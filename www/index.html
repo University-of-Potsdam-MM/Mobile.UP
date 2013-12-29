@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+		<script id="panel-init">
+			$(function () {
+    			$("[data-role='panel']").panel().enhanceWithin();
+			});
+		</script>
+        <title>UP.App</title>
+    </head>
+    <body>
+    	<!-- Start Home - Panel -->
+    	<div data-role="panel" id="homePanel" data-position="left" data-display="push" data-theme="a">
+    		<div data-role="content" class="homePanel-content">
+    			<h3>Navigation:</h3>
+    			<div data-role="controlgroup">
+	    			<a href="news.html" data-role="button">News</a>
+	    			<a href="study.html" data-role="button">Studium & Onlinedienste</a>
+	    			<a href="around.html" data-role="button">Rund ums Studium</a>
+	    			<a href="plans.html" data-role="button">Pläne & Orte</a>
+	    			<a href="search.html" data-role="button">Suchen</a>
+				</div>
+    			<a href="#demo-links" data-role="button" data-rel="close">Close panel</a>
+    		</div>
+    	</div>
+    	<!-- End Home - Panel -->
+    	<!-- Start Main - Page -->
+    	<div data-role="page" id="home">
+	    	<!-- Start Header -->
+		    <div data-role="header">
+		    	<a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
+		    	<a href="options.html" data-icon="gear" class="ui-btn-right">Optionen</a>
+		    	<span class="ui-title">UP.App</span>
+			</div>
+			<!-- End Header -->
+		    <!-- Start Main - Navigation -->
+		    <div data-role="content">
+			    <ul data-role="listview" data-inset="true" id="main-navigation">
+				    <li>
+				    	<a href="news.html">
+				        	<img src="../_assets/img/album-bb.jpg">
+				    		<h2>Neuigkeiten</h2>
+				    		<p>Neuigkeiten</p>
+				    	</a>
+				    </li>
+				    <li>
+		                <a href="study.html">
+							<img src="../_assets/img/album-hc.jpg">
+							<h2>Studium & Onlinedienste</h2>
+							<p>Studium & Onlinedienste</p>
+						</a>
+				    </li>
+				    <li>
+		                <a href="around.html">
+		                    <img src="../_assets/img/album-p.jpg">
+				            <h2>Rund ums Studium</h2>
+		                    <p>Rund ums Studium</p>
+		                </a>
+				    </li>
+					<li>
+		                <a href="plans.html">
+		                    <img src="../_assets/img/album-p.jpg">
+				            <h2>Pläne & Orte</h2>
+		                    <p>Pläne & Orte</p>
+		                </a>
+				    </li>
+					<li>
+		                <a href="search.html">
+		                    <img src="../_assets/img/album-p.jpg">
+				            <h2>Suchen</h2>
+		                    <p>Suchen</p>
+		                </a>
+				    </li>
+					<li>
+		                <a href="#">
+				            <h2>Login</h2>
+		                    <p>Login</p>
+		                </a>
+				    </li>
+			    </ul>
+			</div>
+		    <!-- End Main - Navigation -->
+		</div>
+		<!-- End Main - Page -->
+    </body>
+</html>

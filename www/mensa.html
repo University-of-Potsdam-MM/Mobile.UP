@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+        <title>UP.App-Mensa</title>
+    </head>
+    <body>
+    	<!-- Start Main Page -->
+    	<div data-role="page" id="mensa">
+	    	<!-- Start Header -->
+			<div data-role="header">
+			    <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
+			    <a href="around.html" data-icon="back" class="ui-btn-right">Zurück</a>
+			    <span class="ui-title">Mensen & Speisepläne</span>
+			    <div data-role="navbar">
+				    <ul>
+				        <li><a href="#" class="ui-btn-active">Griebnitzsee</a></li>
+				        <li><a href="#">Neues Palais</a></li>
+				        <li><a href="#">Golm</a></li>
+				    </ul>
+				</div>
+			</div>
+			<!-- End Header -->
+		   <!-- Start Main - Navigation -->
+		   <div data-role="content">
+			   <form>
+			   	<!-- <input type="text" data-role="date"> -->
+		    		<label>
+		        		<input type="checkbox" name="mensa-favorite">Zuerst anzeigen
+		    		</label>
+				</form>
+				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 1<div class="menu">Grießbrei mit heißen Früchten</div></h4>
+					<p>
+						[3] mit Antioxidationsmotteln <br />
+						Studierende: 2,00 <br />
+						Bedienstete: 3,35 <br />
+						Gäste: 4,50 
+					</p>
+				</div>
+				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 2<br />Hänchencurry mit Soße</h4>
+					<p>
+						[3] mit Antioxidationsmotteln <br />
+						Studierende: 2,00 <br />
+						Bedienstete: 3,35 <br />
+						Gäste: 4,50 
+					</p>
+				</div>
+				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 3<p>Lammragout mit Soße</p></h4>
+					<p>
+						[3] mit Antioxidationsmotteln <br />
+						Studierende: 2,00 <br />
+						Bedienstete: 3,35 <br />
+						Gäste: 4,50 
+					</p>
+				</div>
+				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 4<p>Bio</p></h4>
+					<p>
+						[3] mit Antioxidationsmotteln <br />
+						Studierende: 2,00 <br />
+						Bedienstete: 3,35 <br />
+						Gäste: 4,50 
+					</p>
+				</div>
+			</div>
+		    <!-- End Main - Navigation -->
+		</div>
+    </body>
+</html>
