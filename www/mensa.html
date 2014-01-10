@@ -5,10 +5,17 @@
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="css/up-theme.min.css" />
+        <!--  <link rel="stylesheet" href="css/up-style.css" />  -->
+        <link rel="stylesheet" type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" /> 
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+        <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
+        <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js"></script>
+        <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
         <title>UP.App-Mensa</title>
     </head>
     <body>
@@ -21,22 +28,25 @@
 			    <span class="ui-title">Mensen &amp; Speisepläne</span>
 			    <div data-role="navbar">
 				    <ul>
-				        <li><a href="#" class="ui-btn-active">Griebnitzsee</a></li>
-				        <li><a href="#">Neues Palais</a></li>
-				        <li><a href="#">Golm</a></li>
+				        <li><a href="mensa-griebnitzsee.html" class="ui-btn-active">Griebnitzsee</a></li>
+				        <li><a href="mensa-palais.html">Neues Palais</a></li>
+				        <li><a href="mensa-golm.html">Golm</a></li>
 				    </ul>
 				</div>
 			</div>
 			<!-- End Header -->
 		   <!-- Start Main - Navigation -->
 		   <div data-role="content">
-			   <form>
-			   	<!-- <input type="text" data-role="date"> -->
-		    		<label>
-		        		<input type="checkbox" name="mensa-favorite">Zuerst anzeigen
-		    		</label>
-				</form>
-				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+		       <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'>
+                    </div>
+                    <div class="ui-block-b">
+                        <input type="checkbox" name="checkbox-1" id="checkbox-0" class="custom" data-theme="a"/>
+                        <label for="checkbox-0" class="showfirst" >Zuerst anzeigen</label>  
+                    </div>
+                </div><!-- /grid-a /2 spalten -->
+				<div data-role="collapsible" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u" class="speiseplan">
 		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 1<div class="menu">Grießbrei mit heißen Früchten</div></h4>
 					<p>
 						[3] mit Antioxidationsmotteln <br />
