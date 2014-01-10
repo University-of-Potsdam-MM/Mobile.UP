@@ -9,6 +9,23 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+        <script src="js/underscore-min.js"></script>
+        <script src="js/q.min.js"></script>
+        <script src="js/xml2json.min.js"></script>
+        <script src="js/library-logic.js"></script>
+        <script type="text/template" id="results-template">
+            <h1>Results</h1>
+            <ul data-role="listview" data-inset="true">
+                <% _.each(rc, function(entry) { %>
+                <li>
+                    <a href="#">
+                        <h2><%= entry.title %></h2>
+                        <p>t</p>
+                    </a>
+                </li>
+                <% }); %>
+            </ul>
+        </script>
         <title>UP.App-Suche</title>
     </head>
     <body>
@@ -30,10 +47,14 @@
 			<!-- End Header -->
 		    <!-- Start Main - Navigation -->
 		    <div data-role="content">
-				<form>
-		     		<!-- <label for="search-1">Search:</label> -->
-		     		<input type="search" name="search-1" id="search-1" value="">
-				</form>
+               <form method="POST" id="query-form"> 
+                    <!-- <label for="query">Search:</label> -->
+                    <input type="search" name="query" id="query" value="" />
+                    <input type="submit" value="Submit" />
+                </form>
+				<div id="search-results">
+				</div>
+				
 				<!-- End Main Content -->
 			</div>
 		</div>		
