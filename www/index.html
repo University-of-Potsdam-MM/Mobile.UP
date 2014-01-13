@@ -20,18 +20,16 @@
     </head>
     <body>
     	<!-- Start Home - Panel -->
-   	    <div data-role="panel" id="homePanel" data-position="left" data-display="push" data-theme="a">
-    		<div data-role="content" class="homePanel-content">
-    			<h3>Navigation:</h3>
-    			<div data-role="controlgroup">
-	    			<a href="news.html" data-role="button">News</a>
-	    			<a href="study.html" data-role="button">Studium &amp; Onlinedienste</a>
-	    			<a href="around.html" data-role="button">Rund ums Studium</a>
-	    			<a href="plans.html" data-role="button">Pläne &amp; Orte</a>
-	    			<a href="search.html" data-role="button">Suchen</a>
-				</div>
-    			<a href="#demo-links" data-role="button" data-rel="close">Close panel</a>
-    		</div>
+   	    <div data-role="panel" id="nav-panel" data-position-fixed="true" data-display="overlay" data-theme="a">
+    		<ul data-role="listview" data-theme="b" class="nav-search">
+	            <li data-icon="false"><a href="#" data-rel="close">Menu schließen</a></li>
+	            <li data-icon="false"><a href="news.html">News</a></li>
+	            <li data-icon="false"><a href="study.html">Studium und Onlinedienste</a></li>
+	            <li data-icon="false"><a href="around.html">Rund ums Studium</a></li>
+	            <li data-icon="false"><a href="plans.html">Pläne und Orte</a></li>
+	            <li data-icon="false"><a href="search.html">Suche</a></li>
+	            <li data-icon="false"><a href="#">Einstellungen?</a></li>
+            </ul>
     	</div> 
     	<!-- End Home - Panel -->
     	<!-- Start Main - Page -->
