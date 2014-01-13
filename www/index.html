@@ -9,14 +9,39 @@
         <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="js/jquery.mobile.structure-1.4.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/up-style.css" />
+		<link rel="stylesheet" type="text/css" href="js/jqm-datebox.min.css" />
+        <script type="text/javascript" src="phonegap.js"></script>
         <script src="js/jquery-1.10.2.min.js"></script>
         <script src="js/jquery.mobile-1.4.0.min.js"></script>
+        <script src="js/jqm-datebox.core.min.js"></script>
+        <script src="js/jqm-datebox.mode.calbox.min.js"></script>
+        <script src="js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+		<script src="js/underscore-min.js"></script>
+		<script src="js/q.min.js"></script>
 		<script id="panel-init">
 			$(function () {
     			$("[data-role='panel']").panel().enhanceWithin();
 			});
 		</script>
+		<script src="js/mensa-logic.js"></script>
         <title>UP.App</title>
+		
+		<script type="text/html" id="meal-template">
+            <% _.each(meals, function(meal) { %>
+            <div data-role="collapsible" data-collapsed="false">
+                <h3>
+                    <img src="<%= meal.ingredients[0] %>" /><%= meal.title %><br />
+                    <span><%= meal.description %></span>
+                </h3>
+                <p>
+                    [3] mit Antioxidationsmitteln <br />
+                    Studierende: <%= meal.prices.students %> <br />
+                    Bedienstete: <%= meal.prices.staff %> <br />
+                    Gäste: <%= meal.prices.guests %>
+                </p>
+            </div>
+            <% }); %>
+        </script>
     </head>
     <body>
     	<!-- Start Home - Panel -->
