@@ -5,22 +5,25 @@
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <title>UP.App-Neuigkeiten</title>
     </head>
     <body>
 	    <!-- Start Header -->
-		<div data-role="header">
-		    <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-		    <a href="index.html" data-icon="back" class="ui-btn-right">Zurück</a>
-		    <span class="ui-title">Neuigkeiten</span>
+		<div data-role="header" data-position="fixed">
+		    <a href="index.html" data-role="button"data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+		    <h1>Neuigkeiten</h1>
 		</div>
 		<!-- End Header -->
 	    <!-- Start Main - Navigation -->
-
+        <div data-role="content">
+            News
+        </div>
 	    <!-- End Main - Navigation -->
     </body>
 </html>

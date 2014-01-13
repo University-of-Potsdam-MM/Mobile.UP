@@ -5,9 +5,10 @@
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
-        <link rel="stylesheet" href="css/up-theme.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <title>UP.App-Pläne</title>
@@ -16,39 +17,34 @@
     	<!-- Start Main Page -->
     	<div data-role="page" id="plans">
 	    	<!-- Start Header -->
-			<div data-role="header">
-			    <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-			    <a href="index.html" data-icon="back" class="ui-btn-right">Zurück</a>
-			    <span class="ui-title">Pläne und Orte</span>
+			<div data-role="header" data-position="fixed">
+			    <a href="index.html" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+			    <h1>Pläne und Orte</h1>
 			</div>
 			<!-- End Header -->
 		    <!-- Start Main - Navigation -->
 		    <div data-role="content">
-			    <ul data-role="listview" data-inset="true" id="main-navigation">
-				    <li>
-				    	<a href="sitemaps.html">
-				        	<img src="img/up/sitemaps.png">
+			    <ul data-role="listview" data-inset="true" data-theme="c" id="main-navigation">
+				    <li class="sitemaps">
+				    	<a href="sitemaps.html" data-role="button" data-transition="slidefade">
 				    		<h2>Lagepläne</h2>
 				    		<p>Lagepläne</p>
 				    	</a>
 				    </li>
-				    <li>
-		                <a href="#rooms">
-							<img src="img/up/rooms.png">
+				    <li class="rooms">
+		                <a href="#rooms" data-role="button" data-transition="slidefade">
 							<h2>Raumbelegung</h2>
 							<p>Raumbelegung</p>
 						</a>
 				    </li>
-				    <li>
-		                <a href="#">
-		                    <img src="img/up/opening.png">
+				    <li class="opening">
+		                <a href="#" data-role="button" data-transition="slidefade">
 				            <h2>Öffnungszeiten</h2>
 		                    <p>Öffnungszeiten</p>
 		                </a>
 				    </li>
-					<li>
-		                <a href="#transport">
-		                    <img src="img/up/transport.png">
+					<li href="#transport">
+		                <a href="#" data-role="button" data-transition="slidefade">
 				            <h2>Bus &amp; Bahn</h2>
 		                    <p>Bus &amp; Bahn</p>
 		                </a>

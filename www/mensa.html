@@ -5,12 +5,11 @@
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
-        <link rel="stylesheet" href="css/up-theme.min.css" />
-        <!--  <link rel="stylesheet" href="css/up-style.css" />  -->
-        <link rel="stylesheet" type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" /> 
+        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
@@ -22,21 +21,20 @@
     	<!-- Start Main Page -->
     	<div data-role="page" id="mensa">
 	    	<!-- Start Header -->
-			<div data-role="header">
-			    <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-			    <a href="around.html" data-icon="back" class="ui-btn-right">Zurück</a>
-			    <span class="ui-title">Mensen &amp; Speisepläne</span>
-			    <div data-role="navbar">
-				    <ul>
-				        <li><a href="mensa-griebnitzsee.html" class="ui-btn-active">Griebnitzsee</a></li>
-				        <li><a href="mensa-palais.html">Neues Palais</a></li>
-				        <li><a href="mensa-golm.html">Golm</a></li>
-				    </ul>
-				</div>
+			<div data-role="header" data-position="fixed">
+			    <a href="around.html" rel="external" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+			    <h1>Mensen &amp; Speisepläne</h1>
 			</div>
 			<!-- End Header -->
 		   <!-- Start Main - Navigation -->
-		   <div data-role="content">
+		   <div data-role="content" data-theme="c">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="mensa-griebnitzsee.html" class="ui-btn-active">Griebnitzsee</a></li>
+                        <li><a href="mensa-palais.html">Neues Palais</a></li>
+                        <li><a href="mensa-golm.html">Golm</a></li>
+                    </ul>
+                </div>
 		       <div class="ui-grid-a">
                     <div class="ui-block-a">
                         <input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'>
@@ -46,41 +44,42 @@
                         <label for="checkbox-0" class="showfirst" >Zuerst anzeigen</label>  
                     </div>
                 </div><!-- /grid-a /2 spalten -->
-				<div data-role="collapsible" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u" class="speiseplan">
-		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 1<div class="menu">Grießbrei mit heißen Früchten</div></h4>
-					<p>
-						[3] mit Antioxidationsmotteln <br />
-						Studierende: 2,00 <br />
-						Bedienstete: 3,35 <br />
-						Gäste: 4,50 
-					</p>
+				<div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u" class="speiseplan">
+				    <div data-role="collapsible" data-collapsed="false">
+		    		<h3><img src="img/up/lamm.png" />Angebot 1<br /><span>Grießbrei mit heißen Früchten</span></h3>
+						<p>
+							[3] mit Antioxidationsmotteln <br />
+							Studierende: 2,00 <br />
+							Bedienstete: 3,35 <br />
+							Gäste: 4,50 
+						</p>
+				    </div>
+				<div data-role="collapsible">
+		    		<h3><img src="img/up/lamm.png" />Angebot 2<br /><span>Grießbrei mit heißen Früchten</span></h3>
+                        <p>
+                            [3] mit Antioxidationsmotteln <br />
+                            Studierende: 2,00 <br />
+                            Bedienstete: 3,35 <br />
+                            Gäste: 4,50 
+                        </p>
 				</div>
-				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 2<br />Hänchencurry mit Soße</h4>
-					<p>
-						[3] mit Antioxidationsmotteln <br />
-						Studierende: 2,00 <br />
-						Bedienstete: 3,35 <br />
-						Gäste: 4,50 
-					</p>
+				<div data-role="collapsible">
+		    		<h3><img src="img/up/lamm.png" />Angebot 3<br /><span>Grießbrei mit heißen Früchten</span></h3>
+                        <p>
+                            [3] mit Antioxidationsmotteln <br />
+                            Studierende: 2,00 <br />
+                            Bedienstete: 3,35 <br />
+                            Gäste: 4,50 
+                        </p>
 				</div>
-				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 3<p>Lammragout mit Soße</p></h4>
-					<p>
-						[3] mit Antioxidationsmotteln <br />
-						Studierende: 2,00 <br />
-						Bedienstete: 3,35 <br />
-						Gäste: 4,50 
-					</p>
-				</div>
-				<div data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-		    		<h4><img src="../_assets/img/album-bb.jpg" />Angebot 4<p>Bio</p></h4>
-					<p>
-						[3] mit Antioxidationsmotteln <br />
-						Studierende: 2,00 <br />
-						Bedienstete: 3,35 <br />
-						Gäste: 4,50 
-					</p>
+				<div data-role="collapsible">
+		    		<h3><img src="img/up/lamm.png" />Angebot 4<br /><span>Grießbrei mit heißen Früchten</span></h3>
+                        <p>
+                            [3] mit Antioxidationsmotteln <br />
+                            Studierende: 2,00 <br />
+                            Bedienstete: 3,35 <br />
+                            Gäste: 4,50 
+                        </p>
 				</div>
 			</div>
 		    <!-- End Main - Navigation -->
