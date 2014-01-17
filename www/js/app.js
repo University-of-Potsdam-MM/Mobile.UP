@@ -19,9 +19,14 @@ function render(tmpl_name) {
             }
         });
 
+		tmpl_string = removeTabs(tmpl_string);
         render.tmpl_cache[tmpl_name] = _.template(tmpl_string);
                 
     }
 
     return render.tmpl_cache[tmpl_name];
+}
+
+function removeTabs(tmpl) {
+	return tmpl.replace(/\t/g, '');
 }
