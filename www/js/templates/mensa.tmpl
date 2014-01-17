@@ -1,0 +1,1 @@
+<% _.each(meals, function(meal) { %><div data-role="collapsible" data-collapsed="false"><h3><img src="<%= meal.ingredients[0] %>" /><%= meal.title %><br /><span><%=meal.description %></span></h3><p>[3] mit Antioxidationsmitteln<br />Studierende: <%= meal.prices.students %> <br />Bedienstete: <%= meal.prices.staff %><br />Gäste: <%= meal.prices.guests %></p></div><% }); %>

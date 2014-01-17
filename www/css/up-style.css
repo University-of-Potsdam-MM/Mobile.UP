@@ -535,23 +535,23 @@ font-weight:normal;
 /* popup panel */
 
 #nav-panel ul.nav-search  li a, #nav-panel2 ul.nav-search  li a, #nav-panel3 ul.nav-search  li a {
-	background-image:url(img/up/arrow-darkblue.png);
+	background-image:url(../img/up/arrow-darkblue.png);
 	background-repeat:no-repeat;
 	background-position:right;
 	border-right:15px solid #d0dae3;
 }
 
 #nav-panel ul.nav-search  li a:hover, #nav-panel2 ul.nav-search  li a:hover, #nav-panel3 ul.nav-search  li a:hover {
-	background-image:url(img/up/arrow-white.png);
+	background-image:url(../img/up/arrow-white.png);
 	border-right:15px solid #014260;
 	border-top:0;
 	border-bottom:0;
 }
 #nav-panel ul.nav-search  li:first-child a, #nav-panel2 ul.nav-search  li:first-child a, #nav-panel3 ul.nav-search  li:first-child a {
-	background-image:url(img/up/close.png);
+	background-image:url(../img/up/close.png);
 }
 
 #nav-panel ul.nav-search  li:first-child:hover a, #nav-panel2 ul.nav-search  li:first-child:hover a, #nav-panel ul.nav-search  li:first-child:hover a {
-	background-image:url(img/up/close-hover.png);3
+	background-image:url(../img/up/close-hover.png);3
 	
 }
