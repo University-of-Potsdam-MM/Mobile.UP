@@ -1,21 +1,32 @@
+function activeTabFix(target, event) {
+	    event.preventDefault();
+	    $(".location-menu").removeClass("ui-btn-active");
+	    target.addClass("ui-btn-active");
+}
+
 	$(document).ready(function () {
 	    $.support.cors = true;
 	    $.mobile.allowCrossDomainPages = true;
 	});
 	
 	$(document).on("pageinit", "#mensa", function () {
-	    $("#location-menu").bind("change", function (event, ui) {
-	        updateMenu();
+	    $(".location-menu").bind("click", function (event) {
+	        var source = $(this);
+	        updateMenu(source);
+	        
+	        // For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
+	        activeTabFix(source, event);
 	    });
 	});
 	
 	$(document).on("pageshow", "#mensa", function () {
-	    updateMenu();
+	    var source = $(".ui-btn-active");
+	    updateMenu(source);
 	});
 	
-	function updateMenu() {
-	    // var mensa = $("#location-menu option:selected").val();
-		var mensa = "Griebnitzsee";
+	function updateMenu(source) {
+	    var targetMensa = source.attr("href");
+		var mensa = targetMensa.slice(1);
 	
 	    Q(clearMenu())
 	        .then(function () { return loadMenu(mensa); })
@@ -152,10 +163,10 @@
 	
 	function drawMeals(days) {
 		
-		var createDay = render('mensa',{meals:{}});
+		var createDay = render('mensa');
 		
 		// Add day section to html
-		var htmlDay = createDay(days[0]);
+		var htmlDay = createDay(days[1]);
 		$("#todaysMenu").append(htmlDay);
 
 		// Tell collapsible set to refresh itself
