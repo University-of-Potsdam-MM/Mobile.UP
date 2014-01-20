@@ -43,8 +43,8 @@ function activeTabFix(target, event) {
 	        .then(filterEmptyMeals)
 	        .then(drawMeals)
 	        .catch(function (e) {
-	            alert("Fehlschlag: " + JSON.stringify(e));
-	            console.log(e);
+	            console.log("Fehlschlag: " + e.stack);
+	            alert("Fehlschlag: " + e.stack);
 	        });
 	}
 	
@@ -58,20 +58,23 @@ function activeTabFix(target, event) {
 	 */
 	function loadMenu(location) {
 	    var d = Q.defer();
-	    var url = "http://fossa.soft.cs.uni-potsdam.de:8280/services/mensaParserJSON";
+	    var url = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0";
 	
 	    // If we are not in an app environment, we have to use the local proxy
-	  /*
 	    if (navigator.app === undefined) {
-	        url = "/fossa-services/mensaParserJSON";
+	        url = "/usb-services/mensaAPI/1.0";
 	    }
-	*/
-	    $.get(url + "/readCurrentMeals?location=" + location).done(d.resolve).fail(d.reject);
+		
+		headers = { Authorization: "Bearer 44b61d3e121a2e98db3a26bba804a4" };
+		$.ajax({
+			url: url + "/readCurrentMeals?format=jsons&location=" + location,
+			headers: headers
+		}).done(d.resolve).fail(d.reject);
 	    return d.promise;
 	}
 	
 	function selectIcons(menu) {
-	    return menu.readCurrentMealsResponse.return.iconHashMap.entry;
+	    return menu.readCurrentMealsResponse.meals.iconHashMap.entry;
 	}
 	
 	function convertToMap(icons) {
@@ -85,7 +88,7 @@ function activeTabFix(target, event) {
 	}
 	
 	function selectMeals(menu) {
-	    return menu.readCurrentMealsResponse.return.gerichte.entry;
+	    return menu.readCurrentMealsResponse.meals.meal;
 	}
 	
 	function sortMealsByDate(meals) {
@@ -96,21 +99,6 @@ function activeTabFix(target, event) {
 	    });
 	}
 	
-	/**
-	 * Prepare data for day section.
-	 * @param icons
-	 * @returns {Function}
-	 */
-	function mapToDay(icons) {
-	    return function (day) {
-	        var dayData = {};
-	        dayData.title = new Date(day.key).toLocaleDateString();
-	        dayData.contentId = _.uniqueId("id_");
-	        dayData.meals = _.chain(day.value.item).sortBy(sortByAnzeigeprio).map(mapToMeal(icons)).value();
-	        return dayData;
-	    }
-	}
-	
 	function sortByAnzeigeprio(element) {
 	    return element.anzeigeprio;
 	}
@@ -118,20 +106,28 @@ function activeTabFix(target, event) {
 	function mapToMeal(icons) {
 	    return function (meal) {
 	        var mealData = {};
-	        mealData.title = meal.titel;
-	        mealData.description = meal.beschreibung;
+			mealData.contentId = _.uniqueId("id_");
+	        mealData.title = meal.title;
+	        mealData.description = meal.description;
+			
 			mealData.prices = {};
-			mealData.prices.students = meal.preise.entry[0].value;
-			mealData.prices.staff = meal.preise.entry[1].value;
-			mealData.prices.guests = meal.preise.entry[2].value;
+			if (meal.prices) {
+				mealData.prices.students = meal.prices.student;
+				mealData.prices.staff = meal.prices.staff;
+				mealData.prices.guests = meal.prices.guest;
+			} else {
+				mealData.prices.students = "?";
+				mealData.prices.staff = "?";
+				mealData.prices.guests = "?";
+			}
 	
 	        mealData.ingredients = [];
-	        if ($.isArray(meal.essenstyp)) {
-	            for (var typIndex in meal.essenstyp) {
-	                mealData.ingredients.push(icons[meal.essenstyp[typIndex]]);
+	        if ($.isArray(meal.type)) {
+	            for (var typIndex in meal.type) {
+	                mealData.ingredients.push(icons[meal.type[typIndex]]);
 	            }
 	        } else {
-	            mealData.ingredients.push(icons[meal.essenstyp]);
+	            mealData.ingredients.push(icons[meal.type]);
 	        }
 	
 	        return mealData;
@@ -144,7 +140,7 @@ function activeTabFix(target, event) {
 	 * @param icons
 	 */
 	function prepareMeals(meals, icons) {
-	    return _.map(meals, mapToDay(icons));
+	    return _.map(meals, mapToMeal(icons));
 	}
 	
 	/**
@@ -161,18 +157,17 @@ function activeTabFix(target, event) {
 	    });
 	}
 	
-	function drawMeals(days) {
-		
-		var createDay = render('mensa');
+	function drawMeals(meals) {
+		var createMeals = render('mensa');
 		
 		// Add day section to html
-		var htmlDay = createDay(days[1]);
+		var htmlDay = createMeals({meals: meals});
 		$("#todaysMenu").append(htmlDay);
 
 		// Tell collapsible set to refresh itself
 		$("#todaysMenu").collapsibleset("refresh");
 
 		// Open the first section
-		$("#" + days[0].contentId).trigger('expand');
+		$("#" + meals[0].contentId).trigger('expand');
 		
 }
