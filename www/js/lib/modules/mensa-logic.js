@@ -12,20 +12,30 @@ function activeTabFix(target, event) {
 	$(document).on("pageinit", "#mensa", function () {
 	    $(".location-menu").bind("click", function (event) {
 	        var source = $(this);
-	        updateMenu(source);
+			var date = $("#mydate").datebox('getTheDate');
+	        updateMenu(source, date);
 	        
 	        // For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
 	        activeTabFix(source, event);
 	    });
+		
+		$("#mydate").bind("datebox", function(e, p) {
+			if (p.method === "set") {
+				var source = $(".ui-btn-active");
+				var date = p.date;
+				updateMenu(source, date);
+			}
+		});
 	});
 	
 	$(document).on("pageshow", "#mensa", function () {
 	    var source = $(".ui-btn-active");
-	    updateMenu(source);
+		var date = $("#mydate").datebox('getTheDate');
+	    updateMenu(source, date);
 	});
 	
-	function updateMenu(source) {
-	    var targetMensa = source.attr("href");
+	function updateMenu(mensaSource, date) {
+	    var targetMensa = mensaSource.attr("href");
 		var mensa = targetMensa.slice(1);
 	
 	    Q(clearMenu())
@@ -41,6 +51,7 @@ function activeTabFix(target, event) {
 	        })
 	        .spread(prepareMeals)
 	        .then(filterEmptyMeals)
+			.then(filterByDate(date))
 	        .then(drawMeals)
 	        .catch(function (e) {
 	            console.log("Fehlschlag: " + e.stack);
@@ -109,6 +120,7 @@ function activeTabFix(target, event) {
 			mealData.contentId = _.uniqueId("id_");
 	        mealData.title = meal.title;
 	        mealData.description = meal.description;
+			mealData.date = meal.date;
 			
 			mealData.prices = {};
 			if (meal.prices) {
@@ -157,6 +169,14 @@ function activeTabFix(target, event) {
 	    });
 	}
 	
+	function filterByDate(date) {
+		return function(meals) {
+			return _.filter(meals, function(meal) {
+				return new Date(meal.date).toDateString() == date.toDateString();
+			});
+		};
+	}
+	
 	function drawMeals(meals) {
 		var createMeals = render('mensa');
 		
@@ -168,6 +188,8 @@ function activeTabFix(target, event) {
 		$("#todaysMenu").collapsibleset("refresh");
 
 		// Open the first section
-		$("#" + meals[0].contentId).trigger('expand');
+		if (meals[0]) {
+			$("#" + meals[0].contentId).trigger('expand');
+		}
 		
 }
