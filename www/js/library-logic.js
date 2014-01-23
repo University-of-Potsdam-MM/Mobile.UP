@@ -1,21 +1,5 @@
 var environment = 'development';
 
-var xmlHelper = {};
-
-xmlHelper.textForTag = function(node, tagName) {
-  var firstTagNode = node.getElementsByTagName(tagName)[0];
-  if (firstTagNode) {
-    return firstTagNode.textContent;
-  } else {
-    return null;
-  }
-};
-
-xmlHelper.textForQuery = function(jqNode, query) {
-  // if (jqNode instanceof jQuery
-  return _.pluck(jqNode.find(query), 'textContent');
-};
-
 $(document).ready(function() {
   //updateResults();
 })
@@ -57,18 +41,17 @@ function textForTag(node, tagName) {
 }
 
 function textForQuery(jqNode, query){
-  return _.map(
-    jqNode.find(query),
-    function(item){ return item.textContent;}
-  );
-  // return _.pluck(jqNode.find(query), 'textContent');
+  return _.pluck(jqNode.find(query), 'textContent');
 }
 
 function authors($recordData){
   var nameNodes = $recordData.find('name[type=personal]')
   var names = _.map(nameNodes, function(node){
     var $node = $(node);
-    var author = [textForQuery($node, 'namePart[type=family]')[0], textForQuery($node, 'namePart[type=given]')[0]];
+    var author = [
+      textForQuery($node, 'namePart[type=family]')[0],
+      textForQuery($node, 'namePart[type=given]')[0]
+    ];
     return author;
   });
   console.log('names:',names);
@@ -77,7 +60,6 @@ function authors($recordData){
 
 
 function updateResults() {
-
   Q(clearSearch())
   .then(function () {
     var inputs= $("#query-form :input").serializeArray();
@@ -85,23 +67,8 @@ function updateResults() {
     return loadSearch(query);
   })
   .then(xmlToBooksArray)
-  // .then(function (xmlSearchResult) {
-  //  var x2js = new X2JS();
-    
-  //  return x2js.xml2json(searchResult);
-  // })
-  // .then(function (jsonResponse) {
-  //  var jsonResponse = jsonResponse;
-  //  jsonResponse = jsonResponse["searchRetrieveResponse"]["records"];
-  //  var results = Q(convertToMap(jsonResponse));
-
-  //  return results;
-  // })
   .then(renderResults)
-  .catch(function (e) {
-    console.log(e);
-    alert("Fehlschlag: " + JSON.stringify(e));
-    });
+  .catch(errorLogging);
 }
 
 function clearSearch() {
@@ -125,27 +92,16 @@ function loadSearch(query) {
     return d.promise;
 }
 
-function convertToMap(jsonResponse) {
-  var results = [];
-  console.log(jsonResponse);
-
-  for (var i=0; i<10;i++) {
-    var entry = {};
-    if ('titleInfo' in jsonResponse["record"][i]["recordData"]["mods"]) {
-      if ('title' in jsonResponse["record"][i]["recordData"]["mods"]["titleInfo"]) {
-        entry.title = jsonResponse["record"][i]["recordData"]["mods"]["titleInfo"]["title"];
-      } else {
-        entry.title = jsonResponse["record"][i]["recordData"]["mods"]["titleInfo"]["subTitle"];
-      }
-    }
-    results.push(entry);
-  }
-
-  return results;
-}
 
 function renderResults(results) {
+  console.log(results);
   _.templateSettings.variable = "rc";
-  var template = _.template($("#results-template").html());
-  $("#search-results").html(template(results)).trigger('create');
+  var template = _.template($("#lib-results-template").html());
+  var html = template(results);
+  $("#search-results").html(html).trigger('create');
+}
+
+var errorLogging = function (e) {
+  console.log(e);
+  alert("Fehlschlag: " + JSON.stringify(e));
 }
