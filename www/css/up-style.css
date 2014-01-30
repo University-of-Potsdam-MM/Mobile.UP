@@ -327,6 +327,12 @@ height:100%;
     float:left;
     
 }
+
+.speiseplan h3 img {
+	width: 30px;
+	height: 30px;
+}
+
 .speiseplan img{
     margin-left:5px;
     vertical-align:middle;
