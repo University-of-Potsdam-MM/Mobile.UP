@@ -37,8 +37,10 @@ function activeTabFix(target, event) {
 	function updateMenu(mensaSource, date) {
 	    var targetMensa = mensaSource.attr("href");
 		var mensa = targetMensa.slice(1);
-	
-	    Q(clearMenu())
+		
+		uniqueDivId = _.uniqueId("id_");
+		
+	    Q(clearMenu(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
@@ -52,15 +54,16 @@ function activeTabFix(target, event) {
 	        .spread(prepareMeals)
 	        .then(filterEmptyMeals)
 			.then(filterByDate(date))
-	        .then(drawMeals)
+	        .then(drawMeals(uniqueDivId))
 	        .catch(function (e) {
 	            console.log("Fehlschlag: " + e.stack);
 	            alert("Fehlschlag: " + e.stack);
 	        });
 	}
 	
-	function clearMenu() {
+	function clearMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
+		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
 	}
 	
 	/**
@@ -177,19 +180,20 @@ function activeTabFix(target, event) {
 		};
 	}
 	
-	function drawMeals(meals) {
-		var createMeals = render('mensa');
-		
-		// Add day section to html
-		var htmlDay = createMeals({meals: meals});
-		$("#todaysMenu").append(htmlDay);
+	function drawMeals(uniqueDiv) {
+		return function(meals) {
+			var createMeals = render('mensa');
+			
+			// Add day section to html
+			var htmlDay = createMeals({meals: meals});
+			$("#" + uniqueDiv).append(htmlDay);
 
-		// Tell collapsible set to refresh itself
-		$("#todaysMenu").collapsibleset("refresh");
+			// Tell collapsible set to refresh itself
+			$("#todaysMenu").collapsibleset("refresh");
 
-		// Open the first section
-		if (meals[0]) {
-			$("#" + meals[0].contentId).trigger('expand');
+			// Open the first section
+			if (meals[0]) {
+				$("#" + meals[0].contentId).trigger('expand');
+			}
 		}
-		
-}
+	}
