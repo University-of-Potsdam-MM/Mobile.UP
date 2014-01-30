@@ -29,14 +29,23 @@ function activeTabFix(target, event) {
 	});
 	
 	$(document).on("pageshow", "#mensa", function () {
+		activateDefaultMensa();
+		
 	    var source = $(".ui-btn-active");
 		var date = $("#mydate").datebox('getTheDate');
 	    updateMenu(source, date);
 	});
 	
+	function activateDefaultMensa() {
+		defaultMensa = getDefaultMensa();
+		$(".location-menu").removeClass("ui-btn-active");
+		var searchExpression = "a[href='#" + defaultMensa + "']";
+		$(searchExpression).addClass("ui-btn-active");
+	}
+	
 	function updateMenu(mensaSource, date) {
-	    var targetMensa = mensaSource.attr("href");
-		var mensa = targetMensa.slice(1);
+	    var mensa = retreiveMensa(mensaSource);
+		setDefaultMensa(mensa);
 		
 		uniqueDivId = _.uniqueId("id_");
 		
@@ -59,6 +68,19 @@ function activeTabFix(target, event) {
 	            console.log("Fehlschlag: " + e.stack);
 	            alert("Fehlschlag: " + e.stack);
 	        });
+	}
+	
+	function retreiveMensa(mensaSource) {
+		var targetMensa = mensaSource.attr("href");
+		return targetMensa.slice(1);
+	}
+	
+	function setDefaultMensa(mensa) {
+		localStorage.setItem("mensa.default", mensa);
+	}
+	
+	function getDefaultMensa() {
+		return localStorage.getItem("mensa.default");
 	}
 	
 	function clearMenu(uniqueDivId) {
