@@ -1,8 +1,10 @@
 <% _.each(meals, function(meal) { %>
 <div data-role="collapsible" data-collapsed="false" id="<%= meal.contentId %>">
-	<h3>
-		<img src="<%= meal.ingredients[0] %>" width="30" height="30" /><%= meal.title %><br />
-		<span><%=meal.description %></span>
+    <h3>
+        <div class="mensaicons">
+            <img src="<%= meal.ingredients[0] %>" />
+        </div>
+        <div class="mensatext"><%= meal.title %><br /><span><%=meal.description %></span></div>
 	</h3>
 	<p>
 		[3] mit Antioxidationsmitteln<br />
