@@ -37,7 +37,14 @@ function activeTabFix(target, event) {
 	});
 	
 	function activateDefaultMensa() {
-		defaultMensa = getDefaultMensa();
+		var defaultMensa = getDefaultMensa();
+		
+		if (!defaultMensa) {
+			var source = $(".location-menu-default")
+			defaultMensa = retreiveMensa(source);
+			setDefaultMensa(defaultMensa);
+		}
+		
 		$(".location-menu").removeClass("ui-btn-active");
 		var searchExpression = "a[href='#" + defaultMensa + "']";
 		$(searchExpression).addClass("ui-btn-active");
