@@ -1,5 +1,5 @@
 <% _.each(meals, function(meal) { %>
-<div data-role="collapsible" data-collapsed="false" id="<%= meal.contentId %>">
+<div data-role="collapsible" data-collapsed="true" id="<%= meal.contentId %>">
     <h3>
         <div class="mensaicons">
             <img src="<%= meal.ingredients[0] %>" />
@@ -8,9 +8,9 @@
 	</h3>
 	<p>
 		[3] mit Antioxidationsmitteln<br />
-		Studierende: <%= meal.prices.students %> €<br />
-		Bedienstete: <%= meal.prices.staff %> €<br />
-		Gäste: <%= meal.prices.guests %> €
+		Studierende: <% print(Number(meal.prices.students).toFixed(2)); %> €<br />
+		Bedienstete: <% print(Number(meal.prices.staff).toFixed(2)); %> €<br />
+		Gäste: <% print(Number(meal.prices.guests).toFixed(2)); %> €
 	</p>
 </div>
 <% }); %>
