@@ -1,5 +1,10 @@
 /*LAYOUT*/
 
+/*generell*/
+
+.ui-shadow {
+	box-shadow:0px 0px 0px !important;
+}
 /*Abstände zum inhalt zurücksetzen*/
 .ui-content {
 	padding:0em;
@@ -643,6 +648,8 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-b
 	margin:0 0;
 	
 }
+
+.ui-bar-inherit.ui-li-divider {border:none !important}
 
 li.ui-collapsible h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 		
