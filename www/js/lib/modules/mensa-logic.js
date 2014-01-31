@@ -212,17 +212,13 @@ function activeTabFix(target, event) {
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
 			var createMeals = render('mensa');
+			var host = $("#" + uniqueDiv);
 			
 			// Add day section to html
 			var htmlDay = createMeals({meals: meals});
-			$("#" + uniqueDiv).append(htmlDay);
+			host.append(htmlDay);
 
 			// Tell collapsible set to refresh itself
-			$(".speiseplan").trigger("create");
-
-			// Open the first section
-			if (meals[0]) {
-				$("#" + meals[0].contentId).trigger('expand');
-			}
+			host.trigger("create");
 		}
 	}
