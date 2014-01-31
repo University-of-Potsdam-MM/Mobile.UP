@@ -101,9 +101,9 @@ function activeTabFix(target, event) {
 	        url = "/usb-services/mensaAPI/1.0";
 	    }
 		
-		headers = { Authorization: "Bearer 44b61d3e121a2e98db3a26bba804a4" };
+		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
 		$.ajax({
-			url: url + "/readCurrentMeals?format=jsons&location=" + location,
+			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
 		}).done(d.resolve).fail(d.reject);
 	    return d.promise;
