@@ -10,7 +10,7 @@ body, .ui-page {
 	margin:0 auto;
 }
 
-/* margin-top der listview zur�cksetzen*/
+/* margin-top der listview zurücksetzen*/
 .ui-content .ui-listview-inset, .ui-panel-inner>.ui-listview-inset {
 margin: 0em 0;
 }
@@ -22,7 +22,7 @@ border-left-width: 0px;
 
 }
 
-/* login button - h�he*/
+/* login button  - Höhe*/
 #home li.login .ui-btn {
 height:38px;
 
@@ -495,7 +495,7 @@ height:100%;
 }
 
 .ui-listview.ui-group-theme-c  li.opening:hover a {
-	background-image:url(../img/up/opening.png);
+	background-image:url(../img/up/opening-hover.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
@@ -597,3 +597,27 @@ font-weight:normal;
 	background-image:url(../img/up/close-hover.png);
 	
 }
+
+/* Sorter
+-------------------- */
+#sorter .ui-li.ui-li-static.ui-btn-up-c {
+    height: 3.8%;
+    padding: 0;
+    font-size: 8px;
+    padding-left: 5px;
+    line-height: 1.8em;
+}
+#sorter{
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 20px;
+    z-index: 1;
+}
+#sorter ul{
+    height: 100%;
+}
+#sortedList{
+    padding-right: 35px;
+}
+
