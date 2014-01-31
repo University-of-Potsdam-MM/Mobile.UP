@@ -621,3 +621,143 @@ font-weight:normal;
     padding-right: 35px;
 }
 
+
+/*Liste - Öffnungszeiten
+-------------------- */
+.ui-bar-inherit.ui-li-divider {  /*Zeilen für A, B, C ....*/	
+	background:#dedede !important;
+	border:none;
+}
+
+.ui-listview>.ui-li-static {
+	padding:0px;
+	
+}
+
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-body-inherit.ui-collapsible {
+	border-color:#cccccc;
+}
+
+.ui-listview>li h3 {
+	margin:0 0;
+	
+}
+
+li.ui-collapsible h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+		
+	background:#ededed;
+	border:none;
+}
+
+ui-collapsible-heading-toggle, li.ui-collapsible h3.ui-collapsible-heading a,ui-collapsible-heading-toggle {
+	background:#cfdae3;
+}
+
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-content {
+	background:#cfdae3;
+	padding-left:45px;
+}
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
+	color:#1e516b;
+	font-size:.8em;
+	
+}
+
+/* Circles 
+-------------------- */
+
+.both{
+	display:block;
+	float:left;
+     height:0px;
+     width:0px;
+    border-right:10px solid #990808;
+	border-top:10px solid #459909;
+	border-left:10px solid #459909;
+	border-bottom:10px solid #990808;
+	-moz-border-radius: 10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	 margin-right:10px;
+}
+
+.closed{
+	display:block;
+	float:left;
+     height: 20px; 
+    width: 20px; 
+    background-color: #990808; 
+	-moz-border-radius:  150px;
+	-webkit-border-radius: 150px;
+    border-radius: 150px;
+     margin-right:10px;
+}
+
+.open{
+	display:block;
+	float:left;
+     height: 20px; 
+    width: 20px; 
+    background-color: #459909; 
+	-moz-border-radius:  150px;
+	-webkit-border-radius: 150px;
+    border-radius: 150px;
+    margin-right:10px;
+}
+
+/*arrow up - arrow down 
+-------------------- */
+
+.ui-icon-arrow-down:after {
+	background-image: url(../img/up/arrow-down.png);
+	background-color:transparent;
+}
+
+.ui-icon-arrow-up:after {
+	background-image: url(../img/up/arrow-up.png);
+	background-color:transparent;
+}
+
+/*table  öffnungszeiten
+---------------------------------*/
+
+#opening table thead tr th {display:none;}
+#opening table {
+	display:block;
+	font-size:.8em;
+	margin-bottom:20px !important;
+	
+}
+
+#opening .table-stripe tbody tr:nth-child(odd) th {
+
+background-color: rgba(255, 255, 255, 0.4);
+}
+
+.table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
+
+background-color: rgba(255, 255, 255, 0.4);
+}
+
+#opening .table-stripe tbody tr:nth-child(even) th {
+
+background-color: rgba(255, 255, 255, 0.8);
+}
+
+.table-stripe tbody tr:nth-child(even) td, .table-stripe tbody tr:nth-child(even) th {
+
+background-color: rgba(255, 255, 255, 0.8);
+}
+
+/*öffnungszeiten - button hover 
+----------------------------------*/
+
+#opening.ui-page-theme-a .ui-btn:hover {
+	background: #dedede !important;
+	color: #1e516b;
+
+}
+
