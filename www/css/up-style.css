@@ -546,7 +546,7 @@ font-weight:normal;
 .speiseplan .ui-btn-icon-notext:after, 
 .speiseplan .ui-btn-icon-left:after, 
 .speiseplan .ui-btn-icon-right:after {
-	position:relative; float:right;
+	margin-left:93%;
 }
 
 .speiseplan .ui-btn-icon-left {
