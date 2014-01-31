@@ -218,7 +218,7 @@ function activeTabFix(target, event) {
 			$("#" + uniqueDiv).append(htmlDay);
 
 			// Tell collapsible set to refresh itself
-			$("#todaysMenu").collapsibleset("refresh");
+			$(".speiseplan").trigger("create");
 
 			// Open the first section
 			if (meals[0]) {
