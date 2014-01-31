@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div data-role="page" id="opening">
+           <!-- Start Header -->
+            <div data-role="header" data-position="fixed">
+                <a href="plans.html" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+                <h1>Lagepl&auml;ne</h1>
+            </div>
+            <!-- End Header -->
+            <!-- Start Main - Navigation -->
+            <div data-role="content" data-theme="c">
+                <form>
+                	<input data-type="search" id="searchForOpening" placeholder="Eintr&auml;ge filtern" />
+                </form>
+				<div id="sorter">
+					<ul data-role="listview">
+						<li><span>A</span></li>
+						<li><span>B</span></li>
+						<li><span>P</span></li>
+					</ul>
+				</div>
+
+                <ul data-role="listview" data-autodividers="true" data-inset="true" data-filter="true" data-input="#searchForOpening" id="openingTime">
+                	
+                	<li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-filtertext="Allgemeine Studierendenberatung ">
+                		<h3>Allgemeine Studierendenbereatung</h3>
+                		content
+                	</li>
+                	<li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-filtertext="ASTA Bafög Sozial">
+                		<h3>AStA</h3>
+                		BAföG- und Sozialberatung: <br />
+                		Freitags, 09:00 - 14:00 Uhr<br />
+                		<p />
+                		Jobberatung:<br />
+                		Di: 16:30 - 18:30 Uhr<br />
+                		Mi: 11:00 - 13:00 Uhr<br />
+                		<button href="#" class="ui-btn ui-btn-icon-left ui-icon-location">Auf der Karte finden</button>
+                	</li>
+                	<li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-filtertext="Bibliothek Bibo">
+                		<h3>Bibliotheken<img src="http://jquerymobile.com/demos/1.0a4.1/docs/lists/images/us.png" /></h3>
+                		E-Mail: placeholder<br />
+                		<b><u>Öffnungszeiten:</u></b><br />
+                		<table data-role="table" class="ui-responsive ui-body-d table-stripe ui-shadow" data-column-btn-theme="b">
+                			<thead>
+                			<tr><th>Wochentag</th><th>Uhrzeit</th></tr></thead>
+                			<tbody>
+                				<tr><th>Montag:</th><td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td></tr>
+                	 			<tr><th>Dienstag</th><td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td></tr>
+                				<tr><th>Mittwoch</th><td>-</td></tr>
+                				<tr><th>Donnerstag</th><td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td></tr>
+                				<tr><th>Freitag</th><td>10:00 - 12:00 Uhr</td></tr>
+                			</tbody>
+                		</table>
+                		<button href="#" class="ui-btn ui-btn-icon-left ui-icon-location">Auf der Karte finden</button>
+                	</li>
+                	<li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-filtertext="Prüfungsamt Zentrales">
+                		<h3>Prüfungsamt</h3>
+                		Jobberatung:<br />
+                		Di: 16:30 - 18:30 Uhr<br />
+                		Mi: 11:00 - 13:00 Uhr<br />
+                		<button href="#" class="ui-btn ui-btn-icon-left ui-icon-location">Auf der Karte finden</button>
+                	</li>
+                	<!-- Auslagerung in Template -->
+                	<li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-filtertext="PUCK Servicestelle">
+                		<h3>PUCK-Servicestelle</h3>
+                		E-Mail: puck@uni-potsdam.de<br />
+                		<b><u>Öffnungszeiten:</u></b><br />
+                		<table data-role="table" class="ui-responsive ui-body-d table-stripe ui-shadow" data-column-btn-theme="b">
+                			<thead>
+                			<tr><th>Wochentag</th><th>Uhrzeit</th></tr></thead>
+                			<tbody>
+                				<tr><th>Montag:</th><td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td></tr>
+                	 			<tr><th>Dienstag</th><td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td></tr>
+                				<tr><th>Mittwoch</th><td>-</td></tr>
+                				<tr><th>Donnerstag</th><td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td></tr>
+                				<tr><th>Freitag</th><td>10:00 - 12:00 Uhr</td></tr>
+                			</tbody>
+                		</table>
+                		<button href="#" class="ui-btn ui-btn-icon-left ui-icon-location">Auf der Karte finden</button>
+                	</li>
+                </ul>
+                
+            </div>
+       </div>
+       <!-- End Main - Navigation -->
+    </body>
+</html>
