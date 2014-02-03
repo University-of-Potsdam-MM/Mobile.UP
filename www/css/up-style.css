@@ -579,6 +579,21 @@ font-weight:normal;
 	padding-left:88px;
 }
 
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mensaicons img {
+	width:30px;
+	height:30px;
+	float:left;
+}
+
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
+
+	padding-left: 10px;
+}
+
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
+	padding-left: 80px;
+	margin-top: 0px
+}
 
 /* popup panel */
 
