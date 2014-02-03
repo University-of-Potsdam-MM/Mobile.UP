@@ -569,6 +569,7 @@ font-weight:normal;
 .ui-collapsible-inset .ui-collapsible-heading-collapsed .ui-btn {
 	
 	background:#ededed;
+	padding: .8em 1em !important; /*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 }
 
 .speiseplan .ui-collapsible-content.ui-body-inherit {
