@@ -37,7 +37,14 @@ function activeTabFix(target, event) {
 	});
 	
 	function activateDefaultMensa() {
-		defaultMensa = getDefaultMensa();
+		var defaultMensa = getDefaultMensa();
+		
+		if (!defaultMensa) {
+			var source = $(".location-menu-default")
+			defaultMensa = retreiveMensa(source);
+			setDefaultMensa(defaultMensa);
+		}
+		
 		$(".location-menu").removeClass("ui-btn-active");
 		var searchExpression = "a[href='#" + defaultMensa + "']";
 		$(searchExpression).addClass("ui-btn-active");
@@ -101,9 +108,9 @@ function activeTabFix(target, event) {
 	        url = "/usb-services/mensaAPI/1.0";
 	    }
 		
-		headers = { Authorization: "Bearer 44b61d3e121a2e98db3a26bba804a4" };
+		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
 		$.ajax({
-			url: url + "/readCurrentMeals?format=jsons&location=" + location,
+			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
 		}).done(d.resolve).fail(d.reject);
 	    return d.promise;
@@ -205,17 +212,13 @@ function activeTabFix(target, event) {
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
 			var createMeals = render('mensa');
+			var host = $("#" + uniqueDiv);
 			
 			// Add day section to html
 			var htmlDay = createMeals({meals: meals});
-			$("#" + uniqueDiv).append(htmlDay);
+			host.append(htmlDay);
 
 			// Tell collapsible set to refresh itself
-			$("#todaysMenu").collapsibleset("refresh");
-
-			// Open the first section
-			if (meals[0]) {
-				$("#" + meals[0].contentId).trigger('expand');
-			}
+			host.trigger("create");
 		}
 	}
