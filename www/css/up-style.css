@@ -513,14 +513,14 @@ height:100%;
 	background-position:bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.transport a {
-	background-image:url(../img/up/transport.png);
+.ui-listview.ui-group-theme-c  li.travel a {
+	background-image:url(../img/up/travel.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.transport:hover a {
-	background-image:url(../img/up/transport-hover.png);
+.ui-listview.ui-group-theme-c  li.travel:hover a {
+	background-image:url(../img/up/travel-hover.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
