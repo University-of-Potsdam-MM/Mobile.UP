@@ -7,6 +7,11 @@
 			</div>
 			<div class="mensatext"><%= meal.title %><br /><span><%=meal.description %></span></div>
 		</h3>
+		
+		<div class="second-mensaicons">
+			<img src="<%= meal.ingredients[0] %>" />
+		</div>
+	
 		<p>
 			[3] mit Antioxidationsmitteln<br />
 			Studierende: <% print(Number(meal.prices.students).toFixed(2)); %> €<br />
