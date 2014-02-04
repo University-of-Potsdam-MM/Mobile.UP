@@ -1,7 +1,8 @@
 var environment = 'development';
 
 $(document).ready(function() {
-  //updateResults();
+  // debugging
+  updateResults();
 })
 
 $(document).on("submit","#query-form", function(e) {
@@ -9,15 +10,19 @@ $(document).on("submit","#query-form", function(e) {
   updateResults();
 })
 
+// TODO: create object to communicate with SRU and provide pagination for query
+// TODO: store numberOfRecords for search
 function xmlToBooksArray(xmlSearchResult){
+  console.log('xml',xmlSearchResult);
   var records = xmlSearchResult.getElementsByTagName('recordData');
   return _.map(records, book);
 };
 
 function book(recordData){
-  console.log(recordData);
+  console.log('xml:', recordData);
   var $recordData = $(recordData);
   var model = {
+    // TODO: maybe add ID?
     title:     textForTag(recordData, 'title'),
     subtitle:  textForTag(recordData, 'subTitle'),
     abstract:  textForTag(recordData, 'abstract'),
@@ -26,7 +31,7 @@ function book(recordData){
     publisher: textForTag(recordData, 'publisher'),
     isbn:      textForQuery($recordData, 'identifier[type=isbn]')
   };
-  console.log(model);
+  console.log('model:', model);
   return model;
 }
 
@@ -44,6 +49,7 @@ function textForQuery(jqNode, query){
   return _.pluck(jqNode.find(query), 'textContent');
 }
 
+// TODO: a view logic that displays only some of the authors (eg: Gamma et al.)
 function authors($recordData){
   var nameNodes = $recordData.find('name[type=personal]')
   var names = _.map(nameNodes, function(node){
@@ -54,7 +60,7 @@ function authors($recordData){
     ];
     return author;
   });
-  console.log('names:',names);
+  // console.log('names:',names);
   return names;
 }
 
@@ -78,7 +84,8 @@ function clearSearch() {
 function loadSearch(query) {
     var d = Q.defer();
     var baseURL;
-    var max = 10;
+    var startRecord = 1;
+    var maximumRecords = 10;
 
     if ('development' == environment){
       baseURL = '/api/search';
@@ -86,7 +93,11 @@ function loadSearch(query) {
       baseURL  = "http://sru.gbv.de";
     }
 
-    var url = baseURL + '/opac-de-517?version=1.1&operation=searchRetrieve&query=' + query + '&maximumRecords=' + max + '&recordSchema=mods';
+    var url = baseURL + '/opac-de-517?version=1.1&operation=searchRetrieve' +
+              '&query=' + query +
+              '&startRecord=' + startRecord +
+              '&maximumRecords=' + maximumRecords +
+              '&recordSchema=mods';
     console.log(url);
     $.get(url).done(d.resolve).fail(d.reject);
     return d.promise;
