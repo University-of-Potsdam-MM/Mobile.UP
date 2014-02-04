@@ -4,13 +4,7 @@
  */
 $(document).on( "pageinit", "#sitemaps", function() {
 	initializeMap();
-
-});
-
-/*
- * logic when document is ready check for clicks in checkboxes
- */
-$(document).ready(function() {
+	
 	$('#Terminals:checkbox').click(function() {
 		if($(this).is(':checked')) {
 			drawTerminals();
@@ -65,10 +59,6 @@ function initializeMap() {
 	if($('#Terminals:checkbox').is(':checked')) {
 		drawTerminals();
 	}
-	
-}
-
-function drawGeoJSON(options) {
 	
 }
 
