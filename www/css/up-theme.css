@@ -237,7 +237,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
 	background: #ffffff /*{a-page-background-color}*/;
 	border-color: #bbbbbb /*{a-page-border}*/;
 	color: #333333 /*{a-page-color}*/;
-	text-shadow: 0 /*{a-page-shadow-x}*/ 01px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ #f3f3f3 /*{a-page-shadow-color}*/;
+	text-shadow: 0 /*{a-page-shadow-x}*/ 0px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ #f3f3f3 /*{a-page-shadow-color}*/;
 }
 /* Body: Read-only lists, text inputs, collapsible content */
 .ui-body-a,
@@ -370,9 +370,9 @@ html .ui-body-a .ui-focus,
 html body .ui-group-theme-a .ui-focus,
 html head + body .ui-btn-a.ui-focus,
 html head + body .ui-body-a.ui-focus {
-	-webkit-box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
-	-moz-box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
-	box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
+	-webkit-box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
+	-moz-box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
+	box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
 }
 /* B
 -----------------------------------------------------------------------------------------------------------*/
@@ -399,7 +399,7 @@ html body .ui-group-theme-b .ui-bar-inherit {
 	background: #ffffff /*{b-page-background-color}*/;
 	border-color: #bbbbbb /*{b-page-border}*/;
 	color: #333333 /*{b-page-color}*/;
-	text-shadow: 0 /*{b-page-shadow-x}*/ 01px /*{b-page-shadow-y}*/ 0 /*{b-page-shadow-radius}*/ #f3f3f3 /*{b-page-shadow-color}*/;
+	text-shadow: 0 /*{b-page-shadow-x}*/ 0px /*{b-page-shadow-y}*/ 0 /*{b-page-shadow-radius}*/ #f3f3f3 /*{b-page-shadow-color}*/;
 }
 /* Body: Read-only lists, text inputs, collapsible content */
 .ui-body-b,
@@ -532,9 +532,9 @@ html .ui-body-b .ui-focus,
 html body .ui-group-theme-b .ui-focus,
 html head + body .ui-btn-b.ui-focus,
 html head + body .ui-body-b.ui-focus {
-	-webkit-box-shadow: 0 0 12px #014260 /*{b-active-background-color}*/;
-	-moz-box-shadow: 0 0 12px #014260 /*{b-active-background-color}*/;
-	box-shadow: 0 0 12px #014260 /*{b-active-background-color}*/;
+	-webkit-box-shadow: 0 0 0px #014260 /*{b-active-background-color}*/;
+	-moz-box-shadow: 0 0 0px #014260 /*{b-active-background-color}*/;
+	box-shadow: 0 0 0px #014260 /*{b-active-background-color}*/;
 }
 
 
@@ -706,7 +706,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
 	background: #ffffff /*{a-page-background-color}*/;
 	border-color: #bbbbbb /*{a-page-border}*/;
 	color: #333333 /*{a-page-color}*/;
-	text-shadow: 0 /*{a-page-shadow-x}*/ 01px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ #f3f3f3 /*{a-page-shadow-color}*/;
+	text-shadow: 0 /*{a-page-shadow-x}*/ 0px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ #f3f3f3 /*{a-page-shadow-color}*/;
 }
 /* Body: Read-only lists, text inputs, collapsible content */
 .ui-body-a,
@@ -839,9 +839,9 @@ html .ui-body-a .ui-focus,
 html body .ui-group-theme-a .ui-focus,
 html head + body .ui-btn-a.ui-focus,
 html head + body .ui-body-a.ui-focus {
-	-webkit-box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
-	-moz-box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
-	box-shadow: 0 0 12px #cfdae3 /*{a-active-background-color}*/;
+	-webkit-box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
+	-moz-box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
+	box-shadow: 0 0 0px #cfdae3 /*{a-active-background-color}*/;
 }
 /* B
 -----------------------------------------------------------------------------------------------------------*/
@@ -868,7 +868,7 @@ html body .ui-group-theme-c .ui-bar-inherit {
 	background: #ffffff /*{c-page-background-color}*/;
 	border-color: #bbbbbb /*{c-page-border}*/;
 	color: #333333 /*{c-page-color}*/;
-	text-shadow: 0 /*{c-page-shadow-x}*/ 01px /*{c-page-shadow-y}*/ 0 /*{c-page-shadow-radius}*/ #f3f3f3 /*{c-page-shadow-color}*/;
+	text-shadow: 0 /*{c-page-shadow-x}*/ 0px /*{c-page-shadow-y}*/ 0 /*{c-page-shadow-radius}*/ #f3f3f3 /*{c-page-shadow-color}*/;
 }
 /* Body: Read-only lists, text inputs, collapsible content */
 .ui-body-c,
@@ -1001,9 +1001,9 @@ html .ui-body-c .ui-focus,
 html body .ui-group-theme-c .ui-focus,
 html head + body .ui-btn-c.ui-focus,
 html head + body .ui-body-c.ui-focus {
-	-webkit-box-shadow: 0 0 12px #014260 /*{c-active-background-color}*/;
-	-moz-box-shadow: 0 0 12px #014260 /*{c-active-background-color}*/;
-	box-shadow: 0 0 12px #014260 /*{c-active-background-color}*/;
+	-webkit-box-shadow: 0 0 0px #014260 /*{c-active-background-color}*/;
+	-moz-box-shadow: 0 0 0px #014260 /*{c-active-background-color}*/;
+	box-shadow: 0 0 0px #014260 /*{c-active-background-color}*/;
 }
 
 
@@ -1026,7 +1026,7 @@ button[disabled],
 -----------------------------------------------------------------------------------------------------------*/
 .ui-btn:focus,
 .ui-btn.ui-focus {
-	outline: 0;
+	outline: none;
 }
 /* Unset box-shadow in browsers that don't do it right */
 .ui-noboxshadow .ui-shadow,
@@ -1044,7 +1044,7 @@ button[disabled],
 }
 .ui-noboxshadow .ui-btn:focus,
 .ui-noboxshadow .ui-focus {
-	outline-width: 1px;
+	outline-width: 0px;
 	outline-style: auto;
 }
 			
