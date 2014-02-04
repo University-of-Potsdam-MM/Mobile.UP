@@ -1,6 +1,11 @@
 /*LAYOUT*/
 
-/*Abst�nde zum inhalt zur�cksetzen*/
+/*generell*/
+
+.ui-shadow {
+	box-shadow:0px 0px 0px !important;
+}
+/*Abstände zum inhalt zurücksetzen*/
 .ui-content {
 	padding:0em;
 }
@@ -10,7 +15,7 @@ body, .ui-page {
 	margin:0 auto;
 }
 
-/* margin-top der listview zur�cksetzen*/
+/* margin-top der listview zurücksetzen*/
 .ui-content .ui-listview-inset, .ui-panel-inner>.ui-listview-inset {
 margin: 0em 0;
 }
@@ -22,7 +27,7 @@ border-left-width: 0px;
 
 }
 
-/* login button - h�he*/
+/* login button  - Höhe*/
 #home li.login .ui-btn {
 height:38px;
 
@@ -68,6 +73,8 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 	display:table-cell; 
 	vertical-align:middle;
 	width:20%;
+	padding-left:0;
+	padding-right:0;
 }
 
 /*suche input*/
@@ -80,56 +87,56 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 /*SCHRIFT*/
 
 .ui-header .ui-title, .ui-footer .ui-title {
-font-size: 1em;
-min-height: 1.1em;
-text-align: left;
-display: block;
-margin: 0 0.5em;
-padding: 0.7em 0;
-text-overflow: ellipsis;
-overflow: hidden;
-white-space: nowrap;
-outline: 0!important;
-text-transform:uppercase;
-letter-spacing:0.3em;
-font-weight:bold;
-margin-left:45px;
-text-indent:10px;
+	font-size: 1em;
+	min-height: 1.1em;
+	text-align: left;
+	display: block;
+	margin: 0 0.5em;
+	padding: 0.7em 0;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	outline: 0!important;
+	text-transform:uppercase;
+	letter-spacing:0.3em;
+	font-weight:bold;
+	margin-left:45px;
+	text-indent:10px;
 }
 
 #home .ui-btn {
-font-size: 16px;
-margin: 0 0;
-padding: 0em 1em;
-text-align: right;
-text-transform:uppercase;
-font-weight:normal;
-/* vertikal zentrieren*/
-display:table-cell; 
-vertical-align:middle;
-height:78px;
-width:600px;
+	font-size: 16px;
+	margin: 0 0;
+	padding: 0em 1em;
+	text-align: right;
+	text-transform:uppercase;
+	font-weight:normal;
+	/* vertikal zentrieren*/
+	display:table-cell; 
+	vertical-align:middle;
+	height:78px;
+	width:600px;
 }
 
 .ui-listview.ui-group-theme-c .ui-btn {
-font-size: 16px;
-margin: 0 0;
-padding: 0em 1em;
-text-align: right;
-text-transform:uppercase;
-font-weight:normal;
-/* vertikal zentrieren*/
-display:table-cell; 
-vertical-align:middle;
-height:78px;
-width:600px;
+	font-size: 16px;
+	margin: 0 0;
+	padding: 0em 1em;
+	text-align: right;
+	text-transform:uppercase;
+	font-weight:normal;
+	/* vertikal zentrieren*/
+	display:table-cell; 
+	vertical-align:middle;
+	height:78px;
+	width:600px;
 }
 
 /*Schrift in Tabs*/
 .ui-navbar li .ui-btn {
-font-size: 12.5px;
-font-weight:normal;
-text-transform:uppercase;
+	font-size: 12.5px;
+	font-weight:normal;
+	text-transform:uppercase;
 }
 
 /*allgemein*/
@@ -148,7 +155,7 @@ html body  .ui-group-theme-c .speiseplan a{font-weight:normal;color:#000;font-si
 .speiseplan h3 span {
 	font-weight:bold;
 	color:#1e516b;
-	font-size:1.4em;
+	font-size:1.3em;
 }
 
 /*Bilder*/
@@ -302,7 +309,55 @@ height:100%;
 	float:left;
 }
 
-/*3. icons tsudium onlinedienste*/
+/*icons akkordion*/
+.speiseplan .ui-icon-plus:after {
+    background-image:url(images/icons-up/arrow-down.png);
+}
+
+.speiseplan .ui-icon-minus:after {
+    background-image:url(images/icons-up/arrow-up.png);
+}
+
+.speiseplan .ui-btn-icon-left:after, 
+.speiseplan .ui-btn-icon-notext:after {
+    border-radius:0em;
+    background-color:transparent;
+    position:relative;
+    float:right;
+
+    
+}
+/* mensa piktogramme */
+
+.speiseplan .mensaicons{
+    width:45px;
+    float:left;
+    
+}
+
+.speiseplan h3 img {
+	width: 30px;
+	height: 30px;
+}
+
+.speiseplan img{
+    margin-left:5px;
+    vertical-align:middle;
+}
+.speiseplan .ui-collapsible-inset .ui-collapsible-heading-collapsed .ui-btn .mensatext {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+ white-space:nowrap;
+    padding-right:30px;
+}
+
+.speiseplan .ui-collapsible-inset .ui-collapsible-heading .ui-btn .mensatext {
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+ 	padding-right:30px;
+}
+
+/*3. icons studium onlinedienste*/
 
 .ui-listview.ui-group-theme-c  li a span{
 	background-image:url(../img/up/arrow-darkblue.png) !important;
@@ -453,19 +508,19 @@ height:100%;
 }
 
 .ui-listview.ui-group-theme-c  li.opening:hover a {
-	background-image:url(../img/up/opening.png);
+	background-image:url(../img/up/opening-hover.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.transport a {
-	background-image:url(../img/up/transport.png);
+.ui-listview.ui-group-theme-c  li.travel a {
+	background-image:url(../img/up/travel.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.transport:hover a {
-	background-image:url(../img/up/transport-hover.png);
+.ui-listview.ui-group-theme-c  li.travel:hover a {
+	background-image:url(../img/up/travel-hover.png);
 	background-repeat:no-repeat;
 	background-position:bottom left;
 }
@@ -522,15 +577,38 @@ font-weight:normal;
 .ui-collapsible-inset .ui-collapsible-heading-collapsed .ui-btn {
 	
 	background:#ededed;
+	padding: .8em 0em !important; /*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
+	white-space:no-wrap:
+}
+
+.ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+	
+	padding: .8em 0em !important; /*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
+	white-space:normal;
 }
 
 .speiseplan .ui-collapsible-content.ui-body-inherit {
 	background:#cfdae3;
 	color:#000;
 	font-size:.8em;
-	padding-left:50px;
+	padding-left:88px;
 }
 
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mensaicons img {
+	width:30px;
+	height:30px;
+	float:left;
+}
+
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
+
+	padding-left: 0px;
+}
+
+html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
+	padding-left: 47px;
+	margin-top: 0px
+}
 
 /* popup panel */
 
@@ -552,6 +630,172 @@ font-weight:normal;
 }
 
 #nav-panel ul.nav-search  li:first-child:hover a, #nav-panel2 ul.nav-search  li:first-child:hover a, #nav-panel ul.nav-search  li:first-child:hover a {
-	background-image:url(../img/up/close-hover.png);3
+	background-image:url(../img/up/close-hover.png);
 	
 }
+
+/* Sorter
+-------------------- */
+#sorter .ui-li.ui-li-static.ui-btn-up-c {
+    height: 3.8%;
+    padding: 0;
+    font-size: 8px;
+    padding-left: 5px;
+    line-height: 1.8em;
+}
+#sorter{
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 20px;
+    z-index: 1;
+}
+#sorter ul{
+    height: 100%;
+}
+#sortedList{
+    padding-right: 35px;
+}
+
+
+/*Liste - Öffnungszeiten
+-------------------- */
+.ui-bar-inherit.ui-li-divider {  /*Zeilen für A, B, C ....*/	
+	background:#dedede !important;
+	border:none;
+}
+
+.ui-listview>.ui-li-static {
+	padding:0px;
+	
+}
+
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-body-inherit.ui-collapsible {
+	border-color:#cccccc;
+}
+
+.ui-listview>li h3 {
+	margin:0 0;
+	
+}
+
+.ui-bar-inherit.ui-li-divider {border:none !important}
+
+li.ui-collapsible h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+		
+	background:#ededed;
+	border:none;
+}
+
+ui-collapsible-heading-toggle, li.ui-collapsible h3.ui-collapsible-heading a,ui-collapsible-heading-toggle {
+	background:#cfdae3;
+}
+
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-content {
+	background:#cfdae3;
+	padding-left:45px;
+}
+
+html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
+	color:#1e516b;
+	font-size:.8em;
+	
+}
+
+/* Circles 
+-------------------- */
+
+.both{
+	display:block;
+	float:left;
+     height:0px;
+     width:0px;
+    border-right:10px solid #990808;
+	border-top:10px solid #459909;
+	border-left:10px solid #459909;
+	border-bottom:10px solid #990808;
+	-moz-border-radius: 10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+	 margin-right:10px;
+}
+
+.closed{
+	display:block;
+	float:left;
+     height: 20px; 
+    width: 20px; 
+    background-color: #990808; 
+	-moz-border-radius:  150px;
+	-webkit-border-radius: 150px;
+    border-radius: 150px;
+     margin-right:10px;
+}
+
+.open{
+	display:block;
+	float:left;
+     height: 20px; 
+    width: 20px; 
+    background-color: #459909; 
+	-moz-border-radius:  150px;
+	-webkit-border-radius: 150px;
+    border-radius: 150px;
+    margin-right:10px;
+}
+
+/*arrow up - arrow down 
+-------------------- */
+
+.ui-icon-arrow-down:after {
+	background-image: url(../img/up/arrow-down.png);
+	background-color:transparent;
+}
+
+.ui-icon-arrow-up:after {
+	background-image: url(../img/up/arrow-up.png);
+	background-color:transparent;
+}
+
+/*table  öffnungszeiten
+---------------------------------*/
+
+#opening table thead tr th {display:none;}
+#opening table {
+	display:block;
+	font-size:.8em;
+	margin-bottom:20px !important;
+	
+}
+
+#opening .table-stripe tbody tr:nth-child(odd) th {
+
+background-color: rgba(255, 255, 255, 0.4);
+}
+
+.table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
+
+background-color: rgba(255, 255, 255, 0.4);
+}
+
+#opening .table-stripe tbody tr:nth-child(even) th {
+
+background-color: rgba(255, 255, 255, 0.8);
+}
+
+.table-stripe tbody tr:nth-child(even) td, .table-stripe tbody tr:nth-child(even) th {
+
+background-color: rgba(255, 255, 255, 0.8);
+}
+
+/*öffnungszeiten - button hover 
+----------------------------------*/
+
+#opening.ui-page-theme-a ul .ui-btn:hover {
+	background: #dedede !important;
+	color: #1e516b;
+
+}
+

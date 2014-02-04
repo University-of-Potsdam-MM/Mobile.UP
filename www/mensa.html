@@ -13,26 +13,18 @@
 			    <h1>Mensen &amp; Speisepläne</h1>
 			</div>
 			<!-- End Header -->
-		   <!-- Start Main - Navigation -->
-		   <div data-role="content" data-theme="c">
+			<!-- Start Main - Navigation -->
+			<div data-role="content" data-theme="c">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#Griebnitzsee" class="location-menu ui-btn-active">Griebnitzsee</a></li>
+                        <li><a href="#Griebnitzsee" class="location-menu location-menu-default">Griebnitzsee</a></li>
                         <li><a href="#NeuesPalais" class="location-menu">Neues Palais</a></li>
                         <li><a href="#Golm" class="location-menu">Golm</a></li>
                     </ul>
                 </div>
-		       <div class="ui-grid-a">
-                    <div class="ui-block-a">
-                        <input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'>
-                    </div>
-                    <div class="ui-block-b">
-                        <input type="checkbox" name="checkbox-1" id="checkbox-0" class="custom" data-theme="a"/>
-                        <label for="checkbox-0" class="showfirst" >Zuerst anzeigen</label>  
-                    </div>
-                </div><!-- /grid-a /2 spalten -->
-				<div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u" class="speiseplan" id="todaysMenu">
-				</div>
+		        <input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'>
+				<div id="todaysMenu"></div>
+			</div>
 		</div>
 		<!-- End Main - Navigation -->
     </body>
