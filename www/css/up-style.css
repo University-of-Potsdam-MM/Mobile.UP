@@ -600,6 +600,14 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	float:left;
 }
 
+.second-mensaicons {
+	width:40px;
+}
+
+.second-mensaicons img {
+	display:block;
+}
+
 html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
 
 	padding-left: 0px;

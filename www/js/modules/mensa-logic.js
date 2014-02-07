@@ -175,7 +175,7 @@ function activeTabFix(target, event) {
 	            for (var typIndex in meal.type) {
 	                mealData.ingredients.push(icons[meal.type[typIndex]]);
 	            }
-	        } else {
+	        } else if (meal.type) {
 	            mealData.ingredients.push(icons[meal.type]);
 	        }
 	
