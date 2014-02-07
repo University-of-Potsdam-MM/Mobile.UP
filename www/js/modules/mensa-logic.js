@@ -61,6 +61,7 @@ function activeTabFix(target, event) {
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
 	                .then(sortMealsByDate)
+					.then(sortByOrder);
 	
 	            var icons = Q(selectIcons(menu))
 	                .then(convertToMap);
@@ -143,8 +144,12 @@ function activeTabFix(target, event) {
 	    });
 	}
 	
-	function sortByAnzeigeprio(element) {
-	    return element.anzeigeprio;
+	function sortByOrder(meals) {
+		return meals.sort(function (a, b) {
+			var first = a["@order"];
+			var second = b["@order"];
+			return first - second;
+		});
 	}
 	
 	function mapToMeal(icons) {
