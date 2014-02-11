@@ -3,7 +3,7 @@
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
-	initializeMap();
+	// initializeMap();
 	
 	$('#Terminals:checkbox').click(function() {
 		if($(this).is(':checked')) {
@@ -37,10 +37,17 @@ $(document).on( "pageinit", "#sitemaps", function() {
 			}
 		}
 	});
+});
 
+/*
+ * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
+ */
+$(document).on("pageshow", "#sitemaps", function() {
+	initializeMap();
 });
 
 var coords = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
+var map = undefined;
 
 /**
  * initializes the map and draws all markers which are currently selected
