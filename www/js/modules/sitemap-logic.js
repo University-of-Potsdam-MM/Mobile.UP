@@ -170,7 +170,29 @@ $(document).on("click", "#filterable-locations a", function () {
 	var encodedContext = href.slice(1);
 	var context = JSON.parse(decodeURIComponent(encodedContext));
 	
-	alert(JSON.stringify(context));
+	// Remove all markers
+	for(var i=0;i<gTerminals.length;i++) {
+		gTerminals[i].setMap(null);
+	}
+	for(var i=0;i<gInstitutes.length;i++) {
+		gInstitutes[i].setMap(null);
+	}
+	for(var i=0;i<gMensen.length;i++) {
+		gMensen[i].setMap(null);
+	}
+	
+	// Draw result marker
+	var options = {
+		    "strokeColor": "#FF7800",
+		    "strokeOpacity": 1,
+		    "strokeWeight": 2,
+		    "fillColor": "#46461F",
+		    "fillOpacity": 0.25
+		};
+	gResults = new GeoJSON(context, options);
+	for(var i=0;i<gResults.length;i++) {
+		gResults[i].setMap(map);
+	}
 });
 
 function insertSearchableFeatureCollection(collection) {
