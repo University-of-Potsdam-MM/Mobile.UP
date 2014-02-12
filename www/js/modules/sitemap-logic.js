@@ -163,11 +163,26 @@ function insertSearchables(searchables) {
 	host.trigger( "updatelayout");
 }
 
+$(document).on("click", "#filterable-locations a", function () {
+	// Retreive context
+	var source = $(this);
+	var href = source.attr("href");
+	var encodedContext = href.slice(1);
+	var context = JSON.parse(decodeURIComponent(encodedContext));
+	
+	alert(JSON.stringify(context));
+});
+
 function insertSearchableFeatureCollection(collection) {
 	var items = _.map(collection.features, function(item) {
 		var result = {};
 		result.name = item.properties.Name;
 		result.description = item.properties.description;
+		
+		// Save item context
+		result.context = JSON.parse(JSON.stringify(collection));
+		result.context.features = [item];
+		
 		return result;
 	});
 	

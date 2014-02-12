@@ -1,6 +1,6 @@
 <% _.each(items, function(item) { %>
 <li class="ui-screen-hidden">
-	<a href="#">
+	<a href="#<% print(encodeURIComponent(JSON.stringify(item.context))) %>">
 		<h3><%= item.name %></h3>
 		<p><%= item.description %></p>
 	</a>
