@@ -83,6 +83,8 @@ function drawMensen() {
 				gMensen[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -100,6 +102,8 @@ function drawTerminals() {
 				gTerminals[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -121,6 +125,8 @@ function drawInstitutes() {
 				gInstitutes[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -142,4 +148,28 @@ function drawMap(latlng) {
 		title: "Greetings!"
 	});
 	marker.setMap(map);
+}
+
+function insertSearchables(searchables) {
+	var createSearchables = render("sitemap");
+	var host = $("#filterable-locations");
+	
+	// Add items to search list
+	var htmlSearch = createSearchables({items: searchables});
+	host.append(htmlSearch);
+
+	// Tell search list to refresh itself
+	host.listview("refresh");
+	host.trigger( "updatelayout");
+}
+
+function insertSearchableFeatureCollection(collection) {
+	var items = _.map(collection.features, function(item) {
+		var result = {};
+		result.name = item.properties.Name;
+		result.description = item.properties.description;
+		return result;
+	});
+	
+	insertSearchables(items);
 }
