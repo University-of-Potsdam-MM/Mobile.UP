@@ -78,8 +78,6 @@ function filterLocations(index, searchValue) {
 			allMarkers[i].setMap(map);
 			searchedMarkers[i].setMap(null);
 		}
-		
-		console.log("show all markers");
 	}
 	
 	return result;
