@@ -65,6 +65,7 @@
               var openings = _.sortBy(data, 'name');
               console.log(openings);
               renderOpenings(openings);
+              $("#opening").trigger("create");
             }
           });
         });
