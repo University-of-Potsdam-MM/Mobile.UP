@@ -64,11 +64,13 @@ function filterLocations(index, searchValue) {
 			allMarkers[i].setMap(null);
 		}
 		
+		var source = $("a", this);
+		var href = source.attr("href");
+		var index = parseInt(href.slice(1));
 		if (!result) {
-			var source = $("a", this);
-			var href = source.attr("href");
-			var index = parseInt(href.slice(1));
 			searchedMarkers[index].setMap(map);
+		} else {
+			searchedMarkers[index].setMap(null);
 		}
 	} else {
 		// Show all markers
@@ -76,6 +78,8 @@ function filterLocations(index, searchValue) {
 			allMarkers[i].setMap(map);
 			searchedMarkers[i].setMap(null);
 		}
+		
+		console.log("show all markers");
 	}
 	
 	return result;
