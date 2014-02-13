@@ -1,0 +1,25 @@
+{
+  "name": "up_app",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/University-of-Potsdam-MM/UP.App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/University-of-Potsdam-MM/UP.App/issues"
+  },
+  "homepage": "https://github.com/University-of-Potsdam-MM/UP.App",
+  "dependencies": {
+    "express": "~3.4.8",
+    "http-proxy": "~0.10.4",
+    "reload": "~0.1.0",
+    "express-livereload": "0.0.24"
+  }
+}

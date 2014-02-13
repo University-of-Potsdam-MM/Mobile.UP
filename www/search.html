@@ -11,23 +11,24 @@
         <link rel="stylesheet" type="text/css" href="css/up-style.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-        <script src="js/underscore-min.js"></script>
-        <script src="js/q.min.js"></script>
+        <script src="js/lib/underscore.min.js"></script>
+        <script src="js/lib/q.min.js"></script>
         <script src="js/xml2json.min.js"></script>
         <script src="js/library-logic.js"></script>
-        <script type="text/template" id="results-template">
-            <h1>Results</h1>
+        <script type="text/template" id="lib-results-template">
+            <h2>Results</h2>
             <ul data-role="listview" data-inset="true">
-                <% _.each(rc, function(entry) { %>
+                <% _.each(rc, function(book) { %>
                 <li>
                     <a href="#">
-                        <h2><%= entry.title %></h2>
-                        <p>t</p>
+                        <h2><%= book.title %></h2>
+                        <p><%= book.subtitle %></p>
                     </a>
                 </li>
                 <% }); %>
             </ul>
         </script>
+
         <title>UP.App-Suche</title>
     </head>
     <body>
@@ -49,8 +50,8 @@
 	                </ul>
                 </div>
                 <form method="POST" id="query-form">
-                    <input type="search" name="query" id="query" placeholder="Suchbegriff eingeben..." />
-                    <input type="submit" value="Submit" />
+                    <input type="search" name="query" id="query" placeholder="Suchbegriff eingeben..." value="java" />
+                    <input type="submit" value="Search" />
                 </form>
 				<div id="search-results">
 				</div>
