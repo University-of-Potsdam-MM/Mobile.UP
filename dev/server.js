@@ -41,6 +41,7 @@ app.configure(function(){
   app.use(express.errorHandler());
 });
 
+app.get("/", function(req, res){res.redirect('/www/');});
 
 var server = http.createServer(app)
 

@@ -6,288 +6,330 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <!-- Always use the same header for production -->
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-        
+
         <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
         <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
         <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
         <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-        
+
         <!-- Javascript Files -->
-		<!-- Core Libraries -->
-		<script type="text/javascript" src="phonegap.js"></script>
-		<script src="js/lib/jquery-1.10.2.min.js"></script>
-		<script src="js/lib/jquery.mobile-1.4.0.min.js"></script>
-		<script src="js/lib/q.min.js"></script>
-		<script src="js/lib/underscore.min.js"></script>
-		<script src="js/lib/jqm-datebox.core.min.js"></script>
-		<script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>         
+    <!-- Core Libraries -->
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script src="js/lib/jquery-1.10.2.min.js"></script>
+    <script src="js/lib/jquery.mobile-1.4.0.min.js"></script>
+    <script src="js/lib/q.min.js"></script>
+    <script src="js/lib/underscore.min.js"></script>
+    <script src="js/lib/jqm-datebox.core.min.js"></script>
+    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
         <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
         <script id="panel-init">
            $(function () {
                $("[data-role='panel']").panel().enhanceWithin();
            });
-       </script>      
-       <script src="js/app.js"></script>  
+       </script>
+       <script src="js/app.js"></script>
         <!-- Module Libraries -->
         <!-- Mensa -->
         <script src="js/lib/modules/mensa-logic.js"></script>
         <!-- Sitemaps -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
         <script src="js/sitemap.js"></script>
-				
+
         <title>UP.App</title>
+
+        <script>
+        $(function(){
+
+          // how to log properly
+          var createLogger = function(loggerName){
+            var label = '[' + loggerName + ']';
+
+            return function(){
+              if (console) {
+                var args = Array.prototype.slice.call(arguments);
+                args.unshift(label);
+                console.log.apply(console, args);
+              }
+            }
+          };
+
+          // instantiating the logger
+          var log = createLogger('openings');
+
+          log('jQuery ready ...');
+
+          var openings = [
+            {"name": "Akademisches Auslandsamt","link": "http://www.uni-potsdam.de/studium/beratung/aaa/kontakt.html","mail": "infoaaa@uni-potsdam.de","telephone": "+49 331 977-1760","times": []},
+            {"name": "Zentrale Studienberatng","link": "http://www.uni-potsdam.de/studium/beratung/zsb/kontakt.html","mail": "studienberatung@uni-potsdam.de","telephone": "+49 331 977-1715","times": [{"day": "Montag", "opening": "10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr"},{"day": "Dienstag", "opening": "10:00 - 12:00 Uhr | 14:00 - 17:00 Uhr"},{"day": "Mittwoch", "opening": "keine offenen Beratungszeiten"},{"day": "Donnerstag", "opening": "10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "Zentrale Studienberatng (telefonisch)","link": "http://www.uni-potsdam.de/studium/beratung/zsb/kontakt.html","mail": "studienberatung@uni-potsdam.de","telephone": "+49 331 977-1715","times": [{"day": "Dienstag", "opening": "14:00 - 17:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "PUCK-Servicestelle","link": "http://www.uni-potsdam.de/studium/beratung/puck.html","mail": "puck@uni-potsdam.de","telephone": "+49 331 977-4100","times": [{"day": "Montag", "opening": "10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr"},{"day": "Dienstag", "opening": "10:00 - 12:00 Uhr | 14:00 - 17:00 Uhr"},{"day": "Mitwoch", "opening": "keine Sprechzeit"},{"day": "Donnerstag", "opening": "10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "Psychologische Beratung","link": "http://www.uni-potsdam.de/studium/beratung/psychologische-beratung.html","mail": "psychologische-beratung@uni-potsdam.de","telephone": "+49 331 977-1830","times": [{"day": "Dienstag", "opening": "14:00 - 17:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "Studierendensekretariat","link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat.html","mail": "","telephone": "+49 331 977-1231","times": [{"day": "Montag", "opening": "10:00 - 12:00 Uhr"},{"day": "Dienstag", "opening": "10:00 - 12:00 Uhr | 14:00 - 17:00 Uhr"},{"day": "Mitwoch", "opening": "keine Sprechzeit"},{"day": "Donnerstag", "opening": "10:00 - 12:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "Zentrales Prüfungsamt","link": "http://www.uni-potsdam.de/studium/beratung/zentrales-pruefungsamt.html","mail": "pruefungsamt@uni-potsdam.de","telephone": "+49 331 977-1497","times": [{"day": "Montag", "opening": "10:00 - 12:00 Uhr"},{"day": "Dienstag", "opening": "10:00 - 12:00 Uhr | 14:00 - 17:00 Uhr"},{"day": "Mitwoch", "opening": "keine Sprechzeit"},{"day": "Donnerstag", "opening": "10:00 - 12:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 12:00 Uhr"}]},
+            {"name": "Kaffeebar 'Die Bohne'","link": "","mail": "","telephone": "","times": [{"day": "Montag", "opening": "09:30 - 18:00 Uhr"},{"day": "Dienstag", "opening": "09:30 - 18:00 Uhr"},{"day": "Mitwoch", "opening": "09:30 - 18:00 Uhr"},{"day": "Donnerstag", "opening": "09:30 - 18:00 Uhr"},{"day": "Freitag", "opening": "kein Betrieb"}]},
+            {"name": "Cafeteria 'filmriss'","link": "http://www.studentenwerk-potsdam.de/de/cafeterien.html","mail": "cafefilm@studentenwerk-potsdam.de","telephone": "+49 331 977-3748","times": [{"day": "Montag", "opening": "08:30 - 17:30 Uhr"},{"day": "Dienstag", "opening": "08:30 - 17:30 Uhr"},{"day": "Mitwoch", "opening": "08:30 - 17:30 Uhr"},{"day": "Donnerstag", "opening": "08:30 - 17:30 Uhr"},{"day": "Freitag", "opening": "08:30 - 14:30 Uhr"}]},
+            {"name": "Mensa Am Neuen Palais","link": "http://www.studentenwerk-potsdam.de/de/mensa-am-neuen-palais.html","mail": "ehrlich@studentenwerk-potsdam.de", "telephone" : "+49 331 977-1292","times": [{"day": "Montag", "opening": "10:00 - 19:00 Uhr"},{"day": "Dienstag", "opening": "10:00 - 19:00 Uhr"},{"day": "Mitwoch", "opening": "10:00 - 19:00 Uhr"},{"day": "Donnerstag", "opening": "10:00 - 19:00 Uhr"},{"day": "Freitag", "opening": "10:00 - 15:00 Uhr"}]},
+            {"name": "Mensa Griebnitzsee","link": "http://www.studentenwerk-potsdam.de/de/mensa-griebnitzsee.html","mail": "kaehler@studentenwerk-potsdam.de", "telephone": "+49 331 977-3748","times": [{"day": "Montag", "opening": "08:00 - 19:00 Uhr"},{"day": "Dienstag", "opening": "08:00 - 19:00 Uhr"},{"day": "Mitwoch", "opening": "08:00 - 19:00 Uhr"},{"day": "Donnerstag", "opening": "08:00 - 19:00 Uhr"},{"day": "Freitag", "opening": "08:00 - 15:00 Uhr"},{"day": "Samstag", "opening": "09:30 - 13:00 Uhr"}]},
+            {"name": "Mensa Golm","link": "http://www.studentenwerk-potsdam.de/de/mensa-golm.html","mail": "habermann@studentenwerk-potsdam.de", "telephone": "+49 331 977-2350","times": [{"day": "Montag", "opening": "09:00 - 19:00 Uhr"},{"day": "Dienstag", "opening": "09:00 - 19:00 Uhr"},{"day": "Mitwoch", "opening": "09:00 - 19:00 Uhr"},{"day": "Donnerstag", "opening": "09:00 - 19:00 Uhr"},{"day": "Freitag", "opening": "09:00 - 15:00 Uhr"}]}
+          ];
+
+          log(openings);
+
+        });
+        </script>
 </head>
 <body>
-	<div data-role="page" id="opening">
-		<!-- Start Header -->
-		<div data-role="header" data-position="fixed">
-			<a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
-			    <a href="plans.html" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-			    
-			<h1>&Ouml;ffnungszeiten</h1>
-		</div>
-		<!-- End Header -->
-		<!-- Start Main - Navigation -->
-		<div data-role="content" data-theme="c">
-			<form>
-				<input data-type="search" id="searchForOpening"
-					placeholder="Eintr&auml;ge filtern" />
-			</form>
-			<div id="sorter">
-				<ul data-role="listview">
-					<li><span>A</span></li>
-					<li><span>B</span></li>
-					<li><span>P</span></li>
-				</ul>
-			</div>
+  <div data-role="page" id="opening">
+    <!-- Start Header -->
+    <div data-role="header" data-position="fixed">
+      <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
+          <a href="plans.html" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
 
-			<ul data-role="listview" data-autodividers="true" data-inset="true"
-				data-filter="true" data-input="#searchForOpening" id="openingTime">
+      <h1>&Ouml;ffnungszeiten</h1>
+    </div>
+    <!-- End Header -->
+    <!-- Start Main - Navigation -->
+    <div data-role="content" data-theme="c">
+      <form>
+        <input data-type="search" id="searchForOpening"
+          placeholder="Eintr&auml;ge filtern" />
+      </form>
 
-				<li data-role="collapsible" data-collapsed-icon="arrow-down"
-					data-expanded-icon="arrow-up" data-iconpos="right"
-					data-filtertext="Allgemeine Studierendenberatung">
+      <div id="sorter">
+        <ul data-role="listview">
+          <li><span>A</span></li>
+          <li><span>B</span></li>
+          <li><span>P</span></li>
+        </ul>
+      </div>
 
-					<h3>
-						<span class="marker open"></span>Allgemeine Studierendenbereatung
-					</h3>
-					<h4>BAföG- und Sozialberatung:</h4>
-					<table data-role="table" data-mode="reflow"
-						class="ui-responsive table-stripe ">
-						<thead>
-							<tr>
-								<th>Wochentag</th>
-								<th>Uhrzeit</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Montag:</th>
-								<td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Dienstag</th>
-								<td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Mittwoch</th>
-								<td>-</td>
-							</tr>
-							<tr>
-								<th>Donnerstag</th>
-								<td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Freitag</th>
-								<td>10:00 - 12:00 Uhr</td>
-							</tr>
-						</tbody>
-					</table>
+      <ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="openingTime">
 
+        <li data-role="collapsible" data-collapsed-icon="arrow-down"
+          data-expanded-icon="arrow-up" data-iconpos="right"
+          data-filtertext="Allgemeine Studierendenberatung">
 
-
-					<h4>Jobberatung:</h4>
-					<table data-role="table"
-						class="ui-responsive ui-body-d table-stripe ui-shadow"
-						data-column-btn-theme="b">
-						<thead>
-							<tr>
-								<th>Wochentag</th>
-								<th>Uhrzeit</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Montag:</th>
-								<td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Dienstag</th>
-								<td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Mittwoch</th>
-								<td>-</td>
-							</tr>
-							<tr>
-								<th>Donnerstag</th>
-								<td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Freitag</th>
-								<td>10:00 - 12:00 Uhr</td>
-							</tr>
-						</tbody>
-					</table> 
-					
-					<a href="#" data-role="button" data-theme="a" data-icon="location">
-						Auf der Karte finden</a>
-				</li>
+          <h3>
+            <span class="marker open"></span>Allgemeine Studierendenbereatung
+          </h3>
+          <h4>BAföG- und Sozialberatung:</h4>
+          <table data-role="table" data-mode="reflow"
+            class="ui-responsive table-stripe ">
+            <thead>
+              <tr>
+                <th>Wochentag</th>
+                <th>Uhrzeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Montag:</th>
+                <td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Dienstag</th>
+                <td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Mittwoch</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Donnerstag</th>
+                <td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Freitag</th>
+                <td>10:00 - 12:00 Uhr</td>
+              </tr>
+            </tbody>
+          </table>
 
 
-				<li data-role="collapsible" data-collapsed-icon="arrow-down"
-					data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="ASTA Bafög Sozial">
-					<h3>
-						<span class="marker open"></span>AStA
-					</h3>
 
-					<h4>BAföG- und Sozialberatung:</h4>
-					<table data-role="table" data-mode="reflow"
-						class="ui-responsive table-stripe ">
-						<thead>
-							<tr>
-								<th>Wochentag</th>
-								<th>Uhrzeit</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Montag:</th>
-								<td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Dienstag</th>
-								<td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Mittwoch</th>
-								<td>-</td>
-							</tr>
-							<tr>
-								<th>Donnerstag</th>
-								<td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Freitag</th>
-								<td>10:00 - 12:00 Uhr</td>
-							</tr>
-						</tbody>
-					</table>
-					
-					<a href="#" data-role="button" data-theme="a" data-icon="location">
-						Auf der Karte finden</a>
-				</li>
+          <h4>Jobberatung:</h4>
+          <table data-role="table"
+            class="ui-responsive ui-body-d table-stripe ui-shadow"
+            data-column-btn-theme="b">
+            <thead>
+              <tr>
+                <th>Wochentag</th>
+                <th>Uhrzeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Montag:</th>
+                <td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Dienstag</th>
+                <td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Mittwoch</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Donnerstag</th>
+                <td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Freitag</th>
+                <td>10:00 - 12:00 Uhr</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <a href="#" data-role="button" data-theme="a" data-icon="location">
+            Auf der Karte finden</a>
+        </li>
 
 
-				<li data-role="collapsible" data-collapsed-icon="arrow-down"
-					data-expanded-icon="arrow-up" data-iconpos="right"
-					data-filtertext="Prüfungsamt Zentrales">
-					<h3>
-						<span class="marker both"></span>Prüfungsamt
-					</h3>
+        <li data-role="collapsible" data-collapsed-icon="arrow-down"
+          data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="ASTA Bafög Sozial">
+          <h3>
+            <span class="marker open"></span>AStA
+          </h3>
+
+          <h4>BAföG- und Sozialberatung:</h4>
+          <table data-role="table" data-mode="reflow"
+            class="ui-responsive table-stripe ">
+            <thead>
+              <tr>
+                <th>Wochentag</th>
+                <th>Uhrzeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Montag:</th>
+                <td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Dienstag</th>
+                <td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Mittwoch</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Donnerstag</th>
+                <td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Freitag</th>
+                <td>10:00 - 12:00 Uhr</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <a href="#" data-role="button" data-theme="a" data-icon="location">
+            Auf der Karte finden</a>
+        </li>
 
 
-					<h4>BAföG- und Sozialberatung:</h4>
-					<table data-role="table" data-mode="reflow"
-						class="ui-responsive table-stripe ">
-						<thead>
-							<tr>
-								<th>Wochentag</th>
-								<th>Uhrzeit</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Montag:</th>
-								<td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Dienstag</th>
-								<td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Mittwoch</th>
-								<td>-</td>
-							</tr>
-							<tr>
-								<th>Donnerstag</th>
-								<td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Freitag</th>
-								<td>10:00 - 12:00 Uhr</td>
-							</tr>
-						</tbody>
-					</table>
-					
-					<a href="#" data-role="button" data-theme="a" data-icon="location">
-						Auf der Karte finden</a>
-				</li>
+        <li data-role="collapsible" data-collapsed-icon="arrow-down"
+          data-expanded-icon="arrow-up" data-iconpos="right"
+          data-filtertext="Prüfungsamt Zentrales">
+          <h3>
+            <span class="marker both"></span>Prüfungsamt
+          </h3>
 
 
-				<!-- Auslagerung in Template -->
-				<li data-role="collapsible" data-collapsed-icon="arrow-down"
-					data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="PUCK Servicestelle">
+          <h4>BAföG- und Sozialberatung:</h4>
+          <table data-role="table" data-mode="reflow"
+            class="ui-responsive table-stripe ">
+            <thead>
+              <tr>
+                <th>Wochentag</th>
+                <th>Uhrzeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Montag:</th>
+                <td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Dienstag</th>
+                <td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Mittwoch</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Donnerstag</th>
+                <td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Freitag</th>
+                <td>10:00 - 12:00 Uhr</td>
+              </tr>
+            </tbody>
+          </table>
 
-					<h3>
-						<span class="marker closed"></span>PUCK-Servicestelle
-					</h3> 
-					<p>E-Mail: puck@uni-potsdam.de<br />
-					BlablaStraße 33<br />
-					Haus 123<br />
-					Neues Palais<br />
-					</p>
-					<table data-role="table" data-mode="reflow"
-						class="ui-responsive table-stripe ">
-						<thead>
-							<tr>
-								<th>Wochentag</th>
-								<th>Uhrzeit</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Montag:</th>
-								<td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Dienstag</th>
-								<td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Mittwoch</th>
-								<td>-</td>
-							</tr>
-							<tr>
-								<th>Donnerstag</th>
-								<td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
-							</tr>
-							<tr>
-								<th>Freitag</th>
-								<td>10:00 - 12:00 Uhr</td>
-							</tr>
-						</tbody>
-					</table>
-					
-					<a href="#" data-role="button" data-theme="a" data-icon="location">
-						Auf der Karte finden</a>
+          <a href="#" data-role="button" data-theme="a" data-icon="location">
+            Auf der Karte finden</a>
+        </li>
 
-				</li>
-			</ul>
 
-		</div>
-	</div>
-	<!-- End Main - Navigation -->
+        <!-- Auslagerung in Template -->
+        <li data-role="collapsible" data-collapsed-icon="arrow-down"
+          data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="PUCK Servicestelle">
+
+          <h3>
+            <span class="marker closed"></span>PUCK-Servicestelle
+          </h3>
+          <p>E-Mail: puck@uni-potsdam.de<br />
+          BlablaStraße 33<br />
+          Haus 123<br />
+          Neues Palais<br />
+          </p>
+          <table data-role="table" data-mode="reflow"
+            class="ui-responsive table-stripe ">
+            <thead>
+              <tr>
+                <th>Wochentag</th>
+                <th>Uhrzeit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Montag:</th>
+                <td>10:00 - 12:00 Uhr / 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Dienstag</th>
+                <td>10:00 - 12:00 Uhr | 14 - 17:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Mittwoch</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Donnerstag</th>
+                <td>10:00 - 12:00 Uhr | 13:00 - 15:00 Uhr</td>
+              </tr>
+              <tr>
+                <th>Freitag</th>
+                <td>10:00 - 12:00 Uhr</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <a href="#" data-role="button" data-theme="a" data-icon="location">
+            Auf der Karte finden</a>
+
+        </li>
+      </ul>
+
+    </div>
+  </div>
+  <!-- End Main - Navigation -->
 </body>
 </html>
