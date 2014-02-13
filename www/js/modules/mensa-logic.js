@@ -61,6 +61,7 @@ function activeTabFix(target, event) {
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
 	                .then(sortMealsByDate)
+					.then(sortByOrder);
 	
 	            var icons = Q(selectIcons(menu))
 	                .then(convertToMap);
@@ -68,7 +69,6 @@ function activeTabFix(target, event) {
 	            return [meals, icons];
 	        })
 	        .spread(prepareMeals)
-	        .then(filterEmptyMeals)
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
 	        .catch(function (e) {
@@ -143,8 +143,12 @@ function activeTabFix(target, event) {
 	    });
 	}
 	
-	function sortByAnzeigeprio(element) {
-	    return element.anzeigeprio;
+	function sortByOrder(meals) {
+		return meals.sort(function (a, b) {
+			var first = a["@order"];
+			var second = b["@order"];
+			return first - second;
+		});
 	}
 	
 	function mapToMeal(icons) {
@@ -171,7 +175,7 @@ function activeTabFix(target, event) {
 	            for (var typIndex in meal.type) {
 	                mealData.ingredients.push(icons[meal.type[typIndex]]);
 	            }
-	        } else {
+	        } else if (meal.type) {
 	            mealData.ingredients.push(icons[meal.type]);
 	        }
 	
@@ -186,20 +190,6 @@ function activeTabFix(target, event) {
 	 */
 	function prepareMeals(meals, icons) {
 	    return _.map(meals, mapToMeal(icons));
-	}
-	
-	/**
-	 * Filter a meal if its description is empty.
-	 * @param days
-	 * @returns {Array|*|j.map}
-	 */
-	function filterEmptyMeals(days) {
-	    return _.map(days, function (day) {
-	        day.meals = _.filter(day.meals, function (meal) {
-	            return meal.description != "";
-	        });
-	        return day;
-	    });
 	}
 	
 	function filterByDate(date) {

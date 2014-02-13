@@ -142,7 +142,7 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 /*allgemein*/
 
 h2 {
-	color:#1e516b;
+	
 	text-transform:uppercase;
 	font-size:1.2em;
 	font-weight:normal;
@@ -598,6 +598,14 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	width:30px;
 	height:30px;
 	float:left;
+}
+
+.second-mensaicons {
+	width:40px;
+}
+
+.second-mensaicons img {
+	display:block;
 }
 
 html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {

@@ -3,7 +3,7 @@
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
-	initializeMap();
+	// initializeMap();
 	
 	$('#Terminals:checkbox').click(function() {
 		if($(this).is(':checked')) {
@@ -37,10 +37,17 @@ $(document).on( "pageinit", "#sitemaps", function() {
 			}
 		}
 	});
+});
 
+/*
+ * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
+ */
+$(document).on("pageshow", "#sitemaps", function() {
+	initializeMap();
 });
 
 var coords = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
+var map = undefined;
 
 /**
  * initializes the map and draws all markers which are currently selected
@@ -76,6 +83,8 @@ function drawMensen() {
 				gMensen[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -93,6 +102,8 @@ function drawTerminals() {
 				gTerminals[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -114,6 +125,8 @@ function drawInstitutes() {
 				gInstitutes[i].setMap(map);
 			}
 		}
+		
+		insertSearchableFeatureCollection(data);
 	});
 }
 
@@ -135,4 +148,28 @@ function drawMap(latlng) {
 		title: "Greetings!"
 	});
 	marker.setMap(map);
+}
+
+function insertSearchables(searchables) {
+	var createSearchables = render("sitemap");
+	var host = $("#filterable-locations");
+	
+	// Add items to search list
+	var htmlSearch = createSearchables({items: searchables});
+	host.append(htmlSearch);
+
+	// Tell search list to refresh itself
+	host.listview("refresh");
+	host.trigger( "updatelayout");
+}
+
+function insertSearchableFeatureCollection(collection) {
+	var items = _.map(collection.features, function(item) {
+		var result = {};
+		result.name = item.properties.Name;
+		result.description = item.properties.description;
+		return result;
+	});
+	
+	insertSearchables(items);
 }
