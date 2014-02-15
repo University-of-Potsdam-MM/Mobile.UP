@@ -13,16 +13,16 @@ $(document).on("submit","#query-form", function(e) {
 // TODO: create object to communicate with SRU and provide pagination for query
 // TODO: store numberOfRecords for search
 function xmlToBooksArray(xmlSearchResult){
-  console.log('xml',xmlSearchResult);
+  // console.log('xml',xmlSearchResult);
   var records = xmlSearchResult.getElementsByTagName('recordData');
   return _.map(records, book);
 };
 
 function book(recordData){
-  console.log('xml:', recordData);
+  // console.log('xml:', recordData);
   var $recordData = $(recordData);
   var model = {
-    // TODO: maybe add ID?
+    // TODO add recordID as main identifier
     title:     textForTag(recordData, 'title'),
     subtitle:  textForTag(recordData, 'subTitle'),
     abstract:  textForTag(recordData, 'abstract'),
@@ -31,7 +31,7 @@ function book(recordData){
     publisher: textForTag(recordData, 'publisher'),
     isbn:      textForQuery($recordData, 'identifier[type=isbn]')
   };
-  console.log('model:', model);
+  // console.log('model:', model);
   return model;
 }
 
@@ -74,7 +74,7 @@ function updateResults() {
   })
   .then(xmlToBooksArray)
   .then(renderResults)
-  .catch(errorLogging);
+  .catch(logError);
 }
 
 function clearSearch() {
@@ -98,21 +98,28 @@ function loadSearch(query) {
               '&startRecord=' + startRecord +
               '&maximumRecords=' + maximumRecords +
               '&recordSchema=mods';
-    console.log(url);
+    // console.log(url);
     $.get(url).done(d.resolve).fail(d.reject);
     return d.promise;
 }
 
+var bookListViewTemplate = render('book_list_view');
 
 function renderResults(results) {
-  console.log(results);
-  _.templateSettings.variable = "rc";
-  var template = _.template($("#lib-results-template").html());
-  var html = template(results);
-  $("#search-results").html(html).trigger('create');
+  // console.log('Results:', results);
+  _.templateSettings.variable = "booklist";
+  // console.log('templating function', bookListViewTemplate);
+  var html = bookListViewTemplate({booklist:results});
+  // console.log('html', html);
+  $results = $("#search-results");
+  // console.log('results', $results);
+  $results.html(html);
+  $results.trigger('create');
 }
 
-var errorLogging = function (e) {
-  console.log(e);
-  alert("Fehlschlag: " + JSON.stringify(e));
+var logError = function (err) {
+  console.log('ErrorMessage', err.message);
+  console.log('StackTrace', err.stack);
+  alert(err);
+  throw err;
 }
