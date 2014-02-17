@@ -1,3 +1,5 @@
+<ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="placesList" data-hidedividers="true">
 <!-- Auslagerung in Template -->
 <li data-role="collapsible" data-collapsed-icon="arrow-down"
   data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="<%= name %>">
@@ -6,9 +8,9 @@
     <span class="marker closed"></span><%= name %>
   </h3>
   <p>
-    E-Mail: <%= (typeof mail != 'undefined') ? mail : ""  %><br />
-    Tel: <%= (typeof telephone != 'undefined') ? telephone : "" %><br />
-    Link: <%= (typeof link != 'undefined') ? link : ""%><br />
+    <%= (mail) ? "E-Mail: "+mail+"<br />" : ""  %>
+    <%= (telephone) ? "Tel: "+telephone+"<br />" : "" %>
+    <%= (link) ? "Link: "+link+"<br />" : ""%>
   </p>
   <table data-role="table" data-mode="reflow"
     class="ui-responsive table-stripe ">
@@ -32,3 +34,4 @@
     Auf der Karte finden</a>
 
 </li>
+</ul>
