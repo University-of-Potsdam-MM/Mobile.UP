@@ -1,0 +1,17 @@
+{
+[
+{"name": "Polizei","telephone": "110","description": ""},
+{"name": "Feuerwehr","telephone": "112","description": ""},
+{"name": "Giftnotruf 1","telephone": "+493019240","description": "Universit&auml;tsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin, Augustenburger Platz 1, 13353 Berlin-Wedding"},
+{"name": "Giftnotruf 2","telephone": "+493045053555","description": "Universit&auml;tsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin, Augustenburger Platz 1, 13353 Berlin-Wedding"},
+{"name": "Strahlenunfall","telephone": "+4903084453992","description": "Universit&auml;tsklinik Steglitz, Berlin"},
+{"name": "Rettungsstelle - Klinikum Ernst v. Bergmann","telephone": "+493312415051","description": ""},
+{"name": "Rettungsstelle - St. Josefs ","telephone": "+4933196821100","description": ""},
+{"name": "Betriebsarzt","telephone": "+493317488632","description": "Frau Dr. Schmalenbach, Gro&suml;beerenstr. 185, 14482 Potsdam- Babelsberg"},
+{"name": "N&auml;chster Arzt Potsdam","telephone": "+493315507080","description": "Frau Dr. med. Berit B&ouml;ttcher, Praxis Dr.med. Berit B&ouml;ttcher Facharzt f&uuml;r Innere Medizin, Reiherbergstr. 31, 14476 Potsdam"},
+{"name": "N&auml;chster Arzt Potsdam-Eiche","telephone": "+493316011767","description": "Allgemeinarztpraxis, Kang-Hyeb Lee, Facharzt f&uuml;r Allgemeinmedizin, Kaiser-Friedrich-Str. 102 a, 14469 Potsdam / OT Eiche"},
+{"name": "Telefonseelsorge","telephone": "08001110111","description": "kostenfreie Telefonnummer"},
+{"name": "Psychologische Beratung Uni Potsdam","telephone": "+493319771830","description": "Dipl. Psych.  Birgit Kl&ouml;hn, Am Neuen Palais 10, 14469 Potsdam, Haus 08, Raum 0.82"},
+{"name": "Technische Leitzentrale Uni Potsdam","telephone": "+493319772010","description": "St&ouml;rungsannahme 24h-Dienst"}
+]
+}

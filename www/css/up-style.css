@@ -149,6 +149,8 @@ h2 {
 	margin-left:1em;
 }
  
+
+
 html  .ui-body-c .speiseplan a,
 html body  .ui-group-theme-c .speiseplan a{font-weight:normal;color:#000;font-size:.6em;}
 
@@ -157,6 +159,7 @@ html body  .ui-group-theme-c .speiseplan a{font-weight:normal;color:#000;font-si
 	color:#1e516b;
 	font-size:1.3em;
 }
+
 
 /*Bilder*/
 
@@ -806,4 +809,3 @@ background-color: rgba(255, 255, 255, 0.8);
 	color: #1e516b;
 
 }
-
