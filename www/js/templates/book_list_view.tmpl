@@ -1,0 +1,11 @@
+<h2>Results</h2>
+<ul data-role="listview" data-inset="true">
+    <% _.each(booklist, function(book) { %>
+    <li>
+        <a href="#">
+            <h2><%= book.title %></h2>
+            <p><%= book.subtitle %></p>
+        </a>
+    </li>
+    <% }); %>
+</ul>

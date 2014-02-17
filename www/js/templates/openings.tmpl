@@ -1,0 +1,37 @@
+<ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="placesList" data-hidedividers="true">
+<!-- Auslagerung in Template -->
+<li data-role="collapsible" data-collapsed-icon="arrow-down"
+  data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="<%= name %>">
+
+  <h3>
+    <span class="marker closed"></span><%= name %>
+  </h3>
+  <p>
+    <%= (mail) ? "E-Mail: "+mail+"<br />" : ""  %>
+    <%= (telephone) ? "Tel: "+telephone+"<br />" : "" %>
+    <%= (link) ? "Link: "+link+"<br />" : ""%>
+  </p>
+  <table data-role="table" data-mode="reflow"
+    class="ui-responsive table-stripe ">
+    <thead>
+      <tr>
+        <th>Wochentag</th>
+        <th>Uhrzeit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(times, function(time_for_day) { %>
+        <tr>
+          <th><%= time_for_day['day'] %></th>
+          <td><%= time_for_day['opening'] %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="#" data-role="button" data-theme="a" data-icon="location">
+    Auf der Karte finden</a>
+
+</li>
+</ul>
