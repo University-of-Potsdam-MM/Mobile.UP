@@ -47,6 +47,14 @@
         <script>
         $(function(){
 
+          // I give this function a German name,
+          // because someone introduced German weekday names as keys in opening.json
+          var heutigerWochentag = function() {
+            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+            var today = new Date();
+            return tage[today.getDay()]
+          };
+
           var renderOpenings = function(openings) {
             var placesList = $('#openings');
             var placeTemplate = render('openings');
