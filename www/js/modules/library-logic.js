@@ -21,6 +21,7 @@ function registerEventSearch(){
 // controller
 function registerEventChooseBook(){
   $( '#search-results > ul' ).on( 'click', 'li', function(ev){
+    // TODO query Standortinfo for this record
     renderDetailView(getRecord(this.id));
   } );
 }
