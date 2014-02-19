@@ -15,19 +15,14 @@
 
         <!-- Javascript Files -->
 
-    <!-- The core React library -->
-    <script src="http://fb.me/react-0.8.0.js"></script>
-    <!-- In-browser JSX transformer, remove when pre-compiling JSX. -->
-    <script src="http://fb.me/JSXTransformer-0.8.0.js"></script>
-
-    <!-- Core Libraries -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script src="js/lib/jquery-1.10.2.min.js"></script>
-    <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
-    <script src="js/lib/q.min.js"></script>
-    <script src="js/lib/underscore.min.js"></script>
-    <script src="js/lib/jqm-datebox.core.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
+        <!-- Core Libraries -->
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script src="js/lib/jquery-1.10.2.min.js"></script>
+        <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
+        <script src="js/lib/q.min.js"></script>
+        <script src="js/lib/underscore.min.js"></script>
+        <script src="js/lib/jqm-datebox.core.min.js"></script>
+        <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
         <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
         <script id="panel-init">
            $(function () {
@@ -55,9 +50,12 @@
             return tage[today.getDay()]
           };
 
+          // TODO: JSON parsen und uhrzeit herausfinden
+          // Ampel für den heutigen Wochentag rendern
+
           var renderOpenings = function(openings) {
-            var placesList = $('#openings');
             var placeTemplate = render('openings');
+            var placesList = $('#openings > ul');
             _.each(openings, function(place){
               placesList.append(placeTemplate(place));
             });
@@ -108,7 +106,12 @@
         </ul>
       </div>
  -->
-    <div id="openings"></div>
+    <div id="openings">
+      <ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="placesList" data-hidedividers="true">
+        <!-- opening.templ -->
+      </ul>
+    </div>
   </div>
   <!-- End Main - Navigation -->
 </body>
