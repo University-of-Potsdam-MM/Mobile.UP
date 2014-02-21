@@ -61,6 +61,42 @@
             });
           };
 
+          var fromToDaytimeString = function(from, to) {
+            var string = '' + from + ' - ' + to + ' Uhr';
+            // console.log('string',string);
+            return string;
+          };
+
+          var addTextToTimes = function (openings) {
+            _.each(openings, function(place) {
+              // console.log('place',place);
+              _.each(place.times, function(day){
+                // console.log('day', day);
+                if(_.isString(day.opening)) {
+                  day.opening_text = day.opening;
+                  return;
+                }
+
+                if(_.isArray(day.opening)){
+                  var text = _.map(day.opening, function(fromToArr){
+                    // console.log('fromToArr', fromToArr);
+                    if (_.isArray(fromToArr)) {
+                      return fromToDaytimeString(fromToArr[0], fromToArr[1]);
+                    } else {
+                      return fromToArr;
+                    }
+                  }).join(' | ');
+                  day.opening_text = text;
+                  // console.log('text', text);
+                  return;
+                }
+
+                console.log('Neither String nor Array');
+              })
+            });
+            return openings;
+          };
+
           $.ajax({
             url: 'js/json/opening.json',
             method: 'GET',
@@ -69,6 +105,7 @@
             success: function(json) {
               var data = $.parseJSON(json);
               var openings = _.sortBy(data, 'name');
+              openings = addTextToTimes(openings);
               console.log(openings);
               renderOpenings(openings);
               $("#opening").trigger("create");
