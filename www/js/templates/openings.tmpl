@@ -3,7 +3,7 @@
   data-expanded-icon="arrow-up" data-iconpos="right" data-filtertext="<%= name %>">
 
   <h3>
-    <span class="marker open"></span><%= name %>
+    <span class="marker <%= statusOpenNow %>"></span><%= name %>
   </h3>
   <p>
     <%= (mail) ? "E-Mail: "+mail+"<br />" : ""  %>
