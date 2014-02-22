@@ -42,67 +42,56 @@
         <script>
         $(function(){
 
-          var dateHelper = {};
-
-          // I give this function a German name,
-          // because someone introduced German weekday names as keys in opening.json
-          var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-          var wochentag = function(date) {
-            if (date) {
-              return tage[date.getDay()]
-            }
-          };
-
-          var hoursColonMinutes = function(date){
-            if (date) {
-              return date.getHours() + ':' + date.getMinutes();
-            }
-          };
-
-          var openingForWochentag = function(timesArr, wochentag) {
-            if (! _.isArray(timesArr)){ return;}
-            var day = _.find(timesArr, function(timesForDay){
-              console.log('find day', wochentag, timesArr, timesForDay);
-              return timesForDay.day == wochentag;
-            });
-            if (day){
-              return day.opening;
-            }
-            return false;
-          }
-
-          var statusAtPlaceAndDate = function(place, date) {
-            if (date && place) {
-              var _wochentag = wochentag(date);
-              var opening = openingForWochentag(place.times, _wochentag);
-
-              if (opening === false) {
-                return 'closed';
-              };
-
-              if ((opening == null) || _.isString(opening)) {
-                return 'notsure';
-              };
-
-              var time = hoursColonMinutes(date);
-              if (_.isArray(opening)) {
-                var open = _.some(opening, function(fromTo){
-                  return ((fromTo[0] < time) && (fromTo[1] > time))
-                });
-                return (open)? 'open' : 'closed';
+          var date_helper = {
+            // I give this function a German name,
+            // because someone introduced German weekday names as keys in opening.json
+            tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+            wochentag: function(date) {
+              if (date) {
+                return this.tage[date.getDay()]
               }
+            },
+            hoursColonMinutes: function(date){
+              if (date) {
+                return date.getHours() + ':' + date.getMinutes();
+              }
+            },
+            openingForWochentag: function(timesArr, wochentag) {
+              if (! _.isArray(timesArr)){ return;}
+              var day = _.find(timesArr, function(timesForDay){
+                console.log('find day', wochentag, timesArr, timesForDay);
+                return timesForDay.day == wochentag;
+              });
+              if (day){
+                return day.opening;
+              }
+              return false;
+            },
+            statusAtPlaceAndDate: function(place, date) {
+              if (date && place) {
+                var _wochentag = this.wochentag(date);
+                var opening = this.openingForWochentag(place.times, _wochentag);
 
-              return 'problem'
-            }
+                if (opening === false) {
+                  return 'closed';
+                };
+
+                if ((opening == null) || _.isString(opening)) {
+                  return 'notsure';
+                };
+
+                var time = this.hoursColonMinutes(date);
+                if (_.isArray(opening)) {
+                  var open = _.some(opening, function(fromTo){
+                    return ((fromTo[0] < time) && (fromTo[1] > time))
+                  });
+                  return (open)? 'open' : 'closed';
+                }
+
+                return 'problem'
+              }
+            },
           };
-
-          var statusPlaceOpenNow = function(place) {
-            var now = new Date();
-            return statusAtPlaceAndDate(place, now);
-          };
-
-          // TODO: JSON parsen und aktuelle uhrzeit herausfinden
-          // Ampel für den heutigen Wochentag rendern
 
           var renderOpenings = function(openings) {
             var placeTemplate = render('openings');
@@ -161,7 +150,7 @@
 
               var now = new Date();
               _.each(openings, function(place){
-                place.statusOpenNow = statusAtPlaceAndDate(place, now);
+                place.statusOpenNow = date_helper.statusAtPlaceAndDate(place, now);
               });
 
               console.log(openings);
