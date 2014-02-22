@@ -15,19 +15,14 @@
 
         <!-- Javascript Files -->
 
-    <!-- The core React library -->
-    <script src="http://fb.me/react-0.8.0.js"></script>
-    <!-- In-browser JSX transformer, remove when pre-compiling JSX. -->
-    <script src="http://fb.me/JSXTransformer-0.8.0.js"></script>
-
-    <!-- Core Libraries -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script src="js/lib/jquery-1.10.2.min.js"></script>
-    <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
-    <script src="js/lib/q.min.js"></script>
-    <script src="js/lib/underscore.min.js"></script>
-    <script src="js/lib/jqm-datebox.core.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
+        <!-- Core Libraries -->
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script src="js/lib/jquery-1.10.2.min.js"></script>
+        <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
+        <script src="js/lib/q.min.js"></script>
+        <script src="js/lib/underscore.min.js"></script>
+        <script src="js/lib/jqm-datebox.core.min.js"></script>
+        <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
         <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
         <script id="panel-init">
            $(function () {
@@ -47,20 +42,99 @@
         <script>
         $(function(){
 
-          // I give this function a German name,
-          // because someone introduced German weekday names as keys in opening.json
-          var heutigerWochentag = function() {
-            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            var today = new Date();
-            return tage[today.getDay()]
+          var date_helper = {
+            // I give this function a German name,
+            // because someone introduced German weekday names as keys in opening.json
+            tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+            wochentag: function(date) {
+              if (date) {
+                return this.tage[date.getDay()]
+              }
+            },
+            hoursColonMinutes: function(date){
+              if (date) {
+                return date.getHours() + ':' + date.getMinutes();
+              }
+            },
+            openingForWochentag: function(timesArr, wochentag) {
+              if (! _.isArray(timesArr)){ return;}
+              var day = _.find(timesArr, function(timesForDay){
+                console.log('find day', wochentag, timesArr, timesForDay);
+                return timesForDay.day == wochentag;
+              });
+              if (day){
+                return day.opening;
+              }
+              return false;
+            },
+            statusAtPlaceAndDate: function(place, date) {
+              if (date && place) {
+                var _wochentag = this.wochentag(date);
+                var opening = this.openingForWochentag(place.times, _wochentag);
+
+                if (opening === false) {
+                  return 'closed';
+                };
+
+                if ((opening == null) || _.isString(opening)) {
+                  return 'notsure';
+                };
+
+                var time = this.hoursColonMinutes(date);
+                if (_.isArray(opening)) {
+                  var open = _.some(opening, function(fromTo){
+                    return ((fromTo[0] < time) && (fromTo[1] > time))
+                  });
+                  return (open)? 'open' : 'closed';
+                }
+
+                return 'problem'
+              }
+            },
           };
 
           var renderOpenings = function(openings) {
-            var placesList = $('#openings');
             var placeTemplate = render('openings');
+            var placesList = $('#openings > ul');
             _.each(openings, function(place){
               placesList.append(placeTemplate(place));
             });
+          };
+
+          var fromToDaytimeString = function(from, to) {
+            var string = '' + from + ' - ' + to + ' Uhr';
+            // console.log('string',string);
+            return string;
+          };
+
+          var addTextToTimes = function (openings) {
+            _.each(openings, function(place) {
+              // console.log('place',place);
+              _.each(place.times, function(day){
+                // console.log('day', day);
+                if(_.isString(day.opening)) {
+                  day.opening_text = day.opening;
+                  return;
+                }
+
+                if(_.isArray(day.opening)){
+                  var text = _.map(day.opening, function(fromToArr){
+                    // console.log('fromToArr', fromToArr);
+                    if (_.isArray(fromToArr)) {
+                      return fromToDaytimeString(fromToArr[0], fromToArr[1]);
+                    } else {
+                      return fromToArr;
+                    }
+                  }).join(' | ');
+                  day.opening_text = text;
+                  // console.log('text', text);
+                  return;
+                }
+
+                console.log('Neither String nor Array');
+              })
+            });
+            return openings;
           };
 
           $.ajax({
@@ -71,6 +145,14 @@
             success: function(json) {
               var data = $.parseJSON(json);
               var openings = _.sortBy(data, 'name');
+
+              openings = addTextToTimes(openings);
+
+              var now = new Date();
+              _.each(openings, function(place){
+                place.statusOpenNow = date_helper.statusAtPlaceAndDate(place, now);
+              });
+
               console.log(openings);
               renderOpenings(openings);
               $("#opening").trigger("create");
@@ -108,7 +190,12 @@
         </ul>
       </div>
  -->
-    <div id="openings"></div>
+    <div id="openings">
+      <ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="placesList" data-hidedividers="true">
+        <!-- opening.templ -->
+      </ul>
+    </div>
   </div>
   <!-- End Main - Navigation -->
 </body>
