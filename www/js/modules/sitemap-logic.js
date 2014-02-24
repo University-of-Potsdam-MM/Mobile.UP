@@ -1,3 +1,24 @@
+var settings =	{
+	griebnitzsee: {
+		terminals: "js/geojson/terminals-griebnitzsee.json",
+		institutes: "js/geojson/institutes-griebnitzsee.json",
+		canteens: "js/geojson/mensen-griebnitzsee.json",
+		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+	},
+	neuespalais: {
+		terminals: "js/geojson/terminals-palais.geojson",
+		institutes: "js/geojson/institutes-palais.geojson",
+		canteens: "js/geojson/mensen-palais.geojson",
+		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+	},
+	golm: {
+		terminals: "js/geojson/terminals-golm.geojson",
+		institutes: "js/geojson/institutes-golm.geojson",
+		canteens: "js/geojson/mensen-golm.geojson",
+		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+	}
+};
+
 
 /*
  * initialize map when page is initialized
@@ -5,39 +26,42 @@
 $(document).on( "pageinit", "#sitemaps", function() {
 	// initializeMap();
 	
-	$('#Terminals:checkbox').click(function() {
-		if($(this).is(':checked')) {
-			drawTerminals();
-		}else{
-			console.log(gTerminals);
-			for(var i=0;i<gTerminals.length;i++) {
-				gTerminals[i].setMap(null);
-			}
+	var checkboxSettings = {
+		terminals: {
+			draw: drawTerminals,
+			elements: undefined // gTerminals
+		},
+		institutes: {
+			draw: drawInstitutes,
+			elements: undefined // gInstitutes
+		},
+		canteens: {
+			draw: drawMensen,
+			elements: undefined // gMensen
 		}
-	});
+	};
 	
-	$('#Institute:checkbox').click(function() {
-		if($(this).is(':checked')) {
-			drawInstitutes();
-		}else{
-			console.log(gInstitutes);
-			for(var i=0;i<gInstitutes.length;i++) {
-				gInstitutes[i].setMap(null);
-			}
-		}
-	});
-	
-	$('#Mensen:checkbox').click(function() {
-		if($(this).is(':checked')) {
-			drawMensen();
-		}else{
-			console.log(gMensen);
-			for(var i=0;i<gMensen.length;i++) {
-				gMensen[i].setMap(null);
-			}
-		}
-	});
+	$('#Terminals:checkbox').click(checkUncheck(checkboxSettings.terminals));
+	$('#Institute:checkbox').click(checkUncheck(checkboxSettings.institutes));
+	$('#Mensen:checkbox').click(checkUncheck(checkboxSettings.canteens));
 });
+
+function checkUncheck(checkboxSettings) {
+	return function() {
+		if($(this).is(':checked')) {
+			checkboxSettings.draw();
+		}else{
+			console.log(checkboxSettings.elements);
+			makeInvisible(checkboxSettings.elements);
+		}
+	};
+}
+
+function makeInvisible(markers) {
+	for(var i=0;i<markers.length;i++) {
+		markers[i].setMap(null);
+	}
+}
 
 /*
  * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
