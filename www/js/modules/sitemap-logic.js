@@ -19,27 +19,29 @@ var settings =	{
 	}
 };
 
+var checkboxSettings = {
+	terminals: {
+		query: '#Terminals:checkbox',
+		draw: drawTerminals,
+		elements: []
+	},
+	institutes: {
+		query: '#Institute:checkbox',
+		draw: drawInstitutes,
+		elements: []
+	},
+	canteens: {
+		query: '#Mensen:checkbox',
+		draw: drawMensen,
+		elements: []
+	}
+};
 
 /*
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
 	// initializeMap();
-	
-	var checkboxSettings = {
-		terminals: {
-			draw: drawTerminals,
-			elements: undefined // gTerminals
-		},
-		institutes: {
-			draw: drawInstitutes,
-			elements: undefined // gInstitutes
-		},
-		canteens: {
-			draw: drawMensen,
-			elements: undefined // gMensen
-		}
-	};
 	
 	$('#Terminals:checkbox').click(checkUncheck(checkboxSettings.terminals));
 	$('#Institute:checkbox').click(checkUncheck(checkboxSettings.institutes));
@@ -116,18 +118,15 @@ function initializeMap() {
 	allMarkers = [];
 	searchedMarkers = [];
 	
-	if($('#Mensen:checkbox').is(':checked')) {
-		drawMensen();
-	}
+	drawIfChecked(checkboxSettings.canteens);
+	drawIfChecked(checkboxSettings.institutes);
+	drawIfChecked(checkboxSettings.terminals);
+}
 
-	if($('#Institute:checkbox').is(':checked')) {
-		drawInstitutes();
+function drawIfChecked(checkboxSettings) {
+	if($(checkboxSettings.query).is(':checked')) {
+		checkboxSettings.draw();
 	}
-	
-	if($('#Terminals:checkbox').is(':checked')) {
-		drawTerminals();
-	}
-	
 }
 
 function drawMensen() {
