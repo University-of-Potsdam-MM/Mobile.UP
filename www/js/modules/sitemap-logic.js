@@ -37,32 +37,33 @@ var checkboxSettings = {
 	}
 };
 
+var terminals = "terminals";
+var institutes = "institutes";
+var canteens = "canteens";
+
+var categoryStore = new CategoryStore();
+
 /*
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
 	// initializeMap();
 	
-	$('#Terminals:checkbox').click(checkUncheck(checkboxSettings.terminals));
-	$('#Institute:checkbox').click(checkUncheck(checkboxSettings.institutes));
-	$('#Mensen:checkbox').click(checkUncheck(checkboxSettings.canteens));
+	$('#Terminals:checkbox').click(checkUncheck(terminals));
+	$('#Institute:checkbox').click(checkUncheck(institutes));
+	$('#Mensen:checkbox').click(checkUncheck(canteens));
 });
 
-function checkUncheck(checkboxSettings) {
+function checkUncheck(category) {
 	return function() {
-		if($(this).is(':checked')) {
-			checkboxSettings.draw();
-		}else{
-			console.log(checkboxSettings.elements);
-			makeInvisible(checkboxSettings.elements);
+		if ($(this).is(':checked')) {
+			categoryStore.setVisibility(category, true);
+			_.each(allMarkers, function(a) { a.reset(); });
+		} else {
+			categoryStore.setVisibility(category, false);
+			_.each(allMarkers, function(a) { a.reset(); });
 		}
 	};
-}
-
-function makeInvisible(markers) {
-	for(var i=0;i<markers.length;i++) {
-		markers[i].setMap(null);
-	}
 }
 
 /*
@@ -87,22 +88,22 @@ function filterLocations(index, searchValue) {
 	if (searchValue) {
 		// Don't show all markers, only the matching one
 		for (var i = 0; i < allMarkers.length; i++) {
-			allMarkers[i].setMap(null);
+			allMarkers[i].setVisibility(false, true);
 		}
 		
 		var source = $("a", this);
 		var href = source.attr("href");
 		var index = parseInt(href.slice(1));
 		if (!result) {
-			searchedMarkers[index].setMap(map);
+			searchedMarkers[index].setVisibility(true, true);
 		} else {
-			searchedMarkers[index].setMap(null);
+			searchedMarkers[index].setVisibility(false, true);
 		}
 	} else {
 		// Show all markers
 		for (var i = 0; i < allMarkers.length; i++) {
-			allMarkers[i].setMap(map);
-			searchedMarkers[i].setMap(null);
+			searchedMarkers[i].setVisibility(false, true);
+			allMarkers[i].reset();
 		}
 	}
 	
@@ -118,15 +119,13 @@ function initializeMap() {
 	allMarkers = [];
 	searchedMarkers = [];
 	
-	drawIfChecked(checkboxSettings.canteens);
-	drawIfChecked(checkboxSettings.institutes);
-	drawIfChecked(checkboxSettings.terminals);
-}
-
-function drawIfChecked(checkboxSettings) {
-	if($(checkboxSettings.query).is(':checked')) {
-		checkboxSettings.draw();
-	}
+	categoryStore.setVisibility(terminals, true);
+	categoryStore.setVisibility(canteens, true);
+	categoryStore.setVisibility(institutes, true);
+	
+	drawTerminals();
+	drawMensen();
+	drawInstitutes();
 }
 
 function drawMensen() {
@@ -135,7 +134,7 @@ function drawMensen() {
 		};
 		
 	$.getJSON("js/geojson/mensen-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data);
+		insertSearchableFeatureCollection(options, data, canteens);
 	});
 }
 
@@ -145,7 +144,7 @@ function drawTerminals() {
 		};
 		
 	$.getJSON("js/geojson/terminals-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data);
+		insertSearchableFeatureCollection(options, data, terminals);
 	});
 }
 
@@ -159,7 +158,7 @@ function drawInstitutes() {
 		};
 	
 	$.getJSON("js/geojson/institutes-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data);
+		insertSearchableFeatureCollection(options, data, institutes);
 	});
 }
 
@@ -198,21 +197,19 @@ $(document).on("click", "#filterable-locations a", function () {
 	
 	// Hide all markers
 	for (var i = 0; i < allMarkers.length; i++) {
-		allMarkers[i].setMap(null);
-	}
-	for (var i = 0; i < searchedMarkers.length; i++) {
-		searchedMarkers[i].setMap(null);
+		searchedMarkers[i].setVisibility(false, true);
+		allMarkers[i].setVisibility(false, true);
 	}
 	
 	// Show the selected marker
-	searchedMarkers[index].setMap(map);
+	searchedMarkers[index].setVisibility(true, true);
 });
 
 var markers;
 var allMarkers;
 var searchedMarkers;
 
-function insertSearchableFeatureCollection(options, collection) {
+function insertSearchableFeatureCollection(options, collection, category) {
 	var items = _.map(collection.features, function(item) {
 		var result = {};
 		result.name = item.properties.Name;
@@ -223,7 +220,7 @@ function insertSearchableFeatureCollection(options, collection) {
 		context.features = [item];
 		
 		// Save marker and get its index
-		result.index = saveMarker(options, context);
+		result.index = saveMarker(options, context, category);
 		
 		return result;
 	});
@@ -241,20 +238,67 @@ function insertMapsMarkers(items) {
 		if (gMarkers.error) {
 			console.log(gMarkers.error);
 		} else {
-			gMarkers[0].setMap(map);
-			tmpMarkers[0].setMap(null);
+			var gMarker = new CategoryMarker(gMarkers[0], map, m.category, categoryStore);
+			var tmpMarker = new CategoryMarker(tmpMarkers[0], map, m.category, categoryStore);
 			
-			allMarkers[items[i].index] = gMarkers[0];
-			searchedMarkers[items[i].index] = tmpMarkers[0];
+			gMarker.reset();
+			tmpMarker.setVisibility(false, true);
+			
+			allMarkers[items[i].index] = gMarker;
+			searchedMarkers[items[i].index] = tmpMarker;
 		}
 	}
 }
 
-function saveMarker(options, context) {
-	markers.push({options: options, context: context});
+function saveMarker(options, context, category) {
+	markers.push({options: options, context: context, category: category});
 	return markers.length - 1;
 }
 
 function loadMarker(index) {
 	return markers[index];
+}
+
+function CategoryStore() {
+	
+	var store = {};
+	
+	this.isVisible = function(category) {
+		if (store[category] === undefined) {
+			return false;
+		}
+		return store[category];
+	};
+	
+	this.setVisibility = function(category, show) {
+		store[category] = show;
+	};
+}
+
+function CategoryMarker(marker, map, category, categoryStore) {
+	
+	var marker = marker;
+	var map = map;
+	var category = category;
+	var categoryStore = categoryStore;
+	
+	this.setVisibility = function(show, overrideCategory) {
+		if (typeof(overrideCategory)==='undefined') overrideCategory = false;
+		
+		if (show && overrideCategory) {
+			marker.setMap(map);
+		} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
+			marker.setMap(map);
+		} else {
+			marker.setMap(null);
+		}
+	};
+	
+	this.reset = function() {
+		if (categoryStore.isVisible(category)) {
+			marker.setMap(map);
+		} else {
+			marker.setMap(null);
+		}
+	};
 }
