@@ -58,6 +58,7 @@ function clearSearch() {
   // $("#searchResults").empty();
 }
 
+// TODO create Backbone View or Marionette Listview
 var bookListViewTemplate = render('book_list_view');
 function renderBookListView(list) {
   _.templateSettings.variable = "booklist";
@@ -67,6 +68,7 @@ function renderBookListView(list) {
   $results.trigger('create');
 }
 
+// TODO create BackboneView
 var bookDetailViewTemplate = render('book_detail_view');
 function renderDetailView(book) {
   // console.log('render detail', book);
@@ -78,7 +80,7 @@ function renderDetailView(book) {
 }
 
 
-// model
+// TODO: create Backbone Collection
 var resultsList = []
 
 function updateResultsList(list) {
@@ -91,26 +93,55 @@ function getRecord(recordID){
   return _.find(this.resultsList, function(book){ return book.recordID == recordID; });
 }
 
-function loadSearch(query) {
-    var d = Q.defer();
-    var baseURL;
-    var startRecord = 1;
-    var maximumRecords = 10;
+// TODO: look here for setting meta data / attributes on a Backbone collection
+// http://stackoverflow.com/a/5930838/104959
+var LibrarySearch = function(query, options) {
+  var defaultOptions = {
+    startRecord: 1,
+    maximumRecords: 10,
+  };
+  options = _.defaults(options || {}, defaultOptions);
 
-    if ('development' == environment){
-      baseURL = '/api/search';
-    } else {
-      baseURL  = "http://sru.gbv.de";
-    }
+  return _.extend({
+    query:query,
+    options: options
+  }, {
+    baseURL:
+      function() {
+        if ('development' == environment){
+          return '/api/search';
+        } else {
+          return "http://sru.gbv.de";
+        }
+      },
+    url:
+      function() {
+        return this.baseURL() + '/opac-de-517?version=1.1&operation=searchRetrieve' +
+          '&query=' + this.query +
+          '&startRecord=' + this.options.startRecord +
+          '&maximumRecords=' + this.options.maximumRecords +
+          '&recordSchema=mods';
+      },
+    loadSearch:
+      function() {
+        // TODO: return Backbone collection instead of promise
+        var d = Q.defer();
+        var url = this.url();
+        $.get(url).done(d.resolve).fail(d.reject);
+        return d.promise;
+      },
+    next:
+      function(){
+        this.options.startRecord += this.options.maximumRecords;
+        // TODO: update Backbone Collection
+        return this.loadSearch();
+      }
+  });
+};
 
-    var url = baseURL + '/opac-de-517?version=1.1&operation=searchRetrieve' +
-              '&query=' + query +
-              '&startRecord=' + startRecord +
-              '&maximumRecords=' + maximumRecords +
-              '&recordSchema=mods';
-    // console.log(url);
-    $.get(url).done(d.resolve).fail(d.reject);
-    return d.promise;
+function loadSearch(queryString) {
+    var query = new LibrarySearch(queryString)
+    return query.loadSearch();
 }
 
 // TODO: create object to communicate with SRU and provide pagination for query
@@ -121,6 +152,7 @@ function xmlToBooksArray(xmlSearchResult){
   return _.map(records, book);
 };
 
+// TODO: create Backbone Model
 function book(recordData){
   // console.log('xml:', recordData);
   var $recordData = $(recordData);
@@ -159,7 +191,7 @@ function textForQuery(jqNode, query){
   return _.pluck(jqNode.find(query), 'textContent');
 }
 
-// TODO: a view logic that displays only some of the authors (eg: Gamma et al.)
+// TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
 function authors($recordData){
   var nameNodes = $recordData.find('name[type=personal]')
   var names = _.map(nameNodes, function(node){
