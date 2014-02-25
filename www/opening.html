@@ -1,85 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head>
- <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <!-- Always use the same header for production -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+	<head>
 
-        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
-        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-
-        <!-- Javascript Files -->
-
-    <!-- The core React library -->
-    <script src="http://fb.me/react-0.8.0.js"></script>
-    <!-- In-browser JSX transformer, remove when pre-compiling JSX. -->
-    <script src="http://fb.me/JSXTransformer-0.8.0.js"></script>
-
-    <!-- Core Libraries -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script src="js/lib/jquery-1.10.2.min.js"></script>
-    <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
-    <script src="js/lib/q.min.js"></script>
-    <script src="js/lib/underscore.min.js"></script>
-    <script src="js/lib/jqm-datebox.core.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
-        <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
-        <script id="panel-init">
-           $(function () {
-               $("[data-role='panel']").panel().enhanceWithin();
-           });
-       </script>
-       <script src="js/app.js"></script>
-        <!-- Module Libraries -->
-        <!-- Mensa -->
-        <script src="js/lib/modules/mensa-logic.js"></script>
-        <!-- Sitemaps -->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <script src="js/sitemap.js"></script>
-
-        <title>UP.App</title>
-
-        <script>
-        $(function(){
-
-          // I give this function a German name,
-          // because someone introduced German weekday names as keys in opening.json
-          var heutigerWochentag = function() {
-            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-            var today = new Date();
-            return tage[today.getDay()]
-          };
-
-          var renderOpenings = function(openings) {
-            var placesList = $('#openings');
-            var placeTemplate = render('openings');
-            _.each(openings, function(place){
-              placesList.append(placeTemplate(place));
-            });
-          };
-
-          $.ajax({
-            url: 'js/json/opening.json',
-            method: 'GET',
-            dataType: 'html',
-            async: false,
-            success: function(json) {
-              var data = $.parseJSON(json);
-              var openings = _.sortBy(data, 'name');
-              console.log(openings);
-              renderOpenings(openings);
-              $("#opening").trigger("create");
-            }
-          });
-        });
-      </script>
-
-</head>
+	</head>
 <body>
 
 
@@ -108,7 +31,12 @@
         </ul>
       </div>
  -->
-    <div id="openings"></div>
+    <div id="openings">
+      <ul data-role="listview" data-autodividers="true" data-inset="true"
+        data-filter="true" data-input="#searchForOpening" id="placesList" data-hidedividers="true">
+        <!-- opening.templ -->
+      </ul>
+    </div>
   </div>
   <!-- End Main - Navigation -->
 </body>

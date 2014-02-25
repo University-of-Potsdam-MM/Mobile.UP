@@ -132,6 +132,35 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 	width:600px;
 }
 
+#emergency .ui-listview .ui-btn {
+	text-align: left;
+	display:block; 
+	background-image:url(../img/up/phone.png);
+	background-position: 15px center;
+	background-repeat: no-repeat;
+	padding-left:65px;
+	height:auto;
+	height:auto;
+}
+
+#emergency .ui-listview .ui-btn:hover {
+	background-image:url(../img/up/phone-hover.png);
+	
+}
+
+#emergency .ui-listview .ui-btn h2{
+	text-transform:none;
+	font-size:.8em;
+	margin-bottom:0 !important;
+}
+
+
+#emergency .ui-listview >li p {
+	 white-space:normal;
+	 text-transform:none; 
+	 width:87%;	
+	 margin-top:0;
+}
 /*Schrift in Tabs*/
 .ui-navbar li .ui-btn {
 	font-size: 12.5px;
@@ -731,6 +760,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	-webkit-border-radius:10px;
 	border-radius:10px;
 	 margin-right:10px;
+	 margin-left: 10px;
 }
 
 .closed{
@@ -743,6 +773,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	-webkit-border-radius: 150px;
     border-radius: 150px;
      margin-right:10px;
+	 margin-left: 10px;
 }
 
 .open{
@@ -755,6 +786,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	-webkit-border-radius: 150px;
     border-radius: 150px;
     margin-right:10px;
+	margin-left: 10px;
 }
 
 /*arrow up - arrow down 
