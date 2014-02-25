@@ -58,10 +58,10 @@ function checkUncheck(category) {
 	return function() {
 		if ($(this).is(':checked')) {
 			categoryStore.setVisibility(category, true);
-			_.each(allMarkers, function(a) { a.reset(); });
+			_.each(allMarkers.getElements(), function(a) { a.reset(); });
 		} else {
 			categoryStore.setVisibility(category, false);
-			_.each(allMarkers, function(a) { a.reset(); });
+			_.each(allMarkers.getElements(), function(a) { a.reset(); });
 		}
 	};
 }
@@ -86,25 +86,20 @@ function filterLocations(index, searchValue) {
 	var result = text.toLowerCase().indexOf(searchValue) === -1;
 	
 	if (searchValue) {
+		allMarkers.switchMode(SEARCH_MODE);
 		// Don't show all markers, only the matching one
-		for (var i = 0; i < allMarkers.length; i++) {
-			allMarkers[i].setVisibility(false, true);
-		}
 		
 		var source = $("a", this);
 		var href = source.attr("href");
 		var index = parseInt(href.slice(1));
+		var searchedMarkers = allMarkers.getElements();
 		if (!result) {
 			searchedMarkers[index].setVisibility(true, true);
 		} else {
 			searchedMarkers[index].setVisibility(false, true);
 		}
 	} else {
-		// Show all markers
-		for (var i = 0; i < allMarkers.length; i++) {
-			searchedMarkers[i].setVisibility(false, true);
-			allMarkers[i].reset();
-		}
+		allMarkers.switchMode(SHOW_MODE);
 	}
 	
 	return result;
@@ -116,8 +111,7 @@ function filterLocations(index, searchValue) {
 function initializeMap() {
 	drawMap(coords);
 	markers = [];
-	allMarkers = [];
-	searchedMarkers = [];
+	allMarkers = new SearchableMarkerCollection();
 	
 	categoryStore.setVisibility(terminals, true);
 	categoryStore.setVisibility(canteens, true);
@@ -196,18 +190,17 @@ $(document).on("click", "#filterable-locations a", function () {
 	var index = parseInt(href.slice(1));
 	
 	// Hide all markers
-	for (var i = 0; i < allMarkers.length; i++) {
-		searchedMarkers[i].setVisibility(false, true);
-		allMarkers[i].setVisibility(false, true);
+	var tmpMarkers = allMarkers.getElements();
+	for (var i = 0; i < tmpMarkers.length; i++) {
+		tmpMarkers[i].setVisibility(false, true);
 	}
 	
 	// Show the selected marker
-	searchedMarkers[index].setVisibility(true, true);
+	tmpMarkers[index].setVisibility(true, true);
 });
 
 var markers;
 var allMarkers;
-var searchedMarkers;
 
 function insertSearchableFeatureCollection(options, collection, category) {
 	var items = _.map(collection.features, function(item) {
@@ -233,19 +226,15 @@ function insertMapsMarkers(items) {
 	for (var i in items) {
 		var m = loadMarker(items[i].index);
 		var gMarkers = new GeoJSON(m.context, m.options);
-		var tmpMarkers = new GeoJSON(m.context, m.options);
 		
 		if (gMarkers.error) {
 			console.log(gMarkers.error);
 		} else {
 			var gMarker = new CategoryMarker(gMarkers[0], map, m.category, categoryStore);
-			var tmpMarker = new CategoryMarker(tmpMarkers[0], map, m.category, categoryStore);
-			
 			gMarker.reset();
-			tmpMarker.setVisibility(false, true);
 			
-			allMarkers[items[i].index] = gMarker;
-			searchedMarkers[items[i].index] = tmpMarker;
+			var tmpMarkers = allMarkers.getElements();
+			tmpMarkers[items[i].index] = gMarker;
 		}
 	}
 }
@@ -300,5 +289,41 @@ function CategoryMarker(marker, map, category, categoryStore) {
 		} else {
 			marker.setMap(null);
 		}
+	};
+}
+
+var SEARCH_MODE = 0;
+var SHOW_MODE = 1;
+
+function SearchableMarkerCollection() {
+	
+	var elements = [];
+	var mode = SHOW_MODE;
+	
+	this.switchMode = function(targetMode) {
+		if (mode === targetMode) {
+			return;
+		}
+		
+		switch (targetMode) {
+		case SEARCH_MODE:
+			// Don't show all markers, only the matching one
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].setVisibility(false, true);
+			}
+			break;
+		case SHOW_MODE:
+			// Show all markers
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].reset();
+			}
+			break;
+		}
+		
+		mode = targetMode;
+	};
+	
+	this.getElements = function() {
+		return elements;
 	};
 }
