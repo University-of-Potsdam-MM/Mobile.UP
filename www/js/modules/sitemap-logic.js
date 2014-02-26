@@ -1,39 +1,34 @@
 var settings =	{
-	griebnitzsee: {
-		terminals: "js/geojson/terminals-griebnitzsee.json",
-		institutes: "js/geojson/institutes-griebnitzsee.json",
-		canteens: "js/geojson/mensen-griebnitzsee.json",
-		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+	url: {
+		griebnitzsee: {
+			terminals: "js/geojson/terminals-griebnitzsee.json",
+			institutes: "js/geojson/institutes-griebnitzsee.json",
+			canteens: "js/geojson/mensen-griebnitzsee.json",
+			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+		},
+		neuespalais: {
+			terminals: "js/geojson/terminals-palais.geojson",
+			institutes: "js/geojson/institutes-palais.geojson",
+			canteens: "js/geojson/mensen-palais.geojson",
+			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+		},
+		golm: {
+			terminals: "js/geojson/terminals-golm.geojson",
+			institutes: "js/geojson/institutes-golm.geojson",
+			canteens: "js/geojson/mensen-golm.geojson",
+			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+		}
 	},
-	neuespalais: {
-		terminals: "js/geojson/terminals-palais.geojson",
-		institutes: "js/geojson/institutes-palais.geojson",
-		canteens: "js/geojson/mensen-palais.geojson",
-		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
-	},
-	golm: {
-		terminals: "js/geojson/terminals-golm.geojson",
-		institutes: "js/geojson/institutes-golm.geojson",
-		canteens: "js/geojson/mensen-golm.geojson",
-		center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
-	}
-};
-
-var checkboxSettings = {
-	terminals: {
-		query: '#Terminals:checkbox',
-		draw: drawTerminals,
-		elements: []
-	},
-	institutes: {
-		query: '#Institute:checkbox',
-		draw: drawInstitutes,
-		elements: []
-	},
-	canteens: {
-		query: '#Mensen:checkbox',
-		draw: drawMensen,
-		elements: []
+	options: {
+		terminals: { "icon": "img/up/puck-marker.png" },
+		canteens: { "icon": "img/up/mensa-marker.png" },
+		institutes: {
+			"strokeColor": "#FF7800",
+		    "strokeOpacity": 1,
+		    "strokeWeight": 2,
+		    "fillColor": "#46461F",
+		    "fillOpacity": 0.25
+		}
 	}
 };
 
@@ -113,49 +108,16 @@ function initializeMap() {
 	markers = [];
 	allMarkers = new SearchableMarkerCollection();
 	
-	categoryStore.setVisibility(terminals, true);
-	categoryStore.setVisibility(canteens, true);
-	categoryStore.setVisibility(institutes, true);
-	
-	drawTerminals();
-	drawMensen();
-	drawInstitutes();
+	drawCategory(settings.options.terminals, settings.url.griebnitzsee.terminals, terminals);
+	drawCategory(settings.options.institutes, settings.url.griebnitzsee.institutes, institutes);
+	drawCategory(settings.options.canteens, settings.url.griebnitzsee.canteens, canteens);
 }
 
-function drawMensen() {
-	var options = {
-		    "icon": "img/up/mensa-marker.png"
-		};
-		
-	$.getJSON("js/geojson/mensen-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data, canteens);
+function drawCategory(options, url, category) {
+	$.getJSON(url, function(data) {
+		insertSearchableFeatureCollection(options, data, category);
 	});
 }
-
-function drawTerminals() {
-	var options = {
-		    "icon": "img/up/puck-marker.png"
-		};
-		
-	$.getJSON("js/geojson/terminals-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data, terminals);
-	});
-}
-
-function drawInstitutes() {
-	var options = {
-		    "strokeColor": "#FF7800",
-		    "strokeOpacity": 1,
-		    "strokeWeight": 2,
-		    "fillColor": "#46461F",
-		    "fillOpacity": 0.25
-		};
-	
-	$.getJSON("js/geojson/institutes-griebnitzsee.json", function(data) {
-		insertSearchableFeatureCollection(options, data, institutes);
-	});
-}
-
 
 /**
  * draws the initial map and centers on the given coordinate
@@ -254,7 +216,7 @@ function CategoryStore() {
 	
 	this.isVisible = function(category) {
 		if (store[category] === undefined) {
-			return false;
+			return true;
 		}
 		return store[category];
 	};
