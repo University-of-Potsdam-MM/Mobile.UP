@@ -3,8 +3,14 @@
     <% _.each(booklist, function(book) { %>
     <li id="<%= book.recordID %>">
         <a href="#">
+        <h3>
+    <span class="marker open"></span>
+  </h3>
             <h2><%= book.title %></h2>
             <p><%= book.subtitle %></p>
+            <p><%= book.authors %></p>
+            <p><%= book.edition %>, <%= book.publisher %>, <%= book.dateIssued %></p>
+            <p></p>
         </a>
     </li>
     <% }); %>

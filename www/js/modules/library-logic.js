@@ -74,7 +74,7 @@ function renderDetailView(book) {
   // console.log('render detail', book);
   _.templateSettings.variable = "book";
   var html = bookDetailViewTemplate({book:book});
-  $results = $("#search-results");
+  $results = $("#libraryContent");
   $results.html(html);
   $results.trigger('create');
 }
@@ -164,6 +164,8 @@ function book(recordData){
     toc:       split_string(textForTag(recordData, 'tableOfContents'),'--'),
     authors:   authors($recordData),
     publisher: textForTag(recordData, 'publisher'),
+    edition:   textForTag(recordData, 'edition'),
+    dateIssued:textForTag(recordData, 'dateIssued'),
     isbn:      textForQuery($recordData, 'identifier[type=isbn]')
   };
   // console.log('model.toc', model.toc);

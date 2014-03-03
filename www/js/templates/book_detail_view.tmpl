@@ -2,13 +2,40 @@
 <div>Subtitle <%= book.subtitle %></div>
 <div>authors <%= book.authors %></div>
 <div>publisher <%= book.publisher %></div>
-<div>isbn <%= book.isbn %></div>
-<p> Abstract <%= book.abstract %></p>
-<div>
-  <h3>Contents</h3>
-  <ul>
-    <% _.each(book.toc, function(chapter){ %>
-    <li><%= chapter %></li>
-  <%});%>
-  </ul>
+<div data-role="tabs">
+	<div data-role="navbar">
+		<ul>
+			<li><a href="#book-location" data-ajax="false">Standort</a></li>
+			<li><a href="#book-details" data-ajax="false">Details</a></li>
+		</ul>
+	</div>
+	<div id="book-location" class="ui-content">
+		<div>
+			<b>Bereichsbibliothek Golm</b>
+			<p>Regal / Signatur</p>
+			<p>ausleihbar bis?</p>
+		</div>
+		<div>
+			<b>Bereichsbibliothek Golm</b>
+			<p>Regal / Signatur</p>
+			<p>ausleihbar bis?</p>
+		</div>
+		<div>
+			<b>Bereichsbibliothek Palais</b>
+			<p>Regal / Signatur</p>
+			<p>ausleihbar bis?</p>
+		</div>
+	</div>
+	<div id="book-details" class="ui-content">
+		<div>isbn <%= book.isbn %></div>
+		<p> Abstract <%= book.abstract %></p>
+		<div>
+  			<h3>Contents</h3>
+  			<ul>
+	    		<% _.each(book.toc, function(chapter){ %>
+    			<li><%= chapter %></li>
+  				<%});%>
+  			</ul>
+		</div>
+	</div>
 </div>
