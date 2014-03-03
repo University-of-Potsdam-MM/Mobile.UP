@@ -42,8 +42,6 @@ var categoryStore = new CategoryStore();
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
-	// initializeMap();
-	
 	$('#Terminals:checkbox').click(checkUncheck(terminals));
 	$('#Institute:checkbox').click(checkUncheck(institutes));
 	$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -51,13 +49,14 @@ $(document).on( "pageinit", "#sitemaps", function() {
 
 function checkUncheck(category) {
 	return function() {
+		var visibility;
 		if ($(this).is(':checked')) {
-			categoryStore.setVisibility(category, true);
-			_.each(allMarkers.getElements(), function(a) { a.reset(); });
+			visibility = true;
 		} else {
-			categoryStore.setVisibility(category, false);
-			_.each(allMarkers.getElements(), function(a) { a.reset(); });
+			visibility = false;
 		}
+		categoryStore.setVisibility(category, visibility);
+		_.each(allMarkers.getElements(), function(a) { a.reset(); });
 	};
 }
 
@@ -65,16 +64,13 @@ function checkUncheck(category) {
  * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
  */
 $(document).on("pageshow", "#sitemaps", function() {
-	initializeMap();
-	initializeFilter();
+	initializeMap(settings.url.griebnitzsee.center);
+	
+	// Initialize filter
+	$("#filterable-locations").filterable("option", "filterCallback", filterLocations);
 });
 
-var coords = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
 var map = undefined;
-
-function initializeFilter() {
-	$("#filterable-locations").filterable("option", "filterCallback", filterLocations);
-}
 
 function filterLocations(index, searchValue) {
 	var text = $(this).text();
@@ -103,8 +99,8 @@ function filterLocations(index, searchValue) {
 /**
  * initializes the map and draws all markers which are currently selected
  */
-function initializeMap() {
-	drawMap(coords);
+function initializeMap(center) {
+	drawMap(center);
 	markers = [];
 	allMarkers = new SearchableMarkerCollection();
 	
