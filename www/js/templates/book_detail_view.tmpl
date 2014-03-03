@@ -1,0 +1,14 @@
+<h2><%= book.title %></h2>
+<div>Subtitle <%= book.subtitle %></div>
+<div>authors <%= book.authors %></div>
+<div>publisher <%= book.publisher %></div>
+<div>isbn <%= book.isbn %></div>
+<p> Abstract <%= book.abstract %></p>
+<div>
+  <h3>Contents</h3>
+  <ul>
+    <% _.each(book.toc, function(chapter){ %>
+    <li><%= chapter %></li>
+  <%});%>
+  </ul>
+</div>
