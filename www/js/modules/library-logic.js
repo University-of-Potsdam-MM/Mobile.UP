@@ -3,12 +3,12 @@
 var environment = 'development';
 
 // debugging controller
-$(document).ready(function() {
+$(document).on("pageinit","#search", function() {
   registerEventSearch();
 
   // debugging
   updateResults();
-})
+});
 
 // controller
 function registerEventSearch(){
@@ -148,7 +148,7 @@ function loadSearch(queryString) {
 // TODO: store numberOfRecords for search
 function xmlToBooksArray(xmlSearchResult){
   // console.log('xml',xmlSearchResult);
-  var records = xmlSearchResult.getElementsByTagName('recordData');
+  var records = xmlSearchResult.getElementsByTagName('zs:recordData');
   return _.map(records, book);
 };
 
