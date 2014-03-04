@@ -26,7 +26,8 @@ $(function() {
 				var source = $(this);
 				
 				// call onChange callback
-				var target = widgetParent._getDefaultSelection(source);
+				var target = widgetParent._retreiveSelection(source);
+				widgetParent._setDefaultSelection(target);
 				widgetParent.options.onChange(target);
 				
 				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
@@ -39,7 +40,8 @@ $(function() {
 		},
 		
 		pageshow: function() {
-			this._activateDefaultSelection();
+			var selection = this._activateDefaultSelection();
+			this.options.onChange(selection);
 		},
 		
 		_setOption: function(key, value) {
@@ -70,6 +72,8 @@ $(function() {
 			$(".location-menu").removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + defaultSelection + "']";
 			$(searchExpression).addClass("ui-btn-active");
+			
+			return defaultSelection;
 		},
 		
 		_fixActiveTab: function(target, event) {
