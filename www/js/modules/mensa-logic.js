@@ -8,7 +8,7 @@
 		
 		$("#mydate").bind("datebox", function(e, p) {
 			if (p.method === "set") {
-				var source = $(".ui-btn-active");
+				var source = $("div[data-role='campusmenu']").campusmenu("getActive");
 				var date = p.date;
 				updateMenu(source, date);
 			}

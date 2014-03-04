@@ -80,6 +80,10 @@ $(function() {
 			event.preventDefault();
 			$(".location-menu").removeClass("ui-btn-active");
 			target.addClass("ui-btn-active");
+		},
+		
+		getActive: function() {
+			return this._retreiveSelection($(".ui-btn-active"));
 		}
 	});
 });
