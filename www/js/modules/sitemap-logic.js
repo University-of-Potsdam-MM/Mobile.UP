@@ -60,16 +60,55 @@ function checkUncheck(category) {
 	};
 }
 
+$(document).on("pageinit", "#sitemaps", function() {
+	$("div[data-role='campusmenu']").campusmenu({ onChange: drawSelectedCampus });
+});
+
 /*
  * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
  */
 $(document).on("pageshow", "#sitemaps", function() {
-	$("div[data-role='searchablemap']").searchablemap("pageshow");
-	
-	drawCategory(settings.options.terminals, settings.url.griebnitzsee.terminals, terminals);
-	drawCategory(settings.options.institutes, settings.url.griebnitzsee.institutes, institutes);
-	drawCategory(settings.options.canteens, settings.url.griebnitzsee.canteens, canteens);
+	$("div[data-role='campusmenu']").campusmenu("pageshow");
 });
+
+function drawSelectedCampus(campusName) {
+	uniqueDivId = _.uniqueId("id_");
+	
+	var campus = undefined;
+	if (campusName === "Griebnitzsee") {
+		campus = settings.url.griebnitzsee;
+	} else if (campusName === "NeuesPalais") {
+		campus = settings.url.neuespalais;
+	} else {
+		campus = settings.url.golm;
+	}
+	
+	Q(clearMenu(uniqueDivId))
+		.then(drawCampus(uniqueDivId, campus))
+		.catch(function (e) {
+			console.log("Fehlschlag: " + e.stack);
+			alert("Fehlschlag: " + e.stack);
+		});
+}
+
+function clearMenu(uniqueDivId) {
+	$("#currentCampus").empty();
+	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
+}
+
+function drawCampus(uniqueDiv, url) {
+	return function() {
+		var host = $("#" + uniqueDiv);
+		host.append("<div data-role='searchablemap'></div>");
+		host.trigger("create");
+		
+		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
+		
+		drawCategory(settings.options.terminals, url.terminals, terminals);
+		drawCategory(settings.options.institutes, url.institutes, institutes);
+		drawCategory(settings.options.canteens, url.canteens, canteens);
+	};
+}
 
 function drawCategory(options, url, category) {
 	$.getJSON(url, function(data) {

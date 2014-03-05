@@ -137,8 +137,8 @@ $(function() {
 			this._super(key, value);
 		},
 		
-		pageshow: function() {
-			this._initializeMap(settings.url.griebnitzsee.center);
+		pageshow: function(center) {
+			this._initializeMap(center);
 		},
 		
 		/**
@@ -230,7 +230,7 @@ $(function() {
 		_insertMapsMarkers: function(items) {
 			for (var i in items) {
 				var m = this._loadMarker(items[i].index);
-				var gMarkers = new GeoJSON(m.context, m.options);
+				var gMarkers = new GeoJSON(m.context, m.options, this._map);
 				
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
