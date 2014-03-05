@@ -27,7 +27,7 @@ var settings =	{
 		    "strokeOpacity": 1,
 		    "strokeWeight": 2,
 		    "fillColor": "#46461F",
-		    "fillOpacity": 0.25
+		    "fillOpacity": 0.5
 		}
 	}
 };
@@ -42,6 +42,8 @@ var categoryStore = new CategoryStore();
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
+	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
+	
 	$('#Terminals:checkbox').click(checkUncheck(terminals));
 	$('#Institute:checkbox').click(checkUncheck(institutes));
 	$('#Mensen:checkbox').click(checkUncheck(canteens));

@@ -319,6 +319,17 @@ margin:0;
 height:100%;
 }
 
+/* colors for sitemap categories */
+.sitemap-institutes {
+	background-color: #AF63E1 !important;
+}
+.sitemap-terminals {
+	background-color: #E1C562 !important;
+}
+.sitemap-canteens {
+	background-color: #E5241F !important;
+}
+
 /*icons akkordion*/
 .speiseplan .ui-icon-plus:after {
 	background-image:url(../img/up/arrow-down.png);
