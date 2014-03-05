@@ -65,7 +65,17 @@ function checkUncheck(category) {
  */
 $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='searchablemap']").searchablemap("pageshow");
+	
+	drawCategory(settings.options.terminals, settings.url.griebnitzsee.terminals, terminals);
+	drawCategory(settings.options.institutes, settings.url.griebnitzsee.institutes, institutes);
+	drawCategory(settings.options.canteens, settings.url.griebnitzsee.canteens, canteens);
 });
+
+function drawCategory(options, url, category) {
+	$.getJSON(url, function(data) {
+		$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
+	});
+}
 
 function CategoryStore() {
 	

@@ -148,17 +148,6 @@ $(function() {
 			this._drawMap(center);
 			this._markers = [];
 			allMarkers = new SearchableMarkerCollection();
-			
-			this._drawCategory(settings.options.terminals, settings.url.griebnitzsee.terminals, terminals);
-			this._drawCategory(settings.options.institutes, settings.url.griebnitzsee.institutes, institutes);
-			this._drawCategory(settings.options.canteens, settings.url.griebnitzsee.canteens, canteens);
-		},
-		
-		_drawCategory: function(options, url, category) {
-			var widgetParent = this;
-			$.getJSON(url, function(data) {
-				widgetParent._insertSearchableFeatureCollection(options, data, category);
-			});
 		},
 		
 		/**
@@ -187,7 +176,7 @@ $(function() {
 			host.trigger("updatelayout");
 		},
 		
-		_insertSearchableFeatureCollection: function(options, collection, category) {
+		insertSearchableFeatureCollection: function(options, collection, category) {
 			var widgetHost = this;
 			var items = _.map(collection.features, function(item) {
 				var result = {};
