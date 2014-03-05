@@ -105,7 +105,7 @@ $(function() {
 						<div class='ui-controlgroup-controls'></div> \
 					</div> \
 					<!-- map loads here... --> \
-					<div id='map-canvas' class='gmap3' style='height: 300px;'></div> \
+					<div id='map-canvas' class='gmap3' style='height: 400px;'></div> \
 				</div>");
 			this.element.trigger("create");
 			

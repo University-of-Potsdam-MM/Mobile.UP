@@ -10,13 +10,13 @@ var settings =	{
 			terminals: "js/geojson/terminals-palais.geojson",
 			institutes: "js/geojson/institutes-palais.geojson",
 			canteens: "js/geojson/mensen-palais.geojson",
-			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+			center: new google.maps.LatLng(52.400933, 13.011653)
 		},
 		golm: {
 			terminals: "js/geojson/terminals-golm.geojson",
 			institutes: "js/geojson/institutes-golm.geojson",
 			canteens: "js/geojson/mensen-golm.geojson",
-			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+			center: new google.maps.LatLng(52.408716, 12.976138)
 		}
 	},
 	options: {
