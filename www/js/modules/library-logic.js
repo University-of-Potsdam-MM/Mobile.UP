@@ -1,21 +1,25 @@
 // TODO: check if internet is available
 
-var App = {
-  model: {}, // model classes
-  collection: {}, // collection classes
-  collections: {}, //actual collections
-  view: {}, // view classes
-}
+"use strict";
 
+var App = {
+  model:       {}, // model classes
+  models:      {}, // actual models
+  collection:  {}, // collection classes
+  collections: {}, // actual collections
+  view:        {}, // view classes
+};
+
+// TODO: Standort Informationen am Model
 App.model.Book = Backbone.Model.extend({
   // Book instance properties
   initialize: function () {
-    console.log('initialize', this.attributes);
+    // console.log('initialize', this.attributes);
   }
+
 },{
   // Book class properties
 
-  // TODO: Standort Informationen am Model
   fromXmlRecord: function(xmlRecord) {
     // console.log('xml:', xmlRecord);
     var $xmlRecord = $(xmlRecord);
@@ -82,33 +86,32 @@ App.collection.BookList = Backbone.Collection.extend({
   addXmlSearchResult: function(xmlSearchResult){
     // console.log('xml',xmlSearchResult);
     var records = xmlSearchResult.getElementsByTagName('recordData');
-
     this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
-
-    console.log('addXmlSearchResult', this.models);
-
+    console.log('addXmlSearchResult', this.pluck('recordId'));
     return this;
   },
-
 });
-
 // END App.collection.BookList
 
 App.model.LibrarySearch = Backbone.Model.extend({
   // LibrarySearch instance properties
   initialize: function(query) {
     this.set('query', query);
-    this.set('results', new App.collection.BookList());
+    var results = App.collections.searchResults || new App.collection.BookList();
+    this.set('results', results);
+    this.listenTo(results, 'add', function(){
+      // console.log('add to LibrarySearch', this);
+    });
   },
+
   loadNext: function() {
     // fetch the next 10 books
     var q = this.get('query');
     var resultList = this.get('results');
-    var fetch = App.model.LibrarySearch.search(q, {startRecord: resultList.length });
-    console.log('loadNext', fetch)
-    fetch = fetch.loadSearch();
-    debugger
-    return fetch;
+    var options = {startRecord: resultList.length + 1 };
+    var fetch = App.model.LibrarySearch.search(q, options);
+    var promise = fetch.loadSearch();
+    return promise;
   }
 }, {
   // LibrarySearch class properties
@@ -146,7 +149,8 @@ App.model.LibrarySearch = Backbone.Model.extend({
         var d = Q.defer();
         var url = this.url();
         $.get(url).done(d.resolve).fail(d.reject);
-        return d.promise;
+        var promise = d.promise;
+        return promise;
       },
 
       next: function() {
@@ -170,6 +174,7 @@ App.view.LibrarySearchView = Backbone.View.extend({
   },
   loadNext: function(){
     console.log('clicked loadNext');
+    // debugger
     this.model.loadNext();
   }
 });
@@ -194,14 +199,23 @@ function registerEventSearch(){
   $("#query-form").on("submit", function(e) {
     e.preventDefault();
     updateResults();
+    // debugger
+    App.models.currentSearch.loadNext();
   });
 }
+
+// controller
+function registerPagination(){
+  $(".pagination").click(function(e){
+    e.preventDefault();
+    App.models.currentSearch.loadNext();
+  });
+};
 
 // controller
 function registerEventChooseBook(){
   $( '#search-results > ul' ).on( 'click', 'li', function(ev){
     // TODO query Standortinfo for this record
-    debugger
     var book = App.collections.searchResults.get(this.id);
     renderDetailView(book);
   } );
@@ -214,7 +228,6 @@ function updateResults() {
   .then(loadSearch)
   .then(addXmlSearchResult)
   // TODO: adding those books should fire the add event which the view has to listen on
-  .then(updateResultsList)
   .then(renderBookListView)
   .then(registerEventChooseBook)
   .catch(logError);
@@ -223,7 +236,10 @@ function updateResults() {
 // this is a function i use to migrate to Backbone
 // TODO remove it
 function addXmlSearchResult(xmlSearchResult) {
-  var searchResults = new App.collection.BookList();
+  // debugger
+  var searchResults = (App.models.currentSearch) ?
+    App.models.currentSearch.get('results') :
+    new App.collection.BookList();
   App.collections.searchResults = searchResults;
   searchResults.addXmlSearchResult(xmlSearchResult);
   return searchResults.models;
@@ -253,8 +269,9 @@ var bookListViewTemplate = render('book_list_view');
 function renderBookListView(list) {
   _.templateSettings.variable = "booklist";
   var html = bookListViewTemplate({booklist:list});
-  $results = $("#search-results");
+  var $results = $("#search-results");
   $results.html(html);
+  registerPagination();
   $results.trigger('create');
 }
 
@@ -264,31 +281,16 @@ function renderDetailView(book) {
   // console.log('render detail', book);
   _.templateSettings.variable = "book";
   var html = bookDetailViewTemplate({book:book});
-  $results = $("#search-results");
+  var $results = $("#search-results");
   $results.html(html);
   $results.trigger('create');
 }
 
-
-// TODO: create Backbone Collection
-var resultsList = []
-
-function updateResultsList(list) {
-  this.resultsList = list;
-  return this.resultsList;
-}
-
-
 // TODO: this function is here temporarily and should be removed soon
 function loadSearch(queryString) {
     var search = new App.model.LibrarySearch(queryString)
-    return search.loadNext();
-}
-
-
-
-
-
-
-
+    App.models.currentSearch = search;
+    var loading = search.loadNext();
+    return loading;
+};
 
