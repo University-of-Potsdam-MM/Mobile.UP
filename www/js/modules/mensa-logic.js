@@ -27,7 +27,8 @@
 	function updateMenu(mensa, date) {
 	    uniqueDivId = _.uniqueId("id_");
 		
-	    Q(clearMenu(uniqueDivId))
+	    Q(clearTodaysMenu(uniqueDivId))
+			.then(addLodingSpinner(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
@@ -42,13 +43,28 @@
 	        .spread(prepareMeals)
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
+			.finally(removeLoadingSpinner(uniqueDivId))
 	        .catch(function (e) {
 	            console.log("Fehlschlag: " + e.stack);
 	            alert("Fehlschlag: " + e.stack);
 	        });
 	}
 	
-	function clearMenu(uniqueDivId) {
+	function addLodingSpinner(uniqueDivId) {
+		return function() {
+			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
+											<img src=\"img/loadingspinner.gif\"></img> \
+										</div>");
+		};
+	}
+	
+	function removeLoadingSpinner(uniqueDivId) {
+		return function() {
+			$("#" + uniqueDivId).children().first().remove();
+		}
+	}
+	
+	function clearTodaysMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
 	}
