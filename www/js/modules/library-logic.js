@@ -15,7 +15,6 @@ App.model.Book = Backbone.Model.extend({
 },{
   // Book class properties
 
-  // TODO: create Backbone Model
   // TODO: Standort Informationen am Model
   fromXmlRecord: function(xmlRecord) {
     // console.log('xml:', xmlRecord);
@@ -72,18 +71,18 @@ App.model.Book = Backbone.Model.extend({
   }
 
 });
-// END Book
+// END App.model.Book
 
 
 App.collection.BookList = Backbone.Collection.extend({
   model: App.model.Book,
 
   // TODO: create object to communicate with SRU and provide pagination for query
-  // TODO: store numberOfRecords for search
+
   addXmlSearchResult: function(xmlSearchResult){
     // console.log('xml',xmlSearchResult);
     var records = xmlSearchResult.getElementsByTagName('recordData');
-    // return _.map(records, book);
+
     this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
 
     console.log('addXmlSearchResult', this.models);
@@ -93,14 +92,73 @@ App.collection.BookList = Backbone.Collection.extend({
 
 });
 
+// END App.collection.BookList
+
 App.model.LibrarySearch = Backbone.Model.extend({
+  // LibrarySearch instance properties
   initialize: function(query) {
     this.set('query', query);
+    this.set('results', new App.collection.BookList());
   },
   loadNext: function() {
     // fetch the next 10 books
+    var q = this.get('query');
+    var resultList = this.get('results');
+    var fetch = App.model.LibrarySearch.search(q, {startRecord: resultList.length });
+    console.log('loadNext', fetch)
+    fetch = fetch.loadSearch();
+    debugger
+    return fetch;
+  }
+}, {
+  // LibrarySearch class properties
+  search: function(query, options) {
+    var defaultOptions = {
+      startRecord: 1,
+      maximumRecords: 10,
+    };
+    options = _.defaults(options || {}, defaultOptions);
+
+    // TODO refactor into App.model.LibrarySearch instance properties
+    return _.extend({
+      query:query,
+      options: options
+    }, {
+
+      baseURL: function() {
+        if ('development' == environment){
+          return '/api/search';
+        } else {
+          return "http://sru.gbv.de";
+        }
+      },
+
+      url: function() {
+        return this.baseURL() + '/opac-de-517?version=1.1&operation=searchRetrieve' +
+          '&query=' + this.query +
+          '&startRecord=' + this.options.startRecord +
+          '&maximumRecords=' + this.options.maximumRecords +
+          '&recordSchema=mods';
+      },
+
+      loadSearch: function() {
+        // TODO: return and memorize Backbone collection instead of promise
+        var d = Q.defer();
+        var url = this.url();
+        $.get(url).done(d.resolve).fail(d.reject);
+        return d.promise;
+      },
+
+      next: function() {
+        this.options.startRecord += this.options.maximumRecords;
+        // TODO: update Backbone Collection
+        return this.loadSearch();
+      }
+    })
   }
 });
+
+// END App.model.LibrarySearch
 
 App.view.Search = Backbone.View.extend({
   // TODO: this is the main Search Page with everything inside
@@ -111,6 +169,7 @@ App.view.LibrarySearchView = Backbone.View.extend({
     "click .pagination" : this.loadNext,
   },
   loadNext: function(){
+    console.log('clicked loadNext');
     this.model.loadNext();
   }
 });
@@ -219,60 +278,11 @@ function updateResultsList(list) {
   return this.resultsList;
 }
 
-// function getRecord(recordId){
-//   // get book from list with recordId
-//   return _.find(this.resultsList, function(book){ return book.recordId == recordId; });
-// }
 
-// TODO: look here for setting meta data / attributes on a Backbone collection
-// http://stackoverflow.com/a/5930838/104959
-var LibrarySearch = function(query, options) {
-  var defaultOptions = {
-    startRecord: 1,
-    maximumRecords: 10,
-  };
-  options = _.defaults(options || {}, defaultOptions);
-
-  return _.extend({
-    query:query,
-    options: options
-  }, {
-
-    baseURL: function() {
-      if ('development' == environment){
-        return '/api/search';
-      } else {
-        return "http://sru.gbv.de";
-      }
-    },
-
-    url: function() {
-      return this.baseURL() + '/opac-de-517?version=1.1&operation=searchRetrieve' +
-        '&query=' + this.query +
-        '&startRecord=' + this.options.startRecord +
-        '&maximumRecords=' + this.options.maximumRecords +
-        '&recordSchema=mods';
-    },
-
-    loadSearch: function() {
-      // TODO: return and memorize Backbone collection instead of promise
-      var d = Q.defer();
-      var url = this.url();
-      $.get(url).done(d.resolve).fail(d.reject);
-      return d.promise;
-    },
-
-    next: function() {
-      this.options.startRecord += this.options.maximumRecords;
-      // TODO: update Backbone Collection
-      return this.loadSearch();
-    }
-  });
-};
-
+// TODO: this function is here temporarily and should be removed soon
 function loadSearch(queryString) {
-    var query = new LibrarySearch(queryString)
-    return query.loadSearch();
+    var search = new App.model.LibrarySearch(queryString)
+    return search.loadNext();
 }
 
 
