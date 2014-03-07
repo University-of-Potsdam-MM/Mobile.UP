@@ -189,6 +189,13 @@ html body  .ui-group-theme-c .speiseplan a{font-weight:normal;color:#000;font-si
 	font-size:1.3em;
 }
 
+.up-loadingSpinner img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	height: 40px;
+}
+
 
 /*Bilder*/
 
