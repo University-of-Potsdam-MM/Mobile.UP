@@ -20,10 +20,29 @@ function registerEventSearch(){
 
 // controller
 function registerEventChooseBook(){
-  $( '#search-results > ul' ).on( 'click', 'li', function(ev){
-    // TODO query Standortinfo for this record
-    renderDetailView(getRecord(this.id));
-  } );
+	$( '#search-results > ul' ).on( 'click', 'li', function(ev){
+
+		// TODO query Standortinfo for this record
+		var book = getRecord(this.id);
+	    renderDetailView(book);
+	    
+	    // get position of book for detail request
+	    var ajaxCall = $.ajax({
+			url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+book.ppn+'&format=json',
+			method: 'GET',
+			dataType: 'jsonp'
+		});
+	    
+	    ajaxCall.done(function (json) {
+	    	var positions= [];
+	  		_.each(json.document[0].item, function(item) {
+	  			positions.push(position(item, book));
+			});
+	  		renderPositionView(positions);
+	    }).fail(function () {
+	    	console.log('false');
+	    });   
+	});
 }
 
 // controller
