@@ -196,12 +196,82 @@ function book(recordData){
     publisher: textForTag(recordData, 'publisher'),
     edition:   textForTag(recordData, 'edition'),
     dateIssued:textForTag(recordData, 'dateIssued'),
-    isbn:      textForQuery($recordData, 'identifier[type=isbn]')
+    isbn:      textForQuery($recordData, 'identifier[type=isbn]'),
+    url:	   url(recordData),
+    ppn:       textForTag(recordData, 'recordIdentifier')
   };
   // console.log('model.toc', model.toc);
   return model;
 }
 
+// TODO: create Backbone Model
+function position(item, book) {
+	var model = {
+		department: department(item),
+		label: item.label,
+		availableitems: availableItems(item, book)
+	};
+	return model;
+}
+
+// get url for a book
+function url(recordData) {
+	// get first item and check for primary display or usage attribute
+	var  urlusage = attributeContentForTag(recordData, 'location', 'usage');
+	if (urlusage && (urlusage.indexOf('primary display') != -1)) {
+		return textForTag(recordData, 'location');
+	} else {
+		return null;
+	}
+}
+
+// creating department string for emplacement
+function department($recordData) {
+	var department = $recordData.department.content;
+	if($recordData.storage) {
+		department = department+', '+$recordData.storage.content;
+	}
+	return department;
+}
+
+// complex function to get avialable status of items
+// https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
+// TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+function availableItems($recordData, book) {
+	var item = $recordData;
+	var status = '';
+
+	// check for avaiable items
+	if (item.available) {
+		// check if available items contain loan
+		var presentations = _.find(item.available, function(item){
+				return item.service =='loan';		
+		});
+	}
+	
+	if (presentations) {
+		status = 'ausleihbar';
+	}else{
+		// check for loan in unavailable items
+		var loanunavailable = _.find(item.unavailable, function(item){
+			return item.service =='loan';		
+		});
+		if(loanunavailable && loanunavailable.href) {
+			if(loanunavailable.href.indexOf("loan/RES") != -1) {
+				status = "ausleihbar";
+			} else {
+				status = "nicht ausleihbar";
+			}
+		} else {
+			if(book.url == null) {
+				status = 'nicht ausleihbar';
+			}else {
+				status = 'Online-Ressource';
+			}
+		}
+	}
+	return status;
+}
 
 function textForTag(node, tagName) {
   var firstTagNode = node.getElementsByTagName(tagName)[0];
@@ -210,6 +280,15 @@ function textForTag(node, tagName) {
   } else {
     return null;
   }
+}
+
+function attributeContentForTag(node, tagName, attributeName) {
+	var firstTagNode = node.getElementsByTagName(tagName)[0];
+	if (firstTagNode) {
+		return firstTagNode.getElementsByTagName('url')[0].getAttribute(attributeName);
+	} else {
+		return null;
+	}
 }
 
 function split_string(string, split_by){
