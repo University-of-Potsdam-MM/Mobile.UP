@@ -90,12 +90,23 @@ function renderBookListView(list) {
 // TODO create BackboneView
 var bookDetailViewTemplate = render('book_detail_view');
 function renderDetailView(book) {
-  // console.log('render detail', book);
-  _.templateSettings.variable = "book";
-  var html = bookDetailViewTemplate({book:book});
-  $results = $("#libraryContent");
-  $results.html(html);
-  $results.trigger('create');
+	console.log('render detail', book);
+	_.templateSettings.variable = "book";
+	var html = bookDetailViewTemplate({book:book});
+	$results = $("#libraryContent");
+	$results.html(html);
+	$results.trigger('create');
+}
+
+// TODO: create BackboneView
+var bookLocationViewTemplate = render('book_location_view');
+function renderPositionView(positions) {
+   console.log('render positions', positions);
+	_.templateSettings.variable = "positions";
+	var html = bookLocationViewTemplate({positions:positions});
+	$results = $("#book-location");
+	$results.html(html);
+	$results.trigger('create');
 }
 
 
