@@ -178,8 +178,14 @@ function loadSearch(queryString) {
 // TODO: store numberOfRecords for search
 function xmlToBooksArray(xmlSearchResult){
   // console.log('xml',xmlSearchResult);
-  var records = xmlSearchResult.getElementsByTagName('zs:recordData');
+  var records = byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
   return _.map(records, book);
+};
+
+function byTagNS(xml,tag,ns) {
+  return xml.getElementsByTagNameNS
+    ? xml.getElementsByTagNameNS(ns,tag)
+    : xml.getElementsByTagName(ns+":"+tag);
 };
 
 // TODO: create Backbone Model
