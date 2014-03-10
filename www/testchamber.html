@@ -45,6 +45,11 @@
         <script src="js/xml2json.min.js"></script>
         <script src="js/modules/library-logic.js"></script>
         
+		<script>
+			$(function() {
+				$("div[data-role='campusmenu']").campusmenu();
+			});
+		</script>
     </head>
     <body>
     	<!-- Start Home - Panel -->
@@ -70,43 +75,15 @@
 			<!-- End Header -->
 		    <!-- Start Main - Navigation -->
 		    <div data-role="content">
-			    <ul data-role="listview" data-inset="true" data-theme="b" id="main-navigation">
-				    <li class="news">
-				    	<a href="news.html" data-role="button" data-transition="slidefade" data-theme="a">
-				    		<h1>Neuigkeiten</h1>
-				    		<p>Neuigkeiten</p>
-				    	</a>
-				    </li>
-				    <li class="study">
-		                <a href="study.html" data-role="button" data-transition="slidefade">
-							<h1>Studium &amp; Onlinedienste</h1>
-							<p>Studium &amp; Onlinedienste</p>
-						</a>
-				    </li>
-				    <li class="around">
-		                <a href="around.html" data-role="button" data-transition="slidefade">
-				            <h1>Rund ums Studium</h1>
-		                    <p>Rund ums Studium</p>
-		                </a>
-				    </li>
-					<li class="plans">
-		                <a href="plans.html" data-role="button" data-transition="slidefade">
-				            <h1>Pläne &amp; Orte</h1>
-		                    <p>Pläne &amp; Orte</p>
-		                </a>
-				    </li>
-					<li class="search">
-		                <a href="search.html" data-role="button" data-transition="slidefade">
-				            <h1>Suchen</h1>
-		                    <p>Suchen</p>
-		                </a>
-				    </li>
-					<li class="login">
-		                <a href="login.html" data-role="button" data-transition="slidefade" data-theme="c">
-				            <h1>Login</h1>
-		                </a>
-				    </li>
-			    </ul>
+			    <div data-role="campusmenu" data-store="up.mensa.default"></div>
+				<div data-role="campusmenu" data-store="up.mensa.custom"></div>
+				<div data-role="navbar">
+                    <ul>
+                        <li><a href="#Griebnitzsee" class="location-menu location-menu-default">Griebnitzsee</a></li>
+                        <li><a href="#NeuesPalais" class="location-menu">Neues Palais</a></li>
+                        <li><a href="#Golm" class="location-menu">Golm</a></li>
+                    </ul>
+                </div>
 			</div>
 		    <!-- End Main - Navigation -->
 		</div>

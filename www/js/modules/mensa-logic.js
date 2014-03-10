@@ -1,27 +1,14 @@
-function activeTabFix(target, event) {
-	    event.preventDefault();
-	    $(".location-menu").removeClass("ui-btn-active");
-	    target.addClass("ui-btn-active");
-}
-
 	$(document).ready(function () {
 	    $.support.cors = true;
 	    $.mobile.allowCrossDomainPages = true;
 	});
 	
 	$(document).on("pageinit", "#mensa", function () {
-	    $(".location-menu").bind("click", function (event) {
-	        var source = $(this);
-			var date = $("#mydate").datebox('getTheDate');
-	        updateMenu(source, date);
-	        
-	        // For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
-	        activeTabFix(source, event);
-	    });
+		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });
 		
 		$("#mydate").bind("datebox", function(e, p) {
 			if (p.method === "set") {
-				var source = $(".ui-btn-active");
+				var source = $("div[data-role='campusmenu']").campusmenu("getActive");
 				var date = p.date;
 				updateMenu(source, date);
 			}
@@ -29,34 +16,19 @@ function activeTabFix(target, event) {
 	});
 	
 	$(document).on("pageshow", "#mensa", function () {
-		activateDefaultMensa();
-		
-	    var source = $(".ui-btn-active");
-		var date = $("#mydate").datebox('getTheDate');
-	    updateMenu(source, date);
+		$("div[data-role='campusmenu']").campusmenu("pageshow");
 	});
 	
-	function activateDefaultMensa() {
-		var defaultMensa = getDefaultMensa();
-		
-		if (!defaultMensa) {
-			var source = $(".location-menu-default")
-			defaultMensa = retreiveMensa(source);
-			setDefaultMensa(defaultMensa);
-		}
-		
-		$(".location-menu").removeClass("ui-btn-active");
-		var searchExpression = "a[href='#" + defaultMensa + "']";
-		$(searchExpression).addClass("ui-btn-active");
+	function updateMenuData(mensa) {
+		var date = $("#mydate").datebox('getTheDate');
+		updateMenu(mensa, date);
 	}
 	
-	function updateMenu(mensaSource, date) {
-	    var mensa = retreiveMensa(mensaSource);
-		setDefaultMensa(mensa);
+	function updateMenu(mensa, date) {
+	    uniqueDivId = _.uniqueId("id_");
 		
-		uniqueDivId = _.uniqueId("id_");
-		
-	    Q(clearMenu(uniqueDivId))
+	    Q(clearTodaysMenu(uniqueDivId))
+			.then(addLodingSpinner(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
@@ -71,26 +43,28 @@ function activeTabFix(target, event) {
 	        .spread(prepareMeals)
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
+			.finally(removeLoadingSpinner(uniqueDivId))
 	        .catch(function (e) {
 	            console.log("Fehlschlag: " + e.stack);
 	            alert("Fehlschlag: " + e.stack);
 	        });
 	}
 	
-	function retreiveMensa(mensaSource) {
-		var targetMensa = mensaSource.attr("href");
-		return targetMensa.slice(1);
+	function addLodingSpinner(uniqueDivId) {
+		return function() {
+			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
+											<img src=\"img/loadingspinner.gif\"></img> \
+										</div>");
+		};
 	}
 	
-	function setDefaultMensa(mensa) {
-		localStorage.setItem("mensa.default", mensa);
+	function removeLoadingSpinner(uniqueDivId) {
+		return function() {
+			$("#" + uniqueDivId).children().first().remove();
+		}
 	}
 	
-	function getDefaultMensa() {
-		return localStorage.getItem("mensa.default");
-	}
-	
-	function clearMenu(uniqueDivId) {
+	function clearTodaysMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
 	}

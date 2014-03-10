@@ -1,0 +1,7 @@
+<% _.each(positions, function(position) { %>
+<div>
+	<b><%= position.department %></b>
+	<%= (position.label) ? "<p>"+position.label+"</p>" : "" %>
+	<p><%= position.availableitems %></p>
+</div>
+<% }); %>

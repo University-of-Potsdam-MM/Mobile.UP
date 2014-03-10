@@ -189,6 +189,13 @@ html body  .ui-group-theme-c .speiseplan a{font-weight:normal;color:#000;font-si
 	font-size:1.3em;
 }
 
+.up-loadingSpinner img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	height: 40px;
+}
+
 
 /*Bilder*/
 
@@ -317,6 +324,17 @@ left:0;
 top:0;
 margin:0;
 height:100%;
+}
+
+/* colors for sitemap categories */
+.sitemap-institutes {
+	background-color: #AF63E1 !important;
+}
+.sitemap-terminals {
+	background-color: #E1C562 !important;
+}
+.sitemap-canteens {
+	background-color: #E5241F !important;
 }
 
 /*icons akkordion*/

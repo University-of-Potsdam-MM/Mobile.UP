@@ -3,8 +3,10 @@
     <% _.each(booklist, function(book) { %>
     <li id="<%= book.get('recordId') %>">
         <a href="#">
-            <h2><%= book.get('title') %></h2>
-            <p><%= book.get('subtitle') %></p>
+          <h2><%= book.get('title') %></h2>
+          <p><%= book.get('subtitle') %></p>
+          <p><%= book.get('authors') %></p>
+          <p><%= book.get('edition') %>, <%= book.get('publisher') %>, <%= book.get('dateIssued') %></p>
         </a>
     </li>
     <% }); %>

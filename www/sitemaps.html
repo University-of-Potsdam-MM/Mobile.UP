@@ -8,11 +8,11 @@
             <fieldset data-role="controlgroup">
                 <legend>Folgende Orte anzeigen:</legend>
                 <input type="checkbox" name="Terminals" id="Terminals" checked="true">
-                <label for="Terminals">Terminals</label>
+                <label for="Terminals" class="sitemap-terminals">Terminals</label>
                 <input type="checkbox" name="Institute" id="Institute" checked="true">
-                <label for="Institute">Institute</label>
+                <label for="Institute" class="sitemap-institutes">Institute</label>
                 <input type="checkbox" name="Mensen" id="Mensen" checked="true">
-                <label for="Mensen">Mensen &amp; Cafeterien</label>
+                <label for="Mensen" class="sitemap-canteens">Mensen &amp; Cafeterien</label>
             </fieldset>
             <a href="#header" data-role="button" data-rel="close">Schlie&szlig;en</a>
         </div>
@@ -25,23 +25,8 @@
             <!-- End Header -->
             <!-- Start Main - Navigation -->
             <div data-role="content" data-theme="c">
-                <div data-role="navbar">
-                    <ul>
-                        <li><a href="#">Neues Palais</a></li>
-                        <li><a href="#">Griebnitzsee</a></li>
-                        <li><a href="#">Golm</a></li>
-                    </ul>
-                </div>
-
-				<ul id="filterable-locations" data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Suchbegriff eingeben..." data-inset="true">
-				</ul>
-                <div class="ui-controlgroup ui-controlgroup-vertical ui-corner-all" data-role="controlgroup" data-filter="true" data-input="#filterable-locations" data-filter-reveal="true" data-enhanced="true">
-                    <div class="ui-controlgroup-controls">
-
-  					</div>
-				</div>
-                <!-- map loads here... -->
-                <div id="map-canvas" class="gmap3" style="height: 300px;"></div>
+                <div data-role="campusmenu" data-store="up.mensa.default"></div>
+				<div id="currentCampus"></div>
             </div>
        </div>
        <!-- End Main - Navigation -->
