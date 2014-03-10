@@ -170,7 +170,7 @@ App.view.Search = Backbone.View.extend({
 
 App.view.LibrarySearchView = Backbone.View.extend({
   events: {
-    "click .pagination" : this.loadNext,
+    "click .pagination-button" : this.loadNext,
   },
   loadNext: function(){
     console.log('clicked loadNext');
@@ -206,7 +206,7 @@ function registerEventSearch(){
 
 // controller
 function registerPagination(){
-  $(".pagination").click(function(e){
+  $(".pagination-button").click(function(e){
     e.preventDefault();
     App.models.currentSearch.loadNext();
   });
