@@ -86,12 +86,20 @@ App.collection.BookList = Backbone.Collection.extend({
 
   addXmlSearchResult: function(xmlSearchResult){
     // console.log('xml',xmlSearchResult);
-    var records = xmlSearchResult.getElementsByTagName('recordData');
+    var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
     this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
     console.log('addXmlSearchResult', this.pluck('recordId'));
     return this;
   },
+
+  byTagNS: function(xml,tag,ns) {
+    return xml.getElementsByTagNameNS
+      ? xml.getElementsByTagNameNS(ns,tag)
+      : xml.getElementsByTagName(ns+":"+tag);
+  },
+
 });
+
 // END App.collection.BookList
 
 App.model.LibrarySearch = Backbone.Model.extend({
@@ -177,7 +185,7 @@ App.view.BookList = Backbone.View.extend({
   },
   events: {
     "click .pagination-button" : 'loadMore',
-    "click li" : 'renderDetail',
+    "click ul.booklist li.book-short" : 'renderDetail',
   },
   template: render('book_list_view'),
   render: function(){
@@ -189,14 +197,12 @@ App.view.BookList = Backbone.View.extend({
     return this;
   },
   loadMore: function(){
-    // debugger
     App.models.currentSearch.loadNext();
   },
   renderDetail: function(ev) {
     // TODO query Standortinfo for this record
-    // debugger
     ev.preventDefault();
-    var bookId = $(ev.target).closest('li').attr('id')
+    var bookId = $(ev.target).closest('li.book-short').attr('id')
     var book = App.collections.searchResults.get(bookId);
     renderDetailView(book);
   },
@@ -325,4 +331,15 @@ function renderDetailView(book) {
 // }).fail(function () {
 //   console.log('false');
 // });
+
+// TODO: create BackboneView
+var bookLocationViewTemplate = render('book_location_view');
+function renderPositionView(positions) {
+  console.log('render positions', positions);
+  _.templateSettings.variable = "positions";
+  var html = bookLocationViewTemplate({positions:positions});
+  $results = $("#book-location");
+  $results.html(html);
+  $results.trigger('create');
+}
 

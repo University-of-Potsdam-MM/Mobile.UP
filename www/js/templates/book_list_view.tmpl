@@ -1,7 +1,7 @@
 <h2>Results</h2>
-<ul data-role="listview" data-inset="true">
+<ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book) { %>
-    <li id="<%= book.get('recordId') %>">
+    <li class="book-short" id="<%= book.get('recordId') %>">
         <a href="#">
           <h2><%= book.get('title') %></h2>
           <p><%= book.get('subtitle') %></p>
