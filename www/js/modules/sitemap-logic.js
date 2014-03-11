@@ -38,9 +38,6 @@ var canteens = "canteens";
 
 var categoryStore = new CategoryStore();
 
-/*
- * initialize map when page is initialized
- */
 $(document).on( "pageinit", "#sitemaps", function() {
 	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
 	
@@ -67,6 +64,7 @@ $(document).on("pageinit", "#sitemaps", function() {
 });
 
 /*
+ * initialize map when page is shown
  * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
  */
 $(document).on("pageshow", "#sitemaps", function() {
@@ -131,69 +129,5 @@ function CategoryStore() {
 	
 	this.setVisibility = function(category, show) {
 		store[category] = show;
-	};
-}
-
-function CategoryMarker(marker, map, category, categoryStore) {
-	
-	var marker = marker;
-	var map = map;
-	var category = category;
-	var categoryStore = categoryStore;
-	
-	this.setVisibility = function(show, overrideCategory) {
-		if (typeof(overrideCategory)==='undefined') overrideCategory = false;
-		
-		if (show && overrideCategory) {
-			marker.setMap(map);
-		} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
-			marker.setMap(map);
-		} else {
-			marker.setMap(null);
-		}
-	};
-	
-	this.reset = function() {
-		if (categoryStore.isVisible(category)) {
-			marker.setMap(map);
-		} else {
-			marker.setMap(null);
-		}
-	};
-}
-
-var SEARCH_MODE = 0;
-var SHOW_MODE = 1;
-
-function SearchableMarkerCollection() {
-	
-	var elements = [];
-	var mode = SHOW_MODE;
-	
-	this.switchMode = function(targetMode) {
-		if (mode === targetMode) {
-			return;
-		}
-		
-		switch (targetMode) {
-		case SEARCH_MODE:
-			// Don't show all markers, only the matching one
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].setVisibility(false, true);
-			}
-			break;
-		case SHOW_MODE:
-			// Show all markers
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].reset();
-			}
-			break;
-		}
-		
-		mode = targetMode;
-	};
-	
-	this.getElements = function() {
-		return elements;
 	};
 }
