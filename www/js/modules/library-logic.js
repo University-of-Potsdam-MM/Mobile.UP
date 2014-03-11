@@ -16,7 +16,31 @@ App.model.Book = Backbone.Model.extend({
   // Book instance properties
   initialize: function () {
     // console.log('initialize', this.attributes);
-  }
+  },
+
+  updateLocation: function() {
+    // get's bookLocation information and set's it at the book model
+
+    console.log('updateLocation');
+
+    var currentBook = this;
+
+    var ajaxLocationCall = $.ajax({
+      url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+this.get('ppn')+'&format=json',
+      method: 'GET',
+      dataType: 'jsonp'
+    });
+
+    ajaxLocationCall.done(function (json) {
+      var locations = _.map(json.document[0].item, function(item) {
+        return bookLocation(item, currentBook);
+      });
+      renderLocationView(locations);
+    }).fail(function () {
+      console.log('false');
+    });
+
+  },
 
 },{
   // Book class properties
@@ -28,13 +52,15 @@ App.model.Book = Backbone.Model.extend({
     var model = {
       id:        recordId,
       recordId:  recordId,
+      ppn:       recordId,
       title:     App.model.Book.textForTag(xmlRecord, 'title'),
       subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
       abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
       toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
       authors:   App.model.Book.authors($xmlRecord),
       publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
-      isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]')
+      isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
+      url:       App.model.Book.url(xmlRecord),
     };
     // console.log('model.toc', model.toc);
     return new App.model.Book(model);
@@ -73,7 +99,29 @@ App.model.Book = Backbone.Model.extend({
     });
     // console.log('names:',names);
     return names;
-  }
+  },
+
+  //TODO refactor
+  url: function(recordData) {
+    // get first item and check for primary display or usage attribute
+    var  urlusage = this.attributeContentForTag(recordData, 'location', 'usage');
+    if (urlusage && (urlusage.indexOf('primary display') != -1)) {
+      return (this.textForTag(recordData, 'location') || "").trim();
+    } else {
+      return null;
+    }
+  },
+
+  //TODO refactor
+  attributeContentForTag: function (node, tagName, attributeName) {
+    var firstTagNode = node.getElementsByTagName(tagName)[0];
+    if (firstTagNode) {
+      return firstTagNode.getElementsByTagName('url')[0].getAttribute(attributeName);
+    } else {
+      return null;
+    }
+  },
+
 
 });
 // END App.model.Book
@@ -205,6 +253,7 @@ App.view.BookList = Backbone.View.extend({
     var bookId = $(ev.target).closest('li.book-short').attr('id')
     var book = App.collections.searchResults.get(bookId);
     renderDetailView(book);
+    book.updateLocation();
   },
 });
 
@@ -276,7 +325,6 @@ function loadSearch(queryString) {
 // this is a function i use to migrate to Backbone
 // TODO remove it
 function addXmlSearchResult(xmlSearchResult) {
-  // debugger
   var searchResults = App.collections.searchResults;
   searchResults.addXmlSearchResult(xmlSearchResult);
   return searchResults.models;
@@ -315,31 +363,74 @@ function renderDetailView(book) {
   $results.trigger('create');
 }
 
-// // get position of book for detail request
-// var ajaxCall = $.ajax({
-//   url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+book.ppn+'&format=json',
-//   method: 'GET',
-//   dataType: 'jsonp'
-// });
-
-// ajaxCall.done(function (json) {
-//   var positions= [];
-//   _.each(json.document[0].item, function(item) {
-//     positions.push(position(item, book));
-// });
-//   renderPositionView(positions);
-// }).fail(function () {
-//   console.log('false');
-// });
 
 // TODO: create BackboneView
 var bookLocationViewTemplate = render('book_location_view');
-function renderPositionView(positions) {
-  console.log('render positions', positions);
-  _.templateSettings.variable = "positions";
-  var html = bookLocationViewTemplate({positions:positions});
-  $results = $("#book-location");
-  $results.html(html);
-  $results.trigger('create');
+function renderLocationView(locations) {
+  console.log('render locations', locations);
+  _.templateSettings.variable = "locations";
+  var html = bookLocationViewTemplate({locations:locations});
+  var $el = $("#book-locations");
+  $el.html(html);
+  $el.trigger('create');
+}
+
+// TODO: create Backbone Model
+function bookLocation(item, book) {
+  var model = {
+    department: department(item),
+    label: item.label,
+    availableitems: availableItems(item, book)
+  };
+  return model;
+}
+
+// creating department string for emplacement
+function department($recordData) {
+  var department = $recordData.department.content;
+  if($recordData.storage) {
+    department = department+', '+$recordData.storage.content;
+  }
+  return department;
+}
+
+// TODO: Refactor
+// complex function to get avialable status of items
+// https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
+// TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+function availableItems($recordData, book) {
+  var item = $recordData;
+  var status = '';
+
+  // check for avaiable items
+  if (item.available) {
+    // check if available items contain loan
+    var presentations = _.find(item.available, function(item){
+        return item.service =='loan';
+    });
+  }
+
+  if (presentations) {
+    status = 'ausleihbar';
+  }else{
+    // check for loan in unavailable items
+    var loanunavailable = _.find(item.unavailable, function(item){
+      return item.service =='loan';
+    });
+    if(loanunavailable && loanunavailable.href) {
+      if(loanunavailable.href.indexOf("loan/RES") != -1) {
+        status = "ausleihbar";
+      } else {
+        status = "nicht ausleihbar";
+      }
+    } else {
+      if(book.url == null) {
+        status = 'nicht ausleihbar';
+      }else {
+        status = 'Online-Ressource';
+      }
+    }
+  }
+  return status;
 }
 
