@@ -50,20 +50,6 @@
 	        });
 	}
 	
-	function addLodingSpinner(uniqueDivId) {
-		return function() {
-			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
-											<img src=\"img/loadingspinner.gif\"></img> \
-										</div>");
-		};
-	}
-	
-	function removeLoadingSpinner(uniqueDivId) {
-		return function() {
-			$("#" + uniqueDivId).children().first().remove();
-		}
-	}
-	
 	function clearTodaysMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");

@@ -1,4 +1,24 @@
 
+/*
+ * Loading Spinner Animation
+ */
+function addLodingSpinner(uniqueDivId) {
+	return function() {
+		$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
+										<img src=\"img/loadingspinner.gif\"></img> \
+									</div>");
+	};
+}
+
+function removeLoadingSpinner(uniqueDivId) {
+	return function() {
+		$("#" + uniqueDivId).children().first().remove();
+	}
+}
+
+/*
+ * Template Loading Functions
+ */
 function render(tmpl_name) {
     if ( !render.tmpl_cache ) { 
         render.tmpl_cache = {};
