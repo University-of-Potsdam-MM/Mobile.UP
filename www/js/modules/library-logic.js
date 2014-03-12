@@ -54,6 +54,7 @@ App.model.Book = Backbone.Model.extend({
       recordId:  recordId,
       ppn:       recordId,
       title:     App.model.Book.textForTag(xmlRecord, 'title'),
+      // TODO remove brackets[] if there are some around the subtitle
       subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
       abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
       toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
@@ -152,9 +153,10 @@ App.collection.BookList = Backbone.Collection.extend({
 
 App.model.LibrarySearch = Backbone.Model.extend({
   // LibrarySearch instance properties
-  initialize: function(query) {
-    this.set('query', query);
-    this.set('results', App.collections.searchResults);
+  initialize: function() {
+    // attribute to set in the model:
+    // - 'query' (String)
+    // - 'results' (App.collection.BookList)
   },
 
   loadNext: function() {
@@ -301,6 +303,7 @@ function registerPagination(){
 
 // controller
 function updateResults() {
+  // debugger
   Q(clearSearch)
   .then(getKeyword)
   .then(loadSearch)
@@ -314,11 +317,22 @@ function updateResults() {
 
 // TODO: this function is here temporarily and should be removed soon
 function loadSearch(queryString) {
-    var search = new App.model.LibrarySearch(queryString)
-    App.models.currentSearch = search;
-    // on adding books render BookListView
-    var loading = search.loadNext();
-    return loading;
+
+  if (App.collections.searchResults) {
+    App.collections.searchResults.reset();
+  } else {
+    App.collections.searchResults = new App.collection.BookList();
+  }
+
+  var search = new App.model.LibrarySearch({
+    query: queryString,
+    results: App.collections.searchResults,
+  });
+
+  App.models.currentSearch = search;
+  // on adding books render BookListView
+  var loading = search.loadNext();
+  return loading;
 };
 
 
