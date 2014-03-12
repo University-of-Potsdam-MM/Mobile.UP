@@ -24,11 +24,11 @@ $(function() {
 			var widgetParent = this;
 			$(".location-menu", this.element).bind("click", function (event) {
 				var source = $(this);
+				var target = widgetParent._retreiveSelection(source);
 				
 				// call onChange callback
-				var target = widgetParent._retreiveSelection(source);
 				widgetParent._setDefaultSelection(target);
-				widgetParent.options.onChange(target);
+				widgetParent.options.onChange({ campusName: target });
 				
 				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
 				widgetParent._fixActiveTab(source, event);
@@ -41,7 +41,7 @@ $(function() {
 		
 		pageshow: function() {
 			var selection = this._activateDefaultSelection();
-			this.options.onChange(selection);
+			this.options.onChange({ campusName: selection });
 		},
 		
 		_setOption: function(key, value) {

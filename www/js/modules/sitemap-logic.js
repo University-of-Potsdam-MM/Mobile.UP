@@ -71,13 +71,13 @@ $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
 });
 
-function drawSelectedCampus(campusName) {
+function drawSelectedCampus(options) {
 	uniqueDivId = _.uniqueId("id_");
 	
 	var campus = undefined;
-	if (campusName === "Griebnitzsee") {
+	if (options.campusName === "Griebnitzsee") {
 		campus = settings.url.griebnitzsee;
-	} else if (campusName === "NeuesPalais") {
+	} else if (options.campusName === "NeuesPalais") {
 		campus = settings.url.neuespalais;
 	} else {
 		campus = settings.url.golm;

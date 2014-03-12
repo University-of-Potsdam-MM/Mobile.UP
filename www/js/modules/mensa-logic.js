@@ -19,9 +19,9 @@
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 	});
 	
-	function updateMenuData(mensa) {
+	function updateMenuData(options) {
 		var date = $("#mydate").datebox('getTheDate');
-		updateMenu(mensa, date);
+		updateMenu(options.campusName, date);
 	}
 	
 	function updateMenu(mensa, date) {
