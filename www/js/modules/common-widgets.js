@@ -66,7 +66,7 @@ $(function() {
 			if (!defaultSelection) {
 				var source = $(".location-menu-default")
 				defaultSelection = this._retreiveSelection(source);
-				this._setDefaultSelection(defaultMensa);
+				this._setDefaultSelection(defaultSelection);
 			}
 			
 			$(".location-menu", this.element).removeClass("ui-btn-active");
