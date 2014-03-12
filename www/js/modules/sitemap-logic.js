@@ -131,3 +131,32 @@ function CategoryStore() {
 		store[category] = show;
 	};
 }
+
+function SitemapFinder() {
+	
+	var houseNames = [];
+	var descriptions = [];
+	
+	this.addData = function(data, campus) {
+		_.each(data.features, function(item) {
+			houseNames.push({ campus: campus, data: item.properties.Name });
+			descriptions.push({ campus: campus, data: item.properties.description });
+		});
+	};
+	
+	this.findHouseNumberOnOtherCampuses = function(house, currentCampus) {
+		return _.chain(houseNames)
+				.filter(function(houseName) { return houseName.data == house; })
+				.filter(function(houseName) { return houseName.campus != currentCampus })
+				.pluck('data')
+				.value();
+	};
+	
+	this.findDescriptionOnOtherCampuses = function(search, currentCampus) {
+		return _.chain(descriptions)
+				.filter(function(description) { return description.data.indexOf(search) !== -1; })
+				.filter(function(description) { return description.campus != currentCampus; })
+				.pluck('data')
+				.value();
+	};
+}
