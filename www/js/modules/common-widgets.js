@@ -84,6 +84,18 @@ $(function() {
 		
 		getActive: function() {
 			return this._retreiveSelection($(".ui-btn-active"));
+		},
+		
+		changeTo: function(campusName) {
+			var target = campusName;
+			
+			$(".location-menu", this.element).removeClass("ui-btn-active");
+			var searchExpression = "a[href='#" + target + "']";
+			$(searchExpression).addClass("ui-btn-active");
+			
+			// call onChange callback
+			this._setDefaultSelection(target);
+			this.options.onChange({ campusName: target });
 		}
 	});
 	
