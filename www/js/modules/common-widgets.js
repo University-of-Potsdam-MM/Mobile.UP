@@ -86,16 +86,22 @@ $(function() {
 			return this._retreiveSelection($(".ui-btn-active"));
 		},
 		
-		changeTo: function(campusName) {
+		changeTo: function(campusName, meta) {
 			var target = campusName;
 			
 			$(".location-menu", this.element).removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + target + "']";
 			$(searchExpression).addClass("ui-btn-active");
 			
+			// prepare call options
+			var callOptions = { campusName: target };
+			if (meta !== undefined) {
+				callOptions.meta = meta;
+			}
+			
 			// call onChange callback
 			this._setDefaultSelection(target);
-			this.options.onChange({ campusName: target });
+			this.options.onChange(callOptions);
 		}
 	});
 	

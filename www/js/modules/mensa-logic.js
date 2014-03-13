@@ -62,13 +62,7 @@
 	function loadMenu(location) {
 	    var d = Q.defer();
 	    var url = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0";
-	
-	    // If we are not in an app environment, we have to use the local proxy
-	    /*
-	    if (navigator.app === undefined) {
-	        url = "/usb-services/mensaAPI/1.0";
-	    }
-		*/
+		
 		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,

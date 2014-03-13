@@ -71,6 +71,10 @@ $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
 });
 
+function changeToMensaGriebnitzsee() {
+	$("div[data-role='campusmenu']").campusmenu("changeTo", "Griebnitzsee", "mensa");
+}
+
 function drawSelectedCampus(options) {
 	uniqueDivId = _.uniqueId("id_");
 	
@@ -83,8 +87,14 @@ function drawSelectedCampus(options) {
 		campus = settings.url.golm;
 	}
 	
+	var search = undefined;
+	if (options["meta"] !== undefined) {
+		search = options.meta;
+	}
+	
 	Q(clearMenu(uniqueDivId))
 		.then(drawCampus(uniqueDivId, campus))
+		.spread(setSearchValue(search))
 		.catch(function (e) {
 			console.log("Fehlschlag: " + e.stack);
 			alert("Fehlschlag: " + e.stack);
@@ -96,6 +106,12 @@ function clearMenu(uniqueDivId) {
 	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
 }
 
+function loadMenu(url) {
+	var d = Q.defer();
+	$.ajax({ url: url }).done(d.resolve).fail(d.reject);
+	return d.promise;
+}
+
 function drawCampus(uniqueDiv, url) {
 	return function() {
 		var host = $("#" + uniqueDiv);
@@ -104,16 +120,38 @@ function drawCampus(uniqueDiv, url) {
 		
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 		
-		drawCategory(settings.options.terminals, url.terminals, terminals);
-		drawCategory(settings.options.institutes, url.institutes, institutes);
-		drawCategory(settings.options.canteens, url.canteens, canteens);
+		var terminalsData = Q(loadCategory(url.terminals))
+							.then(drawCategory(settings.options.terminals, terminals));
+		
+		var institutesData = Q(loadCategory(url.institutes))
+							.then(drawCategory(settings.options.institutes, institutes));
+		
+		var canteensData = Q(loadCategory(url.canteens))
+							.then(drawCategory(settings.options.canteens, canteens));
+		
+		return [terminalsData, institutesData, canteensData];
 	};
 }
 
-function drawCategory(options, url, category) {
-	$.getJSON(url, function(data) {
+function setSearchValue(search) {
+	return function(terminals, institutes, canteens) {
+		if (search !== undefined) {
+			$("input[data-type='search']").val(search);
+			$("input[data-type='search']").trigger("keyup");
+		}
+	};
+}
+
+function loadCategory(url) {
+	var d = Q.defer();
+	$.getJSON(url).done(d.resolve).fail(d.reject);
+	return d.promise;
+}
+
+function drawCategory(options, category) {
+	return function(data) {
 		$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
-	});
+	};
 }
 
 function CategoryStore() {
