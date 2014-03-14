@@ -37,6 +37,9 @@ var institutes = "institutes";
 var canteens = "canteens";
 
 var categoryStore = new CategoryStore();
+var finder = {};
+var lastFinderId = undefined;
+var lastCampus = undefined;
 
 $(document).on( "pageinit", "#sitemaps", function() {
 	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
@@ -77,6 +80,8 @@ function changeToMensaGriebnitzsee() {
 
 function drawSelectedCampus(options) {
 	uniqueDivId = _.uniqueId("id_");
+	lastFinderId = uniqueDivId;
+	lastCampus = options.campusName;
 	
 	var campus = undefined;
 	if (options.campusName === "Griebnitzsee") {
@@ -93,6 +98,7 @@ function drawSelectedCampus(options) {
 	}
 	
 	Q(clearMenu(uniqueDivId))
+		.then(loadAllCampusData(uniqueDivId))
 		.then(drawCampus(uniqueDivId, campus))
 		.spread(setSearchValue(search))
 		.catch(function (e) {
@@ -104,6 +110,39 @@ function drawSelectedCampus(options) {
 function clearMenu(uniqueDivId) {
 	$("#currentCampus").empty();
 	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
+}
+
+function loadAllCampusData(uniqueDivId) {
+	return function() {
+		finder[uniqueDivId] = new SitemapFinder();
+		
+		var gr = Q(loadCategory(settings.url.griebnitzsee.institutes))
+					.then(insertHash)
+					.then(insertCampusData("griebnitzsee"));
+		
+		var go = Q(loadCategory(settings.url.golm.institutes))
+					.then(insertHash)
+					.then(insertCampusData("golm"));
+		
+		var np = Q(loadCategory(settings.url.neuespalais.institutes))
+					.then(insertHash)
+					.then(insertCampusData("neuespalais"));
+		
+		return [gr, go, np];
+	}
+}
+
+function insertHash(data) {
+	_.each(data.features, function(item) {
+		item.properties.hash = (item.properties.Name || "").hashCode() + " " + (item.properties.description || "").hashCode();
+	});
+	return data;
+}
+
+function insertCampusData(campus) {
+	return function(data) {
+		finder.addData(data, campus);
+	};
 }
 
 function loadMenu(url) {
@@ -121,12 +160,15 @@ function drawCampus(uniqueDiv, url) {
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 		
 		var terminalsData = Q(loadCategory(url.terminals))
+							.then(insertHash)
 							.then(drawCategory(settings.options.terminals, terminals));
 		
 		var institutesData = Q(loadCategory(url.institutes))
+							.then(insertHash)
 							.then(drawCategory(settings.options.institutes, institutes));
 		
 		var canteensData = Q(loadCategory(url.canteens))
+							.then(insertHash)
 							.then(drawCategory(settings.options.canteens, canteens));
 		
 		return [terminalsData, institutesData, canteensData];
@@ -170,15 +212,25 @@ function CategoryStore() {
 	};
 }
 
+function searchSimilarLocations(hash) {
+	var entry = finder[lastFinderId].findEntryByHash(hash);
+	var similarHouses = finder[lastFinderId].findHouseNumberOnOtherCampuses(entry.Name, lastCampus);
+	var similarDescriptions = finder[lastFinderId].findDescriptionOnOtherCampuses(entry.description, lastCampus);
+	
+	return "success";
+}
+
 function SitemapFinder() {
 	
 	var houseNames = [];
 	var descriptions = [];
+	var dataEntries = [];
 	
 	this.addData = function(data, campus) {
 		_.each(data.features, function(item) {
-			houseNames.push({ campus: campus, data: item.properties.Name });
-			descriptions.push({ campus: campus, data: item.properties.description });
+			houseNames.push({ campus: campus, data: item.properties.Name, hash: item.properties.hash });
+			descriptions.push({ campus: campus, data: item.properties.description, hash: item.properties.hash });
+			dataEntries.push({ campus: campus, data: item.properties, hash: item.properties.hash });
 		});
 	};
 	
@@ -195,6 +247,12 @@ function SitemapFinder() {
 				.filter(function(description) { return description.data.indexOf(search) !== -1; })
 				.filter(function(description) { return description.campus != currentCampus; })
 				.pluck('data')
+				.value();
+	};
+	
+	this.findEntryByHash = function(hash) {
+		return _.chain(dataEntries)
+				.filter(function(entry) { return entry.hash == hash; })
 				.value();
 	};
 }
