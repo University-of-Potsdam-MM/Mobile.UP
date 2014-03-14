@@ -6,11 +6,6 @@
 	 */
 	// model for emergency items
 	var EmergencyCall = Backbone.Model.extend({
-		defaults:{
-			name: 'n',
-			telephone: 'w',
-			description: 'a',
-		}
 	});
 	
 	// collection for emergency items
@@ -41,10 +36,7 @@
 	
 	// view for several emergency calls
 	var EmergencyCallsView = Backbone.View.extend({
-		//el: $('#emergencies'),
-		tagName: 'ul',
-		attributes: {"data-role": "listview", "data-inset":"true", "data-icon":"false"},
-
+				
 		initialize: function(){
 			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
 			this.collection.fetch({
@@ -62,18 +54,20 @@
 		},
 			
 		render: function(){	
+			this.el = $('#uff');
 			// iterate over collection and call EmergencyCallViews render method	
 			this.collection.each(function(emergencycall){
 				var emergencyCall = new EmergencyCallView({model: emergencycall});
-				//(this.$el).append(emergencyCall.render().el)
 				$(this.el).append(emergencyCall.render().el);	
 			}, this);
-			console.log("wuff");
-			$('#emergencies').trigger("create");
+			
+			$('#uff').parent().trigger("create");
 			return this;
 		}
 	});
 	// Backbone code - end
+	
+	
 	
 	$(document).on("pageinit", "#emergency", function () {
 		
@@ -82,10 +76,7 @@
 		
 		// pass collection to emergency view
 		var emergencyCallsView = new EmergencyCallsView({collection: emergencyCalls});
-		//console.log(emergencyCallsView.render().el);
 
-		$('#emergencies').append(emergencyCallsView.render().el);
-	
 		
 	});
 })(jQuery);

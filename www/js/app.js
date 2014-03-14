@@ -19,12 +19,12 @@ function removeLoadingSpinner(uniqueDivId) {
 /*
  * Template Loading Functions
  */
-function render(tmpl_name) {
-    if ( !render.tmpl_cache ) { 
-        render.tmpl_cache = {};
+function rendertmpl(tmpl_name) {
+    if ( !rendertmpl.tmpl_cache ) { 
+    	rendertmpl.tmpl_cache = {};
     }
 
-    if ( ! render.tmpl_cache[tmpl_name] ) {
+    if ( ! rendertmpl.tmpl_cache[tmpl_name] ) {
         var tmpl_dir = 'js/templates';
         var tmpl_url = tmpl_dir + '/' + tmpl_name + '.tmpl';
 
@@ -40,11 +40,11 @@ function render(tmpl_name) {
         });
 
 		tmpl_string = removeTabs(tmpl_string);
-        render.tmpl_cache[tmpl_name] = _.template(tmpl_string);
+		rendertmpl.tmpl_cache[tmpl_name] = _.template(tmpl_string);
                 
     }
 
-    return render.tmpl_cache[tmpl_name];
+    return rendertmpl.tmpl_cache[tmpl_name];
 }
 
 function removeTabs(tmpl) {
