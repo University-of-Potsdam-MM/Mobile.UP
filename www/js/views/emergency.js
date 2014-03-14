@@ -36,7 +36,8 @@
 	
 	// view for several emergency calls
 	var EmergencyCallsView = Backbone.View.extend({
-				
+		anchor: '#emergency-list',
+		
 		initialize: function(){
 			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
 			this.collection.fetch({
@@ -54,14 +55,14 @@
 		},
 			
 		render: function(){	
-			this.el = $('#uff');
+			this.el = $(this.anchor);
 			// iterate over collection and call EmergencyCallViews render method	
 			this.collection.each(function(emergencycall){
 				var emergencyCall = new EmergencyCallView({model: emergencycall});
-				$(this.el).append(emergencyCall.render().el);	
+				$(this.el).append(emergencyCall.render().el);
 			}, this);
 			
-			$('#uff').parent().trigger("create");
+			this.el.listview("refresh");
 			return this;
 		}
 	});
@@ -80,4 +81,3 @@
 		
 	});
 })(jQuery);
-
