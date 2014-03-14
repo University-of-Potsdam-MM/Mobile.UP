@@ -2,7 +2,18 @@
 <html>
 <head>
  <meta charset="utf-8" />
-      
+ <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
+        <script src="js/lib/jquery-1.10.2.min.js"></script>
+		<script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
+		<script src="js/lib/q.min.js"></script>
+		<script src="js/lib/underscore.min.js"></script>
+		<script src="js/lib/backbone.min.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/views/emergency.js"></script>  
 
 </head>
 <body>
@@ -19,62 +30,7 @@
 		</div>
 		<!-- End Header -->
 		<!-- Start Main - Navigation -->
-		<div data-role="content" data-iconpos="left" data-theme="c">
-			<ul data-role="listview"  data-inset="true"  data-icon="false" >
-				<li><a href="tel:110"> 
-						<h2>Polizei</h2>
-						<p>110   </p>
-				</a></li>
-				<li><a href="tel:112">
-						<h2>Feuerwehr</h2>
-						<p>112   </p>
-				</a></li>
-				<li><a href="tel:+493019240">
-						<h2>Giftnotruf 1</h2>
-						<p>+493019240   Universit&auml;tsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin, Augustenburger Platz 1, 13353 Berlin-Wedding</p>
-				</a></li>
-				<li><a href="tel:+493045053555">
-						<h2>Giftnotruf 2</h2>
-						<p>+493045053555   Universit&auml;tsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin, Augustenburger Platz 1, 13353 Berlin-Wedding</p>
-				</a></li>
-				<li><a href="tel:+4903084453992">
-						<h2>Strahlenunfall</h2>
-						<p>+4903084453992   Universit&auml;tsklinik Steglitz, Berlin</p>
-				</a></li>
-				<li><a href="tel:+493312415051">
-						<h2>Rettungsstelle - Klinikum Ernst v. Bergmann</h2>
-						<p>+493312415051   </p>
-				</a></li>
-				<li><a href="tel:+4933196821100">
-						<h2>Rettungsstelle - St. Josefs</h2>
-						<p>+4933196821100   </p>
-				</a></li>
-				<li><a href="tel:+493317488632">
-						<h2>Betriebsarzt</h2>
-						<p>+493317488632   Frau Dr. Schmalenbach, Gro&suml;beerenstr. 185, 14482 Potsdam- Babelsberg</p>
-				</a></li>
-				<li><a href="tel:+493315507080">
-						<h2>N&auml;chster Arzt Potsdam</h2>
-						<p>+493315507080   Praxis Frau Dr. med. Berit B&ouml;ttcher, Facharzt f&uuml;r Innere Medizin, Reiherbergstr. 31, 14476 Potsdam</p>
-				</a></li>
-				<li><a href="tel:+493316011767">
-						<h2>N&auml;chster Arzt Potsdam-Eiche</h2>
-						<p>+493316011767   Allgemeinarztpraxis, Kang-Hyeb Lee, Facharzt f&uuml;r Allgemeinmedizin, Kaiser-Friedrich-Str. 102 a, 14469 Potsdam / OT Eiche</p>
-				</a></li>
-				<li><a href="tel:08001110111">
-						<h2>Telefonseelsorge</h2>
-						<p>08001110111   kostenfreie Telefonnummer</p>
-				</a></li>
-				<li><a href="tel:+493319771830">
-						<h2>Psychologische Beratung Uni Potsdam</h2>
-						<p>+493319771830   Dipl. Psych.  Birgit Kl&ouml;hn, Am Neuen Palais 10, 14469 Potsdam, Haus 08, Raum 0.82</p>
-				</a></li>
-				<li><a href="tel:+493319772010">
-						<h2>Technische Leitzentrale Uni Potsdam</h2>
-						<p>+493319772010   St&ouml;rungsannahme 24h-Dienst</p>
-				</a></li>
-			</ul>
-		</div>
+		<div data-role="content" data-iconpos="left" data-theme="c" id="emergencies"></div>
 		<!-- End Main - Navigation -->
 	</div>
 </body>
