@@ -1,4 +1,3 @@
-{
 [
 {"name": "Polizei","telephone": "110","description": ""},
 {"name": "Feuerwehr","telephone": "112","description": ""},
@@ -14,4 +13,3 @@
 {"name": "Psychologische Beratung Uni Potsdam","telephone": "+493319771830","description": "Dipl. Psych.  Birgit Kl&ouml;hn, Am Neuen Palais 10, 14469 Potsdam, Haus 08, Raum 0.82"},
 {"name": "Technische Leitzentrale Uni Potsdam","telephone": "+493319772010","description": "St&ouml;rungsannahme 24h-Dienst"}
 ]
-}
