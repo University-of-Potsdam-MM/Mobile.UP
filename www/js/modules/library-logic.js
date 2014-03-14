@@ -78,7 +78,7 @@ function clearSearch() {
 }
 
 // TODO create Backbone View or Marionette Listview
-var bookListViewTemplate = render('book_list_view');
+var bookListViewTemplate = rendertmpl('book_list_view');
 function renderBookListView(list) {
   _.templateSettings.variable = "booklist";
   var html = bookListViewTemplate({booklist:list});
@@ -88,7 +88,7 @@ function renderBookListView(list) {
 }
 
 // TODO create BackboneView
-var bookDetailViewTemplate = render('book_detail_view');
+var bookDetailViewTemplate = rendertmpl('book_detail_view');
 function renderDetailView(book) {
 	console.log('render detail', book);
 	_.templateSettings.variable = "book";
@@ -99,7 +99,7 @@ function renderDetailView(book) {
 }
 
 // TODO: create BackboneView
-var bookLocationViewTemplate = render('book_location_view');
+var bookLocationViewTemplate = rendertmpl('book_location_view');
 function renderPositionView(positions) {
    console.log('render positions', positions);
 	_.templateSettings.variable = "positions";
