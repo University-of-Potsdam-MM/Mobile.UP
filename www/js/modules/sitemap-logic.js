@@ -145,12 +145,6 @@ function insertCampusData(campus) {
 	};
 }
 
-function loadMenu(url) {
-	var d = Q.defer();
-	$.ajax({ url: url }).done(d.resolve).fail(d.reject);
-	return d.promise;
-}
-
 function drawCampus(uniqueDiv, url) {
 	return function() {
 		var host = $("#" + uniqueDiv);
