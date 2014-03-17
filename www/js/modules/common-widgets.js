@@ -10,9 +10,9 @@ $(function() {
 			this.element.append(
 				"<div data-role='navbar'> \
                     <ul> \
-                        <li><a href='#Griebnitzsee' class='location-menu location-menu-default'>Griebnitzsee</a></li> \
-                        <li><a href='#NeuesPalais' class='location-menu'>Neues Palais</a></li> \
-                        <li><a href='#Golm' class='location-menu'>Golm</a></li> \
+                        <li><a href='#griebnitzsee' class='location-menu location-menu-default'>Griebnitzsee</a></li> \
+                        <li><a href='#neuespalais' class='location-menu'>Neues Palais</a></li> \
+                        <li><a href='#golm' class='location-menu'>Golm</a></li> \
                     </ul> \
                 </div>");
 			this.element.trigger("create");
@@ -24,11 +24,11 @@ $(function() {
 			var widgetParent = this;
 			$(".location-menu", this.element).bind("click", function (event) {
 				var source = $(this);
+				var target = widgetParent._retreiveSelection(source);
 				
 				// call onChange callback
-				var target = widgetParent._retreiveSelection(source);
 				widgetParent._setDefaultSelection(target);
-				widgetParent.options.onChange(target);
+				widgetParent.options.onChange({ campusName: target });
 				
 				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
 				widgetParent._fixActiveTab(source, event);
@@ -41,7 +41,7 @@ $(function() {
 		
 		pageshow: function() {
 			var selection = this._activateDefaultSelection();
-			this.options.onChange(selection);
+			this.options.onChange({ campusName: selection });
 		},
 		
 		_setOption: function(key, value) {
@@ -66,7 +66,7 @@ $(function() {
 			if (!defaultSelection) {
 				var source = $(".location-menu-default")
 				defaultSelection = this._retreiveSelection(source);
-				this._setDefaultSelection(defaultMensa);
+				this._setDefaultSelection(defaultSelection);
 			}
 			
 			$(".location-menu", this.element).removeClass("ui-btn-active");
@@ -84,6 +84,24 @@ $(function() {
 		
 		getActive: function() {
 			return this._retreiveSelection($(".ui-btn-active"));
+		},
+		
+		changeTo: function(campusName, meta) {
+			var target = campusName;
+			
+			$(".location-menu", this.element).removeClass("ui-btn-active");
+			var searchExpression = "a[href='#" + target + "']";
+			$(searchExpression).addClass("ui-btn-active");
+			
+			// prepare call options
+			var callOptions = { campusName: target };
+			if (meta !== undefined) {
+				callOptions.meta = meta;
+			}
+			
+			// call onChange callback
+			this._setDefaultSelection(target);
+			this.options.onChange(callOptions);
 		}
 	});
 	
@@ -112,21 +130,26 @@ $(function() {
 			// Initialize filter
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
 			
+			var widgetHost = this;
 			$(document).on("click", "#filterable-locations a", function () {
 				// Retreive context
 				var source = $(this);
 				var href = source.attr("href");
 				var index = parseInt(href.slice(1));
 				
-				// Hide all markers
-				var tmpMarkers = allMarkers.getElements();
-				for (var i = 0; i < tmpMarkers.length; i++) {
-					tmpMarkers[i].setVisibility(false, true);
-				}
-				
-				// Show the selected marker
-				tmpMarkers[index].setVisibility(true, true);
+				widgetHost._showIndex(index);
 			});
+		},
+		
+		_showIndex: function(index) {
+			// Hide all markers
+			var tmpMarkers = allMarkers.getElements();
+			for (var i = 0; i < tmpMarkers.length; i++) {
+				tmpMarkers[i].setVisibility(false, true);
+			}
+			
+			// Show the selected marker
+			tmpMarkers[index].setVisibility(true, true);
 		},
 		
 		_destroy: function() {
@@ -197,10 +220,13 @@ $(function() {
 			this._insertMapsMarkers(items);
 		},
 		
-		addItems: function(items) {
-		},
-		
-		eachMarker: function(callback) {
+		viewByName: function(name) {
+			var first = _.chain(this._markers)
+							.filter(function(marker) { return marker.context.features[0].properties.Name === name; })
+							.first()
+							.value();
+			var index = _.indexOf(this._markers, first);
+			this._showIndex(index);
 		},
 		
 		_filterLocations: function(index, searchValue) {
@@ -254,3 +280,67 @@ $(function() {
 		}
 	});
 });
+
+function CategoryMarker(marker, map, category, categoryStore) {
+	
+	var marker = marker;
+	var map = map;
+	var category = category;
+	var categoryStore = categoryStore;
+	
+	this.setVisibility = function(show, overrideCategory) {
+		if (typeof(overrideCategory)==='undefined') overrideCategory = false;
+		
+		if (show && overrideCategory) {
+			marker.setMap(map);
+		} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
+			marker.setMap(map);
+		} else {
+			marker.setMap(null);
+		}
+	};
+	
+	this.reset = function() {
+		if (categoryStore.isVisible(category)) {
+			marker.setMap(map);
+		} else {
+			marker.setMap(null);
+		}
+	};
+}
+
+var SEARCH_MODE = 0;
+var SHOW_MODE = 1;
+
+function SearchableMarkerCollection() {
+	
+	var elements = [];
+	var mode = SHOW_MODE;
+	
+	this.switchMode = function(targetMode) {
+		if (mode === targetMode) {
+			return;
+		}
+		
+		switch (targetMode) {
+		case SEARCH_MODE:
+			// Don't show all markers, only the matching one
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].setVisibility(false, true);
+			}
+			break;
+		case SHOW_MODE:
+			// Show all markers
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].reset();
+			}
+			break;
+		}
+		
+		mode = targetMode;
+	};
+	
+	this.getElements = function() {
+		return elements;
+	};
+}

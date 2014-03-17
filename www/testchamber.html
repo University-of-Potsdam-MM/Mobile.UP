@@ -50,6 +50,19 @@
 				$("div[data-role='campusmenu']").campusmenu();
 			});
 		</script>
+		<script>
+			var finder = new SitemapFinder();
+			
+			function testchamber_run() {
+				var url = settings.url.neuespalais.institutes;
+				$.getJSON(url, function(data) {
+					finder.addData(data, "neuespalais");
+					
+					var result = finder.findHouseNumberOnOtherCampuses("Haus 12", "griebnitzsee");
+					console.log("Geladen");
+				});
+			}
+		</script>
     </head>
     <body>
     	<!-- Start Home - Panel -->
@@ -75,15 +88,7 @@
 			<!-- End Header -->
 		    <!-- Start Main - Navigation -->
 		    <div data-role="content">
-			    <div data-role="campusmenu" data-store="up.mensa.default"></div>
-				<div data-role="campusmenu" data-store="up.mensa.custom"></div>
-				<div data-role="navbar">
-                    <ul>
-                        <li><a href="#Griebnitzsee" class="location-menu location-menu-default">Griebnitzsee</a></li>
-                        <li><a href="#NeuesPalais" class="location-menu">Neues Palais</a></li>
-                        <li><a href="#Golm" class="location-menu">Golm</a></li>
-                    </ul>
-                </div>
+			    <button onclick="testchamber_run()">Click me</button>
 			</div>
 		    <!-- End Main - Navigation -->
 		</div>

@@ -19,9 +19,9 @@
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 	});
 	
-	function updateMenuData(mensa) {
+	function updateMenuData(options) {
 		var date = $("#mydate").datebox('getTheDate');
-		updateMenu(mensa, date);
+		updateMenu(options.campusName, date);
 	}
 	
 	function updateMenu(mensa, date) {
@@ -62,13 +62,15 @@
 	function loadMenu(location) {
 	    var d = Q.defer();
 	    var url = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0";
-	
-	    // If we are not in an app environment, we have to use the local proxy
-	    /*
-	    if (navigator.app === undefined) {
-	        url = "/usb-services/mensaAPI/1.0";
-	    }
-		*/
+		
+		if (location == "griebnitzsee") {
+			location = "Griebnitzsee";
+		} else if (location == "neuespalais") {
+			location = "NeuesPalais";
+		} else if (location == "golm") {
+			location = "Golm";
+		}
+		
 		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
