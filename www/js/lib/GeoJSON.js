@@ -1,5 +1,7 @@
-var GeoJSON = function( geojson, options ){
+var GeoJSON = function( geojson, options, map ){
 
+	var map = map;
+	
 	var _geometryToGoogleMaps = function( geojsonGeometry, options, geojsonProperties ){
 
 		var googleObj, opts = _copy(options);

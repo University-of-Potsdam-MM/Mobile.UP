@@ -20,10 +20,29 @@ function registerEventSearch(){
 
 // controller
 function registerEventChooseBook(){
-  $( '#search-results > ul' ).on( 'click', 'li', function(ev){
-    // TODO query Standortinfo for this record
-    renderDetailView(getRecord(this.id));
-  } );
+	$( '#search-results > ul' ).on( 'click', 'li', function(ev){
+
+		// TODO query Standortinfo for this record
+		var book = getRecord(this.id);
+	    renderDetailView(book);
+	    
+	    // get position of book for detail request
+	    var ajaxCall = $.ajax({
+			url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+book.ppn+'&format=json',
+			method: 'GET',
+			dataType: 'jsonp'
+		});
+	    
+	    ajaxCall.done(function (json) {
+	    	var positions= [];
+	  		_.each(json.document[0].item, function(item) {
+	  			positions.push(position(item, book));
+			});
+	  		renderPositionView(positions);
+	    }).fail(function () {
+	    	console.log('false');
+	    });   
+	});
 }
 
 // controller
@@ -71,12 +90,23 @@ function renderBookListView(list) {
 // TODO create BackboneView
 var bookDetailViewTemplate = render('book_detail_view');
 function renderDetailView(book) {
-  // console.log('render detail', book);
-  _.templateSettings.variable = "book";
-  var html = bookDetailViewTemplate({book:book});
-  $results = $("#libraryContent");
-  $results.html(html);
-  $results.trigger('create');
+	console.log('render detail', book);
+	_.templateSettings.variable = "book";
+	var html = bookDetailViewTemplate({book:book});
+	$results = $("#libraryContent");
+	$results.html(html);
+	$results.trigger('create');
+}
+
+// TODO: create BackboneView
+var bookLocationViewTemplate = render('book_location_view');
+function renderPositionView(positions) {
+   console.log('render positions', positions);
+	_.templateSettings.variable = "positions";
+	var html = bookLocationViewTemplate({positions:positions});
+	$results = $("#book-location");
+	$results.html(html);
+	$results.trigger('create');
 }
 
 
@@ -148,8 +178,14 @@ function loadSearch(queryString) {
 // TODO: store numberOfRecords for search
 function xmlToBooksArray(xmlSearchResult){
   // console.log('xml',xmlSearchResult);
-  var records = xmlSearchResult.getElementsByTagName('zs:recordData');
+  var records = byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
   return _.map(records, book);
+};
+
+function byTagNS(xml,tag,ns) {
+  return xml.getElementsByTagNameNS
+    ? xml.getElementsByTagNameNS(ns,tag)
+    : xml.getElementsByTagName(ns+":"+tag);
 };
 
 // TODO: create Backbone Model
@@ -166,12 +202,82 @@ function book(recordData){
     publisher: textForTag(recordData, 'publisher'),
     edition:   textForTag(recordData, 'edition'),
     dateIssued:textForTag(recordData, 'dateIssued'),
-    isbn:      textForQuery($recordData, 'identifier[type=isbn]')
+    isbn:      textForQuery($recordData, 'identifier[type=isbn]'),
+    url:	   url(recordData),
+    ppn:       textForTag(recordData, 'recordIdentifier')
   };
   // console.log('model.toc', model.toc);
   return model;
 }
 
+// TODO: create Backbone Model
+function position(item, book) {
+	var model = {
+		department: department(item),
+		label: item.label,
+		availableitems: availableItems(item, book)
+	};
+	return model;
+}
+
+// get url for a book
+function url(recordData) {
+	// get first item and check for primary display or usage attribute
+	var  urlusage = attributeContentForTag(recordData, 'location', 'usage');
+	if (urlusage && (urlusage.indexOf('primary display') != -1)) {
+		return textForTag(recordData, 'location');
+	} else {
+		return null;
+	}
+}
+
+// creating department string for emplacement
+function department($recordData) {
+	var department = $recordData.department.content;
+	if($recordData.storage) {
+		department = department+', '+$recordData.storage.content;
+	}
+	return department;
+}
+
+// complex function to get avialable status of items
+// https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
+// TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+function availableItems($recordData, book) {
+	var item = $recordData;
+	var status = '';
+
+	// check for avaiable items
+	if (item.available) {
+		// check if available items contain loan
+		var presentations = _.find(item.available, function(item){
+				return item.service =='loan';		
+		});
+	}
+	
+	if (presentations) {
+		status = 'ausleihbar';
+	}else{
+		// check for loan in unavailable items
+		var loanunavailable = _.find(item.unavailable, function(item){
+			return item.service =='loan';		
+		});
+		if(loanunavailable && loanunavailable.href) {
+			if(loanunavailable.href.indexOf("loan/RES") != -1) {
+				status = "ausleihbar";
+			} else {
+				status = "nicht ausleihbar";
+			}
+		} else {
+			if(book.url == null) {
+				status = 'nicht ausleihbar';
+			}else {
+				status = 'Online-Ressource';
+			}
+		}
+	}
+	return status;
+}
 
 function textForTag(node, tagName) {
   var firstTagNode = node.getElementsByTagName(tagName)[0];
@@ -180,6 +286,15 @@ function textForTag(node, tagName) {
   } else {
     return null;
   }
+}
+
+function attributeContentForTag(node, tagName, attributeName) {
+	var firstTagNode = node.getElementsByTagName(tagName)[0];
+	if (firstTagNode) {
+		return firstTagNode.getElementsByTagName('url')[0].getAttribute(attributeName);
+	} else {
+		return null;
+	}
 }
 
 function split_string(string, split_by){

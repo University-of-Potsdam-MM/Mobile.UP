@@ -10,13 +10,13 @@ var settings =	{
 			terminals: "js/geojson/terminals-palais.geojson",
 			institutes: "js/geojson/institutes-palais.geojson",
 			canteens: "js/geojson/mensen-palais.geojson",
-			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+			center: new google.maps.LatLng(52.400933, 13.011653)
 		},
 		golm: {
 			terminals: "js/geojson/terminals-golm.geojson",
 			institutes: "js/geojson/institutes-golm.geojson",
 			canteens: "js/geojson/mensen-golm.geojson",
-			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
+			center: new google.maps.LatLng(52.408716, 12.976138)
 		}
 	},
 	options: {
@@ -27,7 +27,7 @@ var settings =	{
 		    "strokeOpacity": 1,
 		    "strokeWeight": 2,
 		    "fillColor": "#46461F",
-		    "fillOpacity": 0.25
+		    "fillOpacity": 0.5
 		}
 	}
 };
@@ -42,6 +42,8 @@ var categoryStore = new CategoryStore();
  * initialize map when page is initialized
  */
 $(document).on( "pageinit", "#sitemaps", function() {
+	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
+	
 	$('#Terminals:checkbox').click(checkUncheck(terminals));
 	$('#Institute:checkbox').click(checkUncheck(institutes));
 	$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -60,150 +62,60 @@ function checkUncheck(category) {
 	};
 }
 
+$(document).on("pageinit", "#sitemaps", function() {
+	$("div[data-role='campusmenu']").campusmenu({ onChange: drawSelectedCampus });
+});
+
 /*
  * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
  */
 $(document).on("pageshow", "#sitemaps", function() {
-	initializeMap(settings.url.griebnitzsee.center);
-	
-	// Initialize filter
-	$("#filterable-locations").filterable("option", "filterCallback", filterLocations);
+	$("div[data-role='campusmenu']").campusmenu("pageshow");
 });
 
-var map = undefined;
-
-function filterLocations(index, searchValue) {
-	var text = $(this).text();
-	var result = text.toLowerCase().indexOf(searchValue) === -1;
+function drawSelectedCampus(campusName) {
+	uniqueDivId = _.uniqueId("id_");
 	
-	if (searchValue) {
-		allMarkers.switchMode(SEARCH_MODE);
-		// Don't show all markers, only the matching one
-		
-		var source = $("a", this);
-		var href = source.attr("href");
-		var index = parseInt(href.slice(1));
-		var searchedMarkers = allMarkers.getElements();
-		if (!result) {
-			searchedMarkers[index].setVisibility(true, true);
-		} else {
-			searchedMarkers[index].setVisibility(false, true);
-		}
+	var campus = undefined;
+	if (campusName === "Griebnitzsee") {
+		campus = settings.url.griebnitzsee;
+	} else if (campusName === "NeuesPalais") {
+		campus = settings.url.neuespalais;
 	} else {
-		allMarkers.switchMode(SHOW_MODE);
+		campus = settings.url.golm;
 	}
 	
-	return result;
+	Q(clearMenu(uniqueDivId))
+		.then(drawCampus(uniqueDivId, campus))
+		.catch(function (e) {
+			console.log("Fehlschlag: " + e.stack);
+			alert("Fehlschlag: " + e.stack);
+		});
 }
 
-/**
- * initializes the map and draws all markers which are currently selected
- */
-function initializeMap(center) {
-	drawMap(center);
-	markers = [];
-	allMarkers = new SearchableMarkerCollection();
-	
-	drawCategory(settings.options.terminals, settings.url.griebnitzsee.terminals, terminals);
-	drawCategory(settings.options.institutes, settings.url.griebnitzsee.institutes, institutes);
-	drawCategory(settings.options.canteens, settings.url.griebnitzsee.canteens, canteens);
+function clearMenu(uniqueDivId) {
+	$("#currentCampus").empty();
+	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
+}
+
+function drawCampus(uniqueDiv, url) {
+	return function() {
+		var host = $("#" + uniqueDiv);
+		host.append("<div data-role='searchablemap'></div>");
+		host.trigger("create");
+		
+		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
+		
+		drawCategory(settings.options.terminals, url.terminals, terminals);
+		drawCategory(settings.options.institutes, url.institutes, institutes);
+		drawCategory(settings.options.canteens, url.canteens, canteens);
+	};
 }
 
 function drawCategory(options, url, category) {
 	$.getJSON(url, function(data) {
-		insertSearchableFeatureCollection(options, data, category);
+		$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
 	});
-}
-
-/**
- * draws the initial map and centers on the given coordinate
- * @param {latlng} an object of google maps latlng object
- */
-function drawMap(latlng) {
-	var myOptions = {
-			zoom: 16,
-            center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-	map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
-}
-
-function insertSearchables(searchables) {
-	var createSearchables = render("sitemap");
-	var host = $("#filterable-locations");
-	
-	// Add items to search list
-	var htmlSearch = createSearchables({items: searchables});
-	host.append(htmlSearch);
-
-	// Tell search list to refresh itself
-	host.listview("refresh");
-	host.trigger( "updatelayout");
-}
-
-$(document).on("click", "#filterable-locations a", function () {
-	// Retreive context
-	var source = $(this);
-	var href = source.attr("href");
-	var index = parseInt(href.slice(1));
-	
-	// Hide all markers
-	var tmpMarkers = allMarkers.getElements();
-	for (var i = 0; i < tmpMarkers.length; i++) {
-		tmpMarkers[i].setVisibility(false, true);
-	}
-	
-	// Show the selected marker
-	tmpMarkers[index].setVisibility(true, true);
-});
-
-var markers;
-var allMarkers;
-
-function insertSearchableFeatureCollection(options, collection, category) {
-	var items = _.map(collection.features, function(item) {
-		var result = {};
-		result.name = item.properties.Name;
-		result.description = item.properties.description;
-		
-		// Save item context
-		var context = JSON.parse(JSON.stringify(collection));
-		context.features = [item];
-		
-		// Save marker and get its index
-		result.index = saveMarker(options, context, category);
-		
-		return result;
-	});
-	
-	insertSearchables(items);
-	insertMapsMarkers(items);
-}
-
-function insertMapsMarkers(items) {
-	for (var i in items) {
-		var m = loadMarker(items[i].index);
-		var gMarkers = new GeoJSON(m.context, m.options);
-		
-		if (gMarkers.error) {
-			console.log(gMarkers.error);
-		} else {
-			var gMarker = new CategoryMarker(gMarkers[0], map, m.category, categoryStore);
-			gMarker.reset();
-			
-			var tmpMarkers = allMarkers.getElements();
-			tmpMarkers[items[i].index] = gMarker;
-		}
-	}
-}
-
-function saveMarker(options, context, category) {
-	markers.push({options: options, context: context, category: category});
-	return markers.length - 1;
-}
-
-function loadMarker(index) {
-	return markers[index];
 }
 
 function CategoryStore() {
