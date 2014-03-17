@@ -164,7 +164,7 @@
 	
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
-			var createMeals = render('mensa');
+			var createMeals = rendertmpl('mensa');
 			var host = $("#" + uniqueDiv);
 			
 			// Add day section to html
