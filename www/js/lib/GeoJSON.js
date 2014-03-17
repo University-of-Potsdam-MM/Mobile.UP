@@ -18,7 +18,11 @@ var GeoJSON = function( geojson, options, map ){
 				// binds click event to marker with given description
 				if(geojsonProperties) {
 					if (geojsonProperties.description) {
-						googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+'<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>')+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.hash+'\')">Ähnliche Orte</a></b>'});
+						if (geojsonProperties.hash) {
+							googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+'<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>')+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.hash+'\')">Ähnliche Orte</a></b>'});
+						} else {
+							googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+'<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>')+'</b>'});
+						}
 						google.maps.event.addListener(googleObj,'click',function() {
 							googleObj.info.open(map, googleObj);
 						});

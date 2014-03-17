@@ -74,10 +74,6 @@ $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
 });
 
-function changeToMensaGriebnitzsee() {
-	$("div[data-role='campusmenu']").campusmenu("changeTo", "Griebnitzsee", "mensa");
-}
-
 function drawSelectedCampus(options) {
 	uniqueDivId = _.uniqueId("id_");
 	lastFinderId = uniqueDivId;
@@ -99,6 +95,7 @@ function drawSelectedCampus(options) {
 	
 	Q(clearMenu(uniqueDivId))
 		.then(loadAllCampusData(uniqueDivId))
+		.spread(function(a, b, c) {})
 		.then(drawCampus(uniqueDivId, campus))
 		.spread(setSearchValue(search))
 		.catch(function (e) {
@@ -118,15 +115,15 @@ function loadAllCampusData(uniqueDivId) {
 		
 		var gr = Q(loadCategory(settings.url.griebnitzsee.institutes))
 					.then(insertHash)
-					.then(insertCampusData("griebnitzsee"));
+					.then(insertCampusData(uniqueDivId, "griebnitzsee"));
 		
 		var go = Q(loadCategory(settings.url.golm.institutes))
 					.then(insertHash)
-					.then(insertCampusData("golm"));
+					.then(insertCampusData(uniqueDivId, "golm"));
 		
 		var np = Q(loadCategory(settings.url.neuespalais.institutes))
 					.then(insertHash)
-					.then(insertCampusData("neuespalais"));
+					.then(insertCampusData(uniqueDivId, "neuespalais"));
 		
 		return [gr, go, np];
 	}
@@ -139,9 +136,9 @@ function insertHash(data) {
 	return data;
 }
 
-function insertCampusData(campus) {
+function insertCampusData(uniqueDivId, campus) {
 	return function(data) {
-		finder.addData(data, campus);
+		finder[uniqueDivId].addData(data, campus);
 	};
 }
 
@@ -154,7 +151,6 @@ function drawCampus(uniqueDiv, url) {
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 		
 		var terminalsData = Q(loadCategory(url.terminals))
-							.then(insertHash)
 							.then(drawCategory(settings.options.terminals, terminals));
 		
 		var institutesData = Q(loadCategory(url.institutes))
@@ -162,7 +158,6 @@ function drawCampus(uniqueDiv, url) {
 							.then(drawCategory(settings.options.institutes, institutes));
 		
 		var canteensData = Q(loadCategory(url.canteens))
-							.then(insertHash)
 							.then(drawCategory(settings.options.canteens, canteens));
 		
 		return [terminalsData, institutesData, canteensData];
@@ -208,45 +203,62 @@ function CategoryStore() {
 
 function searchSimilarLocations(hash) {
 	var entry = finder[lastFinderId].findEntryByHash(hash);
-	var similarHouses = finder[lastFinderId].findHouseNumberOnOtherCampuses(entry.Name, lastCampus);
-	var similarDescriptions = finder[lastFinderId].findDescriptionOnOtherCampuses(entry.description, lastCampus);
+	var similarHouses = finder[lastFinderId].findHouseNumberOnOtherCampuses(entry.data.Name, lastCampus);
+	var similarDescriptions = finder[lastFinderId].findDescriptionOnOtherCampuses(entry.data.description, lastCampus);
 	
-	return "success";
+	var host = $("#" + lastFinderId);
+	host.empty();
+	host.append("<ul id='similarlocations' data-role='listview' style='margin: 8px;'></ul>");
+	host.append("<button onclick='sitemapReset()'>Zurück</button>");
+	host.trigger("create");
+	
+	var similars = similarHouses.concat(similarDescriptions);
+	similars = _.uniq(similars, false, function(item) { return item.data; });
+	
+	_.each(similars, function(item) {
+		$("#similarlocations").append("<li><a onclick='sitemapNavigateTo(\"" + item.hash + "\")'>" + item.data.Name + " (" + item.campus + ")</a></li>");
+	});
+	
+	$("#similarlocations").listview("refresh");
+}
+
+function sitemapReset() {
+	$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
+}
+
+function sitemapNavigateTo(hash) {
+	var entry = finder[lastFinderId].findEntryByHash(hash);
+	$("div[data-role='campusmenu']").campusmenu("changeTo", entry.campus, entry.data.Name);
 }
 
 function SitemapFinder() {
 	
-	var houseNames = [];
-	var descriptions = [];
 	var dataEntries = [];
 	
 	this.addData = function(data, campus) {
 		_.each(data.features, function(item) {
-			houseNames.push({ campus: campus, data: item.properties.Name, hash: item.properties.hash });
-			descriptions.push({ campus: campus, data: item.properties.description, hash: item.properties.hash });
 			dataEntries.push({ campus: campus, data: item.properties, hash: item.properties.hash });
 		});
 	};
 	
 	this.findHouseNumberOnOtherCampuses = function(house, currentCampus) {
-		return _.chain(houseNames)
-				.filter(function(houseName) { return houseName.data == house; })
-				.filter(function(houseName) { return houseName.campus != currentCampus })
-				.pluck('data')
+		return _.chain(dataEntries)
+				.filter(function(entry) { return entry.data.Name == house; })
+				.filter(function(entry) { return entry.campus.toLowerCase() != currentCampus.toLowerCase(); })
 				.value();
 	};
 	
 	this.findDescriptionOnOtherCampuses = function(search, currentCampus) {
-		return _.chain(descriptions)
-				.filter(function(description) { return description.data.indexOf(search) !== -1; })
-				.filter(function(description) { return description.campus != currentCampus; })
-				.pluck('data')
+		return _.chain(dataEntries)
+				.filter(function(entry) { return (entry.data.description || "").indexOf(search) !== -1; })
+				.filter(function(entry) { return entry.campus.toLowerCase() != currentCampus.toLowerCase(); })
 				.value();
 	};
 	
 	this.findEntryByHash = function(hash) {
 		return _.chain(dataEntries)
 				.filter(function(entry) { return entry.hash == hash; })
+				.first()
 				.value();
 	};
 }
