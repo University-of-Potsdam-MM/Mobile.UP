@@ -21,10 +21,14 @@
 		<script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
 		<script src="js/lib/q.min.js"></script>
 		<script src="js/lib/underscore.min.js"></script>
+		<!-- 
 		<script src="js/lib/jqm-datebox.core.min.js"></script>
 		<script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
 		<script src="js/lib/jquery.datetimepicker.js"></script>
-        <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+        <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>  -->
+         <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
+	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js"></script>
+	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
         <script id="panel-init">
            $(function () {
                $("[data-role='panel']").panel().enhanceWithin();
@@ -88,20 +92,20 @@
             	<div data-role="navbar" class="buttons_pt" >       	
                     <ul>
                     	<li><p></p></li>
-                        <!-- <li><a href="#" data-theme="a">Ab</a></li> -->
+                      
 						<li>
 						<select name="flip-1" id="flip-1" data-role="slider">
 							<option value="off">Ab</option>
 							<option value="on">An</option>
 						</select> </li>
-	                    <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'></li>
-	                   <li><input name="mydate" id="mytime" type="date" value="Jetzt" data-role="timebox" data-options='{"mode": "timebox"}'></li>
+	                    <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
+	                    <li><input name="mydate" id="mydate" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
 					   
 	                </ul>
                 </div>     
                 
                 <input type="submit" value="Suchen" data-theme="a"/> 
-                <a href="public_transport_ride.html">Suchen</a>  <!-- besser vielleicht: <button type="submit">Submit</button>, ---siehe auch  http://demos.jquerymobile.com/1.2.1/docs/forms/forms-all.html
+               <!--  <a href="public_transport_ride.html">Suchen</a>  --> <!-- besser vielleicht: <button type="submit">Submit</button>, ---siehe auch  http://demos.jquerymobile.com/1.2.1/docs/forms/forms-all.html
 man kann auch value usw. dazu schreiben: http://www.w3schools.com/tags/tag_button.asp -->
                
 				<div id="search-results">
