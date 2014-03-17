@@ -875,12 +875,15 @@ background-color: rgba(255, 255, 255, 0.8);
 
 #public_transport .buttons_pt div.ui-slider-switch{
 	width:100%;
-	height:50px;
+	height:40px;
 	line-height:3;
 }
 
+#public_transport .ui-slider-switch .ui-btn.ui-slider-handle {
+	margin: 1px 0 0 -3%; /*wie geht das nur??*/
+}
+
 #public_transport .buttons_pt .ui-slider-switch .ui-slider-label {
-	line-height:3;
 	font-weight:normal;
 	text-transform:uppercase;
 	color:#fff; 
@@ -891,15 +894,8 @@ background-color: rgba(255, 255, 255, 0.8);
 }
 
 #public_transport .buttons_pt .ui-slider-handle {
-	height:48px;
+	height:40px;
 }
-
-#public_transport .buttons_pt div.ui-slider {
-	margin: 0 0;
-	
-}
-
-
 
 #public_transport  .ui-input-btn{
 	display:block !important;
