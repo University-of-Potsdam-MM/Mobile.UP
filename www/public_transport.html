@@ -1,7 +1,50 @@
 <!DOCTYPE html>
 <html>
     <head>
+		meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <!-- Always use the same header for production -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        
+        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
+        
+        <!-- Javascript Files -->
+		<!-- Core Libraries -->
+		<script type="text/javascript" src="phonegap.js"></script>
+		<script src="js/lib/jquery-1.10.2.min.js"></script>
+		<script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
+		<script src="js/lib/q.min.js"></script>
+		<script src="js/lib/underscore.min.js"></script>
+		<script src="js/lib/jqm-datebox.core.min.js"></script>
+		<script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
+		<script src="js/lib/jquery.datetimepicker.js"></script>
+        <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+        <script id="panel-init">
+           $(function () {
+               $("[data-role='panel']").panel().enhanceWithin();
+           });
+       </script>      
+       <script src="js/app.js"></script>  
 
+        <!-- Mensa -->
+        <script src="js/modules/mensa-logic.js"></script>
+        <!-- Sitemaps -->
+        <script src="js/lib/GeoJSON.js"></script>        
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+        <script src="js/modules/sitemap-logic.js"></script>
+        <!-- Opening -->
+        <script src="js/modules/opening-logic.js"></script>
+				
+        <!-- Search - Library -->
+        <script src="js/xml2json.min.js"></script>
+        <script src="js/modules/library-logic.js"></script>
     </head>
     <body>
     	<!-- Start Main Page -->
@@ -25,7 +68,7 @@
 	                </ul>
                 </div>
             	<!-- Fahrt eingeben -->
-            	<div data-role="navbar">       	
+            	<div data-role="navbar" class="buttons_pt">       	
                     <ul>
                     	<li><p>VON:</p></li>
                         <li><a href="#" class="ui-btn-active">GSEE</a></li>
@@ -34,7 +77,7 @@
 	                </ul>
                 </div>
                 
-            	<div data-role="navbar">       	
+            	<div data-role="navbar" class="buttons_pt">       	
                     <ul>
                     	<li><p>Nach:</p></li>
                         <li><a href="#">GSEE</a></li>
@@ -42,18 +85,24 @@
 	                    <li><a href="#" class="ui-btn-active">PALAIS</a></li>
 	                </ul>
                 </div>                
-
-            	<div data-role="navbar">       	
+            	<div data-role="navbar" class="buttons_pt" >       	
                     <ul>
                     	<li><p></p></li>
-                        <li><a href="#" class="ui-btn-active">Ab--></a></li>
-	                    <li><a href="#" class="ui-btn-active">Heute</a></li>
-	                    <li><a href="#" class="ui-btn-active">Jetzt</a></li>
+                        <!-- <li><a href="#" data-theme="a">Ab</a></li> -->
+						<li>
+						<select name="flip-1" id="flip-1" data-role="slider">
+							<option value="off">Ab</option>
+							<option value="on">An</option>
+						</select> </li>
+	                    <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode": "calbox"}'></li>
+	                   <li><input name="mydate" id="mytime" type="date" value="Jetzt" data-role="timebox" data-options='{"mode": "timebox"}'></li>
+					   
 	                </ul>
                 </div>     
                 
-                <input type="submit" value="Suchen" /> 
-                <a href="public_transport_ride.html">Suchen</a>  
+                <input type="submit" value="Suchen" data-theme="a"/> 
+                <a href="public_transport_ride.html">Suchen</a>  <!-- besser vielleicht: <button type="submit">Submit</button>, ---siehe auch  http://demos.jquerymobile.com/1.2.1/docs/forms/forms-all.html
+man kann auch value usw. dazu schreiben: http://www.w3schools.com/tags/tag_button.asp -->
                
 				<div id="search-results">
 				</div>
