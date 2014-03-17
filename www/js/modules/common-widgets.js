@@ -130,21 +130,26 @@ $(function() {
 			// Initialize filter
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
 			
+			var widgetHost = this;
 			$(document).on("click", "#filterable-locations a", function () {
 				// Retreive context
 				var source = $(this);
 				var href = source.attr("href");
 				var index = parseInt(href.slice(1));
 				
-				// Hide all markers
-				var tmpMarkers = allMarkers.getElements();
-				for (var i = 0; i < tmpMarkers.length; i++) {
-					tmpMarkers[i].setVisibility(false, true);
-				}
-				
-				// Show the selected marker
-				tmpMarkers[index].setVisibility(true, true);
+				widgetHost._showIndex(index);
 			});
+		},
+		
+		_showIndex: function(index) {
+			// Hide all markers
+			var tmpMarkers = allMarkers.getElements();
+			for (var i = 0; i < tmpMarkers.length; i++) {
+				tmpMarkers[i].setVisibility(false, true);
+			}
+			
+			// Show the selected marker
+			tmpMarkers[index].setVisibility(true, true);
 		},
 		
 		_destroy: function() {
@@ -215,10 +220,13 @@ $(function() {
 			this._insertMapsMarkers(items);
 		},
 		
-		addItems: function(items) {
-		},
-		
-		eachMarker: function(callback) {
+		viewByName: function(name) {
+			var first = _.chain(this._markers)
+							.filter(function(marker) { return marker.context.features[0].properties.Name === name; })
+							.first()
+							.value();
+			var index = _.indexOf(this._markers, first);
+			this._showIndex(index);
 		},
 		
 		_filterLocations: function(index, searchValue) {

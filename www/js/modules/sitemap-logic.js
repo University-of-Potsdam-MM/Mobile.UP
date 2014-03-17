@@ -168,7 +168,8 @@ function setSearchValue(search) {
 	return function(terminals, institutes, canteens) {
 		if (search !== undefined) {
 			$("input[data-type='search']").val(search);
-			$("input[data-type='search']").trigger("keyup");
+			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
+			// $("input[data-type='search']").trigger("keyup");
 		}
 	};
 }
