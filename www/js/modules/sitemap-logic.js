@@ -80,9 +80,9 @@ function drawSelectedCampus(options) {
 	lastCampus = options.campusName;
 	
 	var campus = undefined;
-	if (options.campusName === "Griebnitzsee") {
+	if (options.campusName === "griebnitzsee") {
 		campus = settings.url.griebnitzsee;
-	} else if (options.campusName === "NeuesPalais") {
+	} else if (options.campusName === "neuespalais") {
 		campus = settings.url.neuespalais;
 	} else {
 		campus = settings.url.golm;

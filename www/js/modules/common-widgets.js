@@ -10,9 +10,9 @@ $(function() {
 			this.element.append(
 				"<div data-role='navbar'> \
                     <ul> \
-                        <li><a href='#Griebnitzsee' class='location-menu location-menu-default'>Griebnitzsee</a></li> \
-                        <li><a href='#NeuesPalais' class='location-menu'>Neues Palais</a></li> \
-                        <li><a href='#Golm' class='location-menu'>Golm</a></li> \
+                        <li><a href='#griebnitzsee' class='location-menu location-menu-default'>Griebnitzsee</a></li> \
+                        <li><a href='#neuespalais' class='location-menu'>Neues Palais</a></li> \
+                        <li><a href='#golm' class='location-menu'>Golm</a></li> \
                     </ul> \
                 </div>");
 			this.element.trigger("create");
