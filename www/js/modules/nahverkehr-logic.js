@@ -1,21 +1,21 @@
 "use strict";
 
-var accessId = 'Access-ID siehe E-Mail';
+var accessId = 'kiy4e84a4b832962eea1943106096116';
 var endpoint = 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
-
-
 
 
 // use this document for creating XML
 var doc = document.implementation.createDocument(null, null, null);
 
 // function that creates the XML structure
-function tag() {
-    var node = doc.createElement(arguments[0]), text, child;
+function tag(nodeName, attributes) {
+    var node = doc.createElement(nodeName), text, child;
 
-    // TODO: add xml attributes
+    _.each(attributes, function(value, key){
+        node.setAttribute(key, value);
+    });
 
-    for(var i = 1; i < arguments.length; i++) {
+    for(var i = 2; i < arguments.length; i++) {
         child = arguments[i];
         if(typeof child == 'string') {
             child = doc.createTextNode(child);
@@ -26,47 +26,35 @@ function tag() {
     return node;
 };
 
-// create the XML structure recursively
-var xml =
-tag('report',
-    tag('submitter',
-        tag('name', 'John Doe')
-    ),
-    tag('students',
-        tag('student',
-            tag('name', 'Alice'),
-            tag('grade', '80')
-        ),
-        tag('student',
-            tag('name', 'Bob'),
-            tag('grade', '90')
-        )
-    )
-);
+function xmlString(xml) {
+    return '<?xml version="1.0" encoding="UTF-8" ?>\n' + new XMLSerializer().serializeToString(xml);
+}
 
-var string = new XMLSerializer().serializeToString(xml);
+function requestExternalId(){
+    var xml =
+        tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
+            tag('LocValReq', {id:'001', maxNr:20, sMode:1},
+                tag('ReqLoc', {type:'ST', match:'Lindenallee'})
+            )
+        );
+    return xmlString(xml);
+}
 
+console.log(requestExternalId());
 
-/*
-<?xml version="1.0" encoding="iso-8859-1"?>
-<ReqC ver="1.1" prod="String" rt="yes" lang="DE" accessId="Access-ID siehe E-Mail">
-    <LocValReq id="001" maxNr="20" sMode="1">
-        <ReqLoc type="ST" match="Lindenallee" />
-    </LocValReq>
-</ReqC>
-*/
 
 // Suche abgehende Verbindungen
-/*
-<?xml version="1.0" encoding="utf-8"?>
-<ReqC ver="1.1" prod="String" rt="no" lang="DE" accessId="Access-ID siehe E-Mail">
-    <STBReq boardType="DEP" maxJourneys="5" sortOrder="REALTIME">
-        <Time>16:00:00</Time>
-        <Today />
-        <TableStation externalId="009230133#86"/>
-        <ProductFilter>1111111111111111</ProductFilter>
-    </STBReq>
-</ReqC>
-*/
+function abgehendeVerbindungen(){
+    var xml =
+        tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
+            tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
+                tag('Time', {}, '16:00:00'),
+                tag('Today', {}),
+                tag('TableStation', {externalId:"009230133#86"}),
+                tag('ProductFilter', {}, '1111111111111111')
+            )
+        );
+    return xmlString(xml);
+}
 
-console.log(string);
+console.log(abgehendeVerbindungen());
