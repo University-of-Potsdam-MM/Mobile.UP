@@ -823,6 +823,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 /*table  öffnungszeiten
 ---------------------------------*/
 
+#opening p {
+  font-size:.8em;
+  margin-bottom:20px !important;
+}
+
 #opening table thead tr th {display:none;}
 #opening table {
 	display:block;
