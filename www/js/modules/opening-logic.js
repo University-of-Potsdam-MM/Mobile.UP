@@ -53,7 +53,7 @@ $(document).on("pageinit", "#opening", function () {
 
           var renderOpenings = function(openings) {
             var placeTemplate = rendertmpl('openings');
-            var placesList = $('#openings > ul');
+            var placesList = $('#openings');
             _.each(openings, function(place){
               placesList.append(placeTemplate(place));
             });
