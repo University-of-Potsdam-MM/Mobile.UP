@@ -187,7 +187,7 @@ $(function() {
 		},
 		
 		_insertSearchables: function(searchables) {
-			var createSearchables = render("sitemap");
+			var createSearchables = rendertmpl("sitemap");
 			var host = $("#filterable-locations");
 			
 			// Add items to search list
