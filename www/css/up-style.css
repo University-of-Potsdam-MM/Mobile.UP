@@ -866,7 +866,7 @@ background-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Verkehr */
-
+/*
 #public_transport  .buttons_pt li {
 		margin:1%;
 		width:23%;
@@ -885,7 +885,7 @@ background-color: rgba(255, 255, 255, 0.8);
 }
 
 #public_transport .ui-slider-switch .ui-btn.ui-slider-handle {
-	margin: 1px 0 0 -3%; /*wie geht das nur??*/
+	margin: 1px 0 0 -3%;
 }
 
 #public_transport .buttons_pt .ui-slider-switch .ui-slider-label {
@@ -908,3 +908,4 @@ background-color: rgba(255, 255, 255, 0.8);
 	float:right;
 
 }
+*/
