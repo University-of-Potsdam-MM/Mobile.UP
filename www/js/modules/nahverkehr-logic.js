@@ -1,7 +1,17 @@
 "use strict";
 
+var environment = 'development';
+
+
 var accessId = 'kiy4e84a4b832962eea1943106096116';
-var endpoint = 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
+// var endpoint = 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
+function endpoint(){
+  if ('development' == environment){
+    return '/api/transport/bin/pub/vbb/extxml.exe';
+  } else {
+    return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
+  }
+}
 
 
 // use this document for creating XML
