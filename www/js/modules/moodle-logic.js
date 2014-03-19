@@ -52,8 +52,8 @@ $(document).on("pageinit", "#opening", function () {
           };
 
           var renderOpenings = function(openings) {
-            var placeTemplate = rendertmpl('openings');
-            var placesList = $('#openings');
+            var placeTemplate = rendertmpl('moodle');
+            var placesList = $('#moodleCourses');
             _.each(openings, function(place){
               placesList.append(placeTemplate(place));
             });
@@ -113,7 +113,7 @@ $(document).on("pageinit", "#opening", function () {
 
               //console.log(openings);
               renderOpenings(openings);
-              $("#opening").trigger("create");
+              $("#moodleCourses").trigger("create");
             }
           });
         });
