@@ -1,4 +1,26 @@
-// TODO: check if internet is available
+/*
+
+This is the JavaScript code for the library search functionality.
+
+authors: @rmetzler, @alekiy
+
+First of all, I have to say I'm sorry that the code isn't yet as clean and readable
+as it should be. We started to build this in generic JavaScript and than wanted to
+refactor it into Backbone. This was way harder than expected without breaking any
+previously working functionality. Please don't judge.
+
+## Working Functionality:
+- searching for query string and displaying Books in a BookListView
+- displaying details of a selected Book
+- displaying location information for the selected Book
+- Pagination for getting more Books from the API
+
+## TODOS
+- check if internet is available and display warning if not
+- display availability information in the BookListView
+- maybe add a finite state machine or a router to simplify the code
+
+*/
 
 "use strict";
 $( function() {
@@ -268,12 +290,12 @@ App.views.SearchResults = new App.view.BookList({
 
 App.views.SearchResults.render();
 
-
-
 App.view.BookDetailView = Backbone.View.extend({});
 App.view.BookShortView = Backbone.View.extend({});
 
-///////////////////////
+//////////////////////////////////////////////
+// below this line is old non Backbone code //
+//////////////////////////////////////////////
 
 var environment = 'development';
 
@@ -308,9 +330,6 @@ function updateResults() {
   .then(getKeyword)
   .then(loadSearch)
   .then(addXmlSearchResult)
-  // TODO: adding those books should fire the add event which the view has to listen on
-  // .then(renderBookListView)
-  // .then(registerEventChooseBook)
   .catch(logError);
 }
 
