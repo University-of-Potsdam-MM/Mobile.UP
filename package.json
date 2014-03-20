@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "supervisor script/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,11 @@
   },
   "homepage": "https://github.com/University-of-Potsdam-MM/UP.App",
   "dependencies": {
+    "underscore": "^1.6.0",
+    "backbone": "^1.1.2",
+    "q": "^1.0.0"
+  },
+  "devDependencies": {
     "express": "~3.4.8",
     "http-proxy": "~0.10.4",
     "reload": "~0.1.0",
