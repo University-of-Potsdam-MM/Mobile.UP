@@ -237,7 +237,7 @@ App.view.BookList = Backbone.View.extend({
     "click .pagination-button" : 'loadMore',
     "click ul.booklist li.book-short" : 'renderDetail',
   },
-  template: render('book_list_view'),
+  template: rendertmpl('book_list_view'),
   render: function(){
     console.log('render');
     _.templateSettings.variable = "booklist";
@@ -365,9 +365,8 @@ function clearSearch() {
 
 });
 
-
 // TODO create BackboneView
-var bookDetailViewTemplate = render('book_detail_view');
+var bookDetailViewTemplate = rendertmpl('book_detail_view');
 function renderDetailView(book) {
   // console.log('render detail', book);
   _.templateSettings.variable = "book";
@@ -377,9 +376,8 @@ function renderDetailView(book) {
   $results.trigger('create');
 }
 
-
 // TODO: create BackboneView
-var bookLocationViewTemplate = render('book_location_view');
+var bookLocationViewTemplate = rendertmpl('book_location_view');
 function renderLocationView(locations) {
   console.log('render locations', locations);
   _.templateSettings.variable = "locations";

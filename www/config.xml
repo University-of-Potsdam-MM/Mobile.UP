@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>HelloWorld</name>
+<widget id="de.unipotsdam.upapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>UPApp</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Inoffizielle App der Universität Potsdam
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="info@elis.uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
+        eLiS-Team
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
     <preference name="permissions" value="none" />
@@ -24,16 +24,16 @@
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
     <icon src="icon.png" />
-    <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36-ldpi.png" />
-    <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-48-mdpi.png" />
-    <icon gap:density="hdpi" gap:platform="android" src="res/icon/android/icon-72-hdpi.png" />
-    <icon gap:density="xhdpi" gap:platform="android" src="res/icon/android/icon-96-xhdpi.png" />
+    <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36.png" />
+    <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-48.png" />
+    <icon gap:density="hdpi" gap:platform="android" src="res/icon/android/icon-72.png" />
+    <icon gap:density="xhdpi" gap:platform="android" src="res/icon/android/icon-96.png" />
     <icon gap:platform="blackberry" src="res/icon/blackberry/icon-80.png" />
     <icon gap:platform="blackberry" gap:state="hover" src="res/icon/blackberry/icon-80.png" />
     <icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
     <icon gap:platform="ios" height="72" src="res/icon/ios/icon-72.png" width="72" />
-    <icon gap:platform="ios" height="114" src="res/icon/ios/icon-57-2x.png" width="114" />
-    <icon gap:platform="ios" height="144" src="res/icon/ios/icon-72-2x.png" width="144" />
+    <icon gap:platform="ios" height="114" src="res/icon/ios/icon-114.png" width="114" />
+    <icon gap:platform="ios" height="144" src="res/icon/ios/icon-144.png" width="144" />
     <icon gap:platform="webos" src="res/icon/webos/icon-64.png" />
     <icon gap:platform="winphone" src="res/icon/windows-phone/icon-48.png" />
     <icon gap:platform="winphone" gap:role="background" src="res/icon/windows-phone/icon-173.png" />

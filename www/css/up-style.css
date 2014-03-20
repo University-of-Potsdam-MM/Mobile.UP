@@ -725,9 +725,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
 
 .ui-listview>.ui-li-static {
 	padding:0px;
-	
 }
-
 
 html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-body-inherit.ui-collapsible {
 	border-color:#cccccc;
@@ -735,7 +733,10 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-b
 
 .ui-listview>li h3 {
 	margin:0 0;
-	
+}
+
+.ui-listview>li p {
+	text-transform: none;
 }
 
 .ui-bar-inherit.ui-li-divider {border:none !important}
@@ -823,6 +824,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 /*table  öffnungszeiten
 ---------------------------------*/
 
+#opening p {
+  font-size:.8em;
+  margin-bottom:20px !important;
+}
+
 #opening table thead tr th {display:none;}
 #opening table {
 	display:block;
@@ -859,3 +865,48 @@ background-color: rgba(255, 255, 255, 0.8);
 	color: #1e516b;
 
 }
+
+/* Verkehr */
+/*
+#public_transport  .buttons_pt li {
+		margin:1%;
+		width:23%;
+}
+
+#public_transport  .buttons_pt li p {
+	color:#041260;
+	text-transform:uppercase;
+	text-align:right;
+}
+
+#public_transport .buttons_pt div.ui-slider-switch{
+	width:100%;
+	height:40px;
+	line-height:3;
+}
+
+#public_transport .ui-slider-switch .ui-btn.ui-slider-handle {
+	margin: 1px 0 0 -3%;
+}
+
+#public_transport .buttons_pt .ui-slider-switch .ui-slider-label {
+	font-weight:normal;
+	text-transform:uppercase;
+	color:#fff; 
+}
+
+#public_transport .buttons_pt .ui-slider-switch .ui-slider-label-b {
+	color:#014260;
+}
+
+#public_transport .buttons_pt .ui-slider-handle {
+	height:40px;
+}
+
+#public_transport  .ui-input-btn{
+	display:block !important;
+	width:200px!important;
+	float:right;
+
+}
+*/

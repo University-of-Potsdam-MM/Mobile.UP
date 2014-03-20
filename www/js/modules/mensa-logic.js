@@ -19,9 +19,9 @@
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 	});
 	
-	function updateMenuData(mensa) {
+	function updateMenuData(options) {
 		var date = $("#mydate").datebox('getTheDate');
-		updateMenu(mensa, date);
+		updateMenu(options.campusName, date);
 	}
 	
 	function updateMenu(mensa, date) {
@@ -50,20 +50,6 @@
 	        });
 	}
 	
-	function addLodingSpinner(uniqueDivId) {
-		return function() {
-			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
-											<img src=\"img/loadingspinner.gif\"></img> \
-										</div>");
-		};
-	}
-	
-	function removeLoadingSpinner(uniqueDivId) {
-		return function() {
-			$("#" + uniqueDivId).children().first().remove();
-		}
-	}
-	
 	function clearTodaysMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
@@ -76,14 +62,16 @@
 	function loadMenu(location) {
 	    var d = Q.defer();
 	    var url = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0";
-	
-	    // If we are not in an app environment, we have to use the local proxy
-	    /*
-	    if (navigator.app === undefined) {
-	        url = "/usb-services/mensaAPI/1.0";
-	    }
-		*/
-		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
+		
+		if (location == "griebnitzsee") {
+			location = "Griebnitzsee";
+		} else if (location == "neuespalais") {
+			location = "NeuesPalais";
+		} else if (location == "golm") {
+			location = "Golm";
+		}
+		
+		headers = { "Authorization": getAuthHeader()};
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
@@ -176,7 +164,7 @@
 	
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
-			var createMeals = render('mensa');
+			var createMeals = rendertmpl('mensa');
 			var host = $("#" + uniqueDiv);
 			
 			// Add day section to html
