@@ -1,9 +1,12 @@
 /*
 
+## Working Functionality
+- make ajax POST request
+- map API XML data into javascript object
+
 ## TODO
 - create an object to encapsulate the API
-- make ajax POST request
-- add moment.js to construct timestring
+- add moment.js to parse and construct timestrings
 - Backbone-ify views and models
 
 */
