@@ -1,25 +1,28 @@
-<h2><%= book.title %></h2>
-<div>Subtitle <%= book.subtitle %></div>
-<div>authors <%= book.authors %></div>
-<div>publisher <%= book.publisher %></div>
+<% console.log('book detail', book); %>
+<h2><%= book.get('title') %></h2>
+<div>Subtitle <%= book.get('subtitle') %></div>
+<div>authors <%= book.get('authors') %></div>
+<div>publisher <%= book.get('publisher') %></div>
 <div data-role="tabs">
-	<div data-role="navbar">
-		<ul>
-			<li><a href="#book-location" data-ajax="false" class="ui-btn-active">Standort</a></li>
-			<li><a href="#book-details" data-ajax="false">Details</a></li>
-		</ul>
-	</div>
-	<div id="book-location" class="ui-content"></div>
-	<div id="book-details" class="ui-content">
-		<div>isbn <%= book.isbn %></div>
-		<p> Abstract <%= book.abstract %></p>
-		<div>
-  			<h3>Contents</h3>
-  			<ul>
-	    		<% _.each(book.toc, function(chapter){ %>
-    			<li><%= chapter %></li>
-  				<%});%>
-  			</ul>
-		</div>
-	</div>
+  <div data-role="navbar">
+    <ul>
+      <li><a href="#book-location" data-ajax="false" class="ui-btn-active">Standort</a></li>
+      <li><a href="#book-details" data-ajax="false">Details</a></li>
+    </ul>
+  </div>
+  <div id="book-locations" class="ui-content">
+    <!-- book_location_view.tmpl -->
+  </div>
+  <div id="book-details" class="ui-content">
+    <div>isbn <%= book.get('isbn') %></div>
+    <p>Abstract <%= book.get('abstract') %></p>
+    <div>
+        <h3>Contents</h3>
+        <ul>
+          <% _.each(book.get('toc'), function(chapter){ %>
+            <li><%= chapter %></li>
+          <% }); %>
+        </ul>
+    </div>
+  </div>
 </div>

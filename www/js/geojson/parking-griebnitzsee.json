@@ -1,7 +1,6 @@
 {
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-
 "features": [
 { "type": "Feature", "properties": { "Name": "Parkplatz", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": -1, "extrude": -1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 13.12766969203949, 52.391718485246969, 0.0 ], [ 13.12816858291626, 52.391728306309865, 0.0 ], [ 13.1281578540802, 52.392065494811099, 0.0 ], [ 13.12791645526886, 52.392117873376264, 0.0 ], [ 13.127889633178711, 52.392268461404804, 0.0 ], [ 13.127519488334656, 52.392265187757481, 0.0 ], [ 13.127514123916626, 52.392039305505222, 0.0 ], [ 13.127642869949341, 52.392029484511504, 0.0 ], [ 13.12766969203949, 52.391718485246969, 0.0 ] ] ] } },
 { "type": "Feature", "properties": { "Name": "Parkplatz", "description": null, "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": -1, "extrude": -1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 13.130695223808289, 52.392022937181174, 0.0 ], [ 13.131076097488403, 52.392039305505222, 0.0 ], [ 13.131049275398254, 52.392255366814013, 0.0 ], [ 13.130684494972229, 52.392248819517171, 0.0 ], [ 13.130695223808289, 52.392022937181174, 0.0 ] ] ] } },
