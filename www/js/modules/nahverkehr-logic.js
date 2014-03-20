@@ -1,8 +1,9 @@
 /*
 
 ## TODO
-- add moment.js to construct timestring
 - create an object to encapsulate the API
+- make ajax POST request
+- add moment.js to construct timestring
 - Backbone-ify views and models
 
 */
@@ -10,6 +11,18 @@
 "use strict";
 
 console.log('loading nahverkehr-logic.js');
+
+(function($){
+
+  // TODO add Backbone code here
+
+  $(document).on("pageinit", "#transport", function () {
+    console.log('pageinit #transport');
+  });
+})(jQuery);
+
+
+
 
 var environment = 'development';
 var accessId = 'kiy4e84a4b832962eea1943106096116';
@@ -21,6 +34,7 @@ function endpoint(){
     return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
   }
 }
+
 
 // use this document for creating XML
 var doc = document.implementation.createDocument(null, null, null);
