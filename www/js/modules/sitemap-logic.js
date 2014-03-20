@@ -7,15 +7,15 @@ var settings =	{
 			center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
 		},
 		neuespalais: {
-			terminals: "js/geojson/terminals-palais.geojson",
-			institutes: "js/geojson/institutes-palais.geojson",
-			canteens: "js/geojson/mensen-palais.geojson",
+			terminals: "js/geojson/terminals-palais.json",
+			institutes: "js/geojson/institutes-palais.json",
+			canteens: "js/geojson/mensen-palais.json",
 			center: new google.maps.LatLng(52.400933, 13.011653)
 		},
 		golm: {
-			terminals: "js/geojson/terminals-golm.geojson",
-			institutes: "js/geojson/institutes-golm.geojson",
-			canteens: "js/geojson/mensen-golm.geojson",
+			terminals: "js/geojson/terminals-golm.json",
+			institutes: "js/geojson/institutes-golm.json",
+			canteens: "js/geojson/mensen-golm.json",
 			center: new google.maps.LatLng(52.408716, 12.976138)
 		}
 	},

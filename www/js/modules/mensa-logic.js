@@ -71,7 +71,7 @@
 			location = "Golm";
 		}
 		
-		headers = { "Authorization": "Bearer 44b61d3e121a2e98db3a26bba804a4"};
+		headers = { "Authorization": getAuthHeader()};
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
