@@ -1,4 +1,15 @@
+/*
+
+## TODO
+- add moment.js to construct timestring
+- create an object to encapsulate the API
+- Backbone-ify views and models
+
+*/
+
 "use strict";
+
+console.log('loading nahverkehr-logic.js');
 
 var environment = 'development';
 var accessId = 'kiy4e84a4b832962eea1943106096116';
