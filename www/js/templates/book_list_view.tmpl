@@ -1,17 +1,15 @@
 <h2>Results</h2>
-<ul data-role="listview" data-inset="true">
+<ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book) { %>
-    <li id="<%= book.recordID %>">
+    <li class="book-short" id="<%= book.get('recordId') %>">
         <a href="#">
-        <h3>
-    <span class="marker open"></span>
-  </h3>
-            <h2><%= book.title %></h2>
-            <p><%= book.subtitle %></p>
-            <p><%= book.authors %></p>
-            <p><%= book.edition %>, <%= book.publisher %>, <%= book.dateIssued %></p>
-            <p></p>
+          <h2><%= book.get('title') %></h2>
+          <p><%= book.get('subtitle') %></p>
+          <p><%= book.get('authors') %></p>
+          <p><%= book.get('edition') %>, <%= book.get('publisher') %>, <%= book.get('dateIssued') %></p>
         </a>
     </li>
     <% }); %>
 </ul>
+
+<a href="#loadNext" data-role="button" class="pagination-button">Mehr Ergebnisse laden</a>
