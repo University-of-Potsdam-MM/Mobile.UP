@@ -95,13 +95,37 @@ console.log('loading nahverkehr-logic.js');
     },
     'xml');
 
+  function mapSTBJourney(journey){
+    var $journey = $(journey);
+    var tmp = {
+      id:            $journey.attr('trainId'),
+      departingTime: $journey.find('Dep > Time').html(),
+      name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').html(),
+      category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').html(),
+      internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').html(),
+      operator:         $journey.find('JourneyAttribute Attribute[type=OPERATOR] Text').html(),
+      number:           $journey.find('JourneyAttribute Attribute[type=NUMBER] Text').html(),
+      direction:        $journey.find('JourneyAttribute Attribute[type=DIRECTION] Text').html(),
+      directionflag:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONFLAG] Text').html(),
+      directioncode:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONCODE] Text').html(),
+      normal:           $journey.find('JourneyAttribute Attribute[type=NORMAL] Text').html(),
+    };
+    return tmp;
+  };
+
   $.post(
     endpoint(),
     abgehendeVerbindungen(externalId),
     function(data, textStatus, jqXHR){
       console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
+      var $data = $(data);
+      // map every node of STBJourney to a JavaScript Object
+      var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
+      return jsonArray;
     },
     'xml');
+
+
 
   $(document).on("pageinit", "#transport", function () {
     console.log('pageinit #transport');
