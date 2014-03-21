@@ -300,12 +300,12 @@ App.view.BookShortView = Backbone.View.extend({});
 var environment = 'development';
 
 // debugging controller
-$(document).ready(function() {
+$(document).on("pageinit", "#search", function () {
   registerEventSearch();
 
   // debugging
   updateResults();
-})
+});
 
 // controller
 function registerEventSearch(){
