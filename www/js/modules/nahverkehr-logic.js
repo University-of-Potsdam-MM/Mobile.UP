@@ -1,5 +1,9 @@
 /*
 
+## Dependencies
+- jQuery
+- moment.js
+
 ## Working Functionality
 - make ajax POST request
 - map API XML data into javascript object
@@ -14,6 +18,7 @@
 "use strict";
 
 console.log('loading nahverkehr-logic.js');
+console.log('dependencies:', moment);
 
 (function($){
 
@@ -98,11 +103,17 @@ console.log('loading nahverkehr-logic.js');
     },
     'xml');
 
+  function parseTime(timeString) {
+    var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
+    console.log('parseTime', timeString, time);
+    return time;
+  }
+
   function mapSTBJourney(journey){
     var $journey = $(journey);
     var tmp = {
       id:            $journey.attr('trainId'),
-      departingTime: $journey.find('Dep > Time').html(),
+      departingTime: parseTime($journey.find('Dep > Time').html()),
       name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').html(),
       category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').html(),
       internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').html(),
