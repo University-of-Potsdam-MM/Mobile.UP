@@ -162,14 +162,6 @@ console.log('dependencies:', moment, jQuery);
     }
   });
 
-  $(function(){
-    // console.log('jQuery loaded, page ready');
-    Transport.view.TransportList = new Transport.views.TransportList({
-      el: $('#search-results'),
-      collection: collection,
-    });
-  });
-
   var nowTimeString = moment().format('HH:mm:ss');
   // console.log('nowTimeString',nowTimeString);
   $.post(
@@ -189,7 +181,14 @@ console.log('dependencies:', moment, jQuery);
 
   $(document).on("pageinit", "#transport", function () {
     console.log('pageinit #transport');
+
+    Transport.view.TransportList = new Transport.views.TransportList({
+      el: $('#search-results'),
+      collection: collection,
+    });
+
   });
+
 })(jQuery);
 
 
