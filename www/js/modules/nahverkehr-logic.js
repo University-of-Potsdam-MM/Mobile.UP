@@ -6,19 +6,21 @@
 
 ## Working Functionality
 - make ajax POST request
-- map API XML data into javascript object
+- map API XML data into JavaScript objects
+- moment.js parses and formats timestrings
+- started Backbone View
 
 ## TODO
-- create an object to encapsulate the API
-- add moment.js to parse and construct timestrings
+- create an object to encapsulate the API (e.g. Pagination)
 - Backbone-ify views and models
+- user should be able to change from where she wants to depart
 
 */
 
 "use strict";
 
 console.log('loading nahverkehr-logic.js');
-console.log('dependencies:', moment);
+console.log('dependencies:', moment, jQuery);
 
 (function($){
 
@@ -76,14 +78,14 @@ console.log('dependencies:', moment);
     return xmlString(xml);
   }
 
-  console.log(requestExternalId(haltestelle));
+  // console.log(requestExternalId(haltestelle));
 
   // Suche abgehende Verbindungen
-  function abgehendeVerbindungen(externalId){
+  function abgehendeVerbindungen(externalId, timeString){
     var xml =
       tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
         tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
-          tag('Time', {}, '16:00:00'),
+          tag('Time', {}, timeString),
           tag('Today', {}),
           tag('TableStation', {externalId:externalId}),
           tag('ProductFilter', {}, '1111111111111111')
@@ -92,20 +94,20 @@ console.log('dependencies:', moment);
     return xmlString(xml);
   }
 
-  console.log(abgehendeVerbindungen(externalId));
+  // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
 
 
   $.post(
     endpoint(),
     requestExternalId(haltestelle),
     function(data, textStatus, jqXHR){
-      console.log('requestExternalId', data,textStatus,jqXHR);
+      // console.log('requestExternalId', data,textStatus,jqXHR);
     },
     'xml');
 
   function parseTime(timeString) {
     var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
-    console.log('parseTime', timeString, time);
+    // console.log('parseTime', timeString, time);
     return time;
   }
 
@@ -113,6 +115,7 @@ console.log('dependencies:', moment);
     var $journey = $(journey);
     var tmp = {
       id:            $journey.attr('trainId'),
+      stationName:   $journey.find('MainStop Station').attr('name'),
       departingTime: parseTime($journey.find('Dep > Time').html()),
       name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').html(),
       category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').html(),
@@ -127,18 +130,61 @@ console.log('dependencies:', moment);
     return tmp;
   };
 
+  window.Transport = {
+    collection: {},
+    views: {},
+    view: {},
+  };
+
+  Transport.collection.TransportsCollection = new Backbone.Collection();
+  var collection = Transport.collection.TransportsCollection;
+  collection.on('add', function(journey){
+    console.log(journey.attributes);
+    console.log("next departure " + journey.get('departingTime').fromNow())
+  });
+
+
+  Transport.views.TransportList = Backbone.View.extend({
+    initialize: function() {
+      var transports = this.collection;
+      transports.on("reset", this.render, this);
+      transports.on("add", this.addOne, this);
+    },
+    addOne: function(t) {
+      // console.log('addOne', t);
+      this.$el.find('ul').append('<li class="ui-li-static ui-body-inherit"><p><span class="marker open"></span> ' + 
+        t.get('departingTime').fromNow() +'&nbsp;' + t.get('name') +
+        ' von ' + t.get('stationName') +
+        ' nach ' + t.get('direction')+'</p></li>');
+    },
+    render: function() {
+      this.collection.each(this.addOne);
+    }
+  });
+
+  $(function(){
+    // console.log('jQuery loaded, page ready');
+    Transport.view.TransportList = new Transport.views.TransportList({
+      el: $('#search-results'),
+      collection: collection,
+    });
+  });
+
+  var nowTimeString = moment().format('HH:mm:ss');
+  // console.log('nowTimeString',nowTimeString);
   $.post(
     endpoint(),
-    abgehendeVerbindungen(externalId),
-    function(data, textStatus, jqXHR){
-      console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
+    abgehendeVerbindungen(externalId, nowTimeString), 'xml'
+  ).done(function(data, textStatus, jqXHR){
+      // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
       var $data = $(data);
       // map every node of STBJourney to a JavaScript Object
       var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
-      return jsonArray;
-    },
-    'xml');
-
+      collection.add(jsonArray);
+      // console.log('done', collection);
+      return collection;
+    }
+  );
 
 
   $(document).on("pageinit", "#transport", function () {
