@@ -71,7 +71,7 @@
 			location = "Golm";
 		}
 		
-		headers = { "Authorization": getAuthHeader()};
+		headers = { "Authorization": getAuthHeader() };
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
