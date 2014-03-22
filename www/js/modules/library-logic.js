@@ -21,7 +21,7 @@ previously working functionality. Please don't judge.
 - maybe add a finite state machine or a router to simplify the code
 
 */
-
+//$(document).on("pageinit", "#search", function (){
 "use strict";
 $( function() {
 window.App = {
@@ -84,6 +84,7 @@ App.model.Book = Backbone.Model.extend({
       publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
       isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
       url:       App.model.Book.url(xmlRecord),
+      notes:	 App.model.Book.contentForTag(xmlRecord, 'note')
     };
     // console.log('model.toc', model.toc);
     return new App.model.Book(model);
@@ -96,6 +97,13 @@ App.model.Book = Backbone.Model.extend({
     } else {
       return null;
     }
+  },
+  
+  contentForTag: function(node, tagName){
+	  var nodes = node.getElementsByTagName(tagName);
+	  var content = _.pluck(nodes, 'textContent');
+	  console.log(content);
+	  return content;	  
   },
 
   split_string: function(string, split_by){
@@ -110,6 +118,7 @@ App.model.Book = Backbone.Model.extend({
   },
 
   // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
+  // maximum three authors to display in first view
   authors: function($recordData){
     var nameNodes = $recordData.find('name[type=personal]')
     var names = _.map(nameNodes, function(node){
@@ -159,7 +168,7 @@ App.collection.BookList = Backbone.Collection.extend({
     // console.log('xml',xmlSearchResult);
     var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
     this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
-    console.log('addXmlSearchResult', this.pluck('recordId'));
+    //console.log('addXmlSearchResult', this.pluck('recordId'));
     return this;
   },
 
@@ -182,7 +191,7 @@ App.model.LibrarySearch = Backbone.Model.extend({
   },
 
   loadNext: function() {
-    console.log('loadNext');
+    //console.log('loadNext');
     // fetch the next 10 books
     var query = this.get('query');
     var resultList = this.get('results');
@@ -190,7 +199,7 @@ App.model.LibrarySearch = Backbone.Model.extend({
     var fetch = App.model.LibrarySearch.search(query, options);
     var promise = fetch.loadSearch();
     promise.done(function(xml) {
-      console.log('done', xml);
+      //console.log('done', xml);
       resultList.addXmlSearchResult(xml);
     });
     return promise;
@@ -261,7 +270,7 @@ App.view.BookList = Backbone.View.extend({
   },
   template: rendertmpl('book_list_view'),
   render: function(){
-    console.log('render');
+    //console.log('render');
     _.templateSettings.variable = "booklist";
     var html = this.template({booklist:this.collection.models});
     this.$el.html(html);
@@ -464,4 +473,4 @@ function availableItems($recordData, book) {
   }
   return status;
 }
-
+//});

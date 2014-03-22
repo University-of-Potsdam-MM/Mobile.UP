@@ -1,8 +1,8 @@
 <% console.log('book detail', book); %>
-<h2><%= book.get('title') %></h2>
-<div>Subtitle <%= book.get('subtitle') %></div>
-<div>authors <%= book.get('authors') %></div>
-<div>publisher <%= book.get('publisher') %></div>
+<%= (book.get('title')) ? '<h2>'+book.get('title')+'</h2>' : ''%>
+<%= (book.get('subtitle')) ? '<p>'+book.get('subtitle')+'</p>' : ''%>
+<%= (book.get('authors')) ? '<p>'+book.get('authors')+'</p>' : ''%>
+<p><%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('edition')) ? ','+book.get('edition') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
 <div data-role="tabs">
   <div data-role="navbar">
     <ul>
@@ -14,7 +14,8 @@
     <!-- book_location_view.tmpl -->
   </div>
   <div id="book-details" class="ui-content">
-    <div>isbn <%= book.get('isbn') %></div>
+    <%= (book.get('isbn')) ? '<p>ISBN: '+book.get('isbn')+'</p>' : ''%>
+    <%= (book.get('notes')) ? '<p>Anmerkungen: '+book.get('notes')+'</p>' : ''%>
     <p>Abstract <%= book.get('abstract') %></p>
     <div>
         <h3>Contents</h3>
