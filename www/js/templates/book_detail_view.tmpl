@@ -10,6 +10,7 @@
       <li><a href="#book-details" data-ajax="false">Details</a></li>
     </ul>
   </div>
+  <div id="book-locations" class="ui-content"></div>
   <div id="book-details" class="ui-content">
     <%= (book.get('isbn')) ? '<p>ISBN: '+book.get('isbn')+'</p>' : ''%>
     <%= (book.get('notes')) ? '<p>Anmerkungen: '+book.get('notes')+'</p>' : ''%>
