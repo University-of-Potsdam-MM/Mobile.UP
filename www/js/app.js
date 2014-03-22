@@ -39,6 +39,11 @@ String.prototype.hashCode = function(){
 };
 
 /*
+ * Use underscore.string functions from underscore library
+ */
+_.mixin(_.string.exports());
+
+/*
  * Template Loading Functions
  */
 function rendertmpl(tmpl_name) {
