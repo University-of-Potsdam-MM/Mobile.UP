@@ -1,9 +1,4 @@
 $(document).on("pageinit", "#rooms", function () {
-	$("#roomsList").listview({
-		autodividers: true,
-		autodividersSelector: selector
-	});
-	
 	$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
 	$("div[data-role='timeselection']").timeselection({ onChange: updateTimeData });
 });
@@ -73,8 +68,8 @@ $(function() {
 			var lowerHour = center.getHours() - (center.getHours() % 2);
 			var upperHour = lowerHour + 2;
 			
-			var lower = new Date(center.getFullYear(), center.getMonth(), center.getDay(), lowerHour, 0, 0, 0);
-			var upper = new Date(center.getFullYear(), center.getMonth(), center.getDay(), upperHour, 0, 0, 0);
+			var lower = new Date(center.getFullYear(), center.getMonth(), center.getDate(), lowerHour, 0, 0, 0);
+			var upper = new Date(center.getFullYear(), center.getMonth(), center.getDate(), upperHour, 0, 0, 0);
 			return {upper: upper, lower: lower};
 		},
 		
@@ -107,6 +102,8 @@ function updateRoomData(campus) {
 	updateRoom(campus.campusName, timeBounds);
 }
 
+var lastRoomsCampus = undefined;
+
 function updateRoom(campusName, timeBounds) {
 	var campusId;
 	if (campusName === "griebnitzsee") {
@@ -117,7 +114,46 @@ function updateRoom(campusName, timeBounds) {
 		campusId = 2;
 	}
 	
+	lastRoomsCampus = campusName;
 	new FreeRooms().showFreeRooms({campus: campusId, startTime: timeBounds.from, endTime: timeBounds.to});
+}
+
+function roomsReset() {
+	$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
+}
+
+function showRoomDetails(room) {
+	var host = $("#roomsHost");
+	host.empty();
+	host.append("<legend>Reservierungen für Haus " + room.house + " Raum " + room.room + "</legend>");
+	host.append('<h3>Diese Ansicht ist derzeit deaktiviert!</h3>');
+	host.append('<ul id="reservationsforroom" data-role="listview" style="margin: 1px;"></ul>');
+	host.append("<button onclick='roomsReset()'>Zurück</button>");
+	host.trigger("create");
+	
+	// Set start and end time
+	var startTime = new Date(room.startTime);
+	startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
+	startTime = startTime.toISOString();
+	var endTime = new Date(room.endTime);
+	endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
+	endTime = endTime.toISOString();
+	
+	var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+	request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
+	headers = { "Authorization": getAuthHeader() };
+	$.ajax({
+		url: request,
+		headers: headers
+	}).done(showRoomDetailsSuccess).fail(showRoomDetailsFail);
+}
+
+function showRoomDetailsSuccess(data) {
+	$("#reservationsforroom").listview("refresh");
+}
+
+function showRoomDetailsFail() {
+	alert("Failed to load data");
 }
 
 function FreeRooms() {
@@ -134,7 +170,6 @@ function FreeRooms() {
 		var startTime = filter.startTime;
 		var endTime = filter.endTime;
 		
-		//var request = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0/readCurrentMeals?format=json&location=Golm";
 		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
 		if (building) {
 			request = request + "&building=%s";
@@ -151,22 +186,35 @@ function FreeRooms() {
 	function requestSuccess(filter) {
 		return function(result) {
 			var rooms = result["rooms4TimeResponse"]["return"];
+			rooms = _.chain(rooms)
+						.map(parseFreeRoom)
+						.map(function(room) { return _.extend(room, { startTime: filter.startTime.toISOString() }); })
+						.map(function(room) { return _.extend(room, { endTime: filter.endTime.toISOString() }); })
+						.value();
 			
-			var host = $("#roomsList");
+			var createRooms = rendertmpl('rooms');
+			var host = $("#roomsHost");
 			host.empty();
 			
-			_.chain(rooms)
-				.map(parseFreeRoom)
-				.each(function(room) {
-					var html = _.sprintf("<li data-house='%d'> \
-											<a class='ui-btn ui-btn-icon-right ui-icon-carat-r'> \
-												<h3>%s</h3> \
-											</a> \
-										</li>", room.house, room.room);
-					host.append(html);
-				});
+			// Create and add html
+			var htmlDay = createRooms({rooms: rooms});
+			host.append(htmlDay);
 			
-			host.listview("refresh");
+			// Refresh html
+			$("#roomsList").listview({
+				autodividers: true,
+				autodividersSelector: selector
+			});
+			host.trigger("create");
+			
+			$("a", host).bind("click", function(event) {
+				event.preventDefault();
+				
+				var href = $(this).attr("href");
+				var roomDetails = new URI(href).search(true).room;
+				var room = JSON.parse(roomDetails);
+				showRoomDetails(room);
+			});
 		};
 	};
 	
