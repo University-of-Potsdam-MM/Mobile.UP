@@ -84,7 +84,9 @@ App.model.Book = Backbone.Model.extend({
       publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
       isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
       url:       App.model.Book.url(xmlRecord),
-      notes:	 App.model.Book.contentForTag(xmlRecord, 'note')
+      notes:	 App.model.Book.contentForTag(xmlRecord, 'note'),
+      series:	 App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+      keywords:  App.model.Book.keywords(xmlRecord, 'subject')
     };
     // console.log('model.toc', model.toc);
     return new App.model.Book(model);
@@ -98,12 +100,21 @@ App.model.Book = Backbone.Model.extend({
       return null;
     }
   },
+
+  // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
+  keywords: function(node, tagName){
+	  var keywords = App.model.Book.contentForTag(node, tagName);
+	  var keys = _.map(keywords, function(keyword){
+		  var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
+		  var key = [keyword.trim(), url];
+		  return key;
+	  });
+	  return keys;
+  },  
   
   contentForTag: function(node, tagName){
 	  var nodes = node.getElementsByTagName(tagName);
-	  var content = _.pluck(nodes, 'textContent');
-	  console.log(content);
-	  return content;	  
+	  return _.pluck(nodes, 'textContent');	  
   },
 
   split_string: function(string, split_by){
@@ -309,12 +320,13 @@ App.view.BookShortView = Backbone.View.extend({});
 var environment = 'development';
 
 // debugging controller
-$(document).on("pageinit", "#search", function () {
+$(document).ready(function() {
+//$(document).on("pageinit", "#search", function () {
   registerEventSearch();
 
   // debugging
   updateResults();
-});
+})
 
 // controller
 function registerEventSearch(){
