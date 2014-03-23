@@ -92,79 +92,9 @@ function selector(li) {
 	return "Haus " + house;
 };
 
-function updateTimeData(bounds) {
-	var campus = $("div[data-role='campusmenu']").campusmenu("getActive");
-	updateRoom(campus, bounds);
-}
-
-function updateRoomData(campus) {
-	var timeBounds = $("div[data-role='timeselection']").timeselection("getActive");
-	updateRoom(campus.campusName, timeBounds);
-}
-
-var lastRoomsCampus = undefined;
-
-function updateRoom(campusName, timeBounds) {
-	var campusId;
-	if (campusName === "griebnitzsee") {
-		campusId = 3;
-	} else if (campusName === "neuespalais") {
-		campusId = 1;
-	} else {
-		campusId = 2;
-	}
+var FreeRooms = Backbone.Model.extend({
 	
-	lastRoomsCampus = campusName;
-	new FreeRooms().showFreeRooms({campus: campusId, startTime: timeBounds.from, endTime: timeBounds.to});
-}
-
-function roomsReset() {
-	$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
-}
-
-function showRoomDetails(room) {
-	var host = $("#roomsHost");
-	host.empty();
-	host.append("<legend>Reservierungen für Haus " + room.house + " Raum " + room.room + "</legend>");
-	host.append('<h3>Diese Ansicht ist derzeit deaktiviert!</h3>');
-	host.append('<ul id="reservationsforroom" data-role="listview" style="margin: 1px;"></ul>');
-	host.append("<button onclick='roomsReset()'>Zurück</button>");
-	host.trigger("create");
-	
-	// Set start and end time
-	var startTime = new Date(room.startTime);
-	startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
-	startTime = startTime.toISOString();
-	var endTime = new Date(room.endTime);
-	endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
-	endTime = endTime.toISOString();
-	
-	var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-	request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
-	headers = { "Authorization": getAuthHeader() };
-	$.ajax({
-		url: request,
-		headers: headers
-	}).done(showRoomDetailsSuccess).fail(showRoomDetailsFail);
-}
-
-function showRoomDetailsSuccess(data) {
-	$("#reservationsforroom").listview("refresh");
-}
-
-function showRoomDetailsFail() {
-	alert("Failed to load data");
-}
-
-function FreeRooms() {
-	
-	this.showCurrentFreeRooms = function(filter) {
-	};
-	
-	this.showNextFreeRooms = function(filter) {
-	};
-	
-	this.showFreeRooms = function(filter) {
+	loadFreeRooms: function(filter) {
 		var campus = filter.campus;
 		var building = filter.building;
 		var startTime = filter.startTime;
@@ -180,52 +110,31 @@ function FreeRooms() {
 		$.ajax({
 			url: request,
 			headers: headers
-		}).done(requestSuccess(filter)).fail(requestFail);
-	};
+		}).done(this.requestSuccess(filter)).fail(this.requestFail);
+	},
 	
-	function requestSuccess(filter) {
+	requestSuccess: function(filter) {
+		var modelHost = this;
 		return function(result) {
 			var rooms = result["rooms4TimeResponse"]["return"];
 			rooms = _.chain(rooms)
-						.map(parseFreeRoom)
+						.map(modelHost.parseFreeRoom)
 						.map(function(room) { return _.extend(room, { startTime: filter.startTime.toISOString() }); })
 						.map(function(room) { return _.extend(room, { endTime: filter.endTime.toISOString() }); })
 						.value();
 			
-			var createRooms = rendertmpl('rooms');
-			var host = $("#roomsHost");
-			host.empty();
-			
-			// Create and add html
-			var htmlDay = createRooms({rooms: rooms});
-			host.append(htmlDay);
-			
-			// Refresh html
-			$("#roomsList").listview({
-				autodividers: true,
-				autodividersSelector: selector
-			});
-			host.trigger("create");
-			
-			$("a", host).bind("click", function(event) {
-				event.preventDefault();
-				
-				var href = $(this).attr("href");
-				var roomDetails = new URI(href).search(true).room;
-				var room = JSON.parse(roomDetails);
-				showRoomDetails(room);
-			});
+			modelHost.set({rooms: rooms});
 		};
-	};
+	},
 	
-	function requestFail(error) {
+	requestFail: function(error) {
 		alert("Daten nicht geladen");
-	};
+	},
 	
 	/*
 	 * Code taken from http://area51-php.erstmal.com/rauminfo/static/js/ShowRooms.js?cb=1395329676756 with slight modifications
 	 */
-	function parseFreeRoom(room_string) {
+	parseFreeRoom: function(room_string) {
         var room_match = room_string.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
 		
 		var room = {};
@@ -237,5 +146,144 @@ function FreeRooms() {
 			room.raw = room_string;
 		}
 		return room;
-    };
+    }
+});
+
+var RoomDetailsModel = Backbone.Model.extend({
+	
+	loadRoomDetails: function(room) {
+		this.set({room: room});
+		
+		// Set start and end time
+		var startTime = new Date(room.startTime);
+		startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
+		startTime = startTime.toISOString();
+		var endTime = new Date(room.endTime);
+		endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
+		endTime = endTime.toISOString();
+		
+		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+		request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
+		headers = { "Authorization": getAuthHeader() };
+		$.ajax({
+			url: request,
+			headers: headers
+		}).done(this.showRoomDetailsSuccess()).fail(this.showRoomDetailsFail());
+	},
+	
+	showRoomDetailsSuccess: function() {
+		var modelHost = this;
+		return function(data) {
+			modelHost.trigger("change");
+		};
+	},
+	
+	showRoomDetailsFail: function() {
+		var modelHost = this;
+		return function() {
+			modelHost.trigger("change");
+		};
+	}
+});
+
+var RoomsOverview = Backbone.View.extend({
+	
+	initialize: function() {
+		this.listenTo(this.model, "change", this.render);
+	},
+	
+	render: function() {
+		var host = this.$el;
+		host.empty();
+		
+		// Create and add html
+		var createRooms = rendertmpl('rooms');
+		var htmlDay = createRooms({rooms: this.model.get("rooms")});
+		host.append(htmlDay);
+		
+		// Refresh html
+		$("#roomsList").listview({
+			autodividers: true,
+			autodividersSelector: selector
+		});
+		host.trigger("create");
+		
+		$("a", host).bind("click", function(event) {
+			event.preventDefault();
+			
+			var href = $(this).attr("href");
+			var roomDetails = new URI(href).search(true).room;
+			var room = JSON.parse(roomDetails);
+			showRoomDetails(room);
+		});
+	}
+});
+
+var RoomDetailsView = Backbone.View.extend({
+	
+	initialize: function() {
+		this.listenTo(this.model, "change", this.render);
+	},
+	
+	render: function() {
+		var room = this.model.get("room");
+		
+		// Create and add html
+		var host = this.$el;
+		host.empty();
+		host.append("<legend>Reservierungen für Haus " + room.house + " Raum " + room.room + "</legend>");
+		host.append('<h3>Diese Ansicht ist derzeit deaktiviert!</h3>');
+		host.append('<ul id="reservationsforroom" data-role="listview" style="margin: 1px;"></ul>');
+		host.append("<button onclick='roomsReset()'>Zurück</button>");
+		host.trigger("create");
+		
+		$("#reservationsforroom").listview("refresh");
+	}
+});
+
+function updateTimeData(bounds) {
+	var campus = $("div[data-role='campusmenu']").campusmenu("getActive");
+	updateRoom(campus, bounds);
+}
+
+function updateRoomData(campus) {
+	var timeBounds = $("div[data-role='timeselection']").timeselection("getActive");
+	updateRoom(campus.campusName, timeBounds);
+}
+
+function showRoomDetails(room) {
+	currentView && currentView.remove();
+	var div = $("<div></div>").appendTo("#roomsHost");
+	
+	var roomDetails = new RoomDetailsModel;
+	currentView = new RoomDetailsView({el: div, model: roomDetails});
+	
+	roomDetails.loadRoomDetails(room);
+}
+
+var lastRoomsCampus = undefined;
+var currentView = undefined;
+
+function updateRoom(campusName, timeBounds) {
+	var campusId;
+	if (campusName === "griebnitzsee") {
+		campusId = 3;
+	} else if (campusName === "neuespalais") {
+		campusId = 1;
+	} else {
+		campusId = 2;
+	}
+	
+	lastRoomsCampus = campusName;
+	currentView && currentView.remove();
+	var div = $("<div></div>").appendTo("#roomsHost");
+	
+	var roomsModel = new FreeRooms;
+	currentView = new RoomsOverview({el: div, model: roomsModel});
+	
+	roomsModel.loadFreeRooms({campus: campusId, startTime: timeBounds.from, endTime: timeBounds.to});
+}
+
+function roomsReset() {
+	$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
 }
