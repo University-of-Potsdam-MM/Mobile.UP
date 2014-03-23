@@ -6,14 +6,14 @@
 
 ## Working Functionality
 - make ajax POST request
-- map API XML data into JavaScript objects
+- switch between stations
+- map API XML data into JavaScript objects, uses Deferreds
 - moment.js parses and formats timestrings
 - started Backbone View
 
 ## TODO
 - create an object to encapsulate the API (e.g. Pagination)
 - Backbone-ify views and models
-- user should be able to change from where she wants to depart
 
 */
 
@@ -30,8 +30,27 @@ console.log('dependencies:', moment, jQuery);
   var environment = 'development';
   var accessId = 'kiy4e84a4b832962eea1943106096116';
 
-  var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
-  var externalId = "009230133#86";
+  // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
+  // var externalId = "009230133#86";
+
+  var stations = {
+    "GSEE": {
+      name: 'S Griebnitzsee Bhf',
+      externalId: '009230003#86',
+      journeys: new Backbone.Collection(),
+    },
+    "GOLM": {
+      name: 'Potsdam, Golm Bhf',
+      externalId: '009220010#86',
+      journeys: new Backbone.Collection(),
+    },
+    "PALAIS": {
+      name: 'Potsdam, Neues Palais',
+      externalId: '009230132#86',
+      journeys: new Backbone.Collection(),
+    },
+  }
+
 
   function endpoint(){
     if ('development' == environment){
@@ -78,8 +97,6 @@ console.log('dependencies:', moment, jQuery);
     return xmlString(xml);
   }
 
-  // console.log(requestExternalId(haltestelle));
-
   // Suche abgehende Verbindungen
   function abgehendeVerbindungen(externalId, timeString){
     var xml =
@@ -96,14 +113,27 @@ console.log('dependencies:', moment, jQuery);
 
   // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
 
+  function getExternalId(stationString) {
+    var defer = $.Deferred();
+    $.post(
+      endpoint(),
+      requestExternalId(stationString),
+      'xml')
+      .done(function(data, textStatus, jqXHR){
+        console.log('requestExternalId', data,textStatus,jqXHR);
+        var $data = $(data)
+        var station = $data.find('Station').first();
+        defer.resolve({
+          name:       station.attr('name'),
+          externalId: station.attr('externalId'),
+        });
+      });
+    return defer.promise();
+  }
 
-  $.post(
-    endpoint(),
-    requestExternalId(haltestelle),
-    function(data, textStatus, jqXHR){
-      // console.log('requestExternalId', data,textStatus,jqXHR);
-    },
-    'xml');
+  // getExternalId('Griebnitzsee').done(function(){console.log('Gsee', arguments)});
+  // getExternalId('Golm, Bahnhof').done(function(){console.log('Golm', arguments)});
+  // getExternalId('Neues Palais').done(function(){console.log('Neues Palais', arguments)});
 
   function parseTime(timeString) {
     var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
@@ -149,34 +179,60 @@ console.log('dependencies:', moment, jQuery);
       var transports = this.collection;
       transports.on("reset", this.render, this);
       transports.on("add", this.addOne, this);
+      _.bindAll(this, 'addOne');
     },
     addOne: function(t) {
       // console.log('addOne', t);
+      // debugger
       this.$el.find('ul').append('<li class="ui-li-static ui-body-inherit"><p><span class="marker open"></span> ' + 
         t.get('departingTime').fromNow() +'&nbsp;' + t.get('name') +
         ' von ' + t.get('stationName') +
         ' nach ' + t.get('direction')+'</p></li>');
     },
     render: function() {
+      // debugger
+      this.$el.find('ul').empty();
       this.collection.each(this.addOne);
     }
   });
 
-  var nowTimeString = moment().format('HH:mm:ss');
-  // console.log('nowTimeString',nowTimeString);
-  $.post(
-    endpoint(),
-    abgehendeVerbindungen(externalId, nowTimeString), 'xml'
-  ).done(function(data, textStatus, jqXHR){
-      // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
-      var $data = $(data);
-      // map every node of STBJourney to a JavaScript Object
-      var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
-      collection.add(jsonArray);
-      // console.log('done', collection);
-      return collection;
+  // moment should be an instance of moment.js
+  function getLeavingJourneys(externalId, moment) {
+    var defer = $.Deferred();
+    var timeString = moment.format('HH:mm:ss');
+    // console.log('timeString',timeString);
+    $.post(
+      endpoint(),
+      abgehendeVerbindungen(externalId, timeString), 'xml'
+    ).done(function(data, textStatus, jqXHR){
+        // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
+        var $data = $(data);
+        // map every node of STBJourney to a JavaScript Object
+        var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
+        defer.resolve(jsonArray);
+      }
+    );
+
+    return defer.promise();
+  }
+
+  var now = moment();
+  _.each(stations, function(station){
+    getLeavingJourneys(station.externalId, now)
+      .done(function(journeys){
+        station.journeys.reset(journeys);
+      });
+  })
+
+  var NavigationView = Backbone.View.extend({
+    events: {
+      "vclick a" : function(ev){
+        ev.preventDefault();
+        var buttonName = $(ev.target).html();
+        this.trigger('select', buttonName);
+      }
     }
-  );
+  });
 
 
   $(document).on("pageinit", "#transport", function () {
@@ -184,7 +240,17 @@ console.log('dependencies:', moment, jQuery);
 
     Transport.view.TransportList = new Transport.views.TransportList({
       el: $('#search-results'),
-      collection: collection,
+      collection: stations['GSEE'].journeys,
+    });
+
+    Transport.view.Navbar = new NavigationView({
+      el: $("#from-station-navbar")
+    });
+
+    Transport.view.Navbar.on('select', function(buttonName){
+      console.log(arguments);
+      Transport.view.TransportList.collection = stations[buttonName].journeys;
+      Transport.view.TransportList.render();
     });
 
   });
