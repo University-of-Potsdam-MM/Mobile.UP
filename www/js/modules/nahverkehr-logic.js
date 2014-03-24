@@ -6,14 +6,16 @@
 
 ## Working Functionality
 - make ajax POST request
-- switch between stations
 - map API XML data into JavaScript objects, uses Deferreds
 - moment.js parses and formats timestrings
+- switch between stations
+- 'pagination': get more departing times (journeys)
 - started Backbone View
 
 ## TODO
-- create an object to encapsulate the API (e.g. Pagination)
-- Backbone-ify views and models
+- better objects
+- Template for view
+- event 'pagebeforeshow' -> find out if need to fetch journeys
 
 */
 
@@ -37,19 +39,43 @@ console.log('dependencies:', moment, jQuery);
     "GSEE": {
       name: 'S Griebnitzsee Bhf',
       externalId: '009230003#86',
-      journeys: new Backbone.Collection(),
     },
     "GOLM": {
       name: 'Potsdam, Golm Bhf',
       externalId: '009220010#86',
-      journeys: new Backbone.Collection(),
     },
     "PALAIS": {
       name: 'Potsdam, Neues Palais',
       externalId: '009230132#86',
-      journeys: new Backbone.Collection(),
     },
-  }
+  };
+
+  // window.App = {
+  //   stations: stations
+  // };
+
+  _.each(stations, function(station){
+    _.extend(station, {
+      journeys: new Backbone.Collection(),
+      getMaxDepartingTime: function(){
+        var times = this.journeys.pluck('departingTime');
+        times.push(moment()); // add now()
+        var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+        var max = _.last(sortedTimes);
+        return max;
+      },
+      fetchJourneys: function(){
+        var station = this;
+        // get the time of last known journey
+        var moment = station.getMaxDepartingTime();
+        // get later journeys
+        getLeavingJourneys(station.externalId, moment)
+          .done(function(journeys){
+            station.journeys.add(journeys);
+          });
+      }
+    });
+  });
 
 
   function endpoint(){
@@ -120,8 +146,8 @@ console.log('dependencies:', moment, jQuery);
       requestExternalId(stationString),
       'xml')
       .done(function(data, textStatus, jqXHR){
-        console.log('requestExternalId', data,textStatus,jqXHR);
-        var $data = $(data)
+        // console.log('requestExternalId', data,textStatus,jqXHR);
+        var $data = $(data);
         var station = $data.find('Station').first();
         defer.resolve({
           name:       station.attr('name'),
@@ -169,8 +195,8 @@ console.log('dependencies:', moment, jQuery);
   Transport.collection.TransportsCollection = new Backbone.Collection();
   var collection = Transport.collection.TransportsCollection;
   collection.on('add', function(journey){
-    console.log(journey.attributes);
-    console.log("next departure " + journey.get('departingTime').fromNow())
+    // console.log(journey.attributes);
+    // console.log("next departure " + journey.get('departingTime').fromNow())
   });
 
 
@@ -184,7 +210,7 @@ console.log('dependencies:', moment, jQuery);
     addOne: function(t) {
       // console.log('addOne', t);
       // debugger
-      this.$el.find('ul').append('<li class="ui-li-static ui-body-inherit"><p><span class="marker open"></span> ' + 
+      this.$el.find('ul').append('<li class="ui-li-static ui-body-inherit"><p><span class="marker open"></span> ' +
         t.get('departingTime').fromNow() +'&nbsp;' + t.get('name') +
         ' von ' + t.get('stationName') +
         ' nach ' + t.get('direction')+'</p></li>');
@@ -217,11 +243,13 @@ console.log('dependencies:', moment, jQuery);
   }
 
   var now = moment();
+
   _.each(stations, function(station){
-    getLeavingJourneys(station.externalId, now)
-      .done(function(journeys){
-        station.journeys.reset(journeys);
-      });
+    // getLeavingJourneys(station.externalId, now)
+    //   .done(function(journeys){
+    //     station.journeys.reset(journeys);
+    //   });
+    station.fetchJourneys();
   })
 
   var NavigationView = Backbone.View.extend({
@@ -240,6 +268,14 @@ console.log('dependencies:', moment, jQuery);
 
     Transport.view.TransportList = new Transport.views.TransportList({
       el: $('#search-results'),
+      events: {
+        'vclick #later-button' : function(){
+          // we just fetch departing journeys for all stations
+          _.each(stations, function(station){
+            station.fetchJourneys();
+          });
+        }
+      },
       collection: stations['GSEE'].journeys,
     });
 
@@ -248,7 +284,7 @@ console.log('dependencies:', moment, jQuery);
     });
 
     Transport.view.Navbar.on('select', function(buttonName){
-      console.log(arguments);
+      // console.log(arguments);
       Transport.view.TransportList.collection = stations[buttonName].journeys;
       Transport.view.TransportList.render();
     });
