@@ -3,13 +3,12 @@
     <% _.each(booklist, function(book) { %>
     <li class="book-short" id="<%= book.get('recordId') %>">
         <a href="#">
-          <h2><%= book.get('title') %></h2>
-          <p><%= book.get('subtitle') %></p>
-          <p><%= book.get('authors') %></p>
-          <p><%= book.get('edition') %>, <%= book.get('publisher') %>, <%= book.get('dateIssued') %></p>
+          <%= (book.get('title')) ? '<h2>'+book.get('title')+'</h2>' : ''%>
+          <%= (book.get('subtitle')) ? '<p>'+book.get('subtitle')+'</p>' : ''%>
+          <%= (book.get('authors')) ? '<p>'+book.get('authors')+'</p>' : ''%>
+          <p><%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
         </a>
     </li>
     <% }); %>
 </ul>
-
 <a href="#loadNext" data-role="button" class="pagination-button">Mehr Ergebnisse laden</a>
