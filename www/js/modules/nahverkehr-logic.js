@@ -207,13 +207,9 @@ console.log('dependencies:', moment, jQuery);
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
-    addOne: function(t) {
-      // console.log('addOne', t);
-      // debugger
-      this.$el.find('ul').append('<li class="ui-li-static ui-body-inherit"><p><span class="marker open"></span> ' +
-        t.get('departingTime').fromNow() +'&nbsp;' + t.get('name') +
-        ' von ' + t.get('stationName') +
-        ' nach ' + t.get('direction')+'</p></li>');
+    template: rendertmpl('transport_listitem_view'),
+    addOne: function(journey) {
+      this.$el.find('ul').append(this.template({journey: journey}));
     },
     render: function() {
       // debugger
