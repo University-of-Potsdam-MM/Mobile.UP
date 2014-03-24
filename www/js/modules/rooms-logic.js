@@ -94,8 +94,20 @@ function selector(li) {
 
 var FreeRooms = Backbone.Model.extend({
 	
+	mapToId: function(campusName) {
+		var campusId;
+		if (campusName === "griebnitzsee") {
+			campusId = 3;
+		} else if (campusName === "neuespalais") {
+			campusId = 1;
+		} else {
+			campusId = 2;
+		}
+		return campusId
+	},
+	
 	loadFreeRooms: function(filter) {
-		var campus = filter.campus;
+		var campus = this.mapToId(filter.campus);
 		var building = filter.building;
 		var startTime = filter.startTime;
 		var endTime = filter.endTime;
@@ -265,15 +277,6 @@ var lastRoomsCampus = undefined;
 var currentView = undefined;
 
 function updateRoom(campusName, timeBounds) {
-	var campusId;
-	if (campusName === "griebnitzsee") {
-		campusId = 3;
-	} else if (campusName === "neuespalais") {
-		campusId = 1;
-	} else {
-		campusId = 2;
-	}
-	
 	lastRoomsCampus = campusName;
 	currentView && currentView.remove();
 	var div = $("<div></div>").appendTo("#roomsHost");
@@ -281,7 +284,7 @@ function updateRoom(campusName, timeBounds) {
 	var roomsModel = new FreeRooms;
 	currentView = new RoomsOverview({el: div, model: roomsModel});
 	
-	roomsModel.loadFreeRooms({campus: campusId, startTime: timeBounds.from, endTime: timeBounds.to});
+	roomsModel.loadFreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
 }
 
 function roomsReset() {
