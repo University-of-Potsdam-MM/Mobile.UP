@@ -201,7 +201,9 @@ console.log('dependencies:', moment, jQuery);
 
 
   Transport.views.TransportList = Backbone.View.extend({
-    initialize: function() {
+    initialize: function(options) {
+      this.stationName = options.stationName;
+
       var transports = this.collection;
       transports.on("reset", this.render, this);
       transports.on("add", this.addOne, this);
@@ -213,8 +215,11 @@ console.log('dependencies:', moment, jQuery);
     },
     render: function() {
       // debugger
+      console.log('render');
+      this.$el.find('.stationName').html(this.stationName);
       this.$el.find('ul').empty();
       this.collection.each(this.addOne);
+      return this;
     }
   });
 
@@ -273,7 +278,9 @@ console.log('dependencies:', moment, jQuery);
         }
       },
       collection: stations['GSEE'].journeys,
+      stationName: stations['GSEE'].name,
     });
+    Transport.view.TransportList.render();
 
     Transport.view.Navbar = new NavigationView({
       el: $("#from-station-navbar")
@@ -282,6 +289,7 @@ console.log('dependencies:', moment, jQuery);
     Transport.view.Navbar.on('select', function(buttonName){
       // console.log(arguments);
       Transport.view.TransportList.collection = stations[buttonName].journeys;
+      Transport.view.TransportList.stationName = stations[buttonName].name;
       Transport.view.TransportList.render();
     });
 
