@@ -1,5 +1,5 @@
 <legend>Freie Räume:</legend>
-<div data-role="listview" style="margin: 1px;">
+<div id="roomsList" data-role="listview" style="margin: 1px;">
 	<% _.each(rooms, function(room) { %>
 	<li data-house="<%= room.house %>">
 		<a href="details.html?room=<% print(encodeURIComponent(JSON.stringify(room))); %>"><%= room.room %></a>
