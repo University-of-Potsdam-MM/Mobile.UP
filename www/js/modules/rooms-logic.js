@@ -133,6 +133,7 @@ var FreeRooms = Backbone.Model.extend({
 						.map(modelHost.parseFreeRoom)
 						.map(function(room) { return _.extend(room, { startTime: filter.startTime.toISOString() }); })
 						.map(function(room) { return _.extend(room, { endTime: filter.endTime.toISOString() }); })
+						.groupBy("house")
 						.value();
 			
 			modelHost.set({rooms: rooms});
@@ -232,10 +233,6 @@ var RoomsOverview = Backbone.View.extend({
 		host.append(htmlDay);
 		
 		// Refresh html
-		$("#roomsList").listview({
-			autodividers: true,
-			autodividersSelector: selector
-		});
 		host.trigger("create");
 		
 		$("a", host).bind("click", function(event) {
@@ -243,8 +240,10 @@ var RoomsOverview = Backbone.View.extend({
 			
 			var href = $(this).attr("href");
 			var roomDetails = new URI(href).search(true).room;
-			var room = JSON.parse(roomDetails);
-			showRoomDetails(room);
+			if (roomDetails) {
+				var room = JSON.parse(roomDetails);
+				showRoomDetails(room);
+			}
 		});
 	}
 });
