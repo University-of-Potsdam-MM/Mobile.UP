@@ -139,6 +139,46 @@ console.log('dependencies:', moment, jQuery);
 
   // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
 
+
+  function verbindungVonNach(fromExternalId, toExternalId, moment) {
+    var xml =
+      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
+        tag('ConReq', {},
+          tag('Start', {},
+            tag('Station',{externalId: fromExternalId}),
+            tag('Prod')
+          ),
+          tag('Dest', {},
+            tag('Station',{externalId: toExternalId})
+          ),
+          tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
+          tag('RFlags', {b: 0, f: 5})
+        )
+      );
+    return xmlString(xml);
+  };
+
+  function getVerbindung(fromExternalId, toExternalId, moment) {
+    var defer = $.Deferred();
+    $.post(
+      endpoint(),
+      verbindungVonNach(fromExternalId, toExternalId, moment),
+      'xml')
+      .done(function(data, textStatus, jqXHR){
+        // console.log('requestExternalId', data,textStatus,jqXHR);
+        var $data = $(data);
+        // TODO: map connections from xml to objects
+        defer.resolve(data);
+      });
+
+    return defer.promise();
+  }
+
+  getVerbindung(stations.GSEE.externalId, stations.GOLM.externalId, moment())
+    .done(function(data){
+      console.log(data);
+    });
+
   function getExternalId(stationString) {
     var defer = $.Deferred();
     $.post(
@@ -246,10 +286,6 @@ console.log('dependencies:', moment, jQuery);
   var now = moment();
 
   _.each(stations, function(station){
-    // getLeavingJourneys(station.externalId, now)
-    //   .done(function(journeys){
-    //     station.journeys.reset(journeys);
-    //   });
     station.fetchJourneys();
   })
 
