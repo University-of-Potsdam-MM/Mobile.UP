@@ -174,7 +174,11 @@ var RoomDetailsModel = Backbone.Model.extend({
 		endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
 		endTime = endTime.toISOString();
 		
-		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+		// Debug: Other start and end time
+		// startTime = new Date(2010, 1, 0, 0, 0, 0, 0).toISOString();
+		// endTime = new Date(2020, 1, 0, 0, 0, 0, 0).toISOString();
+		
+		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
 		request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
 		headers = { "Authorization": getAuthHeader() };
 		$.ajax({
@@ -186,7 +190,21 @@ var RoomDetailsModel = Backbone.Model.extend({
 	showRoomDetailsSuccess: function() {
 		var modelHost = this;
 		return function(data) {
-			modelHost.trigger("change");
+			var response = data.reservations4Room;
+			if (typeof data.reservations4RoomResponse === "object") {
+				// The response is non-empty
+				var reservations = data.reservations4RoomResponse["return"];
+				var reservations = _.map(reservations, function(room) {
+					var result = {};
+					result.startTime = new Date(room.startTime);
+					result.endTime = new Date(room.endTime);
+					result.persons = room.personList;
+					result.title = room.veranstaltung;
+					return result;
+				});
+				
+				modelHost.set({reservations: reservations});
+			}
 		};
 	},
 	
@@ -238,18 +256,16 @@ var RoomDetailsView = Backbone.View.extend({
 	},
 	
 	render: function() {
-		var room = this.model.get("room");
-		
-		// Create and add html
 		var host = this.$el;
 		host.empty();
-		host.append("<legend>Reservierungen für Haus " + room.house + " Raum " + room.room + "</legend>");
-		host.append('<h3>Diese Ansicht ist derzeit deaktiviert!</h3>');
-		host.append('<ul id="reservationsforroom" data-role="listview" style="margin: 1px;"></ul>');
-		host.append("<button onclick='roomsReset()'>Zurück</button>");
-		host.trigger("create");
 		
-		$("#reservationsforroom").listview("refresh");
+		// Create and add html
+		var createDetails = rendertmpl('roomDetails');
+		var htmlDay = createDetails({reservations: this.model.get("reservations"), room: this.model.get("room")});
+		host.append(htmlDay);
+		
+		// Refresh html
+		host.trigger("create");
 	}
 });
 

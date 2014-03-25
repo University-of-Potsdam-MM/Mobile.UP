@@ -1,0 +1,16 @@
+<legend>Reservierungen für Haus <%= room.house %> Raum <%= room.room %></legend>
+<ul id="reservationsforroom" data-role="listview" style="margin: 1px;">
+	<% _.each(reservations, function(reservation) { %>
+	<li>
+		<h3>
+			<% print(("00" + reservation.startTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.startTime.getMinutes()).slice(-2)); %>
+			-
+			<% print(("00" + reservation.endTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.endTime.getMinutes()).slice(-2)); %>
+			<% if (reservation.title) { %>
+				<%= reservation.title %>
+			<% } %>
+		</h3>
+	</li>
+	<% }); %>
+</ul>
+<button onclick='roomsReset()'>Zurück</button>
