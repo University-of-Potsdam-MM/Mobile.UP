@@ -240,6 +240,7 @@ console.log('dependencies:', moment, jQuery);
   };
 
   window.Transport = {
+    model: {},
     collection: {},
     views: {},
     view: {},
@@ -313,6 +314,18 @@ console.log('dependencies:', moment, jQuery);
   });
 
 
+  Transport.views.ComplexSearchView = Backbone.View.extend({
+    events:{
+      "vclick #searchButton" : function(){console.log('click searchButton');},
+      "vclick #earlierButton": function(){console.log('click earlierButton');},
+      "vclick #laterButton"  : function(){console.log('click laterButton');},
+    },
+    render: function(){
+      console.log('render');
+      return this;
+    }
+  });
+
   $(document).on("pageinit", "#transport", function () {
     console.log('pageinit #transport');
 
@@ -345,6 +358,38 @@ console.log('dependencies:', moment, jQuery);
   });
 $(document).on("pageinit", "#transport2", function () {
     console.log('pageinit #transport2');
+
+    Transport.model.State = new Backbone.Model({
+      from: "GSEE",
+      to: "PALAIS",
+      moment: moment(),
+      connections: new Backbone.Collection()
+    });
+
+    Transport.view.FromStation = new NavigationView({
+      el: $("#fromStation2")
+    });
+
+    Transport.view.ToStation = new NavigationView({
+      el: $("#toStation2")
+    });
+
+    Transport.view.FromStation.on('select', function(buttonName){
+      console.log(arguments);
+      Transport.model.State.set('from', buttonName);
+    });
+
+    Transport.view.ToStation.on('select', function(buttonName){
+      console.log(arguments);
+      Transport.model.State.set('to', buttonName);
+    });
+
+    Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
+      el: ('#complexTransport')
+    });
+
+
+
 /*
     Transport.view.TransportList = new Transport.views.TransportList({
       el: $('#search-results'),
@@ -361,9 +406,6 @@ $(document).on("pageinit", "#transport2", function () {
     });
     Transport.view.TransportList.render();
 
-    Transport.view.Navbar = new NavigationView({
-      el: $("#from-station-navbar")
-    });
 
     Transport.view.Navbar.on('select', function(buttonName){
       // console.log(arguments);
