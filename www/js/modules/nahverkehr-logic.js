@@ -315,14 +315,84 @@ console.log('dependencies:', moment, jQuery);
 
 
   Transport.views.ComplexSearchView = Backbone.View.extend({
+    initialize: function(){
+      var query = this.model;
+      var resultList = this.collection;
+      resultList.on('reset', this.renderResults, this);
+      resultList.on('add', this.render, this);
+    },
     events:{
-      "vclick #searchButton" : function(){console.log('click searchButton');},
-      "vclick #earlierButton": function(){console.log('click earlierButton');},
-      "vclick #laterButton"  : function(){console.log('click laterButton');},
+      "vclick #searchButton" : "search",
+      "vclick #earlierButton": "searchEarlier",
+      "vclick #laterButton"  : "searchLater",
+    },
+    search: function(){
+      console.log('click searchButton');
+      this.model.fetchConnections();
+      this.renderSummary();
+    },
+    searchEarlier: function(){
+      console.log('click earlierButton');
+    },
+    searchLater: function(){
+      console.log('click laterButton');
     },
     render: function(){
-      console.log('render');
+      console.log('render', this.collection);
+      // TODO render resultlist
       return this;
+    },
+    renderSummary:function(){
+      var q = this.model;
+      // debugger;
+      this.$el.find('#summary .fromCampus').html(q.fromStation().name);
+      this.$el.find('#summary .toCampus').html(q.toStation().name);
+      this.$el.find('#summary .when').html(q.get('depTime').format());
+    },
+
+    templateListItem: rendertmpl('complex_transport_listitem'),
+    renderResults: function(){
+      console.log('render results', this.collection);
+      // TODO render resultlist
+      var view = this;
+
+      var resultList = this.$el.find('#result ul');
+      resultList.html('');
+      this.collection.each(function(connection){
+        var html = view.templateListItem({connection: connection});
+        resultList.append(html);
+      });
+      resultList.trigger('create');
+      return this;
+    },
+
+  });
+
+  Transport.StateModel = Backbone.Model.extend({
+    defaults:{
+      depTime: moment(),
+      connections: new Backbone.Collection(),
+    },
+    setTime: function(){console.log('setTime',arguments);},
+    setDate: function(){console.log('setDate',arguments);},
+    fromStation: function(){
+      return stations[this.get('from')]
+    },
+    toStation: function(){
+      return stations[this.get('to')]
+    },
+    resetConnections: function(newConnections){
+      this.get('connections').reset(newConnections);
+    },
+    fetchConnections: function(){
+      var that = this;
+      getVerbindung(
+        this.fromStation().externalId,
+        this.toStation().externalId,
+        this.get('depTime')
+      ).done(function(connections){
+        that.resetConnections(connections);
+      });
     }
   });
 
@@ -354,16 +424,15 @@ console.log('dependencies:', moment, jQuery);
       Transport.view.TransportList.stationName = stations[buttonName].name;
       Transport.view.TransportList.render();
     });
-
   });
+  // end on pageinit #transport
+
 $(document).on("pageinit", "#transport2", function () {
     console.log('pageinit #transport2');
 
-    Transport.model.State = new Backbone.Model({
+    Transport.model.State = new Transport.StateModel({
       from: "GSEE",
       to: "PALAIS",
-      moment: moment(),
-      connections: new Backbone.Collection()
     });
 
     Transport.view.FromStation = new NavigationView({
@@ -385,35 +454,10 @@ $(document).on("pageinit", "#transport2", function () {
     });
 
     Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
-      el: ('#complexTransport')
+      el: ('#complexTransport'),
+      model: Transport.model.State,
+      collection: Transport.model.State.get('connections')
     });
-
-
-
-/*
-    Transport.view.TransportList = new Transport.views.TransportList({
-      el: $('#search-results'),
-      events: {
-        'vclick #later-button' : function(){
-          // we just fetch departing journeys for all stations
-          _.each(stations, function(station){
-            station.fetchJourneys();
-          });
-        }
-      },
-      collection: stations['GSEE'].journeys,
-      stationName: stations['GSEE'].name,
-    });
-    Transport.view.TransportList.render();
-
-
-    Transport.view.Navbar.on('select', function(buttonName){
-      // console.log(arguments);
-      Transport.view.TransportList.collection = stations[buttonName].journeys;
-      Transport.view.TransportList.stationName = stations[buttonName].name;
-      Transport.view.TransportList.render();
-    });
-*/
 
   });
 
