@@ -11,9 +11,12 @@
 - switch between stations
 - 'pagination': get more departing times (journeys)
 - started Backbone View
+- verbindungVonNach API Request
 
 ## TODO
-- better objects
+- Backbone Views for Transport2
+- verbindungVonNach Response Mapping
+- better objects (eg)
 - Template for view
 - event 'pagebeforeshow' -> find out if need to fetch journeys
 
@@ -158,6 +161,15 @@ console.log('dependencies:', moment, jQuery);
     return xmlString(xml);
   };
 
+  function mapConnection(connection){
+    console.log('mapConnection', connection);
+    var $con = $(connection);
+    var myCon = {
+      id: $con.attr('id')
+    };
+    return myCon;
+  }
+
   function getVerbindung(fromExternalId, toExternalId, moment) {
     var defer = $.Deferred();
     $.post(
@@ -167,8 +179,9 @@ console.log('dependencies:', moment, jQuery);
       .done(function(data, textStatus, jqXHR){
         // console.log('requestExternalId', data,textStatus,jqXHR);
         var $data = $(data);
+        var connections = _.map($data.find('Connection'), mapConnection);
         // TODO: map connections from xml to objects
-        defer.resolve(data);
+        defer.resolve(connections);
       });
 
     return defer.promise();
@@ -328,6 +341,37 @@ console.log('dependencies:', moment, jQuery);
       Transport.view.TransportList.stationName = stations[buttonName].name;
       Transport.view.TransportList.render();
     });
+
+  });
+$(document).on("pageinit", "#transport2", function () {
+    console.log('pageinit #transport2');
+/*
+    Transport.view.TransportList = new Transport.views.TransportList({
+      el: $('#search-results'),
+      events: {
+        'vclick #later-button' : function(){
+          // we just fetch departing journeys for all stations
+          _.each(stations, function(station){
+            station.fetchJourneys();
+          });
+        }
+      },
+      collection: stations['GSEE'].journeys,
+      stationName: stations['GSEE'].name,
+    });
+    Transport.view.TransportList.render();
+
+    Transport.view.Navbar = new NavigationView({
+      el: $("#from-station-navbar")
+    });
+
+    Transport.view.Navbar.on('select', function(buttonName){
+      // console.log(arguments);
+      Transport.view.TransportList.collection = stations[buttonName].journeys;
+      Transport.view.TransportList.stationName = stations[buttonName].name;
+      Transport.view.TransportList.render();
+    });
+*/
 
   });
 
