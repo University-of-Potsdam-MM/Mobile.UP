@@ -11,13 +11,12 @@
 - switch between stations
 - 'pagination': get more departing times (journeys)
 - started Backbone View
-- verbindungVonNach API Request
+- verbindungVonNach
 
 ## TODO
-- Backbone Views for Transport2
-- verbindungVonNach Response Mapping
-- better objects (eg)
-- Template for view
+- verbindungVonNach: date + time, pagination
+- parsing durations
+- better objects
 - event 'pagebeforeshow' -> find out if need to fetch journeys
 
 */

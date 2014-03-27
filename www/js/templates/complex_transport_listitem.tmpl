@@ -18,49 +18,35 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(connection.get('sections'), function(section) { %>
+      <% _.each(connection.get('sections'), function(section, i) { %>
 
-      <tr>
-        <th><span class="marker closed"></span></th>
-        <td>ab <%= section.depTime %></td>
-        <td><%= section.depStation %></td>
-        <td><%= section.depPlatform %></td>
-        <td><%= section.journey.name %></td>
-      </tr>
-      <tr>
-        <th><span class="marker closed"></span></th>
-        <td>an <%= section.arrTime %></td>
-        <td><%= section.arrStation %></td>
-        <td><%= section.arrPlatform %></td>
-        <td></td>
-      </tr>
+        <% if (i > 0) { %>
+          <tr>
+            <th>Arrow down</th>
+            <td>Feet</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% } %>
+
+        <tr>
+          <th><span class="marker closed"></span></th>
+          <td>ab <%= section.depTime %></td>
+          <td><%= section.depStation %></td>
+          <td><%= section.depPlatform %></td>
+          <td><%= section.journey.name %></td>
+        </tr>
+        <tr>
+          <th><span class="marker closed"></span></th>
+          <td>an <%= section.arrTime %></td>
+          <td><%= section.arrStation %></td>
+          <td><%= section.arrPlatform %></td>
+          <td></td>
+        </tr>
 
       <%});%>
-<!--
-      <tr>
-        <th>Arrow down</th>
-        <td>Feet</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <th><span class="marker open"></span></th>
-        <td>ab 11:19</td>
-        <td>Park Sanssouci</td>
-        <td></td>
-        <td><div title="Richtung: Wissenschaftspark Golm">
-            <a href="#">Bus 222</a>
-          </div></td>
-      </tr>
-      <tr>
-        <th><span class="marker open"></span></th>
-        <td>an 11:25</td>
-        <td>Hauptbahnhof</td>
-        <td></td>
-        <td></td>
-      </tr>
--->
+
     </tbody>
   </table>
 </li>
