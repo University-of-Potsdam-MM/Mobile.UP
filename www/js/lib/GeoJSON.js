@@ -2,6 +2,34 @@ var GeoJSON = function( geojson, options, map ){
 
 	var map = map;
 	
+	/*
+	 * binds click event to marker with given description
+	 */
+	var addInfoWindow = function(map, googleObj, geojsonProperties, anchorPoint) {
+		if(geojsonProperties) {
+			if (geojsonProperties.Name) {
+				var desc = geojsonProperties.description ? '<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>') : "<br><br>Keine Beschreibung verfügbar";
+				if (geojsonProperties.hash) {
+					googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.hash+'\')">Ähnliche Orte</a></b>'});
+				} else {
+					googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'</b>'});
+				}
+				
+				var position;
+				if (anchorPoint) {
+					position = anchorPoint;
+				} else {
+					position = googleObj.position;
+				}
+				googleObj.info.setPosition(position);
+				
+				google.maps.event.addListener(googleObj,'click',function() {
+					googleObj.info.open(map);
+				});
+			}
+		}
+	};
+	
 	var _geometryToGoogleMaps = function( geojsonGeometry, options, geojsonProperties ){
 
 		var googleObj, opts = _copy(options);
@@ -15,20 +43,8 @@ var GeoJSON = function( geojson, options, map ){
 					}
 				}
 				googleObj = new google.maps.Marker(opts);
-				// binds click event to marker with given description
-				if(geojsonProperties) {
-					if (geojsonProperties.description) {
-						if (geojsonProperties.hash) {
-							googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+'<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>')+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.hash+'\')">Ähnliche Orte</a></b>'});
-						} else {
-							googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+'<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>')+'</b>'});
-						}
-						google.maps.event.addListener(googleObj,'click',function() {
-							googleObj.info.open(map, googleObj);
-						});
-					}
-					googleObj.set("geojsonProperties", geojsonProperties);
-				}
+				addInfoWindow(map, googleObj, geojsonProperties);
+				googleObj.set("geojsonProperties", geojsonProperties);
 				break;
 
 			case "MultiPoint":
@@ -107,6 +123,7 @@ var GeoJSON = function( geojson, options, map ){
 				}
 				opts.paths = paths;
 				googleObj = new google.maps.Polygon(opts);
+				addInfoWindow(map, googleObj, geojsonProperties, googleObj.getPath().getAt(0));
 				if (geojsonProperties) {
 					googleObj.set("geojsonProperties", geojsonProperties);
 				}
