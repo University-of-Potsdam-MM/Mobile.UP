@@ -161,12 +161,42 @@ console.log('dependencies:', moment, jQuery);
     return xmlString(xml);
   };
 
+  function mapConnectionOverview(overview) {
+    var $overview = $(overview);
+    return {
+      depStation: $overview.find('Departure BasicStop Station').attr('name'),
+      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').html(),
+      depTime:    $overview.find('Departure BasicStop Dep Time').html(),
+      arrStation: $overview.find('Arrival BasicStop Station').attr('name'),
+      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').html(),
+      arrTime:    $overview.find('Arrival BasicStop Arr Time').html(),
+      duration:   $overview.find('Duration Time').html(),
+    };
+  }
+
+
+  function mapConSections(sectionsArr) {
+    var mapped = _.map(sectionsArr, function(section) {
+      console.log(section);
+      var mapped = _.extend(
+        mapConnectionOverview(section),
+        {journey: mapSTBJourney($(section).find("Journey"))}
+      );
+      return mapped;
+    });
+
+    return mapped
+  }
+
   function mapConnection(connection){
     console.log('mapConnection', connection);
     var $con = $(connection);
     var myCon = {
-      id: $con.attr('id')
+      id: $con.attr('id'),
+      sections: mapConSections($con.find('ConSection')),
     };
+    var overview = $con.find('Overview').first();
+    _.extend(myCon, mapConnectionOverview(overview));
     return myCon;
   }
 
@@ -189,7 +219,7 @@ console.log('dependencies:', moment, jQuery);
 
   getVerbindung(stations.GSEE.externalId, stations.GOLM.externalId, moment())
     .done(function(data){
-      console.log(data);
+      console.log('debugging', data);
     });
 
   function getExternalId(stationString) {
@@ -347,7 +377,7 @@ console.log('dependencies:', moment, jQuery);
       // debugger;
       this.$el.find('#summary .fromCampus').html(q.fromStation().name);
       this.$el.find('#summary .toCampus').html(q.toStation().name);
-      this.$el.find('#summary .when').html(q.get('depTime').format());
+      this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 
     templateListItem: rendertmpl('complex_transport_listitem'),

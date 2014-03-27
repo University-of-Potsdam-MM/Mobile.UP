@@ -2,8 +2,8 @@
   data-expanded-icon="arrow-up" data-iconpos="right">
 
   <h3>
-    <span>ab 11:15 Griebnitzsee Bhf</span>
-    <span>an 11:21 Golm Bhf</span>
+    <span>ab <%= connection.get('depTime') %> <%= connection.get('depStation') %></span> <br />
+    <span>an <%= connection.get('arrTime') %> <%= connection.get('arrStation') %></span>
   </h3>
 
   <table data-role="table" data-mode="reflow"
@@ -18,20 +18,25 @@
       </tr>
     </thead>
     <tbody>
+      <% _.each(connection.get('sections'), function(section) { %>
+
       <tr>
         <th><span class="marker closed"></span></th>
-        <td>ab 11:15</td>
-        <td>Golm</td>
-        <td>Gleis 3</td>
-        <td>RE12345</td>
+        <td>ab <%= section.depTime %></td>
+        <td><%= section.depStation %></td>
+        <td><%= section.depPlatform %></td>
+        <td><%= section.journey.name %></td>
       </tr>
       <tr>
         <th><span class="marker closed"></span></th>
-        <td>an 11:18</td>
-        <td>Park Sanssouci</td>
-        <td>Gleis 4</td>
+        <td>an <%= section.arrTime %></td>
+        <td><%= section.arrStation %></td>
+        <td><%= section.arrPlatform %></td>
         <td></td>
       </tr>
+
+      <%});%>
+<!--
       <tr>
         <th>Arrow down</th>
         <td>Feet</td>
@@ -55,6 +60,7 @@
         <td></td>
         <td></td>
       </tr>
+-->
     </tbody>
   </table>
 </li>
