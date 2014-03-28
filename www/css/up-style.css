@@ -177,6 +177,10 @@ h2 {
 	font-weight:normal;
 	margin-left:1em;
 }
+
+h2 span {
+	font-weight:bold;
+}
  
 
 
@@ -917,4 +921,40 @@ background-color: rgba(255, 255, 255, 0.8);
 	width:86%;
 	margin: 0 auto;
 	color:none;
+	
+ }
+ 
+ #search .ui-listview>li h2  {
+	text-transform:none;
+	color:#000;
+	
+	
+ }
+ 
+  #search .ui-listview>li p {
+	text-transform:none;
+	color:#000; 
+}
+
+  #search .ui-listview>li h2 span {
+	font-weight:normal;
+	color:#000;
+ }
+ 
+ div.booktitle {
+ 	margin-left:.5em;
+ }
+ 
+ div.booktitle h2{
+ 	margin-left:0em;
+ 	text-transform:none;
+ 	font-size:1em;
+ 	margin-bottom:0;
+ 	color:#666;
+ 	font-family:serif;
+ }
+ 
+ div.booktitle p {
+ 	font-size:.75em;
+ 	margin-top:3px;
  }
