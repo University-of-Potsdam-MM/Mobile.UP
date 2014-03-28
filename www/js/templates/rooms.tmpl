@@ -1,0 +1,19 @@
+<legend>Freie Räume:</legend>
+<div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+	<% _.each(_.keys(rooms), function(roomIndex) { %>
+	<div data-role="collapsible" data-collapsed="true">
+		<h3>
+			<div>Haus <%= roomIndex %></div>
+			<div>(<%= rooms[roomIndex].length %>)</div>
+		</h3>
+		
+		<div data-role="listview">
+			<% _.each(rooms[roomIndex], function(room) { %>
+			<li>
+				<a href="details.html?room=<% print(encodeURIComponent(JSON.stringify(room))); %>"><%= room.room %></a>
+			</li>
+			<% }); %>
+		</div>
+	</div>
+	<% }); %>
+</div>

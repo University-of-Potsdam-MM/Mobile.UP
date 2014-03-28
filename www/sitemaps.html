@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-        <div data-role="page" id="sitemaps">
-        <div data-role="panel" data-position="right" data-display="overlay" id="sitemaps-settings" data-theme="c" data-dismissible="false">
-            <fieldset data-role="controlgroup">
-                <legend>Folgende Orte anzeigen:</legend>
-                <input type="checkbox" name="Terminals" id="Terminals" checked="true">
-                <label for="Terminals" class="sitemap-terminals">Terminals</label>
-                <input type="checkbox" name="Institute" id="Institute" checked="true">
-                <label for="Institute" class="sitemap-institutes">Institute</label>
-                <input type="checkbox" name="Mensen" id="Mensen" checked="true">
-                <label for="Mensen" class="sitemap-canteens">Mensen &amp; Cafeterien</label>
-            </fieldset>
-            <a href="#header" data-role="button" data-rel="close">Schlie&szlig;en</a>
-        </div>
-           <!-- Start Header -->
-            <div data-role="header" data-position="fixed">
-                <a href="plans.html" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-                <h1>Lagepl&auml;ne</h1>
-                <a href="#sitemaps-settings" data-role="button" data-icon="gear"></a>
-            </div>
-            <!-- End Header -->
-            <!-- Start Main - Navigation -->
-            <div data-role="content" data-theme="c">
+	<head>
+
+	</head>
+	<body>
+		<div data-role="page" id="sitemaps">
+			<div data-role="panel" data-position="right" data-display="overlay" id="sitemaps-settings" data-theme="c" data-dismissible="false">
+				<fieldset data-role="controlgroup">
+					<legend>Folgende Orte anzeigen:</legend>
+					<input type="checkbox" name="Terminals" id="Terminals" checked="true">
+					<label for="Terminals" class="sitemap-terminals">Terminals</label>
+					<input type="checkbox" name="Institute" id="Institute" checked="true">
+					<label for="Institute" class="sitemap-institutes">Institute</label>
+					<input type="checkbox" name="An-Institute" id="AnInstitute" checked="true">
+					<label for="AnInstitute" class="sitemap-associateinstitutes">An-Institute</label>
+					<input type="checkbox" name="Parking" id="Parking" checked="true">
+					<label for="Parking" class="sitemap-parking">Parkpl&auml;tze</label>
+					<input type="checkbox" name="Mensen" id="Mensen" checked="true">
+					<label for="Mensen" class="sitemap-canteens">Mensen &amp; Cafeterien</label>
+					<input type="checkbox" name="Studentenwohnheime" id="Living" checked="true">
+					<label for="Living" class="sitemap-living">Studentenwohnheime</label>
+				</fieldset>
+				<a href="#header" data-role="button" data-rel="close">Schlie&szlig;en</a>
+			</div>
+			<!-- Start Header -->
+			<div data-role="header" data-position="fixed" data-tap-toggle="false">
+				<a href="plans.html" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+				<h1>Lagepl&auml;ne</h1>
+				<a href="#sitemaps-settings" data-role="button" data-icon="gear"></a>
+			</div>
+			<!-- End Header -->
+			<!-- Start Main - Navigation -->
+			<div data-role="content" data-theme="c">
 				<div data-role="campusmenu" data-store="up.mensa.default"></div>
 				<div id="currentCampus"></div>
-            </div>
-       </div>
-       <!-- End Main - Navigation -->
-    </body>
+			</div>
+		</div>
+		<!-- End Main - Navigation -->
+	</body>
 </html>

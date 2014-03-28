@@ -17,6 +17,13 @@ function removeLoadingSpinner(uniqueDivId) {
 }
 
 /*
+ * Retreive authorization token
+ */
+function getAuthHeader() {
+	return "Bearer c06156e119040a27a4b43fa933f130";
+}
+
+/*
  * hashCode function for String
  * see http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ for details
  */
@@ -30,6 +37,11 @@ String.prototype.hashCode = function(){
     }
     return hash;
 };
+
+/*
+ * Use underscore.string functions from underscore library
+ */
+_.mixin(_.string.exports());
 
 /*
  * Template Loading Functions

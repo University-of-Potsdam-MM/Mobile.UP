@@ -1,17 +1,17 @@
-<h2>Liste aller Ausgaben</h2>
+<h2><span>Liste aller Ausgaben:</span> 20 von 50 Einträgen</h2>
 <ul data-role="listview" data-inset="true">
+
+<ul class="booklist" data-role="listview" data-inset="true">
+
     <% _.each(booklist, function(book) { %>
-    <li id="<%= book.recordID %>">
+    <li class="book-short" id="<%= book.get('recordId') %>">
         <a href="#">
-        <h3>
-    <span class="marker open"></span>
-  </h3>
-            <h2><%= book.title %></h2>
-            <p><%= book.subtitle %></p>
-            <p><%= book.authors %></p>
-            <p><%= book.edition %>, <%= book.publisher %>, <%= book.dateIssued %></p>
-            <p></p>
+          <%= (book.get('title')) ? '<h2>'+book.get('title')+'<br>' : ''%>
+          <%= (book.get('subtitle')) ?'<span>'+ book.get('subtitle')+'</span></h2>' : ''%>
+          <%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
+         <%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
         </a>
     </li>
     <% }); %>
 </ul>
+<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse 21 - 40</a>

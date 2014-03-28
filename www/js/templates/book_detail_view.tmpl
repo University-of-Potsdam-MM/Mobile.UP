@@ -1,25 +1,32 @@
-<h2><%= book.title %></h2>
-<div>Subtitle <%= book.subtitle %></div>
-<div>authors <%= book.authors %></div>
-<div>publisher <%= book.publisher %></div>
+<% console.log('book detail', book); %>
+<%= (book.get('title')) ? '<h2>'+book.get('title')+'</h2>' : ''%>
+<%= (book.get('subtitle')) ? '<p>'+book.get('subtitle')+'</p>' : ''%>
+<%= (book.get('authors')) ? '<p>'+book.get('authors')+'</p>' : ''%>
+<p><%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('edition')) ? ','+book.get('edition') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
 <div data-role="tabs">
-	<div data-role="navbar">
-		<ul>
-			<li><a href="#book-location" data-ajax="false" class="ui-btn-active">Standort</a></li>
-			<li><a href="#book-details" data-ajax="false">Details</a></li>
-		</ul>
-	</div>
-	<div id="book-location" class="ui-content"></div>
-	<div id="book-details" class="ui-content">
-		<div>isbn <%= book.isbn %></div>
-		<p> Abstract <%= book.abstract %></p>
-		<div>
-  			<h3>Contents</h3>
-  			<ul>
-	    		<% _.each(book.toc, function(chapter){ %>
-    			<li><%= chapter %></li>
-  				<%});%>
-  			</ul>
-		</div>
-	</div>
+  <div data-role="navbar">
+    <ul>
+      <li><a href="#book-location" data-ajax="false" class="ui-btn-active">Standort</a></li>
+      <li><a href="#book-details" data-ajax="false">Details</a></li>
+    </ul>
+  </div>
+  <div id="book-locations" class="ui-content"></div>
+  <div id="book-details" class="ui-content">
+    <%= (book.get('isbn')) ? '<p>ISBN: '+book.get('isbn')+'</p>' : ''%>
+    <%= (book.get('notes')) ? '<p>Anmerkungen: '+book.get('notes')+'</p>' : ''%>
+    <%= (book.get('keywords')) ? '<p>Schlagwörter:' : '' %>
+    	<% _.each(book.get('keywords'), function(keyword){ %>
+				<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
+          <% }); %>
+		<%= (book.get('keywords')) ? '</p>' : '' %>
+
+    <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+    	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
+    	<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><p><ul>' : '' %>
+          <% _.each(book.get('toc'), function(chapter){ %>
+            <li><%= chapter %></li>
+          <% }); %>
+			<%= (book.get('toc')) ? '</ul></p></div>' : '' %>
+    </div>    
+  </div>
 </div>

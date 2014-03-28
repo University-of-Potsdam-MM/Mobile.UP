@@ -35,7 +35,7 @@ $(document).on("pageinit", "#opening", function () {
                 };
 
                 if ((opening == null) || _.isString(opening)) {
-                  return 'notsure';
+                  return 'closed';
                 };
 
                 var time = this.hoursColonMinutes(date);
