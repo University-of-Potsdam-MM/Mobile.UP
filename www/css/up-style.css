@@ -79,8 +79,8 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 
 /*suche input*/
 .ui-input-search {
-	margin:20px; auto;
-	width:80%;
+	margin:10px auto;
+	width:85%;
 	border:2px inset #ededed;
 }
 
@@ -909,3 +909,11 @@ background-color: rgba(255, 255, 255, 0.8);
 
 }
 */
+
+/*suche*/
+
+ #search .ui-input-btn  {
+	width:86%;
+	margin: 0 auto;
+	color:none;
+ }
