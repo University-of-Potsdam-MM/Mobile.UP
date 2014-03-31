@@ -77,10 +77,29 @@ html head + body .ui-navbar.ui-btn.ui-btn-c:visited{
 	padding-right:0;
 }
 
+#search .ui-tabs {
+	background-color:#d0dae3;
+	padding:0;
+	
+}
+
+#search-results li.ui-state-active:after {
+	background-image: url(../img/up/marker.png);
+background-repeat: no-repeat;
+background-position: 50%;
+
+content: ".";
+display: block;
+color: #d0dae3;
+margin-top: -6px;
+padding: 0;
+border-right:1px solid #d0dae3;
+}
+
 /*suche input*/
 .ui-input-search {
 	margin:10px auto;
-	width:85%;
+	width:90%;
 	border:2px inset #ededed;
 }
 
@@ -639,6 +658,7 @@ font-weight:normal;
 	
 	padding: .8em 0em !important; /*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 	white-space:normal;
+	background:#d0dae3;
 }
 
 .speiseplan .ui-collapsible-content.ui-body-inherit {
@@ -741,6 +761,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed, html .ui-body-c .ui-b
 
 .ui-listview>li p {
 	text-transform: none;
+	
 }
 
 .ui-bar-inherit.ui-li-divider {border:none !important}
@@ -770,7 +791,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 /* Circles 
 -------------------- */
 
-.both{
+.both, .prebook{
 	display:block;
 	float:left;
      height:0px;
@@ -786,7 +807,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	 margin-left: 10px;
 }
 
-.closed{
+.prebook {
+	margin-left:0;
+}
+
+.closed, lent{
 	display:block;
 	float:left;
      height: 20px; 
@@ -799,7 +824,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	 margin-left: 10px;
 }
 
-.open{
+.lent {
+	margin-left:0;
+}
+
+.open, available{
 	display:block;
 	float:left;
      height: 20px; 
@@ -810,6 +839,10 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
     border-radius: 150px;
     margin-right:10px;
 	margin-left: 10px;
+}
+
+.available {
+	margin-left:0;
 }
 
 /*arrow up - arrow down 
@@ -824,6 +857,15 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	background-image: url(../img/up/arrow-up.png);
 	background-color:transparent;
 }
+
+/*arrow right */
+
+.ui-icon-arrow-darkblue:after {
+	background-image: url(../img/up/arrow-darkblue.png);
+	background-color:transparent;
+}
+
+
 
 /*table  öffnungszeiten
 ---------------------------------*/
@@ -918,15 +960,23 @@ background-color: rgba(255, 255, 255, 0.8);
 /*suche*/
 
  #search .ui-input-btn  {
-	width:86%;
+	width:91%;
 	margin: 0 auto;
 	color:none;
+	font-weight:normal;
+	text-transform:uppercase;
 	
+	
+ }
+ 
+ #search .ui-input-btn input {
+ 	color:none !important;
  }
  
  #search .ui-listview>li h2  {
 	text-transform:none;
 	color:#000;
+	margin-bottom:1px;
 	
 	
  }
@@ -934,7 +984,13 @@ background-color: rgba(255, 255, 255, 0.8);
   #search .ui-listview>li p {
 	text-transform:none;
 	color:#000; 
+	margin-top:0;
+	font-style:italic;
 }
+
+  #search .ui-listview>li p b {
+  font-style:normal;
+  }
 
   #search .ui-listview>li h2 span {
 	font-weight:normal;
@@ -943,9 +999,10 @@ background-color: rgba(255, 255, 255, 0.8);
  
  div.booktitle {
  	margin-left:.5em;
+ 	min-height: 100px;
  }
  
- div.booktitle h2{
+ div.booktitle h2, div.booktitle p{
  	margin-left:0em;
  	text-transform:none;
  	font-size:1em;
@@ -954,7 +1011,60 @@ background-color: rgba(255, 255, 255, 0.8);
  	font-family:serif;
  }
  
+ #book-icon {
+ 	width:100px;
+ 	min-height:100px;
+ 	float:lefT;
+ }
+ 
  div.booktitle p {
  	font-size:.75em;
  	margin-top:3px;
+ 	margin-bottom:1em;
  }
+ 
+  #book-locations {
+   background:#d0dae3;
+  }
+ 
+ #book-locations div {
+ 	margin-left:1em;
+ 	 
+ }
+ 
+  #book-locations h3 {
+  margin:0;
+
+  }
+ 
+ #book-details p {
+ 	margin-left:1em;
+ }
+ 
+ #book-details p em{
+ 	font-style:normal;
+ 	font-weight:bold;
+ }
+ 
+  #book-details .ui-collapsible-heading {
+  	background:#d0dae3;
+  }
+ 
+ #book-details .ui-collapsible-heading a {
+ 	margin-left:1em;
+ }
+ 
+#book-details .ui-body-inherit.ui-collapsible-content {
+	padding-left:1em;
+	padding-top:0;
+}
+
+#book-details .ui-body-inherit.ui-collapsible-content p {
+	margin-left:0em;
+	margin-top:0em;
+}
+
+#book-details .ui-body-inherit.ui-collapsible-content ul {
+	margin-top:0;
+	padding-left: 1.1em;
+}
