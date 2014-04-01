@@ -1,10 +1,12 @@
 <% _.each(locations, function(location) { %>
 <div>
 	<h3><%= location.department %></h3>
+	<span class="available"></span> <!--Alternativen: lent, prebook -->
 	<%= (location.label) ? "<p>"+location.label+"<br>" : "" %>
 
-    <span class="available"></span> <!--Alternativen: lent, prebook -->
+   
 
 	<%= location.availableitems %></p>
+	 
 </div>
 <% }); %>

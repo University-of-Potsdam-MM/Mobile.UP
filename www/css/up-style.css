@@ -811,7 +811,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	margin-left:0;
 }
 
-.closed, lent{
+.closed, .lent{
 	display:block;
 	float:left;
      height: 20px; 
@@ -828,7 +828,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	margin-left:0;
 }
 
-.open, available{
+.open, .available{
 	display:block;
 	float:left;
      height: 20px; 
