@@ -992,6 +992,12 @@ background-color: rgba(255, 255, 255, 0.8);
   font-style:normal;
   }
 
+#search .ui-listview>li h2 {
+	white-space: normal;
+	text-overflow: clip;
+	overflow: visible;
+	margin-top:0;
+}
   #search .ui-listview>li h2 span {
 	font-weight:normal;
 	color:#000;
@@ -1068,3 +1074,67 @@ background-color: rgba(255, 255, 255, 0.8);
 	margin-top:0;
 	padding-left: 1.1em;
 }
+
+/* Ressourcen*/
+li.book-short {
+	word-break:break-all
+}
+
+li.book-short div {	
+	width:30px;
+	height:40px;
+	background-repeat:no-repeat !important;
+	background-position: 0px 7px;
+	float:left;
+
+}
+
+div.buch {
+	background-image:url(../img/up/buch.png) !important;
+}
+
+li.book-short:hover div.buch, li.book-short:active div.buch {
+	background-image:url(../img/up/buch-hover.png) !important;
+}
+
+div.onlineressource {
+	background-image:url(../img/up/onlineressource.png) !important;
+}
+
+li.book-short:hover div.onlineressource, li.book-short:active div.onlineressource, {
+	background-image:url(../img/up/onlineressource-hover.png) !important;
+}
+
+div.zeitschrift {
+	background-image:url(../img/up/zeitschrift.png) !important;
+}
+
+li.book-short:hover div.zeitschrift, li.book-short:active div.zeitschrift {
+	background-image:url(../img/up/zeitschrift-hover.png) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
