@@ -160,42 +160,94 @@ console.log('dependencies:', moment, jQuery);
     return xmlString(xml);
   };
 
+  // maps a Time string like '00d:00:15:00' into a momentjs duration
+  // var m = moment().add(parseDuration("00d00:10:00"));
+  // console.log(m.format('HH:mm'));
+  function parseDuration(durationString) {
+    if (durationString) {
+      var duration = durationString.replace('d', '.');
+      return moment.duration(duration);
+    }
+  }
+
+  // date is a moment.js Date and
+  // we should NEVER CHANGE it!
+  function datetime(date, timeString) {
+    var copyDate = moment(date);
+    var duration = parseDuration(timeString);
+    return copyDate.add(duration);
+  }
+
   function mapConnectionOverview(overview) {
     var $overview = $(overview);
-    return {
+
+    var dateString = $overview.find('Date').html();
+    var date = parseDate(dateString);
+
+    var mapped = {
+      date: date,
+
       depStation: $overview.find('Departure BasicStop Station').attr('name'),
       depPlatform:$overview.find('Departure BasicStop Dep Platform Text').html(),
-      depTime:    $overview.find('Departure BasicStop Dep Time').html(),
+      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').html()),
+
       arrStation: $overview.find('Arrival BasicStop Station').attr('name'),
       arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').html(),
-      arrTime:    $overview.find('Arrival BasicStop Arr Time').html(),
-      duration:   $overview.find('Duration Time').html(),
+      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').html()),
+
+      duration:   parseDuration($overview.find('Duration Time').html()),
     };
+
+    return mapped;
   }
 
 
-  function mapConSections(sectionsArr) {
+  function mapConnectionSection(overview, date) {
+    var $overview = $(overview);
+
+    var mapped = {
+      date: date,
+      depStation: $overview.find('Departure BasicStop Station').attr('name'),
+      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').html(),
+      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').html()),
+
+      arrStation: $overview.find('Arrival BasicStop Station').attr('name'),
+      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').html(),
+      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').html()),
+    };
+
+    return mapped;
+  }
+
+
+  function mapConSections(sectionsArr, mDate) {
+
     var mapped = _.map(sectionsArr, function(section) {
-      console.log(section);
-      var mapped = _.extend(
-        mapConnectionOverview(section),
+      // console.log(section);
+      var mappedSection = _.extend(
+        mapConnectionSection(section, mDate),
         {journey: mapSTBJourney($(section).find("Journey"))}
       );
-      return mapped;
+      return mappedSection;
     });
 
     return mapped
   }
 
   function mapConnection(connection){
-    console.log('mapConnection', connection);
+    // console.log('mapConnection', connection);
     var $con = $(connection);
     var myCon = {
       id: $con.attr('id'),
-      sections: mapConSections($con.find('ConSection')),
     };
+
     var overview = $con.find('Overview').first();
     _.extend(myCon, mapConnectionOverview(overview));
+
+    var date = myCon.date;
+
+    _.extend(myCon, {sections: mapConSections($con.find('ConSection'), date)});
+
     return myCon;
   }
 
@@ -242,6 +294,10 @@ console.log('dependencies:', moment, jQuery);
   // getExternalId('Griebnitzsee').done(function(){console.log('Gsee', arguments)});
   // getExternalId('Golm, Bahnhof').done(function(){console.log('Golm', arguments)});
   // getExternalId('Neues Palais').done(function(){console.log('Neues Palais', arguments)});
+
+  function parseDate(yyyymmdd) {
+    return moment(yyyymmdd,'YYYYMMDD');
+  }
 
   function parseTime(timeString) {
     var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
@@ -297,7 +353,6 @@ console.log('dependencies:', moment, jQuery);
       this.$el.find('ul').append(this.template({journey: journey}));
     },
     render: function() {
-      // debugger
       console.log('render');
       this.$el.find('.stationName').html(this.stationName);
       this.$el.find('ul').empty();
@@ -373,7 +428,6 @@ console.log('dependencies:', moment, jQuery);
     },
     renderSummary:function(){
       var q = this.model;
-      // debugger;
       this.$el.find('#summary .fromCampus').html(q.fromStation().name);
       this.$el.find('#summary .toCampus').html(q.toStation().name);
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
@@ -491,8 +545,3 @@ $(document).on("pageinit", "#transport2", function () {
   });
 
 })(jQuery);
-
-
-
-
-
