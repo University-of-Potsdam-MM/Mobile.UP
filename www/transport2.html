@@ -6,22 +6,23 @@
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
     <!-- Always use the same header for production -->
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-        
+
     <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-        
+
     <!-- Javascript Files -->
     <!-- Core Libraries -->
     <script type="text/javascript" src="phonegap.js"></script>
     <script src="js/lib/jquery-1.10.2.min.js"></script>
     <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
     <script src="js/lib/q.min.js"></script>
-    <script src="js/lib/underscore.min.js"></script>
-    <script src="js/lib/backbone.min.js"></script>
+    <script src="js/vendor/underscore.js"></script>
+    <script src="js/vendor/underscore.string.js"></script>
+    <script src="js/vendor/backbone.js"></script>
     <script src="js/lib/jqm-datebox.core.min.js"></script>
     <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
     <script src="js/lib/jquery.datetimepicker.js"></script>
@@ -29,36 +30,24 @@
     <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
-    
+
     <script src="js/modules/common-widgets.js"></script>
     <script id="panel-init">
       $(function () {
         $("[data-role='panel']").panel().enhanceWithin();
       });
-      </script>      
-     <script src="js/app.js"></script>  
+      </script>
+     <script src="js/app.js"></script>
 
-    <!-- Mensa -->
-    <script src="js/modules/mensa-logic.js"></script>
+    <!-- Public Transportation -->
+    <script src="js/vendor/moment.js"></script>
+    <script src="js/modules/nahverkehr-logic.js"></script>
 
-    <!-- Sitemaps -->
-    <script src="js/lib/GeoJSON.js"></script>        
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <script src="js/modules/sitemap-logic.js"></script>
 
-    <!-- Opening -->
-    <script src="js/modules/opening-logic.js"></script>
-
-    <!-- Search - Library -->
-    <script src="js/xml2json.min.js"></script>
-    <script src="js/modules/library-logic.js"></script>
-
-    <!-- Emergency -->
-    <script src="js/modules/emergency-logic.js"></script>  
   </head>
   <body>
     <!-- Start Main Page -->
-    <div data-role="page" id="transport">
+    <div data-role="page" id="transport2">
        <!-- Start Header -->
       <div data-role="header" data-position="fixed" data-tap-toggle="false">
         <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
@@ -66,243 +55,79 @@
         <h1>Abfahrten</h1>
       </div>
       <!-- End Header -->
+
       <!-- Start Main - Navigation -->
-    <div data-role="content" data-theme="c">
-    <div data-role="navbar">
+      <div data-role="content" data-theme="c">
+
+        <div data-role="navbar">
           <ul>
             <li><a href="transport.html">N&auml;chste Abfahrten</a></li>
             <li><a href="transport2.html" class="ui-btn-active">Fahrt planen</a></li>
           </ul>
-        </div>
-        <!-- Fahrt eingeben -->
-        <div data-role="navbar" class="buttons_pt">         
-          <ul>
-            <li><p>VON:</p></li>
-            <li><a href="#" class="ui-btn-active">GSEE</a></li>
-            <li><a href="#">GOLM</a></li>
-            <li><a href="#">PALAIS</a></li>
-          </ul>
-        </div>
-        <div data-role="navbar" class="buttons_pt route">
-          <ul>
-            <li><p>Nach:</p></li>
-            <li><a href="#">GSEE</a></li>
-            <li><a href="#">GOLM</a></li>
-            <li><a href="#" class="ui-btn-active">PALAIS</a></li>
-          </ul>
-        </div>                
-        <div data-role="navbar" class="buttons_pt route">
-          <ul>
-            <li>
-              <p></p>
-            </li>
-            <li>
-              <select name="flip-1" id="flip-1" data-role="slider">
-                <option value="off">Ab</option>
-                <option value="on">An</option>
-              </select>
-            </li>
-            <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
-            <li><input name="mydate" id="mydate" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
-          </ul>
-        </div>     
-        <input type="submit" value="Suchen" data-theme="a"/>
-      <p>Fahrt von Campus Griebnitzsee nach</p>
-      <p>Campus Golm</p>
-      <p>Heute, 10.02.2234, Abfahrt 11:15</p>
+        </div> <!-- end navbar -->
 
-      <input type="submit" value="<--Fr&uumlher" />
+        <div id="complexTransport">
+          <!-- Fahrt eingeben -->
+          <div id="fromStation2" data-role="navbar" class="buttons_pt">
+            <ul>
+              <li><p>VON:</p></li>
+              <li><a href="#" class="ui-btn-active">GSEE</a></li>
+              <li><a href="#">GOLM</a></li>
+              <li><a href="#">PALAIS</a></li>
+            </ul>
+          </div>
+
+          <div id="toStation2" data-role="navbar" class="buttons_pt route">
+            <ul>
+              <li><p>Nach:</p></li>
+              <li><a href="#">GSEE</a></li>
+              <li><a href="#">GOLM</a></li>
+              <li><a href="#" class="ui-btn-active">PALAIS</a></li>
+            </ul>
+          </div>
+
+          <div data-role="navbar" class="buttons_pt route">
+            <ul>
+              <li>
+                <p></p>
+              </li>
+              <li>
+                <select name="flip-1" id="flip-1" data-role="slider">
+                  <option value="off">Ab</option>
+                  <option value="on">An</option>
+                </select>
+              </li>
+              <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
+              <li><input name="mytime" id="mytime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
+            </ul>
+          </div>
+
+          <input id='searchButton' type="submit" value="Suchen" data-theme="a"/>
+
+          <div id="result">
+
+            <div id="summary">
+              <p>Fahrt von <span class='fromCampus'>Campus Griebnitzsee</span> nach</p>
+              <p class='toCampus'>Campus Golm</p>
+              <p class='when'>Heute, 10.02.2234, Abfahrt 11:15</p>
+            </div>
+
+            <input id='earlierButton' type="submit" value="<--Früher" />
 
 
+            <ul data-role="listview" data-inset="true" id="transport_rides">
+            </ul>
 
 
-      <ul data-role="listview" data-inset="true" id="transport_rides">
+            <input id='laterButton' type="submit" value="Später-->" />
 
-        <li data-role="collapsible" data-collapsed-icon="arrow-down"
-          data-expanded-icon="arrow-up" data-iconpos="right">
+          </div> <!-- end #result -->
 
-          <h3>
-            <p>ab 11:15 Griebnitzsee Bhf</p>
-            <p>an 11:21 Golm Bhf</p>
-          </h3>
+        </div> <!-- end #complexTransport -->
 
-          <table data-role="table" data-mode="reflow"
-            class="ui-responsive table-stripe ">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Uhrzeit</th>
-                <th>Bahnhof</th>
-                <th>Gleis</th>
-                <th>Nr.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>ab 11:15</td>
-                <td>Golm</td>
-                <td>Gleis 3</td>
-                <td>RE12345</td>
-              </tr>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>an 11:18</td>
-                <td>Park Sanssouci</td>
-                <td>Gleis 4</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Arrow down</th>
-                <td>Feet</td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>ab 11:19</td>
-                <td>Park Sanssouci</td>
-                <td></td>
-                <td><div title="Richtung: Wissenschaftspark Golm">
-                    <a href="#">Bus 222</a>
-                  </div></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>an 11:25</td>
-                <td>Hauptbahnhof</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </li>
-        <li data-role="collapsible" data-collapsed-icon="arrow-down"
-          data-expanded-icon="arrow-up" data-iconpos="right">
+		  </div> <!-- end content -->
 
-          <h3>
-            <p>ab 11:15 Griebnitzsee Bhf</p>
-            <p>an 11:21 Golm Bhf</p>
-          </h3>
+    </div> <!-- end page -->
 
-          <table data-role="table" data-mode="reflow"
-            class="ui-responsive table-stripe ">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Uhrzeit</th>
-                <th>Bahnhof</th>
-                <th>Gleis</th>
-                <th>Nr.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>ab 11:15</td>
-                <td>Golm</td>
-                <td>Gleis 3</td>
-                <td>RE12345</td>
-              </tr>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>an 11:18</td>
-                <td>Park Sanssouci</td>
-                <td>Gleis 4</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Arrow down</th>
-                <td>Feet</td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>ab 11:19</td>
-                <td>Park Sanssouci</td>
-                <td></td>
-                <td><div title="Richtung: Wissenschaftspark Golm">
-                    <a href="#">Bus 222</a>
-                  </div></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>an 11:25</td>
-                <td>Hauptbahnhof</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </li>
-        <li data-role="collapsible" data-collapsed-icon="arrow-down"
-          data-expanded-icon="arrow-up" data-iconpos="right">
-
-          <h3>
-            <p>ab 11:15 Griebnitzsee Bhf</p>
-            <p>an 11:21 Golm Bhf</p>
-          </h3>
-
-          <table data-role="table" data-mode="reflow"
-            class="ui-responsive table-stripe ">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Uhrzeit</th>
-                <th>Bahnhof</th>
-                <th>Gleis</th>
-                <th>Nr.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>ab 11:15</td>
-                <td>Golm</td>
-                <td>Gleis 3</td>
-                <td>RE12345</td>
-              </tr>
-              <tr>
-                <th><span class="marker closed"></span></th>
-                <td>an 11:18</td>
-                <td>Park Sanssouci</td>
-                <td>Gleis 4</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>Arrow down</th>
-                <td>Feet</td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>ab 11:19</td>
-                <td>Park Sanssouci</td>
-                <td></td>
-                <td><div title="Richtung: Wissenschaftspark Golm">
-                    <a href="#">Bus 222</a>
-                  </div></td>
-              </tr>
-              <tr>
-                <th><span class="marker open"></span></th>
-                <td>an 11:25</td>
-                <td>Hauptbahnhof</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </li>
-      </ul>
-
-    </div>
-
-    <input type="submit" value="Sp&aumlter-->" />
-		</div>		
   </body>
 </html>

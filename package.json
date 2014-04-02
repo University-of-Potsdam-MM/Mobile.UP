@@ -20,12 +20,14 @@
   "dependencies": {
     "underscore": "^1.6.0",
     "backbone": "^1.1.2",
-    "q": "^1.0.0"
+    "q": "^1.0.0",
+    "underscore.string": "^2.3.3"
   },
   "devDependencies": {
     "express": "~3.4.8",
     "http-proxy": "~0.10.4",
     "reload": "~0.1.0",
-    "express-livereload": "0.0.24"
+    "express-livereload": "0.0.24",
+    "moment": "^2.5.1"
   }
 }

@@ -21,15 +21,16 @@ console.log('livereload when changes occure in ' + config.watchDir);
 
 var bibliothekProxy = httpProxy.createServer(80, 'sru.gbv.de')
 var standortProxy   = httpProxy.createServer(80, 'daia.gbv.de');
-
+var nahverkehrProxy = httpProxy.createServer(80, 'demo.hafas.de')
 
 app.configure(function () {
   app.set('port', process.env.PORT || 3000);
 
   // app.use(express.static(__dirname + '/public'));
 
-  app.use('/api/search',  bibliothekProxy);
-  app.use('/api/place', standortProxy);
+  app.use('/api/search',    bibliothekProxy);
+  app.use('/api/place',     standortProxy);
+  app.use('/api/transport', nahverkehrProxy);
 
   app.use('/bower_components', express.static(__dirname + '/bower_components'));
   app.use('/node_modules',     express.static(__dirname + '/node_modules'));
