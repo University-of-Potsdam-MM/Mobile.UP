@@ -3,11 +3,11 @@
   <h3>
     <span class="marker <%= statusOpenNow %>"></span><%= name %>
   </h3>
-  <p>
-    <%= (mail) ? '<b>E-Mail:</b><a href="mailto:'+mail+'">'+mail+'</a><br />' : ''  %>
-    <%= (telephone) ? '<b>Tel:</b><a href="tel: '+telephone+'">'+telephone+'</a><br />' : '' %>
-    <%= (link) ? '<b>Link:</b><a href="'+link+' target="_blank">'+link+'</a><br />' : ''%>
-  </p>
+ <p>
+    <%= (mail) ? '<b>E-Mail:</b><br><a href="mailto:'+mail+'">'+mail+'</a><br /><br />' : ''  %>
+    <%= (telephone) ? '<b>Tel:</b><br><a href="tel: '+telephone+'">'+telephone+'</a><br /><br />' : '' %>
+    <%= (link) ? '<b>Link:</b><br><a href="'+link+' target="_blank">'+link+'</a><br /><br />' : ''%>
+ </p>
   <table data-role="table" data-mode="reflow"
     class="ui-responsive table-stripe ">
     <thead>

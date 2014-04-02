@@ -11,21 +11,22 @@
     <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-
+    <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
     <!-- Javascript Files -->
     <!-- Core Libraries -->
     <script type="text/javascript" src="phonegap.js"></script>
     <script src="js/lib/jquery-1.10.2.min.js"></script>
     <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
     <script src="js/lib/q.min.js"></script>
+
     <script src="js/vendor/underscore.js"></script>
     <script src="js/vendor/underscore.string.js"></script>
     <script src="js/vendor/backbone.js"></script>
     <script src="js/lib/jqm-datebox.core.min.js"></script>
     <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
     <script src="js/lib/jquery.datetimepicker.js"></script>
+
     <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
 
     <script src="js/modules/common-widgets.js"></script>
@@ -69,29 +70,17 @@
           </ul>
         </div>
 				<div id="search-results">
-          <p>Fahrten ab <span class="stationName">Griebnitzsee</span></p>
+          <h3>Fahrten ab <span class="stationName">Griebnitzsee</span></h3>
           <div data-role="content">
-            <ul data-role="listview" data-inset="true" data-theme="a">
-<!--
-              <li>
-                <p><span class="marker open"></span> 11:14 Berlin Hbf Gleis 7 RE 12345</p>
-              </li>
-              <li>
-                <p><span class="marker open"></span> 11:17 Charlotttenhof Gleis 1 RE 12345</p>
-              </li>
-              <li>
-                <p><span class="marker open"></span> 11:20 Wissenschaftspark Golm Bus 122</p>
-              </li>
-              <li>
-                <p><span class="marker open"></span> 11:20 Wissenschaftspark Golm Bus 122</p>
-              </li>
-              <li>
-                <p><span class="marker open"></span> 11:20 Wissenschaftspark Golm Bus 122</p>
-              </li>
- -->
-             </ul>
+            <ul data-role="listview" data-inset="true">
+              <!-- template transport_listitem_view -->
+            </ul>
           </div>
-        <input id="later-button" type="submit" value="Sp&aumlter -->" />
+
+          <div class="spaeter" >
+            <input id="later-button"type="submit" data-theme="a" value="Später" />
+        </div>
+
       </div>
 				<!-- End Main Content -->
 			</div>

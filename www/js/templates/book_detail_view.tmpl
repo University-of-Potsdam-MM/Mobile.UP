@@ -1,8 +1,11 @@
+<div id="book-icon" class="dummy">
+<img src="../../www/img/up/dummy.png">
+</div>
 <% console.log('book detail', book); %>
-<%= (book.get('title')) ? '<h2>'+book.get('title')+'</h2>' : ''%>
-<%= (book.get('subtitle')) ? '<p>'+book.get('subtitle')+'</p>' : ''%>
-<%= (book.get('authors')) ? '<p>'+book.get('authors')+'</p>' : ''%>
-<p><%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('edition')) ? ','+book.get('edition') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
+<%= (book.get('title')) ? '<div class="booktitle"><h2><span>'+book.get('title')+'</span>' : ''%>
+<%= (book.get('subtitle')) ? '<br>'+book.get('subtitle'): ''%></h2>
+<%= (book.get('authors')) ? '<p>'+book.get('authors')+'<br>' : ''%>
+<%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('edition')) ? ','+book.get('edition') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p></div>
 <div data-role="tabs">
   <div data-role="navbar">
     <ul>
@@ -12,21 +15,26 @@
   </div>
   <div id="book-locations" class="ui-content"></div>
   <div id="book-details" class="ui-content">
-    <%= (book.get('isbn')) ? '<p>ISBN: '+book.get('isbn')+'</p>' : ''%>
-    <%= (book.get('notes')) ? '<p>Anmerkungen: '+book.get('notes')+'</p>' : ''%>
-    <%= (book.get('keywords')) ? '<p>Schlagwörter:' : '' %>
+  
+  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+    
+    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
+   
+    <%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
+  
+    <%= (book.get('keywords')) ? '<div data-role="collapsible"><h3>Schlagwörter:</h3><p>' : '' %>
     	<% _.each(book.get('keywords'), function(keyword){ %>
 				<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
           <% }); %>
-		<%= (book.get('keywords')) ? '</p>' : '' %>
+		<%= (book.get('keywords')) ? '</p></div>' : '' %>
 
-    <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+    
     	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
-    	<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><p><ul>' : '' %>
+    	<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
           <% _.each(book.get('toc'), function(chapter){ %>
             <li><%= chapter %></li>
           <% }); %>
-			<%= (book.get('toc')) ? '</ul></p></div>' : '' %>
+			<%= (book.get('toc')) ? '</ul></div>' : '' %>
     </div>    
   </div>
 </div>
