@@ -79,6 +79,7 @@ previously working functionality. Please don't judge.
         title:     App.model.Book.textForTag(xmlRecord, 'title'),
         // TODO remove brackets[] if there are some around the subtitle
         subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
+        dateIssued: $xmlRecord.find('dateIssued').html(),
         abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
         toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
         authors:   App.model.Book.authors($xmlRecord),
@@ -89,6 +90,7 @@ previously working functionality. Please don't judge.
         series:    App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
         keywords:  App.model.Book.keywords(xmlRecord, 'subject')
       };
+      // debugger
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
     },
@@ -455,7 +457,7 @@ previously working functionality. Please don't judge.
   // TODO: Refactor
   // complex function to get avialable status of items
   // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
-  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+  // TODO: include expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
   function availableItems($recordData, book) {
     var item = $recordData;
     var status = '';
