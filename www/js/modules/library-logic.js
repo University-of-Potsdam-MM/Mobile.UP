@@ -85,9 +85,9 @@ previously working functionality. Please don't judge.
         publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
-        notes:	 App.model.Book.contentForTag(xmlRecord, 'note'),
-		series:	 App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-		keywords:  App.model.Book.keywords(xmlRecord, 'subject')
+        notes:     App.model.Book.contentForTag(xmlRecord, 'note'),
+        series:    App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+        keywords:  App.model.Book.keywords(xmlRecord, 'subject')
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -148,21 +148,21 @@ previously working functionality. Please don't judge.
         return null;
       }
     },
-    
+
     // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
     keywords: function(node, tagName){
-  	  var keywords = App.model.Book.contentForTag(node, tagName);
-  	  var keys = _.map(keywords, function(keyword){
-  		  var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
-  		  var key = [keyword.trim(), url];
-  		  return key;
-  	  });
-  	  return keys;
-    },  
-    
+      var keywords = App.model.Book.contentForTag(node, tagName);
+      var keys = _.map(keywords, function(keyword){
+        var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
+        var key = [keyword.trim(), url];
+        return key;
+      });
+      return keys;
+    },
+
     contentForTag: function(node, tagName){
-  	  var nodes = node.getElementsByTagName(tagName);
-  	  return _.pluck(nodes, 'textContent');	  
+      var nodes = node.getElementsByTagName(tagName);
+      return _.pluck(nodes, 'textContent');
     },
 
 
@@ -170,7 +170,7 @@ previously working functionality. Please don't judge.
   // END App.model.Book
 
 
-  
+
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
 
@@ -410,7 +410,7 @@ previously working functionality. Please don't judge.
     // $("#searchResults").empty();
   }
 
-  
+
   // TODO create BackboneView
   var bookDetailViewTemplate = rendertmpl('book_detail_view');
   function renderDetailView(book) {
