@@ -22,8 +22,16 @@ previously working functionality. Please don't judge.
 
 */
 
+/* global App */
+/* global rendertmpl */
+
+/* global jQuery */
+/* global _ */
+/* global Backbone */
+/* global Q */
+
 "use strict";
-(function($) {
+(function($, _, Backbone, Q) {
 
   window.App = {
     model:       {}, // model classes
@@ -179,7 +187,7 @@ previously working functionality. Please don't judge.
     // TODO: create object to communicate with SRU and provide pagination for query
 
     addXmlSearchResult: function(xmlSearchResult){
-      // console.log('xml',xmlSearchResult);
+      console.log('xml',xmlSearchResult);
       var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
       this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
       console.log('addXmlSearchResult', this.pluck('recordId'));
@@ -297,7 +305,7 @@ previously working functionality. Please don't judge.
     renderDetail: function(ev) {
       // TODO query Standortinfo for this record
       ev.preventDefault();
-      var bookId = $(ev.target).closest('li.book-short').attr('id')
+      var bookId = $(ev.target).closest('li.book-short').attr('id');
       var book = App.collections.searchResults.get(bookId);
       renderDetailView(book);
       book.updateLocation();
@@ -348,7 +356,7 @@ previously working functionality. Please don't judge.
       e.preventDefault();
       App.models.currentSearch.loadNext();
     });
-  };
+  }
 
   // controller
   function updateResults() {
@@ -373,6 +381,9 @@ previously working functionality. Please don't judge.
 
     var search = new App.model.LibrarySearch({
       query: queryString,
+      // TODO:
+      // numberOfRecords
+      // length of resultslist
       results: App.collections.searchResults,
     });
 
@@ -380,7 +391,7 @@ previously working functionality. Please don't judge.
     // on adding books render BookListView
     var loading = search.loadNext();
     return loading;
-  };
+  }
 
 
   // this is a function i use to migrate to Backbone
@@ -391,7 +402,7 @@ previously working functionality. Please don't judge.
     var searchResults = App.collections.searchResults;
     searchResults.addXmlSearchResult(xmlSearchResult);
     return searchResults.models;
-  };
+  }
 
   // controller / helper
   var logError = function (err) {
@@ -447,11 +458,11 @@ previously working functionality. Please don't judge.
 
   // creating department string for emplacement
   function department($recordData) {
-    var department = $recordData.department.content;
+    var dep = $recordData.department.content;
     if($recordData.storage) {
-      department = department+', '+$recordData.storage.content;
+      dep = dep + ', ' + $recordData.storage.content;
     }
-    return department;
+    return dep;
   }
 
   // TODO: Refactor
@@ -484,7 +495,7 @@ previously working functionality. Please don't judge.
           status = "nicht ausleihbar";
         }
       } else {
-        if(book.url == null) {
+        if(book.url === null) {
           status = 'nicht ausleihbar';
         }else {
           status = 'Online-Ressource';
@@ -494,4 +505,4 @@ previously working functionality. Please don't judge.
     return status;
   }
 
-})(jQuery);
+})(jQuery, _, Backbone, Q);
