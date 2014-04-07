@@ -22,8 +22,16 @@ previously working functionality. Please don't judge.
 
 */
 
+/* global App */
+/* global rendertmpl */
+
+/* global jQuery */
+/* global _ */
+/* global Backbone */
+/* global Q */
+
 "use strict";
-(function($) {
+(function($, _, Backbone, Q) {
 
   window.App = {
     model:       {}, // model classes
@@ -79,16 +87,18 @@ previously working functionality. Please don't judge.
         title:     App.model.Book.textForTag(xmlRecord, 'title'),
         // TODO remove brackets[] if there are some around the subtitle
         subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
+        dateIssued: $xmlRecord.find('dateIssued').html(),
         abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
         toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
         authors:   App.model.Book.authors($xmlRecord),
         publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
-        notes:	 App.model.Book.contentForTag(xmlRecord, 'note'),
-		series:	 App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-		keywords:  App.model.Book.keywords(xmlRecord, 'subject')
+        notes:     App.model.Book.contentForTag(xmlRecord, 'note'),
+        series:    App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+        keywords:  App.model.Book.keywords(xmlRecord, 'subject')
       };
+      // debugger
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
     },
@@ -148,21 +158,21 @@ previously working functionality. Please don't judge.
         return null;
       }
     },
-    
+
     // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
     keywords: function(node, tagName){
-  	  var keywords = App.model.Book.contentForTag(node, tagName);
-  	  var keys = _.map(keywords, function(keyword){
-  		  var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
-  		  var key = [keyword.trim(), url];
-  		  return key;
-  	  });
-  	  return keys;
-    },  
-    
+      var keywords = App.model.Book.contentForTag(node, tagName);
+      var keys = _.map(keywords, function(keyword){
+        var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
+        var key = [keyword.trim(), url];
+        return key;
+      });
+      return keys;
+    },
+
     contentForTag: function(node, tagName){
-  	  var nodes = node.getElementsByTagName(tagName);
-  	  return _.pluck(nodes, 'textContent');	  
+      var nodes = node.getElementsByTagName(tagName);
+      return _.pluck(nodes, 'textContent');
     },
 
 
@@ -170,14 +180,14 @@ previously working functionality. Please don't judge.
   // END App.model.Book
 
 
-  
+
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
 
     // TODO: create object to communicate with SRU and provide pagination for query
 
     addXmlSearchResult: function(xmlSearchResult){
-      // console.log('xml',xmlSearchResult);
+      console.log('xml',xmlSearchResult);
       var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
       this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
       console.log('addXmlSearchResult', this.pluck('recordId'));
@@ -295,7 +305,7 @@ previously working functionality. Please don't judge.
     renderDetail: function(ev) {
       // TODO query Standortinfo for this record
       ev.preventDefault();
-      var bookId = $(ev.target).closest('li.book-short').attr('id')
+      var bookId = $(ev.target).closest('li.book-short').attr('id');
       var book = App.collections.searchResults.get(bookId);
       renderDetailView(book);
       book.updateLocation();
@@ -346,7 +356,7 @@ previously working functionality. Please don't judge.
       e.preventDefault();
       App.models.currentSearch.loadNext();
     });
-  };
+  }
 
   // controller
   function updateResults() {
@@ -371,6 +381,9 @@ previously working functionality. Please don't judge.
 
     var search = new App.model.LibrarySearch({
       query: queryString,
+      // TODO:
+      // numberOfRecords
+      // length of resultslist
       results: App.collections.searchResults,
     });
 
@@ -378,7 +391,7 @@ previously working functionality. Please don't judge.
     // on adding books render BookListView
     var loading = search.loadNext();
     return loading;
-  };
+  }
 
 
   // this is a function i use to migrate to Backbone
@@ -389,7 +402,7 @@ previously working functionality. Please don't judge.
     var searchResults = App.collections.searchResults;
     searchResults.addXmlSearchResult(xmlSearchResult);
     return searchResults.models;
-  };
+  }
 
   // controller / helper
   var logError = function (err) {
@@ -410,7 +423,7 @@ previously working functionality. Please don't judge.
     // $("#searchResults").empty();
   }
 
-  
+
   // TODO create BackboneView
   var bookDetailViewTemplate = rendertmpl('book_detail_view');
   function renderDetailView(book) {
@@ -445,17 +458,17 @@ previously working functionality. Please don't judge.
 
   // creating department string for emplacement
   function department($recordData) {
-    var department = $recordData.department.content;
+    var dep = $recordData.department.content;
     if($recordData.storage) {
-      department = department+', '+$recordData.storage.content;
+      dep = dep + ', ' + $recordData.storage.content;
     }
-    return department;
+    return dep;
   }
 
   // TODO: Refactor
   // complex function to get avialable status of items
   // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
-  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+  // TODO: include expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
   function availableItems($recordData, book) {
     var item = $recordData;
     var status = '';
@@ -482,7 +495,7 @@ previously working functionality. Please don't judge.
           status = "nicht ausleihbar";
         }
       } else {
-        if(book.url == null) {
+        if(book.url === null) {
           status = 'nicht ausleihbar';
         }else {
           status = 'Online-Ressource';
@@ -492,4 +505,4 @@ previously working functionality. Please don't judge.
     return status;
   }
 
-})(jQuery);
+})(jQuery, _, Backbone, Q);
