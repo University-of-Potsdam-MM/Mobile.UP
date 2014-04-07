@@ -106,12 +106,30 @@
             <li><input name="mydate" id="mydate" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
           </ul>
         </div>     
-        <input type="submit" value="Suchen" data-theme="a"/>
-      <p>Fahrt von Campus Griebnitzsee nach</p>
-      <p>Campus Golm</p>
-      <p>Heute, 10.02.2234, Abfahrt 11:15</p>
+         <div data-role="navbar" class="buttons_pt route submit-route">
+          <ul>
+          
+            <li>&nbsp;</li><li>&nbsp;</li>
+            <li>    <input type="submit" value="Suchen" class="submit-fahrt" data-theme="a"/>
+            </li>
+           </ul>
+         </div>
+       
+       
+     
+       
+       
+       
+      
+      
+      
+      
+      <p class="summery-route"><span class="tab01">Fahrt von</span> Campus Griebnitzsee<br><span class="tab01">nach</span> Campus Golm</br>
+      <span class="tab01">&nbsp;</span>Heute, 10.02.2234, Abfahrt 11:15</p>
 
-      <input type="submit" value="<--Fr&uumlher" />
+        <div class="spaeter frueher" >
+        <input type="submit" data-theme="a" value="Fr&uumlher" />
+        </div>
 
 
 
@@ -302,7 +320,9 @@
 
     </div>
 
-    <input type="submit" value="Sp&aumlter-->" />
+     <div class="spaeter" >
+        <input type="submit" data-theme="a" value="Sp&aumlter" />
+        </div>
 		</div>		
   </body>
 </html>
