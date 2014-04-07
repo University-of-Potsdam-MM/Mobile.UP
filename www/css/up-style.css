@@ -954,3 +954,11 @@ li.book-short:hover div.zeitschrift,li.book-short:active div.zeitschrift
 	{
 	background-image: url(../img/up/zeitschrift-hover.png) !important;
 }
+
+/***********************Raumbelegung*********************
+**************************************************************/
+
+#freeRooms p {
+	margin-left:.5em;
+	
+}
