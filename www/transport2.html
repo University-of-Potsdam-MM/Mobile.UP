@@ -1,47 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-	    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <!-- Always use the same header for production -->
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-
-    <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
-    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
-    <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-
-    <!-- Javascript Files -->
-    <!-- Core Libraries -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script src="js/lib/jquery-1.10.2.min.js"></script>
-    <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
-    <script src="js/lib/q.min.js"></script>
-    <script src="js/vendor/underscore.js"></script>
-    <script src="js/vendor/underscore.string.js"></script>
-    <script src="js/vendor/backbone.js"></script>
-    <script src="js/lib/jqm-datebox.core.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
-    <script src="js/lib/jquery.datetimepicker.js"></script>
-    <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
-    <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
-    <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js"></script>
-    <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
-
-    <script src="js/modules/common-widgets.js"></script>
-    <script id="panel-init">
-      $(function () {
-        $("[data-role='panel']").panel().enhanceWithin();
-      });
-      </script>
-     <script src="js/app.js"></script>
-
-    <!-- Public Transportation -->
-    <script src="js/vendor/moment.js"></script>
-    <script src="js/modules/nahverkehr-logic.js"></script>
+	   
 
 
   </head>
@@ -64,6 +24,58 @@
             <li><a href="transport.html">N&auml;chste Abfahrten</a></li>
             <li><a href="transport2.html" class="ui-btn-active">Fahrt planen</a></li>
           </ul>
+
+        </div>
+        <!-- Fahrt eingeben -->
+        <div data-role="navbar" class="buttons_pt">         
+          <ul>
+            <li><p>VON:</p></li>
+            <li><a href="#" class="ui-btn-active">GSEE</a></li>
+            <li><a href="#">GOLM</a></li>
+            <li><a href="#">PALAIS</a></li>
+          </ul>
+        </div>
+        <div data-role="navbar" class="buttons_pt route">
+          <ul>
+            <li><p>Nach:</p></li>
+            <li><a href="#">GSEE</a></li>
+            <li><a href="#">GOLM</a></li>
+            <li><a href="#" class="ui-btn-active">PALAIS</a></li>
+          </ul>
+        </div>                
+        <div data-role="navbar" class="buttons_pt route">
+          <ul>
+            <li>
+              <p></p>
+            </li>
+            <li>
+              <select name="flip-1" id="flip-1" data-role="slider">
+                <option value="off">Ab</option>
+                <option value="on">An</option>
+              </select>
+            </li>
+            <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
+            <li><input name="mydate" id="mydate" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
+          </ul>
+        </div>     
+         <div data-role="navbar" class="buttons_pt route submit-route">
+          <ul>
+          
+            <li>&nbsp;</li><li>&nbsp;</li>
+            <li>    <input type="submit" value="Suchen" class="submit-fahrt" data-theme="a"/>
+            </li>
+           </ul>
+         </div>
+       
+
+      
+      <p class="summery-route"><span class="tab01">Fahrt von</span> Campus Griebnitzsee<br><span class="tab01">nach</span> Campus Golm</br>
+      <span class="tab01">&nbsp;</span>Heute, 10.02.2234, Abfahrt 11:15</p>
+
+        <div class="spaeter frueher" >
+        <input type="submit" data-theme="a" value="Fr&uumlher" />
+        </div>
+
         </div> <!-- end navbar -->
 
         <div id="complexTransport">
@@ -102,6 +114,7 @@
             </ul>
           </div>
 
+
           <input id='searchButton' type="submit" value="Suchen" data-theme="a"/>
 
           <div id="result">
@@ -128,6 +141,12 @@
 		  </div> <!-- end content -->
 
     </div> <!-- end page -->
+
+
+     <div class="spaeter" >
+        <input type="submit" data-theme="a" value="Sp&aumlter" />
+        </div>
+		</div>		
 
   </body>
 </html>

@@ -623,8 +623,15 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 
 /****************************** Verkehr ******************
 ***********************************************************/
+
+#transport .buttons_pt ul.ui-grid-c li.ui-block-a {
+	width:14%;
+}
+
 #transport .buttons_pt p {
 	margin:0;
+	padding-top:5px;
+	font-size:.8em;
 }
 
 #transport .buttons_pt ul {
@@ -640,13 +647,48 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 }
 
 #transport  .buttons_pt li {
-		margin:1%;
+		margin:2%;
 		width:23%;
 }
 
-#transport  .buttons_pt li a {
-		height:25px;
+#transport .buttons_pt.submit-route li{
+	width:33%;
+	margin:0;
+	
 }
+
+#transport .buttons_pt.submit-route li .ui-btn {
+	padding:0;
+	font-size:1em;
+	
+	padding:0:
+}
+
+#transport .buttons_pt li a{
+	height:15px;	
+
+}
+
+#transport .ui-input-datebox {
+	min-height:32px;
+}
+
+#transport .ui-input-datebox input {
+	margin-top:0 !important;
+	text-align:center;
+	text-transform:uppercase;
+	font-weight:normal;
+}
+
+#transport .ui-grid-c .ui-input-datebox {
+	width:92%;
+	border:none !important;
+	height:15px !important;
+	-webkit-border-radius:0;
+	border-radius:0;
+	}
+
+
 
 #transport  .buttons_pt li p {
 	color:#041260;
@@ -661,15 +703,6 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	background:#ededed;
 }
 
-#transport .buttons_pt div.ui-slider-switch{
-	width:100%;
-	height:40px;
-	line-height:3;
-}
-
-#transport .ui-slider-switch .ui-btn.ui-slider-handle {
-	margin: 1px 0 0 -3%;
-}
 
 #transport .buttons_pt .ui-slider-switch .ui-slider-label {
 	font-weight:normal;
@@ -679,10 +712,20 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 
 #transport .buttons_pt .ui-slider-switch .ui-slider-label-b {
 	color:#014260;
+
 }
 
-#transport .buttons_pt .ui-slider-handle {
-	height:40px;
+.ui-slider-track.ui-corner-all {
+	-webkit-border-radius:0;
+	border-radius:0;
+}
+
+#transport .ui-block-b  {
+	overflow:hidden;
+}
+
+#transport .ui-slider-inneroffset a.ui-slider-handle {
+	height:30px;
 }
 
 #transport  .ui-input-btn ul li.ui-body-c{
@@ -697,8 +740,9 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	border-bottom:1px solid #dedede;
 }
 
+
 div.spaeter .ui-btn {
-	width:15%;
+	width:20%;
 	font-size:1em;
 	color:#fff;
 	margin:0 auto;
@@ -706,10 +750,59 @@ div.spaeter .ui-btn {
 	font-weight:normal;
 	background-image:url(../img/up/spaeter.png) !important;
 	background-repeat:no-repeat !important;
-	background-position:80% 20px !important;
+	background-position:right !important;
+	padding:0px;
+	
 }
 
+div.frueher {
+	border-bottom:1px solid #dedede;
+	
+}
 
+div.frueher .ui-btn {
+	background-image:url(../img/up/frueher.png) !important;
+	background-repeat:no-repeat !important;
+	background-position:2px !important;
+	
+}
+
+p.summery-route {
+	margin-lefT:.1em;
+	color:#014260;
+	font-weight:bold;
+}
+
+.tab01 {
+	display:inline-block;
+	width:70px;
+	text-align:right;
+	color:#000;
+	font-weight:normal;
+}
+
+#transport #search-results {
+	background:#ededed;
+}
+
+#transport #transport_rides h3{
+		margin-top:0px;
+		padding:0px;
+	}
+
+#transport a.ui-collapsible-heading-toggle {
+	padding-top:2px !important;
+	padding-bottom:2px !important;
+	padding-left:.5em !important;;
+}
+
+#transport .ui-table-reflow.ui-responsive td{
+	min-width:10px;
+}
+
+#transport .ui-collapsible-content {
+	border:none;
+}
 /**********************suche******************
 *****************************************************/
 #search .ui-input-btn {
@@ -830,7 +923,7 @@ li.book-short {
 
 li.book-short div {
 	width: 30px;
-	height: 40px;
+	height: 50px;
 	background-repeat: no-repeat !important;
 	background-position: 0px 7px;
 	float: left;
@@ -860,4 +953,12 @@ div.zeitschrift {
 li.book-short:hover div.zeitschrift,li.book-short:active div.zeitschrift
 	{
 	background-image: url(../img/up/zeitschrift-hover.png) !important;
+}
+
+/***********************Raumbelegung*********************
+**************************************************************/
+
+#freeRooms p {
+	margin-left:.5em;
+	
 }
