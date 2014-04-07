@@ -2,17 +2,12 @@
 <ul data-role="listview" data-inset="true">
 
 <ul class="booklist" data-role="listview" data-inset="true">
-
     <% _.each(booklist, function(book) { %>
-   
-    
-
     <li class="book-short" data-icon="arrow-darkblue" id="<%= book.get('recordId') %>"> <!-- hier müsste noch die Art des Mediums abgerfragt werden und dann entsprechend die Klasse vom div verändert werden: buch, artikel, online, cd --!>
         <a href="#">
-         
           <%= (book.get('title')) ? '<div class="zeitschrift"></div><h2>'+book.get('title')+'' : ''%>
-          <%= (book.get('subtitle')) ?'<span>'+ book.get('subtitle')+'</span>' : ''%></h2>
-          <%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
+          <%= (book.get('subtitle')) ?'<br /><span>'+ book.get('subtitle')+'</span>' : ''%></h2>
+          <%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br />' : ''%>
           <%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p>
         </a>
     </li>
