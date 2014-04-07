@@ -79,6 +79,7 @@ previously working functionality. Please don't judge.
         title:     App.model.Book.textForTag(xmlRecord, 'title'),
         // TODO remove brackets[] if there are some around the subtitle
         subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
+        dateIssued: $xmlRecord.find('dateIssued').html(),
         abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
         toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
         authors:   App.model.Book.authors($xmlRecord),
