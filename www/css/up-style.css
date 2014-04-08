@@ -803,7 +803,7 @@ p.summery-route {
 #transport .ui-collapsible-content {
 	border:none;
 }
-/**********************suche******************
+/**********************Suche******************
 *****************************************************/
 #search .ui-input-btn {
 	width: 91%;
@@ -929,36 +929,131 @@ li.book-short div {
 	float: left;
 }
 
-div.buch {
-	background-image: url(../img/up/buch.png) !important;
+/* MediaIcon A
+---------------------*/
+div.media_a {
+	background-image: url(../img/res/media_a.png) !important;
+}
+li.book-short:hover div.media_a,li.book-short:active div.media_a {
+	background-image: url(../img/res/media_a.png) !important;
+}
+/* MediaIcon B
+---------------------*/
+div.media_b {
+	background-image: url(../img/res/media_b.png) !important;
+}
+li.book-short:hover div.media_b,li.book-short:active div.media_b {
+	background-image: url(../img/res/media_b_hover.png) !important;
+}
+/* MediaIcon E
+---------------------*/
+div.media_e {
+	background-image: url(../img/res/media_e.png) !important;
+}
+li.book-short:hover div.media_e,li.book-short:active div.media_e {
+	background-image: url(../img/res/media_e_hover.png) !important;
+}
+/* MediaIcon G
+---------------------*/
+div.media_g {
+	background-image: url(../img/res/media_g.png) !important;
+}
+li.book-short:hover div.media_g,li.book-short:active div.media_g {
+	background-image: url(../img/res/media_g_hover.png) !important;
+}
+/* MediaIcon H
+---------------------*/
+div.media_h {
+	background-image: url(../img/res/media_h.png) !important;
+}
+li.book-short:hover div.media_h,li.book-short:active div.media_h {
+	background-image: url(../img/res/media_h_hover.png) !important;
+}
+/* MediaIcon I
+---------------------*/
+div.media_i {
+	background-image: url(../img/res/media_i.png) !important;
+}
+li.book-short:hover div.media_i,li.book-short:active div.media_i {
+	background-image: url(../img/res/media_i_hover.png) !important;
+}
+/* MediaIcon K
+---------------------*/
+div.media_k {
+	background-image: url(../img/res/media_k.png) !important;
+}
+li.book-short:hover div.media_k,li.book-short:active div.media_k {
+	background-image: url(../img/res/media_k_hover.png) !important;
+}
+/* MediaIcon L
+---------------------*/
+div.media_l {
+	background-image: url(../img/res/media_l.png) !important;
+}
+li.book-short:hover div.media_l,li.book-short:active div.media_l {
+	background-image: url(../img/res/media_l_hover.png) !important;
+}
+/* MediaIcon M
+---------------------*/
+div.media_m {
+	background-image: url(../img/res/media_m.png) !important;
+}
+li.book-short:hover div.media_m,li.book-short:active div.media_m {
+	background-image: url(../img/res/media_m_hover.png) !important;
+}
+/* MediaIcon O
+---------------------*/
+div.media_o {
+	background-image: url(../img/res/media_o.png) !important;
+}
+li.book-short:hover div.media_o,li.book-short:active div.media_o {
+	background-image: url(../img/res/media_o_hover.png) !important;
+}
+/* MediaIcon P
+---------------------*/
+div.media_p {
+	background-image: url(../img/res/media_p.png) !important;
+}
+li.book-short:hover div.media_p,li.book-short:active div.media_p {
+	background-image: url(../img/res/media_p_hover.png) !important;
+}
+/* MediaIcon S
+---------------------*/
+div.media_s {
+	background-image: url(../img/res/media_s.png) !important;
+}
+li.book-short:hover div.media_s,li.book-short:active div.media_s {
+	background-image: url(../img/res/media_s_hover.png) !important;
+}
+/* MediaIcon T
+---------------------*/
+div.media_t {
+	background-image: url(../img/res/media_t.png) !important;
+}
+li.book-short:hover div.media_t,li.book-short:active div.media_t {
+	background-image: url(../img/res/media_t_hover.png) !important;
+}
+/* MediaIcon V
+---------------------*/
+div.media_v {
+	background-image: url(../img/res/media_v.png) !important;
+}
+li.book-short:hover div.media_v,li.book-short:active div.media_v {
+	background-image: url(../img/res/media_v_hover.png) !important;
+}
+/* MediaIcon X
+---------------------*/
+div.media_x {
+	background-image: url(../img/res/media_x.png) !important;
+}
+li.book-short:hover div.media_x,li.book-short:active div.media_x {
+	background-image: url(../img/res/media_x_hover.png) !important;
 }
 
-li.book-short:hover div.buch,li.book-short:active div.buch {
-	background-image: url(../img/up/buch-hover.png) !important;
-}
-
-div.onlineressource {
-	background-image: url(../img/up/onlineressource.png) !important;
-}
-
-li.book-short:hover div.onlineressource, li.book-short:active div.onlineressource
-
-{	background-image:url(../img/up/onlineressource-hover.png) !important;
-
-}
-div.zeitschrift {
-	background-image: url(../img/up/zeitschrift.png) !important;
-}
-
-li.book-short:hover div.zeitschrift,li.book-short:active div.zeitschrift
-	{
-	background-image: url(../img/up/zeitschrift-hover.png) !important;
-}
 
 /***********************Raumbelegung*********************
 **************************************************************/
 
 #freeRooms p {
 	margin-left:.5em;
-	
 }
