@@ -1,6 +1,4 @@
-<div id="book-icon" class="dummy">
-<img src="../../www/img/up/dummy.png">
-</div>
+<div id="book-icon" class="<%= book.get('mediaType') %>"></div>
 <% console.log('book detail', book); %>
 <%= (book.get('title')) ? '<div class="booktitle"><h2><span>'+book.get('title')+'</span>' : ''%>
 <%= (book.get('subtitle')) ? '<br>'+book.get('subtitle'): ''%></h2>
