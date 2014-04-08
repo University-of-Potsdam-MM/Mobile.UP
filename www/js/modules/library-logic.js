@@ -86,9 +86,10 @@ previously working functionality. Please don't judge.
         publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
-        notes:	 App.model.Book.contentForTag(xmlRecord, 'note'),
-		series:	 App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-		keywords:  App.model.Book.keywords(xmlRecord, 'subject')
+        notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
+		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
+		mediaType: App.model.Book.mediaType(xmlRecord)
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -143,7 +144,7 @@ previously working functionality. Please don't judge.
     //TODO refactor
     attributeContentForTag: function (node, tagName, attributeName) {
       var firstTagNode = node.getElementsByTagName(tagName)[0];
-      if (firstTagNode) {
+      if (firstTagNode && firstTagNode.getElementsByTagName('url')[0]) {
         return firstTagNode.getElementsByTagName('url')[0].getAttribute(attributeName);
       } else {
         return null;
@@ -159,7 +160,112 @@ previously working functionality. Please don't judge.
   		  return key;
   	  });
   	  return keys;
-    },  
+    },
+    
+    mediaType: function(node) {
+    	//TODO: read physical description
+    	var physicalDescription = App.model.Book.contentForTag(node, 'PhysicalDescription');
+    	
+    	//TODO: read typeOfResource
+    	var typeOfResource = App.model.Book.getTypeOfResource(node);
+    	var originInfo = App.model.Book.contentForTag(node, 'originInfo');
+    	//TODO: test for essay
+    	var isEssay = false;
+    	var mediaType = "X";
+
+		if ( physicalDescription != null && physicalDescription == "microform" )
+		{
+			mediaType = "E";
+		}
+		else if ( typeOfResource != null && typeOfResource == "manuscript" )
+		{
+			mediaType = "H";
+		}
+		else if ( isEssay == true )
+		{
+			mediaType = "A";
+		}
+		else
+		{
+			if ( typeOfResource != null )
+			{
+				if ( typeOfResource == "still image" )
+				{
+					mediaType = "I";
+				}
+				else if ( typeOfResource == "sound recording-musical" )
+				{
+					mediaType = "G";
+				}
+				else if ( typeOfResource == "sound recording-nonmusical" )
+				{
+					mediaType = "G";
+				}
+				else if ( typeOfResource == "sound recording" )
+				{
+					mediaType = "G";
+				}
+				else if ( typeOfResource == "cartographic" )
+				{
+					mediaType = "K";
+				}
+				else if ( typeOfResource == "notated music" )
+				{
+					mediaType = "M";
+				}
+				else if ( typeOfResource == "moving image" )
+				{
+					mediaType = "V";
+				}
+				else if ( typeOfResource == "text" )
+				{
+					// TODO: Test with Linux-Magazin
+					if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
+					{
+						mediaType = "T";
+					}
+					else
+					{
+						mediaType = "B";
+					}
+				}
+				else if ( typeOfResource == "software, multimedia" )
+				{
+					if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
+					{
+						if ( physicalDescription != null && physicalDescription == "remote" )
+						{
+							mediaType = "P";
+						}
+						else
+						{
+							mediaType = "T";
+						}
+					}
+					else
+					{
+						if ( physicalDescription != null && physicalDescription == "remote" )
+						{
+							mediaType = "O";
+						}
+						else
+						{
+							mediaType = "S";
+						}
+					}
+				}
+			}
+		}
+    	
+    	console.log(mediaType);
+    	mediaType = "media_"+mediaType.toLowerCase();
+    	return mediaType;
+    },
+    
+    getTypeOfResource: function(node) {
+    	var typeOfResource = App.model.Book.contentForTag(node, 'typeOfResource');
+    	return typeOfResource;
+    },
     
     contentForTag: function(node, tagName){
   	  var nodes = node.getElementsByTagName(tagName);
