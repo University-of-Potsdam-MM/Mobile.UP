@@ -1,9 +1,9 @@
 <div id="book-icon" class="<%= book.get('mediaType') %>"></div>
 <% console.log('book detail', book); %>
-<%= (book.get('title')) ? '<div class="booktitle"><h2><span>'+book.get('title')+'</span>' : ''%>
-<%= (book.get('subtitle')) ? '<br>'+book.get('subtitle'): ''%></h2>
-<%= (book.get('authors')) ? '<p>'+book.get('authors')+'<br>' : ''%>
-<%= (book.get('publisher')) ? book.get('publisher') : '' %><% (book.get('edition')) ? ','+book.get('edition') : '' %><% (book.get('dateIssued')) ? ','+book.get('dateIssued') : '' %></p></div>
+<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
+<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
+<%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
+ <%= _.compact([book.get('publisher'), book.get('dateIssued')]).join(', ') %></p></div>
 <div data-role="tabs">
   <div data-role="navbar">
     <ul>

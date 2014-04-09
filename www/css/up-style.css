@@ -817,59 +817,46 @@ p.summery-route {
 	color: none !important;
 }
 
-#search .ui-listview>li h2 {
+
+#search .ui-listview>li p, div.booktitle p {
+	text-transform: none;
+	color: #666;
+	margin-top: 0;
+	font-size:.75em;
+	
+}
+
+#search .ui-listview>li p b, div.booktitle p b {
+	font-style: normal;
+	color:#000;
+}
+
+#search .ui-listview>li h2, div.booktitle h2{
+	margin-top: 0 0 !important;
+	line-height: 1;
 	text-transform: none;
 	color: #000;
 	margin-bottom: 1px;
+	
 }
 
-#search .ui-listview>li p {
-	text-transform: none;
-	color: #000;
-	margin-top: 0;
-	font-style: italic;
-}
-
-#search .ui-listview>li p b {
-	font-style: normal;
-}
-
-#search .ui-listview>li h2 {
-	white-space: normal;
-	text-overflow: clip;
-	overflow: visible;
-	margin-top: 0;
-}
-
-#search .ui-listview>li h2 span {
+#search .ui-listview>li h3, div.booktitle h3 {
 	font-weight: normal;
-	color: #000;
+	color: #666;
+	margin:0;
+	font-size:.75em;
 }
 
 div.booktitle {
-	margin-left: .5em;
 	min-height: 100px;
-}
-
-div.booktitle h2,div.booktitle p {
-	margin-left: 0em;
-	text-transform: none;
-	font-size: 1em;
-	margin-bottom: 0;
-	color: #666;
-	font-family: serif;
 }
 
 #book-icon {
-	width: 100px;
+	width: 35px;
 	min-height: 100px;
 	float: lefT;
-}
-
-div.booktitle p {
-	font-size: .75em;
-	margin-top: 3px;
-	margin-bottom: 1em;
+	background-repeat:no-repeat;
+	margin-left:.2em;
 }
 
 #book-locations {
@@ -917,8 +904,9 @@ div.booktitle p {
 }
 
 /* Ressourcen*/
-li.book-short {
-	word-break: break-all
+li.book-short a.ui-btn {
+	padding-left:.2em;
+	
 }
 
 li.book-short div {

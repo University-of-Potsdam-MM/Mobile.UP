@@ -8,8 +8,8 @@
       <a href="#">
         <div class="<%= book.get('mediaType') %>"></div>
         <h2>
-          <%= (book.get('title')) ? book.get('title')+'' : ''%>
-          <%= (book.get('subtitle')) ? '<br /><span>'+ book.get('subtitle')+'</span>' : ''%>
+          <%= (book.get('title')) ? book.get('title')+'</h2>' : ''%>
+          <%= (book.get('subtitle')) ? '<h3>'+ book.get('subtitle')+'</h3>' : ''%>
         </h2>
         <p>
           <%= (book.get('authors')) ? '<b>'+book.get('authors')+'</b><br/>' : ''%>
