@@ -55,10 +55,18 @@ previously working functionality. Please don't judge.
       });
 
       ajaxLocationCall.done(function (json) {
-        var locations = _.map(json.document[0].item, function(item) {
-          return bookLocation(item, currentBook);
+    	var bookLocationList = new App.collection.BookLocationList(); 
+    	console.log('init', bookLocationList);
+        _.map(json.document[0].item, function(item) {
+        	//console.log('Item:', item);
+        	var bookLocation = new App.model.BookLocation({});
+        	console.log(bookLocation.getLocation(item, currentBook));
+        	
+        	bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
-        renderLocationView(locations);
+        console.log('List', bookLocationList);
+        var locationView = new App.view.LocationView({collection: bookLocationList});
+        locationView.render();
       }).fail(function () {
         console.log('false');
       });
@@ -380,40 +388,158 @@ previously working functionality. Please don't judge.
 
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
+    
     initialize: function(){
       this.collection.on('add', this.render, this);
     },
+    
     events: {
       "click .pagination-button" : 'loadMore',
       "click ul.booklist li.book-short" : 'renderDetail',
     },
+    
     template: rendertmpl('book_list_view'),
     render: function(){
       console.log('render');
-      // _.templateSettings.variable = "booklist";
       var html = this.template({booklist:this.collection.models});
       this.$el.html(html);
       this.$el.trigger('create');
       return this;
     },
+    
     loadMore: function(){
       App.models.currentSearch.loadNext();
     },
+    
     renderDetail: function(ev) {
       // TODO query Standortinfo for this record
       ev.preventDefault();
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
-      renderDetailView(book);
+      console.log(book);
+      var BookDetailView = new App.view.BookDetailView({
+          model: book
+        });
+      BookDetailView.render();
+      
       book.updateLocation();
     },
   });
+  
+  App.view.BookDetailView = Backbone.View.extend({
+	  el: '#libraryContent',
+	  model: App.model.Book,
+	  
+	  events: {
+		"click .backToList" : 'back' 
+	  },
+	  
+	  template: rendertmpl('book_detail_view'),
+	  render: function(){
+		  console.log('render detail', this.model);
+		  var html = this.template({book:this.model});
+		  this.$el.html(html);
+	      this.$el.trigger('create');
+	      return this;
+	  },
+	  
+	  // TODO:
+	  back: function(){
+		  App.views.SearchResults.render();
+		  updateResults();
+		  return this;
+	  }
+	  
+  });
+  
+  
 
   App.collections.searchResults = new App.collection.BookList();
 
-  App.view.BookDetailView = Backbone.View.extend({});
   App.view.BookShortView = Backbone.View.extend({});
+  
+  
+  App.view.LocationView = Backbone.View.extend({
+	  el: '#book-locations',
+	  collection: App.collection.BookLocationList,
+	    	  
+	  template: rendertmpl('book_location_view'),
+	  render: function(){
+		  console.log('render locations', this.collection);
+		  var html = this.template({locations:this.collection.models});
+		  this.$el.html(html);
+	      this.$el.trigger('create');
+	      return this;
+	  }
+  });
+  
+  
+  App.model.BookLocation = Backbone.Model.extend({
+	  
+	  getLocation: function(item, book){
+		  var model = {
+				  department: this.getDepartment(item),
+			      label: item.label,
+			      availableitems: this.getAvailableItems(item, book)
+			      };
+		  return new App.model.BookLocation(model);
+	  },
 
+	  // creating department string for emplacement
+	  getDepartment: function(recordData){
+		  var department = recordData.department.content;
+		  if(recordData.storage) {
+		      department = department+', '+recordData.storage.content;
+		    }
+		  return department;
+	  },
+	  
+	  // TODO: Refactor
+	  // complex function to get avialable status of items
+	  // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
+	  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+	  getAvailableItems: function(item, book){
+		  var status = '';
+		  
+		  // check for avaiable items
+		  if (item.available) {
+		      	//check if available items contain loan
+		      	var presentations = _.find(item.available, function(item){
+		      		return item.service =='loan';
+		      	});
+		  }
+		  if (presentations) {
+			  status = 'ausleihbar';
+		  } else {
+			  // check for loan in unavailable items
+		      var loanunavailable = _.find(item.unavailable, function(item){
+		        return item.service =='loan';
+		      });
+		      if(loanunavailable && loanunavailable.href) {
+		        if(loanunavailable.href.indexOf("loan/RES") != -1) {
+		          status = "ausleihbar";
+		        } else {
+		          status = "nicht ausleihbar";
+		        }
+		      } else {
+		        if(book.url == null) {
+		          status = 'nicht ausleihbar';
+		        }else {
+		          status = 'Online-Ressource';
+		        }
+		      }
+		  }
+		  return status;
+	  	}		  
+  });   
+  
+  
+  App.collection.BookLocationList = Backbone.Collection.extend({
+	    model: App.model.BookLocation
+  });
+  
+  
+  
   //////////////////////////////////////////////
   // below this line is old non Backbone code //
   //////////////////////////////////////////////
@@ -515,88 +641,6 @@ previously working functionality. Please don't judge.
 
   function clearSearch() {
     // $("#searchResults").empty();
-  }
-
-  
-  // TODO create BackboneView
-  var bookDetailViewTemplate = rendertmpl('book_detail_view');
-  function renderDetailView(book) {
-    console.log('render detail', book);
-    // _.templateSettings.variable = "book";
-    var html = bookDetailViewTemplate({book:book});
-    var $results = $("#search-results");
-    $results.html(html);
-    $results.trigger('create');
-  }
-
-  // TODO: create BackboneView
-  var bookLocationViewTemplate = rendertmpl('book_location_view');
-  function renderLocationView(locations) {
-    console.log('render locations', locations);
-    // _.templateSettings.variable = "locations";
-    var html = bookLocationViewTemplate({locations:locations});
-    var $el = $("#book-locations");
-    $el.html(html);
-    $el.trigger('create');
-  }
-
-  // TODO: create Backbone Model
-  function bookLocation(item, book) {
-    var model = {
-      department: department(item),
-      label: item.label,
-      availableitems: availableItems(item, book)
-    };
-    return model;
-  }
-
-  // creating department string for emplacement
-  function department($recordData) {
-    var department = $recordData.department.content;
-    if($recordData.storage) {
-      department = department+', '+$recordData.storage.content;
-    }
-    return department;
-  }
-
-  // TODO: Refactor
-  // complex function to get avialable status of items
-  // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
-  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
-  function availableItems($recordData, book) {
-    var item = $recordData;
-    var status = '';
-
-    // check for avaiable items
-    if (item.available) {
-      // check if available items contain loan
-      var presentations = _.find(item.available, function(item){
-          return item.service =='loan';
-      });
-    }
-
-    if (presentations) {
-      status = 'ausleihbar';
-    } else {
-      // check for loan in unavailable items
-      var loanunavailable = _.find(item.unavailable, function(item){
-        return item.service =='loan';
-      });
-      if(loanunavailable && loanunavailable.href) {
-        if(loanunavailable.href.indexOf("loan/RES") != -1) {
-          status = "ausleihbar";
-        } else {
-          status = "nicht ausleihbar";
-        }
-      } else {
-        if(book.url == null) {
-          status = 'nicht ausleihbar';
-        }else {
-          status = 'Online-Ressource';
-        }
-      }
-    }
-    return status;
   }
 
 })(jQuery);
