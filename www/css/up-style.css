@@ -2,6 +2,7 @@
 
 /*******************generell********************
 *********************************************************/
+
 .ui-shadow {
 	box-shadow: 0px 0px 0px !important;
 }
@@ -39,7 +40,19 @@ body,.ui-page {
 	padding: 0;
 	margin-bottom: 5px;
 }
+p {
+	margin:0;
+}
 
+
+.blau {
+	color:#014260; 
+}
+
+.alignleft {
+	float:left;
+	margin:.3em;
+}
 
 /*header*/
 
@@ -208,7 +221,7 @@ label.showfirst {
 }
 
 /*suche input*/
-.ui-input-search {
+.ui-input-search, .ui-input-text {
 	margin: 10px auto;
 	width: 90%;
 	border: 2px inset #ededed;
@@ -512,7 +525,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	padding: .8em 0em !important;
 	/*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 	white-space: normal;
-	background: #d0dae3;
+	
 }
 
 
@@ -803,7 +816,7 @@ p.summery-route {
 #transport .ui-collapsible-content {
 	border:none;
 }
-/**********************suche******************
+/**********************Suche******************
 *****************************************************/
 #search .ui-input-btn {
 	width: 91%;
@@ -817,59 +830,46 @@ p.summery-route {
 	color: none !important;
 }
 
-#search .ui-listview>li h2 {
+
+#search .ui-listview>li p, div.booktitle p {
+	text-transform: none;
+	color: #666;
+	margin-top: 0;
+	font-size:.75em;
+	
+}
+
+#search .ui-listview>li p b, div.booktitle p b {
+	font-style: normal;
+	color:#000;
+}
+
+#search .ui-listview>li h2, div.booktitle h2{
+	margin-top: 0 0 !important;
+	line-height: 1;
 	text-transform: none;
 	color: #000;
 	margin-bottom: 1px;
+	
 }
 
-#search .ui-listview>li p {
-	text-transform: none;
-	color: #000;
-	margin-top: 0;
-	font-style: italic;
-}
-
-#search .ui-listview>li p b {
-	font-style: normal;
-}
-
-#search .ui-listview>li h2 {
-	white-space: normal;
-	text-overflow: clip;
-	overflow: visible;
-	margin-top: 0;
-}
-
-#search .ui-listview>li h2 span {
+#search .ui-listview>li h3, div.booktitle h3 {
 	font-weight: normal;
-	color: #000;
+	color: #666;
+	margin:0;
+	font-size:.75em;
 }
 
 div.booktitle {
-	margin-left: .5em;
 	min-height: 100px;
-}
-
-div.booktitle h2,div.booktitle p {
-	margin-left: 0em;
-	text-transform: none;
-	font-size: 1em;
-	margin-bottom: 0;
-	color: #666;
-	font-family: serif;
 }
 
 #book-icon {
-	width: 100px;
+	width: 35px;
 	min-height: 100px;
 	float: lefT;
-}
-
-div.booktitle p {
-	font-size: .75em;
-	margin-top: 3px;
-	margin-bottom: 1em;
+	background-repeat:no-repeat;
+	margin-left:.2em;
 }
 
 #book-locations {
@@ -917,8 +917,9 @@ div.booktitle p {
 }
 
 /* Ressourcen*/
-li.book-short {
-	word-break: break-all
+li.book-short a.ui-btn {
+	padding-left:.2em;
+	
 }
 
 li.book-short div {
@@ -929,36 +930,131 @@ li.book-short div {
 	float: left;
 }
 
-div.buch {
-	background-image: url(../img/up/buch.png) !important;
+/* MediaIcon A
+---------------------*/
+div.media_a {
+	background-image: url(../img/res/media_a.png) !important;
+}
+li.book-short:hover div.media_a,li.book-short:active div.media_a {
+	background-image: url(../img/res/media_a.png) !important;
+}
+/* MediaIcon B
+---------------------*/
+div.media_b {
+	background-image: url(../img/res/media_b.png) !important;
+}
+li.book-short:hover div.media_b,li.book-short:active div.media_b {
+	background-image: url(../img/res/media_b_hover.png) !important;
+}
+/* MediaIcon E
+---------------------*/
+div.media_e {
+	background-image: url(../img/res/media_e.png) !important;
+}
+li.book-short:hover div.media_e,li.book-short:active div.media_e {
+	background-image: url(../img/res/media_e_hover.png) !important;
+}
+/* MediaIcon G
+---------------------*/
+div.media_g {
+	background-image: url(../img/res/media_g.png) !important;
+}
+li.book-short:hover div.media_g,li.book-short:active div.media_g {
+	background-image: url(../img/res/media_g_hover.png) !important;
+}
+/* MediaIcon H
+---------------------*/
+div.media_h {
+	background-image: url(../img/res/media_h.png) !important;
+}
+li.book-short:hover div.media_h,li.book-short:active div.media_h {
+	background-image: url(../img/res/media_h_hover.png) !important;
+}
+/* MediaIcon I
+---------------------*/
+div.media_i {
+	background-image: url(../img/res/media_i.png) !important;
+}
+li.book-short:hover div.media_i,li.book-short:active div.media_i {
+	background-image: url(../img/res/media_i_hover.png) !important;
+}
+/* MediaIcon K
+---------------------*/
+div.media_k {
+	background-image: url(../img/res/media_k.png) !important;
+}
+li.book-short:hover div.media_k,li.book-short:active div.media_k {
+	background-image: url(../img/res/media_k_hover.png) !important;
+}
+/* MediaIcon L
+---------------------*/
+div.media_l {
+	background-image: url(../img/res/media_l.png) !important;
+}
+li.book-short:hover div.media_l,li.book-short:active div.media_l {
+	background-image: url(../img/res/media_l_hover.png) !important;
+}
+/* MediaIcon M
+---------------------*/
+div.media_m {
+	background-image: url(../img/res/media_m.png) !important;
+}
+li.book-short:hover div.media_m,li.book-short:active div.media_m {
+	background-image: url(../img/res/media_m_hover.png) !important;
+}
+/* MediaIcon O
+---------------------*/
+div.media_o {
+	background-image: url(../img/res/media_o.png) !important;
+}
+li.book-short:hover div.media_o,li.book-short:active div.media_o {
+	background-image: url(../img/res/media_o_hover.png) !important;
+}
+/* MediaIcon P
+---------------------*/
+div.media_p {
+	background-image: url(../img/res/media_p.png) !important;
+}
+li.book-short:hover div.media_p,li.book-short:active div.media_p {
+	background-image: url(../img/res/media_p_hover.png) !important;
+}
+/* MediaIcon S
+---------------------*/
+div.media_s {
+	background-image: url(../img/res/media_s.png) !important;
+}
+li.book-short:hover div.media_s,li.book-short:active div.media_s {
+	background-image: url(../img/res/media_s_hover.png) !important;
+}
+/* MediaIcon T
+---------------------*/
+div.media_t {
+	background-image: url(../img/res/media_t.png) !important;
+}
+li.book-short:hover div.media_t,li.book-short:active div.media_t {
+	background-image: url(../img/res/media_t_hover.png) !important;
+}
+/* MediaIcon V
+---------------------*/
+div.media_v {
+	background-image: url(../img/res/media_v.png) !important;
+}
+li.book-short:hover div.media_v,li.book-short:active div.media_v {
+	background-image: url(../img/res/media_v_hover.png) !important;
+}
+/* MediaIcon X
+---------------------*/
+div.media_x {
+	background-image: url(../img/res/media_x.png) !important;
+}
+li.book-short:hover div.media_x,li.book-short:active div.media_x {
+	background-image: url(../img/res/media_x_hover.png) !important;
 }
 
-li.book-short:hover div.buch,li.book-short:active div.buch {
-	background-image: url(../img/up/buch-hover.png) !important;
-}
-
-div.onlineressource {
-	background-image: url(../img/up/onlineressource.png) !important;
-}
-
-li.book-short:hover div.onlineressource, li.book-short:active div.onlineressource
-
-{	background-image:url(../img/up/onlineressource-hover.png) !important;
-
-}
-div.zeitschrift {
-	background-image: url(../img/up/zeitschrift.png) !important;
-}
-
-li.book-short:hover div.zeitschrift,li.book-short:active div.zeitschrift
-	{
-	background-image: url(../img/up/zeitschrift-hover.png) !important;
-}
 
 /***********************Raumbelegung*********************
 **************************************************************/
 
 #freeRooms p {
 	margin-left:.5em;
-	
 }
