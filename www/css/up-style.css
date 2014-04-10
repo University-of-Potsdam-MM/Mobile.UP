@@ -2,6 +2,7 @@
 
 /*******************generell********************
 *********************************************************/
+
 .ui-shadow {
 	box-shadow: 0px 0px 0px !important;
 }
@@ -39,7 +40,19 @@ body,.ui-page {
 	padding: 0;
 	margin-bottom: 5px;
 }
+p {
+	margin:0;
+}
 
+
+.blau {
+	color:#014260; 
+}
+
+.alignleft {
+	float:left;
+	margin:.3em;
+}
 
 /*header*/
 
@@ -208,7 +221,7 @@ label.showfirst {
 }
 
 /*suche input*/
-.ui-input-search {
+.ui-input-search, .ui-input-text {
 	margin: 10px auto;
 	width: 90%;
 	border: 2px inset #ededed;
@@ -512,7 +525,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	padding: .8em 0em !important;
 	/*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 	white-space: normal;
-	background: #d0dae3;
+	
 }
 
 
