@@ -118,7 +118,7 @@
 	        var mealData = {};
 			mealData.contentId = _.uniqueId("id_");
 	        mealData.title = meal.title;
-	        mealData.description = meal.description;
+	        mealData.description = meal.description.replace(/\(.*\)/g, "");
 			mealData.date = meal.date;
 			
 			mealData.prices = {};
