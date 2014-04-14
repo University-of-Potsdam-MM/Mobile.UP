@@ -795,6 +795,7 @@ div.booktitle {
 	float: lefT;
 	background-repeat: no-repeat;
 	margin-left: .2em;
+	margin-top:.4em;
 }
 
 #book-locations {
