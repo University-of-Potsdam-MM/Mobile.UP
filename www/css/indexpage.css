@@ -65,6 +65,12 @@
 	background-position: bottom left;
 }
 
+#home .ui-listview.ui-group-theme-b  li.events a {
+	background-image: url(../img/up/events.png);
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
 #home .ui-listview.ui-group-theme-b  li.study a {
 	background-image: url(../img/up/study.png);
 	background-repeat: no-repeat;

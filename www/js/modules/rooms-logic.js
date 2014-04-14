@@ -17,7 +17,7 @@ $(function() {
 			// create html code
 			this.element.append(
 				'<div data-role="controlgroup"> \
-					<legend>Zeitraum:</legend> \
+					<h3>Zeitraum:</h3> \
 					<input type="radio" id="radioNow" name="roomTime" checked="checked" /> \
 					<label for="radioNow" id="radioNowLabel" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</label> \
 					<input type="radio" id="radioNext" name="roomTime" /> \

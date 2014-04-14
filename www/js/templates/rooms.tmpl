@@ -1,15 +1,14 @@
-<h3>Freie Räume:</h3>
+<h3 style="background:none; margin-left:.3em;">Freie Räume:</h3>
 <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
 	<% _.each(_.keys(rooms), function(roomIndex) { %>
 	<div data-role="collapsible" data-collapsed="true">
 		<h3>
-			<div>Haus <%= roomIndex %></div>
-			<div>(<%= rooms[roomIndex].length %>)</div>
+			<div>Haus <%= roomIndex %><span class="black"> (<%= rooms[roomIndex].length %> freie Räume)</span></div>
 		</h3>
 		
 		<div data-role="listview" data-icon="arrow-darkblue">
 			<% _.each(rooms[roomIndex], function(room) { %>
-			<li>
+			<li data-theme="b">
 				<a href="details.html?room=<% print(encodeURIComponent(JSON.stringify(room))); %>"><%= room.room %></a>
 			</li>
 			<% }); %>
