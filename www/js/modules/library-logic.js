@@ -393,11 +393,45 @@ previously working functionality. Please don't judge.
   });
 
   // END App.model.LibrarySearch
-
+  
+  /**
+   * Backbone - Views
+   * 
+   * 
+   */
+  
+  /**
+   * Backbone View - Search
+   * Main View for submitting search requests
+   */
   App.view.Search = Backbone.View.extend({
-    // TODO: this is the main Search Page with everything inside
-  })
-
+	  el: '#libraryContent',
+	  template: rendertmpl('book_search'),
+	  
+	  events: {
+		  'submit form': 'submit'
+		  
+	  },
+	  
+	  render: function(){
+		  var html = this.template({});
+		  this.$el.html(html);
+		  this.$el.trigger('create');
+		  return this;
+	  },
+	  
+	  submit: function(e){
+		  e.preventDefault();
+		  updateResults();
+		  console.log('submit');
+	  }    
+  });
+  
+  
+  /**
+   * Backbone View - BookList
+   * displays the list of search results
+   */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
 
@@ -437,7 +471,12 @@ previously working functionality. Please don't judge.
       book.updateLocation();
     },
   });
-
+  
+  
+  /**
+   * Backbone View - BookDetailView
+   * displays the detail information of a given book
+   */
   App.view.BookDetailView = Backbone.View.extend({
 	  el: '#libraryContent',
 	  model: App.model.Book,
@@ -457,27 +496,30 @@ previously working functionality. Please don't judge.
 
 	  // TODO:
 	  back: function(){
-		  App.views.SearchResults.render();
-		  updateResults();
+		  console.log('clicked');
+		  App.view.Search.render();
+		  App.view.SearchResults = new App.view.BookList({collection: App.collections.searchResults});
+		  App.view.SearchResults.render();
 		  return this;
 	  }
 
   });
-
-
 
   App.collections.searchResults = new App.collection.BookList();
 
   App.view.BookShortView = Backbone.View.extend({});
 
 
+  /**
+   * Backbone View - LocationView
+   * displays the location information of a given book
+   */
   App.view.LocationView = Backbone.View.extend({
 	  el: '#book-locations',
 	  collection: App.collection.BookLocationList,
-
 	  template: rendertmpl('book_location_view'),
+	  
 	  render: function(){
-		  //console.log('ations', this.collection);
 		  var html = this.template({locations:this.collection.models});
 		  this.$el.html(html);
 	      this.$el.trigger('create');
@@ -485,7 +527,13 @@ previously working functionality. Please don't judge.
 	  }
   });
 
-
+  
+  /**
+   * Backbone Model - BookLocation
+   * Model for the location 
+   * @param item (response from daia)
+   * @param book (backbone book model)
+   */
   App.model.BookLocation = Backbone.Model.extend({
 
 	  getLocation: function(item, book){
@@ -562,29 +610,18 @@ previously working functionality. Please don't judge.
   // debugging controller
   $(document).on("pageinit", "#search", function () {
     console.log('pageinit #search');
-    registerEventSearch();
+    App.view.Search = new App.view.Search();
+    App.view.Search.render();
+    
 
     // initialize Main Views
-    App.views.SearchResults = new App.view.BookList({
-      el: $('#search-results'),
-      collection: App.collections.searchResults
-    });
-
-  App.views.SearchResults.render();
-
+    App.view.SearchResults = new App.view.BookList({collection: App.collections.searchResults});
+    App.view.SearchResults.render();
 
 
     // debugging
     updateResults();
   });
-
-  // controller
-  function registerEventSearch(){
-    $("#query-form").on("submit", function(e) {
-      e.preventDefault();
-      updateResults();
-    });
-  }
 
   // controller
   function registerPagination(){
