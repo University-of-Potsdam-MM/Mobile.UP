@@ -55,13 +55,13 @@ previously working functionality. Please don't judge.
       });
 
       ajaxLocationCall.done(function (json) {
-    	var bookLocationList = new App.collection.BookLocationList(); 
+    	var bookLocationList = new App.collection.BookLocationList();
     	console.log('init', bookLocationList);
         _.map(json.document[0].item, function(item) {
         	//console.log('Item:', item);
         	var bookLocation = new App.model.BookLocation({});
         	console.log(bookLocation.getLocation(item, currentBook));
-        	
+
         	bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
         //console.log('List', bookLocationList);
@@ -158,7 +158,7 @@ previously working functionality. Please don't judge.
         return null;
       }
     },
-    
+
     // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
     keywords: function(node, tagName){
   	  var keywords = App.model.Book.contentForTag(node, tagName);
@@ -169,13 +169,13 @@ previously working functionality. Please don't judge.
   	  });
   	  return keys;
     },
-    
+
     mediaType: function(node) {
     	var $node = $(node);
 
     	// get physcialDescription
     	var physicalDescriptionForms = $node.find('form[authority]');
-    	
+
     	var physicalDescription = _.filter(physicalDescriptionForms,  function(form){
     		var $form = $(form);
     		if (typeof $form[0] != "undefined") {
@@ -184,7 +184,7 @@ previously working functionality. Please don't judge.
     	});
     	if (typeof physicalDescription[0] != "undefined") {
     		physicalDescription = physicalDescription[0].textContent;
-    	}  	 	
+    	}
 
     	//TODO: read typeOfResource
     	var typeOfResource = App.model.Book.getTypeOfResource(node);
@@ -276,20 +276,20 @@ previously working functionality. Please don't judge.
 				}
 			}
 		}
-    	
+
     	//console.log(mediaType);
     	mediaType = "media_"+mediaType.toLowerCase();
     	return mediaType;
     },
-    
+
     getTypeOfResource: function(node) {
     	var typeOfResource = App.model.Book.contentForTag(node, 'typeOfResource');
     	return typeOfResource;
     },
-    
+
     contentForTag: function(node, tagName){
   	  var nodes = node.getElementsByTagName(tagName);
-  	  return _.pluck(nodes, 'textContent');	  
+  	  return _.pluck(nodes, 'textContent');
     },
 
 
@@ -297,7 +297,7 @@ previously working functionality. Please don't judge.
   // END App.model.Book
 
 
-  
+
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
 
@@ -400,16 +400,16 @@ previously working functionality. Please don't judge.
 
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-    
+
     initialize: function(){
       this.collection.on('add', this.render, this);
     },
-    
+
     events: {
       "click .pagination-button" : 'loadMore',
       "click ul.booklist li.book-short" : 'renderDetail',
     },
-    
+
     template: rendertmpl('book_list_view'),
     render: function(){
       console.log('render');
@@ -418,11 +418,11 @@ previously working functionality. Please don't judge.
       this.$el.trigger('create');
       return this;
     },
-    
+
     loadMore: function(){
       App.models.currentSearch.loadNext();
     },
-    
+
     renderDetail: function(ev) {
       // TODO query Standortinfo for this record
       ev.preventDefault();
@@ -433,19 +433,19 @@ previously working functionality. Please don't judge.
           model: book
         });
       BookDetailView.render();
-      
+
       book.updateLocation();
     },
   });
-  
+
   App.view.BookDetailView = Backbone.View.extend({
 	  el: '#libraryContent',
 	  model: App.model.Book,
-	  
+
 	  events: {
-		"click .backToList" : 'back' 
+		"click .backToList" : 'back'
 	  },
-	  
+
 	  template: rendertmpl('book_detail_view'),
 	  render: function(){
 		  //console.log('render detail', this.model);
@@ -454,27 +454,27 @@ previously working functionality. Please don't judge.
 	      this.$el.trigger('create');
 	      return this;
 	  },
-	  
+
 	  // TODO:
 	  back: function(){
 		  App.views.SearchResults.render();
 		  updateResults();
 		  return this;
 	  }
-	  
+
   });
-  
-  
+
+
 
   App.collections.searchResults = new App.collection.BookList();
 
   App.view.BookShortView = Backbone.View.extend({});
-  
-  
+
+
   App.view.LocationView = Backbone.View.extend({
 	  el: '#book-locations',
 	  collection: App.collection.BookLocationList,
-	    	  
+
 	  template: rendertmpl('book_location_view'),
 	  render: function(){
 		  //console.log('ations', this.collection);
@@ -484,15 +484,16 @@ previously working functionality. Please don't judge.
 	      return this;
 	  }
   });
-  
-  
+
+
   App.model.BookLocation = Backbone.Model.extend({
-	  
+
 	  getLocation: function(item, book){
 		  var model = {
 				  department: this.getDepartment(item),
 			      label: item.label,
-			      availableitems: this.getAvailableItems(item, book)
+			      availableitems: this.getAvailableItems(item, book),
+			      url: book.attributes.url
 			      };
 		  return new App.model.BookLocation(model);
 	  },
@@ -505,14 +506,14 @@ previously working functionality. Please don't judge.
 		    }
 		  return department;
 	  },
-	  
+
 	  // TODO: Refactor
 	  // complex function to get avialable status of items
 	  // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
 	  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
 	  getAvailableItems: function(item, book){
 		  var status = '';
-		  
+
 		  // check for avaiable items
 		  if (item.available) {
 		      	//check if available items contain loan
@@ -537,21 +538,21 @@ previously working functionality. Please don't judge.
 		        if(book.url == null) {
 		          status = 'nicht ausleihbar';
 		        }else {
-		          status = 'Online-Ressource';
+		          status = 'Online-Ressource im Browser öffnen';
 		        }
 		      }
 		  }
 		  return status;
-	  	}		  
-  });   
-  
-  
+	  	}
+  });
+
+
   App.collection.BookLocationList = Backbone.Collection.extend({
 	    model: App.model.BookLocation
   });
-  
-  
-  
+
+
+
   //////////////////////////////////////////////
   // below this line is old non Backbone code //
   //////////////////////////////////////////////

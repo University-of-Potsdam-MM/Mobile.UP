@@ -3,10 +3,6 @@
 	<h3><%= location.get('department') %></h3>
 	<span class="available"></span> <!--Alternativen: lent, prebook -->
 	<%= (location.get('label')) ? "<p>"+location.get('label')+"<br>" : "" %>
-
-   
-
-	<%= location.get('availableitems') %></p>
-	 
+	<a href="<%= location.get('url') %>"><%= location.get('availableitems') %></a></p>
 </div>
 <% }); %>
