@@ -64,7 +64,7 @@ previously working functionality. Please don't judge.
         	
         	bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
-        console.log('List', bookLocationList);
+        //console.log('List', bookLocationList);
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
       }).fail(function () {
@@ -171,9 +171,21 @@ previously working functionality. Please don't judge.
     },
     
     mediaType: function(node) {
-    	//TODO: read physical description
-    	var physicalDescription = App.model.Book.contentForTag(node, 'PhysicalDescription');
+    	var $node = $(node);
+
+    	// get physcialDescription
+    	var physicalDescriptionForms = $node.find('form[authority]');
     	
+    	var physicalDescription = _.filter(physicalDescriptionForms,  function(form){
+    		var $form = $(form);
+    		if (typeof $form[0] != "undefined") {
+    			return $form[0].textContent == "remote" || $form[0].textContent == "microform";
+    		}
+    	});
+    	if (typeof physicalDescription[0] != "undefined") {
+    		physicalDescription = physicalDescription[0].textContent;
+    	}  	 	
+
     	//TODO: read typeOfResource
     	var typeOfResource = App.model.Book.getTypeOfResource(node);
     	var originInfo = App.model.Book.contentForTag(node, 'originInfo');
@@ -265,7 +277,7 @@ previously working functionality. Please don't judge.
 			}
 		}
     	
-    	console.log(mediaType);
+    	//console.log(mediaType);
     	mediaType = "media_"+mediaType.toLowerCase();
     	return mediaType;
     },
@@ -416,7 +428,7 @@ previously working functionality. Please don't judge.
       ev.preventDefault();
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
-      console.log(book);
+      //console.log(book);
       var BookDetailView = new App.view.BookDetailView({
           model: book
         });
@@ -436,7 +448,7 @@ previously working functionality. Please don't judge.
 	  
 	  template: rendertmpl('book_detail_view'),
 	  render: function(){
-		  console.log('render detail', this.model);
+		  //console.log('render detail', this.model);
 		  var html = this.template({book:this.model});
 		  this.$el.html(html);
 	      this.$el.trigger('create');
@@ -465,7 +477,7 @@ previously working functionality. Please don't judge.
 	    	  
 	  template: rendertmpl('book_location_view'),
 	  render: function(){
-		  console.log('render locations', this.collection);
+		  //console.log('ations', this.collection);
 		  var html = this.template({locations:this.collection.models});
 		  this.$el.html(html);
 	      this.$el.trigger('create');
