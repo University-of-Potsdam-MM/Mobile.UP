@@ -545,6 +545,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
 	padding-left: 0px;
+	min-height:70px;
 }
 
 html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
