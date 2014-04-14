@@ -14,26 +14,24 @@
   </div>
   <div id="book-locations" class="ui-content"></div>
   <div id="book-details" class="ui-content">
+	  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+	  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
 
-  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+			<%= (book.get('keywords')) ? '<div data-role="collapsible"><h3>Schlagwörter:</h3><p>' : '' %>
+	    	<% _.each(book.get('keywords'), function(keyword){ %>
+					<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
+	          <% }); %>
+			<%= (book.get('keywords')) ? '</p></div>' : '' %>
 
-    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
-
-    <%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
-
-    <%= (book.get('keywords')) ? '<div data-role="collapsible"><h3>Schlagwörter:</h3><p>' : '' %>
-    	<% _.each(book.get('keywords'), function(keyword){ %>
-				<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
-          <% }); %>
-		<%= (book.get('keywords')) ? '</p></div>' : '' %>
-
-
-    	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
-    	<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
-          <% _.each(book.get('toc'), function(chapter){ %>
-            <li><%= chapter %></li>
-          <% }); %>
+			<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
+	          <% _.each(book.get('toc'), function(chapter){ %>
+	            <li><%= chapter %></li>
+	          <% }); %>
 			<%= (book.get('toc')) ? '</ul></div>' : '' %>
+
+			<%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
+
+	    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
     </div>
   </div>
 </div>
