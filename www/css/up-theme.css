@@ -762,7 +762,7 @@ html .ui-bar-a .ui-btn:visited,
 html .ui-body-a .ui-btn:visited,
 html body .ui-group-theme-a .ui-btn:visited,
 html head + body .ui-btn.ui-btn-a:visited {
-	background: #1e516b /*{a-bup-background-color}*/;
+	background: #014260 /*{a-bup-background-color}*/;
 	border-color: #ccc /*{a-bup-border}*/;
 	color: #fff /*{a-bup-color}*/;
 	text-shadow: none;
