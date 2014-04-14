@@ -3,11 +3,22 @@
   <h3>
     <span class="marker <%= statusOpenNow %>"></span><%= name %>
   </h3>
- <p>
-    <%= (mail) ? '<b>E-Mail:</b><br><a href="mailto:'+mail+'">'+mail+'</a><br /><br />' : ''  %>
-    <%= (telephone) ? '<b>Tel:</b><br><a href="tel: '+telephone+'">'+telephone+'</a><br /><br />' : '' %>
-    <%= (link) ? '<b>Link:</b><br><a href="'+link+' target="_blank">'+link+'</a><br /><br />' : ''%>
- </p>
+  <% if (!_.isUndefined(mail) || !_.isUndefined(telephone) || !_.isUndefined(link)) { %>
+  <table data-role="table" data-mode="reflow" class="ui-responsive">
+  	<thead>
+  		<tr>
+  			<th></th>
+  			<th></th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%= (mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+mail+'">'+mail+'</a></td></tr>' : ''  %>
+  		<%= (telephone) ? '<tr><th>Tel:</th><td><a href="tel: '+telephone+'">'+telephone+'</a></td></tr>' : '' %>
+    	<%= (link) ? '<tr><th>Link:</th><td><a href="'+link+' target="_blank">'+link+'</a></td></tr>' : ''%>
+  	</tbody>
+  </table>
+  <% } %>
+
   <table data-role="table" data-mode="reflow"
     class="ui-responsive table-stripe ">
     <thead>
@@ -25,6 +36,8 @@
       <% }); %>
     </tbody>
   </table>
+  <!--
   <a href="#" data-role="button" data-theme="a" data-icon="location">
     Auf der Karte finden</a>
+    -->
 </div>
