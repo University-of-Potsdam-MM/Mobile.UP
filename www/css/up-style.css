@@ -784,6 +784,10 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	font-size: .75em;
 }
 
+#search .ui-collapsible-set {
+	margin-top:0;
+}
+
 div.booktitle {
 	min-height: 100px;
 	margin-bottom: 5px;
@@ -808,7 +812,13 @@ div.booktitle {
 }
 
 #book-locations h3 {
-	margin: 0;
+	margin:.3em 0 .3em 0;
+	font-size:1em;
+}
+
+#book-locations p {
+	margin:.3em 0 .3em 0;
+	font-size:1.8m;
 }
 
 #book-details div h3 a.ui-btn {

@@ -7,7 +7,7 @@
  <%= _.compact([book.get('publisher'), book.get('dateIssued')]).join(', ') %></p></div>
 <div data-role="tabs">
   <div data-role="navbar">
-    <ul>
+    <ul id="search-results">
       <li><a href="#book-locations" data-ajax="false" class="ui-btn-active">Standort</a></li>
       <li><a href="#book-details" data-ajax="false">Details</a></li>
     </ul>
