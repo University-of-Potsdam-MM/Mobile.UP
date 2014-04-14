@@ -179,7 +179,7 @@ h2 span {
 	padding: 0;
 }
 
-#search-results li.ui-state-active:after {
+#libraryContent li.ui-state-active:after {
 	background-image: url(../img/up/marker.png);
 	background-repeat: no-repeat;
 	background-position: 50%;
