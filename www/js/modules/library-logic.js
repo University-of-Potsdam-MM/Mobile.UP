@@ -95,9 +95,9 @@ previously working functionality. Please don't judge.
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
         notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
-		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-		mediaType: App.model.Book.mediaType(xmlRecord)
+    		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+    		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
+    		mediaType: App.model.Book.mediaType(xmlRecord)
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -331,13 +331,20 @@ previously working functionality. Please don't judge.
 
     loadNext: function() {
       console.log('loadNext');
+      var model = this;
       // fetch the next 10 books
       var query = this.get('query');
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
       var promise = fetch.loadSearch();
-      promise.done(function(xml) {
+      promise.then(function(xml){
+        // get relevant pagination information
+        var $xml = $(xml);
+        var numberOfRecords = $xml.find('numberOfRecords').text();
+        model.set('numberOfRecords', numberOfRecords);
+        return xml;
+      }).done(function(xml) {
         console.log('done', xml);
         resultList.addXmlSearchResult(xml);
       });
@@ -436,6 +443,7 @@ previously working functionality. Please don't judge.
     el: '#search-results',
 
     initialize: function(){
+      this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
 
@@ -447,7 +455,10 @@ previously working functionality. Please don't judge.
     template: rendertmpl('book_list_view'),
     render: function(){
       console.log('render');
-      var html = this.template({booklist:this.collection.models});
+      var html = this.template({
+        search: App.models.currentSearch.attributes,
+        booklist: this.collection.models
+      });
       this.$el.html(html);
       this.$el.trigger('create');
       return this;
@@ -482,7 +493,7 @@ previously working functionality. Please don't judge.
 	  model: App.model.Book,
 
 	  events: {
-		"click .backToList" : 'back'
+		  "click .backToList" : 'back'
 	  },
 
 	  template: rendertmpl('book_detail_view'),
@@ -498,7 +509,10 @@ previously working functionality. Please don't judge.
 	  back: function(){
 		  console.log('clicked');
 		  App.view.Search.render();
-		  App.view.SearchResults = new App.view.BookList({collection: App.collections.searchResults});
+		  App.view.SearchResults = new App.view.BookList({
+        model: App.models.currentSearch,
+        collection: App.collections.searchResults
+      });
 		  App.view.SearchResults.render();
 		  return this;
 	  }
@@ -610,14 +624,22 @@ previously working functionality. Please don't judge.
   // debugging controller
   $(document).on("pageinit", "#search", function () {
     console.log('pageinit #search');
+
+    App.models.currentSearch = new App.model.LibrarySearch({
+      query:'',
+      numberOfRecords: 0,
+      results: new Backbone.Collection()
+    });
+
     App.view.Search = new App.view.Search();
     App.view.Search.render();
-    
 
     // initialize Main Views
-    App.view.SearchResults = new App.view.BookList({collection: App.collections.searchResults});
+    App.view.SearchResults = new App.view.BookList({
+      model: App.models.currentSearch,
+      collection: App.collections.searchResults
+    });
     App.view.SearchResults.render();
-
 
     // debugging
     updateResults();
@@ -652,12 +674,11 @@ previously working functionality. Please don't judge.
       App.collections.searchResults = new App.collection.BookList();
     }
 
-    var search = new App.model.LibrarySearch({
+    var search = App.models.currentSearch.set({
       query: queryString,
       results: App.collections.searchResults,
     });
 
-    App.models.currentSearch = search;
     // on adding books render BookListView
     var loading = search.loadNext();
     return loading;
