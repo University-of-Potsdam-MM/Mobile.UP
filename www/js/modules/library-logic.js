@@ -400,13 +400,13 @@ previously working functionality. Please don't judge.
   });
 
   // END App.model.LibrarySearch
-  
+
   /**
    * Backbone - Views
-   * 
-   * 
+   *
+   *
    */
-  
+
   /**
    * Backbone View - Search
    * Main View for submitting search requests
@@ -414,27 +414,27 @@ previously working functionality. Please don't judge.
   App.view.Search = Backbone.View.extend({
 	  el: '#libraryContent',
 	  template: rendertmpl('book_search'),
-	  
+
 	  events: {
 		  'submit form': 'submit'
-		  
+
 	  },
-	  
+
 	  render: function(){
 		  var html = this.template({});
 		  this.$el.html(html);
 		  this.$el.trigger('create');
 		  return this;
 	  },
-	  
+
 	  submit: function(e){
 		  e.preventDefault();
 		  updateResults();
 		  console.log('submit');
-	  }    
+	  }
   });
-  
-  
+
+
   /**
    * Backbone View - BookList
    * displays the list of search results
@@ -482,8 +482,8 @@ previously working functionality. Please don't judge.
       book.updateLocation();
     },
   });
-  
-  
+
+
   /**
    * Backbone View - BookDetailView
    * displays the detail information of a given book
@@ -532,7 +532,7 @@ previously working functionality. Please don't judge.
 	  el: '#book-locations',
 	  collection: App.collection.BookLocationList,
 	  template: rendertmpl('book_location_view'),
-	  
+
 	  render: function(){
 		  var html = this.template({locations:this.collection.models});
 		  this.$el.html(html);
@@ -541,10 +541,10 @@ previously working functionality. Please don't judge.
 	  }
   });
 
-  
+
   /**
    * Backbone Model - BookLocation
-   * Model for the location 
+   * Model for the location
    * @param item (response from daia)
    * @param book (backbone book model)
    */
