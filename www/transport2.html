@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-	   
+
 
   </head>
   <body>
     <!-- Start Main Page -->
     <div data-role="page" id="transport2">
-     
+
        <!-- Start Header -->
       <div data-role="header" data-position="fixed" data-tap-toggle="false">
         <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
@@ -26,7 +26,7 @@
           </ul>
 
         </div>
-       
+
 
         <div id="complexTransport">
           <!-- Fahrt eingeben -->
@@ -64,14 +64,16 @@
             </ul>
           </div>
 
-
           <div data-role="navbar" class="buttons_pt route submit-route">
-          <ul>
-          
-            <li>&nbsp;</li><li>&nbsp;</li>
-            <li>    <input type="submit" value="Suchen" class="submit-fahrt" data-theme="a"/>
-            </li>
+
+            <ul>
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+              <li>
+                <input type="submit" value="Suchen" class="submit-fahrt" data-theme="a"/>
+              </li>
            </ul>
+
          </div>
 
           <div id="result">
@@ -82,18 +84,14 @@
               <p class='when'>Heute, 10.02.2234, Abfahrt 11:15</p>
             </div>
 
-            <input id='earlierButton' type="submit" value="<--Früher" />
-
+            <input id='earlierButton' type="submit" value="← Früher" />
 
             <ul data-role="listview" data-inset="true" id="transport_rides">
             </ul>
 
-
-           
             <div class="spaeter" >
-       			 <input id='laterButton' type="submit" data-theme="a" value="Sp&aumlter" />
+       			  <input id='laterButton' type="submit" data-theme="a" value="Später →" />
       		  </div>
-			
 
           </div> <!-- end #result -->
 
@@ -102,9 +100,6 @@
 		  </div> <!-- end content -->
 
     </div> <!-- end page -->
-
-
-     	
 
   </body>
 </html>
