@@ -540,7 +540,7 @@ previously working functionality. Please don't judge.
 		  var model = {
 				  department: this.getDepartment(item),
 			      label: item.label,
-			      availableitems: this.getAvailableItems(item, book),
+			      item: this.getItem(item, book),
 			      url: book.attributes.url
 			      };
 		  return new App.model.BookLocation(model);
@@ -555,42 +555,75 @@ previously working functionality. Please don't judge.
 		  return department;
 	  },
 
-	  // TODO: Refactor
+	  //
 	  // complex function to get avialable status of items
 	  // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
-	  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
-	  getAvailableItems: function(item, book){
+	  // TODO: limitation expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+	  getItem: function(item, book){
 		  var status = '';
+		  var statusInfo = '';
 
-		  // check for avaiable items
-		  if (item.available) {
-		      	//check if available items contain loan
-		      	var presentations = _.find(item.available, function(item){
-		      		return item.service =='loan';
+		  // check for avaiable items and process loan and presentation
+		  if (item.available){
+		      var loanAvailable = _.find(item.available, function(item){
+		      	return item.service =='loan';
+		      });
+		      var presentationAvailable = _.find(item.available, function(item){
+		      		return item.service =='presentation';
 		      	});
 		  }
-		  if (presentations) {
+		  if (item.unavailable){
+			  var loanUnavailable = _.find(item.unavailable, function(item){
+			        return item.service =='loan';
+			      });
+			  var presentationUnavailable = _.find(item.unavailable, function(item){
+		      		return item.service =='presentation';
+		      	});
+		  }
+		  
+		  if (loanAvailable) {
 			  status = 'ausleihbar';
+			  
+			  if(presentationAvailable){
+				// tag available with service="loan" and href=""?
+				  if(loanAvailable.href==""){
+					  statusInfo += "Bitte bestellen";
+				  } else {
+					  statusInfo += "Bitte am Standort entnehmen";
+				  }
+			  }
+
 		  } else {
 			  // check for loan in unavailable items
-		      var loanunavailable = _.find(item.unavailable, function(item){
-		        return item.service =='loan';
-		      });
-		      if(loanunavailable && loanunavailable.href) {
-		        if(loanunavailable.href.indexOf("loan/RES") != -1) {
+		      if(loanUnavailable && loanUnavailable.href) {
+		        if(loanUnavailable.href.indexOf("loan/RES") != -1) {
 		          status = "ausleihbar";
 		        } else {
 		          status = "nicht ausleihbar";
 		        }
 		      } else {
-		        if(book.url == null) {
+		    	  
+		        if(book.attributes.url == null) {
 		          status = 'nicht ausleihbar';
 		        }else {
 		          status = 'Online-Ressource im Browser öffnen';
 		        }
 		      }
+		      
+		      if(presentationUnavailable)
+		    	  if(loanUnavailable.href) {
+		    		  if(loanUnavailable.href.indexOf("loan/RES") != -1) {
+			    		  if (!loanUnavailable.expected || loanUnavailable.expected == "unknown"){
+			    			  statusInfo += "ausgeliehen, Vormerken möglich";
+			    		  }else{
+			    			  statusInfo += "ausgeliehen bis "+loanUnavailable.expected+", Vormerken möglich";
+			    		  }  
+			    	  } 
+		    	  } else {
+		    		  statusInfo += "...";
+		    	  }
 		  }
-		  return status;
+		  return [status, statusInfo];
 	  	}
   });
 
