@@ -416,22 +416,47 @@ previously working functionality. Please don't judge.
 	  template: rendertmpl('book_search'),
 
 	  events: {
-		  'submit form': 'submit'
-
+		  	'submit form': 'submit',
+		  	'click .pagination-button': 'paginate'
 	  },
-
+	  
 	  render: function(){
 		  var html = this.template({});
 		  this.$el.html(html);
 		  this.$el.trigger('create');
 		  return this;
 	  },
+	  
+	  paginate: function(e){
+		  e.preventDefault();
+		  App.models.currentSearch.loadNext();
+	  },
 
 	  submit: function(e){
 		  e.preventDefault();
-		  updateResults();
 		  console.log('submit');
-	  }
+		  var inputs = $("#query-form :input").serializeArray();
+		  var query = inputs[0].value;
+		  this.loadSearch(query);		  
+	  },
+	  
+	  loadSearch: function(queryString){
+		  console.log('loadSearch');
+		  if (App.collections.searchResults) {
+			  App.collections.searchResults.reset();
+		  } else {
+			  App.collections.searchResults = new App.collection.BookList();
+		  }
+		  var search = App.models.currentSearch.set({
+			  query: queryString,
+			  results: App.collections.searchResults,
+		  });
+
+		  // on adding books render BookListView
+		  var loading = search.loadNext();
+		  return loading;
+	  }	    
+
   });
 
 
@@ -674,77 +699,6 @@ previously working functionality. Please don't judge.
     });
     App.view.SearchResults.render();
 
-    // debugging
-    updateResults();
   });
-
-  // controller
-  function registerPagination(){
-    $(".pagination-button").click(function(e){
-      e.preventDefault();
-      App.models.currentSearch.loadNext();
-    });
-  };
-
-  // controller
-  function updateResults() {
-    // debugger
-    Q(clearSearch)
-    .then(getKeyword)
-    .then(loadSearch)
-    .then(addXmlSearchResult)
-    .catch(logError);
-  }
-
-
-  // TODO: this function is here temporarily and should be removed soon
-  function loadSearch(queryString) {
-    console.log('loadSearch');
-
-    if (App.collections.searchResults) {
-      App.collections.searchResults.reset();
-    } else {
-      App.collections.searchResults = new App.collection.BookList();
-    }
-
-    var search = App.models.currentSearch.set({
-      query: queryString,
-      results: App.collections.searchResults,
-    });
-
-    // on adding books render BookListView
-    var loading = search.loadNext();
-    return loading;
-  };
-
-
-  // this is a function i use to migrate to Backbone
-  // TODO remove it
-  function addXmlSearchResult(xmlSearchResult) {
-    console.log('addXmlSearchResult');
-
-    var searchResults = App.collections.searchResults;
-    searchResults.addXmlSearchResult(xmlSearchResult);
-    return searchResults.models;
-  };
-
-  // controller / helper
-  var logError = function (err) {
-    console.log('ErrorMessage', err.message);
-    console.log('StackTrace', err.stack);
-    alert(err);
-    throw err;
-  }
-
-  // view
-  function getKeyword(){
-    var inputs= $("#query-form :input").serializeArray();
-    var query = inputs[0].value;
-    return query;
-  }
-
-  function clearSearch() {
-    // $("#searchResults").empty();
-  }
-
+  
 })(jQuery);
