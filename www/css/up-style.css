@@ -90,14 +90,15 @@ p {
 }
 
 h2 {
-	text-transform: uppercase;
-	font-size: 1.2em;
+	
+	font-size: 1em;
 	font-weight: normal;
 	margin-left: 1em;
 }
 
 h2 span {
 	font-weight: bold;
+	text-transform: uppercase;
 }
 
 .ui-listview.ui-group-theme-c .ui-btn {
@@ -128,6 +129,21 @@ h2 span {
 	margin-left: 5px;
 }
 
+/*default buttons links */
+.ui-btn-icon-left:after, .ui-btn-icon-right:after
+{
+	background-color:#014260;
+	
+}
+
+
+.ui-btn {
+	padding-right:0;
+}
+
+.ui-header .ui-btn {
+	padding-right:1em;
+}
 /*hover*/
 .ui-page-theme-a .ui-btn.back:hover,html .ui-bar-a .ui-btn.back:hover,html .ui-body-a .ui-btn.back:hover,html body .ui-group-theme-a .ui-btn.back:hover,html head+body .ui-btn.ui-btn-a.back:hover
 	{
@@ -220,9 +236,8 @@ label.showfirst {
 
 /*suche input*/
 .ui-input-search,.ui-input-text {
-	margin: 10px auto;
-	width: 90%;
-	border: 2px inset #ededed;
+	
+	border: 2px inset #ededed; 
 }
 
 /* popup panel */
@@ -658,7 +673,27 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	display: inline-block;
 	width: 90%;
 	height: 20px;
+	text-transform:none;
+	font-size:.8em;
+	font-weight:bold;
 }
+
+html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
+	position: absolute;
+content: ".";
+text-indent: -10000px;
+top: 6px;
+left: 2px;
+background-image: url(../img/up/ok.png) !important;
+background-repeat: no-repeat;
+width: 25px;
+height: 25px;
+}
+
+html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
+	text-indent:15px;
+}
+
 
 .buttons_pt.ui-navbar li p {
 	text-align: center;
@@ -674,10 +709,10 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .buttons_pt .ui-input-datebox input {
 	margin:0 !important;
 	border:0 !important;
-	text-transform:uppercase;
 	text-align:center;
 	font-size:.8em;
 	min-height: 1em;
+	font-weight:bold;
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
@@ -743,11 +778,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	color:#014260
 }
 
+.submit-route .ui-block-c .ui-btn {font-size:1em !important;}
+
 /**********************Suche******************
 *****************************************************/
 #search .ui-input-btn {
-	width: 91%;
-	margin: 0 auto;
 	color: none;
 	font-weight: normal;
 	text-transform: uppercase;
@@ -761,7 +796,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	text-transform: none;
 	color: #666;
 	margin-top: 0;
-	font-size: .75em;
+	font-size: .8em;
 }
 
 #search .ui-listview>li p b,div.booktitle p b {
@@ -781,7 +816,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	font-weight: normal;
 	color: #666;
 	margin: 0;
-	font-size: .75em;
+	font-size: .8em;
 }
 
 #search .ui-collapsible-set {

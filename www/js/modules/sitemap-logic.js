@@ -25,7 +25,7 @@ var settings =	{
 		institutes: {
 			"strokeColor": "#FF7800",
 		    "strokeOpacity": 1,
-		    "strokeWeight": 2,
+		    "strokeWeight": 0,
 		    "fillColor": "#46461F",
 		    "fillOpacity": 0.5
 		}
