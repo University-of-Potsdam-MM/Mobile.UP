@@ -95,9 +95,9 @@ previously working functionality. Please don't judge.
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
         notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
-		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-		mediaType: App.model.Book.mediaType(xmlRecord)
+    		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+    		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
+    		mediaType: App.model.Book.mediaType(xmlRecord)
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -331,13 +331,20 @@ previously working functionality. Please don't judge.
 
     loadNext: function() {
       console.log('loadNext');
+      var model = this;
       // fetch the next 10 books
       var query = this.get('query');
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
       var promise = fetch.loadSearch();
-      promise.done(function(xml) {
+      promise.then(function(xml){
+        // get relevant pagination information
+        var $xml = $(xml);
+        var numberOfRecords = $xml.find('numberOfRecords').text();
+        model.set('numberOfRecords', numberOfRecords);
+        return xml;
+      }).done(function(xml) {
         console.log('done', xml);
         resultList.addXmlSearchResult(xml);
       });
@@ -394,14 +401,74 @@ previously working functionality. Please don't judge.
 
   // END App.model.LibrarySearch
 
-  App.view.Search = Backbone.View.extend({
-    // TODO: this is the main Search Page with everything inside
-  })
+  /**
+   * Backbone - Views
+   *
+   *
+   */
 
+  /**
+   * Backbone View - Search
+   * Main View for submitting search requests
+   */
+  App.view.Search = Backbone.View.extend({
+	  el: '#libraryContent',
+	  template: rendertmpl('book_search'),
+
+	  events: {
+		  	'submit form': 'submit',
+		  	'click .pagination-button': 'paginate'
+	  },
+	  
+	  render: function(){
+		  var html = this.template({});
+		  this.$el.html(html);
+		  this.$el.trigger('create');
+		  return this;
+	  },
+	  
+	  paginate: function(e){
+		  e.preventDefault();
+		  App.models.currentSearch.loadNext();
+	  },
+
+	  submit: function(e){
+		  e.preventDefault();
+		  console.log('submit');
+		  var inputs = $("#query-form :input").serializeArray();
+		  var query = inputs[0].value;
+		  this.loadSearch(query);		  
+	  },
+	  
+	  loadSearch: function(queryString){
+		  console.log('loadSearch');
+		  if (App.collections.searchResults) {
+			  App.collections.searchResults.reset();
+		  } else {
+			  App.collections.searchResults = new App.collection.BookList();
+		  }
+		  var search = App.models.currentSearch.set({
+			  query: queryString,
+			  results: App.collections.searchResults,
+		  });
+
+		  // on adding books render BookListView
+		  var loading = search.loadNext();
+		  return loading;
+	  }	    
+
+  });
+
+
+  /**
+   * Backbone View - BookList
+   * displays the list of search results
+   */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
 
     initialize: function(){
+      this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
 
@@ -413,7 +480,10 @@ previously working functionality. Please don't judge.
     template: rendertmpl('book_list_view'),
     render: function(){
       console.log('render');
-      var html = this.template({booklist:this.collection.models});
+      var html = this.template({
+        search: App.models.currentSearch.attributes,
+        booklist: this.collection.models
+      });
       this.$el.html(html);
       this.$el.trigger('create');
       return this;
@@ -438,12 +508,17 @@ previously working functionality. Please don't judge.
     },
   });
 
+
+  /**
+   * Backbone View - BookDetailView
+   * displays the detail information of a given book
+   */
   App.view.BookDetailView = Backbone.View.extend({
 	  el: '#libraryContent',
 	  model: App.model.Book,
 
 	  events: {
-		"click .backToList" : 'back'
+		  "click .backToList" : 'back'
 	  },
 
 	  template: rendertmpl('book_detail_view'),
@@ -457,27 +532,33 @@ previously working functionality. Please don't judge.
 
 	  // TODO:
 	  back: function(){
-		  App.views.SearchResults.render();
-		  updateResults();
+		  console.log('clicked');
+		  App.view.Search.render();
+		  App.view.SearchResults = new App.view.BookList({
+        model: App.models.currentSearch,
+        collection: App.collections.searchResults
+      });
+		  App.view.SearchResults.render();
 		  return this;
 	  }
 
   });
-
-
 
   App.collections.searchResults = new App.collection.BookList();
 
   App.view.BookShortView = Backbone.View.extend({});
 
 
+  /**
+   * Backbone View - LocationView
+   * displays the location information of a given book
+   */
   App.view.LocationView = Backbone.View.extend({
 	  el: '#book-locations',
 	  collection: App.collection.BookLocationList,
-
 	  template: rendertmpl('book_location_view'),
+
 	  render: function(){
-		  //console.log('ations', this.collection);
 		  var html = this.template({locations:this.collection.models});
 		  this.$el.html(html);
 	      this.$el.trigger('create');
@@ -486,13 +567,19 @@ previously working functionality. Please don't judge.
   });
 
 
+  /**
+   * Backbone Model - BookLocation
+   * Model for the location
+   * @param item (response from daia)
+   * @param book (backbone book model)
+   */
   App.model.BookLocation = Backbone.Model.extend({
 
 	  getLocation: function(item, book){
 		  var model = {
 				  department: this.getDepartment(item),
 			      label: item.label,
-			      availableitems: this.getAvailableItems(item, book),
+			      item: this.getItem(item, book),
 			      url: book.attributes.url
 			      };
 		  return new App.model.BookLocation(model);
@@ -507,42 +594,75 @@ previously working functionality. Please don't judge.
 		  return department;
 	  },
 
-	  // TODO: Refactor
+	  //
 	  // complex function to get avialable status of items
 	  // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
-	  // TODO: iclude expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
-	  getAvailableItems: function(item, book){
+	  // TODO: limitation expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
+	  getItem: function(item, book){
 		  var status = '';
+		  var statusInfo = '';
 
-		  // check for avaiable items
-		  if (item.available) {
-		      	//check if available items contain loan
-		      	var presentations = _.find(item.available, function(item){
-		      		return item.service =='loan';
+		  // check for avaiable items and process loan and presentation
+		  if (item.available){
+		      var loanAvailable = _.find(item.available, function(item){
+		      	return item.service =='loan';
+		      });
+		      var presentationAvailable = _.find(item.available, function(item){
+		      		return item.service =='presentation';
 		      	});
 		  }
-		  if (presentations) {
+		  if (item.unavailable){
+			  var loanUnavailable = _.find(item.unavailable, function(item){
+			        return item.service =='loan';
+			      });
+			  var presentationUnavailable = _.find(item.unavailable, function(item){
+		      		return item.service =='presentation';
+		      	});
+		  }
+		  
+		  if (loanAvailable) {
 			  status = 'ausleihbar';
+			  
+			  if(presentationAvailable){
+				// tag available with service="loan" and href=""?
+				  if(loanAvailable.href==""){
+					  statusInfo += "Bitte bestellen";
+				  } else {
+					  statusInfo += "Bitte am Standort entnehmen";
+				  }
+			  }
+
 		  } else {
 			  // check for loan in unavailable items
-		      var loanunavailable = _.find(item.unavailable, function(item){
-		        return item.service =='loan';
-		      });
-		      if(loanunavailable && loanunavailable.href) {
-		        if(loanunavailable.href.indexOf("loan/RES") != -1) {
+		      if(loanUnavailable && loanUnavailable.href) {
+		        if(loanUnavailable.href.indexOf("loan/RES") != -1) {
 		          status = "ausleihbar";
 		        } else {
 		          status = "nicht ausleihbar";
 		        }
 		      } else {
-		        if(book.url == null) {
+		    	  
+		        if(book.attributes.url == null) {
 		          status = 'nicht ausleihbar';
 		        }else {
 		          status = 'Online-Ressource im Browser öffnen';
 		        }
 		      }
+		      
+		      if(presentationUnavailable)
+		    	  if(loanUnavailable.href) {
+		    		  if(loanUnavailable.href.indexOf("loan/RES") != -1) {
+			    		  if (!loanUnavailable.expected || loanUnavailable.expected == "unknown"){
+			    			  statusInfo += "ausgeliehen, Vormerken möglich";
+			    		  }else{
+			    			  statusInfo += "ausgeliehen bis "+loanUnavailable.expected+", Vormerken möglich";
+			    		  }  
+			    	  } 
+		    	  } else {
+		    		  statusInfo += "...";
+		    	  }
 		  }
-		  return status;
+		  return [status, statusInfo];
 	  	}
   });
 
@@ -562,98 +682,23 @@ previously working functionality. Please don't judge.
   // debugging controller
   $(document).on("pageinit", "#search", function () {
     console.log('pageinit #search');
-    registerEventSearch();
+
+    App.models.currentSearch = new App.model.LibrarySearch({
+      query:'',
+      numberOfRecords: 0,
+      results: new Backbone.Collection()
+    });
+
+    App.view.Search = new App.view.Search();
+    App.view.Search.render();
 
     // initialize Main Views
-    App.views.SearchResults = new App.view.BookList({
-      el: $('#search-results'),
+    App.view.SearchResults = new App.view.BookList({
+      model: App.models.currentSearch,
       collection: App.collections.searchResults
     });
+    App.view.SearchResults.render();
 
-  App.views.SearchResults.render();
-
-
-
-    // debugging
-    updateResults();
   });
-
-  // controller
-  function registerEventSearch(){
-    $("#query-form").on("submit", function(e) {
-      e.preventDefault();
-      updateResults();
-    });
-  }
-
-  // controller
-  function registerPagination(){
-    $(".pagination-button").click(function(e){
-      e.preventDefault();
-      App.models.currentSearch.loadNext();
-    });
-  };
-
-  // controller
-  function updateResults() {
-    // debugger
-    Q(clearSearch)
-    .then(getKeyword)
-    .then(loadSearch)
-    .then(addXmlSearchResult)
-    .catch(logError);
-  }
-
-
-  // TODO: this function is here temporarily and should be removed soon
-  function loadSearch(queryString) {
-    console.log('loadSearch');
-
-    if (App.collections.searchResults) {
-      App.collections.searchResults.reset();
-    } else {
-      App.collections.searchResults = new App.collection.BookList();
-    }
-
-    var search = new App.model.LibrarySearch({
-      query: queryString,
-      results: App.collections.searchResults,
-    });
-
-    App.models.currentSearch = search;
-    // on adding books render BookListView
-    var loading = search.loadNext();
-    return loading;
-  };
-
-
-  // this is a function i use to migrate to Backbone
-  // TODO remove it
-  function addXmlSearchResult(xmlSearchResult) {
-    console.log('addXmlSearchResult');
-
-    var searchResults = App.collections.searchResults;
-    searchResults.addXmlSearchResult(xmlSearchResult);
-    return searchResults.models;
-  };
-
-  // controller / helper
-  var logError = function (err) {
-    console.log('ErrorMessage', err.message);
-    console.log('StackTrace', err.stack);
-    alert(err);
-    throw err;
-  }
-
-  // view
-  function getKeyword(){
-    var inputs= $("#query-form :input").serializeArray();
-    var query = inputs[0].value;
-    return query;
-  }
-
-  function clearSearch() {
-    // $("#searchResults").empty();
-  }
-
+  
 })(jQuery);

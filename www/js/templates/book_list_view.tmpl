@@ -1,5 +1,8 @@
-<h2><span>Liste aller Ausgaben:</span> 20 von 50 Einträgen</h2>
-<ul data-role="listview" data-inset="true">
+<% console.log('search', search); %>
+<h2>
+  <span>Liste aller Ausgaben:</span>
+  <span class="numberOfListEntries"><%= search.results.length %></span> von <span class="numberOfRecords"><%= search.numberOfRecords %></span> Einträgen
+</h2>
 
 <ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book) { %>
@@ -19,4 +22,4 @@
     </li>
     <% }); %>
 </ul>
-<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse 21 - 40</a>
+<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse <%= search.results.length +1 %> - <%= search.results.length + 10 %></a>
