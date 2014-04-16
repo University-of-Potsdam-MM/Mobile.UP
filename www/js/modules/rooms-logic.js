@@ -18,9 +18,9 @@ $(function() {
 			this.element.append(
 				'<div data-role="controlgroup"> \
 					<h3>Zeitraum:</h3> \
-					<input type="radio" id="radioNow" name="roomTime" checked="checked" /> \
+					<input data-theme="a" type="radio" id="radioNow" name="roomTime" checked="checked" /> \
 					<label for="radioNow" id="radioNowLabel" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</label> \
-					<input type="radio" id="radioNext" name="roomTime" /> \
+					<input data-theme="a" type="radio" id="radioNext" name="roomTime" /> \
 					<label for="radioNext" id="radioNextLabel" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</label> \
 				</div>');
 			this.element.trigger("create");

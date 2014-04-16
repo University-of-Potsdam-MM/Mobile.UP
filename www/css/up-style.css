@@ -1010,13 +1010,36 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 #freeRooms h3 {
 	margin-left: .5em;
+	 margin-bottom:.3em
 }
 
 #roomsHost h3 {
 	margin-left: 0em;
 	background: #ededed;
+	margin-bottom:0;
 }
 
 #roomsHost h3 a.ui-btn {
 	text-indent: .3em;
+}
+
+#reservationsforroom {
+	margin-left:.3em;
+	list-style-type:circle;
+		
+}
+
+#reservationsforroom li {
+	border: none;
+line-height: 2em;
+border-left: 10px solid #DEDEDE;
+padding-left: .5em;
+margin-bottom: 2px;
+background-color: #EDEDED;	
+	
+}
+
+#freeRooms .ui-btn-icon-left:after
+{
+	background-color:#014260;
 }
