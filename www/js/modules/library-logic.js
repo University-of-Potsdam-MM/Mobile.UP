@@ -23,6 +23,10 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
+
+// TODO - set environment for production on build
+var environment = 'development';
+
 (function($) {
 
   window.App = {
@@ -329,6 +333,17 @@ previously working functionality. Please don't judge.
       // - 'results' (App.collection.BookList)
     },
 
+    paginationPossible: function(){
+      return (this.get('results').length < this.get('numberOfRecords'));
+    },
+    startPagination: function() {
+      return this.get('results').length + 1;
+    },
+    endPagination: function() {
+      return Math.min(this.get('results').length + 10, this.get('numberOfRecords'));
+    },
+
+
     loadNext: function() {
       console.log('loadNext');
       var model = this;
@@ -480,8 +495,12 @@ previously working functionality. Please don't judge.
     template: rendertmpl('book_list_view'),
     render: function(){
       console.log('render');
+      var search = App.models.currentSearch;
       var html = this.template({
-        search: App.models.currentSearch.attributes,
+        search:             search.attributes,
+        paginationPossible: search.paginationPossible(),
+        startPagination:    search.startPagination(),
+        endPagination:      search.endPagination(),
         booklist: this.collection.models
       });
       this.$el.html(html);
@@ -671,15 +690,7 @@ previously working functionality. Please don't judge.
 	    model: App.model.BookLocation
   });
 
-
-
-  //////////////////////////////////////////////
-  // below this line is old non Backbone code //
-  //////////////////////////////////////////////
-
-  var environment = 'development';
-
-  // debugging controller
+  // setting everything up
   $(document).on("pageinit", "#search", function () {
     console.log('pageinit #search');
 
@@ -700,5 +711,5 @@ previously working functionality. Please don't judge.
     App.view.SearchResults.render();
 
   });
-  
+
 })(jQuery);

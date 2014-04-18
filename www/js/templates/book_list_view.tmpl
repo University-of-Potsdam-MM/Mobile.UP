@@ -22,4 +22,6 @@
     </li>
     <% }); %>
 </ul>
-<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse <%= search.results.length +1 %> - <%= search.results.length + 10 %></a>
+<% if (paginationPossible) { %>
+<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse <%= startPagination %> - <%= endPagination %></a>
+<% } %>
