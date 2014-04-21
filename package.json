@@ -21,13 +21,13 @@
     "underscore": "^1.6.0",
     "backbone": "^1.1.2",
     "q": "^1.0.0",
-    "underscore.string": "^2.3.3"
+    "underscore.string": "^2.3.3",
+    "moment": "^2.5.1"
   },
   "devDependencies": {
-    "express": "~3.4.8",
-    "http-proxy": "~0.10.4",
-    "reload": "~0.1.0",
-    "express-livereload": "0.0.24",
-    "moment": "^2.5.1"
+    "connect": "~2.14.4",
+    "express": "~4.0.0",
+    "http-proxy": "~1.0.0",
+    "reload": "~0.1.0"
   }
 }
