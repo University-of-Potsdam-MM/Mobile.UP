@@ -18,7 +18,7 @@
 - parsing durations
 - better objects
 - event 'pagebeforeshow' -> find out if need to fetch journeys
-
+- prevent breaking if buttons are renamed (Button mapping is done by simply using button text. There should be a better mapping method)
 */
 
 "use strict";
@@ -38,15 +38,15 @@ console.log('dependencies:', moment, jQuery);
   // var externalId = "009230133#86";
 
   var stations = {
-    "GSEE": {
+    "G-see": {
       name: 'S Griebnitzsee Bhf',
       externalId: '009230003#86',
     },
-    "GOLM": {
+    "Golm": {
       name: 'Potsdam, Golm Bhf',
       externalId: '009220010#86',
     },
-    "PALAIS": {
+    "Palais": {
       name: 'Potsdam, Neues Palais',
       externalId: '009230132#86',
     },
@@ -268,7 +268,7 @@ console.log('dependencies:', moment, jQuery);
     return defer.promise();
   }
 
-  getVerbindung(stations.GSEE.externalId, stations.GOLM.externalId, moment())
+  getVerbindung(stations['G-see'].externalId, stations['Golm'].externalId, moment())
     .done(function(data){
       console.log('debugging', data);
     });
@@ -291,7 +291,7 @@ console.log('dependencies:', moment, jQuery);
     return defer.promise();
   }
 
-  // getExternalId('Griebnitzsee').done(function(){console.log('Gsee', arguments)});
+  // getExternalId('Griebnitzsee').done(function(){console.log('G-see', arguments)});
   // getExternalId('Golm, Bahnhof').done(function(){console.log('Golm', arguments)});
   // getExternalId('Neues Palais').done(function(){console.log('Neues Palais', arguments)});
 
@@ -492,8 +492,8 @@ console.log('dependencies:', moment, jQuery);
           });
         }
       },
-      collection: stations['GSEE'].journeys,
-      stationName: stations['GSEE'].name,
+      collection: stations['G-see'].journeys,
+      stationName: stations['G-see'].name,
     });
     Transport.view.TransportList.render();
 
@@ -502,7 +502,7 @@ console.log('dependencies:', moment, jQuery);
     });
 
     Transport.view.Navbar.on('select', function(buttonName){
-      // console.log(arguments);
+      console.log(arguments);
       Transport.view.TransportList.collection = stations[buttonName].journeys;
       Transport.view.TransportList.stationName = stations[buttonName].name;
       Transport.view.TransportList.render();
@@ -514,8 +514,8 @@ $(document).on("pageinit", "#transport2", function () {
     console.log('pageinit #transport2');
 
     Transport.model.State = new Transport.StateModel({
-      from: "GSEE",
-      to: "PALAIS",
+      from: "G-see",
+      to: "Palais",
     });
 
     Transport.view.FromStation = new NavigationView({

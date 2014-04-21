@@ -17,6 +17,7 @@ previously working functionality. Please don't judge.
 
 ## TODOS
 - check if internet is available and display warning if not
+- display "zs:diagnostics" "diag:message" element (namespace'http://www.loc.gov/zing/srw/diagnostic/')
 - display availability information in the BookListView
 - maybe add a finite state machine or a router to simplify the code
 
