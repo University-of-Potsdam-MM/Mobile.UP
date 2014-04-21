@@ -397,6 +397,15 @@ console.log('dependencies:', moment, jQuery);
     }
   });
 
+  Transport.views.SliderView = Backbone.View.extend({
+    events: {
+      'slidestart': function(ev){
+        console.log('toggleMode', ev);
+        this.trigger('toggle');
+      }
+    }
+  });
+
 
   Transport.views.ComplexSearchView = Backbone.View.extend({
     initialize: function(){
@@ -476,6 +485,11 @@ console.log('dependencies:', moment, jQuery);
       ).done(function(connections){
         that.resetConnections(connections);
       });
+    },
+    toggleArrivalMode: function(){
+      var mode = this.get('arrivalMode') || '0';
+      var toggled = (mode == '0') ? '1' : '0';
+      this.set( 'arrivalMode', toggled );
     }
   });
 
@@ -516,6 +530,7 @@ $(document).on("pageinit", "#transport2", function () {
     Transport.model.State = new Transport.StateModel({
       from: "G-see",
       to: "Palais",
+      arrivalMode: '0',
     });
 
     Transport.view.FromStation = new NavigationView({
@@ -524,6 +539,15 @@ $(document).on("pageinit", "#transport2", function () {
 
     Transport.view.ToStation = new NavigationView({
       el: $("#toStation2")
+    });
+
+    Transport.view.ArrivalModeSlider = new Transport.views.SliderView({
+      el: $('#flip-1')
+    });
+
+    Transport.view.ArrivalModeSlider.on('toggle', function(){
+      Transport.model.State.toggleArrivalMode();
+      console.log('arrivalMode', Transport.model.State.get('arrivalMode'));
     });
 
     Transport.view.FromStation.on('select', function(buttonName){
