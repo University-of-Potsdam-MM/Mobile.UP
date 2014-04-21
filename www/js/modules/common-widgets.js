@@ -199,7 +199,7 @@ $(function() {
 			host.trigger("updatelayout");
 		},
 
-		insertSearchableFeatureCollection: function(options, collection, category) {
+		insertSearchableFeatureCollection: function(options, collection, category, hasSimilarsCallback) {
 			var widgetHost = this;
 			var items = _.map(collection.features, function(item) {
 				var result = {};
@@ -217,7 +217,7 @@ $(function() {
 			});
 
 			this._insertSearchables(items);
-			this._insertMapsMarkers(items);
+			this._insertMapsMarkers(items, hasSimilarsCallback);
 		},
 
 		viewByName: function(name) {
@@ -253,10 +253,10 @@ $(function() {
 			return result;
 		},
 
-		_insertMapsMarkers: function(items) {
+		_insertMapsMarkers: function(items, hasSimilarsCallback) {
 			for (var i in items) {
 				var m = this._loadMarker(items[i].index);
-				var gMarkers = new GeoJSON(m.context, m.options, this._map);
+				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);

@@ -149,22 +149,22 @@ function drawCampus(uniqueDiv, url) {
 		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
 		
 		var terminalsData = Q.fcall(getGeoByCategory, data, terminals)
-							.then(drawCategory(settings.options.terminals, terminals));
+							.then(drawCategory(settings.options.terminals, terminals, url.campus));
 		
 		var institutesData = Q.fcall(getGeoByCategory, data, institutes)
-							.then(drawCategory(settings.options.institutes, institutes));
+							.then(drawCategory(settings.options.institutes, institutes, url.campus));
 		
 		var canteensData = Q.fcall(getGeoByCategory, data, canteens)
-							.then(drawCategory(settings.options.canteens, canteens));
+							.then(drawCategory(settings.options.canteens, canteens, url.campus));
 		
 		var parkingData = Q.fcall(getGeoByCategory, data, parking)
-							.then(drawCategory(settings.options.parking, parking));
+							.then(drawCategory(settings.options.parking, parking, url.campus));
 		
 		var associateinstitutesData = Q.fcall(getGeoByCategory, data, associateinstitutes)
-										.then(drawCategory(settings.options.associateinstitutes, associateinstitutes));
+										.then(drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus));
 		
 		var studentData = Q.fcall(getGeoByCategory, data, student)
-						.then(drawCategory(settings.options.student, student));
+							.then(drawCategory(settings.options.student, student, url.campus));
 		
 		return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
 	};
@@ -192,11 +192,21 @@ function setSearchValue(search) {
 	};
 }
 
-function drawCategory(options, category) {
+function drawCategory(options, category, campus) {
 	return function(data) {
 		if (data) {
-			$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
+			$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
 		}
+	};
+}
+
+function hasSimilarLocations(campus) {
+	return function(id) {
+		var entry = geo.findEntryById(id);
+		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
+		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
+		
+		return similarHouses.length + similarDescriptions.length > 0;
 	};
 }
 
