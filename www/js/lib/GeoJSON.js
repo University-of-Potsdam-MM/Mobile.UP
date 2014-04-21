@@ -9,8 +9,8 @@ var GeoJSON = function( geojson, options, map ){
 		if(geojsonProperties) {
 			if (geojsonProperties.Name) {
 				var desc = geojsonProperties.description ? '<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>') : "<br><br>Keine Beschreibung verfügbar";
-				if (geojsonProperties.hash) {
-					googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.hash+'\')">Ähnliche Orte</a></b>'});
+				if (geojsonProperties.id) {
+					googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.id+'\')">Ähnliche Orte</a></b>'});
 				} else {
 					googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'</b>'});
 				}

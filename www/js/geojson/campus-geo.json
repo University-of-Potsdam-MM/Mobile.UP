@@ -982,7 +982,7 @@
 		"type" : "FeatureCollection"
 	}
 }, {
-	"campus" : "palais",
+	"campus" : "neuespalais",
 	"category" : "institutes",
 	"geo" : {
 		"crs" : {
@@ -1112,7 +1112,7 @@
 				"Name" : "Haus 9",
 				"icon" : null,
 				"visibility" : -1,
-				"description" : "- Eltern-Kind-Raum (Raum 1.01 )\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzlerin\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und �\u2013ffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+				"description" : "- Eltern-Kind-Raum (Raum 1.01 )\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzlerin\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und �\u2013ffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
 				"tessellate" : -1,
 				"drawOrder" : null,
 				"end" : null,
@@ -1319,7 +1319,7 @@
 	}
 }, {
 	"campus" : "golm",
-	"category" : "mensen",
+	"category" : "canteens",
 	"geo" : {
 		"crs" : {
 			"properties" : {
@@ -1389,7 +1389,7 @@
 	}
 }, {
 	"campus" : "griebnitzsee",
-	"category" : "mensen",
+	"category" : "canteens",
 	"geo" : {
 		"crs" : {
 			"properties" : {
@@ -1458,8 +1458,8 @@
 		"type" : "FeatureCollection"
 	}
 }, {
-	"campus" : "palais",
-	"category" : "mensen",
+	"campus" : "neuespalais",
+	"category" : "canteens",
 	"geo" : {
 		"crs" : {
 			"properties" : {
@@ -1649,7 +1649,7 @@
 		"type" : "FeatureCollection"
 	}
 }, {
-	"campus" : "palais",
+	"campus" : "neuespalais",
 	"category" : "parking",
 	"geo" : {
 		"crs" : {
@@ -2049,7 +2049,7 @@
 		"type" : "FeatureCollection"
 	}
 }, {
-	"campus" : "palais",
+	"campus" : "neuespalais",
 	"category" : "student",
 	"geo" : {
 		"crs" : {
@@ -2221,7 +2221,7 @@
 		"type" : "FeatureCollection"
 	}
 }, {
-	"campus" : "palais",
+	"campus" : "neuespalais",
 	"category" : "terminals",
 	"geo" : {
 		"crs" : {
