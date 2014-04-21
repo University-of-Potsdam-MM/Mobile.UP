@@ -507,6 +507,18 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	background-color: #E5241F !important;
 }
 
+.sitemap-parking {
+	background-color: #00FFFF !important;
+}
+
+.sitemap-associateinstitutes {
+	background-color: #00FF00 !important;
+}
+
+.sitemap-living {
+	background-color: #66CCFF !important;
+}
+
 /*icons akkordion*/
 .speiseplan .ui-icon-plus:after {
 	background-image: url(../img/up/arrow-down.png);

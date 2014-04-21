@@ -16,7 +16,28 @@ var settings =	{
 	options: {
 		terminals: { "icon": "img/up/puck-marker.png" },
 		canteens: { "icon": "img/up/mensa-marker.png" },
+		parking: {
+			"strokeColor": "#FF7800",
+		    "strokeOpacity": 1,
+		    "strokeWeight": 0,
+		    "fillColor": "#46461F",
+		    "fillOpacity": 0.5
+		},
 		institutes: {
+			"strokeColor": "#FF7800",
+		    "strokeOpacity": 1,
+		    "strokeWeight": 0,
+		    "fillColor": "#46461F",
+		    "fillOpacity": 0.5
+		},
+		associateinstitutes: {
+			"strokeColor": "#FF7800",
+		    "strokeOpacity": 1,
+		    "strokeWeight": 0,
+		    "fillColor": "#46461F",
+		    "fillOpacity": 0.5
+		},
+		student: {
 			"strokeColor": "#FF7800",
 		    "strokeOpacity": 1,
 		    "strokeWeight": 0,
@@ -29,6 +50,9 @@ var settings =	{
 var terminals = "terminals";
 var institutes = "institutes";
 var canteens = "canteens";
+var parking = "parking";
+var associateinstitutes = "associateinstitutes";
+var student = "student";
 
 var categoryStore = new CategoryStore();
 var lastFinderId = undefined;
@@ -36,10 +60,16 @@ var lastCampus = undefined;
 
 $(document).on("pageinit", "#sitemaps", function() {
 	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
+	settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
+	settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
+	settings.options.student.fillColor = $(".sitemap-living").css("background-color");
 	
 	$('#Terminals:checkbox').click(checkUncheck(terminals));
 	$('#Institute:checkbox').click(checkUncheck(institutes));
 	$('#Mensen:checkbox').click(checkUncheck(canteens));
+	$('#Parking:checkbox').click(checkUncheck(parking));
+	$('#AnInstitute:checkbox').click(checkUncheck(associateinstitutes));
+	$('#Living:checkbox').click(checkUncheck(student));
 });
 
 function checkUncheck(category) {
@@ -127,16 +157,29 @@ function drawCampus(uniqueDiv, url) {
 		var canteensData = Q.fcall(getGeoByCategory, data, canteens)
 							.then(drawCategory(settings.options.canteens, canteens));
 		
-		return [terminalsData, institutesData, canteensData];
+		var parkingData = Q.fcall(getGeoByCategory, data, parking)
+							.then(drawCategory(settings.options.parking, parking));
+		
+		var associateinstitutesData = Q.fcall(getGeoByCategory, data, associateinstitutes)
+										.then(drawCategory(settings.options.associateinstitutes, associateinstitutes));
+		
+		var studentData = Q.fcall(getGeoByCategory, data, student)
+						.then(drawCategory(settings.options.student, student));
+		
+		return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
 	};
 }
 
 function getGeoByCategory(data, category) {
-	return _.chain(data)
-			.filter(function(element) { return element.get("category") === category; })
-			.first()
-			.value()
-			.get("geo");
+	var result = _.chain(data)
+				.filter(function(element) { return element.get("category") === category; })
+				.first()
+				.value();
+	if (result) {
+		return result.get("geo");
+	} else {
+		return undefined;
+	}
 }
 
 function setSearchValue(search) {
@@ -151,7 +194,9 @@ function setSearchValue(search) {
 
 function drawCategory(options, category) {
 	return function(data) {
-		$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
+		if (data) {
+			$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category);
+		}
 	};
 }
 
