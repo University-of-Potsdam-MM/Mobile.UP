@@ -407,6 +407,7 @@ console.log('dependencies:', moment, jQuery);
   });
 
 
+
   Transport.views.ComplexSearchView = Backbone.View.extend({
     initialize: function(){
       var query = this.model;
@@ -421,6 +422,8 @@ console.log('dependencies:', moment, jQuery);
     },
     search: function(){
       console.log('click searchButton');
+      console.log('DateTime for connection:', this.getMoment().format('DD.MM.YYYY - HH:mm') );
+      this.model.set('depTime', this.getMoment());
       this.model.fetchConnections();
       this.renderSummary();
     },
@@ -430,6 +433,52 @@ console.log('dependencies:', moment, jQuery);
     searchLater: function(){
       console.log('click laterButton');
     },
+
+    // returns a momentjs object for Transportation Date + Time
+    getMoment: function() {
+      var date = this.getDate();
+      var time = this.getTime();
+      if ('Heute' === date) {
+        if ('Jetzt' === time) {
+          // Heute & Jetzt
+          return moment();
+        } else {
+          // Heute + specific time
+          // time should be parseable in the format
+          // '09:59 AM'
+          return moment(time, 'H:mm A');
+        }
+      } else {
+        // date should be parseable
+        var mDate = moment(date);
+        var mTime;
+        if ('Jetzt' === time) {
+          // current time but on a specific date
+          mTime = moment();
+        } else {
+          // parse time
+          mTime = moment(time, 'H:mm A')
+        }
+
+        // setting minutes and hours on the mDate object
+        mDate.hours(mTime.hours());
+        mDate.minutes(mTime.minutes());
+        return mDate;
+      }
+    },
+    getDate: function(){
+      // we shouldn't store data in the DOM,
+      // but I don't know how to access this in another way
+      var val = this.$el.find('#transportationDate').val();
+      return val;
+    },
+    getTime: function(){
+      // we shouldn't store data in the DOM,
+      // but I don't know how to access this in another way
+      var val = this.$el.find('#transportationTime').val()
+      return val;
+    },
+
     render: function(){
       console.log('render', this.collection);
       // TODO render resultlist
@@ -439,6 +488,7 @@ console.log('dependencies:', moment, jQuery);
       var q = this.model;
       this.$el.find('#summary .fromCampus').html(q.fromStation().name);
       this.$el.find('#summary .toCampus').html(q.toStation().name);
+      this.$el.find('#summary .arrivalMode').html( ('0' === q.get('arrivalMode')) ? 'Abfahrt' : 'Ankunft');
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 

@@ -28,6 +28,7 @@
     <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
     <script src="js/lib/jqm-datebox.mode.datebox.min.js"></script>
     <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+    <!-- <script src="js/lib/jquery.mobile.datebox.i18n.de_DE.utf8.js"></script> -->
 
     <script src="js/modules/common-widgets.js"></script>
     <script src="js/app.js"></script>
@@ -92,8 +93,8 @@
                   <option value="on">An</option>
                 </select>
               </li>
-              <li><input name="mydate" id="mydate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
-              <li><input name="mytime" id="mytime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
+              <li><input name="transportationDate" id="transportationDate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'></li>
+              <li><input name="transportationTime" id="transportationTime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'></li>
             </ul>
           </div>
 
@@ -114,7 +115,8 @@
             <div id="summary">
               <p>Fahrt von <span class='fromCampus'>Campus Griebnitzsee</span> nach</p>
               <p class='toCampus'>Campus Golm</p>
-              <p class='when'>Heute, 10.02.2234, Abfahrt 11:15</p>
+              <p class="arrivalMode">Abfahrt</p>
+              <p class='when'>Heute, 10.02.2234,  11:15</p>
             </div>
 
             <input id='earlierButton' type="submit" value="← Früher" />
