@@ -394,6 +394,12 @@ console.log('dependencies:', moment, jQuery);
         var buttonName = $(ev.target).html();
         this.trigger('select', buttonName);
       }
+    },
+    activeButton: function(buttonText){
+      this.$el.find('a').removeClass('ui-btn-active');
+      this.$el.find('a').filter(function(){
+        return $(this).text() === buttonText;
+      }).addClass('ui-btn-active');
     }
   });
 
@@ -517,6 +523,22 @@ console.log('dependencies:', moment, jQuery);
     },
     setTime: function(){console.log('setTime',arguments);},
     setDate: function(){console.log('setDate',arguments);},
+
+    setFromStation: function(string) {
+      if (this.get('to') == string) {
+        // if to and from are equal, both should switch
+        this.set('to', this.get('from'));
+      }
+      this.set('from', string);
+    },
+    setToStation: function(string) {
+      if (this.get('from') == string) {
+        // if to and from are equal, both should switch
+        this.set('from', this.get('to'));
+      }
+      this.set('to', string);
+    },
+
     fromStation: function(){
       return stations[this.get('from')]
     },
@@ -583,13 +605,35 @@ $(document).on("pageinit", "#transport2", function () {
       arrivalMode: '0',
     });
 
+    // From station
+
     Transport.view.FromStation = new NavigationView({
       el: $("#fromStation2")
     });
 
-    Transport.view.ToStation = new NavigationView({
-      el: $("#toStation2")
+    Transport.view.FromStation.on('select', function(buttonName){
+      Transport.model.State.setFromStation(buttonName);
     });
+
+    Transport.model.State.on('change:from', function(ev, buttonText){
+      Transport.view.FromStation.activeButton(buttonText);
+    });
+
+    // To station
+
+    Transport.view.ToStation = new NavigationView({
+      el: $("#toStation2"),
+    });
+
+    Transport.view.ToStation.on('select', function(buttonName){
+      Transport.model.State.setToStation(buttonName);
+    });
+
+    Transport.model.State.on('change:to', function(ev, buttonText){
+      Transport.view.ToStation.activeButton(buttonText);
+    });
+
+    // Slider
 
     Transport.view.ArrivalModeSlider = new Transport.views.SliderView({
       el: $('#flip-1')
@@ -598,16 +642,6 @@ $(document).on("pageinit", "#transport2", function () {
     Transport.view.ArrivalModeSlider.on('toggle', function(){
       Transport.model.State.toggleArrivalMode();
       console.log('arrivalMode', Transport.model.State.get('arrivalMode'));
-    });
-
-    Transport.view.FromStation.on('select', function(buttonName){
-      console.log(arguments);
-      Transport.model.State.set('from', buttonName);
-    });
-
-    Transport.view.ToStation.on('select', function(buttonName){
-      console.log(arguments);
-      Transport.model.State.set('to', buttonName);
     });
 
     Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
