@@ -1,8 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "Name": "Validierungsstation", "description": "Validierungsstation für die Puck", "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": -1, "extrude": -1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Point", "coordinates": [ 13.011680245399475, 52.400216161136477, 0.0 ] } },
-{ "type": "Feature", "properties": { "Name": "Aufladestation", "description": "Die Aufladestationen für die Aufwertung der Geldbörse", "timestamp": null, "begin": null, "end": null, "altitudeMode": null, "tessellate": -1, "extrude": -1, "visibility": -1, "drawOrder": null, "icon": null }, "geometry": { "type": "Point", "coordinates": [ 13.012200593948364, 52.400203068903778, 0.0 ] } }
-]
-}

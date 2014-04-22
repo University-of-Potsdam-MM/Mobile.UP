@@ -1,3 +1,4 @@
 platforms/**/
 
 /.project
+.settings/
