@@ -23,8 +23,8 @@
 
 "use strict";
 
-console.log('loading nahverkehr-logic.js');
-console.log('dependencies:', moment, jQuery);
+// console.log('loading nahverkehr-logic.js');
+// console.log('dependencies:', moment, jQuery);
 
 (function($){
 
@@ -268,10 +268,10 @@ console.log('dependencies:', moment, jQuery);
     return defer.promise();
   }
 
-  getVerbindung(stations['G-see'].externalId, stations['Golm'].externalId, moment())
-    .done(function(data){
-      console.log('debugging', data);
-    });
+  // getVerbindung(stations['G-see'].externalId, stations['Golm'].externalId, moment())
+  //   .done(function(data){
+  //     console.log('debugging', data);
+  //   });
 
   function getExternalId(stationString) {
     var defer = $.Deferred();
