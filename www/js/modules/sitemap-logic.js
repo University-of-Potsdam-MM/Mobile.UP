@@ -96,7 +96,7 @@ $(document).on("pageinit", "#sitemaps", function() {
  */
 $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
-	searchView = new SearchView({query: "input[data-type='search']"});
+	searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
 });
 
 function drawSelectedCampus(options) {
@@ -133,11 +133,10 @@ function clearMenu(uniqueDivId) {
 	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
 }
 
-function insertHash(data) {
-	_.each(data.features, function(item) {
-		item.properties.hash = (item.properties.Name || "").hashCode() + " " + (item.properties.description || "").hashCode();
-	});
-	return data;
+function onItemSelected(selection) {
+	searchView.setSearchValue(selection);
+	searchView.hideAllItems();
+	$("div[data-role='searchablemap']").searchablemap("viewByName", selection);
 }
 
 function drawCampus(uniqueDiv, url) {
@@ -146,6 +145,7 @@ function drawCampus(uniqueDiv, url) {
 		host.append("<div data-role='searchablemap'></div>");
 		host.trigger("create");
 		
+		$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected });
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 		
 		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
@@ -265,11 +265,19 @@ var SearchView = Backbone.View.extend({
 	
 	initialize: function(options) {
 		this.query = options.query;
+		this.children = options.children;
 	},
 	
-	setSearchValue: function(search) {
+	setSearchValue: function(search, updateView) {
 		$(this.query).val(search);
-		// $(this.query).trigger("keyup");
+		if (updateView) {
+			$(this.query).trigger("keyup");
+		}
+	},
+	
+	hideAllItems: function() {
+		var host = $(this.children);
+		$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
 	}
 });
 

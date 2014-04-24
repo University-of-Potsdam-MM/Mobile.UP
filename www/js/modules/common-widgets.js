@@ -138,6 +138,7 @@ $(function() {
 				var index = parseInt(href.slice(1));
 
 				widgetHost._showIndex(index);
+				widgetHost.options.onSelected(widgetHost._markers[index].context.features[0].properties.Name);
 			});
 		},
 
