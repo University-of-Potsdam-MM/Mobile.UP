@@ -1,16 +1,16 @@
 <li data-role="collapsible" data-collapsed-icon="arrow-down"
   data-expanded-icon="arrow-up" data-iconpos="right">
 
-  <h3>
-    <span>ab <%= connection.get('depTime').format('HH:mm') %> <%= connection.get('depStation') %></span> <br />
-    <span>an <%= connection.get('arrTime').format('HH:mm') %> <%= connection.get('arrStation') %></span>
+  <h3 class="complex_transport">
+    <span>ab <%= connection.get('depTime').format('HH:mm') %></span> <%= connection.get('depStation') %> <br />
+    <span>an <%= connection.get('arrTime').format('HH:mm') %></span> <%= connection.get('arrStation') %>
   </h3>
 
   <table data-role="table" data-mode="reflow"
     class="ui-responsive table-stripe ">
     <thead>
       <tr>
-        <th></th>
+       
         <th>Uhrzeit</th>
         <th>Bahnhof</th>
         <th>Gleis</th>
@@ -22,23 +22,22 @@
 
         <% if (i > 0) { %>
           <tr>
-            <th>Arrow down</th>
-            <td>Feet</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th class="foot"><img src="../../www/img/up/foot.png"></th>
+            <td class="empty"></td>
+            <td class="empty"></td>
+            <td  class="empty"></td>
           </tr>
         <% } %>
 
         <tr>
-          <th><span class="marker closed"></span></th>
+        
           <td>ab <%= section.depTime.format('HH:mm') %></td>
           <td><%= section.depStation %></td>
           <td><%= section.depPlatform %></td>
           <td><%= section.journey.name %></td>
         </tr>
         <tr>
-          <th><span class="marker closed"></span></th>
+        
           <td>an <%= section.arrTime.format('HH:mm') %></td>
           <td><%= section.arrStation %></td>
           <td><%= section.arrPlatform %></td>

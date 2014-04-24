@@ -1,8 +1,9 @@
 <li class="ui-li-static ui-body-inherit">
-  <p>
-    <span class="marker open"></span>
-    <%= journey.get('departingTime').format('HH:mm') %>
-    <%= journey.get('name') %>
-    nach <%= journey.get('direction') %>
+  <p style="margin-left:.3em;">
+    <b class="blau" style="display:inline-block;width:10%;">
+    <%= journey.get('departingTime').format('HH:mm') %>  </b>
+    <span style="display:inline-block; width:18%;">
+    <%= journey.get('name') %></span>
+    nach<b> <%= journey.get('direction') %></b>
   </p>
 </li>
