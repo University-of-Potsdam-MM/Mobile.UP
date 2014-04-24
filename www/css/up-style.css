@@ -496,27 +496,27 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 /* colors for sitemap categories */
 .sitemap-institutes {
-	background-color: #AF63E1 !important;
+	background-color: #e57967 !important;
 }
 
 .sitemap-terminals {
-	background-color: #E1C562 !important;
+	background-color: #e8e466 !important;
 }
 
 .sitemap-canteens {
-	background-color: #E5241F !important;
+	background-color: #7cc292 !important;
 }
 
 .sitemap-parking {
-	background-color: #00FFFF !important;
+	background-color: #70c8dc !important;
 }
 
 .sitemap-associateinstitutes {
-	background-color: #00FF00 !important;
+	background-color: #cf6da8 !important;
 }
 
 .sitemap-living {
-	background-color: #66CCFF !important;
+	background-color: #897cc2 !important;
 }
 
 /*icons akkordion*/
@@ -606,7 +606,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed,html .ui-body-c .ui-bo
 	border: none !important
 }
 
-li.ui-collapsible h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a
+#opening li.ui-collapsible h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a
 	{
 	background: #ededed;
 	border: none;
@@ -643,7 +643,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	margin-bottom: 20px !important;
 }
 
-.ui-table-reflow.ui-responsive td {
+#opening .ui-table-reflow.ui-responsive td {
 	min-width: 260px;
 }
 
@@ -791,6 +791,84 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 }
 
 .submit-route .ui-block-c .ui-btn {font-size:1em !important;}
+
+/*route*/
+
+ #transport_rides a.ui-btn span {
+	text-indent:0.3em !important;
+	display: inline-block;
+	width:20%;
+}
+
+#transport2 #result {
+	margin-top:1em;
+}
+
+.spaeter {
+	width:40%;
+	margin:0 auto;
+}
+.spaeter .ui-input-btn {
+		margin-top:0;
+		margin-bottom:0;
+		border:0;
+}
+
+.ui-listview>li h3.complex_transport .ui-btn {
+	font-size:.8em;
+}
+
+.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+	border-bottom:none;
+}
+
+.ui-collapsible-heading {
+	
+	border-bottom:1px solid #ccc;
+	
+}
+
+#transport2 .ui-table-reflow.ui-responsive {
+	display:table;
+}
+
+#transport2 .ui-table td, #transport2 .ui-table-reflow tbody th {
+line-height: 1.3em;
+padding: .1em .2em;
+
+}
+
+#transport2 .ui-table-reflow tbody th {
+	margin-top:0;
+}
+
+#transport2 tr {
+	border-bottom:3px solid #d0dae3;
+}
+
+@media (max-width: 35em) {
+	#transport2 .ui-table-reflow.ui-responsive td {
+		min-width: 260px;
+	}
+
+	#transport2 .ui-table td.empty, #transport2 .ui-table td.empty .ui-table-cell-label, #transport2 .ui-table th.foot .ui-table-cell-label {
+		display:none;
+	}
+
+}
+
+#transport2 .ui-table th.foot {
+		width:100%;
+	}
+
+#transport2 .ui-collapsible-content {
+	padding:0;
+}
+
+#transport2 .ui-table th.foot img {
+	margin: 0 auto;
+display: block;
+}
 
 /**********************Suche******************
 *****************************************************/

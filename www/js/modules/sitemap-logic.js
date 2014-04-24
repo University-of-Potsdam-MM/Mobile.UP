@@ -17,31 +17,31 @@ var settings =	{
 		terminals: { "icon": "img/up/puck-marker.png" },
 		canteens: { "icon": "img/up/mensa-marker.png" },
 		parking: {
-			"strokeColor": "#FF7800",
+			"strokeColor": "#70c8dc",
 		    "strokeOpacity": 1,
 		    "strokeWeight": 0,
-		    "fillColor": "#46461F",
+		    "fillColor": "#70c8dc",
 		    "fillOpacity": 0.5
 		},
 		institutes: {
-			"strokeColor": "#FF7800",
+			"strokeColor": "#e57967",
 		    "strokeOpacity": 1,
 		    "strokeWeight": 0,
-		    "fillColor": "#46461F",
+		    "fillColor": "#e57967",
 		    "fillOpacity": 0.5
 		},
 		associateinstitutes: {
-			"strokeColor": "#FF7800",
+			"strokeColor": "#cf6da8",
 		    "strokeOpacity": 1,
 		    "strokeWeight": 0,
-		    "fillColor": "#46461F",
+		    "fillColor": "#cf6da8",
 		    "fillOpacity": 0.5
 		},
 		student: {
-			"strokeColor": "#FF7800",
+			"strokeColor": "#897cc2",
 		    "strokeOpacity": 1,
 		    "strokeWeight": 0,
-		    "fillColor": "#46461F",
+		    "fillColor": "#897cc2",
 		    "fillOpacity": 0.5
 		}
 	}
