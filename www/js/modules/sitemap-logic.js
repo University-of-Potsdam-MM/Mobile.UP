@@ -57,6 +57,7 @@ var student = "student";
 var categoryStore = new CategoryStore();
 var lastFinderId = undefined;
 var lastCampus = undefined;
+var searchView = undefined;
 
 $(document).on("pageinit", "#sitemaps", function() {
 	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
@@ -95,6 +96,7 @@ $(document).on("pageinit", "#sitemaps", function() {
  */
 $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
+	searchView = new SearchView({query: "input[data-type='search']"});
 });
 
 function drawSelectedCampus(options) {
@@ -185,9 +187,8 @@ function getGeoByCategory(data, category) {
 function setSearchValue(search) {
 	return function(terminals, institutes, canteens) {
 		if (search !== undefined) {
-			$("input[data-type='search']").val(search);
+			searchView.setSearchValue(search);
 			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
-			// $("input[data-type='search']").trigger("keyup");
 		}
 	};
 }
@@ -258,6 +259,18 @@ function sitemapNavigateTo(id) {
 
 $(document).on("pageinit", "#sitemaps", function() {
 	geo.loadAllOnce();
+});
+
+var SearchView = Backbone.View.extend({
+	
+	initialize: function(options) {
+		this.query = options.query;
+	},
+	
+	setSearchValue: function(search) {
+		$(this.query).val(search);
+		// $(this.query).trigger("keyup");
+	}
 });
 
 var GeoBlock = Backbone.Model.extend({
