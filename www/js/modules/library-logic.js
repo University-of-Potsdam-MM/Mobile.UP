@@ -26,7 +26,7 @@ previously working functionality. Please don't judge.
 "use strict";
 
 // TODO - set environment for production on build
-var environment = 'development';
+var environment = 'production';
 
 (function($) {
 
@@ -48,8 +48,10 @@ var environment = 'development';
 
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
+      var spinner = addLodingSpinner("book-locations");
+      spinner();      
 
-      console.log('updateLocation');
+      //console.log('updateLocation');
 
       var currentBook = this;
 
@@ -61,15 +63,17 @@ var environment = 'development';
 
       ajaxLocationCall.done(function (json) {
     	var bookLocationList = new App.collection.BookLocationList();
-    	console.log('init', bookLocationList);
+    	//console.log('init', bookLocationList);
         _.map(json.document[0].item, function(item) {
         	//console.log('Item:', item);
         	var bookLocation = new App.model.BookLocation({});
-        	console.log(bookLocation.getLocation(item, currentBook));
+        	//console.log(bookLocation.getLocation(item, currentBook));
 
         	bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
         //console.log('List', bookLocationList);
+        var spinner = removeLoadingSpinner("book-locations");
+        spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
       }).fail(function () {
@@ -309,10 +313,10 @@ var environment = 'development';
     // TODO: create object to communicate with SRU and provide pagination for query
 
     addXmlSearchResult: function(xmlSearchResult){
-      // console.log('xml',xmlSearchResult);
+      //console.log('xml',xmlSearchResult);
       var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
       this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
-      console.log('addXmlSearchResult', this.pluck('recordId'));
+      //console.log('addXmlSearchResult', this.pluck('recordId'));
       return this;
     },
 
@@ -346,25 +350,25 @@ var environment = 'development';
 
 
     loadNext: function() {
-      console.log('loadNext');
+      //console.log('loadNext');
       var model = this;
       // fetch the next 10 books
       var query = this.get('query');
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
-      var promise = fetch.loadSearch();
-      promise.then(function(xml){
+      return Q.fcall(addLodingSpinner("search-results"))
+      .then(function() { return fetch.loadSearch(); })
+      .then(function(xml){
         // get relevant pagination information
         var $xml = $(xml);
         var numberOfRecords = $xml.find('numberOfRecords').text();
         model.set('numberOfRecords', numberOfRecords);
         return xml;
       }).done(function(xml) {
-        console.log('done', xml);
+        //console.log('done', xml);
         resultList.addXmlSearchResult(xml);
       });
-      return promise;
     }
   }, {
     // LibrarySearch class properties
@@ -385,12 +389,12 @@ var environment = 'development';
           if ('development' == environment){
             return '/api/search';
           } else {
-            return "http://sru.gbv.de";
+            return "http://usb.soft.cs.uni-potsdam.de/libraryAPI/1.0";
           }
         },
 
         url: function() {
-          return this.baseURL() + '/opac-de-517?version=1.1&operation=searchRetrieve' +
+          return this.baseURL() + '/operation=searchRetrieve' +
             '&query=' + this.query +
             '&startRecord=' + this.options.startRecord +
             '&maximumRecords=' + this.options.maximumRecords +
@@ -401,9 +405,14 @@ var environment = 'development';
           // TODO: return and memorize Backbone collection instead of promise
           var d = Q.defer();
           var url = this.url();
-          $.get(url).done(d.resolve).fail(d.reject);
-          var promise = d.promise;
-          return promise;
+          var headers = { "Authorization": getAuthHeader() };
+          $.ajax({
+  			url: url,
+  			dataType: "xml",
+  			headers: headers
+  		  }).done(d.resolve).fail(d.reject);
+
+          return d.promise;
         },
 
         next: function() {
@@ -453,11 +462,11 @@ var environment = 'development';
 		  console.log('submit');
 		  var inputs = $("#query-form :input").serializeArray();
 		  var query = inputs[0].value;
-		  this.loadSearch(query);		  
+		  this.loadSearch(query);
 	  },
 	  
 	  loadSearch: function(queryString){
-		  console.log('loadSearch');
+		  // console.log('loadSearch');
 		  if (App.collections.searchResults) {
 			  App.collections.searchResults.reset();
 		  } else {
@@ -495,7 +504,7 @@ var environment = 'development';
 
     template: rendertmpl('book_list_view'),
     render: function(){
-      console.log('render');
+
       var search = App.models.currentSearch;
       var html = this.template({
         search:             search.attributes,
@@ -543,7 +552,6 @@ var environment = 'development';
 
 	  template: rendertmpl('book_detail_view'),
 	  render: function(){
-		  //console.log('render detail', this.model);
 		  var html = this.template({book:this.model});
 		  this.$el.html(html);
 	      this.$el.trigger('create');
@@ -552,12 +560,11 @@ var environment = 'development';
 
 	  // TODO:
 	  back: function(){
-		  console.log('clicked');
-		  App.view.Search.render();
+		  App.view.SearchForm.render();
 		  App.view.SearchResults = new App.view.BookList({
-        model: App.models.currentSearch,
-        collection: App.collections.searchResults
-      });
+			  model: App.models.currentSearch,
+			  collection: App.collections.searchResults
+		  });
 		  App.view.SearchResults.render();
 		  return this;
 	  }
@@ -693,7 +700,7 @@ var environment = 'development';
 
   // setting everything up
   $(document).on("pageinit", "#search", function () {
-    console.log('pageinit #search');
+    //console.log('pageinit #search');
 
     App.models.currentSearch = new App.model.LibrarySearch({
       query:'',
@@ -701,8 +708,8 @@ var environment = 'development';
       results: new Backbone.Collection()
     });
 
-    App.view.Search = new App.view.Search();
-    App.view.Search.render();
+    App.view.SearchForm = new App.view.Search();
+    App.view.SearchForm.render();
 
     // initialize Main Views
     App.view.SearchResults = new App.view.BookList({

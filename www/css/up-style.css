@@ -774,7 +774,7 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 .buttons_pt div.ui-slider-switch {
 	width:90%;
 	margin:0;
-	height: 42px;
+	height: 39px;
 	border: none
 }
 
@@ -1167,4 +1167,43 @@ background-color: #EDEDED;
 #freeRooms .ui-btn-icon-left:after
 {
 	background-color:#014260;
+}
+
+/***********************Moodle*********************
+**************************************************************/
+
+#moodle ul {
+	overflow: hidden
+}
+
+#moodle .ui-content .ui-listview {
+	margin:0;
+}
+
+#moodle .ui-listview.ui-group-theme-c .ui-btn {
+	font-size: 16px;
+text-align: left;
+text-transform: none;
+font-weight: normal;
+
+vertical-align: middle;
+height: auto;
+display: block;
+width: 95%;
+	
+}
+
+#moodle .ui-btn-icon-left:after, #moodle .ui-btn-icon-notext:after
+	{
+	position: relative;
+	float: right;
+	margin-top: -30px;
+	padding-right: .3em;
+}
+
+#moodle .ui-listview>li h2 {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 95%;
 }
