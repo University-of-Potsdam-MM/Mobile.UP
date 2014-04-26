@@ -1,5 +1,6 @@
 var express   = require('express');
 var http      = require('http');
+var https     = require('https');
 var path      = require('path');
 var httpProxy = require('http-proxy');
 
@@ -27,7 +28,7 @@ app.use('/api/search',    proxyTo('http://sru.gbv.de') );
 // http://daia.gbv.de/isil/DE-517?id=ppn:775459445&format=json
 app.use('/api/place',     proxyTo('http://daia.gbv.de') );
 app.use('/api/transport', proxyTo('http://demo.hafas.de') );
-app.use('/api/moodle',    proxyTo('https://erdmaennchen.soft.cs.uni-potsdam.de') );
+app.use('/api/moodle',    proxyTo('http://erdmaennchen.soft.cs.uni-potsdam.de') );
 
 
 app.use('/node_modules',

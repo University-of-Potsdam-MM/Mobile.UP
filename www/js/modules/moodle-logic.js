@@ -1,127 +1,83 @@
+/*
+
+I couldn't get the server.js to work as a proxy with the moodle testsystem.
+
+So in order to make cross domain requests when developing,
+you have to configure your browser to allow cross domain requests.
+
+The command line flag for Chrome is: --disable-web-security
+
+This ish how works for me on OS X:
+
+    $ open -a '/Applications/Google Chrome.app' --args --disable-web-security
+
+*/
+
 "use strict";
+
+// TODO change this in build step
+var environment = 'development';
+
+window.MoodleApp = {};
 
 (function($){
 
+
+  // SEE HEADER COMMENT IN THIS FILE
+  // if ('development' == environment) {
+  //   var moodle_base_url = '/api/moodle';
+  // } else {
+    // TODO: replace with actual production Moodle environment
+    var moodle_base_url = 'https://erdmaennchen.soft.cs.uni-potsdam.de';
+  // }
+
+  MoodleApp.moodle_ws_url = moodle_base_url + '/moodle/webservice/rest/server.php'
+
+  MoodleApp.Course = Backbone.Model.extend({});
+
+  MoodleApp.CourseList = Backbone.Collection.extend({
+    model: MoodleApp.Course,
+
+    moodle_ws_params: {
+      moodlewsrestformat:'json',
+      wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
+      userid:'2',
+      wsfunction:'moodle_enrol_get_users_courses',
+    },
+
+    fetch: function(){
+      console.log(MoodleApp.moodle_ws_url, this.moodle_ws_params);
+      var collection = this;
+      $.post(MoodleApp.moodle_ws_url, this.moodle_ws_params, function(content){
+        console.log('fetch', content);
+        collection.reset(content);
+      })
+    }
+  });
+
+  MoodleApp.CourseListView = Backbone.View.extend({
+    template: rendertmpl('moodle_course_list_view'),
+    initialize: function(){
+      this.collection.on('reset', this.render, this);
+    },
+    render: function(){
+      console.log('rendering', this);
+      this.$el.html(this.template({courses:this.collection.models}));
+      this.$el.trigger('create')
+      return this;
+    }
+  })
+
+
   $(document).on("pageinit", "#moodle", function () {
     // on pageinit
-
-    var date_helper = {
-      // I give this function a German name,
-      // because someone introduced German weekday names as keys in opening.json
-      tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-      wochentag: function(date) {
-        if (date) {
-          return this.tage[date.getDay()]
-        }
-      },
-      hoursColonMinutes: function(date){
-        if (date) {
-          return date.getHours() + ':' + date.getMinutes();
-        }
-      },
-      openingForWochentag: function(timesArr, wochentag) {
-        if (! _.isArray(timesArr)){ return;}
-        var day = _.find(timesArr, function(timesForDay){
-          //console.log('find day', wochentag, timesArr, timesForDay);
-          return timesForDay.day == wochentag;
-        });
-        if (day){
-          return day.opening;
-        }
-        return false;
-      },
-      statusAtPlaceAndDate: function(place, date) {
-        if (date && place) {
-          var _wochentag = this.wochentag(date);
-          var opening = this.openingForWochentag(place.times, _wochentag);
-
-          if (opening === false) {
-            return 'closed';
-          };
-
-          if ((opening == null) || _.isString(opening)) {
-            return 'closed';
-          };
-
-          var time = this.hoursColonMinutes(date);
-          if (_.isArray(opening)) {
-            var open = _.some(opening, function(fromTo){
-              return ((fromTo[0] < time) && (fromTo[1] > time))
-            });
-            return (open)? 'open' : 'closed';
-          }
-
-          return 'problem'
-        }
-      },
-    };
-
-    var renderOpenings = function(openings) {
-      var placeTemplate = rendertmpl('moodle');
-      var placesList = $('#moodleCourses');
-      _.each(openings, function(place){
-        placesList.append(placeTemplate(place));
-      });
-    };
-
-    var fromToDaytimeString = function(from, to) {
-      var string = '' + from + ' - ' + to + ' Uhr';
-      // console.log('string',string);
-      return string;
-    };
-
-    var addTextToTimes = function (openings) {
-      _.each(openings, function(place) {
-        // console.log('place',place);
-        _.each(place.times, function(day){
-          // console.log('day', day);
-          if(_.isString(day.opening)) {
-            day.opening_text = day.opening;
-            return;
-          }
-
-          if(_.isArray(day.opening)){
-            var text = _.map(day.opening, function(fromToArr){
-              // console.log('fromToArr', fromToArr);
-              if (_.isArray(fromToArr)) {
-                return fromToDaytimeString(fromToArr[0], fromToArr[1]);
-              } else {
-                return fromToArr;
-              }
-            }).join(' | ');
-            day.opening_text = text;
-            // console.log('text', text);
-            return;
-          }
-
-          //console.log('Neither String nor Array');
-        })
-      });
-      return openings;
-    };
-
-    $.ajax({
-      url: 'js/json/opening.json',
-      method: 'GET',
-      dataType: 'html',
-      async: false,
-      success: function(json) {
-        var data = $.parseJSON(json);
-        var openings = _.sortBy(data, 'name');
-
-        openings = addTextToTimes(openings);
-
-        var now = new Date();
-        _.each(openings, function(place){
-          place.statusOpenNow = date_helper.statusAtPlaceAndDate(place, now);
-        });
-
-        //console.log(openings);
-        renderOpenings(openings);
-        $("#moodleCourses").trigger("create");
-      }
+    MoodleApp.courses = new MoodleApp.CourseList();
+    MoodleApp.courses.fetch();
+    MoodleApp.listview = new MoodleApp.CourseListView({
+      el: $('ul#moodle_courses'),
+      collection: MoodleApp.courses
     });
-
   });
+
 })(jQuery);
 

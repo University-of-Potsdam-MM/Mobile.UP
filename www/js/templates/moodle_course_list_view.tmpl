@@ -1,0 +1,9 @@
+<% _.each(courses, function(course){ %>
+  <% console.log(JSON.stringify(course.attributes)); %>
+    <li><a href="#moodle-course-<%= course.get('id') %>" data-role="button"
+      data-icon="arrow-darkblue" data-transition="slidefade">
+        <h2><%= course.get('fullname') %></h2>
+          <!-- <%= JSON.stringify(course.attributes) %> -->
+    </a></li>
+
+<%});%>
