@@ -1266,6 +1266,7 @@ width: 95%;
 #peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover{
 	background-image:url(../img/up/people-hover.png) !important;
 	background-repeat:no-repeat;
+	background-color:#d0dae3 !important;
 	
 
 }
