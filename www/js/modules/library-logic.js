@@ -301,7 +301,11 @@ var environment = 'production';
 
     contentForTag: function(node, tagName){
   	  var nodes = node.getElementsByTagName(tagName);
-  	  return _.pluck(nodes, 'textContent');
+  	  if (nodes && nodes.length != 0) {
+  		return _.pluck(nodes, 'textContent');  
+  	  } else {
+  		  return null;
+  	  }
     }
 
   });
