@@ -49,7 +49,7 @@ var environment = 'production';
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
       var spinner = addLodingSpinner("book-locations");
-      spinner();      
+      spinner();
 
       //console.log('updateLocation');
 
@@ -104,9 +104,12 @@ var environment = 'production';
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
         notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
-    		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-    		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-    		mediaType: App.model.Book.mediaType(xmlRecord)
+        series:	   App.model.Book.series($xmlRecord, 'relatedItem[type=series]'),
+        keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
+        mediaType: App.model.Book.mediaType(xmlRecord),
+        extent:    App.model.Book.textForTag(xmlRecord, 'extent'),
+        edition:   App.model.Book.textForTag(xmlRecord, 'edition'),
+        place:     App.model.Book.place($xmlRecord, 'placeTerm[type=text]'),
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -129,7 +132,12 @@ var environment = 'production';
     },
 
     textForQuery: function(jqNode, query){
-      return _.pluck(jqNode.find(query), 'textContent');
+    	var nodes = _.pluck(jqNode.find(query), 'textContent');
+      	if(nodes && nodes.length != 0) {
+      		return nodes;
+      	}else{
+      		return null;
+      	}
     },
 
     // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
@@ -138,8 +146,8 @@ var environment = 'production';
       var names = _.map(nameNodes, function(node){
         var $node = $(node);
         var author = [
-          App.model.Book.textForQuery($node, 'namePart[type=family]')[0],
-          App.model.Book.textForQuery($node, 'namePart[type=given]')[0]
+          (App.model.Book.textForQuery($node, 'namePart[type=family]')) ? App.model.Book.textForQuery($node, 'namePart[type=family]')[0] : '',
+          (App.model.Book.textForQuery($node, 'namePart[type=given]')) ? App.model.Book.textForQuery($node, 'namePart[type=given]')[0] : ''
         ];
         return author;
       });
@@ -298,9 +306,30 @@ var environment = 'production';
 
     contentForTag: function(node, tagName){
   	  var nodes = node.getElementsByTagName(tagName);
-  	  return _.pluck(nodes, 'textContent');
+  	  if (nodes && nodes.length != 0) {
+  		return _.pluck(nodes, 'textContent');
+  	  } else {
+  		  return null;
+  	  }
     },
 
+    place: function(jqNode, query){
+    	var nodes = App.model.Book.textForQuery(jqNode, query);
+    	if(nodes) {
+    		return nodes[0];
+    	}else{
+    		return null;
+    	}
+    },
+
+    series: function(jqNode, query){
+    	var nodes = App.model.Book.textForQuery(jqNode, query);
+    	if(nodes) {
+    		return nodes[0];
+    	}else{
+    		return null;
+    	}
+    }
 
   });
   // END App.model.Book
@@ -367,7 +396,7 @@ var environment = 'production';
     		var numberOfRecords=xml.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
     	}
     	model.set('numberOfRecords',numberOfRecords);
-    	
+
         return xml;
       }).done(function(xml) {
         //console.log('done', xml);
@@ -448,14 +477,14 @@ var environment = 'production';
 		  	'submit form': 'submit',
 		  	'click .pagination-button': 'paginate'
 	  },
-	  
+
 	  render: function(){
 		  var html = this.template({});
 		  this.$el.html(html);
 		  this.$el.trigger('create');
 		  return this;
 	  },
-	  
+
 	  paginate: function(e){
 		  e.preventDefault();
 		  App.models.currentSearch.loadNext();
@@ -468,7 +497,7 @@ var environment = 'production';
 		  var query = inputs[0].value;
 		  this.loadSearch(query);
 	  },
-	  
+
 	  loadSearch: function(queryString){
 		  // console.log('loadSearch');
 		  if (App.collections.searchResults) {
@@ -484,7 +513,7 @@ var environment = 'production';
 		  // on adding books render BookListView
 		  var loading = search.loadNext();
 		  return loading;
-	  }	    
+	  }
 
   });
 
@@ -650,10 +679,10 @@ var environment = 'production';
 		      		return item.service =='presentation';
 		      	});
 		  }
-		  
+
 		  if (loanAvailable) {
 			  status = 'ausleihbar';
-			  
+
 			  if(presentationAvailable){
 				// tag available with service="loan" and href=""?
 				  if(loanAvailable.href==""){
@@ -672,14 +701,14 @@ var environment = 'production';
 		          status = "nicht ausleihbar";
 		        }
 		      } else {
-		    	  
+
 		        if(book.attributes.url == null) {
 		          status = 'nicht ausleihbar';
 		        }else {
 		          status = 'Online-Ressource im Browser öffnen';
 		        }
 		      }
-		      
+
 		      if(presentationUnavailable)
 		    	  if(loanUnavailable.href) {
 		    		  if(loanUnavailable.href.indexOf("loan/RES") != -1) {
@@ -687,8 +716,8 @@ var environment = 'production';
 			    			  statusInfo += "ausgeliehen, Vormerken möglich";
 			    		  }else{
 			    			  statusInfo += "ausgeliehen bis "+loanUnavailable.expected+", Vormerken möglich";
-			    		  }  
-			    	  } 
+			    		  }
+			    	  }
 		    	  } else {
 		    		  statusInfo += "...";
 		    	  }
