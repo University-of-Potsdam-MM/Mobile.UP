@@ -360,10 +360,14 @@ var environment = 'production';
       return Q.fcall(addLodingSpinner("search-results"))
       .then(function() { return fetch.loadSearch(); })
       .then(function(xml){
-        // get relevant pagination information
-        var $xml = $(xml);
-        var numberOfRecords = $xml.find('numberOfRecords').text();
-        model.set('numberOfRecords', numberOfRecords);
+    	// get relevant pagination information
+    	if(xml.getElementsByTagNameNS) {
+    		var numberOfRecords=xml.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+    	}else{
+    		var numberOfRecords=xml.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
+    	}
+    	model.set('numberOfRecords',numberOfRecords);
+    	
         return xml;
       }).done(function(xml) {
         //console.log('done', xml);
