@@ -104,9 +104,10 @@ var environment = 'production';
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
         notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
-    		series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
-    		keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-    		mediaType: App.model.Book.mediaType(xmlRecord)
+    	series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+    	keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
+    	mediaType: App.model.Book.mediaType(xmlRecord),
+    	extent:    App.model.Book.textForTag(xmlRecord, 'extent')
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -299,8 +300,7 @@ var environment = 'production';
     contentForTag: function(node, tagName){
   	  var nodes = node.getElementsByTagName(tagName);
   	  return _.pluck(nodes, 'textContent');
-    },
-
+    }
 
   });
   // END App.model.Book

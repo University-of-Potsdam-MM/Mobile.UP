@@ -34,6 +34,8 @@
 			<%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
 
 	    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
+	    
+	    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
     </div>
   </div>
 </div>
