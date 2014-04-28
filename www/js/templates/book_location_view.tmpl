@@ -5,9 +5,11 @@
 		<!--Alternativen: lent, prebook -->
 		<% console.log(location.get('item')) %>
 		<%= (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) ? '<span class="lent"></span>' : '<span class="available"></span>' %>
+		<span class="location-details">
 		<%= (location.get('url')) ? '<a href="'+location.get('url')+'">'+location.get('item')[0]+'</a><br />' : location.get('item')[0] %>
 		<%= (location.get('item')[1]) ? ', '+location.get('item')[1]+'<br />' : '<br />' %>
-		<%= (location.get('label')) ? location.get('label')+'<br />' : '' %>
+		<%= (location.get('label')) ? '<b>'+location.get('label')+'</b><br />' : '' %> 
+		</span>
 	</p>
 </div>
 <% }); %>
