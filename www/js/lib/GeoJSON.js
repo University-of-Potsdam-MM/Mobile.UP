@@ -31,6 +31,23 @@ var GeoJSON = function( geojson, options, map, hasSimilarsCallback ){
 		}
 	};
 	
+	var calculateMid = function(points) {
+		var pointsArray = points.getArray();
+		var sum = _.reduce(pointsArray, reduceToMid, {x: 0, y: 0, c: 0});
+		
+		var midX = sum.x / sum.c;
+		var midY = sum.y / sum.c;
+		return new google.maps.LatLng(midX, midY);
+	};
+	
+	var reduceToMid = function(memo, point) {
+		var result = {};
+		result.x = memo.x + point.lat();
+		result.y = memo.y + point.lng();
+		result.c = memo.c + 1;
+		return result;
+	};
+	
 	var _geometryToGoogleMaps = function( geojsonGeometry, options, geojsonProperties ){
 
 		var googleObj, opts = _copy(options);
@@ -124,7 +141,7 @@ var GeoJSON = function( geojson, options, map, hasSimilarsCallback ){
 				}
 				opts.paths = paths;
 				googleObj = new google.maps.Polygon(opts);
-				addInfoWindow(map, googleObj, geojsonProperties, googleObj.getPath().getAt(0));
+				addInfoWindow(map, googleObj, geojsonProperties, calculateMid(googleObj.getPath()));
 				if (geojsonProperties) {
 					googleObj.set("geojsonProperties", geojsonProperties);
 				}

@@ -57,6 +57,7 @@ var student = "student";
 var categoryStore = new CategoryStore();
 var lastFinderId = undefined;
 var lastCampus = undefined;
+var searchView = undefined;
 
 $(document).on("pageinit", "#sitemaps", function() {
 	settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
@@ -95,6 +96,7 @@ $(document).on("pageinit", "#sitemaps", function() {
  */
 $(document).on("pageshow", "#sitemaps", function() {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
+	searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
 });
 
 function drawSelectedCampus(options) {
@@ -131,11 +133,10 @@ function clearMenu(uniqueDivId) {
 	$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
 }
 
-function insertHash(data) {
-	_.each(data.features, function(item) {
-		item.properties.hash = (item.properties.Name || "").hashCode() + " " + (item.properties.description || "").hashCode();
-	});
-	return data;
+function onItemSelected(selection) {
+	searchView.setSearchValue(selection);
+	searchView.hideAllItems();
+	$("div[data-role='searchablemap']").searchablemap("viewByName", selection);
 }
 
 function drawCampus(uniqueDiv, url) {
@@ -144,6 +145,7 @@ function drawCampus(uniqueDiv, url) {
 		host.append("<div data-role='searchablemap'></div>");
 		host.trigger("create");
 		
+		$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected });
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 		
 		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
@@ -185,9 +187,8 @@ function getGeoByCategory(data, category) {
 function setSearchValue(search) {
 	return function(terminals, institutes, canteens) {
 		if (search !== undefined) {
-			$("input[data-type='search']").val(search);
+			searchView.setSearchValue(search);
 			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
-			// $("input[data-type='search']").trigger("keyup");
 		}
 	};
 }
@@ -258,6 +259,26 @@ function sitemapNavigateTo(id) {
 
 $(document).on("pageinit", "#sitemaps", function() {
 	geo.loadAllOnce();
+});
+
+var SearchView = Backbone.View.extend({
+	
+	initialize: function(options) {
+		this.query = options.query;
+		this.children = options.children;
+	},
+	
+	setSearchValue: function(search, updateView) {
+		$(this.query).val(search);
+		if (updateView) {
+			$(this.query).trigger("keyup");
+		}
+	},
+	
+	hideAllItems: function() {
+		var host = $(this.children);
+		$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
+	}
 });
 
 var GeoBlock = Backbone.Model.extend({
