@@ -107,7 +107,9 @@ var environment = 'production';
     	series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
     	keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
     	mediaType: App.model.Book.mediaType(xmlRecord),
-    	extent:    App.model.Book.textForTag(xmlRecord, 'extent')
+    	extent:    App.model.Book.textForTag(xmlRecord, 'extent'),
+    	edition:   App.model.Book.textForTag(xmlRecord, 'edition'),
+    	place:     App.model.Book.textForQuery($xmlRecord, 'placeTerm[type=text]'),
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);

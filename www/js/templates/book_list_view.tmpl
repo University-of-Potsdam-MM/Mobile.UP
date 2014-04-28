@@ -16,7 +16,7 @@
         </h2>
         <p>
           <%= (book.get('authors')) ? '<b>'+book.get('authors')+'</b><br/>' : ''%>
-          <%= _.compact([book.get('publisher'), book.get('dateIssued')]).join(', ') %>
+          <%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %>
         </p>
       </a>
     </li>
