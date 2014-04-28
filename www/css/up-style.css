@@ -1232,3 +1232,68 @@ width: 95%;
 	white-space: nowrap;
 	width: 95%;
 }
+
+
+/***********************Personensuche*********************
+**************************************************************/
+#peoples h3.ui-collapsible-heading {
+		border-bottom:0px;
+}
+#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+		border-bottom:1px;
+}
+
+#peoples h3.ui-collapsible-heading a{
+	background-image:url(../img/up/people-hover.png) !important;
+	background-repeat:no-repeat;
+	background-position:0px 9px;
+	padding:5px 1.5em 0 40px !important;
+	display:block;
+	background-color:#d0dae3 !important;
+
+
+
+}
+
+#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a{
+	background-image:url(../img/up/people.png) !important;
+	background-repeat:no-repeat;
+	background-color:#ededed !important;
+	
+	
+}
+
+#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover{
+	background-image:url(../img/up/people-hover.png) !important;
+	background-repeat:no-repeat;
+	
+
+}
+
+
+
+#peoples h3 a span {
+	margin-bottom:3px;
+	display:inline-block;
+}
+
+#peoples .ui-btn-icon-right:after {
+	right:-.1em;
+}
+
+.mail {background-image:url(../img/up/mail-small.png) !important;
+	background-repeat:no-repeat;
+	background-position:0px .4em;
+	text-indent:20px;
+	}
+	
+.phone {background-image:url(../img/up/phone-small.png) !important;
+	background-repeat:no-repeat;
+	background-position:0px .4em;
+	text-indent:20px;
+	}
+
+
+#peoples .ui-collapsible-content p {
+	padding-left:25px;
+}
