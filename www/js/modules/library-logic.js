@@ -104,12 +104,12 @@ var environment = 'production';
         isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
         url:       App.model.Book.url(xmlRecord),
         notes:	   App.model.Book.contentForTag(xmlRecord, 'note'),
-    	series:	   App.model.Book.textForQuery($xmlRecord, 'identifier[type=series]'),
+    	series:	   App.model.Book.series($xmlRecord, 'relatedItem[type=series]'),
     	keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
     	mediaType: App.model.Book.mediaType(xmlRecord),
     	extent:    App.model.Book.textForTag(xmlRecord, 'extent'),
     	edition:   App.model.Book.textForTag(xmlRecord, 'edition'),
-    	place:     App.model.Book.textForQuery($xmlRecord, 'placeTerm[type=text]'),
+    	place:     App.model.Book.place($xmlRecord, 'placeTerm[type=text]'),
       };
       // console.log('model.toc', model.toc);
       return new App.model.Book(model);
@@ -132,7 +132,12 @@ var environment = 'production';
     },
 
     textForQuery: function(jqNode, query){
-      return _.pluck(jqNode.find(query), 'textContent');
+    	var nodes = _.pluck(jqNode.find(query), 'textContent');
+      	if(nodes && nodes.length != 0) {
+      		return nodes;
+      	}else{
+      		return null;
+      	}
     },
 
     // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
@@ -141,8 +146,8 @@ var environment = 'production';
       var names = _.map(nameNodes, function(node){
         var $node = $(node);
         var author = [
-          App.model.Book.textForQuery($node, 'namePart[type=family]')[0],
-          App.model.Book.textForQuery($node, 'namePart[type=given]')[0]
+          (App.model.Book.textForQuery($node, 'namePart[type=family]')) ? App.model.Book.textForQuery($node, 'namePart[type=family]')[0] : '',
+          (App.model.Book.textForQuery($node, 'namePart[type=given]')) ? App.model.Book.textForQuery($node, 'namePart[type=given]')[0] : ''
         ];
         return author;
       });
@@ -306,6 +311,24 @@ var environment = 'production';
   	  } else {
   		  return null;
   	  }
+    },
+    
+    place: function(jqNode, query){
+    	var nodes = App.model.Book.textForQuery(jqNode, query);
+    	if(nodes) {
+    		return nodes[0];
+    	}else{
+    		return null;
+    	}
+    },
+    
+    series: function(jqNode, query){
+    	var nodes = App.model.Book.textForQuery(jqNode, query);
+    	if(nodes) {
+    		return nodes[0];
+    	}else{
+    		return null;
+    	}
     }
 
   });
