@@ -52,6 +52,10 @@ p {
 	color: #666;
 }
 
+.normal {
+	font-weight:normal;
+}
+
 .alignleft {
 	float: left;
 	margin: .3em;
