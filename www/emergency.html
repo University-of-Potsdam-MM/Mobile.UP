@@ -16,8 +16,17 @@
 		</div>
 		<!-- End Header -->
 		<!-- Start Main - Navigation -->
-		<div data-role="content" data-iconpos="left" data-theme="c" id="emergencies">
-			<ul data-role="listview" data-inset="true" data-icon="false" id="emergency-list"></ul>
+
+		<div data-role="content" data-iconpos="left" data-theme="c"
+			id="emergencies">
+			<form>
+				<input data-type="search" id="searchForEmergency"
+					placeholder="Eintr&auml;ge filtern" />
+			</form>
+			<ul data-role="listview" data-inset="true" data-icon="false"
+				id="emergency-list" data-filter="true"
+				data-input="#searchForEmergency">
+			</ul>
 		</div>
 		<!-- End Main - Navigation -->
 	</div>
