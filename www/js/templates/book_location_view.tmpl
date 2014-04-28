@@ -3,10 +3,10 @@
 	<h3><%= location.get('department') %></h3>
 	<p>
 		<!--Alternativen: lent, prebook -->
-		<%= (location.get('item')[1] && location.get('item')[1].indexOf("ausgeliehen") != -1) ? '<span class="lent"></span>' : '<span class="available"></span>' %>
-		<%= (location.get('url')) ? '<a href="'+location.get('url')+'">'+location.get('item')[0]+'</a><br />' : location.get('item')[0] %>
-		<%= (location.get('item')[1]) ? ', '+location.get('item')[1]+'<br />' : '<br />' %>
-		<%= (location.get('label')) ? location.get('label')+'<br />' : '' %>
+		 <%= (location.get('item')[1] && location.get('item')[1].indexOf("ausgeliehen") != -1) ? '<span class="lent"></span>' : '<span class="available"></span>' %>
+		 <%= (location.get('url')) ? '<a href="'+location.get('url')+'">'+location.get('item')[0]+'</a><br />' : location.get('item')[0] %>
+		 <%= (location.get('item')[1]) ? ', '+location.get('item')[1]+'<br />' : '<br />' %>
+		<b> <%= (location.get('label')) ? location.get('label')+'<br />' : '' %> </b>
 	</p>
 </div>
 <% }); %>

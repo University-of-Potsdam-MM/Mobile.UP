@@ -178,9 +178,11 @@ h2 span {
 	height: 35px;
 	display: table-cell;
 	vertical-align: middle;
-	width: 20%;
+	width: 100%;
 	padding-left: 0;
 	padding-right: 0;
+	display: inline-block;
+	line-height: 35px
 }
 
 /*Schrift in Tabs*/
