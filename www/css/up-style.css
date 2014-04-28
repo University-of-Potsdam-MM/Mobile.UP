@@ -913,6 +913,10 @@ display: block;
 	margin-top:0;
 }
 
+#search-results .ui-btn-icon-right:after {
+	right:-.1em;
+}
+
 div.booktitle {
 	min-height: 100px;
 	margin-bottom: 5px;
@@ -978,9 +982,12 @@ div.booktitle {
 	padding-left: 1.1em;
 }
 
+
+
 /* Ressourcen*/
 li.book-short a.ui-btn {
 	padding-left: .2em;
+	padding-right:1em;
 }
 
 li.book-short div {
