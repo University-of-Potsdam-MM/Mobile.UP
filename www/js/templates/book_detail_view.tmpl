@@ -4,7 +4,7 @@
 <%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
 <%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
 <%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
- <%= _.compact([book.get('publisher'), book.get('dateIssued')]).join(', ') %></p></div>
+<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %></p></div>
 <div data-role="tabs">
   <div data-role="navbar">
     <ul id="search-results">
@@ -17,11 +17,13 @@
 	  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
 	  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
 
-			<%= (book.get('keywords')) ? '<div data-role="collapsible"><h3>Schlagwörter:</h3><p>' : '' %>
+			<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
+				<div data-role="collapsible"><h3>Schlagwörter:</h3><p>
 	    	<% _.each(book.get('keywords'), function(keyword){ %>
 					<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
 	          <% }); %>
-			<%= (book.get('keywords')) ? '</p></div>' : '' %>
+				</p></div>
+			<% } %>
 
 			<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
 	          <% _.each(book.get('toc'), function(chapter){ %>
@@ -32,6 +34,10 @@
 			<%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
 
 	    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
+	    
+	    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
+	    
+	    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
     </div>
   </div>
 </div>
