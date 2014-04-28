@@ -33,11 +33,20 @@
 
 			<%= (book.get('notes')) ? '<div data-role="collapsible"><h3>Anmerkungen:</h3><p> '+book.get('notes')+'</p></div>' : ''%>
 
-	    <%= (book.get('isbn')) ? '<div data-role="collapsible"><h3>ISBN: </h3><p>'+book.get('isbn')+'</p></div>' : ''%>
-	    
+	    <% if (book.get('isbn')) { %>
+	    	<div data-role="collapsible"><h3>ISBN:</h3><p>
+	    		<ul>
+	    		<% _.each(book.get('isbn'), function(isbn){ %>
+						<li><%= isbn %></li>
+	        <% }); %>
+	        </ul>
+				</p></div>
+	    <% } %>
+
 	    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
 	    
 	    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
     </div>
   </div>
 </div>
+<% console.log(book.get('isbn')) %>
