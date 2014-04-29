@@ -127,7 +127,7 @@ window.MoodleApp = {};
       // console.log('init', this);
     },
     render: function(){
-      console.log('render CourseContentsPage', this.el, this.model);
+      console.log('render CourseContentsPage', this.el, this.model, this.collection);
       this.$el.html(this.template({course:this.model, contents: this.collection}));
       this.$el.trigger('create');
       return this;
