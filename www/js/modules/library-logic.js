@@ -25,9 +25,6 @@ previously working functionality. Please don't judge.
 
 "use strict";
 
-// TODO - set environment for production on build
-var environment = 'production';
-
 (function($) {
 
   window.App = {
@@ -419,11 +416,7 @@ var environment = 'production';
       }, {
 
         baseURL: function() {
-          if ('development' == environment){
-            return '/api/search';
-          } else {
-            return "http://usb.soft.cs.uni-potsdam.de/libraryAPI/1.0";
-          }
+        	return "http://usb.soft.cs.uni-potsdam.de/libraryAPI/1.0";
         },
 
         url: function() {
@@ -687,8 +680,6 @@ var environment = 'production';
 				// tag available with service="loan" and href=""?
 				  if(loanAvailable.href==""){
 					  statusInfo += "Bitte bestellen";
-				  } else {
-					  statusInfo += "Bitte am Standort entnehmen";
 				  }
 			  }
 
