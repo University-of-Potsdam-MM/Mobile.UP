@@ -342,20 +342,20 @@
   Transport.views.TransportList = Backbone.View.extend({
     initialize: function(options) {
       this.stationName = options.stationName;
-
       var transports = this.collection;
+      this.$ul = this.$el.find('ul');
       transports.on("reset", this.render, this);
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
     template: rendertmpl('transport_listitem_view'),
     addOne: function(journey) {
-      this.$el.find('ul').append(this.template({journey: journey}));
+      this.$ul.append(this.template({journey: journey}));
     },
     render: function() {
       console.log('render');
       this.$el.find('.stationName').html(this.stationName);
-      this.$el.find('ul').empty();
+      this.$ul.empty();
       this.collection.each(this.addOne);
       return this;
     }
