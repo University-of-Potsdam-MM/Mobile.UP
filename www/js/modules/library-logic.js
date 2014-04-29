@@ -452,6 +452,22 @@ previously working functionality. Please don't judge.
 
   // END App.model.LibrarySearch
 
+
+
+  /**
+   * THIS IS THE INTERNAL STATE OF THE LIBRARY SEARCH
+   */
+
+  App.collections.searchResults = new App.collection.BookList();
+
+  App.models.currentSearch = new App.model.LibrarySearch({
+    query:'',
+    numberOfRecords: 0,
+    results: App.collections.searchResults
+  });
+
+
+
   /**
    * Backbone - Views
    *
@@ -472,7 +488,7 @@ previously working functionality. Please don't judge.
 	  },
 
 	  render: function(){
-		  var html = this.template({});
+		  var html = this.template({keyword: App.models.currentSearch.get('query')});
 		  this.$el.html(html);
 		  this.$el.trigger('create');
 		  return this;
@@ -596,8 +612,6 @@ previously working functionality. Please don't judge.
 	  }
 
   });
-
-  App.collections.searchResults = new App.collection.BookList();
 
   App.view.BookShortView = Backbone.View.extend({});
 
@@ -724,13 +738,7 @@ previously working functionality. Please don't judge.
 
   // setting everything up
   $(document).on("pageinit", "#search", function () {
-    //console.log('pageinit #search');
-
-    App.models.currentSearch = new App.model.LibrarySearch({
-      query:'',
-      numberOfRecords: 0,
-      results: new Backbone.Collection()
-    });
+    console.log('pageinit #search');
 
     App.view.SearchForm = new App.view.Search();
     App.view.SearchForm.render();
