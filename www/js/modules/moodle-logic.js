@@ -24,15 +24,62 @@ window.MoodleApp = {};
 
 
   // SEE HEADER COMMENT IN THIS FILE
-  // if ('development' == environment) {
-  //   var moodle_base_url = '/api/moodle';
-  // } else {
-    // TODO: replace with actual production Moodle environment
-    var moodle_base_url = 'https://erdmaennchen.soft.cs.uni-potsdam.de';
-  // }
+  var moodle_base_url = 'https://erdmaennchen.soft.cs.uni-potsdam.de';
 
-  // https://www.yourmoodle.com/login/token.php?username=USERNAME&password=PASSWORD&service=SERVICESHORTNAME
-  // Moodle mobile service shortname => moodle_mobile_app
+  MoodleApp.api = new (Backbone.Model.extend({
+    initialize: function(){
+      this.createWsFunction('moodle_webservice_get_siteinfo',[]);
+      this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
+      this.createWsFunction('core_course_get_contents',['courseid']);
+    },
+    login_url: moodle_base_url + '/moodle/login/token.php',
+    authorize: function(){
+      var params = _.pick(this.attributes, 'username', 'password', 'service');
+      var api = this;
+      $.post(this.login_url, params, function(data){
+        console.log('success get_token', arguments);
+        api.set(data);
+        api.unset('password'); // remove password
+      });
+    },
+
+    webservice_url: moodle_base_url + '/moodle/webservice/rest/server.php',
+    fetchUserid: function(){
+      var api = this;
+      var params = {
+        moodlewsrestformat:'json',
+        wstoken: this.get('token'),
+        wsfunction:'moodle_webservice_get_siteinfo',
+      };
+      $.post(this.webservice_url, params, function(data){
+        console.log('fetchUserid', arguments);
+        api.set(data);
+      });
+    },
+
+    createWsFunction: function(wsfunction, paramNames){
+      var api = this;
+      api[wsfunction] = function(params, callback) {
+        debugger
+        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
+        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
+        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
+        $.post(api.webservice_url, postParams, callback);
+      }
+    },
+
+    callWsFunction: function(functionName, params, callback){},
+  }))({
+    realm:'Moodle',             // => display this in the user login page
+    username:'admin',           // <= set this from the login page
+    password:'',                // <= set this from the login page
+    service:'moodle_mobile_app',
+    moodlewsrestformat:'json',
+  });
+
+
+  // MoodleApp.api.authorize();
+  // MoodleApp.api.fetchUserid();
 
 
 
