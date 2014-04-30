@@ -262,3 +262,13 @@
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
+
+/*panel*/
+
+.nav-search .ui-btn-icon-right:after {
+	left:1em;
+}
+
+ul.nav-search li a.ui-icon-gear {
+	text-indent:28px;
+}

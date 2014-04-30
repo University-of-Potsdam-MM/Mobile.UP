@@ -258,8 +258,8 @@ label.showfirst {
 	{
 	background-image: url(../img/up/arrow-white.png);
 	border-right: 15px solid #014260;
-	border-top: 0;
-	border-bottom: 0;
+	border-top: 1px;
+	border-bottom: 1px;
 }
 
 #nav-panel ul.nav-search  li:first-child a,#nav-panel2 ul.nav-search  li:first-child a,#nav-panel3 ul.nav-search  li:first-child a
