@@ -398,6 +398,7 @@ previously working functionality. Please don't judge.
       }).done(function(xml) {
         //console.log('done', xml);
         resultList.addXmlSearchResult(xml);
+        $('input[type="submit"]').removeAttr('disabled');
       });
     }
   }, {
@@ -501,8 +502,8 @@ previously working functionality. Please don't judge.
 
 	  submit: function(e){
 		  e.preventDefault();
-		  console.log('submit');
-		  var inputs = $("#query-form :input").serializeArray();
+		  $('input[type="submit"]').attr('disabled', 'disabled');
+		  var inputs = $('#query-form :input').serializeArray();
 		  var query = inputs[0].value;
 		  this.loadSearch(query);
 	  },
