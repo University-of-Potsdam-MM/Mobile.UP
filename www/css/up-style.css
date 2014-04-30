@@ -11,7 +11,7 @@
 }
 
 body,.ui-page {
-	max-width: 600px;
+	
 	margin: 0 auto;
 }
 
@@ -31,7 +31,7 @@ body,.ui-page {
 .ui-header,.ui-footer {
 	border-width: 0px;
 	border-style: solid;
-	max-width: 600px;
+	
 }
 
 .ui-header {
@@ -107,15 +107,15 @@ h2 span {
 .ui-listview.ui-group-theme-c .ui-btn {
 	font-size: 16px;
 	margin: 0 0;
-	padding: 0em 1em;
+	padding-right:1em;
 	text-align: right;
 	text-transform: uppercase;
 	font-weight: normal;
 	/* vertikal zentrieren*/
-	display: table-cell;
+	display: block;
 	vertical-align: middle;
 	height: 78px;
-	width: 600px;
+	
 }
 
 /*2. Back button*/
@@ -1291,7 +1291,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	vertical-align: middle;
 	height: auto;
 	display: block;
-	width: 95%;
 }
 
 #moodle .ui-btn-icon-left:after,#moodle .ui-btn-icon-notext:after {
