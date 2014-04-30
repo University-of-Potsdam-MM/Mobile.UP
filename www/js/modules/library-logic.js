@@ -45,7 +45,7 @@ previously working functionality. Please don't judge.
 
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
-      var spinner = addLodingSpinner("book-locations");
+      var spinner = addLoadingSpinner("book-locations");
       spinner();
 
       //console.log('updateLocation');
@@ -331,8 +331,7 @@ previously working functionality. Please don't judge.
   });
   // END App.model.Book
 
-
-
+  
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
 
@@ -383,7 +382,7 @@ previously working functionality. Please don't judge.
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
-      return Q.fcall(addLodingSpinner("search-results"))
+      return Q.fcall(addLoadingSpinner("search-results"))
       .then(function() { return fetch.loadSearch(); })
       .then(function(xml){
     	// get relevant pagination information
@@ -397,6 +396,8 @@ previously working functionality. Please don't judge.
         return xml;
       }).done(function(xml) {
         //console.log('done', xml);
+    	var spinner = removeLoadingSpinner("search-results");
+        spinner();
         resultList.addXmlSearchResult(xml);
         $('input[type="submit"]').removeAttr('disabled');
       });
