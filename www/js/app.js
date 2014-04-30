@@ -2,7 +2,7 @@
 /*
  * Loading Spinner Animation
  */
-function addLodingSpinner(uniqueDivId) {
+function addLoadingSpinner(uniqueDivId) {
 	return function() {
 		$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
 										<img src=\"img/loadingspinner.gif\"></img> \
@@ -12,7 +12,7 @@ function addLodingSpinner(uniqueDivId) {
 
 function removeLoadingSpinner(uniqueDivId) {
 	return function() {
-		$("#" + uniqueDivId).children().first().remove();
+		$("#" + uniqueDivId + " .up-loadingSpinner").remove();
 	}
 }
 
