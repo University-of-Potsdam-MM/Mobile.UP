@@ -28,7 +28,7 @@
 	    uniqueDivId = _.uniqueId("id_");
 		
 	    Q(clearTodaysMenu(uniqueDivId))
-			.then(addLodingSpinner(uniqueDivId))
+			.then(addLoadingSpinner(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
