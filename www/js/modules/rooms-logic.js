@@ -18,15 +18,17 @@ $(function() {
 			this.element.append(
 				'<div data-role="controlgroup"> \
 					<h3>Zeitraum:</h3> \
-					<input data-theme="a" type="radio" id="radioNow" name="roomTime" checked="checked" /> \
-					<label for="radioNow" id="radioNowLabel" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</label> \
-					<input data-theme="a" type="radio" id="radioNext" name="roomTime" /> \
-					<label for="radioNext" id="radioNextLabel" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</label> \
+					<div data-role="navbar" id="timeNavbar"> \
+						<ul> \
+							<li><a href="#now" class="time-menu" id="radioNow" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</a></li> \
+							<li><a href="#then" class="time-menu" id="radioNext" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</a></li> \
+						</ul> \
+					</div> \
 				</div>');
 			this.element.trigger("create");
 			
 			// Set current time values in radio labels
-			var template = $("#radioNowLabel").attr("data-template");
+			var template = $("#radioNow").attr("data-template");
 			
 			var now = new Date();
 			var centered = this._upperAndLowerDate(now);
@@ -34,11 +36,10 @@ $(function() {
 			var lower = centered.lower;
 			var label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 			
-			$("#radioNowLabel").text(label);
+			$("#radioNow").text(label);
 			$("#radioNow").attr("data-timestamp", now.toISOString());
-			$("#radioNow").checkboxradio("refresh");
 			
-			var template = $("#radioNextLabel").attr("data-template");
+			var template = $("#radioNext").attr("data-template");
 			
 			now.setHours(now.getHours() + 2);
 			centered = this._upperAndLowerDate(now);
@@ -46,12 +47,11 @@ $(function() {
 			lower = centered.lower;
 			label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 			
-			$("#radioNextLabel").text(label);
+			$("#radioNext").text(label);
 			$("#radioNext").attr("data-timestamp", now.toISOString());
-			$("#radioNext").checkboxradio("refresh");
 			
 			var widgetHost = this;
-			$(":radio").bind("change", function (event) {
+			$(".time-menu").bind("click", function (event) {
 				var bounds = widgetHost._retreiveActiveBounds($(this));
 				widgetHost.options.onChange({ from: bounds.lower, to: bounds.upper });
 			});
