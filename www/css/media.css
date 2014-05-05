@@ -1,0 +1,44 @@
+/*Regeln für Desktopanzeige*/
+@media all and (min-width:600px) {
+	
+	body.ui-overlay-a {
+		background-color:#dedede;
+	}
+	
+	.ui-mobile [data-role=page], .ui-page {
+		position:relative;
+		max-width:600px;
+		-moz-box-shadow: 5px 5px 5px #888;
+		-webkit-box-shadow: 5px 5px 5px #888;
+		box-shadow: 5px 5px 5px #888;
+	}
+	
+	.ui-header-fixed {
+		max-width:600px;
+		margin:0 auto;
+	}
+	
+	/*panel immer offen */
+	
+	#nav-panel.ui-panel-display-overlay {
+		-moz-box-shadow: 0px 0px 0px transparent;
+		-webkit-box-shadow: 0px 0px 0px transparent;
+		box-shadow: 0px 0px 0px transparent;
+	}
+	
+	#nav-panel.ui-panel-display-overlay {
+		background:transparent;
+	}
+	
+	#nav-panel.ui-panel-closed {
+	width:48%;
+	visibility:visible;
+	}
+	
+	/*NICHT offen auf den Navigationsseiten */
+	
+	/*body#panel-off #nav-panel.ui-panel-closed {
+	width:0%;
+	visibility:hidden;*/
+	}
+}

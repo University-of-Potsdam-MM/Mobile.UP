@@ -799,10 +799,14 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 }
 
 /*route*/
+#transport2 .ui-table {
+	max-width:600px;
+}
+
 #transport_rides a.ui-btn span {
 	text-indent: 0.3em !important;
 	display: inline-block;
-	width: 20%;
+	width: 90px;
 }
 
 #transport2 #result {
@@ -838,7 +842,6 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 
 #transport2 .ui-table td,#transport2 .ui-table-reflow tbody th {
 	line-height: 1.3em;
-	padding: .1em .2em;
 }
 
 #transport2 .ui-table-reflow tbody th {
@@ -853,15 +856,17 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 	#transport2 .ui-table-reflow.ui-responsive td {
 		min-width: 260px;
 	}
-	#transport2 .ui-table td.empty,#transport2 .ui-table td.empty .ui-table-cell-label,#transport2 .ui-table th.foot .ui-table-cell-label
+	#transport2 .ui-table td.foot .ui-table-cell-label
 		{
 		display: none;
 	}
+	
+	#transport2 .ui-table td.foot img {
+	display:block;
+	margin:0 auto;
+	}
 }
 
-#transport2 .ui-table th.foot {
-	width: 100%;
-}
 
 #transport2 .ui-collapsible-content {
 	padding: 0;
