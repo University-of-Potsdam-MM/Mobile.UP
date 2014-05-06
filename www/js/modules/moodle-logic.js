@@ -34,13 +34,27 @@ window.MoodleApp = {};
     },
     login_url: moodle_base_url + '/moodle/login/token.php',
     authorize: function(){
+      // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
       var api = this;
       $.post(this.login_url, params, function(data){
         console.log('success get_token', arguments);
         api.set(data);
+        // TODO: what happens when pw is wrong?
+        // debugger
+        api.set('wstoken', data['token']);
         api.unset('password'); // remove password
+        api.trigger('authorized');
       });
+    },
+
+    isAuthorized: function(){
+      if (this.has('wstoken')) {
+        // TODO if token works to fetch UserId, then we are authorized
+        return true;
+      } else {
+        return false
+      }
     },
 
     webservice_url: moodle_base_url + '/moodle/webservice/rest/server.php',
@@ -60,7 +74,6 @@ window.MoodleApp = {};
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
       api[wsfunction] = function(params, callback) {
-        debugger
         paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
         var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
@@ -72,14 +85,65 @@ window.MoodleApp = {};
   }))({
     realm:'Moodle',             // => display this in the user login page
     username:'admin',           // <= set this from the login page
-    password:'',                // <= set this from the login page
+    password:'#Admin2012moodle',                // <= set this from the login page
     service:'moodle_mobile_app',
     moodlewsrestformat:'json',
   });
 
+  MoodleApp.news_api = new (Backbone.Model.extend({
+    initialize: function(){
+      this.createWsFunction('webservice_get_latest_coursenews',[]);
+    },
+    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
+    authorize: function(){
+      // TODO wait until authorization or throw error
+      var params = _.pick(this.attributes, 'username', 'password', 'service');
+      var api = this;
+      $.post(this.login_url, params, function(data){
+        console.log('success get_token', arguments);
+        api.set(data);
+        // TODO: what happens when pw is wrong?
+        // debugger
+        api.set('wstoken', data['token']);
+        api.unset('password'); // remove password
+        api.trigger('authorized');
+      });
+    },
 
-  // MoodleApp.api.authorize();
-  // MoodleApp.api.fetchUserid();
+    isAuthorized: function(){
+      if (this.has('wstoken')) {
+        // TODO if token works to fetch UserId, then we are authorized
+        return true;
+      } else {
+        return false
+      }
+    },
+
+    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
+
+    createWsFunction: function(wsfunction, paramNames){
+      var api = this;
+      api[wsfunction] = function(params, callback) {
+        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
+        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
+        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
+        $.post(api.webservice_url, postParams, callback);
+      }
+    },
+
+    callWsFunction: function(functionName, params, callback){},
+  }))({
+    realm:'Moodle',             // => display this in the user login page
+    username:'admin',           // <= set this from the login page
+    password:'#Admin2012moodle',                // <= set this from the login page
+    service:'webservice_coursenews',
+    moodlewsrestformat:'json',
+  });
+
+
+
+  MoodleApp.api.authorize();
+  MoodleApp.api.fetchUserid();
 
 
 
@@ -105,47 +169,55 @@ window.MoodleApp = {};
 
     model: MoodleApp.CourseContent,
 
-    moodle_ws_params: {
-      moodlewsrestformat:'json',
-      wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
-      wsfunction: 'core_course_get_contents',
-    },
+    // moodle_ws_params: {
+    //   moodlewsrestformat:'json',
+    //   wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
+    //   wsfunction: 'core_course_get_contents',
+    // },
 
     fetch: function(){
       console.log('fetch CourseContents', arguments);
-      var params = _.extend(this.moodle_ws_params,{
-        courseid: this.courseid,
-      });
-
       var collection = this;
-
-      $.post(MoodleApp.moodle_ws_url, params, function(contents){
+      MoodleApp.api.core_course_get_contents({courseid: this.courseid},
+        function(contents){
         // console.log('returned fetch',arguments);
         // debugger
         collection.reset(contents);
       });
 
-      return collection;
+      // var params = _.extend(this.moodle_ws_params,{
+      //   ,
+      // });
+
+      // 
+
+      // $.post(MoodleApp.moodle_ws_url, params, function(contents){
+      //   // console.log('returned fetch',arguments);
+      //   // debugger
+      //   collection.reset(contents);
+      // });
+
+      return this;
     }
   })
 
   MoodleApp.CourseList = Backbone.Collection.extend({
     model: MoodleApp.Course,
 
-    moodle_ws_params: {
-      moodlewsrestformat:'json',
-      wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
-      wsfunction:'moodle_enrol_get_users_courses',
-      userid:'2',
-    },
+    // moodle_ws_params: {
+    //   moodlewsrestformat:'json',
+    //   wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
+    //   wsfunction:'moodle_enrol_get_users_courses',
+    //   userid:'2',
+    // },
 
     fetch: function(){
       // console.log(MoodleApp.moodle_ws_url, this.moodle_ws_params);
       var collection = this;
-      $.post(MoodleApp.moodle_ws_url, this.moodle_ws_params, function(content){
-        // console.log('fetch', content);
-        collection.reset(content);
-      });
+      MoodleApp.api.moodle_enrol_get_users_courses({}, function(content){
+          // console.log('fetch', content);
+          collection.reset(content);
+        });
       return this;
     }
   });
@@ -182,7 +254,7 @@ window.MoodleApp = {};
   })
 
 
-  MoodleApp.PagesView = Backbone.View.extend({
+  MoodleApp.PageListView = Backbone.View.extend({
     initialize: function(){
       _.bindAll(this, 'renderOne');
     },
@@ -203,15 +275,54 @@ window.MoodleApp = {};
     },
   })
 
-
+  MoodleApp.LoginPageView = Backbone.View.extend({
+    initialize: function(){
+    },
+    events:{
+      "click input#login": 'click_login'
+    },
+    template: rendertmpl('auth'),
+    attributes: {"data-role":"page"},
+    render: function(){
+      console.log('render LoginPageView');
+      this.$el.html(this.template({model:this.model}));
+      $('body').append(this.$el);
+      this.$el.trigger('create');
+      return this;
+    },
+    click_login: function(ev){
+      ev.preventDefault();
+      this.model.set('username', this.$('input#username').val());
+      this.model.set('password', this.$('input#password').val());
+      this.trigger('login_attempt');
+    }
+  });
 
   MoodleApp.start = function(){
     MoodleApp.state = new Backbone.Model();
 
-    // on pageinit
+    MoodleApp.api.on('login_attempt', function(){
+      console.log(arguments);
+    });
+
+    MoodleApp.authView = new MoodleApp.LoginPageView({
+      id:'moodle-login-dialog',
+      model: MoodleApp.api
+    });
+
+    MoodleApp.authView.render();
+
+    MoodleApp.authView.on('login_attempt', function(){
+      MoodleApp.api.authorize();
+      MoodleApp.api.once('authorized', function(){
+        $.mobile.navigate('#moodle');
+      });
+    });
+
+
     MoodleApp.courses = new MoodleApp.CourseList();
 
-    MoodleApp.pages = new MoodleApp.PagesView({
+    MoodleApp.pages = new MoodleApp.PageListView({
       el: $('body'),
       collection: MoodleApp.courses
     });
@@ -252,6 +363,12 @@ window.MoodleApp = {};
     MoodleApp.state.on('change:selectedCourse', function(){
       console.log('change selectedCourse', arguments);
     });
+
+    console.log('should navigate to login dialog', ! MoodleApp.api.isAuthorized());
+    if (! MoodleApp.api.isAuthorized()) {
+      $.mobile.navigate('#moodle-login-dialog');
+    }
+
 
   };
 
