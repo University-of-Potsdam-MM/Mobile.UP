@@ -189,6 +189,8 @@ h2 span {
 	line-height: 35px
 }
 
+
+
 /*Schrift in Tabs*/
 .ui-navbar li .ui-btn {
 	font-size: 12.5px;
@@ -721,6 +723,17 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 .buttons_pt .ui-input-text {
 	border: none;
 }
+
+html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
+	line-height:135%;
+	
+}
+
+html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
+	line-height:35px;
+	
+}
+
 
 .buttons_pt .ui-input-datebox input {
 	margin: 0 !important;
