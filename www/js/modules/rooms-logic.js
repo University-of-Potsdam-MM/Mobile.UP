@@ -224,6 +224,9 @@ var RoomsOverview = Backbone.View.extend({
 	},
 	
 	render: function() {
+		$("#roomsDetailsHint").hide();
+		$("#roomsOverviewHint").show();
+		
 		var host = this.$el;
 		host.empty();
 		
@@ -255,6 +258,9 @@ var RoomDetailsView = Backbone.View.extend({
 	},
 	
 	render: function() {
+		$("#roomsOverviewHint").hide();
+		$("#roomsDetailsHint").show();
+		
 		var host = this.$el;
 		host.empty();
 		
