@@ -206,22 +206,28 @@ var RoomDetailsModel = Backbone.Model.extend({
 	showRoomDetailsSuccess: function() {
 		var modelHost = this;
 		return function(data) {
-			var response = data.reservations4Room;
 			if (typeof data.reservations4RoomResponse === "object") {
 				// The response is non-empty
 				var reservations = data.reservations4RoomResponse["return"];
-				var reservations = _.map(reservations, function(room) {
-					var result = {};
-					result.startTime = new Date(room.startTime);
-					result.endTime = new Date(room.endTime);
-					result.persons = room.personList;
-					result.title = room.veranstaltung;
-					return result;
-				});
+				
+				if (Array.isArray(reservations)) {
+					reservations = _.map(reservations, modelHost.parseDates);
+				} else {
+					reservations = [modelHost.parseDates(reservations)];
+				}
 				
 				modelHost.set({reservations: reservations});
 			}
 		};
+	},
+	
+	parseDates: function(room) {
+		var result = {};
+		result.startTime = new Date(room.startTime);
+		result.endTime = new Date(room.endTime);
+		result.persons = room.personList;
+		result.title = room.veranstaltung;
+		return result;
 	},
 	
 	showRoomDetailsFail: function() {
