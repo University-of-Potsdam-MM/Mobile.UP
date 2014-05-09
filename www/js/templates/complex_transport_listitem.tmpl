@@ -21,15 +21,14 @@
       <% _.each(connection.get('sections'), function(section, i) { %>
 
         <% if (i > 0) { %>
-          <tr>
-            <th class="foot"><img src="../../www/img/up/foot.png"></th>
-            <td class="empty"></td>
-            <td class="empty"></td>
-            <td  class="empty"></td>
-          </tr>
+         <tr>
+         
+         <td class="foot" style="background:transparent;">  <img src="../../www/img/up/foot.png"></td>
+        
         <% } %>
+        </tr>
 
-        <tr>
+       
         
           <td>ab <%= section.depTime.format('HH:mm') %></td>
           <td><%= section.depStation %></td>

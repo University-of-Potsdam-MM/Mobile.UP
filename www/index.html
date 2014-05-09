@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/media.css" />
     <link rel="stylesheet" type="text/css" href="css/up-style.css" />
     <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
 
@@ -66,22 +67,27 @@
 	<script src="js/modules/rooms-logic.js"></script>
 
   </head>
-  <body>
+  <body id="panel-off">
+  <div class="indexpage">
+  <div class="ui-grid-a">
+  <div class="ui-block-a page-wrapper">
     <!-- Start Home - Panel -->
     <div data-role="panel" id="nav-panel" data-position-fixed="true" data-display="overlay" data-theme="a">
       <ul data-role="listview" data-theme="b" class="nav-search">
         <li data-icon="false"><a href="#" data-rel="close">Menu schließen</a></li>
-        <li data-icon="false"><a href="news.html">News</a></li>
-        <li data-icon="false"><a href="events.html">Veranstaltungen</a></li>
-        <li data-icon="false"><a href="study.html">Studium</a></li>
-        <li data-icon="false"><a href="campus.html">Campus</a></li>
-        <li data-icon="false"><a href="search.html">Suche</a></li>
-        <li data-icon="false"><a href="index.html">Home</a></li>
-         <li data-icon="gear"><a href="options.html">Einstellungen</a></li>
+        
+        <li class="news" data-icon="false"><a href="news.html">News</a></li>
+        <li class="events" data-icon="false"><a href="events.html">Veranstaltungen</a></li>
+        <li class="study" data-icon="false"><a href="study.html">Studium</a></li>
+        <li class="around" data-icon="false"><a href="campus.html">Campus</a></li>
+        <li class="search" data-icon="false"><a href="search.html">Suche</a></li>
+        <li class="home" data-icon="false"><a href="index.html">Home</a></li>
+         <li class="options" data-icon="gear"><a href="options.html">Einstellungen</a></li>
       </ul>
     </div>
-    <!-- End Home - Panel -->
+    <!-- End Home - Panel --> </div><!--  ende grif block a -->
     <!-- Start Main - Page -->
+    <div class="ui-block-b page-wrapper">
     <div data-role="page" id="home">
       <!-- Start Header -->
       <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
@@ -125,15 +131,14 @@
               <p>Bibliothek, Personen, Orte</p>
             </a>
           </li>
-          <li class="login">
-            <a href="login.html" data-role="button" data-transition="slidefade" data-theme="c">
-              <h1>Login</h1>
-            </a>
-          </li>
+       
         </ul>
       </div>
       <!-- End Main - Navigation -->
     </div>
-    <!-- End Main - Page -->
+    <!-- End Main - Page --> </div> <!-- ende grid b -->
+    </div><!--  ende grid gesamt -->
+ 
+ </div>
   </body>
 </html>
