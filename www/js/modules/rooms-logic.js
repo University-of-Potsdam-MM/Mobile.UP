@@ -5,6 +5,7 @@ $(document).on("pageinit", "#rooms", function () {
 
 $(document).on("pageshow", "#rooms", function () {
 	$("div[data-role='campusmenu']").campusmenu("pageshow");
+	$("div[data-role='timeselection']").timeselection("pageshow");
 });
 
 $(function() {
@@ -20,7 +21,7 @@ $(function() {
 					<h3>Zeitraum:</h3> \
 					<div data-role="navbar" id="timeNavbar"> \
 						<ul> \
-							<li><a href="#now" class="time-menu" id="radioNow" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</a></li> \
+							<li><a href="#now" class="time-menu ui-btn-active" id="radioNow" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</a></li> \
 							<li><a href="#then" class="time-menu" id="radioNext" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</a></li> \
 						</ul> \
 					</div> \
@@ -54,6 +55,9 @@ $(function() {
 			$(".time-menu").bind("click", function (event) {
 				var bounds = widgetHost._retreiveActiveBounds($(this));
 				widgetHost.options.onChange({ from: bounds.lower, to: bounds.upper });
+				
+				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
+				widgetHost._fixActiveTab($(this), event);
 			});
 		},
 		
@@ -62,6 +66,11 @@ $(function() {
 		
 		_setOption: function(key, value) {
 			this._super(key, value);
+		},
+		
+		pageshow: function() {
+//			var bounds = this._retreiveActiveBounds($(".ui-btn-active", this));
+//			this.options.onChange({ from: bounds.lower, to: bounds.upper });
 		},
 		
 		_upperAndLowerDate: function(center) {
@@ -80,9 +89,15 @@ $(function() {
 		},
 		
 		getActive: function() {
-			var activeId = $(".ui-radio-on", this.element).attr("for");
+			var activeId = $(".ui-btn-active", this.element).attr("id");
 			var bounds = this._retreiveActiveBounds($("#" + activeId));
 			return { from: bounds.lower, to: bounds.upper };
+		},
+		
+		_fixActiveTab: function(target, event) {
+			event.preventDefault();
+			$(".time-menu", this.element).removeClass("ui-btn-active");
+			target.addClass("ui-btn-active");
 		}
 	});
 });
