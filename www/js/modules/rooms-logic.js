@@ -8,6 +8,36 @@ $(document).on("pageshow", "#rooms", function () {
 	$("div[data-role='timeselection']").timeselection("pageshow");
 });
 
+var TimeSlot = Backbone.Model.extend({
+	defaults: {
+		isDefault: false,
+		name: "Bezeichner",
+		center: undefined,
+		bounds: undefined,
+		hourOffset: 0		
+	},
+	
+	initialize: function() {
+		var offset = this.get("hourOffset");
+		
+		var then = new Date();
+		then.setHours(then.getHours() + offset);
+		var bounds = this.calculateUpperAndLowerDate(then);
+		
+		this.set("center", then);
+		this.set("bounds", bounds);
+	},
+	
+	calculateUpperAndLowerDate: function(center) {
+		var lowerHour = center.getHours() - (center.getHours() % 2);
+		var upperHour = lowerHour + 2;
+		
+		var lower = new Date(center.getFullYear(), center.getMonth(), center.getDate(), lowerHour, 0, 0, 0);
+		var upper = new Date(center.getFullYear(), center.getMonth(), center.getDate(), upperHour, 0, 0, 0);
+		return {upper: upper, lower: lower};
+	}
+});
+
 $(function() {
 	$.widget("up.timeselection", {
 		options: {
@@ -31,25 +61,23 @@ $(function() {
 			// Set current time values in radio labels
 			var template = $("#radioNow").attr("data-template");
 			
-			var now = new Date();
-			var centered = this._upperAndLowerDate(now);
-			var upper = centered.upper;
-			var lower = centered.lower;
+			var now = new TimeSlot();
+			var upper = now.get("bounds").upper;
+			var lower = now.get("bounds").lower;
 			var label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 			
 			$("#radioNow").text(label);
-			$("#radioNow").attr("data-timestamp", now.toISOString());
+			$("#radioNow").attr("data-timestamp", now.get("center").toISOString());
 			
 			var template = $("#radioNext").attr("data-template");
 			
-			now.setHours(now.getHours() + 2);
-			centered = this._upperAndLowerDate(now);
-			upper = centered.upper;
-			lower = centered.lower;
+			var then = new TimeSlot({hourOffset: 2});
+			upper = then.get("bounds").upper;
+			lower = then.get("bounds").lower;
 			label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 			
 			$("#radioNext").text(label);
-			$("#radioNext").attr("data-timestamp", now.toISOString());
+			$("#radioNext").attr("data-timestamp", then.get("center").toISOString());
 			
 			var widgetHost = this;
 			$(".time-menu").bind("click", function (event) {
