@@ -77,7 +77,7 @@ $(function() {
 		},
 		
 		_create: function() {
-			// create html code
+			// Create HTML basis
 			this.element.append(
 				'<div data-role="controlgroup"> \
 					<h3>Zeitraum:</h3> \
@@ -86,21 +86,22 @@ $(function() {
 					</div> \
 				</div>');
 			
+			// Create tab data
 			var now = new TimeSlot({name: "Jetzt", isDefault: true});
-			var nowTabView = new TabButtonView({model: now});
-			$(this.element).find("ul").append(nowTabView.render().el);
-			
 			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
-			var thenTabView = new TabButtonView({model: then});
-			$(this.element).find("ul").append(thenTabView.render().el);
 			
+			// Create tab views
+			_.each([now, then], function(model) {
+				var view = new TabButtonView({model: model});
+				$(this.element).find("ul").append(view.render().el);
+				
+				var localActivate = $.proxy(this.activate, this);
+				view.on("activate", localActivate);
+			}, this);
+			
+			// Activate jQuery magic
 			this.element.trigger("create");
-			
 			this.activeModel = now;
-			
-			var localActivate = $.proxy(this.activate, this);
-			nowTabView.on("activate", localActivate);
-			thenTabView.on("activate", localActivate);
 		},
 		
 		_destroy: function() {
@@ -148,7 +149,7 @@ var FreeRooms = Backbone.Model.extend({
 		} else {
 			campusId = 2;
 		}
-		return campusId
+		return campusId;
 	},
 	
 	loadFreeRooms: function(filter) {
