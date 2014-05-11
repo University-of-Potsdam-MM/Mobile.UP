@@ -38,6 +38,38 @@ var TimeSlot = Backbone.Model.extend({
 	}
 });
 
+var TabButtonView = Backbone.View.extend({
+	tagName: "li",
+	
+	events: {
+		"click": "activate"
+	},
+	
+	render: function() {
+		var href = $('<a href="#select" class="time-menu"></a>');
+		href.append(this.createLabel());
+		
+		if (this.model.get("isDefault")) {
+			href.addClass("ui-btn-active");
+		}
+		
+		this.$el.append(href);
+		return this;
+	},
+	
+	createLabel: function() {
+		var upper = this.model.get("bounds").upper;
+		var lower = this.model.get("bounds").lower;
+		var name = this.model.get("name");
+		return _.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
+	},
+	
+	activate: function(e) {
+		event.preventDefault();
+		this.trigger("activate", this);
+	}
+});
+
 $(function() {
 	$.widget("up.timeselection", {
 		options: {
@@ -50,52 +82,25 @@ $(function() {
 				'<div data-role="controlgroup"> \
 					<h3>Zeitraum:</h3> \
 					<div data-role="navbar" id="timeNavbar"> \
-						<ul> \
-							<li><a href="#now" class="time-menu ui-btn-active" id="radioNow" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</a></li> \
-							<li><a href="#then" class="time-menu" id="radioNext" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</a></li> \
-						</ul> \
+						<ul></ul> \
 					</div> \
 				</div>');
+			
+			var now = new TimeSlot({name: "Jetzt", isDefault: true});
+			var nowTabView = new TabButtonView({model: now});
+			$(this.element).find("ul").append(nowTabView.render().el);
+			
+			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
+			var thenTabView = new TabButtonView({model: then});
+			$(this.element).find("ul").append(thenTabView.render().el);
+			
 			this.element.trigger("create");
-			
-			// Set current time values in radio labels
-			var template = $("#radioNow").attr("data-template");
-			
-			var now = new TimeSlot();
-			var upper = now.get("bounds").upper;
-			var lower = now.get("bounds").lower;
-			var label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
-			
-			$("#radioNow").text(label);
-			$("#radioNow").attr("data-timestamp", now.get("center").toISOString());
-			
-			var template = $("#radioNext").attr("data-template");
-			
-			var then = new TimeSlot({hourOffset: 2});
-			upper = then.get("bounds").upper;
-			lower = then.get("bounds").lower;
-			label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
-			
-			$("#radioNext").text(label);
-			$("#radioNext").attr("data-timestamp", then.get("center").toISOString());
 			
 			this.activeModel = now;
 			
-			var widgetHost = this;
-			$("#radioNow").bind("click", function (event) {
-				widgetHost.activeModel = now;
-				widgetHost.options.onChange(widgetHost.activeModel.get("bounds"));
-				
-				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
-				widgetHost._fixActiveTab($(this), event);
-			});
-			$("#radioNext").bind("click", function (event) {
-				widgetHost.activeModel = then;
-				widgetHost.options.onChange(widgetHost.activeModel.get("bounds"));
-				
-				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
-				widgetHost._fixActiveTab($(this), event);
-			});
+			var localActivate = $.proxy(this.activate, this);
+			nowTabView.on("activate", localActivate);
+			thenTabView.on("activate", localActivate);
 		},
 		
 		_destroy: function() {
@@ -105,18 +110,24 @@ $(function() {
 			this._super(key, value);
 		},
 		
+		activate: function(view) {
+			this.activeModel = view.model;
+			
+			var bounds = this.activeModel.get("bounds");
+			this.options.onChange({ from: bounds.lower, to: bounds.upper });
+			
+			// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
+			var target = view.$el.find("a");
+			$("a", this.element).removeClass("ui-btn-active");
+			target.addClass("ui-btn-active");
+		},
+		
 		pageshow: function() {
 		},
 		
 		getActive: function() {
 			var bounds = this.activeModel.get("bounds");
 			return { from: bounds.lower, to: bounds.upper };
-		},
-		
-		_fixActiveTab: function(target, event) {
-			event.preventDefault();
-			$(".time-menu", this.element).removeClass("ui-btn-active");
-			target.addClass("ui-btn-active");
 		}
 	});
 });
