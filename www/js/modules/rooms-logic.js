@@ -79,10 +79,19 @@ $(function() {
 			$("#radioNext").text(label);
 			$("#radioNext").attr("data-timestamp", then.get("center").toISOString());
 			
+			this.activeModel = now;
+			
 			var widgetHost = this;
-			$(".time-menu").bind("click", function (event) {
-				var bounds = widgetHost._retreiveActiveBounds($(this));
-				widgetHost.options.onChange({ from: bounds.lower, to: bounds.upper });
+			$("#radioNow").bind("click", function (event) {
+				widgetHost.activeModel = now;
+				widgetHost.options.onChange(widgetHost.activeModel.get("bounds"));
+				
+				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
+				widgetHost._fixActiveTab($(this), event);
+			});
+			$("#radioNext").bind("click", function (event) {
+				widgetHost.activeModel = then;
+				widgetHost.options.onChange(widgetHost.activeModel.get("bounds"));
 				
 				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
 				widgetHost._fixActiveTab($(this), event);
@@ -97,28 +106,10 @@ $(function() {
 		},
 		
 		pageshow: function() {
-//			var bounds = this._retreiveActiveBounds($(".ui-btn-active", this));
-//			this.options.onChange({ from: bounds.lower, to: bounds.upper });
-		},
-		
-		_upperAndLowerDate: function(center) {
-			var lowerHour = center.getHours() - (center.getHours() % 2);
-			var upperHour = lowerHour + 2;
-			
-			var lower = new Date(center.getFullYear(), center.getMonth(), center.getDate(), lowerHour, 0, 0, 0);
-			var upper = new Date(center.getFullYear(), center.getMonth(), center.getDate(), upperHour, 0, 0, 0);
-			return {upper: upper, lower: lower};
-		},
-		
-		_retreiveActiveBounds: function(activeElement) {
-			var timestamp = activeElement.attr("data-timestamp");
-			var time = new Date(timestamp);
-			return this._upperAndLowerDate(time);
 		},
 		
 		getActive: function() {
-			var activeId = $(".ui-btn-active", this.element).attr("id");
-			var bounds = this._retreiveActiveBounds($("#" + activeId));
+			var bounds = this.activeModel.get("bounds");
 			return { from: bounds.lower, to: bounds.upper };
 		},
 		
