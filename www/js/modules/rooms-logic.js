@@ -158,7 +158,7 @@ var FreeRooms = Backbone.Model.extend({
 		var startTime = filter.startTime;
 		var endTime = filter.endTime;
 		
-		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
 		if (building) {
 			request = request + "&building=%s";
 		}
@@ -208,64 +208,55 @@ var FreeRooms = Backbone.Model.extend({
     }
 });
 
+var RoomDetailsCollections = Backbone.Collection.extend({
+	model: function(attrs, options) {
+		attrs.startTime = new Date(attrs.startTime);
+		attrs.endTime = new Date(attrs.endTime);
+		attrs.title = attrs.veranstaltung;
+		return new Backbone.Model(_.omit(attrs, "veranstaltung"));
+	},
+	
+	parse: function(response) {
+		if (typeof response.reservations4RoomResponse === "object") {
+			// The response is non-empty
+			var reservations = response.reservations4RoomResponse["return"];
+			
+			if (Array.isArray(reservations)) {
+				return reservations;
+			} else {
+				return [reservations];
+			}
+		} else {
+			return [];
+		}
+	}
+});
+
 var RoomDetailsModel = Backbone.Model.extend({
 	
-	loadRoomDetails: function(room) {
-		this.set({room: room});
+	initialize: function() {
+		this.reservations = new RoomDetailsCollections;
+		this.reservations.url = this.createUrl();
 		
+		this.reservations.on("reset", _.bind(this.triggerChanged, this));
+		this.reservations.on("error", _.bind(this.triggerChanged, this));
+	},
+	
+	triggerChanged: function() {
+		this.trigger("change");
+	},
+	
+	createUrl: function() {
 		// Set start and end time
-		var startTime = new Date(room.startTime);
+		var startTime = this.get("startTime");
 		startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
 		startTime = startTime.toISOString();
-		var endTime = new Date(room.endTime);
+		var endTime = this.get("endTime");
 		endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
 		endTime = endTime.toISOString();
 		
-		// Debug: Other start and end time
-		// startTime = new Date(2010, 1, 0, 0, 0, 0, 0).toISOString();
-		// endTime = new Date(2020, 1, 0, 0, 0, 0, 0).toISOString();
-		
-		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-		request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
-		headers = { "Authorization": getAuthHeader() };
-		$.ajax({
-			url: request,
-			headers: headers
-		}).done(this.showRoomDetailsSuccess()).fail(this.showRoomDetailsFail());
-	},
-	
-	showRoomDetailsSuccess: function() {
-		var modelHost = this;
-		return function(data) {
-			if (typeof data.reservations4RoomResponse === "object") {
-				// The response is non-empty
-				var reservations = data.reservations4RoomResponse["return"];
-				
-				if (Array.isArray(reservations)) {
-					reservations = _.map(reservations, modelHost.parseDates);
-				} else {
-					reservations = [modelHost.parseDates(reservations)];
-				}
-				
-				modelHost.set({reservations: reservations});
-			}
-		};
-	},
-	
-	parseDates: function(room) {
-		var result = {};
-		result.startTime = new Date(room.startTime);
-		result.endTime = new Date(room.endTime);
-		result.persons = room.personList;
-		result.title = room.veranstaltung;
-		return result;
-	},
-	
-	showRoomDetailsFail: function() {
-		var modelHost = this;
-		return function() {
-			modelHost.trigger("change");
-		};
+		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+		return _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
 	}
 });
 
@@ -316,9 +307,11 @@ var RoomDetailsView = Backbone.View.extend({
 		var host = this.$el;
 		host.empty();
 		
+		var reservations = this.model.reservations.map(function(d) { return d.attributes; });
+		
 		// Create and add html
 		var createDetails = rendertmpl('roomDetails');
-		var htmlDay = createDetails({reservations: this.model.get("reservations"), room: this.model.get("room")});
+		var htmlDay = createDetails({reservations: reservations, room: this.model.attributes});
 		host.append(htmlDay);
 		
 		// Refresh html
@@ -340,10 +333,11 @@ function showRoomDetails(room) {
 	currentView && currentView.remove();
 	var div = $("<div></div>").appendTo("#roomsHost");
 	
-	var roomDetails = new RoomDetailsModel;
+	var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
 	currentView = new RoomDetailsView({el: div, model: roomDetails});
 	
-	roomDetails.loadRoomDetails(room);
+	var headers = { "Authorization": getAuthHeader() };
+	roomDetails.reservations.fetch({headers: headers, reset: true});
 }
 
 var lastRoomsCampus = undefined;
