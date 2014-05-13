@@ -22,9 +22,98 @@ window.MoodleApp = {};
 
 (function($){
 
+  MoodleApp.fsm = new machina.Fsm({
+    error: function(data){
+      var errorcode = _.isString(data) ? data : data.errorcode;
+      this.transition('error');
+    },
+    states: {
+      uninitialized: {
+        // this state is here so the we don't get errors when Moodle.api isn't defined yet
+        initialize: function( payload ) {
+          console.log('transition to initialized');
+          this.transition('initialized');
+        },
+      },
+      initialized:{
+        _onEnter: function() {
+          // if there is a token, go to authorized
+          if (MoodleApp.api.isAuthorized() && MoodleApp.news_api.isAuthorized()) {
+            console.log('schon authorized');
+            this.transition('authorized');
+          } else {
+            console.log('noch nicht authorized');
+            this.transition('loginform');
+          }
+        },
+      },
+      loginform:{
+        _onEnter: function(){
+          // TODO: clear tokens and credentials from api
 
-  // SEE HEADER COMMENT IN THIS FILE
-  var moodle_base_url = 'https://erdmaennchen.soft.cs.uni-potsdam.de';
+          // display login form
+          console.log('display login dialog');
+          $.mobile.navigate('#moodle-login-dialog');
+        },
+        authorize: function(credentials){
+          // if username / password are set go to authorizing
+          console.log('authorize', credentials);
+          if ( ! (_.isEmpty(credentials.username) || _.isEmpty(credentials.password)) ) {
+            MoodleApp.api.set(credentials);
+            MoodleApp.news_api.set(credentials);
+            this.transition('authorizing', credentials); // it doesn't seem like credentials are passed at all
+          }
+        }
+      },
+      authorizing:{
+        _onEnter: function() {
+          // display spinner
+          // ask Moodle.api and Moodle.news_api for token + UID (use async or similar)
+          console.log('authorizing: _onEnter', arguments);
+          var fsm = this;
+          $.when(
+            MoodleApp.api.authorizeAndGetUserId(),
+            MoodleApp.news_api.authorize()
+          ).done(function(){
+            // Moodle.api should be authorized and has userId, MoodleApp.news_api should be authorized
+            console.log('authorization complete');
+            fsm.transition('authorized');
+          });
+        },
+        success: function() {
+          // success = beide APIs sind authorized
+          // save token
+          // go to authorized
+          this.transition('authorized');
+        },
+        failure: function() {
+          // go to loginform
+          // display message
+        },
+        _onExit: function() {
+          // remove spinner
+        }
+
+      },
+      authorized: {
+        _onEnter: function() {
+          // display main view
+          $.mobile.navigate('#moodle');
+          MoodleApp.courses.fetch();
+          // api.moodle_enrol_get_users_courses().done(function(courses) {
+          //   console.log('bla', arguments);
+          //   MoodleApp.courses.reset(courses);
+          // });
+        },
+        not_authorized: {
+          // called when there is a 'you are not authorized msg from the server'
+          // should reset authorization and go to uninitialized state
+        }
+      }
+    },
+  });
+
+
 
   MoodleApp.api = new (Backbone.Model.extend({
     initialize: function(){
@@ -32,12 +121,23 @@ window.MoodleApp = {};
       this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
       this.createWsFunction('core_course_get_contents',['courseid']);
     },
-    login_url: moodle_base_url + '/moodle/login/token.php',
+
+
+    authorizeAndGetUserId: function(){
+      var api = this;
+      return api.authorize().then(function(){
+        if (api.isAuthorized()) {
+          return api.fetchUserid();
+        };
+      });
+    },
+
+    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
     authorize: function(){
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
       var api = this;
-      $.post(this.login_url, params, function(data){
+      return $.post(this.login_url, params, function(data){
         console.log('success get_token', arguments);
         api.set(data);
         // TODO: what happens when pw is wrong?
@@ -45,7 +145,7 @@ window.MoodleApp = {};
         api.set('wstoken', data['token']);
         api.unset('password'); // remove password
         api.trigger('authorized');
-      });
+      }).promise();
     },
 
     isAuthorized: function(){
@@ -57,7 +157,7 @@ window.MoodleApp = {};
       }
     },
 
-    webservice_url: moodle_base_url + '/moodle/webservice/rest/server.php',
+    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
     fetchUserid: function(){
       var api = this;
       var params = {
@@ -65,27 +165,26 @@ window.MoodleApp = {};
         wstoken: this.get('token'),
         wsfunction:'moodle_webservice_get_siteinfo',
       };
-      $.post(this.webservice_url, params, function(data){
+      return $.post(this.webservice_url, params, function(data){
         console.log('fetchUserid', arguments);
         api.set(data);
-      });
+      }).promise();
     },
 
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
-      api[wsfunction] = function(params, callback) {
+      api[wsfunction] = function(params) {
         paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
         var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-        $.post(api.webservice_url, postParams, callback);
+
+        return $.post(api.webservice_url, postParams).promise();
       }
     },
-
-    callWsFunction: function(functionName, params, callback){},
   }))({
     realm:'Moodle',             // => display this in the user login page
-    username:'admin',           // <= set this from the login page
-    password:'#Admin2012moodle',                // <= set this from the login page
+    // username: undefined,     // <= set this from the login page
+    // password: undefined,     // <= set this from the login page
     service:'moodle_mobile_app',
     moodlewsrestformat:'json',
   });
@@ -99,7 +198,7 @@ window.MoodleApp = {};
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
       var api = this;
-      $.post(this.login_url, params, function(data){
+      return $.post(this.login_url, params, function(data){
         console.log('success get_token', arguments);
         api.set(data);
         // TODO: what happens when pw is wrong?
@@ -107,7 +206,7 @@ window.MoodleApp = {};
         api.set('wstoken', data['token']);
         api.unset('password'); // remove password
         api.trigger('authorized');
-      });
+      }).promise();
     },
 
     isAuthorized: function(){
@@ -123,39 +222,29 @@ window.MoodleApp = {};
 
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
-      api[wsfunction] = function(params, callback) {
+      api[wsfunction] = function(params) {
         paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
         var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-        $.post(api.webservice_url, postParams, callback);
+        return $.post(api.webservice_url, postParams).promise();
       }
     },
-
-    callWsFunction: function(functionName, params, callback){},
   }))({
     realm:'Moodle',             // => display this in the user login page
-    username:'admin',           // <= set this from the login page
-    password:'#Admin2012moodle',                // <= set this from the login page
+    // username: undefined,     // <= set this from the login page
+    // password: undefined,     // <= set this from the login page
     service:'webservice_coursenews',
     moodlewsrestformat:'json',
   });
 
 
-
-  MoodleApp.api.authorize();
-  MoodleApp.api.fetchUserid();
-
-
-
-  MoodleApp.moodle_ws_url = moodle_base_url + '/moodle/webservice/rest/server.php'
-
   MoodleApp.Course = Backbone.Model.extend({
     fetchContents: function(){
-      var contents = new MoodleApp.CourseContents({
-        courseid: this.id
-      }).fetch();
+      // Contents is a Collection
+      console.log("TODO: fetchContents: is this correct? I'm not sure about it.");
+      var contents = new MoodleApp.CourseContents({courseid: this.id});
       this.set('contents', contents);
-      return this.get('contents');
+      return contents.fetch();
     },
   });
 
@@ -169,33 +258,13 @@ window.MoodleApp = {};
 
     model: MoodleApp.CourseContent,
 
-    // moodle_ws_params: {
-    //   moodlewsrestformat:'json',
-    //   wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
-    //   wsfunction: 'core_course_get_contents',
-    // },
-
     fetch: function(){
       console.log('fetch CourseContents', arguments);
       var collection = this;
-      MoodleApp.api.core_course_get_contents({courseid: this.courseid},
+      MoodleApp.api.core_course_get_contents({courseid: this.courseid}).done(
         function(contents){
-        // console.log('returned fetch',arguments);
-        // debugger
-        collection.reset(contents);
+          collection.reset(contents);
       });
-
-      // var params = _.extend(this.moodle_ws_params,{
-      //   ,
-      // });
-
-      // 
-
-      // $.post(MoodleApp.moodle_ws_url, params, function(contents){
-      //   // console.log('returned fetch',arguments);
-      //   // debugger
-      //   collection.reset(contents);
-      // });
 
       return this;
     }
@@ -204,17 +273,10 @@ window.MoodleApp = {};
   MoodleApp.CourseList = Backbone.Collection.extend({
     model: MoodleApp.Course,
 
-    // moodle_ws_params: {
-    //   moodlewsrestformat:'json',
-    //   wstoken: '2f8c156e50d9b595dd15e1b93b3c6bb4',
-    //   wsfunction:'moodle_enrol_get_users_courses',
-    //   userid:'2',
-    // },
-
     fetch: function(){
       // console.log(MoodleApp.moodle_ws_url, this.moodle_ws_params);
       var collection = this;
-      MoodleApp.api.moodle_enrol_get_users_courses({}, function(content){
+      MoodleApp.api.moodle_enrol_get_users_courses().done(function(content){
           // console.log('fetch', content);
           collection.reset(content);
         });
@@ -294,16 +356,15 @@ window.MoodleApp = {};
       ev.preventDefault();
       this.model.set('username', this.$('input#username').val());
       this.model.set('password', this.$('input#password').val());
-      this.trigger('login_attempt');
+      this.trigger('login_attempt', this.model.attributes);
     }
   });
 
   MoodleApp.start = function(){
-    MoodleApp.state = new Backbone.Model();
+    MoodleApp.api.unset('wstoken');
+    MoodleApp.news_api.unset('wstoken');
 
-    MoodleApp.api.on('login_attempt', function(){
-      console.log(arguments);
-    });
+    MoodleApp.state = new Backbone.Model();
 
     MoodleApp.authView = new MoodleApp.LoginPageView({
       id:'moodle-login-dialog',
@@ -312,11 +373,8 @@ window.MoodleApp = {};
 
     MoodleApp.authView.render();
 
-    MoodleApp.authView.on('login_attempt', function(){
-      MoodleApp.api.authorize();
-      MoodleApp.api.once('authorized', function(){
-        $.mobile.navigate('#moodle');
-      });
+    MoodleApp.authView.on('login_attempt', function(credentials){
+      MoodleApp.fsm.handle('authorize', credentials);
     });
 
 
@@ -328,11 +386,11 @@ window.MoodleApp = {};
     });
 
     MoodleApp.courses.on('add', function(course){
-      // console.log('add', arguments);
+      console.log('add', arguments);
       course.fetchContents();
     });
     MoodleApp.courses.on('reset', function(collection){
-      // console.log('reset', arguments);
+      console.log('reset', arguments);
       collection.each(function(course){
         console.log('fetch contents for course', course);
         course.fetchContents();
@@ -340,7 +398,8 @@ window.MoodleApp = {};
 
       MoodleApp.pages.render();
     });
-    MoodleApp.courses.fetch();
+
+    // MoodleApp.courses.fetch();
     MoodleApp.listview = new MoodleApp.CourseListView({
       el: $('ul#moodle_courses'),
       collection: MoodleApp.courses,
@@ -369,7 +428,7 @@ window.MoodleApp = {};
       $.mobile.navigate('#moodle-login-dialog');
     }
 
-
+    MoodleApp.fsm.handle('initialize');
   };
 
   $(document).on("pageinit", "#moodle", MoodleApp.start);
