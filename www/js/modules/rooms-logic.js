@@ -336,8 +336,7 @@ function showRoomDetails(room) {
 	var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
 	currentView = new RoomDetailsView({el: div, model: roomDetails});
 	
-	var headers = { "Authorization": getAuthHeader() };
-	roomDetails.reservations.fetch({headers: headers, reset: true});
+	roomDetails.reservations.fetch({reset: true});
 }
 
 var lastRoomsCampus = undefined;

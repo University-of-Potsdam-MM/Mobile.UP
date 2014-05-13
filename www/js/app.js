@@ -77,3 +77,29 @@ function rendertmpl(tmpl_name) {
 function removeTabs(tmpl) {
 	return tmpl.replace(/\t/g, '');
 }
+
+/**
+ * Override Backbone.sync to automatically include auth headers according to the url in use
+ */
+function overrideBackboneSync() {
+	var authUrls = ["http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI"];
+	var isStartOf = function(url) {
+		return function(authUrl) {
+			return _.startsWith(url, authUrl);
+		};
+	};
+	
+	var sync = Backbone.sync;
+	Backbone.sync = function(method, model, options) {
+		var url = options.url || _.result(model, "url");
+		if (url && _.any(authUrls, isStartOf(url))) {
+			options.headers = _.extend(options.headers || {}, { "Authorization": getAuthHeader() });
+		}
+		sync(method, model, options);
+	};
+}
+
+/**
+ * Initialize Backbone override
+ */
+$(overrideBackboneSync);
