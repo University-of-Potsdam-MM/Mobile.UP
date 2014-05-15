@@ -8,6 +8,68 @@ $(document).on("pageshow", "#rooms", function () {
 	$("div[data-role='timeselection']").timeselection("pageshow");
 });
 
+var TimeSlot = Backbone.Model.extend({
+	defaults: {
+		isDefault: false,
+		name: "Bezeichner",
+		center: undefined,
+		bounds: undefined,
+		hourOffset: 0		
+	},
+	
+	initialize: function() {
+		var offset = this.get("hourOffset");
+		
+		var then = new Date();
+		then.setHours(then.getHours() + offset);
+		var bounds = this.calculateUpperAndLowerDate(then);
+		
+		this.set("center", then);
+		this.set("bounds", bounds);
+	},
+	
+	calculateUpperAndLowerDate: function(center) {
+		var lowerHour = center.getHours() - (center.getHours() % 2);
+		var upperHour = lowerHour + 2;
+		
+		var lower = new Date(center.getFullYear(), center.getMonth(), center.getDate(), lowerHour, 0, 0, 0);
+		var upper = new Date(center.getFullYear(), center.getMonth(), center.getDate(), upperHour, 0, 0, 0);
+		return {upper: upper, lower: lower};
+	}
+});
+
+var TabButtonView = Backbone.View.extend({
+	tagName: "li",
+	
+	events: {
+		"click": "activate"
+	},
+	
+	render: function() {
+		var href = $('<a href="#select" class="time-menu"></a>');
+		href.append(this.createLabel());
+		
+		if (this.model.get("isDefault")) {
+			href.addClass("ui-btn-active");
+		}
+		
+		this.$el.append(href);
+		return this;
+	},
+	
+	createLabel: function() {
+		var upper = this.model.get("bounds").upper;
+		var lower = this.model.get("bounds").lower;
+		var name = this.model.get("name");
+		return _.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
+	},
+	
+	activate: function(e) {
+		event.preventDefault();
+		this.trigger("activate", this);
+	}
+});
+
 $(function() {
 	$.widget("up.timeselection", {
 		options: {
@@ -15,50 +77,31 @@ $(function() {
 		},
 		
 		_create: function() {
-			// create html code
+			// Create HTML basis
 			this.element.append(
 				'<div data-role="controlgroup"> \
 					<h3>Zeitraum:</h3> \
 					<div data-role="navbar" id="timeNavbar"> \
-						<ul> \
-							<li><a href="#now" class="time-menu ui-btn-active" id="radioNow" data-template="Jetzt (%02d:%02d-%02d:%02d)">Jetzt</a></li> \
-							<li><a href="#then" class="time-menu" id="radioNext" data-template="Demnächst (%02d:%02d-%02d:%02d)">Demnächst</a></li> \
-						</ul> \
+						<ul></ul> \
 					</div> \
 				</div>');
-			this.element.trigger("create");
 			
-			// Set current time values in radio labels
-			var template = $("#radioNow").attr("data-template");
+			// Create tab data
+			var now = new TimeSlot({name: "Jetzt", isDefault: true});
+			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
 			
-			var now = new Date();
-			var centered = this._upperAndLowerDate(now);
-			var upper = centered.upper;
-			var lower = centered.lower;
-			var label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
-			
-			$("#radioNow").text(label);
-			$("#radioNow").attr("data-timestamp", now.toISOString());
-			
-			var template = $("#radioNext").attr("data-template");
-			
-			now.setHours(now.getHours() + 2);
-			centered = this._upperAndLowerDate(now);
-			upper = centered.upper;
-			lower = centered.lower;
-			label = _.sprintf(template, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
-			
-			$("#radioNext").text(label);
-			$("#radioNext").attr("data-timestamp", now.toISOString());
-			
-			var widgetHost = this;
-			$(".time-menu").bind("click", function (event) {
-				var bounds = widgetHost._retreiveActiveBounds($(this));
-				widgetHost.options.onChange({ from: bounds.lower, to: bounds.upper });
+			// Create tab views
+			_.each([now, then], function(model) {
+				var view = new TabButtonView({model: model});
+				$(this.element).find("ul").append(view.render().el);
 				
-				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
-				widgetHost._fixActiveTab($(this), event);
-			});
+				var localActivate = $.proxy(this.activate, this);
+				view.on("activate", localActivate);
+			}, this);
+			
+			// Activate jQuery magic
+			this.element.trigger("create");
+			this.activeModel = now;
 		},
 		
 		_destroy: function() {
@@ -68,36 +111,24 @@ $(function() {
 			this._super(key, value);
 		},
 		
-		pageshow: function() {
-//			var bounds = this._retreiveActiveBounds($(".ui-btn-active", this));
-//			this.options.onChange({ from: bounds.lower, to: bounds.upper });
-		},
-		
-		_upperAndLowerDate: function(center) {
-			var lowerHour = center.getHours() - (center.getHours() % 2);
-			var upperHour = lowerHour + 2;
+		activate: function(view) {
+			this.activeModel = view.model;
 			
-			var lower = new Date(center.getFullYear(), center.getMonth(), center.getDate(), lowerHour, 0, 0, 0);
-			var upper = new Date(center.getFullYear(), center.getMonth(), center.getDate(), upperHour, 0, 0, 0);
-			return {upper: upper, lower: lower};
+			var bounds = this.activeModel.get("bounds");
+			this.options.onChange({ from: bounds.lower, to: bounds.upper });
+			
+			// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
+			var target = view.$el.find("a");
+			$("a", this.element).removeClass("ui-btn-active");
+			target.addClass("ui-btn-active");
 		},
 		
-		_retreiveActiveBounds: function(activeElement) {
-			var timestamp = activeElement.attr("data-timestamp");
-			var time = new Date(timestamp);
-			return this._upperAndLowerDate(time);
+		pageshow: function() {
 		},
 		
 		getActive: function() {
-			var activeId = $(".ui-btn-active", this.element).attr("id");
-			var bounds = this._retreiveActiveBounds($("#" + activeId));
+			var bounds = this.activeModel.get("bounds");
 			return { from: bounds.lower, to: bounds.upper };
-		},
-		
-		_fixActiveTab: function(target, event) {
-			event.preventDefault();
-			$(".time-menu", this.element).removeClass("ui-btn-active");
-			target.addClass("ui-btn-active");
 		}
 	});
 });
@@ -107,56 +138,12 @@ function selector(li) {
 	return "Haus " + house;
 };
 
-var FreeRooms = Backbone.Model.extend({
+var Room = Backbone.Model.extend({
 	
-	mapToId: function(campusName) {
-		var campusId;
-		if (campusName === "griebnitzsee") {
-			campusId = 3;
-		} else if (campusName === "neuespalais") {
-			campusId = 1;
-		} else {
-			campusId = 2;
-		}
-		return campusId
-	},
-	
-	loadFreeRooms: function(filter) {
-		var campus = this.mapToId(filter.campus);
-		var building = filter.building;
-		var startTime = filter.startTime;
-		var endTime = filter.endTime;
-		
-		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
-		if (building) {
-			request = request + "&building=%s";
-		}
-		request = _.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
-		
-		headers = { "Authorization": getAuthHeader() };
-		$.ajax({
-			url: request,
-			headers: headers
-		}).done(this.requestSuccess(filter)).fail(this.requestFail);
-	},
-	
-	requestSuccess: function(filter) {
-		var modelHost = this;
-		return function(result) {
-			var rooms = result["rooms4TimeResponse"]["return"];
-			rooms = _.chain(rooms)
-						.map(modelHost.parseFreeRoom)
-						.map(function(room) { return _.extend(room, { startTime: filter.startTime.toISOString() }); })
-						.map(function(room) { return _.extend(room, { endTime: filter.endTime.toISOString() }); })
-						.groupBy("house")
-						.value();
-			
-			modelHost.set({rooms: rooms});
-		};
-	},
-	
-	requestFail: function(error) {
-		alert("Daten nicht geladen");
+	initialize: function() {
+		var raw = this.get("raw");
+		var attributes = this.parseFreeRoom(raw);
+		this.set(attributes);
 	},
 	
 	/*
@@ -177,64 +164,122 @@ var FreeRooms = Backbone.Model.extend({
     }
 });
 
+var RoomsCollection = Backbone.Collection.extend({
+	model: Room,
+	
+	initialize: function() {
+		this.enrich = _.bind(this.enrichData, this);
+	},
+	
+	parse: function(response) {
+		var results = response["rooms4TimeResponse"]["return"];
+		return _.map(results, this.enrich);
+	},
+	
+	enrichData: function(result) {
+		return {
+			raw: result,
+			startTime: this.startTime.toISOString(),
+			endTime: this.endTime.toISOString()
+			};
+	}
+});
+
+var FreeRooms = Backbone.Model.extend({
+	
+	initialize: function() {
+		this.rooms = new RoomsCollection();
+		this.rooms.url = this.createUrl();
+		this.rooms.startTime = this.get("startTime");
+		this.rooms.endTime = this.get("endTime");
+		
+		this.rooms.on("reset", _.bind(this.triggerChanged, this));
+		this.rooms.on("error", this.requestFail);
+	},
+	
+	triggerChanged: function() {
+		this.trigger("change");
+	},
+	
+	mapToId: function(campusName) {
+		var campusId;
+		if (campusName === "griebnitzsee") {
+			campusId = 3;
+		} else if (campusName === "neuespalais") {
+			campusId = 1;
+		} else {
+			campusId = 2;
+		}
+		return campusId;
+	},
+	
+	createUrl: function() {
+		var campus = this.mapToId(this.get("campus"));
+		var building = this.get("building");
+		var startTime = this.get("startTime");
+		var endTime = this.get("endTime");
+		
+		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+		if (building) {
+			request = request + "&building=%s";
+		}
+		return _.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
+	},
+	
+	requestFail: function(error) {
+		alert("Daten nicht geladen");
+	}
+});
+
+var RoomDetailsCollections = Backbone.Collection.extend({
+	model: function(attrs, options) {
+		attrs.startTime = new Date(attrs.startTime);
+		attrs.endTime = new Date(attrs.endTime);
+		attrs.title = attrs.veranstaltung;
+		return new Backbone.Model(_.omit(attrs, "veranstaltung"));
+	},
+	
+	parse: function(response) {
+		if (typeof response.reservations4RoomResponse === "object") {
+			// The response is non-empty
+			var reservations = response.reservations4RoomResponse["return"];
+			
+			if (Array.isArray(reservations)) {
+				return reservations;
+			} else {
+				return [reservations];
+			}
+		} else {
+			return [];
+		}
+	}
+});
+
 var RoomDetailsModel = Backbone.Model.extend({
 	
-	loadRoomDetails: function(room) {
-		this.set({room: room});
+	initialize: function() {
+		this.reservations = new RoomDetailsCollections;
+		this.reservations.url = this.createUrl();
 		
+		this.reservations.on("reset", _.bind(this.triggerChanged, this));
+		this.reservations.on("error", _.bind(this.triggerChanged, this));
+	},
+	
+	triggerChanged: function() {
+		this.trigger("change");
+	},
+	
+	createUrl: function() {
 		// Set start and end time
-		var startTime = new Date(room.startTime);
+		var startTime = this.get("startTime");
 		startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
 		startTime = startTime.toISOString();
-		var endTime = new Date(room.endTime);
+		var endTime = this.get("endTime");
 		endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
 		endTime = endTime.toISOString();
 		
-		// Debug: Other start and end time
-		// startTime = new Date(2010, 1, 0, 0, 0, 0, 0).toISOString();
-		// endTime = new Date(2020, 1, 0, 0, 0, 0, 0).toISOString();
-		
-		var request = "http://usb.soft.cs.uni-potsdam.de/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-		request = _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(room.campus), encodeURIComponent(room.house), encodeURIComponent(room.room));
-		headers = { "Authorization": getAuthHeader() };
-		$.ajax({
-			url: request,
-			headers: headers
-		}).done(this.showRoomDetailsSuccess()).fail(this.showRoomDetailsFail());
-	},
-	
-	showRoomDetailsSuccess: function() {
-		var modelHost = this;
-		return function(data) {
-			if (typeof data.reservations4RoomResponse === "object") {
-				// The response is non-empty
-				var reservations = data.reservations4RoomResponse["return"];
-				
-				if (Array.isArray(reservations)) {
-					reservations = _.map(reservations, modelHost.parseDates);
-				} else {
-					reservations = [modelHost.parseDates(reservations)];
-				}
-				
-				modelHost.set({reservations: reservations});
-			}
-		};
-	},
-	
-	parseDates: function(room) {
-		var result = {};
-		result.startTime = new Date(room.startTime);
-		result.endTime = new Date(room.endTime);
-		result.persons = room.personList;
-		result.title = room.veranstaltung;
-		return result;
-	},
-	
-	showRoomDetailsFail: function() {
-		var modelHost = this;
-		return function() {
-			modelHost.trigger("change");
-		};
+		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+		return _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
 	}
 });
 
@@ -251,9 +296,11 @@ var RoomsOverview = Backbone.View.extend({
 		var host = this.$el;
 		host.empty();
 		
+		var attributes = this.model.rooms.map(function(model) { return model.attributes; });
+		
 		// Create and add html
 		var createRooms = rendertmpl('rooms');
-		var htmlDay = createRooms({rooms: this.model.get("rooms")});
+		var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 		host.append(htmlDay);
 		
 		// Refresh html
@@ -285,9 +332,11 @@ var RoomDetailsView = Backbone.View.extend({
 		var host = this.$el;
 		host.empty();
 		
+		var reservations = this.model.reservations.map(function(d) { return d.attributes; });
+		
 		// Create and add html
 		var createDetails = rendertmpl('roomDetails');
-		var htmlDay = createDetails({reservations: this.model.get("reservations"), room: this.model.get("room")});
+		var htmlDay = createDetails({reservations: reservations, room: this.model.attributes});
 		host.append(htmlDay);
 		
 		// Refresh html
@@ -309,10 +358,10 @@ function showRoomDetails(room) {
 	currentView && currentView.remove();
 	var div = $("<div></div>").appendTo("#roomsHost");
 	
-	var roomDetails = new RoomDetailsModel;
+	var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
 	currentView = new RoomDetailsView({el: div, model: roomDetails});
 	
-	roomDetails.loadRoomDetails(room);
+	roomDetails.reservations.fetch({reset: true});
 }
 
 var lastRoomsCampus = undefined;
@@ -323,10 +372,10 @@ function updateRoom(campusName, timeBounds) {
 	currentView && currentView.remove();
 	var div = $("<div></div>").appendTo("#roomsHost");
 	
-	var roomsModel = new FreeRooms;
+	var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
 	currentView = new RoomsOverview({el: div, model: roomsModel});
 	
-	roomsModel.loadFreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+	roomsModel.rooms.fetch({reset: true});
 }
 
 function roomsReset() {
