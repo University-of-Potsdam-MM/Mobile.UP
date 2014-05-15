@@ -138,56 +138,12 @@ function selector(li) {
 	return "Haus " + house;
 };
 
-var FreeRooms = Backbone.Model.extend({
+var Room = Backbone.Model.extend({
 	
-	mapToId: function(campusName) {
-		var campusId;
-		if (campusName === "griebnitzsee") {
-			campusId = 3;
-		} else if (campusName === "neuespalais") {
-			campusId = 1;
-		} else {
-			campusId = 2;
-		}
-		return campusId;
-	},
-	
-	loadFreeRooms: function(filter) {
-		var campus = this.mapToId(filter.campus);
-		var building = filter.building;
-		var startTime = filter.startTime;
-		var endTime = filter.endTime;
-		
-		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
-		if (building) {
-			request = request + "&building=%s";
-		}
-		request = _.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
-		
-		headers = { "Authorization": getAuthHeader() };
-		$.ajax({
-			url: request,
-			headers: headers
-		}).done(this.requestSuccess(filter)).fail(this.requestFail);
-	},
-	
-	requestSuccess: function(filter) {
-		var modelHost = this;
-		return function(result) {
-			var rooms = result["rooms4TimeResponse"]["return"];
-			rooms = _.chain(rooms)
-						.map(modelHost.parseFreeRoom)
-						.map(function(room) { return _.extend(room, { startTime: filter.startTime.toISOString() }); })
-						.map(function(room) { return _.extend(room, { endTime: filter.endTime.toISOString() }); })
-						.groupBy("house")
-						.value();
-			
-			modelHost.set({rooms: rooms});
-		};
-	},
-	
-	requestFail: function(error) {
-		alert("Daten nicht geladen");
+	initialize: function() {
+		var raw = this.get("raw");
+		var attributes = this.parseFreeRoom(raw);
+		this.set(attributes);
 	},
 	
 	/*
@@ -206,6 +162,73 @@ var FreeRooms = Backbone.Model.extend({
 		}
 		return room;
     }
+});
+
+var RoomsCollection = Backbone.Collection.extend({
+	model: Room,
+	
+	initialize: function() {
+		this.enrich = _.bind(this.enrichData, this);
+	},
+	
+	parse: function(response) {
+		var results = response["rooms4TimeResponse"]["return"];
+		return _.map(results, this.enrich);
+	},
+	
+	enrichData: function(result) {
+		return {
+			raw: result,
+			startTime: this.startTime.toISOString(),
+			endTime: this.endTime.toISOString()
+			};
+	}
+});
+
+var FreeRooms = Backbone.Model.extend({
+	
+	initialize: function() {
+		this.rooms = new RoomsCollection();
+		this.rooms.url = this.createUrl();
+		this.rooms.startTime = this.get("startTime");
+		this.rooms.endTime = this.get("endTime");
+		
+		this.rooms.on("reset", _.bind(this.triggerChanged, this));
+		this.rooms.on("error", this.requestFail);
+	},
+	
+	triggerChanged: function() {
+		this.trigger("change");
+	},
+	
+	mapToId: function(campusName) {
+		var campusId;
+		if (campusName === "griebnitzsee") {
+			campusId = 3;
+		} else if (campusName === "neuespalais") {
+			campusId = 1;
+		} else {
+			campusId = 2;
+		}
+		return campusId;
+	},
+	
+	createUrl: function() {
+		var campus = this.mapToId(this.get("campus"));
+		var building = this.get("building");
+		var startTime = this.get("startTime");
+		var endTime = this.get("endTime");
+		
+		var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+		if (building) {
+			request = request + "&building=%s";
+		}
+		return _.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
+	},
+	
+	requestFail: function(error) {
+		alert("Daten nicht geladen");
+	}
 });
 
 var RoomDetailsCollections = Backbone.Collection.extend({
@@ -273,9 +296,11 @@ var RoomsOverview = Backbone.View.extend({
 		var host = this.$el;
 		host.empty();
 		
+		var attributes = this.model.rooms.map(function(model) { return model.attributes; });
+		
 		// Create and add html
 		var createRooms = rendertmpl('rooms');
-		var htmlDay = createRooms({rooms: this.model.get("rooms")});
+		var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 		host.append(htmlDay);
 		
 		// Refresh html
@@ -347,10 +372,10 @@ function updateRoom(campusName, timeBounds) {
 	currentView && currentView.remove();
 	var div = $("<div></div>").appendTo("#roomsHost");
 	
-	var roomsModel = new FreeRooms;
+	var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
 	currentView = new RoomsOverview({el: div, model: roomsModel});
 	
-	roomsModel.loadFreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+	roomsModel.rooms.fetch({reset: true});
 }
 
 function roomsReset() {
