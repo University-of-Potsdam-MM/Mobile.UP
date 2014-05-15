@@ -64,7 +64,7 @@ $(function() {
 			var defaultSelection = this._getDefaultSelection();
 
 			if (!defaultSelection) {
-				var source = $(".location-menu-default")
+				var source = $(".location-menu-default");
 				defaultSelection = this._retrieveSelection(source);
 				this._setDefaultSelection(defaultSelection);
 			}
