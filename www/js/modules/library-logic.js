@@ -331,7 +331,7 @@ previously working functionality. Please don't judge.
   });
   // END App.model.Book
 
-  
+
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
 
@@ -418,7 +418,7 @@ previously working functionality. Please don't judge.
       }, {
 
         baseURL: function() {
-        	return "http://usb.soft.cs.uni-potsdam.de/libraryAPI/1.0";
+        	return "http://api.uni-potsdam.de/endpoints/libraryAPI/1.0";
         },
 
         url: function() {

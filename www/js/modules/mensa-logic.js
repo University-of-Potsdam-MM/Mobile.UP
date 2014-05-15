@@ -2,10 +2,10 @@
 	    $.support.cors = true;
 	    $.mobile.allowCrossDomainPages = true;
 	});
-	
+
 	$(document).on("pageinit", "#mensa", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });
-		
+
 		$("#mydate").bind("datebox", function(e, p) {
 			if (p.method === "set") {
 				var source = $("div[data-role='campusmenu']").campusmenu("getActive");
@@ -14,19 +14,19 @@
 			}
 		});
 	});
-	
+
 	$(document).on("pageshow", "#mensa", function () {
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 	});
-	
+
 	function updateMenuData(options) {
 		var date = $("#mydate").datebox('getTheDate');
 		updateMenu(options.campusName, date);
 	}
-	
+
 	function updateMenu(mensa, date) {
 	    uniqueDivId = _.uniqueId("id_");
-		
+
 	    Q(clearTodaysMenu(uniqueDivId))
 			.then(addLoadingSpinner(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
@@ -34,10 +34,10 @@
 	            var meals = Q(selectMeals(menu))
 	                .then(sortMealsByDate)
 					.then(sortByOrder);
-	
+
 	            var icons = Q(selectIcons(menu))
 	                .then(convertToMap);
-	
+
 	            return [meals, icons];
 	        })
 	        .spread(prepareMeals)
@@ -49,20 +49,20 @@
 	            alert("Fehlschlag: " + e.stack);
 	        });
 	}
-	
+
 	function clearTodaysMenu(uniqueDivId) {
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
 	}
-	
+
 	/**
 	 * Loads all meals and some meta data for a given mensa.
 	 * @param location One of the values ["Griebnitzsee", "NeuesPalais", "Golm"]
 	 */
 	function loadMenu(location) {
 	    var d = Q.defer();
-	    var url = "http://usb.soft.cs.uni-potsdam.de/mensaAPI/1.0";
-		
+	    var url = "http://api.uni-potsdam.de/endpoints/mensaAPI/1.0";
+
 		if (location == "griebnitzsee") {
 			location = "Griebnitzsee";
 		} else if (location == "neuespalais") {
@@ -70,7 +70,7 @@
 		} else if (location == "golm") {
 			location = "Golm";
 		}
-		
+
 		headers = { "Authorization": getAuthHeader() };
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
@@ -78,11 +78,11 @@
 		}).done(d.resolve).fail(d.reject);
 	    return d.promise;
 	}
-	
+
 	function selectIcons(menu) {
 	    return menu.readCurrentMealsResponse.meals.iconHashMap.entry;
 	}
-	
+
 	function convertToMap(icons) {
 	    var result = {};
 	    for (var index in icons) {
@@ -92,11 +92,11 @@
 	    }
 	    return result;
 	}
-	
+
 	function selectMeals(menu) {
 	    return menu.readCurrentMealsResponse.meals.meal;
 	}
-	
+
 	function sortMealsByDate(meals) {
 	    return meals.sort(function (a, b) {
 	        var first = new Date(a.key);
@@ -104,7 +104,7 @@
 	        return first - second;
 	    });
 	}
-	
+
 	function sortByOrder(meals) {
 		return meals.sort(function (a, b) {
 			var first = a["@order"];
@@ -112,7 +112,7 @@
 			return first - second;
 		});
 	}
-	
+
 	function mapToMeal(icons) {
 	    return function (meal) {
 	        var mealData = {};
@@ -120,7 +120,7 @@
 	        mealData.title = meal.title;
 	        mealData.description = meal.description.replace(/\(.*\)/g, "");
 			mealData.date = meal.date;
-			
+
 			mealData.prices = {};
 			if (meal.prices) {
 				mealData.prices.students = meal.prices.student;
@@ -131,7 +131,7 @@
 				mealData.prices.staff = "?";
 				mealData.prices.guests = "?";
 			}
-	
+
 	        mealData.ingredients = [];
 	        if ($.isArray(meal.type)) {
 	            for (var typIndex in meal.type) {
@@ -140,11 +140,11 @@
 	        } else if (meal.type) {
 	            mealData.ingredients.push(icons[meal.type]);
 	        }
-	
+
 	        return mealData;
 	    };
 	}
-	
+
 	/**
 	 * Prepare data.
 	 * @param meals
@@ -153,7 +153,7 @@
 	function prepareMeals(meals, icons) {
 	    return _.map(meals, mapToMeal(icons));
 	}
-	
+
 	function filterByDate(date) {
 		return function(meals) {
 			return _.filter(meals, function(meal) {
@@ -161,12 +161,12 @@
 			});
 		};
 	}
-	
+
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
 			var createMeals = rendertmpl('mensa');
 			var host = $("#" + uniqueDiv);
-			
+
 			// Add day section to html
 			var htmlDay = createMeals({meals: meals});
 			host.append(htmlDay);

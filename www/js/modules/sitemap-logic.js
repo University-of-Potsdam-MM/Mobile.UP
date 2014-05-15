@@ -64,7 +64,7 @@ $(document).on("pageinit", "#sitemaps", function() {
 	settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
 	settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
 	settings.options.student.fillColor = $(".sitemap-living").css("background-color");
-	
+
 	$('#Terminals:checkbox').click(checkUncheck(terminals));
 	$('#Institute:checkbox').click(checkUncheck(institutes));
 	$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -103,7 +103,7 @@ function drawSelectedCampus(options) {
 	uniqueDivId = _.uniqueId("id_");
 	lastFinderId = uniqueDivId;
 	lastCampus = options.campusName;
-	
+
 	var campus = undefined;
 	if (options.campusName === "griebnitzsee") {
 		campus = settings.url.griebnitzsee;
@@ -112,12 +112,12 @@ function drawSelectedCampus(options) {
 	} else {
 		campus = settings.url.golm;
 	}
-	
+
 	var search = undefined;
 	if (options["meta"] !== undefined) {
 		search = options.meta;
 	}
-	
+
 	Q(clearMenu(uniqueDivId))
 		.then(function() { return geo.loadAllOnce(); })
 		.then(drawCampus(uniqueDivId, campus))
@@ -144,30 +144,30 @@ function drawCampus(uniqueDiv, url) {
 		var host = $("#" + uniqueDiv);
 		host.append("<div data-role='searchablemap'></div>");
 		host.trigger("create");
-		
+
 		$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected });
 		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
-		
+
 		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
-		
+
 		var terminalsData = Q.fcall(getGeoByCategory, data, terminals)
 							.then(drawCategory(settings.options.terminals, terminals, url.campus));
-		
+
 		var institutesData = Q.fcall(getGeoByCategory, data, institutes)
 							.then(drawCategory(settings.options.institutes, institutes, url.campus));
-		
+
 		var canteensData = Q.fcall(getGeoByCategory, data, canteens)
 							.then(drawCategory(settings.options.canteens, canteens, url.campus));
-		
+
 		var parkingData = Q.fcall(getGeoByCategory, data, parking)
 							.then(drawCategory(settings.options.parking, parking, url.campus));
-		
+
 		var associateinstitutesData = Q.fcall(getGeoByCategory, data, associateinstitutes)
 										.then(drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus));
-		
+
 		var studentData = Q.fcall(getGeoByCategory, data, student)
 							.then(drawCategory(settings.options.student, student, url.campus));
-		
+
 		return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
 	};
 }
@@ -206,22 +206,22 @@ function hasSimilarLocations(campus) {
 		var entry = geo.findEntryById(id);
 		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
 		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
-		
+
 		return similarHouses.length + similarDescriptions.length > 0;
 	};
 }
 
 function CategoryStore() {
-	
+
 	var store = {};
-	
+
 	this.isVisible = function(category) {
 		if (store[category] === undefined) {
 			return true;
 		}
 		return store[category];
 	};
-	
+
 	this.setVisibility = function(category, show) {
 		store[category] = show;
 	};
@@ -231,20 +231,20 @@ function searchSimilarLocations(id) {
 	var entry = geo.findEntryById(id);
 	var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, lastCampus);
 	var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, lastCampus);
-	
+
 	var host = $("#" + lastFinderId);
 	host.empty();
 	host.append("<ul id='similarlocations' data-role='listview' style='margin: 8px;'></ul>");
 	host.append("<button onclick='sitemapReset()'>Zurück</button>");
 	host.trigger("create");
-	
+
 	var similars = similarHouses.concat(similarDescriptions);
 	similars = _.uniq(similars, false, function(item) { return item.data; });
-	
+
 	_.each(similars, function(item) {
 		$("#similarlocations").append("<li><a onclick='sitemapNavigateTo(\"" + item.geo.properties.id + "\")'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
 	});
-	
+
 	$("#similarlocations").listview("refresh");
 }
 
@@ -262,19 +262,19 @@ $(document).on("pageinit", "#sitemaps", function() {
 });
 
 var SearchView = Backbone.View.extend({
-	
+
 	initialize: function(options) {
 		this.query = options.query;
 		this.children = options.children;
 	},
-	
+
 	setSearchValue: function(search, updateView) {
 		$(this.query).val(search);
 		if (updateView) {
 			$(this.query).trigger("keyup");
 		}
 	},
-	
+
 	hideAllItems: function() {
 		var host = $(this.children);
 		$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
@@ -282,14 +282,14 @@ var SearchView = Backbone.View.extend({
 });
 
 var GeoBlock = Backbone.Model.extend({
-	
+
 	initialize: function() {
 		this.insertId(this.get("geo"));
 	},
-	
+
 	/**
 	 * Inserts IDs into the properties objects of the given parameter.
-	 * 
+	 *
 	 * The expected structure is:
 	 * "geo": {
 	 *     features: [ {
@@ -308,48 +308,48 @@ var GeoBlock = Backbone.Model.extend({
 });
 
 var GeoCollection = Backbone.Collection.extend({
-	
+
 	model: GeoBlock,
-	
+
 	initialize: function() {
 		// Workaround for overwriting of "this"
 		this.loadSuccess = _.bind(this.loaded, this);
 		this.loadFail = _.bind(this.failed, this);
 	},
-	
+
 	loadAll: function() {
 		console.log("executing GeoCollection.loadAll()");
 		return Q.fcall(this.callAjax)
 				.then(this.loadSuccess)
 				.catch(this.loadFail);
 	},
-	
+
 	callAjax: function() {
 		var url = "js/geojson/campus-geo.json";
-		
+
 		var d = Q.defer();
 		$.getJSON(url).done(d.resolve).fail(d.reject);
 		return d.promise;
 	},
-	
+
 	loadAllOnce: function() {
 		if (this.loadAllOncePromise == undefined) {
 			this.loadAllOncePromise = this.loadAll();
 		}
 		return this.loadAllOncePromise;
 	},
-	
+
 	loaded: function(result) {
 		this.add(result);
 	},
-	
+
 	failed: function(error) {
 		alert("Daten konnten nicht geladen werden");
 	}
 });
 
 var SearchableGeoCollection = GeoCollection.extend({
-	
+
 	findHouseNumberOnOtherCampuses: function(house, currentCampus) {
 		return this.chain()
 					.filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
@@ -362,7 +362,7 @@ var SearchableGeoCollection = GeoCollection.extend({
 					.flatten()
 					.value();
 	},
-	
+
 	findDescriptionOnOtherCampuses: function(search, currentCampus) {
 		return this.chain()
 					.filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
@@ -375,7 +375,7 @@ var SearchableGeoCollection = GeoCollection.extend({
 					.flatten()
 					.value();
 	},
-	
+
 	findEntryById: function(id) {
 		return this.chain()
 					.map(function(item) {
