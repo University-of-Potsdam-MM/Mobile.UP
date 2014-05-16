@@ -1,0 +1,5 @@
+[
+	{"lastname":"Müller","firstname":"Gilda","department":"HGP","secondTelephone":"","fax":"","pcfax":"","unit":"Institut","title":"Sir","suffix":"","room":"GS_03_03","show_only_altphone":"","mail":"mueller@uni-potsdam.de","telephone":"1256"},
+	{"lastname":"gego","firstname":"ingo","department":"Institut für Informatik","secondTelephone":"","fax":"","pcfax":"","unit":"Dezernat","title":"Doktor","suffix":"","room":"GO_03_01","show_only_altphone":"Ja","mail":"gego@uni-potsdam.de","telephone":"1414"},
+	{"lastname":"Joacdsadhim Schultz","firstname":"Götz","department":"Institut für Informatik","secondTelephone":"","fax":"","pcfax":"","unit":"Bürg.Recht,Internationales Privatrecht- für.Verfahrensrecht u.Rechtsvergleichung","title":"Prof. Dr.","suffix":"","room":"GO_03_01","show_only_altphone":"Ja","mail":"goesch@uni-potsdam.de","telephone":"1414"}
+] 

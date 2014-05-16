@@ -11,7 +11,7 @@
 }
 
 body,.ui-page {
-	
+
 	margin: 0 auto;
 }
 
@@ -31,7 +31,7 @@ body,.ui-page {
 .ui-header,.ui-footer {
 	border-width: 0px;
 	border-style: solid;
-	
+
 }
 
 .ui-header {
@@ -115,7 +115,7 @@ h2 span {
 	display: block;
 	vertical-align: middle;
 	height: 78px;
-	
+
 }
 
 /*2. Back button*/
@@ -274,7 +274,7 @@ label.showfirst {
 	background-image: url(../img/up/close-hover.png);
 }
 
-/* Circles 
+/* Circles
 -------------------- */
 .both,.prebook {
 	display: block;
@@ -322,7 +322,7 @@ label.showfirst {
 	margin-left: 0;
 }
 
-/*arrow up - arrow down 
+/*arrow up - arrow down
 -------------------- */
 .ui-icon-arrow-down:after {
 	background-image: url(../img/up/arrow-down.png);
@@ -726,12 +726,12 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 
 html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
 	line-height:135%;
-	
+
 }
 
 html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	line-height:35px;
-	
+
 }
 
 
@@ -873,7 +873,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 		{
 		display: none;
 	}
-	
+
 	#transport2 .ui-table td.foot img {
 	display:block;
 	margin:0 auto;
@@ -1327,15 +1327,15 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 /***********************Personensuche*********************
 **************************************************************/
-#peoples h3.ui-collapsible-heading {
+#people-list h3.ui-collapsible-heading {
 	border-bottom: 0px;
 }
 
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
 	border-bottom: 1px;
 }
 
-#peoples h3.ui-collapsible-heading a {
+#people-list h3.ui-collapsible-heading a {
 	background-image: url(../img/up/people-hover.png) !important;
 	background-repeat: no-repeat;
 	background-position: 0px 9px;
@@ -1344,25 +1344,25 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background-color: #d0dae3 !important;
 }
 
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background-image: url(../img/up/people.png) !important;
 	background-repeat: no-repeat;
 	background-color: #ededed !important;
 }
 
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover
 	{
 	background-image: url(../img/up/people-hover.png) !important;
 	background-repeat: no-repeat;
 	background-color: #d0dae3 !important;
 }
 
-#peoples h3 a span {
+#people-list h3 a span {
 	margin-bottom: 3px;
 	display: inline-block;
 }
 
-#peoples .ui-btn-icon-right:after {
+#people-list .ui-btn-icon-right:after {
 	right: -.1em;
 }
 
@@ -1380,6 +1380,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	text-indent: 20px;
 }
 
-#peoples .ui-collapsible-content p {
+#people-list .ui-collapsible-content p {
 	padding-left: 25px;
 }

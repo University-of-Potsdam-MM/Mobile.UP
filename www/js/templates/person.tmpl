@@ -1,0 +1,11 @@
+<div data-role="collapsible" >
+	<h3>
+		<span class="blau"><%= person.get('firstname') %><%= person.get('lastname') %>, <%= person.get('title') %></span><br />
+		<span class="black normal"><%= _.compact([person.get('institute'), person.get('unit')]).join(', ') %></span>
+		<span class="mail"><%= person.get('mail') %></span><br />
+		<span class="phone"><%= person.get('telephone') %></span>
+	</h3>
+	<div>
+		<p><%= person.get('room') %><br /><%= (person.get('fax')) ? 'Fax:'+person.get('fax')+'<br />' : '' %><br /></p>
+	</div>
+</div>
