@@ -23,13 +23,20 @@ window.MoodleApp = {};
 (function($){
 
   MoodleApp.fsm = new machina.Fsm({
+    logout: function(){
+      console.log('logging out');
+      MoodleApp.api.unset('wstoken');
+      MoodleApp.news_api.unset('wstoken');
+      this.transition('loginform');
+    },
     error: function(data){
+      // TODO doesn't work yet
       var errorcode = _.isString(data) ? data : data.errorcode;
       this.transition('error');
     },
     states: {
       uninitialized: {
-        // this state is here so the we don't get errors when Moodle.api isn't defined yet
+        // this state is here so the we don't get errors when MoodleApp.api isn't defined yet
         initialize: function( payload ) {
           console.log('transition to initialized');
           this.transition('initialized');
@@ -68,14 +75,14 @@ window.MoodleApp = {};
       authorizing:{
         _onEnter: function() {
           // display spinner
-          // ask Moodle.api and Moodle.news_api for token + UID (use async or similar)
+          // ask MoodleApp.api and MoodleApp.news_api for token + UID (use async or similar)
           console.log('authorizing: _onEnter', arguments);
           var fsm = this;
           $.when(
             MoodleApp.api.authorizeAndGetUserId(),
             MoodleApp.news_api.authorize()
           ).done(function(){
-            // Moodle.api should be authorized and has userId, MoodleApp.news_api should be authorized
+            // MoodleApp.api should be authorized and has userId, MoodleApp.news_api should be authorized
             console.log('authorization complete');
             fsm.transition('authorized');
           });
@@ -361,9 +368,6 @@ window.MoodleApp = {};
   });
 
   MoodleApp.start = function(){
-    MoodleApp.api.unset('wstoken');
-    MoodleApp.news_api.unset('wstoken');
-
     MoodleApp.state = new Backbone.Model();
 
     MoodleApp.authView = new MoodleApp.LoginPageView({
@@ -399,7 +403,6 @@ window.MoodleApp = {};
       MoodleApp.pages.render();
     });
 
-    // MoodleApp.courses.fetch();
     MoodleApp.listview = new MoodleApp.CourseListView({
       el: $('ul#moodle_courses'),
       collection: MoodleApp.courses,
@@ -422,16 +425,16 @@ window.MoodleApp = {};
     MoodleApp.state.on('change:selectedCourse', function(){
       console.log('change selectedCourse', arguments);
     });
-
-    console.log('should navigate to login dialog', ! MoodleApp.api.isAuthorized());
-    if (! MoodleApp.api.isAuthorized()) {
-      $.mobile.navigate('#moodle-login-dialog');
-    }
-
-    MoodleApp.fsm.handle('initialize');
   };
 
   $(document).on("pageinit", "#moodle", MoodleApp.start);
+  $(document).on("pagechange", function(event, options){
+    console.log('pagechange', arguments);
+    console.log('pagechange', options.toPage);
+    
+    MoodleApp.fsm.handle('initialize');
+    // MoodleApp.fsm.logout();
+  });
 
 
 })(jQuery);
