@@ -66,6 +66,7 @@ window.MoodleApp = {};
           // if username / password are set go to authorizing
           console.log('authorize', credentials);
           if ( ! (_.isEmpty(credentials.username) || _.isEmpty(credentials.password)) ) {
+            // debugger
             MoodleApp.api.set(credentials);
             MoodleApp.news_api.set(credentials);
             this.transition('authorizing', credentials); // it doesn't seem like credentials are passed at all
@@ -204,15 +205,15 @@ window.MoodleApp = {};
     authorize: function(){
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
-      var api = this;
+      var news_api = this;
       return $.post(this.login_url, params, function(data){
-        console.log('success get_token', arguments);
-        api.set(data);
+        console.log('news_api success get_token', arguments);
+        news_api.set(data);
         // TODO: what happens when pw is wrong?
         // debugger
-        api.set('wstoken', data['token']);
-        api.unset('password'); // remove password
-        api.trigger('authorized');
+        news_api.set('wstoken', data['token']);
+        news_api.unset('password'); // remove password
+        news_api.trigger('authorized');
       }).promise();
     },
 
@@ -291,7 +292,15 @@ window.MoodleApp = {};
     }
   });
 
-
+  MoodleApp.NewsList = Backbone.Collection.extend({
+    fetch: function() {
+      var collection = this;
+      MoodleApp.news_api.webservice_get_latest_coursenews().done(function(news){
+        console.log(news);
+      });
+      return this;
+    }
+  });
 
   MoodleApp.CourseListView = Backbone.View.extend({
     template: rendertmpl('moodle_course_list_view'),
@@ -372,7 +381,7 @@ window.MoodleApp = {};
 
     MoodleApp.authView = new MoodleApp.LoginPageView({
       id:'moodle-login-dialog',
-      model: MoodleApp.api
+      model: new Backbone.Model()
     });
 
     MoodleApp.authView.render();
