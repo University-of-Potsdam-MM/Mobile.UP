@@ -142,7 +142,18 @@
   // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
 
 
-  function verbindungVonNach(fromExternalId, toExternalId, moment) {
+  function verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode) {
+
+    var rflags;
+    if ('1' == arrivalMode) {
+      rflags = tag('RFlags', {b: 5, f: 0, a: 0 })
+    } else {
+      // default
+      rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
+    }
+
+    console.log('rflags', rflags);
+
     var xml =
       tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
         tag('ConReq', {},
@@ -154,7 +165,7 @@
             tag('Station',{externalId: toExternalId})
           ),
           tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
-          tag('RFlags', {b: 0, f: 5})
+          rflags
         )
       );
     return xmlString(xml);
@@ -251,11 +262,11 @@
     return myCon;
   }
 
-  function getVerbindung(fromExternalId, toExternalId, moment) {
+  function getVerbindung(fromExternalId, toExternalId, moment, arrivalMode) {
     var defer = $.Deferred();
     $.post(
       endpoint(),
-      verbindungVonNach(fromExternalId, toExternalId, moment),
+      verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode),
       'xml')
       .done(function(data, textStatus, jqXHR){
         // console.log('requestExternalId', data,textStatus,jqXHR);
@@ -569,7 +580,8 @@
       getVerbindung(
         this.fromStation().externalId,
         this.toStation().externalId,
-        this.get('depTime')
+        this.get('depTime'),
+        this.get('arrivalMode')
       ).done(function(connections){
         that.resetConnections(connections);
       });
