@@ -428,16 +428,18 @@
     },
     search: function(){
       console.log('click searchButton');
-      console.log('DateTime for connection:', this.getMoment().format('DD.MM.YYYY - HH:mm') );
-      this.model.set('depTime', this.getMoment());
       this.model.fetchConnections();
       this.renderSummary();
     },
     searchEarlier: function(){
       console.log('click earlierButton');
+      this.model.addTime('minutes', -30);
+      this.search();
     },
     searchLater: function(){
       console.log('click laterButton');
+      this.model.addTime('minutes', 30);
+      this.search();
     },
 
     // returns a momentjs object for Transportation Date + Time
@@ -531,8 +533,10 @@
       depTime: moment(),
       connections: new Backbone.Collection(),
     },
-    setTime: function(){console.log('setTime',arguments);},
-    setDate: function(){console.log('setDate',arguments);},
+
+    addTime: function(units, value) {
+      this.get('depTime').add(units, value);
+    },
 
     setFromStation: function(string) {
       if (this.get('to') == string) {
@@ -559,6 +563,8 @@
       this.get('connections').reset(newConnections);
     },
     fetchConnections: function(){
+      console.log('DateTime for connection:', this.get('depTime').format('DD.MM.YYYY - HH:mm') );
+
       var that = this;
       getVerbindung(
         this.fromStation().externalId,
@@ -572,6 +578,8 @@
       var mode = this.get('arrivalMode') || '0';
       var toggled = (mode == '0') ? '1' : '0';
       this.set( 'arrivalMode', toggled );
+
+      //FIXME should also move depTime to arrTime and back
     }
   });
 
