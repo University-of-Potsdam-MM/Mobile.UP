@@ -17,12 +17,20 @@ The Backbone.View creates the containing element (this.el) and it should look li
     <div data-role="content" data-theme="c">
 
       <h2><%= course.get('fullname') %></h2>
-      <p><strong>Eingeschrieben:</strong> <%= course.get('enrolledusercount') %></p>
 
-    <!--
-      Kurskram:
-      <%= JSON.stringify(course.attributes) %>
-    -->
+      <% if (news && ! news.get('coursenews').isEmpty()) { %>
+        <h4>Neuigkeiten</h4>
+        <ul>
+          <% news.get('coursenews').each(function(cn){ %>
+          <li>
+            <%= cn.get('news') %>
+            <% console.log('coursenews template:', JSON.stringify(cn.attributes) ) %>
+          </li>
+          <% }); %>
+        </ul>
+      <% }; %>
+
+      <p><strong>Eingeschrieben:</strong> <%= course.get('enrolledusercount') %></p>
 
       <ul data-role="listview" data-inset="true">
       <% contents.each(function(c){ %>
@@ -32,7 +40,6 @@ The Backbone.View creates the containing element (this.el) and it should look li
 
           <% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
             <ul>
-              <% console.log('modules', c.get('modules'));%>
               <% _.each(c.get('modules'), function(m){ %>
                 <li>
                   <a href="<%= m.url %> ">

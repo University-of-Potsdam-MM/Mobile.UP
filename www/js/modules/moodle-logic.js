@@ -108,10 +108,7 @@ window.MoodleApp = {};
           // display main view
           $.mobile.navigate('#moodle');
           MoodleApp.courses.fetch();
-          // api.moodle_enrol_get_users_courses().done(function(courses) {
-          //   console.log('bla', arguments);
-          //   MoodleApp.courses.reset(courses);
-          // });
+          MoodleApp.news.fetch();
         },
         not_authorized: {
           // called when there is a 'you are not authorized msg from the server'
@@ -292,14 +289,29 @@ window.MoodleApp = {};
     }
   });
 
+
+
   MoodleApp.NewsList = Backbone.Collection.extend({
     fetch: function() {
       var collection = this;
       MoodleApp.news_api.webservice_get_latest_coursenews().done(function(news){
-        console.log(news);
+        console.log('newslist fetch returns', news);
+        var courses = _.map(news.courses, function(course){
+          course.id = course.courseid;
+
+          var realnews = _.reject(course.coursenews, function(cn){
+            // remove all where this condition holds
+            return ((cn.modulename == null) && (cn.news == 'no news'));
+          });
+          course.coursenews = new Backbone.Collection(realnews);
+
+          return new Backbone.Model(course);
+        })
+        collection.reset(courses);
       });
       return this;
-    }
+    },
+
   });
 
   MoodleApp.CourseListView = Backbone.View.extend({
@@ -317,15 +329,22 @@ window.MoodleApp = {};
 
   MoodleApp.CourseContentsPage = Backbone.View.extend({
     template: rendertmpl('moodle_course_contents_page'),
-    initialize: function(){
+    initialize: function(options){
+      this.news = options.news;
+
       this.model.on('change', this.render, this);
       this.collection.on('change', this.render, this);
       this.collection.on('reset', this.render, this);
-      // console.log('init', this);
+      this.news.on('change', this.render, this);
     },
     render: function(){
       console.log('render CourseContentsPage', this.el, this.model, this.collection);
-      this.$el.html(this.template({course:this.model, contents: this.collection}));
+      var data = {
+        course:this.model,
+        contents: this.collection,
+        news: this.news.get(this.model.id)
+      };
+      this.$el.html(this.template(data));
       this.$el.trigger('create');
       return this;
     }
@@ -333,7 +352,8 @@ window.MoodleApp = {};
 
 
   MoodleApp.PageListView = Backbone.View.extend({
-    initialize: function(){
+    initialize: function(options){
+      this.news = options.news;
       _.bindAll(this, 'renderOne');
     },
     renderOne: function(course) {
@@ -342,6 +362,7 @@ window.MoodleApp = {};
         attributes: {"data-role":"page"},
         model: course,
         collection: course.get('contents') || course.fetchContents(),
+        news: this.news,
       });
       this.$el.append(page.render().el);
     },
@@ -392,10 +413,12 @@ window.MoodleApp = {};
 
 
     MoodleApp.courses = new MoodleApp.CourseList();
+    MoodleApp.news = new MoodleApp.NewsList()
 
     MoodleApp.pages = new MoodleApp.PageListView({
       el: $('body'),
-      collection: MoodleApp.courses
+      collection: MoodleApp.courses,
+      news: MoodleApp.news,
     });
 
     MoodleApp.courses.on('add', function(course){
