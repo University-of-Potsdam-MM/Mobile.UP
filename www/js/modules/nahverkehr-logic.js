@@ -487,10 +487,19 @@
 
     render: function(){
       console.log('render', this.collection);
+      this.renderScrollButtons();
+
       // TODO render resultlist
       return this;
     },
-    renderSummary:function(){
+    renderScrollButtons: function(){
+      if (this.collection.isEmpty()){
+        this.$el.find('#result .scrollbutton').hide();
+      } else {
+        this.$el.find('#result .scrollbutton').show();
+      }
+    },
+    renderSummary: function(){
       var q = this.model;
       this.$el.find('#summary .fromCampus').html(q.fromStation().name);
       this.$el.find('#summary .toCampus').html(q.toStation().name);
@@ -501,9 +510,10 @@
     templateListItem: rendertmpl('complex_transport_listitem'),
     renderResults: function(){
       console.log('render results', this.collection);
-      // TODO render resultlist
-      var view = this;
 
+      this.renderScrollButtons();
+
+      var view = this;
       var resultList = this.$el.find('#result ul');
       resultList.html('');
       this.collection.each(function(connection){
@@ -649,7 +659,7 @@ $(document).on("pageinit", "#transport2", function () {
       model: Transport.model.State,
       collection: Transport.model.State.get('connections')
     });
-
+    Transport.view.ComplexSearch.render();
   });
 
 })(jQuery);
