@@ -1,3 +1,23 @@
+define(['router'], function(Router){
+	var initialize= function(){
+		Router.initialize();
+	}
+
+	return {
+		initialize: initialize
+	};
+});
+
+
+$.mobile.ajaxEnabled=false;
+// Prevents all anchor click handling
+$.mobile.linkBindingEnabled = false;
+
+// Disabling this will prevent jQuery Mobile from handling hash changes
+$.mobile.hashListeningEnabled = false;
+$.mobile.pushStateEnabled=false;
+//$.mobile.buttonMarkup.hoverDelay = 0;
+
 
 /*
  * Loading Spinner Animation
@@ -27,6 +47,7 @@ function getAuthHeader() {
  * hashCode function for String
  * see http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ for details
  */
+
 String.prototype.hashCode = function(){
     var hash = 0, i, char;
     if (this.length == 0) return hash;
@@ -41,13 +62,13 @@ String.prototype.hashCode = function(){
 /*
  * Use underscore.string functions from underscore library
  */
-_.mixin(_.string.exports());
+//_.mixin(_.string.exports());
 
 /*
  * Template Loading Functions
  */
 function rendertmpl(tmpl_name) {
-    if ( !rendertmpl.tmpl_cache ) { 
+    if ( !rendertmpl.tmpl_cache ) {
     	rendertmpl.tmpl_cache = {};
     }
 
@@ -68,7 +89,7 @@ function rendertmpl(tmpl_name) {
 
 		tmpl_string = removeTabs(tmpl_string);
 		rendertmpl.tmpl_cache[tmpl_name] = _.template(tmpl_string);
-                
+
     }
 
     return rendertmpl.tmpl_cache[tmpl_name];
@@ -88,7 +109,7 @@ function overrideBackboneSync() {
 			return _.startsWith(url, authUrl);
 		};
 	};
-	
+
 	var sync = Backbone.sync;
 	Backbone.sync = function(method, model, options) {
 		var url = options.url || _.result(model, "url");
@@ -102,4 +123,4 @@ function overrideBackboneSync() {
 /**
  * Initialize Backbone override
  */
-$(overrideBackboneSync);
+ //$(overrideBackboneSync);

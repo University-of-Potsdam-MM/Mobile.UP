@@ -1,6 +1,6 @@
-$(document).on("pageinit", "#opening", function () {
+define([], function(){
 
-          var date_helper = {
+	var dateHelper = {
             // I give this function a German name,
             // because someone introduced German weekday names as keys in opening.json
             tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
@@ -47,28 +47,64 @@ $(document).on("pageinit", "#opening", function () {
                 }
 
                 return 'problem'
-              }
-            },
-          };
+            }
+		}
+	};
 
-          var renderOpenings = function(openings) {
-            var placeTemplate = rendertmpl('openings');
-            var placesList = $('#openings');
-            _.each(openings, function(place){
-              placesList.append(placeTemplate(place));
+	var Opening = Backbone.Model.extend({
+	});
+
+	var Openings = Backbone.Collection.extend({
+		model: Opening,
+		url: 'js/json/opening.json'
+	});
+
+	var OpeningView = Backbone.View.extend({
+		tagName: 'div',
+		attributes: {"data-role": 'collapsible'},
+
+		initialize: function(){
+			_.bindAll(this, 'render');
+			this.template = rendertmpl('opening_detail');
+		},
+
+		render: function(){
+			$(this.el).html(this.template({opening: this.model.toJSON()}));
+			return this;
+		}
+	});
+
+	var OpeningsView = Backbone.View.extend({
+		anchor: '#opening-list',
+
+		initialize: function(){
+			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
+			this.collection.fetch({
+				success: this.fetchSuccess,
+				error: this.fetchError
+			});
+		},
+
+
+
+		fetchSuccess: function() {
+			//this.collection = _.sortBy(this.collection.attributes, 'name');
+
+            this.collection = this.addTextToTimes(this.collection);
+
+            var now = new Date();
+
+            _.each(this.collection.models, function(model){
+                model.attributes.statusOpenNow = dateHelper.statusAtPlaceAndDate(model, now);
             });
-          };
+			this.render();
+		},
 
-          var fromToDaytimeString = function(from, to) {
-            var string = '' + from + ' - ' + to + ' Uhr';
-            // console.log('string',string);
-            return string;
-          };
-
-          var addTextToTimes = function (openings) {
-            _.each(openings, function(place) {
+		addTextToTimes: function (collection) {
+			var parentThis = this;
+            _.each(collection.models, function(model) {
               // console.log('place',place);
-              _.each(place.times, function(day){
+              _.each(model.get('times'), function(day){
                 // console.log('day', day);
                 if(_.isString(day.opening)) {
                   day.opening_text = day.opening;
@@ -79,7 +115,7 @@ $(document).on("pageinit", "#opening", function () {
                   var text = _.map(day.opening, function(fromToArr){
                     // console.log('fromToArr', fromToArr);
                     if (_.isArray(fromToArr)) {
-                      return fromToDaytimeString(fromToArr[0], fromToArr[1]);
+                      return parentThis.fromToDaytimeString(fromToArr[0], fromToArr[1]);
                     } else {
                       return fromToArr;
                     }
@@ -92,28 +128,50 @@ $(document).on("pageinit", "#opening", function () {
                 //console.log('Neither String nor Array');
               })
             });
-            return openings;
-          };
+            return collection;
+        },
 
-          $.ajax({
-            url: 'js/json/opening.json',
-            method: 'GET',
-            dataType: 'html',
-            async: false,
-            success: function(json) {
-              var data = $.parseJSON(json);
-              var openings = _.sortBy(data, 'name');
+        fromToDaytimeString: function(from, to) {
+			var string = '' + from + ' - ' + to + ' Uhr';
+            // console.log('string',string);
+            return string;
+        },
 
-              openings = addTextToTimes(openings);
+		fetchError: function() {
+			throw new Error('Error loading Opening-JSON file');
+		},
 
-              var now = new Date();
-              _.each(openings, function(place){
-                place.statusOpenNow = date_helper.statusAtPlaceAndDate(place, now);
-              });
+		render: function() {
+			this.el = $(this.anchor);
+			// iterate over collection and call EmergencyCallViews render method
+			this.collection.each(function(opening){
+				var openingView = new OpeningView({model: opening});
+				$(this.el).append(openingView.render().el);
+			}, this);
+			this.el.trigger("create");
+			return this;
+		}
 
-              //console.log(openings);
-              renderOpenings(openings);
-              $("#opening").trigger("create");
-            }
-          });
-        });
+	});
+
+	/*
+	 *	Opening Page View
+	 */
+	var OpeningPageView = Backbone.View.extend({
+
+		initialize: function(){
+			this.template = rendertmpl('opening');
+		},
+
+    	render: function(){
+    		$(this.el).html(this.template({}));
+    		var openings = new Openings();
+    		var openingsView = new OpeningsView({collection: openings});
+    		$(this.el).trigger("create");
+    		return this;
+		}
+
+  });
+
+  return OpeningPageView;
+});

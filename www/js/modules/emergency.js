@@ -1,9 +1,7 @@
-(function($){
-
-	// Backbone code - start
+define([], function(){
 	/*
 	 * Models
-	 */
+	*/
 	// model for emergency items
 	var EmergencyCall = Backbone.Model.extend({
 	});
@@ -14,14 +12,12 @@
 		url: 'js/json/emergencycalls.json'
 	});
 
-
 	/*
 	 * Views
 	 */
 	// view for single emergency call
 	var EmergencyCallView = Backbone.View.extend({
 		tagName: 'li',
-		template: null,
 
 		initialize: function(){
 			_.bindAll(this, 'render');
@@ -66,18 +62,22 @@
 			return this;
 		}
 	});
-	// Backbone code - end
 
+	// view for the emergency page
+	var EmergencyPageView = Backbone.View.extend({
 
+		initialize: function() {
+			this.template = rendertmpl('emergency');
+		},
 
-	$(document).on("pageinit", "#emergency", function () {
-
-		// create instance of our emergency collection
-		var emergencyCalls = new EmergencyCalls();
-
-		// pass collection to emergency view
-		var emergencyCallsView = new EmergencyCallsView({collection: emergencyCalls});
-
-
+		render: function() {
+			$(this.el).html(this.template({}));
+			var emergencyCalls = new EmergencyCalls();
+			var emergencyCallsView = new EmergencyCallsView({collection: emergencyCalls});
+			$(this.el).trigger("create");
+			return this;
+		}
 	});
-})(jQuery);
+
+	return EmergencyPageView;
+});
