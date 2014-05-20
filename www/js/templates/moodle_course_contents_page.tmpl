@@ -30,6 +30,23 @@ The Backbone.View creates the containing element (this.el) and it should look li
   data-expanded-icon="arrow-up" data-iconpos="right">
           <h3><%= c.get('name') %></h3>
 
+          <% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
+            <ul>
+              <% console.log('modules', c.get('modules'));%>
+              <% _.each(c.get('modules'), function(m){ %>
+                <li>
+                  <a href="<%= m.url %> ">
+                    <img src="<%= m.modicon %>" alt="<%= m.modname %>" />
+                    <%= m.name %>
+                  </a>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <em>bisher keine Module</em>
+          <% } %>
+
+
           <p>
             <%= c.get('summary') %>
           </p>
