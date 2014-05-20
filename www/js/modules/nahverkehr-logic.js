@@ -433,12 +433,17 @@
       resultList.on('add', this.render, this);
     },
     events:{
-      "vclick #searchButton" : "search",
+      "vclick #searchButton" : "searchButton",
       "vclick #earlierButton": "searchEarlier",
       "vclick #laterButton"  : "searchLater",
     },
-    search: function(){
+    searchButton: function() {
       console.log('click searchButton');
+      this.model.set('depTime', this.getMoment());
+      this.search();
+    },
+    search: function(){
+      console.log('fetch & render');
       this.model.fetchConnections();
       this.renderSummary();
     },
