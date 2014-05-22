@@ -2,19 +2,22 @@
  *	Router
  */
 define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'modules/home',
 	'modules/study',
 	'modules/emergency',
 	'modules/campus',
-	'modules/opening'], function(
-		StudyPageView,
-		EmergencyPageView,
-		CampusPageView,
-		OpeningPageView
-		) {
+	'modules/opening',
+	'modules/mensa',
+	'modules/search'
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, OpeningPageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
 			"": "home",
+			"home": "home",
 			"news": "news",
 			"events": "events",
 			"study": "study",
@@ -23,6 +26,7 @@ define([
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
 			"opening": "opening",
+			"mensa": "mensa",
 			"emergency": "emergency"
 		},
 
@@ -32,7 +36,8 @@ define([
 		},
 
 		home: function(){
-
+			console.log("Side -> Home");
+			this.changePage(new HomePageView);
 		},
 
 		news: function(){
@@ -54,7 +59,8 @@ define([
 		},
 
 		search: function(){
-
+			console.log("Side -> Search");
+			this.changePage(new SearchPageView);
 		},
 
 		// Routes for Campus - Page
@@ -90,25 +96,34 @@ define([
 		},
 
 		changePage: function(page){
-			console.log('changePage - render', page);
-			// clean up old view from DOM
-			if (this.currentView) {
-				this.currentView.remove();
-			}
+
 
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
-			this.currentView = page;
 
-			$('body').append($(page.el));
+			console.log(page.el);
+
+			$('#pagecontainer').append($(page.el));
+
 			var transition = $.mobile.defaultPageTransition;
+console.log(transition);
 			// Erste Seite nicht sliden
 			if (this.firstPage){
 				transition = 'none';
 				this.firstPage = false;
 			}
+
 			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
+
+			// clean up old view from DOM
+			if (this.currentView) {
+				this.currentView.remove();
+			} else {
+				$('#pagecontainer').children().first().remove();
+			}
+			this.currentView = page;
+
 		}
 	});
 
