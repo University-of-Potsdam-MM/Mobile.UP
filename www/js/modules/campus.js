@@ -1,8 +1,8 @@
-define([],function(){
+define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
 	var CampusPageView = Backbone.View.extend({
 
 		initialize: function(){
-			this.template = rendertmpl('campus');
+			this.template = helper.rendertmpl('campus');
 		},
 
 		render: function(){
