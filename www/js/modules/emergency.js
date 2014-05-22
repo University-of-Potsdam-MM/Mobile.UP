@@ -1,4 +1,4 @@
-define([], function(){
+define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
 	/*
 	 * Models
 	*/
@@ -21,7 +21,7 @@ define([], function(){
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = rendertmpl('emergencycall');
+			this.template = helper.rendertmpl('emergencycall');
 		},
 
 		render: function(){
@@ -67,7 +67,7 @@ define([], function(){
 	var EmergencyPageView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = rendertmpl('emergency');
+			this.template = helper.rendertmpl('emergency');
 		},
 
 		render: function() {

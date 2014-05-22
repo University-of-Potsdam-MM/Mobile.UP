@@ -1,4 +1,4 @@
-define([], function(){
+define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
 
 	var dateHelper = {
             // I give this function a German name,
@@ -65,7 +65,7 @@ define([], function(){
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = rendertmpl('opening_detail');
+			this.template = helper.rendertmpl('opening_detail');
 		},
 
 		render: function(){
@@ -90,13 +90,14 @@ define([], function(){
 		fetchSuccess: function() {
 			//this.collection = _.sortBy(this.collection.attributes, 'name');
 
-            this.collection = this.addTextToTimes(this.collection);
+      this.collection = this.addTextToTimes(this.collection);
 
-            var now = new Date();
+      var now = new Date();
 
-            _.each(this.collection.models, function(model){
-                model.attributes.statusOpenNow = dateHelper.statusAtPlaceAndDate(model, now);
-            });
+      _.each(this.collection.models, function(model){
+        model.attributes.statusOpenNow = dateHelper.statusAtPlaceAndDate(model.attributes, now);
+      });
+
 			this.render();
 		},
 
@@ -160,7 +161,7 @@ define([], function(){
 	var OpeningPageView = Backbone.View.extend({
 
 		initialize: function(){
-			this.template = rendertmpl('opening');
+			this.template = helper.rendertmpl('opening');
 		},
 
     	render: function(){
