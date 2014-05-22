@@ -2,3 +2,5 @@ platforms/**/
 
 /.project
 .settings/
+
+plugins/org.apache.cordova.inappbrowser/
