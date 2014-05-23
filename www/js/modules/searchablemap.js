@@ -1,4 +1,68 @@
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'helper', 'geojson'], function($, _, Backbone, helper, GeoJSON){
+
+	var CategoryMarker = function (marker, map, category, categoryStore) {
+
+		var marker = marker;
+		var map = map;
+		var category = category;
+		var categoryStore = categoryStore;
+
+		this.setVisibility = function(show, overrideCategory) {
+			if (typeof(overrideCategory)==='undefined') overrideCategory = false;
+
+			if (show && overrideCategory) {
+				marker.setMap(map);
+			} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
+				marker.setMap(map);
+			} else {
+				marker.setMap(null);
+			}
+		};
+
+		this.reset = function() {
+			if (categoryStore.isVisible(category)) {
+				marker.setMap(map);
+			} else {
+				marker.setMap(null);
+			}
+		};
+	}
+
+	var SEARCH_MODE = 0;
+	var SHOW_MODE = 1;
+
+	var SearchableMarkerCollection = function() {
+
+		var elements = [];
+		var mode = SHOW_MODE;
+
+		this.switchMode = function(targetMode) {
+			if (mode === targetMode) {
+				return;
+			}
+
+			switch (targetMode) {
+			case SEARCH_MODE:
+				// Don't show all markers, only the matching one
+				for (var i = 0; i < elements.length; i++) {
+					elements[i].setVisibility(false, true);
+				}
+				break;
+			case SHOW_MODE:
+				// Show all markers
+				for (var i = 0; i < elements.length; i++) {
+					elements[i].reset();
+				}
+				break;
+			}
+
+			mode = targetMode;
+		};
+
+		this.getElements = function() {
+			return elements;
+		};
+	}
 
 
 	$.widget("up.searchablemap", {
@@ -84,7 +148,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 		},
 
 		_insertSearchables: function(searchables) {
-			var createSearchables = rendertmpl("sitemap");
+			var createSearchables = helper.rendertmpl("sitemap_detail");
 			var host = $("#filterable-locations");
 
 			// Add items to search list
@@ -153,6 +217,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 		_insertMapsMarkers: function(items, hasSimilarsCallback) {
 			for (var i in items) {
 				var m = this._loadMarker(items[i].index);
+
 				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
@@ -176,68 +241,4 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 			return this._markers[index];
 		}
 	});
-});
-
-function CategoryMarker(marker, map, category, categoryStore) {
-
-	var marker = marker;
-	var map = map;
-	var category = category;
-	var categoryStore = categoryStore;
-
-	this.setVisibility = function(show, overrideCategory) {
-		if (typeof(overrideCategory)==='undefined') overrideCategory = false;
-
-		if (show && overrideCategory) {
-			marker.setMap(map);
-		} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
-			marker.setMap(map);
-		} else {
-			marker.setMap(null);
-		}
-	};
-
-	this.reset = function() {
-		if (categoryStore.isVisible(category)) {
-			marker.setMap(map);
-		} else {
-			marker.setMap(null);
-		}
-	};
-}
-
-var SEARCH_MODE = 0;
-var SHOW_MODE = 1;
-
-function SearchableMarkerCollection() {
-
-	var elements = [];
-	var mode = SHOW_MODE;
-
-	this.switchMode = function(targetMode) {
-		if (mode === targetMode) {
-			return;
-		}
-
-		switch (targetMode) {
-		case SEARCH_MODE:
-			// Don't show all markers, only the matching one
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].setVisibility(false, true);
-			}
-			break;
-		case SHOW_MODE:
-			// Show all markers
-			for (var i = 0; i < elements.length; i++) {
-				elements[i].reset();
-			}
-			break;
-		}
-
-		mode = targetMode;
-	};
-
-	this.getElements = function() {
-		return elements;
-	};
 });

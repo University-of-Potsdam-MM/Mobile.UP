@@ -9,11 +9,12 @@ define([
 	'modules/study',
 	'modules/emergency',
 	'modules/campus',
+	'modules/sitemap',
 	'modules/room',
 	'modules/opening',
 	'modules/mensa',
 	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -66,7 +67,6 @@ define([
 		},
 
 		// Routes for Campus - Page
-
 		sitemap: function(){
 			console.log("Side -> Sitemaps");
 			this.changePage(new SitemapPageView);

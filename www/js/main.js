@@ -1,6 +1,7 @@
 require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
     baseUrl: 'js',
+    //waitSeconds: 10,
     paths: {
     	'templates': '../templates',
     	'controllers': '../controllers',
@@ -10,6 +11,8 @@ require.config({
     	'underscore': 'lib/underscore.min',
         'underscore-string': 'lib/underscore.string.min',
     	'backbone': 'lib/backbone.min',
+        'async' : 'lib/async',
+        'geojson': 'lib/GeoJSON'
     },
     shim: {
         // use namespace Backbone
@@ -25,7 +28,8 @@ require.config({
         'underscore-string': {
             deps: ['underscore']
         },
-        'datebox': {
+
+         'datebox': {
             deps: ['jquery'],
             exports: 'datebox'
         },
