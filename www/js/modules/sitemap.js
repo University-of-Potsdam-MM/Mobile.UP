@@ -153,7 +153,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 
 			var terminalsData = Q.fcall(getGeoByCategory, data, terminals)
 								.then(drawCategory(settings.options.terminals, terminals, url.campus));
-/*
+
 			var institutesData = Q.fcall(getGeoByCategory, data, institutes)
 								.then(drawCategory(settings.options.institutes, institutes, url.campus));
 
@@ -168,9 +168,8 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 
 			var studentData = Q.fcall(getGeoByCategory, data, student)
 								.then(drawCategory(settings.options.student, student, url.campus));
-*/
-//			return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
-			return [terminalsData];
+
+			return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
 		};
 	}
 
