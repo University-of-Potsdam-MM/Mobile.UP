@@ -2,23 +2,30 @@ require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
     baseUrl: 'js',
     paths: {
-    	templates: '../templates',
-    	controllers: '../controllers',
-    	jquery: 'lib/jquery-1.10.2.min',
-    	jquerymobile: 'lib/jquery.mobile-1.4.1.min',
-        datebox: 'lib/jqm-datebox.core.min',
-    	underscore: 'lib/underscore.min',
-    	backbone: 'lib/backbone.min',
+    	'templates': '../templates',
+    	'controllers': '../controllers',
+    	'jquery': 'lib/jquery-1.10.2.min',
+    	'jquerymobile': 'lib/jquery.mobile-1.4.1.min',
+        'datebox': 'lib/jqm-datebox.core.min',
+    	'underscore': 'lib/underscore.min',
+        'underscore-string': 'lib/underscore.string.min',
+    	'backbone': 'lib/backbone.min',
     },
     shim: {
-    	backbone: {
+        // use namespace Backbone
+    	'backbone': {
     		deps: ['jquery', 'underscore'],
     		exports: 'Backbone'
     	},
-    	underscore: {
+        // use namespace _
+    	'underscore': {
     		exports: '_'
     	},
-        datebox: {
+        // use namespace _str.
+        'underscore-string': {
+            deps: ['underscore']
+        },
+        'datebox': {
             deps: ['jquery'],
             exports: 'datebox'
         },

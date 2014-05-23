@@ -9,10 +9,11 @@ define([
 	'modules/study',
 	'modules/emergency',
 	'modules/campus',
+	'modules/room',
 	'modules/opening',
 	'modules/mensa',
 	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, OpeningPageView, MensaPageView, SearchPageView){
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -25,6 +26,7 @@ define([
 			"search": "search",
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
+			"room": "room",
 			"opening": "opening",
 			"mensa": "mensa",
 			"emergency": "emergency"
