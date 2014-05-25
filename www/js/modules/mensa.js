@@ -58,7 +58,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu','date
 	 */
 	function loadMenu(location) {
 	    var d = Q.defer();
-	    var url = "https://api.uni-potsdam.de/endpoints/mensaAPI/1.0";
+	    var url = "http://api.uni-potsdam.de/endpoints/mensaAPI/1.0";
 
 		if (location == "griebnitzsee") {
 			location = "Griebnitzsee";

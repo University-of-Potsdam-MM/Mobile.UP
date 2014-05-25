@@ -85,8 +85,6 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 			});
 		},
 
-
-
 		fetchSuccess: function() {
 			//this.collection = _.sortBy(this.collection.attributes, 'name');
 
@@ -159,6 +157,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 	 *	Opening Page View
 	 */
 	var OpeningPageView = Backbone.View.extend({
+    attributes: {"id": "opening"},
 
 		initialize: function(){
 			this.template = helper.rendertmpl('opening');

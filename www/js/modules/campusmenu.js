@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
+define(['jquery', 'underscore', 'backbone', 'jquerymobile'], function($, _, Backbone){
 	$.widget("up.campusmenu", {
 		options: {
 			onChange: function(name) {},

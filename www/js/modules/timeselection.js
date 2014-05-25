@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'underscore-string'], function($, _, Backbone){
+define(['jquery', 'underscore', 'backbone', 'jquerymobile', 'underscore-string'], function($, _, Backbone){
 
 	var TimeSlot = Backbone.Model.extend({
 		defaults: {
