@@ -1,0 +1,17 @@
+.jshintignore
+.jshintrc
+
+/.editorconfig
+/.gitattributes
+/.travis.yml
+
+/build
+/Gruntfile.js
+
+*.php
+/tools
+/external
+/demos
+/tests
+/js
+/css
