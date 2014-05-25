@@ -156,7 +156,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
 			endTime = endTime.toISOString();
 
-			var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+			var request = "http://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
 			return _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
 		}
 	});
