@@ -6,6 +6,8 @@ define([
 	'underscore',
 	'backbone',
 	'modules/home',
+	'modules/news',
+	'modules/events',
 	'modules/study',
 	'modules/emergency',
 	'modules/campus',
@@ -14,7 +16,7 @@ define([
 	'modules/opening',
 	'modules/mensa',
 	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
+	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -36,6 +38,14 @@ define([
 		initialize: function(){
 			//this.CampusPageView = new CampusPageView();
 			//this.EmergencyPageView = new EmergencyPageView();
+			/*
+			// Handle back button throughout the application
+        	$('.back').live('click', function(event) {
+            	window.history.back();
+            	return false;
+        	});
+        	this.firstPage = true;
+        	*/
 		},
 
 		home: function(){
@@ -44,11 +54,13 @@ define([
 		},
 
 		news: function(){
-
+			console.log("Side -> News");
+			this.changePage(new NewsPageView);
 		},
 
 		events: function(){
-
+			console.log("Side -> Events");
+			this.changePage(new EventsPageView);
 		},
 
 		study: function(){
@@ -99,17 +111,17 @@ define([
 
 		changePage: function(page){
 
+			if(!this.currentView){
+				$('#pagecontainer').children().first().remove();
+			}
 
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
-
-			console.log(page.el);
-
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.defaultPageTransition;
-console.log(transition);
+
 			// Erste Seite nicht sliden
 			if (this.firstPage){
 				transition = 'none';
@@ -118,14 +130,7 @@ console.log(transition);
 
 			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
 
-			// clean up old view from DOM
-			if (this.currentView) {
-				this.currentView.remove();
-			} else {
-				$('#pagecontainer').children().first().remove();
-			}
 			this.currentView = page;
-
 		}
 	});
 

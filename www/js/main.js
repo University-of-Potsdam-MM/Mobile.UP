@@ -6,13 +6,15 @@ require.config({
     	'templates': '../templates',
     	'controllers': '../controllers',
     	'jquery': 'lib/jquery-1.10.2.min',
+        'jquerymobile-config': 'jqm-config',
     	'jquerymobile': 'lib/jquery.mobile-1.4.1.min',
         'datebox': 'lib/jqm-datebox.core.min',
     	'underscore': 'lib/underscore.min',
         'underscore-string': 'lib/underscore.string.min',
     	'backbone': 'lib/backbone.min',
         'async' : 'lib/async',
-        'geojson': 'lib/GeoJSON'
+        'geojson': 'lib/GeoJSON',
+        'date': 'lib/date',
     },
     shim: {
         // use namespace Backbone
@@ -29,8 +31,12 @@ require.config({
             deps: ['underscore']
         },
 
-         'datebox': {
-            deps: ['jquery'],
+        'jquerymobile-config': ['jquery'],
+
+        'jquerymobile': ['jquery', 'jquerymobile-config'],
+
+        'datebox': {
+            deps: ['jquery', 'jquerymobile'],
             exports: 'datebox'
         },
 
@@ -41,11 +47,8 @@ require.config({
 
 });
 
-require(['app'], function(App){
-    $.mobile.ajaxEnabled = false;
-    $.mobile.linkBindingEnabled = false;
-    $.mobile.hashListeningEnabled = false;
-    $.mobile.pushStateEnabled = false;
-    $.mobile.defaultPageTransition = 'none';
-	App.initialize();
+require(['jquery', 'app', 'jquerymobile', 'jquerymobile-config'], function($, App){
+    $(function(){
+	   App.initialize();
+    });
 });
