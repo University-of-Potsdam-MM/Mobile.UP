@@ -97,7 +97,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			var startTime = this.get("startTime");
 			var endTime = this.get("endTime");
 
-			var request = "http://fossa.soft.cs.uni-potsdam.de:8280/services/roomsAPI/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+			var request = "http://api.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
 			if (building) {
 				request = request + "&building=%s";
 			}

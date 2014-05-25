@@ -24,8 +24,8 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
+define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
 
-(function($) {
 
   window.App = {
     model:       {}, // model classes
@@ -45,7 +45,7 @@ previously working functionality. Please don't judge.
 
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
-      var spinner = addLoadingSpinner("book-locations");
+      var spinner = helper.addLoadingSpinner("book-locations");
       spinner();
 
       //console.log('updateLocation');
@@ -69,7 +69,7 @@ previously working functionality. Please don't judge.
         	bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
         //console.log('List', bookLocationList);
-        var spinner = removeLoadingSpinner("book-locations");
+        var spinner = helper.removeLoadingSpinner("book-locations");
         spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
@@ -83,7 +83,7 @@ previously working functionality. Please don't judge.
     // Book class properties
 
     fromXmlRecord: function(xmlRecord) {
-      // console.log('xml:', xmlRecord);
+      console.log('xml:', xmlRecord);
       var $xmlRecord = $(xmlRecord);
       var recordId = App.model.Book.textForTag(xmlRecord, 'recordIdentifier');
       var model = {
@@ -382,7 +382,7 @@ previously working functionality. Please don't judge.
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
-      return Q.fcall(addLoadingSpinner("search-results"))
+      return Q.fcall(helper.addLoadingSpinner("search-results"))
       .then(function() { return fetch.loadSearch(); })
       .then(function(xml){
     	// get relevant pagination information
@@ -396,7 +396,7 @@ previously working functionality. Please don't judge.
         return xml;
       }).done(function(xml) {
         //console.log('done', xml);
-    	var spinner = removeLoadingSpinner("search-results");
+    	var spinner = helper.removeLoadingSpinner("search-results");
         spinner();
         resultList.addXmlSearchResult(xml);
         $('input[type="submit"]').removeAttr('disabled');
@@ -433,7 +433,7 @@ previously working functionality. Please don't judge.
           // TODO: return and memorize Backbone collection instead of promise
           var d = Q.defer();
           var url = this.url();
-          var headers = { "Authorization": getAuthHeader() };
+          var headers = { "Authorization": helper.getAuthHeader() };
           $.ajax({
   			url: url,
   			dataType: "xml",
@@ -482,17 +482,22 @@ previously working functionality. Please don't judge.
    */
   App.view.Search = Backbone.View.extend({
 	  el: '#libraryContent',
-	  template: rendertmpl('book_search'),
 
 	  events: {
 		  	'submit form': 'submit',
 		  	'click .pagination-button': 'paginate'
 	  },
 
+    initialize: function(){
+      this.template = helper.rendertmpl('book_search');
+    },
+
 	  render: function(){
-		  var html = this.template({keyword: App.models.currentSearch.get('query')});
-		  this.$el.html(html);
-		  this.$el.trigger('create');
+      console.log(this.el);
+
+		  $(this.el).html(this.template({keyword: App.models.currentSearch.get('query')}));
+
+      console.log(this);
 		  return this;
 	  },
 
@@ -535,21 +540,22 @@ previously working functionality. Please don't judge.
    */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-
-    initialize: function(){
-      this.model.on('change', this.render, this);
-      this.collection.on('add', this.render, this);
-    },
+    template: helper.rendertmpl('book_list_view'),
 
     events: {
       "click .pagination-button" : 'loadMore',
       "click ul.booklist li.book-short" : 'renderDetail',
     },
 
-    template: rendertmpl('book_list_view'),
-    render: function(){
+    initialize: function(){
+      this.model.on('change', this.render, this);
+      this.collection.on('add', this.render, this);
+    },
 
+
+    render: function(){
       var search = App.models.currentSearch;
+      console.log(search);
       var html = this.template({
         search:             search.attributes,
         paginationPossible: search.paginationPossible(),
@@ -594,7 +600,7 @@ previously working functionality. Please don't judge.
 		  "click .backToList" : 'back'
 	  },
 
-	  template: rendertmpl('book_detail_view'),
+	  template: helper.rendertmpl('book_detail_view'),
 	  render: function(){
 		  var html = this.template({book:this.model});
 		  this.$el.html(html);
@@ -625,7 +631,7 @@ previously working functionality. Please don't judge.
   App.view.LocationView = Backbone.View.extend({
 	  el: '#book-locations',
 	  collection: App.collection.BookLocationList,
-	  template: rendertmpl('book_location_view'),
+	  template: helper.rendertmpl('book_location_view'),
 
 	  render: function(){
 		  var html = this.template({locations:this.collection.models});
@@ -739,19 +745,36 @@ previously working functionality. Please don't judge.
   });
 
   // setting everything up
-  $(document).on("pageinit", "#search", function () {
-    console.log('pageinit #search');
 
-    App.view.SearchForm = new App.view.Search();
-    App.view.SearchForm.render();
+  var SearchPageView = Backbone.View.extend({
+    attributes: {"id": 'search'},
 
-    // initialize Main Views
-    App.view.SearchResults = new App.view.BookList({
-      model: App.models.currentSearch,
-      collection: App.collections.searchResults
-    });
-    App.view.SearchResults.render();
+    initialize: function(){
+      this.template = helper.rendertmpl('search');
+    },
+
+    render: function(){
+
+      $(this.el).html(this.template({}));
+      console.log(this.el);
+      console.log($("#libraryContent", this.el));
+
+      App.view.SearchForm = new App.view.Search({el: $("#libraryContent", this.el)});
+      App.view.SearchForm.render();
+
+      // initialize Main Views
+
+      App.view.SearchResults = new App.view.BookList({
+        model: App.models.currentSearch,
+        collection: App.collections.searchResults,
+        el: $("#search-results", this.el)
+      });
+      App.view.SearchResults.render();
+
+      return this;
+      }
 
   });
 
-})(jQuery);
+  return SearchPageView;
+});
