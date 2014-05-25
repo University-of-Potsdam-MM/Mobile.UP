@@ -5,16 +5,17 @@ require.config({
     paths: {
     	'templates': '../templates',
     	'controllers': '../controllers',
-    	'jquery': 'lib/jquery-1.10.2.min',
+    	'jquery': 'vendor/jquery.min',
         'jquerymobile-config': 'jqm-config',
-    	'jquerymobile': 'lib/jquery.mobile-1.4.1.min',
+    	'jquerymobile': 'vendor/jquery.mobile.min',
         'datebox': 'lib/jqm-datebox.core.min',
-    	'underscore': 'lib/underscore.min',
-        'underscore-string': 'lib/underscore.string.min',
-    	'backbone': 'lib/backbone.min',
+    	'underscore': 'vendor/underscore-min',
+        'underscore-string': 'vendor/underscore.string.min',
+    	'backbone': 'vendor/backbone-min',
         'async' : 'lib/async',
         'geojson': 'lib/GeoJSON',
         'date': 'lib/date',
+        'q': 'lib/q'
     },
     shim: {
         // use namespace Backbone
