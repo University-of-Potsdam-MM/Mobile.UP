@@ -1,0 +1,4 @@
+{
+    "main": ["main.js", "main_2.js"],
+    "subpackage": ["submodule.js", "submodule_2.js"]
+}

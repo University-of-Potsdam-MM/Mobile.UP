@@ -1,147 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <!-- Always use the same header for production -->
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <!-- Always use the same header for production -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
 
-    <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
-    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/media.css" />
-    <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-    <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/media.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-style.css" />
+        <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
 
-    <!-- Javascript Files -->
-    <!-- Core Libraries -->
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script src="js/lib/jquery-1.10.2.min.js"></script>
-    <script src="js/lib/jquery.mobile-1.4.1.min.js"></script>
-    <script src="js/lib/q.min.js"></script>
-    <script src="js/lib/underscore.min.js"></script>
-  	<script src="js/lib/underscore.string.min.js"></script>
-    <script src="js/lib/backbone.min.js"></script>
-    <script src="js/lib/jqm-datebox.core.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>
-    <script src="js/lib/jqm-datebox.mode.datebox.min.js"></script>
-    <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
-	<script src="js/lib/URI.min.js"></script>
+        <!-- Javascript Files -->
+        <!-- Core Libraries -->
+        <script type="text/javascript" src="phonegap.js"></script>
 
-    <script src="js/modules/common-widgets.js"></script>
-    <script id="panel-init">
-      $(function () {
-    	  $("[data-role='panel']").panel().enhanceWithin();
-    	});
-      </script>
-     <script src="js/app.js"></script>
+        <script type="text/javascript" src="js/vendor/require.js"></script>
 
-    <!-- Mensa -->
-    <script src="js/modules/mensa-logic.js"></script>
+        <!--  <script src="js/lib/URI.min.js"></script>-->
 
-    <!-- Sitemaps -->
-    <script src="js/lib/GeoJSON.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <script src="js/modules/sitemap-logic.js"></script>
+        <!--<script id="panel-init">
+        $(function () {
+          $("[data-role='panel']").panel().enhanceWithin();
+        });
+        </script>
+        -->
 
-    <!-- Opening -->
-    <script src="js/modules/opening-logic.js"></script>
+        <script src="js/xml2json.min.js"></script>
 
-    <!-- Search - Library -->
-    <script src="js/xml2json.min.js"></script>
-    <script src="js/modules/library-logic.js"></script>
+        <!-- Moodle -->
+        <!--<script src="js/modules/moodle-logic.js"></script>-->
 
-    <!-- Emergency -->
-    <script src="js/modules/emergency-logic.js"></script>
+        <!-- Public Transportation -->
+        <!--
+        <script src="js/vendor/moment.js"></script>
+        <script src="js/modules/nahverkehr-logic.js"></script> -->
 
-    <!-- Moodle -->
-    <script src="js/modules/moodle-logic.js"></script>
+        <!-- Sports -->
+        <!--
+        <script src="js/modules/sports-logic.js"></script>-->
+        <script type="text/javascript" src="js/main.js"></script>
 
-    <!-- Public Transportation -->
-    <script src="js/vendor/moment.js"></script>
-    <script src="js/modules/nahverkehr-logic.js"></script>
 
-	<!-- Rooms -->
-	<script src="js/modules/rooms-logic.js"></script>
-	
-	<!-- Sports -->
-	<script src="js/modules/sports-logic.js"></script>
+    </head>
+    <body id="panel-off">
+        <div class="indexpage">
+            <div class="ui-grid-a">
+                <div class="ui-block-a page-wrapper">
+                    <!-- Start Home - Panel -->
+                    <!--
+                    <div data-role="panel" id="nav-panel" data-position-fixed="true" data-display="overlay" data-theme="a">
+                    <ul data-role="listview" data-theme="b" class="nav-search">
+                    <li data-icon="false"><a href="#" data-rel="close">Menu schließen</a></li>
 
-  </head>
-  <body id="panel-off">
-  <div class="indexpage">
-  <div class="ui-grid-a">
-  <div class="ui-block-a page-wrapper">
-    <!-- Start Home - Panel -->
-    <div data-role="panel" id="nav-panel" data-position-fixed="true" data-display="overlay" data-theme="a">
-      <ul data-role="listview" data-theme="b" class="nav-search">
-        <li data-icon="false"><a href="#" data-rel="close">Menu schließen</a></li>
-
-        <li class="news" data-icon="false"><a href="news.html">News</a></li>
-        <li class="events" data-icon="false"><a href="events.html">Veranstaltungen</a></li>
-        <li class="study" data-icon="false"><a href="study.html">Studium</a></li>
-        <li class="around" data-icon="false"><a href="campus.html">Campus</a></li>
-        <li class="search" data-icon="false"><a href="search.html">Suche</a></li>
-        <li class="home" data-icon="false"><a href="index.html">Home</a></li>
-         <li class="options" data-icon="gear"><a href="options.html">Einstellungen</a></li>
-      </ul>
-    </div>
-    <!-- End Home - Panel --> </div><!--  ende grif block a -->
-    <!-- Start Main - Page -->
-    <div class="ui-block-b page-wrapper">
-    <div data-role="page" id="home">
-      <!-- Start Header -->
-      <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-        <!-- 	<a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-        <a href="options.html" data-icon="gear" class="ui-btn-right">Optionen</a> -->
-        <h1>Mobile UP</h1>
-      </div>
-      <!-- End Header -->
-      <!-- Start Main - Navigation -->
-      <div data-role="content">
-        <ul data-role="listview" data-inset="true" data-theme="b" id="main-navigation">
-          <li class="news">
-            <a href="news.html" data-role="button" data-transition="slidefade" data-theme="a">
-              <h1>Neuigkeiten</h1>
-              <p>News aus der Hochschule</p>
-            </a>
-          </li>
-          <li class="events">
-            <a href="events.html" data-role="button" data-transition="slidefade">
-              <h1>Veranstaltungen</h1>
-              <p> Veranstaltungen rund ums Studium</p>
-            </a>
-          </li>
-
-          <li class="study">
-            <a href="study.html" data-role="button" data-transition="slidefade">
-              <h1>Studium</h1>
-              <p>Moodle</p>
-            </a>
-          </li>
-          <li class="around">
-            <a href="campus.html" data-role="button" data-transition="slidefade">
-              <h1>Campus</h1>
-              <p>Lagepl&auml;ne, Raumbelegung, &Ouml;ffnungszeiten,<br>Bus & Bahn, Mensa & Speisepläne,<br>Notrufnummern, Hochschulsport</p>
-            </a>
-          </li>
-
-          <li class="search">
-            <a href="search.html" data-role="button" data-transition="slidefade">
-              <h1>Suche</h1>
-              <p>Bibliothek, Personen</p>
-            </a>
-          </li>
-
-        </ul>
-      </div>
-      <!-- End Main - Navigation -->
-    </div>
-    <!-- End Main - Page --> </div> <!-- ende grid b -->
-    </div><!--  ende grid gesamt -->
-
- </div>
-  </body>
+                    <li class="news" data-icon="false"><a href="#news">News</a></li>
+                    <li class="events" data-icon="false"><a href="#events">Veranstaltungen</a></li>
+                    <li class="study" data-icon="false"><a href="#study">Studium</a></li>
+                    <li class="around" data-icon="false"><a href="#campus">Campus</a></li>
+                    <li class="search" data-icon="false"><a href="#search">Suche</a></li>
+                    <li class="home" data-icon="false"><a href="#home">Home</a></li>
+                    </ul>
+                    </div>
+                    <!-- End Home - Panel -->
+                </div><!--  ende grif block a -->
+                <div class="ui-block-b page-wrapper" id="pagecontainer">
+                    <div data-role="page" id="page"></div>
+                </div>
+            </div> <!-- ende grid b -->
+        </div><!--  ende grid gesamt -->
+    </body>
 </html>
