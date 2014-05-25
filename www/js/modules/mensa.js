@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.en_US.utf8'], function($, _, Backbone, helper, campusmenu, datebox){
+define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.en_US.utf8'], function($, _, Backbone, helper, Q, campusmenu, datebox){
 
 	$(document).on("pageinit", "#mensa", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });

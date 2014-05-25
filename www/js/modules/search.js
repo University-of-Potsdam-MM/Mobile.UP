@@ -24,7 +24,7 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backbone, helper, Q){
 
 
   window.App = {
