@@ -12,9 +12,11 @@ define([
 	'modules/sitemap',
 	'modules/room',
 	'modules/opening',
+	'modules/transport',
+	'modules/transport2',
 	'modules/mensa',
 	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, MensaPageView, SearchPageView){
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -28,6 +30,8 @@ define([
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
 			"room": "room",
+			"transport": "transport",
+			"transport2": "transport2",
 			"opening": "opening",
 			"mensa": "mensa",
 			"emergency": "emergency"
@@ -85,6 +89,16 @@ define([
 		room: function(){
 			console.log("Side -> Rooms");
 			this.changePage(new RoomPageView);
+		},
+
+		transport: function(){
+			console.log("Side -> Transport");
+			this.changePage(new TransportPageView);
+		},
+
+		transport2: function(){
+			console.log("Side -> Transport2")
+			this.changePage(new Transport2PageView);
 		},
 
 		opening: function(){
