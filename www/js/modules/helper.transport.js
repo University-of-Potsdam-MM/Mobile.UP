@@ -239,7 +239,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
     return myCon;
   }
 
-  function getVerbindung(fromExternalId, toExternalId, moment, arrivalMode) {
+  var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
     var defer = $.Deferred();
     $.post(
       endpoint(),
@@ -339,7 +339,8 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
   });
 
   return {
-  	stations: function() {return stations;}
+  	stations: function() {return stations;},
+    getVerbindung: getVerbindung
   };
 
 });

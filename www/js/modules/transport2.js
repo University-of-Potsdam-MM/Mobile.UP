@@ -185,10 +185,10 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     },
 
     fromStation: function(){
-      return stations[this.get('from')]
+      return ht.stations()[this.get('from')]
     },
     toStation: function(){
-      return stations[this.get('to')]
+      return ht.stations()[this.get('to')]
     },
     resetConnections: function(newConnections){
       this.get('connections').reset(newConnections);
@@ -262,9 +262,8 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    });
 
 	    // From station
-
 	    Transport.view.FromStation = new NavigationView({
-	      el: $("#fromStation2")
+	      el: ($("#fromStation2"),this.el)
 	    });
 
 	    Transport.view.FromStation.on('select', function(buttonName){
@@ -278,7 +277,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    // To station
 
 	    Transport.view.ToStation = new NavigationView({
-	      el: $("#toStation2"),
+	      el: ($("#toStation2"),this.el),
 	    });
 
 	    Transport.view.ToStation.on('select', function(buttonName){
@@ -292,7 +291,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    // Slider
 
 	    Transport.view.ArrivalModeSlider = new TransportViewsSliderView({
-	      el: $('#flip-1')
+	      el: ($('#flip-1'), this.el)
 	    });
 
 	    Transport.view.ArrivalModeSlider.on('toggle', function(){
@@ -301,7 +300,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    });
 
 	    Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
-	      el: ('#complexTransport'),
+	      el: ($('#complexTransport'), this.el),
 	      model: Transport.model.State,
 	      collection: Transport.model.State.get('connections')
 	    });
