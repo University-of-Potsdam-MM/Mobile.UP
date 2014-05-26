@@ -12,20 +12,17 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     initialize: function(options) {
       this.stationName = options.stationName;
       var transports = this.collection;
-      console.log(this);
-      this.$ul = this.$el.find('ul');
+      this.$ul = this.$el.find('ul#transport-list');
       transports.on("reset", this.render, this);
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
     template: helper.rendertmpl('transport_listitem_view'),
     addOne: function(journey) {
-      console.log('add', journey);
       this.$ul.append(this.template({journey: journey}));
     },
     render: function() {
       console.log('render');
-      console.log(this);
       this.$el.find('.stationName').html(this.stationName);
       this.$ul.empty();
       this.collection.each(this.addOne);
@@ -49,17 +46,6 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     }
   });
 
-  Transport.views.SliderView = Backbone.View.extend({
-    events: {
-      'slidestart': function(ev){
-        console.log('toggleMode', ev);
-        this.trigger('toggle');
-      }
-    }
-  });
-
-
-
   /*
    *  Transport Page View
    */
@@ -77,7 +63,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
         events: {
           'vclick #later-button' : function(){
             // we just fetch departing journeys for all stations
-            _.each(stations, function(station){
+            _.each(ht.stations(), function(station){
               station.fetchJourneys();
             });
           }
@@ -88,13 +74,12 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transportViewTransportList.render();
 
       transportViewNavbar = new NavigationView({
-        el: $("#from-station-navbar")
+        el: ($("#from-station-navbar"),this.el)
       });
 
       transportViewNavbar.on('select', function(buttonName){
-        console.log(arguments);
-        transportViewTransportList.collection = stations[buttonName].journeys;
-        transportViewTransportList.stationName = stations[buttonName].name;
+        transportViewTransportList.collection = ht.stations()[buttonName].journeys;
+        transportViewTransportList.stationName = ht.stations()[buttonName].name;
         transportViewTransportList.render();
       });
 
