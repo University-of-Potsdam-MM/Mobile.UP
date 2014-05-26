@@ -15,7 +15,8 @@ require.config({
         'async' : 'lib/async',
         'geojson': 'lib/GeoJSON',
         'date': 'lib/date',
-        'q': 'vendor/q'
+        'q': 'vendor/q',
+        'moment': 'vendor/moment.min'
     },
     shim: {
         // use namespace Backbone

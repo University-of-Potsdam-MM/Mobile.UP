@@ -1,0 +1,40 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
+    <a href="#campus" data-role="button" data-icon="false"	data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+    <h1>Verkehr</h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+    <div data-role="navbar">
+        <ul>
+            <li><a href="#transport" class="ui-btn-active">N&auml;chste Abfahrten</a></li>
+            <li><a href="#transport2">Fahrt planen</a></li>
+        </ul>
+    </div>
+    <!-- Fahrt eingeben -->
+    <div id="from-station-navbar" data-role="navbar" class="buttons_pt">
+        <ul>
+            <li><p>VON:</p></li>
+            <li><a href="#" class="ui-btn-active">G-see</a></li>
+            <li><a href="#">Golm</a></li>
+            <li><a href="#">Palais</a></li>
+        </ul>
+    </div>
+    <div id="search-results">
+        <h3>Fahrten ab <span class="stationName">Griebnitzsee</span></h3>
+
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true" id="transport-list">
+              <!-- template transport_listitem_view -->
+            </ul>
+        </div>
+
+        <div class="spaeter">
+            <input id="later-button"type="submit" data-theme="a" value="Später" />
+        </div>
+
+    </div>
+	<!-- End Main Content -->
+</div>
