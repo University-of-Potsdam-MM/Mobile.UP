@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transportViewTransportList.render();
 
       transportViewNavbar = new NavigationView({
-        el: ($("#from-station-navbar"),this.el)
+        el: this.$el.find("#from-station-navbar")
       });
 
       transportViewNavbar.on('select', function(buttonName){
