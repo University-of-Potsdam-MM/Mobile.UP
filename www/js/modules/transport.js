@@ -59,7 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     render: function(){
       $(this.el).html(this.template({}));
       transportViewTransportList = new TransportViewsTransportList({
-        el: ($('#search-results'), this.el),
+        el: this.$el.find('#search-results'),
         events: {
           'vclick #later-button' : function(){
             // we just fetch departing journeys for all stations
