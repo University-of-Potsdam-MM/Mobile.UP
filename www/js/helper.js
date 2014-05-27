@@ -37,6 +37,8 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 	/*
  	 * Loading Spinner Animation
  	*/
+ 	// I think we should use a selector/ DOM element as argument
+ 	// instead of an id - Richard
 	var addLoadingSpinner = function(uniqueDivId) {
 		return function() {
 			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
