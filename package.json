@@ -18,11 +18,15 @@
   },
   "homepage": "https://github.com/University-of-Potsdam-MM/UP.App",
   "dependencies": {
+    "jquery": "^2.1.1",
+    "jquery-mobile": "^1.4.1",
     "underscore": "^1.6.0",
+    "underscore.string": "^2.3.3",
     "backbone": "^1.1.2",
     "q": "^1.0.0",
     "underscore.string": "^2.3.3",
     "moment": "^2.5.1",
+    "requirejs": "^2.1.11",
     "machina": "^0.3.6"
   },
   "devDependencies": {

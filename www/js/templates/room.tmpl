@@ -1,0 +1,19 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
+    <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+    <h1>Raumbelegung</h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+    <div data-role="campusmenu" data-store="up.mensa.default"></div>
+    <div id="freeRooms">
+		<br />
+		<img src="img/up/hinweis.png" class="alignleft">
+		<p id="roomsOverviewHint" class="blau" style="margin-left:55px;">In dieser Ansicht werden freie Räume auf dem gewählten Campus angezeigt. Frei bedeutet, dass der Raum nicht über das Raumbuchungssystem der Universität Potsdam reserviert wurde. Dies sagt nichts über die Verwendung des Raumes durch andere, zum Beispiel studentische Lerngruppen, aus.</p>
+		<p id="roomsDetailsHint" class="blau" style="margin-left:55px;">In dieser Ansicht werden alle heutigen Reservierungen für diesen Raum angezeigt.</p>
+		<div data-role="timeselection"></div>
+		<div id="roomsHost"></div>
+	</div>
+</div>

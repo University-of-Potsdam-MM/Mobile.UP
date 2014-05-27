@@ -13,7 +13,7 @@
 	</li>
 	<% }); %>
 </ul>
-<% if (!reservations) { %>
+<% if (!reservations || reservations.length == 0) { %>
 <ul>
 	<li>Keine Reservierungen</li>
 </ul>
