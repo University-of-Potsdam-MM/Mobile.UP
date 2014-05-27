@@ -7,6 +7,7 @@ define([
 	'backbone',
 	'modules/home',
 	'modules/study',
+	'modules/moodle',
 	'modules/emergency',
 	'modules/campus',
 	'modules/sitemap',
@@ -16,7 +17,7 @@ define([
 	'modules/transport2',
 	'modules/mensa',
 	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, SearchPageView){
+	], function($, _, Backbone, HomePageView, StudyPageView, MoodlePageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, SearchPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -25,6 +26,7 @@ define([
 			"news": "news",
 			"events": "events",
 			"study": "study",
+			"study/moodle": "moodle",
 			"campus": "campus",
 			"search": "search",
 			// Routes for Campus - Page
@@ -68,6 +70,11 @@ define([
 		study: function(){
 			console.log("Side -> Study");
 			this.changePage(new StudyPageView);
+		},
+
+		moodle: function () {
+			console.log("Side -> Study -> Moodle")
+			this.changePage(new MoodlePageView);
 		},
 
 		campus: function(){

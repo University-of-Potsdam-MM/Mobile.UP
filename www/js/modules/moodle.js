@@ -15,12 +15,13 @@ This ish how works for me on OS X:
 
 "use strict";
 
-// TODO change this in build step
-var environment = 'development';
+define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
+  function( $, _, Backbone, helper, machina ) {
 
-window.MoodleApp = {};
+  // TODO change this in build step
+  var environment = 'development';
 
-(function($){
+  window.MoodleApp = {};
 
   MoodleApp.fsm = new machina.Fsm({
     logout: function(){
@@ -315,7 +316,7 @@ window.MoodleApp = {};
   });
 
   MoodleApp.CourseListView = Backbone.View.extend({
-    template: rendertmpl('moodle_course_list_view'),
+    template: helper.rendertmpl('moodle_course_list_view'),
     initialize: function(){
       this.collection.on('reset', this.render, this);
     },
@@ -328,7 +329,7 @@ window.MoodleApp = {};
   })
 
   MoodleApp.CourseContentsPage = Backbone.View.extend({
-    template: rendertmpl('moodle_course_contents_page'),
+    template: helper.rendertmpl('moodle_course_contents_page'),
     initialize: function(options){
       this.news = options.news;
 
@@ -380,7 +381,7 @@ window.MoodleApp = {};
     events:{
       "click input#login": 'click_login'
     },
-    template: rendertmpl('auth'),
+    template: helper.rendertmpl('auth'),
     attributes: {"data-role":"page"},
     render: function(){
       console.log('render LoginPageView');
@@ -463,11 +464,13 @@ window.MoodleApp = {};
   $(document).on("pagechange", function(event, options){
     console.log('pagechange', arguments);
     console.log('pagechange', options.toPage);
-    
+
     MoodleApp.fsm.handle('initialize');
     // MoodleApp.fsm.logout();
   });
 
 
-})(jQuery);
+  return MoodleApp;
+
+});
 
