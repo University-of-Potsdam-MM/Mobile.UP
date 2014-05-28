@@ -1,11 +1,20 @@
 UP.App
 ======
 
-##Dependencies aktualisieren
+## Dependencies aktualisieren
 
-1. npm install
+```
+npm install
+./script/vendor.sh
+```
 
-2. ./script/vendor.sj
+## Running the webserver / proxy for development
+
+```
+npm start
+```
+The project should then be available at http://localhost:3000/www/
+
 
 ## Weiterführende Informationen
 
