@@ -83,7 +83,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     // Book class properties
 
     fromXmlRecord: function(xmlRecord) {
-      console.log('xml:', xmlRecord);
+      // console.log('xml:', xmlRecord);
       var $xmlRecord = $(xmlRecord);
       var recordId = App.model.Book.textForTag(xmlRecord, 'recordIdentifier');
       var model = {
@@ -492,11 +492,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     },
 
     render: function(){
-      console.log(this.el);
-
       this.$el.html(this.template({keyword: App.models.currentSearch.get('query')}));
-
-      console.log(this);
       return this;
     },
 
@@ -537,7 +533,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     template: helper.rendertmpl('book_list_view'),
 
     events: {
-      "click .pagination-button" : 'loadMore',
+      "click input" : 'loadMore',
       "click ul.booklist li.book-short" : 'renderDetail',
     },
 
@@ -549,7 +545,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
 
     render: function(){
       var search = App.models.currentSearch;
-      console.log(search);
+
       var html = this.template({
         search:             search.attributes,
         paginationPossible: search.paginationPossible(),
@@ -564,6 +560,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
 
     loadMore: function(ev){
       ev.preventDefault();
+      $('#loadNext').attr('disabled', 'disabled');
       App.models.currentSearch.loadNext();
     },
 
