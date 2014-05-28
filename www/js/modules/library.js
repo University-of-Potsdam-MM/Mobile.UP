@@ -488,11 +488,12 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     },
 
     initialize: function(){
-      this.template = helper.rendertmpl('book_search');
+      this.template = helper.rendertmpl('library_search');
     },
 
     render: function(){
       this.$el.html(this.template({keyword: App.models.currentSearch.get('query')}));
+      this.$el.trigger('create');
       return this;
     },
 
@@ -530,7 +531,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
    */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-    template: helper.rendertmpl('book_list_view'),
+    template: helper.rendertmpl('library_list_view'),
 
     events: {
       "click input" : 'loadMore',
@@ -592,7 +593,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
       "click .backToList" : 'back'
     },
 
-    template: helper.rendertmpl('book_detail_view'),
+    template: helper.rendertmpl('library_detail_view'),
     render: function(){
       var html = this.template({book:this.model});
       this.$el.html(html);
@@ -623,7 +624,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
   App.view.LocationView = Backbone.View.extend({
     el: '#book-locations',
     collection: App.collection.BookLocationList,
-    template: helper.rendertmpl('book_location_view'),
+    template: helper.rendertmpl('library_location_view'),
 
     render: function(){
       var html = this.template({locations:this.collection.models});
@@ -738,24 +739,21 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
 
   // setting everything up
 
-  var SearchPageView = Backbone.View.extend({
+  var LibraryPageView = Backbone.View.extend({
     attributes: {"id": 'search'},
 
     initialize: function(){
-      this.template = helper.rendertmpl('search');
+      this.template = helper.rendertmpl('library');
     },
 
     render: function(){
 
       this.$el.html(this.template({}));
-      // console.log(this.el);
-      // console.log($("#libraryContent", this.el));
 
       App.view.SearchForm = new App.view.Search({el: this.$el.find("#libraryContent")});
       App.view.SearchForm.render();
 
       // initialize Main Views
-
       App.view.SearchResults = new App.view.BookList({
         model: App.models.currentSearch,
         collection: App.collections.searchResults,
@@ -768,5 +766,5 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
 
   });
 
-  return SearchPageView;
+  return LibraryPageView;
 });
