@@ -1,4 +1,3 @@
-<% console.log('search', search); %>
 <h2>
   <span>Liste aller Ausgaben:</span><br>
   <span class="numberOfListEntries blau"><%= search.results.length %></span> von <span class="numberOfRecords"><%= search.numberOfRecords %></span> Einträgen
@@ -23,5 +22,5 @@
     <% }); %>
 </ul>
 <% if (paginationPossible) { %>
-<a href="#loadNext" data-role="button" data-theme="a" class="pagination-button">Lade Ergebnisse <%= startPagination %> - <%= endPagination %></a>
+<input id="loadNext" type="submit" value="Lade Ergebnisse <%= startPagination %> - <%= endPagination %>" data-theme="a" data-icon="search" data-iconpos="right"/>
 <% } %>

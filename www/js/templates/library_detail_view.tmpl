@@ -1,4 +1,4 @@
-<a href="#goBack" data-role="button" data-theme="a" class="backToList">Back</a>
+<a href="#library" data-role="button" data-theme="a" class="backToList">Back</a>
 <div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
 <% console.log('book detail', book); %>
 <%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
@@ -52,9 +52,8 @@
 	    <% } %>
 
 	    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
-	    
+
 	    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
     </div>
   </div>
 </div>
-<% console.log(book.get('notes')) %>

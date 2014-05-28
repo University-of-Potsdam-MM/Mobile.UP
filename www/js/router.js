@@ -15,8 +15,8 @@ define([
 	'modules/transport',
 	'modules/transport2',
 	'modules/mensa',
-	'modules/search'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, SearchPageView){
+	'modules/library'
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -26,7 +26,7 @@ define([
 			"events": "events",
 			"study": "study",
 			"campus": "campus",
-			"search": "search",
+			"library": "library",
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
 			"room": "room",
@@ -75,9 +75,10 @@ define([
 			this.changePage(new CampusPageView);
 		},
 
-		search: function(){
-			console.log("Side -> Search");
-			this.changePage(new SearchPageView);
+		library: function(){
+			console.log("Side -> Library");
+			// later on Search View and PersonPageView and LibraryPageView
+			this.changePage(new LibraryPageView);
 		},
 
 		// Routes for Campus - Page
