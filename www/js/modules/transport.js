@@ -54,6 +54,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 
     initialize: function(){
       this.template = helper.rendertmpl('transport');
+      ht.fetchJourneysForAllStations();
     },
 
     render: function(){

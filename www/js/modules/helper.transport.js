@@ -315,7 +315,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
     return tmp;
   };
 
-    // moment should be an instance of moment.js
+  // moment should be an instance of moment.js
   function getLeavingJourneys(externalId, moment) {
     var defer = $.Deferred();
     var timeString = moment.format('HH:mm:ss');
@@ -333,14 +333,11 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
     return defer.promise();
   }
 
-  var now = moment();
-
-  _.each(stations, function(station){
-    station.fetchJourneys();
-  });
-
   return {
-  	stations: function() {return stations;},
+    stations: function() {return stations;},
+    fetchJourneysForAllStations: function() {
+      _.invoke(stations, 'fetchJourneys');
+    },
     getVerbindung: getVerbindung
   };
 
