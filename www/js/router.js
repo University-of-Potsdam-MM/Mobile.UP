@@ -131,6 +131,7 @@ define([
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
+			$('body').css('overflow', 'hidden');
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.defaultPageTransition;
