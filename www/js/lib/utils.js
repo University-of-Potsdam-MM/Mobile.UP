@@ -74,9 +74,9 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 	 	initialize: function(attributes){
 	 		this.msg = attributes.msg;
 	 		this.module = attributes.module;
+	 		this.error = attributes.error;
 	 	}
 	 });
-
 
 	/**
 	 *	Error View
@@ -85,8 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		model: Error,
 
 		initialize: function(options){
-			error = new Error({msg: options.msg})
-			console.log(error);
+			error = new Error({msg: options.msg, module: options.module, error: options.err})
 			this.template = rendertmpl('error');
 			this.render();
 		},

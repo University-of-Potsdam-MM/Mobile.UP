@@ -1,5 +1,6 @@
 <div class="error">
-An Error occured.<br />
+<%= error.error %><%= error.error.message %><br />
 Fehlerbeschreibung: <%= error.msg %><br />
 Fehlermodul: <%=error.module %>
+<% console.log(error.error.stack) %>
 </div>

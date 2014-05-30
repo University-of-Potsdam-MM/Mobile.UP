@@ -74,8 +74,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
       }).fail(function () {
-      	// errorPage
-      	var errorPage = new utils.ErrorView({el: '#book-locations', msg: 'Der Standort-Dienst ist momentan nicht erreichbar.', module:'library'});
+      	var errorPage = new utils.ErrorView({el: '#book-locations', msg: 'Der Standort-Dienst ist momentan nicht erreichbar.', module: 'library', err: error});
       });
 
     },
@@ -442,7 +441,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         	})
         	.done(d.resolve)
         	.fail(function(error){
-        		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module:'library'});
+        		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
         	});
 
           return d.promise;

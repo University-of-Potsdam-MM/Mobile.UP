@@ -105,7 +105,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#roomsHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module:'room'});
+			var errorPage = new utils.ErrorView({el: '#roomsHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
 		}
 	});
 
