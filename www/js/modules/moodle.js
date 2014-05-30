@@ -15,8 +15,8 @@ This ish how works for me on OS X:
 
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'helper', 'machina', 'modules/moodle.api'],
-  function( $, _, Backbone, helper, machina, moodleAPI ) {
+define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.api'],
+  function( $, _, Backbone, utils, machina, moodleAPI ) {
 
   // TODO change this in build step
   var environment = 'development';
@@ -196,7 +196,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina', 'modules/moodle
   });
 
   MoodleApp.CourseListView = Backbone.View.extend({
-    template: helper.rendertmpl('moodle_course_list_view'),
+    template: utils.rendertmpl('moodle_course_list_view'),
     initialize: function(){
       this.collection.on('reset', this.render, this);
     },
@@ -209,7 +209,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina', 'modules/moodle
   })
 
   MoodleApp.CourseContentsPage = Backbone.View.extend({
-    template: helper.rendertmpl('moodle_course_contents_page'),
+    template: utils.rendertmpl('moodle_course_contents_page'),
     initialize: function(options){
       this.news = options.news;
 
@@ -261,7 +261,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina', 'modules/moodle
     events:{
       "click input#login": 'click_login'
     },
-    template: helper.rendertmpl('auth'),
+    template: utils.rendertmpl('auth'),
     attributes: {"data-role":"page"},
     render: function(){
       console.log('render LoginPageView');
