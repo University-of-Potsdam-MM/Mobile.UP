@@ -54,12 +54,13 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 
     initialize: function(){
       this.template = helper.rendertmpl('transport');
+      ht.fetchJourneysForAllStations();
     },
 
     render: function(){
       $(this.el).html(this.template({}));
       transportViewTransportList = new TransportViewsTransportList({
-        el: ($('#search-results'), this.el),
+        el: this.$el.find('#search-results'),
         events: {
           'vclick #later-button' : function(){
             // we just fetch departing journeys for all stations
@@ -74,7 +75,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transportViewTransportList.render();
 
       transportViewNavbar = new NavigationView({
-        el: ($("#from-station-navbar"),this.el)
+        el: this.$el.find("#from-station-navbar")
       });
 
       transportViewNavbar.on('select', function(buttonName){
