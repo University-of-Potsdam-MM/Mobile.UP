@@ -3,26 +3,12 @@
 define(['jquery', 'underscore', 'backbone'],
 function( $, _, Backbone) {
 
-  var moodleAPI = {};
+  var moodleAPI = {
+    BaseURL: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X',
+  };
 
-  moodleAPI.api = new (Backbone.Model.extend({
-    initialize: function(){
-      this.createWsFunction('moodle_webservice_get_siteinfo',[]);
-      this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
-      this.createWsFunction('core_course_get_contents',['courseid']);
-    },
-
-
-    authorizeAndGetUserId: function(){
-      var api = this;
-      return api.authorize().then(function(){
-        if (api.isAuthorized()) {
-          return api.fetchUserid();
-        }
-      });
-    },
-
-    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
+  var BasicAPI = Backbone.Model.extend({
+    login_url: moodleAPI.BaseURL + '/login/token.php',
     authorize: function(){
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
@@ -47,7 +33,38 @@ function( $, _, Backbone) {
       }
     },
 
-    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
+    webservice_url: moodleAPI.BaseURL + '/webservice/rest/server.php',
+
+    createWsFunction: function(wsfunction, paramNames){
+      var api = this;
+      api[wsfunction] = function(params) {
+        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
+        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
+        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
+
+        return $.post(api.webservice_url, postParams).promise();
+      }
+    },
+  });
+
+
+  moodleAPI.api = new (BasicAPI.extend({
+    initialize: function(){
+      this.createWsFunction('moodle_webservice_get_siteinfo',[]);
+      this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
+      this.createWsFunction('core_course_get_contents',['courseid']);
+    },
+
+
+    authorizeAndGetUserId: function(){
+      var api = this;
+      return api.authorize().then(function(){
+        if (api.isAuthorized()) {
+          return api.fetchUserid();
+        }
+      });
+    },
+
     fetchUserid: function(){
       var api = this;
       var params = {
@@ -60,17 +77,6 @@ function( $, _, Backbone) {
         api.set(data);
       }).promise();
     },
-
-    createWsFunction: function(wsfunction, paramNames){
-      var api = this;
-      api[wsfunction] = function(params) {
-        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
-        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
-        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-
-        return $.post(api.webservice_url, postParams).promise();
-      }
-    },
   }))({
     // username: undefined,     // <= set this from the login page
     // password: undefined,     // <= set this from the login page
@@ -78,45 +84,9 @@ function( $, _, Backbone) {
     moodlewsrestformat:'json',
   });
 
-  moodleAPI.news_api = new (Backbone.Model.extend({
+  moodleAPI.news_api = new (BasicAPI.extend({
     initialize: function(){
       this.createWsFunction('webservice_get_latest_coursenews',[]);
-    },
-    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
-    authorize: function(){
-      // TODO wait until authorization or throw error
-      var params = _.pick(this.attributes, 'username', 'password', 'service');
-      var news_api = this;
-      return $.post(this.login_url, params, function(data){
-        console.log('news_api success get_token', arguments);
-        news_api.set(data);
-        // TODO: what happens when pw is wrong?
-        // debugger
-        news_api.set('wstoken', data['token']);
-        news_api.unset('password'); // remove password
-        news_api.trigger('authorized');
-      }).promise();
-    },
-
-    isAuthorized: function(){
-      if (this.has('wstoken')) {
-        // TODO if token works to fetch UserId, then we are authorized
-        return true;
-      } else {
-        return false;
-      }
-    },
-
-    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
-
-    createWsFunction: function(wsfunction, paramNames){
-      var api = this;
-      api[wsfunction] = function(params) {
-        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
-        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
-        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-        return $.post(api.webservice_url, postParams).promise();
-      }
     },
   }))({
     // username: undefined,     // <= set this from the login page
