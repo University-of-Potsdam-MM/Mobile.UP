@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 	/*
 	 * Models
 	*/
@@ -21,7 +21,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = helper.rendertmpl('emergencycall');
+			this.template = utils.rendertmpl('emergencycall');
 		},
 
 		render: function(){
@@ -67,7 +67,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 	var EmergencyPageView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = helper.rendertmpl('emergency');
+			this.template = utils.rendertmpl('emergency');
 		},
 
 		render: function() {

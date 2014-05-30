@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport', 'moment'], function($, _, Backbone, helper, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', 'moment'], function($, _, Backbone, utils, ht){
  /*
 
   ## Dependencies
@@ -140,7 +140,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 
-    templateListItem: helper.rendertmpl('complex_transport_listitem'),
+    templateListItem: utils.rendertmpl('complex_transport_listitem'),
     renderResults: function(){
       console.log('render results', this.collection);
 
@@ -247,7 +247,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     attributes: {"id": "transport2"},
 
     initialize: function(){
-      this.template = helper.rendertmpl('transport2');
+      this.template = utils.rendertmpl('transport2');
     },
 
     render: function(){

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu', 'modules/timeselection', 'modules/searchablemap', 'async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function($, _, Backbone, helper, Q, campusmenu, timeselection, searchablemap){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'modules/searchablemap', 'async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
 	var settings =	{
 		url: {
 			griebnitzsee: {
@@ -397,7 +397,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 		attributes: {"id": 'sitemap'},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('sitemap');
+			this.template = utils.rendertmpl('sitemap');
 		},
 
 		render: function(){

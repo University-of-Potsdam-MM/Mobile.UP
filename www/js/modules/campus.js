@@ -1,10 +1,10 @@
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 
 	var CampusPageView = Backbone.View.extend({
 		attributes: {"id": "campus"},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('campus');
+			this.template = utils.rendertmpl('campus');
 		},
 
 		render: function(){

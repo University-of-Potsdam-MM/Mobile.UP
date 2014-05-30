@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'], function($, _, Backbone, helper, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, ht){
 
 
   window.Transport = {
@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
-    template: helper.rendertmpl('transport_listitem_view'),
+    template: utils.rendertmpl('transport_listitem_view'),
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     attributes: {"id": "transport"},
 
     initialize: function(){
-      this.template = helper.rendertmpl('transport');
+      this.template = utils.rendertmpl('transport');
       ht.fetchJourneysForAllStations();
     },
 

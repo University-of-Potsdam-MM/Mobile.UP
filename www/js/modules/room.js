@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'modules/timeselection', 'underscore-string'], function($, _, Backbone, helper, campusmenu, timeselection){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore-string'], function($, _, Backbone, utils, campusmenu, timeselection){
 
 	$(document).on("pageinit", "#room", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
@@ -177,7 +177,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
 
 			// Create and add html
-			var createRooms = helper.rendertmpl('rooms');
+			var createRooms = utils.rendertmpl('rooms');
 			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 			host.append(htmlDay);
 
@@ -213,7 +213,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			var reservations = this.model.reservations.map(function(d) { return d.attributes; });
 
 			// Create and add html
-			var createDetails = helper.rendertmpl('roomDetails');
+			var createDetails = utils.rendertmpl('roomDetails');
 			var htmlDay = createDetails({reservations: reservations, room: this.model.attributes});
 			host.append(htmlDay);
 
@@ -264,7 +264,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 		attributes: {"id": 'room'},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('room');
+			this.template = utils.rendertmpl('room');
 		},
 
 		render: function(){

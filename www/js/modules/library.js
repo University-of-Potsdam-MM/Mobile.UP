@@ -24,7 +24,7 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
-define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backbone, helper, Q){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbone, utils, Q){
 
 
   window.App = {
@@ -45,7 +45,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
 
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
-      var spinner = helper.addLoadingSpinner("book-locations");
+      var spinner = utils.addLoadingSpinner("book-locations");
       spinner();
 
       //console.log('updateLocation');
@@ -69,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
           bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
         //console.log('List', bookLocationList);
-        var spinner = helper.removeLoadingSpinner("book-locations");
+        var spinner = utils.removeLoadingSpinner("book-locations");
         spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
@@ -382,7 +382,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
       var resultList = this.get('results');
       var options = {startRecord: resultList.length + 1 };
       var fetch = App.model.LibrarySearch.search(query, options);
-      return Q.fcall(helper.addLoadingSpinner("search-results"))
+      return Q.fcall(utils.addLoadingSpinner("search-results"))
       .then(function() { return fetch.loadSearch(); })
       .then(function(xml){
       // get relevant pagination information
@@ -396,7 +396,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
         return xml;
       }).done(function(xml) {
         //console.log('done', xml);
-      var spinner = helper.removeLoadingSpinner("search-results");
+      var spinner = utils.removeLoadingSpinner("search-results");
         spinner();
         resultList.addXmlSearchResult(xml);
         $('input[type="submit"]').removeAttr('disabled');
@@ -433,7 +433,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
           // TODO: return and memorize Backbone collection instead of promise
           var d = Q.defer();
           var url = this.url();
-          var headers = { "Authorization": helper.getAuthHeader() };
+          var headers = { "Authorization": utils.getAuthHeader() };
           $.ajax({
         url: url,
         dataType: "xml",
@@ -488,7 +488,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     },
 
     initialize: function(){
-      this.template = helper.rendertmpl('library_search');
+      this.template = utils.rendertmpl('library_search');
     },
 
     render: function(){
@@ -531,7 +531,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
    */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-    template: helper.rendertmpl('library_list_view'),
+    template: utils.rendertmpl('library_list_view'),
 
     events: {
       "click input" : 'loadMore',
@@ -593,7 +593,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
       "click .backToList" : 'back'
     },
 
-    template: helper.rendertmpl('library_detail_view'),
+    template: utils.rendertmpl('library_detail_view'),
     render: function(){
       var html = this.template({book:this.model});
       this.$el.html(html);
@@ -624,7 +624,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
   App.view.LocationView = Backbone.View.extend({
     el: '#book-locations',
     collection: App.collection.BookLocationList,
-    template: helper.rendertmpl('library_location_view'),
+    template: utils.rendertmpl('library_location_view'),
 
     render: function(){
       var html = this.template({locations:this.collection.models});
@@ -743,7 +743,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q'], function($, _, Backb
     attributes: {"id": 'search'},
 
     initialize: function(){
-      this.template = helper.rendertmpl('library');
+      this.template = utils.rendertmpl('library');
     },
 
     render: function(){
