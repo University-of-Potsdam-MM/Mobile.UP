@@ -15,8 +15,8 @@ This ish how works for me on OS X:
 
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
-  function( $, _, Backbone, helper, machina ) {
+define(['jquery', 'underscore', 'backbone', 'helper', 'machina', 'modules/moodle.api'],
+  function( $, _, Backbone, helper, machina, moodleAPI ) {
 
   // TODO change this in build step
   var environment = 'development';
@@ -26,8 +26,8 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
   MoodleApp.fsm = new machina.Fsm({
     logout: function(){
       console.log('logging out');
-      MoodleApp.api.unset('wstoken');
-      MoodleApp.news_api.unset('wstoken');
+      moodleAPI.api.unset('wstoken');
+      moodleAPI.news_api.unset('wstoken');
       this.transition('loginform');
     },
     error: function(data){
@@ -37,7 +37,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
     },
     states: {
       uninitialized: {
-        // this state is here so the we don't get errors when MoodleApp.api isn't defined yet
+        // this state is here so the we don't get errors when moodleAPI.api isn't defined yet
         initialize: function( payload ) {
           console.log('transition to initialized');
           this.transition('initialized');
@@ -46,7 +46,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
       initialized:{
         _onEnter: function() {
           // if there is a token, go to authorized
-          if (MoodleApp.api.isAuthorized() && MoodleApp.news_api.isAuthorized()) {
+          if (moodleAPI.api.isAuthorized() && moodleAPI.news_api.isAuthorized()) {
             console.log('schon authorized');
             this.transition('authorized');
           } else {
@@ -68,8 +68,8 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
           console.log('authorize', credentials);
           if ( ! (_.isEmpty(credentials.username) || _.isEmpty(credentials.password)) ) {
             // debugger
-            MoodleApp.api.set(credentials);
-            MoodleApp.news_api.set(credentials);
+            moodleAPI.api.set(credentials);
+            moodleAPI.news_api.set(credentials);
             this.transition('authorizing', credentials); // it doesn't seem like credentials are passed at all
           }
         }
@@ -77,14 +77,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
       authorizing:{
         _onEnter: function() {
           // display spinner
-          // ask MoodleApp.api and MoodleApp.news_api for token + UID (use async or similar)
+          // ask moodleAPI.api and moodleAPI.news_api for token + UID (use async or similar)
           console.log('authorizing: _onEnter', arguments);
           var fsm = this;
           $.when(
-            MoodleApp.api.authorizeAndGetUserId(),
-            MoodleApp.news_api.authorize()
+            moodleAPI.api.authorizeAndGetUserId(),
+            moodleAPI.news_api.authorize()
           ).done(function(){
-            // MoodleApp.api should be authorized and has userId, MoodleApp.news_api should be authorized
+            // moodleAPI.api should be authorized and has userId, moodleAPI.news_api should be authorized
             console.log('authorization complete');
             fsm.transition('authorized');
           });
@@ -121,127 +121,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
 
 
 
-  MoodleApp.api = new (Backbone.Model.extend({
-    initialize: function(){
-      this.createWsFunction('moodle_webservice_get_siteinfo',[]);
-      this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
-      this.createWsFunction('core_course_get_contents',['courseid']);
-    },
 
-
-    authorizeAndGetUserId: function(){
-      var api = this;
-      return api.authorize().then(function(){
-        if (api.isAuthorized()) {
-          return api.fetchUserid();
-        };
-      });
-    },
-
-    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
-    authorize: function(){
-      // TODO wait until authorization or throw error
-      var params = _.pick(this.attributes, 'username', 'password', 'service');
-      var api = this;
-      return $.post(this.login_url, params, function(data){
-        console.log('success get_token', arguments);
-        api.set(data);
-        // TODO: what happens when pw is wrong?
-        // debugger
-        api.set('wstoken', data['token']);
-        api.unset('password'); // remove password
-        api.trigger('authorized');
-      }).promise();
-    },
-
-    isAuthorized: function(){
-      if (this.has('wstoken')) {
-        // TODO if token works to fetch UserId, then we are authorized
-        return true;
-      } else {
-        return false
-      }
-    },
-
-    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
-    fetchUserid: function(){
-      var api = this;
-      var params = {
-        moodlewsrestformat:'json',
-        wstoken: this.get('token'),
-        wsfunction:'moodle_webservice_get_siteinfo',
-      };
-      return $.post(this.webservice_url, params, function(data){
-        console.log('fetchUserid', arguments);
-        api.set(data);
-      }).promise();
-    },
-
-    createWsFunction: function(wsfunction, paramNames){
-      var api = this;
-      api[wsfunction] = function(params) {
-        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
-        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
-        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-
-        return $.post(api.webservice_url, postParams).promise();
-      }
-    },
-  }))({
-    realm:'Moodle',             // => display this in the user login page
-    // username: undefined,     // <= set this from the login page
-    // password: undefined,     // <= set this from the login page
-    service:'moodle_mobile_app',
-    moodlewsrestformat:'json',
-  });
-
-  MoodleApp.news_api = new (Backbone.Model.extend({
-    initialize: function(){
-      this.createWsFunction('webservice_get_latest_coursenews',[]);
-    },
-    login_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/token.php',
-    authorize: function(){
-      // TODO wait until authorization or throw error
-      var params = _.pick(this.attributes, 'username', 'password', 'service');
-      var news_api = this;
-      return $.post(this.login_url, params, function(data){
-        console.log('news_api success get_token', arguments);
-        news_api.set(data);
-        // TODO: what happens when pw is wrong?
-        // debugger
-        news_api.set('wstoken', data['token']);
-        news_api.unset('password'); // remove password
-        news_api.trigger('authorized');
-      }).promise();
-    },
-
-    isAuthorized: function(){
-      if (this.has('wstoken')) {
-        // TODO if token works to fetch UserId, then we are authorized
-        return true;
-      } else {
-        return false
-      }
-    },
-
-    webservice_url: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/webservice/rest/server.php',
-
-    createWsFunction: function(wsfunction, paramNames){
-      var api = this;
-      api[wsfunction] = function(params) {
-        paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
-        var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
-        var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
-        return $.post(api.webservice_url, postParams).promise();
-      }
-    },
-  }))({
-    realm:'Moodle',             // => display this in the user login page
-    // username: undefined,     // <= set this from the login page
-    // password: undefined,     // <= set this from the login page
-    service:'webservice_coursenews',
-    moodlewsrestformat:'json',
-  });
 
 
   MoodleApp.Course = Backbone.Model.extend({
@@ -267,7 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
     fetch: function(){
       console.log('fetch CourseContents', arguments);
       var collection = this;
-      MoodleApp.api.core_course_get_contents({courseid: this.courseid}).done(
+      moodleAPI.api.core_course_get_contents({courseid: this.courseid}).done(
         function(contents){
           collection.reset(contents);
       });
@@ -282,7 +162,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
     fetch: function(){
       // console.log(MoodleApp.moodle_ws_url, this.moodle_ws_params);
       var collection = this;
-      MoodleApp.api.moodle_enrol_get_users_courses().done(function(content){
+      moodleAPI.api.moodle_enrol_get_users_courses().done(function(content){
           // console.log('fetch', content);
           collection.reset(content);
         });
@@ -295,7 +175,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'machina'],
   MoodleApp.NewsList = Backbone.Collection.extend({
     fetch: function() {
       var collection = this;
-      MoodleApp.news_api.webservice_get_latest_coursenews().done(function(news){
+      moodleAPI.news_api.webservice_get_latest_coursenews().done(function(news){
         console.log('newslist fetch returns', news);
         var courses = _.map(news.courses, function(course){
           course.id = course.courseid;
