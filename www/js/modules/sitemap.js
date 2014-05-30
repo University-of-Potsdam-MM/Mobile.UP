@@ -82,10 +82,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 		}).fail(function(){
 			if(arguments[0].readyState==0){
-        		//script failed to load
+        		var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es besteht keine Internetverbindung.', module:'sitemap'});
     		}else{
         		//script loaded but failed to parse
-	        	// append error handler for offline mode
+	        	var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es besteht keine Internetverbindung.', module:'sitemap'});
     		}
 		});
 	});
@@ -139,9 +139,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			.then(function() { return geo.loadAllOnce(); })
 			.then(drawCampus(uniqueDivId, campus))
 			.spread(setSearchValue(search))
-			.catch(function (e) {
-				console.log("Fehlschlag: " + e.stack);
-				alert("Fehlschlag: " + e.stack);
+			.catch(function (error) {
+				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
 			});
 	}
 
@@ -361,7 +360,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		},
 
 		failed: function(error) {
-			alert("Daten konnten nicht geladen werden");
+			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
 		}
 	});
 
