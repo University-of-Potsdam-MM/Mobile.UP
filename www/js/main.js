@@ -12,7 +12,6 @@ require.config({
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
-        'async' : 'lib/async',
         'geojson': 'lib/GeoJSON',
         'date': 'lib/date',
         'q': 'vendor/q',
@@ -49,6 +48,16 @@ require.config({
     }
 
 });
+
+requirejs.onError = function(error){
+	var failedId = error.requireModules && error.requireModules[0];
+
+	if(error.requireType === 'timeout'){
+		console.log('Timeout of RequireJS-Module:'+error.requireModules);
+	}else{
+		throw error;
+	}
+};
 
 require(['jquery', 'app', 'jquerymobile', 'jquerymobile-config'], function($, App){
     $(function(){
