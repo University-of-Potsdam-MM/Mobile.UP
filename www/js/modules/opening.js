@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 
-	var dateHelper = {
+	var dateutils = {
             // I give this function a German name,
             // because someone introduced German weekday names as keys in opening.json
             tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
@@ -65,7 +65,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = helper.rendertmpl('opening_detail');
+			this.template = utils.rendertmpl('opening_detail');
 		},
 
 		render: function(){
@@ -93,7 +93,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
       var now = new Date();
 
       _.each(this.collection.models, function(model){
-        model.attributes.statusOpenNow = dateHelper.statusAtPlaceAndDate(model.attributes, now);
+        model.attributes.statusOpenNow = dateutils.statusAtPlaceAndDate(model.attributes, now);
       });
 
 			this.render();
@@ -160,7 +160,7 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
     attributes: {"id": "opening"},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('opening');
+			this.template = utils.rendertmpl('opening');
 		},
 
     	render: function(){

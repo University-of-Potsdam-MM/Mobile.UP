@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.en_US.utf8'], function($, _, Backbone, helper, Q, campusmenu, datebox){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.en_US.utf8'], function($, _, Backbone, utils, Q, campusmenu, datebox){
 
 	$(document).on("pageinit", "#mensa", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });
@@ -25,7 +25,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 	    uniqueDivId = _.uniqueId("id_");
 
 	    Q(clearTodaysMenu(uniqueDivId))
-			.then(helper.addLoadingSpinner(uniqueDivId))
+			.then(utils.addLoadingSpinner(uniqueDivId))
 	        .then(function () { return loadMenu(mensa); })
 	        .then(function (menu) {
 	            var meals = Q(selectMeals(menu))
@@ -40,7 +40,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 	        .spread(prepareMeals)
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
-			.finally(helper.removeLoadingSpinner(uniqueDivId))
+			.finally(utils.removeLoadingSpinner(uniqueDivId))
 	        .catch(function (e) {
 	            console.log("Fehlschlag: " + e.stack);
 	            alert("Fehlschlag: " + e.stack);
@@ -68,7 +68,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 			location = "Golm";
 		}
 
-		headers = { "Authorization": helper.getAuthHeader() };
+		headers = { "Authorization": utils.getAuthHeader() };
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
@@ -161,7 +161,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
-			var createMeals = helper.rendertmpl('mensa_detail');
+			var createMeals = utils.rendertmpl('mensa_detail');
 			var host = $("#" + uniqueDiv);
 
 			// Add day section to html
@@ -178,7 +178,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'q', 'modules/campusmenu',
 
 		initialize: function() {
 			_.bindAll(this, 'render');
-			this.template = helper.rendertmpl('mensa');
+			this.template = utils.rendertmpl('mensa');
 		},
 
 		render: function() {
