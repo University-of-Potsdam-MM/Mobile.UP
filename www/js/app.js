@@ -10,7 +10,6 @@ define([
 		var initialize= function(){
 			Router.initialize();
 
-
 			/**
 	 	 	 * Override Backbone.sync to automatically include auth headers according to the url in use
 	 	 	 */

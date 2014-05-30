@@ -60,11 +60,50 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		return "Bearer c06156e119040a27a4b43fa933f130";
 	};
 
+
+	/**
+	 *	Error Model
+	 */
+	 var Error = Backbone.Model.extend({
+	 	// default values for an error
+	 	default:{
+	 		msg: 'Es ist ein Fehler aufgetreten.',
+	 		module: 'Modul nicht bekannt'
+	 	},
+
+	 	initialize: function(attributes){
+	 		this.msg = attributes.msg;
+	 		this.module = attributes.module;
+	 	}
+	 });
+
+
+	/**
+	 *	Error View
+	 */
+	 var ErrorView = Backbone.View.extend({
+		model: Error,
+
+		initialize: function(options){
+			error = new Error({msg: options.msg})
+			console.log(error);
+			this.template = rendertmpl('error');
+			this.render();
+		},
+
+		render: function(){
+			$(this.el).html(this.template({model: this.model}));
+			$(this.el).trigger("create");
+			return this;
+		}
+	});
+
 	return {
 			rendertmpl: rendertmpl,
 			removeTabs: removeTabs,
 			addLoadingSpinner: addLoadingSpinner,
 			removeLoadingSpinner: removeLoadingSpinner,
-			getAuthHeader: getAuthHeader
+			getAuthHeader: getAuthHeader,
+			ErrorView: ErrorView
 		};
 });
