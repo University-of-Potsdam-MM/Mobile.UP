@@ -41,9 +41,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
 			.finally(utils.removeLoadingSpinner(uniqueDivId))
-	        .catch(function (e) {
-	            console.log("Fehlschlag: " + e.stack);
-	            alert("Fehlschlag: " + e.stack);
+	        .catch(function (error) {
+	            var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module:'mensa'});
 	        });
 	};
 
@@ -72,7 +71,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
-		}).done(d.resolve).fail(d.reject);
+		})
+		.done(d.resolve)
+		.fail(function(error){
+			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module:'mensa'});
+		});
 	    return d.promise;
 	};
 
