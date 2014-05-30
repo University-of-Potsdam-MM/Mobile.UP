@@ -82,6 +82,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					<div class='ui-controlgroup ui-controlgroup-vertical ui-corner-all' data-role='controlgroup' data-filter='true' data-input='#filterable-locations' data-filter-reveal='true' data-enhanced='true'> \
 						<div class='ui-controlgroup-controls'></div> \
 					</div> \
+					<div id='error-placeholder'></div> \
 					<!-- map loads here... --> \
 					<div id='map-canvas' class='gmap3' style='height: 400px;'></div> \
 				</div>");
