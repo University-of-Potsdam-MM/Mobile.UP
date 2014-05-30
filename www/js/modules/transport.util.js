@@ -1,13 +1,33 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, Backbone, helper){
-
-  // console.log('loading nahverkehr-logic.js');
-  // console.log('dependencies:', moment, jQuery);
-
-  // TODO add Backbone code here
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils){
 
   // API code
-  var environment = 'development';
+  var environment = 'upproxy';
   var accessId = 'kiy4e84a4b832962eea1943106096116';
+
+  function endpoint(){
+    if ('development' == environment) {
+      return '/api/transport/bin/pub/vbb/extxml.exe';
+    } else if ('upproxy' == environment) {
+      return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
+    } else {
+      return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
+    }
+  }
+
+  function ajax(xmlPayload) {
+    return $.ajax({
+      type: "POST",
+      url: endpoint(),
+      crossDomain: true,
+      data: xmlPayload,
+      contentType: 'application/xml',
+      dataType: 'xml',
+      beforeSend: function (request) {
+          request.withCredentials = true;
+          request.setRequestHeader("Authorization", utils.getAuthHeader());
+      },
+    });
+  }
 
   // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
   // var externalId = "009230133#86";
@@ -26,10 +46,6 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
       externalId: '009230132#86',
     },
   };
-
-    // window.App = {
-  //   stations: stations
-  // };
 
   _.each(stations, function(station){
     _.extend(station, {
@@ -53,18 +69,6 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
       }
     });
   });
-
-
-
-  function endpoint(){
-    if ('development' == environment){
-      return '/api/transport/bin/pub/vbb/extxml.exe';
-      //return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
-    } else {
-      return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
-    }
-  }
-
 
   // use this document for creating XML
   var doc = document.implementation.createDocument(null, null, null);
@@ -241,17 +245,16 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
 
   var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
     var defer = $.Deferred();
-    $.post(
-      endpoint(),
-      verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode),
-      'xml')
-      .done(function(data, textStatus, jqXHR){
-        // console.log('requestExternalId', data,textStatus,jqXHR);
-        var $data = $(data);
-        var connections = _.map($data.find('Connection'), mapConnection);
-        // TODO: map connections from xml to objects
-        defer.resolve(connections);
-      });
+
+    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode)).done(
+      function(data, textStatus, jqXHR){
+      // console.log('requestExternalId', data,textStatus,jqXHR);
+      var $data = $(data);
+      var connections = _.map($data.find('Connection'), mapConnection);
+      // TODO: map connections from xml to objects
+      defer.resolve(connections);
+    });
+
 
     return defer.promise();
   }
@@ -312,15 +315,13 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
     return tmp;
   };
 
-    // moment should be an instance of moment.js
+  // moment should be an instance of moment.js
   function getLeavingJourneys(externalId, moment) {
     var defer = $.Deferred();
     var timeString = moment.format('HH:mm:ss');
-    // console.log('timeString',timeString);
-    $.post(
-      endpoint(),
-      abgehendeVerbindungen(externalId, timeString), 'xml'
-    ).done(function(data, textStatus, jqXHR){
+
+    ajax(abgehendeVerbindungen(externalId, timeString)).done(
+      function(data, textStatus, jqXHR){
         // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
         var $data = $(data);
         // map every node of STBJourney to a JavaScript Object
@@ -332,14 +333,11 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
     return defer.promise();
   }
 
-  var now = moment();
-
-  _.each(stations, function(station){
-    station.fetchJourneys();
-  });
-
   return {
-  	stations: function() {return stations;},
+    stations: function() {return stations;},
+    fetchJourneysForAllStations: function() {
+      _.invoke(stations, 'fetchJourneys');
+    },
     getVerbindung: getVerbindung
   };
 

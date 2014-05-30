@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'], function($, _, Backbone, helper, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, ht){
 
 
   window.Transport = {
@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
-    template: helper.rendertmpl('transport_listitem_view'),
+    template: utils.rendertmpl('transport_listitem_view'),
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
@@ -53,13 +53,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     attributes: {"id": "transport"},
 
     initialize: function(){
-      this.template = helper.rendertmpl('transport');
+      this.template = utils.rendertmpl('transport');
+      ht.fetchJourneysForAllStations();
     },
 
     render: function(){
       $(this.el).html(this.template({}));
       transportViewTransportList = new TransportViewsTransportList({
-        el: ($('#search-results'), this.el),
+        el: this.$el.find('#search-results'),
         events: {
           'vclick #later-button' : function(){
             // we just fetch departing journeys for all stations
@@ -74,7 +75,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transportViewTransportList.render();
 
       transportViewNavbar = new NavigationView({
-        el: ($("#from-station-navbar"),this.el)
+        el: this.$el.find("#from-station-navbar")
       });
 
       transportViewNavbar.on('select', function(buttonName){

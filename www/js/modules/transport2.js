@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport', 'moment'], function($, _, Backbone, helper, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', 'moment'], function($, _, Backbone, utils, ht){
  /*
 
   ## Dependencies
@@ -140,14 +140,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 
-    templateListItem: helper.rendertmpl('complex_transport_listitem'),
+    templateListItem: utils.rendertmpl('complex_transport_listitem'),
     renderResults: function(){
       console.log('render results', this.collection);
 
       this.renderScrollButtons();
 
       var view = this;
-      var resultList = this.$el.find('#result ul');
+      var resultList = this.$el.find('#transport_rides');
       resultList.html('');
       this.collection.each(function(connection){
         var html = view.templateListItem({connection: connection});
@@ -247,7 +247,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     attributes: {"id": "transport2"},
 
     initialize: function(){
-      this.template = helper.rendertmpl('transport2');
+      this.template = utils.rendertmpl('transport2');
     },
 
     render: function(){
@@ -263,7 +263,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 
 	    // From station
 	    Transport.view.FromStation = new NavigationView({
-	      el: ($("#fromStation2"),this.el)
+	      el: this.$el.find("#fromStation2")
 	    });
 
 	    Transport.view.FromStation.on('select', function(buttonName){
@@ -277,7 +277,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    // To station
 
 	    Transport.view.ToStation = new NavigationView({
-	      el: ($("#toStation2"),this.el),
+	      el: this.$el.find("#toStation2"),
 	    });
 
 	    Transport.view.ToStation.on('select', function(buttonName){
@@ -291,7 +291,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    // Slider
 
 	    Transport.view.ArrivalModeSlider = new TransportViewsSliderView({
-	      el: ($('#flip-1'), this.el)
+	      el: this.$el.find('#flip-1')
 	    });
 
 	    Transport.view.ArrivalModeSlider.on('toggle', function(){
@@ -300,13 +300,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
 	    });
 
 	    Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
-	      el: ($('#complexTransport'), this.el),
+	      el: this.$el.find('#complexTransport'),
 	      model: Transport.model.State,
 	      collection: Transport.model.State.get('connections')
 	    });
 	    Transport.view.ComplexSearch.render();
 
-      $(this.el).trigger("create");
+      this.$el.trigger("create");
+
       return this;
     }
 
