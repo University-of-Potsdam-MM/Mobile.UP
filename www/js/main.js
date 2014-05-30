@@ -50,6 +50,16 @@ require.config({
 
 });
 
+requirejs.onError = function(error){
+	var failedId = error.requireModules && error.requireModules[0];
+
+	if(error.requireType === 'timeout'){
+		console.log('Timeout of RequireJS-Module:'+error.requireModules);
+	}else{
+		throw error;
+	}
+};
+
 require(['jquery', 'app', 'jquerymobile', 'jquerymobile-config'], function($, App){
     $(function(){
 	   App.initialize();
