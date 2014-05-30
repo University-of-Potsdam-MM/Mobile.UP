@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils){
 
   // API code
   var environment = 'upproxy';
@@ -24,7 +24,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'moment'], function($, _, 
       dataType: 'xml',
       beforeSend: function (request) {
           request.withCredentials = true;
-          request.setRequestHeader("Authorization", helper.getAuthHeader());
+          request.setRequestHeader("Authorization", utils.getAuthHeader());
       },
     });
   }
