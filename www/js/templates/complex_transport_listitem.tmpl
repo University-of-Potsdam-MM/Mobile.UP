@@ -1,5 +1,4 @@
-<li data-role="collapsible" data-collapsed-icon="arrow-down"
-  data-expanded-icon="arrow-up" data-iconpos="right">
+<div data-role="collapsible">
 
   <h3 class="complex_transport">
     <span>ab <%= connection.get('depTime').format('HH:mm') %></span> <%= connection.get('depStation') %> <br />
@@ -23,20 +22,17 @@
         <% if (i > 0) { %>
          <tr>
          
-         <td class="foot" style="background:transparent;">  <img src="../../www/img/up/foot.png"></td>
+         <td class="foot" style="background:transparent;"><img src="img/up/foot.png" /></td>
         
         <% } %>
         </tr>
 
-       
-        
           <td>ab <%= section.depTime.format('HH:mm') %></td>
           <td><%= section.depStation %></td>
           <td><%= section.depPlatform %></td>
           <td><%= section.journey.name %></td>
         </tr>
         <tr>
-        
           <td>an <%= section.arrTime.format('HH:mm') %></td>
           <td><%= section.arrStation %></td>
           <td><%= section.arrPlatform %></td>
@@ -47,4 +43,4 @@
 
     </tbody>
   </table>
-</li>
+</div>

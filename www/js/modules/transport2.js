@@ -147,7 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       this.renderScrollButtons();
 
       var view = this;
-      var resultList = this.$el.find('#result ul');
+      var resultList = this.$el.find('#transport_rides');
       resultList.html('');
       this.collection.each(function(connection){
         var html = view.templateListItem({connection: connection});
