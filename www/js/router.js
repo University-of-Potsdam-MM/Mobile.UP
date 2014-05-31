@@ -21,6 +21,7 @@ define([
 		routes:{
 			// Routes for Index - Page
 			"": "home",
+			"nav-panel": "navpanel",
 			"home": "home",
 			"news": "news",
 			"events": "events",
@@ -53,6 +54,17 @@ define([
 		home: function(){
 			console.log("Side -> Home");
 			this.changePage(new HomePageView);
+		},
+
+		navpanel: function(){
+			console.log("Nav-Panel");
+			$('#nav-panel').trigger("create");
+			$('#nav-panel').trigger("updatelayout");
+			$('#nav-panel').panel({animate: true});
+			$('#nav-panel').panel("open");
+			//$('#nav-panel').popup();
+			//$('#nav-panel').popup("open");
+			//$('#nav-panel').html($(this.currentView.el)).popup("open");
 		},
 
 		news: function(){
