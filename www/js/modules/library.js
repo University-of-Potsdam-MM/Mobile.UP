@@ -59,8 +59,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       });
 
       ajaxLocationCall.done(function (json) {
-      var bookLocationList = new App.collection.BookLocationList();
-      //console.log('init', bookLocationList);
+      	var bookLocationList = new App.collection.BookLocationList();
+      	//console.log('init', bookLocationList);
         _.map(json.document[0].item, function(item) {
           //console.log('Item:', item);
           var bookLocation = new App.model.BookLocation({});
@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
       }).fail(function () {
-        console.log('false');
+      	var errorPage = new utils.ErrorView({el: '#book-locations', msg: 'Der Standort-Dienst ist momentan nicht erreichbar.', module: 'library', err: error});
       });
 
     },
@@ -435,10 +435,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           var url = this.url();
           var headers = { "Authorization": utils.getAuthHeader() };
           $.ajax({
-        url: url,
-        dataType: "xml",
-        headers: headers
-        }).done(d.resolve).fail(d.reject);
+		        url: url,
+		        dataType: "xml",
+		        headers: headers
+        	})
+        	.done(d.resolve)
+        	.fail(function(error){
+        		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
+        	});
 
           return d.promise;
         },
@@ -472,7 +476,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
   /**
    * Backbone - Views
-   *
    *
    */
 
