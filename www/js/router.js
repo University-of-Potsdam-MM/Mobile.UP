@@ -80,7 +80,7 @@ define([
 		},
 
 		moodle: function () {
-			console.log("Side -> Study -> Moodle")
+			console.log("Side -> Study -> Moodle");
 			this.changePage(new MoodlePageView);
 		},
 

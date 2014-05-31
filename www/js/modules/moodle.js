@@ -350,7 +350,22 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
   });
 
 
-  return MoodleApp;
+  var MoodlePageView = Backbone.View.extend({
+    attributes: {"id": "moodle"},
+
+    initialize: function(){
+      this.template = utils.rendertmpl('moodle');
+    },
+
+    render: function(){
+      $(this.el).html(this.template({}));
+      // append your MoodleApp Logic here
+
+      $(this.el).trigger("create");
+      return this;
+    }
+  });
+
+  return MoodlePageView;
 
 });
-
