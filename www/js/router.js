@@ -144,6 +144,7 @@ define([
 			$(page.el).attr('data-role', 'page');
 			page.render();
 			$('body').css('overflow', 'hidden');
+			$('#nav-panel').css('display', 'none');
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.defaultPageTransition;

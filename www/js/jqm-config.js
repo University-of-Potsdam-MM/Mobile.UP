@@ -11,6 +11,11 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
 	    $(document).on('pagehide', 'div[data-role="page"]', function(event, ui){
             $(event.currentTarget).remove();
             $('body').css('overflow', 'auto');
+            $('#nav-panel').css('display', 'block');
    		});
+	});
+
+	$(document).ready(function(){
+		$('body').css('visibility','visible');
 	});
 });
