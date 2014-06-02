@@ -8,7 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     if ('development' == environment) {
       return '/api/transport/bin/pub/vbb/extxml.exe';
     } else if ('upproxy' == environment) {
-      return 'http://api.uni-potsdam.de/endpoints/transportAPI/1!.0/';
+      return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
     } else {
       return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
     }
@@ -245,7 +245,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
     var defer = $.Deferred();
-    
+
     ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
     .done(function(data, textStatus, jqXHR){
       // console.log('requestExternalId', data,textStatus,jqXHR);
@@ -284,7 +284,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
         });
       })
       .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});      	
+		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
       });
     return defer.promise();
   }
@@ -336,7 +336,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
         defer.resolve(jsonArray);
       })
     .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});      	
+		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
      });
 
     return defer.promise();
