@@ -1383,3 +1383,45 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #peoples .ui-collapsible-content p {
 	padding-left: 25px;
 }
+
+/*****error*****************/
+
+.error {
+		background:#d0dae3;		
+		padding:2em;	
+		margin:10px auto;	
+}
+
+.error h2 {
+		color:#014260;
+		font-size:140%; 
+		margin:3px auto 3px auto;	
+		font-weight:bold;
+}
+
+
+.error p{
+		border-top:2px solid #ededed; 
+		border-bottom:2px solid #ededed;	
+		padding:.5em;
+		font-size:.8em;
+}
+
+@media ( max-width : 35em) {
+	.error img {width:55%;
+	}
+}
+
+@media ( min-width : 35em) {
+	.error img {width:20%;
+	}
+	
+	.error p{
+		max-width:25%;
+		margin:0 auto;
+	}
+}
+
+
+
+
