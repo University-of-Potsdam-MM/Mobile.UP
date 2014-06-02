@@ -19,3 +19,7 @@ The project should then be available at http://localhost:3000/www/
 ## Weiterführende Informationen
 
 * [Wiki](https://github.com/University-of-Potsdam-MM/UP.App/wiki)
+
+## Demo Version
+
+* [Demo Mobile.UP](https://erdmaennchen.soft.cs.uni-potsdam.de/UP-App/www/)
