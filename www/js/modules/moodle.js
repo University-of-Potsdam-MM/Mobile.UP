@@ -217,6 +217,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       this.collection.on('reset', this.render, this);
       this.news.on('change', this.render, this);
     },
+    events: {
+      "click .backbutton": "back"
+    },
     render: function(){
       console.log('render CourseContentsPage', this.el, this.model, this.collection);
       var data = {
@@ -227,6 +230,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       this.$el.html(this.template(data));
       this.$el.trigger('create');
       return this;
+    },
+    back: function(ev){
+      ev.preventDefault();
+      $.mobile.changePage($('#moodle'));
     }
   })
 
@@ -235,6 +242,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
     initialize: function(options){
       this.news = options.news;
       _.bindAll(this, 'renderOne');
+    },
+    events: {
+      'click li': 'selectCourse'
     },
     renderOne: function(course) {
       var page = new MoodleApp.CourseContentsPage({
@@ -252,6 +262,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       console.log('done rendering CourseContents', this.el);
       return this;
     },
+    selectCourse: function(ev) {
+      ev.preventDefault();
+      var pageid = $(ev.target).closest('li').attr('pageid');
+      $.mobile.changePage($('#' + pageid));
+    }
   })
 
   MoodleApp.LoginPageView = Backbone.View.extend({
@@ -284,7 +299,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
     MoodleApp.news = new MoodleApp.NewsList()
 
     MoodleApp.pages = new MoodleApp.PageListView({
-      el: $('body'),
+      el: $('#pagecontainer'),
       collection: MoodleApp.courses,
       news: MoodleApp.news,
     });

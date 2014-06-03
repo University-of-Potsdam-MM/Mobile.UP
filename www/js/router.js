@@ -33,7 +33,6 @@ define([
 			"news": "news",
 			"events": "events",
 			"study": "study",
-			"study/moodle/course/:courseid": "moodle_course",
 			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
@@ -83,11 +82,6 @@ define([
 		moodle: function () {
 			console.log("Side -> Study -> Moodle");
 			this.changePage(new MoodlePageView);
-		},
-
-		moodle_course: function(courseid) {
-			console.log("Side -> Study -> Moodle -> Course ", courseid);
-			$.mobile.changePage($('#moodle-course-content-' + courseid));
 		},
 
 		campus: function(){
