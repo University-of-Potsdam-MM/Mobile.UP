@@ -61,7 +61,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
 
           // display login form
           console.log('display login dialog');
-          $.mobile.navigate('#moodle-login-dialog');
         },
         authorize: function(credentials){
           // if username / password are set go to authorizing
@@ -72,6 +71,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
             moodleAPI.news_api.set(credentials);
             this.transition('authorizing', credentials); // it doesn't seem like credentials are passed at all
           }
+        },
+        _onExit: function() {
+          MoodleApp.authView.$el.hide();
         }
       },
       authorizing:{
@@ -107,9 +109,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       authorized: {
         _onEnter: function() {
           // display main view
-          $.mobile.navigate('#moodle');
+          // $.mobile.navigate('#moodle');
           MoodleApp.courses.fetch();
           MoodleApp.news.fetch();
+          MoodleApp.listview.render();
         },
         not_authorized: {
           // called when there is a 'you are not authorized msg from the server'
@@ -118,10 +121,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       }
     },
   });
-
-
-
-
 
 
   MoodleApp.Course = Backbone.Model.extend({
@@ -266,12 +265,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
     render: function(){
       console.log('render LoginPageView');
       this.$el.html(this.template({model:this.model}));
-      $('body').append(this.$el);
       this.$el.trigger('create');
       return this;
     },
     click_login: function(ev){
       ev.preventDefault();
+      console.log('click_login', arguments);
       this.model.set('username', this.$('input#username').val());
       this.model.set('password', this.$('input#password').val());
       this.trigger('login_attempt', this.model.attributes);
@@ -280,18 +279,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
 
   MoodleApp.start = function(){
     MoodleApp.state = new Backbone.Model();
-
-    MoodleApp.authView = new MoodleApp.LoginPageView({
-      id:'moodle-login-dialog',
-      model: new Backbone.Model()
-    });
-
-    MoodleApp.authView.render();
-
-    MoodleApp.authView.on('login_attempt', function(credentials){
-      MoodleApp.fsm.handle('authorize', credentials);
-    });
-
 
     MoodleApp.courses = new MoodleApp.CourseList();
     MoodleApp.news = new MoodleApp.NewsList()
@@ -316,38 +303,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       MoodleApp.pages.render();
     });
 
-    MoodleApp.listview = new MoodleApp.CourseListView({
-      el: $('ul#moodle_courses'),
-      collection: MoodleApp.courses,
-      // events: {
-      //   "click li" : function(ev){
-      //     // console.log('click', arguments);
-      //     var courseid = $(ev.target).closest('li.moodle-course').attr('id');
-      //     // console.log('courseid', courseid);
-      //     var selectedCourse = this.collection.get(courseid);
-      //     this.trigger('select', selectedCourse)
-      //   }
-      // }
-    });
-
-    MoodleApp.listview.on('select', function(course){
-      course.fetchContents();
-      MoodleApp.state.set('selectedCourse', course);
-    });
-
-    MoodleApp.state.on('change:selectedCourse', function(){
-      console.log('change selectedCourse', arguments);
-    });
   };
-
-  $(document).on("pageinit", "#moodle", MoodleApp.start);
-  $(document).on("pagechange", function(event, options){
-    console.log('pagechange', arguments);
-    console.log('pagechange', options.toPage);
-
-    MoodleApp.fsm.handle('initialize');
-    // MoodleApp.fsm.logout();
-  });
 
 
   var MoodlePageView = Backbone.View.extend({
@@ -355,13 +311,50 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
 
     initialize: function(){
       this.template = utils.rendertmpl('moodle');
+      this.courselist = this.$el.find('courselist');
+
+      MoodleApp.start();
+      MoodleApp.fsm.handle('initialize');
     },
 
     render: function(){
-      $(this.el).html(this.template({}));
-      // append your MoodleApp Logic here
+      this.$el.html(this.template({}));
 
-      $(this.el).trigger("create");
+
+      if (MoodleApp.fsm.state == 'loginform') {
+
+        this.loginform = this.$el.find('#loginform');
+        MoodleApp.authView = new MoodleApp.LoginPageView({
+          el: this.$('#loginform'),
+          model: new Backbone.Model()
+        });
+
+        MoodleApp.authView.on('login_attempt', function(credentials){
+          MoodleApp.fsm.handle('authorize', credentials);
+        });
+        MoodleApp.authView.render();
+        // debugger
+      }
+      
+      MoodleApp.listview = new MoodleApp.CourseListView({
+        el: this.$('ul#moodle_courses'),
+        collection: MoodleApp.courses,
+      });
+
+        MoodleApp.listview.on('select', function(course){
+          course.fetchContents();
+          MoodleApp.state.set('selectedCourse', course);
+        });
+
+        MoodleApp.state.on('change:selectedCourse', function(){
+          console.log('change selectedCourse', arguments);
+        });
+
+
+
+      // TODO append your MoodleApp Logic here
+
+      // this.$el.trigger("create");
       return this;
     }
   });
