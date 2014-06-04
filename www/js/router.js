@@ -136,15 +136,13 @@ define([
 
 		changePage: function(page){
 
-			if(!this.currentView){
-				$('#pagecontainer').children().first().remove();
-			}
-
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
+			// prepare for transition
 			$('body').css('overflow', 'hidden');
 			$('#nav-panel').css('display', 'none');
+
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.defaultPageTransition;
@@ -156,6 +154,12 @@ define([
 			}
 
 			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
+
+			if(!this.currentView){
+				$('#pagecontainer').children().first().remove();
+				$('body').css('overflow', 'auto');
+            	$('#nav-panel').css('display', 'block');
+			}
 
 			this.currentView = page;
 		}
