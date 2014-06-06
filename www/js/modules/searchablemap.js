@@ -2,11 +2,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 	var CategoryMarker = function (marker, map, category, categoryStore) {
 
-		var marker = marker;
-		var map = map;
-		var category = category;
-		var categoryStore = categoryStore;
-
 		this.setVisibility = function(show, overrideCategory) {
 			if (typeof(overrideCategory)==='undefined') overrideCategory = false;
 
@@ -26,7 +21,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				marker.setMap(null);
 			}
 		};
-	}
+	};
 
 	var SEARCH_MODE = 0;
 	var SHOW_MODE = 1;
@@ -62,12 +57,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		this.getElements = function() {
 			return elements;
 		};
-	}
+	};
 
 
 	$.widget("up.searchablemap", {
 		options: {
-			onSelected: function(selection) {}
+			onSelected: function(selection) {},
+			categoryStore: undefined
 		},
 
 		_map: undefined,
@@ -224,7 +220,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
 				} else {
-					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, categoryStore);
+					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, this.options.categoryStore);
 					gMarker.reset();
 
 					var tmpMarkers = allMarkers.getElements();

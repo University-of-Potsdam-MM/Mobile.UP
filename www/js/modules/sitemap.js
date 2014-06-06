@@ -161,7 +161,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			host.append("<div data-role='searchablemap'></div>");
 			host.trigger("create");
 
-			$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected });
+			$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
 			$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 
 			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
