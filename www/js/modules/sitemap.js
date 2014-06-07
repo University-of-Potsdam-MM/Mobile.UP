@@ -251,14 +251,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		var host = $("#" + lastFinderId);
 		host.empty();
 		host.append("<ul id='similarlocations' data-role='listview' style='margin: 8px;'></ul>");
-		host.append("<button onclick='sitemapReset()'>Zurück</button>");
+		host.append("<button onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
 		host.trigger("create");
 
 		var similars = similarHouses.concat(similarDescriptions);
 		similars = _.uniq(similars, false, function(item) { return item.data; });
 
 		_.each(similars, function(item) {
-			$("#similarlocations").append("<li><a onclick='sitemapNavigateTo(\"" + item.geo.properties.id + "\")'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
+			$("#similarlocations").append("<li><a onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
 		});
 
 		$("#similarlocations").listview("refresh");
@@ -418,9 +418,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		render: function(){
 			$(this.el).html(this.template({}));
 			return this;
+		},
+		
+		searchSimilarLocations: function(id) {
+			searchSimilarLocations(id);
+		},
+		
+		sitemapReset: function() {
+			sitemapReset();
+		},
+		
+		sitemapNavigateTo: function(id) {
+			sitemapNavigateTo(id);
 		}
 	});
 
 	return SitemapPageView;
-
 });
