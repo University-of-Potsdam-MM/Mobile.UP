@@ -91,8 +91,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			$(document).on("click", "#filterable-locations a", function () {
 				// Retreive context
 				var source = $(this);
-				var href = source.attr("href");
-				var index = parseInt(href.slice(1));
+				var href = source.attr("data-tag");
+				var index = parseInt(href);
 
 				widgetHost._showIndex(index);
 				widgetHost.options.onSelected(widgetHost._markers[index].context.features[0].properties.Name);
@@ -196,8 +196,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 				// Don't show all markers, only the matching one
 				var source = $("a", this);
-				var href = source.attr("href");
-				var index = parseInt(href.slice(1));
+				var href = source.attr("data-tag");
+				var index = parseInt(href);
 				var searchedMarkers = allMarkers.getElements();
 				if (!result) {
 					searchedMarkers[index].setVisibility(true, true);

@@ -152,7 +152,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	function onItemSelected(selection) {
 		searchView.setSearchValue(selection);
 		searchView.hideAllItems();
-		$("div[data-role='searchablemap']").searchablemap("viewByName", selection);
+		// $("div[data-role='searchablemap']").searchablemap("viewByName", selection);
 	}
 
 	function drawCampus(uniqueDiv, url) {
