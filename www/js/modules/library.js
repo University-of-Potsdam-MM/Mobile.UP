@@ -16,11 +16,9 @@ previously working functionality. Please don't judge.
 - Pagination for getting more Books from the API
 
 ## TODOS
-- check if internet is available and display warning if not
 - display "zs:diagnostics" "diag:message" element (namespace'http://www.loc.gov/zing/srw/diagnostic/')
 - display availability information in the BookListView
 - maybe add a finite state machine or a router to simplify the code
-
 */
 
 "use strict";
@@ -480,55 +478,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
    */
 
   /**
-   * Backbone View - Search
-   * Main View for submitting search requests
-   */
-  App.view.Search = Backbone.View.extend({
-    el: '#libraryContent',
-
-    events: {
-      'submit form': 'submit',
-    },
-
-    initialize: function(){
-      this.template = utils.rendertmpl('library_search');
-    },
-
-    render: function(){
-      this.$el.html(this.template({keyword: App.models.currentSearch.get('query')}));
-      this.$el.trigger('create');
-      return this;
-    },
-
-    submit: function(e){
-      e.preventDefault();
-      $('input[type="submit"]').attr('disabled', 'disabled');
-      var inputs = $('#query-form :input').serializeArray();
-      var query = inputs[0].value;
-      this.loadSearch(query);
-    },
-
-    loadSearch: function(queryString){
-      // console.log('loadSearch');
-      if (App.collections.searchResults) {
-        App.collections.searchResults.reset();
-      } else {
-        App.collections.searchResults = new App.collection.BookList();
-      }
-      var search = App.models.currentSearch.set({
-        query: queryString,
-        results: App.collections.searchResults,
-      });
-
-      // on adding books render BookListView
-      var loading = search.loadNext();
-      return loading;
-    }
-
-  });
-
-
-  /**
    * Backbone View - BookList
    * displays the list of search results
    */
@@ -545,7 +494,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
-
 
     render: function(){
       var search = App.models.currentSearch;
@@ -574,9 +522,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
       //console.log(book);
-      var BookDetailView = new App.view.BookDetailView({
-          model: book
-        });
+      var BookDetailView = new App.view.BookDetailView({model: book});
       BookDetailView.render();
 
       book.updateLocation();
@@ -589,7 +535,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
    * displays the detail information of a given book
    */
   App.view.BookDetailView = Backbone.View.extend({
-    el: '#libraryContent',
+    el: '#library',
     model: App.model.Book,
 
     events: {
@@ -604,20 +550,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       return this;
     },
 
-    // TODO:
     back: function(){
+      App.view.SearchForm = new LibraryPageView({el: this.$el.find("#libraryContent")});
       App.view.SearchForm.render();
       App.view.SearchResults = new App.view.BookList({
         model: App.models.currentSearch,
         collection: App.collections.searchResults
       });
       App.view.SearchResults.render();
+
       return this;
     }
-
   });
-
-  App.view.BookShortView = Backbone.View.extend({});
 
 
   /**
@@ -740,21 +684,24 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       model: App.model.BookLocation
   });
 
-  // setting everything up
 
+  /**
+   * Backbone View - Search
+   * Main View for submitting search requests
+   */
   var LibraryPageView = Backbone.View.extend({
-    attributes: {"id": 'search'},
+    attributes: {"id": 'library'},
+
+    events: {
+      'submit form': 'submit',
+    },
 
     initialize: function(){
       this.template = utils.rendertmpl('library');
     },
 
     render: function(){
-
-      this.$el.html(this.template({}));
-
-      App.view.SearchForm = new App.view.Search({el: this.$el.find("#libraryContent")});
-      App.view.SearchForm.render();
+      this.$el.html(this.template({keyword: App.models.currentSearch.get('query')}));
 
       // initialize Main Views
       App.view.SearchResults = new App.view.BookList({
@@ -764,8 +711,34 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       });
       App.view.SearchResults.render();
 
+      this.$el.trigger('create');
       return this;
+    },
+
+    submit: function(e){
+      e.preventDefault();
+      $('input[type="submit"]').attr('disabled', 'disabled');
+      var inputs = $('#query-form :input').serializeArray();
+      var query = inputs[0].value;
+      this.loadSearch(query);
+    },
+
+    loadSearch: function(queryString){
+      // console.log('loadSearch');
+      if (App.collections.searchResults) {
+        App.collections.searchResults.reset();
+      } else {
+        App.collections.searchResults = new App.collection.BookList();
       }
+      var search = App.models.currentSearch.set({
+        query: queryString,
+        results: App.collections.searchResults,
+      });
+
+      // on adding books render BookListView
+      var loading = search.loadNext();
+      return loading;
+    }
 
   });
 

@@ -173,8 +173,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 			// Tell collapsible set to refresh itself
 			host.trigger("create");
+			
+			if (meals.length == 0) {
+				showNoMealsToday(host);
+			}
 		}
 	};
+	
+	function showNoMealsToday(host) {
+		var insDiv = $("<div>");
+		insDiv.append('<br />');
+		insDiv.append('<img src="img/up/hinweis.png" class="alignleft">');
+		insDiv.append('<p class="blau" style="margin-left:55px;">Heute gibt es kein Essensangebot. Vielleicht ist die Mensa geschlossen?</p>');
+		insDiv.appendTo(host);
+	}
 
 	var MensaPageView = Backbone.View.extend({
 		attributes: {"id": 'mensa'},
