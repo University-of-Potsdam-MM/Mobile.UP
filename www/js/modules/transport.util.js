@@ -246,13 +246,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
     var defer = $.Deferred();
 
-    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode)).done(
-      function(data, textStatus, jqXHR){
+    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+    .done(function(data, textStatus, jqXHR){
       // console.log('requestExternalId', data,textStatus,jqXHR);
       var $data = $(data);
       var connections = _.map($data.find('Connection'), mapConnection);
       // TODO: map connections from xml to objects
       defer.resolve(connections);
+    })
+    .fail(function(error){
+    	var errorPage = new utils.ErrorView({el: '#result', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport2', err: error});
     });
 
 
@@ -266,6 +269,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   function getExternalId(stationString) {
     var defer = $.Deferred();
+
     $.post(
       endpoint(),
       requestExternalId(stationString),
@@ -278,6 +282,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
           name:       station.attr('name'),
           externalId: station.attr('externalId'),
         });
+      })
+      .fail(function(error){
+		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
       });
     return defer.promise();
   }
@@ -320,15 +327,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     var defer = $.Deferred();
     var timeString = moment.format('HH:mm:ss');
 
-    ajax(abgehendeVerbindungen(externalId, timeString)).done(
-      function(data, textStatus, jqXHR){
+    ajax(abgehendeVerbindungen(externalId, timeString))
+    .done(function(data, textStatus, jqXHR){
         // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
         var $data = $(data);
         // map every node of STBJourney to a JavaScript Object
         var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
         defer.resolve(jsonArray);
-      }
-    );
+      })
+    .fail(function(error){
+		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
+     });
 
     return defer.promise();
   }

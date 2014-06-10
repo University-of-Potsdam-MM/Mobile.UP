@@ -41,9 +41,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
 			.finally(utils.removeLoadingSpinner(uniqueDivId))
-	        .catch(function (e) {
-	            console.log("Fehlschlag: " + e.stack);
-	            alert("Fehlschlag: " + e.stack);
+	        .catch(function (error) {
+	            var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
 	        });
 	};
 
@@ -72,7 +71,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		$.ajax({
 			url: url + "/readCurrentMeals?format=json&location=" + location,
 			headers: headers
-		}).done(d.resolve).fail(d.reject);
+		})
+		.done(d.resolve)
+		.fail(function(error){
+			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
+		});
 	    return d.promise;
 	};
 
@@ -170,8 +173,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 			// Tell collapsible set to refresh itself
 			host.trigger("create");
+			
+			if (meals.length == 0) {
+				showNoMealsToday(host);
+			}
 		}
 	};
+	
+	function showNoMealsToday(host) {
+		var insDiv = $("<div>");
+		insDiv.append('<br />');
+		insDiv.append('<img src="img/up/hinweis.png" class="alignleft">');
+		insDiv.append('<p class="blau" style="margin-left:55px;">Heute gibt es kein Essensangebot. Vielleicht ist die Mensa geschlossen?</p>');
+		insDiv.appendTo(host);
+	}
 
 	var MensaPageView = Backbone.View.extend({
 		attributes: {"id": 'mensa'},

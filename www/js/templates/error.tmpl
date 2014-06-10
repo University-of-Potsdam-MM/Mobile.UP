@@ -1,0 +1,14 @@
+<div class="error" style="text-align:center;">
+<img src="img/up/404.png">
+
+<h2 >Etwas funktioniert nicht ...</h2>
+<p >
+
+
+<%= error.error %><%= error.error.message %>
+<b>Fehlerbeschreibung:</b> <%= error.msg %><br />
+<b>Fehlermodul:</b> <%=error.module %>
+<% console.log(error.error.stack) %>
+</p>
+
+</div>

@@ -29,6 +29,7 @@ define([
 		routes:{
 			// Routes for Index - Page
 			"": "home",
+			"nav-panel": "navpanel",
 			"home": "home",
 			"news": "news",
 			"events": "events",
@@ -62,6 +63,17 @@ define([
 		home: function(){
 			console.log("Side -> Home");
 			this.changePage(new HomePageView);
+		},
+
+		navpanel: function(){
+			console.log("Nav-Panel");
+			$('#nav-panel').trigger("create");
+			$('#nav-panel').trigger("updatelayout");
+			$('#nav-panel').panel({animate: true});
+			$('#nav-panel').panel("open");
+			//$('#nav-panel').popup();
+			//$('#nav-panel').popup("open");
+			//$('#nav-panel').html($(this.currentView.el)).popup("open");
 		},
 
 		news: function(){
@@ -145,6 +157,8 @@ define([
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
+			$('body').css('overflow', 'hidden');
+			$('#nav-panel').css('display', 'none');
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.defaultPageTransition;
