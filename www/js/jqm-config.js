@@ -9,7 +9,10 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
 
 	    // Remove page from DOM when it's being replaced
 	    $(document).on('pagehide', 'div[data-role="page"]', function(event, ui){
-            $(event.currentTarget).remove();
+            var target = $(event.currentTarget);
+            if (target.attr('data-dom-cache') != 'true') {
+              target.remove();
+            }
             $('body').css('overflow', 'auto');
             $('#nav-panel').css('display', 'block');
    		});

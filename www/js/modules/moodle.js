@@ -249,7 +249,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
     renderOne: function(course) {
       var page = new MoodleApp.CourseContentsPage({
         id: 'moodle-course-content-' + course.id,
-        attributes: {"data-role":"page"},
+        attributes: {"data-role":"page", "data-dom-cache":"true"},
         model: course,
         collection: course.get('contents') || course.fetchContents(),
         news: this.news,
@@ -276,7 +276,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
       "click input#login": 'click_login'
     },
     template: utils.rendertmpl('auth'),
-    attributes: {"data-role":"page"},
+    attributes: {"data-role":"page", "data-dom-cache":"true"},
     render: function(){
       console.log('render LoginPageView');
       this.$el.html(this.template({model:this.model}));
@@ -322,7 +322,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
 
 
   var MoodlePageView = Backbone.View.extend({
-    attributes: {"id": "moodle"},
+    attributes: {"id": "moodle", "data-dom-cache": "true"},
 
     initialize: function(){
       this.template = utils.rendertmpl('moodle');
