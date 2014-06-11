@@ -14,5 +14,5 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		}
 	});
 
-	return GradesPageVieww;
+	return GradesPageView;
 });

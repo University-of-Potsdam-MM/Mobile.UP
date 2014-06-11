@@ -671,6 +671,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .table-stripe tbody tr:nth-child(odd) td,.table-stripe tbody tr:nth-child(odd) th
 	{
 	background-color: rgba(255, 255, 255, 0.4);
+	
 }
 
 #opening .table-stripe tbody tr:nth-child(even) th {
@@ -1445,4 +1446,19 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #lectures .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
 		padding-left:1em !important;
 }
+
+/****grades*****/
+
+table#grades {
+	background-color:#d0dae3;
+	
+	
+}
+
+@media (min-width: 35em) {
+	#grades.ui-table-reflow.ui-responsive {
+	display: inline-table;
+	}
+}
+
 
