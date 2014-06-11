@@ -12,7 +12,7 @@ define([], function(){
 				if (geojsonProperties.Name) {
 					var desc = geojsonProperties.description ? '<br><br>'+geojsonProperties.description.replace(/\n/g, '<br>') : "<br><br>Keine Beschreibung verfügbar";
 					if (geojsonProperties.id && hasSimilars(geojsonProperties.id)) {
-						googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'<br><br><a onclick="searchSimilarLocations(\''+geojsonProperties.id+'\')">Ähnliche Orte</a></b>'});
+						googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'<br><br><a onclick="require([\'modules/sitemap\'], function(Sitemap) { new Sitemap().searchSimilarLocations(\''+geojsonProperties.id+'\'); });">Ähnliche Orte</a></b>'});
 					} else {
 						googleObj.info = new google.maps.InfoWindow({content: '<b>'+geojsonProperties.Name+desc+'</b>'});
 					}
