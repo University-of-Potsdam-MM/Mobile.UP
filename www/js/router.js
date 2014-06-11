@@ -15,8 +15,10 @@ define([
 	'modules/transport',
 	'modules/transport2',
 	'modules/mensa',
-	'modules/library'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView){
+	'modules/library',
+	'modules/lectures',
+	'modules/grades'
+	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -35,7 +37,11 @@ define([
 			"transport2": "transport2",
 			"opening": "opening",
 			"mensa": "mensa",
-			"emergency": "emergency"
+			"emergency": "emergency",
+			"lectures":"lectures",
+			"grades":"grades"
+				
+				
 		},
 
 		initialize: function(){
@@ -85,6 +91,16 @@ define([
 		campus: function(){
 			console.log("Side -> Campus");
 			this.changePage(new CampusPageView);
+		},
+		
+		lectures: function(){
+			console.log("Side -> Lectures");
+			this.changePage(new LecturesPageView);
+		},
+		
+		grades: function(){
+			console.log("Side -> Grades");
+			this.changePage(new GradesPageView);
 		},
 
 		library: function(){
