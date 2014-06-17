@@ -1,11 +1,26 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone'],
-function( $, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'utils'],
+function( $, _, Backbone, utils) {
 
   var moodleAPI = {
     BaseURL: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X',
   };
+
+  function cors_post(url, params) {
+    console.log('cors_post to', url);
+    return $.ajax( url, {
+      type: "POST",
+      crossDomain: true,
+      data: params,
+      beforeSend: function (request) {
+          request.withCredentials = true;
+          request.setRequestHeader("Authorization", utils.getAuthHeader());
+      },
+    });
+  }
+
+
 
   var BasicAPI = Backbone.Model.extend({
     login_url: moodleAPI.BaseURL + '/login/token.php',
@@ -13,15 +28,29 @@ function( $, _, Backbone) {
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
       var api = this;
-      return $.post(this.login_url, params, function(data){
-        console.log('success get_token', arguments);
-        api.set(data);
-        // TODO: what happens when pw is wrong?
-        // debugger
-        api.set('wstoken', data['token']);
-        api.unset('password'); // remove password
-        api.trigger('authorized');
-      }).promise();
+
+      var deferred = $.Deferred();
+      deferred.then(
+        cors_post(this.login_url, params).then(function(data){
+          console.log('success get_token', arguments);
+          api.set(data);
+          api.unset('password'); // remove password
+
+          if (data['error']) {
+            api.set(data);
+            api.trigger('error');
+            deferred.rejectWith(data);
+          } else {
+            api.set('wstoken', data['token']);
+            // you shouldn't listen on this one,
+            // because it is triggered for each authenticated service
+            api.trigger('authorized');
+            deferred.resolveWith(data);
+          }
+        })
+      );
+
+      return deferred.promise();
     },
 
     isAuthorized: function(){
@@ -72,7 +101,7 @@ function( $, _, Backbone) {
         wstoken: this.get('token'),
         wsfunction:'moodle_webservice_get_siteinfo',
       };
-      return $.post(this.webservice_url, params, function(data){
+      return cors_post(this.webservice_url, params).then(function(data){
         console.log('fetchUserid', arguments);
         api.set(data);
       }).promise();

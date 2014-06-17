@@ -66,7 +66,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
           // if username / password are set go to authorizing
           console.log('authorize', credentials);
           if ( ! (_.isEmpty(credentials.username) || _.isEmpty(credentials.password)) ) {
-            // debugger
             moodleAPI.api.set(credentials);
             moodleAPI.news_api.set(credentials);
             this.transition('authorizing', credentials); // it doesn't seem like credentials are passed at all
@@ -82,12 +81,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
           // ask moodleAPI.api and moodleAPI.news_api for token + UID (use async or similar)
           console.log('authorizing: _onEnter', arguments);
           var fsm = this;
+          moodleAPI.api.on('error', function(){fsm.transition('error');});
+          moodleAPI.api.on('authorized', function(){console.log('moodle api authorized ')});
+          moodleAPI.news_api.on('authorized', function(){console.log('moodle news_api authorized')});
+
+          // we want both services to be authorized
           $.when(
             moodleAPI.api.authorizeAndGetUserId(),
             moodleAPI.news_api.authorize()
           ).done(function(){
-            // moodleAPI.api should be authorized and has userId, moodleAPI.news_api should be authorized
-            console.log('authorization complete');
+            // moodleAPI.api should be authorized and has userId,
+            // moodleAPI.news_api should be authorized
+            console.log('authorization complete, but we use Backbone ');
             fsm.transition('authorized');
           });
         },
@@ -117,6 +122,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
         not_authorized: {
           // called when there is a 'you are not authorized msg from the server'
           // should reset authorization and go to uninitialized state
+        }
+      },
+      error: {
+        _onEnter: function() {
+          alert(moodleAPI.api.get('error'));
+          this.logout();
         }
       }
     },
@@ -348,9 +359,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'machina', 'modules/moodle.
           MoodleApp.fsm.handle('authorize', credentials);
         });
         MoodleApp.authView.render();
-        // debugger
       }
-      
+
       MoodleApp.listview = new MoodleApp.CourseListView({
         el: this.$('ul#moodle_courses'),
         collection: MoodleApp.courses,
