@@ -105,12 +105,10 @@ define([
 		},
 
 		transport: function(){
-			console.log("Side -> Transport");
 			this.changePage(new TransportPageView);
 		},
 
 		transport2: function(){
-			console.log("Side -> Transport2")
 			this.changePage(new Transport2PageView);
 		},
 
@@ -151,6 +149,10 @@ define([
 			if (this.firstPage){
 				transition = 'none';
 				this.firstPage = false;
+			}
+
+			if (page.$el[0].id == 'transport' || page.$el[0].id == 'transport2') {
+				transition = 'none';
 			}
 
 			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
