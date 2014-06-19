@@ -46,6 +46,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       var resultList = this.collection;
       resultList.on('reset', this.renderResults, this);
       resultList.on('add', this.render, this);
+      _.bindAll(this, 'spinnerOn', 'spinnerOff');
     },
     events:{
       "vclick #searchButton" : "searchButton",
@@ -59,6 +60,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
     search: function(){
       console.log('fetch & render');
+      this.spinner();
       this.model.fetchConnections();
       this.renderSummary();
     },
@@ -72,6 +74,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       this.model.addTime('minutes', 30);
       this.search();
     },
+
+    spinner: function(){
+      var view = this;
+      view.spinnerOn();
+      _.each(ht.stations(), function(station){
+        view.collection.once('add', view.spinnerOff);
+      });
+    },
+    spinnerOn:  utils.addLoadingSpinner('transport_rides'),
+    spinnerOff: utils.removeLoadingSpinner('transport_rides'),
+
 
     // returns a momentjs object for Transportation Date + Time
     getMoment: function() {
