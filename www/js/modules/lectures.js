@@ -2,12 +2,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	
 	// Helping the eclipse JS Tools by declaring the variable here
 	var VvzCollection = undefined;
+	var VvzCourseCollection = undefined;
 	
 	var VvzItem = Backbone.Model.extend({
 		
 		initialize: function() {
-			this.subitems = new VvzCollection();
-			this.subitems.url = this.createSubUrl();
+			this.set("suburl", this.createSubUrl());
 		},
 		
 		createSubUrl: function() {
@@ -23,6 +23,26 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			}
 			
 			return result;
+		},
+		
+		/**
+		 * 
+		 * @param context should be a CurrentVvz
+		 */
+		loadIn: function(context) {
+			context.subitems.url = this.get("suburl");
+			context.subitems.fetch({reset: true});
+			
+			context.courses.url = this.get("suburl");
+			context.courses.fetch({reset: true});
+		}
+	});
+	
+	var CurrentVvz = Backbone.Model.extend({
+		
+		initialize: function() {
+			this.subitems = new VvzCollection();
+			this.courses = new VvzCourseCollection();
 		}
 	});
 	
@@ -34,62 +54,137 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		}
 	});
 	
-	var items = new VvzItem().subitems;
-	items.on("add", function(data) {
-		// Do something with data
-		console.log("VVZ-Daten geladen");
+	VvzCourseCollection = Backbone.Collection.extend({
+		model: VvzItem,
+		
+		parse: function(response) {
+			return response.listitem.subitems.course;
+		}
 	});
-	items.fetch();
 	
-	// Fetch all items at startup
+	var currentVvz = new CurrentVvz;
 	
-	// Fetch subitems on request
-	
-	// Show individual vvz nodes
 	var LectureNodeView = Backbone.View.extend({
 		
 		events: {
 			"click": "loadChildren"
 		},
 		
+		initialize: function() {
+			this.template = utils.rendertmpl('lectures_items');
+		},
+		
+		render: function() {
+			var html = this.template({model: this.model});
+			
+			this.undelegateEvents();
+			this.$el = $(html);
+			this.delegateEvents();
+			
+			return this;
+		},
+		
 		loadChildren: function() {
-			this.trigger("loadChildren", this.model);
+			console.log("Lade " + this.model.get("suburl"));
+			this.model.loadIn(currentVvz);
 		}
 	});
 	
 	var LectureNodesView = Backbone.View.extend({
 		
 		initialize: function() {
-			this.template = utils.rendertmpl('lectures_items');
-			this.listenTo(this.collection, "sync", this.render);
+			this.listenTo(this.collection, "reset", this.render);
 		},
 		
 		render: function() {
 			this.$el.empty();
-			this.$el.html(this.template({items: this.collection.models}));
 			
 			var that = this;
-			this.$("li").each(function(index, element) {
-				var model = that.collection.models[index];
-				var view = new LectureNodeView({model: model, el: element});
-				that.listenTo(view, "loadChildren", that.loadChildren);
+			this.collection.each(function(model) {
+				var view = new LectureNodeView({model: model});
+				that.$el.append(view.render().$el);
 			});
 			
-			this.$el.listview("refresh");
+			this.$el.listview().listview("refresh");
+			return this;
+		}
+	});
+	
+	var LectureCourseView = Backbone.View.extend({
+		
+		events: {
+			"click": "loadChildren"
+		},
+		
+		initialize: function() {
+			this.template = utils.rendertmpl('lectures_courses');
+		},
+		
+		render: function() {
+			var html = this.template({model: this.model});
+			
+			this.undelegateEvents();
+			this.$el = $(html);
+			this.delegateEvents();
+			
 			return this;
 		},
 		
-		loadChildren: function(model) {
-			var items = model.subitems;
+		loadChildren: function() {
+			console.log("Lade " + this.model.get("suburl"));
 			
-			new LectureNodesView({collection: items, el: this.$el});
-			items.fetch();
+			// Create model
+			var toLoad = new Backbone.Model;
+			toLoad.url = this.model.get("suburl");
+			toLoad.parse = function(response) { return response.course; };
+			
+			// Create view
+			new LectureSingleCourseView({model: toLoad, el: $("#lectureCourse")});
+			
+			// Fetch from server
+			toLoad.fetch();
+		}
+	});
+	
+	var LectureCoursesView = Backbone.View.extend({
+		
+		initialize: function() {
+			this.listenTo(this.collection, "reset", this.render);
+		},
+		
+		render: function() {
+			this.$el.empty();
+			
+			var that = this;
+			this.collection.each(function(model) {
+				var view = new LectureCourseView({model: model});
+				that.$el.append(view.render().$el);
+			});
+			
+			this.$el.listview().listview("refresh");
+			return this;
+		}
+	});
+	
+	var LectureSingleCourseView = Backbone.View.extend({
+		
+		initialize: function() {
+			this.template = utils.rendertmpl('lectures_course');
+			this.listenTo(this.model, "sync", this.render);
+		},
+		
+		render: function() {
+			this.$el.empty();
+			this.$el.append(this.template({model: this.model}));
+			this.$el.trigger("create");
+			
+			return this;
 		}
 	});
 	
 	var LecturesPageView = Backbone.View.extend({
 		attributes: {"id": "lectures"},
-
+		
 		initialize: function(){
 			this.template = utils.rendertmpl('lectures');
 			
@@ -97,13 +192,15 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 		
 		loadVvz: function() {
-			var items = new VvzItem().subitems;
+			var items = currentVvz.subitems;
 			var host = this.$("#lectureCategoryList");
 			
 			new LectureNodesView({collection: items, el: host});
-			items.fetch();
+			new LectureCoursesView({collection: currentVvz.courses, el: this.$("#lectureCourseList")});
+			
+			new VvzItem().loadIn(currentVvz);
 		},
-
+		
 		render: function(){
 			$(this.el).html(this.template({}));
 			$(this.el).trigger("create");
@@ -113,6 +210,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			return this;
 		}
 	});
-
+	
 	return LecturesPageView;
 });
