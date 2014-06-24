@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils){
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
   // API code
   var environment = 'upproxy';

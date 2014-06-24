@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', 'moment'], function($, _, Backbone, utils, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', 'moment'], function($, _, Backbone, utils, ht, moment){
  /*
   ## Dependencies
   - jQuery
