@@ -213,3 +213,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	
 	return LecturesPageView;
 });
+
+function asArray(subject) {
+	 if (Array.isArray(subject)) {
+		 return subject;
+	 } else {
+		 return [subject];
+	 }
+}
