@@ -160,7 +160,7 @@ define([
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
 				$('body').css('overflow', 'auto');
-            	$('#nav-panel').css('display', 'block');
+				$("body").fadeIn(100);
 			}
 
 			this.currentView = page;

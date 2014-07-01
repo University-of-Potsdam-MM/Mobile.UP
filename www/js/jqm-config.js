@@ -15,7 +15,4 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
    		});
 	});
 
-	$(document).ready(function(){
-		$('body').css('visibility','visible');
-	});
 });
