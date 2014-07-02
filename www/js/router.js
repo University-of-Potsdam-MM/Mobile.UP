@@ -39,6 +39,7 @@ define([
 			"mensa": "mensa",
 			"emergency": "emergency",
 			"lectures":"lectures",
+			"lectures/:vvzUrl":"lectures",
 			"grades":"grades"
 				
 				
@@ -93,9 +94,15 @@ define([
 			this.changePage(new CampusPageView);
 		},
 		
-		lectures: function(){
+		lectures: function(vvzUrl){
 			console.log("Side -> Lectures");
 			this.changePage(new LecturesPageView);
+			
+			this.currentView.openVvzUrl(vvzUrl);
+			
+			this.listenTo(this.currentView, "openVvzUrl", function(url) {
+				this.navigate("lectures/" + encodeURIComponent(url));
+			});
 		},
 		
 		grades: function(){
@@ -126,7 +133,7 @@ define([
 		},
 
 		transport2: function(){
-			console.log("Side -> Transport2")
+			console.log("Side -> Transport2");
 			this.changePage(new Transport2PageView);
 		},
 
@@ -159,7 +166,7 @@ define([
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
-			$('body').css('overflow', 'hidden');
+			// $('body').css('overflow', 'hidden');
 			$('#nav-panel').css('display', 'none');
 			$('#pagecontainer').append($(page.el));
 
