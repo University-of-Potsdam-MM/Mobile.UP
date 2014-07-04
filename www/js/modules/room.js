@@ -157,7 +157,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			endTime = endTime.toISOString();
 
 			var request = "http://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-			return _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+			return _.str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
 		}
 	});
 
@@ -201,6 +201,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 
 		initialize: function() {
 			this.listenTo(this.model, "change", this.render);
+		},
+
+		events: {
+			'click button': 'roomsReset'
+		},
+
+		roomsReset: function(){
+			$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
 		},
 
 		render: function() {
@@ -254,10 +262,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		currentView = new RoomsOverview({el: div, model: roomsModel});
 
 		roomsModel.rooms.fetch({reset: true});
-	}
-
-	function roomsReset() {
-		$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
 	}
 
 	var RoomPageView = Backbone.View.extend({
