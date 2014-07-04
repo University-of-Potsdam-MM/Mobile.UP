@@ -1,0 +1,31 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#nav-panel" data-role="button" data-icon="false"
+		data-inline="true" class="menubutton">Menue</a> <a
+		href="#study" data-role="button" data-icon="false"
+		data-inline="true" data-transition="slidefade"
+		data-direction="reverse" class="back">Back</a>
+	<h1>Vorlesungsverzeichnis</h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content">
+	<select name="selectLevel" id="selectLevel" data-native-menu="false" data-inline="true">
+		<option value="">Zurück zu ...</option>
+	</select>
+	<!--
+	<a href="#" data-rel="popup" data-role="button" data-icon="arrow-white-down"  data-iconpos="right" data-inline="false">Zurück zu ...</a>
+-->
+	<!-- liste -->
+	<ul class="lecture-category-list" data-role="listview" data-inset="true" data-theme="b" id="lectureCategoryList">
+	</ul>
+
+	<!-- liste -->
+	<ul class="lecture-category-list" data-role="listview" data-inset="true" data-theme="b" id="lectureCourseList">
+	</ul>
+
+	<!-- einzelne Vorlesung/letzte Ebene -->
+	<div id="lectureCourse"></div>
+
+</div>
+<!-- End Main - Navigation -->
