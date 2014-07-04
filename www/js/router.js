@@ -98,11 +98,12 @@ define([
 			console.log("Side -> Lectures");
 			this.changePage(new LecturesPageView);
 			
-			var vvzHistory = new Backbone.Collection;
+			var vvzHistory = this.currentView.vvzHistory;
 			if (vvzUrls != undefined) {
-				vvzHistory.add(JSON.parse(vvzUrls));
+				vvzHistory.reset(JSON.parse(vvzUrls));
+			} else {
+				vvzHistory.reset();
 			}
-			this.currentView.openVvzUrl(vvzHistory);
 			
 			this.listenTo(this.currentView, "openVvzUrl", function(vvzHistory) {
 				var param = JSON.stringify(vvzHistory.toJSON());
