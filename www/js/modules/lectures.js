@@ -5,6 +5,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	var VvzCourseCollection = undefined;
 
 	var VvzItem = Backbone.Model.extend({
+		defaults: {
+			"name": "Vorlesungsverzeichnis"
+		},
 
 		initialize: function() {
 			this.set("suburl", this.createSubUrl());
@@ -86,10 +89,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 		loadChildren: function(ev) {
 			console.log("Lade " + this.model.get("suburl"));
-			$('#selectLevel option').removeAttr('selected');
-			$('#selectLevel').append('<option value="'+ev.target.text+'" selected="selected">'+ev.target.text+'</option>');
-			$('#selectLevel').selectmenu('refresh', true);
-			this.trigger("openVvzUrl", this.model.get("suburl"));
+			this.trigger("openVvzUrl", this.model);
 		}
 	});
 
@@ -106,7 +106,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.collection.each(function(model) {
 				var view = new LectureNodeView({model: model});
 				that.$el.append(view.render().$el);
-				that.listenTo(view, "openVvzUrl", function(url) { this.trigger("openVvzUrl", url); });
+				that.listenTo(view, "openVvzUrl", function(model) { this.trigger("openVvzUrl", model); });
 			});
 
 			this.$el.listview().listview("refresh");
@@ -199,15 +199,22 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenToOnce(this, "render", this.prepareVvz);
 		},
 
-		selectMenu: function(ev){
+		selectMenu: function(ev) {
 			ev.preventDefault();
 			$('#selectLevel-listbox').popup("open");
-			console.log('clicked');
 		},
 
-		selectLevel: function(ev){
+		selectLevel: function(ev) {
 			ev.preventDefault();
-			console.log('clicked Menu Button');
+			var selectedUrl = $('#selectLevel').find(":selected").attr("value");
+			var selectedModel = this.vvzHistory.find(function(element) { return element.get("suburl") == selectedUrl; });
+			var remainingModels = this.vvzHistory.last(this.vvzHistory.length - this.vvzHistory.indexOf(selectedModel));
+			
+			this.vvzHistory.on("reset", function(col) {
+				console.log("remaining " + col.pluck("name"));
+			});
+			
+			this.vvzHistory.reset(remainingModels);
 		},
 
 		prepareVvz: function() {
@@ -215,15 +222,29 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			var host = this.$("#lectureCategoryList");
 
 			var lnv = new LectureNodesView({collection: items, el: host});
-			this.listenTo(lnv, "openVvzUrl", this.openVvzUrl);
+			this.listenTo(lnv, "openVvzUrl", this.proxyOpenVvzUrl);
 			
 			new LectureCoursesView({collection: currentVvz.courses, el: this.$("#lectureCourseList")});
 		},
 		
-		openVvzUrl: function(vvzUrl) {
-			if (!vvzUrl) {
-				vvzUrl = new VvzItem().get("suburl");
+		proxyOpenVvzUrl: function(vvzItem) {
+			var current = vvzItem.pick("name", "suburl");
+			this.vvzHistory.add(current, {at: 0});
+			this.openVvzUrl(this.vvzHistory);
+		},
+		
+		openVvzUrl: function(vvzHistory) {
+			this.vvzHistory = vvzHistory;
+			if (vvzHistory.isEmpty()) {
+				vvzHistory.add(new VvzItem());
 			}
+			var vvzUrl = vvzHistory.first().get("suburl");
+			
+			this.createPopupMenu(vvzHistory);
+			
+			// Attach listeners
+			this.stopListening(this.vvzHistory);
+			this.listenTo(this.vvzHistory, "reset", this.openVvzUrl);
 			
 			var context = currentVvz;
 			
@@ -233,7 +254,20 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			context.courses.url = vvzUrl;
 			context.courses.fetch({reset: true});
 			
-			this.trigger("openVvzUrl", vvzUrl);
+			this.trigger("openVvzUrl", vvzHistory);
+		},
+		
+		createPopupMenu: function(history) {
+			$('#selectLevel option').remove();
+			history.each(function(option) {
+				var node = $("<option>");
+				node.attr("value", option.get("suburl"));
+				node.text(option.get("name"));
+				//$('#selectLevel').prepend('<option value="'+option.get("name")+'">'+option.get("name")+'</option>');
+				$('#selectLevel').prepend(node);
+			});
+			$('#selectLevel option').last().attr('selected', 'selected');
+			$('#selectLevel').selectmenu('refresh', true);
 		},
 
 		render: function(){

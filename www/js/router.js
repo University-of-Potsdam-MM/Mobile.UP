@@ -39,7 +39,7 @@ define([
 			"mensa": "mensa",
 			"emergency": "emergency",
 			"lectures":"lectures",
-			"lectures/:vvzUrl":"lectures",
+			"lectures/*vvzUrls":"lectures",
 			"grades":"grades"
 				
 				
@@ -94,14 +94,19 @@ define([
 			this.changePage(new CampusPageView);
 		},
 		
-		lectures: function(vvzUrl){
+		lectures: function(vvzUrls){
 			console.log("Side -> Lectures");
 			this.changePage(new LecturesPageView);
 			
-			this.currentView.openVvzUrl(vvzUrl);
+			var vvzHistory = new Backbone.Collection;
+			if (vvzUrls != undefined) {
+				vvzHistory.add(JSON.parse(vvzUrls));
+			}
+			this.currentView.openVvzUrl(vvzHistory);
 			
-			this.listenTo(this.currentView, "openVvzUrl", function(url) {
-				this.navigate("lectures/" + encodeURIComponent(url));
+			this.listenTo(this.currentView, "openVvzUrl", function(vvzHistory) {
+				var param = JSON.stringify(vvzHistory.toJSON());
+				this.navigate("lectures/" + encodeURIComponent(param));
 			});
 		},
 		
