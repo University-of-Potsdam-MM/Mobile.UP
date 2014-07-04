@@ -167,7 +167,8 @@ define([
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
 			page.render();
-			// $('body').css('overflow', 'hidden');
+			// prepare for transition
+			$('body').css('overflow', 'hidden');
 			$('#nav-panel').css('display', 'none');
 
 			$('#pagecontainer').append($(page.el));
