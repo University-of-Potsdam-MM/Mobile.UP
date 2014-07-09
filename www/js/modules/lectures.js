@@ -26,18 +26,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			}
 
 			return result;
-		},
-
-		/**
-		 *
-		 * @param context should be a CurrentVvz
-		 */
-		loadIn: function(context) {
-			context.subitems.url = this.get("suburl");
-			context.subitems.fetch({reset: true});
-
-			context.courses.url = this.get("suburl");
-			context.courses.fetch({reset: true});
 		}
 	});
 
@@ -89,7 +77,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 		loadChildren: function(ev) {
 			console.log("Lade " + this.model.get("suburl"));
-			this.trigger("openVvzUrl", this.model);
+			vvzHistory.openVvz(this.model);
 		}
 	});
 
@@ -106,7 +94,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.collection.each(function(model) {
 				var view = new LectureNodeView({model: model});
 				that.$el.append(view.render().$el);
-				that.listenTo(view, "openVvzUrl", function(model) { this.trigger("openVvzUrl", model); });
 			});
 
 			this.$el.listview().listview("refresh");
@@ -185,6 +172,23 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			return this;
 		}
 	});
+	
+	var VvzHistory = Backbone.Collection.extend({
+		
+		openVvz: function(vvzItem) {
+			var current = vvzItem.pick("name", "suburl");
+			this.add(current, {at: 0});
+		},
+		
+		resetToUrl: function(modelUrl) {
+			var model = this.find(function(element) { return element.get("suburl") == modelUrl; });
+			var remainingModels = this.last(this.length - this.indexOf(model));
+			
+			this.reset(remainingModels);
+		}
+	});
+	
+	var vvzHistory = new VvzHistory;
 
 	var LecturesPageView = Backbone.View.extend({
 		attributes: {"id": "lectures"},
@@ -198,9 +202,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.template = utils.rendertmpl('lectures');
 			this.listenToOnce(this, "render", this.prepareVvz);
 			
-			this.vvzHistory = new Backbone.Collection;
-			this.listenTo(this.vvzHistory, "reset", this.openVvzUrl);
-			this.listenTo(this.vvzHistory, "add", this.openVvzUrl);
+			this.vvzHistory = vvzHistory;
+			this.listenTo(vvzHistory, "reset", this.openVvzUrl);
+			this.listenTo(vvzHistory, "add", this.openVvzUrl);
 		},
 
 		selectMenu: function(ev) {
@@ -211,35 +215,22 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		selectLevel: function(ev) {
 			ev.preventDefault();
 			var selectedUrl = $('#selectLevel').find(":selected").attr("value");
-			var selectedModel = this.vvzHistory.find(function(element) { return element.get("suburl") == selectedUrl; });
-			var remainingModels = this.vvzHistory.last(this.vvzHistory.length - this.vvzHistory.indexOf(selectedModel));
-			
-			this.vvzHistory.reset(remainingModels);
+			vvzHistory.resetToUrl(selectedUrl);
 		},
 
 		prepareVvz: function() {
-			var items = currentVvz.subitems;
-			var host = this.$("#lectureCategoryList");
-
-			var lnv = new LectureNodesView({collection: items, el: host});
-			this.listenTo(lnv, "openVvzUrl", this.proxyOpenVvzUrl);
-			
+			new LectureNodesView({collection: currentVvz.subitems, el: this.$("#lectureCategoryList")});
 			new LectureCoursesView({collection: currentVvz.courses, el: this.$("#lectureCourseList")});
 		},
 		
-		proxyOpenVvzUrl: function(vvzItem) {
-			var current = vvzItem.pick("name", "suburl");
-			this.vvzHistory.add(current, {at: 0});
-		},
-		
 		openVvzUrl: function() {
-			if (this.vvzHistory.isEmpty()) {
-				this.vvzHistory.add(new VvzItem());
+			if (vvzHistory.isEmpty()) {
+				vvzHistory.add(new VvzItem());
 				return;
 			}
-			var vvzUrl = this.vvzHistory.first().get("suburl");
+			var vvzUrl = vvzHistory.first().get("suburl");
 			
-			this.createPopupMenu(this.vvzHistory);
+			this.createPopupMenu(vvzHistory);
 			
 			var context = currentVvz;
 			
@@ -249,7 +240,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			context.courses.url = vvzUrl;
 			context.courses.fetch({reset: true});
 			
-			this.trigger("openVvzUrl", this.vvzHistory);
+			this.trigger("openVvzUrl", vvzHistory);
 		},
 		
 		createPopupMenu: function(history) {
