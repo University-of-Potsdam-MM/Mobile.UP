@@ -12,58 +12,31 @@
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c">
 
-	 <div data-role="navbar">
+  <!-- <div data-role="navbar">
     <ul>
       <li><a href="" class="ui-btn-active">Studiengang..</a></li>
       <li><a href="" >Studiengang b </a></li>
       <li><a href="" >Studiengang c </a></li>
     </ul>
+  </div> -->
+  
+  <div id="loginForm">
+    <p>Benutzer: <input name="benutzer" type="text" /></p>
+    <p>Passwort: <input name="password" type="password" /></p>
+    <p><button id="login">Einloggen</button>
   </div>
 
 <table data-role="table" id="grades" data-mode="reflow" class="table-stripe ui-responsive" data-theme="c" >
   <thead>
     <tr>
       <th>Veranstaltung</th>
-      <th>SWS</th>
-      <th>ECTS</th>
-      <th>Irgendwas</th>
+      <th>Leistungspunkte</th>
+      <th>Status</th>
       <th>Note</th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th>Veranstaltungsname</th>
-      <td>3 sws</td>
-      <td>4 ects</td>
-      <td>bestanden</td>
-      <td>2.7</td>
-    </tr>
-    
-    <tr>
-      <th>VVeranstaltungsname</th>
-      <td>3 sws</td>
-      <td>4 ects</td>
-      <td>bestandenn</td>
-      <td>2.7</td>
-    </tr>
-    
-    <tr>
-      <th>Veranstaltungsname</th>
-      <td>3 sws</td>
-      <td>4 ects</td>
-      <td>bestanden</td>
-      <td>2.7</td>
-    </tr>
-    
-    <tr>
-      <th>Veranstaltungsname</th>
-      <td>3 sws</td>
-      <td>4 ects</td>
-      <td>bestanden</td>
-      <td>2.7</td>
-    </tr>
-   </tbody>
+  <tbody id="gradesTable">
+  </tbody>
 </table>
-	
-	
+
 </div> <!-- ende content -->
