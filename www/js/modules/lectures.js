@@ -162,6 +162,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		initialize: function() {
 			this.template = utils.rendertmpl('lectures_course');
 			this.listenTo(this.model, "sync", this.render);
+			this.listenTo(this.model, "error", this.requestFail);
+		},
+		
+		requestFail: function(error) {
+			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
 		},
 
 		render: function() {
@@ -220,6 +225,13 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenTo(vvzHistory, "vvzChange", function(vvzHistory) { currentVvz.load(vvzHistory); });
 			this.listenTo(vvzHistory, "vvzChange", this.createPopupMenu);
 			this.listenTo(vvzHistory, "vvzChange", this.triggerOpenVvzUrl);
+			
+			this.listenTo(currentVvz.subitems, "error", this.requestFail);
+			this.listenTo(currentVvz.courses, "error", this.requestFail);
+		},
+		
+		requestFail: function(error) {
+			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
 		},
 
 		selectMenu: function(ev) {
