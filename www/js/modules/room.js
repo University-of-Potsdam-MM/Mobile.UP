@@ -16,42 +16,25 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		return "Haus " + house;
 	};
 
-	var Room = Backbone.Model.extend({
-
-		initialize: function() {
-			var raw = this.get("raw");
-			var attributes = this.parseFreeRoom(raw);
-			this.set(attributes);
-		},
+	var RoomsCollection = Backbone.Collection.extend({
 
 		/*
 		 * Code taken from http://area51-php.erstmal.com/rauminfo/static/js/ShowRooms.js?cb=1395329676756 with slight modifications
 		 */
-		parseFreeRoom: function(room_string) {
-	        var room_match = room_string.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
-
-			var room = {};
+		model: function(attrs, options) {
+			var room_match = attrs.raw.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
+			
 	        if (room_match) {
-	            room.campus = room_match[1];
-	            room.house = parseInt(room_match[2], 10);
-	            room.room = room_match[3];
-	        } else {
-				room.raw = room_string;
-			}
-			return room;
-	    }
-	});
-
-	var RoomsCollection = Backbone.Collection.extend({
-		model: Room,
-
-		initialize: function() {
-			this.enrich = _.bind(this.enrichData, this);
+	        	attrs.campus = room_match[1];
+	        	attrs.house = parseInt(room_match[2], 10);
+	        	attrs.room = room_match[3];
+	        }
+			return new Backbone.Model(attrs);
 		},
 
 		parse: function(response) {
-			var results = response["rooms4TimeResponse"]["return"];
-			return _.map(results, this.enrich);
+			var results = response.rooms4TimeResponse["return"];
+			return _.map(results, this.enrichData, this);
 		},
 
 		enrichData: function(result) {
