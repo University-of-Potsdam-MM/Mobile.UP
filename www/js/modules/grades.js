@@ -27,12 +27,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			"click #login": "login"
 		},
 		
-		initialize: function() {
-			this.listenTo(this.collection, "sync", function(model) {
-				console.log("Loginvorgang abgeschlossen");
-			});
-		},
-		
 		login: function(ev) {
 			ev.preventDefault();
 			
@@ -57,6 +51,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenToOnce(this, "render", this.prepareGrade);
 			
 			this.grades = new Grades;
+			this.listenTo(this.grades, "error", this.requestFail);
+		},
+		
+		requestFail: function(error) {
+			var errorPage = new utils.ErrorView({el: '#gradesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'grades', err: error});
 		},
 		
 		prepareGrade: function() {
