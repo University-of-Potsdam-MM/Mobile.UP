@@ -144,6 +144,53 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		}
 	});
 
+	var RoomListElementView = Backbone.View.extend({
+
+		events: {
+			"click": "loadRoom"
+		},
+
+		initialize: function() {
+			this.template = utils.rendertmpl("roomListElement");
+		},
+
+		render: function() {
+			this.undelegateEvents();
+			console.log(this.model);
+			this.$el = $(this.template({room: this.model}));
+			this.delegateEvents();
+
+			return this;
+		},
+
+		loadRoom: function(event) {
+			event.preventDefault();
+			showRoomDetails(this.model);
+		}
+	});
+
+	var RoomListGroupView = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = utils.rendertmpl("roomList");
+		},
+
+		render: function() {
+			var roomIndex = _.first(this.collection).house;
+
+			this.undelegateEvents();
+			this.$el = $(this.template({roomIndex: roomIndex, rooms: this.collection}));
+			this.delegateEvents();
+
+			_.each(this.collection, function(model) {
+				var view = new RoomListElementView({model: model});
+				this.$(".rooms-subview").append(view.render().$el);
+			}, this);
+
+			return this;
+		}
+	});
+
 	var RoomsOverview = Backbone.View.extend({
 
 		initialize: function() {
@@ -164,19 +211,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 			host.append(htmlDay);
 
+			// Add room groups
+			_.each(_.groupBy(attributes, "house"), function(collection) {
+				var view = new RoomListGroupView({collection: collection});
+				this.$("#roomsOverviewList").append(view.render().$el);
+			});
+
 			// Refresh html
 			host.trigger("create");
-
-			$("a", host).bind("click", function(event) {
-				event.preventDefault();
-
-				var href = $(this).attr("href");
-				var roomDetails = new URI(href).search(true).room;
-				if (roomDetails) {
-					var room = JSON.parse(roomDetails);
-					showRoomDetails(room);
-				}
-			});
 		}
 	});
 
