@@ -1,10 +1,10 @@
-define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, helper){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 
 	var ImpressumPageView = Backbone.View.extend({
 		attributes: {"id": "impressum"},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('impressum');
+			this.template = utils.rendertmpl('impressum');
 		},
 
 		render: function(){
