@@ -6,6 +6,8 @@ define([
 	'underscore',
 	'backbone',
 	'modules/home',
+	'modules/news',
+	'modules/events',
 	'modules/study',
 	'modules/emergency',
 	'modules/campus',
@@ -18,7 +20,7 @@ define([
 	'modules/library',
 	'modules/lectures',
 	'modules/grades'
-	], function($, _, Backbone, HomePageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView){
+	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -41,8 +43,7 @@ define([
 			"lectures":"lectures",
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades"
-				
-				
+
 		},
 
 		initialize: function(){
@@ -93,24 +94,24 @@ define([
 			console.log("Side -> Campus");
 			this.changePage(new CampusPageView);
 		},
-		
+
 		lectures: function(vvzUrls){
 			console.log("Side -> Lectures");
 			this.changePage(new LecturesPageView);
-			
+
 			var vvzHistory = this.currentView.vvzHistory;
 			if (vvzUrls != undefined) {
 				vvzHistory.reset(JSON.parse(vvzUrls));
 			} else {
 				vvzHistory.reset();
 			}
-			
+
 			this.listenTo(this.currentView, "openVvzUrl", function(vvzHistory) {
 				var param = JSON.stringify(vvzHistory.toJSON());
 				this.navigate("lectures/" + encodeURIComponent(param));
 			});
 		},
-		
+
 		grades: function(){
 			console.log("Side -> Grades");
 			this.changePage(new GradesPageView);
