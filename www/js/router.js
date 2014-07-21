@@ -19,8 +19,9 @@ define([
 	'modules/mensa',
 	'modules/library',
 	'modules/lectures',
-	'modules/grades'
-	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView){
+	'modules/grades',
+	'modules/impressum'
+	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -42,8 +43,8 @@ define([
 			"emergency": "emergency",
 			"lectures":"lectures",
 			"lectures/*vvzUrls":"lectures",
-			"grades":"grades"
-
+			"grades":"grades",
+			"impressum": "impressum"
 		},
 
 		initialize: function(){
@@ -161,6 +162,11 @@ define([
 		emergency: function(){
 			console.log("Side -> Emergency");
 			this.changePage(new EmergencyPageView);
+		},
+
+		impressum: function(){
+			console.log("Side -> Impressum");
+			this.changePage(new ImpressumPageView);
 		},
 
 		changePage: function(page){
