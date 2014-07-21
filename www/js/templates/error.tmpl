@@ -4,11 +4,12 @@
 <h2 >Etwas funktioniert nicht ...</h2>
 <p >
 
-
-<%= error.error %><%= error.error.message %>
+<% if (error.error) { %>
+	<%= error.error %><%= error.error.message %>
+	<% console.log(error.error.stack) %>
+<% } %>
 <b>Fehlerbeschreibung:</b> <%= error.msg %><br />
 <b>Fehlermodul:</b> <%=error.module %>
-<% console.log(error.error.stack) %>
 </p>
 
 </div>
