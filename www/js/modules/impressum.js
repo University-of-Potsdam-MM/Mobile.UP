@@ -9,7 +9,6 @@ define(['jquery', 'underscore', 'backbone', 'helper'], function($, _, Backbone, 
 
 		render: function(){
 			$(this.el).html(this.template({}));
-			$(this.el).trigger("create");
 			return this;
 		}
 	});
