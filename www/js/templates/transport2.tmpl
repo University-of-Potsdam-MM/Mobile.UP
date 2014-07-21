@@ -2,7 +2,7 @@
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-    <h1>Abfahrten</h1>
+    <h1>Fahrten planen</h1>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -72,7 +72,8 @@
                 <input id="earlierButton" data-theme="a" type="submit" value="← Früher" />
             </div>
 
-            <ul data-role="listview" data-inset="true" id="transport_rides"></ul>
+            <div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-inset="true" id="transport_rides"></div>
+
 
             <div class="spaeter scrollbutton" >
                 <input id="laterButton" type="submit" data-theme="a" value="Später →" />

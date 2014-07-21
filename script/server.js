@@ -27,7 +27,7 @@ app.use('/api/search',    proxyTo('http://sru.gbv.de') );
 // Standort
 // http://daia.gbv.de/isil/DE-517?id=ppn:775459445&format=json
 app.use('/api/place',     proxyTo('http://daia.gbv.de') );
-app.use('/api/transport', proxyTo('http://demo.hafas.de') );
+// app.use('/api/transport', proxyTo('http://demo.hafas.de') );
 app.use('/api/moodle',    proxyTo('http://erdmaennchen.soft.cs.uni-potsdam.de') );
 
 

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'], function($, _, Backbone, helper, ht){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, ht){
 
 
   window.Transport = {
@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
   };
 
   var TransportViewsTransportList = Backbone.View.extend({
+
     initialize: function(options) {
       this.stationName = options.stationName;
       var transports = this.collection;
@@ -17,12 +18,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
-    template: helper.rendertmpl('transport_listitem_view'),
+
+    template: utils.rendertmpl('transport_listitem_view'),
+
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
+
     render: function() {
-      console.log('render');
       this.$el.find('.stationName').html(this.stationName);
       this.$ul.empty();
       this.collection.each(this.addOne);
@@ -31,6 +34,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
   });
 
   var NavigationView = Backbone.View.extend({
+
     events: {
       "vclick a" : function(ev){
         ev.preventDefault();
@@ -38,6 +42,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
         this.trigger('select', buttonName);
       }
     },
+
     activeButton: function(buttonText){
       this.$el.find('a').removeClass('ui-btn-active');
       this.$el.find('a').filter(function(){
@@ -53,15 +58,37 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
     attributes: {"id": "transport"},
 
     initialize: function(){
-      this.template = helper.rendertmpl('transport');
+      this.template = utils.rendertmpl('transport');
+      _.bindAll(this, 'spinnerOn', 'spinnerOff');
+      this.spinner();
+
+      // check for existing journeys
+      if (ht.stations()['G-see'].journeys.length == 0){
+        ht.fetchJourneysForAllStations();
+      }
     },
+
+    spinner: function(){
+      var view = this;
+      view.spinnerOn();
+      _.each(ht.stations(), function(station){
+        station.journeys.once('add', view.spinnerOff);
+      });
+    },
+
+    spinnerOn:  utils.addLoadingSpinner('transport-result-wrapper'),
+    spinnerOff: utils.removeLoadingSpinner('transport-result-wrapper'),
 
     render: function(){
       $(this.el).html(this.template({}));
+
+      var view = this;
+
       transportViewTransportList = new TransportViewsTransportList({
-        el: ($('#search-results'), this.el),
+        el: this.$el.find('#search-results'),
         events: {
           'vclick #later-button' : function(){
+            view.spinner();
             // we just fetch departing journeys for all stations
             _.each(ht.stations(), function(station){
               station.fetchJourneys();
@@ -74,7 +101,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/helper.transport'
       transportViewTransportList.render();
 
       transportViewNavbar = new NavigationView({
-        el: ($("#from-station-navbar"),this.el)
+        el: this.$el.find("#from-station-navbar")
       });
 
       transportViewNavbar.on('select', function(buttonName){

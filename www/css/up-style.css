@@ -11,7 +11,7 @@
 }
 
 body,.ui-page {
-	
+
 	margin: 0 auto;
 }
 
@@ -31,7 +31,7 @@ body,.ui-page {
 .ui-header,.ui-footer {
 	border-width: 0px;
 	border-style: solid;
-	
+
 }
 
 .ui-header {
@@ -115,7 +115,7 @@ h2 span {
 	display: block;
 	vertical-align: middle;
 	height: 78px;
-	
+
 }
 
 /*2. Back button*/
@@ -198,7 +198,7 @@ h2 span {
 	text-transform: uppercase;
 }
 
-#search .ui-tabs {
+#library .ui-tabs {
 	background-color: #d0dae3;
 	padding: 0;
 }
@@ -274,7 +274,7 @@ label.showfirst {
 	background-image: url(../img/up/close-hover.png);
 }
 
-/* Circles 
+/* Circles
 -------------------- */
 .both,.prebook {
 	display: block;
@@ -322,7 +322,7 @@ label.showfirst {
 	margin-left: 0;
 }
 
-/*arrow up - arrow down 
+/*arrow up - arrow down
 -------------------- */
 .ui-icon-arrow-down:after {
 	background-image: url(../img/up/arrow-down.png);
@@ -333,6 +333,17 @@ label.showfirst {
 	background-image: url(../img/up/arrow-up.png);
 	background-color: transparent;
 }
+
+.ui-icon-arrow-white-down:after {
+	background-image: url(../img/up/arrow-white-down.png);
+	background-color: transparent;
+}
+
+.ui-icon-arrow-white-up:after {
+	background-image: url(../img/up/arrow-white-up.png);
+	background-color: transparent;
+}
+
 
 /*arrow right */
 .ui-icon-arrow-darkblue:after {
@@ -621,11 +632,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed,html .ui-body-c .ui-bo
 
 ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-collapsible-heading-toggle
 	{
-	background: #cfdae3;
+	background: #d0dae3;
 }
 
 html .ui-body-c .ui-body-inherit.ui-collapsible-content {
-	background: #cfdae3;
+	background: #d0dae3;
 }
 
 html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
@@ -660,6 +671,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .table-stripe tbody tr:nth-child(odd) td,.table-stripe tbody tr:nth-child(odd) th
 	{
 	background-color: rgba(255, 255, 255, 0.4);
+
 }
 
 #opening .table-stripe tbody tr:nth-child(even) th {
@@ -726,12 +738,12 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 
 html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
 	line-height:135%;
-	
+
 }
 
 html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	line-height:35px;
-	
+
 }
 
 
@@ -873,7 +885,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 		{
 		display: none;
 	}
-	
+
 	#transport2 .ui-table td.foot img {
 	display:block;
 	margin:0 auto;
@@ -892,29 +904,29 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 
 /**********************Suche******************
 *****************************************************/
-#search .ui-input-btn {
+#library .ui-input-btn {
 	color: none;
 	font-weight: normal;
 	text-transform: uppercase;
 }
 
-#search .ui-input-btn input {
+#library .ui-input-btn input {
 	color: none !important;
 }
 
-#search .ui-listview>li p,div.booktitle p {
+#library .ui-listview>li p,div.booktitle p {
 	text-transform: none;
 	color: #666;
 	margin-top: 0;
 	font-size: .8em;
 }
 
-#search .ui-listview>li p b,div.booktitle p b {
+#library .ui-listview>li p b,div.booktitle p b {
 	font-style: normal;
 	color: #000;
 }
 
-#search .ui-listview>li h2,div.booktitle h2 {
+#library .ui-listview>li h2,div.booktitle h2 {
 	margin-top: 0 0 !important;
 	line-height: 1;
 	text-transform: none;
@@ -922,14 +934,14 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	margin-bottom: 1px;
 }
 
-#search .ui-listview>li h3,div.booktitle h3 {
+#library .ui-listview>li h3,div.booktitle h3 {
 	font-weight: normal;
 	color: #666;
 	margin: 0;
 	font-size: .8em;
 }
 
-#search .ui-collapsible-set {
+#library .ui-collapsible-set {
 	margin-top: 0;
 }
 
@@ -1416,7 +1428,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 .ui-datebox-container .ui-header .ui-btn {
 	padding-right: 0em;
-	
+
 }
 
 .ui-datebox-container {
@@ -1431,6 +1443,74 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 .ui-datebox-container .ui-page-theme-a .ui-datebox-gridrow .ui-btn:hover, html head + body .ui-datebox-container .ui-datebox-gridrow .ui-btn.ui-btn-a:hover {
 	border-color:#fff;
 }
-	
+
 }
 
+/*****error*****************/
+
+.error {
+		background:#d0dae3;
+		padding:2em;
+		margin:10px auto;
+}
+
+.error h2 {
+		color:#014260;
+		font-size:140%;
+		margin:3px auto 3px auto;
+		font-weight:bold;
+}
+
+
+.error p{
+		border-top:2px solid #ededed;
+		border-bottom:2px solid #ededed;
+		padding:.5em;
+		font-size:.8em;
+}
+
+@media ( max-width : 35em) {
+	.error img {width:55%;
+	}
+}
+
+@media ( min-width : 35em) {
+	.error img {width:20%;
+	}
+
+	.error p{
+		max-width:25%;
+		margin:0 auto;
+	}
+}
+
+/******lectures *******/
+
+#lectures .ui-collapsible-content.ui-body-inherit {
+	background: #cfdae3;
+	color: #014260;
+	font-size: .8em;
+	padding-left: 1.5em;
+}
+
+#lectures .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+		padding-left:1em !important;
+}
+
+#lectures .ui-select {
+	width: 100%;
+}
+
+/****grades*****/
+
+table#grades {
+	background-color:#d0dae3;
+
+
+}
+
+@media (min-width: 35em) {
+	#grades.ui-table-reflow.ui-responsive {
+	display: inline-table;
+	}
+}

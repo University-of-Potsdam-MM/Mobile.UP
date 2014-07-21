@@ -1,0 +1,24 @@
+<div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="lectures-detail-list" >
+    	
+ 	   <div data-role="collapsible" data-collapsed="false" >
+			<h3>
+				<%= model.attributes.name %>
+			</h3>
+			
+			<p>
+			<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
+				<%= group.name %>
+				<% _.each(asArray(group.dates.date), function(date) { %>
+					<br><%= date.weekday %> <%= date.time %>
+					<br>-&gt; <%= date.rythm %>, <%= date.timespan %>
+					<br>-&gt; Raum <%= date.room %>, Lehrperson: <%= date.lecturer %>
+				<% }); %>
+				<% if (index + 1 < allGroups.length) { %>
+					<br><br>
+				<% } else { %>
+					<br>
+				<% } %>
+			<% }); %>
+			</p>
+		</div>
+  </div><!-- ende collapsible set -->

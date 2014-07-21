@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'modules/timeselection', 'underscore-string'], function($, _, Backbone, helper, campusmenu, timeselection){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore-string'], function($, _, Backbone, utils, campusmenu, timeselection){
 
 	$(document).on("pageinit", "#room", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
@@ -16,42 +16,25 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 		return "Haus " + house;
 	};
 
-	var Room = Backbone.Model.extend({
-
-		initialize: function() {
-			var raw = this.get("raw");
-			var attributes = this.parseFreeRoom(raw);
-			this.set(attributes);
-		},
+	var RoomsCollection = Backbone.Collection.extend({
 
 		/*
 		 * Code taken from http://area51-php.erstmal.com/rauminfo/static/js/ShowRooms.js?cb=1395329676756 with slight modifications
 		 */
-		parseFreeRoom: function(room_string) {
-	        var room_match = room_string.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
-
-			var room = {};
+		model: function(attrs, options) {
+			var room_match = attrs.raw.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
+			
 	        if (room_match) {
-	            room.campus = room_match[1];
-	            room.house = parseInt(room_match[2], 10);
-	            room.room = room_match[3];
-	        } else {
-				room.raw = room_string;
-			}
-			return room;
-	    }
-	});
-
-	var RoomsCollection = Backbone.Collection.extend({
-		model: Room,
-
-		initialize: function() {
-			this.enrich = _.bind(this.enrichData, this);
+	        	attrs.campus = room_match[1];
+	        	attrs.house = parseInt(room_match[2], 10);
+	        	attrs.room = room_match[3];
+	        }
+			return new Backbone.Model(attrs);
 		},
 
 		parse: function(response) {
-			var results = response["rooms4TimeResponse"]["return"];
-			return _.map(results, this.enrich);
+			var results = response.rooms4TimeResponse["return"];
+			return _.map(results, this.enrichData, this);
 		},
 
 		enrichData: function(result) {
@@ -105,7 +88,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 		},
 
 		requestFail: function(error) {
-			alert("Daten nicht geladen");
+			var errorPage = new utils.ErrorView({el: '#roomsHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
 		}
 	});
 
@@ -157,7 +140,54 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			endTime = endTime.toISOString();
 
 			var request = "http://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-			return _.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+			return _.str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+		}
+	});
+
+	var RoomListElementView = Backbone.View.extend({
+
+		events: {
+			"click": "loadRoom"
+		},
+
+		initialize: function() {
+			this.template = utils.rendertmpl("roomListElement");
+		},
+
+		render: function() {
+			this.undelegateEvents();
+			console.log(this.model);
+			this.$el = $(this.template({room: this.model}));
+			this.delegateEvents();
+
+			return this;
+		},
+
+		loadRoom: function(event) {
+			event.preventDefault();
+			showRoomDetails(this.model);
+		}
+	});
+
+	var RoomListGroupView = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = utils.rendertmpl("roomList");
+		},
+
+		render: function() {
+			var roomIndex = _.first(this.collection).house;
+
+			this.undelegateEvents();
+			this.$el = $(this.template({roomIndex: roomIndex, rooms: this.collection}));
+			this.delegateEvents();
+
+			_.each(this.collection, function(model) {
+				var view = new RoomListElementView({model: model});
+				this.$(".rooms-subview").append(view.render().$el);
+			}, this);
+
+			return this;
 		}
 	});
 
@@ -177,23 +207,18 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
 
 			// Create and add html
-			var createRooms = helper.rendertmpl('rooms');
+			var createRooms = utils.rendertmpl('rooms');
 			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 			host.append(htmlDay);
 
+			// Add room groups
+			_.each(_.groupBy(attributes, "house"), function(collection) {
+				var view = new RoomListGroupView({collection: collection});
+				this.$("#roomsOverviewList").append(view.render().$el);
+			});
+
 			// Refresh html
 			host.trigger("create");
-
-			$("a", host).bind("click", function(event) {
-				event.preventDefault();
-
-				var href = $(this).attr("href");
-				var roomDetails = new URI(href).search(true).room;
-				if (roomDetails) {
-					var room = JSON.parse(roomDetails);
-					showRoomDetails(room);
-				}
-			});
 		}
 	});
 
@@ -201,6 +226,14 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 
 		initialize: function() {
 			this.listenTo(this.model, "change", this.render);
+		},
+
+		events: {
+			'click button': 'roomsReset'
+		},
+
+		roomsReset: function(){
+			$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
 		},
 
 		render: function() {
@@ -213,7 +246,7 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 			var reservations = this.model.reservations.map(function(d) { return d.attributes; });
 
 			// Create and add html
-			var createDetails = helper.rendertmpl('roomDetails');
+			var createDetails = utils.rendertmpl('roomDetails');
 			var htmlDay = createDetails({reservations: reservations, room: this.model.attributes});
 			host.append(htmlDay);
 
@@ -256,15 +289,11 @@ define(['jquery', 'underscore', 'backbone', 'helper', 'modules/campusmenu', 'mod
 		roomsModel.rooms.fetch({reset: true});
 	}
 
-	function roomsReset() {
-		$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
-	}
-
 	var RoomPageView = Backbone.View.extend({
 		attributes: {"id": 'room'},
 
 		initialize: function(){
-			this.template = helper.rendertmpl('room');
+			this.template = utils.rendertmpl('room');
 		},
 
 		render: function(){
