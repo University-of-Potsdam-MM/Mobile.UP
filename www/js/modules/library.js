@@ -71,7 +71,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
         locationView.render();
-      }).fail(function () {
+      }).fail(function (error) {
       	var errorPage = new utils.ErrorView({el: '#book-locations', msg: 'Der Standort-Dienst ist momentan nicht erreichbar.', module: 'library', err: error});
       });
 

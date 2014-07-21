@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
   };
 
   var TransportViewsTransportList = Backbone.View.extend({
+
     initialize: function(options) {
       this.stationName = options.stationName;
       var transports = this.collection;
@@ -17,12 +18,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       transports.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
+
     template: utils.rendertmpl('transport_listitem_view'),
+
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
+
     render: function() {
-      console.log('render');
       this.$el.find('.stationName').html(this.stationName);
       this.$ul.empty();
       this.collection.each(this.addOne);
@@ -31,6 +34,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
   });
 
   var NavigationView = Backbone.View.extend({
+
     events: {
       "vclick a" : function(ev){
         ev.preventDefault();
@@ -38,6 +42,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
         this.trigger('select', buttonName);
       }
     },
+
     activeButton: function(buttonText){
       this.$el.find('a').removeClass('ui-btn-active');
       this.$el.find('a').filter(function(){
@@ -54,15 +59,36 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
 
     initialize: function(){
       this.template = utils.rendertmpl('transport');
-      ht.fetchJourneysForAllStations();
+      _.bindAll(this, 'spinnerOn', 'spinnerOff');
+      this.spinner();
+
+      // check for existing journeys
+      if (ht.stations()['G-see'].journeys.length == 0){
+        ht.fetchJourneysForAllStations();
+      }
     },
+
+    spinner: function(){
+      var view = this;
+      view.spinnerOn();
+      _.each(ht.stations(), function(station){
+        station.journeys.once('add', view.spinnerOff);
+      });
+    },
+
+    spinnerOn:  utils.addLoadingSpinner('transport-result-wrapper'),
+    spinnerOff: utils.removeLoadingSpinner('transport-result-wrapper'),
 
     render: function(){
       $(this.el).html(this.template({}));
+
+      var view = this;
+
       transportViewTransportList = new TransportViewsTransportList({
         el: this.$el.find('#search-results'),
         events: {
           'vclick #later-button' : function(){
+            view.spinner();
             // we just fetch departing journeys for all stations
             _.each(ht.stations(), function(station){
               station.fetchJourneys();

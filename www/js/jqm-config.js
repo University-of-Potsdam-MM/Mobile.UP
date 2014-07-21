@@ -18,8 +18,4 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
         $('#nav-panel').css('display', 'block');
       });
   });
-
-  $(document).ready(function(){
-    $('body').css('visibility','visible');
-  });
 });

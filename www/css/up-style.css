@@ -334,6 +334,17 @@ label.showfirst {
 	background-color: transparent;
 }
 
+.ui-icon-arrow-white-down:after {
+	background-image: url(../img/up/arrow-white-down.png);
+	background-color: transparent;
+}
+
+.ui-icon-arrow-white-up:after {
+	background-image: url(../img/up/arrow-white-up.png);
+	background-color: transparent;
+}
+
+
 /*arrow right */
 .ui-icon-arrow-darkblue:after {
 	background-image: url(../img/up/arrow-darkblue.png);
@@ -621,11 +632,11 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed,html .ui-body-c .ui-bo
 
 ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-collapsible-heading-toggle
 	{
-	background: #cfdae3;
+	background: #d0dae3;
 }
 
 html .ui-body-c .ui-body-inherit.ui-collapsible-content {
-	background: #cfdae3;
+	background: #d0dae3;
 }
 
 html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
@@ -660,6 +671,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .table-stripe tbody tr:nth-child(odd) td,.table-stripe tbody tr:nth-child(odd) th
 	{
 	background-color: rgba(255, 255, 255, 0.4);
+
 }
 
 #opening .table-stripe tbody tr:nth-child(even) th {
@@ -1384,6 +1396,56 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	padding-left: 25px;
 }
 
+/*Impressum*/
+
+#impressum .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+	padding:.7em 2.5em !important;
+}
+
+#impressum .ui-collapsible-inset em {
+	font-weight:bold;
+	color:#014260;
+	margin-bottom:.1em;
+	margin-top:1.5em;
+	display:block;
+	font-style:normal;
+}
+
+/*icons akkordion*/
+#impressum .ui-icon-impressum:after {
+	background-image: url(../img/up/impressum.png);
+}
+
+#impressum .ui-icon-ansprech:after {
+	background-image: url(../img/up/ansprech.png);
+}
+
+#impressum .ui-icon-mitmachen:after {
+	background-image: url(../img/up/mitmachen.png);
+}
+
+/*datebox*/
+
+.ui-datebox-container .ui-header .ui-btn {
+	padding-right: 0em;
+
+}
+
+.ui-datebox-container {
+	border: 1px solid #DEDEDE!important;
+}
+
+
+.ui-datebox-container .ui-btn-icon-notext:after, .ui-datebox-container .ui-btn-icon-top:after, .ui-datebox-container .ui-btn-icon-bottom:after {
+	background-color:transparent;
+}
+
+.ui-datebox-container .ui-page-theme-a .ui-datebox-gridrow .ui-btn:hover, html head + body .ui-datebox-container .ui-datebox-gridrow .ui-btn.ui-btn-a:hover {
+	border-color:#fff;
+}
+
+}
+
 /*****error*****************/
 
 .error {
@@ -1422,6 +1484,33 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	}
 }
 
+/******lectures *******/
+
+#lectures .ui-collapsible-content.ui-body-inherit {
+	background: #cfdae3;
+	color: #014260;
+	font-size: .8em;
+	padding-left: 1.5em;
+}
+
+#lectures .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+		padding-left:1em !important;
+}
+
+#lectures .ui-select {
+	width: 100%;
+}
+
+/****grades*****/
+
+table#grades {
+	background-color:#d0dae3;
 
 
+}
 
+@media (min-width: 35em) {
+	#grades.ui-table-reflow.ui-responsive {
+	display: inline-table;
+	}
+}

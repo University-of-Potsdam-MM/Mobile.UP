@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils){
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
   // API code
   var environment = 'upproxy';
@@ -132,8 +132,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       // default
       rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
     }
-
-    console.log('rflags', rflags);
 
     var xml =
       tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},

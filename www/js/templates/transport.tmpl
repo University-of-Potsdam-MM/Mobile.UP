@@ -2,7 +2,7 @@
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
     <a href="#campus" data-role="button" data-icon="false"	data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-    <h1>Verkehr</h1>
+    <h1>N&auml;chste Abfahrten</h1>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -25,13 +25,10 @@
     <div id="search-results">
         <h3>Fahrten ab <span class="stationName">Griebnitzsee</span></h3>
         <p style="font-weight:bold;"><span style="display:inline-block;width:10%;">Zeit</span> <span style="display:inline-block; width:18%;">Linie</span> <span>Ziel</span></p>
-     
-           
 
-
-        <div data-role="content">
+        <div id="transport-result-wrapper" data-role="content">
             <ul data-role="listview" data-inset="true" id="transport-list">
-                        
+
               <!-- template transport_listitem_view -->
             </ul>
         </div>

@@ -1,0 +1,32 @@
+<h3><%= model.attributes.name %></h3>
+
+<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
+<div data-role="collapsible" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+	<h3><%= group.name %></h3>
+	
+	<table data-role="table" class="ui-responsive">
+		<thead>
+			<tr>
+				<th>Tag</th>
+				<th>Zeit</th>
+				<th>Rhythmus</th>
+				<th>Dauer</th>
+				<th>Raum</th>
+				<th>Lehrperson</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% _.each(asArray(group.dates.date), function(date) { %>
+			<tr>
+				<th><%= date.weekday %></th>
+				<th><%= date.time %></th>
+				<th><%= date.rythm %></th>
+				<th><%= date.timespan %></th>
+				<th><%= date.room %></th>
+				<th><%= date.lecturer %></th>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+</div>
+<% }); %>
