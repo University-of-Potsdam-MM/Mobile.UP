@@ -9,6 +9,7 @@ define([
 	'modules/news',
 	'modules/events',
 	'modules/study',
+	'modules/moodle',
 	'modules/emergency',
 	'modules/campus',
 	'modules/sitemap',
@@ -31,6 +32,7 @@ define([
 			"news": "news",
 			"events": "events",
 			"study": "study",
+			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
@@ -89,6 +91,11 @@ define([
 		study: function(){
 			console.log("Side -> Study");
 			this.changePage(new StudyPageView);
+		},
+
+		moodle: function () {
+			console.log("Side -> Study -> Moodle");
+			this.changePage(new MoodlePageView);
 		},
 
 		campus: function(){

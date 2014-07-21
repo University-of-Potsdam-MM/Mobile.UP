@@ -1,27 +1,66 @@
 <!--
 
-this.el looks like this:
-<div data-role="page" id="<%= course.get('id') %>">
+The Backbone.View creates the containing element (this.el) and it should look like this:
 
+<div data-role="page" id="<%= course.get('id') %>">
 -->
+
     <div data-role="header" data-position="fixed" data-tap-toggle="false">
       <a href="#nav-panel" data-role="button" data-icon="false"
         data-inline="true" class="menubutton">Menue</a> <a
-        href="moodle.html" data-role="button" data-icon="false"
+        href="#study/moodle" data-role="button" data-icon="false"
         data-inline="true" data-transition="slidefade"
-        data-direction="reverse" class="back">Back</a>
-      <h1><%= course.get('fullname') %></h1>
+        data-direction="reverse" class="back backbutton">Back</a>
+      <h1>Kurs <%= course.get('shortname') %></h1>
     </div> <!-- End Header -->
 
     <div data-role="content" data-theme="c">
-      Kurskram:
-      <%= JSON.stringify(course.attributes) %>
-      <br />
-      <br />
-      <br />
-      <!-- trick 17 um html escaping hinzubekommen, aber irgendwas stimmt noch nicht -->
-      <%= 'contents: ' + $(document.createElement('div')).text( JSON.stringify(contents.models) ).text() %>
 
+      <h2><%= course.get('fullname') %></h2>
+
+      <% if (news && ! news.get('coursenews').isEmpty()) { %>
+        <h4>Neuigkeiten</h4>
+        <ul>
+          <% news.get('coursenews').each(function(cn){ %>
+          <li>
+            <%= cn.get('news') %>
+            <% console.log('coursenews template:', JSON.stringify(cn.attributes) ) %>
+          </li>
+          <% }); %>
+        </ul>
+      <% }; %>
+
+      <p><strong>Eingeschrieben:</strong> <%= course.get('enrolledusercount') %></p>
+
+      <ul data-role="listview" data-inset="true">
+      <% contents.each(function(c){ %>
+        <li data-role="collapsible" data-collapsed-icon="arrow-down"
+  data-expanded-icon="arrow-up" data-iconpos="right">
+          <h3><%= c.get('name') %></h3>
+
+          <% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
+            <ul>
+              <% _.each(c.get('modules'), function(m){ %>
+                <li>
+                  <a href="<%= m.url %> ">
+                    <img src="<%= m.modicon %>" alt="<%= m.modname %>" />
+                    <%= m.name %>
+                  </a>
+                </li>
+              <% }); %>
+            </ul>
+          <% } else { %>
+            <em>bisher keine Module</em>
+          <% } %>
+
+
+          <p>
+            <%= c.get('summary') %>
+          </p>
+
+        </li>
+      <% }); %>
+      </ul>
     </div> <!-- End Content -->
 
 <!--

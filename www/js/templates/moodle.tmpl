@@ -1,10 +1,21 @@
-<!-- Auslagerung in Template -->
-<div data-role="collapsible">
-  <h3>
-    Moodle-Kursname
-  </h3>
-  <p>
-    Neuigkeiten
-    <%= (link) ? '<b>Link:</b><a href="'+link+' target="_blank">'+link+'</a><br />' : ''%>
-  </p>
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#nav-panel" data-role="button" data-icon="false"
+		data-inline="true" class="menubutton">Menue</a>
+	<a id="backbutton" href="#study" data-role="button" data-icon="false" data-inline="true"
+		data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+	<h1>Moodle</h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+
+	<div id="loginform"></div>
+	<div id="courselist">
+		<form>
+			<input data-type="search" id="searchForMoodleCourses" placeholder="Eintr&auml;ge filtern" />
+		</form>
+		<ul id='moodle_courses' data-role="listview" data-theme="c" data-filter="true" data-input="#searchForMoodleCourses">
+		</ul>
+	</div>
 </div>

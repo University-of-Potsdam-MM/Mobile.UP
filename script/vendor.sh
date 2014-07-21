@@ -9,7 +9,7 @@ TARGET_DIR=./www/js/vendor/
 #    "q": "^1.0.0",
 #    "requirejs": "^2.1.11"
 #	 "moment": "^2.6.0"
-
+#  "machina": "^0.3.6"
 cp ./node_modules/jquery/dist/jquery.min.js $TARGET_DIR
 cp ./node_modules/jquery-mobile/dist/jquery.mobile.min.js $TARGET_DIR
 cp ./node_modules/underscore/underscore-min.js $TARGET_DIR
@@ -17,4 +17,5 @@ cp ./node_modules/underscore.string/dist/underscore.string.min.js $TARGET_DIR
 cp ./node_modules/backbone/backbone-min.js $TARGET_DIR
 cp ./node_modules/q/q.js $TARGET_DIR
 cp ./node_modules/requirejs/require.js $TARGET_DIR
-cp ./node_modules/moment/min/moment.min.js $TARGET_DIR
+cp ./node_modules/moment/moment.min.js $TARGET_DIR
+cp ./node_modules/machina/lib/machina.js $TARGET_DIR

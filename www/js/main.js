@@ -16,6 +16,7 @@ require.config({
         'date': 'lib/date',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
+        'machina': 'vendor/machina',
         'utils': 'lib/utils'
     },
     shim: {
