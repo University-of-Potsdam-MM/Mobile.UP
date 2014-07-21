@@ -1,24 +1,32 @@
-<div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="lectures-detail-list" >
-    	
- 	   <div data-role="collapsible" data-collapsed="false" >
-			<h3>
-				<%= model.attributes.name %>
-			</h3>
-			
-			<p>
-			<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
-				<%= group.name %>
-				<% _.each(asArray(group.dates.date), function(date) { %>
-					<br><%= date.weekday %> <%= date.time %>
-					<br>-&gt; <%= date.rythm %>, <%= date.timespan %>
-					<br>-&gt; Raum <%= date.room %>, Lehrperson: <%= date.lecturer %>
-				<% }); %>
-				<% if (index + 1 < allGroups.length) { %>
-					<br><br>
-				<% } else { %>
-					<br>
-				<% } %>
+<h3><%= model.attributes.name %></h3>
+
+<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
+<div data-role="collapsible" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+	<h3><%= group.name %></h3>
+	
+	<table data-role="table" class="ui-responsive">
+		<thead>
+			<tr>
+				<th>Tag</th>
+				<th>Zeit</th>
+				<th>Rhythmus</th>
+				<th>Dauer</th>
+				<th>Raum</th>
+				<th>Lehrperson</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% _.each(asArray(group.dates.date), function(date) { %>
+			<tr>
+				<th><%= date.weekday %></th>
+				<th><%= date.time %></th>
+				<th><%= date.rythm %></th>
+				<th><%= date.timespan %></th>
+				<th><%= date.room %></th>
+				<th><%= date.lecturer %></th>
+			</tr>
 			<% }); %>
-			</p>
-		</div>
-  </div><!-- ende collapsible set -->
+		</tbody>
+	</table>
+</div>
+<% }); %>
