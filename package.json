@@ -26,8 +26,7 @@
     "q": "^1.0.0",
     "underscore.string": "^2.3.3",
     "moment": "^2.5.1",
-    "requirejs": "^2.1.11",
-    "machina": "^0.3.6"
+    "requirejs": "^2.1.11"
   },
   "devDependencies": {
     "connect": "~2.14.4",
