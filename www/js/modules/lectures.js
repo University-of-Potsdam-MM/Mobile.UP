@@ -33,18 +33,14 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	var CurrentVvz = Backbone.Model.extend({
 
 		initialize: function() {
-			this.subitems = new VvzCollection();
-			this.courses = new VvzCourseCollection();
+			this.items = new VvzCollection();
 		},
 		
 		load: function(vvzHistory) {
 			var vvzUrl = vvzHistory.first().get("suburl")
 			
-			this.subitems.url = vvzUrl;
-			this.subitems.fetch({reset: true});
-			
-			this.courses.url = vvzUrl;
-			this.courses.fetch({reset: true});
+			this.items.url = vvzUrl;
+			this.items.fetch({reset: true});
 		}
 	});
 
@@ -52,15 +48,17 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		model: VvzItem,
 
 		parse: function(response) {
-			return response.listitem.subitems.listitem;
-		}
-	});
-
-	VvzCourseCollection = Backbone.Collection.extend({
-		model: VvzItem,
-
-		parse: function(response) {
-			return response.listitem.subitems.course;
+			var categories = _.map(response.listitem.subitems.listitem, function(model) {
+				model.isCategory = true;
+				return model;
+			});
+			
+			var courses = _.map(response.listitem.subitems.course, function(model) {
+				model.isCourse = true;
+				return model;
+			});
+			
+			return _.union(categories, courses);
 		}
 	});
 
@@ -91,11 +89,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			vvzHistory.openVvz(this.model);
 		}
 	});
-	
+
 	var LectureCourseView = Backbone.View.extend({
 
 		events: {
-			"click": "loadChildren"
+			"collapsibleexpand": "loadChildren"
 		},
 
 		initialize: function() {
@@ -108,28 +106,37 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.undelegateEvents();
 			this.$el = $(html);
 			this.delegateEvents();
+			
+			// Somehow the standard .trigger("create") doesn't work within this collapsible so we have to initialize the listview manually
+			this.$("[data-role=listview]").listview();
 
 			return this;
 		},
 
 		loadChildren: function() {
-			console.log("Lade " + this.model.get("suburl"));
+			console.log("loadChildren ausgelöst");
+			
+			var submodel = this.model.get("submodel");
+			if (!submodel) {
+				// Create model
+				submodel = new Backbone.Model;
+				submodel.url = this.model.get("suburl");
+				submodel.parse = function(response) { return response.course; };
+				this.model.set("submodel", submodel);
 
-			// Create model
-			var toLoad = new Backbone.Model;
-			toLoad.url = this.model.get("suburl");
-			toLoad.parse = function(response) { return response.course; };
+				// Create view
+				new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
 
-			// Create view
-			new LectureSingleCourseView({model: toLoad, el: $("#lectureCourse")});
-
-			// Fetch from server
-			toLoad.fetch();
+				// Fetch from server
+				submodel.fetch();
+			}
 		}
 	});
-	
+
 	var LectureView = Backbone.View.extend({
 		childView: undefined,
+		childPredicate: undefined,
+		renderPostAction: undefined,
 
 		initialize: function() {
 			this.listenTo(this.collection, "reset", this.render);
@@ -139,22 +146,27 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.$el.empty();
 
 			var that = this;
-			this.collection.each(function(model) {
+			var children = this.collection.filter(this.childPredicate);
+			_.each(children, function(model) {
 				var view = new that.childView({model: model});
 				that.$el.append(view.render().$el);
 			});
 
-			this.$el.listview().listview("refresh");
+			this.renderPostAction();
 			return this;
 		}
 	});
 
 	var LectureNodesView = LectureView.extend({
-		childView: LectureNodeView
+		childView: LectureNodeView,
+		childPredicate: function(model) { return model.get("isCategory"); },
+		renderPostAction: function() { this.$el.listview().listview("refresh"); }
 	});
 	
 	var LectureCoursesView = LectureView.extend({
-		childView: LectureCourseView
+		childView: LectureCourseView,
+		childPredicate: function(model) { return model.get("isCourse"); },
+		renderPostAction: function() { this.$el.collapsibleset().collapsibleset("refresh"); }
 	});
 
 	var LectureSingleCourseView = Backbone.View.extend({
@@ -170,9 +182,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		render: function() {
-			this.$el.empty();
+			console.log("sync ausgelöst");
 			this.$el.append(this.template({model: this.model}));
-			this.$el.trigger("create");
+			this.$el.listview("refresh");
 
 			return this;
 		}
@@ -226,8 +238,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenTo(vvzHistory, "vvzChange", this.createPopupMenu);
 			this.listenTo(vvzHistory, "vvzChange", this.triggerOpenVvzUrl);
 			
-			this.listenTo(currentVvz.subitems, "error", this.requestFail);
-			this.listenTo(currentVvz.courses, "error", this.requestFail);
+			this.listenTo(currentVvz.items, "error", this.requestFail);
 		},
 		
 		requestFail: function(error) {
@@ -249,8 +260,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		 * Initializes the views for the lecture course lists. This function may only be called after rendering the template because the views depend on anchors that are defined within the template.
 		 */
 		prepareVvz: function() {
-			new LectureNodesView({collection: currentVvz.subitems, el: this.$("#lectureCategoryList")});
-			new LectureCoursesView({collection: currentVvz.courses, el: this.$("#lectureCourseList")});
+			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
+			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
 		},
 		
 		triggerOpenVvzUrl: function(vvzHistory) {
