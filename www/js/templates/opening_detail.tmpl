@@ -13,7 +13,13 @@
   	<tbody>
   		<%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'">'+opening.mail+'</a></td></tr>' : ''  %>
   		<%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel: '+opening.telephone+'">'+opening.telephone+'</a></td></tr>' : '' %>
-    	<%= (opening.link) ? '<tr><th>Link:</th><td><a href="'+opening.link+' target="_blank">'+opening.link+'</a></td></tr>' : ''%>
+    	<% if (opening.link) { %>
+        <% if (document.URL.match(/^https?:/)) { %>
+          <tr><th>Link:</th><td><a href="<%= opening.link %>" target="_blank"><%= opening.link %></a></td></tr>
+        <% } else { %>
+          <tr><th>Link:</th><td><a onclick="window.open("<%= opening.link %>", "_blank");"><%= opening.link %></a></td></tr>
+        <% } %>
+      <% } %>
   	</tbody>
   </table>
   <% } %>
