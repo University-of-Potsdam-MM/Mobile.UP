@@ -1,10 +1,14 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'utils'],
-function( $, _, Backbone, utils) {
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'utils'
+], function( $, _, Backbone, utils) {
 
   var moodleAPI = {
-    BaseURL: 'https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X',
+    BaseURL: 'http://fossa.soft.cs.uni-potsdam.de:8280/services/moodleAPI',
   };
 
   function cors_post(url, params) {
@@ -20,10 +24,11 @@ function( $, _, Backbone, utils) {
     });
   }
 
-
-
   var BasicAPI = Backbone.Model.extend({
+
     login_url: moodleAPI.BaseURL + '/login/token.php',
+    webservice_url: moodleAPI.BaseURL + '/webservice/rest/server.php',
+
     authorize: function(){
       // TODO wait until authorization or throw error
       var params = _.pick(this.attributes, 'username', 'password', 'service');
@@ -33,6 +38,7 @@ function( $, _, Backbone, utils) {
       deferred.then(
         cors_post(this.login_url, params).then(function(data){
           console.log('success get_token', arguments);
+          console.log(data);
           api.set(data);
           api.unset('password'); // remove password
 
@@ -62,8 +68,6 @@ function( $, _, Backbone, utils) {
       }
     },
 
-    webservice_url: moodleAPI.BaseURL + '/webservice/rest/server.php',
-
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
       api[wsfunction] = function(params) {
@@ -78,12 +82,12 @@ function( $, _, Backbone, utils) {
 
 
   moodleAPI.api = new (BasicAPI.extend({
+
     initialize: function(){
       this.createWsFunction('moodle_webservice_get_siteinfo',[]);
       this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
       this.createWsFunction('core_course_get_contents',['courseid']);
     },
-
 
     authorizeAndGetUserId: function(){
       var api = this;
@@ -101,10 +105,12 @@ function( $, _, Backbone, utils) {
         wstoken: this.get('token'),
         wsfunction:'moodle_webservice_get_siteinfo',
       };
-      return cors_post(this.webservice_url, params).then(function(data){
-        console.log('fetchUserid', arguments);
-        api.set(data);
-      }).promise();
+      return cors_post(this.webservice_url, params)
+        .then(function(data){
+          console.log('fetchUserid', arguments);
+          api.set(data);
+        })
+        .promise();
     },
   }))({
     // username: undefined,     // <= set this from the login page
