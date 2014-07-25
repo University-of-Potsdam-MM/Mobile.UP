@@ -16,7 +16,6 @@ require.config({
         'date': 'lib/date',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
-        'machina': 'vendor/machina',
         'utils': 'lib/utils'
     },
     shim: {
@@ -62,6 +61,6 @@ requirejs.onError = function(error){
 
 require(['jquery', 'app', 'jquerymobile', 'jquerymobile-config'], function($, App){
     $(function(){
-	   App.initialize();
+
     });
 });
