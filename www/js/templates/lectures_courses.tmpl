@@ -1,3 +1,5 @@
-<li data-icon="arrow-darkblue">
-	<a><%= model.attributes.type %>: <%= model.attributes.name %></a> 
-</li>
+<div data-role="collapsible">
+	<h3><%= model.attributes.type %>: <%= model.attributes.name %></h3>
+	
+	<div data-role="listview" data-inset="true"></div>
+</div>
