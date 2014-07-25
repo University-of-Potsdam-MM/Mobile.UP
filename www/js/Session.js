@@ -56,7 +56,8 @@ define([
 
         login : function(credentials){
             this.set('authenticated', true);
-            this.set('credentials', credentials);
+            this.set('username', credentials.username);
+            this.set('password', credentials.password);
 
             if(this.get('redirectFrom')){
                 var path = this.get('redirectFrom');
