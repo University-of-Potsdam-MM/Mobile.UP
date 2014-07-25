@@ -26,7 +26,6 @@ define([
 		routes:{
 			// Routes for Index - Page
 			"": "home",
-			"nav-panel": "navpanel",
 			"home": "home",
 			"news": "news",
 			"events": "events",
@@ -48,8 +47,6 @@ define([
 		},
 
 		initialize: function(){
-			//this.CampusPageView = new CampusPageView();
-			//this.EmergencyPageView = new EmergencyPageView();
 			/*
 			// Handle back button throughout the application
         	$('.back').live('click', function(event) {
@@ -58,46 +55,33 @@ define([
         	});
         	this.firstPage = true;
         	*/
+        	// Prepare Navigation-Panel
+        	$('#nav-panel').trigger("create");
+			$('#nav-panel').trigger("updatelayout");
+			$('#nav-panel').panel({animate: true});
 		},
 
 		home: function(){
-			console.log("Side -> Home");
 			this.changePage(new HomePageView);
 		},
 
-		navpanel: function(){
-			console.log("Nav-Panel");
-			$('#nav-panel').trigger("create");
-			$('#nav-panel').trigger("updatelayout");
-			$('#nav-panel').panel({animate: true});
-			$('#nav-panel').panel("open");
-			//$('#nav-panel').popup();
-			//$('#nav-panel').popup("open");
-			//$('#nav-panel').html($(this.currentView.el)).popup("open");
-		},
-
 		news: function(){
-			console.log("Side -> News");
 			this.changePage(new NewsPageView);
 		},
 
 		events: function(){
-			console.log("Side -> Events");
 			this.changePage(new EventsPageView);
 		},
 
 		study: function(){
-			console.log("Side -> Study");
 			this.changePage(new StudyPageView);
 		},
 
 		campus: function(){
-			console.log("Side -> Campus");
 			this.changePage(new CampusPageView);
 		},
 
 		lectures: function(vvzUrls){
-			console.log("Side -> Lectures");
 			this.changePage(new LecturesPageView);
 
 			var vvzHistory = this.currentView.vvzHistory;
@@ -114,24 +98,20 @@ define([
 		},
 
 		grades: function(){
-			console.log("Side -> Grades");
 			this.changePage(new GradesPageView);
 		},
 
 		library: function(){
-			console.log("Side -> Library");
 			// later on Search View and PersonPageView and LibraryPageView
 			this.changePage(new LibraryPageView);
 		},
 
 		// Routes for Campus - Page
 		sitemap: function(){
-			console.log("Side -> Sitemaps");
 			this.changePage(new SitemapPageView);
 		},
 
 		room: function(){
-			console.log("Side -> Rooms");
 			this.changePage(new RoomPageView);
 		},
 
@@ -140,32 +120,26 @@ define([
 		},
 
 		transport2: function(){
-			console.log("Side -> Transport2");
 			this.changePage(new Transport2PageView);
 		},
 
 		opening: function(){
-			console.log("Side -> Openings");
 			this.changePage(new OpeningPageView);
 		},
 
 		transport: function(){
-			console.log("Side -> Transport");
 			this.changePage(new TransportPageView);
 		},
 
 		mensa: function(){
-			console.log("Side -> Mensa");
 			this.changePage(new MensaPageView);
 		},
 
 		emergency: function(){
-			console.log("Side -> Emergency");
 			this.changePage(new EmergencyPageView);
 		},
 
 		impressum: function(){
-			console.log("Side -> Impressum");
 			this.changePage(new ImpressumPageView);
 		},
 
@@ -197,6 +171,7 @@ define([
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
 				$('body').css('overflow', 'auto');
+				$('#nav-panel').css('display', 'block');
 				$("body").fadeIn(100);
 			}
 
