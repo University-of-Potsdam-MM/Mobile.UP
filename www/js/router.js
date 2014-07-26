@@ -20,8 +20,9 @@ define([
 	'modules/library',
 	'modules/lectures',
 	'modules/grades',
-	'modules/impressum'
-	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView){
+	'modules/impressum',
+	'modules/sports-logic'
+	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView){
 	var AppRouter = Backbone.Router.extend({
 		routes:{
 			// Routes for Index - Page
@@ -43,7 +44,8 @@ define([
 			"lectures":"lectures",
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
-			"impressum": "impressum"
+			"impressum": "impressum",
+			"sports": "sports"
 		},
 
 		initialize: function(){
@@ -141,6 +143,11 @@ define([
 
 		impressum: function(){
 			this.changePage(new ImpressumPageView);
+		},
+
+		sports: function() {
+			console.log("Side -> Sports");
+			this.changePage(new SportsPageView);
 		},
 
 		changePage: function(page){
