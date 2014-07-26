@@ -21,6 +21,12 @@ define([
           request.withCredentials = true;
           request.setRequestHeader("Authorization", utils.getAuthHeader());
       },
+    }).fail(function(jqXHR, textStatus){
+      // TODO: Handle Errors
+      if(textStatus == 'timeout'){
+        console.log('timeout error');
+      }
+      console.log(textStatus, jqXHR);
     });
   }
 
