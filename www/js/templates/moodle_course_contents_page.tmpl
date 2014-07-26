@@ -1,10 +1,3 @@
-<!--
-
-The Backbone.View creates the containing element (this.el) and it should look like this:
-
-<div data-role="page" id="<%= course.get('id') %>">
--->
-
     <div data-role="header" data-position="fixed" data-tap-toggle="false">
       <a href="#nav-panel" data-role="button" data-icon="false"
         data-inline="true" class="menubutton">Menue</a> <a
@@ -15,6 +8,7 @@ The Backbone.View creates the containing element (this.el) and it should look li
     </div> <!-- End Header -->
 
     <div data-role="content" data-theme="c">
+      <div id="<%= course.get('id') %>">
 
       <h2><%= course.get('fullname') %></h2>
 
@@ -61,7 +55,9 @@ The Backbone.View creates the containing element (this.el) and it should look li
         </li>
       <% }); %>
       </ul>
-    </div> <!-- End Content -->
+    </div>
+    </div>
+    <!-- End Content -->
 
 <!--
 </div>
