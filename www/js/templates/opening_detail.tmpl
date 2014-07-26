@@ -17,7 +17,7 @@
         <% if (document.URL.match(/^https?:/)) { %>
           <tr><th>Link:</th><td><a href="<%= opening.link %>" target="_blank"><%= opening.link %></a></td></tr>
         <% } else { %>
-          <tr><th>Link:</th><td><a onclick="window.open("<%= opening.link %>", "_blank");"><%= opening.link %></a></td></tr>
+          <tr><th>Link:</th><td><a onclick="window.open('<%= opening.link %>', '_blank');"><%= opening.link %></a></td></tr>
         <% } %>
       <% } %>
   	</tbody>
