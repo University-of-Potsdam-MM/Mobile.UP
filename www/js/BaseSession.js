@@ -17,15 +17,15 @@ define([
               }
           });
 
-          //Check for sessionStorage support
-          if(Storage && sessionStorage){
+          //Check for localStorage support
+          if(Storage && localStorage){
               this.supportStorage = true;
           }
       },
 
       get : function(key){
           if(this.supportStorage){
-              var data = sessionStorage.getItem(key);
+              var data = localStorage.getItem(key);
               if(data && data[0] === '{'){
                   return JSON.parse(data);
               }else{
@@ -39,7 +39,7 @@ define([
 
       set : function(key, value){
           if(this.supportStorage){
-              sessionStorage.setItem(key, value);
+              localStorage.setItem(key, value);
           }else{
               Backbone.Model.prototype.set.call(this, key, value);
           }
@@ -48,7 +48,7 @@ define([
 
       unset : function(key){
           if(this.supportStorage){
-              sessionStorage.removeItem(key);
+              localStorage.removeItem(key);
           }else{
               Backbone.Model.prototype.unset.call(this, key);
           }
@@ -57,7 +57,7 @@ define([
 
       clear : function(){
           if(this.supportStorage){
-              sessionStorage.clear();
+              localStorage.clear();
           }else{
               Backbone.Model.prototype.clear(this);
           }
@@ -101,26 +101,6 @@ define([
               that.initialize();
               callback();
           });
-      },
-
-
-      getAuth : function(callback){
-          var that = this;
-          var Session = this.fetch();
-
-          Session.done(function(response){
-              that.set('authenticated', true);
-              that.set('user', JSON.stringify(response.user));
-          });
-
-          Session.fail(function(response){
-              response = JSON.parse(response.responseText);
-              that.clear();
-              csrf = response.csrf !== csrf ? response.csrf : csrf;
-              that.initialize();
-          });
-
-          Session.always(callback);
       }
   });
 
