@@ -24,8 +24,9 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
+	'modules/sports-logic'
 	'modules/options'
-], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsPageView, EventsPageView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
+], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsPageView, EventsPageView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView, OptionsPageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -51,6 +52,7 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
+			"sports": "sports",
 			"options": "options"
 		},
 
@@ -197,12 +199,20 @@ define([
 			this.changePage(new ImpressumPageView);
 		},
 
+		sports: function() {
+			this.changePage(new SportsPageView);
+		},
+
 		options: function(){
-			console.log("Side -> Options");
+
 			this.changePage(new OptionsPageView({model: this.session}));
 		},
 
 		changePage: function(page){
+			if (this.currentView) {
+				// Release memory, stop listening to events
+				this.currentView.remove();
+			}
 
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
