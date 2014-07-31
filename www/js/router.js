@@ -24,7 +24,7 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
-	'modules/sports-logic'
+	'modules/sports-logic',
 	'modules/options'
 ], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsPageView, EventsPageView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView, OptionsPageView){
 
