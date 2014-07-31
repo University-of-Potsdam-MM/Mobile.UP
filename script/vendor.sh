@@ -17,4 +17,4 @@ cp ./node_modules/underscore.string/dist/underscore.string.min.js $TARGET_DIR
 cp ./node_modules/backbone/backbone-min.js $TARGET_DIR
 cp ./node_modules/q/q.js $TARGET_DIR
 cp ./node_modules/requirejs/require.js $TARGET_DIR
-cp ./node_modules/moment/min/moment.min.js $TARGET_DIR
+cp ./node_modules/moment/moment.min.js $TARGET_DIR

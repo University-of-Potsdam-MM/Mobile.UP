@@ -5,10 +5,13 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'BaseRouter',
+	'Session',
 	'modules/home',
 	'modules/news',
 	'modules/events',
 	'modules/study',
+	'modules/moodle',
 	'modules/emergency',
 	'modules/campus',
 	'modules/sitemap',
@@ -22,8 +25,11 @@ define([
 	'modules/grades',
 	'modules/impressum',
 	'modules/sports-logic'
-	], function($, _, Backbone, HomePageView, NewsPageView, EventsPageView, StudyPageView, EmergencyPageView,	CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView){
-	var AppRouter = Backbone.Router.extend({
+	'modules/options'
+], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsPageView, EventsPageView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView, OptionsPageView){
+
+	var AppRouter = BaseRouter.extend({
+
 		routes:{
 			// Routes for Index - Page
 			"": "home",
@@ -31,6 +37,7 @@ define([
 			"news": "news",
 			"events": "events",
 			"study": "study",
+			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
@@ -45,10 +52,51 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
-			"sports": "sports"
+			"sports": "sports",
+			"options": "options"
+		},
+
+		// routes that need authentication
+		requiresAuth: ['moodle'],
+
+		// routes to prevent authentication when already authenticated
+		preventAccessWhenAuth: [],
+
+		before: function(params, next, name){
+			//Checking if user is authenticated or not
+			//then check the path if the path requires authentication
+
+			var isAuth = this.session.get('authenticated');
+			console.log('isAuth?', isAuth);
+			var path = Backbone.history.location.hash;
+			var needAuth = _.contains(this.requiresAuth, name);
+			var cancelAccess = _.contains(this.preventAccessWhenAuth, name);
+
+			console.log('Path', path, 'NeedAuth?', needAuth, 'cancelAccess?', cancelAccess);
+
+			if(needAuth && !isAuth){
+				// If user gets redirect to login because wanted to access
+				// to a route that requires login, save the path in session
+				// to redirect the user back to path after successful login
+				this.session.set('redirectFrom', path);
+				Backbone.history.navigate('options', { trigger : true });
+			}else if(isAuth && cancelAccess){
+				// User is authenticated and tries to go to login, register ...
+				// so redirect the user to home page
+				Backbone.history.navigate('', { trigger : true });
+			}else{
+				//No problem, handle the route!!
+				return next();
+			}
+		},
+
+		after: function(){
+			// still empty
 		},
 
 		initialize: function(){
+			this.session = new Session;
+
 			/*
 			// Handle back button throughout the application
         	$('.back').live('click', function(event) {
@@ -61,6 +109,7 @@ define([
         	$('#nav-panel').trigger("create");
 			$('#nav-panel').trigger("updatelayout");
 			$('#nav-panel').panel({animate: true});
+
 		},
 
 		home: function(){
@@ -77,6 +126,11 @@ define([
 
 		study: function(){
 			this.changePage(new StudyPageView);
+		},
+
+		moodle: function () {
+			console.log("Side -> Study -> Moodle");
+			this.changePage(new MoodlePageView({model: this.session}));
 		},
 
 		campus: function(){
@@ -146,8 +200,12 @@ define([
 		},
 
 		sports: function() {
-			console.log("Side -> Sports");
 			this.changePage(new SportsPageView);
+		},
+
+		options: function(){
+
+			this.changePage(new OptionsPageView({model: this.session}));
 		},
 
 		changePage: function(page){
