@@ -151,6 +151,10 @@ define([
 		},
 
 		changePage: function(page){
+			if (this.currentView) {
+				// Release memory, stop listening to events
+				this.currentView.remove();
+			}
 
 			// prepare new view for DOM display
 			$(page.el).attr('data-role', 'page');
