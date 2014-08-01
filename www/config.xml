@@ -4,7 +4,7 @@
     <description>
         Offizielle App der Universität Potsdam
     </description>
-    <author email="info@elis.uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
+    <author email="mobileup-service@uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
         eLiS-Team
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
@@ -23,6 +23,8 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
+	<preference name="SplashScreen" value="screen" />
+	<preference name="SplashScreenDelay" value="3000" />
     <icon src="icon.png" />
     <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36.png" />
     <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-48.png" />
