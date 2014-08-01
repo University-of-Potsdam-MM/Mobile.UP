@@ -11,6 +11,10 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -19,6 +23,9 @@
     },
     "installed_plugins": {
         "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "de.unipotsdam.upapp"
+        },
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "de.unipotsdam.upapp"
         }
     },
