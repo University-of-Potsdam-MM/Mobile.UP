@@ -210,8 +210,8 @@ define([
 
 		changePage: function(page){
 			if (this.currentView) {
-				// Release memory, stop listening to events
-				this.currentView.remove();
+				// Stop listening to events
+				this.currentView.stopListening();
 			}
 
 			// prepare new view for DOM display
