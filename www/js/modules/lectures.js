@@ -269,15 +269,17 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 		
 		createPopupMenu: function(history) {
-			$('#selectLevel option').remove();
+			var level = this.$("#selectLevel");
+			
+			this.$('#selectLevel option').remove();
 			history.each(function(option) {
 				var node = $("<option>");
 				node.attr("value", option.get("suburl"));
 				node.text(option.get("name"));
-				$('#selectLevel').prepend(node);
+				level.prepend(node);
 			});
-			$('#selectLevel option').last().attr('selected', 'selected');
-			$('#selectLevel').selectmenu('refresh', true);
+			this.$('#selectLevel option').last().attr('selected', 'selected');
+			level.selectmenu('refresh', true);
 		},
 
 		render: function(){
