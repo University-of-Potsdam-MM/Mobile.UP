@@ -14,6 +14,14 @@ define([
 
 				Router.initialize();
 
+				$(document).ready(function() {
+  					document.addEventListener("deviceready", onDeviceReady, false);
+				});
+
+				function onDeviceReady() {
+    				navigator.splashscreen.hide();
+				}
+
 				/**
 		 	 	 * Override Backbone.sync to automatically include auth headers according to the url in use
 		 	 	 */
