@@ -1,59 +1,79 @@
-<a href="#library" data-role="button" data-theme="a" class="backToList">Back</a>
-<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
-<% console.log('book detail', book); %>
-<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
-<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
-<%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
-<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %></p></div>
-<div data-role="tabs">
-  <div data-role="navbar">
-    <ul id="search-results">
-      <li><a href="#book-locations" data-ajax="false" class="ui-btn-active">Standort</a></li>
-      <li><a href="#book-details" data-ajax="false">Details</a></li>
-    </ul>
-  </div>
-  <div id="book-locations" class="ui-content"></div>
-  <div id="book-details" class="ui-content">
-	  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
-	  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList">Back</a>
+	<h1><%= book.get('title') %></h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c" class="ui-content ui-body-c" role="main">
+	<!--
+    <div data-role="navbar">
+		<ul>
+			<li><a href="#library" class="ui-btn-active">Bibliothek</a></li>
+			<li><a href="#people">Personen</a></li>
+			<li><a href="#places">Orte</a></li>
+		</ul>
+	</div>
+	-->
+	<div id="libraryContent">
+		<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
+		<% console.log('book detail', book); %>
+		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
+		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
+		<%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
+		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %></p></div>
+		<div data-role="tabs">
+		  <div data-role="navbar">
+		    <ul id="search-results">
+		      <li><a href="#book-locations" data-ajax="false" class="ui-btn-active">Standort</a></li>
+		      <li><a href="#book-details" data-ajax="false">Details</a></li>
+		    </ul>
+		  </div>
+		  <div id="book-locations" class="ui-content"></div>
+		  <div id="book-details" class="ui-content">
+			  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
+			  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
 
-			<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
-				<div data-role="collapsible"><h3>Schlagwörter:</h3><p>
-	    	<% _.each(book.get('keywords'), function(keyword){ %>
-					<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
-	          <% }); %>
-				</p></div>
-			<% } %>
+					<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
+						<div data-role="collapsible"><h3>Schlagwörter:</h3><p>
+			    	<% _.each(book.get('keywords'), function(keyword){ %>
+							<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
+			          <% }); %>
+						</p></div>
+					<% } %>
 
-			<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
-	          <% _.each(book.get('toc'), function(chapter){ %>
-	            <li><%= chapter %></li>
-	          <% }); %>
-			<%= (book.get('toc')) ? '</ul></div>' : '' %>
+					<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
+			          <% _.each(book.get('toc'), function(chapter){ %>
+			            <li><%= chapter %></li>
+			          <% }); %>
+					<%= (book.get('toc')) ? '</ul></div>' : '' %>
 
-			<% if (book.get('notes')) { %>
-	    	<div data-role="collapsible"><h3>Anmerkungen:</h3><p>
-	    		<ul>
-	    		<% _.each(book.get('notes'), function(note){ %>
-						<li><%= note %></li>
-	        <% }); %>
-	        </ul>
-				</p></div>
-	    <% } %>
+					<% if (book.get('notes')) { %>
+			    	<div data-role="collapsible"><h3>Anmerkungen:</h3><p>
+			    		<ul>
+			    		<% _.each(book.get('notes'), function(note){ %>
+								<li><%= note %></li>
+			        <% }); %>
+			        </ul>
+						</p></div>
+			    <% } %>
 
-	    <% if (book.get('isbn')) { %>
-	    	<div data-role="collapsible"><h3>ISBN:</h3><p>
-	    		<ul>
-	    		<% _.each(book.get('isbn'), function(isbn){ %>
-						<li><%= isbn %></li>
-	        <% }); %>
-	        </ul>
-				</p></div>
-	    <% } %>
+			    <% if (book.get('isbn')) { %>
+			    	<div data-role="collapsible"><h3>ISBN:</h3><p>
+			    		<ul>
+			    		<% _.each(book.get('isbn'), function(isbn){ %>
+								<li><%= isbn %></li>
+			        <% }); %>
+			        </ul>
+						</p></div>
+			    <% } %>
 
-	    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
+			    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
 
-	    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
-    </div>
-  </div>
+			    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	<!-- End Main Content -->
 </div>

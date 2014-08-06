@@ -1,6 +1,13 @@
-<div class="error">
-<%= error.error %><%= error.error.message %><br />
-Fehlerbeschreibung: <%= error.msg %><br />
-Fehlermodul: <%=error.module %>
-<% console.log(error.error.stack) %>
+<div class="error" style="text-align:center;">
+<img src="img/up/404.png" />
+<h2>Etwas funktioniert nicht ...</h2>
+<p>
+
+<% if (error.error) { %>
+	<%= error.error %><%= error.error.message %>
+	<% console.log(error.error.stack) %>
+<% } %>
+<b>Fehlerbeschreibung:</b> <%= error.msg %><br />
+<b>Fehlermodul:</b> <%=error.module %>
+</p>
 </div>

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.unipotsdam.upapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>UPApp</name>
+<widget id="de.unipotsdam.upapp" version="0.9.1-bd8e5665a76f9f5eed440551e7ce0bb1f3e2c5e2" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Mobile.UP</name>
     <description>
-        Inoffizielle App der Universität Potsdam
+        Offizielle App der Universität Potsdam
     </description>
     <author email="info@elis.uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
         eLiS-Team

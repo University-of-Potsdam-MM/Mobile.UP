@@ -1,0 +1,44 @@
+<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
+<li>
+	<p>
+		<h3><%= group.name %></h3>
+		
+		<style>
+			th
+			{
+			border-bottom: 1px solid #d6d6d6;
+			}
+			
+			tr:nth-child(even)
+			{
+			background:#e9e9e9;
+			}
+		</style>
+		
+		<table data-role="table" class="ui-responsive">
+			<thead>
+				<tr>
+					<th>Tag</th>
+					<th>Zeit</th>
+					<th>Rhythmus</th>
+					<th>Dauer</th>
+					<th>Raum</th>
+					<th>Lehrperson</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% _.each(asArray(group.dates.date), function(date) { %>
+				<tr>
+					<th><%= date.weekday %></th>
+					<th><%= date.time %></th>
+					<th><%= date.rythm %></th>
+					<th><%= date.timespan %></th>
+					<th><%= date.room %></th>
+					<th><%= date.lecturer %></th>
+				</tr>
+				<% }); %>
+			</tbody>
+		</table>
+	</p>
+</li>
+<% }); %>

@@ -66,7 +66,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 	 */
 	 var Error = Backbone.Model.extend({
 	 	// default values for an error
-	 	default:{
+	 	defaults: {
 	 		msg: 'Es ist ein Fehler aufgetreten.',
 	 		module: 'Modul nicht bekannt'
 	 	},

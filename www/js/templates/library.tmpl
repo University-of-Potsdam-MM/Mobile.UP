@@ -6,7 +6,7 @@
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c">
-<!--
+	<!--
     <div data-role="navbar">
 		<ul>
 			<li><a href="#library" class="ui-btn-active">Bibliothek</a></li>
@@ -15,6 +15,12 @@
 		</ul>
 	</div>
 	-->
-	<div id="libraryContent"></div>
+	<div id="libraryContent">
+		<form method="POST" id="query-form">
+			<input type="search" name="query" id="query" placeholder="Suchbegriff eingeben..." value="<%= keyword %>" />
+			<input type="submit" value="Suchen" data-theme="a" data-icon="search" data-iconpos="right"/>
+		</form>
+		<div id="search-results"></div>
+	</div>
 	<!-- End Main Content -->
 </div>

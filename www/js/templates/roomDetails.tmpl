@@ -1,15 +1,15 @@
-<h3 style="background:none;margin-left:.3em; margin-bottom:.3em">Reservierungen für Haus <%= room.house %> Raum <%= room.room %>:</h3>
+<h3 style="background:none;margin-left:.3em; margin-bottom:.3em">Reservierungen für Haus <%= room.house %>, Raum <%= room.room %>:</h3>
 <ul id="reservationsforroom" data-role="listview" style="margin: 1px;">
 	<% _.each(reservations, function(reservation) { %>
 	<li>
-		
+
 			<% print(("00" + reservation.startTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.startTime.getMinutes()).slice(-2)); %>
 			-
 			<% print(("00" + reservation.endTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.endTime.getMinutes()).slice(-2)); %>
 			<% if (reservation.title) { %>
 				<%= reservation.title %>
 			<% } %>
-		
+
 	</li>
 	<% }); %>
 </ul>
@@ -18,4 +18,4 @@
 	<li>Keine Reservierungen</li>
 </ul>
 <% } %>
-<button data-theme="a" data-icon="back" onclick='roomsReset()'>Zurück</button>
+<button data-theme="a" data-icon="back">Zurück</button>
