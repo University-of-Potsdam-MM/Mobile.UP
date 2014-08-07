@@ -12,18 +12,6 @@
 
       <h2><%= course.get('fullname') %></h2>
 
-      <% if (news && ! news.get('coursenews').isEmpty()) { %>
-        <h4>Neuigkeiten</h4>
-        <ul>
-          <% news.get('coursenews').each(function(cn){ %>
-          <li>
-            <%= cn.get('news') %>
-            <% console.log('coursenews template:', JSON.stringify(cn.attributes) ) %>
-          </li>
-          <% }); %>
-        </ul>
-      <% }; %>
-
       <p><strong>Eingeschrieben:</strong> <%= course.get('enrolledusercount') %></p>
 
       <ul data-role="listview" data-inset="true">
@@ -58,7 +46,3 @@
     </div>
     </div>
     <!-- End Content -->
-
-<!--
-</div>
- -->

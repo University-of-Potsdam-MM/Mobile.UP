@@ -8,11 +8,11 @@ define([
 ], function( $, _, Backbone, utils) {
 
   var moodleAPI = {
-    BaseURL: 'http://fossa.soft.cs.uni-potsdam.de:8280/services/moodleAPI',
+    BaseURL: 'http://api.uni-potsdam.de/endpoints/moodleAPI/1.0',
   };
 
   function cors_post(url, params) {
-    console.log('cors_post to', url);
+    console.log(url, params);
     return $.ajax( url, {
       type: "POST",
       crossDomain: true,
@@ -43,8 +43,8 @@ define([
       var deferred = $.Deferred();
       deferred.then(
         cors_post(this.login_url, params).then(function(data){
-          console.log('success get_token', arguments);
-          console.log(data);
+          // console.log('success get_token', arguments);
+          // console.log(data);
           api.set(data);
           api.unset('password'); // remove password
 
@@ -81,7 +81,7 @@ define([
         var ws = {'wsfunction': wsfunction, 'wstoken': api.get('token')};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
 
-        return $.post(api.webservice_url, postParams).promise();
+        return cors_post(api.webservice_url, postParams).promise();
       }
     },
   });
@@ -113,7 +113,7 @@ define([
       };
       return cors_post(this.webservice_url, params)
         .then(function(data){
-          console.log('fetchUserid', arguments);
+          // console.log('fetchUserid', arguments);
           api.set(data);
         })
         .promise();
@@ -124,7 +124,7 @@ define([
     service:'moodle_mobile_app',
     moodlewsrestformat:'json',
   });
-
+/*
   moodleAPI.news_api = new (BasicAPI.extend({
     initialize: function(){
       this.createWsFunction('webservice_get_latest_coursenews',[]);
@@ -135,7 +135,7 @@ define([
     service:'webservice_coursenews',
     moodlewsrestformat:'json',
   });
-
+*/
 
   return moodleAPI;
 });
