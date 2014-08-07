@@ -1,6 +1,13 @@
 /* login button  - Höhe*/
-#home li.login .ui-btn {
+#home li.impressum .ui-btn {
 	height: 38px;
+}
+
+#home li.impressum h1 {
+	margin-bottom: 0;
+}
+#home li.impressum p{
+	margin: 0;
 }
 
 #home .ui-page-theme-b .ui-btn,html #home .ui-bar-b .ui-btn,html #home.ui-body-b .ui-btn,html body  #home.ui-group-theme-b .ui-btn,html head+body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited,html #home.ui-bar-b .ui-btn:visited,html #home .ui-body-b .ui-btn:visited,html body #home .ui-group-theme-b .ui-btn:visited,html head+body #home .ui-btn.ui-btn-b:visited
@@ -19,7 +26,7 @@
 	display: block;
 	vertical-align: middle;
 	height: 78px;
-	
+
 }
 
 #home .ui-btn.settings.ui-icon-info {
