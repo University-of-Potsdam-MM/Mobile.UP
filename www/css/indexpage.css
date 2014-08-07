@@ -6,6 +6,7 @@
 #home li.impressum h1 {
 	margin-bottom: 0;
 }
+
 #home li.impressum p{
 	margin: 0;
 }
@@ -26,10 +27,9 @@
 	display: block;
 	vertical-align: middle;
 	height: 78px;
-
 }
 
-#home .ui-btn.settings.ui-icon-info {
+#home .ui-btn.settings.ui-icon-gear {
 	height:auto;
 }
 
