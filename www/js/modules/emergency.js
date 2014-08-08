@@ -9,7 +9,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	// collection for emergency items
 	var EmergencyCalls = Backbone.Collection.extend({
 		model: EmergencyCall,
-		url: 'js/json/emergencycalls.json'
+		url: 'js/json/emergencycalls.json',
+		comparator: 'name'
 	});
 
 	/*
