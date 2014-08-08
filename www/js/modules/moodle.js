@@ -161,9 +161,7 @@ define([
         var that = this;
 
         // get cred and populate Moodle Session
-
-        var credentials = {username: this.model.get('username'), password: this.model.get('password')};
-        console.log(credentials);
+        var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
         moodleAPI.api.set(credentials);
         //moodleAPI.news_api.set(credentials);
