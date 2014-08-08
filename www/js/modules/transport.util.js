@@ -113,9 +113,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return xmlString(xml);
   }
 
-  // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
-
-
+  // Suche Verbindung mit zwei IDs
   function verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode) {
 
     var rflags;
