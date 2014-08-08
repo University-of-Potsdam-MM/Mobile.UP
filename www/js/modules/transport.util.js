@@ -1,17 +1,10 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
   // API code
-  var environment = 'upproxy';
   var accessId = 'kiy4e84a4b832962eea1943106096116';
 
   function endpoint(){
-    if ('development' == environment) {
-      return '/api/transport/bin/pub/vbb/extxml.exe';
-    } else if ('upproxy' == environment) {
       return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
-    } else {
-      return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
-    }
   }
 
   function ajax(xmlPayload) {
