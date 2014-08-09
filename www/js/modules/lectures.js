@@ -108,7 +108,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.delegateEvents();
 
 			// Somehow the standard .trigger("create") doesn't work within this collapsible so we have to initialize the listview manually
-			this.$("[data-role=listview]").listview();
+			this.$("[data-role=table]").table();
 
 			return this;
 		},
