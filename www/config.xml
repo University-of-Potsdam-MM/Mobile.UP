@@ -27,10 +27,10 @@
 	<preference name="SplashScreen" value="screen" />
 	<preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
-        <icon gap:density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
-        <icon gap:density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
-        <icon gap:density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
-        <icon gap:density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
+        <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
     </platform>
     <platform name="ios"> <!-- according to http://docs.phonegap.com/en/3.5.0/config_ref_images.md.html -->
         <!-- iOS 7.0+ -->
