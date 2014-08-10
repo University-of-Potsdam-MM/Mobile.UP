@@ -25,7 +25,7 @@
     <preference name="android-installLocation" value="auto" />
     <preference name="FadeSplashScreen" value="true" />
 	<preference name="SplashScreen" value="screen" />
-	<preference name="SplashScreenDelay" value="3000" />
+	<preference name="SplashScreenDelay" value="10000" />
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
         <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
