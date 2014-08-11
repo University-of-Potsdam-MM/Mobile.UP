@@ -14,7 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		createSubUrl: function() {
-			var result = "http://fossa.soft.cs.uni-potsdam.de:8280/services/pulsAPI?action=vvz";
+			var result = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=vvz";
 			result += "&auth=H2LHXK5N9RDBXMB";
 			result += this.getIfAvailable("url", "&url=");
 			result += this.getIfAvailable("level", "&level=");
