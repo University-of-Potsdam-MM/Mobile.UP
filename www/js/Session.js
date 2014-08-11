@@ -1,11 +1,10 @@
 define([
   'jquery',
   'backbone',
-  'router',
-  'BaseSession'
-], function($, Backbone, Router, BaseSession){
+  'router'
+], function($, Backbone, Router){
 
-    var Session = BaseSession.extend({
+    var Session = Backbone.Model.extend({
 
         initialize : function(){
             console.log('Session initialized');
