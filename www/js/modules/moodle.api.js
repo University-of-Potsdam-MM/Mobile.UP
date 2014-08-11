@@ -8,7 +8,7 @@ define([
 ], function( $, _, Backbone, utils) {
 
   var moodleAPI = {
-    BaseURL: 'http://api.uni-potsdam.de/endpoints/moodleAPI/1.0',
+    BaseURL: 'https://api.uni-potsdam.de/endpoints/moodleAPI',
   };
 
   function cors_post(url, params) {

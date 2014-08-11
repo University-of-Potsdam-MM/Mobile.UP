@@ -67,7 +67,6 @@ define([
 			//then check the path if the path requires authentication
 
 			var isAuth = this.session.get('up.session.authenticated');
-
 			var path = Backbone.history.location.hash;
 			var needAuth = _.contains(this.requiresAuth, name);
 			var cancelAccess = _.contains(this.preventAccessWhenAuth, name);

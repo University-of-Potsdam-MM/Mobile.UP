@@ -1,11 +1,10 @@
 define([
   'jquery',
   'backbone',
-  'router',
-  'BaseSession'
-], function($, Backbone, Router, BaseSession){
+  'router'
+], function($, Backbone, Router){
 
-    var Session = BaseSession.extend({
+    var Session = Backbone.Model.extend({
 
         initialize : function(){
             //Check for localStorage support
@@ -16,7 +15,7 @@ define([
 
         get : function(key){
             if(this.supportStorage){
-                var data = localStorage.getItem(key);
+                var data = (localStorage.getItem(key) === null) ? null : localStorage.getItem(key);
                 if(data && data[0] === '{'){
                     return JSON.parse(data);
                 }else{
@@ -60,7 +59,7 @@ define([
             this.set('up.session.username', credentials.username);
             this.set('up.session.password', credentials.password);
 
-            if(this.get('redirectFrom')){
+            if(this.get('up.session.redirectFrom')){
                 var path = this.get('up.session.redirectFrom');
                 this.unset('up.session.redirectFrom');
                 Backbone.history.navigate(path, { trigger : true });

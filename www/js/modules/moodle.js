@@ -53,7 +53,6 @@ define([
       var collection = this;
       moodleAPI.api.moodle_enrol_get_users_courses()
         .done(function(content){
-          console.log('fetch', content);
           collection.reset(content);
         });
       return this;
