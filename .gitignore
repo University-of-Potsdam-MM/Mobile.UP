@@ -4,3 +4,4 @@ platforms/**/
 .settings/
 
 plugins/org.apache.cordova.inappbrowser/
+plugins/org.apache.cordova.splashscreen/
