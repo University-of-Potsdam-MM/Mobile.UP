@@ -17,7 +17,7 @@ define([
 
         get : function(key){
             if(this.supportStorage){
-                var data = localStorage.getItem(key);
+                var data = (localStorage.getItem(key) === null) ? null : localStorage.getItem(key);
                 if(data && data[0] === '{'){
                     return JSON.parse(data);
                 }else{
@@ -48,22 +48,22 @@ define([
 
         clear : function(){
             if(this.supportStorage){
-                this.unset('authenticated');
-                this.unset('username');
-                this.unset('password');
+                this.unset('up.session.authenticated');
+                this.unset('up.session.username');
+                this.unset('up.session.password');
             }else{
                 Backbone.Model.prototype.clear(this);
             }
         },
 
         login : function(credentials){
-            this.set('authenticated', true);
-            this.set('username', credentials.username);
-            this.set('password', credentials.password);
+            this.set('up.session.authenticated', true);
+            this.set('up.session.username', credentials.username);
+            this.set('up.session.password', credentials.password);
 
-            if(this.get('redirectFrom')){
-                var path = this.get('redirectFrom');
-                this.unset('redirectFrom');
+            if(this.get('up.session.redirectFrom')){
+                var path = this.get('up.session.redirectFrom');
+                this.unset('up.session.redirectFrom');
                 Backbone.history.navigate(path, { trigger : true });
             }else{
                 Backbone.history.navigate('', { trigger : true });
