@@ -53,7 +53,6 @@ define([
       var collection = this;
       moodleAPI.api.moodle_enrol_get_users_courses()
         .done(function(content){
-          console.log('fetch', content);
           collection.reset(content);
         });
       return this;
@@ -162,8 +161,7 @@ define([
 
         // get cred and populate Moodle Session
 
-        var credentials = {username: this.model.get('username'), password: this.model.get('password')};
-        console.log(credentials);
+        var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
         moodleAPI.api.set(credentials);
         //moodleAPI.news_api.set(credentials);
