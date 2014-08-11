@@ -66,7 +66,7 @@ define([
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
 
-			var isAuth = this.session.get('authenticated');
+			var isAuth = this.session.get('up.session.authenticated');
 			console.log('isAuth?', isAuth);
 			var path = Backbone.history.location.hash;
 			var needAuth = _.contains(this.requiresAuth, name);
@@ -78,7 +78,7 @@ define([
 				// If user gets redirect to login because wanted to access
 				// to a route that requires login, save the path in session
 				// to redirect the user back to path after successful login
-				this.session.set('redirectFrom', path);
+				this.session.set('up.session.redirectFrom', path);
 				Backbone.history.navigate('options', { trigger : true });
 			}else if(isAuth && cancelAccess){
 				// User is authenticated and tries to go to login, register ...
