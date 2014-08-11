@@ -48,17 +48,29 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		model: VvzItem,
 
 		parse: function(response) {
-			var categories = _.map(response.listitem.subitems.listitem, function(model) {
+			var rawCategories = this.ensureArray(response.listitem.subitems.listitem);
+			var categories = _.map(rawCategories, function(model) {
 				model.isCategory = true;
 				return model;
 			});
 
-			var courses = _.map(response.listitem.subitems.course, function(model) {
+			var rawCourses = this.ensureArray(response.listitem.subitems.course);
+			var courses = _.map(rawCourses, function(model) {
 				model.isCourse = true;
 				return model;
 			});
 
 			return _.union(categories, courses);
+		},
+		
+		ensureArray: function(param) {
+			if (!param) {
+				return param;
+			} else if (Array.isArray(param)) {
+				return param;
+			} else {
+				return [param];
+			}
 		}
 	});
 
@@ -108,7 +120,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.delegateEvents();
 
 			// Somehow the standard .trigger("create") doesn't work within this collapsible so we have to initialize the listview manually
-			this.$("[data-role=listview]").listview();
+			this.$("[data-role=table]").table();
 
 			return this;
 		},
