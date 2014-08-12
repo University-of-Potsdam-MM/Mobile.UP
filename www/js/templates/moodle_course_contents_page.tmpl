@@ -10,14 +10,18 @@
     <div data-role="content" data-theme="c">
       <div id="<%= course.get('id') %>">
 
-      <h2><%= course.get('fullname') %></h2>
+      <h3><%= course.get('fullname') %></h3>
 
-      <p><strong>Eingeschrieben:</strong> <%= course.get('enrolledusercount') %></p>
+     
 
-      <ul data-role="listview" data-inset="true">
+      <ul data-role="listview" data-inset="true" data-theme="c">
       <% contents.each(function(c){ %>
         <li data-role="collapsible" data-collapsed-icon="arrow-down"
   data-expanded-icon="arrow-up" data-iconpos="right">
+  
+   <p>
+            <%= c.get('summary') %>
+          </p>
           <h3><%= c.get('name') %></h3>
 
           <% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
@@ -36,13 +40,13 @@
           <% } %>
 
 
-          <p>
-            <%= c.get('summary') %>
-          </p>
+         
 
         </li>
       <% }); %>
       </ul>
+      
     </div>
     </div>
+    <% console.log(course); %>
     <!-- End Content -->

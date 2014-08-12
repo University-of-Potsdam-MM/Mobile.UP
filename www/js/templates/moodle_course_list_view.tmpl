@@ -1,9 +1,9 @@
 <% _.each(courses, function(course){ %>
-
-    <li class='moodle-course' courseid='<%= course.get('id') %>'>
-      <a href="#study/moodle" data-role="button" data-icon="arrow-darkblue" data-transition="slidefade">
-        <h2><%= course.get('fullname') %></h2>
-      </a>
+<% console.log(courses) %>
+    <li class='moodle-course'  courseid='<%= course.get('id') %>'><h3>
+      <a href="#study/moodle" data-role="button" data-iconpos="right" data-icon="arrow-darkblue" data-transition="slidefade">
+        <%= course.get('fullname') %>
+      </a></h3>
     </li>
 
 <%});%>
