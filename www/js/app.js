@@ -12,8 +12,6 @@ define([
 
 			initialize: function(){
 
-				Router.initialize();
-
 				$(document).ready(function() {
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
@@ -47,6 +45,8 @@ define([
 			 	 * Initialize Backbone override
 			 	 */
 				$(overrideBackboneSync);
+
+				Router.initialize();
 			}
 		});
 
