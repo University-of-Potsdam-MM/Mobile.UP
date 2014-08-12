@@ -157,33 +157,39 @@ define([
     },
 
     initialize: function(){
-        var that = this;
+        this.listenToOnce(this, "authorize", this.authorize);
+        this.listenToOnce(this, "fetchContent", this.fetchContent);
+    },
 
-        // get cred and populate Moodle Session
-        var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
+    authorize: function(){
+      // get credentials and populate Moodle Session
+      var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
-        moodleAPI.api.set(credentials);
-        //moodleAPI.news_api.set(credentials);
-
-        $.when(
-            moodleAPI.api.authorizeAndGetUserId()
-            //moodleAPI.news_api.authorize()
+      moodleAPI.api.set(credentials);
+      //moodleAPI.news_api.set(credentials);
+      var that = this;
+      $.when(
+          moodleAPI.api.authorizeAndGetUserId()
+          //moodleAPI.news_api.authorize()
         ).done(function(){
             // moodleAPI.api should be authorized and has userId, moodleAPI.news_api should be authorized
             console.log('authorization complete');
-            that.fetchContent();
+            that.trigger("fetchContent");
         }).fail(function(error){
             var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Fehler beim Abruf der Kurse. Bitte loggen Sie sich erneut ein.', module: 'moodle', err: error});
         });
     },
 
     fetchContent: function(){
+      console.log('fetching');
         var that = this;
         // fetch all necessary information
         MoodleApp.courses = new MoodleApp.CourseList();
         //MoodleApp.news = new MoodleApp.NewsList();
 
         //$.when(MoodleApp.courses.fetch(), MoodleApp.news.fetch())
+        new utils.LoadingView({collection: MoodleApp.courses, el: this.$("#loadingSpinner")});
+
         $.when(MoodleApp.courses.fetch())
          .then(function(){
 
@@ -209,11 +215,11 @@ define([
     },
 
     render: function(){
-
+      console.log('render');
         this.$el.html(this.template({}));
         this.courselist = this.$el.find('courselist');
-
         $(this.el).trigger("create");
+        this.trigger("authorize");
         return this;
     },
 
