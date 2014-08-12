@@ -162,6 +162,11 @@ define([
     },
 
     authorize: function(){
+      // Moodle API isn't fetching so manuell adding of loading spinner
+      this.$el.find("#loadingSpinner").append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
+                "<img src=\"img/loadingspinner.gif\"></img>" +
+              "</div>");
+
       // get credentials and populate Moodle Session
       var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
@@ -181,14 +186,12 @@ define([
     },
 
     fetchContent: function(){
-      console.log('fetching');
         var that = this;
         // fetch all necessary information
         MoodleApp.courses = new MoodleApp.CourseList();
         //MoodleApp.news = new MoodleApp.NewsList();
-
         //$.when(MoodleApp.courses.fetch(), MoodleApp.news.fetch())
-        new utils.LoadingView({collection: MoodleApp.courses, el: this.$("#loadingSpinner")});
+
 
         $.when(MoodleApp.courses.fetch())
          .then(function(){
@@ -211,11 +214,11 @@ define([
                     course.fetchContents();
                 });
             });
+            that.$el.find("#loadingSpinner").empty();
          });
     },
 
     render: function(){
-      console.log('render');
         this.$el.html(this.template({}));
         this.courselist = this.$el.find('courselist');
         $(this.el).trigger("create");
