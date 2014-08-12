@@ -2,6 +2,7 @@ platforms/**/
 
 /.project
 .settings/
+.DS_Store
 
 plugins/org.apache.cordova.inappbrowser/
 plugins/org.apache.cordova.splashscreen/
