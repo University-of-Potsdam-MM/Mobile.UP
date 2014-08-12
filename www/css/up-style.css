@@ -1325,10 +1325,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 #moodle .ui-btn-icon-left:after,#moodle .ui-btn-icon-notext:after {
-	position: relative;
-	float: right;
-	margin-top: -30px;
-	padding-right: .3em;
+
 }
 
 #moodle .ui-listview>li h2 {
