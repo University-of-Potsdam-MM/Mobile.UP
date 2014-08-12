@@ -96,6 +96,42 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			return this;
 		}
 	});
+	
+	/**
+	 * Loading View, that listens to a given model or collection.
+	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
+	 */
+	var LoadingView = Backbone.View.extend({
+		
+		initialize: function() {
+			var subject = this.findSubject();
+			
+			this.listenTo(subject, "request", this.spinnerOn);
+			this.listenTo(subject, "sync", this.spinnerOff);
+			this.listenTo(subject, "error", this.spinnerOff);
+		},
+		
+		findSubject: function() {
+			if (this.model) {
+				return this.model;
+			} else if (this.collection) {
+				return this.collection;
+			} else {
+				console.log("LoadingView needs a model or collection to work on. It didn't find one here.");
+				return undefined;
+			}
+		},
+		
+		spinnerOn: function() {
+			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
+								"<img src=\"img/loadingspinner.gif\"></img>" +
+							"</div>");
+		},
+		
+		spinnerOff: function() {
+			this.$el.empty();
+		}
+	});
 
 	return {
 			rendertmpl: rendertmpl,
@@ -103,6 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			addLoadingSpinner: addLoadingSpinner,
 			removeLoadingSpinner: removeLoadingSpinner,
 			getAuthHeader: getAuthHeader,
-			ErrorView: ErrorView
+			ErrorView: ErrorView,
+			LoadingView: LoadingView
 		};
 });

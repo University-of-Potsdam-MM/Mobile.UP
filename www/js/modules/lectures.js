@@ -40,6 +40,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			var vvzUrl = vvzHistory.first().get("suburl")
 
 			this.items.url = vvzUrl;
+			this.items.reset();
 			this.items.fetch({reset: true});
 		}
 	});
@@ -196,7 +197,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		render: function() {
 			console.log("sync ausgelöst");
 			this.$el.append(this.template({model: this.model}));
-			this.$el.listview("refresh");
+			this.$el.listview().listview("refresh");
 
 			return this;
 		}
@@ -275,6 +276,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		prepareVvz: function() {
 			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
 			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
+			new utils.LoadingView({collection: currentVvz.items, el: this.$("#loadingSpinner")});
 		},
 
 		triggerOpenVvzUrl: function(vvzHistory) {
