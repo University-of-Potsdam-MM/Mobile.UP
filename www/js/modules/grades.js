@@ -36,20 +36,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		initialize: function(){
 			this.template = utils.rendertmpl('grades');
 			this.listenToOnce(this, "render", this.prepareGrade);
+			
 			this.grades = new Grades();
-			this.grades.bind('request', this.spinnerOn, this);
-			this.grades.bind('sync', this.spinnerOff, this);
 			this.listenTo(this.grades, "error", this.requestFail);
-		},
-
-		spinnerOn: function(){
-			this.$el.find('#gradesHost').append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\"> \
-													<img src=\"img/loadingspinner.gif\"></img> \
-												</div>");
-		},
-
-		spinnerOff: function(){
-			this.$el.find('#gradesHost .up-loadingSpinner').remove();
 		},
 
 		requestFail: function(error) {
@@ -57,8 +46,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		},
 
 		prepareGrade: function() {
-			this.grades.fetch();
 			new GradesView({collection: this.grades, el: this.$("#gradesTable")});
+			new utils.LoadingView({collection: this.grades, el: this.$("#loadingSpinner")});
+			
+			this.grades.fetch();
 		},
 
 		render: function(){
