@@ -5,3 +5,6 @@ platforms/**/
 
 plugins/org.apache.cordova.inappbrowser/
 plugins/org.apache.cordova.splashscreen/
+
+plugins/android.json
+plugins/ios.json
