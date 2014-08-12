@@ -24,12 +24,16 @@ define([
 
   MoodleApp.CourseContent = Backbone.Model.extend({});
 
+
+  /**
+   *  Backbone Collection - Moodle CourseContents
+   *  for holding the whole course content
+   */
   MoodleApp.CourseContents = Backbone.Collection.extend({
 
     model: MoodleApp.CourseContent,
 
     initialize: function(options){
-      // console.log('initialize', arguments);
       this.courseid = options.courseid;
     },
 
@@ -40,11 +44,14 @@ define([
         .done(function(contents){
           collection.reset(contents);
         });
-
       return this;
     }
   });
 
+  /**
+   *  Backbone Collection - Moodle CourseList
+   *  displays all courses in the starting list
+   */
   MoodleApp.CourseList = Backbone.Collection.extend({
 
     model: MoodleApp.Course,
@@ -59,8 +66,10 @@ define([
     }
   });
 
-
-
+  /**
+   *  Backbone Collection - Moodle Newslist
+   *  for displaying all news (still not productive)
+   */
   MoodleApp.NewsList = Backbone.Collection.extend({
     fetch: function() {
       var collection = this;
@@ -85,10 +94,10 @@ define([
 
   });
 
+
   /**
    * Backbone View - CourseList
    */
-
   MoodleApp.CourseListView = Backbone.View.extend({
 
     template: utils.rendertmpl('moodle_course_list_view'),
@@ -107,11 +116,11 @@ define([
     }
   });
 
-  /*
+
+  /**
    *  Backbone View - CourseView
    *  view for single courses
    */
-
   MoodleApp.CourseView = Backbone.View.extend({
 
     template: utils.rendertmpl('moodle_course_contents_page'),
@@ -138,19 +147,16 @@ define([
     }
   });
 
+
   /**
    * Backbone View - MoodlePage
    * Startview for Moodle
    */
-
   var MoodlePageView = Backbone.View.extend({
 
     model: Session,
-
     template: utils.rendertmpl('moodle'),
-
     attributes: {"id": "moodle"},
-
     events: {
         'click li': 'selectCourse',
         'click .backbutton': 'back'
@@ -165,18 +171,14 @@ define([
       // Moodle API isn't fetching so manuell adding of loading spinner
       this.LoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")});
       this.LoadingView.spinnerOn();
-      // get credentials and populate Moodle Session
-      var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
-      moodleAPI.api.set(credentials);
       //moodleAPI.news_api.set(credentials);
       var that = this;
       $.when(
-          moodleAPI.api.authorizeAndGetUserId()
+          moodleAPI.api.fetchUserid()
           //moodleAPI.news_api.authorize()
         ).done(function(){
             // moodleAPI.api should be authorized and has userId, moodleAPI.news_api should be authorized
-            console.log('authorization complete');
             that.trigger("fetchContent");
         }).fail(function(error){
             var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Fehler beim Abruf der Kurse. Bitte loggen Sie sich erneut ein.', module: 'moodle', err: error});
@@ -189,7 +191,6 @@ define([
         MoodleApp.courses = new MoodleApp.CourseList();
         //MoodleApp.news = new MoodleApp.NewsList();
         //$.when(MoodleApp.courses.fetch(), MoodleApp.news.fetch())
-
 
         $.when(MoodleApp.courses.fetch())
          .then(function(){
