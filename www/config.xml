@@ -19,20 +19,31 @@
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
+    
+    <!-- Splashscreen settings -->
+    <!-- For details see https://github.com/apache/cordova-plugin-splashscreen/blob/master/doc/index.md -->
     <preference name="FadeSplashScreen" value="true" />
-	<preference name="SplashScreen" value="screen" />
-	<preference name="SplashScreenDelay" value="10000" />
+    <preference name="SplashScreen" value="screen" />
+    <platform name="android">
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenDelay" value="10000" />
+    </platform>
+    <platform name="ios">
+        <preference name="AutoHideSplashScreen" value="false" />
+    </platform>
+    
+    <!-- Icon settings -->
+    <!-- For details see http://docs.phonegap.com/en/3.5.0/config_ref_images.md.html -->
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
         <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
         <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
         <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
     </platform>
-    <platform name="ios"> <!-- according to http://docs.phonegap.com/en/3.5.0/config_ref_images.md.html -->
+    <platform name="ios">
         <!-- iOS 7.0+ -->
         <!-- iPhone / iPod Touch  -->
         <icon src="www/res/icon/ios/icon-60.png" width="60" height="60" />
@@ -57,6 +68,7 @@
         <icon src="www/res/icon/ios/icon-50.png" width="50" height="50" />
         <icon src="www/res/icon/ios/icon-50@2x.png" width="100" height="100" />
     </platform>
+    
     <gap:splash gap:density="ldpi" gap:platform="android" src="res/screen/android/screen-ldpi-portrait.png" />
     <gap:splash gap:density="mdpi" gap:platform="android" src="res/screen/android/screen-mdpi-portrait.png" />
     <gap:splash gap:density="hdpi" gap:platform="android" src="res/screen/android/screen-hdpi-portrait.png" />
