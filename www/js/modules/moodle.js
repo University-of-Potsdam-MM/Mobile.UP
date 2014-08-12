@@ -163,10 +163,8 @@ define([
 
     authorize: function(){
       // Moodle API isn't fetching so manuell adding of loading spinner
-      this.$el.find("#loadingSpinner").append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
-                "<img src=\"img/loadingspinner.gif\"></img>" +
-              "</div>");
-
+      this.LoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")});
+      this.LoadingView.spinnerOn();
       // get credentials and populate Moodle Session
       var credentials = {username: this.model.get('up.session.username'), password: this.model.get('up.session.password')};
 
@@ -214,7 +212,7 @@ define([
                     course.fetchContents();
                 });
             });
-            that.$el.find("#loadingSpinner").empty();
+            that.LoadingView.spinnerOff();
          });
     },
 
