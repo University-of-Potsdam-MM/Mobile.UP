@@ -1,8 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
-  // API code
-  var accessId = 'kiy4e84a4b832962eea1943106096116';
-
   function endpoint(){
       return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
   }
@@ -13,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       url: endpoint(),
       crossDomain: true,
       data: xmlPayload,
-      contentType: 'application/xml',
+      contentType: 'text/xml',
       dataType: 'xml',
       beforeSend: function (request) {
           request.withCredentials = true;
@@ -24,7 +21,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
   // var externalId = "009230133#86";
-
   var stations = {
     "G-see": {
       name: 'S Griebnitzsee Bhf',
@@ -91,10 +87,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   function requestExternalId(location){
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('LocValReq', {id:'001', maxNr:20, sMode:1},
-          tag('ReqLoc', {type:'ST', match:location})
-        )
+      tag('LocValReq', {id:'001', maxNr:20, sMode:1},
+         tag('ReqLoc', {type:'ST', match:location})
       );
     return xmlString(xml);
   }
@@ -102,13 +96,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   // Suche abgehende Verbindungen
   function abgehendeVerbindungen(externalId, timeString){
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
-          tag('Time', {}, timeString),
-          tag('Today', {}),
-          tag('TableStation', {externalId:externalId}),
-          tag('ProductFilter', {}, '1111111111111111')
-        )
+      tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
+        tag('Time', {}, timeString),
+        tag('Today', {}),
+        tag('TableStation', {externalId:externalId}),
+        tag('ProductFilter', {}, '1111111111111111')
       );
     return xmlString(xml);
   }
@@ -125,18 +117,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     }
 
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('ConReq', {},
-          tag('Start', {},
-            tag('Station',{externalId: fromExternalId}),
-            tag('Prod')
-          ),
-          tag('Dest', {},
-            tag('Station',{externalId: toExternalId})
-          ),
-          tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
-          rflags
-        )
+      tag('ConReq', {},
+        tag('Start', {},
+          tag('Station',{externalId: fromExternalId}),
+          tag('Prod')
+        ),
+        tag('Dest', {},
+          tag('Station',{externalId: toExternalId})
+        ),
+        tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
+        rflags
       );
     return xmlString(xml);
   };
@@ -216,7 +206,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   }
 
   function mapConnection(connection){
-    // console.log('mapConnection', connection);
     var $con = $(connection);
     var myCon = {
       id: $con.attr('id'),
@@ -237,7 +226,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
     ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
     .done(function(data, textStatus, jqXHR){
-      // console.log('requestExternalId', data,textStatus,jqXHR);
       var $data = $(data);
       var connections = _.map($data.find('Connection'), mapConnection);
       // TODO: map connections from xml to objects
@@ -259,12 +247,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   function getExternalId(stationString) {
     var defer = $.Deferred();
 
-    $.post(
-      endpoint(),
-      requestExternalId(stationString),
-      'xml')
+    $.ajax(requestExternalId(stationString))
       .done(function(data, textStatus, jqXHR){
-        // console.log('requestExternalId', data,textStatus,jqXHR);
         var $data = $(data);
         var station = $data.find('Station').first();
         defer.resolve({
@@ -273,7 +257,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
         });
       })
       .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
+		    var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
       });
     return defer.promise();
   }
@@ -288,7 +272,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   function parseTime(timeString) {
     var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
-    // console.log('parseTime', timeString, time);
     return time;
   }
 
@@ -315,17 +298,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   function getLeavingJourneys(externalId, moment) {
     var defer = $.Deferred();
     var timeString = moment.format('HH:mm:ss');
-
     ajax(abgehendeVerbindungen(externalId, timeString))
     .done(function(data, textStatus, jqXHR){
-        // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
         var $data = $(data);
         // map every node of STBJourney to a JavaScript Object
         var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
         defer.resolve(jsonArray);
       })
     .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
+		  var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
      });
 
     return defer.promise();
