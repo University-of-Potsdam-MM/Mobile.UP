@@ -8,9 +8,7 @@ define([
   'Session'
 ], function( $, _, Backbone, utils, Session) {
 
-  var moodleAPI = {
-    BaseURL: 'https://api.uni-potsdam.de/endpoints/moodleAPI',
-  };
+  var moodleAPI = {};
 
   function cors_post(url, params) {
     // console.log(url, params);
@@ -38,7 +36,7 @@ define([
    */
   var BasicAPI = Backbone.Model.extend({
 
-    webservice_url: moodleAPI.BaseURL + '/webservice/rest/server.php',
+    url: 'https://api.uni-potsdam.de/endpoints/moodleAPI/webservice/rest/server.php',
 
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
@@ -47,7 +45,7 @@ define([
         var ws = {'wsfunction': wsfunction, 'wstoken': this.session.get('up.session.MoodleToken')};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
 
-        return cors_post(api.webservice_url, postParams).promise();
+        return cors_post(api.url, postParams).promise();
       }
     }
   });
@@ -73,7 +71,8 @@ define([
           wstoken: this.session.get('up.session.MoodleToken'),
           wsfunction:'moodle_webservice_get_siteinfo',
         };
-        return cors_post(this.webservice_url, params)
+
+        return cors_post(this.url, params)
           .then(function(data){
             // console.log('fetchUserid', arguments);
             api.set(data);
@@ -85,6 +84,7 @@ define([
     service:'moodle_mobile_app',
     moodlewsrestformat:'json',
   });
+
 /*
   moodleAPI.news_api = new (BasicAPI.extend({
     initialize: function(){
