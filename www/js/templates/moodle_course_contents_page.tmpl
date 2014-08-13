@@ -1,52 +1,42 @@
-    <div data-role="header" data-position="fixed" data-tap-toggle="false">
-      <a href="#nav-panel" data-role="button" data-icon="false"
-        data-inline="true" class="menubutton">Menue</a> <a
-        href="#study/moodle" data-role="button" data-icon="false"
-        data-inline="true" data-transition="slidefade"
-        data-direction="reverse" class="back backbutton">Back</a>
-      <h1>Kurs <%= course.get('shortname') %> <a href="#options" class="settings" data-role="button" data-icon="gear"></a></h1>
-    </div> <!-- End Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
+	<a href="#study/moodle" data-role="button" data-icon="false" data-inline="true"	data-direction="reverse" class="back backbutton">Back</a>
+	<h1>Kurs: <%= course.get('shortname') %> <a href="#options" class="settings" data-role="button" data-icon="gear"></a></h1>
+</div> <!-- End Header -->
 
-    <div data-role="content" data-theme="c">
-      <div id="<%= course.get('id') %>">
-
-      <h3><%= course.get('fullname') %></h3>
-
-     
-
-      <ul data-role="listview" data-inset="true" data-theme="c">
-      <% contents.each(function(c){ %>
-        <li data-role="collapsible" data-collapsed-icon="arrow-down"
-  data-expanded-icon="arrow-up" data-iconpos="right">
-  
-   <p>
-            <%= c.get('summary') %>
-          </p>
-          <h3><%= c.get('name') %></h3>
-
-          <% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
-            <ul>
-              <% _.each(c.get('modules'), function(m){ %>
-                <li>
-                  <a href="<%= m.url %> ">
-                    <img src="<%= m.modicon %>" alt="<%= m.modname %>" />
-                    <%= m.name %>
-                  </a>
-                </li>
-              <% }); %>
-            </ul>
-          <% } else { %>
-            <em>bisher keine Module</em>
-          <% } %>
-
-
-         
-
-        </li>
-      <% }); %>
-      </ul>
-      
-    </div>
-    </div>
-    <% console.log(course); %>
-    <!-- End Content -->
+<div data-role="content" data-theme="c">
+	<div id="<%= course.get('id') %>">
+		<h3><%= course.get('fullname') %></h3>
+		<div data-role="listview" data-inset="true" data-theme="c">
+			<% contents.each(function(c){ %>
+			<% if (contents.first() == c) { %>
+			<div data-role="collapsible" data-collapsed="false" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+			<% }else{ %>
+			<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+			<% } %>
+				<% if (!_.isEmpty(c.get('summary'))) { %>
+				<p>
+					<%= c.get('summary') %>
+				</p>
+				<% } %>
+				<h3><%= c.get('name') %></h3>
+				<% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
+					<ul>
+						<% _.each(c.get('modules'), function(m){ %>
+						<li>
+							<a href="<%= m.url %> ">
+								<img src="<%= m.modicon %>" alt="<%= m.modname %>" />
+								<%= m.name %>
+							</a>
+						</li>
+						<% }); %>
+					</ul>
+				<% } else { %>
+					<em>bisher keine Module</em>
+				<% } %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<!-- End Content -->
