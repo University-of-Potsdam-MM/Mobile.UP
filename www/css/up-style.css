@@ -74,7 +74,7 @@ p {
 	width: 100%;
 }
 
-#error 
+#error
 {
 	padding:.5em;
 	background:#ff9999;
@@ -677,7 +677,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	margin-top: .5em;
 }
 
-/*öffnungszeiten - button hover 
+/*öffnungszeiten - button hover
 #opening.ui-page-theme-a ul .ui-btn:hover {
 	background: #dedede !important;
 	color: #014260;
@@ -1299,6 +1299,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	overflow: hidden;
 	list-style:none;
 	padding-left:0;
+	margin: 0;
 }
 
 #moodle .ui-content .ui-listview {
@@ -1325,7 +1326,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	white-space: nowrap;
 	margin-bottom:0;
 	margin-top:0;
-	
+
 }
 
 #moodle .ui-listview>li h2 a{
@@ -1347,6 +1348,10 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #moodle .ui-listview>.ui-li-static {
 	border:0;
 	background-color:#ededed;
+}
+
+#moodle .ui-collapsible-inset, .ui-collapsible-set {
+	margin: 0;
 }
 
 /***********************Personensuche*********************
