@@ -56,6 +56,8 @@ define([
 
     model: MoodleApp.Course,
 
+    comparator: 'fullname',
+
     fetch: function(){
       var collection = this;
       moodleAPI.api.moodle_enrol_get_users_courses()
