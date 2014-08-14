@@ -20,7 +20,10 @@
 		<% console.log('book detail', book); %>
 		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
 		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
-		<%= (book.get('authors')) ? '<p><b>'+book.get('authors')+'</b><br>' : ''%>
+		<p>
+		<% if (book.get('authors')) { %>
+            <b><%= book.get('authors').join("; ") %></b><br />
+        <% } %>
 		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %></p></div>
 		<div data-role="tabs">
 		  <div data-role="navbar">
