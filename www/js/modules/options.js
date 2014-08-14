@@ -20,12 +20,11 @@ define([
 
 		logintemplate: utils.rendertmpl('login'),
 		logouttemplate: utils.rendertmpl('logout'),
-		errortemplate: utils.rendertmpl('errorlogin'),
 
 		events: {
 			'submit #loginform': 'login',
 			'submit #logoutform': 'logout',
-			'focus #loginform': 'clearForm'
+			'focus #loginform input': 'clearForm'
 		},
 
 		initialize: function(){
@@ -85,7 +84,8 @@ define([
 					}
 				});
 			}else{
-				console.log('more then 3 login attempts sry');
+				this.$("#error3").css('display', 'block');
+				this.$('#login').attr('disabled', 'disabled');
 			}
 		},
 
@@ -100,13 +100,11 @@ define([
 
 		errorHandler: function(){
 			this.loginAttempts++;
-			$(this.el).html(this.errortemplate({}));
-			$(this.el).trigger("create");
-			return this;
+			this.$("#error").css('display', 'block');
 		},
 
 		clearForm: function(){
-			this.$("#loginform").removeClass('error')
+			this.$("#error").css('display', 'none');
 		}
 
 	});

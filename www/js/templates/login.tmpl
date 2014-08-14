@@ -8,14 +8,16 @@
 <div data-role="content" data-theme="c">
 	<br />
 	<img src="img/up/hinweis.png" class="alignleft" />
-	<p class="blau" style="margin-left:55px;">
-		Um diese Funktion nutzen zu k&ouml;nnen, musst du dich mit deinem Nutzernamen und deinem Passwort der Uni Potsdam anmelden. Danach kann es weitergehen...
+	<p class="blau" style="margin-left:55px; padding-right: 10px;">
+		Um diese Funktion nutzen zu k&ouml;nnen, musst du dich mit deinem Nutzernamen und deinem Passwort der Uni Potsdam anmelden. Hierzu ist es notwendig, dass du dich bereits einmalig bei Moodle 2.UP angemeldet hast. Danach kann es weitergehen...
 	</p>
 	<h3>Benutzerdaten eingeben:</h3>
-	<div id="error">
-	<p>
-	Du hast alles falsch gemacht
-	</p>
+	<div id="error3" style="display:none;">
+		<p>Sie haben sich dreimal versucht sich verglich einzumelden. ;(</p>
+		<p>Sie haben Ihre Freiversuche aufgebraucht.</p>
+	</div>
+	<div id="error" style="display:none;">
+		<p>Benutzername oder Passwort falsch!</p>
 	</div>
 	<form id="loginform">
 		<input id='username' type="text" placeholder="Meine UP - Mailadresse ohne @uni..." autocomplete="off" />
