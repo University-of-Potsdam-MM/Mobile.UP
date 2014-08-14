@@ -4,15 +4,15 @@
 	<h1>Kurs: <%= course.get('shortname') %> <a href="#options" class="settings" data-role="button" data-icon="gear"></a></h1>
 </div> <!-- End Header -->
 
-<div data-role="content" data-theme="c">
+<div data-role="content" data-theme="b">
 	<div id="<%= course.get('id') %>">
 		<h3><%= course.get('fullname') %></h3>
-		<div data-role="listview" data-inset="true" data-theme="c">
+		<div data-role="listview" data-inset="true" data-theme="b">
 			<% contents.each(function(c){ %>
 			<% if (contents.first() == c) { %>
-			<div data-role="collapsible" data-collapsed="false" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+			<div data-role="collapsible" data-collapsed="false" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-white-up" data-iconpos="right">
 			<% }else{ %>
-			<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+			<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-white-up" data-iconpos="right">
 			<% } %>
 				<% if (!_.isEmpty(c.get('summary'))) { %>
 				<p>
