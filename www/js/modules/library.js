@@ -36,9 +36,33 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
   // TODO: Standort Informationen am Model
   App.model.Book = Backbone.Model.extend({
-    // Book instance properties
-    initialize: function () {
-      // console.log('initialize', this.attributes);
+
+    /* nearly parsing, substitue it with parse function */
+    initialize: function(){
+      var xmlRecord = this.get('xmlRecord');
+      var $xmlRecord = $(this.get('xmlRecord'));
+      var recordId = this.textForTag(xmlRecord, 'recordIdentifier');
+
+      this.set('id', recordId);
+      this.set('recordId', recordId);
+      this.set('ppn', recordId);
+      this.set('title', this.textForTag(xmlRecord, 'title'));
+      this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
+      this.set('dateIssued', $xmlRecord.find('dateIssued').html());
+      this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
+      this.set('toc', this.split_string(this.textForTag(xmlRecord, 'tableOfContents'),'--'));
+      this.set('authors', this.authors($xmlRecord));
+      this.set('publisher', this.textForTag(xmlRecord, 'publisher'));
+      this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
+      this.set('url', this.url(xmlRecord));
+      this.set('notes', this.contentForTag(xmlRecord, 'note'));
+      this.set('series', this.series($xmlRecord, 'relatedItem[type=series]'));
+      this.set('keywords', this.keywords(xmlRecord, 'subject'));
+      this.set('mediaType', this.mediaType(xmlRecord));
+      this.set('extent', this.textForTag(xmlRecord, 'extent'));
+      this.set('edition', this.textForTag(xmlRecord, 'edition'));
+      this.set('place', this.place($xmlRecord, 'placeTerm[type=text]'));
+      // console.log(this);
     },
 
     updateLocation: function() {
@@ -46,10 +70,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var spinner = utils.addLoadingSpinner("book-locations");
       spinner();
 
-      //console.log('updateLocation');
-
       var currentBook = this;
-
       var ajaxLocationCall = $.ajax({
         url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+this.get('ppn')+'&format=json',
         method: 'GET',
@@ -58,15 +79,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       ajaxLocationCall.done(function (json) {
       	var bookLocationList = new App.collection.BookLocationList();
-      	//console.log('init', bookLocationList);
-        _.map(json.document[0].item, function(item) {
-          //console.log('Item:', item);
-          var bookLocation = new App.model.BookLocation({});
-          //console.log(bookLocation.getLocation(item, currentBook));
 
+        _.map(json.document[0].item, function(item) {
+          var bookLocation = new App.model.BookLocation({});
           bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
-        //console.log('List', bookLocationList);
+
         var spinner = utils.removeLoadingSpinner("book-locations");
         spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
@@ -77,53 +95,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     },
 
-  },{
-    // Book class properties
-
-    fromXmlRecord: function(xmlRecord) {
-      // console.log('xml:', xmlRecord);
-      var $xmlRecord = $(xmlRecord);
-      var recordId = App.model.Book.textForTag(xmlRecord, 'recordIdentifier');
-      var model = {
-        id:        recordId,
-        recordId:  recordId,
-        ppn:       recordId,
-        title:     App.model.Book.textForTag(xmlRecord, 'title'),
-        // TODO remove brackets[] if there are some around the subtitle
-        subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
-        dateIssued: $xmlRecord.find('dateIssued').html(),
-        abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
-        toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
-        authors:   App.model.Book.authors($xmlRecord),
-        publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
-        isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
-        url:       App.model.Book.url(xmlRecord),
-        notes:     App.model.Book.contentForTag(xmlRecord, 'note'),
-        series:    App.model.Book.series($xmlRecord, 'relatedItem[type=series]'),
-        keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-        mediaType: App.model.Book.mediaType(xmlRecord),
-        extent:    App.model.Book.textForTag(xmlRecord, 'extent'),
-        edition:   App.model.Book.textForTag(xmlRecord, 'edition'),
-        place:     App.model.Book.place($xmlRecord, 'placeTerm[type=text]'),
-      };
-      // console.log('model.toc', model.toc);
-      return new App.model.Book(model);
-    },
-
     textForTag: function(node, tagName) {
       var firstTagNode = node.getElementsByTagName(tagName)[0];
-      if (firstTagNode) {
+      if (firstTagNode){
         return firstTagNode.textContent;
-      } else {
+      }else{
         return null;
       }
     },
 
     split_string: function(string, split_by){
-      if (string) {
-        return string.split(split_by);
-      }
-      return null;
+      if (string) { return string.split(split_by); }else{ return null; }
     },
 
     textForQuery: function(jqNode, query){
@@ -138,11 +120,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
     authors: function($recordData){
       var nameNodes = $recordData.find('name[type=personal]')
+      var that = this;
       var names = _.map(nameNodes, function(node){
         var $node = $(node);
         var author = [
-          (App.model.Book.textForQuery($node, 'namePart[type=family]')) ? App.model.Book.textForQuery($node, 'namePart[type=family]')[0] : '',
-          (App.model.Book.textForQuery($node, 'namePart[type=given]')) ? App.model.Book.textForQuery($node, 'namePart[type=given]')[0] : ''
+          (that.textForQuery($node, 'namePart[type=family]')) ? that.textForQuery($node, 'namePart[type=family]')[0] : '',
+          (that.textForQuery($node, 'namePart[type=given]')) ? that.textForQuery($node, 'namePart[type=given]')[0] : ''
         ];
         return author;
       });
@@ -173,7 +156,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
     keywords: function(node, tagName){
-      var keywords = App.model.Book.contentForTag(node, tagName);
+      var keywords = this.contentForTag(node, tagName);
       var keys = _.map(keywords, function(keyword){
         var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
         var key = [keyword.trim(), url];
@@ -187,7 +170,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       // get physcialDescription
       var physicalDescriptionForms = $node.find('form[authority]');
-
       var physicalDescription = _.filter(physicalDescriptionForms,  function(form){
         var $form = $(form);
         if (typeof $form[0] != "undefined") {
@@ -198,79 +180,65 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         physicalDescription = physicalDescription[0].textContent;
       }
 
-      //TODO: read typeOfResource
-      var typeOfResource = App.model.Book.getTypeOfResource(node);
-      var originInfo = App.model.Book.contentForTag(node, 'originInfo');
+      var typeOfResource = this.getTypeOfResource(node);
+      var originInfo = this.contentForTag(node, 'originInfo');
       //TODO: test for essay
       var isEssay = false;
       var mediaType = "X";
 
-    if ( physicalDescription != null && physicalDescription == "microform" ){
-      mediaType = "E";
-    }else if ( typeOfResource != null && typeOfResource == "manuscript" ){
-      mediaType = "H";
-    }else if ( isEssay == true ){
-      mediaType = "A";
-    }else{
-      if ( typeOfResource != null )
-      {
-        if ( typeOfResource == "still image" ){
-          mediaType = "I";
-        }else if ( typeOfResource == "sound recording-musical" ){
-          mediaType = "G";
-        }else if ( typeOfResource == "sound recording-nonmusical" ){
-          mediaType = "G";
-        }else if ( typeOfResource == "sound recording" ){
-          mediaType = "G";
-        }else if ( typeOfResource == "cartographic" ){
-          mediaType = "K";
-        }else if ( typeOfResource == "notated music" ){
-          mediaType = "M";
-        }else if ( typeOfResource == "moving image" ){
-          mediaType = "V";
-        }else if ( typeOfResource == "text" ){
-          // TODO: Test with Linux-Magazin
-          if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
-          {
-            mediaType = "T";
-          }
-          else
-          {
-            mediaType = "B";
-          }
-        }else if ( typeOfResource == "software, multimedia" ){
-          if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
-          {
-            if ( physicalDescription != null && physicalDescription == "remote" )
-            {
-              mediaType = "P";
-            }
-            else
-            {
+      if ( physicalDescription != null && physicalDescription == "microform" ){
+        mediaType = "E";
+      }else if ( typeOfResource != null && typeOfResource == "manuscript" ){
+        mediaType = "H";
+      }else if ( isEssay == true ){
+        mediaType = "A";
+      }else{
+        if ( typeOfResource != null ){
+          if ( typeOfResource == "still image" ){
+            mediaType = "I";
+          }else if ( typeOfResource == "sound recording-musical" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "sound recording-nonmusical" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "sound recording" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "cartographic" ){
+            mediaType = "K";
+          }else if ( typeOfResource == "notated music" ){
+            mediaType = "M";
+          }else if ( typeOfResource == "moving image" ){
+            mediaType = "V";
+          }else if ( typeOfResource == "text" ){
+            // TODO: Test with Linux-Magazin
+            if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) ){
               mediaType = "T";
+            }else{
+              mediaType = "B";
             }
-          }
-          else
-          {
-            if ( physicalDescription != null && physicalDescription == "remote" )
-            {
-              mediaType = "O";
+          }else if ( typeOfResource == "software, multimedia" ){
+            if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) ){
+              if ( physicalDescription != null && physicalDescription == "remote" ){
+                mediaType = "P";
+              }else{
+                mediaType = "T";
+              }
             }
-            else
-            {
-              mediaType = "S";
+            else{
+              if ( physicalDescription != null && physicalDescription == "remote" ){
+                mediaType = "O";
+              }else{
+                mediaType = "S";
+              }
             }
           }
         }
       }
-    }
-      //console.log(mediaType);
       mediaType = "media_"+mediaType.toLowerCase();
       return mediaType;
     },
 
     getTypeOfResource: function(node) {
-      var typeOfResource = App.model.Book.contentForTag(node, 'typeOfResource');
+      var typeOfResource = this.contentForTag(node, 'typeOfResource');
       return typeOfResource;
     },
 
@@ -284,7 +252,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     place: function(jqNode, query){
-      var nodes = App.model.Book.textForQuery(jqNode, query);
+      var nodes = this.textForQuery(jqNode, query);
       if(nodes) {
         return nodes[0];
       }else{
@@ -293,28 +261,28 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     series: function(jqNode, query){
-      var nodes = App.model.Book.textForQuery(jqNode, query);
+      var nodes = this.textForQuery(jqNode, query);
       if(nodes) {
         return nodes[0];
       }else{
         return null;
       }
     }
-
   });
   // END App.model.Book
 
 
   App.collection.BookList = Backbone.Collection.extend({
+
     model: App.model.Book,
 
     // TODO: create object to communicate with SRU and provide pagination for query
 
     addXmlSearchResult: function(xmlSearchResult){
-      //console.log('xml',xmlSearchResult);
+      console.log('xml',xmlSearchResult);
       var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
-      this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
-      //console.log('addXmlSearchResult', this.pluck('recordId'));
+      this.add ( _.map(records, function(record) {return new App.model.Book({xmlRecord: record});}));
+      console.log('addXmlSearchResult', this.pluck('recordId'));
       return this;
     },
 
@@ -325,9 +293,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
   });
-
   // END App.collection.BookList
 
+  /*
+   *  Backbone Model - la
+   *  TODO: later on convert to collection and use fetch
+   */
   App.model.LibrarySearch = Backbone.Model.extend({
     defaults: {
       query: '',
@@ -337,10 +308,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     url: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
-
-    initialize: function() {
-      console.log(this);
-    },
 
     paginationPossible: function(){
       return (this.get('results').length < this.get('numberOfRecords'));
