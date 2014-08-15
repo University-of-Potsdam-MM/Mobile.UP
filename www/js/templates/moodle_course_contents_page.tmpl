@@ -6,7 +6,7 @@
 
 <div data-role="content" data-theme="b">
 	<div id="<%= course.get('id') %>">
-		<h3><%= course.get('fullname') %></h3>
+		<h3 class="coursetitle"><%= course.get('fullname') %></h3>
 		<div data-role="listview" data-inset="true" data-theme="b">
 			<% contents.each(function(c){ %>
 			<% if (contents.first() == c) { %>
