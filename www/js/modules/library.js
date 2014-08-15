@@ -205,52 +205,30 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var isEssay = false;
       var mediaType = "X";
 
-    if ( physicalDescription != null && physicalDescription == "microform" )
-    {
+    if ( physicalDescription != null && physicalDescription == "microform" ){
       mediaType = "E";
-    }
-    else if ( typeOfResource != null && typeOfResource == "manuscript" )
-    {
+    }else if ( typeOfResource != null && typeOfResource == "manuscript" ){
       mediaType = "H";
-    }
-    else if ( isEssay == true )
-    {
+    }else if ( isEssay == true ){
       mediaType = "A";
-    }
-    else
-    {
+    }else{
       if ( typeOfResource != null )
       {
-        if ( typeOfResource == "still image" )
-        {
+        if ( typeOfResource == "still image" ){
           mediaType = "I";
-        }
-        else if ( typeOfResource == "sound recording-musical" )
-        {
+        }else if ( typeOfResource == "sound recording-musical" ){
           mediaType = "G";
-        }
-        else if ( typeOfResource == "sound recording-nonmusical" )
-        {
+        }else if ( typeOfResource == "sound recording-nonmusical" ){
           mediaType = "G";
-        }
-        else if ( typeOfResource == "sound recording" )
-        {
+        }else if ( typeOfResource == "sound recording" ){
           mediaType = "G";
-        }
-        else if ( typeOfResource == "cartographic" )
-        {
+        }else if ( typeOfResource == "cartographic" ){
           mediaType = "K";
-        }
-        else if ( typeOfResource == "notated music" )
-        {
+        }else if ( typeOfResource == "notated music" ){
           mediaType = "M";
-        }
-        else if ( typeOfResource == "moving image" )
-        {
+        }else if ( typeOfResource == "moving image" ){
           mediaType = "V";
-        }
-        else if ( typeOfResource == "text" )
-        {
+        }else if ( typeOfResource == "text" ){
           // TODO: Test with Linux-Magazin
           if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
           {
@@ -260,9 +238,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           {
             mediaType = "B";
           }
-        }
-        else if ( typeOfResource == "software, multimedia" )
-        {
+        }else if ( typeOfResource == "software, multimedia" ){
           if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
           {
             if ( physicalDescription != null && physicalDescription == "remote" )
@@ -288,7 +264,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         }
       }
     }
-
       //console.log(mediaType);
       mediaType = "media_"+mediaType.toLowerCase();
       return mediaType;
@@ -354,35 +329,42 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   // END App.collection.BookList
 
   App.model.LibrarySearch = Backbone.Model.extend({
-    // LibrarySearch instance properties
+    defaults: {
+      query: '',
+      options: '',
+      startRecord: 1,
+      maximumRecords: 10
+    },
+
+    url: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+
     initialize: function() {
-      // attribute to set in the model:
-      // - 'query' (String)
-      // - 'results' (App.collection.BookList)
+      console.log(this);
     },
 
     paginationPossible: function(){
       return (this.get('results').length < this.get('numberOfRecords'));
     },
+
     startPagination: function() {
       return this.get('results').length + 1;
     },
+
     endPagination: function() {
       return Math.min(this.get('results').length + 10, this.get('numberOfRecords'));
     },
 
-
     loadNext: function() {
-      //console.log('loadNext');
+      console.log('loadNext');
       var model = this;
       // fetch the next 10 books
       var query = this.get('query');
       var resultList = this.get('results');
-      var options = {startRecord: resultList.length + 1 };
-      var fetch = App.model.LibrarySearch.search(query, options);
+      this.set('startRecord', resultList.length + 1);
+
       return Q.fcall(utils.addLoadingSpinner("search-results"))
-      .then(function() { return fetch.loadSearch(); })
-      .then(function(xml){
+        .then(function() { return model.loadSearch(); })
+        .then(function(xml){
       // get relevant pagination information
       if(xml.getElementsByTagNameNS) {
         var numberOfRecords=xml.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
@@ -399,63 +381,44 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         resultList.addXmlSearchResult(xml);
         $('input[type="submit"]').removeAttr('disabled');
       });
-    }
-  }, {
-    // LibrarySearch class properties
-    search: function(query, options) {
-      var defaultOptions = {
-        startRecord: 1,
-        maximumRecords: 10,
-      };
-      options = _.defaults(options || {}, defaultOptions);
+      console.log(this);
+    },
 
-      // TODO refactor into App.model.LibrarySearch instance properties
-      return _.extend({
-        query:query,
-        options: options
-      }, {
+    generateUrl: function() {
+      console.log(this.url);
+      return this.url + '/operation=searchRetrieve' +
+        '&query=' + this.get('query') +
+        '&startRecord=' + this.get('startRecord') +
+        '&maximumRecords=' + this.get('maximumRecords') +
+        '&recordSchema=mods';
+    },
 
-        baseURL: function() {
-          return "http://api.uni-potsdam.de/endpoints/libraryAPI/1.0";
-        },
-
-        url: function() {
-          return this.baseURL() + '/operation=searchRetrieve' +
-            '&query=' + this.query +
-            '&startRecord=' + this.options.startRecord +
-            '&maximumRecords=' + this.options.maximumRecords +
-            '&recordSchema=mods';
-        },
-
-        loadSearch: function() {
-          // TODO: return and memorize Backbone collection instead of promise
-          var d = Q.defer();
-          var url = this.url();
-          var headers = { "Authorization": utils.getAuthHeader() };
-          $.ajax({
-		        url: url,
-		        dataType: "xml",
-		        headers: headers
-        	})
-        	.done(d.resolve)
-        	.fail(function(error){
-        		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
-        	});
-
-          return d.promise;
-        },
-
-        next: function() {
-          this.options.startRecord += this.options.maximumRecords;
-          // TODO: update Backbone Collection
-          return this.loadSearch();
-        }
+    loadSearch: function() {
+      console.log('loadSearch');
+      // TODO: return and memorize Backbone collection instead of promise
+      var d = Q.defer();
+      var url = this.generateUrl();
+      var headers = { "Authorization": utils.getAuthHeader() };
+      $.ajax({
+        url: url,
+        dataType: "xml",
+        headers: headers
       })
+      .done(d.resolve)
+      .fail(function(error){
+        var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
+      });
+
+      return d.promise;
+    },
+
+    next: function() {
+      this.options.startRecord += this.options.maximumRecords;
+      // TODO: update Backbone Collection
+      return this.loadSearch();
     }
   });
-
   // END App.model.LibrarySearch
-
 
 
   /**
@@ -470,12 +433,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     results: App.collections.searchResults
   });
 
-
-
-  /**
-   * Backbone - Views
-   *
-   */
 
   /**
    * Backbone View - BookList
@@ -609,7 +566,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       return department;
     },
 
-    //
     // complex function to get avialable status of items
     // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
     // TODO: limitation expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
