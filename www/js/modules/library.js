@@ -1,19 +1,10 @@
 /*
-
-This is the JavaScript code for the library search functionality.
-
 authors: @rmetzler, @alekiy
 
 First of all, I have to say I'm sorry that the code isn't yet as clean and readable
 as it should be. We started to build this in generic JavaScript and than wanted to
 refactor it into Backbone. This was way harder than expected without breaking any
 previously working functionality. Please don't judge.
-
-## Working Functionality:
-- searching for query string and displaying Books in a BookListView
-- displaying details of a selected Book
-- displaying location information for the selected Book
-- Pagination for getting more Books from the API
 
 ## TODOS
 - display "zs:diagnostics" "diag:message" element (namespace'http://www.loc.gov/zing/srw/diagnostic/')
@@ -34,7 +25,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     views:       {}, // actual view instances
   };
 
-  // TODO: Standort Informationen am Model
+
+  /**
+   *  Backbone Model - Book
+   *  TODO: Standort Informationen am Model
+   */
   App.model.Book = Backbone.Model.extend({
 
     /* nearly parsing, substitue it with parse function */
@@ -62,7 +57,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
       this.set('edition', this.textForTag(xmlRecord, 'edition'));
       this.set('place', this.place($xmlRecord, 'placeTerm[type=text]'));
-      // console.log(this);
     },
 
     updateLocation: function() {
@@ -269,35 +263,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       }
     }
   });
-  // END App.model.Book
 
 
+  /**
+   *  Backbone Collection - BookList
+   */
   App.collection.BookList = Backbone.Collection.extend({
-
     model: App.model.Book,
-
-    // TODO: create object to communicate with SRU and provide pagination for query
-
-    addXmlSearchResult: function(xmlSearchResult){
-      console.log('xml',xmlSearchResult);
-      var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
-      this.add ( _.map(records, function(record) {return new App.model.Book({xmlRecord: record});}));
-      console.log('addXmlSearchResult', this.pluck('recordId'));
-      return this;
-    },
-
-    byTagNS: function(xml,tag,ns) {
-      return xml.getElementsByTagNameNS ?
-        xml.getElementsByTagNameNS(ns,tag) :
-        xml.getElementsByTagName(ns+":"+tag);
-    },
-
   });
-  // END App.collection.BookList
+
 
   /*
-   *  Backbone Model - la
-   *  TODO: later on convert to collection and use fetch
+   *  Backbone Model - LibrarySearch
+   *  holding all necessary values for the current search
    */
   App.model.LibrarySearch = Backbone.Model.extend({
     defaults: {
@@ -307,7 +285,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       maximumRecords: 10
     },
 
-    url: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+    collection: App.collection.BookList,
+
+    //url: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+    url: 'js/modules/test.xml',
 
     paginationPossible: function(){
       return (this.get('results').length < this.get('numberOfRecords'));
@@ -329,26 +310,43 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var resultList = this.get('results');
       this.set('startRecord', resultList.length + 1);
 
-      return Q.fcall(utils.addLoadingSpinner("search-results"))
-        .then(function() { return model.loadSearch(); })
-        .then(function(xml){
-      // get relevant pagination information
-      if(xml.getElementsByTagNameNS) {
-        var numberOfRecords=xml.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
-      }else{
-        var numberOfRecords=xml.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
-      }
-      model.set('numberOfRecords',numberOfRecords);
+      // Loading Spinner (activate)
+      // generate url
+      this.fetch();
+      // Loading Spinner (deactivate)
+      $('input[type="submit"]').removeAttr('disabled');
+    },
 
-        return xml;
-      }).done(function(xml) {
-        //console.log('done', xml);
-      var spinner = utils.removeLoadingSpinner("search-results");
-        spinner();
-        resultList.addXmlSearchResult(xml);
-        $('input[type="submit"]').removeAttr('disabled');
+    // TODO Handle fetch error
+    // var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
+
+    byTagNS: function(xml,tag,ns) {
+      return xml.getElementsByTagNameNS ?
+        xml.getElementsByTagNameNS(ns,tag) :
+        xml.getElementsByTagName(ns+":"+tag);
+    },
+
+    parse: function(data){
+
+      // get relevant pagination information
+      if(data.getElementsByTagNameNS) {
+        var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+      }else{
+        var numberOfRecords=data.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
+      }
+      this.set('numberOfRecords',numberOfRecords);
+
+      var records = this.byTagNS(data, 'recordData', 'http://www.loc.gov/zing/srw/');
+      var that= this;
+      _.map(records, function(record) {
+        that.get('results').add(new App.model.Book({xmlRecord: record}));
       });
-      console.log(this);
+    },
+
+    fetch: function(options){
+      options = options || {};
+      options.dataType = "xml";
+      return Backbone.Model.prototype.fetch.call(this, options);
     },
 
     generateUrl: function() {
@@ -358,25 +356,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         '&startRecord=' + this.get('startRecord') +
         '&maximumRecords=' + this.get('maximumRecords') +
         '&recordSchema=mods';
-    },
-
-    loadSearch: function() {
-      console.log('loadSearch');
-      // TODO: return and memorize Backbone collection instead of promise
-      var d = Q.defer();
-      var url = this.generateUrl();
-      var headers = { "Authorization": utils.getAuthHeader() };
-      $.ajax({
-        url: url,
-        dataType: "xml",
-        headers: headers
-      })
-      .done(d.resolve)
-      .fail(function(error){
-        var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
-      });
-
-      return d.promise;
     },
 
     next: function() {
@@ -391,7 +370,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   /**
    * THIS IS THE INTERNAL STATE OF THE LIBRARY SEARCH
    */
-
   App.collections.searchResults = new App.collection.BookList();
 
   App.models.currentSearch = new App.model.LibrarySearch({
@@ -580,7 +558,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
             if(book.attributes.url == null) {
               status = 'nicht ausleihbar';
-            }else {
+            }else{
               status = 'Online-Ressource im Browser öffnen';
             }
           }
@@ -647,7 +625,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     loadSearch: function(queryString){
-      // console.log('loadSearch');
+
       if (App.collections.searchResults) {
         App.collections.searchResults.reset();
       } else {
