@@ -39,7 +39,7 @@
 					<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
 						<div data-role="collapsible"><h3>Schlagwörter:</h3><p>
 			    	<% _.each(book.get('keywords'), function(keyword){ %>
-							<a href="<%= keyword[1] %>" target="_blank"><%= keyword[0] %></a>&nbsp;
+							<a href="<%= keyword[1] %>" target="_blank" rel="external"><%= keyword[0] %></a>&nbsp;
 			          <% }); %>
 						</p></div>
 					<% } %>
