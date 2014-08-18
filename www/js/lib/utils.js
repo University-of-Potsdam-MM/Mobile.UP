@@ -133,6 +133,20 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			this.$el.empty();
 		}
 	});
+	
+	/**
+	 * Opens external links (identified by rel="external") according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
+	 */
+	var overrideExternalLinks = function(event) {
+		var url = $(event.currentTarget).attr("href");
+		if (window.cordova) {
+			console.log("Opening " + url + " externally");
+			window.open(url, "_blank", "enableViewportScale=yes");
+			return false;
+		} else {
+			console.log("Opening " + url + " internally");
+		}
+	};
 
 	return {
 			rendertmpl: rendertmpl,
@@ -141,6 +155,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			removeLoadingSpinner: removeLoadingSpinner,
 			getAuthHeader: getAuthHeader,
 			ErrorView: ErrorView,
-			LoadingView: LoadingView
+			LoadingView: LoadingView,
+			overrideExternalLinks: overrideExternalLinks
 		};
 });

@@ -48,6 +48,11 @@ define([
 			 	 * Initialize Backbone override
 			 	 */
 				$(overrideBackboneSync);
+				
+				/**
+				 * Initialize external link override
+				 */
+				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
 
 				Router.initialize();
 			}
