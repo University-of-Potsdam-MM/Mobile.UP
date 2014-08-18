@@ -1,4 +1,4 @@
-/*
+/* 619
 authors: @rmetzler, @alekiy
 
 First of all, I have to say I'm sorry that the code isn't yet as clean and readable
@@ -39,7 +39,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var recordId = this.textForTag(xmlRecord, 'recordIdentifier');
 
       this.set('id', recordId);
-      this.set('recordId', recordId);
       this.set('ppn', recordId);
       this.set('title', this.textForTag(xmlRecord, 'title'));
       this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
@@ -51,14 +50,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
       this.set('url', this.url(xmlRecord));
       this.set('notes', this.contentForTag(xmlRecord, 'note'));
-      this.set('series', this.series($xmlRecord, 'relatedItem[type=series]'));
+      this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
       this.set('keywords', this.keywords(xmlRecord, 'subject'));
       this.set('mediaType', this.mediaType(xmlRecord));
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
       this.set('edition', this.textForTag(xmlRecord, 'edition'));
-      this.set('place', this.place($xmlRecord, 'placeTerm[type=text]'));
+      this.set('place', this.firstNode($xmlRecord, 'placeTerm[type=text]'));
     },
 
+    // TODO Refactor using  fetch in BookLocationList
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
       var spinner = utils.addLoadingSpinner("book-locations");
@@ -111,7 +111,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         }
     },
 
-    // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
     authors: function($recordData){
       var nameNodes = $recordData.find('name[type=personal]')
       var that = this;
@@ -123,7 +122,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         ];
         return author;
       });
-      // console.log('names:',names);
       return names;
     },
 
@@ -245,16 +243,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       }
     },
 
-    place: function(jqNode, query){
-      var nodes = this.textForQuery(jqNode, query);
-      if(nodes) {
-        return nodes[0];
-      }else{
-        return null;
-      }
-    },
-
-    series: function(jqNode, query){
+    firstNode: function(jqNode, query){
       var nodes = this.textForQuery(jqNode, query);
       if(nodes) {
         return nodes[0];
@@ -285,10 +274,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       maximumRecords: 10
     },
 
-    collection: App.collection.BookList,
+    baseUrl: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
 
-    //url: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
-    url: 'js/modules/test.xml',
+    initialize: function(){
+      this.listenTo(this, "error", this.requestFail);
+    },
 
     paginationPossible: function(){
       return (this.get('results').length < this.get('numberOfRecords'));
@@ -303,22 +293,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     loadNext: function() {
-      console.log('loadNext');
-      var model = this;
       // fetch the next 10 books
       var query = this.get('query');
       var resultList = this.get('results');
       this.set('startRecord', resultList.length + 1);
 
-      // Loading Spinner (activate)
-      // generate url
+      this.generateUrl();
       this.fetch();
-      // Loading Spinner (deactivate)
       $('input[type="submit"]').removeAttr('disabled');
     },
 
-    // TODO Handle fetch error
-    // var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
+    requestFail: function(error) {
+      var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
+    },
 
     byTagNS: function(xml,tag,ns) {
       return xml.getElementsByTagNameNS ?
@@ -327,10 +314,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     parse: function(data){
-
       // get relevant pagination information
       if(data.getElementsByTagNameNS) {
-        var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+        if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
+          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar', module: 'library'});
+        }else{
+          var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+        }
       }else{
         var numberOfRecords=data.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
       }
@@ -350,33 +340,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     generateUrl: function() {
-      console.log(this.url);
-      return this.url + '/operation=searchRetrieve' +
+      this.url = this.baseUrl + '/operation=searchRetrieve' +
         '&query=' + this.get('query') +
         '&startRecord=' + this.get('startRecord') +
         '&maximumRecords=' + this.get('maximumRecords') +
         '&recordSchema=mods';
-    },
-
-    next: function() {
-      this.options.startRecord += this.options.maximumRecords;
-      // TODO: update Backbone Collection
-      return this.loadSearch();
     }
   });
   // END App.model.LibrarySearch
-
-
-  /**
-   * THIS IS THE INTERNAL STATE OF THE LIBRARY SEARCH
-   */
-  App.collections.searchResults = new App.collection.BookList();
-
-  App.models.currentSearch = new App.model.LibrarySearch({
-    query:'',
-    numberOfRecords: 0,
-    results: App.collections.searchResults
-  });
 
 
   /**
@@ -388,8 +359,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     template: utils.rendertmpl('library_list_view'),
 
     events: {
-      "click input" : 'loadMore',
-      "click ul.booklist li.book-short" : 'renderDetail',
+      'click ul.booklist li.book-short' : 'renderDetail',
+      'click input' : 'loadMore'
     },
 
     initialize: function(){
@@ -423,12 +394,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       ev.preventDefault();
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
-      //console.log(book);
+
       var BookDetailView = new App.view.BookDetailView({model: book});
       BookDetailView.render();
 
       book.updateLocation();
-    },
+    }
   });
 
 
@@ -555,7 +526,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
               status = "nicht ausleihbar";
             }
           } else {
-
             if(book.attributes.url == null) {
               status = 'nicht ausleihbar';
             }else{
@@ -585,6 +555,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       model: App.model.BookLocation
   });
 
+  /**
+   *  Initial State of Library Search
+   */
+  App.collections.searchResults = new App.collection.BookList();
+
+  App.models.currentSearch = new App.model.LibrarySearch({
+    query:'',
+    numberOfRecords: 0,
+    results: App.collections.searchResults
+  });
 
   /**
    * Backbone View - Search
@@ -593,12 +573,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   var LibraryPageView = Backbone.View.extend({
     attributes: {"id": 'library'},
 
-    events: {
-      'submit form': 'submit',
-    },
+    template: utils.rendertmpl('library'),
 
-    initialize: function(){
-      this.template = utils.rendertmpl('library');
+    events: {
+      'submit form': 'loadSearch'
     },
 
     render: function(){
@@ -610,37 +588,28 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         collection: App.collections.searchResults,
         el: this.$el.find("#search-results")
       });
-      App.view.SearchResults.render();
 
+      App.view.SearchResults.render();
       this.$el.trigger('create');
       return this;
     },
 
-    submit: function(e){
-      e.preventDefault();
+    loadSearch: function(ev){
+      ev.preventDefault();
       $('input[type="submit"]').attr('disabled', 'disabled');
       var inputs = $('#query-form :input').serializeArray();
       var query = inputs[0].value;
-      this.loadSearch(query);
-    },
+      this.LoadingView = new utils.LoadingView({model: App.models.currentSearch, el: this.$("#loadingSpinner")});
 
-    loadSearch: function(queryString){
+      App.collections.searchResults.reset();
 
-      if (App.collections.searchResults) {
-        App.collections.searchResults.reset();
-      } else {
-        App.collections.searchResults = new App.collection.BookList();
-      }
       var search = App.models.currentSearch.set({
-        query: queryString,
+        query: query,
         results: App.collections.searchResults,
       });
-
       // on adding books render BookListView
       var loading = search.loadNext();
-      return loading;
     }
-
   });
 
   return LibraryPageView;

@@ -17,7 +17,6 @@
 	-->
 	<div id="libraryContent">
 		<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
-		<% console.log('book detail', book); %>
 		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
 		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
 		<p>
