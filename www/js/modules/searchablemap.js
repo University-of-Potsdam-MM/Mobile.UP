@@ -26,6 +26,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				marker.setMap(null);
 			}
 		};
+		
+		this.openInfoWindow = function() {
+			marker.info.open(map);
+		};
 	};
 
 	var SEARCH_MODE = 0;
@@ -113,6 +117,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 			// Show the selected marker
 			tmpMarkers[index].setVisibility(true, true);
+			tmpMarkers[index].openInfoWindow();
 		},
 
 		_destroy: function() {
