@@ -30,6 +30,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		this.openInfoWindow = function() {
 			marker.info.open(map);
 		};
+		
+		this.centerOnMap = function() {
+			// Get the selected item into view. Tested for Polygon and Marker.
+			var bounds = new google.maps.LatLngBounds();
+			if (marker.getPath) {
+				marker.getPath().forEach(function(latLng) {
+					bounds.extend(latLng);
+				});
+			} else if (marker.getPosition) {
+				bounds.extend(marker.getPosition());
+			}
+			
+			// Keep the current zoom level
+			var oldZoom = map.getZoom();
+			map.fitBounds(bounds);
+			var newZoom = map.getZoom();
+			if (oldZoom < newZoom) {
+				map.setZoom(oldZoom);
+			}
+		};
 	};
 
 	var SEARCH_MODE = 0;
@@ -117,6 +137,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 			// Show the selected marker
 			tmpMarkers[index].setVisibility(true, true);
+			tmpMarkers[index].centerOnMap();
 			tmpMarkers[index].openInfoWindow();
 		},
 
