@@ -270,7 +270,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			
 			options = JSON.parse(JSON.stringify(options));
 			options.strokeColor = "#000000";
-			options.strokeOpacity = 0.5;
+			options.strokeOpacity = 0.3;
 			options.strokeWeight = 20;
 			options.fillColor = "#000000";
 			options.fillOpacity = 0.5;
