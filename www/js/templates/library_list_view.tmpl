@@ -5,7 +5,7 @@
 
 <ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book) { %>
-
+<% console.log(book); %>
     <li class="book-short" data-icon="arrow-darkblue" id="<%= book.get('id') %>">
       <a href="#">
         <div class="<%= book.get('mediaType') %>"></div>
@@ -14,8 +14,11 @@
           <%= (book.get('subtitle')) ? '<h3>'+ book.get('subtitle')+'</h3>' : ''%>
         </h2>
         <p>
-          <% if (book.get('authors')) { %>
+          <% if (book.get('authors') && book.get('authors').length>0) { %>
             <b><%= book.get('authors').join("; ") %></b><br />
+          <% } %>
+          <% if (book.get('enumerationAndChronology')) { %>
+            <b><%= book.get('enumerationAndChronology') %></b><br />
           <% } %>
           <%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %>
         </p>

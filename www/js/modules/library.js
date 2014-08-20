@@ -56,6 +56,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
       this.set('edition', this.textForTag(xmlRecord, 'edition'));
       this.set('place', this.firstNode($xmlRecord, 'placeTerm[type=text]'));
+      // holding statement for magazines
+      this.set('enumerationAndChronology', this.textForTag(xmlRecord, 'enumerationAndChronology'));
     },
 
     // TODO Refactor using  fetch in BookLocationList
