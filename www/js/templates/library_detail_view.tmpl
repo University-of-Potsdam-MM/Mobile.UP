@@ -25,7 +25,13 @@
         <% if (book.get('enumerationAndChronology')) { %>
             <b><%= book.get('enumerationAndChronology') %></b><br />
         <% } %>
-		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %></p></div>
+		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %>
+		</p></div>
+		<div class="booktitle">
+		<% if (book.get('mediaType') == "media_o"){ %>
+			<h3>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</h3>
+		<% } %>
+		</div>
 		<div data-role="tabs">
 		  <div data-role="navbar">
 		    <ul id="search-results">
