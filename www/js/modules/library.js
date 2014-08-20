@@ -1,4 +1,4 @@
-/* 619
+/*
 authors: @rmetzler, @alekiy
 
 First of all, I have to say I'm sorry that the code isn't yet as clean and readable
@@ -9,7 +9,6 @@ previously working functionality. Please don't judge.
 ## TODOS
 - display "zs:diagnostics" "diag:message" element (namespace'http://www.loc.gov/zing/srw/diagnostic/')
 - display availability information in the BookListView
-- maybe add a finite state machine or a router to simplify the code
 */
 
 "use strict";
@@ -390,7 +389,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     renderDetail: function(ev) {
-      // TODO query Standortinfo for this record
       ev.preventDefault();
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
@@ -411,27 +409,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     el: '#library',
     model: App.model.Book,
 
-    events: {
-      "click .backToList" : 'back'
-    },
-
     template: utils.rendertmpl('library_detail_view'),
+
     render: function(){
       var html = this.template({book:this.model});
       this.$el.html(html);
       this.$el.trigger('create');
-      return this;
-    },
-
-    back: function(){
-      App.view.SearchForm = new LibraryPageView({el: this.$el.find("#libraryContent")});
-      App.view.SearchForm.render();
-      App.view.SearchResults = new App.view.BookList({
-        model: App.models.currentSearch,
-        collection: App.collections.searchResults
-      });
-      App.view.SearchResults.render();
-
       return this;
     }
   });
@@ -576,7 +559,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     template: utils.rendertmpl('library'),
 
     events: {
-      'submit form': 'loadSearch'
+      'submit form': 'loadSearch',
+      'click .backToList': 'back'
     },
 
     render: function(){
@@ -609,6 +593,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       });
       // on adding books render BookListView
       var loading = search.loadNext();
+    },
+
+     back: function(ev){
+        ev.preventDefault();
+        this.render();
     }
   });
 
