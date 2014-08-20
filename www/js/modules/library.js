@@ -174,6 +174,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       var typeOfResource = this.getTypeOfResource(node);
       var originInfo = this.contentForTag(node, 'originInfo');
+      var issuance = this.contentForTag(node, 'issuance');
       //TODO: test for essay
       var isEssay = false;
       var mediaType = "X";
@@ -201,14 +202,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           }else if ( typeOfResource == "moving image" ){
             mediaType = "V";
           }else if ( typeOfResource == "text" ){
-            // TODO: Test with Linux-Magazin
-            if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) ){
+            if ( originInfo != null && ( issuance == "serial" || issuance == "continuing" ) ){
               mediaType = "T";
             }else{
               mediaType = "B";
             }
           }else if ( typeOfResource == "software, multimedia" ){
-            if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) ){
+            if ( originInfo != null && ( issuance == "serial" || issuance == "continuing" ) ){
               if ( physicalDescription != null && physicalDescription == "remote" ){
                 mediaType = "P";
               }else{
