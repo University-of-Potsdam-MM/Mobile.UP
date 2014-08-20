@@ -40,7 +40,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       this.set('id', recordId);
       this.set('ppn', recordId);
-      this.set('title', this.textForTag(xmlRecord, 'title'));
+      this.set('title', this.getTitle(xmlRecord));
       this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
       this.set('dateIssued', $xmlRecord.find('dateIssued').html());
       this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
@@ -48,7 +48,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('authors', this.authors($xmlRecord));
       this.set('publisher', this.textForTag(xmlRecord, 'publisher'));
       this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
-      this.set('url', this.url(xmlRecord));
+      this.set('url', this.textForQuery($xmlRecord, 'url[displayLabel=Volltext]'));
       this.set('notes', this.contentForTag(xmlRecord, 'note'));
       this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
       this.set('keywords', this.keywords(xmlRecord, 'subject'));
@@ -93,24 +93,22 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     textForTag: function(node, tagName) {
       var firstTagNode = node.getElementsByTagName(tagName)[0];
-      if (firstTagNode){
-        return firstTagNode.textContent;
-      }else{
-        return null;
-      }
+      return (firstTagNode) ? firstTagNode.textContent : null;
     },
 
     split_string: function(string, split_by){
-      if (string) { return string.split(split_by); }else{ return null; }
+      return (string) ? string.split(split_by) : null;
     },
 
     textForQuery: function(jqNode, query){
       var nodes = _.pluck(jqNode.find(query), 'textContent');
-        if(nodes && nodes.length != 0) {
-          return nodes;
-        }else{
-          return null;
-        }
+      return (nodes && nodes.length != 0) ? nodes : null;
+    },
+
+    getTitle: function(node){
+      var title = this.textForTag(node, 'title');
+      var nonSort = this.textForTag(node, 'nonSort');
+      return (nonSort!=null) ? nonSort + " " + title : title;
     },
 
     authors: function($recordData){

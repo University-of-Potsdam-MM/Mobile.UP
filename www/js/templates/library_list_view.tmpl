@@ -5,7 +5,6 @@
 
 <ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book) { %>
-<% console.log(book); %>
     <li class="book-short" data-icon="arrow-darkblue" id="<%= book.get('id') %>">
       <a href="#">
         <div class="<%= book.get('mediaType') %>"></div>
