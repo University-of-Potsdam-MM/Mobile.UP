@@ -1,7 +1,4 @@
 /*
-
-This is the JavaScript code for the library search functionality.
-
 authors: @rmetzler, @alekiy
 
 First of all, I have to say I'm sorry that the code isn't yet as clean and readable
@@ -9,16 +6,9 @@ as it should be. We started to build this in generic JavaScript and than wanted 
 refactor it into Backbone. This was way harder than expected without breaking any
 previously working functionality. Please don't judge.
 
-## Working Functionality:
-- searching for query string and displaying Books in a BookListView
-- displaying details of a selected Book
-- displaying location information for the selected Book
-- Pagination for getting more Books from the API
-
 ## TODOS
 - display "zs:diagnostics" "diag:message" element (namespace'http://www.loc.gov/zing/srw/diagnostic/')
 - display availability information in the BookListView
-- maybe add a finite state machine or a router to simplify the code
 */
 
 "use strict";
@@ -34,22 +24,48 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     views:       {}, // actual view instances
   };
 
-  // TODO: Standort Informationen am Model
+
+  /**
+   *  Backbone Model - Book
+   *  TODO: Standort Informationen am Model
+   */
   App.model.Book = Backbone.Model.extend({
-    // Book instance properties
-    initialize: function () {
-      // console.log('initialize', this.attributes);
+
+    /* nearly parsing, substitue it with parse function */
+    initialize: function(){
+      var xmlRecord = this.get('xmlRecord');
+      var $xmlRecord = $(this.get('xmlRecord'));
+      var recordId = this.textForTag(xmlRecord, 'recordIdentifier');
+
+      this.set('id', recordId);
+      this.set('ppn', recordId);
+      this.set('title', this.getTitle(xmlRecord));
+      this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
+      this.set('dateIssued', $xmlRecord.find('dateIssued').html());
+      this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
+      this.set('toc', this.split_string(this.textForTag(xmlRecord, 'tableOfContents'),'--'));
+      this.set('authors', this.authors($xmlRecord));
+      this.set('publisher', this.textForTag(xmlRecord, 'publisher'));
+      this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
+      this.set('url', this.textForQuery($xmlRecord, 'url[displayLabel=Volltext]'));
+      this.set('notes', this.contentForTag(xmlRecord, 'note'));
+      this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
+      this.set('keywords', this.keywords(xmlRecord, 'subject'));
+      this.set('mediaType', this.mediaType(xmlRecord));
+      this.set('extent', this.textForTag(xmlRecord, 'extent'));
+      this.set('edition', this.textForTag(xmlRecord, 'edition'));
+      this.set('place', this.firstNode($xmlRecord, 'placeTerm[type=text]'));
+      // holding statement for magazines
+      this.set('enumerationAndChronology', this.textForTag(xmlRecord, 'enumerationAndChronology'));
     },
 
+    // TODO Refactor using  fetch in BookLocationList
     updateLocation: function() {
       // get's bookLocation information and set's it at the book model
       var spinner = utils.addLoadingSpinner("book-locations");
       spinner();
 
-      //console.log('updateLocation');
-
       var currentBook = this;
-
       var ajaxLocationCall = $.ajax({
         url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+this.get('ppn')+'&format=json',
         method: 'GET',
@@ -58,15 +74,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       ajaxLocationCall.done(function (json) {
       	var bookLocationList = new App.collection.BookLocationList();
-      	//console.log('init', bookLocationList);
-        _.map(json.document[0].item, function(item) {
-          //console.log('Item:', item);
-          var bookLocation = new App.model.BookLocation({});
-          //console.log(bookLocation.getLocation(item, currentBook));
 
+        _.map(json.document[0].item, function(item) {
+          var bookLocation = new App.model.BookLocation({});
           bookLocationList.add(bookLocation.getLocation(item, currentBook));
         });
-        //console.log('List', bookLocationList);
+
         var spinner = utils.removeLoadingSpinner("book-locations");
         spinner();
         var locationView = new App.view.LocationView({collection: bookLocationList});
@@ -77,76 +90,37 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     },
 
-  },{
-    // Book class properties
-
-    fromXmlRecord: function(xmlRecord) {
-      // console.log('xml:', xmlRecord);
-      var $xmlRecord = $(xmlRecord);
-      var recordId = App.model.Book.textForTag(xmlRecord, 'recordIdentifier');
-      var model = {
-        id:        recordId,
-        recordId:  recordId,
-        ppn:       recordId,
-        title:     App.model.Book.textForTag(xmlRecord, 'title'),
-        // TODO remove brackets[] if there are some around the subtitle
-        subtitle:  App.model.Book.textForTag(xmlRecord, 'subTitle'),
-        dateIssued: $xmlRecord.find('dateIssued').html(),
-        abstract:  App.model.Book.textForTag(xmlRecord, 'abstract'),
-        toc:       App.model.Book.split_string(App.model.Book.textForTag(xmlRecord, 'tableOfContents'),'--'),
-        authors:   App.model.Book.authors($xmlRecord),
-        publisher: App.model.Book.textForTag(xmlRecord, 'publisher'),
-        isbn:      App.model.Book.textForQuery($xmlRecord, 'identifier[type=isbn]'),
-        url:       App.model.Book.url(xmlRecord),
-        notes:     App.model.Book.contentForTag(xmlRecord, 'note'),
-        series:    App.model.Book.series($xmlRecord, 'relatedItem[type=series]'),
-        keywords:  App.model.Book.keywords(xmlRecord, 'subject'),
-        mediaType: App.model.Book.mediaType(xmlRecord),
-        extent:    App.model.Book.textForTag(xmlRecord, 'extent'),
-        edition:   App.model.Book.textForTag(xmlRecord, 'edition'),
-        place:     App.model.Book.place($xmlRecord, 'placeTerm[type=text]'),
-      };
-      // console.log('model.toc', model.toc);
-      return new App.model.Book(model);
-    },
-
     textForTag: function(node, tagName) {
       var firstTagNode = node.getElementsByTagName(tagName)[0];
-      if (firstTagNode) {
-        return firstTagNode.textContent;
-      } else {
-        return null;
-      }
+      return (firstTagNode) ? firstTagNode.textContent : null;
     },
 
     split_string: function(string, split_by){
-      if (string) {
-        return string.split(split_by);
-      }
-      return null;
+      return (string) ? string.split(split_by) : null;
     },
 
     textForQuery: function(jqNode, query){
       var nodes = _.pluck(jqNode.find(query), 'textContent');
-        if(nodes && nodes.length != 0) {
-          return nodes;
-        }else{
-          return null;
-        }
+      return (nodes && nodes.length != 0) ? nodes : null;
     },
 
-    // TODO: a view logic that displays only some of the authors (eg: "Gamma et al.")
+    getTitle: function(node){
+      var title = this.textForTag(node, 'title');
+      var nonSort = this.textForTag(node, 'nonSort');
+      return (nonSort!=null) ? nonSort + " " + title : title;
+    },
+
     authors: function($recordData){
       var nameNodes = $recordData.find('name[type=personal]')
+      var that = this;
       var names = _.map(nameNodes, function(node){
         var $node = $(node);
         var author = [
-          (App.model.Book.textForQuery($node, 'namePart[type=family]')) ? App.model.Book.textForQuery($node, 'namePart[type=family]')[0] : '',
-          (App.model.Book.textForQuery($node, 'namePart[type=given]')) ? App.model.Book.textForQuery($node, 'namePart[type=given]')[0] : ''
+          (that.textForQuery($node, 'namePart[type=family]')) ? that.textForQuery($node, 'namePart[type=family]')[0] : '',
+          (that.textForQuery($node, 'namePart[type=given]')) ? that.textForQuery($node, 'namePart[type=given]')[0] : ''
         ];
         return author;
       });
-      // console.log('names:',names);
       return names;
     },
 
@@ -173,7 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     // filters keywordsm, trims from leading and trailing whitespaces & generates url for keyword link
     keywords: function(node, tagName){
-      var keywords = App.model.Book.contentForTag(node, tagName);
+      var keywords = this.contentForTag(node, tagName);
       var keys = _.map(keywords, function(keyword){
         var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
         var key = [keyword.trim(), url];
@@ -187,7 +161,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
       // get physcialDescription
       var physicalDescriptionForms = $node.find('form[authority]');
-
       var physicalDescription = _.filter(physicalDescriptionForms,  function(form){
         var $form = $(form);
         if (typeof $form[0] != "undefined") {
@@ -198,104 +171,65 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         physicalDescription = physicalDescription[0].textContent;
       }
 
-      //TODO: read typeOfResource
-      var typeOfResource = App.model.Book.getTypeOfResource(node);
-      var originInfo = App.model.Book.contentForTag(node, 'originInfo');
+      var typeOfResource = this.getTypeOfResource(node);
+      var originInfo = this.contentForTag(node, 'originInfo');
+      var issuance = this.contentForTag(node, 'issuance');
       //TODO: test for essay
       var isEssay = false;
       var mediaType = "X";
 
-    if ( physicalDescription != null && physicalDescription == "microform" )
-    {
-      mediaType = "E";
-    }
-    else if ( typeOfResource != null && typeOfResource == "manuscript" )
-    {
-      mediaType = "H";
-    }
-    else if ( isEssay == true )
-    {
-      mediaType = "A";
-    }
-    else
-    {
-      if ( typeOfResource != null )
-      {
-        if ( typeOfResource == "still image" )
-        {
-          mediaType = "I";
-        }
-        else if ( typeOfResource == "sound recording-musical" )
-        {
-          mediaType = "G";
-        }
-        else if ( typeOfResource == "sound recording-nonmusical" )
-        {
-          mediaType = "G";
-        }
-        else if ( typeOfResource == "sound recording" )
-        {
-          mediaType = "G";
-        }
-        else if ( typeOfResource == "cartographic" )
-        {
-          mediaType = "K";
-        }
-        else if ( typeOfResource == "notated music" )
-        {
-          mediaType = "M";
-        }
-        else if ( typeOfResource == "moving image" )
-        {
-          mediaType = "V";
-        }
-        else if ( typeOfResource == "text" )
-        {
-          // TODO: Test with Linux-Magazin
-          if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
-          {
-            mediaType = "T";
-          }
-          else
-          {
-            mediaType = "B";
-          }
-        }
-        else if ( typeOfResource == "software, multimedia" )
-        {
-          if ( originInfo != null && ( originInfo == "serial" || originInfo == "continuing" ) )
-          {
-            if ( physicalDescription != null && physicalDescription == "remote" )
-            {
-              mediaType = "P";
-            }
-            else
-            {
+      if ( physicalDescription != null && physicalDescription == "microform" ){
+        mediaType = "E";
+      }else if ( typeOfResource != null && typeOfResource == "manuscript" ){
+        mediaType = "H";
+      }else if ( isEssay == true ){
+        mediaType = "A";
+      }else{
+        if ( typeOfResource != null ){
+          if ( typeOfResource == "still image" ){
+            mediaType = "I";
+          }else if ( typeOfResource == "sound recording-musical" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "sound recording-nonmusical" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "sound recording" ){
+            mediaType = "G";
+          }else if ( typeOfResource == "cartographic" ){
+            mediaType = "K";
+          }else if ( typeOfResource == "notated music" ){
+            mediaType = "M";
+          }else if ( typeOfResource == "moving image" ){
+            mediaType = "V";
+          }else if ( typeOfResource == "text" ){
+            if ( originInfo != null && ( issuance == "serial" || issuance == "continuing" ) ){
               mediaType = "T";
+            }else{
+              mediaType = "B";
             }
-          }
-          else
-          {
-            if ( physicalDescription != null && physicalDescription == "remote" )
-            {
-              mediaType = "O";
+          }else if ( typeOfResource == "software, multimedia" ){
+            if ( originInfo != null && ( issuance == "serial" || issuance == "continuing" ) ){
+              if ( physicalDescription != null && physicalDescription == "remote" ){
+                mediaType = "P";
+              }else{
+                mediaType = "T";
+              }
             }
-            else
-            {
-              mediaType = "S";
+            else{
+              if ( physicalDescription != null && physicalDescription == "remote" ){
+                mediaType = "O";
+              }else{
+                mediaType = "S";
+              }
             }
           }
         }
       }
-    }
-
-      //console.log(mediaType);
       mediaType = "media_"+mediaType.toLowerCase();
       return mediaType;
     },
 
     getTypeOfResource: function(node) {
-      var typeOfResource = App.model.Book.contentForTag(node, 'typeOfResource');
+      var typeOfResource = this.contentForTag(node, 'typeOfResource');
       return typeOfResource;
     },
 
@@ -308,39 +242,68 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       }
     },
 
-    place: function(jqNode, query){
-      var nodes = App.model.Book.textForQuery(jqNode, query);
-      if(nodes) {
-        return nodes[0];
-      }else{
-        return null;
-      }
-    },
-
-    series: function(jqNode, query){
-      var nodes = App.model.Book.textForQuery(jqNode, query);
+    firstNode: function(jqNode, query){
+      var nodes = this.textForQuery(jqNode, query);
       if(nodes) {
         return nodes[0];
       }else{
         return null;
       }
     }
-
   });
-  // END App.model.Book
 
 
+  /**
+   *  Backbone Collection - BookList
+   */
   App.collection.BookList = Backbone.Collection.extend({
     model: App.model.Book,
+  });
 
-    // TODO: create object to communicate with SRU and provide pagination for query
 
-    addXmlSearchResult: function(xmlSearchResult){
-      //console.log('xml',xmlSearchResult);
-      var records = this.byTagNS(xmlSearchResult, 'recordData', 'http://www.loc.gov/zing/srw/');
-      this.add ( _.map(records, App.model.Book.fromXmlRecord ) );
-      //console.log('addXmlSearchResult', this.pluck('recordId'));
-      return this;
+  /*
+   *  Backbone Model - LibrarySearch
+   *  holding all necessary values for the current search
+   */
+  App.model.LibrarySearch = Backbone.Model.extend({
+    defaults: {
+      query: '',
+      options: '',
+      startRecord: 1,
+      maximumRecords: 10
+    },
+
+    baseUrl: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+
+    initialize: function(){
+      this.listenTo(this, "error", this.requestFail);
+    },
+
+    paginationPossible: function(){
+      return (this.get('results').length < this.get('numberOfRecords'));
+    },
+
+    startPagination: function() {
+      return this.get('results').length + 1;
+    },
+
+    endPagination: function() {
+      return Math.min(this.get('results').length + 10, this.get('numberOfRecords'));
+    },
+
+    loadNext: function() {
+      // fetch the next 10 books
+      var query = this.get('query');
+      var resultList = this.get('results');
+      this.set('startRecord', resultList.length + 1);
+
+      this.generateUrl();
+      this.fetch();
+      $('input[type="submit"]').removeAttr('disabled');
+    },
+
+    requestFail: function(error) {
+      var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
     },
 
     byTagNS: function(xml,tag,ns) {
@@ -349,133 +312,42 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         xml.getElementsByTagName(ns+":"+tag);
     },
 
-  });
-
-  // END App.collection.BookList
-
-  App.model.LibrarySearch = Backbone.Model.extend({
-    // LibrarySearch instance properties
-    initialize: function() {
-      // attribute to set in the model:
-      // - 'query' (String)
-      // - 'results' (App.collection.BookList)
-    },
-
-    paginationPossible: function(){
-      return (this.get('results').length < this.get('numberOfRecords'));
-    },
-    startPagination: function() {
-      return this.get('results').length + 1;
-    },
-    endPagination: function() {
-      return Math.min(this.get('results').length + 10, this.get('numberOfRecords'));
-    },
-
-
-    loadNext: function() {
-      //console.log('loadNext');
-      var model = this;
-      // fetch the next 10 books
-      var query = this.get('query');
-      var resultList = this.get('results');
-      var options = {startRecord: resultList.length + 1 };
-      var fetch = App.model.LibrarySearch.search(query, options);
-      return Q.fcall(utils.addLoadingSpinner("search-results"))
-      .then(function() { return fetch.loadSearch(); })
-      .then(function(xml){
+    parse: function(data){
       // get relevant pagination information
-      if(xml.getElementsByTagNameNS) {
-        var numberOfRecords=xml.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
-      }else{
-        var numberOfRecords=xml.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
-      }
-      model.set('numberOfRecords',numberOfRecords);
-
-        return xml;
-      }).done(function(xml) {
-        //console.log('done', xml);
-      var spinner = utils.removeLoadingSpinner("search-results");
-        spinner();
-        resultList.addXmlSearchResult(xml);
-        $('input[type="submit"]').removeAttr('disabled');
-      });
-    }
-  }, {
-    // LibrarySearch class properties
-    search: function(query, options) {
-      var defaultOptions = {
-        startRecord: 1,
-        maximumRecords: 10,
-      };
-      options = _.defaults(options || {}, defaultOptions);
-
-      // TODO refactor into App.model.LibrarySearch instance properties
-      return _.extend({
-        query:query,
-        options: options
-      }, {
-
-        baseURL: function() {
-          return "http://api.uni-potsdam.de/endpoints/libraryAPI/1.0";
-        },
-
-        url: function() {
-          return this.baseURL() + '/operation=searchRetrieve' +
-            '&query=' + this.query +
-            '&startRecord=' + this.options.startRecord +
-            '&maximumRecords=' + this.options.maximumRecords +
-            '&recordSchema=mods';
-        },
-
-        loadSearch: function() {
-          // TODO: return and memorize Backbone collection instead of promise
-          var d = Q.defer();
-          var url = this.url();
-          var headers = { "Authorization": utils.getAuthHeader() };
-          $.ajax({
-		        url: url,
-		        dataType: "xml",
-		        headers: headers
-        	})
-        	.done(d.resolve)
-        	.fail(function(error){
-        		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
-        	});
-
-          return d.promise;
-        },
-
-        next: function() {
-          this.options.startRecord += this.options.maximumRecords;
-          // TODO: update Backbone Collection
-          return this.loadSearch();
+      if(data.getElementsByTagNameNS) {
+        if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
+          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar', module: 'library'});
+        }else{
+          var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
         }
-      })
+      }else{
+        var numberOfRecords=data.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
+      }
+      this.set('numberOfRecords',numberOfRecords);
+
+      var records = this.byTagNS(data, 'recordData', 'http://www.loc.gov/zing/srw/');
+      var that= this;
+      _.map(records, function(record) {
+        that.get('results').add(new App.model.Book({xmlRecord: record}));
+      });
+    },
+
+    fetch: function(options){
+      options = options || {};
+      options.dataType = "xml";
+      return Backbone.Model.prototype.fetch.call(this, options);
+    },
+
+    generateUrl: function() {
+      this.url = this.baseUrl + '/operation=searchRetrieve' +
+        '&query=' + this.get('query') +
+        '&startRecord=' + this.get('startRecord') +
+        '&maximumRecords=' + this.get('maximumRecords') +
+        '&recordSchema=mods';
     }
   });
-
   // END App.model.LibrarySearch
 
-
-
-  /**
-   * THIS IS THE INTERNAL STATE OF THE LIBRARY SEARCH
-   */
-
-  App.collections.searchResults = new App.collection.BookList();
-
-  App.models.currentSearch = new App.model.LibrarySearch({
-    query:'',
-    numberOfRecords: 0,
-    results: App.collections.searchResults
-  });
-
-
-
-  /**
-   * Backbone - Views
-   *
-   */
 
   /**
    * Backbone View - BookList
@@ -486,8 +358,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     template: utils.rendertmpl('library_list_view'),
 
     events: {
-      "click input" : 'loadMore',
-      "click ul.booklist li.book-short" : 'renderDetail',
+      'click ul.booklist li.book-short' : 'renderDetail',
+      'click input' : 'loadMore'
     },
 
     initialize: function(){
@@ -517,16 +389,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     renderDetail: function(ev) {
-      // TODO query Standortinfo for this record
       ev.preventDefault();
       var bookId = $(ev.target).closest('li.book-short').attr('id')
       var book = App.collections.searchResults.get(bookId);
-      //console.log(book);
+
       var BookDetailView = new App.view.BookDetailView({model: book});
       BookDetailView.render();
 
       book.updateLocation();
-    },
+    }
   });
 
 
@@ -538,27 +409,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     el: '#library',
     model: App.model.Book,
 
-    events: {
-      "click .backToList" : 'back'
-    },
-
     template: utils.rendertmpl('library_detail_view'),
+
     render: function(){
       var html = this.template({book:this.model});
       this.$el.html(html);
       this.$el.trigger('create');
-      return this;
-    },
-
-    back: function(){
-      App.view.SearchForm = new LibraryPageView({el: this.$el.find("#libraryContent")});
-      App.view.SearchForm.render();
-      App.view.SearchResults = new App.view.BookList({
-        model: App.models.currentSearch,
-        collection: App.collections.searchResults
-      });
-      App.view.SearchResults.render();
-
       return this;
     }
   });
@@ -609,7 +465,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       return department;
     },
 
-    //
     // complex function to get avialable status of items
     // https://github.com/University-of-Potsdam-MM/bibapp-android/blob/develop/BibApp/src/de/eww/bibapp/data/DaiaXmlParser.java
     // TODO: limitation expected http://daia.gbv.de/isil/DE-517?id=ppn:684154994&format=json
@@ -654,10 +509,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
               status = "nicht ausleihbar";
             }
           } else {
-
             if(book.attributes.url == null) {
               status = 'nicht ausleihbar';
-            }else {
+            }else{
               status = 'Online-Ressource im Browser öffnen';
             }
           }
@@ -684,6 +538,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       model: App.model.BookLocation
   });
 
+  /**
+   *  Initial State of Library Search
+   */
+  App.collections.searchResults = new App.collection.BookList();
+
+  App.models.currentSearch = new App.model.LibrarySearch({
+    query:'',
+    numberOfRecords: 0,
+    results: App.collections.searchResults
+  });
 
   /**
    * Backbone View - Search
@@ -692,12 +556,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   var LibraryPageView = Backbone.View.extend({
     attributes: {"id": 'library'},
 
-    events: {
-      'submit form': 'submit',
-    },
+    template: utils.rendertmpl('library'),
 
-    initialize: function(){
-      this.template = utils.rendertmpl('library');
+    events: {
+      'submit form': 'loadSearch',
+      'click .backToList': 'back'
     },
 
     render: function(){
@@ -709,37 +572,33 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         collection: App.collections.searchResults,
         el: this.$el.find("#search-results")
       });
-      App.view.SearchResults.render();
 
+      App.view.SearchResults.render();
       this.$el.trigger('create');
       return this;
     },
 
-    submit: function(e){
-      e.preventDefault();
+    loadSearch: function(ev){
+      ev.preventDefault();
       $('input[type="submit"]').attr('disabled', 'disabled');
       var inputs = $('#query-form :input').serializeArray();
       var query = inputs[0].value;
-      this.loadSearch(query);
-    },
+      this.LoadingView = new utils.LoadingView({model: App.models.currentSearch, el: this.$("#loadingSpinner")});
 
-    loadSearch: function(queryString){
-      // console.log('loadSearch');
-      if (App.collections.searchResults) {
-        App.collections.searchResults.reset();
-      } else {
-        App.collections.searchResults = new App.collection.BookList();
-      }
+      App.collections.searchResults.reset();
+
       var search = App.models.currentSearch.set({
-        query: queryString,
+        query: query,
         results: App.collections.searchResults,
       });
-
       // on adding books render BookListView
       var loading = search.loadNext();
-      return loading;
-    }
+    },
 
+     back: function(ev){
+        ev.preventDefault();
+        this.render();
+    }
   });
 
   return LibraryPageView;

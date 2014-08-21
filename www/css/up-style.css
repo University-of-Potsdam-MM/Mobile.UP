@@ -945,7 +945,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 
 div.booktitle {
 	min-height: 100px;
-	margin-bottom: 5px;
+	margin: 5px;
 }
 
 #book-icon {
@@ -1189,7 +1189,7 @@ div.media_t {
 	background-image: url(../img/res/media_t.png) !important;
 }
 
-div.media_t {
+div.media_t_big {
 	background-image: url(../img/res/media_t_big.png) !important;
 }
 /*

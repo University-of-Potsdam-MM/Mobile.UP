@@ -25,6 +25,7 @@ define([
 		 	 	 */
 				function overrideBackboneSync() {
 					var authUrls = ["http://api.uni-potsdam.de/endpoints/roomsAPI",
+									"http://api.uni-potsdam.de/endpoints/libraryAPI",
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI"];
 					var isStartOf = function(url) {
@@ -47,6 +48,11 @@ define([
 			 	 * Initialize Backbone override
 			 	 */
 				$(overrideBackboneSync);
+				
+				/**
+				 * Initialize external link override
+				 */
+				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
 
 				Router.initialize();
 			}
