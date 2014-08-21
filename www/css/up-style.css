@@ -1323,11 +1323,22 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #moodle .ui-collapsible-heading a {
 	background:#014260;
 	color:#fff;
+	font-weight:normal;
+	
 }
 
 #moodle .ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background:#d0dae3;
 	color:#014260;
+	font-weight:normal;
+	
+}
+
+#moodle h3.coursetitle {
+	margin: 0;
+	padding: 1em 0 1em .1em;
+	color:#014260;
+	
 }
 
 #moodle .ui-listview>li h2 {
