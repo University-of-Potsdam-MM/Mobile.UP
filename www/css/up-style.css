@@ -61,6 +61,15 @@ p {
 	margin: .3em;
 }
 
+/*visited*/
+
+ html .ui-bar-a .ui-btn:visited, 
+ html .ui-body-a .ui-btn:visited,  
+ html body .ui-group-theme-a .ui-btn:visited,  
+ html head+body .ui-btn.ui-btn-a:visited {
+ background:#EDEDED;
+ }
+
 /*header*/
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
@@ -929,6 +938,13 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	color: #666;
 	margin: 0;
 	font-size: .8em;
+}
+
+
+.booktitle.copyright p {
+	color:red;
+	margin-left: 54px;
+	
 }
 
 #library .ui-collapsible-set {
