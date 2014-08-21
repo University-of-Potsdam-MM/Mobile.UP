@@ -124,7 +124,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		},
 
 		spinnerOn: function() {
-			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
+			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin: 50px;\">" +
 								"<img src=\"img/loadingspinner.gif\"></img>" +
 							"</div>");
 		},
@@ -133,7 +133,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			this.$el.empty();
 		}
 	});
-	
+
 	/**
 	 * Opens external links (identified by rel="external") according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
