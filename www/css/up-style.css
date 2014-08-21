@@ -941,12 +941,6 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 
-.booktitle.copyright p {
-	color:red;
-	margin-left: 54px;
-	
-}
-
 #library .ui-collapsible-set {
 	margin-top: 0;
 }
@@ -960,8 +954,17 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 div.booktitle {
-	min-height: 100px;
+	min-height: 70px;
 	margin: 5px;
+	padding-left:55px;
+}
+
+div.booktitle h2{
+	margin-lefT:0;
+}
+
+div.booktitle.copyright p {
+	color:red;
 }
 
 #book-icon {
