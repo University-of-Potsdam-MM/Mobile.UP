@@ -21,44 +21,82 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
   // var externalId = "009230133#86";
-  var stations = {
-    "G-see": {
-      name: 'S Griebnitzsee Bhf',
-      externalId: '009230003#86',
+  var TransportStation = Backbone.Model.extend({
+    defaults:{
+      "campus": "",
+      "name": "",
+      "externalId": "",
     },
-    "Golm": {
-      name: 'Potsdam, Golm Bhf',
-      externalId: '009220010#86',
-    },
-    "Palais": {
-      name: 'Potsdam, Neues Palais',
-      externalId: '009230132#86',
-    },
-  };
 
-  _.each(stations, function(station){
-    _.extend(station, {
-      journeys: new Backbone.Collection(),
-      getMaxDepartingTime: function(){
-        var times = this.journeys.pluck('departingTime');
-        times.push(moment()); // add now()
-        var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
-        var max = _.last(sortedTimes);
-        return max;
-      },
-      fetchJourneys: function(){
-        var station = this;
-        // get the time of last known journey
-        var moment = station.getMaxDepartingTime();
-        // get later journeys
-        getLeavingJourneys(station.externalId, moment)
-          .done(function(journeys){
-            station.journeys.add(journeys);
-          });
-      }
-    });
+    initialize: function(){
+      this.set('journeys', new Journeys);
+    },
+
+    getMaxDepartingTime: function(){
+      var times = this.get('journeys').pluck('departingTime');
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var max = _.last(sortedTimes);
+      return max;
+    },
+
+    fetch: function(){
+      console.log('fetching station:', this.get('name'));
+      var station = this;
+      // get the time of last known journey
+      var lastDepartingTme = this.getMaxDepartingTime();
+      var timeString = lastDepartingTme.format('HH:mm:ss');
+
+      // get later journeys
+      ajax(abgehendeVerbindungen(station.get('externalId'), timeString))
+        .done(function(data, textStatus, jqXHR){
+          console.log(data);
+          var $data = $(data);
+          // map every node of STBJourney to a JavaScript Object
+          var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
+          station.get('journeys').add(jsonArray);
+        })
+      .fail(function(error){
+        var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
+      });
+    }
   });
 
+  /**
+   *  Backbone Collection - TransportStations
+   *  holding all stations and delegates fetch to station models
+   */
+  var TransportStations = Backbone.Collection.extend({
+
+      model: TransportStation,
+
+      fetch: function(){
+        _.each(this.models, function(model){
+          model.fetch();
+        });
+      }
+  });
+
+  var Journey = Backbone.Model.extend({
+    defaults:{ "departingTime": ""}
+  });
+
+  var Journeys = Backbone.Collection.extend({
+    model: Journey
+  });
+
+  var stations = new TransportStations([
+    new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003#86"}),
+    new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010#86"}),
+    new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132#86"})
+  ]);
+
+
+  /**
+   *
+   *  Helper Functions
+   *
+   */
   // use this document for creating XML
   var doc = document.implementation.createDocument(null, null, null);
 
@@ -77,7 +115,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       }
       node.appendChild(child);
     }
-
     return node;
   };
 
@@ -294,29 +331,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return tmp;
   };
 
-  // moment should be an instance of moment.js
-  function getLeavingJourneys(externalId, moment) {
-    var defer = $.Deferred();
-    var timeString = moment.format('HH:mm:ss');
-    ajax(abgehendeVerbindungen(externalId, timeString))
-    .done(function(data, textStatus, jqXHR){
-        var $data = $(data);
-        // map every node of STBJourney to a JavaScript Object
-        var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
-        defer.resolve(jsonArray);
-      })
-    .fail(function(error){
-		  var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
-     });
-
-    return defer.promise();
-  }
-
   return {
     stations: function() {return stations;},
-    fetchJourneysForAllStations: function() {
-      _.invoke(stations, 'fetchJourneys');
-    },
     getVerbindung: getVerbindung
   };
 
