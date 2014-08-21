@@ -1,14 +1,15 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, ht){
 
-
-  window.Transport = {
-    model: {},
-    collection: {},
-    views: {},
-    view: {},
-  };
-
+  /**
+   *  Backbone View - TransportViewsTransportList
+   */
   var TransportViewsTransportList = Backbone.View.extend({
+
+    template: utils.rendertmpl('transport_listitem_view'),
+
+    events: {
+      'vclick #later-button' : 'loadNext'
+    },
 
     initialize: function(options) {
       this.stationName = options.stationName;
@@ -19,13 +20,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       _.bindAll(this, 'addOne');
     },
 
-    template: utils.rendertmpl('transport_listitem_view'),
-
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
 
+    loadNext: function(){
+      this.LoadingView = new utils.LoadingView({collection: ht.stations(), el: this.$("#transport-result-wrapper")});
+      ht.stations().fetch();
+    },
+
     render: function() {
+      console.log('render');
       this.$el.find('.stationName').html(this.stationName);
       this.$ul.empty();
       this.collection.each(this.addOne);
@@ -33,14 +38,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     }
   });
 
+  /**
+   *  Backbone View - NavigationView
+   *  for navigating between transport and transport2 view
+   */
   var NavigationView = Backbone.View.extend({
 
     events: {
-      "vclick a" : function(ev){
-        ev.preventDefault();
-        var buttonName = $(ev.target).html();
-        this.trigger('select', buttonName);
-      }
+      'vclick a' : 'selectButton'
     },
 
     activeButton: function(buttonText){
@@ -48,69 +53,63 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       this.$el.find('a').filter(function(){
         return $(this).text() === buttonText;
       }).addClass('ui-btn-active');
+    },
+
+    selectButton: function(ev){
+      ev.preventDefault();
+      var buttonName = $(ev.target).html();
+      this.trigger('select', buttonName);
     }
   });
 
-  /*
+  /**
    *  Transport Page View
    */
   var TransportPageView = Backbone.View.extend({
     attributes: {"id": "transport"},
+    template: utils.rendertmpl('transport'),
 
     initialize: function(){
-      this.template = utils.rendertmpl('transport');
-      _.bindAll(this, 'spinnerOn', 'spinnerOff');
-      this.spinner();
+      this.listenTo(this, "prepareJouneys", this.prepareJouneys);
+    },
+
+    prepareJouneys: function(){
+
+      this.LoadingView = new utils.LoadingView({collection: ht.stations(), el: this.$("#loadingSpinner")});
+//      this.LoadingView.spinnerOn();
 
       // check for existing journeys
-      if (ht.stations()['G-see'].journeys.length == 0){
-        ht.fetchJourneysForAllStations();
+
+
+      if (ht.stations().where({campus: 'G-see'})[0].get('journeys').length == 0){
+        ht.stations().fetch();
       }
-    },
 
-    spinner: function(){
-      var view = this;
-      view.spinnerOn();
-      _.each(ht.stations(), function(station){
-        station.journeys.once('add', view.spinnerOff);
-      });
-    },
-
-    spinnerOn:  utils.addLoadingSpinner('transport-result-wrapper'),
-    spinnerOff: utils.removeLoadingSpinner('transport-result-wrapper'),
-
-    render: function(){
-      $(this.el).html(this.template({}));
-
-      var view = this;
-
+      // TODO: turn Spinner Off
       transportViewTransportList = new TransportViewsTransportList({
         el: this.$el.find('#search-results'),
-        events: {
-          'vclick #later-button' : function(){
-            view.spinner();
-            // we just fetch departing journeys for all stations
-            _.each(ht.stations(), function(station){
-              station.fetchJourneys();
-            });
-          }
-        },
-        collection: ht.stations()['G-see'].journeys,
-        stationName: ht.stations()['G-see'].name,
+        collection: ht.stations().where({campus: 'G-see'})[0].get('journeys'),
+        stationName: ht.stations().where({campus: 'G-see'})[0].get('name'),
       });
       transportViewTransportList.render();
+      //this.LoadingView.spinnerOff();
+    },
+
+    render: function(){
+      this.$el.html(this.template({}));
 
       transportViewNavbar = new NavigationView({
         el: this.$el.find("#from-station-navbar")
       });
 
       transportViewNavbar.on('select', function(buttonName){
-        transportViewTransportList.collection = ht.stations()[buttonName].journeys;
-        transportViewTransportList.stationName = ht.stations()[buttonName].name;
+        transportViewTransportList.collection = ht.stations().where({campus: buttonName})[0].get('journeys');
+        transportViewTransportList.stationName = ht.stations().where({campus: buttonName})[0].get('name')
         transportViewTransportList.render();
       });
 
-      $(this.el).trigger("create");
+      this.$el.trigger("create");
+      this.trigger("prepareJouneys");
       return this;
     }
 
