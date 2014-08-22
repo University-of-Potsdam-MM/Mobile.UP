@@ -28,8 +28,8 @@
 		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %>
 		</p></div>
 		<% if (book.get('mediaType') == "media_o"){ %>
-		<div class="booktitle">
-			<h3>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</h3>
+		<div class="booktitle copyright">
+			<p>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</p>
 		</div>
 		<% } %>
 		<div data-role="tabs">

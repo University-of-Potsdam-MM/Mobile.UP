@@ -61,6 +61,15 @@ p {
 	margin: .3em;
 }
 
+/*visited*/
+
+ html .ui-bar-a .ui-btn:visited, 
+ html .ui-body-a .ui-btn:visited,  
+ html body .ui-group-theme-a .ui-btn:visited,  
+ html head+body .ui-btn.ui-btn-a:visited {
+ background:#EDEDED;
+ }
+
 /*header*/
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
@@ -931,6 +940,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	font-size: .8em;
 }
 
+
 #library .ui-collapsible-set {
 	margin-top: 0;
 }
@@ -944,8 +954,17 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 div.booktitle {
-	min-height: 100px;
+	min-height: 70px;
 	margin: 5px;
+	padding-left:55px;
+}
+
+div.booktitle h2{
+	margin-lefT:0;
+}
+
+div.booktitle.copyright p {
+	color:red;
 }
 
 #book-icon {
@@ -1323,11 +1342,22 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #moodle .ui-collapsible-heading a {
 	background:#014260;
 	color:#fff;
+	font-weight:normal;
+	
 }
 
 #moodle .ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background:#d0dae3;
 	color:#014260;
+	font-weight:normal;
+	
+}
+
+#moodle h3.coursetitle {
+	margin: 0;
+	padding: 1em 0 1em .1em;
+	color:#014260;
+	
 }
 
 #moodle .ui-listview>li h2 {
