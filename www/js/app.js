@@ -27,7 +27,8 @@ define([
 					var authUrls = ["http://api.uni-potsdam.de/endpoints/roomsAPI",
 									"http://api.uni-potsdam.de/endpoints/libraryAPI",
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
-									"https://api.uni-potsdam.de/endpoints/moodleAPI"];
+									"https://api.uni-potsdam.de/endpoints/moodleAPI",
+									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);

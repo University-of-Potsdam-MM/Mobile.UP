@@ -1,6 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
-  function endpoint(){
+	function endpoint(){
       return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
   }
 
@@ -25,8 +25,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     defaults:{
       "campus": "",
       "name": "",
-      "externalId": "",
+      "externalId": ""
     },
+
+    url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
 
     initialize: function(){
       this.set('journeys', new Journeys);
@@ -40,26 +42,23 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       return max;
     },
 
-    fetch: function(){
-      console.log('fetching station:', this.get('name'));
-      var station = this;
-      // get the time of last known journey
-      var lastDepartingTme = this.getMaxDepartingTime();
-      var timeString = lastDepartingTme.format('HH:mm:ss');
+    getMinDepartingTime: function(){
+      var times = this.get('journeys').pluck('departingTime');
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var min = _.first(sortedTimes);
+      return min;
+    },
 
-      // get later journeys
-      ajax(abgehendeVerbindungen(station.get('externalId'), timeString))
-        .done(function(data, textStatus, jqXHR){
-          console.log(data);
-          var $data = $(data);
-          // map every node of STBJourney to a JavaScript Object
-          var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
-          station.get('journeys').add(jsonArray);
-        })
-      .fail(function(error){
-        var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
-      });
-    }
+		parse: function(data, options){
+      var $data = $(data);
+      // map every node of STBJourney to a JavaScript Object
+      var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
+      this.get('journeys').add(jsonArray);
+      this.set('stationTime', this.getMinDepartingTime().format('HH:mm') + " - " + this.getMaxDepartingTime().format('HH:mm'));
+      console.log(this);
+      return this;
+		}
   });
 
   /**
@@ -71,8 +70,32 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       model: TransportStation,
 
       fetch: function(){
+      	this.trigger("request");
+      	var that = this;
+
+      	var successORerror = _.after(3, function(){
+      		console.log('sync');
+      		that.trigger("sync");
+      	});
+
         _.each(this.models, function(model){
-          model.fetch();
+        	console.log('fetching station:', model.get('name'));
+
+      		// get the time of last known journey
+      		var lastDepartingTime = model.getMaxDepartingTime();
+      		var timeString = lastDepartingTime.format('HH:mm:ss');
+
+          model.fetch({	data: abgehendeVerbindungen(model.get('externalId'), timeString),
+          							type: 'POST',
+          							contentType: 'text/xml',
+          							dataType: 'xml',
+          							crossDomain: true,
+          							success: successORerror(),
+          							error: function(error, a, b){
+          								var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
+          								successORerror();
+          							}});
+          //error Handling
         });
       }
   });
@@ -90,6 +113,34 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010#86"}),
     new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132#86"})
   ]);
+
+
+  var Connection = new Backbone.Model.extend({
+  	defaults: {
+  		"fromExternalId": "",
+  		"toExternalId": "",
+  		"moment": "",
+  		"arrivalMode": ""
+  	},
+
+  	url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+
+
+  	parse: function(){
+
+	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+	    .done(function(data, textStatus, jqXHR){
+	      var $data = $(data);
+	      var connections = _.map($data.find('Connection'), mapConnection);
+	      // TODO: map connections from xml to objects
+	      defer.resolve(connections);
+	    })
+	    .fail(function(error){
+	    	var errorPage = new utils.ErrorView({el: '#result', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport2', err: error});
+	    });
+
+  	}
+  });
 
 
   /**
