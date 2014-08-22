@@ -1,6 +1,6 @@
 <% _.each(locations, function(location) { %>
 <div>
-	<h3><%= location.get('department') %></h3>
+	<h3><a href="<%= location.get('departmentURL') %>" target="_blank" rel="external"><%= location.get('department') %></a></h3>
 	<p>
 		<!--Alternativen: lent, prebook -->
 		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) { %>

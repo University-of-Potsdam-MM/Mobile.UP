@@ -448,6 +448,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     getLocation: function(item, book){
       var model = {
         department: this.getDepartment(item),
+        departmentURL: this.getDepartmentURL(item),
         label: item.label,
         item: this.getItem(item, book),
         url: book.attributes.url
@@ -462,6 +463,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         department = department+', '+recordData.storage.content;
       }
       return department;
+    },
+
+    getDepartmentURL: function(recordData){
+      return recordData.department.href;
     },
 
     // complex function to get avialable status of items
