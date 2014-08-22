@@ -408,7 +408,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   App.view.BookDetailView = Backbone.View.extend({
     el: '#library',
     model: App.model.Book,
-
     template: utils.rendertmpl('library_detail_view'),
 
     render: function(){
@@ -471,6 +470,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     getItem: function(item, book){
       var status = '';
       var statusInfo = '';
+      // check for url when not in sru response
+      if (book.attributes.url == null){
+        var url =  (item.unavailable && item.unavailable[0].href) ? item.unavailable[0].href : null;
+        book.set('url', url);
+      }
 
       // check for avaiable items and process loan and presentation
       if (item.available){
@@ -510,7 +514,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
             }
           } else {
             if(book.attributes.url == null) {
-              status = 'nicht ausleihbar';
+              status = 'Präsenzbestand';
             }else{
               status = 'Online-Ressource im Browser öffnen';
             }
