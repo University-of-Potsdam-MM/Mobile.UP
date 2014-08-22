@@ -56,7 +56,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
       this.get('journeys').add(jsonArray);
       this.set('stationTime', this.getMinDepartingTime().format('HH:mm') + " - " + this.getMaxDepartingTime().format('HH:mm'));
-      console.log(this);
       return this;
 		}
   });
@@ -74,12 +73,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       	var that = this;
 
       	var successORerror = _.after(3, function(){
-      		console.log('sync');
       		that.trigger("sync");
       	});
 
         _.each(this.models, function(model){
-        	console.log('fetching station:', model.get('name'));
+        	//console.log('fetching station:', model.get('name'));
 
       		// get the time of last known journey
       		var lastDepartingTime = model.getMaxDepartingTime();
@@ -90,12 +88,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
           							contentType: 'text/xml',
           							dataType: 'xml',
           							crossDomain: true,
-          							success: successORerror(),
+          							success: function(){ successORerror(); },
           							error: function(error, a, b){
           								var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
           								successORerror();
           							}});
-          //error Handling
         });
       }
   });

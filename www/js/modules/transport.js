@@ -1,5 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, ht){
 
+
   /**
    *  Backbone View - TransportViewsTransportList
    */
@@ -12,6 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     },
 
     initialize: function(options) {
+      this.stations = options.stations;
       this.stationName = options.stationName;
       this.stationTime = options.stationTime;
 
@@ -26,7 +28,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     },
 
     loadNext: function(){
-      ht.stations().fetch();
+      this.stations.fetch();
     },
 
     render: function() {
@@ -37,6 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       return this;
     }
   });
+
 
   /**
    *  Backbone View - NavigationView
@@ -62,6 +65,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     }
   });
 
+
   /**
    *  Transport Page View
    */
@@ -72,29 +76,31 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     initialize: function(){
       this.collection = ht.stations();
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
-      //this.listenTo(this.collection, "sync", this.logme);
+      this.listenTo(this, "renderTransportList", this.renderTransportList);
+      this.listenTo(this.collection.where({campus: 'G-see'})[0], "sync", this.renderTransportList);
+    },
+
+    renderTransportList: function(){
+
+      transportViewTransportList = new TransportViewsTransportList({
+        el: this.$el.find('#search-results'),
+        stations: this.collection,
+        collection: this.collection.where({campus: 'G-see'})[0].get('journeys'),
+        stationName: this.collection.where({campus: 'G-see'})[0].get('name'),
+        stationTime: this.collection.where({campus: 'G-see'})[0].get('stationTime')
+      });
+      transportViewTransportList.render();
     },
 
     prepareJouneys: function(){
+      this.LoadingView = new utils.LoadingView({collection: this.collection.where({campus: 'G-see'})[0], el: this.$("#loadingSpinner")});
 
-      this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
-      console.log(this);
-      var that = this;
-      // check for existing journeys
+      // check for existing journeys otherwise fetch
       if (this.collection.where({campus: 'G-see'})[0].get('journeys').length == 0){
-        console.log(this.collection);
-        this.collection.fetch({success: console.log('succ'), error: function() { console.log(arguments); }});
+        this.collection.fetch({success: function(){console.log('succ');}, error: function() { console.log(arguments); }});
+      }else{
+        this.trigger("renderTransportList");
       }
-      console.log(that.collection.where({campus: 'G-see'})[0]);
-      console.log(that.collection.where({campus: 'G-see'})[0].attributes);
-
-      transportViewTransportList = new TransportViewsTransportList({
-        el: that.$el.find('#search-results'),
-        collection: that.collection.where({campus: 'G-see'})[0].get('journeys'),
-        stationName: that.collection.where({campus: 'G-see'})[0].get('name'),
-        stationTime: that.collection.where({campus: 'G-see'})[0].get('stationTime')
-      });
-      transportViewTransportList.render();
     },
 
     render: function(){
