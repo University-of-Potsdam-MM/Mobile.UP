@@ -55,12 +55,11 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
-			"sports": "sports",
 			"options": "options"
 		},
 
 		// routes that need authentication
-		requiresAuth: ['moodle'],
+		requiresAuth: ['moodle', 'grades'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -69,19 +68,16 @@ define([
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
 
-			var isAuth = this.session.get('authenticated');
-			console.log('isAuth?', isAuth);
+			var isAuth = this.session.get('up.session.authenticated');
 			var path = Backbone.history.location.hash;
 			var needAuth = _.contains(this.requiresAuth, name);
 			var cancelAccess = _.contains(this.preventAccessWhenAuth, name);
-
-			console.log('Path', path, 'NeedAuth?', needAuth, 'cancelAccess?', cancelAccess);
 
 			if(needAuth && !isAuth){
 				// If user gets redirect to login because wanted to access
 				// to a route that requires login, save the path in session
 				// to redirect the user back to path after successful login
-				this.session.set('redirectFrom', path);
+				this.session.set('up.session.redirectFrom', path);
 				Backbone.history.navigate('options', { trigger : true });
 			}else if(isAuth && cancelAccess){
 				// User is authenticated and tries to go to login, register ...
@@ -167,7 +163,6 @@ define([
 		},
 
 		moodle: function () {
-			console.log("Side -> Study -> Moodle");
 			this.changePage(new MoodlePageView({model: this.session}));
 		},
 
@@ -235,10 +230,6 @@ define([
 
 		impressum: function(){
 			this.changePage(new ImpressumPageView);
-		},
-
-		sports: function() {
-			this.changePage(new SportsPageView);
 		},
 
 		options: function(){

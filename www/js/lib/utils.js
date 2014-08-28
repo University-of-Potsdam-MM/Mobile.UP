@@ -96,7 +96,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			return this;
 		}
 	});
-	
+
 	/*
 	* Betriebssystem/UserAgent ermitteln
 	*/
@@ -131,6 +131,57 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		$.os.android = false;
 	}
 
+	/**
+	 * Loading View, that listens to a given model or collection.
+	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
+	 */
+	var LoadingView = Backbone.View.extend({
+
+		initialize: function() {
+			var subject = this.findSubject();
+			if (subject){
+				this.listenTo(subject, "request", this.spinnerOn);
+				this.listenTo(subject, "sync", this.spinnerOff);
+				this.listenTo(subject, "error", this.spinnerOff);
+			}
+		},
+
+		findSubject: function() {
+			if (this.model) {
+				return this.model;
+			} else if (this.collection) {
+				return this.collection;
+			} else {
+				console.log("LoadingView needs a model or collection to work on. It didn't find one here.");
+				return undefined;
+			}
+		},
+
+		spinnerOn: function() {
+			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
+								"<img src=\"img/loadingspinner.gif\"></img>" +
+							"</div>");
+		},
+
+		spinnerOff: function() {
+			this.$el.empty();
+		}
+	});
+
+	/**
+	 * Opens external links (identified by rel="external") according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
+	 */
+	var overrideExternalLinks = function(event) {
+		var url = $(event.currentTarget).attr("href");
+		if (window.cordova) {
+			console.log("Opening " + url + " externally");
+			window.open(url, "_blank", "enableViewportScale=yes");
+			return false;
+		} else {
+			console.log("Opening " + url + " internally");
+		}
+	};
+
 	return {
 			rendertmpl: rendertmpl,
 			removeTabs: removeTabs,
@@ -138,6 +189,8 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			removeLoadingSpinner: removeLoadingSpinner,
 			getAuthHeader: getAuthHeader,
 			ErrorView: ErrorView,
+			LoadingView: LoadingView,
+			overrideExternalLinks: overrideExternalLinks,
 			detectUA:detectUA
 		};
 });

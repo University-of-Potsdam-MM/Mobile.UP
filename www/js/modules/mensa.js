@@ -40,8 +40,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 	        .spread(prepareMeals)
 			.then(filterByDate(date))
 	        .then(drawMeals(uniqueDivId))
-			.finally(utils.removeLoadingSpinner(uniqueDivId))
-	        .catch(function (error) {
+			.fin(utils.removeLoadingSpinner(uniqueDivId))
+	        .fail(function (error) {
 	            var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
 	        });
 	};

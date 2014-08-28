@@ -14,13 +14,13 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		createSubUrl: function() {
-			var result = "http://fossa.soft.cs.uni-potsdam.de:8280/services/pulsAPI?action=vvz";
+			var result = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=vvz";
 			result += "&auth=H2LHXK5N9RDBXMB";
 			result += this.getIfAvailable("url", "&url=");
 			result += this.getIfAvailable("level", "&level=");
 			return result;
 		},
-		
+
 		getIfAvailable: function(attribute, pretext) {
 			if (this.get(attribute)) {
 				return pretext + encodeURIComponent(this.get(attribute));
@@ -35,11 +35,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		initialize: function() {
 			this.items = new VvzCollection();
 		},
-		
+
 		load: function(vvzHistory) {
 			var vvzUrl = vvzHistory.first().get("suburl")
-			
+
 			this.items.url = vvzUrl;
+			this.items.reset();
 			this.items.fetch({reset: true});
 		}
 	});
@@ -48,17 +49,29 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		model: VvzItem,
 
 		parse: function(response) {
-			var categories = _.map(response.listitem.subitems.listitem, function(model) {
+			var rawCategories = this.ensureArray(response.listitem.subitems.listitem);
+			var categories = _.map(rawCategories, function(model) {
 				model.isCategory = true;
 				return model;
 			});
-			
-			var courses = _.map(response.listitem.subitems.course, function(model) {
+
+			var rawCourses = this.ensureArray(response.listitem.subitems.course);
+			var courses = _.map(rawCourses, function(model) {
 				model.isCourse = true;
 				return model;
 			});
-			
+
 			return _.union(categories, courses);
+		},
+		
+		ensureArray: function(param) {
+			if (!param) {
+				return param;
+			} else if (Array.isArray(param)) {
+				return param;
+			} else {
+				return [param];
+			}
 		}
 	});
 
@@ -106,16 +119,16 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.undelegateEvents();
 			this.$el = $(html);
 			this.delegateEvents();
-			
+
 			// Somehow the standard .trigger("create") doesn't work within this collapsible so we have to initialize the listview manually
-			this.$("[data-role=listview]").listview();
+			this.$("[data-role=table]").table();
 
 			return this;
 		},
 
 		loadChildren: function() {
 			console.log("loadChildren ausgelöst");
-			
+
 			var submodel = this.model.get("submodel");
 			if (!submodel) {
 				// Create model
@@ -162,7 +175,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		childPredicate: function(model) { return model.get("isCategory"); },
 		renderPostAction: function() { this.$el.listview().listview("refresh"); }
 	});
-	
+
 	var LectureCoursesView = LectureView.extend({
 		childView: LectureCourseView,
 		childPredicate: function(model) { return model.get("isCourse"); },
@@ -176,7 +189,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenTo(this.model, "sync", this.render);
 			this.listenTo(this.model, "error", this.requestFail);
 		},
-		
+
 		requestFail: function(error) {
 			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
 		},
@@ -184,31 +197,31 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		render: function() {
 			console.log("sync ausgelöst");
 			this.$el.append(this.template({model: this.model}));
-			this.$el.listview("refresh");
+			this.$el.listview().listview("refresh");
 
 			return this;
 		}
 	});
-	
+
 	var VvzHistory = Backbone.Collection.extend({
-		
+
 		initialize: function() {
 			this.listenTo(this, "add", this.triggerVvzChange);
 			this.listenTo(this, "reset", this.triggerVvzChange);
 		},
-		
+
 		openVvz: function(vvzItem) {
 			var current = vvzItem.pick("name", "suburl");
 			this.add(current, {at: 0});
 		},
-		
+
 		resetToUrl: function(modelUrl) {
 			var model = this.find(function(element) { return element.get("suburl") == modelUrl; });
 			var remainingModels = this.last(this.length - this.indexOf(model));
-			
+
 			this.reset(remainingModels);
 		},
-		
+
 		triggerVvzChange: function() {
 			if (this.isEmpty()) {
 				// Triggers a new function call
@@ -218,7 +231,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			}
 		}
 	});
-	
+
 	var vvzHistory = new VvzHistory;
 
 	var LecturesPageView = Backbone.View.extend({
@@ -232,21 +245,22 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		initialize: function(){
 			this.template = utils.rendertmpl('lectures');
 			this.listenToOnce(this, "render", this.prepareVvz);
-			
+
 			this.vvzHistory = vvzHistory;
 			this.listenTo(vvzHistory, "vvzChange", function(vvzHistory) { currentVvz.load(vvzHistory); });
 			this.listenTo(vvzHistory, "vvzChange", this.createPopupMenu);
 			this.listenTo(vvzHistory, "vvzChange", this.triggerOpenVvzUrl);
-			
+
 			this.listenTo(currentVvz.items, "error", this.requestFail);
 		},
-		
+
 		requestFail: function(error) {
 			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
 		},
 
 		selectMenu: function(ev) {
 			ev.preventDefault();
+			$('#selectLevel-listbox').popup({ theme: "b" });
 			$('#selectLevel-listbox').popup("open");
 		},
 
@@ -262,15 +276,16 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		prepareVvz: function() {
 			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
 			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
+			new utils.LoadingView({collection: currentVvz.items, el: this.$("#loadingSpinner")});
 		},
-		
+
 		triggerOpenVvzUrl: function(vvzHistory) {
 			this.trigger("openVvzUrl", vvzHistory);
 		},
-		
+
 		createPopupMenu: function(history) {
 			var level = this.$("#selectLevel");
-			
+
 			this.$('#selectLevel option').remove();
 			history.each(function(option) {
 				var node = $("<option>");

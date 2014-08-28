@@ -12,8 +12,6 @@ define([
 
 			initialize: function(){
 
-				Router.initialize();
-
 				$(document).ready(function() {
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
@@ -26,7 +24,10 @@ define([
 		 	 	 * Override Backbone.sync to automatically include auth headers according to the url in use
 		 	 	 */
 				function overrideBackboneSync() {
-					var authUrls = ["http://api.uni-potsdam.de/endpoints/roomsAPI"];
+					var authUrls = ["http://api.uni-potsdam.de/endpoints/roomsAPI",
+									"http://api.uni-potsdam.de/endpoints/libraryAPI",
+									"https://api.uni-potsdam.de/endpoints/pulsAPI",
+									"https://api.uni-potsdam.de/endpoints/moodleAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
@@ -47,6 +48,13 @@ define([
 			 	 * Initialize Backbone override
 			 	 */
 				$(overrideBackboneSync);
+				
+				/**
+				 * Initialize external link override
+				 */
+				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
+
+				Router.initialize();
 			}
 		});
 

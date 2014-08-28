@@ -10,14 +10,12 @@
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content">
-	<select name="selectLevel" id="selectLevel" data-native-menu="false" data-inline="true">
+	<select name="selectLevel" id="selectLevel" data-native-menu="false" data-inline="true" data-icon="bars">
 		<option value="">Zurück zu ...</option>
 	</select>
-	<!--
-	<a href="#" data-rel="popup" data-role="button" data-icon="arrow-white-down"  data-iconpos="right" data-inline="false">Zurück zu ...</a>
--->
-	
+
 	<div id="lecturesHost"></div>
+	<div id="loadingSpinner"></div>
 
 	<!-- liste -->
 	<ul class="lecture-category-list" data-role="listview" data-inset="true" data-theme="b" id="lectureCategoryList">
@@ -26,6 +24,6 @@
 	<!-- liste -->
 	<div data-role="collapsible-set" data-inset="true" data-theme="b" data-collapsed="true" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="lectureCourseList">
 	</div>
-	
+
 </div>
 <!-- End Main - Navigation -->

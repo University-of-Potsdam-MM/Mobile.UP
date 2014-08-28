@@ -1,7 +1,4 @@
 /* login button  - Höhe*/
-#home li.login .ui-btn {
-	height: 38px;
-}
 
 #home .ui-page-theme-b .ui-btn,html #home .ui-bar-b .ui-btn,html #home.ui-body-b .ui-btn,html body  #home.ui-group-theme-b .ui-btn,html head+body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited,html #home.ui-bar-b .ui-btn:visited,html #home .ui-body-b .ui-btn:visited,html body #home .ui-group-theme-b .ui-btn:visited,html head+body #home .ui-btn.ui-btn-b:visited
 	{
@@ -19,20 +16,20 @@
 	display: block;
 	vertical-align: middle;
 	height: 78px;
-	
 }
 
-#home .ui-btn.settings.ui-icon-info {
-	height:auto;
+#home .ui-btn.settings.ui-icon-gear {
+	height:20px;
 }
 
+/*
 #home .ui-page-theme-a .ui-btn:hover, html #home .ui-bar-a .ui-btn:hover {
 	background:#d0dae3;
-}
-
+}*/
+/*
 #home .ui-btn-icon-left.settings:hover:after, #home .ui-btn-icon-left.settings:active:after {
 	background-color:#dedede;
-}
+}*/
 
 #home .ui-header .ui-title {
 	background-image: none;
@@ -49,18 +46,6 @@
 	display: inline-block;
 }
 
-#home .ui-listview.ui-group-theme-b  li.news a:hover span {
-	background-image: url(../img/up/arrow-darkblue.png) !important;
-	background-repeat: no-repeat;
-	background-position: right;
-	width: 20px;
-	height: 12px;
-	display: inline-block;
-}
-
-#home .ui-listview.ui-group-theme-b  li.news a:hover {
-	color: #04305e;
-}
 
 #home .ui-listview.ui-group-theme-b  li.news a span {
 	background-image: url(../img/up/arrow-white.png) !important;
@@ -107,6 +92,12 @@
 	background-position: bottom left;
 }
 
+#home .ui-listview.ui-group-theme-b  li.impressum a {
+	background-image: url(../img/up/impressum-index.png);
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
 /*3. icons studium onlinedienste*/
 .ui-listview.ui-group-theme-c  li a span {
 	background-image: url(../img/up/arrow-darkblue.png) !important;
@@ -123,20 +114,8 @@
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.calendar:hover a {
-	background-image: url(../img/up/calendar-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.lecturesdir a {
 	background-image: url(../img/up/lecturesdir.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-.ui-listview.ui-group-theme-c  li.lecturesdir:hover a {
-	background-image: url(../img/up/lecturesdir-hover.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
@@ -147,32 +126,14 @@
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.grades:hover a {
-	background-image: url(../img/up/grades-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.moodle a {
 	background-image: url(../img/up/moodle.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.moodle:hover a {
-	background-image: url(../img/up/moodle-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.itservices a {
 	background-image: url(../img/up/itservices.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-.ui-listview.ui-group-theme-c  li.itservices:hover a {
-	background-image: url(../img/up/itservices-hover.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
@@ -184,20 +145,8 @@
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.events:hover a {
-	background-image: url(../img/up/events-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.mensa a {
 	background-image: url(../img/up/mensa.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-.ui-listview.ui-group-theme-c  li.mensa:hover a {
-	background-image: url(../img/up/mensa-hover.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
@@ -208,20 +157,8 @@
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.emergency:hover a {
-	background-image: url(../img/up/emergency-hover.png);
-	background-repeat: bottom no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.sports a {
 	background-image: url(../img/up/sports.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-.ui-listview.ui-group-theme-c  li.sports:hover a {
-	background-image: url(../img/up/sports-hover.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
@@ -233,44 +170,19 @@
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.sitemaps:hover a {
-	background-image: url(../img/up/sitemaps-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.rooms a {
 	background-image: url(../img/up/rooms.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
-
-.ui-listview.ui-group-theme-c  li.rooms:hover a {
-	background-image: url(../img/up/rooms-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.opening a {
 	background-image: url(../img/up/opening.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.opening:hover a {
-	background-image: url(../img/up/opening-hover.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 .ui-listview.ui-group-theme-c  li.travel a {
 	background-image: url(../img/up/travel.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-.ui-listview.ui-group-theme-c  li.travel:hover a {
-	background-image: url(../img/up/travel-hover.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
