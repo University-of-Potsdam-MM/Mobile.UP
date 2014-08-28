@@ -7,6 +7,7 @@ define([
 	'backbone',
 	'BaseRouter',
 	'Session',
+	'utils',
 	'modules/home',
 	'modules/news',
 	'modules/events',
@@ -24,10 +25,8 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
-	'modules/sports-logic',
-	'modules/options',
-	'utils'
-], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView, OptionsPageView, utils){
+	'modules/options'
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
 
 	var AppRouter = BaseRouter.extend({
 
