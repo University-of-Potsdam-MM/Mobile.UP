@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			vars = $.extend(vars, {going:Boolean(LocalStore.get('going', {})[vars.event.Event.id])});
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').attr('href', '#events');
+			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
 			return this;
 		},
 

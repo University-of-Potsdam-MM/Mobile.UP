@@ -71,7 +71,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 				vars.news = vars;
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').attr('href', '#news');
+			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
 			return this;
 		}
 	});
