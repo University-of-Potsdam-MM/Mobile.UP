@@ -1,17 +1,7 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
-  // API code
-  var environment = 'upproxy';
-  var accessId = 'kiy4e84a4b832962eea1943106096116';
-
-  function endpoint(){
-    if ('development' == environment) {
-      return '/api/transport/bin/pub/vbb/extxml.exe';
-    } else if ('upproxy' == environment) {
+	function endpoint(){
       return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
-    } else {
-      return 'http://demo.hafas.de/bin/pub/vbb/extxml.exe';
-    }
   }
 
   function ajax(xmlPayload) {
@@ -20,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       url: endpoint(),
       crossDomain: true,
       data: xmlPayload,
-      contentType: 'application/xml',
+      contentType: 'text/xml',
       dataType: 'xml',
       beforeSend: function (request) {
           request.withCredentials = true;
@@ -31,45 +21,130 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
   // var externalId = "009230133#86";
+  var TransportStation = Backbone.Model.extend({
+    defaults:{
+      "campus": "",
+      "name": "",
+      "externalId": ""
+    },
 
-  var stations = {
-    "G-see": {
-      name: 'S Griebnitzsee Bhf',
-      externalId: '009230003#86',
-    },
-    "Golm": {
-      name: 'Potsdam, Golm Bhf',
-      externalId: '009220010#86',
-    },
-    "Palais": {
-      name: 'Potsdam, Neues Palais',
-      externalId: '009230132#86',
-    },
-  };
+    url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
 
-  _.each(stations, function(station){
-    _.extend(station, {
-      journeys: new Backbone.Collection(),
-      getMaxDepartingTime: function(){
-        var times = this.journeys.pluck('departingTime');
-        times.push(moment()); // add now()
-        var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
-        var max = _.last(sortedTimes);
-        return max;
-      },
-      fetchJourneys: function(){
-        var station = this;
-        // get the time of last known journey
-        var moment = station.getMaxDepartingTime();
-        // get later journeys
-        getLeavingJourneys(station.externalId, moment)
-          .done(function(journeys){
-            station.journeys.add(journeys);
-          });
-      }
-    });
+    initialize: function(){
+      this.set('journeys', new Journeys);
+    },
+
+    getMaxDepartingTime: function(){
+      var times = this.get('journeys').pluck('departingTime');
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var max = _.last(sortedTimes);
+      return max;
+    },
+
+    getMinDepartingTime: function(){
+      var times = this.get('journeys').pluck('departingTime');
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var min = _.first(sortedTimes);
+      return min;
+    },
+
+		parse: function(data, options){
+      var $data = $(data);
+      // map every node of STBJourney to a JavaScript Object
+      var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
+      this.get('journeys').add(jsonArray);
+      this.set('stationTime', this.getMinDepartingTime().format('HH:mm') + " - " + this.getMaxDepartingTime().format('HH:mm'));
+      return this;
+		}
   });
 
+  /**
+   *  Backbone Collection - TransportStations
+   *  holding all stations and delegates fetch to station models
+   */
+  var TransportStations = Backbone.Collection.extend({
+
+      model: TransportStation,
+
+      fetch: function(){
+      	this.trigger("request");
+      	var that = this;
+
+      	var successORerror = _.after(3, function(){
+      		that.trigger("sync");
+      	});
+
+        _.each(this.models, function(model){
+        	//console.log('fetching station:', model.get('name'));
+
+      		// get the time of last known journey
+      		var lastDepartingTime = model.getMaxDepartingTime();
+      		var timeString = lastDepartingTime.format('HH:mm:ss');
+
+          model.fetch({	data: abgehendeVerbindungen(model.get('externalId'), timeString),
+          							type: 'POST',
+          							contentType: 'text/xml',
+          							dataType: 'xml',
+          							crossDomain: true,
+          							success: function(){ successORerror(); },
+          							error: function(error, a, b){
+          								var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
+          								successORerror();
+          							}});
+        });
+      }
+  });
+
+  var Journey = Backbone.Model.extend({
+    defaults:{ "departingTime": ""}
+  });
+
+  var Journeys = Backbone.Collection.extend({
+    model: Journey
+  });
+
+  var stations = new TransportStations([
+    new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003#86"}),
+    new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010#86"}),
+    new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132#86"})
+  ]);
+
+
+  var Connection = new Backbone.Model.extend({
+  	defaults: {
+  		"fromExternalId": "",
+  		"toExternalId": "",
+  		"moment": "",
+  		"arrivalMode": ""
+  	},
+
+  	url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+
+
+  	parse: function(){
+
+	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+	    .done(function(data, textStatus, jqXHR){
+	      var $data = $(data);
+	      var connections = _.map($data.find('Connection'), mapConnection);
+	      // TODO: map connections from xml to objects
+	      defer.resolve(connections);
+	    })
+	    .fail(function(error){
+	    	var errorPage = new utils.ErrorView({el: '#result', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport2', err: error});
+	    });
+
+  	}
+  });
+
+
+  /**
+   *
+   *  Helper Functions
+   *
+   */
   // use this document for creating XML
   var doc = document.implementation.createDocument(null, null, null);
 
@@ -88,7 +163,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       }
       node.appendChild(child);
     }
-
     return node;
   };
 
@@ -98,10 +172,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   function requestExternalId(location){
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('LocValReq', {id:'001', maxNr:20, sMode:1},
-          tag('ReqLoc', {type:'ST', match:location})
-        )
+      tag('LocValReq', {id:'001', maxNr:20, sMode:1},
+         tag('ReqLoc', {type:'ST', match:location})
       );
     return xmlString(xml);
   }
@@ -109,20 +181,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   // Suche abgehende Verbindungen
   function abgehendeVerbindungen(externalId, timeString){
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
-          tag('Time', {}, timeString),
-          tag('Today', {}),
-          tag('TableStation', {externalId:externalId}),
-          tag('ProductFilter', {}, '1111111111111111')
-        )
+      tag('STBReq',{boardType:"DEP", maxJourneys:"5", sortOrder:"REALTIME"},
+        tag('Time', {}, timeString),
+        tag('Today', {}),
+        tag('TableStation', {externalId:externalId}),
+        tag('ProductFilter', {}, '1111111111111111')
       );
     return xmlString(xml);
   }
 
-  // console.log(abgehendeVerbindungen(externalId, moment().format('HH:mm:ss')));
-
-
+  // Suche Verbindung mit zwei IDs
   function verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode) {
 
     var rflags;
@@ -134,18 +202,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     }
 
     var xml =
-      tag('ReqC', {ver:'1.1', prod:'String', rt:'yes', lang:'DE', accessId:accessId},
-        tag('ConReq', {},
-          tag('Start', {},
-            tag('Station',{externalId: fromExternalId}),
-            tag('Prod')
-          ),
-          tag('Dest', {},
-            tag('Station',{externalId: toExternalId})
-          ),
-          tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
-          rflags
-        )
+      tag('ConReq', {},
+        tag('Start', {},
+          tag('Station',{externalId: fromExternalId}),
+          tag('Prod')
+        ),
+        tag('Dest', {},
+          tag('Station',{externalId: toExternalId})
+        ),
+        tag('ReqT', {date: moment.format('YYYYMMDD'), time: moment.format('HH:mm')}),
+        rflags
       );
     return xmlString(xml);
   };
@@ -225,7 +291,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   }
 
   function mapConnection(connection){
-    // console.log('mapConnection', connection);
     var $con = $(connection);
     var myCon = {
       id: $con.attr('id'),
@@ -246,7 +311,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
     ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
     .done(function(data, textStatus, jqXHR){
-      // console.log('requestExternalId', data,textStatus,jqXHR);
       var $data = $(data);
       var connections = _.map($data.find('Connection'), mapConnection);
       // TODO: map connections from xml to objects
@@ -268,12 +332,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   function getExternalId(stationString) {
     var defer = $.Deferred();
 
-    $.post(
-      endpoint(),
-      requestExternalId(stationString),
-      'xml')
+    $.ajax(requestExternalId(stationString))
       .done(function(data, textStatus, jqXHR){
-        // console.log('requestExternalId', data,textStatus,jqXHR);
         var $data = $(data);
         var station = $data.find('Station').first();
         defer.resolve({
@@ -282,7 +342,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
         });
       })
       .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
+		    var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
       });
     return defer.promise();
   }
@@ -297,7 +357,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   function parseTime(timeString) {
     var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
-    // console.log('parseTime', timeString, time);
     return time;
   }
 
@@ -320,31 +379,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return tmp;
   };
 
-  // moment should be an instance of moment.js
-  function getLeavingJourneys(externalId, moment) {
-    var defer = $.Deferred();
-    var timeString = moment.format('HH:mm:ss');
-
-    ajax(abgehendeVerbindungen(externalId, timeString))
-    .done(function(data, textStatus, jqXHR){
-        // console.log('abgehendeVerbindungen', data,textStatus,jqXHR);
-        var $data = $(data);
-        // map every node of STBJourney to a JavaScript Object
-        var jsonArray = _.map($data.find('STBJourney'), mapSTBJourney);
-        defer.resolve(jsonArray);
-      })
-    .fail(function(error){
-		var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Der Dienst des öffentlichen Nahverkehrs ist momentan nicht erreichbar.', module: 'transport', err: error});
-     });
-
-    return defer.promise();
-  }
-
   return {
     stations: function() {return stations;},
-    fetchJourneysForAllStations: function() {
-      _.invoke(stations, 'fetchJourneys');
-    },
     getVerbindung: getVerbindung
   };
 

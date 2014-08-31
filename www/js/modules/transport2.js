@@ -74,11 +74,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
 
     fromStation: function(){
-      return ht.stations()[this.get('from')]
+      return ht.stations().where({campus: this.get('from')})[0];
     },
 
     toStation: function(){
-      return ht.stations()[this.get('to')]
+      ht.stations().where({campus: this.get('to')})[0]
+      return ht.stations().where({campus: this.get('to')})[0];
     },
 
     resetConnections: function(newConnections){
@@ -87,11 +88,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
 
     fetchConnections: function(){
       console.log('DateTime for connection:', this.get('depTime').format('DD.MM.YYYY - HH:mm') );
-
       var that = this;
       ht.getVerbindung(
-        this.fromStation().externalId,
-        this.toStation().externalId,
+        this.fromStation().get('externalId'),
+        this.toStation().get('externalId'),
         this.get('depTime'),
         this.get('arrivalMode')
       ).done(function(connections){
@@ -129,26 +129,22 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
 
     searchButton: function() {
-      //console.log('click searchButton');
       this.model.set('depTime', this.getMoment());
       this.search();
     },
 
     search: function(){
-      //console.log('fetch & render');
       this.spinner();
       this.model.fetchConnections();
       this.renderSummary();
     },
 
     searchEarlier: function(){
-      //console.log('click earlierButton');
       this.model.addTime('minutes', -30);
       this.search();
     },
 
     searchLater: function(){
-      //console.log('click laterButton');
       this.model.addTime('minutes', 30);
       this.search();
     },

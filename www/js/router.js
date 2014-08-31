@@ -7,6 +7,7 @@ define([
 	'backbone',
 	'BaseRouter',
 	'Session',
+	'utils',
 	'modules/home',
 	'modules/news',
 	'modules/events',
@@ -24,9 +25,8 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
-	'modules/sports-logic',
 	'modules/options'
-], function($, _, Backbone, BaseRouter, Session, HomePageView, NewsPageView, EventsPageView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, SportsPageView, OptionsPageView){
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -34,8 +34,10 @@ define([
 			// Routes for Index - Page
 			"": "home",
 			"home": "home",
+			"news/*id": "news",
 			"news": "news",
 			"events": "events",
+			"events/*id": "events",
 			"study": "study",
 			"study/moodle": "moodle",
 			"campus": "campus",
@@ -52,12 +54,11 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
-			"sports": "sports",
 			"options": "options"
 		},
 
 		// routes that need authentication
-		requiresAuth: ['moodle'],
+		requiresAuth: ['moodle', 'grades'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -66,19 +67,16 @@ define([
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
 
-			var isAuth = this.session.get('authenticated');
-			console.log('isAuth?', isAuth);
+			var isAuth = this.session.get('up.session.authenticated');
 			var path = Backbone.history.location.hash;
 			var needAuth = _.contains(this.requiresAuth, name);
 			var cancelAccess = _.contains(this.preventAccessWhenAuth, name);
-
-			console.log('Path', path, 'NeedAuth?', needAuth, 'cancelAccess?', cancelAccess);
 
 			if(needAuth && !isAuth){
 				// If user gets redirect to login because wanted to access
 				// to a route that requires login, save the path in session
 				// to redirect the user back to path after successful login
-				this.session.set('redirectFrom', path);
+				this.session.set('up.session.redirectFrom', path);
 				Backbone.history.navigate('options', { trigger : true });
 			}else if(isAuth && cancelAccess){
 				// User is authenticated and tries to go to login, register ...
@@ -116,12 +114,47 @@ define([
 			this.changePage(new HomePageView);
 		},
 
-		news: function(){
-			this.changePage(new NewsPageView);
+		news: function(id){
+			var page = new NewsView.NewsPage;
+			this.changePage(page);
+			var hideSettings = false;
+			if(!id || id == 'index'){
+				new NewsView.NewsIndex({page:page});
+			} else {
+				hideSettings = true;
+				if(id.indexOf('set_sources') > -1)
+					new NewsView.NewsSet_sources({page:page});
+				else if(id.indexOf('source') > -1)
+					new NewsView.NewsSource({page:page, id:id.split('/')[1]});
+				else if(id.indexOf('view') > -1)
+					new NewsView.NewsView({page:page, id:id.split('/')[1]});
+			}
+			if(hideSettings)
+				$('.settings').hide();
 		},
 
-		events: function(){
-			this.changePage(new EventsPageView);
+		events: function(id){
+			var page = new EventsView.EventsPage;
+			//console.log(page);
+			var hideFooter = false;
+			if(!id || id.indexOf('index') > -1){
+				var filter = id ? (id.split('/')[1] ? id.split('/')[1] : 'next') : 'next'
+				new EventsView.EventsIndex({page:page, filter: filter});
+			} else {
+				hideFooter = true;
+				if(id.indexOf('set_locations') > -1)
+					new EventsView.EventsSet_locations({page:page, id:2});
+				else
+				if(id.indexOf('place') > -1)
+					new EventsView.EventsPlace({page:page, id:id.split('/')[1]});
+				else
+				if(id.indexOf('view') > -1)
+					new EventsView.EventsView({page:page, id:id.split('/')[1]});
+			}
+			this.changePage(page);
+			if(hideFooter) {
+				$('.footer,.settings').hide();
+			}
 		},
 
 		study: function(){
@@ -129,7 +162,6 @@ define([
 		},
 
 		moodle: function () {
-			console.log("Side -> Study -> Moodle");
 			this.changePage(new MoodlePageView({model: this.session}));
 		},
 
@@ -199,10 +231,6 @@ define([
 			this.changePage(new ImpressumPageView);
 		},
 
-		sports: function() {
-			this.changePage(new SportsPageView);
-		},
-
 		options: function(){
 
 			this.changePage(new OptionsPageView({model: this.session}));
@@ -249,6 +277,7 @@ define([
 	});
 
 	var initialize= function(){
+		utils.detectUA($, navigator.userAgent);
 		var approuter = new AppRouter;
 		Backbone.history.start();
 	};

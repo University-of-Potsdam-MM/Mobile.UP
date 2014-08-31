@@ -5,7 +5,7 @@
 		href="#study" data-role="button" data-icon="false"
 		data-inline="true" data-transition="slidefade"
 		data-direction="reverse" class="back">Back</a>
-	<h1>Leistungsübersicht</h1>
+	<h1>Leistungsübersicht<a href="#options" class="settings" data-role="button" data-icon="gear"></a></h1>
 </div>
 <!-- End Header -->
 
@@ -19,26 +19,21 @@
       <li><a href="" >Studiengang c </a></li>
     </ul>
   </div> -->
-  
-  <div id="gradesHost"></div>
-  
-  <div id="loginForm">
-    <p>Benutzer: <input name="benutzer" type="text" /></p>
-    <p>Passwort: <input name="password" type="password" /></p>
-    <p><button id="login">Einloggen</button>
-  </div>
 
-<table data-role="table" id="grades" data-mode="reflow" class="table-stripe ui-responsive" data-theme="c" >
-  <thead>
-    <tr>
-      <th>Veranstaltung</th>
-      <th>Leistungspunkte</th>
-      <th>Status</th>
-      <th>Note</th>
-    </tr>
-  </thead>
-  <tbody id="gradesTable">
-  </tbody>
-</table>
+	<table data-role="table" id="grades" data-mode="reflow" class="table-stripe ui-responsive" data-theme="c" >
+	  <thead>
+	    <tr>
+	      <th>Veranstaltung</th>
+	      <th>Leistungspunkte</th>
+	      <th>Status</th>
+	      <th>Note</th>
+	    </tr>
+	  </thead>
+	  <tbody id="gradesTable">
+	  </tbody>
+	</table>
+
+	<div id="gradesHost"></div>
+	<div id="loadingSpinner"></div>
 
 </div> <!-- ende content -->

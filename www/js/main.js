@@ -1,3 +1,4 @@
+var app = {models:{}, views:{}, data:{}};
 require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
     baseUrl: 'js',
@@ -13,10 +14,11 @@ require.config({
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
         'geojson': 'lib/GeoJSON',
-        'date': 'lib/date',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
-        'utils': 'lib/utils'
+        'utils': 'lib/utils',
+		'date': 'lib/date',
+		'LocalStore': 'lib/ls-store'
     },
     shim: {
         // use namespace Backbone

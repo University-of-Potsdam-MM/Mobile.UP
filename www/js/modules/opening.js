@@ -56,7 +56,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 	var Openings = Backbone.Collection.extend({
 		model: Opening,
-		url: 'js/json/opening.json'
+		url: 'js/json/opening.json',
+    comparator: 'name'
 	});
 
 	var OpeningView = Backbone.View.extend({
@@ -86,7 +87,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		fetchSuccess: function() {
-			//this.collection = _.sortBy(this.collection.attributes, 'name');
 
       this.collection = this.addTextToTimes(this.collection);
 
@@ -124,7 +124,6 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
                   return;
                 }
 
-                //console.log('Neither String nor Array');
               })
             });
             return collection;
@@ -153,8 +152,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 	});
 
-	/*
-	 *	Opening Page View
+	/**
+	 *	BackboneView - Opening Page View
 	 */
 	var OpeningPageView = Backbone.View.extend({
     attributes: {"id": "opening"},

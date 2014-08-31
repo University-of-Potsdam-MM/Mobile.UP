@@ -139,7 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			.then(function() { return geo.loadAllOnce(); })
 			.then(drawCampus(uniqueDivId, campus))
 			.spread(setSearchValue(search))
-			.catch(function (error) {
+			.fail(function (error) {
 				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
 			});
 	}
@@ -337,7 +337,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			console.log("executing GeoCollection.loadAll()");
 			return Q.fcall(this.callAjax)
 					.then(this.loadSuccess)
-					.catch(this.loadFail);
+					.fail(this.loadFail);
 		},
 
 		callAjax: function() {

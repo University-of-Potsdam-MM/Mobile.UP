@@ -1,24 +1,53 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, Backbone, utils, GeoJSON){
 
-	var CategoryMarker = function (marker, map, category, categoryStore) {
+	var CategoryMarker = function (marker, map, category, categoryStore, markerShadow) {
 
 		this.setVisibility = function(show, overrideCategory) {
 			if (typeof(overrideCategory)==='undefined') overrideCategory = false;
 
 			if (show && overrideCategory) {
 				marker.setMap(map);
+				markerShadow.setMap(map);
 			} else if (show && !overrideCategory && categoryStore.isVisible(category)) {
+				marker.setMap(map);
+				markerShadow.setMap(null);
+			} else {
+				marker.setMap(null);
+				markerShadow.setMap(null);
+			}
+		};
+
+		this.reset = function() {
+			markerShadow.setMap(null);
+			
+			if (categoryStore.isVisible(category)) {
 				marker.setMap(map);
 			} else {
 				marker.setMap(null);
 			}
 		};
-
-		this.reset = function() {
-			if (categoryStore.isVisible(category)) {
-				marker.setMap(map);
-			} else {
-				marker.setMap(null);
+		
+		this.openInfoWindow = function() {
+			marker.info.open(map);
+		};
+		
+		this.centerOnMap = function() {
+			// Get the selected item into view. Tested for Polygon and Marker.
+			var bounds = new google.maps.LatLngBounds();
+			if (marker.getPath) {
+				marker.getPath().forEach(function(latLng) {
+					bounds.extend(latLng);
+				});
+			} else if (marker.getPosition) {
+				bounds.extend(marker.getPosition());
+			}
+			
+			// Keep the current zoom level
+			var oldZoom = map.getZoom();
+			map.fitBounds(bounds);
+			var newZoom = map.getZoom();
+			if (oldZoom < newZoom) {
+				map.setZoom(oldZoom);
 			}
 		};
 	};
@@ -108,6 +137,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 			// Show the selected marker
 			tmpMarkers[index].setVisibility(true, true);
+			tmpMarkers[index].centerOnMap();
+			tmpMarkers[index].openInfoWindow();
 		},
 
 		_destroy: function() {
@@ -215,18 +246,37 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			for (var i in items) {
 				var m = this._loadMarker(items[i].index);
 
+				m.options.zIndex = 2;
 				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
+				var bMarkers = this._shadowOf(m.context, m.options, this._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
+				} else if (bMarkers.error) {
+					console.log(bMarkers.error);
 				} else {
-					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, this.options.categoryStore);
+					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, this.options.categoryStore, bMarkers[0]);
 					gMarker.reset();
 
 					var tmpMarkers = allMarkers.getElements();
 					tmpMarkers[items[i].index] = gMarker;
 				}
 			}
+		},
+		
+		_shadowOf: function(context, options, map, hasSimilarsCallback) {
+			context = JSON.parse(JSON.stringify(context));
+			context.properties = {};
+			
+			options = JSON.parse(JSON.stringify(options));
+			options.strokeColor = "#000000";
+			options.strokeOpacity = 0.3;
+			options.strokeWeight = 20;
+			options.fillColor = "#000000";
+			options.fillOpacity = 0.5;
+			options.zIndex = -1;
+			
+			return new GeoJSON(context, options, map, hasSimilarsCallback);
 		},
 
 		_saveMarker: function(options, context, category) {

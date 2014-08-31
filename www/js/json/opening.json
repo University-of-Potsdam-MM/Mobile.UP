@@ -302,5 +302,117 @@
         "opening": [["09:00", "15:00"]]
       }
     ]
+  },
+  {
+    "name": "Bereichsbiliothek Babelsberg",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["09:00", "2:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["09:00", "22:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["09:00", "22:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["09:00", "22:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Samstag",
+        "opening": [["09:00", "18:00"]]
+      }
+    ]
+  },
+  {
+    "name": "Bereichsbiliothek Golm",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["09:00", "20:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["09:00", "20:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["09:00", "20:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["09:00", "20:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Samstag",
+        "opening": [["10:00", "15:00"]]
+      }
+    ]
+  },
+  {
+    "name": "Bereichsbiliothek Neues Palais (Haus 10)",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Samstag",
+        "opening": [["10:00", "15:00"]]
+      }
+    ]
+  },
+  {
+    "name": "Bereichsbiliothek Neues Palais (Haus 9 und 11)",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["09:00", "16:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["09:00", "16:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["09:00", "16:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["09:00", "16:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["09:00", "16:00"]]
+      }
+    ]
   }
 ]
