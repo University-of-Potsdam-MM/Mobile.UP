@@ -160,7 +160,7 @@ define([
     template: utils.rendertmpl('moodle'),
     attributes: {"id": "moodle"},
     events: {
-        'click li': 'selectCourse',
+        'click .moodle-course': 'selectCourse',
         'click .backbutton': 'back'
     },
 
