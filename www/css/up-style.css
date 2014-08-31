@@ -63,9 +63,9 @@ p {
 
 /*visited*/
 
- html .ui-bar-a .ui-btn:visited, 
- html .ui-body-a .ui-btn:visited,  
- html body .ui-group-theme-a .ui-btn:visited,  
+ html .ui-bar-a .ui-btn:visited,
+ html .ui-body-a .ui-btn:visited,
+ html body .ui-group-theme-a .ui-btn:visited,
  html head+body .ui-btn.ui-btn-a:visited {
  background:#EDEDED;
  }
@@ -75,12 +75,6 @@ p {
 	background-image: url(../img/up/seperator.png);
 	background-repeat: no-repeat;
 	background-position: top left;
-}
-
-.ui-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
 }
 
 #error, #error3
@@ -1343,21 +1337,21 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background:#014260;
 	color:#fff;
 	font-weight:normal;
-	
+
 }
 
 #moodle .ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background:#d0dae3;
 	color:#014260;
 	font-weight:normal;
-	
+
 }
 
 #moodle h3.coursetitle {
 	margin: 0;
 	padding: 1em 0 1em .1em;
 	color:#014260;
-	
+
 }
 
 #moodle .ui-listview>li h2 {
