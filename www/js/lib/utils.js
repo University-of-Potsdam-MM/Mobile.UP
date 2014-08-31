@@ -158,7 +158,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		},
 
 		spinnerOn: function() {
-			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin-top: 50px;\">" +
+			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin: 50px;\">" +
 								"<img src=\"img/loadingspinner.gif\"></img>" +
 							"</div>");
 		},
