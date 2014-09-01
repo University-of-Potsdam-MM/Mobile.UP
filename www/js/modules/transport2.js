@@ -117,6 +117,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     initialize: function(){
       var query = this.model;
       var resultList = this.collection;
+      this.templateListItem =utils.rendertmpl('complex_transport_listitem');
       resultList.on('reset', this.renderResults, this);
       resultList.on('add', this.render, this);
       _.bindAll(this, 'spinnerOn', 'spinnerOff');
@@ -229,7 +230,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 
-    templateListItem: utils.rendertmpl('complex_transport_listitem'),
     renderResults: function(){
       //console.log('render results', this.collection);
 

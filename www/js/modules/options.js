@@ -14,12 +14,8 @@ define([
 	 *	TODO: will be substituted by use of local Accounts and by the use of the Mobile Proxy of the DFN
 	 */
 	var OptionsPageView = Backbone.View.extend({
-
 		model: Session,
 		attributes: {"id": 'options'},
-
-		logintemplate: utils.rendertmpl('login'),
-		logouttemplate: utils.rendertmpl('logout'),
 
 		events: {
 			'submit #loginform': 'login',
@@ -29,12 +25,14 @@ define([
 
 		initialize: function(){
 			this.loginAttempts = 0;
+			this.logintemplate = utils.rendertmpl('login');
+			this.logouttemplate = utils.rendertmpl('logout');
+
 			this.listenTo(this.model,'change', this.render);
 			this.listenTo(this, "errorHandler", this.errorHandler);
 		},
 
 		render: function(){
-
 			if (this.model.get('up.session.authenticated')){
 				$(this.el).html(this.logouttemplate({}));
 			}else{

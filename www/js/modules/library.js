@@ -355,7 +355,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
    */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-    template: utils.rendertmpl('library_list_view'),
 
     events: {
       'click ul.booklist li.book-short' : 'renderDetail',
@@ -363,6 +362,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     initialize: function(){
+      this.template = utils.rendertmpl('library_list_view');
       this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
@@ -408,7 +408,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   App.view.BookDetailView = Backbone.View.extend({
     el: '#library',
     model: App.model.Book,
-    template: utils.rendertmpl('library_detail_view'),
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library_detail_view');
+    },
 
     render: function(){
       var html = this.template({book:this.model});
@@ -426,7 +429,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   App.view.LocationView = Backbone.View.extend({
     el: '#book-locations',
     collection: App.collection.BookLocationList,
-    template: utils.rendertmpl('library_location_view'),
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library_location_view');
+    },
 
     render: function(){
       var html = this.template({locations:this.collection.models});
@@ -565,11 +571,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   var LibraryPageView = Backbone.View.extend({
     attributes: {"id": 'library'},
 
-    template: utils.rendertmpl('library'),
-
     events: {
       'submit form': 'loadSearch',
       'click .backToList': 'back'
+    },
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library');
     },
 
     render: function(){
