@@ -33,9 +33,12 @@ define([
 	 * 	BackboneView - PersonView
 	 */
 	var PersonView = Backbone.View.extend({
-		template: utils.rendertmpl('person'),
 		attributes: {"data-role": 'collapsible'},
 		model: Person,
+
+		initialize: function(){
+			this.template = utils.rendertmpl('person');
+		},
 
 		render: function(){
 			this.$el.html(this.template({person: this.model}));
@@ -48,7 +51,6 @@ define([
 	 *	BackvoneView - PeoplePageView
 	 */
 	var PeoplePageView = Backbone.View.extend({
-		template: utils.rendertmpl('people'),
 		attributes: {"id": "people"},
 
 		events: {
@@ -58,6 +60,7 @@ define([
 		initialize: function(){
 			this.collection = new PersonList();
 			this.session = new Session();
+			this.template = utils.rendertmpl('people'),
 			this.listenTo(this.collection, "error", this.requestFail);
 			this.collection.bind("reset", this.clearList);
 			this.collection.bind("add", this.addPerson);
