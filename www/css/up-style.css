@@ -228,20 +228,27 @@ h2 span {
 }
 
 /* Datebox*/
+
 .ui-input-datebox {
-	width: 100%;
+
+	width: 100% !important;
+	color: #fff;
+	background-color: #014260;
+/*
 	background-image: none;
-	padding: .4em;
+	padding: 0.4em;
 	font-size: 16px;
 	display: block;
 	padding-top: 0;
 	padding-bottom: 0;
-	background-color: #014260;
+
+
 }
 
 .ui-input-datebox input {
 	color: #fff;
 	text-shadow: none;
+	*/
 }
 
 label.showfirst {
