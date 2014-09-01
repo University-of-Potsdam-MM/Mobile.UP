@@ -289,7 +289,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
 
     render: function(){
-      $(this.el).html(this.template({}));
+      this.$el.html(this.template({}));
 
       if (Transport.model.State){
         // reset Transport.model.State.reset();
