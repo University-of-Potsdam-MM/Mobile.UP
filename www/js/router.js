@@ -25,8 +25,9 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
-	'modules/options'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
+	'modules/options',
+	'modules/people'
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -54,11 +55,12 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
-			"options": "options"
+			"options": "options",
+			"people": "people"
 		},
 
 		// routes that need authentication
-		requiresAuth: ['moodle', 'grades'],
+		requiresAuth: ['moodle', 'grades', 'people'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -232,8 +234,11 @@ define([
 		},
 
 		options: function(){
-
 			this.changePage(new OptionsPageView({model: this.session}));
+		},
+
+		people: function(){
+			this.changePage(new PeoplePageView);
 		},
 
 		changePage: function(page){
@@ -253,14 +258,19 @@ define([
 
 			var transition = $.mobile.defaultPageTransition;
 
-			// Erste Seite nicht sliden
+			// dont slide first page
 			if (this.firstPage){
 				transition = 'none';
 				this.firstPage = false;
 			}
-
-			if (page.$el[0].id == 'transport' || page.$el[0].id == 'transport2') {
-				transition = 'none';
+			// pages which should not slide by transition, affects separat sides in tabs
+			if (this.currentView){
+				if (this.currentView.el.id == 'transport' && page.$el[0].id == 'transport2' ||
+					this.currentView.el.id == 'transport2' && page.$el[0].id == 'transport' ||
+					this.currentView.el.id == 'people' && page.$el[0].id == 'library' ||
+					this.currentView.el.id == 'library' && page.$el[0].id == 'people'){
+					transition = 'none';
+				}
 			}
 
 			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
