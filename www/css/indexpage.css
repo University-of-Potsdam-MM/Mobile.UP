@@ -34,7 +34,14 @@
 #home .ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
+	color:#fff;
 }
+
+
+#home .ui-header {
+	background-color:#014260 !important;
+}
+
 
 /*1. icons startseite*/
 #home .ui-listview.ui-group-theme-b  li a span {

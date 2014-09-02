@@ -746,7 +746,8 @@ html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
 }
 
 html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
-	line-height:35px;
+	line-height: 25px;
+	font-size: .9em !important;
 
 }
 
@@ -758,6 +759,17 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	font-size: .8em;
 	min-height: 1em;
 	font-weight: bold;
+}
+.buttons_pt .ui-input-datebox {
+	background:transparent;
+	
+}
+
+.buttons_pt .ui-input-datebox a.ui-btn {
+	visibility:hidden;
+	width:0 px !important;
+	height:0px !important;
+	
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
@@ -783,6 +795,9 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 
 .buttons_pt .ui-slider-switch .ui-slider-label-b {
 	color: #014260;
+}
+html .ui-body-c .ui-slider-track .ui-btn-active {
+	color:#fff;
 }
 
 .ui-slider-track.ui-corner-all {
@@ -815,8 +830,11 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	text-indent: 0;
 	line-height: 40px;
 	font-size: .8em;
-}
 
+
+#earlierButton {
+	font-size:.8em !important;
+}
 #summary {
 	margin: 1em .3em 1em .3em;
 	font-size: .8em;
@@ -845,12 +863,14 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 .spaeter {
 	width: 40%;
 	margin: 0 auto;
+	font-size: .8em;
 }
 
 .spaeter .ui-input-btn {
 	margin-top: 0;
 	margin-bottom: 0;
 	border: 0;
+	font-size: .8em;
 }
 
 .ui-listview>li h3.complex_transport .ui-btn {
