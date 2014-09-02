@@ -756,7 +756,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	width:50% !important;
 	text-align:left;
 	float:left;
-	
+
 	margin: 0 !important;
 	border: 0 !important;
 	text-align: center;
@@ -766,7 +766,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 .buttons_pt .ui-input-datebox {
 	background:transparent;
-	
+
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn {
@@ -774,12 +774,12 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	width:22px !important;
 	float:right;
 	margin-right:15%;
-	
+
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn:after {
 	background-color:transparent;
-	
+
 }
 
 .buttons_pt li:last-child .ui-btn {
@@ -1391,7 +1391,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin: 0;
 	padding: 1em 0 1em .1em;
 	color:#014260;
-
 }
 
 #moodle .ui-listview>li h2 {
@@ -1400,7 +1399,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	white-space: nowrap;
 	margin-bottom:0;
 	margin-top:0;
-
 }
 
 #moodle .ui-listview>li h2 a{
@@ -1552,24 +1550,24 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 **************************************************************/
 
 .error {
-		background:#d0dae3;
-		padding:2em;
-		margin:10px auto;
+	background:#d0dae3;
+	padding:2em;
+	margin:10px auto;
 }
 
 .error h2 {
-		color:#014260;
-		font-size:140%;
-		margin:3px auto 3px auto;
-		font-weight:bold;
+	color:#014260;
+	font-size:140%;
+	margin:3px auto 3px auto;
+	font-weight:bold;
 }
 
 
 .error p{
-		border-top:2px solid #ededed;
-		border-bottom:2px solid #ededed;
-		padding:.5em;
-		font-size:.8em;
+	border-top:2px solid #ededed;
+	border-bottom:2px solid #ededed;
+	padding:.5em;
+	font-size:.8em;
 }
 
 @media ( max-width : 35em) {
@@ -1610,13 +1608,11 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 table#grades {
 	background-color:#d0dae3;
-
-
 }
 
 @media (min-width: 35em) {
 	#grades.ui-table-reflow.ui-responsive {
-	display: inline-table;
+		display: inline-table;
 	}
 }
 
@@ -1638,13 +1634,13 @@ li.news-entry a {
 	overflow: hidden;
 	white-space: nowrap;
 	padding-right:30px;
-	
+
 }
 
 li.news-entry a p{
 	font-weight:normal;
 	font-size:.8em;
-	
+
 }
 
 
@@ -1686,13 +1682,11 @@ li.news-entry a p span.news-date{
 	font-size:.1.5em;
 	margin-bottom:0px;
 	margin-left:.1em;
-	
 }
 
 #news-content p.news-text,  p,  #news-content br {
 	margin-bottom:10px !important;
 	margin-top:0px;
-	
 }
 
 #news-content {
@@ -1711,12 +1705,10 @@ li.news-entry a p span.news-date{
     min-height: 3.625em;
     padding-left: 3.5em;
     padding-top:.5em;
-  
 }
 
 #events .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child {
-	margin-top:.5em; 
-	
+	margin-top:.5em;
 }
 
 #events span.event-title, #events span.event-time {
@@ -1734,41 +1726,34 @@ div.event-caption{
 div.event-caption span.event-title{
 	font-weight:bold;
 	font-size:.8em;
-	
-	
 }
-
 
 div.event-caption span.event-time{
 	font-weight:normal;
 	font-size:.7em;
 }
 
-
 .event-image-container {
 	padding-top:.5em;
 	padding-bottom:.5em;
-	background-color:#dedede;
 	min-height:100px;
-	}
-	
+}
+
 .event-image-container h2 {
 	margin-top: 0;
-margin-left: 115px;
-color: #014260;
-font-weight: bold;
-}	
-	
+	margin-left: 115px;
+	color: #014260;
+	font-weight: bold;
+}
+
 .event-image {
 	float:left;
 	margin-left:.5em;
 }
 
 .event-time-date {
-	
 	min-height: 30px;
-padding: .5em;
-
+	padding: .5em;
 }
 
 .event-detail {
@@ -1784,12 +1769,9 @@ padding: .5em;
 	margin-top:0px;
 	padding-left:.1em;
 	color:#fff !important;
-	
-	
 }
 
 .event-list li a.ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-darkblue.png);
 	background-color: transparent;
 }
-
