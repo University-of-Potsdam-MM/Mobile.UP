@@ -1428,6 +1428,15 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin: 0;
 }
 
+
+#moodle .ui-link {
+	text-decoration:none;
+	line-height: 3em;
+}
+
+#moodle .ui-link img {
+	vertical-align:text-bottom;
+}
 /***********************Personensuche*********************
 **************************************************************/
 #peoples h3.ui-collapsible-heading {
