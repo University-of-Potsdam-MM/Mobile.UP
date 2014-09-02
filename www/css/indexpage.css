@@ -43,6 +43,11 @@
 }
 
 
+#home .ui-icon-gear:after {
+	background-color:#fff;
+	background-image:url(../img/up/gear.svg);
+}
+
 /*1. icons startseite*/
 #home .ui-listview.ui-group-theme-b  li a span {
 	background-image: url(../img/up/arrow-darkblue.png) !important;
