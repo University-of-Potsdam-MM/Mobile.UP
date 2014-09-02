@@ -45,6 +45,23 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			return response.news;
 		},
 	});
+	
+	app.models.NewsSource = Backbone.Collection.extend({
+		model: app.models.NewsEntry,
+		url: 'http://headkino.de/potsdamevents/json/news/source/',
+
+		initialize: function(p){
+			this.url = this.url+p.id;
+		},
+
+		parse: function(response){
+			if(response.vars)
+				response = response.vars;
+			this.response = response;
+			return response.news;
+		},
+	});
+	
 
 	var NewsSource = Backbone.Collection.extend({
 		model: app.models.News
@@ -83,7 +100,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			this.template = helper.rendertmpl('news_source');
 			this.page  = p.page;
 			_.bindAll(this, 'render');
-			this.collection = new app.models.News();
+			this.collection = new app.models.NewsSource(p);
 			this.collection.fetch({
 				success: this.render,
 				dataType: 'json' });
