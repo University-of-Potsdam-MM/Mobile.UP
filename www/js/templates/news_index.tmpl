@@ -1,4 +1,4 @@
-<ul id="newslist"  data-role="listview" data-inset="true">
+<ul id="newslist"  data-role="listview" data-inset="true" data-icon="arrow-darkblue">
   <% var source = -1, epCount = 0, html = '', extra = '', allHtml = '', img = '';
 _.each(news, function(n, i) {
 var e = n.News,
@@ -8,14 +8,15 @@ if(e.source_id != source) {
 source = e.source_id;
 epCount = 0;
 %>
-  <li class="source-news-li up-divider show-all show-recent news-<%=news[i].NewsSource.rank%>" id="<%= n.NewsSource.id%>"> <a class="source-news-li-a ui-btn ui-btn-icon-right ui-icon-carat-r" href="#news/source/<%= n.NewsSource.id%>"> <%= n.NewsSource.name %> </a> </li>
+  <li class="source-news-li news-divider show-all show-recent news-<%=news[i].NewsSource.rank%>" id="<%= n.NewsSource.id%>" > 
+  	<a class="source-news-li-a ui-btn ui-btn-icon-right ui-icon-carat-r" href="#news/source/<%= n.NewsSource.id%>"> <%= n.NewsSource.name %> </a> </li>
   <% }
 if(epCount < 4) {
 epCount++;
 %>
-  <li<%=extra%> class="<%=klasse%>" id="<%= e.id %>"> <a href="#news/view/<%= e.id %>"><%= e.headline %><br />
-    <span style="font-size:12px"><%= e.description %></span> <br />
-    <span style="font-size:10px"><%= e.DateString %></span> </a> </li>
+  <li<%=extra%> class="<%=klasse%>" id="<%= e.id %>"> <a href="#news/view/<%= e.id %>"><%= e.headline %>
+    <p><%= e.description %> <br>
+    <span class="news-date"><%= e.DateString %></p> </a> </li>
   <% }
 }); %>
 </ul>

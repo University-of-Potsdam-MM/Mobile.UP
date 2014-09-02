@@ -61,6 +61,10 @@ p {
 	margin: .3em;
 }
 
+.nomargin {
+	margin:0 !important;
+}
+
 /*visited*/
 
  html .ui-bar-a .ui-btn:visited,
@@ -1571,4 +1575,87 @@ table#grades {
 	#grades.ui-table-reflow.ui-responsive {
 	display: inline-table;
 	}
+}
+
+/* News*/
+
+.news-divider a.ui-btn{
+	background:#014260;
+	color:#fff;
+}
+
+.news-divider a.ui-btn:visited{
+	background:#014260;
+	color:#fff;
+}
+
+li.news-entry a {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	padding-right:30px;
+	
+}
+
+li.news-entry a p{
+	font-weight:normal;
+	font-size:.8em;
+	
+}
+
+
+li.news-entry a p span.news-date{
+	font-weight:bold;
+	font-size:.7em;
+}
+
+#news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-white.png);
+	background-color: transparent;
+}
+
+#news li.entry .ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-darkblue.png);
+	background-color: transparent;
+}
+
+#news li.show-all a {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	padding-right:30px;
+}
+
+#news h3 {
+	background-color:#014260;
+	padding-left:.5em;
+	color:#fff;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	min-height: 40px;
+	line-height: 40px;
+}
+
+#news-content h2 {
+	color:#014260;
+	font-weight:bold;
+	font-size:.1.5em;
+	margin-bottom:0px;
+	margin-left:.1em;
+	
+}
+
+#news-content p.news-text,  p,  #news-content br {
+	margin-bottom:10px !important;
+	margin-top:0px;
+	
+}
+
+#news-content {
+	padding:.5em;
+}
+
+#news-content img {
+	float:left;
+	margin:0 auto;
 }
