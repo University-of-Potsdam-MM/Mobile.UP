@@ -1,5 +1,7 @@
 <% if (event.Event.pic) { %>
-  <img class="event-image" height="100" src="<%= event.Event.pic %>" />
+<div class="event-image-container">
+  <img class="event-image" height="100" src="<%= event.Event.pic %>" /> 
+   <h2><%= event.Event.name %></h2></div>
 <% } %>
 <div class="floatR right-event-detail">
 	<% if(going) { %>
@@ -16,14 +18,16 @@
 	</div>
 <% } %>
 </div>
-<h1><%= event.Event.name %></h1>
+<div class="event-time-date">
+
 <% var ds = event.Event.DateString.replace(/\|/, '<img style="vertical-align:-2px;" src="img/clock.png" />') %>
 <p>
 	<img style="vertical-align:-2px;" src="img/cal.png" />
 	<strong><%= ds %> Uhr</strong>
+</div>
 	<% if(true) { %>
-		<br />
-		<a id="saveInCal<%=event.Event.id%>" class="button saveToCal" data-role="button">In Kalender speichern</a>
+		
+		<a id="saveInCal<%=event.Event.id%>" class="saveToCal" data-role="button" data-theme="a">In Kalender speichern</a>
 	<% } %>
 </p>
 <%
@@ -42,8 +46,8 @@ if(d.length - lim > 25) {
 	<p><%= description %></p>
 <% } %>
 <br />
-<div>
-	<strong>
+<div class="event-detail">
+	
 		<%=event.Place.name%><br />
 		<%=event.Place.adresse%><br />
 		<%=event.Place.plz%> <%=event.Place.ort%><br />
@@ -54,5 +58,5 @@ if(d.length - lim > 25) {
 		<% } else { %>
 			<a target="_system" href="http://maps.google.com/?q=<%=event.Place.lat%>,+<%=event.Place.lng%>+(<%=event.Place.name%>)">Auf Karte anzeigen</a>
 		<% } %>
-	</strong>
+	
 </div>
