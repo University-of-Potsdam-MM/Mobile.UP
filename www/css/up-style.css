@@ -830,11 +830,8 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 	text-indent: 0;
 	line-height: 40px;
 	font-size: .8em;
-
-
-#earlierButton {
-	font-size:.8em !important;
 }
+
 #summary {
 	margin: 1em .3em 1em .3em;
 	font-size: .8em;
@@ -863,14 +860,12 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 .spaeter {
 	width: 40%;
 	margin: 0 auto;
-	font-size: .8em;
 }
 
 .spaeter .ui-input-btn {
 	margin-top: 0;
 	margin-bottom: 0;
 	border: 0;
-	font-size: .8em;
 }
 
 .ui-listview>li h3.complex_transport .ui-btn {
