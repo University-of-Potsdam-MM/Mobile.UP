@@ -1,6 +1,6 @@
 <% if (event.Event.pic) { %>
 <div class="event-image-container">
-  <img class="event-image" height="100" src="<%= event.Event.pic %>" /> 
+  <img class="event-image" height="100" src="<%= event.Event.pic %>" />
    <h2><%= event.Event.name %></h2></div>
 <% } %>
 <div class="floatR right-event-detail">
@@ -26,12 +26,11 @@
 	<strong><%= ds %> Uhr</strong>
 </div>
 	<% if(true) { %>
-		
+
 		<a id="saveInCal<%=event.Event.id%>" class="saveToCal" data-role="button" data-theme="a">In Kalender speichern</a>
 	<% } %>
 </p>
 <%
-console.log(event);
 var description = event.Event.description;
 var d = description.split(' '), lim = 50;
 if(d.length - lim > 25) {
@@ -47,7 +46,7 @@ if(d.length - lim > 25) {
 <% } %>
 <br />
 <div class="event-detail">
-	
+
 		<%=event.Place.name%><br />
 		<%=event.Place.adresse%><br />
 		<%=event.Place.plz%> <%=event.Place.ort%><br />
@@ -58,5 +57,5 @@ if(d.length - lim > 25) {
 		<% } else { %>
 			<a target="_system" href="http://maps.google.com/?q=<%=event.Place.lat%>,+<%=event.Place.lng%>+(<%=event.Place.name%>)">Auf Karte anzeigen</a>
 		<% } %>
-	
+
 </div>

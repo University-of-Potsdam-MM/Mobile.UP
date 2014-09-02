@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		parse: function(response){
 			//console.log(response);
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			return response;
 		}
@@ -39,7 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		},
 
 		parse: function(response){
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			this.response = response;
 			return response.news;
@@ -97,7 +97,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			return this;
 		}
 	});
-	
+
 	app.views.NewsSet_sources = Backbone.View.extend({
 		el: '#news',
 
@@ -110,7 +110,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		render:function(){
 			this.$el = this.page.$el.find('#news');
-			console.log(LocalStore.get('disabledNews', {}));
+			//console.log(LocalStore.get('disabledNews', {}));
 			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: LocalStore.get('disabledNews', {})}));
 			$('.ch-news').change(this.toggleNews);
 			this.$el.trigger("create");
@@ -129,7 +129,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 				if(!el.checked)
 					disabledNews[$(el).data('id')] = $(el).data('id');
 			});
-			console.log(disabledNews);
+			//console.log(disabledNews);
 			LocalStore.set('disabledNews', disabledNews);
 		},
 	});
@@ -168,8 +168,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		render: function(){
 
 			this.$el.html(this.template({}));
-			console.log(this.options.action);
-			console.log(this.options.aid);
+			//console.log(this.options.action);
+			//console.log(this.options.aid);
 
 			/*if (!this.options.action){
 				var news = new app.models.News();
@@ -194,44 +194,3 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 	return app.views; //NewsPageView;
 });
-
-
-/*
-
-
-/*
-		events: {
-			"click ul li.news-entry" : 'renderNewsEntry',
-			"click ul li.news-divider" : 'renderNewsSource'
-		},
-
-
-		renderNewsEntry: function(ev){
-	      ev.preventDefault();
-	      var newsId = $(ev.target).closest('li').attr('id')
-	      var newsEntry = this.collection.find(function(model) {
-	      	return model.get('News').id == newsId;
-	      });
-
-	      var newsEntryView = new NewsEntryView({model: newsEntry});
-	      newsEntryView.render();
-		},
-
-		renderNewsSource: function(ev){
-			ev.preventDefault();
-			var newsId = $(ev.target).closest('li').attr('id')
-			console.log(this.collection);
-			var filteredNews = this.collection.filter(function(model) {
-				return model.get('NewsSource').id == newsId;
-			});
-
-			var newsSource = new NewsSource(filteredNews);
-			console.log(newsSource);
-
-
-			var newsSourceView = new NewsSourceView({collection: newsSource});
-			newsSourceView.render();
-		}
-
-
-*/

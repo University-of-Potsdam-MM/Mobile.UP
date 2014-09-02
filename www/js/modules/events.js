@@ -9,7 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.url = this.url + this.id;
 		},
 		parse: function(response){
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			return response;
 		}
@@ -17,15 +17,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 	app.models.Events = Backbone.Collection.extend({
 		model: app.models.Event,
-		//url: 'js/json/events.json',
 		url: 'http://headkino.de/potsdamevents/json/events/',
 
-		initialize: function(){
-
-		},
-
 		parse: function(response){
-			console.log(response);
 			if(response.vars)
 				response = response.vars;
 			this.response = response;
@@ -33,10 +27,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 	});
-	
+
 	app.models.Place = Backbone.Collection.extend({
 		model: app.models.Event,
-		//url: 'js/json/events.json',
 		url: 'http://headkino.de/potsdamevents/json/events/place/',
 
 		initialize: function(p){
@@ -67,7 +60,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 		render:function(){
-			var vars = this.model.toJSON(); 
+			var vars = this.model.toJSON();
 			if(!vars.event)
 				vars.event = vars;
 			this.$el = this.page.$el.find('#events');// $(this.el, this.page.$el)
@@ -103,7 +96,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		}
 
 	});
-	
+
 	app.views.EventsPlace = Backbone.View.extend({
 		el: '#events',
 		initialize: function(p){
@@ -112,7 +105,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.page = p.page;
 			this.filter = p.filter;
 			app.data.events = p.events;
-			
+
 			_.bindAll(this, 'render');
 			//this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
 	   		//this.disabledLocations = LocalStore.get('disabledLocations', {});
@@ -125,7 +118,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 		fetchError: function(){
-			throw new Error('Error loading JSON file'); 
+			throw new Error('Error loading JSON file');
 		},
 
 		render: function(){
@@ -138,7 +131,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			return this;
 		}
 	});
-	
+
 	app.views.EventsSet_locations = Backbone.View.extend({
 		el: '#events',
 
@@ -157,7 +150,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			$('.back').attr('href', '#events');
 			return this;
 		},
-		
+
 		/*
 		* Locations toggeln
 		*/
@@ -189,7 +182,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 		fetchError: function(){
-			throw new Error('Error loading JSON file'); 
+			throw new Error('Error loading JSON file');
 		},
 
 		render: function(){
@@ -197,7 +190,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.$el = this.page.$el.find('#events');
 			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:LocalStore.get('going', {})}));
 			var self = this;
-			$('.btn-filter-events').click(function(e){ 
+			$('.btn-filter-events').click(function(e){
 				e.preventDefault();
 				self.filterIndex($(this).data('filter'));
 			});
@@ -205,7 +198,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.$el.trigger("create");
 			return this;
 		},
-		
+
 		filterIndex: function(w){
 			if(!this.filter)
 				this.filter = 'next';
@@ -239,7 +232,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			return this;
 		}
 	});
-	
+
 	return app.views;
 
 });
