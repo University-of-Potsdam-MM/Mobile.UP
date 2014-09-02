@@ -706,7 +706,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .ui-body-c .buttons_pt.ui-navbar .ui-btn,.ui-body-c .buttons_pt.ui-navbar .ui-input-text
 	{
 	display: inline-block;
-	width: 90%;
+	width: 100%;
 	height: 20px;
 	text-transform: none;
 	font-size: .8em;
@@ -753,6 +753,10 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 
 
 .buttons_pt .ui-input-datebox input {
+	width:50% !important;
+	text-align:left;
+	float:left;
+	
 	margin: 0 !important;
 	border: 0 !important;
 	text-align: center;
@@ -766,10 +770,20 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn {
-	visibility:hidden;
-	width:0 px !important;
-	height:0px !important;
+	background:transparent;
+	width:22px !important;
+	float:right;
+	margin-right:15%;
 	
+}
+
+.buttons_pt .ui-input-datebox a.ui-btn:after {
+	background-color:transparent;
+	
+}
+
+.buttons_pt li:last-child .ui-btn {
+	margin-right:15% !important;
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
