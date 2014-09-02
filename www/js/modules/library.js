@@ -472,7 +472,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     getDepartmentURL: function(recordData){
-      return recordData.department.href;
+      return recordData.department.id;
     },
 
     // complex function to get avialable status of items
@@ -483,7 +483,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       var statusInfo = '';
       // check for url when not in sru response
       if (book.attributes.url == null){
-        var url =  (item.unavailable && item.unavailable[0].href) ? item.unavailable[0].href : null;
+        var url =  (item.available && item.available[0].href) ? item.available[0].href : null;
         book.set('url', url);
       }
 

@@ -12,7 +12,8 @@
 		<% } %>
 		<span class="location-details">
 		<%= (location.get('url')) ? '<a href="'+location.get('url')+'" target="_blank" rel="external">'+location.get('item')[0]+'</a><br />' : '' %>
-		<%= (location.get('item')[1]) ? location.get('item')[1]+'<br />' : '' %><%= (location.get('item')[0] && !location.get('url')) ? location.get('item')[0]+'<br />' : '' %>
+		<%= (location.get('item')[1]) ? location.get('item')[1]+'<br />' : '' %>
+		<%= (!location.get('item')[1] && location.get('item')[0] && !location.get('url')) ? location.get('item')[0]+'<br />' : '' %>
 		<%= (location.get('label')) ? '<b>'+location.get('label')+'</b><br />' : '' %>
 		</span>
 	</p>
