@@ -45,15 +45,14 @@ define([
 					};
 				}
 
-				/**
-			 	 * Initialize Backbone override
-			 	 */
+			 	// Initialize Backbone override
 				$(overrideBackboneSync);
 				
-				/**
-				 * Initialize external link override
-				 */
+				// Initialize external link override
 				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
+				
+				// Register global error handler
+				window.onerror = utils.onError;
 
 				Router.initialize();
 			}

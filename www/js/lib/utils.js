@@ -181,6 +181,41 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			console.log("Opening " + url + " internally");
 		}
 	};
+	
+	/**
+	 * Generates a uuid v4. Code is taken from broofas answer in http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+	 */
+	var uuid4 = function() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		    return v.toString(16);
+		});
+	}
+	
+	/**
+	 * Handles unhandled errors and prevents them from bubbling to the top
+	 */
+	var onError = function(errorMessage, errorUrl, lineNumber, columnNumber, error) {
+		var uuid = localStorage.getItem("user-uuid");
+		if (!uuid) {
+			uuid = uuid4();
+			localStorage.setItem("user-uuid", uuid);
+		}
+		
+		var info = new Backbone.Model;
+		info.url = "http://localhost/log-services/rest/log";
+		info.set("uuid", uuid);
+		info.set("message", errorMessage);
+		info.set("url", errorUrl);
+		info.set("line", lineNumber);
+		info.set("column", columnNumber);
+		info.save();
+		
+		console.log("Unhandled error thrown:");
+		console.log(info.attributes);
+		
+		return true;
+	};
 
 	return {
 			rendertmpl: rendertmpl,
@@ -191,6 +226,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			ErrorView: ErrorView,
 			LoadingView: LoadingView,
 			overrideExternalLinks: overrideExternalLinks,
-			detectUA:detectUA
+			detectUA:detectUA,
+			onError: onError
 		};
 });
