@@ -109,7 +109,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					</div> \
 					<div id='error-placeholder'></div> \
 					<!-- map loads here... --> \
-					<div id='map-canvas' class='gmap3' style='height: 400px;'></div> \
+					<div id='map-canvas' class='gmap3' style='min-height: 600px;'></div> \
 				</div>");
 			this.element.trigger("create");
 

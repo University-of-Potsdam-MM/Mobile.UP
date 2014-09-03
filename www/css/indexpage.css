@@ -19,7 +19,8 @@
 }
 
 #home .ui-btn.settings.ui-icon-gear {
-	height:20px;
+	height:15px;
+	margin-right:10px;
 }
 
 /*
@@ -34,7 +35,12 @@
 #home .ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
-	color:#fff;
+	color: #FFF;
+	font-family: GEorgia, serif;
+	font-weight: normal;
+	text-transform:none;
+	letter-spacing:.1em;
+	font-style:italic;
 }
 
 
@@ -49,7 +55,7 @@
 }
 
 /*1. icons startseite*/
-#home .ui-listview.ui-group-theme-b  li a span {
+#home .ui-listview.ui-group-theme-c  li a span {
 	background-image: url(../img/up/arrow-darkblue.png) !important;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -59,7 +65,7 @@
 }
 
 
-#home .ui-listview.ui-group-theme-b  li.news a span {
+#home .ui-listview.ui-group-theme-c  li.news a span {
 	background-image: url(../img/up/arrow-white.png) !important;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -68,43 +74,43 @@
 	display: inline-block;
 }
 
-#home .ui-listview.ui-group-theme-b  li.news a {
+#home .ui-listview.ui-group-theme-c  li.news a {
 	background-image: url(../img/up/news.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.events a {
+#home .ui-listview.ui-group-theme-c  li.events a {
 	background-image: url(../img/up/events.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.study a {
+#home .ui-listview.ui-group-theme-c  li.study a {
 	background-image: url(../img/up/study.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.around a {
+#home .ui-listview.ui-group-theme-c  li.around a {
 	background-image: url(../img/up/around.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.plans a {
+#home .ui-listview.ui-group-theme-c  li.plans a {
 	background-image: url(../img/up/plans.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.search a {
+#home .ui-listview.ui-group-theme-c  li.search a {
 	background-image: url(../img/up/search.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.impressum a {
+#home .ui-listview.ui-group-theme-c  li.impressum a {
 	background-image: url(../img/up/impressum-index.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;

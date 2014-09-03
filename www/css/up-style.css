@@ -9,6 +9,10 @@
 .ui-content {
 	padding: 0em;
 }
+	
+.ui-collapsible-content {
+	padding-right:.5em;
+}
 
 body,.ui-page {
 
@@ -71,8 +75,10 @@ p {
  html .ui-body-a .ui-btn:visited,
  html body .ui-group-theme-a .ui-btn:visited,
  html head+body .ui-btn.ui-btn-a:visited {
- background:#EDEDED;
+ 	background:#014260;
  }
+ 
+ 
 
 /*header*/
 .ui-header .ui-title {
@@ -100,12 +106,17 @@ p {
 	overflow: hidden;
 	white-space: nowrap;
 	outline: 0 !important;
-	text-transform: uppercase;
-	letter-spacing: 0.3em;
-	font-weight: bold;
+	font-weight:normal;
+	
+	font-family:Georgia,serif;
 	margin-left: 45px;
 	text-indent: 15px;
 	line-height:2em;
+	
+	
+	
+	letter-spacing:.1em;
+	font-style:italic;
 }
 
 h2 {
@@ -144,11 +155,9 @@ h2 span {
 	text-indent: -400000px;
 	position: relative;
 	float: left;
-	margin-left: 5px;
-	margin-right: 5px;
 	height:80%;
 	width:12px;
-	background-position:10px 8px;
+	background-position:10px 11px;
 }
 
 /*default buttons links */
@@ -586,8 +595,9 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	white-space: no-wrap:
 }
 
+/*frage*/
 .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
-	padding: .8em 0em !important;
+	padding: .8em .1em !important;
 	/*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 	white-space: normal;
 }
@@ -647,6 +657,16 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	color: #014260 font-size:  .8em;
 }
 
+#opening .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+	padding-left: 0px !important;
+	padding-right: 15px !important;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	
+}
+
+
 /*table  öffnungszeiten
 ---------------------------------*/
 #opening p {
@@ -690,6 +710,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .ui-table-reflow tbody th {
 	margin-top: .5em;
 }
+
 
 /*öffnungszeiten - button hover
 #opening.ui-page-theme-a ul .ui-btn:hover {
@@ -880,6 +901,7 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 	margin-top: 0;
 	margin-bottom: 0;
 	border: 0;
+	font-size:.8em;
 }
 
 .ui-listview>li h3.complex_transport .ui-btn {
@@ -935,6 +957,10 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 	display: block;
 }
 
+
+.stationTime {
+	color:#014260;
+}
 /**********************Suche******************
 *****************************************************/
 #library .ui-input-btn {
@@ -1592,15 +1618,42 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background: #cfdae3;
 	color: #014260;
 	font-size: .8em;
-	padding-left: 1.5em;
+	padding-left: 5px;
 }
 
 #lectures .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
-		padding-left:1em !important;
+		padding-left:5 px !important;
 }
 
 #lectures .ui-select {
 	width: 100%;
+}
+
+#lectures .ui-listview-inset>.ui-li-static, .ui-listview-inset>.ui-li-divider, .ui-listview-inset>li>a.ui-btn {
+	padding-right:25px;
+}
+
+a#selectLevel-button {
+	padding-right:15px;
+	padding-left: 5px;
+text-align: left;
+}
+
+#lectures #selectLevel-listbox .ui-header .ui-title{
+	background-image:none;
+	text-indent:1px;
+	margin-left: 10px;
+	letter-spacing: normal
+	
+}
+
+#lectures .table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
+	background-color:#ededed;
+	border-bottom:none;
+}
+
+#lectures .ui-listview-inset>.ui-li-static.lecture-group-detail {
+	padding-right:0;
 }
 
 /***********************grades***********************
@@ -1646,7 +1699,7 @@ li.news-entry a p{
 
 li.news-entry a p span.news-date{
 	font-weight:bold;
-	font-size:.7em;
+	font-size:.8em;
 }
 
 #news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
@@ -1663,7 +1716,7 @@ li.news-entry a p span.news-date{
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	padding-right:30px;
+	
 }
 
 #news h3 {
@@ -1684,7 +1737,7 @@ li.news-entry a p span.news-date{
 	margin-left:.1em;
 }
 
-#news-content p.news-text,  p,  #news-content br {
+#news-content p.news-text, #news p,  #news-content br {
 	margin-bottom:10px !important;
 	margin-top:0px;
 }
@@ -1703,12 +1756,13 @@ li.news-entry a p span.news-date{
 
 #events .ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
     min-height: 3.625em;
-    padding-left: 3.5em;
+    padding-left: 4.5em;
     padding-top:.5em;
 }
 
 #events .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child {
 	margin-top:.5em;
+	margin-left:.5em;
 }
 
 #events span.event-title, #events span.event-time {
@@ -1737,6 +1791,7 @@ div.event-caption span.event-time{
 	padding-top:.5em;
 	padding-bottom:.5em;
 	min-height:100px;
+	background-color:#ededed;
 }
 
 .event-image-container h2 {
@@ -1758,6 +1813,13 @@ div.event-caption span.event-time{
 
 .event-detail {
 	color:#014260;
+	padding-left:.5em;
+	padding-right:.5em;
+}
+
+p.event-description {
+	padding-left:.5em;
+	padding-right:.5em;
 }
 
 #events h3 {

@@ -1,6 +1,6 @@
 <% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
-<li>
-	<p>
+<li class="lecture-group-detail">
+	
 		<h3><%= group.name %></h3>
 
 		<style>
@@ -15,7 +15,7 @@
 			}
 		</style>
 
-		<table data-role="table" class="ui-responsive">
+		<table data-role="table" data-mode="reflow" class="ui-responsive table-stripe  ui-table ui-table-reflow" >
 			<thead>
 				<tr>
 					<th>Tag</th>
@@ -39,6 +39,6 @@
 				<% }); %>
 			</tbody>
 		</table>
-	</p>
+	
 </li>
 <% }); %>

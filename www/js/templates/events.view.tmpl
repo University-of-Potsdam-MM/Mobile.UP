@@ -35,14 +35,14 @@ var description = event.Event.description;
 var d = description.split(' '), lim = 50;
 if(d.length - lim > 25) {
 	var d2 = d.splice(lim, d.length - lim);
-	%><p>
+	%><p class="event-description">
 		<%= d.join(' ') %>&nbsp;<span id="showMore<%=event.Event.id%>" style="display:none"><%= d2.join(' ') %></span>
 		<span id="showMoreBtn<%=event.Event.id%>">... <a href="javascript:;" onclick="$('#showMore<%=event.Event.id%>, #showMoreBtn<%=event.Event.id%>').toggle();">
 			mehr anzeigen</a>
 		</span>
 	</p>
 <% } else { %>
-	<p><%= description %></p>
+	<p class="event-description"><%= description %></p>
 <% } %>
 <br />
 <div class="event-detail">

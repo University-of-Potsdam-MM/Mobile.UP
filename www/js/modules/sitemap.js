@@ -36,32 +36,32 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 						terminals: { "icon": "img/up/puck-marker.png" },
 						canteens: { "icon": "img/up/mensa-marker.png" },
 						parking: {
-							"strokeColor": "#70c8dc",
+							"strokeColor": "#fff",
 						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
+						    "strokeWeight": 2,
 						    "fillColor": "#70c8dc",
-						    "fillOpacity": 0.5
+						    "fillOpacity": 0.8
 						},
 						institutes: {
-							"strokeColor": "#e57967",
+							"strokeColor": "#fff",
 						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
+						    "strokeWeight": 2,
 						    "fillColor": "#e57967",
-						    "fillOpacity": 0.5
+						    "fillOpacity": 0.8
 						},
 						associateinstitutes: {
-							"strokeColor": "#cf6da8",
+							"strokeColor": "#fff",
 						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
+						    "strokeWeight": 2,
 						    "fillColor": "#cf6da8",
-						    "fillOpacity": 0.5
+						    "fillOpacity": 0.8
 						},
 						student: {
-							"strokeColor": "#897cc2",
+							"strokeColor": "#fff",
 						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
+						    "strokeWeight": 2,
 						    "fillColor": "#897cc2",
-						    "fillOpacity": 0.5
+						    "fillOpacity": 0.8
 						}
 					}
 				};
@@ -250,8 +250,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 		var host = $("#" + lastFinderId);
 		host.empty();
-		host.append("<ul id='similarlocations' data-role='listview' style='margin: 8px;'></ul>");
-		host.append("<button onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
+		host.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
+		host.append("<button data-theme='a' 'onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
 		host.trigger("create");
 
 		var similars = similarHouses.concat(similarDescriptions);
