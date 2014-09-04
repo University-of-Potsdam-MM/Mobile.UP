@@ -9,7 +9,7 @@
 .ui-content {
 	padding: 0em;
 }
-	
+
 .ui-collapsible-content {
 	padding-right:.5em;
 }
@@ -77,8 +77,8 @@ p {
  html head+body .ui-btn.ui-btn-a:visited {
  	background:#014260;
  }
- 
- 
+
+
 
 /*header*/
 .ui-header .ui-title {
@@ -107,14 +107,14 @@ p {
 	white-space: nowrap;
 	outline: 0 !important;
 	font-weight:normal;
-	
+
 	font-family:Georgia,serif;
 	margin-left: 45px;
 	text-indent: 15px;
 	line-height:2em;
-	
-	
-	
+
+
+
 	letter-spacing:.1em;
 	font-style:italic;
 }
@@ -243,25 +243,9 @@ h2 span {
 /* Datebox*/
 
 .ui-input-datebox {
-
 	width: 100% !important;
 	color: #fff;
 	background-color: #014260;
-/*
-	background-image: none;
-	padding: 0.4em;
-	font-size: 16px;
-	display: block;
-	padding-top: 0;
-	padding-bottom: 0;
-
-
-}
-
-.ui-input-datebox input {
-	color: #fff;
-	text-shadow: none;
-	*/
 }
 
 label.showfirst {
@@ -663,7 +647,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-	
+
 }
 
 
@@ -763,21 +747,17 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 
 html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
 	line-height:135%;
-
 }
 
 html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	line-height: 25px;
 	font-size: .9em !important;
-
 }
 
-
 .buttons_pt .ui-input-datebox input {
-	width:50% !important;
-	text-align:left;
-	float:left;
-
+	width: 60% !important;
+	text-align: left;
+	float: left;
 	margin: 0 !important;
 	border: 0 !important;
 	text-align: center;
@@ -785,9 +765,9 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	min-height: 1em;
 	font-weight: bold;
 }
+
 .buttons_pt .ui-input-datebox {
 	background:transparent;
-
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn {
@@ -795,12 +775,10 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	width:22px !important;
 	float:right;
 	margin-right:15%;
-
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn:after {
 	background-color:transparent;
-
 }
 
 .buttons_pt li:last-child .ui-btn {
@@ -821,6 +799,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	padding: .7em 0em;
 	background-color: #014260 !important;
 }
+
 /*slider*/
 .buttons_pt .ui-slider-switch .ui-slider-label {
 	font-weight: normal;
@@ -831,6 +810,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 .buttons_pt .ui-slider-switch .ui-slider-label-b {
 	color: #014260;
 }
+
 html .ui-body-c .ui-slider-track .ui-btn-active {
 	color:#fff;
 }
@@ -1644,7 +1624,7 @@ text-align: left;
 	text-indent:1px;
 	margin-left: 10px;
 	letter-spacing: normal
-	
+
 }
 
 #lectures .table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
@@ -1716,7 +1696,7 @@ li.news-entry a p span.news-date{
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	
+
 }
 
 #news h3 {
