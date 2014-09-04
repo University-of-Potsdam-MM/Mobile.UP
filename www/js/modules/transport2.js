@@ -177,7 +177,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
         }
       } else {
         // date should be parseable
-        var mDate = moment(date);
+        var mDate = moment(date, "DD MM YYYY");
         var mTime;
         if ('Jetzt' === time) {
           // current time but on a specific date
