@@ -28,7 +28,8 @@ define([
 									"http://api.uni-potsdam.de/endpoints/libraryAPI",
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
-									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/"];
+									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
+									"http://fossa.soft.cs.uni-potsdam.de:8280/services/errorAPI/"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);

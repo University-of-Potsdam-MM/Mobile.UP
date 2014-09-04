@@ -203,16 +203,17 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		}
 		
 		var info = new Backbone.Model;
-		info.url = "http://localhost/log-services/rest/log";
+		info.url = "http://fossa.soft.cs.uni-potsdam.de:8280/services/errorAPI/rest/log";
 		info.set("uuid", uuid);
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);
 		info.set("line", lineNumber);
 		info.set("column", columnNumber);
-		info.save();
 		
 		console.log("Unhandled error thrown:");
 		console.log(info.attributes);
+		
+		info.save();
 		
 		return true;
 	};
