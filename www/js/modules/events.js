@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 	 *
 	 */
 	app.models.Event = Backbone.Model.extend({
-		url: 'http://headkino.de/potsdamevents/json/events/view/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/view/',
 		initialize: function(){
 			this.url = this.url + this.id;
 		},
@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 	app.models.Events = Backbone.Collection.extend({
 		model: app.models.Event,
-		url: 'http://headkino.de/potsdamevents/json/events/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/',
 
 		parse: function(response){
 			if(response.vars)
@@ -30,7 +30,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 	app.models.Place = Backbone.Collection.extend({
 		model: app.models.Event,
-		url: 'http://headkino.de/potsdamevents/json/events/place/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/place/',
 
 		initialize: function(p){
 			this.url = this.url + p.id;

@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 	 *	Backbone Model - NewsEntry
 	 */
 	app.models.NewsEntry = Backbone.Model.extend({
-		url: 'http://headkino.de/potsdamevents/json/news/view/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/',
 
 		initialize: function(){
 			this.url = this.url+this.id;
@@ -33,7 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 	 */
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'http://headkino.de/potsdamevents/json/news/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
 
 		initialize: function(){
 		},
@@ -45,10 +45,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			return response.news;
 		},
 	});
-	
+
 	app.models.NewsSource = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'http://headkino.de/potsdamevents/json/news/source/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/source/',
 
 		initialize: function(p){
 			this.url = this.url+p.id;
@@ -61,7 +61,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			return response.news;
 		},
 	});
-	
+
 
 	var NewsSource = Backbone.Collection.extend({
 		model: app.models.News
