@@ -60,6 +60,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 		render:function(){
+			this.undelegateEvents();
+			
 			var vars = this.model.toJSON();
 			if(!vars.event)
 				vars.event = vars;
@@ -68,6 +70,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
 			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			
+			this.delegateEvents();
 			return this;
 		},
 
