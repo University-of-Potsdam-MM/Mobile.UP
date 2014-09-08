@@ -6,7 +6,7 @@ define([
   'backbone',
   'utils',
   'Session'
-], function( $, _, Backbone, utils, Session) {
+], function( $, _, Backbone, utils, Session ) {
 
   var moodleAPI = {};
 
@@ -38,11 +38,15 @@ define([
 
     url: 'https://api.uni-potsdam.de/endpoints/moodleAPI/webservice/rest/server.php',
 
+    token: function() {
+      return this.session.get('up.session.MoodleToken');
+    },
+
     createWsFunction: function(wsfunction, paramNames){
       var api = this;
       api[wsfunction] = function(params) {
         paramNames = _.union(paramNames, ['wsfunction','wstoken','moodlewsrestformat']);
-        var ws = {'wsfunction': wsfunction, 'wstoken': this.session.get('up.session.MoodleToken')};
+        var ws = {'wsfunction': wsfunction, 'wstoken': this.token()};
         var postParams = _.pick(_.extend(api.attributes, params, ws), paramNames);
 
         return cors_post(api.url, postParams).promise();
@@ -64,11 +68,11 @@ define([
     },
 
     fetchUserid: function(){
-      if (this.session.get('up.session.MoodleToken')){
+      if (this.token()){
         var api = this;
         var params = {
           moodlewsrestformat:'json',
-          wstoken: this.session.get('up.session.MoodleToken'),
+          wstoken: this.token(),
           wsfunction:'moodle_webservice_get_siteinfo',
         };
 

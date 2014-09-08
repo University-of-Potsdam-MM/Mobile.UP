@@ -4,8 +4,9 @@ define([
         'backbone',
         'utils',
         'modules/moodle.api',
+        'modules/moodle.utils',
         'Session'
-], function( $, _, Backbone, utils, moodleAPI, Session) {
+], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
 
   "use strict";
 
@@ -41,6 +42,10 @@ define([
       // console.log('fetch CourseContents', arguments);
       var collection = this;
       moodleAPI.api.core_course_get_contents({courseid: this.courseid})
+        .then(function(contents){
+          var token = moodleAPI.api.token();
+          return moodleUtils.fixPluginfileForCourseContents(token, contents);
+        })
         .done(function(contents){
           collection.reset(contents);
         });
