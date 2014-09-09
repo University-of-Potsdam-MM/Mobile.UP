@@ -347,6 +347,32 @@ label.showfirst {
 	background-color: transparent;
 }
 
+/*login - logout
+-------------------- */
+.ui-icon-login:after {
+	background-image: url(../img/up/login.svg);
+	background-color:#fff !important;
+	top:25%;
+}
+
+.ui-icon-logout:after {
+	background-image: url(../img/up/logout.svg);
+	background-color:#fff !important;
+	top:25%;
+}
+
+.ui-icon-login-blue:after {
+	background-image: url(../img/up/login-white.svg);
+	background-color:#014260 !important;
+	top:55%;
+}
+
+.ui-icon-logout-blue:after {
+	background-image: url(../img/up/logout-white.svg);
+	background-color:#014260 !important;
+	top:55%;
+}
+
 
 /*arrow right */
 .ui-icon-arrow-darkblue:after {
