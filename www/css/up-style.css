@@ -1636,6 +1636,15 @@ text-align: left;
 	padding-right:0;
 }
 
+li.lecture-group-detail {
+	background-color:transparent !important;
+}
+
+h3.lecture-group-name {
+	margin: 12px !important;
+	margin-left:5px !important;
+}
+
 /***********************grades***********************
 **************************************************************/
 
