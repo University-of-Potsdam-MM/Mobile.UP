@@ -54,6 +54,17 @@
 	background-image:url(../img/up/gear.svg);
 }
 
+#home .ui-header span.username-header {
+	display: inline-block;
+	float: right;
+	margin-right: 35px;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 40px;
+	font-family: arial,sans-serif;
+	
+}
+
 /*1. icons startseite*/
 #home .ui-listview.ui-group-theme-c  li a span {
 	background-image: url(../img/up/arrow-darkblue.png) !important;
