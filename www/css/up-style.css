@@ -353,24 +353,32 @@ label.showfirst {
 	background-image: url(../img/up/login.svg);
 	background-color:#fff !important;
 	top:25%;
+	left: .1em !important;
 }
 
 .ui-icon-logout:after {
 	background-image: url(../img/up/logout.svg);
 	background-color:#fff !important;
 	top:25%;
+	left: .1em !important;
 }
 
 .ui-icon-login-blue:after {
 	background-image: url(../img/up/login-white.svg);
 	background-color:#014260 !important;
 	top:55%;
+	left: .1em !important;
 }
 
 .ui-icon-logout-blue:after {
 	background-image: url(../img/up/logout-white.svg);
 	background-color:#014260 !important;
 	top:55%;
+	left: .1em !important;
+}
+
+#home .ui-btn.settings:active {
+	background-color:transparent;
 }
 
 
