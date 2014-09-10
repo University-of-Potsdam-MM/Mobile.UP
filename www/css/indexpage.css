@@ -57,10 +57,10 @@
 #home .ui-header span.username-header {
 	display: inline-block;
 	float: right;
-	margin-right: 35px;
+	margin-right: 25px;
 	font-size: .7em;
 	font-style: normal;
-	line-height: 40px;
+	line-height: 35px;
 	font-family: arial,sans-serif;
 	
 }
