@@ -27,7 +27,15 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			tmpl_string = removeTabs(tmpl_string);
 			rendertmpl.tmpl_cache[tmpl_name] = _.template(tmpl_string);
 	    }
-	    return rendertmpl.tmpl_cache[tmpl_name];
+	    return function(params) {
+	    	var templateFunction = rendertmpl.tmpl_cache[tmpl_name];
+	    	if (params.store == undefined){
+	    		params.store = LocalStore;
+	    	}else{
+	    		throw new error('Variable store already defined in function rendertmpl');
+	    	}
+	    	return templateFunction(params);
+	    };
 	};
 
 	var removeTabs = function(tmpl) {
