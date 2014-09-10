@@ -181,7 +181,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			console.log("Opening " + url + " internally");
 		}
 	};
-	
+
 	/**
 	 * Generates a uuid v4. Code is taken from broofas answer in http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 	 */
@@ -191,7 +191,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		    return v.toString(16);
 		});
 	}
-	
+
 	/**
 	 * Handles unhandled errors and prevents them from bubbling to the top
 	 */
@@ -201,20 +201,20 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 			uuid = uuid4();
 			localStorage.setItem("user-uuid", uuid);
 		}
-		
+
 		var info = new Backbone.Model;
-		info.url = "http://fossa.soft.cs.uni-potsdam.de:8280/services/errorAPI/rest/log";
+		info.url = "http://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
 		info.set("uuid", uuid);
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);
 		info.set("line", lineNumber);
 		info.set("column", columnNumber);
-		
+
 		console.log("Unhandled error thrown:");
 		console.log(info.attributes);
-		
+
 		info.save();
-		
+
 		return true;
 	};
 

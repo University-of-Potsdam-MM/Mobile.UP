@@ -29,7 +29,7 @@ define([
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
 									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
-									"http://fossa.soft.cs.uni-potsdam.de:8280/services/errorAPI/"];
+									"http://api.uni-potsdam.de/endpoints/errorAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
@@ -48,10 +48,10 @@ define([
 
 			 	// Initialize Backbone override
 				$(overrideBackboneSync);
-				
+
 				// Initialize external link override
 				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
-				
+
 				// Register global error handler
 				window.onerror = utils.onError;
 
