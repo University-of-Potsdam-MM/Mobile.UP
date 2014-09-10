@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, _, Backbone, helper, LocalStore){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 	var classes = {};
 
 	/*
@@ -73,7 +73,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		idInCollection : 'id', //name oder . getrennter Pfad, wo die id in der collection steht für ein objekt
 		initialize: function(p){
 			this.page  = p.page;
-			this.template = helper.rendertmpl('news.view');
+			this.template = utils.rendertmpl('news.view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
 			this.model.fetch({
@@ -97,7 +97,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news_source');
+			this.template = utils.rendertmpl('news_source');
 			this.page  = p.page;
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
@@ -119,7 +119,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news.set_sources');
+			this.template = utils.rendertmpl('news.set_sources');
 			this.page  = p.page;
 			_.bindAll(this, 'render');
 			this.render();
@@ -127,8 +127,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		render:function(){
 			this.$el = this.page.$el.find('#news');
-			//console.log(LocalStore.get('disabledNews', {}));
-			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: LocalStore.get('disabledNews', {})}));
+			//console.log(utils.LocalStore.get('disabledNews', {}));
+			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			$('.ch-news').change(this.toggleNews);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#news');
@@ -147,7 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 					disabledNews[$(el).data('id')] = $(el).data('id');
 			});
 			//console.log(disabledNews);
-			LocalStore.set('disabledNews', disabledNews);
+			utils.LocalStore.set('disabledNews', disabledNews);
 		},
 	});
 
@@ -155,7 +155,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news_index');
+			this.template = utils.rendertmpl('news_index');
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
@@ -167,7 +167,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		render: function(){
 			app.data.newsSources = this.collection.response.newsSources;
 			this.$el = this.page.$el.find('#news');
-			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: LocalStore.get('disabledNews', {})}));
+			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -179,7 +179,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		initialize: function(options){
 			this.options = options || {};
-			this.template = helper.rendertmpl('news');
+			this.template = utils.rendertmpl('news');
 		},
 
 		render: function(){

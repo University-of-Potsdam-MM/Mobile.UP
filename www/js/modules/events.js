@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], function($, _, Backbone, utils, date, LocalStore){
+define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Backbone, utils, date){
 
 	/*
 	 *
@@ -61,16 +61,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 		render:function(){
 			this.undelegateEvents();
-			
+
 			var vars = this.model.toJSON();
 			if(!vars.event)
 				vars.event = vars;
 			this.$el = this.page.$el.find('#events');// $(this.el, this.page.$el)
-			vars = $.extend(vars, {going:Boolean(LocalStore.get('going', {})[vars.event.Event.id])});
+			vars = $.extend(vars, {going:Boolean(utils.LocalStore.get('going', {})[vars.event.Event.id])});
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
 			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
-			
+
 			this.delegateEvents();
 			return this;
 		},
@@ -86,7 +86,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			window.plugins.calendar.createEvent(e.Event.name, e.Place.name, e.Event.description, new Date(parseInt(e.Event.startTime) * 1000), new Date((parseInt(e.Event.startTime) + 3600) * 1000 ),
 				function(m){ //Bei erfolgreichem Speichern ausgeführt, unter Android leider nicht ausgeführt
 					navigator.notification.alert(e.Event.name + ' am ' + e.Event.DateString + ' wurde deinem Kalender hinzugefügt.', null, 'Gespeichert'); //Nachricht ausgeben
-					LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
+					utils.LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
 					$('#savedInCal'+e.Event.id).show(); //VOrgemerkt Häckchen anzeigen
 					saved = true;
 					track('events/calendar/'+e.Event.id+'/saved'); //Aktion tracken
@@ -111,8 +111,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			app.data.events = p.events;
 
 			_.bindAll(this, 'render');
-			//this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
-	   		//this.disabledLocations = LocalStore.get('disabledLocations', {});
+			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
+	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			if(!app.data.events)
 				this.collection.fetch({
 					success: this.render,
@@ -128,7 +128,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		render: function(){
 			this.$el = this.page.$el.find('#events');
 			console.log(this.$el);
-			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:LocalStore.get('going', {})}));
+			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;
 			this.$el.trigger("create");
 			$('.back').attr('href', '#events');
@@ -148,7 +148,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 		render:function(){
 			this.$el = this.page.$el.find('#events');
-			this.$el.html(this.template({places: app.data.places, disabledLocations: LocalStore.get('disabledLocations', {})}));
+			this.$el.html(this.template({places: app.data.places, disabledLocations: utils.LocalStore.get('disabledLocations', {})}));
 			$('.ch-location').change(this.toggleLocation);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#events');
@@ -166,7 +166,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 				if(!el.checked)
 					self.disabledLocations[$(el).data('id')] = $(el).data('id');
 			});
-			LocalStore.set('disabledLocations', this.disabledLocations);
+			utils.LocalStore.set('disabledLocations', this.disabledLocations);
 		},
 	});
 
@@ -178,8 +178,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.page = p.page;
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
-			//this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
-	   		//this.disabledLocations = LocalStore.get('disabledLocations', {});
+			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
+	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			this.collection.fetch({
 				success: this.render,
 				dataType: 'json' });
@@ -192,7 +192,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		render: function(){
 			app.data.places = this.collection.response.places;
 			this.$el = this.page.$el.find('#events');
-			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:LocalStore.get('going', {})}));
+			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;
 			$('.btn-filter-events').click(function(e){
 				e.preventDefault();
@@ -210,7 +210,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 				w = this.filter;
 			} else
 			var lstr = '', lim = '';
-			for(var i in LocalStore.get('disabledLocations', {})) {
+			for(var i in utils.LocalStore.get('disabledLocations', {})) {
 				lstr += lim + 'li.location-'+i;
 				lim = ',';
 			}
