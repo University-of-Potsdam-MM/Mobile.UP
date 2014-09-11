@@ -594,6 +594,10 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	opacity: 1
 }
 
+.ui-page-theme-a .ui-btn.settings2 {
+	right:30px;
+}
+
 
 
 /***************Öffnungszeiten********************
