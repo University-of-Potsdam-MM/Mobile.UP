@@ -3,7 +3,12 @@
     <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
   <!--        <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
       <a href="index.html" data-icon="back" class="ui-btn-right">Zurück</a> -->
-    <h1>Campus</h1>
+    <h1>Campus
+    <%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->

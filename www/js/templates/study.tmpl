@@ -1,7 +1,12 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
   <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-  <h1>Studium<a href="#options" class="settings" data-role="button" data-icon="login-blue"></a></h1>
+    <h1>Studium
+    <%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -14,15 +19,15 @@
         <p>Terminkalender</p>
       </a>
     </li> -->
-    
+
     <li class="lecturesdir">
       <a href="#lectures" data-role="button" data-transition="slidefade">
         <h2>Vorlesungsverzeichnis</h2>
         <p>Online Vorlesungsverzeichnis</p>
       </a>
-    </li> 
-    
-   
+    </li>
+
+
     <li class="grades">
       <a href="#grades" data-role="button" data-transition="slidefade">
         <h2>Meine Leistungen </h2>
@@ -30,7 +35,7 @@
 
       </a>
     </li>
-   
+
     <li class="moodle">
       <a href="#study/moodle" data-role="button" data-transition="slidefade">
         <h2>Moodle</h2>

@@ -5,8 +5,14 @@
     data-direction="reverse" class="back">Back</a>
   <!--        <a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
       <a href="index.html" data-icon="back" class="ui-btn-right">Zurück</a> -->
-  <h1>Veranstaltungen</h1>
-  <a data-icon="star" data-role="button" class="settings" href="#events/set_locations" role="button"></a>
+  <h1>Veranstaltungen
+  <%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header"><%= store.get('up.session.username') %></span><a href="#options" class="settings settings2" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings settings2" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+    <%  } %>
+    </h1>
+  <a data-icon="star" data-role="button" class="settings" href="#events/set_locations" role="button" title="settings" alt="settings"></a>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->

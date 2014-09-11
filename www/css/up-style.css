@@ -89,12 +89,11 @@ p {
 	background-position: top left;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.ui-header .ui-title {
 	background-image: url(../img/up/seperator-hres.png);
 	background-size:46px 55px;
 	}
-	
 }
 
 #error, #error3
@@ -198,10 +197,10 @@ h2 span {
 	height: 100%;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 	{
-	background-image: url(../img/up/menubutton-hres.png) !important; 
+	background-image: url(../img/up/menubutton-hres.png) !important;
 	background-size:7px 55px;
 	}
 }
@@ -609,12 +608,38 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 }
 
 .ui-page-theme-a .ui-btn.settings2 {
-	
 	right: 30px;
-	
 }
 
+.ui-header span.username-header {
+	display: inline-block;
+	float: right;
+	margin-right: 63px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
 
+}
+
+.ui-header span.username-header.nooptions {
+	display: inline-block;
+	float: right;
+	margin-right: 30px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
+
+}
+
+@media ( max-width : 300px) {
+	.ui-header span.username-header{
+		display:none;
+	}
+}
 
 /***************Öffnungszeiten********************
 *****************************************************/
