@@ -81,16 +81,18 @@ p {
 
 
 /*header*/
+
+
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.ui-header .ui-title {
-	background-image: url(../img/up/seperator-highres.png);
-	background-size:7px 55px;
+	background-image: url(../img/up/seperator-hres.png);
+	background-size:46px 55px;
 	}
 }
 
@@ -114,14 +116,10 @@ p {
 	white-space: nowrap;
 	outline: 0 !important;
 	font-weight:normal;
-
 	font-family:Georgia,serif;
 	margin-left: 45px;
 	text-indent: 15px;
 	line-height:2em;
-
-
-
 	letter-spacing:.1em;
 	font-style:italic;
 }
@@ -199,15 +197,13 @@ h2 span {
 	height: 100%;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 	{
-	
-	background-image: url(../img/up/menubutton-highres.png) !important;
-	background-size:46px 55px;
+	background-image: url(../img/up/menubutton-hres.png) !important;
+	background-size:7px 55px;
 	}
 }
-
 
 /*tabs*/
 .ui-navbar li {
@@ -612,7 +608,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 }
 
 .ui-page-theme-a .ui-btn.settings2 {
-	right:30px;
+	right: 30px;
 }
 
 .ui-header span.username-header {
@@ -624,7 +620,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	font-style: normal;
 	line-height: 35px;
 	font-family: arial,sans-serif;
-	
+
 }
 
 .ui-header span.username-header.nooptions {
@@ -636,11 +632,11 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	font-style: normal;
 	line-height: 35px;
 	font-family: arial,sans-serif;
-	
+
 }
 
 @media ( max-width : 300px) {
-	.ui-header span.username-header{ 
+	.ui-header span.username-header{
 		display:none;
 	}
 }
