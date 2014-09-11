@@ -81,10 +81,20 @@ p {
 
 
 /*header*/
+
+
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
 	background-repeat: no-repeat;
 	background-position: top left;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-hres.png);
+	background-size:46px 55px;
+	}
+	
 }
 
 #error, #error3
@@ -190,6 +200,14 @@ h2 span {
 	top: 0;
 	margin: 0;
 	height: 100%;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
+	{
+	background-image: url(../img/up/menubutton-hres.png) !important; 
+	background-size:7px 55px;
+	}
 }
 
 /*tabs*/
