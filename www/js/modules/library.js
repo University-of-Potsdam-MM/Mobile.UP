@@ -47,7 +47,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('authors', this.authors($xmlRecord));
       this.set('publisher', this.textForTag(xmlRecord, 'publisher'));
       this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
-      this.set('url', this.textForQuery($xmlRecord, 'url[displayLabel=Volltext]'));
+      this.set('url', this.textForQuery($xmlRecord, 'url[usage="primary display"]'));
       this.set('notes', this.contentForTag(xmlRecord, 'note'));
       this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
       this.set('keywords', this.keywords(xmlRecord, 'subject'));
@@ -122,17 +122,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         return author;
       });
       return names;
-    },
-
-    //TODO refactor
-    url: function(recordData) {
-      // get first item and check for primary display or usage attribute
-      var  urlusage = this.attributeContentForTag(recordData, 'location', 'usage');
-      if (urlusage && (urlusage.indexOf('primary display') != -1)) {
-        return (this.textForTag(recordData, 'location') || "").trim();
-      } else {
-        return null;
-      }
     },
 
     //TODO refactor
@@ -481,9 +470,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     getItem: function(item, book){
       var status = '';
       var statusInfo = '';
-      // check for url when not in sru response
-      if (book.attributes.url == null){
-        var url =  (item.available && item.available[0].href) ? item.available[0].href : null;
+      // reset url when in daia response unavailable service item openaccess is existing
+      var url =  (item.unavailable && item.unavailable[0].service == "openaccess") ? item.unavailable[0].href : null;
+      if (url != null){
         book.set('url', url);
       }
 
