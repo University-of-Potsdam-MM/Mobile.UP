@@ -117,14 +117,10 @@ p {
 	white-space: nowrap;
 	outline: 0 !important;
 	font-weight:normal;
-
 	font-family:Georgia,serif;
 	margin-left: 45px;
 	text-indent: 15px;
 	line-height:2em;
-
-
-
 	letter-spacing:.1em;
 	font-style:italic;
 }
@@ -610,6 +606,12 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 .ui-btn-icon-left.settings:after {
 	background-color: #014260;
 	opacity: 1
+}
+
+.ui-page-theme-a .ui-btn.settings2 {
+	
+	right: 30px;
+	
 }
 
 
