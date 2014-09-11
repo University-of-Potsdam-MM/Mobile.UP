@@ -87,6 +87,13 @@ p {
 	background-position: top left;
 }
 
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-highres.png);
+	background-size:7px 55px;
+	}
+}
+
 #error, #error3
 {
 	padding:.5em;
@@ -191,6 +198,16 @@ h2 span {
 	margin: 0;
 	height: 100%;
 }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
+	{
+	
+	background-image: url(../img/up/menubutton-highres.png) !important;
+	background-size:46px 55px;
+	}
+}
+
 
 /*tabs*/
 .ui-navbar li {
@@ -594,7 +611,39 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	opacity: 1
 }
 
+.ui-page-theme-a .ui-btn.settings2 {
+	right:30px;
+}
 
+.ui-header span.username-header {
+	display: inline-block;
+	float: right;
+	margin-right: 63px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
+	
+}
+
+.ui-header span.username-header.nooptions {
+	display: inline-block;
+	float: right;
+	margin-right: 30px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
+	
+}
+
+@media ( max-width : 300px) {
+	.ui-header span.username-header{ 
+		display:none;
+	}
+}
 
 /***************Öffnungszeiten********************
 *****************************************************/
