@@ -136,6 +136,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 				// Create view
 				new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
+				new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
 
 				// Fetch from server
 				submodel.fetch();
