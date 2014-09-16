@@ -89,7 +89,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 					utils.LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
 					$('#savedInCal'+e.Event.id).show(); //VOrgemerkt Häckchen anzeigen
 					saved = true;
-					track('events/calendar/'+e.Event.id+'/saved'); //Aktion tracken
 				},
 				function(m){ //Bei einem Fehler beim Speichern ausgeführt
 					if(m != 'User cancelled')

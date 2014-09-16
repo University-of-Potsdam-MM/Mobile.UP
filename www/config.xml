@@ -22,6 +22,7 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
+	<preference name="DisallowOverscroll" value="true" />
 
     <!-- Splashscreen settings -->
     <!-- For details see https://github.com/apache/cordova-plugin-splashscreen/blob/master/doc/index.md -->

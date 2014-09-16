@@ -4,14 +4,13 @@
    <h2><%= event.Event.name %></h2></div>
 <% } %>
 <div class="floatR right-event-detail">
-	<% if(going) { %>
-	<div class="clear floatR" id="savedInCal<%=event.Event.id%>">
+	<div class="clear floatR" <% if(!going) { %>style="display:none"<% } %> id="savedInCal<%=event.Event.id%>">
 		<span class="going-check">
 			<span class="ui-btn-icon-notext ui-icon-check"></span>
 		</span>
 		<span class="s-font floatR">Vorgemerkt</span>
 	</div>
-	<% } %>
+	
 <% if(event.Event.ticket_uri && false) { %>
 	<div class="buy-ticket-link">
 		<a onclick="app.openBrowser('<%=event.Event.ticket_uri%>')">Tickets kaufen</a>
