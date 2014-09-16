@@ -220,6 +220,11 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 
 		console.log("Unhandled error thrown:");
 		console.log(info.attributes);
+		
+		info.on("error", function(error) {
+			console.warn("Could not log error");
+			console.warn(error);
+		});
 
 		info.save();
 
