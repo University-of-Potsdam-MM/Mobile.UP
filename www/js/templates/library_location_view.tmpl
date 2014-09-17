@@ -5,7 +5,8 @@
 		<!--Alternativen: lent, prebook -->
 		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) { %>
 		<span class="lent"></span>
-		<% }else if(location.get('item')[0] && location.get('item')[0].indexOf("Präsenzbestand") != -1){ %>
+		<% }else if((location.get('item')[0] && location.get('item')[0].indexOf("Präsenzbestand") != -1) ||
+					(location.get('department') && location.get('department').indexOf("Handapparat") != -1)){ %>
 		<span class="prebook"></span>
 		<% }else{ %>
 		<span class="available"></span>
