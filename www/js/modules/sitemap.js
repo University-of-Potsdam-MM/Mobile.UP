@@ -60,8 +60,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		}
 	};
 	
+	/**
+	 * Prevents a given callback from getting called while a block is enabled. After the block is lifted, the callback gets called if its call was blocked earlier.
+	 */
 	var oneSidedGuard = {
-		callback: function(options) { drawSelectedCampus(options); },
+		callback: function(options) { mapHelper.drawSelectedCampus(options); },
 		isCalled: false,
 		isBlocked: true,
 		options: undefined,
@@ -134,117 +137,125 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
 		settings.options.student.fillColor = $(".sitemap-living").css("background-color");
 	});
+	
+	var MapHelper = Backbone.View.extend({
+		
+		drawSelectedCampus: function(options) {
+			uniqueDivId = _.uniqueId("id_");
+			lastFinderId = uniqueDivId;
+			lastCampus = options.campusName;
 
-	function drawSelectedCampus(options) {
-		uniqueDivId = _.uniqueId("id_");
-		lastFinderId = uniqueDivId;
-		lastCampus = options.campusName;
+			var campus = undefined;
+			if (options.campusName === "griebnitzsee") {
+				campus = settings.url.griebnitzsee;
+			} else if (options.campusName === "neuespalais") {
+				campus = settings.url.neuespalais;
+			} else {
+				campus = settings.url.golm;
+			}
 
-		var campus = undefined;
-		if (options.campusName === "griebnitzsee") {
-			campus = settings.url.griebnitzsee;
-		} else if (options.campusName === "neuespalais") {
-			campus = settings.url.neuespalais;
-		} else {
-			campus = settings.url.golm;
-		}
+			var search = undefined;
+			if (options["meta"] !== undefined) {
+				search = options.meta;
+			}
 
-		var search = undefined;
-		if (options["meta"] !== undefined) {
-			search = options.meta;
-		}
-
-		Q(clearMenu(uniqueDivId))
-			.then(function() { return geo.loadAllOnce(); })
-			.then(drawCampus(uniqueDivId, campus))
-			.spread(setSearchValue(search))
-			.fail(function (error) {
-				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
-			});
-	}
-
-	function clearMenu(uniqueDivId) {
-		$("#currentCampus").empty();
-		$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
-	}
-
-	function onItemSelected(selection) {
-		searchView.setSearchValue(selection);
-		searchView.hideAllItems();
-		// $("div[data-role='searchablemap']").searchablemap("viewByName", selection);
-	}
-
-	function drawCampus(uniqueDiv, url) {
-		return function() {
-			var host = $("#" + uniqueDiv);
-			host.append("<div data-role='searchablemap'></div>");
-			host.trigger("create");
-
-			$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
-			$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
-
-			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
-
-			var terminalsData = Q.fcall(getGeoByCategory, data, terminals)
-								.then(drawCategory(settings.options.terminals, terminals, url.campus));
-
-			var institutesData = Q.fcall(getGeoByCategory, data, institutes)
-								.then(drawCategory(settings.options.institutes, institutes, url.campus));
-
-			var canteensData = Q.fcall(getGeoByCategory, data, canteens)
-								.then(drawCategory(settings.options.canteens, canteens, url.campus));
-
-			var parkingData = Q.fcall(getGeoByCategory, data, parking)
-								.then(drawCategory(settings.options.parking, parking, url.campus));
-
-			var associateinstitutesData = Q.fcall(getGeoByCategory, data, associateinstitutes)
-											.then(drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus));
-
-			var studentData = Q.fcall(getGeoByCategory, data, student)
-								.then(drawCategory(settings.options.student, student, url.campus));
-
-			return [terminalsData, institutesData, canteensData, parkingData, associateinstitutesData, studentData];
-		};
-	}
-
-	function getGeoByCategory(data, category) {
-		var result = _.chain(data)
-					.filter(function(element) { return element.get("category") === category; })
-					.first()
-					.value();
-		if (result) {
-			return result.get("geo");
-		} else {
-			return undefined;
-		}
-	}
-
-	function setSearchValue(search) {
-		return function(terminals, institutes, canteens) {
+			Q(this.clearMenu(uniqueDivId))
+				.then(function() { return geo.loadAllOnce(); })
+				.then(function() { mapHelper.drawCampus(uniqueDivId, campus); })
+				.then(function() { mapHelper.setSearchValue(search); })
+				.fail(function (error) {
+					var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
+				});
+		},
+		
+		clearMenu: function(uniqueDivId) {
+			$("#currentCampus").empty();
+			$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
+		},
+		
+		setSearchValue: function(search) {
 			if (search !== undefined) {
 				searchView.setSearchValue(search);
 				$("div[data-role='searchablemap']").searchablemap("viewByName", search);
 			}
-		};
-	}
+		},
+		
+		drawCampus: function(uniqueDiv, url) {
+			var host = $("#" + uniqueDiv);
+			host.append("<div data-role='searchablemap'></div>");
+			host.trigger("create");
 
-	function drawCategory(options, category, campus) {
-		return function(data) {
-			if (data) {
-				$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
+			$("div[data-role='searchablemap']", host).searchablemap({ onSelected: this.onItemSelected, categoryStore: categoryStore });
+			$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
+
+			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
+
+			this.getAndDrawGeoByCategory(data, settings.options.terminals, terminals, url.campus);
+			this.getAndDrawGeoByCategory(data, settings.options.institutes, institutes, url.campus);
+			this.getAndDrawGeoByCategory(data, settings.options.canteens, canteens, url.campus);
+			this.getAndDrawGeoByCategory(data, settings.options.parking, parking, url.campus);
+			this.getAndDrawGeoByCategory(data, settings.options.associateinstitutes, associateinstitutes, url.campus);
+			this.getAndDrawGeoByCategory(data, settings.options.student, student, url.campus);
+		},
+		
+		getAndDrawGeoByCategory: function(data, options, category, campus) {
+			var result = _.chain(data)
+						.filter(function(element) { return element.get("category") === category; })
+						.first()
+						.value();
+			
+			var foundData = undefined
+			if (result) {
+				foundData = result.get("geo");
 			}
-		};
-	}
+			
+			if (foundData) {
+				$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, foundData, category, similarHelper.hasSimilarLocations(campus));
+			}
+		},
+		
+		onItemSelected: function(selection) {
+			searchView.setSearchValue(selection);
+			searchView.hideAllItems();
+		}
+	});
+	
+	var SimilarHelper = Backbone.View.extend({
+		
+		hasSimilarLocations: function(campus) {
+			return function(id) {
+				var entry = geo.findEntryById(id);
+				var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
+				var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
 
-	function hasSimilarLocations(campus) {
-		return function(id) {
+				return similarHouses.length + similarDescriptions.length > 0;
+			};
+		},
+		
+		searchSimilarLocations: function(id) {
 			var entry = geo.findEntryById(id);
-			var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
-			var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
+			var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, lastCampus);
+			var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, lastCampus);
 
-			return similarHouses.length + similarDescriptions.length > 0;
-		};
-	}
+			var host = $("#" + lastFinderId);
+			host.empty();
+			host.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
+			host.append("<button data-theme='a' onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
+			host.trigger("create");
+
+			var similars = similarHouses.concat(similarDescriptions);
+			similars = _.uniq(similars, false, function(item) { return item.data; });
+
+			_.each(similars, function(item) {
+				$("#similarlocations").append("<li><a onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
+			});
+
+			$("#similarlocations").listview("refresh");
+		}
+	});
+	
+	var mapHelper = new MapHelper;
+	var similarHelper = new SimilarHelper;
 
 	function CategoryStore() {
 
@@ -260,36 +271,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		this.setVisibility = function(category, show) {
 			store[category] = show;
 		};
-	}
-
-	function searchSimilarLocations(id) {
-		var entry = geo.findEntryById(id);
-		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, lastCampus);
-		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, lastCampus);
-
-		var host = $("#" + lastFinderId);
-		host.empty();
-		host.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
-		host.append("<button data-theme='a' onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
-		host.trigger("create");
-
-		var similars = similarHouses.concat(similarDescriptions);
-		similars = _.uniq(similars, false, function(item) { return item.data; });
-
-		_.each(similars, function(item) {
-			$("#similarlocations").append("<li><a onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
-		});
-
-		$("#similarlocations").listview("refresh");
-	}
-
-	function sitemapReset() {
-		$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
-	}
-
-	function sitemapNavigateTo(id) {
-		var entry = geo.findEntryById(id);
-		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.campus, entry.geo.properties.Name);
 	}
 
 	$(document).on("pageinit", "#sitemap", function() {
@@ -347,38 +328,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		model: GeoBlock,
 
 		initialize: function() {
-			// Workaround for overwriting of "this"
-			this.loadSuccess = _.bind(this.loaded, this);
-			this.loadFail = _.bind(this.failed, this);
+			this.loadAllPromise = Q.defer();
+			this.url = "js/geojson/campus-geo.json";
+			this.listenTo(this, "sync", this.synced)
+			this.listenTo(this, "error", this.failed);
+			
+			this.loadAllOnce = _.once(this.loadAll);
 		},
 
 		loadAll: function() {
 			console.log("executing GeoCollection.loadAll()");
-			return Q.fcall(this.callAjax)
-					.then(this.loadSuccess)
-					.fail(this.loadFail);
+			this.fetch({reset: true});
+			return this.loadAllPromise;
 		},
-
-		callAjax: function() {
-			var url = "js/geojson/campus-geo.json";
-
-			var d = Q.defer();
-			$.getJSON(url).done(d.resolve).fail(d.reject);
-			return d.promise;
-		},
-
-		loadAllOnce: function() {
-			if (this.loadAllOncePromise == undefined) {
-				this.loadAllOncePromise = this.loadAll();
-			}
-			return this.loadAllOncePromise;
-		},
-
-		loaded: function(result) {
-			this.add(result);
+		
+		synced: function() {
+			this.loadAllPromise.resolve(this);
 		},
 
 		failed: function(error) {
+			this.loadAllPromise.reject(new Error("Die Daten konnten nicht geladen werden"));
 			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
 		}
 	});
@@ -440,15 +409,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		},
 		
 		searchSimilarLocations: function(id) {
-			searchSimilarLocations(id);
+			similarHelper.searchSimilarLocations(id);
 		},
 		
 		sitemapReset: function() {
-			sitemapReset();
+			$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
 		},
 		
 		sitemapNavigateTo: function(id) {
-			sitemapNavigateTo(id);
+			var entry = geo.findEntryById(id);
+			$("div[data-role='campusmenu']").campusmenu("changeTo", entry.campus, entry.geo.properties.Name);
 		}
 	});
 
