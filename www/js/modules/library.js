@@ -539,7 +539,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
 
   App.collection.BookLocationList = Backbone.Collection.extend({
-      model: App.model.BookLocation
+      model: App.model.BookLocation,
+
+      comparator: function(model1, model2){
+        return (model1.get('department').indexOf("Handapparat") != -1) ? 1 : -1;
+      }
   });
 
   /**
