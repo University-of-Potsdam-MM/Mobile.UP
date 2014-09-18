@@ -89,12 +89,14 @@ p {
 	background-position: top left;
 }
 
+/* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.ui-header .ui-title {
 	background-image: url(../img/up/seperator-hres.png);
 	background-size:46px 55px;
 	}
 }
+*/
 
 #error, #error3
 {
@@ -197,6 +199,7 @@ h2 span {
 	height: 100%;
 }
 
+/* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 	{
@@ -204,6 +207,7 @@ h2 span {
 	background-size:7px 55px;
 	}
 }
+*/
 
 /*tabs*/
 .ui-navbar li {
