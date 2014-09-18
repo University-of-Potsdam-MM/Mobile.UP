@@ -1905,3 +1905,90 @@ p.event-description {
 	background-image: url(../img/up/arrow-darkblue.png);
 	background-color: transparent;
 }
+
+
+/*** iamges high resoluton devices *** /
+
+@media only screen and (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) { 
+	
+	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
+	background-image: url(../img/up/arrow-back_hr.png) !important;
+	background-size: 25px 25px;
+	}
+	
+	#nav-panel ul.nav-search  li a,#nav-panel2 ul.nav-search  li a,#nav-panel3 ul.nav-search  li a {
+	background-image: url(../img/up/arrow-darkblue_hr.png);
+	background-size:11 px 17px}
+	
+	.ui-icon-arrow-down:after {
+	background-image: url(../img/up/arrow-down_hr.png);
+	background-size:21px 9px;
+	}
+
+	.ui-icon-arrow-up:after {
+		background-image: url(../img/up/arrow-up_hr.png);
+		background-size:21px 9px;
+	}
+
+	.ui-icon-arrow-white-down:after {
+		background-image: url(../img/up/arrow-white-down_hr.png);
+		background-yize:17px 11px;
+	}
+
+	.ui-icon-arrow-white-up:after {
+		background-image: url(../img/up/arrow-white-up_hr.png);
+		background-size:17px 11px;
+	}
+
+	#nav-panel ul.nav-search  li:first-child a,#nav-panel2 ul.nav-search  li:first-child a,#nav-panel3 ul.nav-search  li:first-child a{
+		background-image: url(../img/up/close_hr.png);
+		background-size:13px 17px;
+	}
+	
+	#impressum .ui-icon-impressum:after {
+	background-image: url(../img/up/impressum_hr.png);
+	background-size:25px 25px;
+	}
+
+	#impressum .ui-icon-ansprech:after {
+		background-image: url(../img/up/ansprech_hr.png);
+		background-size:25px 25px;
+	}
+	
+	.mail {
+	background-image: url(../img/up/mail-small^_hr.png) !important;
+	background-size:20px 11px;
+	}
+
+	.phone {
+		background-image: url(../img/up/phone-small_hr.png) !important;
+		background-size:20px 11px;
+	}
+	
+	#libraryContent li.ui-state-active:after {
+		background-image: url(../img/up/marker_hr.png);
+		background-size:16px 10px;
+	}
+	
+	#impressum .ui-icon-mitmachen:after {
+		background-image: url(../img/up/mitmachen_hr.png);
+		background-size:25px 25px;
+	}
+	
+	html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
+		background-image: url(../img/up/ok_hr.png) !important;
+		background-size:23px 22px;
+	}
+	
+	#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+		background-image: url(../img/up/people_hr.png) !important;
+		background-size:35px 29px;
+	}
+	#emergency .ui-listview .ui-btn {
+		background-image: url(../img/up/phone_hr.png);
+		background-size:40px 24px;
+	
+	}
+
+
+}
