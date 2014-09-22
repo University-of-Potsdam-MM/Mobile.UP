@@ -476,7 +476,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         book.set('url', url);
       }
 
-      // check for avaiable items and process loan and presentation
+      // check for avaiable and unavailable items and process loan and presentation
+      // ignore interloan
       if (item.available){
           var loanAvailable = _.find(item.available, function(item){
             return item.service =='loan';
@@ -494,27 +495,32 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
             });
       }
 
+      // check for loanable items like LBS
       if (loanAvailable) {
         status = 'ausleihbar';
 
         if(presentationAvailable){
-        // tag available with service="loan" and href=""?
+          // tag available with service="loan" and href=""?
+          statusInfo = presentationAvailable.limitation[0].content;
           if(loanAvailable.href==""){
             statusInfo += "Bitte bestellen";
           }
         }
 
-      } else {
+      }else{
         // check for loan in unavailable items
+        // indicates LBS and Online-Resources
           if(loanUnavailable && loanUnavailable.href) {
             if(loanUnavailable.href.indexOf("loan/RES") != -1) {
               status = "ausleihbar";
-            } else {
+            }else{
               status = "nicht ausleihbar";
             }
-          } else {
+          }else{
+            // if there is no url then it will be a presentation
             if(book.attributes.url == null) {
               status = 'Präsenzbestand';
+              statusInfo = presentationAvailable.limitation[0].content;
             }else{
               status = 'Online-Ressource im Browser öffnen';
             }
@@ -523,6 +529,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           if(presentationUnavailable)
             if(loanUnavailable.href) {
               if(loanUnavailable.href.indexOf("loan/RES") != -1) {
+                status ="ausgeliehen";
                 if (!loanUnavailable.expected || loanUnavailable.expected == "unknown"){
                   statusInfo += "ausgeliehen, Vormerken möglich";
                 }else{
