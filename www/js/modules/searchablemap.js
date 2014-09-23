@@ -19,18 +19,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		this.reset = function() {
 			markerShadow.setMap(null);
-			
+
 			if (categoryStore.isVisible(category)) {
 				marker.setMap(map);
 			} else {
 				marker.setMap(null);
 			}
 		};
-		
+
 		this.openInfoWindow = function() {
 			marker.info.open(map);
 		};
-		
+
 		this.centerOnMap = function() {
 			// Get the selected item into view. Tested for Polygon and Marker.
 			var bounds = new google.maps.LatLngBounds();
@@ -41,7 +41,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			} else if (marker.getPosition) {
 				bounds.extend(marker.getPosition());
 			}
-			
+
 			// Keep the current zoom level
 			var oldZoom = map.getZoom();
 			map.fitBounds(bounds);
@@ -109,9 +109,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					</div> \
 					<div id='error-placeholder'></div> \
 					<!-- map loads here... --> \
-					<div id='map-canvas' class='gmap3' style='min-height: 600px;'></div> \
+					<div id='map-canvas' class='gmap3'></div> \
 				</div>");
 			this.element.trigger("create");
+			$('#map-canvas').css("height",$(window).height()-165);
 
 			// Initialize filter
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
@@ -126,6 +127,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				widgetHost._showIndex(index);
 				widgetHost.options.onSelected(widgetHost._markers[index].context.features[0].properties.Name);
 			});
+
+			// when window resizing set new center and resize map
+			$(window).resize(function(){
+				$('#map-canvas').css("height",$(window).height()-165);
+		        var center = widgetHost._map.getCenter();
+		        google.maps.event.trigger(widgetHost._map, 'resize');
+		        widgetHost._map.setCenter(center);
+		   });
 		},
 
 		_showIndex: function(index) {
@@ -263,11 +272,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				}
 			}
 		},
-		
+
 		_shadowOf: function(context, options, map, hasSimilarsCallback) {
 			context = JSON.parse(JSON.stringify(context));
 			context.properties = {};
-			
+
 			options = JSON.parse(JSON.stringify(options));
 			options.strokeColor = "#000000";
 			options.strokeOpacity = 0.3;
@@ -275,7 +284,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			options.fillColor = "#000000";
 			options.fillOpacity = 0.5;
 			options.zIndex = -1;
-			
+
 			return new GeoJSON(context, options, map, hasSimilarsCallback);
 		},
 

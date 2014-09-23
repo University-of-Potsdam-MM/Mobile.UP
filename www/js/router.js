@@ -89,25 +89,10 @@ define([
 		},
 
 		after: function(){
-			// still empty
 		},
 
 		initialize: function(){
 			this.session = new Session;
-
-			/*
-			// Handle back button throughout the application
-        	$('.back').live('click', function(event) {
-            	window.history.back();
-            	return false;
-        	});
-        	this.firstPage = true;
-        	*/
-        	// Prepare Navigation-Panel
-        	$('#nav-panel').trigger("create");
-			$('#nav-panel').trigger("updatelayout");
-			$('#nav-panel').panel({animate: true});
-
 		},
 
 		home: function(){
@@ -247,11 +232,10 @@ define([
 			page.render();
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#nav-panel').css('display', 'none');
-
 			$('#pagecontainer').append($(page.el));
 
-			var transition = $.mobile.defaultPageTransition;
+			var transition = $.mobile.changePage.defaults.transition;
+			var reverse = $.mobile.changePage.defaults.reverse;
 
 			// Erste Seite nicht sliden
 			if (this.firstPage){
@@ -259,16 +243,11 @@ define([
 				this.firstPage = false;
 			}
 
-			if (page.$el[0].id == 'transport' || page.$el[0].id == 'transport2') {
-				transition = 'none';
-			}
-
-			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
+			$.mobile.changePage($(page.el), {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
 				$('body').css('overflow', 'auto');
-				$('#nav-panel').css('display', 'block');
 				$("body").fadeIn(100);
 			}
 

@@ -304,11 +304,11 @@
     ]
   },
   {
-    "name": "Bereichsbiliothek Babelsberg",
+    "name": "Bereichsbibliothek Babelsberg",
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "2:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Dienstag",

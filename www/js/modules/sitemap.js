@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'modules/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
-	
+
 	var settings = {};
 
 	var terminals = "terminals";
@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	var lastFinderId = undefined;
 	var lastCampus = undefined;
 	var searchView = undefined;
-	
+
 	settings =	{
 		url: {
 			griebnitzsee: {
@@ -59,13 +59,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			}
 		}
 	};
-	
+
 	var oneSidedGuard = {
 		callback: function(options) { drawSelectedCampus(options); },
 		isCalled: false,
 		isBlocked: true,
 		options: undefined,
-		
+
 		callMultiple: function(options) {
 			if (this.isBlocked) {
 				this.isCalled = true;
@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 				this.callback(options);
 			}
 		},
-		
+
 		disableBlock: function() {
 			this.isBlocked = false;
 			if (this.isCalled) {
@@ -89,7 +89,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 				settings.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
 				settings.url.neuespalais.center = new google.maps.LatLng(52.400933, 13.011653);
 				settings.url.golm.center = new google.maps.LatLng(52.408716, 12.976138);
-				
+
 				oneSidedGuard.disableBlock();
 			}});
 		}).fail(function(){
@@ -121,14 +121,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	$(document).on("pageshow", "#sitemap", function() {
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 		searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
-		
+
 		$('#Terminals:checkbox').click(checkUncheck(terminals));
 		$('#Institute:checkbox').click(checkUncheck(institutes));
 		$('#Mensen:checkbox').click(checkUncheck(canteens));
 		$('#Parking:checkbox').click(checkUncheck(parking));
 		$('#AnInstitute:checkbox').click(checkUncheck(associateinstitutes));
 		$('#Living:checkbox').click(checkUncheck(student));
-		
+
 		settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
 		settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
 		settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
@@ -438,15 +438,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			$(this.el).html(this.template({}));
 			return this;
 		},
-		
+
 		searchSimilarLocations: function(id) {
 			searchSimilarLocations(id);
 		},
-		
+
 		sitemapReset: function() {
 			sitemapReset();
 		},
-		
+
 		sitemapNavigateTo: function(id) {
 			sitemapNavigateTo(id);
 		}

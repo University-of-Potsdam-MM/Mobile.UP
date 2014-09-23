@@ -219,7 +219,14 @@ ul.nav-search li a.ui-icon-gear {
 
 /**** images high resolution devices ***/
 
-@media only screen and (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) { 
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx)
+	{
 	
 	#home .ui-listview.ui-group-theme-c  li.around a{
 	background-image: url(../img/up/around_hr.png) !important;
@@ -303,7 +310,7 @@ ul.nav-search li a.ui-icon-gear {
 	.ui-listview.ui-group-theme-c  li.sports a {
 		background-image: url(../img/up/sports_hr.png);
 		background-size:71px 69px;
-	]
+	}
 	
 	#home .ui-listview.ui-group-theme-c  li.study a {
 		background-image: url(../img/up/study_hr.png);
