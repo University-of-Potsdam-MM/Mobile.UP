@@ -223,7 +223,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		
 		info.on("error", function(error) {
 			console.warn("Could not log error");
-			console.warn(error);
+			console.warn(error.attributes);
 		});
 
 		info.save();
