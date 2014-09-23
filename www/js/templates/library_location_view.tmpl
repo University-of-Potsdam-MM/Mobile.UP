@@ -1,7 +1,10 @@
+<% var currentLocation = ""; %>
 <% _.each(locations, function(location) { %>
-<div>
+<% if (location.get('department') != currentLocation){ %>
 	<h3><a href="<%= location.get('departmentURL') %>" target="_blank" rel="external"><%= location.get('department') %></a></h3>
-	<p>
+<% } %>
+	<div data-role="collapsible" data-mini="true" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-iconpos="right">
+	<h3>
 		<!--Alternativen: lent, prebook -->
 		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) { %>
 		<span class="lent"></span>
@@ -11,18 +14,19 @@
 		<% }else{ %>
 		<span class="available"></span>
 		<% } %>
-		<span class="location-details" style="width: 90%;">
-			<%= (location.get('url')) ? '<a href="'+location.get('url')+'" target="_blank" rel="external">'+location.get('item')[0]+'</a><br />' : '' %>
-			<% if (location.get('item')[0]){ %>
-				<span class="location-info" id="<%= location.cid %>"><%= location.get('item')[0] %></span>
-			<% } %>
-			<% if (location.get('item')[1]){  %>
-				<span class="location-secondinfo" id="c<%= location.cid %>" style="display: none;"><%= location.get('item')[1] %></span>
-			<% } %>
-			<br />
-		<%= (!location.get('item')[1] && location.get('item')[0] && !location.get('url')) ? location.get('item')[0]+'<br />' : '' %>
-		<%= (location.get('label')) ? '<b>'+location.get('label')+'</b><br />' : '' %>
-		</span>
-	</p>
-</div>
+		<%= (location.get('url')) ? '<a href="'+location.get('url')+'" target="_blank" rel="external">'+location.get('item')[0]+'</a><br />' : '' %>
+		<% if (location.get('item')[0]){ %>
+			<%= location.get('item')[0] %>
+		<% } %>
+	</h3>
+		<p>
+			<span class="location-details">
+				<%= (location.get('item')[1]) ? location.get('item')[1] : '' %>
+				<br />
+			<%= (!location.get('item')[1] && location.get('item')[0] && !location.get('url')) ? location.get('item')[0]+'<br />' : '' %>
+			<%= (location.get('label')) ? '<b>'+location.get('label')+'</b><br />' : '' %>
+			</span>
+		</p>
+	</div>
+<% currentLocation = location.get('department'); %>
 <% }); %>
