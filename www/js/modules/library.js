@@ -379,7 +379,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     renderDetail: function(ev) {
       ev.preventDefault();
-      var bookId = $(ev.target).closest('li.book-short').attr('id')
+      var bookId = $(ev.target).closest('li.book-short').attr('id');
       var book = App.collections.searchResults.get(bookId);
 
       var BookDetailView = new App.view.BookDetailView({model: book});
@@ -419,6 +419,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     el: '#book-locations',
     collection: App.collection.BookLocationList,
 
+    events:{
+      'click span.location-details': 'toggleInfo'
+    },
+
     initialize: function(){
       this.template = utils.rendertmpl('library_location_view');
     },
@@ -428,7 +432,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.$el.html(html);
       this.$el.trigger('create');
       return this;
+    },
+
+    toggleInfo: function(ev){
+      console.log('triggered');
+      ev.preventDefault();
+      var cid = $(ev.target).closest('span.location-info').attr('id');
+      $('#c'+cid).toggle();
     }
+
   });
 
 

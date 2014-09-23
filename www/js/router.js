@@ -89,15 +89,10 @@ define([
 		},
 
 		after: function(){
-			// still empty
 		},
 
 		initialize: function(){
 			this.session = new Session;
-        	// Prepare Navigation-Panel
-        	$('#nav-panel').trigger("create");
-			$('#nav-panel').trigger("updatelayout");
-			$('#nav-panel').panel({animate: true});
 		},
 
 		home: function(){
@@ -237,8 +232,6 @@ define([
 			page.render();
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#nav-panel').css('display', 'none');
-
 			$('#pagecontainer').append($(page.el));
 
 			var transition = $.mobile.changePage.defaults.transition;
@@ -255,7 +248,6 @@ define([
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
 				$('body').css('overflow', 'auto');
-				$('#nav-panel').css('display', 'block');
 				$("body").fadeIn(100);
 			}
 

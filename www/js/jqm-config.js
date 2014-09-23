@@ -15,7 +15,6 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
                 target.remove();
             }
             $('body').css('overflow', 'auto');
-            $('#nav-panel').css('display', 'block');
         });
 
 
