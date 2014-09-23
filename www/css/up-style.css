@@ -204,7 +204,7 @@ h2 span {
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 	{
 	background-image: url(../img/up/menubutton-hres.png) !important;
-	background-size:7px 55px;
+	background-size:46px 55px;
 	}
 }
 */
@@ -856,8 +856,8 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 .buttons_pt .ui-input-datebox a.ui-btn {
 	background:transparent;
 	width:22px !important;
-	float:right;
-	margin-right:15%;
+	float:left;
+	/*margin-right:10%;*/
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn:after {
@@ -865,7 +865,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 .buttons_pt li:last-child .ui-btn {
-	margin-right:15% !important;
+	/*margin-right:10% !important;*/
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
@@ -886,7 +886,6 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 /*slider*/
 .buttons_pt .ui-slider-switch .ui-slider-label {
 	font-weight: normal;
-	text-transform: uppercase;
 	color: #fff;
 }
 
@@ -1911,9 +1910,26 @@ p.event-description {
 }
 
 
-/*** iamges high resoluton devices *** /
+/*** images high resoluton devices ***/
 
-@media only screen and (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) { 
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+
+	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
+	{
+	background-image: url(../img/up/menubutton-hres.png) !important;
+	background-size:46px 55px;
+	}
+	
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-hres.png);
+	background-size:46px 55px;
+	}
 	
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
 	background-image: url(../img/up/arrow-back_hr.png) !important;
@@ -1992,6 +2008,189 @@ p.event-description {
 		background-image: url(../img/up/phone_hr.png);
 		background-size:40px 24px;
 	
+	}
+	
+	/** Mediaicons **/
+	
+	/* MediaIcon A
+	---------------------*/
+	div.media_a {
+		background-image: url(../img/res/media_a_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_a_big {
+		background-image: url(../img/res/media_a_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+
+	/* MediaIcon B
+	---------------------*/
+	div.media_b {
+		background-image: url(../img/res/media_b_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_b_big {
+		background-image: url(../img/res/media_b_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon E
+	---------------------*/
+	div.media_e {
+		background-image: url(../img/res/media_e_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_e_big {
+		background-image: url(../img/res/media_e_big_hr.png) !important;
+		background-size:55px 55px;
+		
+	}
+	/* MediaIcon G
+	---------------------*/
+	div.media_g {
+		background-image: url(../img/res/media_g_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_g_big {
+		background-image: url(../img/res/media_g_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon H
+	---------------------*/
+	div.media_h {
+		background-image: url(../img/res/media_h_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_h_big {
+		background-image: url(../img/res/media_h_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon I
+	---------------------*/
+	div.media_i {
+		background-image: url(../img/res/media_i_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_i_big {
+		background-image: url(../img/res/media_i_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon K
+	---------------------*/
+	div.media_k {
+		background-image: url(../img/res/media_k_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_k_big {
+		background-image: url(../img/res/media_k_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon L
+	---------------------*/
+	div.media_l {
+		background-image: url(../img/res/media_l.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_l_big {
+		background-image: url(../img/res/media_l_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon M
+	---------------------*/
+	div.media_m {
+		background-image: url(../img/res/media_m_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_m_big {
+		background-image: url(../img/res/media_m_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon O
+	---------------------*/
+	div.media_o {
+		background-image: url(../img/res/media_o_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_o_big {
+		background-image: url(../img/res/media_o_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon P
+	---------------------*/
+	div.media_p {
+		background-image: url(../img/res/media_p_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_p_big {
+		background-image: url(../img/res/media_p_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon S
+	---------------------*/
+	div.media_s {
+		background-image: url(../img/res/media_s_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_s_big {
+		background-image: url(../img/res/media_s_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon T
+	---------------------*/
+	div.media_t {
+		background-image: url(../img/res/media_t_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_t_big {
+		background-image: url(../img/res/media_t_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon V
+	---------------------*/
+	div.media_v {
+		background-image: url(../img/res/media_v_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_v_big {
+		background-image: url(../img/res/media_v_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon X
+	---------------------*/
+	div.media_x {
+		background-image: url(../img/res/media_x_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_x_big {
+		background-image:url(..img/red/media_x_big_hr.png) !important;
+		background-size:55px 55px;
 	}
 
 
