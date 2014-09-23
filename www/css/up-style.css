@@ -2009,6 +2009,189 @@ only screen and (                min-resolution: 2dppx) {
 		background-size:40px 24px;
 	
 	}
+	
+	/** Mediaicons **/
+	
+	/* MediaIcon A
+	---------------------*/
+	div.media_a {
+		background-image: url(../img/res/media_a_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_a_big {
+		background-image: url(../img/res/media_a_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+
+	/* MediaIcon B
+	---------------------*/
+	div.media_b {
+		background-image: url(../img/res/media_b_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_b_big {
+		background-image: url(../img/res/media_b_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon E
+	---------------------*/
+	div.media_e {
+		background-image: url(../img/res/media_e_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_e_big {
+		background-image: url(../img/res/media_e_big_hr.png) !important;
+		background-size:55px 55px;
+		
+	}
+	/* MediaIcon G
+	---------------------*/
+	div.media_g {
+		background-image: url(../img/res/media_g_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_g_big {
+		background-image: url(../img/res/media_g_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon H
+	---------------------*/
+	div.media_h {
+		background-image: url(../img/res/media_h_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_h_big {
+		background-image: url(../img/res/media_h_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon I
+	---------------------*/
+	div.media_i {
+		background-image: url(../img/res/media_i_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_i_big {
+		background-image: url(../img/res/media_i_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon K
+	---------------------*/
+	div.media_k {
+		background-image: url(../img/res/media_k_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_k_big {
+		background-image: url(../img/res/media_k_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon L
+	---------------------*/
+	div.media_l {
+		background-image: url(../img/res/media_l.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_l_big {
+		background-image: url(../img/res/media_l_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon M
+	---------------------*/
+	div.media_m {
+		background-image: url(../img/res/media_m_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_m_big {
+		background-image: url(../img/res/media_m_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon O
+	---------------------*/
+	div.media_o {
+		background-image: url(../img/res/media_o_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_o_big {
+		background-image: url(../img/res/media_o_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon P
+	---------------------*/
+	div.media_p {
+		background-image: url(../img/res/media_p_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_p_big {
+		background-image: url(../img/res/media_p_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon S
+	---------------------*/
+	div.media_s {
+		background-image: url(../img/res/media_s_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_s_big {
+		background-image: url(../img/res/media_s_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon T
+	---------------------*/
+	div.media_t {
+		background-image: url(../img/res/media_t_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_t_big {
+		background-image: url(../img/res/media_t_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon V
+	---------------------*/
+	div.media_v {
+		background-image: url(../img/res/media_v_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_v_big {
+		background-image: url(../img/res/media_v_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon X
+	---------------------*/
+	div.media_x {
+		background-image: url(../img/res/media_x_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_x_big {
+		background-image:url(..img/red/media_x_big_hr.png) !important;
+		background-size:55px 55px;
+	}
 
 
 }
