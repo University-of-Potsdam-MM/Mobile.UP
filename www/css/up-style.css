@@ -856,8 +856,8 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 .buttons_pt .ui-input-datebox a.ui-btn {
 	background:transparent;
 	width:22px !important;
-	float:right;
-	margin-right:15%;
+	float:left;
+	/*margin-right:10%;*/
 }
 
 .buttons_pt .ui-input-datebox a.ui-btn:after {
@@ -865,7 +865,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 }
 
 .buttons_pt li:last-child .ui-btn {
-	margin-right:15% !important;
+	/*margin-right:10% !important;*/
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
@@ -886,7 +886,6 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 /*slider*/
 .buttons_pt .ui-slider-switch .ui-slider-label {
 	font-weight: normal;
-	text-transform: uppercase;
 	color: #fff;
 }
 
