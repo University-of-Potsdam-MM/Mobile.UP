@@ -1911,13 +1911,24 @@ p.event-description {
 }
 
 
-/*** images high resoluton devices *** /
+/*** images high resoluton devices ***/
 
-@media only screen and (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) { 
-	
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 	{
 	background-image: url(../img/up/menubutton-hres.png) !important;
+	background-size:46px 55px;
+	}
+	
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-hres.png);
 	background-size:46px 55px;
 	}
 	
