@@ -549,7 +549,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       model: App.model.BookLocation,
 
       comparator: function(model1, model2){
-        return (model1.get('department').indexOf("Handapparat") != -1) ? 1 : -1;
+        if (model1.get('department').indexOf("Handapparat") == -1){
+          if (model1.get('department') > model2.get('department')){
+            return 1;
+          }else{
+            return -1;
+          }
+        }else{
+          return 1;
+        }
       }
   });
 
