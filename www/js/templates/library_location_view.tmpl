@@ -1,10 +1,10 @@
 <% var currentLocation = ""; %>
 <% _.each(locations, function(location) { %>
 <% if (location.get('department') != currentLocation){ %>
-	<h3><a href="<%= location.get('departmentURL') %>" target="_blank" rel="external"><%= location.get('department') %></a></h3>
+	<h3><%= location.get('department') %> <a href="<%= location.get('departmentURL') %>" target="_blank" rel="external">Info</a></h3>
 <% } %>
-	<div data-role="collapsible" data-mini="true" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" data-iconpos="right">
-	<h3>
+	<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+	<h3 data-icon="arrow-darkblue">
 		<!--Alternativen: lent, prebook -->
 		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) { %>
 		<span class="lent"></span>

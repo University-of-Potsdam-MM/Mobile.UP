@@ -1103,13 +1103,55 @@ div.booktitle.copyright p {
 }
 
 #book-locations div {
-	margin-left: 1em;
-	padding: .5em 0;
+	margin:0;
+	
+}
+
+#book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+	
+	background-color: #ededed;
+	padding: 0;
+	color: #FFF;
+	
+}
+
+#book-locations h3.ui-collapsible-heading {
+	
+	background-color: #ededed;
+	padding: 0;
+	color: #FFF;
+	
+}
+
+#book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+	font-style:normal;
+	font-size:16px;
+	text-indent:.5em;
+	padding: 0em;
+	color: #014260;
+}
+
+#book-locations h3.ui-collapsible-heading a.ui-collapsible-heading-toggle {
+	font-style:normal;
+	font-size:16px;
+	text-indent:.5em;
+	padding: 0em;
+	color: #014260;
 }
 
 #book-locations h3 {
-	margin: .3em 0 .3em 0;
 	font-size: 1em;
+	background-color: #014260;
+	padding: 1em;
+	color: #FFF;
+	margin:0;
+}
+
+#book-locations h3 a {
+	font-style: italic;
+	font-size: .8em;
+	color: #D0DAE3;
+	margin:0;
 }
 
 #book-locations p {
@@ -1166,6 +1208,9 @@ li.book-short div {
 	background-position: 0px 7px;
 	float: left;
 }
+
+/*Standorte*/
+
 
 /* MediaIcon A
 ---------------------*/
