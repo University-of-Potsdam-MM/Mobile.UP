@@ -501,7 +501,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
         if(presentationAvailable){
           // tag available with service="loan" and href=""?
-          statusInfo = presentationAvailable.limitation[0].content;
+          if (presentationAvailable.limitation){
+            statusInfo = presentationAvailable.limitation[0].content;
+          }
           if(loanAvailable.href==""){
             statusInfo += "Bitte bestellen";
           }
@@ -519,8 +521,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           }else{
             // if there is no url then it will be a presentation
             if(book.attributes.url == null) {
-              status = 'Präsenzbestand';
-              statusInfo = presentationAvailable.limitation[0].content;
+              if (item.label && item.label.indexOf("bestellt") != -1){
+                status = item.label;
+                statusInfo = "";
+              }else{
+                status = 'Präsenzbestand';
+                if (presentationAvailable.limitation){
+                  statusInfo = presentationAvailable.limitation[0].content;
+                }
+              }
             }else{
               status = 'Online-Ressource im Browser öffnen';
             }

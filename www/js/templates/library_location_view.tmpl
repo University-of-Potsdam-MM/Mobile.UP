@@ -9,7 +9,7 @@
 	<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
 	<h3 data-icon="arrow-darkblue">
 		<!--Alternativen: lent, prebook -->
-		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) { %>
+		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("bestellt") != -1)) { %>
 		<span class="lent"></span>
 		<% }else if((location.get('item')[0] && location.get('item')[0].indexOf("Präsenzbestand") != -1) ||
 					(location.get('department') && location.get('department').indexOf("Handapparat") != -1)){ %>
@@ -23,8 +23,7 @@
 			<span class="location-details">
 				<%= (location.get('item')[1]) ? location.get('item')[1] : '' %>
 				<br />
-			<%= (!location.get('item')[1] && location.get('item')[0] && !location.get('url')) ? location.get('item')[0]+'<br />' : '' %>
-			<%= (location.get('label')) ? '<b>'+location.get('label')+'</b><br />' : '' %>
+				<%= (location.get('label') && location.get('label').indexOf("bestellt") == -1) ? '<b>'+location.get('label')+'</b><br />' : '' %>
 			</span>
 		</p>
 	</div>
