@@ -18,5 +18,10 @@
 {"name": "Durchgangsarzt Babelsberg S&uuml;d","telephone": "+49331621001","description": "Dr. Bernd Rudtke","street": "Gro&szlig;beerenstr. 187","postal": "14482 Potsdam","mail": "b.rudtke@t-online.de"},
 {"name": "Telefonseelsorge","telephone": "08001110111","description": "kostenfreie Telefonnummer"},
 {"name": "Psychologische Beratung Uni Potsdam","telephone": "+493319771830","description": "Dipl. Psych.  Birgit Kl&ouml;hn","street": "Am Neuen Palais 10","postal": "14469 Potsdam, Haus 08, Raum 0.82"},
-{"name": "Technische Leitzentrale Uni Potsdam","telephone": "+493319772010","description": "St&ouml;rungsannahme 24h-Dienst"}
+{"name": "Technische Leitzentrale Uni Potsdam","telephone": "+493319772010","description": "St&ouml;rungsannahme 24h-Dienst"},
+{"name": "Betriebsst&ouml;rungen (Technik)","telephone": "+493319772798","description": "Herr Paul"},
+{"name": "Betriebsst&ouml;rungen (Wasser)","telephone": "+493319772790","description": "Frau Lange"},
+{"name": "Betriebsst&ouml;rungen (Elektro)","telephone": "+493319772332","description": "Herr Dankworth"},
+{"name": "Betriebsst&ouml;rungen (au&szlig;erhalb der Dienstzeiten)","telephone": "+493319772010", "description": "Leitzentrale UP"},
+{"name": "Sicherheitswesen der UP","telephone": "+493319772383", "street": "Karl-Liebknecht-Str. 24 /25 Haus 8c, Zi. 2.04","postal": "14476 Potsdam / Golm"}
 ]
