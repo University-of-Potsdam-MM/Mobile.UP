@@ -1104,23 +1104,23 @@ div.booktitle.copyright p {
 
 #book-locations div {
 	margin:0;
-	
+
 }
 
 #book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
-	
+
 	background-color: #ededed;
 	padding: 0;
 	color: #FFF;
-	
+
 }
 
 #book-locations h3.ui-collapsible-heading {
-	
+
 	background-color: #ededed;
 	padding: 0;
 	color: #FFF;
-	
+
 }
 
 #book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
@@ -1568,44 +1568,50 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 #moodle .ui-link img {
 	vertical-align:text-bottom;
 }
-/***********************Personensuche*********************
+/***********************Personensuche*************************
 **************************************************************/
-#peoples h3.ui-collapsible-heading {
+#emergency-list h3.ui-collapsible-heading,
+#people-list h3.ui-collapsible-heading {
 	border-bottom: 0px;
 }
 
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
 	border-bottom: 1px;
 }
-/*
-#peoples h3.ui-collapsible-heading a {
+
+#emergency-list h3.ui-collapsible-heading a,
+#people-list h3.ui-collapsible-heading a {
 	background-image: url(../img/up/people-hover.png) !important;
 	background-repeat: no-repeat;
 	background-position: 0px 9px;
 	padding: 5px 1.5em 0 40px !important;
 	display: block;
 	background-color: #d0dae3 !important;
-}*/
+}
 
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background-image: url(../img/up/people.png) !important;
 	background-repeat: no-repeat;
 	background-color: #ededed !important;
 }
-/*
-#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover
-	{
-	background-image: url(../img/up/people-hover.png) !important;
+
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+	background-image: url(../img/up/people.png) !important;
 	background-repeat: no-repeat;
-	background-color: #d0dae3 !important;
+	background-color: #ededed !important;
 }
-*/
-#peoples h3 a span {
+
+#emergency-list h3 a span,
+#people-list h3 a span {
 	margin-bottom: 3px;
 	display: inline-block;
 }
 
-#peoples .ui-btn-icon-right:after {
+#emergency-list .ui-btn-icon-right:after,
+#people-list .ui-btn-icon-right:after {
 	right: -.1em;
 }
 
@@ -1623,7 +1629,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	text-indent: 20px;
 }
 
-#peoples .ui-collapsible-content p {
+#emergency-list .ui-collapsible-content p,
+#people-list .ui-collapsible-content p {
 	padding-left: 25px;
 }
 
@@ -1970,21 +1977,21 @@ only screen and (                min-resolution: 2dppx) {
 	background-image: url(../img/up/menubutton-hres.png) !important;
 	background-size:46px 55px;
 	}
-	
+
 	.ui-header .ui-title {
 	background-image: url(../img/up/seperator-hres.png);
 	background-size:46px 55px;
 	}
-	
+
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
 	background-image: url(../img/up/arrow-back_hr.png) !important;
 	background-size: 25px 25px;
 	}
-	
+
 	#nav-panel ul.nav-search  li a,#nav-panel2 ul.nav-search  li a,#nav-panel3 ul.nav-search  li a {
 	background-image: url(../img/up/arrow-darkblue_hr.png);
 	background-size:11 px 17px}
-	
+
 	.ui-icon-arrow-down:after {
 	background-image: url(../img/up/arrow-down_hr.png);
 	background-size:21px 9px;
@@ -2009,7 +2016,7 @@ only screen and (                min-resolution: 2dppx) {
 		background-image: url(../img/up/close_hr.png);
 		background-size:13px 17px;
 	}
-	
+
 	#impressum .ui-icon-impressum:after {
 	background-image: url(../img/up/impressum_hr.png);
 	background-size:25px 25px;
@@ -2019,7 +2026,7 @@ only screen and (                min-resolution: 2dppx) {
 		background-image: url(../img/up/ansprech_hr.png);
 		background-size:25px 25px;
 	}
-	
+
 	.mail {
 	background-image: url(../img/up/mail-small^_hr.png) !important;
 	background-size:20px 11px;
@@ -2029,22 +2036,22 @@ only screen and (                min-resolution: 2dppx) {
 		background-image: url(../img/up/phone-small_hr.png) !important;
 		background-size:20px 11px;
 	}
-	
+
 	#libraryContent li.ui-state-active:after {
 		background-image: url(../img/up/marker_hr.png);
 		background-size:16px 10px;
 	}
-	
+
 	#impressum .ui-icon-mitmachen:after {
 		background-image: url(../img/up/mitmachen_hr.png);
 		background-size:25px 25px;
 	}
-	
+
 	html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
 		background-image: url(../img/up/ok_hr.png) !important;
 		background-size:23px 22px;
 	}
-	
+
 	#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 		background-image: url(../img/up/people_hr.png) !important;
 		background-size:35px 29px;
@@ -2052,11 +2059,11 @@ only screen and (                min-resolution: 2dppx) {
 	#emergency .ui-listview .ui-btn {
 		background-image: url(../img/up/phone_hr.png);
 		background-size:40px 24px;
-	
+
 	}
-	
+
 	/** Mediaicons **/
-	
+
 	/* MediaIcon A
 	---------------------*/
 	div.media_a {
@@ -2092,7 +2099,7 @@ only screen and (                min-resolution: 2dppx) {
 	div.media_e_big {
 		background-image: url(../img/res/media_e_big_hr.png) !important;
 		background-size:55px 55px;
-		
+
 	}
 	/* MediaIcon G
 	---------------------*/

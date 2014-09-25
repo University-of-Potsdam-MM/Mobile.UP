@@ -11,15 +11,12 @@
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
-<div data-role="content" data-iconpos="left" data-theme="c"
-	id="emergencies">
+<div data-role="content" data-iconpos="left" data-theme="c"	id="emergencies">
 	<form>
-		<input data-type="search" id="searchForEmergency"
-			placeholder="Eintr&auml;ge filtern" />
+		<input data-type="search" id="searchForEmergency" placeholder="Eintr&auml;ge filtern" />
 	</form>
-	<ul data-role="listview" data-inset="true" data-icon="false"
-		id="emergency-list" data-filter="true"
-		data-input="#searchForEmergency">
-	</ul>
+
+	<div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="emergency-list" data-filter="true" data-input="#searchForEmergency">
+	</div>
 </div>
 <!-- End Main - Navigation -->
