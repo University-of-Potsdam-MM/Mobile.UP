@@ -1592,7 +1592,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 #emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a,
 #people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
-	background-image: url(../img/up/people.png) !important;
+	background-image: url(../img/up/people-hover.png) !important;
 	background-repeat: no-repeat;
 	background-color: #ededed !important;
 }
@@ -1618,15 +1618,17 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 .mail {
 	background-image: url(../img/up/mail-small.png) !important;
 	background-repeat: no-repeat;
-	background-position: 0px .4em;
+	background-position: 0px .2em;
 	text-indent: 20px;
+	padding-left: 20px;
 }
 
 .phone {
 	background-image: url(../img/up/phone-small.png) !important;
 	background-repeat: no-repeat;
-	background-position: 0px .4em;
+	background-position: 0px .2em;
 	text-indent: 20px;
+	padding-left: 20px;
 }
 
 #emergency-list .ui-collapsible-content p,
