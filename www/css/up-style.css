@@ -1681,6 +1681,12 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 .ui-datebox-container .ui-btn-icon-notext:after, .ui-datebox-container .ui-btn-icon-top:after, .ui-datebox-container .ui-btn-icon-bottom:after {
 	background-color:transparent;
 }
+
+.ui-datebox-griddate-disable{
+	background:#ccc!important;
+	color: #000!important;
+}
+
 /*
 .ui-datebox-container .ui-page-theme-a .ui-datebox-gridrow .ui-btn:hover, html head + body .ui-datebox-container .ui-datebox-gridrow .ui-btn.ui-btn-a:hover {
 	border-color:#fff;
