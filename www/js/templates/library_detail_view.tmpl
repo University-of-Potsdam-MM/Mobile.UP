@@ -22,7 +22,8 @@
 	<div id="libraryContent">
 		<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
 		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
-		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
+		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle')+'</h3>' : ''%>
+		<%= (book.get('partNumber')) ? '<h3>'+ book.get('partNumber')+'</h3>' : ''%>
 		<p>
 		<% if (book.get('authors') && book.get('authors').length>0) { %>
             <b><%= book.get('authors').join("; ") %></b><br />

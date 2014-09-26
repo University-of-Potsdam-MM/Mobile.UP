@@ -41,6 +41,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       this.set('ppn', recordId);
       this.set('title', this.getTitle(xmlRecord));
       this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
+      this.set('partNumber', this.textForTag(xmlRecord, 'partNumber'))
       this.set('dateIssued', $xmlRecord.find('dateIssued').html());
       this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
       this.set('toc', this.split_string(this.textForTag(xmlRecord, 'tableOfContents'),'--'));
@@ -632,7 +633,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     },
 
      back: function(ev){
-        ev.preventDefault();zzz
+        ev.preventDefault();
         this.render();
     }
   });
