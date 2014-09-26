@@ -617,6 +617,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       $('input[type="submit"]').attr('disabled', 'disabled');
       var inputs = $('#query-form :input').serializeArray();
       var query = inputs[0].value;
+      if(this.LoadingView){
+        this.LoadingView.stopListening();
+      }
       this.LoadingView = new utils.LoadingView({model: App.models.currentSearch, el: this.$("#loadingSpinner")});
 
       App.collections.searchResults.reset();
