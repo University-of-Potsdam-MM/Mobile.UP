@@ -49,8 +49,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       depTime: moment(),
       connections: new Backbone.Collection(),
       from: "G-see",
-      to: "Palais",
-      arrivalMode: '0'
+      to: "Palais"
     },
 
     addTime: function(units, value) {
@@ -92,19 +91,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       ht.getVerbindung(
         this.fromStation().get('externalId'),
         this.toStation().get('externalId'),
-        this.get('depTime'),
-        this.get('arrivalMode')
+        this.get('depTime')
+        //this.get('arrivalMode')
       ).done(function(connections){
         that.resetConnections(connections);
       });
-    },
-
-    toggleArrivalMode: function(){
-      var mode = this.get('arrivalMode') || '0';
-      var toggled = (mode == '0') ? '1' : '0';
-      this.set( 'arrivalMode', toggled );
-
-      //FIXME should also move depTime to arrTime and back
     }
   });
 
@@ -226,7 +217,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       var q = this.model;
       this.$el.find('#summary .fromCampus').html(q.fromStation().name);
       this.$el.find('#summary .toCampus').html(q.toStation().name);
-      this.$el.find('#summary .arrivalMode').html( ('0' === q.get('arrivalMode')) ? 'Abfahrt' : 'Ankunft');
       this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
     },
 
@@ -264,15 +254,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       this.$el.find('a').filter(function(){
         return $(this).text() === buttonText;
       }).addClass('ui-btn-active');
-    }
-  });
-
-	var TransportViewsSliderView = Backbone.View.extend({
-    events: {
-      'slidestart': function(ev){
-        console.log('toggleMode', ev);
-        this.trigger('toggle');
-      }
     }
   });
 
@@ -321,16 +302,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
 
 	    Transport.model.State.on('change:to', function(ev, buttonText){
 	      Transport.view.ToStation.activeButton(buttonText);
-	    });
-
-	    // Listen for events for the slider
-	    Transport.view.ArrivalModeSlider = new TransportViewsSliderView({
-	      el: this.$el.find('#flip-1')
-	    });
-
-	    Transport.view.ArrivalModeSlider.on('toggle', function(){
-	      Transport.model.State.toggleArrivalMode();
-	      console.log('arrivalMode', Transport.model.State.get('arrivalMode'));
 	    });
 
 	    Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({

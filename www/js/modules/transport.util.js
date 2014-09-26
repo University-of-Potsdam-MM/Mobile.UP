@@ -116,8 +116,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   	defaults: {
   		"fromExternalId": "",
   		"toExternalId": "",
-  		"moment": "",
-  		"arrivalMode": ""
+  		"moment": ""
   	},
 
   	url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
@@ -125,7 +124,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   	parse: function(){
 
-	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment))
 	    .done(function(data, textStatus, jqXHR){
 	      var $data = $(data);
 	      var connections = _.map($data.find('Connection'), mapConnection);
@@ -191,15 +190,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   }
 
   // Suche Verbindung mit zwei IDs
-  function verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode) {
+  function verbindungVonNach(fromExternalId, toExternalId, moment) {
 
-    var rflags;
-    if ('1' == arrivalMode) {
-      rflags = tag('RFlags', {b: 5, f: 0, a: 0 })
-    } else {
-      // default
-      rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
-    }
+    var rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
+
 
     var xml =
       tag('ConReq', {},
@@ -309,10 +303,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return myCon;
   }
 
-  var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
+  var getVerbindung = function(fromExternalId, toExternalId, moment) {
     var defer = $.Deferred();
 
-    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+    ajax(verbindungVonNach(fromExternalId, toExternalId, moment))
     .done(function(data, textStatus, jqXHR){
       var $data = $(data);
       var connections = _.map($data.find('Connection'), mapConnection);
@@ -326,11 +320,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
     return defer.promise();
   }
-
-  // getVerbindung(stations['G-see'].externalId, stations['Golm'].externalId, moment())
-  //   .done(function(data){
-  //     console.log('debugging', data);
-  //   });
 
   function getExternalId(stationString) {
     var defer = $.Deferred();
@@ -349,10 +338,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       });
     return defer.promise();
   }
-
-  // getExternalId('Griebnitzsee').done(function(){console.log('G-see', arguments)});
-  // getExternalId('Golm, Bahnhof').done(function(){console.log('Golm', arguments)});
-  // getExternalId('Neues Palais').done(function(){console.log('Neues Palais', arguments)});
 
   function parseDate(yyyymmdd) {
     return moment(yyyymmdd,'YYYYMMDD');
