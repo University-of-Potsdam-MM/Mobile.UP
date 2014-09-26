@@ -5,11 +5,9 @@
     <span>an <%= connection.get('arrTime').format('HH:mm') %></span> <%= connection.get('arrStation') %>
   </h3>
 
-  <table data-role="table" data-mode="reflow"
-    class="ui-responsive table-stripe ">
+  <table data-role="table" data-mode="reflow" class="ui-responsive table-stripe ">
     <thead>
       <tr>
-       
         <th>Uhrzeit</th>
         <th>Bahnhof</th>
         <th>Gleis</th>
@@ -21,12 +19,10 @@
 
         <% if (i > 0) { %>
          <tr>
-         
-         <td class="foot" style="background:transparent;"><img src="img/up/foot.png" /></td>
-        
+          <td class="foot" style="background:transparent;"><img src="img/up/foot.png" /></td>
         <% } %>
         </tr>
-
+        <tr>
           <td>ab <%= section.depTime.format('HH:mm') %></td>
           <td><%= section.depStation %></td>
           <td><%= section.depPlatform %></td>
