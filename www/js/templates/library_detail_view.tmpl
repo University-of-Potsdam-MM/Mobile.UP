@@ -37,6 +37,11 @@
 			<p>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</p>
 		</div>
 		<% } %>
+		<% if (book.get('issuance').indexOf('multipart') != -1){ %>
+		<div class="booktitle copyright">
+			<p>Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.</p>
+		</div>
+		<% } %>
 		<div data-role="tabs">
 		  <div data-role="navbar">
 		    <ul id="search-results">

@@ -55,6 +55,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
       this.set('edition', this.textForTag(xmlRecord, 'edition'));
       this.set('place', this.firstNode($xmlRecord, 'placeTerm[type=text]'));
+      this.set('issuance', this.textForTag(xmlRecord, 'issuance'));
       // holding statement for magazines
       this.set('enumerationAndChronology', this.textForTag(xmlRecord, 'enumerationAndChronology'));
     },
@@ -160,7 +161,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         physicalDescription = physicalDescription[0].textContent;
       }
 
-      var typeOfResource = this.getTypeOfResource(node);
+      var typeOfResource = this.contentForTag(node, 'typeOfResource');
       var originInfo = this.contentForTag(node, 'originInfo');
       var issuance = this.contentForTag(node, 'issuance');
       //TODO: test for essay
@@ -215,11 +216,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       }
       mediaType = "media_"+mediaType.toLowerCase();
       return mediaType;
-    },
-
-    getTypeOfResource: function(node) {
-      var typeOfResource = this.contentForTag(node, 'typeOfResource');
-      return typeOfResource;
     },
 
     contentForTag: function(node, tagName){
