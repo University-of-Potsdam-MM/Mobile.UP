@@ -40,13 +40,8 @@
         </div>
         <div data-role="navbar" class="buttons_pt route">
             <ul>
-                <li><p></p></li>
-                <li>
-                    <select name="flip-1" id="flip-1" data-role="slider">
-                        <option value="off">Abfahrt</option>
-                        <option value="on">Ankunft</option>
-                    </select>
-                </li>
+                <li><p>Wann:</p></li>
+                <li></li>
                 <li>
                     <input name="transportationDate" id="transportationDate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "overrideCalStartDay": 1, "useFocus": true}'>
                 </li>
@@ -67,18 +62,11 @@
         </div>
 
         <div id="result">
-            <!--  <div id="summary">
-            <p>Fahrt von <span class='fromCampus'>Campus Griebnitzsee</span> nach</p>
-            <p class='toCampus'>Campus Golm</p>
-            <p class="arrivalMode">Abfahrt</p>
-            <p class='when'>Heute, 10.02.2234,  11:15</p>
-            </div> -->
             <div class="spaeter scrollbutton" >
                 <input id="earlierButton" data-theme="a" type="submit" value="← Früher" />
             </div>
 
             <div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-inset="true" id="transport_rides"></div>
-
 
             <div class="spaeter scrollbutton" >
                 <input id="laterButton" type="submit" data-theme="a" value="Später →" />
