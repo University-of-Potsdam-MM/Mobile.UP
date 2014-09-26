@@ -2,7 +2,6 @@
   <span>Liste aller Ausgaben:</span><br>
   <span class="numberOfListEntries blau"><%= search.results.length %></span> von <span class="numberOfRecords"><%= search.numberOfRecords %></span> Einträgen
 </h2>
-
 <ul class="booklist" data-role="listview" data-inset="true">
     <% _.each(booklist, function(book, index) { %>
     <% var number = index;%>
@@ -26,9 +25,7 @@
         </p>
       </a>
     </li>
-
     <% if ((number % 10) == 0) { %>
-    <% console.log('added divider', (number % 10)); %>
       <li data-role="list-divider" class="book-short"></li>
     <% } %>
     <% }); %>
