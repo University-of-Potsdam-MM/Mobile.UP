@@ -88,7 +88,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 				vars.news = vars;
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			$('.back').attr('href', '#news');
 			return this;
 		}
 	});
@@ -110,6 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.$el = this.page.$el.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON()}));
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
 			$('.back').attr('href', '#news');
 			return this;
 		}
@@ -169,6 +171,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.$el = this.page.$el.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#home');
 			return this;
 		}
 

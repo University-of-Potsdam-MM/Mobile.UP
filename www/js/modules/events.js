@@ -69,8 +69,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			vars = $.extend(vars, {going:Boolean(utils.LocalStore.get('going', {})[vars.event.Event.id])});
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
-
+			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#events');
+			
 			this.delegateEvents();
 			return this;
 		},
@@ -130,6 +132,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
 			$('.back').attr('href', '#events');
 			return this;
 		}
@@ -198,6 +201,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 				self.filterIndex($(this).data('filter'));
 			});
 			this.filterIndex(this.filter);
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#home');
 			this.$el.trigger("create");
 			return this;
 		},
