@@ -12,7 +12,7 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
-define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbone, utils, Q){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($, _, Backbone, utils, Q, moment){
 
 
   window.App = {
@@ -542,7 +542,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
                 if (!loanUnavailable.expected || loanUnavailable.expected == "unknown"){
                   statusInfo += "ausgeliehen, Vormerken möglich";
                 }else{
-                  statusInfo += "ausgeliehen bis "+loanUnavailable.expected+", Vormerken möglich";
+                  // print loanUnavailable.expected in human readable form
+                  statusInfo += "ausgeliehen bis ";
+                  statusInfo += moment(loanUnavailable.expected, "YYYY-DD-MM").format("DD.MM.YYYY");
+                  statusInfo += ", Vormerken möglich";
                 }
               }
             } else {
@@ -633,7 +636,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
      back: function(ev){
-        ev.preventDefault();
+        ev.preventDefault();zzz
         this.render();
     }
   });
