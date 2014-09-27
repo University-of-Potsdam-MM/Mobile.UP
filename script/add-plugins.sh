@@ -12,3 +12,6 @@ phonegap plugin add https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.g
 
 phonegap plugin remove org.apache.cordova.device
 phonegap plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
+
+phonegap plugin remove org.apache.cordova.network-information
+phonegap plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git

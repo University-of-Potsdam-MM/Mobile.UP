@@ -68,6 +68,25 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		return "Bearer c06156e119040a27a4b43fa933f130";
 	};
 
+	/**
+	 *	Function to get network status using org.apache.cordova.network-information
+	 */
+	function checkOffline() {
+		var networkState = navigator.connection.type;
+
+		var states = {};
+		states[Connection.UNKNOWN]  = 'Unknown connection';
+		states[Connection.ETHERNET] = 'Ethernet connection';
+		states[Connection.WIFI]     = 'WiFi connection';
+		states[Connection.CELL_2G]  = 'Cell 2G connection';
+		states[Connection.CELL_3G]  = 'Cell 3G connection';
+		states[Connection.CELL_4G]  = 'Cell 4G connection';
+		states[Connection.CELL]     = 'Cell generic connection';
+		states[Connection.NONE]     = 'No network connection';
+
+		return (states[networkState] == states[Connection.NONE]) ? true : false;
+	}
+
 
 	/**
 	 *	Error Model
@@ -82,7 +101,13 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 	 	initialize: function(attributes){
 	 		this.msg = attributes.msg;
 	 		this.module = attributes.module;
-	 		this.error = attributes.error;
+	 		if (navigator.connection !== undefined){
+	 			if (checkOffline()){
+	 				this.error = 'Bitte prüfen Sie ihre Internetverbindung. Vermutlich sind Sie offline.'
+	 			}else{
+	 				this.error = attributes.error;
+	 			}
+	 		}
 	 	}
 	 });
 
@@ -99,8 +124,8 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		},
 
 		render: function(){
-			$(this.el).html(this.template({model: this.model}));
-			$(this.el).trigger("create");
+			this.$el.html(this.template({model: this.model}));
+			this.$el.trigger("create");
 			return this;
 		}
 	});
@@ -220,7 +245,7 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 
 		console.log("Unhandled error thrown:");
 		console.log(info.attributes);
-		
+
 		info.on("error", function(error) {
 			console.warn("Could not log error");
 			console.warn(error.attributes);
