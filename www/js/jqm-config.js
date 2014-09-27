@@ -14,6 +14,7 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             if (target.attr('data-dom-cache') != 'true') {
                 target.remove();
             }
+            $('html,body').scrollTop(0);
             $('body').css('overflow', 'auto');
         });
 
