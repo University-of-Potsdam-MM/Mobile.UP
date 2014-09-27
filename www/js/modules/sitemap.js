@@ -93,7 +93,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 				oneSidedGuard.disableBlock();
 			}});
 		}).fail(function(){
-			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es besteht keine Internetverbindung.', module:'sitemap'});
+			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
 		});
 	});
 
