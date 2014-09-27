@@ -70,9 +70,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
 			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
-			$.mobile.changePage.defaults.reverse = false;
+			$.mobile.changePage.defaults.reverse = true;
 			$('.back').attr('href', '#events');
-			
+
 			this.delegateEvents();
 			return this;
 		},

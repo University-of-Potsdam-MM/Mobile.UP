@@ -111,7 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.$el = this.page.$el.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON()}));
 			this.$el.trigger("create");
-			$.mobile.changePage.defaults.reverse = false;
+			$.mobile.changePage.defaults.reverse = true;
 			$('.back').attr('href', '#news');
 			return this;
 		}
