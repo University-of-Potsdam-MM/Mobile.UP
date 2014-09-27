@@ -28,15 +28,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 	});
 
-	/*
+	/**
 	 *	Backbone Model - News
 	 */
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
 		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
-
-		initialize: function(){
-		},
 
 		parse: function(response){
 			if(response.vars)
@@ -161,6 +158,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
+			this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
 			this.collection.fetch({
 				success: this.render,
 				dataType: 'json' });
