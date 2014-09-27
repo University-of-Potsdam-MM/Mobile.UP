@@ -302,15 +302,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       // get relevant pagination information
       if(data.getElementsByTagNameNS) {
         if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
-          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar', module: 'library'});
+          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar oder Sie haben einen Leerstring eingegeben.', module: 'library'});
         }else{
           var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+          this.set('numberOfRecords',numberOfRecords);
         }
       }else{
         var numberOfRecords=data.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
+        this.set('numberOfRecords',numberOfRecords);
       }
-      this.set('numberOfRecords',numberOfRecords);
-
       var records = this.byTagNS(data, 'recordData', 'http://www.loc.gov/zing/srw/');
       var that= this;
       _.map(records, function(record) {
