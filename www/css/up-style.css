@@ -1825,16 +1825,13 @@ li.news-entry a {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	padding-right:30px;
-
+	padding-right: 30px;
 }
 
-li.news-entry a p{
+li.news-entry a p {
 	font-weight:normal;
 	font-size:.8em;
-
 }
-
 
 li.news-entry a p span.news-date{
 	font-weight:bold;
@@ -1855,7 +1852,6 @@ li.news-entry a p span.news-date{
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-
 }
 
 #news h3 {
@@ -1879,10 +1875,11 @@ li.news-entry a p span.news-date{
 #news-content p.news-text, #news p,  #news-content br {
 	margin-bottom:10px !important;
 	margin-top:0px;
+	text-align: justify;
 }
 
 #news-content {
-	padding:.5em;
+	padding: 0.5em;
 }
 
 #news-content img {
