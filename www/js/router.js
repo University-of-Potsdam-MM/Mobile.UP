@@ -57,13 +57,26 @@ define([
 			"options": "options"
 		},
 
+		history: [],
+
+		routesToScrollPositions: {},
+
 		// routes that need authentication
 		requiresAuth: ['moodle', 'grades'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
 
+		initialize: function(){
+			this.session = new Session;
+			this.listenTo(this, 'route', function(route){
+				this.history.splice(0,1,{name: route});
+			});
+		},
+
 		before: function(params, next, name){
+			this.saveScrollPosition();
+
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
 
@@ -88,11 +101,24 @@ define([
 			}
 		},
 
-		after: function(){
+		after: function(params, name){
 		},
 
-		initialize: function(){
-			this.session = new Session;
+		saveScrollPosition: function() {
+			if (this.history.length > 0){
+				var name = this.history[this.history.length-1].name;
+    			this.routesToScrollPositions[name] = $(window).scrollTop();
+    		}
+
+		},
+
+		getScrollPosition: function(route) {
+			var pos = 0;
+			if (this.routesToScrollPositions[route]) {
+				pos = this.routesToScrollPositions[route];
+				delete this.routesToScrollPositions[route]
+			}
+			return pos;
 		},
 
 		home: function(){
@@ -217,7 +243,6 @@ define([
 		},
 
 		options: function(){
-
 			this.changePage(new OptionsPageView({model: this.session}));
 		},
 
@@ -257,7 +282,7 @@ define([
 
 	var initialize= function(){
 		utils.detectUA($, navigator.userAgent);
-		var approuter = new AppRouter;
+		window.approuter = new AppRouter;
 		Backbone.history.start();
 	};
 

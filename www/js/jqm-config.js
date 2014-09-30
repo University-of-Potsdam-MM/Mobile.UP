@@ -14,7 +14,12 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             if (target.attr('data-dom-cache') != 'true') {
                 target.remove();
             }
-            $('html,body').scrollTop(0);
+
+            // get old scroll position of site and set it
+            var name = window.approuter.history[window.approuter.history.length-1].name;
+            var pos = window.approuter.getScrollPosition(name);
+            $(window).scrollTop(pos);
+
             $('body').css('overflow', 'auto');
         });
 
