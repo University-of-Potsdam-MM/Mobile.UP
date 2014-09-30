@@ -4,9 +4,9 @@
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
     <h1>Raumbelegung
     <%  if(store.get('up.session.authenticated')){ %>
-        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a></h1>
     <%  }else{ %>
-        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="login" alt="login">Login</a></h1>
     <%  } %>
 </div>
 <!-- End Header -->
@@ -14,21 +14,16 @@
 <div data-role="content" data-theme="c">
     <div data-role="campusmenu" data-store="up.mensa.default"></div>
     <div id="freeRooms">
-		<br />
-		
-		
-	<div data-role="collapsible" data-collapsed="true" data-collapsed-icon="false" class="infotext">
-	<h3>
-		<img src="img/up/information.png" class="alignleft">Zeige Infotext
-	</h3>
-	
-	<div data-role="listview" data-icon="arrow-darkblue" >text</div>
-</div>
-		
-		
-		
-		
-		
+		<div data-role="collapsible" data-collapsed="true" data-collapsed-icon="false" class="infotext">
+			<h3>
+				<img src="img/up/information.png" class="alignleft">Zeige Infotext
+			</h3>
+
+			<div data-role="listview" data-icon="arrow-darkblue">
+				<p id="roomsOverviewHint" class="blau">In dieser Ansicht werden freie Räume auf dem gewählten Campus angezeigt. Frei bedeutet, dass der Raum nicht über das Raumbuchungssystem der Universität Potsdam reserviert wurde. Dies sagt nichts über die Verwendung des Raumes durch andere, zum Beispiel studentische Lerngruppen, aus.</p>
+				<p id="roomsDetailsHint" class="blau">In dieser Ansicht werden alle heutigen Reservierungen für diesen Raum angezeigt.</p>
+			</div>
+		</div>
 		<div data-role="timeselection"></div>
 		<div id="roomsHost"></div>
 	</div>
