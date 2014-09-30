@@ -164,6 +164,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
+			meals = _.sortBy(meals, 'title');
 			var createMeals = utils.rendertmpl('mensa_detail');
 			var host = $("#" + uniqueDiv);
 
