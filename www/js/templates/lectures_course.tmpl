@@ -1,21 +1,9 @@
 <% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
-<li>
-	<p>
-		<h3><%= group.name %></h3>
+<li class="lecture-group-detail">
 
-		<style>
-			th
-			{
-			border-bottom: 1px solid #d6d6d6;
-			}
+		<h3 class="lecture-group-name"><%= group.name %></h3>
 
-			tr:nth-child(even)
-			{
-			background:#e9e9e9;
-			}
-		</style>
-
-		<table data-role="table" class="ui-responsive">
+		<table data-role="table" data-mode="reflow" class="ui-responsive table-stripe  ui-table ui-table-reflow" >
 			<thead>
 				<tr>
 					<th>Tag</th>
@@ -39,6 +27,6 @@
 				<% }); %>
 			</tbody>
 		</table>
-	</p>
+
 </li>
 <% }); %>

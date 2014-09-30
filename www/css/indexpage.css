@@ -19,8 +19,22 @@
 }
 
 #home .ui-btn.settings.ui-icon-gear {
-	height:20px;
+	height:15px;
+	margin-right:10px;
 }
+
+#home .ui-btn.settings {
+	margin:.5em 0;
+	text-transform:none;
+	color:#fff;
+	letter-spacing:normal;
+	font-weight:bold;
+	padding: .3em 2em 2em 1em;
+	font-size: 12.5px;
+	margin-top:1em;
+	
+}
+
 
 /*
 #home .ui-page-theme-a .ui-btn:hover, html #home .ui-bar-a .ui-btn:hover {
@@ -34,10 +48,29 @@
 #home .ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
+	color: #FFF;
+	font-family: GEorgia, serif;
+	font-weight: normal;
+	text-transform:none;
+	letter-spacing:.1em;
+	font-style:italic;
 }
 
+
+#home .ui-header {
+	background-color:#014260 !important;
+}
+
+
+#home .ui-icon-gear:after {
+	background-color:#fff;
+	background-image:url(../img/up/gear.svg);
+}
+
+
+
 /*1. icons startseite*/
-#home .ui-listview.ui-group-theme-b  li a span {
+#home .ui-listview.ui-group-theme-c  li a span {
 	background-image: url(../img/up/arrow-darkblue.png) !important;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -47,7 +80,7 @@
 }
 
 
-#home .ui-listview.ui-group-theme-b  li.news a span {
+#home .ui-listview.ui-group-theme-c  li.news a span {
 	background-image: url(../img/up/arrow-white.png) !important;
 	background-repeat: no-repeat;
 	background-position: right;
@@ -56,43 +89,43 @@
 	display: inline-block;
 }
 
-#home .ui-listview.ui-group-theme-b  li.news a {
+#home .ui-listview.ui-group-theme-c  li.news a {
 	background-image: url(../img/up/news.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.events a {
+#home .ui-listview.ui-group-theme-c  li.events a {
 	background-image: url(../img/up/events.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.study a {
+#home .ui-listview.ui-group-theme-c  li.study a {
 	background-image: url(../img/up/study.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.around a {
+#home .ui-listview.ui-group-theme-c  li.around a {
 	background-image: url(../img/up/around.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.plans a {
+#home .ui-listview.ui-group-theme-c  li.plans a {
 	background-image: url(../img/up/plans.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.search a {
+#home .ui-listview.ui-group-theme-c  li.search a {
 	background-image: url(../img/up/search.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-b  li.impressum a {
+#home .ui-listview.ui-group-theme-c  li.impressum a {
 	background-image: url(../img/up/impressum-index.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
@@ -195,4 +228,111 @@
 
 ul.nav-search li a.ui-icon-gear {
 	text-indent:28px;
+}
+
+/**** images high resolution devices ***/
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx)
+	{
+	
+	#home .ui-listview.ui-group-theme-c  li.around a{
+	background-image: url(../img/up/around_hr.png) !important;
+	background-size: 71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.calendar a {
+	background-image: url(../img/up/calendar_hr.png);
+	background-size:61px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.emergency a {
+	background-image: url(../img/up/emergency_hr.png);
+	background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.events a {
+	background-image: url(../img/up/events_hr.png);
+	background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.grades a {
+	background-image: url(../img/up/grades-hr.png);
+	background-size:61px 69px;
+	}
+	
+	#home .ui-listview.ui-group-theme-c  li.impressum a {
+	background-image: url(../img/up/impressum-index_hr.png);
+	background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.itservices a {
+		background-image: url(../img/up/itservices_hr.png);
+		background-size:61px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.lecturesdir a {
+		background-image: url(../img/up/lecturesdir_hr.png);
+		background-size:61px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.mensa a {
+		background-image: url(../img/up/mensa_hr.png);
+		background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.moodle a {
+		background-image: url(../img/up/moodle_hr.png);
+		background-size:80px 69px;
+	}
+	
+	#home .ui-listview.ui-group-theme-c  li.news a {
+		background-image: url(../img/up/news_hr.png);
+		background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.opening a {
+		background-image: url(../img/up/opening_hr.png);
+		background-size:71px 69px;
+	}
+	
+	#home .ui-listview.ui-group-theme-c  li.plans a {
+		background-image: url(../img/up/plans_hr.png);
+		background-size:61px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.rooms a {
+		background-image: url(../img/up/rooms_hr.png);
+		background-size:71px 69px;
+	}
+	
+	#home .ui-listview.ui-group-theme-c  li.search a {
+		background-image: url(../img/up/search_hr.png);
+		background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.sitemaps a {
+		background-image: url(../img/up/sitemaps_hr.png);
+		background-size:71px 69px;
+	}
+	.ui-listview.ui-group-theme-c  li.sports a {
+		background-image: url(../img/up/sports_hr.png);
+		background-size:71px 69px;
+	}
+	
+	#home .ui-listview.ui-group-theme-c  li.study a {
+		background-image: url(../img/up/study_hr.png);
+		background-size:71px 69px;
+	}
+	
+	.ui-listview.ui-group-theme-c  li.travel a {
+		background-image: url(../img/up/travel_hr.png);
+		background-size:71px 69px;
+	}
+
 }

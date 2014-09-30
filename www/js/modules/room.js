@@ -23,7 +23,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		 */
 		model: function(attrs, options) {
 			var room_match = attrs.raw.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
-			
+
 	        if (room_match) {
 	        	attrs.campus = room_match[1];
 	        	attrs.house = parseInt(room_match[2], 10);
@@ -156,7 +156,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 
 		render: function() {
 			this.undelegateEvents();
-			console.log(this.model);
+			//console.log(this.model);
 			this.$el = $(this.template({room: this.model}));
 			this.delegateEvents();
 

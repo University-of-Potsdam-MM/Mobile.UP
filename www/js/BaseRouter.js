@@ -3,11 +3,7 @@ define([
   'backbone'
 ], function(_, Backbone){
 
-  var BaseRouter = Backbone.Router.extend({
-
-      before: function(){},
-
-      after: function(){},
+    var BaseRouter = Backbone.Router.extend({
 
       route : function(route, name, callback){
           if (!_.isRegExp(route)) route = this._routeToRegExp(route);
@@ -27,13 +23,13 @@ define([
                   router.trigger.apply(router, ['route:' + name].concat(args));
                   router.trigger('route', name, args);
                   Backbone.history.trigger('route', router, name, args);
-                  router.after.apply(router, args);
+                  router.after.apply(router, [args, name]);
               }
               router.before.apply(router, [args, next, name]);
           });
           return this;
       }
-  });
+    });
 
   return BaseRouter;
 });

@@ -1,6 +1,11 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false"><a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a><a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList">Back</a>
-	<h1><%= book.get('title') %></h1>
+	<h1><%= book.get('title') %>
+	<%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -17,7 +22,8 @@
 	<div id="libraryContent">
 		<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
 		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
-		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle'): ''%></h3>
+		<%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle')+'</h3>' : ''%>
+		<%= (book.get('partNumber')) ? '<h3>'+ book.get('partNumber')+'</h3>' : ''%>
 		<p>
 		<% if (book.get('authors') && book.get('authors').length>0) { %>
             <b><%= book.get('authors').join("; ") %></b><br />
@@ -30,6 +36,11 @@
 		<% if (book.get('mediaType') == "media_o"){ %>
 		<div class="booktitle copyright">
 			<p>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</p>
+		</div>
+		<% } %>
+		<% if (book.get('issuance').indexOf('multipart') != -1){ %>
+		<div class="booktitle copyright">
+			<p>Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.</p>
 		</div>
 		<% } %>
 		<div data-role="tabs">

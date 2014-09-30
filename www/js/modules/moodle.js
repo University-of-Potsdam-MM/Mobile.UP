@@ -4,8 +4,9 @@ define([
         'backbone',
         'utils',
         'modules/moodle.api',
+        'modules/moodle.utils',
         'Session'
-], function( $, _, Backbone, utils, moodleAPI, Session) {
+], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
 
   "use strict";
 
@@ -41,6 +42,10 @@ define([
       // console.log('fetch CourseContents', arguments);
       var collection = this;
       moodleAPI.api.core_course_get_contents({courseid: this.courseid})
+        .then(function(contents){
+          var token = moodleAPI.api.token();
+          return moodleUtils.fixPluginfileForCourseContents(token, contents);
+        })
         .done(function(contents){
           collection.reset(contents);
         });
@@ -102,11 +107,10 @@ define([
    */
   MoodleApp.CourseListView = Backbone.View.extend({
 
-    template: utils.rendertmpl('moodle_course_list_view'),
-
     initialize: function(options){
         this.courses = options.courses;
         this.news = options.news;
+        this.template = utils.rendertmpl('moodle_course_list_view');
         this.courses.on('reset', this.render, this);
         //this.news.on('reset', this.render, this);
     },
@@ -125,10 +129,11 @@ define([
    */
   MoodleApp.CourseView = Backbone.View.extend({
 
-    template: utils.rendertmpl('moodle_course_contents_page'),
+
 
     initialize: function(options){
       this.news = options.news;
+      this.template = utils.rendertmpl('moodle_course_contents_page');
 
       this.model.on('change', this.render, this);
       this.collection.on('change', this.render, this);
@@ -155,16 +160,16 @@ define([
    * Startview for Moodle
    */
   var MoodlePageView = Backbone.View.extend({
-
-    model: Session,
-    template: utils.rendertmpl('moodle'),
     attributes: {"id": "moodle"},
+    model: Session,
+
     events: {
         'click .moodle-course': 'selectCourse',
         'click .backbutton': 'back'
     },
 
     initialize: function(){
+        this.template = utils.rendertmpl('moodle');
         this.listenToOnce(this, "authorize", this.authorize);
         this.listenToOnce(this, "fetchContent", this.fetchContent);
     },

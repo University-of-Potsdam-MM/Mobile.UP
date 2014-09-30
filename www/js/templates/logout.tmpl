@@ -1,7 +1,12 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-  <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-    <h1>Logout</h1>
+  	<a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+  	<h1>Logout
+    <%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">logout</a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="login" alt="login">Login</a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -9,11 +14,12 @@
 	<br />
 	<img src="img/up/hinweis.png" class="alignleft" />
 	<p class="blau" style="margin-left:55px; margin-bottom: 40px;">
-		Du bist erfolgreich eingeloggt.<br />Hier kannst du dich ausloggen...
+		Du bist erfolgreich eingeloggt. Hier kannst du dich ausloggen...<br /><br />
+		Hinterlegt sind Ihr Benutzername (<%= store.get('up.session.username') %>) und Passwort für die Anmeldung in PULS und Moodle.
 	</p>
 	<form id="logoutform">
 
-		<input id='logout' type="submit" value="Ausloggen" />
+		<input id='logout' data-theme='a' type="submit" value="Ausloggen" />
 	</form>
 </div>
 <!-- End Main - Navigation -->

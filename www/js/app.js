@@ -28,7 +28,8 @@ define([
 									"http://api.uni-potsdam.de/endpoints/libraryAPI",
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
-									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/"];
+									"http://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
+									"http://api.uni-potsdam.de/endpoints/errorAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
@@ -45,15 +46,14 @@ define([
 					};
 				}
 
-				/**
-			 	 * Initialize Backbone override
-			 	 */
+			 	// Initialize Backbone override
 				$(overrideBackboneSync);
-				
-				/**
-				 * Initialize external link override
-				 */
+
+				// Initialize external link override
 				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
+
+				// Register global error handler
+				window.onerror = utils.onError;
 
 				Router.initialize();
 			}

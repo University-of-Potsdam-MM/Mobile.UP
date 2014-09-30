@@ -1,8 +1,13 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-    <a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a>
+    <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton">Menue</a>
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-    <h1>Fahrten planen</h1>
+    <h1>Fahrten planen
+    <%  if(store.get('up.session.authenticated')){ %>
+        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+    <%  }else{ %>
+        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -10,8 +15,8 @@
 
     <div data-role="navbar">
         <ul>
-            <li><a href="#transport">N&auml;chste Abfahrten</a></li>
-            <li><a href="#transport2" class="ui-btn-active">Fahrt planen</a></li>
+            <li><a href="#transport" data-role="button" data-transition="none">N&auml;chste Abfahrten</a></li>
+            <li><a href="#transport2" data-role="button" data-transition="none" class="ui-btn-active">Fahrt planen</a></li>
         </ul>
     </div>
 
@@ -35,18 +40,13 @@
         </div>
         <div data-role="navbar" class="buttons_pt route">
             <ul>
-                <li><p></p></li>
+                <li><p>Wann:</p></li>
+                <li></li>
                 <li>
-                    <select name="flip-1" id="flip-1" data-role="slider">
-                        <option value="off">Ab</option>
-                        <option value="on">An</option>
-                    </select>
+                    <input name="transportationDate" id="transportationDate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "overrideCalStartDay": 1, "useFocus": true, "calHighToday": false, "centerHoriz": true}'>
                 </li>
                 <li>
-                    <input name="transportationDate" id="transportationDate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "useFocus": true, "useButton": false}'>
-                </li>
-                <li>
-                    <input name="transportationTime" id="transportationTime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useButton": false }'>
+                    <input name="transportationTime" id="transportationTime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useLang": "de", "centerHoriz": true}'>
                 </li>
             </ul>
         </div>
@@ -62,18 +62,11 @@
         </div>
 
         <div id="result">
-            <!--  <div id="summary">
-            <p>Fahrt von <span class='fromCampus'>Campus Griebnitzsee</span> nach</p>
-            <p class='toCampus'>Campus Golm</p>
-            <p class="arrivalMode">Abfahrt</p>
-            <p class='when'>Heute, 10.02.2234,  11:15</p>
-            </div> -->
             <div class="spaeter scrollbutton" >
                 <input id="earlierButton" data-theme="a" type="submit" value="← Früher" />
             </div>
 
             <div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-inset="true" id="transport_rides"></div>
-
 
             <div class="spaeter scrollbutton" >
                 <input id="laterButton" type="submit" data-theme="a" value="Später →" />

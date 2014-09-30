@@ -14,12 +14,8 @@ define([
 	 *	TODO: will be substituted by use of local Accounts and by the use of the Mobile Proxy of the DFN
 	 */
 	var OptionsPageView = Backbone.View.extend({
-
 		model: Session,
 		attributes: {"id": 'options'},
-
-		logintemplate: utils.rendertmpl('login'),
-		logouttemplate: utils.rendertmpl('logout'),
 
 		events: {
 			'submit #loginform': 'login',
@@ -29,19 +25,21 @@ define([
 
 		initialize: function(){
 			this.loginAttempts = 0;
+			this.logintemplate = utils.rendertmpl('login');
+			this.logouttemplate = utils.rendertmpl('logout');
+
 			this.listenTo(this.model,'change', this.render);
 			this.listenTo(this, "errorHandler", this.errorHandler);
 		},
 
 		render: function(){
-
 			if (this.model.get('up.session.authenticated')){
-				$(this.el).html(this.logouttemplate({}));
+				this.$el.html(this.logouttemplate({}));
 			}else{
-				$(this.el).html(this.logintemplate({}));
+				this.$el.html(this.logintemplate({}));
 			}
 
-			$(this.el).trigger("create");
+			this.$el.trigger("create");
 			return this;
 		},
 
@@ -51,6 +49,7 @@ define([
 				var username = $('#username').val();
 				var password = $('#password').val();
 				this.model.generateLoginURL({username: username, password: password});
+				this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 				var that = this;
 				this.model.fetch({
 					success: function(model, response, options){
@@ -66,7 +65,6 @@ define([
             				that.model.set('up.session.password', password);
 							that.model.set('up.session.MoodleToken', response['token']);
 
-							console.log('success -logged in');
 							if(that.model.get('up.session.redirectFrom')){
 		                		var path = that.model.get('up.session.redirectFrom');
 		                		that.model.unset('up.session.redirectFrom');
@@ -95,7 +93,7 @@ define([
             this.model.unset('up.session.username');
             this.model.unset('up.session.password');
             this.model.unset('up.session.MoodleToken');
-			this.render();
+			Backbone.history.navigate('', { trigger : true });
 		},
 
 		errorHandler: function(){

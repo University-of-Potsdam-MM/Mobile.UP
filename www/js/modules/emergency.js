@@ -18,7 +18,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	 */
 	// view for single emergency call
 	var EmergencyCallView = Backbone.View.extend({
-		tagName: 'li',
+		tagName: 'div',
+		attributes: {"data-role": 'collapsible'},
 
 		initialize: function(){
 			_.bindAll(this, 'render');
@@ -26,7 +27,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		render: function(){
-			$(this.el).html(this.template({emergency: this.model.toJSON()}));
+			this.$el.html(this.template({emergency: this.model.toJSON()}));
 			return this;
 		}
 	});
@@ -59,7 +60,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 				$(this.el).append(emergencyCall.render().el);
 			}, this);
 
-			this.el.listview("refresh");
+			this.el.trigger("create");
 			return this;
 		}
 	});
@@ -72,10 +73,10 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		render: function() {
-			$(this.el).html(this.template({}));
+			this.$el.html(this.template({}));
 			var emergencyCalls = new EmergencyCalls();
 			var emergencyCallsView = new EmergencyCallsView({collection: emergencyCalls});
-			$(this.el).trigger("create");
+			this.$el.trigger("create");
 			return this;
 		}
 	});

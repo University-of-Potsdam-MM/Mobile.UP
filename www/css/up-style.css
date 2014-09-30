@@ -10,6 +10,10 @@
 	padding: 0em;
 }
 
+.ui-collapsible-content {
+	padding-right:.5em;
+}
+
 body,.ui-page {
 
 	margin: 0 auto;
@@ -61,21 +65,38 @@ p {
 	margin: .3em;
 }
 
+.nomargin {
+	margin:0 !important;
+}
+
 /*visited*/
 
  html .ui-bar-a .ui-btn:visited,
  html .ui-body-a .ui-btn:visited,
  html body .ui-group-theme-a .ui-btn:visited,
  html head+body .ui-btn.ui-btn-a:visited {
- background:#EDEDED;
+ 	background:#014260;
  }
 
+
+
 /*header*/
+
+
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 }
+
+/* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-hres.png);
+	background-size:46px 55px;
+	}
+}
+*/
 
 #error, #error3
 {
@@ -96,12 +117,13 @@ p {
 	overflow: hidden;
 	white-space: nowrap;
 	outline: 0 !important;
-	text-transform: uppercase;
-	letter-spacing: 0.3em;
-	font-weight: bold;
+	font-weight:normal;
+	font-family:Georgia,serif;
 	margin-left: 45px;
 	text-indent: 15px;
 	line-height:2em;
+	letter-spacing:.1em;
+	font-style:italic;
 }
 
 h2 {
@@ -140,11 +162,9 @@ h2 span {
 	text-indent: -400000px;
 	position: relative;
 	float: left;
-	margin-left: 5px;
-	margin-right: 5px;
 	height:80%;
 	width:12px;
-	background-position:10px 8px;
+	background-position:10px 11px;
 }
 
 /*default buttons links */
@@ -178,6 +198,16 @@ h2 span {
 	margin: 0;
 	height: 100%;
 }
+
+/* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
+	{
+	background-image: url(../img/up/menubutton-hres.png) !important;
+	background-size:46px 55px;
+	}
+}
+*/
 
 /*tabs*/
 .ui-navbar li {
@@ -228,20 +258,11 @@ h2 span {
 }
 
 /* Datebox*/
-.ui-input-datebox {
-	width: 100%;
-	background-image: none;
-	padding: .4em;
-	font-size: 16px;
-	display: block;
-	padding-top: 0;
-	padding-bottom: 0;
-	background-color: #014260;
-}
 
-.ui-input-datebox input {
+.ui-input-datebox {
+	width: 100% !important;
 	color: #fff;
-	text-shadow: none;
+	background-color: #014260;
 }
 
 label.showfirst {
@@ -341,6 +362,40 @@ label.showfirst {
 .ui-icon-arrow-white-up:after {
 	background-image: url(../img/up/arrow-white-up.png);
 	background-color: transparent;
+}
+
+/*login - logout
+-------------------- */
+.ui-icon-login:after {
+	background-image: url(../img/up/login.svg);
+	background-color:#fff !important;
+	top:25%;
+	left: .1em !important;
+}
+
+.ui-icon-logout:after {
+	background-image: url(../img/up/logout.svg);
+	background-color:#fff !important;
+	top:25%;
+	left: .1em !important;
+}
+
+.ui-icon-login-blue:after {
+	background-image: url(../img/up/login-white.svg);
+	background-color:#014260 !important;
+	top:55%;
+	left: .1em !important;
+}
+
+.ui-icon-logout-blue:after {
+	background-image: url(../img/up/logout-white.svg);
+	background-color:#014260 !important;
+	top:55%;
+	left: .1em !important;
+}
+
+#home .ui-btn.settings:active {
+	background-color:transparent;
 }
 
 
@@ -556,7 +611,39 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	opacity: 1
 }
 
+.ui-page-theme-a .ui-btn.settings2 {
+	right: 30px;
+}
 
+.ui-header span.username-header {
+	display: inline-block;
+	margin-right: 63px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
+
+
+}
+
+.ui-header span.username-header.nooptions {
+	display: inline-block;
+	margin-right: 30px;
+	text-align:right;
+	font-size: .7em;
+	font-style: normal;
+	line-height: 35px;
+	font-family: arial,sans-serif;
+
+
+}
+
+@media ( max-width : 300px) {
+	.ui-header span.username-header{
+		display:none;
+	}
+}
 
 /***************Öffnungszeiten********************
 *****************************************************/
@@ -575,8 +662,9 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	white-space: no-wrap:
 }
 
+/*frage*/
 .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
-	padding: .8em 0em !important;
+	padding: .8em .1em !important;
 	/*macht die Lücke in der Liste bei den Öffnugnszeiten weg....muss vielleicht nicht?° */
 	white-space: normal;
 }
@@ -636,6 +724,16 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	color: #014260 font-size:  .8em;
 }
 
+#opening .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
+	padding-left: 0px !important;
+	padding-right: 15px !important;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+
+}
+
+
 /*table  öffnungszeiten
 ---------------------------------*/
 #opening p {
@@ -680,6 +778,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	margin-top: .5em;
 }
 
+
 /*öffnungszeiten - button hover
 #opening.ui-page-theme-a ul .ui-btn:hover {
 	background: #dedede !important;
@@ -695,7 +794,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 .ui-body-c .buttons_pt.ui-navbar .ui-btn,.ui-body-c .buttons_pt.ui-navbar .ui-input-text
 	{
 	display: inline-block;
-	width: 90%;
+	width: 100%;
 	height: 20px;
 	text-transform: none;
 	font-size: .8em;
@@ -731,22 +830,42 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 
 html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
 	line-height:135%;
-
 }
 
 html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
-	line-height:35px;
-
+	line-height: 25px;
+	font-size: .9em !important;
 }
 
-
 .buttons_pt .ui-input-datebox input {
+	width: 60% !important;
+	text-align: left;
+	float: left;
 	margin: 0 !important;
 	border: 0 !important;
 	text-align: center;
 	font-size: .8em;
 	min-height: 1em;
 	font-weight: bold;
+}
+
+.buttons_pt .ui-input-datebox {
+	background:transparent;
+}
+
+.buttons_pt .ui-input-datebox a.ui-btn {
+	background:transparent;
+	width:22px !important;
+	float:left;
+	/*margin-right:10%;*/
+}
+
+.buttons_pt .ui-input-datebox a.ui-btn:after {
+	background-color:transparent;
+}
+
+.buttons_pt li:last-child .ui-btn {
+	/*margin-right:10% !important;*/
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
@@ -763,15 +882,19 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	padding: .7em 0em;
 	background-color: #014260 !important;
 }
+
 /*slider*/
 .buttons_pt .ui-slider-switch .ui-slider-label {
 	font-weight: normal;
-	text-transform: uppercase;
 	color: #fff;
 }
 
 .buttons_pt .ui-slider-switch .ui-slider-label-b {
 	color: #014260;
+}
+
+html .ui-body-c .ui-slider-track .ui-btn-active {
+	color:#fff;
 }
 
 .ui-slider-track.ui-corner-all {
@@ -840,6 +963,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	margin-top: 0;
 	margin-bottom: 0;
 	border: 0;
+	font-size:.8em;
 }
 
 .ui-listview>li h3.complex_transport .ui-btn {
@@ -895,6 +1019,10 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	display: block;
 }
 
+
+.stationTime {
+	color:#014260;
+}
 /**********************Suche******************
 *****************************************************/
 #people .ui-input-btn,
@@ -977,13 +1105,55 @@ div.booktitle.copyright p {
 }
 
 #book-locations div {
-	margin-left: 1em;
-	padding: .5em 0;
+	margin:0;
+
+}
+
+#book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+
+	background-color: #ededed;
+	padding: 0;
+	color: #FFF;
+
+}
+
+#book-locations h3.ui-collapsible-heading {
+
+	background-color: #ededed;
+	padding: 0;
+	color: #FFF;
+
+}
+
+#book-locations h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+	font-style:normal;
+	font-size:16px;
+	text-indent:.5em;
+	padding: 0em;
+	color: #014260;
+}
+
+#book-locations h3.ui-collapsible-heading a.ui-collapsible-heading-toggle {
+	font-style:normal;
+	font-size:16px;
+	text-indent:.5em;
+	padding: 0em;
+	color: #014260;
 }
 
 #book-locations h3 {
-	margin: .3em 0 .3em 0;
 	font-size: 1em;
+	background-color: #014260;
+	padding: 1em;
+	color: #FFF;
+	margin:0;
+}
+
+#book-locations h3 a {
+	font-style: italic;
+	font-size: .8em;
+	color: #D0DAE3;
+	margin:0;
 }
 
 #book-locations p {
@@ -1034,12 +1204,23 @@ li.book-short a.ui-btn {
 }
 
 li.book-short div {
-	width: 30px;
-	height: 50px;
+	width: 25px;
+	height: 70px;
 	background-repeat: no-repeat !important;
-	background-position: 0px 7px;
+	background-position: 0px 30px;
 	float: left;
+	padding-left: 2px;
+	padding-top: 10px;
+	font-size: 14px;
 }
+
+li.book-short.ui-li-divider.ui-bar-inherit {
+	background: #014260!important;
+	padding: 2px;
+}
+
+/*Standorte*/
+
 
 /* MediaIcon A
 ---------------------*/
@@ -1250,6 +1431,27 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin-bottom: .3em
 }
 
+#freeRooms .infotext h3 {
+	margin:0;
+	border:none;
+}
+
+#freeRooms .infotext h3 a {
+	background-color:#fff;
+	border:none;
+	line-height: 2.5em;
+	padding-bottom: 0 !important;
+	padding-top: 0 !important;
+
+}
+
+html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
+	background-color: #FFF;
+	text-indent: 35px;
+	border-bottom: 0px;
+}
+
+
 #roomsHost h3 {
 	margin-left: 0em;
 	background: #ededed;
@@ -1353,7 +1555,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin: 0;
 	padding: 1em 0 1em .1em;
 	color:#014260;
-
 }
 
 #moodle .ui-listview>li h2 {
@@ -1362,7 +1563,6 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	white-space: nowrap;
 	margin-bottom:0;
 	margin-top:0;
-
 }
 
 #moodle .ui-listview>li h2 a{
@@ -1390,17 +1590,29 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin: 0;
 }
 
-/***********************Personensuche*********************
+
+#moodle .ui-link {
+	text-decoration:none;
+	line-height: 3em;
+}
+
+#moodle .ui-link img {
+	vertical-align:text-bottom;
+}
+/***********************Personensuche*************************
 **************************************************************/
-#people-results h3.ui-collapsible-heading {
+#emergency-list h3.ui-collapsible-heading,
+#people-list h3.ui-collapsible-heading {
 	border-bottom: 0px;
 }
 
-#people-results h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
 	border-bottom: 1px;
 }
 
-#people-results h3.ui-collapsible-heading a {
+#emergency-list h3.ui-collapsible-heading a,
+#people-list h3.ui-collapsible-heading a {
 	background-image: url(../img/up/people-hover.png) !important;
 	background-repeat: no-repeat;
 	background-position: 0px 9px;
@@ -1409,47 +1621,54 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background-color: #d0dae3 !important;
 }
 
-#people-results h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a{
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+	background-image: url(../img/up/people-hover.png) !important;
+	background-repeat: no-repeat;
+	background-color: #ededed !important;
+}
+
+#emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a,
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
 	background-image: url(../img/up/people.png) !important;
 	background-repeat: no-repeat;
 	background-color: #ededed !important;
 }
 
-#people-results h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a:hover
-	{
-	background-image: url(../img/up/people-hover.png) !important;
-	background-repeat: no-repeat;
-	background-color: #d0dae3 !important;
-}
-
-#people-results h3 a span {
+#emergency-list h3 a span,
+#people-list h3 a span {
 	margin-bottom: 3px;
 	display: inline-block;
 }
 
-#people-results .ui-btn-icon-right:after {
+#emergency-list .ui-btn-icon-right:after,
+#people-list .ui-btn-icon-right:after {
 	right: -.1em;
 }
 
 .mail {
 	background-image: url(../img/up/mail-small.png) !important;
 	background-repeat: no-repeat;
-	background-position: 0px .4em;
+	background-position: 0px .2em;
 	text-indent: 20px;
+	padding-left: 20px;
 }
 
 .phone {
 	background-image: url(../img/up/phone-small.png) !important;
 	background-repeat: no-repeat;
-	background-position: 0px .4em;
+	background-position: 0px .2em;
 	text-indent: 20px;
+	padding-left: 20px;
 }
 
+#emergency-list .ui-collapsible-content p,
 #people-list .ui-collapsible-content p {
 	padding-left: 25px;
 }
 
-/*Impressum*/
+/*/***********************Impressum*********************
+**************************************************************/
 
 #impressum .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
 	padding:.7em 2.5em !important;
@@ -1477,7 +1696,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background-image: url(../img/up/mitmachen.png);
 }
 
-/*datebox*/
+/************************datebox*********************
+**************************************************************/
 
 .ui-datebox-container .ui-header .ui-btn {
 	padding-right: 0em;
@@ -1492,6 +1712,12 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 .ui-datebox-container .ui-btn-icon-notext:after, .ui-datebox-container .ui-btn-icon-top:after, .ui-datebox-container .ui-btn-icon-bottom:after {
 	background-color:transparent;
 }
+
+.ui-datebox-griddate-disable{
+	background:#ccc!important;
+	color: #000!important;
+}
+
 /*
 .ui-datebox-container .ui-page-theme-a .ui-datebox-gridrow .ui-btn:hover, html head + body .ui-datebox-container .ui-datebox-gridrow .ui-btn.ui-btn-a:hover {
 	border-color:#fff;
@@ -1499,27 +1725,28 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 }
 
-/*****error*****************/
+/***********************error************************
+**************************************************************/
 
 .error {
-		background:#d0dae3;
-		padding:2em;
-		margin:10px auto;
+	background:#d0dae3;
+	padding:2em 1em 2em 1em;
+	margin:10px auto;
 }
 
 .error h2 {
-		color:#014260;
-		font-size:140%;
-		margin:3px auto 3px auto;
-		font-weight:bold;
+	color:#014260;
+	font-size:140%;
+	margin:3px auto 3px auto;
+	font-weight:bold;
 }
 
 
 .error p{
-		border-top:2px solid #ededed;
-		border-bottom:2px solid #ededed;
-		padding:.5em;
-		font-size:.8em;
+	border-top:2px solid #ededed;
+	border-bottom:2px solid #ededed;
+	padding:.5em;
+	font-size:.8em;
 }
 
 @media ( max-width : 35em) {
@@ -1532,38 +1759,542 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	}
 
 	.error p{
-		max-width:25%;
+		max-width:75%;
 		margin:0 auto;
 	}
 }
 
-/******lectures *******/
+/***********************lectures **********************
+**************************************************************/
 
 #lectures .ui-collapsible-content.ui-body-inherit {
 	background: #cfdae3;
 	color: #014260;
 	font-size: .8em;
-	padding-left: 1.5em;
+	padding-left: 5px;
 }
 
 #lectures .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
-		padding-left:1em !important;
+		padding-left:5 px !important;
 }
 
 #lectures .ui-select {
 	width: 100%;
 }
 
-/****grades*****/
+#lectures .ui-listview-inset>.ui-li-static, .ui-listview-inset>.ui-li-divider, .ui-listview-inset>li>a.ui-btn {
+	padding-right:25px;
+}
+
+a#selectLevel-button {
+	padding-right:15px;
+	padding-left: 5px;
+text-align: left;
+}
+
+#lectures #selectLevel-listbox .ui-header .ui-title{
+	background-image:none;
+	text-indent:1px;
+	margin-left: 10px;
+	letter-spacing: normal
+
+}
+
+#lectures .table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
+	background-color:#ededed;
+	border-bottom:none;
+}
+
+#lectures .ui-listview-inset>.ui-li-static.lecture-group-detail {
+	padding-right:0;
+}
+
+li.lecture-group-detail {
+	background-color:transparent !important;
+}
+
+h3.lecture-group-name {
+	margin: 12px !important;
+	margin-left:5px !important;
+}
+
+/***********************grades***********************
+**************************************************************/
 
 table#grades {
 	background-color:#d0dae3;
-
-
 }
 
 @media (min-width: 35em) {
 	#grades.ui-table-reflow.ui-responsive {
-	display: inline-table;
+		display: inline-table;
 	}
+}
+
+/*********************** News*********************
+**************************************************************/
+
+.news-divider a.ui-btn{
+	background:#014260;
+	color:#fff;
+}
+
+.news-divider a.ui-btn:visited{
+	background:#014260;
+	color:#fff;
+}
+
+li.news-entry a {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	padding-right: 30px;
+}
+
+li.news-entry a p {
+	font-weight:normal;
+	font-size:.8em;
+}
+
+li.news-entry a p span.news-date{
+	font-weight:bold;
+	font-size:.8em;
+}
+
+#news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-white.png);
+	background-color: transparent;
+}
+
+#news li.entry .ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-darkblue.png);
+	background-color: transparent;
+}
+
+#news li.show-all a {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#news ul h3 {
+	background-color:#014260;
+	padding-left:.5em;
+	color:#fff;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	min-height: 40px;
+	line-height: 40px;
+}
+
+#news-content h2 {
+	color:#014260;
+	font-weight:bold;
+	font-size:.1.5em;
+	margin-bottom:0px;
+	margin-left:.1em;
+}
+
+#news-content p.news-text, #news p,  #news-content br {
+	margin-bottom:10px !important;
+	margin-top:0px;
+	line-height:1.5em;
+
+}
+
+#news-content {
+	padding: 0.5em; line-height:1.5em;
+}
+
+#news-content img {
+	float:left;
+	margin:0 auto;
+}
+
+/*********************** Veranstaltungen*********************
+**************************************************************/
+
+#events .ui-listview > .ui-li-has-thumb > .ui-btn, .ui-listview > .ui-li-static.ui-li-has-thumb {
+    min-height: 3.625em;
+    padding-left: 4.5em;
+    padding-top:.5em;
+}
+
+#events .ui-listview .ui-li-has-thumb > .ui-btn > img:first-child {
+	margin-top:.5em;
+	margin-left:.5em;
+}
+
+#events span.event-title, #events span.event-time {
+	text-overflow: ellipsis !important;
+	overflow: hidden !important;
+	white-space: nowrap;
+}
+
+div.event-caption{
+	text-overflow: ellipsis !important;
+	overflow: hidden !important;
+	white-space: nowrap;
+}
+
+div.event-caption span.event-title{
+	font-weight:bold;
+	font-size:.8em;
+}
+
+div.event-caption span.event-time{
+	font-weight:normal;
+	font-size:.7em;
+}
+
+.event-image-container {
+	padding-top:.5em;
+	padding-bottom:.5em;
+	min-height:100px;
+	background-color:#ededed;
+}
+
+.event-image-container h2 {
+	margin-top: 0;
+	margin-left: 115px;
+	color: #014260;
+	font-weight: bold;
+}
+
+.event-image {
+	float:left;
+	margin-left:.5em;
+}
+
+.event-time-date {
+	min-height: 30px;
+	padding: .5em;
+}
+
+.event-detail {
+	color:#014260;
+	padding-left:.5em;
+	padding-right:.5em;
+}
+
+p.event-description {
+	padding-left:.5em;
+	padding-right:.5em;
+}
+
+#events h3 {
+	background-color:#014260;
+	font-weight:bold;
+	min-height:40px;
+	line-height:40px;
+	margin-bottom:0px;
+	margin-top:0px;
+	padding-left:.1em;
+	color:#fff !important;
+}
+
+.event-list li a.ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-darkblue.png);
+	background-color: transparent;
+}
+
+.vorgemerkt {
+	display:inline-block;
+	text-indent:20px;
+	line-height:25px;
+	color:red;
+}
+
+.vorgemerkt:before {
+	background-image: url(../img/up/ok.png) !important;)
+	width: 25px;
+	height: 25px;
+	content:"."
+}
+
+
+/*** images high resoluton devices ***/
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+
+	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
+	{
+	background-image: url(../img/up/menubutton-hres.png) !important;
+	background-size:46px 55px;
+	}
+
+	.ui-header .ui-title {
+	background-image: url(../img/up/seperator-hres.png);
+	background-size:46px 55px;
+	}
+
+	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
+	background-image: url(../img/up/arrow-back_hr.png) !important;
+	background-size: 25px 25px;
+	}
+
+	#nav-panel ul.nav-search  li a,#nav-panel2 ul.nav-search  li a,#nav-panel3 ul.nav-search  li a {
+	background-image: url(../img/up/arrow-darkblue_hr.png);
+	background-size:11 px 17px}
+
+	.ui-icon-arrow-down:after {
+	background-image: url(../img/up/arrow-down_hr.png);
+	background-size:21px 9px;
+	}
+
+	.ui-icon-arrow-up:after {
+		background-image: url(../img/up/arrow-up_hr.png);
+		background-size:21px 9px;
+	}
+
+	.ui-icon-arrow-white-down:after {
+		background-image: url(../img/up/arrow-white-down_hr.png);
+		background-yize:17px 11px;
+	}
+
+	.ui-icon-arrow-white-up:after {
+		background-image: url(../img/up/arrow-white-up_hr.png);
+		background-size:17px 11px;
+	}
+
+	#nav-panel ul.nav-search  li:first-child a,#nav-panel2 ul.nav-search  li:first-child a,#nav-panel3 ul.nav-search  li:first-child a{
+		background-image: url(../img/up/close_hr.png);
+		background-size:13px 17px;
+	}
+
+	#impressum .ui-icon-impressum:after {
+	background-image: url(../img/up/impressum_hr.png);
+	background-size:25px 25px;
+	}
+
+	#impressum .ui-icon-ansprech:after {
+		background-image: url(../img/up/ansprech_hr.png);
+		background-size:25px 25px;
+	}
+
+	.mail {
+	background-image: url(../img/up/mail-small^_hr.png) !important;
+	background-size:20px 11px;
+	}
+
+	.phone {
+		background-image: url(../img/up/phone-small_hr.png) !important;
+		background-size:20px 11px;
+	}
+
+	#libraryContent li.ui-state-active:after {
+		background-image: url(../img/up/marker_hr.png);
+		background-size:16px 10px;
+	}
+
+	#impressum .ui-icon-mitmachen:after {
+		background-image: url(../img/up/mitmachen_hr.png);
+		background-size:25px 25px;
+	}
+
+	html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
+		background-image: url(../img/up/ok_hr.png) !important;
+		background-size:23px 22px;
+	}
+
+	#peoples h3.ui-collapsible-heading.ui-collapsible-heading-collapsed a {
+		background-image: url(../img/up/people_hr.png) !important;
+		background-size:35px 29px;
+	}
+	#emergency .ui-listview .ui-btn {
+		background-image: url(../img/up/phone_hr.png);
+		background-size:40px 24px;
+
+	}
+
+	/** Mediaicons **/
+
+	/* MediaIcon A
+	---------------------*/
+	div.media_a {
+		background-image: url(../img/res/media_a_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_a_big {
+		background-image: url(../img/res/media_a_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+
+	/* MediaIcon B
+	---------------------*/
+	div.media_b {
+		background-image: url(../img/res/media_b_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_b_big {
+		background-image: url(../img/res/media_b_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon E
+	---------------------*/
+	div.media_e {
+		background-image: url(../img/res/media_e_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_e_big {
+		background-image: url(../img/res/media_e_big_hr.png) !important;
+		background-size:55px 55px;
+
+	}
+	/* MediaIcon G
+	---------------------*/
+	div.media_g {
+		background-image: url(../img/res/media_g_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_g_big {
+		background-image: url(../img/res/media_g_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon H
+	---------------------*/
+	div.media_h {
+		background-image: url(../img/res/media_h_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_h_big {
+		background-image: url(../img/res/media_h_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon I
+	---------------------*/
+	div.media_i {
+		background-image: url(../img/res/media_i_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_i_big {
+		background-image: url(../img/res/media_i_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon K
+	---------------------*/
+	div.media_k {
+		background-image: url(../img/res/media_k_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_k_big {
+		background-image: url(../img/res/media_k_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon L
+	---------------------*/
+	div.media_l {
+		background-image: url(../img/res/media_l.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_l_big {
+		background-image: url(../img/res/media_l_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon M
+	---------------------*/
+	div.media_m {
+		background-image: url(../img/res/media_m_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_m_big {
+		background-image: url(../img/res/media_m_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon O
+	---------------------*/
+	div.media_o {
+		background-image: url(../img/res/media_o_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_o_big {
+		background-image: url(../img/res/media_o_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon P
+	---------------------*/
+	div.media_p {
+		background-image: url(../img/res/media_p_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_p_big {
+		background-image: url(../img/res/media_p_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon S
+	---------------------*/
+	div.media_s {
+		background-image: url(../img/res/media_s_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_s_big {
+		background-image: url(../img/res/media_s_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon T
+	---------------------*/
+	div.media_t {
+		background-image: url(../img/res/media_t_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_t_big {
+		background-image: url(../img/res/media_t_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon V
+	---------------------*/
+	div.media_v {
+		background-image: url(../img/res/media_v_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_v_big {
+		background-image: url(../img/res/media_v_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+	/* MediaIcon X
+	---------------------*/
+	div.media_x {
+		background-image: url(../img/res/media_x_hr.png) !important;
+		background-size:23px 30px;
+	}
+
+	div.media_x_big {
+		background-image:url(..img/red/media_x_big_hr.png) !important;
+		background-size:55px 55px;
+	}
+
+
 }

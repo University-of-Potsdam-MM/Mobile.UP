@@ -6,8 +6,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
    */
   var TransportViewsTransportList = Backbone.View.extend({
 
-    template: utils.rendertmpl('transport_listitem_view'),
-
     events: {
       'vclick #later-button' : 'loadNext'
     },
@@ -16,6 +14,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       this.stations = options.stations;
       this.stationName = options.stationName;
       this.stationTime = options.stationTime;
+
+      this.template = utils.rendertmpl('transport_listitem_view');
 
       this.$ul = this.$el.find('ul#transport-list');
       this.collection.on("reset", this.render, this);
@@ -71,10 +71,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
    */
   var TransportPageView = Backbone.View.extend({
     attributes: {"id": "transport"},
-    template: utils.rendertmpl('transport'),
 
     initialize: function(){
       this.collection = ht.stations();
+      this.template = utils.rendertmpl('transport');
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
       this.listenTo(this.collection.where({campus: 'G-see'})[0], "sync", this.renderTransportList);

@@ -1,15 +1,11 @@
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content" id="news-content">
-<h2><%= news.News.headline %></h2>
-<div class="news-text unchanged"><%= news.News.text %></div>
-<br />
-<br />
-<div class="floatL clear">
-<div>
-<a onclick="app.openBrowser('<%=news.News.link%>')">Auf Website lesen</a>
-</div>
-<div>Veröffentlicht: <%= news.News.DateString %> Uhr</div>
-</div>
+	<h2><%= news.News.headline %></h2>
+	<p class="news-text unchanged"><%= news.News.text %></p>
+	<div>
+		<a href="<%=news.News.link%>" target="_blank" rel="external" data-role="button" data-transition="slidefade">Auf Website lesen</a>
+	</div>
+	<div style="text-align:center;">Veröffentlicht: <%= news.News.DateString %> Uhr</div>
 </div>
 <!-- End Main - Navigation -->

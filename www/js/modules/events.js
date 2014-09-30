@@ -1,15 +1,15 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], function($, _, Backbone, utils, date, LocalStore){
+define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Backbone, utils, date){
 
 	/*
 	 *
 	 */
 	app.models.Event = Backbone.Model.extend({
-		url: 'http://headkino.de/potsdamevents/json/events/view/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/view/',
 		initialize: function(){
 			this.url = this.url + this.id;
 		},
 		parse: function(response){
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			return response;
 		}
@@ -17,15 +17,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 	app.models.Events = Backbone.Collection.extend({
 		model: app.models.Event,
-		//url: 'js/json/events.json',
-		url: 'http://headkino.de/potsdamevents/json/events/',
-
-		initialize: function(){
-
-		},
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/',
 
 		parse: function(response){
-			console.log(response);
 			if(response.vars)
 				response = response.vars;
 			this.response = response;
@@ -33,11 +27,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		},
 
 	});
-	
+
 	app.models.Place = Backbone.Collection.extend({
 		model: app.models.Event,
-		//url: 'js/json/events.json',
-		url: 'http://headkino.de/potsdamevents/json/events/place/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/place/',
 
 		initialize: function(p){
 			this.url = this.url + p.id;
@@ -63,18 +56,28 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.model = new app.models.Event(p);
 			this.model.fetch({
 				success: this.render,
-				dataType: 'json' });
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltung konnte nicht abgerufen werden.', module: 'events'});
+				},
+				dataType: 'json' 
+			});
 		},
 
 		render:function(){
-			var vars = this.model.toJSON(); 
+			this.undelegateEvents();
+
+			var vars = this.model.toJSON();
 			if(!vars.event)
 				vars.event = vars;
 			this.$el = this.page.$el.find('#events');// $(this.el, this.page.$el)
-			vars = $.extend(vars, {going:Boolean(LocalStore.get('going', {})[vars.event.Event.id])});
+			vars = $.extend(vars, {going:Boolean(utils.LocalStore.get('going', {})[vars.event.Event.id])});
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			$.mobile.changePage.defaults.reverse = true;
+			$('.back').attr('href', '#events');
+
+			this.delegateEvents();
 			return this;
 		},
 
@@ -89,10 +92,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			window.plugins.calendar.createEvent(e.Event.name, e.Place.name, e.Event.description, new Date(parseInt(e.Event.startTime) * 1000), new Date((parseInt(e.Event.startTime) + 3600) * 1000 ),
 				function(m){ //Bei erfolgreichem Speichern ausgeführt, unter Android leider nicht ausgeführt
 					navigator.notification.alert(e.Event.name + ' am ' + e.Event.DateString + ' wurde deinem Kalender hinzugefügt.', null, 'Gespeichert'); //Nachricht ausgeben
-					LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
+					utils.LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
 					$('#savedInCal'+e.Event.id).show(); //VOrgemerkt Häckchen anzeigen
 					saved = true;
-					track('events/calendar/'+e.Event.id+'/saved'); //Aktion tracken
 				},
 				function(m){ //Bei einem Fehler beim Speichern ausgeführt
 					if(m != 'User cancelled')
@@ -103,7 +105,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 		}
 
 	});
-	
+
 	app.views.EventsPlace = Backbone.View.extend({
 		el: '#events',
 		initialize: function(p){
@@ -112,33 +114,37 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.page = p.page;
 			this.filter = p.filter;
 			app.data.events = p.events;
-			
+
 			_.bindAll(this, 'render');
-			//this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
-	   		//this.disabledLocations = LocalStore.get('disabledLocations', {});
+			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
+	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			if(!app.data.events)
 				this.collection.fetch({
 					success: this.render,
+					error: function(){
+						var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
+					},
 					dataType: 'json' });
 			else
 				this.render();
 		},
 
 		fetchError: function(){
-			throw new Error('Error loading JSON file'); 
+			throw new Error('Error loading JSON file');
 		},
 
 		render: function(){
 			this.$el = this.page.$el.find('#events');
 			console.log(this.$el);
-			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:LocalStore.get('going', {})}));
+			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
 			$('.back').attr('href', '#events');
 			return this;
 		}
 	});
-	
+
 	app.views.EventsSet_locations = Backbone.View.extend({
 		el: '#events',
 
@@ -151,13 +157,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 
 		render:function(){
 			this.$el = this.page.$el.find('#events');
-			this.$el.html(this.template({places: app.data.places, disabledLocations: LocalStore.get('disabledLocations', {})}));
+			this.$el.html(this.template({places: app.data.places, disabledLocations: utils.LocalStore.get('disabledLocations', {})}));
 			$('.ch-location').change(this.toggleLocation);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#events');
 			return this;
 		},
-		
+
 		/*
 		* Locations toggeln
 		*/
@@ -169,7 +175,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 				if(!el.checked)
 					self.disabledLocations[$(el).data('id')] = $(el).data('id');
 			});
-			LocalStore.set('disabledLocations', this.disabledLocations);
+			utils.LocalStore.set('disabledLocations', this.disabledLocations);
 		},
 	});
 
@@ -181,31 +187,36 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			this.page = p.page;
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
-			//this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
-	   		//this.disabledLocations = LocalStore.get('disabledLocations', {});
+			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
+	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
+				},
 				dataType: 'json' });
 		},
 
 		fetchError: function(){
-			throw new Error('Error loading JSON file'); 
+			throw new Error('Error loading JSON file');
 		},
 
 		render: function(){
 			app.data.places = this.collection.response.places;
 			this.$el = this.page.$el.find('#events');
-			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:LocalStore.get('going', {})}));
+			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;
-			$('.btn-filter-events').click(function(e){ 
+			$('.btn-filter-events').click(function(e){
 				e.preventDefault();
 				self.filterIndex($(this).data('filter'));
 			});
 			this.filterIndex(this.filter);
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#home');
 			this.$el.trigger("create");
 			return this;
 		},
-		
+
 		filterIndex: function(w){
 			if(!this.filter)
 				this.filter = 'next';
@@ -213,7 +224,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 				w = this.filter;
 			} else
 			var lstr = '', lim = '';
-			for(var i in LocalStore.get('disabledLocations', {})) {
+			for(var i in utils.LocalStore.get('disabledLocations', {})) {
 				lstr += lim + 'li.location-'+i;
 				lim = ',';
 			}
@@ -239,7 +250,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'LocalStore'], func
 			return this;
 		}
 	});
-	
+
 	return app.views;
 
 });

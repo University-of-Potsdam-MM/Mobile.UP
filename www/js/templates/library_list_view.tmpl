@@ -2,15 +2,18 @@
   <span>Liste aller Ausgaben:</span><br>
   <span class="numberOfListEntries blau"><%= search.results.length %></span> von <span class="numberOfRecords"><%= search.numberOfRecords %></span> Einträgen
 </h2>
-
 <ul class="booklist" data-role="listview" data-inset="true">
-    <% _.each(booklist, function(book) { %>
+    <% _.each(booklist, function(book, index) { %>
+    <% var number = index;%>
+    <% number = number+1 %>
     <li class="book-short" data-icon="arrow-darkblue" id="<%= book.get('id') %>">
+
       <a href="#">
-        <div class="<%= book.get('mediaType') %>"></div>
+            <div class="<%= book.get('mediaType') %>"><%= (number) %></div>
         <h2>
           <%= (book.get('title')) ? book.get('title')+'</h2>' : ''%>
           <%= (book.get('subtitle')) ? '<h3>'+ book.get('subtitle')+'</h3>' : ''%>
+          <%= (book.get('partNumber')) ? '<h3>'+ book.get('partNumber')+'</h3>' : ''%>
         </h2>
         <p>
           <% if (book.get('authors') && book.get('authors').length>0) { %>
@@ -23,6 +26,9 @@
         </p>
       </a>
     </li>
+    <% if ((number % 10) == 0) { %>
+      <li data-role="list-divider" class="book-short"></li>
+    <% } %>
     <% }); %>
 </ul>
 <% if (paginationPossible) { %>

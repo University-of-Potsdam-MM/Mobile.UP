@@ -63,7 +63,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 			return _.union(categories, courses);
 		},
-		
+
 		ensureArray: function(param) {
 			if (!param) {
 				return param;
@@ -120,14 +120,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.$el = $(html);
 			this.delegateEvents();
 
-			// Somehow the standard .trigger("create") doesn't work within this collapsible so we have to initialize the listview manually
-			this.$("[data-role=table]").table();
-
 			return this;
 		},
 
 		loadChildren: function() {
-			console.log("loadChildren ausgelöst");
+			//console.log("loadChildren ausgelöst");
 
 			var submodel = this.model.get("submodel");
 			if (!submodel) {
@@ -139,6 +136,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 				// Create view
 				new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
+				new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
 
 				// Fetch from server
 				submodel.fetch();
@@ -195,7 +193,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		render: function() {
-			console.log("sync ausgelöst");
+			//console.log("sync ausgelöst");
 			this.$el.append(this.template({model: this.model}));
 			this.$el.listview().listview("refresh");
 

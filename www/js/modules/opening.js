@@ -1,30 +1,28 @@
-define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
 
 	var dateutils = {
             // I give this function a German name,
             // because someone introduced German weekday names as keys in opening.json
             tage: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+
             wochentag: function(date) {
-              if (date) {
-                return this.tage[date.getDay()]
-              }
+              return (date) ? this.tage[date.getDay()] : '';
             },
+
             hoursColonMinutes: function(date){
-              if (date) {
-                return date.getHours() + ':' + date.getMinutes();
-              }
+              return (date) ? date.getHours() + ':' + date.getMinutes() : '';
             },
+
             openingForWochentag: function(timesArr, wochentag) {
               if (! _.isArray(timesArr)){ return;}
               var day = _.find(timesArr, function(timesForDay){
                 //console.log('find day', wochentag, timesArr, timesForDay);
                 return timesForDay.day == wochentag;
               });
-              if (day){
-                return day.opening;
-              }
-              return false;
+
+              return (day) ? day.opening : false;
             },
+
             statusAtPlaceAndDate: function(place, date) {
               if (date && place) {
                 var _wochentag = this.wochentag(date);
@@ -41,11 +39,10 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
                 var time = this.hoursColonMinutes(date);
                 if (_.isArray(opening)) {
                   var open = _.some(opening, function(fromTo){
-                    return ((fromTo[0] < time) && (fromTo[1] > time))
+                    return ((moment(fromTo[0], "hh:mm") < moment(time, "hh:mm")) && (moment(fromTo[1], "hh:mm") > moment(time, "hh:mm")))
                   });
-                  return (open)? 'open' : 'closed';
+                  return (open) ? 'open' : 'closed';
                 }
-
                 return 'problem'
             }
 		}
@@ -70,7 +67,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		render: function(){
-			$(this.el).html(this.template({opening: this.model.toJSON()}));
+			this.$el.html(this.template({opening: this.model.toJSON()}));
 			return this;
 		}
 	});
@@ -87,9 +84,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		fetchSuccess: function() {
-
       this.collection = this.addTextToTimes(this.collection);
-
       var now = new Date();
 
       _.each(this.collection.models, function(model){
@@ -129,11 +124,11 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
             return collection;
         },
 
-        fromToDaytimeString: function(from, to) {
+    fromToDaytimeString: function(from, to) {
 			var string = '' + from + ' - ' + to + ' Uhr';
-            // console.log('string',string);
-            return string;
-        },
+      // console.log('string',string);
+      return string;
+    },
 
 		fetchError: function() {
 			throw new Error('Error loading Opening-JSON file');
@@ -163,10 +158,10 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
     	render: function(){
-    		$(this.el).html(this.template({}));
+    		this.$el.html(this.template({}));
     		var openings = new Openings();
     		var openingsView = new OpeningsView({collection: openings});
-    		$(this.el).trigger("create");
+    		this.$el.trigger("create");
     		return this;
 		}
 

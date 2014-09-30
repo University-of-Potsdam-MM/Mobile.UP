@@ -1,11 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, _, Backbone, helper, LocalStore){
+define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 	var classes = {};
 
 	/*
 	 *	Backbone Model - NewsEntry
 	 */
 	app.models.NewsEntry = Backbone.Model.extend({
-		url: 'http://headkino.de/potsdamevents/json/news/view/',
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/',
 
 		initialize: function(){
 			this.url = this.url+this.id;
@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		parse: function(response){
 			//console.log(response);
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			return response;
 		}
@@ -28,23 +28,37 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 	});
 
-	/*
+	/**
 	 *	Backbone Model - News
 	 */
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'http://headkino.de/potsdamevents/json/news/',
-
-		initialize: function(){
-		},
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
 
 		parse: function(response){
-			if(response.vars) 
+			if(response.vars)
 				response = response.vars;
 			this.response = response;
 			return response.news;
 		},
 	});
+
+	app.models.NewsSource = Backbone.Collection.extend({
+		model: app.models.NewsEntry,
+		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/source/',
+
+		initialize: function(p){
+			this.url = this.url+p.id;
+		},
+
+		parse: function(response){
+			if(response.vars)
+				response = response.vars;
+			this.response = response;
+			return response.news;
+		},
+	});
+
 
 	var NewsSource = Backbone.Collection.extend({
 		model: app.models.News
@@ -56,11 +70,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		idInCollection : 'id', //name oder . getrennter Pfad, wo die id in der collection steht für ein objekt
 		initialize: function(p){
 			this.page  = p.page;
-			this.template = helper.rendertmpl('news.view');
+			this.template = utils.rendertmpl('news.view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
 			this.model.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeit konnte nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 
@@ -71,7 +88,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 				vars.news = vars;
 			this.$el.html(this.template(vars));
 			this.$el.trigger("create");
-			$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
+			$('.back').attr('href', '#news');
 			return this;
 		}
 	});
@@ -80,12 +98,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news_source');
+			this.template = utils.rendertmpl('news_source');
 			this.page  = p.page;
 			_.bindAll(this, 'render');
-			this.collection = new app.models.News();
+			this.collection = new app.models.NewsSource(p);
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 
@@ -93,16 +114,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 			this.$el = this.page.$el.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON()}));
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = true;
 			$('.back').attr('href', '#news');
 			return this;
 		}
 	});
-	
+
 	app.views.NewsSet_sources = Backbone.View.extend({
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news.set_sources');
+			this.template = utils.rendertmpl('news.set_sources');
 			this.page  = p.page;
 			_.bindAll(this, 'render');
 			this.render();
@@ -110,8 +132,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		render:function(){
 			this.$el = this.page.$el.find('#news');
-			console.log(LocalStore.get('disabledNews', {}));
-			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: LocalStore.get('disabledNews', {})}));
+			//console.log(utils.LocalStore.get('disabledNews', {}));
+			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			$('.ch-news').change(this.toggleNews);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#news');
@@ -129,8 +151,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 				if(!el.checked)
 					disabledNews[$(el).data('id')] = $(el).data('id');
 			});
-			console.log(disabledNews);
-			LocalStore.set('disabledNews', disabledNews);
+			//console.log(disabledNews);
+			utils.LocalStore.set('disabledNews', disabledNews);
 		},
 	});
 
@@ -138,20 +160,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 		el: '#news',
 
 		initialize: function(p){
-			this.template = helper.rendertmpl('news_index');
+			this.template = utils.rendertmpl('news_index');
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
+			//this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 
 		render: function(){
 			app.data.newsSources = this.collection.response.newsSources;
 			this.$el = this.page.$el.find('#news');
-			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: LocalStore.get('disabledNews', {})}));
+			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#home');
 			return this;
 		}
 
@@ -162,14 +190,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 		initialize: function(options){
 			this.options = options || {};
-			this.template = helper.rendertmpl('news');
+			this.template = utils.rendertmpl('news');
 		},
 
 		render: function(){
 
 			this.$el.html(this.template({}));
-			console.log(this.options.action);
-			console.log(this.options.aid);
+			//console.log(this.options.action);
+			//console.log(this.options.aid);
 
 			/*if (!this.options.action){
 				var news = new app.models.News();
@@ -194,44 +222,3 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'LocalStore'], function($, 
 
 	return app.views; //NewsPageView;
 });
-
-
-/*
-
-
-/*
-		events: {
-			"click ul li.news-entry" : 'renderNewsEntry',
-			"click ul li.news-divider" : 'renderNewsSource'
-		},
-
-
-		renderNewsEntry: function(ev){
-	      ev.preventDefault();
-	      var newsId = $(ev.target).closest('li').attr('id')
-	      var newsEntry = this.collection.find(function(model) {
-	      	return model.get('News').id == newsId;
-	      });
-
-	      var newsEntryView = new NewsEntryView({model: newsEntry});
-	      newsEntryView.render();
-		},
-
-		renderNewsSource: function(ev){
-			ev.preventDefault();
-			var newsId = $(ev.target).closest('li').attr('id')
-			console.log(this.collection);
-			var filteredNews = this.collection.filter(function(model) {
-				return model.get('NewsSource').id == newsId;
-			});
-
-			var newsSource = new NewsSource(filteredNews);
-			console.log(newsSource);
-
-
-			var newsSourceView = new NewsSourceView({collection: newsSource});
-			newsSourceView.render();
-		}
-
-
-*/

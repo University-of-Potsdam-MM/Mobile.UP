@@ -12,7 +12,7 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
-define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbone, utils, Q){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($, _, Backbone, utils, Q, moment){
 
 
   window.App = {
@@ -41,13 +41,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('ppn', recordId);
       this.set('title', this.getTitle(xmlRecord));
       this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
+      this.set('partNumber', this.textForTag(xmlRecord, 'partNumber'))
       this.set('dateIssued', $xmlRecord.find('dateIssued').html());
       this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
       this.set('toc', this.split_string(this.textForTag(xmlRecord, 'tableOfContents'),'--'));
       this.set('authors', this.authors($xmlRecord));
       this.set('publisher', this.textForTag(xmlRecord, 'publisher'));
       this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
-      this.set('url', this.textForQuery($xmlRecord, 'url[displayLabel=Volltext]'));
+      this.set('url', this.textForQuery($xmlRecord, 'url[usage="primary display"]'));
       this.set('notes', this.contentForTag(xmlRecord, 'note'));
       this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
       this.set('keywords', this.keywords(xmlRecord, 'subject'));
@@ -55,6 +56,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
       this.set('edition', this.textForTag(xmlRecord, 'edition'));
       this.set('place', this.firstNode($xmlRecord, 'placeTerm[type=text]'));
+      this.set('issuance', this.textForTag(xmlRecord, 'issuance'));
       // holding statement for magazines
       this.set('enumerationAndChronology', this.textForTag(xmlRecord, 'enumerationAndChronology'));
     },
@@ -125,17 +127,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     //TODO refactor
-    url: function(recordData) {
-      // get first item and check for primary display or usage attribute
-      var  urlusage = this.attributeContentForTag(recordData, 'location', 'usage');
-      if (urlusage && (urlusage.indexOf('primary display') != -1)) {
-        return (this.textForTag(recordData, 'location') || "").trim();
-      } else {
-        return null;
-      }
-    },
-
-    //TODO refactor
     attributeContentForTag: function (node, tagName, attributeName) {
       var firstTagNode = node.getElementsByTagName(tagName)[0];
       if (firstTagNode && firstTagNode.getElementsByTagName('url')[0]) {
@@ -171,7 +162,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
         physicalDescription = physicalDescription[0].textContent;
       }
 
-      var typeOfResource = this.getTypeOfResource(node);
+      var typeOfResource = this.contentForTag(node, 'typeOfResource');
       var originInfo = this.contentForTag(node, 'originInfo');
       var issuance = this.contentForTag(node, 'issuance');
       //TODO: test for essay
@@ -226,11 +217,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       }
       mediaType = "media_"+mediaType.toLowerCase();
       return mediaType;
-    },
-
-    getTypeOfResource: function(node) {
-      var typeOfResource = this.contentForTag(node, 'typeOfResource');
-      return typeOfResource;
     },
 
     contentForTag: function(node, tagName){
@@ -316,15 +302,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       // get relevant pagination information
       if(data.getElementsByTagNameNS) {
         if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
-          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar', module: 'library'});
+          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar oder Sie haben einen Leerstring eingegeben.', module: 'library'});
         }else{
           var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
+          this.set('numberOfRecords',numberOfRecords);
         }
       }else{
         var numberOfRecords=data.getElementsByTagName('http://www.loc.gov/zing/srw/'+':'+'numberOfRecords')[0].textContent;
+        this.set('numberOfRecords',numberOfRecords);
       }
-      this.set('numberOfRecords',numberOfRecords);
-
       var records = this.byTagNS(data, 'recordData', 'http://www.loc.gov/zing/srw/');
       var that= this;
       _.map(records, function(record) {
@@ -355,7 +341,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
    */
   App.view.BookList = Backbone.View.extend({
     el: '#search-results',
-    template: utils.rendertmpl('library_list_view'),
 
     events: {
       'click ul.booklist li.book-short' : 'renderDetail',
@@ -363,6 +348,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     initialize: function(){
+      this.template = utils.rendertmpl('library_list_view');
       this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
@@ -390,7 +376,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
     renderDetail: function(ev) {
       ev.preventDefault();
-      var bookId = $(ev.target).closest('li.book-short').attr('id')
+      var bookId = $(ev.target).closest('li.book-short').attr('id');
       var book = App.collections.searchResults.get(bookId);
 
       var BookDetailView = new App.view.BookDetailView({model: book});
@@ -408,7 +394,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   App.view.BookDetailView = Backbone.View.extend({
     el: '#library',
     model: App.model.Book,
-    template: utils.rendertmpl('library_detail_view'),
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library_detail_view');
+    },
 
     render: function(){
       var html = this.template({book:this.model});
@@ -426,7 +415,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   App.view.LocationView = Backbone.View.extend({
     el: '#book-locations',
     collection: App.collection.BookLocationList,
-    template: utils.rendertmpl('library_location_view'),
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library_location_view');
+    },
 
     render: function(){
       var html = this.template({locations:this.collection.models});
@@ -466,7 +458,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     },
 
     getDepartmentURL: function(recordData){
-      return recordData.department.href;
+      return recordData.department.id;
     },
 
     // complex function to get avialable status of items
@@ -475,13 +467,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
     getItem: function(item, book){
       var status = '';
       var statusInfo = '';
-      // check for url when not in sru response
-      if (book.attributes.url == null){
-        var url =  (item.unavailable && item.unavailable[0].href) ? item.unavailable[0].href : null;
+      // reset url when in daia response unavailable service item openaccess is existing
+      var url =  (item.unavailable && item.unavailable[0].service == "openaccess") ? item.unavailable[0].href : null;
+      if (url != null){
         book.set('url', url);
       }
 
-      // check for avaiable items and process loan and presentation
+      // check for avaiable and unavailable items and process loan and presentation
+      // ignore interloan
       if (item.available){
           var loanAvailable = _.find(item.available, function(item){
             return item.service =='loan';
@@ -499,27 +492,41 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
             });
       }
 
+      // check for loanable items like LBS
       if (loanAvailable) {
         status = 'ausleihbar';
 
         if(presentationAvailable){
-        // tag available with service="loan" and href=""?
+          // tag available with service="loan" and href=""?
+          if (presentationAvailable.limitation){
+            statusInfo = presentationAvailable.limitation[0].content;
+          }
           if(loanAvailable.href==""){
             statusInfo += "Bitte bestellen";
           }
         }
 
-      } else {
+      }else{
         // check for loan in unavailable items
+        // indicates LBS and Online-Resources
           if(loanUnavailable && loanUnavailable.href) {
             if(loanUnavailable.href.indexOf("loan/RES") != -1) {
               status = "ausleihbar";
-            } else {
+            }else{
               status = "nicht ausleihbar";
             }
-          } else {
+          }else{
+            // if there is no url then it will be a presentation
             if(book.attributes.url == null) {
-              status = 'Präsenzbestand';
+              if (item.label && item.label.indexOf("bestellt") != -1){
+                status = item.label;
+                statusInfo = "";
+              }else{
+                status = 'Präsenzbestand';
+                if (presentationAvailable.limitation){
+                  statusInfo = presentationAvailable.limitation[0].content;
+                }
+              }
             }else{
               status = 'Online-Ressource im Browser öffnen';
             }
@@ -528,10 +535,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
           if(presentationUnavailable)
             if(loanUnavailable.href) {
               if(loanUnavailable.href.indexOf("loan/RES") != -1) {
+                status ="ausgeliehen";
                 if (!loanUnavailable.expected || loanUnavailable.expected == "unknown"){
                   statusInfo += "ausgeliehen, Vormerken möglich";
                 }else{
-                  statusInfo += "ausgeliehen bis "+loanUnavailable.expected+", Vormerken möglich";
+                  // print loanUnavailable.expected in human readable form
+                  statusInfo += "ausgeliehen bis ";
+                  statusInfo += moment(loanUnavailable.expected, "YYYY-DD-MM").format("DD.MM.YYYY");
+                  statusInfo += ", Vormerken möglich";
                 }
               }
             } else {
@@ -544,7 +555,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
 
 
   App.collection.BookLocationList = Backbone.Collection.extend({
-      model: App.model.BookLocation
+      model: App.model.BookLocation,
+
+      comparator: function(model1, model2){
+        if (model1.get('department').indexOf("Handapparat") == -1){
+          if (model1.get('department') > model2.get('department')){
+            return 1;
+          }else{
+            return -1;
+          }
+        }else{
+          return 1;
+        }
+      }
   });
 
   /**
@@ -565,11 +588,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
   var LibraryPageView = Backbone.View.extend({
     attributes: {"id": 'library'},
 
-    template: utils.rendertmpl('library'),
-
     events: {
       'submit form': 'loadSearch',
       'click .backToList': 'back'
+    },
+
+    initialize: function(){
+      this.template = utils.rendertmpl('library');
     },
 
     render: function(){
@@ -592,6 +617,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q'], function($, _, Backbo
       $('input[type="submit"]').attr('disabled', 'disabled');
       var inputs = $('#query-form :input').serializeArray();
       var query = inputs[0].value;
+      if(this.LoadingView){
+        this.LoadingView.stopListening();
+      }
       this.LoadingView = new utils.LoadingView({model: App.models.currentSearch, el: this.$("#loadingSpinner")});
 
       App.collections.searchResults.reset();

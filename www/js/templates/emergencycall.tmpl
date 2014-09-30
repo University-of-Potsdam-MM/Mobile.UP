@@ -1,4 +1,12 @@
-<a href="tel:<%= emergency.telephone %>">
-	<h3><%= emergency.name %></h3>
-	<p><%= emergency.description %></p>
-</a>
+<h3>
+	<span class="blau"><%= emergency.name %></span><br />
+	<span class="black normal"><%= emergency.description %></span><br />
+</h3>
+<div>
+	<p>
+		<%= (emergency.mail) ? '<p><span class="mail"><a href="mailto:'+emergency.mail+'">'+emergency.mail+'</a></span></p>' : '' %>
+		<%= (emergency.telephone) ? '<p><span class="phone"><a href="tel:'+emergency.telephone+'">'+emergency.telephone+'</a></span></p>' : '' %>
+		<%= (emergency.street) ? '<p>'+emergency.street+'</p>' : '' %>
+		<%= (emergency.postal) ? '<p>'+emergency.postal+'</p>' : '' %>
+	</p>
+</div>

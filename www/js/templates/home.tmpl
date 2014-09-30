@@ -1,13 +1,15 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false" data-theme="a">
-<!-- 	<a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-<a href="options.html" data-icon="gear" class="ui-btn-right">Optionen</a> -->
-    <h1>Mobile.UP <a href="#options" class="settings" data-role="button" data-icon="gear"></a></h1>
+    <%  if(store.get('up.session.authenticated')){ %>
+        <h1>Mobile.UP <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="false">Logout</a></h1>
+    <%  }else{ %>
+        <h1>Mobile.UP<a href="#options" class="settings" data-role="button" data-icon="false">Login</a></h1>
+    <%  } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content">
-    <ul data-role="listview" data-inset="true" data-theme="b" id="main-navigation">
+    <ul data-role="listview" data-inset="true" data-theme="c" id="main-navigation">
         <li class="news">
             <a href="#news" data-role="button">
                 <h1>Neuigkeiten</h1>

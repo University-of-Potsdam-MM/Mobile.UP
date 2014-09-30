@@ -116,8 +116,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   	defaults: {
   		"fromExternalId": "",
   		"toExternalId": "",
-  		"moment": "",
-  		"arrivalMode": ""
+  		"moment": ""
   	},
 
   	url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
@@ -125,7 +124,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
   	parse: function(){
 
-	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+	    ajax(verbindungVonNach(fromExternalId, toExternalId, moment))
 	    .done(function(data, textStatus, jqXHR){
 	      var $data = $(data);
 	      var connections = _.map($data.find('Connection'), mapConnection);
@@ -191,15 +190,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   }
 
   // Suche Verbindung mit zwei IDs
-  function verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode) {
+  function verbindungVonNach(fromExternalId, toExternalId, moment) {
 
-    var rflags;
-    if ('1' == arrivalMode) {
-      rflags = tag('RFlags', {b: 5, f: 0, a: 0 })
-    } else {
-      // default
-      rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
-    }
+    var rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
+
 
     var xml =
       tag('ConReq', {},
@@ -237,39 +231,42 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   function mapConnectionOverview(overview) {
     var $overview = $(overview);
 
-    var dateString = $overview.find('Date').html();
+    var dateString = $overview.find('Date').text();
     var date = parseDate(dateString);
 
     var mapped = {
       date: date,
 
       depStation: $overview.find('Departure BasicStop Station').attr('name'),
-      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').html(),
-      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').html()),
+      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').text(),
+      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').text()),
 
       arrStation: $overview.find('Arrival BasicStop Station').attr('name'),
-      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').html(),
-      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').html()),
+      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').text(),
+      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').text()),
 
-      duration:   parseDuration($overview.find('Duration Time').html()),
+      duration:   parseDuration($overview.find('Duration Time').text()),
     };
 
     return mapped;
   }
 
-
+  /**
+   *  @returns mapped
+   *  @description mapping overview to connection section
+   */
   function mapConnectionSection(overview, date) {
     var $overview = $(overview);
 
     var mapped = {
       date: date,
       depStation: $overview.find('Departure BasicStop Station').attr('name'),
-      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').html(),
-      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').html()),
+      depPlatform:$overview.find('Departure BasicStop Dep Platform Text').text(),
+      depTime:    datetime(date, $overview.find('Departure BasicStop Dep Time').text()),
 
       arrStation: $overview.find('Arrival BasicStop Station').attr('name'),
-      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').html(),
-      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').html()),
+      arrPlatform:$overview.find('Arrival BasicStop Arr Platform Text').text(),
+      arrTime:    datetime(date, $overview.find('Arrival BasicStop Arr Time').text()),
     };
 
     return mapped;
@@ -306,10 +303,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return myCon;
   }
 
-  var getVerbindung = function(fromExternalId, toExternalId, moment, arrivalMode) {
+  var getVerbindung = function(fromExternalId, toExternalId, moment) {
     var defer = $.Deferred();
 
-    ajax(verbindungVonNach(fromExternalId, toExternalId, moment, arrivalMode))
+    ajax(verbindungVonNach(fromExternalId, toExternalId, moment))
     .done(function(data, textStatus, jqXHR){
       var $data = $(data);
       var connections = _.map($data.find('Connection'), mapConnection);
@@ -323,11 +320,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
     return defer.promise();
   }
-
-  // getVerbindung(stations['G-see'].externalId, stations['Golm'].externalId, moment())
-  //   .done(function(data){
-  //     console.log('debugging', data);
-  //   });
 
   function getExternalId(stationString) {
     var defer = $.Deferred();
@@ -347,10 +339,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return defer.promise();
   }
 
-  // getExternalId('Griebnitzsee').done(function(){console.log('G-see', arguments)});
-  // getExternalId('Golm, Bahnhof').done(function(){console.log('Golm', arguments)});
-  // getExternalId('Neues Palais').done(function(){console.log('Neues Palais', arguments)});
-
   function parseDate(yyyymmdd) {
     return moment(yyyymmdd,'YYYYMMDD');
   }
@@ -363,18 +351,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
   function mapSTBJourney(journey){
     var $journey = $(journey);
     var tmp = {
-      id:            $journey.attr('trainId'),
-      stationName:   $journey.find('MainStop Station').attr('name'),
-      departingTime: parseTime($journey.find('Dep > Time').html()),
-      name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').html(),
-      category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').html(),
-      internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').html(),
-      operator:         $journey.find('JourneyAttribute Attribute[type=OPERATOR] Text').html(),
-      number:           $journey.find('JourneyAttribute Attribute[type=NUMBER] Text').html(),
-      direction:        $journey.find('JourneyAttribute Attribute[type=DIRECTION] Text').html(),
-      directionflag:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONFLAG] Text').html(),
-      directioncode:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONCODE] Text').html(),
-      normal:           $journey.find('JourneyAttribute Attribute[type=NORMAL] Text').html(),
+      id:               $journey.attr('trainId'),
+      stationName:      $journey.find('MainStop Station').attr('name'),
+      departingTime:    parseTime($journey.find('MainStop BasicStop Dep Time').text()),
+      name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').text(),
+      category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').text(),
+      internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').text(),
+      operator:         $journey.find('JourneyAttribute Attribute[type=OPERATOR] Text').text(),
+      number:           $journey.find('JourneyAttribute Attribute[type=NUMBER] Text').text(),
+      direction:        $journey.find('JourneyAttribute Attribute[type=DIRECTION] Text').text(),
+      directionflag:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONFLAG] Text').text(),
+      directioncode:    $journey.find('JourneyAttribute Attribute[type=DIRECTIONCODE] Text').text(),
+      normal:           $journey.find('JourneyAttribute Attribute[type=NORMAL] Text').text(),
     };
     return tmp;
   };

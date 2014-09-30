@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'modules/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
-	
+
 	var settings = {};
 
 	var terminals = "terminals";
@@ -14,79 +14,86 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	var lastCampus = undefined;
 	var searchView = undefined;
 
+	settings =	{
+		url: {
+			griebnitzsee: {
+				campus: "griebnitzsee"
+			},
+			neuespalais: {
+				campus: "neuespalais"
+			},
+			golm: {
+				campus: "golm"
+			}
+		},
+		options: {
+			terminals: { "icon": "img/up/puck-marker.png" },
+			canteens: { "icon": "img/up/mensa-marker.png" },
+			parking: {
+				"strokeColor": "#fff",
+			    "strokeOpacity": 1,
+			    "strokeWeight": 2,
+			    "fillColor": "#70c8dc",
+			    "fillOpacity": 0.8
+			},
+			institutes: {
+				"strokeColor": "#fff",
+			    "strokeOpacity": 1,
+			    "strokeWeight": 2,
+			    "fillColor": "#e57967",
+			    "fillOpacity": 0.8
+			},
+			associateinstitutes: {
+				"strokeColor": "#fff",
+			    "strokeOpacity": 1,
+			    "strokeWeight": 2,
+			    "fillColor": "#cf6da8",
+			    "fillOpacity": 0.8
+			},
+			student: {
+				"strokeColor": "#fff",
+			    "strokeOpacity": 1,
+			    "strokeWeight": 2,
+			    "fillColor": "#897cc2",
+			    "fillOpacity": 0.8
+			}
+		}
+	};
+
+	var oneSidedGuard = {
+		callback: function(options) { drawSelectedCampus(options); },
+		isCalled: false,
+		isBlocked: true,
+		options: undefined,
+
+		callMultiple: function(options) {
+			if (this.isBlocked) {
+				this.isCalled = true;
+				this.options = options;
+			} else {
+				this.callback(options);
+			}
+		},
+
+		disableBlock: function() {
+			this.isBlocked = false;
+			if (this.isCalled) {
+				this.callback(this.options);
+			}
+		}
+	};
+
 	$(document).on("pageinit", "#sitemap", function() {
-		$.getScript('https://www.google.com/jsapi', function(){
+		$.getScript('https://www.google.com/jsapi').done(function(){
 			google.load('maps', '3', {other_params: 'sensor=false', callback: function(){
-				settings =	{
-					url: {
-						griebnitzsee: {
-							campus: "griebnitzsee",
-							center: new google.maps.LatLng(52.39345677934452, 13.128039836883545)
-						},
-						neuespalais: {
-							campus: "neuespalais",
-							center: new google.maps.LatLng(52.400933, 13.011653)
-						},
-						golm: {
-							campus: "golm",
-							center: new google.maps.LatLng(52.408716, 12.976138)
-						}
-					},
-					options: {
-						terminals: { "icon": "img/up/puck-marker.png" },
-						canteens: { "icon": "img/up/mensa-marker.png" },
-						parking: {
-							"strokeColor": "#70c8dc",
-						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
-						    "fillColor": "#70c8dc",
-						    "fillOpacity": 0.5
-						},
-						institutes: {
-							"strokeColor": "#e57967",
-						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
-						    "fillColor": "#e57967",
-						    "fillOpacity": 0.5
-						},
-						associateinstitutes: {
-							"strokeColor": "#cf6da8",
-						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
-						    "fillColor": "#cf6da8",
-						    "fillOpacity": 0.5
-						},
-						student: {
-							"strokeColor": "#897cc2",
-						    "strokeOpacity": 1,
-						    "strokeWeight": 0,
-						    "fillColor": "#897cc2",
-						    "fillOpacity": 0.5
-						}
-					}
-				};
+				settings.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
+				settings.url.neuespalais.center = new google.maps.LatLng(52.400933, 13.011653);
+				settings.url.golm.center = new google.maps.LatLng(52.408716, 12.976138);
 
-				settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
-				settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
-				settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
-				settings.options.student.fillColor = $(".sitemap-living").css("background-color");
-
-				$('#Terminals:checkbox').click(checkUncheck(terminals));
-				$('#Institute:checkbox').click(checkUncheck(institutes));
-				$('#Mensen:checkbox').click(checkUncheck(canteens));
-				$('#Parking:checkbox').click(checkUncheck(parking));
-				$('#AnInstitute:checkbox').click(checkUncheck(associateinstitutes));
-				$('#Living:checkbox').click(checkUncheck(student));
-
+				oneSidedGuard.disableBlock();
 			}});
-
 		}).fail(function(){
-			if(arguments[0].readyState==0){
-        		var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es besteht keine Internetverbindung.', module:'sitemap'});
-    		}else{
-        		//script loaded but failed to parse
-	        	var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es besteht keine Internetverbindung.', module:'sitemap'});
-    		}
+			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
 		});
 	});
 
@@ -104,7 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	}
 
 	$(document).on("pageinit", "#sitemap", function() {
-		$("div[data-role='campusmenu']").campusmenu({ onChange: drawSelectedCampus });
+		$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } });
 	});
 
 	/*
@@ -114,6 +121,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	$(document).on("pageshow", "#sitemap", function() {
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
 		searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
+
+		$('#Terminals:checkbox').click(checkUncheck(terminals));
+		$('#Institute:checkbox').click(checkUncheck(institutes));
+		$('#Mensen:checkbox').click(checkUncheck(canteens));
+		$('#Parking:checkbox').click(checkUncheck(parking));
+		$('#AnInstitute:checkbox').click(checkUncheck(associateinstitutes));
+		$('#Living:checkbox').click(checkUncheck(student));
+
+		settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
+		settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
+		settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
+		settings.options.student.fillColor = $(".sitemap-living").css("background-color");
 	});
 
 	function drawSelectedCampus(options) {
@@ -250,8 +269,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 		var host = $("#" + lastFinderId);
 		host.empty();
-		host.append("<ul id='similarlocations' data-role='listview' style='margin: 8px;'></ul>");
-		host.append("<button onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
+		host.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
+		host.append("<button data-theme='a' onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapReset(); });'>Zurück</button>");
 		host.trigger("create");
 
 		var similars = similarHouses.concat(similarDescriptions);
@@ -419,15 +438,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			$(this.el).html(this.template({}));
 			return this;
 		},
-		
+
 		searchSimilarLocations: function(id) {
 			searchSimilarLocations(id);
 		},
-		
+
 		sitemapReset: function() {
 			sitemapReset();
 		},
-		
+
 		sitemapNavigateTo: function(id) {
 			sitemapNavigateTo(id);
 		}

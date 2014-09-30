@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.en_US.utf8'], function($, _, Backbone, utils, Q, campusmenu, datebox){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.de.utf8'], function($, _, Backbone, utils, Q, campusmenu, datebox){
 
 	$(document).on("pageinit", "#mensa", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });
@@ -164,6 +164,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
+			meals = _.sortBy(meals, 'title');
 			var createMeals = utils.rendertmpl('mensa_detail');
 			var host = $("#" + uniqueDiv);
 
@@ -173,13 +174,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 			// Tell collapsible set to refresh itself
 			host.trigger("create");
-			
+
 			if (meals.length == 0) {
 				showNoMealsToday(host);
 			}
 		}
 	};
-	
+
 	function showNoMealsToday(host) {
 		var insDiv = $("<div>");
 		insDiv.append('<br />');
@@ -198,6 +199,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 		render: function() {
 			$(this.el).html(this.template({}));
+			this.$el.trigger("create");
 			return this;
 		}
 	});

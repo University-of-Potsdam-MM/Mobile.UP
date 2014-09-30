@@ -59,13 +59,26 @@ define([
 			"people": "people"
 		},
 
+		history: [],
+
+		routesToScrollPositions: {},
+
 		// routes that need authentication
 		requiresAuth: ['moodle', 'grades', 'people'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
 
+		initialize: function(){
+			this.session = new Session;
+			this.listenTo(this, 'route', function(route){
+				this.history.splice(0,1,{name: route});
+			});
+		},
+
 		before: function(params, next, name){
+			this.saveScrollPosition();
+
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
 
@@ -90,26 +103,24 @@ define([
 			}
 		},
 
-		after: function(){
-			// still empty
+		after: function(params, name){
 		},
 
-		initialize: function(){
-			this.session = new Session;
+		saveScrollPosition: function() {
+			if (this.history.length > 0){
+				var name = this.history[this.history.length-1].name;
+    			this.routesToScrollPositions[name] = $(window).scrollTop();
+    		}
 
-			/*
-			// Handle back button throughout the application
-        	$('.back').live('click', function(event) {
-            	window.history.back();
-            	return false;
-        	});
-        	this.firstPage = true;
-        	*/
-        	// Prepare Navigation-Panel
-        	$('#nav-panel').trigger("create");
-			$('#nav-panel').trigger("updatelayout");
-			$('#nav-panel').panel({animate: true});
+		},
 
+		getScrollPosition: function(route) {
+			var pos = 0;
+			if (this.routesToScrollPositions[route]) {
+				pos = this.routesToScrollPositions[route];
+				delete this.routesToScrollPositions[route]
+			}
+			return pos;
 		},
 
 		home: function(){
@@ -252,33 +263,22 @@ define([
 			page.render();
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#nav-panel').css('display', 'none');
-
 			$('#pagecontainer').append($(page.el));
 
-			var transition = $.mobile.defaultPageTransition;
+			var transition = $.mobile.changePage.defaults.transition;
+			var reverse = $.mobile.changePage.defaults.reverse;
 
 			// dont slide first page
 			if (this.firstPage){
 				transition = 'none';
 				this.firstPage = false;
 			}
-			// pages which should not slide by transition, affects separat sides in tabs
-			if (this.currentView){
-				if (this.currentView.el.id == 'transport' && page.$el[0].id == 'transport2' ||
-					this.currentView.el.id == 'transport2' && page.$el[0].id == 'transport' ||
-					this.currentView.el.id == 'people' && page.$el[0].id == 'library' ||
-					this.currentView.el.id == 'library' && page.$el[0].id == 'people'){
-					transition = 'none';
-				}
-			}
 
-			$.mobile.changePage($(page.el), {changeHash: false, transition: transition});
+			$.mobile.changePage($(page.el), {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
 				$('body').css('overflow', 'auto');
-				$('#nav-panel').css('display', 'block');
 				$("body").fadeIn(100);
 			}
 
@@ -288,7 +288,7 @@ define([
 
 	var initialize= function(){
 		utils.detectUA($, navigator.userAgent);
-		var approuter = new AppRouter;
+		window.approuter = new AppRouter;
 		Backbone.history.start();
 	};
 
