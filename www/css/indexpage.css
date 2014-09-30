@@ -23,6 +23,19 @@
 	margin-right:10px;
 }
 
+#home .ui-btn.settings {
+	margin:.5em 0;
+	text-transform:none;
+	color:#fff;
+	letter-spacing:normal;
+	font-weight:bold;
+	padding: .3em 2em 2em 1em;
+	font-size: 12.5px;
+	margin-top:1em;
+	
+}
+
+
 /*
 #home .ui-page-theme-a .ui-btn:hover, html #home .ui-bar-a .ui-btn:hover {
 	background:#d0dae3;

@@ -4,9 +4,9 @@
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
     <h1>Mensen &amp; Speisepläne
     <%  if(store.get('up.session.authenticated')){ %>
-        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+       <a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a></h1>
     <%  }else{ %>
-        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="login" alt="login">Login</a></h1>
     <%  } %>
 </div>
 <!-- End Header -->

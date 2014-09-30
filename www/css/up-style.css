@@ -617,7 +617,6 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 .ui-header span.username-header {
 	display: inline-block;
-	float: right;
 	margin-right: 63px;
 	text-align:right;
 	font-size: .7em;
@@ -625,17 +624,18 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	line-height: 35px;
 	font-family: arial,sans-serif;
 
+
 }
 
 .ui-header span.username-header.nooptions {
 	display: inline-block;
-	float: right;
 	margin-right: 30px;
 	text-align:right;
 	font-size: .7em;
 	font-style: normal;
 	line-height: 35px;
 	font-family: arial,sans-serif;
+	
 
 }
 

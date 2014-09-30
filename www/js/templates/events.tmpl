@@ -7,9 +7,9 @@
       <a href="index.html" data-icon="back" class="ui-btn-right">Zurück</a> -->
   <h1>Veranstaltungen
   <%  if(store.get('up.session.authenticated')){ %>
-        <span class="username-header"><%= store.get('up.session.username') %></span><a href="#options" class="settings settings2" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+       <a href="#options" class="settings settings2" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a></h1>
     <%  }else{ %>
-        <a href="#options" class="settings settings2" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+        <a href="#options" class="settings settings2" data-role="button" data-icon="faslse" title="login" alt="login">Login</a></h1>
     <%  } %>
     </h1>
   <a data-icon="star" data-role="button" class="settings" href="#events/set_locations" role="button" title="settings" alt="settings"></a>
