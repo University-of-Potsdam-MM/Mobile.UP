@@ -1996,6 +1996,20 @@ p.event-description {
 	background-color: transparent;
 }
 
+.vorgemerkt {
+	display:inline-block;
+	text-indent:20px;
+	line-height:25px;
+	color:red;
+}
+
+.vorgemerkt:before {
+	background-image: url(../img/up/ok.png) !important;)
+	width: 25px;
+	height: 25px;
+	content:"."
+}
+
 
 /*** images high resoluton devices ***/
 
