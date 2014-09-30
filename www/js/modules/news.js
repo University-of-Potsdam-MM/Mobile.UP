@@ -75,6 +75,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.model = new app.models.NewsEntry(p);
 			this.model.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeit konnte nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 
@@ -101,6 +104,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.collection = new app.models.NewsSource(p);
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 
@@ -161,6 +167,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			//this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
+				},
 				dataType: 'json' });
 		},
 

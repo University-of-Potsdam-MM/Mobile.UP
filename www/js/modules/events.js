@@ -56,7 +56,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.model = new app.models.Event(p);
 			this.model.fetch({
 				success: this.render,
-				dataType: 'json' });
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltung konnte nicht abgerufen werden.', module: 'events'});
+				},
+				dataType: 'json' 
+			});
 		},
 
 		render:function(){
@@ -117,6 +121,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			if(!app.data.events)
 				this.collection.fetch({
 					success: this.render,
+					error: function(){
+						var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
+					},
 					dataType: 'json' });
 			else
 				this.render();
@@ -184,6 +191,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			this.collection.fetch({
 				success: this.render,
+				error: function(){
+					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
+				},
 				dataType: 'json' });
 		},
 
