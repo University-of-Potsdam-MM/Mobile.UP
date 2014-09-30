@@ -158,7 +158,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
-			this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
+			//this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
 			this.collection.fetch({
 				success: this.render,
 				dataType: 'json' });
