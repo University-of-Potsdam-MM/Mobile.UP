@@ -1736,7 +1736,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	}
 
 	.error p{
-		max-width:25%;
+		max-width:75%;
 		margin:0 auto;
 	}
 }
