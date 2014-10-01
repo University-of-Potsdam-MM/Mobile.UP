@@ -16,8 +16,22 @@ define([
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
 
+				/**
+				 *	functions get exectuted when device is ready and handles hiding of splashscreen and backButton navigation
+				 */
 				function onDeviceReady() {
+    				// hide splashscreen
     				navigator.splashscreen.hide();
+    				// EventListener for BackButton
+    				document.addEventListener("backbutton", function(e){
+    					if($.mobile.activePage.is('#home') || $.mobile.activePage.is('#')){
+    						e.preventDefault();
+    						navigator.app.exitApp();
+    					}else{
+    						// needs to be tested on native device
+    						navigator.app.backHistory();
+    					}
+    				}, false);
 				}
 
 				/**
