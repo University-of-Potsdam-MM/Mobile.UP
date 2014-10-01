@@ -2,9 +2,9 @@
 <div data-role="header" data-position="fixed" data-tap-toggle="false"><a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a><a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList">Back</a>
 	<h1><%= book.get('title') %>
 	<%  if(store.get('up.session.authenticated')){ %>
-        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a></h1>
     <%  }else{ %>
-        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
+        <a href="#options" class="settings" data-role="button" data-icon="false" title="login" alt="login">Login</a></h1>
     <%  } %>
 </div>
 <!-- End Header -->
@@ -55,41 +55,53 @@
 			  <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up">
 			  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
 
-					<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
-						<div data-role="collapsible"><h3>Schlagwörter:</h3><p>
-			    	<% _.each(book.get('keywords'), function(keyword){ %>
-							<a href="<%= keyword[1] %>" target="_blank" rel="external"><%= keyword[0] %></a>&nbsp;
-			          <% }); %>
-						</p></div>
-					<% } %>
+				<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
+				<div data-role="collapsible"><h3>Schlagwörter:</h3>
+		    		<% _.each(book.get('keywords'), function(keyword){ %>
+						<a href="<%= keyword[1] %>" target="_blank" rel="external"><%= keyword[0] %></a>&nbsp;
+		          	<% }); %>
+				</div>
+				<% } %>
 
-					<%= (book.get('toc')) ? '<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3><ul>' : '' %>
-			          <% _.each(book.get('toc'), function(chapter){ %>
-			            <li><%= chapter %></li>
-			          <% }); %>
-					<%= (book.get('toc')) ? '</ul></div>' : '' %>
+				<% if (book.get('toc')) { %>
+				<div data-role="collapsible"><h3>Inhaltsverzeichnis</h3>
+					<ul>
+					<% _.each(book.get('toc'), function(chapter){ %>
+						<li><%= chapter %></li>
+					<% }); %>
+					</ul>
+				</div>
+				<% } %>
 
-					<% if (book.get('notes')) { %>
-			    	<div data-role="collapsible"><h3>Anmerkungen:</h3><p>
-			    		<ul>
-			    		<% _.each(book.get('notes'), function(note){ %>
-								<li><%= note %></li>
-			        <% }); %>
-			        </ul>
-						</p></div>
-			    <% } %>
+				<% if (book.get('notes')) { %>
+		    	<div data-role="collapsible"><h3>Anmerkungen:</h3>
+		    		<ul>
+		    		<% _.each(book.get('notes'), function(note){ %>
+						<li><%= note %></li>
+		        	<% }); %>
+		        	</ul>
+				</div>
+		    	<% } %>
 
 			    <% if (book.get('isbn')) { %>
-			    	<div data-role="collapsible"><h3>ISBN:</h3><p>
-			    		<ul>
-			    		<% _.each(book.get('isbn'), function(isbn){ %>
-								<li><%= isbn %></li>
+			    <div data-role="collapsible"><h3>ISBN:</h3>
+			    	<ul>
+			    	<% _.each(book.get('isbn'), function(isbn){ %>
+							<li><%= isbn %></li>
 			        <% }); %>
 			        </ul>
-						</p></div>
+				</div>
 			    <% } %>
 
-			    <%= (book.get('series')) ? '<div data-role="collapsible"><h3>Serie: </h3><p>'+book.get('series')+'</p></div>' : ''%>
+			    <% if (book.get('series')) { %>
+			    <div data-role="collapsible"><h3>Serie: </h3>
+			    	<ul>
+			    	<% _.each(book.get('series'), function(serie){ %>
+			    		<li><%= serie %></li>
+			    	<% }); %>
+			    	</ul>
+			    </div>
+			    <% } %>
 
 			    <%= (book.get('extent')) ? '<div data-role="collapsible"><h3>Umfang </h3><p>'+book.get('extent')+'</p></div>' : ''%>
 		    </div>

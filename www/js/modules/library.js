@@ -50,7 +50,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       this.set('isbn', this.textForQuery($xmlRecord, 'identifier[type=isbn]'));
       this.set('url', this.textForQuery($xmlRecord, 'url[usage="primary display"]'));
       this.set('notes', this.contentForTag(xmlRecord, 'note'));
-      this.set('series', this.firstNode($xmlRecord, 'relatedItem[type=series]'));
+      this.set('series', this.textForQuery($xmlRecord, 'relatedItem[type=series]'));
       this.set('keywords', this.keywords(xmlRecord, 'subject'));
       this.set('mediaType', this.mediaType(xmlRecord));
       this.set('extent', this.textForTag(xmlRecord, 'extent'));
