@@ -101,7 +101,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		parse: function(response) {
-			if (typeof response.reservations4RoomResponse === "object") {
+			if (typeof response.reservations4RoomResponse === "object" && response.reservations4RoomResponse  != null) {
 				// The response is non-empty
 				var reservations = response.reservations4RoomResponse["return"];
 
