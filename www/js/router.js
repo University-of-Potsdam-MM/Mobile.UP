@@ -125,6 +125,10 @@ define([
 			this.changePage(new HomePageView);
 		},
 
+		currentPage: function(){
+			return this.history[this.history.length-1].name;
+		},
+
 		news: function(id){
 			var page = new NewsView.NewsPage;
 			this.changePage(page);

@@ -24,12 +24,12 @@ define([
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
     				document.addEventListener("backbutton", function(e){
-    					if($.mobile.activePage.is('#home') || $.mobile.activePage.is('#')){
+    					var currentPage = window.approuter.currentPage();
+    					if (currentPage == 'home' || currentPage == ''){
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-    						// needs to be tested on native device
-    						navigator.app.backHistory();
+    						history.back();
     					}
     				}, false);
 				}
