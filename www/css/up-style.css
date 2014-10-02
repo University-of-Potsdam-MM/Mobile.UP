@@ -1909,6 +1909,15 @@ li.news-entry a p span.news-date{
 	margin:0 auto;
 }
 
+.newssource {
+	margin:0;
+	text-indent: .8em;
+	background: #014260;
+	padding-top: .6em;
+	padding-bottom: .6em;
+	color: #FFF
+}
+
 /*********************** Veranstaltungen*********************
 **************************************************************/
 
