@@ -2038,7 +2038,7 @@ only screen and (                min-resolution: 2dppx) {
 
 	.ui-header .ui-title {
 	background-image: url(../img/up/seperator-hres.png);
-	background-size:46px 55px;
+	background-size:7px 55px;
 	}
 
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
