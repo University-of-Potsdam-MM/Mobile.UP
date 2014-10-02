@@ -635,7 +635,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	font-style: normal;
 	line-height: 35px;
 	font-family: arial,sans-serif;
-	
+
 
 }
 
@@ -1440,7 +1440,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	line-height: 2.5em;
 	padding-bottom: 0 !important;
 	padding-top: 0 !important;
-	
+
 }
 
 html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
@@ -1841,7 +1841,7 @@ table#grades {
 	background:#014260;
 	color:#fff;
 }
-
+/*
 li.news-entry a {
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -1858,7 +1858,7 @@ li.news-entry a p span.news-date{
 	font-weight:bold;
 	font-size:.8em;
 }
-
+*/
 #news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-white.png);
 	background-color: transparent;
@@ -1867,12 +1867,6 @@ li.news-entry a p span.news-date{
 #news li.entry .ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-darkblue.png);
 	background-color: transparent;
-}
-
-#news li.show-all a {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 #news ul h3 {
