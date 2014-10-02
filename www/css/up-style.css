@@ -1819,6 +1819,12 @@ h3.lecture-group-name {
 	margin-left:5px !important;
 }
 
+#lectures .ui-selectmenu-list li a {
+	padding-left: .1em;
+padding-right: .1em;
+	
+}
+
 /***********************grades***********************
 **************************************************************/
 
