@@ -602,8 +602,11 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	top: 0;
 	background: none;
 	border: none;
-	padding: .3em 2em 2em 1em;
-	margin-top:1em;
+	padding: .6em 2em 2em 1em;
+	margin-top: 1em;
+	color: #014260;
+	font-family: georgia, serif;
+	font-weight: normal;
 }
 
 .ui-btn-icon-left.settings:after {

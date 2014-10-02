@@ -25,10 +25,8 @@
 #home .ui-btn.settings {
 	margin:.5em 0;
 	text-transform:none;
-	color:#fff;
-	letter-spacing:normal;
-	font-weight:bold;
-	padding: .3em 2em 2em 1em;
+	font-weight:normal;
+	padding: .6em 2em 2em 1em;
 	font-size: 12.5px;
 	margin-top:1em;
 }
