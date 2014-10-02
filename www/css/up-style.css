@@ -609,9 +609,15 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	font-weight: normal;
 }
 
-.ui-btn-icon-left.settings:after {
-	background-color: #014260;
-	opacity: 1
+.ui-page-theme-a .ui-btn.settings:before {
+	background-image: url(../img/up/logout.svg);
+	background-repeat: no-repeat;
+	content: ".";
+	display: inline-block;
+	width: 18px;
+	height: 22px;
+	text-indent: -222222px;
+	background-position: 0px 0px
 }
 
 .ui-page-theme-a .ui-btn.settings2 {
@@ -1821,7 +1827,7 @@ h3.lecture-group-name {
 
 #lectures .ui-selectmenu-list li a {
 	padding-left: .1em;
-padding-right: .1em;
+	padding-right: .1em;
 	
 }
 
