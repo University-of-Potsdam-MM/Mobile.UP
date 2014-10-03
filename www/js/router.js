@@ -69,7 +69,7 @@ define([
 
 		initialize: function(){
 			this.session = new Session;
-			this.listenTo(this, 'route', function(route){
+			this.listenTo(this, 'route', function(route, params){
 				this.history.push({name: route});
 			});
 		},
@@ -196,7 +196,9 @@ define([
 
 			this.listenTo(this.currentView, "openVvzUrl", function(vvzHistory) {
 				var param = JSON.stringify(vvzHistory.toJSON());
-				this.navigate("lectures/" + encodeURIComponent(param));
+				var url = "lectures/" + encodeURIComponent(param)
+				this.navigate(url);
+				this.history.push({name: url});
 			});
 		},
 
