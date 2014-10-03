@@ -1,5 +1,6 @@
 <% var currentLocation = ""; %>
 <% _.each(locations, function(location) { %>
+<% console.log(location); %>
 <% if (location.get('department') != currentLocation){ %>
 	<h3><%= location.get('department') %> <a href="<%= location.get('departmentURL') %>" target="_blank" rel="external">Info</a></h3>
 <% } %>
