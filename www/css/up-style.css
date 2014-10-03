@@ -1423,20 +1423,24 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 /***********************Raumbelegung*********************
 **************************************************************/
+#options p,
 #freeRooms p {
 	margin: .5em;
 }
 
+#options h3,
 #freeRooms h3 {
 	margin-left: .5em;
 	margin-bottom: .3em
 }
 
+#options .infotext h3,
 #freeRooms .infotext h3 {
 	margin:0;
 	border:none;
 }
 
+#options .infotext h3 a,
 #freeRooms .infotext h3 a {
 	background-color:#fff;
 	border:none;
@@ -1822,7 +1826,7 @@ h3.lecture-group-name {
 #lectures .ui-selectmenu-list li a {
 	padding-left: .1em;
 padding-right: .1em;
-	
+
 }
 
 /***********************grades***********************
