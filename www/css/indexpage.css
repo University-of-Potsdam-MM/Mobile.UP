@@ -258,8 +258,8 @@ only screen and (                min-resolution: 2dppx)
 	}
 
 	.ui-listview.ui-group-theme-c  li.grades a {
-	background-image: url(../img/up/grades-hr.png);
-	background-size:61px 69px;
+	background-image: url(../img/up/grades_hr.png);
+	background-size:71px 69px;
 	}
 
 	#home .ui-listview.ui-group-theme-c  li.impressum a {
