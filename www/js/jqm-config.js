@@ -43,8 +43,6 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             }
 
             if($this.attr('data-rel') === 'back') {
-                window.history.back();
-                return false;
             }
         });
     });

@@ -24,12 +24,15 @@ define([
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
     				document.addEventListener("backbutton", function(e){
-    					var currentPage = window.approuter.currentPage();
-    					if (currentPage == 'home' || currentPage == ''){
+    					if(window.approuter.history.length == 1){
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-    						history.back();
+    						$.mobile.changePage.defaults.transition = 'slidefade';
+    						$.mobile.changePage.defaults.reverse = 'reverse';
+    						var lastPage = window.approuter.history[window.approuter.history.length-2].name;
+    						window.approuter.history.splice(-2);
+    						Backbone.history.navigate(lastPage, {trigger:true});
     					}
     				}, false);
 				}

@@ -70,7 +70,7 @@ define([
 		initialize: function(){
 			this.session = new Session;
 			this.listenTo(this, 'route', function(route){
-				this.history.splice(0,1,{name: route});
+				this.history.push({name: route});
 			});
 		},
 
