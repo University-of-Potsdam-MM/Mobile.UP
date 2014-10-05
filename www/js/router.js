@@ -109,7 +109,6 @@ define([
 				var name = this.history[this.history.length-1].name;
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
-
 		},
 
 		getScrollPosition: function(route) {
