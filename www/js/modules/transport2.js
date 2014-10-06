@@ -121,7 +121,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
 
     searchButton: function() {
-      console.log(this.getMoment());
       this.model.set('depTime', this.getMoment());
       this.search();
     },
