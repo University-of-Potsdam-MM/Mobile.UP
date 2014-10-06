@@ -1794,7 +1794,7 @@ html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 a#selectLevel-button {
 	padding-right:15px;
 	padding-left: 5px;
-text-align: left;
+	text-align: left;
 }
 
 #lectures #selectLevel-listbox .ui-header .ui-title{
@@ -1802,7 +1802,6 @@ text-align: left;
 	text-indent:1px;
 	margin-left: 10px;
 	letter-spacing: normal
-
 }
 
 #lectures .table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
@@ -1824,9 +1823,7 @@ h3.lecture-group-name {
 }
 
 #lectures .ui-selectmenu-list li a {
-	padding-left: .1em;
-padding-right: .1em;
-
+	padding: 0.5em;
 }
 
 /***********************grades***********************
