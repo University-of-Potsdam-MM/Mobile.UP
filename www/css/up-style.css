@@ -614,6 +614,18 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	opacity: 1
 }
 
+.ui-page-theme-a .ui-btn.settings:before {
+	background-image: url(../img/up/logout.svg);
+	background-repeat: no-repeat;
+	content: ".";
+	display: inline-block;
+	width: 18px;
+	height: 22px;
+	text-indent: -222222px;
+	background-position: 0px 0px
+ }
+
+
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
 }
