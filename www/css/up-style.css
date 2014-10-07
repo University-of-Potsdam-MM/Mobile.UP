@@ -2022,17 +2022,25 @@ p.event-description {
 }
 
 .vorgemerkt {
-	display:inline-block;
-	text-indent:20px;
-	line-height:25px;
-	color:red;
+	display: inline-block;
+line-height: 24px;
+color: #014260;
+font-weight: bold;
+font-family: georgia,serif;
+margin-top: 15px;
+width: 100%;
+background-color: #D0DAE3;
+padding: .5em;
 }
 
 .vorgemerkt:before {
-	background-image: url(../img/up/ok.png) !important;)
-	width: 25px;
-	height: 25px;
-	content:"."
+	background-image: url(../img/up/ok.png) !important;
+height: 25px;
+width: 25px;
+display: inline-block;
+content: ".";
+background-repeat: no-repeat;
+text-indent: -1000000px;
 }
 
 
