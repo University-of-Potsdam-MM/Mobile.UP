@@ -598,7 +598,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 .ui-page-theme-a .ui-btn.settings {
 	position: absolute;
-	right: 0;
+	right: 10px;
 	top: 0;
 	background: none;
 	border: none;
@@ -629,6 +629,11 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
 }
+
+.ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
+	display:none;
+}
+
 
 .ui-header span.username-header {
 	display: inline-block;

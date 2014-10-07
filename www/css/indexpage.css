@@ -31,15 +31,20 @@
 	margin-top:1em;
 }
 
+#home .ui-btn.settings:before {
+	background-image: url(../img/up/logout-white.svg);
+	background-repeat: no-repeat;
+	content: ".";
+	display: inline-block;
+	width: 18px;
+	height: 22px;
+	text-indent:100px;
+	background-position: 0px 0px
+	
+	
+}
 
-/*
-#home .ui-page-theme-a .ui-btn:hover, html #home .ui-bar-a .ui-btn:hover {
-	background:#d0dae3;
-}*/
-/*
-#home .ui-btn-icon-left.settings:hover:after, #home .ui-btn-icon-left.settings:active:after {
-	background-color:#dedede;
-}*/
+
 
 #home .ui-header .ui-title {
 	background-image: none;
