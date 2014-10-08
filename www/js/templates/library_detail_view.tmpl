@@ -1,3 +1,4 @@
+<% console.log(book); %>
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false"><a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a><a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList">Back</a>
 	<h1><%= book.get('title') %>
@@ -34,8 +35,16 @@
 		<%= _.compact([book.get('edition'), _.compact([book.get('place'),	_.compact([book.get('publisher'), book.get('dateIssued')]).join(', ')]).join(': ')]) %>
 		</p></div>
 		<% if (book.get('mediaType') == "media_o"){ %>
-		<div class="booktitle copyright">
+		<div class="copyright">
 			<p>Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisches Downloaden durch Robots.</p>
+		</div>
+		<div data-role="collapsible" data-collapsed="true" data-collapsed-icon="false" class="infotext">
+			<h3>
+				<img src="img/up/information.png" class="alignleft">Zeige Infotext
+			</h3>
+			<div data-role="listview" data-icon="arrow-darkblue">
+				<p class="blau">Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.</p>
+			</div>
 		</div>
 		<% } %>
 		<% if (book.get('issuance').indexOf('multipart') != -1){ %>
