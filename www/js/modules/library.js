@@ -42,7 +42,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       this.set('title', this.getTitle(xmlRecord));
       this.set('subtitle', this.textForTag(xmlRecord, 'subTitle'));
       this.set('partNumber', this.textForTag(xmlRecord, 'partNumber'))
-      this.set('dateIssued', $xmlRecord.find('dateIssued').html());
+      this.set('dateIssued', this.textForTag(xmlRecord, 'dateIssued'));
       this.set('abstract', this.textForTag(xmlRecord, 'abstract'));
       this.set('toc', this.split_string(this.textForTag(xmlRecord, 'tableOfContents'),'--'));
       this.set('authors', this.authors($xmlRecord));
