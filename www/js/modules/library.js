@@ -468,9 +468,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       var status = '';
       var statusInfo = '';
       // reset url when in daia response unavailable service item openaccess is existing
-      var url =  (item.unavailable && item.unavailable[0].service == "openaccess") ? item.unavailable[0].href : null;
-      if (url != null){
-        book.set('url', url);
+      if (book.get('mediaType') == "media_o"){
+        var url =  (item.unavailable && item.unavailable[0].service == "openaccess") ? item.unavailable[0].href : null;
+        if (url != null){
+          book.set('url', url);
+        }
       }
 
       // check for avaiable and unavailable items and process loan and presentation
