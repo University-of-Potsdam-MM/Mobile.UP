@@ -1,11 +1,14 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
   <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
-  <h1>Veranstaltungen
   <%  if(store.get('up.session.authenticated')){ %>
-       <a href="#options" class="settings settings2" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a></h1>
-    <%  } %>
-    </h1>
+	<h1 class="loggedin">Veranstaltungen</h1>
+	<a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %> 
+    <h1>Veranstaltungen</h1>
+    <% } %> 
+    
+    
   <a data-icon="star" data-role="button" class="settings" href="#events/set_locations" role="button" title="settings" alt="settings"></a>
 </div>
 <!-- End Header -->

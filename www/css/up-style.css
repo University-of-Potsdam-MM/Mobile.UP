@@ -126,6 +126,10 @@ p {
 	font-style:italic;
 }
 
+.ui-header .ui-title.loggedin {
+	margin-right:100px;
+}
+
 h2 {
 	font-size: 1em;
 	font-weight: normal;
@@ -628,6 +632,10 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
+}
+
+.ui-page-theme-a .ui-btn.settings.ui-icon-star {
+	right: -3px;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
@@ -1613,7 +1621,7 @@ html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 }
 
 
-#moodle .ui-link {
+#moodle .ui-content .ui-link {
 	text-decoration:none;
 	line-height: 3em;
 }
