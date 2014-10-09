@@ -16,8 +16,25 @@ define([
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
 
+				/**
+				 *	functions get exectuted when device is ready and handles hiding of splashscreen and backButton navigation
+				 */
 				function onDeviceReady() {
+    				// hide splashscreen
     				navigator.splashscreen.hide();
+    				// EventListener for BackButton
+    				document.addEventListener("backbutton", function(e){
+    					if(window.approuter.history.length == 1){
+    						e.preventDefault();
+    						navigator.app.exitApp();
+    					}else{
+    						$.mobile.changePage.defaults.transition = 'slidefade';
+    						$.mobile.changePage.defaults.reverse = 'reverse';
+    						var lastPage = window.approuter.history[window.approuter.history.length-2].name;
+    						window.approuter.history.splice(-2);
+    						Backbone.history.navigate(lastPage, {trigger:true});
+    					}
+    				}, false);
 				}
 
 				/**

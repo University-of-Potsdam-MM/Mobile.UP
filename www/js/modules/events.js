@@ -59,7 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltung konnte nicht abgerufen werden.', module: 'events'});
 				},
-				dataType: 'json' 
+				dataType: 'json'
 			});
 		},
 

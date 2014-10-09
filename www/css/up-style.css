@@ -598,12 +598,15 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 
 .ui-page-theme-a .ui-btn.settings {
 	position: absolute;
-	right: 0;
+	right: 10px;
 	top: 0;
 	background: none;
 	border: none;
-	padding: .3em 2em 2em 1em;
-	margin-top:1em;
+	padding: .6em 2em 2em 1em;
+	margin-top: 1em;
+	color: #014260;
+	font-family: georgia, serif;
+	font-weight: normal;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -611,9 +614,26 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	opacity: 1
 }
 
+.ui-page-theme-a .ui-btn.settings:before {
+	background-image: url(../img/up/logout.svg);
+	background-repeat: no-repeat;
+	content: ".";
+	display: inline-block;
+	width: 18px;
+	height: 22px;
+	text-indent: -222222px;
+	background-position: 0px 0px
+ }
+
+
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
 }
+
+.ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
+	display:none;
+}
+
 
 .ui-header span.username-header {
 	display: inline-block;
@@ -1050,7 +1070,7 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 }
 
 #library .ui-listview>li h2,div.booktitle h2 {
-	margin-top: 0 0 !important;
+	margin-top: 10px;
 	line-height: 1;
 	text-transform: none;
 	color: #000;
@@ -1087,8 +1107,15 @@ div.booktitle h2{
 	margin-lefT:0;
 }
 
-div.booktitle.copyright p {
+div.copyright p {
 	color:red;
+	margin: 5px;
+	padding-left: 55px;
+	font-size: 13px;
+}
+
+div.infotext{
+	padding-left: 55px;
 }
 
 #book-icon {
@@ -1201,6 +1228,8 @@ div.booktitle.copyright p {
 li.book-short a.ui-btn {
 	padding-left: .2em;
 	padding-right: 1em;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 li.book-short div {
@@ -1212,6 +1241,7 @@ li.book-short div {
 	padding-left: 2px;
 	padding-top: 10px;
 	font-size: 14px;
+	margin-right: 5px;
 }
 
 li.book-short.ui-li-divider.ui-bar-inherit {
@@ -1422,20 +1452,26 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 /***********************Raumbelegung*********************
 **************************************************************/
+#options p,
 #freeRooms p {
 	margin: .5em;
 }
 
+#options h3,
 #freeRooms h3 {
 	margin-left: .5em;
 	margin-bottom: .3em
 }
 
+#library .infotext h3,
+#options .infotext h3,
 #freeRooms .infotext h3 {
 	margin:0;
 	border:none;
 }
 
+#library .infotext h3 a,
+#options .infotext h3 a,
 #freeRooms .infotext h3 a {
 	background-color:#fff;
 	border:none;
@@ -1448,9 +1484,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
 	text-indent: 35px;
-	border-bottom: 0px;
+	border: 0px;
 }
-
 
 #roomsHost h3 {
 	margin-left: 0em;
@@ -1789,7 +1824,7 @@ html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 a#selectLevel-button {
 	padding-right:15px;
 	padding-left: 5px;
-text-align: left;
+	text-align: left;
 }
 
 #lectures #selectLevel-listbox .ui-header .ui-title{
@@ -1797,7 +1832,6 @@ text-align: left;
 	text-indent:1px;
 	margin-left: 10px;
 	letter-spacing: normal
-
 }
 
 #lectures .table-stripe tbody tr:nth-child(odd) td, .table-stripe tbody tr:nth-child(odd) th {
@@ -1816,6 +1850,10 @@ li.lecture-group-detail {
 h3.lecture-group-name {
 	margin: 12px !important;
 	margin-left:5px !important;
+}
+
+#lectures .ui-selectmenu-list li a {
+	padding: 0.5em;
 }
 
 /***********************grades***********************
@@ -1843,7 +1881,7 @@ table#grades {
 	background:#014260;
 	color:#fff;
 }
-
+/*
 li.news-entry a {
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -1860,7 +1898,7 @@ li.news-entry a p span.news-date{
 	font-weight:bold;
 	font-size:.8em;
 }
-
+*/
 #news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-white.png);
 	background-color: transparent;
@@ -1869,12 +1907,6 @@ li.news-entry a p span.news-date{
 #news li.entry .ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-darkblue.png);
 	background-color: transparent;
-}
-
-#news li.show-all a {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
 }
 
 #news ul h3 {
@@ -1909,6 +1941,15 @@ li.news-entry a p span.news-date{
 #news-content img {
 	float:left;
 	margin:0 auto;
+}
+
+.newssource {
+	margin:0;
+	text-indent: .8em;
+	background: #014260;
+	padding-top: .6em;
+	padding-bottom: .6em;
+	color: #FFF
 }
 
 /*********************** Veranstaltungen*********************
@@ -1999,17 +2040,25 @@ p.event-description {
 }
 
 .vorgemerkt {
-	display:inline-block;
-	text-indent:20px;
-	line-height:25px;
-	color:red;
+	display: inline-block;
+line-height: 24px;
+color: #014260;
+font-weight: bold;
+font-family: georgia,serif;
+margin-top: 15px;
+width: 100%;
+background-color: #D0DAE3;
+padding: .5em;
 }
 
 .vorgemerkt:before {
-	background-image: url(../img/up/ok.png) !important;)
-	width: 25px;
-	height: 25px;
-	content:"."
+	background-image: url(../img/up/ok.png) !important;
+height: 25px;
+width: 25px;
+display: inline-block;
+content: ".";
+background-repeat: no-repeat;
+text-indent: -1000000px;
 }
 
 
@@ -2031,7 +2080,7 @@ only screen and (                min-resolution: 2dppx) {
 
 	.ui-header .ui-title {
 	background-image: url(../img/up/seperator-hres.png);
-	background-size:46px 55px;
+	background-size:7px 55px;
 	}
 
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{

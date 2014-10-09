@@ -240,13 +240,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
   /**
    * Backbone View - NavigationView
    */
-	var NavigationView = Backbone.View.extend({
+  var NavigationView = Backbone.View.extend({
     events: {
-      "vclick a" : function(ev){
-        ev.preventDefault();
-        var buttonName = $(ev.target).html();
-        this.trigger('select', buttonName);
-      }
+      'vclick a' : 'selectButton'
     },
 
     activeButton: function(buttonText){
@@ -254,6 +250,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
       this.$el.find('a').filter(function(){
         return $(this).text() === buttonText;
       }).addClass('ui-btn-active');
+    },
+
+    selectButton: function(ev){
+      ev.preventDefault();
+      var buttonName = $(ev.target).html();
+      this.trigger('select', buttonName);
     }
   });
 

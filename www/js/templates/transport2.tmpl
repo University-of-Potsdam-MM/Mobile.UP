@@ -3,11 +3,10 @@
     <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton">Menue</a>
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
     <h1>Fahrten planen
-    <%  if(store.get('up.session.authenticated')){ %>
-        <span class="username-header nooptions"><%= store.get('up.session.username') %></span><a href="#options" class="settings" data-role="button" data-icon="logout-blue" title="logout" alt="logout"></a></h1>
-    <%  }else{ %>
-        <a href="#options" class="settings" data-role="button" data-icon="login-blue" title="login" alt="login"></a></h1>
-    <%  } %>
+    <% if(store.get('up.session.authenticated')){ %>
+       <a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <% } %>
+    </h1>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -41,12 +40,11 @@
         <div data-role="navbar" class="buttons_pt route">
             <ul>
                 <li><p>Wann:</p></li>
-                <li></li>
                 <li>
-                    <input name="transportationDate" id="transportationDate" type="date" value="Heute" data-role="datebox" data-options='{"mode":"calbox", "overrideCalStartDay": 1, "useFocus": true, "calHighToday": false, "centerHoriz": true}'>
+                    <input name="transportationDate" id="transportationDate" type="date" data-role="datebox" data-options='{"mode":"calbox", "showInitialValue": true, "overrideCalStartDay": 1, "calHighToday": false, "centerHoriz": true, "useFocus": true}'>
                 </li>
                 <li>
-                    <input name="transportationTime" id="transportationTime" type="date" value="Jetzt" data-role="datebox" data-options='{"mode": "timebox", "useFocus": true, "useLang": "de", "centerHoriz": true}'>
+                    <input name="transportationTime" id="transportationTime" type="date" data-role="datebox" data-options='{"mode": "timebox", "showInitialValue": true, "useFocus": true, "useLang": "de", "centerHoriz": true}'>
                 </li>
             </ul>
         </div>

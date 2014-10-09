@@ -11,9 +11,9 @@
       <a href="#">
             <div class="<%= book.get('mediaType') %>"><%= (number) %></div>
         <h2>
-          <%= (book.get('title')) ? book.get('title')+'</h2>' : ''%>
-          <%= (book.get('subtitle')) ? '<h3>'+ book.get('subtitle')+'</h3>' : ''%>
-          <%= (book.get('partNumber')) ? '<h3>'+ book.get('partNumber')+'</h3>' : ''%>
+          <%= (book.get('title')) ? book.get('title') : ''%>
+          <%= (book.get('subtitle')) ? '<h3>'+book.get('subtitle')+'</h3>' : ''%>
+          <h3><%= (book.get('partNumber')) ? book.get('partNumber') : ''%><%= (book.get('series')) ? book.get('series')[0] : ''%></h3>
         </h2>
         <p>
           <% if (book.get('authors') && book.get('authors').length>0) { %>

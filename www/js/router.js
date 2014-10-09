@@ -71,8 +71,8 @@ define([
 
 		initialize: function(){
 			this.session = new Session;
-			this.listenTo(this, 'route', function(route){
-				this.history.splice(0,1,{name: route});
+			this.listenTo(this, 'route', function(route, params){
+				this.history.push({name: route});
 			});
 		},
 
@@ -111,7 +111,6 @@ define([
 				var name = this.history[this.history.length-1].name;
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
-
 		},
 
 		getScrollPosition: function(route) {
@@ -125,6 +124,10 @@ define([
 
 		home: function(){
 			this.changePage(new HomePageView);
+		},
+
+		currentPage: function(){
+			return this.history[this.history.length-1].name;
 		},
 
 		news: function(id){
@@ -194,7 +197,9 @@ define([
 
 			this.listenTo(this.currentView, "openVvzUrl", function(vvzHistory) {
 				var param = JSON.stringify(vvzHistory.toJSON());
-				this.navigate("lectures/" + encodeURIComponent(param));
+				var url = "lectures/" + encodeURIComponent(param)
+				this.navigate(url);
+				this.history.push({name: url});
 			});
 		},
 

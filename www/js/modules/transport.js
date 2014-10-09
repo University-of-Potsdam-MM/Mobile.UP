@@ -46,7 +46,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
    *  for navigating between transport and transport2 view
    */
   var NavigationView = Backbone.View.extend({
-
     events: {
       'vclick a' : 'selectButton'
     },
@@ -78,6 +77,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
       this.listenTo(this.collection.where({campus: 'G-see'})[0], "sync", this.renderTransportList);
+      this.trigger("renderTransportList");
     },
 
     renderTransportList: function(){
