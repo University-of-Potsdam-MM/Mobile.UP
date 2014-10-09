@@ -4,7 +4,9 @@
 	<h3><%= location.get('department') %> <a href="<%= location.get('departmentURL') %>" target="_blank" rel="external">Info</a></h3>
 <% } %>
 <% if (location.get('url')){ %>
+	<div class="onlineressource">
 	<span class="available"></span><a href="<%= location.get('url') %>" target="_blank" rel="external"><%= location.get('item')[0] %></a><br />
+	</div>
 <% }else{ %>
 	<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
 	<h3 data-icon="arrow-darkblue">

@@ -1230,6 +1230,11 @@ div.infotext{
 	display: inline-block;
 }
 
+.onlineressource {
+	padding-top:.5em;
+	padding-bottom:.5em;
+}
+
 /* Ressourcen*/
 li.book-short a.ui-btn {
 	padding-left: .2em;
