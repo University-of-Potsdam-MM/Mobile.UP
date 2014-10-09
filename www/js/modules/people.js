@@ -68,13 +68,13 @@ define([
 
 		clearList: function(){
 			// clear previous results
-			$("#people-results").empty();
+			$("#people-list").empty();
 		},
 
 		addPerson: function(model){
 			personView = new PersonView({model: model});
-			$("#people-results").append(personView.render().el);
-			$("#people-results").trigger("create");
+			$("#people-list").append(personView.render().el);
+			$("#people-list").trigger("create");
 			return this;
 		},
 
@@ -86,10 +86,8 @@ define([
 			// generate url and set collection url
 			var url = 'https://www.intern.uni-potsdam.de/personsearch/app/webroot/index.php/person/.json';
 			url += '?value='+query;
-			url += '&username=wuff';
-			url += '&password=wuff';
-			//url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
-			//url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
+			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
+			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
 			console.log(url);
 			this.collection.reset();
 			this.collection.url = url;
@@ -97,7 +95,7 @@ define([
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#people-results', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: error});
+			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: error});
 		},
 
 		render: function(){
