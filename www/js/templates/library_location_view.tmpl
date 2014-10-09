@@ -1,6 +1,5 @@
 <% var currentLocation = ""; %>
 <% _.each(locations, function(location) { %>
-<% console.log(location); %>
 <% if (location.get('department') != currentLocation){ %>
 	<h3><%= location.get('department') %> <a href="<%= location.get('departmentURL') %>" target="_blank" rel="external">Info</a></h3>
 <% } %>
@@ -9,7 +8,7 @@
 <% }else{ %>
 	<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
 	<h3 data-icon="arrow-darkblue">
-		<!--Alternativen: lent, prebook -->
+		<!--Alternativen:  lent, prebook -->
 		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("bestellt") != -1)) { %>
 		<span class="lent"></span>
 		<% }else if((location.get('item')[0] && location.get('item')[0].indexOf("Präsenzbestand") != -1) ||

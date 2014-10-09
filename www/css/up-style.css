@@ -1076,7 +1076,7 @@ html .ui-body-c .ui-slider-track .ui-btn-active {
 }
 
 #library .ui-listview>li h2,div.booktitle h2 {
-	margin-top: 0 0 !important;
+	margin-top: 10px;
 	line-height: 1;
 	text-transform: none;
 	color: #000;
@@ -1113,8 +1113,15 @@ div.booktitle h2{
 	margin-lefT:0;
 }
 
-div.booktitle.copyright p {
+div.copyright p {
 	color:red;
+	margin: 5px;
+	padding-left: 55px;
+	font-size: 13px;
+}
+
+div.infotext{
+	padding-left: 55px;
 }
 
 #book-icon {
@@ -1227,6 +1234,8 @@ div.booktitle.copyright p {
 li.book-short a.ui-btn {
 	padding-left: .2em;
 	padding-right: 1em;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 li.book-short div {
@@ -1238,6 +1247,7 @@ li.book-short div {
 	padding-left: 2px;
 	padding-top: 10px;
 	font-size: 14px;
+	margin-right: 5px;
 }
 
 li.book-short.ui-li-divider.ui-bar-inherit {
@@ -1459,12 +1469,14 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin-bottom: .3em
 }
 
+#library .infotext h3,
 #options .infotext h3,
 #freeRooms .infotext h3 {
 	margin:0;
 	border:none;
 }
 
+#library .infotext h3 a,
 #options .infotext h3 a,
 #freeRooms .infotext h3 a {
 	background-color:#fff;
@@ -1478,9 +1490,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
 	text-indent: 35px;
-	border-bottom: 0px;
+	border: 0px;
 }
-
 
 #roomsHost h3 {
 	margin-left: 0em;
@@ -1637,7 +1648,7 @@ html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 }
 
 #emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed,
-#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {   
 	border-bottom: 1px;
 }
 
