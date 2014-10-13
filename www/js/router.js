@@ -279,6 +279,15 @@ define([
 			if (this.currentView) {
 				header.css("display", "none")
 			}
+			
+			// As the page carries a ui-page-theme-a class, the header should carry one too
+			// If the page carries a home id the header should carry a home-id class
+			// This is done for reasons of backward compatibility
+			header.addClass("ui-page-theme-a");
+			if (pageContent.attr("id") == "home") {
+				header.addClass("home-id");
+			}
+			
 			$('#pagecontainer').append(header);
 
 			$.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
