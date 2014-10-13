@@ -273,17 +273,20 @@ define([
 				transition = 'none';
 				this.firstPage = false;
 			}
+			
+			// If there already is an old view then insert the new header invisible
+			// The headers will be faded after the page transition
+			if (this.currentView) {
+				header.css("display", "none")
+			}
+			$('#pagecontainer').append(header);
 
 			$.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
-				$('#pagecontainer').append(header);
 				$('body').css('overflow', 'auto');
 				$("body").fadeIn(100);
-			} else {
-				$("[data-role=header]").remove();
-				$('#pagecontainer').append(header);
 			}
 
 			this.currentView = page;

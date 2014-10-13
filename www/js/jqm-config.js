@@ -16,6 +16,16 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             }
             $('body').css('overflow', 'auto');
         });
+        
+        // Fade in new header while fading out the old one, remove old header when it is no longer visible
+        $(document).on('pagehide', 'div[data-role="page"]', function(event, ui){
+            var headers = $("[data-role=header]");
+            var oldHeader = headers.first();
+            var newHeader = headers.last();
+            
+            oldHeader.fadeOut("fast", function() { oldHeader.remove(); });
+            newHeader.fadeIn("fast");
+        });
 
         $(document).on('pageshow', 'div[data-role="page"]', function(){
             if (window.approuter && window.approuter.history.length > 0){
