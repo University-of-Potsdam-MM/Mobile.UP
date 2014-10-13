@@ -258,11 +258,12 @@ define([
 			}
 
 			// prepare new view for DOM display
-			$(page.el).attr('data-role', 'page');
 			page.render();
+			var header = page.$("[data-role=header]").toolbar();
+			var pageContent = $("<div data-role='page'></div>").append(page.$("[data-role=content]"));
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#pagecontainer').append($(page.el));
+			$('#pagecontainer').append(pageContent);
 
 			var transition = $.mobile.changePage.defaults.transition;
 			var reverse = $.mobile.changePage.defaults.reverse;
@@ -273,12 +274,16 @@ define([
 				this.firstPage = false;
 			}
 
-			$.mobile.changePage($(page.el), {changeHash: false, transition: transition, reverse: reverse});
+			$.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
+				$('#pagecontainer').append(header);
 				$('body').css('overflow', 'auto');
 				$("body").fadeIn(100);
+			} else {
+				$("[data-role=header]").remove();
+				$('#pagecontainer').append(header);
 			}
 
 			this.currentView = page;
