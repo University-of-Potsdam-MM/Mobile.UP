@@ -259,8 +259,8 @@ define([
 
 			// prepare new view for DOM display
 			page.render();
-			var header = page.$("[data-role=header]").toolbar();
-			var pageContent = $("<div data-role='page'></div>").append(page.$("[data-role=content]"));
+			var header = page.$("[data-role=header]").detach().toolbar();
+			var pageContent = page.$el.attr("data-role", "page");
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
 			$('#pagecontainer').append(pageContent);
