@@ -1,6 +1,6 @@
 /* login button  - Höhe*/
 
-#home .ui-page-theme-b .ui-btn,html #home .ui-bar-b .ui-btn,html #home.ui-body-b .ui-btn,html body  #home.ui-group-theme-b .ui-btn,html head+body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited,html #home.ui-bar-b .ui-btn:visited,html #home .ui-body-b .ui-btn:visited,html body #home .ui-group-theme-b .ui-btn:visited,html head+body #home .ui-btn.ui-btn-b:visited
+#home .ui-page-theme-b .ui-btn, #home .ui-bar-b .ui-btn, #home.ui-body-b .ui-btn, body  #home.ui-group-theme-b .ui-btn, body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited, #home.ui-bar-b .ui-btn:visited, #home .ui-body-b .ui-btn:visited, body #home .ui-group-theme-b .ui-btn:visited, head+body #home .ui-btn.ui-btn-b:visited
 	{
 	border-color: #94bbe3;
 }

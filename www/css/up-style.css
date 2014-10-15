@@ -71,10 +71,10 @@ p {
 
 /*visited*/
 
- html .ui-bar-a .ui-btn:visited,
- html .ui-body-a .ui-btn:visited,
- html body .ui-group-theme-a .ui-btn:visited,
- html head+body .ui-btn.ui-btn-a:visited {
+.ui-bar-a .ui-btn:visited,
+.ui-body-a .ui-btn:visited,
+body .ui-group-theme-a .ui-btn:visited,
+.ui-btn.ui-btn-a:visited {
  	background:#014260;
  }
 
@@ -156,7 +156,7 @@ h2 span {
 }
 
 /*2. Back button*/
-.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited
+.ui-page-theme-a .ui-btn.back, .ui-bar-a .ui-btn.back, .ui-body-a .ui-btn.back, body .ui-group-theme-a .ui-btn.back, body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited, .ui-bar-a .ui-btn.back:visited, .ui-body-a .ui-btn.back:visited, body .ui-group-theme-a .ui-btn.back:visited, body .ui-btn.ui-btn-a.back:visited
 	{
 	border: none;
 	color: #cfdae3;
@@ -218,7 +218,7 @@ h2 span {
 	border-right: 2px solid #fff;
 }
 
-.ui-navbar .ui-page-theme-c .ui-btn,html  .ui-bar-c .ui-navbar .ui-btn,html  .ui-body-c .ui-navbar .ui-btn,html body .ui-group-theme-c  .ui-navbar .ui-btn,html head+body .ui-navbar .ui-btn.ui-btn-c,.ui-page-theme-c .ui-navbar .ui-btn:visited,html .ui-bar-c .ui-navbar .ui-btn:visited,html .ui-body-c .ui-navbar .ui-btn:visited,html body .ui-group-theme-c .ui-navbar .ui-btn:visited,html head+body .ui-navbar.ui-btn.ui-btn-c:visited
+.ui-navbar .ui-page-theme-c .ui-btn, .ui-bar-c .ui-navbar .ui-btn, .ui-body-c .ui-navbar .ui-btn, body .ui-group-theme-c  .ui-navbar .ui-btn, body .ui-navbar .ui-btn.ui-btn-c,.ui-page-theme-c .ui-navbar .ui-btn:visited, .ui-bar-c .ui-navbar .ui-btn:visited, .ui-body-c .ui-navbar .ui-btn:visited, body .ui-group-theme-c .ui-navbar .ui-btn:visited, body .ui-navbar.ui-btn.ui-btn-c:visited
 	{
 	border: none;
 	height: 35px;
@@ -463,7 +463,7 @@ label.showfirst {
 
 /*************************************Mensa*********************************
 *****************************************************************************/
-html  .ui-body-c .speiseplan a,html body  .ui-group-theme-c .speiseplan a
+.ui-body-c .speiseplan a, body  .ui-group-theme-c .speiseplan a
 	{
 	font-weight: normal;
 	color: #000;
@@ -548,7 +548,7 @@ html  .ui-body-c .speiseplan a,html body  .ui-group-theme-c .speiseplan a
 	padding-left: 88px;
 }
 
-html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mensaicons img
+.ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mensaicons img
 	{
 	width: 30px;
 	height: 30px;
@@ -697,12 +697,12 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content .second-mens
 	white-space: normal;
 }
 
-html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
+.ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content {
 	padding-left: 0px;
 	min-height: 70px;
 }
 
-html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
+.ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
 	padding-left: 47px;
 	margin-top: 0px
 }
@@ -716,7 +716,7 @@ html .ui-body-c .speiseplan .ui-body-inherit.ui-collapsible-content p {
 	padding: 0px;
 }
 
-html .ui-body-c .ui-body-inherit.ui-collapsible-collapsed,html .ui-body-c .ui-body-inherit.ui-collapsible
+.ui-body-c .ui-body-inherit.ui-collapsible-collapsed,.ui-body-c .ui-body-inherit.ui-collapsible
 	{
 	border-color: #cccccc;
 }
@@ -744,11 +744,11 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	background: #d0dae3;
 }
 
-html .ui-body-c .ui-body-inherit.ui-collapsible-content {
+.ui-body-c .ui-body-inherit.ui-collapsible-content {
 	background: #d0dae3;
 }
 
-html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
+.ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	color: #014260 font-size:  .8em;
 }
 
@@ -829,7 +829,7 @@ html .ui-body-c .ui-body-inherit.ui-collapsible-content h4 {
 	font-weight: bold;
 }
 
-html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
+.ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
 	position: absolute;
 	content: ".";
 	text-indent: -10000px;
@@ -841,7 +841,7 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
 	height: 25px;
 }
 
-html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
+.ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 	text-indent: 15px;
 }
 
@@ -856,11 +856,11 @@ html .ui-body-c .buttons_pt .ui-btn.ui-btn-active {
 	border: none;
 }
 
-html .ui-body-c .ui-navbar.buttons_pt .ui-btn {
+.ui-body-c .ui-navbar.buttons_pt .ui-btn {
 	line-height:135%;
 }
 
-html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
+.ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	line-height: 25px;
 	font-size: .9em !important;
 }
@@ -921,7 +921,7 @@ html .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	color: #014260;
 }
 
-html .ui-body-c .ui-slider-track .ui-btn-active {
+.ui-body-c .ui-slider-track .ui-btn-active {
 	color:#fff;
 }
 
@@ -1492,7 +1492,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 }
 
-html .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
+.ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
 	text-indent: 35px;
 	border: 0px;
@@ -2094,7 +2094,7 @@ only screen and (                min-resolution: 2dppx) {
 	background-size:7px 55px;
 	}
 
-	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited{
+	.ui-page-theme-a .ui-btn.back,.ui-bar-a .ui-btn.back, .ui-body-a .ui-btn.back, body .ui-group-theme-a .ui-btn.back, body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited, .ui-bar-a .ui-btn.back:visited, .ui-body-a .ui-btn.back:visited, body .ui-group-theme-a .ui-btn.back:visited, body .ui-btn.ui-btn-a.back:visited{
 	background-image: url(../img/up/arrow-back_hr.png) !important;
 	background-size: 25px 25px;
 	}
@@ -2158,7 +2158,7 @@ only screen and (                min-resolution: 2dppx) {
 		background-size:25px 25px;
 	}
 
-	html .ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
+	.ui-body-c .buttons_pt .ui-btn.ui-btn-active:after {
 		background-image: url(../img/up/ok_hr.png) !important;
 		background-size:23px 22px;
 	}
