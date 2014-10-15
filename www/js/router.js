@@ -258,11 +258,12 @@ define([
 			}
 
 			// prepare new view for DOM display
-			$(page.el).attr('data-role', 'page');
 			page.render();
+			var header = page.$("[data-role=header]").detach().toolbar();
+			var pageContent = page.$el.attr("data-role", "page");
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#pagecontainer').append($(page.el));
+			$('#pagecontainer').append(pageContent);
 
 			var transition = $.mobile.changePage.defaults.transition;
 			var reverse = $.mobile.changePage.defaults.reverse;
@@ -272,8 +273,24 @@ define([
 				transition = 'none';
 				this.firstPage = false;
 			}
+			
+			// If there already is an old view then insert the new header invisible
+			// The headers will be faded after the page transition
+			if (this.currentView) {
+				header.css("display", "none")
+			}
+			
+			// As the page carries a ui-page-theme-a class, the header should carry one too
+			// If the page carries a home id the header should carry a home-id class
+			// This is done for reasons of backward compatibility
+			header.addClass("ui-page-theme-a");
+			if (pageContent.attr("id") == "home") {
+				header.addClass("home-id");
+			}
+			
+			$('#pagecontainer').append(header);
 
-			$.mobile.changePage($(page.el), {changeHash: false, transition: transition, reverse: reverse});
+			$.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
