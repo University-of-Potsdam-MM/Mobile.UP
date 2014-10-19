@@ -289,8 +289,17 @@ define([
 			}
 			
 			$('#pagecontainer').append(header);
+			
+			var headers = $("[data-role=header]");
+            if (headers.length > 1) {
+            	var oldHeader = headers.first();
+                var newHeader = headers.last();
+                
+                oldHeader.fadeOut("fast", function() { oldHeader.remove(); });
+                newHeader.fadeIn("fast");
+            }
 
-			$.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
+            $.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
