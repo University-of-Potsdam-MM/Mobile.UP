@@ -41,6 +41,7 @@ define([
 			"events/*id": "events",
 			"study": "study",
 			"calendar": "calendar",
+			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
@@ -177,8 +178,8 @@ define([
 			this.changePage(new StudyPageView);
 		},
 
-		calendar: function(){
-			this.changePage(new CalendarPageView);
+		calendar: function(day){
+			this.changePage(new CalendarPageView({day: day}));
 		},
 
 		moodle: function () {

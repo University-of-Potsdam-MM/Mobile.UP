@@ -1,10 +1,16 @@
 	<% console.log(CoursesForDay); %>
     <ul data-role="listview" data-inset="true" data-theme="c">
+        <% _.each(CoursesForDay.models, function(course){ %>
+        <% console.log(course); %>
         <li>
             <a href="" data-role="button" data-transition="slidefade">
-                <h2>08:00 bis 10:00</h2>
+                <h2><%=course.get('dates')[0].begin %> - <%=course.get('dates')[0].end %></h2>
+                <p><%= course.get('name') %></p>
             </a>
         </li>
+
+        <% }); %>
+<!--
         <li>
             <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
                 <h2>10:00 bis 12:00</h2>
@@ -34,5 +40,5 @@
             <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
                 <h2>20:00 bis 22:00</h2>
             </a>
-        </li>
+        </li> -->
     </ul>
