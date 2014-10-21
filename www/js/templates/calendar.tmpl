@@ -15,5 +15,13 @@
 <div data-role="content" data-theme="c">
     <div id="coursesForDay"></div>
 	<div id="loadingSpinner"></div>
-
 </div> <!-- ende content -->
+
+<div data-role="footer" data-position="fixed" class="footer">
+	<div data-role="navbar" data-tap-toggle="false">
+		<ul>
+			<li><a href="#calendar/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
+			<li><a href="#calendar/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" data-role="button">Nächster Tag</a></li>
+		</ul>
+	</div>
+</div>
