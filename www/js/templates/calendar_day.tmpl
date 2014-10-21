@@ -1,44 +1,18 @@
-	<% console.log(CoursesForDay); %>
-    <ul data-role="listview" data-inset="true" data-theme="c">
-        <% _.each(CoursesForDay.models, function(course){ %>
-        <% console.log(course); %>
-        <li>
-            <a href="" data-role="button" data-transition="slidefade">
-                <h2><%=course.get('dates')[0].begin %> - <%=course.get('dates')[0].end %></h2>
-                <p><%= course.get('name') %></p>
-            </a>
-        </li>
-
-        <% }); %>
-<!--
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>10:00 bis 12:00</h2>
-            </a>
-        </li>
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>12:00 bis 14:00</h2>
-            </a>
-        </li>
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>14:00 bis 16:00</h2>
-            </a>
-        </li>
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>16:00 bis 18:00</h2>
-            </a>
-        </li>
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>18:00 bis 20:00</h2>
-            </a>
-        </li>
-        <li>
-            <a href="calendar/timestamp" data-role="button" data-transition="slidefade">
-                <h2>20:00 bis 22:00</h2>
-            </a>
-        </li> -->
-    </ul>
+<ul data-role="listview" data-inset="true" data-theme="c">
+    <% _.each(CourseSlots.models, function(courseSlot){ %>
+    <li>
+        <% if (courseSlot.get('model').length == 0){ %>
+        <a href="" data-role="button" data-transition="slidefade">
+            <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
+        </a>
+        <% }else{
+            var course = courseSlot.get('model');
+        %>
+        <a href="" data-role="button" data-transition="slidefade" id="<%= course.cid %>">
+            <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
+            <p><%= course.get('name') %><br /><%= course.get('dates')[0].lecturer %><br /><%= course.get('dates')[0].room %></p>
+        </a>
+        <% } %>
+    </li>
+    <% }); %>
+</ul>

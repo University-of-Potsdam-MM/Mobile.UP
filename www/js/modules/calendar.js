@@ -19,19 +19,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 	/**
 	 *	CourseList - BackboneCollection
-	 * 	@desc 	holding all available courses of a user
+	 * 	@desc 	holding all available courses of a user (present and past courses)
 	 */
 	var CourseList = Backbone.Collection.extend({
 		model: Course,
 		url: 'js/json/courses-hgessner.json',
-	});
-
-
-	/**
-	 *	CalendarDay - Backbone.Model
-	 *	@desc	model for one selected day containing all relevant courses
-	 */
-	var CoursesForDay = Backbone.Collection.extend({
 	});
 
 
@@ -56,6 +48,49 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 
 	/**
+	 *	CalendarDay - Backbone.Model
+	 *	@desc	model for one selected day containing all relevant courses
+	 *			ordering will be done by timeslots
+	 */
+	var CoursesForDay = Backbone.Collection.extend({
+		model: Course
+	});
+
+
+	/**
+	 *	CourseSlot - BackboneModel
+	 *	@desc	model for a courseslot / timeslot for a given day
+	 *			consists of a timeslot and a course model if available
+	 */
+	var CourseSlot = Backbone.Model.extend({
+		defaults: {
+			"timeslotbegin": "",
+			"timeslotend": "",
+			model: Course
+		}
+	});
+
+
+	/**
+	 *	CourseSlots - BackboneCollection
+	 *	@desc	colletion holding all timeslots for a day
+	 */
+	var CourseSlots = Backbone.Collection.extend({
+		model: CourseSlot,
+
+		initialize: function(){
+			for (var i=0; i<7; i++){
+				var courseslot = new CourseSlot();
+				courseslot.set('timeslotbegin', (parseInt("0800")+i*200).toString());
+				courseslot.set('timeslotend', (parseInt("1000")+i*200).toString());
+				this.add(courseslot);
+			}
+			this.models[0].set('timeslotbegin', '0800');
+		}
+	});
+
+
+	/**
 	 *	CalendarDayView - BackboneView
 	 * 	@desc	view for one specific day
 	 */
@@ -66,9 +101,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 			'click li': 'renderCourseDetails'
 		},
 
-
 		initialize: function(){
 			this.template = utils.rendertmpl('calendar_day');
+			this.CourseSlots = new CourseSlots();
+		},
+
+		prepareDaySchedule: function(){
+			// TODO: Better to transform it to collection
+			var that = this;
+			// iterate over collection and paste into timetable array
+			_.each(this.collection.models, function(course){
+				var courseBegin = course.get('dates')[0].begin;
+				var courseEnd = course.get('dates')[0].end;
+				_.each(that.CourseSlots.models, function(courseslot){
+					var timeslotbegin = courseslot.get('timeslotbegin');
+					var timeslotend = courseslot.get('timeslotend');
+					if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
+						courseslot.set('model', course);
+					}
+				});
+			});
 		},
 
 		renderCourseDetails: function(ev){
@@ -80,7 +132,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		},
 
 		render: function(){
-			this.$el.html(this.template({CoursesForDay: this.collection}));
+			this.$el.html(this.template({CourseSlots: this.CourseSlots}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -105,9 +157,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 		prepareCourses: function(){
 			console.log('prepareCourses');
-			this.CoursesForDay = new CoursesForDay();
 			this.CourseList = new CourseList();
-			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
+			//new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			this.CourseList.fetch({
 				success: this.fetchSuccess,
 				error: this.fetchError
@@ -116,18 +167,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 		fetchSuccess: function(){
 			this.trigger('getCoursesForDay');
-			console.log(this.CoursesForDay);
 			this.CalendarDayView = new CalendarDayView({collection: this.CoursesForDay});
+			this.CalendarDayView.prepareDaySchedule();
 			this.CalendarDayView.render();
 
 		},
 
+		// TODO: Error Handler
 		fetchError: function(){
 
 		},
 
 		// get current selected day and filter relevant courses to display
 		getCoursesForDay: function(){
+			this.CoursesForDay = new CoursesForDay();
 
 			// check for valid date otherwise use current day
 			if (!this.day || !moment(this.day, "YYYY-MM-DD", true).isValid()){
@@ -135,6 +188,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 			}
 			day = moment(this.day);
 
+			// filter out all courses relevant for the current date
 			var coursesForDay = _.filter(this.CourseList.models, function(course){
 				if (course.get('starting')){
 					var courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
@@ -142,14 +196,23 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 				if (course.get('ending')){
 					var courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
 				}
-
-				var weekdaynr = course.get('dates')[0].weekdaynr;
+				var containsCurrentDay = false;
 
 				if (courseStarting && courseEnding){
-					return ((courseStarting < day) && (courseEnding > day) &&  (weekdaynr == day.day()))
+					if ((courseStarting <= day) && (courseEnding >= day)){
+						// iterate over all dates of a course
+						var coursedates = course.get('dates');
+						_.each(coursedates, function(coursedate){
+							if (coursedate.weekdaynr == day.day()){
+								containsCurrentDay = true;
+							}
+						});
+					}
 				}
+				return containsCurrentDay;
 
 			});
+
 			this.CoursesForDay.add(coursesForDay);
 		},
 
