@@ -6,11 +6,24 @@
             var course = courseSlot.get('model');
             var currentDate = course.get('currentDate');
         %>
-        <li id="<%= course.cid %>">
-            <a href="" data-role="button" data-transition="slidefade">
-                <h2><%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %></h2>
-                <p><%= course.get('name') %><br /><%= course.get('dates')[currentDate].lecturer %><br /><%= course.get('dates')[currentDate].room %></p>
-            </a>
+        <li data-role="collapsible" data-iconpos="left" id="<%= course.cid %>">
+            <h2>
+                <%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %>
+                <%= course.get('name') %><br /><%= course.get('dates')[currentDate].lecturer %><br /><%= course.get('dates')[currentDate].room %>
+
+            </h2>
+            <p>
+                Titel: <%= course.get('name') %><br />
+                Raum: <%= course.get('dates')[currentDate].room %><br />
+
+                Zeit: <%= course.get('dates')[currentDate].time %><br />
+                Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
+                Status: <%= course.get('status') %><br />
+                Rhythmus: <%= course.get('dates')[currentDate].rythm %><br />
+                Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
+                Dozent: <%= course.get('dates')[currentDate].lecturer %><br />
+                Webseite: <%= course.get('weblink') %><br />
+            </p>
         </li>
         <% } %>
     <% }); %>
