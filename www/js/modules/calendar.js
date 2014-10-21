@@ -22,6 +22,10 @@ define([
 		}
 	});
 
+	var Courses = Backbone.Collection.extend({
+		model: Course
+	});
+
 
 	/**
 	 *	CourseList - BackboneCollection
@@ -34,32 +38,13 @@ define([
 
 
 	/**
-	 *	CourseDetailView - BackboneView
-	 *	@desc	detail view for a course
-	 */
-	var CourseDetailView = Backbone.View.extend({
-		model: Course,
-		el: '#loadingSpinner',
-
-		initialize: function(){
-			this.template = utils.rendertmpl('course_detail');
-		},
-
-		render: function(){
-			console.log(this.model);
-			this.$el.html(this.template({course: this.model}));
-			return this;
-		}
-	});
-
-
-	/**
 	 *	CalendarDay - Backbone.Model
 	 *	@desc	model for one selected day containing all relevant courses
 	 *			ordering will be done by timeslots
 	 */
 	var CoursesForDay = Backbone.Collection.extend({
-		model: Course
+		model: Course,
+		//comparator: ''
 	});
 
 
@@ -72,7 +57,7 @@ define([
 		defaults: {
 			"timeslotbegin": "",
 			"timeslotend": "",
-			model: Course
+			collection: Courses
 		}
 	});
 
@@ -102,9 +87,6 @@ define([
 	 */
 	var CalendarDayView = Backbone.View.extend({
 		collection: CoursesForDay,
-		events: {
-			'click li': 'renderCourseDetails'
-		},
 
 		initialize: function(){
 			this.template = utils.rendertmpl('calendar_day');
@@ -115,27 +97,25 @@ define([
 			// TODO: Better to transform it to collection
 			var that = this;
 			// iterate over collection and paste into timetable array
-			_.each(this.collection.models, function(course){
-				var currentDate = course.get('currentDate');
-				var courseBegin = course.get('dates')[currentDate].begin;
-				var courseEnd = course.get('dates')[currentDate].end;
-				_.each(that.CourseSlots.models, function(courseslot){
-					var timeslotbegin = courseslot.get('timeslotbegin');
-					var timeslotend = courseslot.get('timeslotend');
-					if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
-						courseslot.set('model', course);
+			_.each(this.CourseSlots.models, function(courseslot){
+				var timeslotBegin = courseslot.get('timeslotbegin');
+				var timeslotEnd = courseslot.get('timeslotend');
+				var timeSlotCourses = new Courses();
+				console.log(timeSlotCourses);
+				_.each(that.collection.models, function(course){
+					var currentDate = course.get('currentDate');
+					var courseBegin = course.get('dates')[currentDate].begin;
+					var courseEnd = course.get('dates')[currentDate].end;
+
+					//if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
+					if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
+						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
+						timeSlotCourses.add(course);
+						console.log(timeSlotCourses);
 					}
 				});
+				courseslot.set({collection: timeSlotCourses});
 			});
-		},
-
-		renderCourseDetails: function(ev){
-			// get model and display view
-			ev.preventDefault();
-			var courseID = $(ev.target).closest('li').attr('id');
-
-			this.CourseDetailView = new CourseDetailView({model: this.collection.get(courseID)});
-			this.CourseDetailView.render();
 		},
 
 		render: function(){
