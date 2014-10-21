@@ -2358,3 +2358,9 @@ only screen and (                min-resolution: 2dppx) {
 
 
 }
+
+/* Slide transition speed */
+.in, .out {
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-duration: 300ms !important;
+}

@@ -292,11 +292,14 @@ define([
 			
 			var headers = $("[data-role=header]");
             if (headers.length > 1) {
+            	// Remember to keep this in sync with the ".in, .out" css rule
+            	var fadeTime = 2 * 300;
+            	
             	var oldHeader = headers.first();
                 var newHeader = headers.last();
                 
-                oldHeader.fadeOut("fast", function() { oldHeader.remove(); });
-                newHeader.fadeIn("fast");
+                oldHeader.fadeOut(fadeTime, function() { oldHeader.remove(); });
+                newHeader.fadeIn(fadeTime);
             }
 
             $.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
