@@ -116,8 +116,9 @@ define([
 			var that = this;
 			// iterate over collection and paste into timetable array
 			_.each(this.collection.models, function(course){
-				var courseBegin = course.get('dates')[0].begin;
-				var courseEnd = course.get('dates')[0].end;
+				var currentDate = course.get('currentDate');
+				var courseBegin = course.get('dates')[currentDate].begin;
+				var courseEnd = course.get('dates')[currentDate].end;
 				_.each(that.CourseSlots.models, function(courseslot){
 					var timeslotbegin = courseslot.get('timeslotbegin');
 					var timeslotend = courseslot.get('timeslotend');
@@ -156,6 +157,12 @@ define([
 		initialize: function(vars){
 			// get passed day parameter and init collections
 			this.day = vars.day;
+			// check for valid date otherwise use current day
+			if (!this.day || !moment(this.day, "YYYY-MM-DD", true).isValid()){
+				this.day = new Date();
+			}
+			day = moment(this.day);
+
 			this.CourseList = new CourseList();
 			this.CoursesForDay = new CoursesForDay();
 
@@ -189,12 +196,6 @@ define([
 		// get current selected day and filter relevant courses to display
 		getCoursesForDay: function(){
 
-			// check for valid date otherwise use current day
-			if (!this.day || !moment(this.day, "YYYY-MM-DD", true).isValid()){
-				this.day = new Date();
-			}
-			day = moment(this.day);
-
 			// filter out all courses relevant for the current date
 			var coursesForDay = _.filter(this.CourseList.models, function(course){
 				if (course.get('starting')){
@@ -209,11 +210,12 @@ define([
 					if ((courseStarting <= day) && (courseEnding >= day)){
 						// iterate over all dates of a course
 						var coursedates = course.get('dates');
-						_.each(coursedates, function(coursedate){
-							if (coursedate.weekdaynr == day.day()){
+						for(var i=0; i < coursedates.length; i++){
+							if (coursedates[i].weekdaynr == day.day()){
 								containsCurrentDay = true;
+								course.set('currentDate', i);
 							}
-						});
+						}
 					}
 				}
 				return containsCurrentDay;

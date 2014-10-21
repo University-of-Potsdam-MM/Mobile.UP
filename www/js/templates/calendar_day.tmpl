@@ -1,4 +1,5 @@
 <ul data-role="listview" data-inset="true" data-theme="c">
+    <li data-role="list-divider"><%= day.locale('de').format('LLLL')%></li>
     <% _.each(CourseSlots.models, function(courseSlot){ %>
         <% if (courseSlot.get('model').length == 0){ %>
         <li>
@@ -8,11 +9,13 @@
         </li>
         <% }else{
             var course = courseSlot.get('model');
+            var currentDate = course.get('currentDate');
         %>
         <li id="<%= course.cid %>">
+        <% console.log(course); %>
             <a href="" data-role="button" data-transition="slidefade">
-                <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
-                <p><%= course.get('name') %><br /><%= course.get('dates')[0].lecturer %><br /><%= course.get('dates')[0].room %></p>
+                <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %> (<%=course.get('dates')[currentDate].begin %> - <%=course.get('dates')[currentDate].end %>)</h2>
+                <p><%= course.get('name') %><br /><%= course.get('dates')[currentDate].lecturer %><br /><%= course.get('dates')[currentDate].room %></p>
             </a>
         </li>
         <% } %>
