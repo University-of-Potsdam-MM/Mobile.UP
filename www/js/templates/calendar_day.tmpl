@@ -1,18 +1,20 @@
 <ul data-role="listview" data-inset="true" data-theme="c">
     <% _.each(CourseSlots.models, function(courseSlot){ %>
-    <li>
         <% if (courseSlot.get('model').length == 0){ %>
-        <a href="" data-role="button" data-transition="slidefade">
-            <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
-        </a>
+        <li>
+            <a href="" data-role="button" data-transition="slidefade">
+                <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
+            </a>
+        </li>
         <% }else{
             var course = courseSlot.get('model');
         %>
-        <a href="" data-role="button" data-transition="slidefade" id="<%= course.cid %>">
-            <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
-            <p><%= course.get('name') %><br /><%= course.get('dates')[0].lecturer %><br /><%= course.get('dates')[0].room %></p>
-        </a>
+        <li id="<%= course.cid %>">
+            <a href="" data-role="button" data-transition="slidefade">
+                <h2><%=courseSlot.get('timeslotbegin') %> - <%=courseSlot.get('timeslotend') %></h2>
+                <p><%= course.get('name') %><br /><%= course.get('dates')[0].lecturer %><br /><%= course.get('dates')[0].room %></p>
+            </a>
+        </li>
         <% } %>
-    </li>
     <% }); %>
 </ul>
