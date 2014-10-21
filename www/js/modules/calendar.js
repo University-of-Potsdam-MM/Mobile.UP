@@ -1,4 +1,10 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'utils',
+	'moment'
+], function($, _, Backbone, utils, moment){
 
 
 	/**
@@ -96,7 +102,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 	 */
 	var CalendarDayView = Backbone.View.extend({
 		collection: CoursesForDay,
-		el: '#coursesForDay',
 		events: {
 			'click li': 'renderCourseDetails'
 		},
@@ -124,11 +129,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		},
 
 		renderCourseDetails: function(ev){
-			ev.preventDefault();
-			console.log('renderCourseDetails');
 			// get model and display view
-			//this.CourseDetailView = new CourseDetailView({model: this.CourseList.at('0')});
-			//this.CourseDetailView.render();
+			ev.preventDefault();
+			var courseID = $(ev.target).closest('li').attr('id');
+
+			this.CourseDetailView = new CourseDetailView({model: this.collection.get(courseID)});
+			this.CourseDetailView.render();
 		},
 
 		render: function(){
@@ -148,39 +154,40 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		attributes: {"id": "calendar"},
 
 		initialize: function(vars){
+			// get passed day parameter and init collections
 			this.day = vars.day;
-			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
+			this.CourseList = new CourseList();
+			this.CoursesForDay = new CoursesForDay();
+
+			this.listenTo(this.CourseList, "sync", this.renderDay);
+			this.listenTo(this.CourseList, "error", this.errorHandler);
+
 			this.listenToOnce(this, "prepareCourses", this.prepareCourses);
 			this.listenTo(this, 'getCoursesForDay', this.getCoursesForDay);
+
 			this.template = utils.rendertmpl('calendar');
 		},
 
 		prepareCourses: function(){
-			console.log('prepareCourses');
-			this.CourseList = new CourseList();
-			//new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
-			this.CourseList.fetch({
-				success: this.fetchSuccess,
-				error: this.fetchError
-			});
+			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
+			this.CourseList.fetch();
 		},
 
-		fetchSuccess: function(){
+		renderDay: function(){
 			this.trigger('getCoursesForDay');
-			this.CalendarDayView = new CalendarDayView({collection: this.CoursesForDay});
+
+			this.CalendarDayView = new CalendarDayView({el: this.$("#coursesForDay"), collection: this.CoursesForDay});
 			this.CalendarDayView.prepareDaySchedule();
 			this.CalendarDayView.render();
-
 		},
 
 		// TODO: Error Handler
-		fetchError: function(){
-
+		errorHandler: function(){
+			console.log('error');
 		},
 
 		// get current selected day and filter relevant courses to display
 		getCoursesForDay: function(){
-			this.CoursesForDay = new CoursesForDay();
 
 			// check for valid date otherwise use current day
 			if (!this.day || !moment(this.day, "YYYY-MM-DD", true).isValid()){
@@ -217,7 +224,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		},
 
 		render: function(){
-			this.$el.html(this.template({}));
+			this.$el.html(this.template({day: this.day}));
 			this.$el.trigger("create");
 			this.trigger("prepareCourses");
 			return this;
