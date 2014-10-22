@@ -169,8 +169,8 @@ define([
 		},
 
 		// TODO: Error Handler
-		errorHandler: function(){
-			console.log('error');
+		errorHandler: function(error){
+			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
 		},
 
 		// get current selected day and filter relevant courses to display
