@@ -1,11 +1,11 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton">Menue</a>
-	<a id="backbutton" href="#study" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back">Back</a>
+	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+	<a id="backbutton" href="#study" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
 	
 	<%  if(store.get('up.session.authenticated')){ %>
 	<h1 class="loggedin">Moodle </h1>
-	<a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
     <%  } else { %> 
     <h1>Moodle </h1>
     <% } %>    
