@@ -1,5 +1,5 @@
 <ul data-role="listview" data-inset="true" data-theme="c">
-    <li data-role="list-divider up-divider"><%= day.locale('de').format('LLLL')%></li>
+    <li data-role="list-divider" class="up-divider"><%= day.locale('de').format('LLLL')%></li>
     <% _.each(CourseSlots.models, function(courseSlot){ %>
        
        <!--wenn keine kurse drinstehen dann
@@ -16,7 +16,7 @@
                 _.each(courses.models, function(course){
                     var currentDate = course.get('currentDate');
         %>
-        <li data-role="collapsible" data-iconpos="left" id="<%= course.cid %>">
+        <li data-role="collapsible"  data-iconpos="left" id="<%= course.cid %>">
             <h2>
                 <%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %>
                 <%= course.get('name') %><br /><%= course.get('dates')[currentDate].lecturer %><br /><%= course.get('dates')[currentDate].room %>
