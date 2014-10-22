@@ -1,43 +1,45 @@
-<ul data-role="listview" data-inset="true" data-theme="c">
-    <li data-role="list-divider" class="up-divider"><%= day.locale('de').format('LLLL')%></li>
-    <% _.each(CourseSlots.models, function(courseSlot){ %>
-       
-       <!--wenn keine kurse drinstehen dann
-        <li data-role="list-divider" class="empty"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
-       sonst: -->
-       
-       <li data-role="list-divider"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
-       
-        <%
-
+<ul data-role="listview"  data-inset="true" data-theme="c">
+    <li data-role="list-divider" class="calendar-date"><%= day.locale('de').format('LLLL')%></li>
+    <% _.each(CourseSlots.models, function(courseSlot){
             if (courseSlot.get('collection').length != 0){
                 var courses = courseSlot.get('collection');
 
-                _.each(courses.models, function(course){
-                    var currentDate = course.get('currentDate');
-        %>
-        <li data-role="collapsible"  data-iconpos="left" id="<%= course.cid %>">
-            <h2>
-                <%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %>
-                <%= course.get('name') %><br /><%= course.get('dates')[currentDate].lecturer %><br /><%= course.get('dates')[currentDate].room %>
+    %>
+    <li data-role="list-divider" class="up-divider"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
+    <%
+            _.each(courses.models, function(course){
+                var currentDate = course.get('currentDate');
+    %>
+    <li data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="<%= course.cid %>">
+        <h2>
+        	<span class="smaller italic">
+            <%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %>
+            </span>
+            <br />
+            <em>
+            <%= course.get('name') %> </em>
+            <br />
+            <%= course.get('dates')[currentDate].lecturer %>
+            <br /><span>Raum:
+            <%= course.get('dates')[currentDate].room %></span>
 
-            </h2>
-            <p>
-                Titel: <%= course.get('name') %><br />
-                Raum: <%= course.get('dates')[currentDate].room %><br />
+        </h2>
+        <p>
+          
 
-                Zeit: <%= course.get('dates')[currentDate].time %><br />
-                Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
-                Status: <%= course.get('status') %><br />
-                Rhythmus: <%= course.get('dates')[currentDate].rythm %><br />
-                Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
-                Dozent: <%= course.get('dates')[currentDate].lecturer %><br />
-                Webseite: <%= course.get('weblink') %><br />
-            </p>
-        </li>
-        <%
+         
+            Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
+            Status: <%= course.get('status') %><br />
+            Rhythmus: <%= course.get('dates')[currentDate].rythm %><br />
+            Webseite: <a href="<%= course.get('weblink') %>"><%= course.get('weblink') %></a><br />
+        </p>
+    </li>
+    <%
             });
-        }
-        %>
-    <% }); %>
+            }else{
+    %>
+    <li data-role="list-divider" class="empty"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
+    <%
+            }
+        }); %>
 </ul>
