@@ -1883,12 +1883,12 @@ table#grades {
 /*********************** News*********************
 **************************************************************/
 
-.news-divider a.ui-btn{
+.up-divider a.ui-btn{
 	background:#014260;
 	color:#fff;
 }
 
-.news-divider a.ui-btn:visited{
+.up-divider a.ui-btn:visited{
 	background:#014260;
 	color:#fff;
 }
@@ -1910,7 +1910,7 @@ li.news-entry a p span.news-date{
 	font-size:.8em;
 }
 */
-#news li.source-news-li.news-divider a.source-news-li-a.ui-icon-carat-r:after {
+#news li.source-news-li.up-divider a.source-news-li-a.ui-icon-carat-r:after {
 	background-image: url(../img/up/arrow-white.png);
 	background-color: transparent;
 }
@@ -2358,3 +2358,15 @@ only screen and (                min-resolution: 2dppx) {
 
 
 }
+
+/**** Schedule
+----------------------------------------------*/
+
+
+#calendar li.ui-collapsible {background-color:#d0dae3;}
+
+#calendar li.ui-collapsible h2 {background-color:#d0dae3;border-bottom:1px solid #ccc;}
+
+#calendar li.ui-collapsible h2 a {background-color:#d0dae3;border:none; text-align:left; text-transform:none; margin-left:1em;}
+
+.up-divider {background-color:#014260; color:#fff;}
