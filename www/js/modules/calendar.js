@@ -3,8 +3,10 @@ define([
 	'underscore',
 	'backbone',
 	'utils',
-	'moment'
-], function($, _, Backbone, utils, moment){
+	'moment',
+	'Session',
+	'cache'
+], function($, _, Backbone, utils, moment, Session){
 
 
 	/**
@@ -34,6 +36,15 @@ define([
 	var CourseList = Backbone.Collection.extend({
 		model: Course,
 		url: 'js/json/courses-hgessner.json',
+
+		initialize: function(){
+			//this.session = new Session();
+			/*
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json";
+			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
+			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
+			*/
+		}
 	});
 
 
@@ -43,7 +54,7 @@ define([
 	 *			ordering will be done by timeslots
 	 */
 	var CoursesForDay = Backbone.Collection.extend({
-		model: Course,
+		model: Course
 		//comparator: ''
 	});
 
@@ -101,7 +112,7 @@ define([
 				var timeslotBegin = courseslot.get('timeslotbegin');
 				var timeslotEnd = courseslot.get('timeslotend');
 				var timeSlotCourses = new Courses();
-				console.log(timeSlotCourses);
+				//console.log(timeSlotCourses);
 				_.each(that.collection.models, function(course){
 					var currentDate = course.get('currentDate');
 					var courseBegin = course.get('dates')[currentDate].begin;
@@ -111,7 +122,7 @@ define([
 					if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
 						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
 						timeSlotCourses.add(course);
-						console.log(timeSlotCourses);
+						//console.log(timeSlotCourses);
 					}
 				});
 				courseslot.set({collection: timeSlotCourses});
@@ -143,6 +154,7 @@ define([
 			}
 			day = moment(this.day);
 
+			//check if response request present
 			this.CourseList = new CourseList();
 			this.CoursesForDay = new CoursesForDay();
 
@@ -157,7 +169,13 @@ define([
 
 		prepareCourses: function(){
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
-			this.CourseList.fetch();
+			// Chrome is throwing an error of jqXHR undefined so catch it and manualy trigger fetch without caching
+			try{
+				this.CourseList.fetch({cache: true});
+			}catch(e){
+				console.log(e);
+				this.CourseList.fetch();
+			}
 		},
 
 		renderDay: function(){

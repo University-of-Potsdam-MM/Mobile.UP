@@ -25,7 +25,8 @@
     "q": "^1.0.0",
     "underscore.string": "^2.3.3",
     "moment": "^2.5.1",
-    "requirejs": "^2.1.11"
+    "requirejs": "^2.1.11",
+    "backbone-fetch-cache": "^1.4.1"
   },
   "devDependencies": {
     "connect": "~2.14.4",
