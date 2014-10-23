@@ -606,7 +606,7 @@ label.showfirst {
 	top: 0;
 	background: none;
 	border: none;
-	padding: .6em 2em 2em 1em;
+	padding: .6em 2em .6em 1em;
 	margin-top: 1em;
 	color: #014260;
 	font-family: georgia, serif;
@@ -1653,7 +1653,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 #emergency-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed,
-#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {   
+#people-list h3.ui-collapsible-heading.ui-collapsible-heading-collapsed {
 	border-bottom: 1px;
 }
 
