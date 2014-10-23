@@ -17,14 +17,6 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             $('body').css('overflow', 'auto');
         });
         
-        $(document).on('pageshow', 'div[data-role="page"]', function(){
-            if (window.approuter && window.approuter.history.length > 0){
-                var route = Backbone.history.fragment;
-                var pos = window.approuter.getScrollPosition(route);
-                $.mobile.silentScroll(pos);
-            }
-        });
-
         // Handle buttons e.g. back button throughout the application
         var defs = $.mobile.changePage.defaults;
         $(document).on('click', 'a[data-role="button"]', function(event, ui){

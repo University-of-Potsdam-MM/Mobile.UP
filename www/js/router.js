@@ -76,6 +76,7 @@ define([
 
 		before: function(params, next, name){
 			this.saveScrollPosition();
+			this.prepareScrollPositionFor(name);
 
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
@@ -110,14 +111,17 @@ define([
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
 		},
-
-		getScrollPosition: function(route) {
+		
+		prepareScrollPositionFor: function(route) {
 			var pos = 0;
 			if (this.routesToScrollPositions[route]) {
 				pos = this.routesToScrollPositions[route];
 				delete this.routesToScrollPositions[route]
 			}
-			return pos;
+			
+			// We only have one active page because jQuery mobiles custom history is disabled
+			var activePage = $.mobile.navigate.history.getActive();
+			activePage.lastScroll = pos;
 		},
 
 		home: function(){
