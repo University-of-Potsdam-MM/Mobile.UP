@@ -48,6 +48,7 @@ require.config({
         'lib/jqm-datebox.mode.calbox.min' : ['jquery', 'datebox'],
         'lib/jqm-datebox.mode.datebox.min' : ['jquery', 'datebox'],
         'lib/jquery.mobile.datebox.i18n.de.utf8' : ['jquery', 'datebox'],
+        'cache': ['backbone', 'underscore']
     }
 
 });

@@ -5,7 +5,7 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	//'cache' ??
+	'cache'
 ], function($, _, Backbone, utils, moment, Session){
 
 
@@ -173,17 +173,7 @@ define([
 			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
-			// Chrome is throwing an error of jqXHR undefined so catch it and manualy trigger fetch without caching
-			//??
 			this.CourseList.fetch({cache: true});
-			/*
-			try{
-				this.CourseList.fetch({cache: true});
-			}catch(e){
-				console.log(e);
-				this.CourseList.fetch();
-			}
-			*/
 		},
 
 		renderDay: function(){
