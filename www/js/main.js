@@ -13,6 +13,7 @@ require.config({
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
+        'cache': 'vendor/backbone.fetch-cache.min',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
@@ -47,6 +48,7 @@ require.config({
         'lib/jqm-datebox.mode.calbox.min' : ['jquery', 'datebox'],
         'lib/jqm-datebox.mode.datebox.min' : ['jquery', 'datebox'],
         'lib/jquery.mobile.datebox.i18n.de.utf8' : ['jquery', 'datebox'],
+        'cache': ['backbone', 'underscore']
     }
 
 });

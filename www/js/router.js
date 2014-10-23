@@ -12,6 +12,7 @@ define([
 	'modules/news',
 	'modules/events',
 	'modules/study',
+	'modules/calendar',
 	'modules/moodle',
 	'modules/emergency',
 	'modules/campus',
@@ -26,7 +27,7 @@ define([
 	'modules/grades',
 	'modules/impressum',
 	'modules/options'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -39,6 +40,8 @@ define([
 			"events": "events",
 			"events/*id": "events",
 			"study": "study",
+			"calendar": "calendar",
+			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
@@ -62,7 +65,7 @@ define([
 		routesToScrollPositions: {},
 
 		// routes that need authentication
-		requiresAuth: ['moodle', 'grades'],
+		requiresAuth: ['calendar', 'moodle', 'grades'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -179,6 +182,10 @@ define([
 			this.changePage(new StudyPageView);
 		},
 
+		calendar: function(day){
+			this.changePage(new CalendarPageView({day: day}));
+		},
+
 		moodle: function () {
 			this.changePage(new MoodlePageView({model: this.session}));
 		},
@@ -277,13 +284,13 @@ define([
 				transition = 'none';
 				this.firstPage = false;
 			}
-			
+
 			// If there already is an old view then insert the new header invisible
 			// The headers will be faded after the page transition
 			if (this.currentView) {
 				header.css("display", "none")
 			}
-			
+
 			// As the page carries a ui-page-theme-a class, the header should carry one too
 			// If the page carries a home id the header should carry a home-id class
 			// This is done for reasons of backward compatibility
@@ -291,9 +298,9 @@ define([
 			if (pageContent.attr("id") == "home") {
 				header.addClass("home-id");
 			}
-			
+
 			$('#pagecontainer').append(header);
-			
+
 			var headers = $("[data-role=header]");
             if (headers.length > 1) {
             	// Remember to keep this in sync with the ".in, .out" css rule
@@ -301,7 +308,7 @@ define([
             	
             	var oldHeader = headers.first();
                 var newHeader = headers.last();
-                
+
                 oldHeader.fadeOut(fadeTime, function() { oldHeader.remove(); });
                 newHeader.fadeIn(fadeTime);
             }
