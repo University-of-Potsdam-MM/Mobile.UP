@@ -68,8 +68,11 @@ p {
 }
 
 /*visited*/
-html .ui-bar-a .ui-btn:visited,html .ui-body-a .ui-btn:visited,html body .ui-group-theme-a .ui-btn:visited,html head+body .ui-btn.ui-btn-a:visited
-	background: #014260;
+.ui-bar-a .ui-btn:visited,
+.ui-body-a .ui-btn:visited,
+body .ui-group-theme-a .ui-btn:visited,
+.ui-btn.ui-btn-a:visited {
+	background:#014260;
 }
 
 /*header*/
