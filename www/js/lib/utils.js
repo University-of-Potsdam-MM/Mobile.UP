@@ -1,4 +1,10 @@
-define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'app',
+	'Session'
+], function($, _, Backbone, app, Session){
 
 	/*
 	 * Template Loading Functions
@@ -208,7 +214,21 @@ define(['jquery', 'underscore', 'backbone', 'app'], function($, _, Backbone, app
 		var url = $(event.currentTarget).attr("href");
 		if (window.cordova) {
 			console.log("Opening " + url + " externally");
-			window.open(url, "_blank", "enableViewportScale=yes");
+			var moodlePage = "https://moodle2.uni-potsdam.de/";
+			if(url.indexOf(moodlePage) != -1){
+				var session = new Session();
+
+				$.post("https://moodle2.uni-potsdam.de/login/index.php",
+					{
+						username: session.get('up.session.username'),
+						password: session.get('up.session.password')
+					}
+				).done(function(response){
+					window.open(url, "_blank", "enableViewportScale=yes");
+				});
+			}else{
+				window.open(url, "_blank", "enableViewportScale=yes");
+			}
 			return false;
 		} else {
 			console.log("Opening " + url + " internally");
