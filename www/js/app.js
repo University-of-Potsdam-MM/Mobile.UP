@@ -59,7 +59,7 @@ define([
 						if (url && _.any(authUrls, isStartOf(url))) {
 							options.headers = _.extend(options.headers || {}, { "Authorization": utils.getAuthHeader() });
 						}
-						sync(method, model, options);
+						return sync(method, model, options);
 					};
 				}
 
