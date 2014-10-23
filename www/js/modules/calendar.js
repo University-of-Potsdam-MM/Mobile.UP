@@ -5,7 +5,7 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	'cache'
+	//'cache' ??
 ], function($, _, Backbone, utils, moment, Session){
 
 
@@ -35,15 +35,13 @@ define([
 	 */
 	var CourseList = Backbone.Collection.extend({
 		model: Course,
-		url: 'js/json/courses-hgessner.json',
+		//url: 'js/json/courses-hgessner.json',
 
 		initialize: function(){
-			//this.session = new Session();
-			/*
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json";
+			this.session = new Session();
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
-			*/
 		}
 	});
 
@@ -101,6 +99,8 @@ define([
 
 		initialize: function(){
 			this.template = utils.rendertmpl('calendar_day');
+			this.listenTo(this.collection, "add", this.prepareDaySchedule);
+			this.listenTo(this, "render", this.render);
 			this.CourseSlots = new CourseSlots();
 		},
 
@@ -127,6 +127,7 @@ define([
 				});
 				courseslot.set({collection: timeSlotCourses});
 			});
+			this.trigger("render");
 		},
 
 		render: function(){
@@ -163,30 +164,36 @@ define([
 
 			this.listenToOnce(this, "prepareCourses", this.prepareCourses);
 			this.listenTo(this, 'getCoursesForDay', this.getCoursesForDay);
+			this.listenTo(this, 'errorHandler', this.errorHandler);
 
 			this.template = utils.rendertmpl('calendar');
 		},
 
 		prepareCourses: function(){
+			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
+
 			// Chrome is throwing an error of jqXHR undefined so catch it and manualy trigger fetch without caching
+			//??
+			this.CourseList.fetch({cache: true});
+			/*
 			try{
 				this.CourseList.fetch({cache: true});
 			}catch(e){
 				console.log(e);
 				this.CourseList.fetch();
 			}
+			*/
 		},
 
 		renderDay: function(){
-			this.trigger('getCoursesForDay');
-
-			this.CalendarDayView = new CalendarDayView({el: this.$("#coursesForDay"), collection: this.CoursesForDay});
-			this.CalendarDayView.prepareDaySchedule();
-			this.CalendarDayView.render();
+			if (this.CourseList.length ==0){
+				var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Keine Kurse gefunden', module: 'calendar'});
+			}else{
+				this.trigger('getCoursesForDay');
+			}
 		},
 
-		// TODO: Error Handler
 		errorHandler: function(error){
 			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
 		},

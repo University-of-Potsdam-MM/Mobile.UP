@@ -65,7 +65,7 @@ define([
 		routesToScrollPositions: {},
 
 		// routes that need authentication
-		requiresAuth: ['moodle', 'grades'],
+		requiresAuth: ['calendar', 'moodle', 'grades'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
