@@ -39,7 +39,6 @@ body,.ui-page {
 .ui-header {
 	height: 55px;
 	padding: 0;
-	margin-bottom: 5px;
 }
 
 p {
@@ -103,7 +102,7 @@ body .ui-group-theme-a .ui-btn:visited,
 	text-align: left;
 	display: block;
 	margin: 0 0.5em;
-	padding: 0.7em 0;
+	padding: .7em 0 .6em 0;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -146,8 +145,16 @@ h2 span {
 }
 
 /*2. Back button*/
-.ui-page-theme-a .ui-btn.back, .ui-bar-a .ui-btn.back, .ui-body-a .ui-btn.back, body .ui-group-theme-a .ui-btn.back, body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited, .ui-bar-a .ui-btn.back:visited, .ui-body-a .ui-btn.back:visited, body .ui-group-theme-a .ui-btn.back:visited, body .ui-btn.ui-btn-a.back:visited
-	{
+.ui-page-theme-a .ui-btn.back,
+.ui-bar-a .ui-btn.back,
+.ui-body-a .ui-btn.back,
+body .ui-group-theme-a .ui-btn.back,
+body .ui-btn.ui-btn-a.back,
+.ui-page-theme-a .ui-btn.back:visited,
+.ui-bar-a .ui-btn.back:visited,
+.ui-body-a .ui-btn.back:visited,
+body .ui-group-theme-a .ui-btn.back:visited,
+body .ui-btn.ui-btn-a.back:visited {
 	border: none;
 	color: #cfdae3;
 	background-color: transparent;
@@ -156,9 +163,12 @@ h2 span {
 	text-indent: -400000px;
 	position: relative;
 	float: left;
-	height: 80%;
+	height: 100%;
 	width: 12px;
 	background-position: 10px 11px;
+	top: 0;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 /*default buttons links */
@@ -175,8 +185,8 @@ h2 span {
 }
 
 /*Menubutton*/
-.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
-	{
+.menubutton.ui-link.ui-btn-left.ui-btn,
+.menubutton.ui-link.ui-btn-left.ui-btn:visited {
 	position: relative;
 	float: left;
 	padding-left: 33px;
@@ -190,6 +200,8 @@ h2 span {
 	top: 0;
 	margin: 0;
 	height: 100%;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 /* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
@@ -868,7 +880,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 
 .buttons_pt li:last-child .ui-btn { /*margin-right:10% !important;*/
-	
+
 }
 
 .buttons_pt .ui-grid-c .ui-input-datebox {
