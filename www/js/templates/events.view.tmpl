@@ -1,0 +1,58 @@
+<% if (event.Event.pic) { %>
+<div class="event-image-container">
+  <img class="event-image" height="100" src="<%= event.Event.pic %>" />
+   <h2><%= event.Event.name %></h2></div>
+<% } %>
+<div class="floatR right-event-detail">
+	<div class="clear floatR" <% if(!going) { %>style="display:none"<% } %> id="savedInCal<%=event.Event.id%>">
+		
+		<span class="s-font floatR vorgemerkt">Vorgemerkt</span>
+	</div>
+	
+<% if(event.Event.ticket_uri && false) { %>
+	<div class="buy-ticket-link">
+		<a onclick="app.openBrowser('<%=event.Event.ticket_uri%>')">Tickets kaufen</a>
+	</div>
+<% } %>
+</div>
+<div class="event-time-date">
+
+<% var ds = event.Event.DateString.replace(/\|/, '<img style="vertical-align:-2px;" src="img/clock.png" />') %>
+<p>
+	<img style="vertical-align:-2px;" src="img/cal.png" />
+	<strong><%= ds %> Uhr</strong>
+</div>
+	<% if(true) { %>
+
+		<a id="saveInCal<%=event.Event.id%>" class="saveToCal" data-role="button" data-theme="a">In Kalender speichern</a>
+	<% } %>
+</p>
+<%
+var description = event.Event.description;
+var d = description.split(' '), lim = 50;
+if(d.length - lim > 25) {
+	var d2 = d.splice(lim, d.length - lim);
+	%><p class="event-description">
+		<%= d.join(' ') %>&nbsp;<span id="showMore<%=event.Event.id%>" style="display:none"><%= d2.join(' ') %></span>
+		<span id="showMoreBtn<%=event.Event.id%>">... <a href="javascript:;" onclick="$('#showMore<%=event.Event.id%>, #showMoreBtn<%=event.Event.id%>').toggle();">
+			mehr anzeigen</a>
+		</span>
+	</p>
+<% } else { %>
+	<p class="event-description"><%= description %></p>
+<% } %>
+<br />
+<div class="event-detail">
+
+		<%=event.Place.name%><br />
+		<%=event.Place.adresse%><br />
+		<%=event.Place.plz%> <%=event.Place.ort%><br />
+		<% if($.os.ios) { %>
+			<a href="maps:q=<%=event.Place.lat%>,+<%=event.Place.lng%>" target="_system">Auf Karte anzeigen</a>
+		<% } else if($.os.android) { %>
+			<a target="_system" href="geo:<%=event.Place.lat%>,+<%=event.Place.lng%>?q=<%=event.Place.name%>, <%=event.Place.adresse%>, <%=event.Place.plz%> <%=event.Place.ort%>" rel="external">Auf Karte anzeigen</a>
+		<% } else { %>
+			<a target="_system" href="http://maps.google.com/?q=<%=event.Place.lat%>,+<%=event.Place.lng%>+(<%=event.Place.name%>)"  rel="external">Auf Karte anzeigen</a>
+		<% } %>
+
+</div>

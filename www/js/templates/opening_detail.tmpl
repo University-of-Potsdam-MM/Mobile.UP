@@ -1,0 +1,43 @@
+<!-- Auslagerung in Template -->
+  <h3>
+    <span class="marker <%= opening.statusOpenNow %>"></span><%= opening.name %>
+  </h3>
+  <% if (!_.isUndefined(opening.mail) || !_.isUndefined(opening.telephone) || !_.isUndefined(opening.link)) { %>
+  <table data-role="table" data-mode="reflow" class="ui-responsive">
+  	<thead>
+  		<tr>
+  			<th></th>
+  			<th></th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'">'+opening.mail+'</a></td></tr>' : ''  %>
+  		<%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel: '+opening.telephone+'">'+opening.telephone+'</a></td></tr>' : '' %>
+    	<% if (opening.link) { %>
+	        <tr><th>Link:</th><td><a href="<%= opening.link %>" target="_blank" rel="external"><%= opening.link %></a></td></tr>
+        <% } %>
+  	</tbody>
+  </table>
+  <% } %>
+
+  <table data-role="table" data-mode="reflow"
+    class="ui-responsive table-stripe ">
+    <thead>
+      <tr>
+        <th>Wochentag</th>
+        <th>Uhrzeit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(opening.times, function(time_for_day) { %>
+        <tr>
+          <th><%= time_for_day['day'] %></th>
+          <td><%= time_for_day['opening_text'] %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <!--
+  <a href="#" data-role="button" data-theme="a" data-icon="location">
+    Auf der Karte finden</a>
+    -->

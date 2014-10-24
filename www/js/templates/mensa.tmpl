@@ -1,37 +1,22 @@
-<div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" class="speiseplan">
-	<% _.each(meals, function(meal) { %>
-	<div data-role="collapsible" data-collapsed="true" id="<%= meal.contentId %>">
-		<h3>
-			<div class="mensaicons">
-				<% if (meal.ingredients.length > 1) { %>
-				<img src="img/up/mensa-spezial.png" />
-				<% } else if (meal.ingredients.length == 1) { %>
-				<img src="<%= meal.ingredients[0] %>" />
-				<% } else { %>
-				<img style="visibility:hidden" />
-				<% } %>
-			</div>
-			
-			<div class="mensatext">
-				<%= meal.title %><br />
-				<span><%= meal.description %></span>
-			</div>
-		</h3>
-		
-		<div class="second-mensaicons">
-			<% if (meal.ingredients.length > 1) { %>
-			<%   for (var count = 0; count < meal.ingredients.length; count++) { %>
-			<img src="<%= meal.ingredients[count] %>" />
-			<%   } %>
-			<% } %>
-		</div>
-	
-		<p>
-			[3] mit Antioxidationsmitteln<br />
-			Studierende: <% print(Number(meal.prices.students).toFixed(2)); %> €<br />
-			Bedienstete: <% print(Number(meal.prices.staff).toFixed(2)); %> €<br />
-			Gäste: <% print(Number(meal.prices.guests).toFixed(2)); %> €
-		</p>
-	</div>
-	<% }); %>
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+    <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+
+    <%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">Mensen &amp; Speisepläne </h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %>
+    <h1>Mensen &amp; Speisepläne </h1>
+    <% } %>
+
+
 </div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+    <div data-role="campusmenu" data-store="up.mensa.default"></div>
+    <input name="mydate" id="mydate" type="date" data-role="datebox" data-options='{"mode": "calbox", "showInitialValue": true, "useFocus": true, "overrideCalStartDay": 1, "useLang": "de", "blackDays" : [0], "calHighToday": false, "centerHoriz": true}'>
+	<div id="todaysMenu"></div>
+</div>
+<!-- End Main - Navigation -->

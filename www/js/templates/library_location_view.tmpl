@@ -1,0 +1,34 @@
+<% var currentLocation = ""; %>
+<% _.each(locations, function(location) { %>
+<% if (location.get('department') != currentLocation){ %>
+	<h3><%= location.get('department') %> <a href="<%= location.get('departmentURL') %>" target="_blank" rel="external">Info</a></h3>
+<% } %>
+<% if (location.get('url')){ %>
+	<div class="onlineressource">
+	<span class="available"></span><a href="<%= location.get('url') %>" target="_blank" rel="external"><%= location.get('item')[0] %></a><br />
+	</div>
+<% }else{ %>
+	<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-iconpos="right">
+	<h3 data-icon="arrow-darkblue">
+		<!--Alternativen:  lent, prebook -->
+		<% if (location.get('item')[1] && (location.get('item')[1].indexOf("ausgeliehen") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("nicht") != -1) || (location.get('item')[0] && location.get('item')[0].indexOf("bestellt") != -1)) { %>
+		<span class="lent"></span>
+		<% }else if((location.get('item')[0] && location.get('item')[0].indexOf("Präsenzbestand") != -1) ||
+					(location.get('department') && location.get('department').indexOf("Handapparat") != -1)){ %>
+		<span class="prebook"></span>
+		<% }else{ %>
+		<span class="available"></span>
+		<% } %>
+		<%= location.get('item')[0] %><br />
+	</h3>
+		<p>
+			<span class="location-details">
+				<%= (location.get('item')[1]) ? location.get('item')[1] : '' %>
+				<br />
+				<%= (location.get('label') && location.get('label').indexOf("bestellt") == -1) ? '<b>'+location.get('label')+'</b><br />' : '' %>
+			</span>
+		</p>
+	</div>
+<% } %>
+<% currentLocation = location.get('department'); %>
+<% }); %>

@@ -1,2 +1,17 @@
 platforms/**/
+node_modules/
+/.project
+.settings/
+.DS_Store
+.cordova/
 
+plugins/org.apache.cordova.inappbrowser/
+plugins/org.apache.cordova.splashscreen/
+plugins/nl.x-services.plugins.calendar/
+plugins/org.apache.cordova.dialogs/
+plugins/org.apache.cordova.device/
+plugins/org.apache.cordova.network-information/
+
+plugins/android.json
+plugins/ios.json
+config.json

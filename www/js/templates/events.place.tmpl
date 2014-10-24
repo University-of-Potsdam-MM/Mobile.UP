@@ -1,0 +1,18 @@
+<h3><%= events[0].Place.name %></h3>
+
+<ul id="placeevents" class="event-list" data-inset="true" data-role="listview">
+<% _.each(events, function(event) { %>
+	<li ><a href="#events/view/<%= event.Event.id %>">
+		<% if(event.Event.pic_square) { %>
+			<img class="event-thumb" src="<%= event.Event.pic_square %>" />
+		<% } %>
+
+		<div class="event-caption">
+			<span class="event-title"><%= event.Event.name %></span>
+			<br />
+			<span class="event-time"><%= event.Event.DateString %></span>
+		</div>
+	</a>
+	</li>
+<% }); %>
+</ul>

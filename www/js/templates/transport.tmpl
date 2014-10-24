@@ -1,0 +1,50 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+    <a href="#campus" data-role="button" data-icon="false"	data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+   
+    <%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">N&auml;chste Abfahrten </h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %> 
+    <h1>N&auml;chste Abfahrten </h1>   
+    <% } %> 
+    
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+    <div data-role="navbar">
+        <ul>
+            <li><a href="#transport" data-role="button" data-transition="none" class="ui-btn-active">N&auml;chste Abfahrten</a></li>
+            <li><a href="#transport2" data-role="button" data-transition="none">Fahrt planen</a></li>
+        </ul>
+    </div>
+    <!-- Fahrt eingeben -->
+    <div id="from-station-navbar" data-role="navbar" class="buttons_pt">
+        <ul>
+            <li><p>VON:</p></li>
+            <li><a href="#" class="ui-btn-active">G-see</a></li>
+            <li><a href="#">Golm</a></li>
+            <li><a href="#">Palais</a></li>
+        </ul>
+    </div>
+    <div id="search-results">
+        <h3>Fahrten ab <span class="stationName">Griebnitzsee</span></h3><h3><span class="stationTime"></span></h3>
+        <p style="font-weight:bold;"><span style="display:inline-block;width:10%;">Zeit</span> <span style="display:inline-block; width:18%;">Linie</span> <span>Ziel</span></p>
+
+        <div id="transport-result-wrapper" data-role="content">
+            <ul data-role="listview" data-inset="true" id="transport-list">
+
+              <!-- template transport_listitem_view -->
+            </ul>
+            <div id="loadingSpinner"></div>
+        </div>
+
+        <div class="spaeter">
+            <input id="later-button"type="submit" data-theme="a" value="Später" />
+        </div>
+
+    </div>
+	<!-- End Main Content -->
+</div>

@@ -1,0 +1,37 @@
+{
+  "name": "up_app",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "supervisor script/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/University-of-Potsdam-MM/UP.App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/University-of-Potsdam-MM/UP.App/issues"
+  },
+  "homepage": "https://github.com/University-of-Potsdam-MM/UP.App",
+  "dependencies": {
+    "jquery": "^2.1.1",
+    "underscore": "^1.6.0",
+    "underscore.string": "^2.3.3",
+    "backbone": "^1.1.2",
+    "q": "^1.0.0",
+    "underscore.string": "^2.3.3",
+    "moment": "^2.5.1",
+    "requirejs": "^2.1.11",
+    "backbone-fetch-cache": "^1.4.1"
+  },
+  "devDependencies": {
+    "connect": "~2.14.4",
+    "express": "~4.0.0",
+    "http-proxy": "~1.0.0",
+    "reload": "~0.1.0"
+  }
+}

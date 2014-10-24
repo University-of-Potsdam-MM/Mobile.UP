@@ -1,0 +1,73 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+	<%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">Impressum </h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %> 
+    <h1>Impressum </h1>   
+    <% } %> 
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-iconpos="left"  data-theme="b" id="impressum">
+
+	<div data-role="collapsible-set">
+		<div data-role="collapsible" data-collapsed-icon="ansprech" data-expanded-icon="ansprech">
+			<h3>Ansprechpartner</h3>
+			<p>
+				<b>Ulrike Lucke</b><br />
+				Universität Potsdam<br />
+				Institut für Informatik<br />
+				August-Bebel-Str. 89<br />
+				14482 Potsdam<br />
+				Haus 4 | 1.17<br /><br />
+
+				<b>Telefon:</b> +49-331-977-3023 <br style="clear:left;">
+
+			</p>
+		</div>
+
+		<div data-role="collapsible" data-collapsed-icon="mitmachen" data-expanded-icon="mitmachen">
+			<h3>Mitmachen</h3>
+			<p>Es gibt die Möglichkeit als studentische Mitarbeiter innerhalb von Lehrprojekten, Aufträgen oder Anstellung an der App-Entwicklung im Rahmen des eLiS-Projekts mitzuwirken.<br />Die App ist als Open Source Projekt veröffentlicht.<br /><br />Wenn Sie sich für eine Mitarbeit an der App interessieren, können Sie gern das Entwicklerteam unter <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a> kontaktieren oder sich über <a href="https://github.com/University-of-Potsdam-MM/UP.App">GitHub</a> beteiligen.</p>
+		</div>
+
+		<div data-role="collapsible" data-collapsed="false" data-collapsed-icon="impressum" data-expanded-icon="impressum">
+			<h3>Impressum</h3>
+			<p>
+				<em>Herausgeber</em>
+				<p>Universität Potsdam<br />
+					Am Neuen Palais 10<br />
+					14469 Potsdam<br /><br />
+					<b>Tel.:</b> 0331 977-0<br />
+					<b>Fax:</b> 0331 97 21 63<br />
+					<b>Web:</b> www.uni-potsdam.de<br />
+				</p>
+
+				<em>Verantwortlich für den App Store Account des Service Mobile.UP der Universität Potsdam</em>
+				<p>
+					Ulrike Lucke, CIO der Universität Potsdam<br />
+					14469 Potsdam<br />
+					<b>E-Mail:</b> <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a>
+				</p>
+
+				<em>Rechtsform und gesetzliche Vertretung</em>
+				Die Universität Potsdam ist eine Körperschaft des Öffentlichen Rechts. Sie wird gesetzlich vertreten durch Prof. Oliver Günther, Ph.D., Präsident der Universität Potsdam, Am Neuen Palais 10, 14469 Potsdam.
+
+
+				<em>Zuständige Aufsichtsbehörde</em>
+				<p>Ministerium für Wissenschaft, Forschung und Kultur des Landes Brandenburg, Dortustr. 36, 14467 Potsdam</p>
+
+				<em>Umsatzsteueridentifikationsnummer und inhaltliche Verantwortlichkeit</em>
+				<p>Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz: DE138408327</p>
+				<p>Die inhaltliche Verantwortlichkeit i. S. v. § 5 TMG und § 55 Abs. 2 RStV übernimmt der ASTA (Allgemeiner Studierendenausschuss) der Universität Potsdam.</p>
+
+				<em>Haftung</em>
+				<p>Für die Punkte Haftung, Urheberrecht und Datenschutz gilt die <a href="(http://www.zeik.uni-potsdam.de/fileadmin/projects/zeik/assets/benutzerordnung_zeik.pdf">Nutzungsordnung der ZEIK</a>. Die Haftung erfolgt ausschließlich für die Erstinstallation und weiteren Updates aus dem App Store oder anderen offiziellen Quellen. Applikationen Dritter können ein einigen Stellen in Mobile.UP verlinkt werden. Diese werden jedoch separat installiert und beinhalten eigene Nutzungsrichtlinien. Für die Inhalte solcher Apps zeichnet sich die Universität Potsdam nicht verantwortlich.<br /><br />Bei dem Abruf von Daten zu Stundenplänen und Notenübersichten wird der mobile Zugriff auf die Sudierendendatenverwaltung PULS der Universität Potsdam verwendet. Dazu notwendig ist der personenbezogene Login der Universität Potsdam. Damit werden Leistungsdaten des Studierenden übertragen. Der Zugriff ist technisch abgesichert und die Daten werden nicht zwischengespeichert. Die Verwendung dieses Dienstes erfolgt durch den Nutzer freiwillig. Es gelten die Nutzungsbedingungen des PULS Service.</p>
+
+		 	</p>
+		</div>
+	</div>
+</div>
+<!-- End Main - Navigation -->

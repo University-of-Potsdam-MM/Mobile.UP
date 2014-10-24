@@ -1,0 +1,42 @@
+<div data-role="collapsible">
+
+  <h3 class="complex_transport">
+    <span>ab <%= connection.get('depTime').format('HH:mm') %></span> <%= connection.get('depStation') %> <br />
+    <span>an <%= connection.get('arrTime').format('HH:mm') %></span> <%= connection.get('arrStation') %>
+  </h3>
+
+  <table data-role="table" data-mode="reflow" class="ui-responsive table-stripe ">
+    <thead>
+      <tr>
+        <th>Uhrzeit</th>
+        <th>Bahnhof</th>
+        <th>Gleis</th>
+        <th>Nr.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(connection.get('sections'), function(section, i) { %>
+
+        <% if (i > 0) { %>
+         <tr>
+          <td class="foot" style="background:transparent;"><img src="img/up/foot.png" /></td>
+        <% } %>
+        </tr>
+        <tr>
+          <td>ab <%= section.depTime.format('HH:mm') %></td>
+          <td><%= section.depStation %></td>
+          <td><%= section.depPlatform %></td>
+          <td><%= section.journey.name %></td>
+        </tr>
+        <tr>
+          <td>an <%= section.arrTime.format('HH:mm') %></td>
+          <td><%= section.arrStation %></td>
+          <td><%= section.arrPlatform %></td>
+          <td></td>
+        </tr>
+
+      <%});%>
+
+    </tbody>
+  </table>
+</div>

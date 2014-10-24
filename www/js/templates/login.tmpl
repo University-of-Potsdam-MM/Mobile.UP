@@ -1,0 +1,34 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+  <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+    <h1>Login</h1>
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c" id="options">
+	<div data-role="collapsible" data-collapsed="true" data-collapsed-icon="false" class="infotext">
+		<h3>
+			<img src="img/up/information.png" class="alignleft">Zeige Infotext
+		</h3>
+
+		<div data-role="listview" data-icon="arrow-darkblue">
+			<p class="blau">Um PULS und Moodle nutzen zu k&ouml;nnen, musst du dich mit deinem Nutzernamen und deinem Passwort der Uni Potsdam anmelden.<br />Hierzu ist es notwendig, dass du dich bereits bei Moodle 2.UP angemeldet hast. Danach kann es weitergehen...</p>
+		</div>
+	</div>
+
+	<h3>Benutzerdaten eingeben:</h3>
+	<div id="error3" style="display:none;">
+		<p>Sie haben dreimal vergeblich versucht sich anzumelden.</p>
+		<p>Sie haben Ihre Freiversuche aufgebraucht.</p>
+	</div>
+	<div id="error" style="display:none;">
+		<p>Benutzername oder Passwort falsch!</p>
+	</div>
+	<form id="loginform">
+		<input id='username' type="text" placeholder="Meine UP - Mailadresse ohne @uni..." autocomplete="off" />
+		<input id='password' type="password" placeholder="Mein UP - Passwort" autocomplete="off" />
+		<input id='login' type="submit" value="SPEICHERN UND WEITER" />
+	</form>
+	<div id="loadingSpinner"></div>
+</div>
+<!-- End Main - Navigation -->

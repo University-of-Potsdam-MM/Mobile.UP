@@ -1,0 +1,24 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+	<a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+	
+	<%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">Notrufnummern </h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %> 
+    <h1>Notrufnummern </h1>   
+    <% } %> 
+    
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-iconpos="left" data-theme="c"	id="emergencies">
+	<form>
+		<input data-type="search" id="searchForEmergency" placeholder="Eintr&auml;ge filtern" />
+	</form>
+
+	<div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="emergency-list" data-filter="true" data-input="#searchForEmergency">
+	</div>
+</div>
+<!-- End Main - Navigation -->

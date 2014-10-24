@@ -1,0 +1,49 @@
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+	<a href="#study/moodle" data-role="button" data-icon="false" data-inline="true" class="back backbutton ui-btn">Back</a>
+
+    <%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">Kurs: <%= course.get('shortname') %></h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %>
+    <h1>Kurs: <%= course.get('shortname') %></h1>
+    <% } %>
+
+</div> <!-- End Header -->
+
+<div data-role="content" data-theme="b">
+	<div id="<%= course.get('id') %>">
+		<h3 class="coursetitle"><%= course.get('fullname') %></h3>
+		<div data-role="listview" data-inset="true" data-theme="b">
+			<% contents.each(function(c){ %>
+			<% if (contents.first() == c) { %>
+			<div data-role="collapsible" data-collapsed="false" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-white-up" data-iconpos="right">
+			<% }else{ %>
+			<div data-role="collapsible" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-white-up" data-iconpos="right">
+			<% } %>
+				<% if (!_.isEmpty(c.get('summary'))) { %>
+				<p>
+					<%= c.get('summary') %>
+				</p>
+				<% } %>
+				<h3><%= c.get('name') %></h3>
+				<% if ( c.has('modules') && ! _.isEmpty( c.get('modules') ) ) { %>
+					<ul>
+						<% _.each(c.get('modules'), function(m){ %>
+						<li>
+							<a href="<%= m.url %>" target="_blank" rel="external">
+								<img src="<%= m.modicon %>" alt="<%= m.modname %>" />
+								<%= m.name %>
+							</a>
+						</li>
+						<% }); %>
+					</ul>
+				<% } else { %>
+					<em>bisher keine Module</em>
+				<% } %>
+			</div>
+			<% }); %>
+		</div>
+	</div>
+</div>
+<!-- End Content -->

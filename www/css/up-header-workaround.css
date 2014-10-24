@@ -1,0 +1,16 @@
+/*
+This file was created to cope with the new page header structure
+See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
+*/
+
+/*
+The rule in up-theme.min.css originally expected an .ui-bar-inherit within an .ui-page-theme-a
+This rule accepts an element that holds both classes simultaneously
+*/
+.ui-header.ui-page-theme-a.ui-bar-inherit {
+	background: #cfdae3;
+	border-color: #cfdae3;
+	color: #014260;
+	text-shadow: none;
+	font-weight: 700;
+}

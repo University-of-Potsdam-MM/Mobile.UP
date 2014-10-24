@@ -1,115 +1,50 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Mobile.UP</title>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
         <!-- Always use the same header for production -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-        
+        <!--    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+		-->
+		<meta name="viewport" content="width=device-width, user-scalable=no">
         <link rel="stylesheet" type="text/css" href="css/up-theme.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/up-header-workaround.css" />
         <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
-        <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure.min.css" />
         <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/media.css" />
         <link rel="stylesheet" type="text/css" href="css/up-style.css" />
-        
-        <!-- Javascript Files -->
-		<!-- Core Libraries -->
-		<script type="text/javascript" src="phonegap.js"></script>
-		<script src="js/lib/fastclick.js"></script>
-		<script src="js/lib/jquery-1.10.2.min.js"></script>
-		<script src="js/lib/jquery.mobile-1.4.0.min.js"></script>
-		<script src="js/lib/q.min.js"></script>
-		<script src="js/lib/underscore.min.js"></script>
-		<script src="js/lib/jqm-datebox.core.min.js"></script>
-		<script src="js/lib/jqm-datebox.mode.calbox.min.js"></script>         
-        <script src="js/lib/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
-        <script id="panel-init">
-           $(function () {
-               $("[data-role='panel']").panel().enhanceWithin();
-           });
+        <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
+
+
+        <!-- Core Libraries -->
+        <script type="text/javascript" src="phonegap.js"></script>
+        <script type="text/javascript" src="js/vendor/require.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script src="js/lib/fastclick.js"></script>
+        <!--<script id="panel-init">
+        $(function () {
+          $("[data-role='panel']").panel().enhanceWithin();
+        });
+        </script>
+        -->
+        <script id="fastclick-enabled">
+            $(function() {
+                FastClick.attach(document.body);
+            });
        </script>
-	   <script id="fastclick-enabled">
-			$(function() {
-				FastClick.attach(document.body);
-			});
-	   </script>
-       <script src="js/app.js"></script>  
-        <!-- Mensa -->
-        <script src="js/modules/mensa-logic.js"></script>
-        <!-- Sitemaps -->
-        <script src="js/lib/GeoJSON.js"></script>        
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <script src="js/modules/sitemap-logic.js"></script>
-        <!-- Opening -->
-        <script src="js/modules/opening-logic.js"></script>
-				
-        <title>UP.App</title>
     </head>
-    <body>
-    	<!-- Start Home - Panel -->
-   	    <div data-role="panel" id="nav-panel" data-position-fixed="true" data-display="overlay" data-theme="a">
-    		<ul data-role="listview" data-theme="b" class="nav-search">
-	            <li data-icon="false"><a href="#" data-rel="close">Menu schließen</a></li>
-	            <li data-icon="false"><a href="news.html">News</a></li>
-	            <li data-icon="false"><a href="study.html">Studium und Onlinedienste</a></li>
-	            <li data-icon="false"><a href="around.html">Rund ums Studium</a></li>
-	            <li data-icon="false"><a href="plans.html">Pläne und Orte</a></li>
-	            <li data-icon="false"><a href="search.html">Suche</a></li>
-	            <li data-icon="false"><a href="#">Einstellungen?</a></li>
-            </ul>
-    	</div> 
-    	<!-- End Home - Panel -->
-    	<!-- Start Main - Page -->
-    	<div data-role="page" id="home">
-            <div data-role="header" data-position="fixed" data-theme="a">
-		    <!-- 	<a href="#homePanel" data-icon="home" class="ui-btn-left">Menu</a>
-		    	<a href="options.html" data-icon="gear" class="ui-btn-right">Optionen</a> -->
-		    	<h1>Mobile UP</h1>
-			</div>
-			<!-- End Header -->
-		    <!-- Start Main - Navigation -->
-		    <div data-role="content">
-			    <ul data-role="listview" data-inset="true" data-theme="b" id="main-navigation">
-				    <li class="news">
-				    	<a href="news.html" data-role="button" data-transition="slidefade" data-theme="a">
-				    		<h1>Neuigkeiten</h1>
-				    		<p>Neuigkeiten</p>
-				    	</a>
-				    </li>
-				    <li class="study">
-		                <a href="study.html" data-role="button" data-transition="slidefade">
-							<h1>Studium &amp; Onlinedienste</h1>
-							<p>Studium &amp; Onlinedienste</p>
-						</a>
-				    </li>
-				    <li class="around">
-		                <a href="around.html" data-role="button" data-transition="slidefade">
-				            <h1>Rund ums Studium</h1>
-		                    <p>Rund ums Studium</p>
-		                </a>
-				    </li>
-					<li class="plans">
-		                <a href="plans.html" data-role="button" data-transition="slidefade">
-				            <h1>Pläne &amp; Orte</h1>
-		                    <p>Pläne &amp; Orte</p>
-		                </a>
-				    </li>
-					<li class="search">
-		                <a href="search.html" data-role="button" data-transition="slidefade">
-				            <h1>Suchen</h1>
-		                    <p>Suchen</p>
-		                </a>
-				    </li>
-					<li class="login">
-		                <a href="#" data-role="button" data-transition="slidefade" data-theme="c">
-				            <h1>Login</h1>
-		                </a>
-				    </li>
-			    </ul>
-			</div>
-		    <!-- End Main - Navigation -->
-		</div>
-		<!-- End Main - Page -->
+    <body id="panel-off" style="display:none;">
+        <div class="indexpage">
+            <div class="ui-grid-a">
+                <div class="ui-block-a page-wrapper">
+                </div><!--  ende grif block a -->
+                <div class="ui-block-b page-wrapper" id="pagecontainer">
+                    <div data-role="page" id="page"></div>
+                </div>
+            </div> <!-- ende grid b -->
+        </div><!--  ende grid gesamt -->
     </body>
 </html>

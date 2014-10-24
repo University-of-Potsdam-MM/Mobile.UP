@@ -1,0 +1,76 @@
+<!-- Start Header -->
+<div data-role="header" data-position="fixed" data-tap-toggle="false">
+    <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+    <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
+   <%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin">Fahrten planen </h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %> 
+    <h1>Fahrten planen </h1>   
+    <% } %> 
+</div>
+<!-- End Header -->
+<!-- Start Main - Navigation -->
+<div data-role="content" data-theme="c">
+
+    <div data-role="navbar">
+        <ul>
+            <li><a href="#transport" data-role="button" data-transition="none">N&auml;chste Abfahrten</a></li>
+            <li><a href="#transport2" data-role="button" data-transition="none" class="ui-btn-active">Fahrt planen</a></li>
+        </ul>
+    </div>
+
+    <div id="complexTransport">
+        <!-- Fahrt eingeben -->
+        <div id="fromStation2" data-role="navbar" class="buttons_pt">
+            <ul>
+                <li><p>VON:</p></li>
+                <li><a href="#" class="ui-btn-active">G-see</a></li>
+                <li><a href="#">Golm</a></li>
+                <li><a href="#">Palais</a></li>
+            </ul>
+        </div>
+        <div id="toStation2" data-role="navbar" class="buttons_pt route">
+            <ul>
+                <li><p>Nach:</p></li>
+                <li><a href="#">G-see</a></li>
+                <li><a href="#">Golm</a></li>
+                <li><a href="#" class="ui-btn-active">Palais</a></li>
+            </ul>
+        </div>
+        <div data-role="navbar" class="buttons_pt route">
+            <ul>
+                <li><p>Wann:</p></li>
+                <li>
+                    <input name="transportationDate" id="transportationDate" type="date" data-role="datebox" data-options='{"mode":"calbox", "showInitialValue": true, "overrideCalStartDay": 1, "calHighToday": false, "centerHoriz": true, "useFocus": true}'>
+                </li>
+                <li>
+                    <input name="transportationTime" id="transportationTime" type="date" data-role="datebox" data-options='{"mode": "timebox", "showInitialValue": true, "useFocus": true, "useLang": "de", "centerHoriz": true}'>
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="navbar" class="buttons_pt route submit-route">
+            <ul>
+                <li>&nbsp;</li>
+                <li>&nbsp;</li>
+                <li>
+                    <input id="searchButton" type="submit" value="Suchen" class="submit-fahrt" data-theme="a"/>
+                </li>
+            </ul>
+        </div>
+
+        <div id="result">
+            <div class="spaeter scrollbutton" >
+                <input id="earlierButton" data-theme="a" type="submit" value="← Früher" />
+            </div>
+
+            <div data-role="collapsible-set" data-theme="c" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" data-inset="true" id="transport_rides"></div>
+
+            <div class="spaeter scrollbutton" >
+                <input id="laterButton" type="submit" data-theme="a" value="Später →" />
+            </div>
+        </div>
+        <!-- end #result -->
+    </div> <!-- end #complexTransport -->
+</div> <!-- end content -->
