@@ -1,4 +1,10 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'utils',
+  'moment'
+], function($, _, Backbone, utils, moment){
 
 	function endpoint(){
       return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
@@ -18,6 +24,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       },
     });
   }
+
+  var Journey = Backbone.Model.extend({
+    defaults:{ "departingTime": ""}
+  });
+
+  var Journeys = Backbone.Collection.extend({
+    model: Journey
+  });
 
   // var haltestelle = 'Potsdam, Campus Universität/Lindenallee';
   // var externalId = "009230133#86";
@@ -77,8 +91,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       	});
 
         _.each(this.models, function(model){
-        	//console.log('fetching station:', model.get('name'));
-
       		// get the time of last known journey
       		var lastDepartingTime = model.getMaxDepartingTime();
       		var timeString = lastDepartingTime.format('HH:mm:ss');
@@ -92,17 +104,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
           							error: function(error, a, b){
           								var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
           								successORerror();
-          							}});
+          							}
+                      });
         });
       }
-  });
-
-  var Journey = Backbone.Model.extend({
-    defaults:{ "departingTime": ""}
-  });
-
-  var Journeys = Backbone.Collection.extend({
-    model: Journey
   });
 
   var stations = new TransportStations([
@@ -140,9 +145,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 
   /**
-   *
    *  Helper Functions
-   *
    */
   // use this document for creating XML
   var doc = document.implementation.createDocument(null, null, null);
@@ -343,17 +346,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     return moment(yyyymmdd,'YYYYMMDD');
   }
 
-  function parseTime(timeString) {
-    var time = moment(timeString, 'DD.MM.YY[T]HH:mm');
-    return time;
-  }
-
   function mapSTBJourney(journey){
     var $journey = $(journey);
     var tmp = {
       id:               $journey.attr('trainId'),
       stationName:      $journey.find('MainStop Station').attr('name'),
-      departingTime:    parseTime($journey.find('MainStop BasicStop Dep Time').text()),
+      departingTime:    moment($journey.find('Date').text()+' '+$journey.find('MainStop BasicStop Dep Time').text(), "YYYYMMDD HH:mm"),
       name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').text(),
       category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').text(),
       internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').text(),
