@@ -114,14 +114,14 @@ define([
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
 		},
-		
+
 		prepareScrollPositionFor: function(route) {
 			var pos = 0;
 			if (this.routesToScrollPositions[route]) {
 				pos = this.routesToScrollPositions[route];
 				delete this.routesToScrollPositions[route]
 			}
-			
+
 			// We only have one active page because jQuery mobiles custom history is disabled
 			var activePage = $.mobile.navigate.history.getActive();
 			activePage.lastScroll = pos;
@@ -305,7 +305,7 @@ define([
             if (headers.length > 1) {
             	// Remember to keep this in sync with the ".in, .out" css rule
             	var fadeTime = 2 * 300;
-            	
+
             	var oldHeader = headers.first();
                 var newHeader = headers.last();
 
