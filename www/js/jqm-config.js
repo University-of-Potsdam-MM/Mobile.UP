@@ -1,3 +1,6 @@
+/**
+ *  file contains special JQM-configuration
+ */
 define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
 
 	    $(document).bind("mobileinit", function () {
