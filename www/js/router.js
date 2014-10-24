@@ -309,8 +309,8 @@ define([
             	var oldHeader = headers.first();
                 var newHeader = headers.last();
 
-                oldHeader.fadeOut(fadeTime, function() { oldHeader.remove(); });
-                newHeader.fadeIn(fadeTime);
+                oldHeader.fadeOut("fast", function() { oldHeader.remove(); });
+                newHeader.fadeIn("fast");
             }
 
             $.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
