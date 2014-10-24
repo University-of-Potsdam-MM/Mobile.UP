@@ -1,3 +1,6 @@
+/**
+ *  file contains special JQM-configuration
+ */
 define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
 
 	    $(document).bind("mobileinit", function () {
@@ -16,7 +19,7 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone){
             }
             $('body').css('overflow', 'auto');
         });
-        
+
         // Handle buttons e.g. back button throughout the application
         var defs = $.mobile.changePage.defaults;
         $(document).on('click', 'a[data-role="button"]', function(event, ui){

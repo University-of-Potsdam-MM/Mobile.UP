@@ -1,3 +1,6 @@
+/**
+ *  file contains all Require.JS dependencies
+ */
 var app = {models:{}, views:{}, data:{}};
 require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
@@ -19,7 +22,8 @@ require.config({
         'moment': 'vendor/moment.min',
         'utils': 'lib/utils',
 		'date': 'lib/date',
-		'LocalStore': 'lib/ls-store'
+		'LocalStore': 'lib/ls-store',
+        'fastclick': 'vendor/fastclick.min'
     },
     shim: {
         // use namespace Backbone
