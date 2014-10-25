@@ -67,7 +67,6 @@ define([
 		},
 
 		clearList: function(){
-			// clear previous results
 			$("#people-list").empty();
 		},
 
@@ -88,7 +87,7 @@ define([
 			url += '?value='+query;
 			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
 			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
-			console.log(url);
+
 			this.collection.reset();
 			this.collection.url = url;
 			this.collection.fetch();

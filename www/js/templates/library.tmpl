@@ -5,9 +5,9 @@
 	<%  if(store.get('up.session.authenticated')){ %>
 	<h1 class="loggedin">Einfache Bibliothekssuche </h1>
 	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %> 
+    <%  } else { %>
     <h1>Einfache Bibliothekssuche</h1>
-    <% } %>   
+    <% } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -15,9 +15,8 @@
 
     <div data-role="navbar">
 		<ul>
-			<li><a href="#library" class="ui-btn-active">Bibliothek</a></li>
-			<li><a href="#people">Personen</a></li>
-			<!--<li><a href="#places">Orte</a></li>-->
+			<li><a href="#library" data-role="button" class="ui-btn-active" data-transition="fade">Bibliothek</a></li>
+			<li><a href="#people" data-role="button" data-transition="none">Personen</a></li>
 		</ul>
 	</div>
 
