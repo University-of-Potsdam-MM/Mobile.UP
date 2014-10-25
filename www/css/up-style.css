@@ -608,6 +608,7 @@ label.showfirst {
 	color: #014260;
 	font-family: georgia, serif;
 	font-weight: normal;
+	height: 10px;
 }
 
 .ui-btn-icon-left.settings:after {
