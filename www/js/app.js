@@ -1,3 +1,6 @@
+/**
+ *  file contains the initialization of the application
+ */
 define([
 	'jquery',
 	'underscore',
@@ -5,12 +8,15 @@ define([
 	'router',
 	'underscore-string',
 	'utils',
-	'jquerymobile'], function($, _, Backbone, Router, _str, utils){
+	'fastclick',
+	'jquerymobile'], function($, _, Backbone, Router, _str, utils, FastClick){
 
 
 		var Application = Backbone.Model.extend({
 
 			initialize: function(){
+				// initialize fastclick
+				new FastClick(document.body);
 
 				$(document).ready(function() {
   					document.addEventListener("deviceready", onDeviceReady, false);
@@ -59,7 +65,7 @@ define([
 						if (url && _.any(authUrls, isStartOf(url))) {
 							options.headers = _.extend(options.headers || {}, { "Authorization": utils.getAuthHeader() });
 						}
-						sync(method, model, options);
+						return sync(method, model, options);
 					};
 				}
 

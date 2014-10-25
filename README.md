@@ -1,20 +1,5 @@
-UP.App
+Mobile.UP
 ======
-
-## Dependencies aktualisieren
-
-```
-npm install
-./script/vendor.sh
-```
-
-## Running the webserver / proxy for development
-
-```
-npm start
-```
-The project should then be available at http://localhost:3000/www/
-
 
 ## Weiterführende Informationen
 
@@ -23,6 +8,10 @@ The project should then be available at http://localhost:3000/www/
 ## Demo Version
 
 * [Demo Mobile.UP](https://erdmaennchen.soft.cs.uni-potsdam.de/UP-App/www/)
+
+## Kontakt
+
+Bei Interesse kontaktieren Sie mobileup-serivce@uni-potsdam.de
 
 ## Lizenz
 

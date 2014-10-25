@@ -44,7 +44,9 @@ define([
       moodleAPI.api.core_course_get_contents({courseid: this.courseid})
         .then(function(contents){
           var token = moodleAPI.api.token();
-          return moodleUtils.fixPluginfileForCourseContents(token, contents);
+          if (contents.errorcode != 'invalidresponse'){
+            return moodleUtils.fixPluginfileForCourseContents(token, contents);
+          }
         })
         .done(function(contents){
           collection.reset(contents);

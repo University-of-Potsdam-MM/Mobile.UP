@@ -1,0 +1,1641 @@
+[
+    {
+        "name": "555211 Embedded System Design",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43211&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Krstic",
+                "room": "3.04.1.03",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 17.10.2014 bis 06.02.2015",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "55521 Komplexe Multimediale Anwendungsarchitekturen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43213&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Lucke , Zender , Zinke , KÃ¶hlmann",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 14.10.2014 bis 03.02.2015",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "555111 Cognitive Robotics Project",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43196&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Schaub , Andres",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 21.10.2014 bis 03.02.2015",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "555111 Knowledge-based Gaming",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43228&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schaub , N.N.",
+                "room": "3.04.1.03",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 21.10.2014 bis 03.02.2015",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "554921 Declarative Modelling",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43200&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "N.N.",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "554911 Declarative Modelling",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43199&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Prof. Dr. Schaub",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "553521 Pimp your video conference!",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=45745&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "KÃ¶hlmann",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 15.10.2014 bis 04.02.2015",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "553021 Declarative Problem Solving and Optimization",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43202&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "N.N.",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "553011 Declarative Problem Solving and Optimization",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43201&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Prof. Dr. Schaub",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "552721 Intelligente Datenanalyse in Matlab",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43225&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Scheffer",
+                "room": "3.04.1.03",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 16:00",
+                "timespan": "vom 13.10.2014 bis 02.02.2015",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "552711 Intelligente Datenanalyse in Matlab",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43226&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Scheffer",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 14.10.2014 bis 03.02.2015",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "511521 Ringvorlesung interdisziplinÃ¤re Mathematik: Eine projektorientierte EinfÃ¼hrung 2",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=43619&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "angemeldet",
+        "current": "1",
+        "dates": [
+            {
+                "begin": "1215",
+                "end": "1345",
+                "lecturer": "apl. Prof. BÃ¶ckmann , Prof. Dr. Reich , Prof. Dr. Beta , Prof. Dr. Scheffer",
+                "room": "1.08.0.59",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:15 bis 13:45",
+                "timespan": "vom 14.10.2014 bis 03.02.2015",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1415",
+                "end": "1545",
+                "lecturer": "apl. Prof. BÃ¶ckmann , Prof. Dr. Reich , Prof. Dr. Beta , Prof. Dr. Scheffer",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:15 bis 15:45",
+                "timespan": "vom 16.10.2014 bis 05.02.2015",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1215",
+                "end": "1345",
+                "lecturer": "apl. Prof. BÃ¶ckmann , Prof. Dr. Reich , Prof. Dr. Beta , Prof. Dr. Scheffer",
+                "room": "1.08.0.59",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:15 bis 13:45",
+                "timespan": "vom 15.10.2014 bis 04.02.2015",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "555111 Entwicklung einer geobasierten 3D-Lern-App",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=42328&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "KÃ¶hlmann",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 07.04.2014 bis 14.07.2014",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "552821 Netzbasierte Speichersysteme",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=41949&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Zinke",
+                "room": "3.06.S26",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 09.04.2014 bis 16.07.2014",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "552811 Netzbasierte Speichersysteme",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=41948&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Zender",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 08.04.2014 bis 15.07.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "1150 Statistische Datenanalyse",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=41335&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "apl. Prof. Liero",
+                "room": "1.08.0.59",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 08.04.2014 bis 15.07.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1415",
+                "end": "1545",
+                "lecturer": "N.N.",
+                "room": "1.19.1.19",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:15 bis 15:45",
+                "timespan": "vom 08.04.2014 bis 15.07.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "apl. Prof. Liero",
+                "room": "1.08.0.59",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 07.04.2014 bis 14.07.2014",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "909 Gewinnung von Meta-Daten aus multimedialen Inhalten",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=39080&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Siebert",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 15.10.2013 bis 04.02.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "791 Prozessmodellierung in Wissenschaftlichen Anwendungen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=39107&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Voigt",
+                "room": "3.04.0.04",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 15.10.2013 bis 04.02.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Voigt , Lamprecht",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 14.10.2013 bis 03.02.2014",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "555211 Forschungsseminar Komplexe Multimediale Anwendungsarchitekturen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=39079&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Lucke , Zender , Zinke , KÃ¶hlmann",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 15.10.2013 bis 04.02.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "555211 Sichere verteilte Anwendungen mit Java",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=39113&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 18.10.2013 bis 07.02.2014",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "497 Maschinelles Lernen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=39097&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Scheffer",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 16:00",
+                "timespan": "vom 15.10.2013 bis 04.02.2014",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "877 Internet der Dinge 2",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35924&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Kalkbrenner",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 12.04.2013 bis 12.07.2013",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "840 Forschungsseminar Komplexe Multimediale Anwendungsarchitekturen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35917&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Lucke , Zender , Zinke , KÃ¶hlmann",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 09.04.2013 bis 09.07.2013",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "809 Pervasive Computing",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35940&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Zender",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 12.04.2013 bis 12.07.2013",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Zender",
+                "room": "3.06.S26",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 10.04.2013 bis 10.07.2013",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "428 Sicherheit in Rechnernetzen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35950&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Christgau",
+                "room": "3.06.H01",
+                "rythm": "14-tÃ¤glich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 18.04.2013 bis 11.07.2013",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.06.H01",
+                "rythm": "14-tÃ¤glich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 11.04.2013 bis 04.07.2013",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 12.04.2013 bis 12.07.2013",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "418 Leistungsanalysecolon; Messen, Modellieren, Simulation",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35930&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 09.04.2013 bis 09.07.2013",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "332 Automatic Problem Solving",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=35900&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Schaub , Gebser",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 08.04.2013 bis 08.07.2013",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "Declarative Problem Solving",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=33126&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Schaub , Gebser",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 18:00",
+                "timespan": "vom 16.10.2012 bis 04.12.2012",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Gebser",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 15.10.2012 bis 03.12.2012",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "Multimedia-Technologie",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=33156&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Prof. Dr. Lucke",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 16.10.2012 bis 05.02.2013",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Zinke",
+                "room": "3.06.H08",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 17.10.2012 bis 06.02.2013",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "809 Pervasive Computing",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30426&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Zender",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 12.04.2012 bis 12.07.2012",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Zender",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 13.04.2012 bis 13.07.2012",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "792 Implementierung von Argumentationssystemen mit Funktionaler Programmierung in Clojure",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30402&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Gordon",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 23.04.2012 bis 09.07.2012",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "739 Forschungsseminar Komplexe Multimediale Anwendungsarchitekturen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30398&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Lucke , Zender , Zinke , KÃ¶hlmann",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 10.04.2012 bis 10.07.2012",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "527 General Game Playing Project",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30399&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Schaub , Dr. Zettier",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 11.04.2012 bis 11.07.2012",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "10401 Wie SIE Ã¼berzeugender redet und ER sympathischer wirkt: Geschlechterrollen und Rhetorik fÃ¼r die Welt von morgen.",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30672&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Hamann",
+                "room": "",
+                "rythm": "Blockveranstaltung (inkl. Sa,So)",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "10030 Jazzchor Golm - fÃ¼r Fortgeschrittene",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=30709&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "N.N. , Haakh",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "767 Service-Orientierte Architekturen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27761&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Zender",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 18.10.2011 bis 07.02.2012",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "765 Praktische Umsetzung modellgetriebener Softwareentwicklung mit Open Source",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27751&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "2000",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "16:00 bis 20:00",
+                "timespan": "",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1600",
+                "end": "2000",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "16:00 bis 20:00",
+                "timespan": "",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1600",
+                "end": "2000",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "16:00 bis 20:00",
+                "timespan": "",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1000",
+                "end": "1600",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "10:00 bis 16:00",
+                "timespan": "",
+                "weekday": "Sa.",
+                "weekdaynr": "6"
+            },
+            {
+                "begin": "1000",
+                "end": "1600",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "10:00 bis 16:00",
+                "timespan": "",
+                "weekday": "Sa.",
+                "weekdaynr": "6"
+            },
+            {
+                "begin": "1000",
+                "end": "1600",
+                "lecturer": "N.N.",
+                "room": "3.04.1.02",
+                "rythm": "Termin",
+                "time": "10:00 bis 16:00",
+                "timespan": "",
+                "weekday": "Sa.",
+                "weekdaynr": "6"
+            }
+        ]
+    },
+    {
+        "name": "757 Semantic Technologies",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27756&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1800",
+                "end": "2000",
+                "lecturer": "Prof. Dr. Schaub",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "18:00 bis 20:00",
+                "timespan": "vom 20.10.2011 bis 09.02.2012",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "713 Netzbasierte Datenverarbeitung",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27746&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Prof. Dr. Lucke",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 20.10.2011 bis 09.02.2012",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Zender",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 26.10.2011 bis 08.02.2012",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "594 Service Engineering for a Process-oriented Enterprise (Softwareprojekt)",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27759&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Voigt , Prof. Dr. Margaria-Steffen , Wagner",
+                "room": "3.04.2.01",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 20.10.2011 bis 09.02.2012",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "564 Grundlagen des Service Engineerings",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27733&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Dr. Bordihn , Wagner",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 19.10.2011 bis 08.02.2012",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            },
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Prof. Dr. Margaria-Steffen",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 18.10.2011 bis 07.02.2012",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "497 Maschinelles Lernen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27741&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Scheffer",
+                "room": "3.06.S21",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 14:00",
+                "timespan": "vom 18.10.2011 bis 07.02.2012",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "383 Datenbank-Anwendungsprogrammierung mit PL/SQL",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27719&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Dr. Zettier",
+                "room": "3.04.0.04",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 19.10.2011 bis 08.02.2012",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "10202 Jazzchor Golm",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=27323&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1800",
+                "end": "2000",
+                "lecturer": "Haakh",
+                "room": "2.05.1.06",
+                "rythm": "wÃ¶chentlich",
+                "time": "18:00 bis 20:00",
+                "timespan": "vom 19.10.2011 bis 08.02.2012",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "734 Software Engineering II",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=24210&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Wagner",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 15.04.2011 bis 22.07.2011",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Dr. Bordihn , Prof. Dr. Margaria-Steffen",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 13.04.2011 bis 20.07.2011",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "727 Pervasive Computing",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=24063&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Prof. Dr. Lucke",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 14.04.2011 bis 21.07.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "723 Pervasive Games for Learning",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=24216&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Zender , KÃ¶hlmann",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 12.04.2011 bis 19.07.2011",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "432 WissensreprÃ¤sentation und -verarbeitung",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=23882&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Prof. Dr. Schaub , Prof. Dr. Stede",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            },
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. Stede , Gebser",
+                "room": "3.04.0.03",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 14.04.2011 bis 21.07.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "428 Sicherheit in Rechnernetzen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=24235&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 14.04.2011 bis 21.07.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "Â .Bemerkung",
+                "rythm": "14-tÃ¤glich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 22.04.2011 bis 15.07.2011",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            },
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.06.H01",
+                "rythm": "14-tÃ¤glich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 15.04.2011 bis 22.07.2011",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "709 Methoden des wissenschaftlichen Arbeitens",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=21811&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1600",
+                "end": "1800",
+                "lecturer": "Prof. Dr. JÃ¼rgensen",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:00 bis 18:00",
+                "timespan": "vom 21.10.2010 bis 10.02.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "688 Software Engineering I",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=21846&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "Voigt , Dr. Bordihn , Wagner",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 21.10.2010 bis 10.02.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Margaria-Steffen",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 20.10.2010 bis 09.02.2011",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            }
+        ]
+    },
+    {
+        "name": "671 EinfÃ¼hrung in die KÃ¼nstliche Intelligenz",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=21650&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Gebser",
+                "room": "3.06.S17",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 19.10.2010 bis 08.02.2011",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schaub",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 22.10.2010 bis 11.02.2011",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "565 C- Programmierung und UNIX-Tools in Theorie und Praxis",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=20364&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1000",
+                "end": "1200",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.04.1.03",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:00 bis 12:00",
+                "timespan": "vom 21.10.2010 bis 10.02.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "40 Mathematik fÃ¼r Informatiker III",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=20357&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0800",
+                "end": "1000",
+                "lecturer": "N.N.",
+                "room": "3.06.S14",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:00 bis 10:00",
+                "timespan": "vom 20.10.2010 bis 09.02.2011",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            },
+            {
+                "begin": "1400",
+                "end": "1600",
+                "lecturer": "Dr. Koppitz",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:00 bis 16:00",
+                "timespan": "vom 21.10.2010 bis 10.02.2011",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "185 Grundlagen der Betriebssysteme und Rechnernetze",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=21684&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Schnor",
+                "room": "3.06.S17",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 19.10.2010 bis 08.02.2011",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1200",
+                "end": "1400",
+                "lecturer": "Prof. Dr. Schnor , N.N.",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:00 bis 14:00",
+                "timespan": "vom 22.10.2010 bis 11.02.2011",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "80 Theoretische Informatik II",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18685&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1330",
+                "end": "1500",
+                "lecturer": "Prof. Dr. Kreitz",
+                "room": "HPI.A-2.2",
+                "rythm": "wÃ¶chentlich",
+                "time": "13:30 bis 15:00",
+                "timespan": "vom 26.04.201019 bis 23.07.2010",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            },
+            {
+                "begin": "0830",
+                "end": "1000",
+                "lecturer": "Prof. Dr. Kreitz",
+                "room": "HPI.HS1",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:30 bis 10:00",
+                "timespan": "vom 23.04.2010 bis 23.07.2010",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "76 Technische Grundlagen der Informatik II",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18684&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "Vogel",
+                "room": "3.04.1.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 22.04.2010 bis 23.07.2010",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1615",
+                "end": "1745",
+                "lecturer": "Prof. Dr. Bobda",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:15 bis 17:45",
+                "timespan": "vom 19.04.2010 bis 23.07.2010",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "630 Programmierung",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18679&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Dr. Schubert",
+                "room": "",
+                "rythm": "wÃ¶chentlich",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "519 Angewandte Logik",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18680&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1215",
+                "end": "1345",
+                "lecturer": "Gebser",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:15 bis 13:45",
+                "timespan": "vom 28.04.2010 bis 23.07.2010",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            },
+            {
+                "begin": "",
+                "end": "",
+                "lecturer": "Gebser",
+                "room": "",
+                "rythm": "Einzeltermin",
+                "time": "",
+                "timespan": "",
+                "weekday": "-",
+                "weekdaynr": ""
+            }
+        ]
+    },
+    {
+        "name": "39 Mathematik fÃ¼r Informatiker II",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18683&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "0815",
+                "end": "0945",
+                "lecturer": "Dr. Fritzsche",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "08:15 bis 09:45",
+                "timespan": "vom 22.04.2010 bis 23.07.2010",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "Prof. Dr. Denecke",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 20.04.2010 bis 23.07.2010",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "23 Grundlagen der Programmierung II",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=18681&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1215",
+                "end": "1345",
+                "lecturer": "Hackel",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:15 bis 13:45",
+                "timespan": "vom 27.04.2010 bis 23.07.2010",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1615",
+                "end": "1745",
+                "lecturer": "Prof. Dr. Schwill",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:15 bis 17:45",
+                "timespan": "vom 22.04.2010 bis 23.07.2010",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    },
+    {
+        "name": "79 Theoretische Informatik I: Automaten und formale Sprachen",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=16822&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1415",
+                "end": "1545",
+                "lecturer": "Prof. Dr. Kreitz",
+                "room": "3.04.0.02",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:15 bis 15:45",
+                "timespan": "vom 26.10.2009 bis 12.02.2010",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            },
+            {
+                "begin": "1700",
+                "end": "1830",
+                "lecturer": "Prof. Dr. Kreitz",
+                "room": "HPI.HS1",
+                "rythm": "wÃ¶chentlich",
+                "time": "17:00 bis 18:30",
+                "timespan": "vom 20.10.2009 bis 12.02.2010",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            }
+        ]
+    },
+    {
+        "name": "75 Technische Grundlagen der Informatik I",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=16821&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1615",
+                "end": "1745",
+                "lecturer": "Vogel",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "16:15 bis 17:45",
+                "timespan": "vom 21.10.2009 bis 12.02.2010",
+                "weekday": "Mi.",
+                "weekdaynr": "3"
+            },
+            {
+                "begin": "1215",
+                "end": "1345",
+                "lecturer": "Prof. Dr. Bobda",
+                "room": "3.06.H03",
+                "rythm": "wÃ¶chentlich",
+                "time": "12:15 bis 13:45",
+                "timespan": "vom 19.10.2009 bis 12.02.2010",
+                "weekday": "Mo.",
+                "weekdaynr": "1"
+            }
+        ]
+    },
+    {
+        "name": "605 Rechner- und Netzbetrieb",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=14422&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1415",
+                "end": "1745",
+                "lecturer": "Dr. Bordihn , Dr. Schubert",
+                "room": "Â .Bemerkung",
+                "rythm": "wÃ¶chentlich",
+                "time": "14:15 bis 17:45",
+                "timespan": "vom 23.10.2009 bis 12.02.2010",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "38 Mathematik I fÃ¼r Informatiker",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=14618&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "Dr. Fritzsche",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 22.10.2009 bis 11.02.2010",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            },
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "Prof. Dr. Denecke",
+                "room": "3.06.H01",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 23.10.2009 bis 12.02.2010",
+                "weekday": "Fr.",
+                "weekdaynr": "5"
+            }
+        ]
+    },
+    {
+        "name": "22 Grundlagen der Programmierung I",
+        "weblink": "https://puls.uni-potsdam.de/qisserver/rds;jsessionid=1C90BF179CD35A7F80204516E12A3863.node11?state=verpublish&amp;status=init&amp;vmfile=no&amp;publishid=16818&amp;moduleCall=webInfo&amp;publishConfFile=webInfo&amp;publishSubDir=veranstaltung",
+        "status": "zugelassen",
+        "current": "",
+        "dates": [
+            {
+                "begin": "1015",
+                "end": "1145",
+                "lecturer": "Hackel",
+                "room": "3.06.S16",
+                "rythm": "wÃ¶chentlich",
+                "time": "10:15 bis 11:45",
+                "timespan": "vom 27.10.2009 bis 12.02.2010",
+                "weekday": "Di.",
+                "weekdaynr": "2"
+            },
+            {
+                "begin": "1815",
+                "end": "1945",
+                "lecturer": "Prof. Dr. Schwill",
+                "room": "3.06.H04",
+                "rythm": "wÃ¶chentlich",
+                "time": "18:15 bis 19:45",
+                "timespan": "vom 22.10.2009 bis 12.02.2010",
+                "weekday": "Do.",
+                "weekdaynr": "4"
+            }
+        ]
+    }
+]

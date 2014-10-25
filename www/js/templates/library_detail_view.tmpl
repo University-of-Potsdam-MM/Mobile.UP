@@ -1,24 +1,15 @@
-<% console.log(book); %>
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false"><a href="#nav-panel" data-role="button" data-icon="false" data-inline="true" class="menubutton">Menue</a><a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList">Back</a>
-	<h1><%= book.get('title') %>
-	<%  if(store.get('up.session.authenticated')){ %>
-        <a href="#options" class="settings" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } %>
-    </h1>
+    <%  if(store.get('up.session.authenticated')){ %>
+	<h1 class="loggedin"><%= book.get('title') %></h1>
+	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
+    <%  } else { %>
+    <h1><%= book.get('title') %> </h1>
+    <% } %>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c" class="ui-content ui-body-c" role="main">
-	<!--
-    <div data-role="navbar">
-		<ul>
-			<li><a href="#library" class="ui-btn-active">Bibliothek</a></li>
-			<li><a href="#people">Personen</a></li>
-			<li><a href="#places">Orte</a></li>
-		</ul>
-	</div>
-	-->
 	<div id="libraryContent">
 		<div id="book-icon" class="<%= book.get('mediaType')+'_big' %>"></div>
 		<%= (book.get('title')) ? '<div class="booktitle"><h2>'+book.get('title')+'</h2>' : ''%>
@@ -65,7 +56,7 @@
 			  	<%= (book.get('abstract')) ? '<div data-role="collapsible"><h3>Abstract</h3><p>'+book.get('abstract')+'</p></div>' : '' %>
 
 				<% if (book.get('keywords') && book.get('keywords').length != 0) { %>
-				<div data-role="collapsible"><h3>Schlagwörter:</h3>
+				<div data-role="collapsible"><h3>Schlagwörter</h3>
 		    		<% _.each(book.get('keywords'), function(keyword){ %>
 						<a href="<%= keyword[1] %>" target="_blank" rel="external"><%= keyword[0] %></a>&nbsp;
 		          	<% }); %>
@@ -83,7 +74,7 @@
 				<% } %>
 
 				<% if (book.get('notes')) { %>
-		    	<div data-role="collapsible"><h3>Anmerkungen:</h3>
+		    	<div data-role="collapsible"><h3>Anmerkungen</h3>
 		    		<ul>
 		    		<% _.each(book.get('notes'), function(note){ %>
 						<li><%= note %></li>
@@ -93,7 +84,7 @@
 		    	<% } %>
 
 			    <% if (book.get('isbn')) { %>
-			    <div data-role="collapsible"><h3>ISBN:</h3>
+			    <div data-role="collapsible"><h3>ISBN</h3>
 			    	<ul>
 			    	<% _.each(book.get('isbn'), function(isbn){ %>
 							<li><%= isbn %></li>
@@ -103,7 +94,7 @@
 			    <% } %>
 
 			    <% if (book.get('series')) { %>
-			    <div data-role="collapsible"><h3>Serie: </h3>
+			    <div data-role="collapsible"><h3>Serie</h3>
 			    	<ul>
 			    	<% _.each(book.get('series'), function(serie){ %>
 			    		<li><%= serie %></li>

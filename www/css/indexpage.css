@@ -1,6 +1,6 @@
 /* login button  - Höhe*/
 
-#home .ui-page-theme-b .ui-btn,html #home .ui-bar-b .ui-btn,html #home.ui-body-b .ui-btn,html body  #home.ui-group-theme-b .ui-btn,html head+body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited,html #home.ui-bar-b .ui-btn:visited,html #home .ui-body-b .ui-btn:visited,html body #home .ui-group-theme-b .ui-btn:visited,html head+body #home .ui-btn.ui-btn-b:visited
+#home .ui-page-theme-b .ui-btn, #home .ui-bar-b .ui-btn, #home.ui-body-b .ui-btn, body  #home.ui-group-theme-b .ui-btn, body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited, #home.ui-bar-b .ui-btn:visited, #home .ui-body-b .ui-btn:visited, body #home .ui-group-theme-b .ui-btn:visited, head+body #home .ui-btn.ui-btn-b:visited
 	{
 	border-color: #94bbe3;
 }
@@ -26,7 +26,7 @@
 	margin:.5em 0;
 	text-transform:none;
 	font-weight:normal;
-	padding: .6em 2em 2em 1em;
+	padding: .6em 2em .6em 1em;
 	font-size: 12.5px;
 	margin-top:1em;
 }
@@ -40,8 +40,6 @@
 	height: 22px;
 	text-indent:100px;
 	background-position: 0px 0px
-	
-	
 }
 
 
@@ -336,4 +334,62 @@ only screen and (                min-resolution: 2dppx)
 		background-size:71px 69px;
 	}
 
+}
+
+/*
+The following rules in indexpage.css expected to be applied within a container with the id home
+They are rewritten to adapt to a container with the home-id class
+The rewrite was necessary to cope with the new page header structure
+See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
+*/
+.home-id .ui-btn {
+	font-size: 16px;
+	margin: 0 0;
+	padding-right:1em;
+	text-align: right;
+	text-transform: uppercase;
+	font-weight: normal;
+	/* vertikal zentrieren*/
+	display: block;
+	vertical-align: middle;
+}
+
+.home-id .ui-btn.settings.ui-icon-gear {
+	height:15px;
+	margin-right:10px;
+}
+
+.home-id .ui-btn.settings {
+	margin:.5em 0;
+	text-transform:none;
+	font-weight:normal;
+	padding: .6em 2em .6em 1em;
+	font-size: 12.5px;
+	margin-top:1em;
+}
+
+.home-id .ui-btn.settings:before {
+	background-image: url(../img/up/logout-white.svg);
+	background-repeat: no-repeat;
+	content: ".";
+	display: inline-block;
+	width: 18px;
+	height: 22px;
+	text-indent:100px;
+	background-position: 0px 0px
+}
+
+.home-id.ui-header .ui-title {
+	background-image: none;
+	margin-left: 10px;
+	color: #FFF;
+	font-family: GEorgia, serif;
+	font-weight: normal;
+	text-transform:none;
+	letter-spacing:.1em;
+	font-style:italic;
+}
+
+.home-id.ui-header {
+	background-color:#014260 !important;
 }

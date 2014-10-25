@@ -1,3 +1,6 @@
+/**
+ *  file contains all Require.JS dependencies
+ */
 var app = {models:{}, views:{}, data:{}};
 require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
@@ -13,12 +16,14 @@ require.config({
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
+        'cache': 'vendor/backbone.fetch-cache.min',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
         'utils': 'lib/utils',
 		'date': 'lib/date',
-		'LocalStore': 'lib/ls-store'
+		'LocalStore': 'lib/ls-store',
+        'fastclick': 'vendor/fastclick.min'
     },
     shim: {
         // use namespace Backbone
@@ -47,6 +52,7 @@ require.config({
         'lib/jqm-datebox.mode.calbox.min' : ['jquery', 'datebox'],
         'lib/jqm-datebox.mode.datebox.min' : ['jquery', 'datebox'],
         'lib/jquery.mobile.datebox.i18n.de.utf8' : ['jquery', 'datebox'],
+        'cache': ['backbone', 'underscore']
     }
 
 });

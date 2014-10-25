@@ -12,6 +12,7 @@ define([
 	'modules/news',
 	'modules/events',
 	'modules/study',
+	'modules/calendar',
 	'modules/moodle',
 	'modules/emergency',
 	'modules/campus',
@@ -27,7 +28,7 @@ define([
 	'modules/impressum',
 	'modules/options',
 	'modules/people'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -40,6 +41,8 @@ define([
 			"events": "events",
 			"events/*id": "events",
 			"study": "study",
+			"calendar": "calendar",
+			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
 			"campus": "campus",
 			"library": "library",
@@ -64,7 +67,7 @@ define([
 		routesToScrollPositions: {},
 
 		// routes that need authentication
-		requiresAuth: ['moodle', 'grades', 'people'],
+		requiresAuth: ['calendar', 'moodle', 'grades', 'people'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -78,6 +81,7 @@ define([
 
 		before: function(params, next, name){
 			this.saveScrollPosition();
+			this.prepareScrollPositionFor(name);
 
 			//Checking if user is authenticated or not
 			//then check the path if the path requires authentication
@@ -113,13 +117,16 @@ define([
     		}
 		},
 
-		getScrollPosition: function(route) {
+		prepareScrollPositionFor: function(route) {
 			var pos = 0;
 			if (this.routesToScrollPositions[route]) {
 				pos = this.routesToScrollPositions[route];
 				delete this.routesToScrollPositions[route]
 			}
-			return pos;
+
+			// We only have one active page because jQuery mobiles custom history is disabled
+			var activePage = $.mobile.navigate.history.getActive();
+			activePage.lastScroll = pos;
 		},
 
 		home: function(){
@@ -175,6 +182,10 @@ define([
 
 		study: function(){
 			this.changePage(new StudyPageView);
+		},
+
+		calendar: function(day){
+			this.changePage(new CalendarPageView({day: day}));
 		},
 
 		moodle: function () {
@@ -264,11 +275,12 @@ define([
 			}
 
 			// prepare new view for DOM display
-			$(page.el).attr('data-role', 'page');
 			page.render();
+			var header = page.$("[data-role=header]").detach().toolbar();
+			var pageContent = page.$el.attr("data-role", "page");
 			// prepare for transition
 			$('body').css('overflow', 'hidden');
-			$('#pagecontainer').append($(page.el));
+			$('#pagecontainer').append(pageContent);
 
 			var transition = $.mobile.changePage.defaults.transition;
 			var reverse = $.mobile.changePage.defaults.reverse;
@@ -279,7 +291,35 @@ define([
 				this.firstPage = false;
 			}
 
-			$.mobile.changePage($(page.el), {changeHash: false, transition: transition, reverse: reverse});
+			// If there already is an old view then insert the new header invisible
+			// The headers will be faded after the page transition
+			if (this.currentView) {
+				header.css("display", "none")
+			}
+
+			// As the page carries a ui-page-theme-a class, the header should carry one too
+			// If the page carries a home id the header should carry a home-id class
+			// This is done for reasons of backward compatibility
+			header.addClass("ui-page-theme-a");
+			if (pageContent.attr("id") == "home") {
+				header.addClass("home-id");
+			}
+
+			$('#pagecontainer').append(header);
+
+			var headers = $("[data-role=header]");
+            if (headers.length > 1) {
+            	// Remember to keep this in sync with the ".in, .out" css rule
+            	var fadeTime = 2 * 300;
+
+            	var oldHeader = headers.first();
+                var newHeader = headers.last();
+
+                oldHeader.fadeOut("fast", function() { oldHeader.remove(); });
+                newHeader.fadeIn("fast");
+            }
+
+            $.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse});
 
 			if(!this.currentView){
 				$('#pagecontainer').children().first().remove();
