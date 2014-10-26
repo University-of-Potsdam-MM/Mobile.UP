@@ -14,3 +14,7 @@ This rule accepts an element that holds both classes simultaneously
 	text-shadow: none;
 	font-weight: 700;
 }
+
+.ui-page-theme-a.ui-bar-a .settings {
+	color: #FFFFFF !important;
+}
