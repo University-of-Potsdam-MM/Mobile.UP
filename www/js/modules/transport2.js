@@ -1,4 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', 'moment'], function($, _, Backbone, utils, ht, moment){
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'utils',
+  'modules/transport.util',
+  'moment'
+], function($, _, Backbone, utils, transport, moment){
  /*
   ## Dependencies
   - jQuery
@@ -73,12 +80,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     },
 
     fromStation: function(){
-      return ht.stations().where({campus: this.get('from')})[0];
+      return this.get('stations').where({campus: this.get('from')})[0];
     },
 
     toStation: function(){
-      ht.stations().where({campus: this.get('to')})[0]
-      return ht.stations().where({campus: this.get('to')})[0];
+      return this.get('stations').where({campus: this.get('to')})[0];
     },
 
     resetConnections: function(newConnections){
@@ -88,7 +94,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     fetchConnections: function(){
       console.log('DateTime for connection:', this.get('depTime').format('DD.MM.YYYY - HH:mm') );
       var that = this;
-      ht.getVerbindung(
+      transport.getVerbindung(
         this.fromStation().get('externalId'),
         this.toStation().get('externalId'),
         this.get('depTime')
@@ -144,7 +150,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
     spinner: function(){
       var view = this;
       view.spinnerOn();
-      _.each(ht.stations(), function(station){
+      _.each(this.collection, function(station){
         view.collection.once('add', view.spinnerOff);
       });
     },
@@ -164,7 +170,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
           // Heute + specific time
           // time should be parseable in the format
           // '09:59 AM'
-          return moment(time, 'H:mm A');
+          return moment(time, 'HH:mm');
         }
       } else {
         // date should be parseable
@@ -175,7 +181,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
           mTime = moment();
         } else {
           // parse time
-          mTime = moment(time, 'H:mm A')
+          mTime = moment(time, 'HH:mm')
         }
 
         // setting minutes and hours on the mDate object
@@ -269,17 +275,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util', '
 
     initialize: function(){
       this.template = utils.rendertmpl('transport2');
-    },
 
-    render: function(){
-      this.$el.html(this.template({}));
+      this.collection = new transport.TransportStations();
 
       if (Transport.model.State){
         // reset Transport.model.State.reset();
       }else{
-        Transport.model.State = new Transport.StateModel({});
+        Transport.model.State = new Transport.StateModel({stations: this.collection});
       }
+    },
 
+    render: function(){
+      this.$el.html(this.template({}));
 	    // Listen for Events from station
 	    Transport.view.FromStation = new NavigationView({
 	      el: this.$el.find("#fromStation2")

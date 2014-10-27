@@ -82,6 +82,12 @@ define([
 
       model: TransportStation,
 
+      initialize: function(){
+        this.add(new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003#86"}));
+        this.add(new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010#86"}));
+        this.add(new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132#86"}));
+      },
+
       fetch: function(){
       	this.trigger("request");
       	var that = this;
@@ -109,13 +115,6 @@ define([
         });
       }
   });
-
-  var stations = new TransportStations([
-    new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003#86"}),
-    new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010#86"}),
-    new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132#86"})
-  ]);
-
 
   var Connection = new Backbone.Model.extend({
   	defaults: {
@@ -366,7 +365,7 @@ define([
   };
 
   return {
-    stations: function() {return stations;},
+    TransportStations: TransportStations,
     getVerbindung: getVerbindung
   };
 
