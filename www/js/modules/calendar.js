@@ -99,7 +99,7 @@ define([
 
 		initialize: function(){
 			this.template = utils.rendertmpl('calendar_day');
-			this.listenTo(this.collection, "add", this.prepareDaySchedule);
+			this.listenTo(this.collection, "reset", this.prepareDaySchedule);
 			this.listenTo(this, "render", this.render);
 			this.CourseSlots = new CourseSlots();
 		},
@@ -217,7 +217,7 @@ define([
 
 			});
 
-			this.CoursesForDay.add(coursesForDay);
+			this.CoursesForDay.reset(coursesForDay);
 		},
 
 		render: function(){
