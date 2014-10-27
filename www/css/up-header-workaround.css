@@ -18,3 +18,11 @@ This rule accepts an element that holds both classes simultaneously
 .ui-page-theme-a.ui-bar-a .settings {
 	color: #FFFFFF !important;
 }
+
+/*
+The links in the calendar footer leave a space to left
+This rule fixes them
+*/
+.calendar-footer a {
+	border-left-width: 0 !important;
+}
