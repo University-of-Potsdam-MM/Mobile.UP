@@ -72,9 +72,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     attributes: {"id": "transport"},
 
     initialize: function(){
-      console.log(transport);
       this.collection = new transport.TransportStations();
-      console.log(this.collection);
       this.template = utils.rendertmpl('transport');
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
