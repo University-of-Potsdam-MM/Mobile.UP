@@ -121,9 +121,9 @@ define([
     },
 
     events:{
-      "vclick #searchButton" : "searchButton",
-      "vclick #earlierButton": "searchEarlier",
-      "vclick #laterButton"  : "searchLater",
+      "click #searchButton" : "searchButton",
+      "click #earlierButton": "searchEarlier",
+      "click #laterButton"  : "searchLater",
     },
 
     searchButton: function() {
@@ -248,7 +248,7 @@ define([
    */
   var NavigationView = Backbone.View.extend({
     events: {
-      'vclick a' : 'selectButton'
+      'click a' : 'selectButton'
     },
 
     activeButton: function(buttonText){

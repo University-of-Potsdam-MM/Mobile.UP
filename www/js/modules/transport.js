@@ -7,7 +7,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
   var TransportViewsTransportList = Backbone.View.extend({
 
     events: {
-      'vclick #later-button' : 'loadNext'
+      'click #later-button' : 'loadNext'
     },
 
     initialize: function(options) {
@@ -47,7 +47,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
    */
   var NavigationView = Backbone.View.extend({
     events: {
-      'vclick a' : 'selectButton'
+      'click a' : 'selectButton'
     },
 
     activeButton: function(buttonText){
@@ -58,6 +58,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
     },
 
     selectButton: function(ev){
+      console.log('prevent');
       ev.preventDefault();
       var buttonName = $(ev.target).html();
       this.trigger('select', buttonName);
