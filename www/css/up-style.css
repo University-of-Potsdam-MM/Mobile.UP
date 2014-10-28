@@ -665,6 +665,12 @@ label.showfirst {
 	}
 }
 
+#sitemap #sitemaps-settings .options-close {
+	background-color:#014260;
+	color:#fff;
+	
+}
+
 /***************Öffnungszeiten********************
 *****************************************************/
 .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
@@ -1107,9 +1113,6 @@ div.copyright p {
 	font-size: 13px;
 }
 
-div.infotext {
-	padding-left: 55px;
-}
 
 #book-icon {
 	width: 55px;
@@ -2047,7 +2050,7 @@ p.event-description {
 	background-color: rgba(0, 0, 0, 0);
 }
 
-.btn-filter-events {
+.btn-filter-events.ui-btn-active {
 	background-color:#014260 !important;
 	color:#fff !important;;
 }
@@ -2343,6 +2346,7 @@ p.event-description {
 	font-style: italic;
 	font-family: georgia, serif;
 	text-align: center !important;
+	border-top: 0 !important;
 }
 
 .up-divider {
@@ -2386,6 +2390,16 @@ p.event-description {
 
 #calendar em {
 	font-weight: bold;
+}
+
+#calendar .footer .ui-navbar li .ui-btn {
+	background-color:#014260;
+	color:#fff;
+}
+
+.saveToCal {
+	background-color:#014260 !important;
+	color:#fff !important;
 }
 
 /* Slide transition speed */
