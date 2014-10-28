@@ -851,6 +851,8 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 .ui-body-c .ui-navbar.buttons_pt.submit-route .ui-btn {
 	line-height: 25px;
 	font-size: .9em !important;
+	background-color: #014260;
+	color: #FFF;
 }
 
 .buttons_pt .ui-input-datebox input {
@@ -980,6 +982,8 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	margin-bottom: 0;
 	border: 0;
 	font-size: .8em;
+	background-color: #014260 !important;
+	color: #FFF !important;
 }
 
 .ui-listview>li h3.complex_transport .ui-btn {
@@ -1718,11 +1722,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 .ui-datebox-container {
 	border: 1px solid #DEDEDE !important;
-}
-
-.ui-datebox-container .ui-btn-icon-notext:after,.ui-datebox-container .ui-btn-icon-top:after,.ui-datebox-container .ui-btn-icon-bottom:after
-	{
-	background-color: transparent;
+	background-color:#fff;
 }
 
 .ui-datebox-griddate-disable {
@@ -1730,12 +1730,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	color: #000 !important;
 }
 
-/*
-.ui-datebox-container .ui-page-theme-a .ui-datebox-gridrow .ui-btn:hover, html head + body .ui-datebox-container .ui-datebox-gridrow .ui-btn.ui-btn-a:hover {
-	border-color:#fff;
-}/*
 
-}
 
 /***********************error************************
 **************************************************************/
@@ -1928,6 +1923,11 @@ li.news-entry a p span.news-date{
 	color: #FFF
 }
 
+#news #news-content .ui-btn {
+	background-color:#014260;
+	color:#fff;
+}
+
 /*********************** Veranstaltungen*********************
 **************************************************************/
 #events .ui-listview>.ui-li-has-thumb>.ui-btn,.ui-listview>.ui-li-static.ui-li-has-thumb
@@ -2035,6 +2035,21 @@ p.event-description {
 	content: ".";
 	background-repeat: no-repeat;
 	text-indent: -1000000px;
+}
+
+#events li.up-divider.place-events-li a.place-events-li-a.ui-icon-carat-r:after {
+	background-image: url(../img/up/arrow-white.png);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+#events  li.entry .ui-btn.ui-btn-icon-right:after {
+	background-image: url(../img/up/arrow-darkblue.png);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.btn-filter-events {
+	background-color:#014260 !important;
+	color:#fff !important;;
 }
 
 /*** images high resoluton devices ***/
