@@ -273,6 +273,10 @@ define([
   var Transport2PageView = Backbone.View.extend({
     attributes: {"id": "transport2"},
 
+    events: {
+      'click .ui-input-datebox a': 'datetimeBox'
+    },
+
     initialize: function(){
       this.template = utils.rendertmpl('transport2');
 
@@ -283,6 +287,10 @@ define([
       }else{
         Transport.model.State = new Transport.StateModel({stations: this.collection});
       }
+    },
+
+    datetimeBox: function(ev){
+      ev.preventDefault();
     },
 
     render: function(){

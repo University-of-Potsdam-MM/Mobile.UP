@@ -192,9 +192,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 	var MensaPageView = Backbone.View.extend({
 		attributes: {"id": 'mensa'},
 
+		events: {
+			'click .ui-input-datebox a': 'dateBox'
+		},
+
 		initialize: function() {
 			_.bindAll(this, 'render');
 			this.template = utils.rendertmpl('mensa');
+		},
+
+		dateBox: function(ev){
+			ev.preventDefault();
 		},
 
 		render: function() {

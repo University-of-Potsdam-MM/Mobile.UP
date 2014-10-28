@@ -4,19 +4,17 @@
     <a href="#campus" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
 
     <%  if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin">Mensen &amp; Speisepläne </h1>
+	<h1 class="loggedin">Mensen &amp; Speisepläne</h1>
 	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
     <%  } else { %>
-    <h1>Mensen &amp; Speisepläne </h1>
+    <h1>Mensen &amp; Speisepläne</h1>
     <% } %>
-
-
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c">
     <div data-role="campusmenu" data-store="up.mensa.default"></div>
-    <input name="mydate" id="mydate" type="date" data-role="datebox" data-options='{"mode": "calbox", "showInitialValue": true, "useFocus": true, "overrideCalStartDay": 1, "useLang": "de", "blackDays" : [0], "calHighToday": false, "centerHoriz": true}'>
+    <input name="mydate" id="mydate" type="date" data-role="datebox" data-options='{"mode": "calbox", "showInitialValue": true, "useFocus": true, "overrideCalStartDay": 1, "useLang": "de", "blackDays" : [0], "calHighToday": false, "centerHoriz": true}' />
 	<div id="todaysMenu"></div>
 </div>
 <!-- End Main - Navigation -->
