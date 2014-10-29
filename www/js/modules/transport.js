@@ -1,5 +1,8 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], function($, _, Backbone, utils, transport){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
+  function($, _, Backbone, utils, transport){
 
+
+  var view_state = {campus: 'G-see'};
 
   /**
    *  Backbone View - TransportViewsTransportList
@@ -77,7 +80,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       this.template = utils.rendertmpl('transport');
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
-      this.listenTo(this.collection.where({campus: 'G-see'})[0], "sync", this.renderTransportList);
+      this.listenTo(this.collection.where(view_state)[0], "sync", this.renderTransportList);
       this.trigger("renderTransportList");
     },
 
@@ -86,18 +89,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       transportViewTransportList = new TransportViewsTransportList({
         el: this.$el.find('#search-results'),
         stations: this.collection,
-        collection: this.collection.where({campus: 'G-see'})[0].get('journeys'),
-        stationName: this.collection.where({campus: 'G-see'})[0].get('name'),
-        stationTime: this.collection.where({campus: 'G-see'})[0].get('stationTime')
+        collection: this.collection.where(view_state)[0].get('journeys'),
+        stationName: this.collection.where(view_state)[0].get('name'),
+        stationTime: this.collection.where(view_state)[0].get('stationTime')
       });
       transportViewTransportList.render();
     },
 
     prepareJouneys: function(){
-      this.LoadingView = new utils.LoadingView({collection: this.collection.where({campus: 'G-see'})[0], el: this.$("#loadingSpinner")});
+      this.LoadingView = new utils.LoadingView({collection: this.collection.where(view_state)[0], el: this.$("#loadingSpinner")});
 
       // check for existing journeys otherwise fetch
-      if (this.collection.where({campus: 'G-see'})[0].get('journeys').length == 0){
+      if (this.collection.where(view_state)[0].get('journeys').length == 0){
         this.collection.fetch({success: function(){console.log('succ');}, error: function() { console.log(arguments); }});
       }else{
         this.trigger("renderTransportList");
@@ -112,9 +115,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'], 
       });
       var that = this;
       transportViewNavbar.on('select', function(buttonName){
-        transportViewTransportList.collection = that.collection.where({campus: buttonName})[0].get('journeys');
-        transportViewTransportList.stationName = that.collection.where({campus: buttonName})[0].get('name');
-        transportViewTransportList.stationTime = that.collection.where({campus: buttonName})[0].get('stationTime');
+        view_state = {campus: buttonName}
+        first_journey = that.collection.where(view_state)[0]
+        transportViewTransportList.collection  = first_journey.get('journeys');
+        transportViewTransportList.stationName = first_journey.get('name');
+        transportViewTransportList.stationTime = first_journey.get('stationTime');
         transportViewTransportList.render();
       });
 
