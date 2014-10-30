@@ -17,6 +17,10 @@ define([
 
 		// setting starting and ending to simplify later parsing and display of daily courses
 		parse: function(course){
+			if (!$.isArray(course.dates)) {
+				course.dates = [course.dates];
+			}
+			
 			var split = (course.dates[0].timespan).split(' ');
 			(split[1]) ? this.set('starting', split[1]) : '';
 			(split[3]) ? this.set('ending', split[3]) : '';
@@ -42,6 +46,10 @@ define([
 			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
+		},
+		
+		parse: function(response) {
+			return response.jsonArray.jsonElement;
 		}
 	});
 
