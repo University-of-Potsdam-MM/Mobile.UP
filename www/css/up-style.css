@@ -2051,9 +2051,14 @@ p.event-description {
 }
 
 .btn-filter-events.ui-btn-active {
-	background-color:#014260 !important;
-	color:#fff !important;;
+	background-color:#d0dae3 !important;
+	color:#014260 !important;
 }
+
+.btn-filter-events  {
+	background-color:#014260 !important;
+	color:#fff !important;
+	}
 
 /*** images high resoluton devices ***/
 @media only screen and (-webkit-min-device-pixel-ratio: 2) , only screen and (
