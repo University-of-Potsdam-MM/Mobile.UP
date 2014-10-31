@@ -269,10 +269,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       return (this.get('results').length < this.get('numberOfRecords'));
     },
 
-    startPagination: function() {
-      return this.get('results').length + 1;
-    },
-
     endPagination: function() {
       return Math.min(this.get('results').length + 10, this.get('numberOfRecords'));
     },
@@ -359,7 +355,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       var html = this.template({
         search:             search.attributes,
         paginationPossible: search.paginationPossible(),
-        startPagination:    search.startPagination(),
         endPagination:      search.endPagination(),
         booklist: this.collection.models
       });
