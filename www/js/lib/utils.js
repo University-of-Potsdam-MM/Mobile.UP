@@ -256,7 +256,7 @@ define([
 		}
 
 		var info = new Backbone.Model;
-		info.url = "http://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
+		info.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
 		info.set("uuid", uuid);
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);

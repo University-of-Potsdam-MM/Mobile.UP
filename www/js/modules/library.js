@@ -69,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
       var currentBook = this;
       var ajaxLocationCall = $.ajax({
-        url: 'http://daia.gbv.de/isil/DE-517?id=ppn:'+this.get('ppn')+'&format=json',
+        url: 'https://daia.gbv.de/isil/DE-517?id=ppn:'+this.get('ppn')+'&format=json',
         method: 'GET',
         dataType: 'jsonp'
       });
@@ -140,7 +140,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     keywords: function(node, tagName){
       var keywords = this.contentForTag(node, tagName);
       var keys = _.map(keywords, function(keyword){
-        var url = 'http://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
+        var url = 'https://opac.ub.uni-potsdam.de/DB=1/SET=1/TTL=2/MAT=/NOMAT=T/CMD?ACT=SRCHA&IKT=5040&TRM='+encodeURIComponent(keyword.trim());
         var key = [keyword.trim(), url];
         return key;
       });
@@ -259,7 +259,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       maximumRecords: 10
     },
 
-    baseUrl: 'http://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+    baseUrl: 'https://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
 
     initialize: function(){
       this.listenTo(this, "error", this.requestFail);
