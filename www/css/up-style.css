@@ -1047,12 +1047,14 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 /**********************Suche******************
 *****************************************************/
+#people .ui-input-btn,
 #library .ui-input-btn {
 	color: none;
 	font-weight: normal;
 	text-transform: uppercase;
 }
 
+#people .ui-input-btn input,
 #library .ui-input-btn input {
 	color: none !important;
 }

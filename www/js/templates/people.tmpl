@@ -3,10 +3,10 @@
     <a href="#home" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
 
 	<%  if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin">Einfache Bibliothekssuche </h1>
+	<h1 class="loggedin">Personensuche</h1>
 	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
     <%  } else { %>
-    <h1>Einfache Bibliothekssuche</h1>
+    <h1>Personensuche</h1>
     <% } %>
 </div>
 <!-- End Header -->
@@ -15,17 +15,17 @@
 
     <div data-role="navbar">
 		<ul>
-			<li><a href="#library" data-role="button" class="ui-btn-active" data-transition="fade">Bibliothek</a></li>
-			<li><a href="#people" data-role="button" data-transition="none">Personen</a></li>
+			<li><a href="#library" data-role="button" data-transition="none">Bibliothek</a></li>
+			<li><a href="#people" data-role="button" class="ui-btn-active" data-transition="none">Personen</a></li>
 		</ul>
 	</div>
 
-	<div id="libraryContent">
+	<div id="peopleContent">
 		<form method="POST" id="query-form">
-			<input type="search" name="query" id="query" placeholder="Suchbegriff eingeben..." value="<%= keyword %>" />
+			<input type="search" name="query" id="query" placeholder="Suchbegriff eingeben..." value="" />
 			<input type="submit" value="Suchen" data-theme="a" data-icon="search" data-iconpos="right"/>
 		</form>
-		<div id="search-results"></div>
+		<div id="people-list"></div>
 		<div id="loadingSpinner"></div>
 	</div>
 	<!-- End Main Content -->
