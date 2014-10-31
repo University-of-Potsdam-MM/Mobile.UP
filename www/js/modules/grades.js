@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		},
 
 		parse: function(result) {
-			return result;
+			return result.jsonArray.jsonElement;
 		}
 	});
 
