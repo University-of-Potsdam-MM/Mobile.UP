@@ -176,10 +176,6 @@ body .ui-btn.ui-btn-a.back:visited {
 	background-color: #014260;
 }
 
-.ui-btn {
-	padding-right: 0;
-}
-
 .ui-header .ui-btn {
 	padding-right: 1em;
 }
