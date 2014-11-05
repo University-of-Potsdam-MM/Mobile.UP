@@ -603,12 +603,13 @@ label.showfirst {
 	top: 0;
 	background: none;
 	border: none;
-	padding: .6em 2em .6em 1em;
+	/*padding: .6em 2em .6em 1em;*/
 	margin-top: 1em;
 	color: #014260;
 	font-family: georgia, serif;
 	font-weight: normal;
 	height: 10px;
+	width:80px;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -632,7 +633,8 @@ label.showfirst {
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star {
-	right: -3px;
+	right: -90px;
+	margin-top: 15px;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star:before {

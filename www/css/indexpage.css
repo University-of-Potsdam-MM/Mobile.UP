@@ -20,8 +20,8 @@
 #home .ui-btn.settings.ui-icon-gear {
 	height:15px;
 	margin-right:10px;
-}
 
+}
 #home .ui-btn.settings {
 	margin:.5em 0;
 	text-transform:none;
@@ -366,6 +366,7 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 	padding: .6em 2em .6em 1em;
 	font-size: 12.5px;
 	margin-top:1em;
+	width:auto;
 }
 
 .home-id .ui-btn.settings:before {
@@ -382,6 +383,7 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 .home-id.ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
+	margin-left:10px;
 	color: #FFF;
 	font-family: GEorgia, serif;
 	font-weight: normal;
