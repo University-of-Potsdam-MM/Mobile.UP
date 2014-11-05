@@ -668,7 +668,7 @@ label.showfirst {
 #sitemap #sitemaps-settings .options-close {
 	background-color:#014260;
 	color:#fff;
-	
+
 }
 
 /***************Öffnungszeiten********************
@@ -809,6 +809,11 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 
 /****************************** Verkehr ******************
 ***********************************************************/
+
+#complexTransport, #transport, #mensa{
+	margin-bottom: 20px;
+}
+
 .buttons_pt {
 	margin-top: 10px;
 }
@@ -1113,6 +1118,15 @@ div.copyright p {
 	font-size: 13px;
 }
 
+.ui-footer .copyright{
+	text-align: center;
+	background-color: #FFFFFF;
+	font-weight: normal;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: #cfdae3;
+	font-size: 12px;
+}
 
 #book-icon {
 	width: 55px;

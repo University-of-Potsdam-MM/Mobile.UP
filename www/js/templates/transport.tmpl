@@ -2,14 +2,14 @@
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
     <a href="#campus" data-role="button" data-icon="false"	data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn">Back</a>
-   
+
     <%  if(store.get('up.session.authenticated')){ %>
 	<h1 class="loggedin">N&auml;chste Abfahrten </h1>
 	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %> 
-    <h1>N&auml;chste Abfahrten </h1>   
-    <% } %> 
-    
+    <%  } else { %>
+    <h1>N&auml;chste Abfahrten </h1>
+    <% } %>
+
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->
@@ -45,6 +45,9 @@
             <input id="later-button"type="submit" data-theme="a" value="Später" />
         </div>
 
+    </div>
+    <div data-role="footer" data-position="fixed" data-tap-toggle="false">
+        <p class="copyright">Alle Daten werden mit freundlicher Unterstützung der <a href="http://www.vbb.de/" target="_blank" rel="external">VBB GmbH</a> bereitgestellt<br />Alle Angaben ohne Gewähr.</p>
     </div>
 	<!-- End Main Content -->
 </div>
