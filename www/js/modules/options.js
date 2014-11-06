@@ -49,7 +49,7 @@ define([
 				var username = $('#username').val();
 				var password = $('#password').val();
 				this.model.generateLoginURL({username: username, password: password});
-				this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+				if (!this.LoadingView) {this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});}
 				var that = this;
 				this.model.fetch({
 					success: function(model, response, options){
