@@ -25,13 +25,13 @@
 
         </h2>
         <p>
-          
 
-         
+
+
             Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
             Status: <%= course.get('status') %><br />
             Rhythmus: <%= course.get('dates')[currentDate].rythm %><br />
-            Webseite: <a href="<%= course.get('weblink') %>"><%= course.get('weblink') %></a><br />
+            Webseite: <a href="<%= course.get('weblink') %>" rel="external"><%= course.get('weblink') %></a><br />
         </p>
     </li>
     <%
