@@ -545,11 +545,14 @@ label.showfirst {
 	{
 	width: 30px;
 	height: 30px;
-	float: left;
+	float:left;
+
 }
 
 .second-mensaicons {
-	width: 40px;
+	float:left;
+	height:60px;
+	margin-right:10px;
 }
 
 .second-mensaicons img {
