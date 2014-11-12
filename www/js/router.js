@@ -43,6 +43,7 @@ define([
 			"calendar": "calendar",
 			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
+			"study/moodle/*courseid": "moodle",
 			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
@@ -186,8 +187,8 @@ define([
 			this.changePage(new CalendarPageView({day: day}));
 		},
 
-		moodle: function () {
-			this.changePage(new MoodlePageView({model: this.session}));
+		moodle: function (courseid) {
+			this.changePage(new MoodlePageView({model: this.session, courseid: courseid}));
 		},
 
 		campus: function(){
