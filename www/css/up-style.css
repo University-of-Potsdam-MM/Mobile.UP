@@ -1474,6 +1474,10 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin-bottom: .3em
 }
 
+#library .infotext {
+	margin-left:55px;
+}
+
 #library .infotext h3,#options .infotext h3,#freeRooms .infotext h3 {
 	margin: 0;
 	border: none;
@@ -1490,7 +1494,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
-	text-indent: 35px;
+	padding-left: 25px;
+	padding-right:30px;
 	border: 0px;
 }
 
