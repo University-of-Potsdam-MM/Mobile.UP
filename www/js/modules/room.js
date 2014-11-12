@@ -297,11 +297,27 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		render: function(){
-			$(this.el).html(this.template({}));
+			this.$el.html(this.template({}));
+			
+			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
+			this.$(".infotext-header-show").show();
+			this.$(".infotext-header-hide").hide();
+			this.$(".infotext").collapsible({
+				
+				collapse: function() {
+					$(".infotext-header-show").show();
+					$(".infotext-header-hide").hide();
+				},
+				
+				expand: function() {
+					$(".infotext-header-show").hide();
+					$(".infotext-header-hide").show();
+				}
+			});
+			
 			return this;
 		}
 	});
 
 	return RoomPageView;
-
 });
