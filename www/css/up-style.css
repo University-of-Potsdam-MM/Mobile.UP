@@ -1103,7 +1103,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 
 div.booktitle {
-	min-height: 70px;
+	min-height: 100px;
 	margin: 5px;
 	padding-left: 55px;
 }
