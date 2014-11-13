@@ -7,7 +7,7 @@ define([
 ], function($, _, Backbone, utils, moment){
 
 	function endpoint(){
-      return 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
+      return 'https://api.uni-potsdam.de/endpoints/transportAPI/1.0/';
   }
 
   function ajax(xmlPayload) {
@@ -42,7 +42,7 @@ define([
       "externalId": ""
     },
 
-    url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+    url: 'https://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
 
     initialize: function(){
       this.set('journeys', new Journeys);
@@ -123,7 +123,7 @@ define([
   		"moment": ""
   	},
 
-  	url: 'http://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+  	url: 'https://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
 
 
   	parse: function(){

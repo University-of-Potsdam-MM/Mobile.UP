@@ -206,16 +206,34 @@ define([
 			this.$el.empty();
 		}
 	});
+	
+	// At most one InAppBrowser window should be opened at any time
+	var hasOpenInAppBrowser = false;
+	
+	var openInAppBrowser = function(url) {
+		var openWindow = window.open(url, "_blank", "enableViewportScale=yes");
+		openWindow.addEventListener('exit', function(event) {
+			hasOpenInAppBrowser = false;
+		});
+	};
 
 	/**
 	 * Opens external links (identified by rel="external") according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
 	var overrideExternalLinks = function(event) {
 		var url = $(event.currentTarget).attr("href");
+		
+		if (hasOpenInAppBrowser) {
+			console.log("InAppBrowser open, " + url + " won't be opened");
+			return false;
+		}
+		
 		if (window.cordova) {
+			hasOpenInAppBrowser = true;
 			console.log("Opening " + url + " externally");
+			
 			var moodlePage = "https://moodle2.uni-potsdam.de/";
-			if(url.indexOf(moodlePage) != -1){
+			if (url.indexOf(moodlePage) != -1){
 				var session = new Session();
 
 				$.post("https://moodle2.uni-potsdam.de/login/index.php",
@@ -223,11 +241,13 @@ define([
 						username: session.get('up.session.username'),
 						password: session.get('up.session.password')
 					}
-				).done(function(response){
-					window.open(url, "_blank", "enableViewportScale=yes");
+				).done(function(response) {
+					openInAppBrowser(url);
+				}).fail(function() {
+					hasOpenInAppBrowser = false;
 				});
-			}else{
-				window.open(url, "_blank", "enableViewportScale=yes");
+			} else {
+				openInAppBrowser(url);
 			}
 			return false;
 		} else {
@@ -256,7 +276,7 @@ define([
 		}
 
 		var info = new Backbone.Model;
-		info.url = "http://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
+		info.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
 		info.set("uuid", uuid);
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);

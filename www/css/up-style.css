@@ -176,10 +176,6 @@ body .ui-btn.ui-btn-a.back:visited {
 	background-color: #014260;
 }
 
-.ui-btn {
-	padding-right: 0;
-}
-
 .ui-header .ui-btn {
 	padding-right: 1em;
 }
@@ -549,11 +545,14 @@ label.showfirst {
 	{
 	width: 30px;
 	height: 30px;
-	float: left;
+	float:left;
+
 }
 
 .second-mensaicons {
-	width: 40px;
+	float:left;
+	height:60px;
+	margin-right:10px;
 }
 
 .second-mensaicons img {
@@ -603,12 +602,13 @@ label.showfirst {
 	top: 0;
 	background: none;
 	border: none;
-	padding: .6em 2em .6em 1em;
+	/*padding: .6em 2em .6em 1em;*/
 	margin-top: 1em;
 	color: #014260;
 	font-family: georgia, serif;
 	font-weight: normal;
 	height: 10px;
+	width:80px;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -632,7 +632,8 @@ label.showfirst {
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star {
-	right: -3px;
+	right: -90px;
+	margin-top: 15px;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
@@ -668,7 +669,7 @@ label.showfirst {
 #sitemap #sitemaps-settings .options-close {
 	background-color:#014260;
 	color:#fff;
-	
+
 }
 
 /***************Öffnungszeiten********************
@@ -809,6 +810,11 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 
 /****************************** Verkehr ******************
 ***********************************************************/
+
+#complexTransport, #transport, #mensa{
+	margin-bottom: 20px;
+}
+
 .buttons_pt {
 	margin-top: 10px;
 }
@@ -1099,7 +1105,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 
 div.booktitle {
-	min-height: 70px;
+	min-height: 100px;
 	margin: 5px;
 	padding-left: 55px;
 }
@@ -1115,6 +1121,15 @@ div.copyright p {
 	font-size: 13px;
 }
 
+.ui-footer .copyright{
+	text-align: center;
+	background-color: #FFFFFF;
+	font-weight: normal;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: #cfdae3;
+	font-size: 12px;
+}
 
 #book-icon {
 	width: 55px;
@@ -1461,6 +1476,10 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin-bottom: .3em
 }
 
+#library .infotext {
+	margin-left:55px;
+}
+
 #library .infotext h3,#options .infotext h3,#freeRooms .infotext h3 {
 	margin: 0;
 	border: none;
@@ -1477,7 +1496,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
-	text-indent: 35px;
+	padding-left: 25px;
+	padding-right:30px;
 	border: 0px;
 }
 
@@ -1667,7 +1687,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 #emergency-list .ui-btn-icon-right:after,#people-list .ui-btn-icon-right:after
 	{
-	right: -.1em;
+	right: .5em;
 }
 
 .mail {
@@ -1798,7 +1818,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 a#selectLevel-button {
-	padding-right: 15px;
+	padding-right: 305px;
 	padding-left: 5px;
 	text-align: left;
 }

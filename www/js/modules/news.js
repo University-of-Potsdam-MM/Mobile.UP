@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	 *	Backbone Model - NewsEntry
 	 */
 	app.models.NewsEntry = Backbone.Model.extend({
-		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/',
+		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/',
 
 		initialize: function(){
 			this.url = this.url+this.id;
@@ -33,7 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	 */
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
+		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
 
 		parse: function(response){
 			if(response.vars)
@@ -45,7 +45,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 	app.models.NewsSource = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'http://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/source/',
+		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/source/',
 
 		initialize: function(p){
 			this.url = this.url+p.id;
