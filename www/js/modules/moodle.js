@@ -169,11 +169,11 @@ define([
         this.listenToOnce(this, "authorize", this.authorize);
         this.listenToOnce(this, "fetchContent", this.fetchContent);
         this.listenTo(this, "renderView", this.renderView);
-        this.listenTo(this, "renderCourseList", this.renderCourseList);   
+        this.listenTo(this, "renderCourseList", this.renderCourseList);
         if (!MoodleApp.courses){
             // authoize and fetch
             this.trigger("authorize");
-          }   
+          }
     },
 
     authorize: function(){
@@ -201,7 +201,7 @@ define([
 
         // fetch all necessary information
         MoodleApp.courses.fetch();
-        MoodleApp.courses.bind("reset", this.renderView, this)     
+        MoodleApp.courses.bind("reset", this.renderView, this)
     },
 
     renderView: function(){
@@ -213,14 +213,21 @@ define([
     },
 
     renderCourseView: function(){
-        var course = MoodleApp.courses.get(this.courseid);
-          // render course
-        this.courseView = new MoodleApp.CourseView({
-            model: course,
-            collection: course.get('contents') || course.fetchContents(),
-            //news: MoodleApp.news,
-        });
-        this.$el.html(this.courseView.render().el);
+        if (MoodleApp.courses.get(this.courseid)){
+            var course = MoodleApp.courses.get(this.courseid);
+            // render course
+            this.courseView = new MoodleApp.CourseView({
+                model: course,
+                collection: course.get('contents') || course.fetchContents(),
+                //news: MoodleApp.news,
+            });
+            this.$el.html(this.courseView.render().el);
+        }else{
+            this.template = utils.rendertmpl('moodle');
+            this.$el.html(this.template({}));
+            var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Dieser Kurs existiert nicht oder Sie sind nicht eingeschrieben.', module: 'moodle'});
+        }
+
         this.$el.trigger("create");
         return this;
     },
@@ -240,7 +247,7 @@ define([
     render: function(){
         if (this.courseid){
             if(MoodleApp.courses){
-                this.renderCourseView();    
+                this.renderCourseView();
             }
         }else{
           this.template = utils.rendertmpl('moodle');
