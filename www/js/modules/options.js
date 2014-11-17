@@ -50,7 +50,7 @@ define([
 				var password = $('#password').val();
 				
 				suffixIndex = username.indexOf("@");
-				if (suffixIndex) {
+				if (suffixIndex != -1) {
 					username = username.substr(0, suffixIndex);
 					$('#username').val(username);
 				}
