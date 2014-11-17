@@ -397,6 +397,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     render: function(){
       var html = this.template({book:this.model});
       this.$el.html(html);
+      this.$(".infotext-header-show").show();
+      this.$(".infotext-header-hide").hide();
+      this.$(".infotext").collapsible({
+
+        collapse: function() {
+          $(".infotext-header-show").show();
+          $(".infotext-header-hide").hide();
+        },
+
+        expand: function() {
+          $(".infotext-header-show").hide();
+          $(".infotext-header-hide").show();
+        }
+      });
       this.$el.trigger('create');
       return this;
     }
