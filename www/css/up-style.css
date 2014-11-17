@@ -2429,6 +2429,21 @@ p.event-description {
 	color:#fff !important;
 }
 
+.gradeAverages h2 {
+	font-weight: bold;
+	color: #fff;
+	background-color: #014260;
+	margin: 0px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 13px;
+	padding-top: 13px;
+}
+
+.grade-right-aligned {
+	float: right !important;
+}
+
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;

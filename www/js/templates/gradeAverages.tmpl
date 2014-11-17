@@ -1,5 +1,6 @@
 <% if (averages) { %>
 <h2>
-	Geschätzte &Oslash;-Note: <% print(Number(averages.grade).toFixed(2)); %> LP: <%= averages.lps %>
+	<span class="grade-left-aligned">Geschätzte &Oslash;-Note: <% print(Number(averages.grade).toFixed(2)); %></span>
+	<span class="grade-right-aligned">LP: <%= averages.lps %></span>
 </h2>
 <% } %>
