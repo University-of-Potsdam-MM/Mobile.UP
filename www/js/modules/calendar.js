@@ -5,7 +5,8 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	'cache'
+	'cache',
+	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session){
 
 
@@ -20,7 +21,7 @@ define([
 			if (!$.isArray(course.dates)) {
 				course.dates = [course.dates];
 			}
-			
+
 			var split = (course.dates[0].timespan).split(' ');
 			(split[1]) ? this.set('starting', split[1]) : '';
 			(split[3]) ? this.set('ending', split[3]) : '';
@@ -39,7 +40,6 @@ define([
 	 */
 	var CourseList = Backbone.Collection.extend({
 		model: Course,
-		//url: 'js/json/courses-hgessner.json',
 
 		initialize: function(){
 			this.session = new Session();
@@ -47,7 +47,7 @@ define([
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 		},
-		
+
 		parse: function(response) {
 			return response.jsonArray.jsonElement;
 		}
@@ -154,6 +154,11 @@ define([
 
 		attributes: {"id": "calendar"},
 
+		events: {
+			'swipeleft': 'navigateForward',
+			'swiperight': 'navigateBackward'
+		},
+
 		initialize: function(vars){
 			// get passed day parameter and init collections
 			this.day = vars.day;
@@ -175,6 +180,16 @@ define([
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 
 			this.template = utils.rendertmpl('calendar');
+		},
+
+		navigateBackward: function(ev){
+			var route = '#calendar/'+moment(day).add(-1, 'd').format('YYYY-MM-DD');
+			Backbone.history.navigate(route, { trigger : true });
+		},
+
+		navigateForward: function(ev){
+			var route = '#calendar/'+moment(day).add(1, 'd').format('YYYY-MM-DD');
+			Backbone.history.navigate(route, { trigger : true });
 		},
 
 		prepareCourses: function(){
