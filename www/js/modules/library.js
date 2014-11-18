@@ -298,7 +298,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       // get relevant pagination information
       if(data.getElementsByTagNameNS) {
         if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
-          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar oder Sie haben einen Leerstring eingegeben.', module: 'library'});
+          this.set('numberOfRecords',0);
         }else{
           var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
           this.set('numberOfRecords',numberOfRecords);
