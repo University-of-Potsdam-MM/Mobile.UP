@@ -3,8 +3,9 @@ define([
 	'underscore',
 	'backbone',
 	'app',
-	'Session'
-], function($, _, Backbone, app, Session){
+	'Session',
+	'hammerjs'
+], function($, _, Backbone, app, Session, Hammer){
 
 	/*
 	 * Template Loading Functions
@@ -330,6 +331,72 @@ define([
 		},
 
 	};
+	
+	var GesturesView = Backbone.View.extend({
+		
+		delegateEventSplitter: /^(\S+)\s*(.*)$/,
+		gestures: ["swipeleft", "swiperight"],
+		gesturesCleanup: [],
+		
+		/**
+		 * Code taken from original implementation
+		 */
+		delegateEvents: function(events) {
+			if (!(events || (events = _.result(this, 'events')))) return this;
+			this.undelegateEvents();
+			for (var key in events) {
+				var method = events[key];
+				if (!_.isFunction(method)) method = this[events[key]];
+				if (!method) continue;
+				
+				var match = key.match(this.delegateEventSplitter);
+				var eventName = match[1], selector = match[2];
+				method = _.bind(method, this);
+				
+				/** This block is new */
+				if (_.contains(this.gestures, eventName)) {
+					var elements = undefined;
+					if (selector === '') {
+						elements = this.$el.get();
+					} else {
+						elements = this.$(selector).get();
+					}
+					
+					var that = this;
+					$.each(elements, function(index, el) {
+						var hammer = new Hammer(el);
+						hammer.on(eventName, method);
+						that.gesturesCleanup.push(function() { hammer.off(eventName); });
+					});
+					
+					continue;
+				}
+				
+				eventName += '.delegateEvents' + this.cid;
+				if (selector === '') {
+					this.$el.on(eventName, method);
+				} else {
+					this.$el.on(eventName, selector, method);
+				}
+			}
+			return this;
+		},
+		
+		/**
+		 * Code taken from original implementation
+		 */
+		undelegateEvents: function() {
+			this.$el.off('.delegateEvents' + this.cid);
+			
+			/** This block is new */
+			for (var count = 0; count < this.gesturesCleanup.length; count++) {
+				this.gesturesCleanup[count].apply(this);
+			}
+			this.gesturesCleanup = [];
+			
+			return this;
+		},
+	});
 
 	return {
 			rendertmpl: rendertmpl,
@@ -342,6 +409,7 @@ define([
 			overrideExternalLinks: overrideExternalLinks,
 			detectUA:detectUA,
 			onError: onError,
-			LocalStore: LocalStore
+			LocalStore: LocalStore,
+			GesturesView: GesturesView
 		};
 });
