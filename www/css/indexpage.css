@@ -1,6 +1,5 @@
 /* login button  - Höhe*/
-
-#home .ui-page-theme-b .ui-btn, #home .ui-bar-b .ui-btn, #home.ui-body-b .ui-btn, body  #home.ui-group-theme-b .ui-btn, body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited, #home.ui-bar-b .ui-btn:visited, #home .ui-body-b .ui-btn:visited, body #home .ui-group-theme-b .ui-btn:visited, head+body #home .ui-btn.ui-btn-b:visited
+#home .ui-page-theme-b .ui-btn,#home .ui-bar-b .ui-btn,#home.ui-body-b .ui-btn,body  #home.ui-group-theme-b .ui-btn,body  #home.ui-btn.ui-btn-b,#home.ui-page-theme-b .ui-btn:visited,#home.ui-bar-b .ui-btn:visited,#home .ui-body-b .ui-btn:visited,body #home .ui-group-theme-b .ui-btn:visited,head+body #home .ui-btn.ui-btn-b:visited
 	{
 	border-color: #94bbe3;
 }
@@ -8,7 +7,7 @@
 #home .ui-btn {
 	font-size: 16px;
 	margin: 0 0;
-	padding-right:1em;
+	padding-right: 1em;
 	text-align: right;
 	text-transform: uppercase;
 	font-weight: normal;
@@ -18,17 +17,17 @@
 }
 
 #home .ui-btn.settings.ui-icon-gear {
-	height:15px;
-	margin-right:10px;
-
+	height: 15px;
+	margin-right: 10px;
 }
+
 #home .ui-btn.settings {
-	margin:.5em 0;
-	text-transform:none;
-	font-weight:normal;
+	margin: .5em 0;
+	text-transform: none;
+	font-weight: normal;
 	padding: .6em 2em .6em 1em;
 	font-size: 12.5px;
-	margin-top:1em;
+	margin-top: 1em;
 }
 
 #home .ui-btn.settings:before {
@@ -38,11 +37,9 @@
 	display: inline-block;
 	width: 18px;
 	height: 22px;
-	text-indent:100px;
+	text-indent: 100px;
 	background-position: 0px 0px
 }
-
-
 
 #home .ui-header .ui-title {
 	background-image: none;
@@ -50,23 +47,19 @@
 	color: #FFF;
 	font-family: GEorgia, serif;
 	font-weight: normal;
-	text-transform:none;
-	letter-spacing:.1em;
-	font-style:italic;
+	text-transform: none;
+	letter-spacing: .1em;
+	font-style: italic;
 }
-
 
 #home .ui-header {
-	background-color:#014260 !important;
+	background-color: #014260 !important;
 }
-
 
 #home .ui-icon-gear:after {
-	background-color:#fff;
-	background-image:url(../img/up/gear.svg);
+	background-color: #fff;
+	background-image: url(../img/up/gear.svg);
 }
-
-
 
 /*1. icons startseite*/
 #home .ui-listview.ui-group-theme-c  li a span {
@@ -78,7 +71,6 @@
 	display: inline-block;
 }
 
-
 #home .ui-listview.ui-group-theme-c  li.news a span {
 	background-image: url(../img/up/arrow-white.png) !important;
 	background-repeat: no-repeat;
@@ -88,43 +80,84 @@
 	display: inline-block;
 }
 
-#home .ui-listview.ui-group-theme-c  li.news a {
+#home .ui-grid-d {
+	margin-bottom: .5em;
+	margin-left:0em;
+	max-width:400px;
+	min-width:321px;
+}
+
+#home .ui-grid-solo a {
+	background-color: #ededed;
+	padding: .2em;
+	min-height: 45px;
+	background-color: transparent;
+	border: none;
+	width: 45px;
+	margin: 0 auto;
+	border: 1px solid #D0DAE3;
+	border-radius: 3px;
+	background-color: #EDEDED;
+}
+
+#home .ui-grid-solo h2 {
+	margin-left: .5em;
+	font-family: georgia, serif;
+	font-style: italic;
+	font-weight: bold;
+	color: #014260;
+	border-bottom: 1px solid #d0dae3;
+}
+
+#home .ui-grid-solo h3 {
+	font-size: .7em;
+	color: #014260;
+	text-align: center;
+	font-weight:normal;
+}
+
+#home .ui-block-a.divider {
+	background-color:#d0dae3;
+	padding-top:1px;
+}
+
+#home .news {
 	background-image: url(../img/up/news.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.events a {
+#home .events {
 	background-image: url(../img/up/events.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.study a {
+#home .study {
 	background-image: url(../img/up/study.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.around a {
+#home .around {
 	background-image: url(../img/up/around.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.plans a {
+#home .plans {
 	background-image: url(../img/up/plans.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.search a {
+#home .search {
 	background-image: url(../img/up/search.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-#home .ui-listview.ui-group-theme-c  li.impressum a {
+#home .impressum {
 	background-image: url(../img/up/impressum-index.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
@@ -140,200 +173,178 @@
 	display: inline-block;
 }
 
-.ui-listview.ui-group-theme-c  li.calendar a {
+#home .calendar {
 	background-image: url(../img/up/calendar.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.lecturesdir a {
+#home .lecturesdir {
 	background-image: url(../img/up/lecturesdir.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.grades a {
+#home .grades {
 	background-image: url(../img/up/grades.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.moodle a {
+#home .moodle {
 	background-image: url(../img/up/moodle.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.itservices a {
+.
+#home itservices {
 	background-image: url(../img/up/itservices.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
 /*4. icons rund ums studium*/
-.ui-listview.ui-group-theme-c  li.events a {
+#home .events {
 	background-image: url(../img/up/events.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.mensa a {
+#home .mensa {
 	background-image: url(../img/up/mensa.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.emergency a {
+#home .emergency {
 	background-image: url(../img/up/emergency.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.sports a {
+#home .sports {
 	background-image: url(../img/up/sports.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
 /*4. icons plaene orte*/
-.ui-listview.ui-group-theme-c  li.sitemaps a {
+#home .sitemaps {
 	background-image: url(../img/up/sitemaps.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.rooms a {
+#home .rooms {
 	background-image: url(../img/up/rooms.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
-.ui-listview.ui-group-theme-c  li.opening a {
+
+#home .opening {
 	background-image: url(../img/up/opening.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
-.ui-listview.ui-group-theme-c  li.travel a {
+#home .travel {
 	background-image: url(../img/up/travel.png);
 	background-repeat: no-repeat;
 	background-position: bottom left;
 }
 
 /*panel*/
-
 .nav-search .ui-btn-icon-right:after {
-	left:1em;
+	left: 1em;
 }
 
 ul.nav-search li a.ui-icon-gear {
-	text-indent:28px;
+	text-indent: 28px;
 }
 
 /**** images high resolution devices ***/
-
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
-only screen and (                min-resolution: 192dpi),
-only screen and (                min-resolution: 2dppx)
-	{
-
-	#home .ui-listview.ui-group-theme-c  li.around a{
-	background-image: url(../img/up/around_hr.png) !important;
-	background-size: 71px 69px;
+@media only screen and (-webkit-min-device-pixel-ratio: 2) , only screen and (
+		min--moz-device-pixel-ratio: 2) , only screen and (
+		-o-min-device-pixel-ratio: 2/1) , only screen and (
+		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
+		, only screen and ( min-resolution: 2dppx) {
+	#home .ui-listview.ui-group-theme-c  li.around a {
+		background-image: url(../img/up/around_hr.png) !important;
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.calendar a {
-	background-image: url(../img/up/calendar_hr.png);
-	background-size:61px 69px;
+		background-image: url(../img/up/calendar_hr.png);
+		background-size: 61px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.emergency a {
-	background-image: url(../img/up/emergency_hr.png);
-	background-size:71px 69px;
+		background-image: url(../img/up/emergency_hr.png);
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.events a {
-	background-image: url(../img/up/events_hr.png);
-	background-size:71px 69px;
+		background-image: url(../img/up/events_hr.png);
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.grades a {
-	background-image: url(../img/up/grades_hr.png);
-	background-size:71px 69px;
+		background-image: url(../img/up/grades_hr.png);
+		background-size: 71px 69px;
 	}
-
 	#home .ui-listview.ui-group-theme-c  li.impressum a {
-	background-image: url(../img/up/impressum-index_hr.png);
-	background-size:71px 69px;
+		background-image: url(../img/up/impressum-index_hr.png);
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.itservices a {
 		background-image: url(../img/up/itservices_hr.png);
-		background-size:61px 69px;
+		background-size: 61px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.lecturesdir a {
 		background-image: url(../img/up/lecturesdir_hr.png);
-		background-size:61px 69px;
+		background-size: 61px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.mensa a {
 		background-image: url(../img/up/mensa_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.moodle a {
 		background-image: url(../img/up/moodle_hr.png);
-		background-size:80px 69px;
+		background-size: 80px 69px;
 	}
-
 	#home .ui-listview.ui-group-theme-c  li.news a {
 		background-image: url(../img/up/news_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.opening a {
 		background-image: url(../img/up/opening_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	#home .ui-listview.ui-group-theme-c  li.plans a {
 		background-image: url(../img/up/plans_hr.png);
-		background-size:61px 69px;
+		background-size: 61px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.rooms a {
 		background-image: url(../img/up/rooms_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	#home .ui-listview.ui-group-theme-c  li.search a {
 		background-image: url(../img/up/search_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.sitemaps a {
 		background-image: url(../img/up/sitemaps_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
 	.ui-listview.ui-group-theme-c  li.sports a {
 		background-image: url(../img/up/sports_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	#home .ui-listview.ui-group-theme-c  li.study a {
 		background-image: url(../img/up/study_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 	.ui-listview.ui-group-theme-c  li.travel a {
 		background-image: url(../img/up/travel_hr.png);
-		background-size:71px 69px;
+		background-size: 71px 69px;
 	}
-
 }
 
 /*
@@ -345,7 +356,7 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 .home-id .ui-btn {
 	font-size: 16px;
 	margin: 0 0;
-	padding-right:1em;
+	padding-right: 1em;
 	text-align: right;
 	text-transform: uppercase;
 	font-weight: normal;
@@ -355,18 +366,18 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 }
 
 .home-id .ui-btn.settings.ui-icon-gear {
-	height:15px;
-	margin-right:10px;
+	height: 15px;
+	margin-right: 10px;
 }
 
 .home-id .ui-btn.settings {
-	margin:.5em 0;
-	text-transform:none;
-	font-weight:normal;
+	margin: .5em 0;
+	text-transform: none;
+	font-weight: normal;
 	padding: .6em 2em .6em 1em;
 	font-size: 12.5px;
-	margin-top:1em;
-	width:auto;
+	margin-top: 1em;
+	width: auto;
 }
 
 .home-id .ui-btn.settings:before {
@@ -376,22 +387,22 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 	display: inline-block;
 	width: 18px;
 	height: 22px;
-	text-indent:100px;
+	text-indent: 100px;
 	background-position: 0px 0px
 }
 
 .home-id.ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
-	margin-left:10px;
+	margin-left: 10px;
 	color: #FFF;
 	font-family: GEorgia, serif;
 	font-weight: normal;
-	text-transform:none;
-	letter-spacing:.1em;
-	font-style:italic;
+	text-transform: none;
+	letter-spacing: .1em;
+	font-style: italic;
 }
 
 .home-id.ui-header {
-	background-color:#014260 !important;
+	background-color: #014260 !important;
 }
