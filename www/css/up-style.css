@@ -402,6 +402,11 @@ label.showfirst {
 	background-color: transparent;
 }
 
+.ui-icon-arrow-white:after {
+	background-image: url(../img/up/arrow-white.png);
+	background-color: transparent;
+}
+
 /* Sorter
 -------------------- */
 #sorter .ui-li.ui-li-static.ui-btn-up-c {
