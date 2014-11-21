@@ -74,6 +74,9 @@ define([
 
 				// Initialize external link override
 				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
+				
+				// Activate extended ajax error logging on console
+				//utils.activateExtendedAjaxLogging();
 
 				// Register global error handler
 				window.onerror = utils.onError;

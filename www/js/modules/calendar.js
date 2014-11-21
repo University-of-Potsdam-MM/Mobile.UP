@@ -5,7 +5,8 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	'cache'
+	'cache',
+	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session){
 
 
@@ -149,9 +150,14 @@ define([
 	 *	CalendarPageView - BackboneView
 	 * 	Main View fpr calendar
 	 */
-	var CalendarPageView = Backbone.View.extend({
+	var CalendarPageView = utils.GesturesView.extend({
 
 		attributes: {"id": "calendar"},
+
+		events: {
+			'swipeleft': 'navigateForward',
+			'swiperight': 'navigateBackward'
+		},
 
 		initialize: function(vars){
 			// get passed day parameter and init collections
@@ -174,6 +180,18 @@ define([
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 
 			this.template = utils.rendertmpl('calendar');
+		},
+
+		navigateBackward: function(ev){
+			var route = '#calendar/'+moment(day).add(-1, 'd').format('YYYY-MM-DD');
+			$.mobile.changePage.defaults.reverse = 'reverse';
+			Backbone.history.navigate(route, { trigger : true });
+		},
+
+		navigateForward: function(ev){
+			var route = '#calendar/'+moment(day).add(1, 'd').format('YYYY-MM-DD');
+			$.mobile.changePage.defaults.reverse = false;
+			Backbone.history.navigate(route, { trigger : true });
 		},
 
 		prepareCourses: function(){
