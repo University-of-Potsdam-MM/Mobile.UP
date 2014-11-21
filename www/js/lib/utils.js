@@ -397,6 +397,17 @@ define([
 			return this;
 		},
 	});
+	
+	var activateExtendedAjaxLogging = function() {
+		$(document).ajaxError(function(event, jqHXR, ajaxSettings, thrownError) {
+			console.log("Error handler activated");
+			console.log(jqHXR.status + ": " + jqHXR.statusText);
+			console.log(jqHXR.responseText);
+			console.log("Thrown error: " + thrownError);
+			console.log("URL: " + ajaxSettings.url);
+			console.log("Authorization: " + ajaxSettings.headers["Authorization"]);
+		});
+	};
 
 	return {
 			rendertmpl: rendertmpl,
@@ -410,6 +421,7 @@ define([
 			detectUA:detectUA,
 			onError: onError,
 			LocalStore: LocalStore,
-			GesturesView: GesturesView
+			GesturesView: GesturesView,
+			activateExtendedAjaxLogging: activateExtendedAjaxLogging
 		};
 });
