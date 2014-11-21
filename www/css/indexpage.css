@@ -114,14 +114,15 @@
 	border:none;
 	margin-top: .2em;
 	padding: 0 2px 0 0;
+	height:70px;
 }
 
 #home .ui-grid-solo h2 {
 	margin-left: .5em;
 	font-family: georgia, serif;
 	font-style: italic;
-	font-weight: bold;
 	color: #fff;
+	letter-spacing: 1px;
 }
 
 
@@ -130,6 +131,7 @@
 	padding-top: 1px;
 	padding-bottom:1px;
 	margin:1em auto;
+	width:99%;
 }
 
 
@@ -419,7 +421,7 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 .home-id.ui-header .ui-title {
 	background-image: none;
 	margin-left: 10px;
-	margin-left: 10px;
+	margin-left: .1em;
 	color: #FFF;
 	font-family: GEorgia, serif;
 	font-weight: normal;
