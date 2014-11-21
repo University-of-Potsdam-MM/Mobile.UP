@@ -49,11 +49,15 @@ define([
 				var username = $('#username').val();
 				var password = $('#password').val();
 				
+				// Remove mail suffix, only username is needed
 				suffixIndex = username.indexOf("@");
 				if (suffixIndex != -1) {
 					username = username.substr(0, suffixIndex);
 					$('#username').val(username);
 				}
+				
+				// Usernames have to be all lower case, otherwise some service logins will fail
+				$('#username').val(username.toLowerCase());
 				
 				this.model.generateLoginURL({username: username, password: password});
 				if (!this.LoadingView) {this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});}
