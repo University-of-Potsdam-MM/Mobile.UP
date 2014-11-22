@@ -57,7 +57,8 @@ define([
 				}
 				
 				// Usernames have to be all lower case, otherwise some service logins will fail
-				$('#username').val(username.toLowerCase());
+				username = username.toLowerCase()
+				$('#username').val(username);
 				
 				this.model.generateLoginURL({username: username, password: password});
 				if (!this.LoadingView) {this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});}
