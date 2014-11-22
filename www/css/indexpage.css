@@ -84,10 +84,10 @@
 }
 
 #home .flex-container {
-  text-align: center;
-  max-width: 680px; /* Maximum of five horizontal items */
+  max-width: 580px; /* Maximum of five horizontal items */
   margin-left: auto;
   margin-right: auto;
+  margin-top: 8px;
 }
 
 #home .flex-item {
@@ -97,13 +97,13 @@
 }
 
 #home .flex-item a {
-	width: 100px;
- 	height: 100px;
+	width: 80px;
+ 	height: 80px;
  	background-color: #d0dae3;
 	background-color: transparent;
 	text-transform: none;
 	color: #014260;
-	font-size: .9em;
+	font-size: .8em;
 	text-align: right;
 	text-transform: none;
 	word-wrap: normal;
@@ -117,34 +117,25 @@
 	letter-spacing: 1px;
 	background-color: #014260;
 	padding: 8px;
-	margin-top: 4px;
-	margin-bottom: 4px;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 4px;
 }
 
 /* Adapt header width to horizontal item count */
-/* Each item has a width of 128 and a margin of 8 */
-/* Each h2 has an additional padding of 16 */
-@media all and (min-width: 136px) {
-	#home h2 { width: 112px; }
-	#home .flex-container { width: 136px; }
+/* Each item has a width of 108 and a margin of 8 */
+@media all and (min-width: 116px) {
+	#home .flex-container { width: 116px; }
 }
-@media all and (min-width: 272px) {
-	#home h2 { width: 248px; }
-	#home .flex-container { width: 272px; }
+@media all and (min-width: 232px) {
+	#home .flex-container { width: 232px; }
 }
-@media all and (min-width: 408px) {
-	#home h2 { width: 384px; }
-	#home .flex-container { width: 408px; }
+@media all and (min-width: 348px) {
+	#home .flex-container { width: 348px; }
 }
-@media all and (min-width: 544px) {
-	#home h2 { width: 520px; }
-	#home .flex-container { width: 544px; }
+@media all and (min-width: 464px) {
+	#home .flex-container { width: 464px; }
 }
-@media all and (min-width: 680px) {
-	#home h2 { width: 656px; }
-	#home .flex-container { width: 680px; }
+@media all and (min-width: 580px) {
+	#home .flex-container { width: 580px; }
 }
 
 
