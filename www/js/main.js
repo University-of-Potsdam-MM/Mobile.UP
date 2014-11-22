@@ -23,7 +23,8 @@ require.config({
         'utils': 'lib/utils',
 		'date': 'lib/date',
 		'LocalStore': 'lib/ls-store',
-        'fastclick': 'vendor/fastclick.min'
+        'fastclick': 'vendor/fastclick.min',
+        'hammerjs': 'vendor/hammer.min'
     },
     shim: {
         // use namespace Backbone

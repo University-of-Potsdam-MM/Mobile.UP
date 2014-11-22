@@ -26,8 +26,9 @@ define([
 	'modules/lectures',
 	'modules/grades',
 	'modules/impressum',
-	'modules/options'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView){
+	'modules/options',
+	'modules/people'
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -57,7 +58,8 @@ define([
 			"lectures/*vvzUrls":"lectures",
 			"grades":"grades",
 			"impressum": "impressum",
-			"options": "options"
+			"options": "options",
+			"people": "people"
 		},
 
 		history: [],
@@ -65,7 +67,7 @@ define([
 		routesToScrollPositions: {},
 
 		// routes that need authentication
-		requiresAuth: ['calendar', 'moodle', 'grades'],
+		requiresAuth: ['calendar', 'moodle', 'grades', 'people'],
 
 		// routes to prevent authentication when already authenticated
 		preventAccessWhenAuth: [],
@@ -262,6 +264,10 @@ define([
 			this.changePage(new OptionsPageView({model: this.session}));
 		},
 
+		people: function(){
+			this.changePage(new PeoplePageView);
+		},
+
 		changePage: function(page){
 			if (this.currentView) {
 				// Stop listening to events
@@ -279,7 +285,7 @@ define([
 			var transition = $.mobile.changePage.defaults.transition;
 			var reverse = $.mobile.changePage.defaults.reverse;
 
-			// Erste Seite nicht sliden
+			// dont slide first page
 			if (this.firstPage){
 				transition = 'none';
 				this.firstPage = false;
