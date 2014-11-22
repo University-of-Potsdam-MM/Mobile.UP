@@ -1854,6 +1854,10 @@ h3.lecture-group-name {
 	margin-left: 5px !important;
 }
 
+.lecture-group-puls-link {
+	margin: 5px;
+}
+
 #lectures .ui-selectmenu-list li a {
 	padding: 0.5em;
 }
