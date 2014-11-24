@@ -13,7 +13,7 @@
 
 <div data-role="content" data-theme="b">
 	<div id="<%= course.get('id') %>">
-		<h3 class="coursetitle"><%= course.get('fullname') %></h3>
+		<h3 class="coursetitle"><a href="https://moodle2.uni-potsdam.de/course/view.php?id=<%= course.get('id') %>" rel="external"><%= course.get('fullname') %></a></h3>
 		<div data-role="listview" data-inset="true" data-theme="b">
 			<% contents.each(function(c){ %>
 			<% if (contents.first() == c) { %>
