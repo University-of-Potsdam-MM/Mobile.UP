@@ -11,11 +11,9 @@ define([
 	'modules/home',
 	'modules/news',
 	'modules/events',
-	'modules/study',
 	'modules/calendar',
 	'modules/moodle',
 	'modules/emergency',
-	'modules/campus',
 	'modules/sitemap',
 	'modules/room',
 	'modules/opening',
@@ -28,7 +26,7 @@ define([
 	'modules/impressum',
 	'modules/options',
 	'modules/people'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
+], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -40,11 +38,9 @@ define([
 			"news": "news",
 			"events": "events",
 			"events/*id": "events",
-			"study": "study",
 			"calendar": "calendar",
 			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
-			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
@@ -180,20 +176,12 @@ define([
 			}
 		},
 
-		study: function(){
-			this.changePage(new StudyPageView);
-		},
-
 		calendar: function(day){
 			this.changePage(new CalendarPageView({day: day}));
 		},
 
 		moodle: function () {
 			this.changePage(new MoodlePageView({model: this.session}));
-		},
-
-		campus: function(){
-			this.changePage(new CampusPageView);
 		},
 
 		lectures: function(vvzUrls){
