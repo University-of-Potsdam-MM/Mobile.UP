@@ -25,7 +25,9 @@ define([
       if(textStatus == 'timeout'){
         console.log('timeout error');
       }
-      console.log(textStatus, jqXHR);
+      //console.log(textStatus, jqXHR);
+    }).done(function(jqXHR, textStatus){
+      //console.log(textStatus, jqXHR);
     });
   }
 
