@@ -30,7 +30,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
       this.$ul.append(this.template({journey: journey}));
     },
 
-    loadNext: function(){
+    loadNext: function(ev){
+      ev.preventDefault();
       this.stations.fetch();
     },
 
