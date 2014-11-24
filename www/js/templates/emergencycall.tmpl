@@ -5,7 +5,7 @@
 <div>
 	<p>
 		<%= (emergency.mail) ? '<p><span class="mail"><a href="mailto:'+emergency.mail+'" data-rel="external">'+emergency.mail+'</a></span></p>' : '' %>
-		<%= (emergency.telephone) ? '<p><span class="phone"><a href="tel:'+emergency.telephone+'">'+emergency.telephone+'</a></span></p>' : '' %>
+		<%= (emergency.telephone) ? '<p><span class="phone"><a href="tel:'+emergency.telephone.replace(/[\s-]/g, '').replace(/\+/g, '00')+'">'+emergency.telephone+'</a></span></p>' : '' %>
 		<%= (emergency.street) ? '<p>'+emergency.street+'</p>' : '' %>
 		<%= (emergency.postal) ? '<p>'+emergency.postal+'</p>' : '' %>
 	</p>
