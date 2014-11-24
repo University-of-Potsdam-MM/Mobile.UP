@@ -8,45 +8,74 @@
     <% } %>
 </div>
 <!-- End Header -->
+
 <!-- Start Main - Navigation -->
 <div data-role="content">
-    <ul data-role="listview" data-inset="true" data-theme="c" id="main-navigation">
-        <li class="news">
-            <a href="#news" data-role="button">
-                <h1>Neuigkeiten</h1>
-                <p>News aus der Hochschule</p>
-            </a>
-        </li>
-        <li class="events">
-            <a href="#events" data-role="button">
-                <h1>Veranstaltungen</h1>
-                <p> Veranstaltungen rund ums Studium</p>
-            </a>
-        </li>
-        <li class="study">
-            <a href="#study" data-role="button">
-                <h1>Mein Studium</h1>
-                <p>Stundenplan, Vorlesungsverzeichnis,<br />Leistungen, Moodle</p>
-            </a>
-        </li>
-        <li class="around">
-            <a href="#campus" data-role="button">
-                <h1>Campus</h1>
-                <p>Lagepl&auml;ne, Raumbelegung, &Ouml;ffnungszeiten,<br />Bus &amp; Bahn, Mensa &amp; Speisepläne,<br />Notrufnummern, Hochschulsport</p>
-            </a>
-        </li>
-        <li class="search">
-            <a href="#library" data-role="button">
-                <h1>Suche</h1>
-                <p>Einfache Bibliothekssuche</p>
-            </a>
-        </li>
-        <li class="impressum">
-            <a href="#impressum" data-role="button">
-                <h1>Impressum</h1>
-                <p>Ansprechpartner, Mitmachen, Impressum</p>
-            </a>
-        </li>
-    </ul>
-</div>
+	
+	<div class="flex-container">
+		<!-- Mein Studium -->
+		<h2>Mein Studium</h2>
+		<div>
+			<div class= "flex-item iconized calendar">
+				<a href="#calendar" data-role="button">Stundenplan</a>
+			</div>
+			<div class="flex-item iconized lecturesdir">
+				<a href="#lectures" data-role="button">Vorlesungs-<br>verzeichnis</a>
+			</div>
+			<div class="flex-item iconized grades">
+				<a href="#grades" data-role="button">Meine<br>Leistungen</a>
+			</div>
+			<div class="flex-item iconized moodle">
+				<a href="#study/moodle" data-role="button">Moodle</a>
+			</div>
+			<div class="flex-item iconized search">
+				<a href="#library" data-role="button">Bibliotheks-<br>suche</a>
+			</div>
+		</div>
+	</div>
+	
+	<div style="clear: both;"></div>
+	
+	<div class="flex-container">
+		<!-- Mein Campus -->
+		<h2>Mein Campus</h2>
+		<div>
+			<div class="flex-item iconized news">
+				<a href="#news" data-role="button">Neuigkeiten</a>
+			</div>
+			<div class="flex-item iconized events">
+				<a href="#events" data-role="button">Events</a>
+			</div>
+			<div class="flex-item iconized plans">
+				<a href="#sitemap" data-role="button">Lagepläne</a>
+			</div>
+			<div class="flex-item iconized rooms">
+				<a href="#room" data-role="button">Raum-<br>belegung</a>
+			</div>
+			<div class="flex-item iconized opening">
+				<a href="#opening" data-role="button">Öffnungs-<br>zeiten</a>
+			</div>
+			<div class="flex-item iconized travel">
+				<a href="#transport"  data-role="button">Bus & Bahn</a>
+			</div>
+			<div class="flex-item iconized mensa">
+				<a href="#mensa" data-role="button">Mensa</a>
+			</div>
+			<div class="flex-item iconized emergency">
+				<a href="#emergency" data-role="button">Notruf-<br>nummern</a>
+			</div>
+			<div class="flex-item iconized sports">
+				<a href="http://www.hochschulsport-potsdam.de/" rel="external" data-role="button">Hochschul-<br>sport</a>
+			</div>
+			<div class="flex-item iconized person">
+				<a href="#people" data-role="button">Personen-<br>suche</a>
+			</div>
+		</div>
+	</div>
+	
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
+		<a class="home-impressum" href="#impressum" data-role="button" data-icon="arrow-white" data-iconpos="right">Impressum</a>
+	</div>
+	
+</div> <!-- ende content -->
 <!-- End Main - Navigation -->

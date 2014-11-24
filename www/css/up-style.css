@@ -402,6 +402,11 @@ label.showfirst {
 	background-color: transparent;
 }
 
+.ui-icon-arrow-white:after {
+	background-image: url(../img/up/arrow-white.png);
+	background-color: transparent;
+}
+
 /* Sorter
 -------------------- */
 #sorter .ui-li.ui-li-static.ui-btn-up-c {
@@ -1053,12 +1058,14 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 /**********************Suche******************
 *****************************************************/
+#people .ui-input-btn,
 #library .ui-input-btn {
 	color: none;
 	font-weight: normal;
 	text-transform: uppercase;
 }
 
+#people .ui-input-btn input,
 #library .ui-input-btn input {
 	color: none !important;
 }
@@ -1103,7 +1110,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 }
 
 div.booktitle {
-	min-height: 70px;
+	min-height: 100px;
 	margin: 5px;
 	padding-left: 55px;
 }
@@ -1474,6 +1481,10 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	margin-bottom: .3em
 }
 
+#library .infotext {
+	margin-left:55px;
+}
+
 #library .infotext h3,#options .infotext h3,#freeRooms .infotext h3 {
 	margin: 0;
 	border: none;
@@ -1490,7 +1501,8 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 
 .ui-body-c .infotext .ui-body-inherit.ui-collapsible-content {
 	background-color: #FFF;
-	text-indent: 35px;
+	padding-left: 25px;
+	padding-right:30px;
 	border: 0px;
 }
 
@@ -1840,6 +1852,10 @@ li.lecture-group-detail {
 h3.lecture-group-name {
 	margin: 12px !important;
 	margin-left: 5px !important;
+}
+
+.lecture-group-puls-link {
+	margin: 5px;
 }
 
 #lectures .ui-selectmenu-list li a {
@@ -2420,6 +2436,21 @@ p.event-description {
 .saveToCal {
 	background-color:#014260 !important;
 	color:#fff !important;
+}
+
+.gradeAverages h2 {
+	font-weight: bold;
+	color: #fff;
+	background-color: #014260;
+	margin: 0px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 13px;
+	padding-top: 13px;
+}
+
+.grade-right-aligned {
+	float: right !important;
 }
 
 /* Slide transition speed */
