@@ -84,7 +84,7 @@
 }
 
 #home .flex-container {
-  max-width: 580px; /* Maximum of five horizontal items */
+  max-width: 515px; /* Maximum of five horizontal items */
   margin-left: auto;
   margin-right: auto;
   margin-top: 8px;
@@ -97,13 +97,14 @@
 }
 
 #home .flex-item a {
-	width: 80px;
- 	height: 80px;
+	width: 85px;
+ 	height: 85px;
+ 	padding: 5px;
  	background-color: #d0dae3;
 	background-color: transparent;
 	text-transform: none;
 	color: #014260;
-	font-size: .8em;
+	font-size: .9em;
 	text-align: right;
 	text-transform: none;
 	word-wrap: normal;
@@ -121,21 +122,21 @@
 }
 
 /* Adapt header width to horizontal item count */
-/* Each item has a width of 108 and a margin of 8 */
-@media all and (min-width: 116px) {
-	#home .flex-container { width: 116px; }
+/* Each item has a width of 95 and a margin of 8 */
+@media all and (min-width: 103px) {
+	#home .flex-container { width: 103px; }
 }
-@media all and (min-width: 232px) {
-	#home .flex-container { width: 232px; }
+@media all and (min-width: 206px) {
+	#home .flex-container { width: 206px; }
 }
-@media all and (min-width: 348px) {
-	#home .flex-container { width: 348px; }
+@media all and (min-width: 309px) {
+	#home .flex-container { width: 309px; }
 }
-@media all and (min-width: 464px) {
-	#home .flex-container { width: 464px; }
+@media all and (min-width: 412px) {
+	#home .flex-container { width: 412px; }
 }
-@media all and (min-width: 580px) {
-	#home .flex-container { width: 580px; }
+@media all and (min-width: 515px) {
+	#home .flex-container { width: 515px; }
 }
 
 #home .iconized {
