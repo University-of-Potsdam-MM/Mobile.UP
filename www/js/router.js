@@ -43,8 +43,8 @@ define([
 			"study": "study",
 			"calendar": "calendar",
 			"calendar/*day": "calendar",
-			"study/moodle": "moodle",
-			"study/moodle/*courseid": "moodle",
+			"moodle": "moodle",
+			"moodle/*courseid": "moodle",
 			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
