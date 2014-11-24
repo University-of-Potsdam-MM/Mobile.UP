@@ -40,11 +40,9 @@ define([
 			"news": "news",
 			"events": "events",
 			"events/*id": "events",
-			"study": "study",
 			"calendar": "calendar",
 			"calendar/*day": "calendar",
 			"study/moodle": "moodle",
-			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
@@ -180,20 +178,12 @@ define([
 			}
 		},
 
-		study: function(){
-			this.changePage(new StudyPageView);
-		},
-
 		calendar: function(day){
 			this.changePage(new CalendarPageView({day: day}));
 		},
 
 		moodle: function () {
 			this.changePage(new MoodlePageView({model: this.session}));
-		},
-
-		campus: function(){
-			this.changePage(new CampusPageView);
 		},
 
 		lectures: function(vvzUrls){
