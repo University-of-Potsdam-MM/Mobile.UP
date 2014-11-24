@@ -73,7 +73,7 @@ define([
 				$(overrideBackboneSync);
 
 				// Initialize external link override
-				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
+				$(document).on("click", "a", utils.overrideExternalLinks);
 				
 				// Activate extended ajax error logging on console
 				//utils.activateExtendedAjaxLogging();
