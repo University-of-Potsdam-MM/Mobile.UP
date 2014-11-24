@@ -138,6 +138,11 @@
 	#home .flex-container { width: 580px; }
 }
 
+#home .iconized {
+	background-repeat: no-repeat;
+	background-position: bottom left;
+	background-size: 60px;
+}
 
 #home .home-impressum {
 	background-color:#014260;
@@ -154,14 +159,10 @@
 
 #home .news {
 	background-image: url(../img/up/news.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .events {
 	background-image: url(../img/up/events.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .study {
@@ -170,22 +171,12 @@
 	background-position: bottom left;
 }
 
-#home .around {
-	background-image: url(../img/up/around.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
 #home .plans {
 	background-image: url(../img/up/plans.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .search {
 	background-image: url(../img/up/search.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .impressum {
@@ -206,82 +197,46 @@
 
 #home .calendar {
 	background-image: url(../img/up/calendar.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .lecturesdir {
 	background-image: url(../img/up/lecturesdir.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .grades {
 	background-image: url(../img/up/grades.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .moodle {
 	background-image: url(../img/up/moodle.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .person {
 	background-image: url(../img/up/person.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-/*4. icons rund ums studium*/
-#home .events {
-	background-image: url(../img/up/events.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .mensa {
 	background-image: url(../img/up/mensa.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .emergency {
 	background-image: url(../img/up/emergency.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .sports {
 	background-image: url(../img/up/sports.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
-}
-
-/*4. icons plaene orte*/
-#home .sitemaps {
-	background-image: url(../img/up/sitemaps.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .rooms {
 	background-image: url(../img/up/rooms.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .opening {
 	background-image: url(../img/up/opening.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 #home .travel {
 	background-image: url(../img/up/travel.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
 }
 
 /*panel*/
