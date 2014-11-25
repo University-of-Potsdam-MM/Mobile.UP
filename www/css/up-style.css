@@ -1695,12 +1695,17 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	right: .5em;
 }
 
+#people-list .ui-btn-icon-left:after{
+	top: 2em;
+	left: 0.9em;
+}
+
 .mail {
 	background-image: url(../img/up/mail-small.png) !important;
 	background-repeat: no-repeat;
 	background-position: 0px .2em;
 	text-indent: 20px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
 .phone {
@@ -1708,7 +1713,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background-repeat: no-repeat;
 	background-position: 0px .2em;
 	text-indent: 20px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
 #emergency-list .ui-collapsible-content p,#people-list .ui-collapsible-content p
