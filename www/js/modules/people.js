@@ -62,8 +62,13 @@ define([
 			this.session = new Session();
 			this.template = utils.rendertmpl('people'),
 			this.listenTo(this.collection, "error", this.requestFail);
+			this.listenTo(this.collection, "sync", this.enableSearch);
 			this.collection.bind("reset", this.clearList);
 			this.collection.bind("add", this.addPerson);
+		},
+
+		enableSearch: function(){
+			$("input[type='submit']").removeAttr('disabled');
 		},
 
 		clearList: function(){
@@ -79,6 +84,7 @@ define([
 
 		submit: function(ev){
 			ev.preventDefault();
+			$("input[type='submit']").prop("disabled", true);
 			// get search query
 			var inputs = $('#query-form :input').serializeArray();
       		var query = inputs[0].value;
