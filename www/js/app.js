@@ -52,7 +52,8 @@ define([
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
 									"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
-									"https://api.uni-potsdam.de/endpoints/errorAPI"];
+									"https://api.uni-potsdam.de/endpoints/errorAPI",
+									"https://api.uni-potsdam.de/endpoints/personAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
@@ -74,7 +75,7 @@ define([
 
 				// Initialize external link override
 				$(document).on("click", "a", utils.overrideExternalLinks);
-				
+
 				// Activate extended ajax error logging on console
 				//utils.activateExtendedAjaxLogging();
 

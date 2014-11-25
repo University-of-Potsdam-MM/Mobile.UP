@@ -83,7 +83,7 @@ define([
 			var inputs = $('#query-form :input').serializeArray();
       		var query = inputs[0].value;
 			// generate url and set collection url
-			var url = 'https://www.intern.uni-potsdam.de/personsearch/app/webroot/index.php/person/.json';
+			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
 			url += '?value='+query;
 			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
 			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
