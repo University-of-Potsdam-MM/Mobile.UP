@@ -5,10 +5,10 @@
 <% } %>
 <div class="floatR right-event-detail">
 	<div class="clear floatR" <% if(!going) { %>style="display:none"<% } %> id="savedInCal<%=event.Event.id%>">
-		
+
 		<span class="s-font floatR vorgemerkt">Vorgemerkt</span>
 	</div>
-	
+
 <% if(event.Event.ticket_uri && false) { %>
 	<div class="buy-ticket-link">
 		<a onclick="app.openBrowser('<%=event.Event.ticket_uri%>')">Tickets kaufen</a>
@@ -22,8 +22,7 @@
 	<img style="vertical-align:-2px;" src="img/cal.png" />
 	<strong><%= ds %> Uhr</strong>
 </div>
-	<% if(true) { %>
-
+	<% if(window.cordova) { %>
 		<a id="saveInCal<%=event.Event.id%>" class="saveToCal" data-role="button" data-theme="a">In Kalender speichern</a>
 	<% } %>
 </p>
