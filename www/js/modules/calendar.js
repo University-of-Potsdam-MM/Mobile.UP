@@ -198,7 +198,7 @@ define([
 			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
-			this.CourseList.fetch({cache: true});
+			this.CourseList.fetch({cache: true, expires: false, prefill: true});
 		},
 
 		renderDay: function(){

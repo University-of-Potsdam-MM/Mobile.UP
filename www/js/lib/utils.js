@@ -177,11 +177,14 @@ define([
 	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
 	 */
 	var LoadingView = Backbone.View.extend({
+		
+		runningCounter: 0,
 
 		initialize: function() {
 			var subject = this.findSubject();
 			if (subject){
 				this.listenTo(subject, "request", this.spinnerOn);
+				this.listenTo(subject, "cachesync", this.spinnerHold)
 				this.listenTo(subject, "sync", this.spinnerOff);
 				this.listenTo(subject, "error", this.spinnerOff);
 			}
@@ -199,13 +202,24 @@ define([
 		},
 
 		spinnerOn: function() {
+			this.runningCounter++;
 			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin: 50px;\">" +
 								"<img src=\"img/loadingspinner.gif\"></img>" +
 							"</div>");
 		},
+		
+		spinnerHold: function(model, attr, opts) {
+			// backbone-fetch-cache is used, we should be aware of prefill requests
+			if (opts.prefill) {
+				this.runningCounter++;
+			}
+		},
 
 		spinnerOff: function() {
-			this.$el.empty();
+			this.runningCounter--;
+			if (this.runningCounter <= 0) {
+				this.$el.empty();
+			}
 		}
 	});
 	
