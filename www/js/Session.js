@@ -8,7 +8,7 @@ define([
 	var CacheManager = Backbone.Model.extend({
 		
 		privateHost: "api.uni-potsdam.de",
-		privateEndpoints = ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
+		privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
 		
 		/**
 		 * Removes all cache entries that are based on user data.
