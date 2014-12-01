@@ -979,6 +979,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	max-width: 600px;
 }
 
+#opening .ui-table td,
 #transport2 .ui-table td {
 	padding-top: 0px;
 	padding-bottom: 0px;

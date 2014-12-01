@@ -1,17 +1,37 @@
 [
   {
-    "name": "Akademisches Auslandsamt (Erasmus)",
+    "name": "Akademisches Auslandsamt (Erasmus+)",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
     "mail": "infoaaa@uni-potsdam.de",
     "telephone": "+49 331 977-1760",
     "times": [
       {
         "day": "Montag",
-        "opening": [["10:00", "12:00"], ["13:00", "15:00"]]
+        "opening": [["10:00", "12:00"]]
       },
       {
         "day": "Dienstag",
         "opening": [["10:00", "12:00"], ["13:00", "17:00"]]
+      }
+    ]
+  },
+  {
+    "name": "Akademisches Auslandsamt (Beratung und Zulassung internationaler Studienbewerber, Äquivalenzen)",
+    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
+    "mail": "infoaaa@uni-potsdam.de",
+    "telephone": "+49 331 977-1676",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["10:00", "12:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["10:00", "12:00"], ["13:00", "17:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["10:00", "12:00"]]
       }
     ]
   },
