@@ -979,6 +979,11 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	max-width: 600px;
 }
 
+#transport2 .ui-table td {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
 #transport_rides a.ui-btn span {
 	text-indent: 0.3em !important;
 	display: inline-block;
