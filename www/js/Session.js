@@ -16,7 +16,7 @@ define([
 		clearPrivateCache: function() {
 			var privateKeys = _.filter(_.keys(Backbone.fetchCache._cache), this.isPrivate, this);
 			for (key in privateKeys) {
-				delete Backbone.fetchCache._cache[privateKeys[key]];
+				Backbone.fetchCache.clearItem(privateKeys[key]);
 			}
 		},
 		
