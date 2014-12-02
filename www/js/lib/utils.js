@@ -442,6 +442,17 @@ define([
 			console.log("Authorization: " + ajaxSettings.headers["Authorization"]);
 		});
 	};
+	
+	// Hold cached data for five minutes, then do a background update
+	var prefillExpires = 5 * 60;
+	var cacheDefaults = function(opts) {
+		var defaults = {cache: true, expires: false, prefill: true, prefillExpires: prefillExpires};
+		if (opts) {
+			return _.defaults(opts, defaults);
+		} else {
+			return defaults;
+		}
+	};
 
 	return {
 			rendertmpl: rendertmpl,
@@ -456,6 +467,7 @@ define([
 			onError: onError,
 			LocalStore: LocalStore,
 			GesturesView: GesturesView,
-			activateExtendedAjaxLogging: activateExtendedAjaxLogging
+			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
+			cacheDefaults: cacheDefaults
 		};
 });
