@@ -203,7 +203,7 @@ define([
 
 		spinnerOn: function() {
 			this.runningCounter++;
-			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin: 50px;\">" +
+			this.$el.append("<div class=\"up-loadingSpinner extensive-spinner\">" +
 								"<img src=\"img/loadingspinner.gif\"></img>" +
 							"</div>");
 		},
@@ -212,6 +212,7 @@ define([
 			// backbone-fetch-cache is used, we should be aware of prefill requests
 			if (opts.prefill) {
 				this.runningCounter++;
+				this.$(".up-loadingSpinner").removeClass("extensive-spinner").addClass("compact-spinner");
 			}
 		},
 
