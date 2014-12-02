@@ -151,6 +151,9 @@ define([
 	 * 	Main View fpr calendar
 	 */
 	var CalendarPageView = utils.GesturesView.extend({
+		
+		// Hold cached data for five minutes, then do a background update
+		prefillExpires: 5 * 60,
 
 		attributes: {"id": "calendar"},
 
@@ -198,7 +201,7 @@ define([
 			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
-			this.CourseList.fetch({cache: true, expires: false, prefill: true});
+			this.CourseList.fetch({cache: true, expires: false, prefill: true, prefillExpires: this.prefillExpires});
 		},
 
 		renderDay: function(){
