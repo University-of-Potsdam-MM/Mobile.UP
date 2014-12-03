@@ -41,7 +41,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 			this.items.url = vvzUrl;
 			this.items.reset();
-			this.items.fetch({reset: true});
+			this.items.fetch(utils.cacheDefaults({reset: true}));
 		}
 	});
 
@@ -139,7 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 				new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
 
 				// Fetch from server
-				submodel.fetch();
+				submodel.fetch(utils.cacheDefaults());
 			}
 		}
 	});

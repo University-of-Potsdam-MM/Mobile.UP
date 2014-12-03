@@ -151,7 +151,7 @@ define([
 	 * 	Main View fpr calendar
 	 */
 	var CalendarPageView = utils.GesturesView.extend({
-
+		
 		attributes: {"id": "calendar"},
 
 		events: {
@@ -198,7 +198,7 @@ define([
 			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
-			this.CourseList.fetch({cache: true});
+			this.CourseList.fetch(utils.cacheDefaults());
 		},
 
 		renderDay: function(){
