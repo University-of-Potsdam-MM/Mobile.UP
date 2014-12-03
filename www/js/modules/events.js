@@ -30,7 +30,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 
 	app.models.Place = Backbone.Collection.extend({
 		model: app.models.Event,
-		url: 'https/://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/place/',
+		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/place/',
 
 		initialize: function(p){
 			this.url = this.url + p.id;
@@ -75,7 +75,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.$el.trigger("create");
 			//$('.back').click(function(e){window.history.back(); e.preventDefault(); e.stopPropagation();});
 			$.mobile.changePage.defaults.reverse = true;
-			$('.back').attr('href', '#events');
+			$('.back').attr('href', 'javascript:history.back()');
 
 			this.delegateEvents();
 			return this;
@@ -219,10 +219,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 
 		filterIndex: function(w){
 			if(!this.filter)
-				this.filter = 'next';
+				this.filter = window.android_bug_events_filter ? window.android_bug_events_filter : 'next';
 			if(!w) {
 				w = this.filter;
-			} else
+			} 
 			var lstr = '', lim = '';
 			for(var i in utils.LocalStore.get('disabledLocations', {})) {
 				lstr += lim + 'li.location-'+i;
@@ -232,7 +232,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			$('#eventlist').children('li.show-'+w).not(lstr).css('display', 'block');
 			$('#eventlist').trigger('resize');
 			this.filter = w;
-			Backbone.history.navigate('events/index/'+this.filter, { trigger : false });
+			window.android_bug_events_filter = this.filter;
+			Backbone.history.navigate('events/index/'+this.filter, { replace: true, trigger : false });
 			//this.setActiveBtn();
 			window.setTimeout(function(){$(window).trigger('resize');}, 10);
 		}

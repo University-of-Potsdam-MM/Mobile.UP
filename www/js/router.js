@@ -157,10 +157,6 @@ define([
 			var hideFooter = false;
 			if(!id || id.indexOf('index') > -1){
 				var filter = id ? (id.split('/')[1] ? id.split('/')[1] : false) : false;
-				if(!filter)
-					filter = window.android_bug_events_filter ? window.android_bug_events_filter : 'next';
-				else
-					window.android_bug_events_filter = filter;
 				new EventsView.EventsIndex({page:page, filter: filter});
 			} else {
 				hideFooter = true;
