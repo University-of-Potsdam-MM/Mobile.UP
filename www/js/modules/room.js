@@ -272,7 +272,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
 		currentView = new RoomDetailsView({el: div, model: roomDetails});
 
-		roomDetails.reservations.fetch({reset: true});
+		roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
 	}
 
 	var lastRoomsCampus = undefined;
@@ -286,7 +286,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
 		currentView = new RoomsOverview({el: div, model: roomsModel});
 
-		roomsModel.rooms.fetch({reset: true});
+		roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
 	}
 
 	var RoomPageView = Backbone.View.extend({

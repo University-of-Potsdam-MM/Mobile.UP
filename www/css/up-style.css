@@ -474,11 +474,27 @@ label.showfirst {
 	font-size: 1.3em;
 }
 
-.up-loadingSpinner img {
+.up-loadingSpinner {
+	width: 40px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.up-loadingSpinner.extensive-spinner {
+	margin-top: 50px;
+	margin-bottom: 50px;
 	height: 40px;
+}
+
+.up-loadingSpinner.compact-spinner {
+	margin-top: 10px;
+	margin-bottom: 3px;
+	height: 25px;
+}
+
+.up-loadingSpinner img {
+	height: 100%;
 }
 
 /* mensa piktogramme */
