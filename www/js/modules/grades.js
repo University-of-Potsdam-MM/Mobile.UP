@@ -69,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 			new GradeAveragesView({model: this.grades, el: this.$("#averageData")});
 			new utils.LoadingView({model: this.grades, el: this.$("#loadingSpinner")});
 			
-			this.grades.fetch();
+			this.grades.fetch(utils.cacheDefaults());
 		},
 
 		render: function(){
