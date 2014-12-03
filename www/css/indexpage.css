@@ -255,79 +255,79 @@ ul.nav-search li a.ui-icon-gear {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
-	#home .ui-listview.ui-group-theme-c  li.around a {
+	#home .around {
 		background-image: url(../img/up/around_hr.png) !important;
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.calendar a {
+	#home .calendar {
 		background-image: url(../img/up/calendar_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.emergency a {
+	#home .emergency  {
 		background-image: url(../img/up/emergency_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.events a {
+	#home .events {
 		background-image: url(../img/up/events_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.grades a {
+	#home .grades  {
 		background-image: url(../img/up/grades_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .ui-listview.ui-group-theme-c  li.impressum a {
+	#home .impressum  {
 		background-image: url(../img/up/impressum-index_hr.png);
 		background-size: 20px 20px;
 	}
-	.ui-listview.ui-group-theme-c  li.itservices a {
+	#home .person {
 		background-image: url(../img/up/person_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.lecturesdir a {
+	#home .lecturesdir  {
 		background-image: url(../img/up/lecturesdir_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.mensa a {
+	#home .mensa  {
 		background-image: url(../img/up/mensa_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.moodle a {
+	#home .moodle {
 		background-image: url(../img/up/moodle_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .ui-listview.ui-group-theme-c  li.news a {
+	#home .news  {
 		background-image: url(../img/up/news_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.opening a {
+	#home .opening  {
 		background-image: url(../img/up/opening_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .ui-listview.ui-group-theme-c  li.plans a {
+	#home .plans  {
 		background-image: url(../img/up/plans_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.rooms a {
+	#home .rooms {
 		background-image: url(../img/up/rooms_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .ui-listview.ui-group-theme-c  li.search a {
+	#home .search  {
 		background-image: url(../img/up/search_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.sitemaps a {
+	#home .sitemaps {
 		background-image: url(../img/up/sitemaps_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.sports a {
+	#home .sports {
 		background-image: url(../img/up/sports_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .ui-listview.ui-group-theme-c  li.study a {
+	#home .study  {
 		background-image: url(../img/up/study_hr.png);
 		background-size: 70px 70px;
 	}
-	.ui-listview.ui-group-theme-c  li.travel a {
+	#home .travel {
 		background-image: url(../img/up/travel_hr.png);
 		background-size: 70px 70px;
 	}
