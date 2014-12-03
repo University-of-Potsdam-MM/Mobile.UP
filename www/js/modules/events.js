@@ -54,13 +54,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			_.bindAll(this, 'render');
 			this.page = p.page;
 			this.model = new app.models.Event(p);
-			this.model.fetch({
+			this.model.fetch(utils.cacheDefaults({
 				success: this.render,
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltung konnte nicht abgerufen werden.', module: 'events'});
 				},
 				dataType: 'json'
-			});
+			}));
 		},
 
 		render:function(){
@@ -119,12 +119,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
 	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
 			if(!app.data.events)
-				this.collection.fetch({
+				this.collection.fetch(utils.cacheDefaults({
 					success: this.render,
 					error: function(){
 						var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
 					},
-					dataType: 'json' });
+					dataType: 'json' }));
 			else
 				this.render();
 		},
@@ -189,12 +189,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			_.bindAll(this, 'render', 'filterIndex');
 			//this.going = utils.LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
 	   		//this.disabledLocations = utils.LocalStore.get('disabledLocations', {});
-			this.collection.fetch({
+			this.collection.fetch(utils.cacheDefaults({
 				success: this.render,
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
 				},
-				dataType: 'json' });
+				dataType: 'json' }));
 		},
 
 		fetchError: function(){
