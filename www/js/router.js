@@ -207,8 +207,13 @@ define([
 
 		library: function(){
 			// later on Search View and PersonPageView and LibraryPageView
-			this.changePage(new LibraryPageView);
+			this.listenToLibraryChange();
+			this.changePage(new LibraryPageView.View);
 		},
+		
+		listenToLibraryChange: _.once(function() {
+			this.listenTo(LibraryPageView.Bus, "openView", this.changePage);
+		}),
 
 		// Routes for Campus - Page
 		sitemap: function(){
