@@ -270,7 +270,7 @@ define([
 		
 		var internalProtocols = ["http", "https"];
 		var isInternalProtocol = internalProtocols.indexOf(uri.protocol()) >= 0;
-		var hasProtocol = uri.protocol() !== '';
+		var hasProtocol = uri.protocol() !== '' && uri.protocol() !== "javascript";
 		
 		// In the app we consider three cases:
 		// 1. Protocol is empty (URL is relative): we let the browser handle it
