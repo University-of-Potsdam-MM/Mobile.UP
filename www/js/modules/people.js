@@ -24,7 +24,11 @@ define([
 		model: Person,
 
 		parse:function(response){
-			return response.people;
+			if (response.people[0] && response.people[0].length != 0){
+				return response.people;
+			}else{
+				return null;
+			}
 		}
 	});
 
