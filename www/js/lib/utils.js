@@ -57,7 +57,7 @@ define([
  	// instead of an id - Richard
 	var addLoadingSpinner = function(uniqueDivId) {
 		return function() {
-			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
+			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner extensive-spinner\"> \
 											<img src=\"img/loadingspinner.gif\"></img> \
 										</div>");
 		};
