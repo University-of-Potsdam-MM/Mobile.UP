@@ -37,7 +37,7 @@ define([
     						$.mobile.changePage.defaults.transition = 'slidefade';
     						$.mobile.changePage.defaults.reverse = 'reverse';
     						var lastPage = window.approuter.history[window.approuter.history.length-2].name;
-    						window.approuter.history.splice(-2);
+    						window.approuter.history.pop();
     						Backbone.history.navigate(lastPage, {trigger:true});
     					}
     				}, false);
