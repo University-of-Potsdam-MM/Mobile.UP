@@ -73,6 +73,20 @@ define([
 			this.listenTo(this, 'route', function(route, params){
 				this.history.push({name: route});
 			});
+			
+			// Because we track our own history, we have to consider the replace option
+			// See http://backbonejs.org/#Router-navigate and {replace: true} for details
+			var that = this;
+			var savedNavigate = Backbone.history.navigate;
+			Backbone.history.navigate = function(fragment, options) {
+				// Pop current history entry if {replace: true}
+				if (options.replace) {
+					that.history.pop();
+				}
+				
+				// Call original function
+				savedNavigate.apply(this, arguments);
+			}
 		},
 
 		before: function(params, next, name){
