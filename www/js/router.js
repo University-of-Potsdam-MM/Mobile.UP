@@ -8,6 +8,7 @@ define([
 	'BaseRouter',
 	'Session',
 	'utils',
+	'history',
 	'modules/home',
 	'modules/news',
 	'modules/events',
@@ -26,7 +27,7 @@ define([
 	'modules/impressum',
 	'modules/options',
 	'modules/people'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
+], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -58,8 +59,6 @@ define([
 			"people": "people"
 		},
 
-		history: [],
-
 		routesToScrollPositions: {},
 
 		// routes that need authentication
@@ -71,22 +70,10 @@ define([
 		initialize: function(){
 			this.session = new Session;
 			this.listenTo(this, 'route', function(route, params){
-				this.history.push({name: route});
+				customHistory.push(route);
 			});
 			
-			// Because we track our own history, we have to consider the replace option
-			// See http://backbonejs.org/#Router-navigate and {replace: true} for details
-			var that = this;
-			var savedNavigate = Backbone.history.navigate;
-			Backbone.history.navigate = function(fragment, options) {
-				// Pop current history entry if {replace: true}
-				if (options.replace) {
-					that.history.pop();
-				}
-				
-				// Call original function
-				savedNavigate.apply(this, arguments);
-			}
+			customHistory.startTracking();
 		},
 
 		before: function(params, next, name){
@@ -121,8 +108,8 @@ define([
 		},
 
 		saveScrollPosition: function() {
-			if (this.history.length > 0){
-				var name = this.history[this.history.length-1].name;
+			if (customHistory.hasHistory()){
+				var name = customHistory.currentRoute();
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
 		},
@@ -144,7 +131,7 @@ define([
 		},
 
 		currentPage: function(){
-			return this.history[this.history.length-1].name;
+			return customHistory.currentRoute();
 		},
 
 		news: function(id){
@@ -211,7 +198,7 @@ define([
 				var param = JSON.stringify(vvzHistory.toJSON());
 				var url = "lectures/" + encodeURIComponent(param)
 				this.navigate(url);
-				this.history.push({name: url});
+				customHistory.push(url);
 			});
 		},
 

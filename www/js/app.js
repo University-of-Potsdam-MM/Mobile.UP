@@ -9,7 +9,8 @@ define([
 	'underscore-string',
 	'utils',
 	'fastclick',
-	'jquerymobile'], function($, _, Backbone, Router, _str, utils, FastClick){
+	'history',
+	'jquerymobile'], function($, _, Backbone, Router, _str, utils, FastClick, customHistory){
 
 
 		var Application = Backbone.Model.extend({
@@ -30,15 +31,13 @@ define([
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
     				document.addEventListener("backbutton", function(e){
-    					if(window.approuter.history.length == 1){
+    					if(customHistory.length() == 1){
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
     						$.mobile.changePage.defaults.transition = 'slidefade';
     						$.mobile.changePage.defaults.reverse = 'reverse';
-    						var lastPage = window.approuter.history[window.approuter.history.length-2].name;
-    						window.approuter.history.pop();
-    						Backbone.history.navigate(lastPage, {trigger:true});
+    						customHistory.goBack();
     					}
     				}, false);
 				}

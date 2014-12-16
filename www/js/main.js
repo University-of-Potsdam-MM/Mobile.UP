@@ -25,7 +25,8 @@ require.config({
 		'LocalStore': 'lib/ls-store',
         'fastclick': 'vendor/fastclick.min',
         'hammerjs': 'vendor/hammer.min',
-        'uri': 'vendor/src'
+        'uri': 'vendor/src',
+        'history': 'lib/history'
     },
     shim: {
         // use namespace Backbone
