@@ -70,8 +70,9 @@ p {
 .ui-bar-a .ui-btn:visited,
 .ui-body-a .ui-btn:visited,
 body .ui-group-theme-a .ui-btn:visited,
-.ui-btn.ui-btn-a:visited {
+.ui-btn.ui-btn-a:visited , ui-btn:visited{
 	background:#014260;
+	text-decoration:none !important;
 }
 
 /*header*/
