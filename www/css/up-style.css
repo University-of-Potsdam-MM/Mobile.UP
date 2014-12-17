@@ -366,28 +366,28 @@ label.showfirst {
 /*login - logout
 -------------------- */
 .ui-icon-login:after {
-	background-image: url(../img/up/login.svg);
+	background-image: url(../img/up/login.png);
 	background-color: #fff !important;
 	top: 25%;
 	left: .1em !important;
 }
 
 .ui-icon-logout:after {
-	background-image: url(../img/up/logout.svg);
+	background-image: url(../img/up/logout.png);
 	background-color: #fff !important;
 	top: 25%;
 	left: .1em !important;
 }
 
 .ui-icon-login-blue:after {
-	background-image: url(../img/up/login-white.svg);
+	background-image: url(../img/up/login-white.png);
 	background-color: #014260 !important;
 	top: 55%;
 	left: .1em !important;
 }
 
 .ui-icon-logout-blue:after {
-	background-image: url(../img/up/logout-white.svg);
+	background-image: url(../img/up/logout-white.png);
 	background-color: #014260 !important;
 	top: 55%;
 	left: .1em !important;
@@ -631,6 +631,7 @@ label.showfirst {
 	font-weight: normal;
 	height: 10px;
 	width:80px;
+	text-decoration:none;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -639,7 +640,7 @@ label.showfirst {
 }
 
 .ui-page-theme-a .ui-btn.settings:before {
-	background-image: url(../img/up/logout.svg);
+	background-image: url(../img/up/logout.png);
 	background-repeat: no-repeat;
 	content: ".";
 	display: inline-block;
@@ -651,6 +652,11 @@ label.showfirst {
 
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
+	text-decoration:none;
+}
+
+.ui-page-theme-a .ui-btn.settings:visited {
+	text-decoration:none !important;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star {
@@ -2125,6 +2131,11 @@ p.event-description {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
+		
+	.ui-page-theme-a .ui-btn.settings:before {
+		background-image: url(../img/up/logout_hr.png);
+	}
+		
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 		{
 		background-image: url(../img/up/menubutton-hres.png) !important;

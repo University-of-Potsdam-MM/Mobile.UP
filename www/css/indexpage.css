@@ -34,7 +34,7 @@
 }
 
 #home .ui-btn.settings:before {
-	background-image: url(../img/up/logout-white.svg);
+	background-image: url(../img/up/logout-white.png);
 	background-repeat: no-repeat;
 	content: ".";
 	display: inline-block;
@@ -255,6 +255,10 @@ ul.nav-search li a.ui-icon-gear {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
+	
+	.home-id .ui-btn.settings:before {
+		background-image: url(../img/up/logout-white_hr.png);
+	}	
 	#home .around {
 		background-image: url(../img/up/around_hr.png) !important;
 		background-size: 70px 70px;
@@ -366,8 +370,12 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 	width: auto;
 }
 
+.home-id .ui-btn.settings:visited {
+	text-decoration:none;
+}
+
 .home-id .ui-btn.settings:before {
-	background-image: url(../img/up/logout-white.svg);
+	background-image: url(../img/up/logout-white.png);
 	background-repeat: no-repeat;
 	content: ".";
 	display: inline-block;
