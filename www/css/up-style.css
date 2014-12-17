@@ -2134,6 +2134,7 @@ p.event-description {
 		
 	.ui-page-theme-a .ui-btn.settings:before {
 		background-image: url(../img/up/logout_hr.png);
+		background-size: 18px 18px;
 	}
 		
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited

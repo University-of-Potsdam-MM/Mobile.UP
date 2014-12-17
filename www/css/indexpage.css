@@ -258,6 +258,7 @@ ul.nav-search li a.ui-icon-gear {
 	
 	.home-id .ui-btn.settings:before {
 		background-image: url(../img/up/logout-white_hr.png);
+		background-size: 18px 18px;
 	}	
 	#home .around {
 		background-image: url(../img/up/around_hr.png) !important;
