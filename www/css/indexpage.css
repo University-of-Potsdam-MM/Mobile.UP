@@ -255,6 +255,8 @@ ul.nav-search li a.ui-icon-gear {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
+		
+		
 	
 	.home-id .ui-btn.settings:before {
 		background-image: url(../img/up/logout-white_hr.png);
@@ -284,6 +286,13 @@ ul.nav-search li a.ui-icon-gear {
 		background-image: url(../img/up/impressum-index_hr.png);
 		background-size: 20px 20px;
 	}
+	
+	#home .home-impressum {
+	
+		background-image:url(../img/up/impressum-index_hr.png); 
+		background-size:20px 20px;
+	}
+	
 	#home .person {
 		background-image: url(../img/up/person_hr.png);
 		background-size: 70px 70px;
