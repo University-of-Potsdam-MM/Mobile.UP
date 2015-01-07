@@ -11,6 +11,7 @@ plugins/nl.x-services.plugins.calendar/
 plugins/org.apache.cordova.dialogs/
 plugins/org.apache.cordova.device/
 plugins/org.apache.cordova.network-information/
+plugins/com.borismus.webintent/
 
 plugins/android.json
 plugins/ios.json
