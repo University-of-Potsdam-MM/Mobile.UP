@@ -27,7 +27,8 @@ require.config({
         'hammerjs': 'vendor/hammer.min',
         'uri': 'vendor/src',
         'history': 'lib/history',
-        'moodle.download': 'lib/moodle.download'
+        'moodle.download': 'lib/moodle.download',
+        'headerParser': 'lib/headerParser'
     },
     shim: {
         // use namespace Backbone

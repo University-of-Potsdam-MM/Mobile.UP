@@ -3,12 +3,13 @@ define([
 	'underscore',
 	'backbone',
 	'uri/URI',
-	'Session'
-], function($, _, Backbone, URI, Session){
+	'Session',
+	'headerParser'
+], function($, _, Backbone, URI, Session, headerParser){
 	
 	/**
 	 * Steps to open file:
-	 * 1. Get content type
+	 * 1. Get content type and filename
 	 * 2. Download file content
 	 * 3. Open file
 	 */
@@ -16,9 +17,8 @@ define([
 		
 		initialize: function(params) {
 			this.url = encodeURI(params.url);
-			this.targetUrl = cordova.file.externalDataDirectory + Math.floor(Math.random() * 5) + ".tmp";
 			
-			this.listenTo(this, "syncContentType", this.downloadFileContent);
+			this.listenTo(this, "syncContentMeta", this.downloadFileContent);
 			this.listenTo(this, "error", this.onError);
 		},
 		
@@ -32,9 +32,9 @@ define([
 				type: "HEAD",
 				url: this.url,
 				success: function(data, textStatus, jqHXR) {
-					var contentType = jqHXR.getResponseHeader("content-type");
-					that.contentType = contentType;
-					that.trigger("syncContentType", contentType);
+					that.fileName = headerParser(jqHXR.getResponseHeader("content-disposition")).filename;
+					that.contentType = jqHXR.getResponseHeader("content-type");
+					that.trigger("syncContentMeta", that);
 				},
 				error: function() {
 					that.trigger("error");
@@ -44,6 +44,7 @@ define([
 		
 		downloadFileContent: function() {
 			var that = this;
+			this.targetUrl = cordova.file.externalDataDirectory + this.fileName;
 			var fileTransfer = new FileTransfer().download(
 				this.url,
 				this.targetUrl,
@@ -56,8 +57,8 @@ define([
 		},
 		
 		onError: function(error) {
-			alert("Konnte Datei nicht öffnen");
-			console.log("Failed to open URL: " + this.url);
+			alert("Konnte Datei nicht herunterladen");
+			console.log("Failed to save " + this.url + " to " + this.targetUrl);
 		}
 	});
 	
