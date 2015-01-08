@@ -5,14 +5,6 @@ node_modules/
 .DS_Store
 .cordova/
 
-plugins/org.apache.cordova.inappbrowser/
-plugins/org.apache.cordova.splashscreen/
-plugins/nl.x-services.plugins.calendar/
-plugins/org.apache.cordova.dialogs/
-plugins/org.apache.cordova.device/
-plugins/org.apache.cordova.network-information/
-plugins/com.borismus.webintent/
+plugins/
 
-plugins/android.json
-plugins/ios.json
 config.json

@@ -6,52 +6,58 @@ define([
 	'Session'
 ], function($, _, Backbone, URI, Session){
 	
+	/**
+	 * Steps to open file:
+	 * 1. Get content type
+	 * 2. Download file content
+	 * 3. Open file
+	 */
 	var MoodleFile = Backbone.Model.extend({
 		
 		initialize: function(params) {
-			this.url = params.url;
-			this.boundOpenViaActivity = _.bind(this.openViaActivity, this);
-			this.boundOpeningFailed = _.bind(this.openingFailed, this);
-		},
-		
-		open: function() {
-			this.fetch();
+			this.url = encodeURI(params.url);
+			this.targetUrl = cordova.file.externalDataDirectory + Math.floor(Math.random() * 5) + ".tmp";
+			
+			this.listenTo(this, "syncContentType", this.downloadFileContent);
+			this.listenTo(this, "error", this.onError);
 		},
 		
 		fetch: function() {
-			var pdfViewer = "http://docs.google.com/viewer?url=" + encodeURIComponent(this.url);
-			
-			window.plugins.webintent.startActivity({
-					action: window.plugins.webintent.ACTION_VIEW,
-					url: pdfViewer
-				},
-				function() {},
-				this.boundOpeningFailed);
-			
-//			$.ajax({
-//				type: "HEAD",
-//				url: this.url,
-//				success: this.boundOpenViaActivity,
-//				error: this.boundOpeningFailed
-//			});
+			this.loadContentType();
 		},
 		
-		openViaActivity: function(data, textStatus, jqHXR) {
-			var contentType = jqHXR.getResponseHeader("content-type");
-			console.log("contentType: " + contentType);
-			
-			window.plugins.webintent.startActivity({
-					action: window.plugins.webintent.ACTION_VIEW,
-					url: this.url,
-					type: contentType
+		loadContentType: function() {
+			var that = this;
+			$.ajax({
+				type: "HEAD",
+				url: this.url,
+				success: function(data, textStatus, jqHXR) {
+					var contentType = jqHXR.getResponseHeader("content-type");
+					that.contentType = contentType;
+					that.trigger("syncContentType", contentType);
 				},
-				function() {},
-				this.boundOpeningFailed);
+				error: function() {
+					that.trigger("error");
+				}
+			});
 		},
 		
-		openingFailed: function() {
-			alert("Konnte URL nicht öffnen");
-			console.log("Failed to open URL via Android Intent. URL: " + this.url);
+		downloadFileContent: function() {
+			var that = this;
+			var fileTransfer = new FileTransfer().download(
+				this.url,
+				this.targetUrl,
+				function() {
+					that.trigger("sync", that);
+				},
+			    function() {
+					that.trigger("error", that);
+				});
+		},
+		
+		onError: function(error) {
+			alert("Konnte Datei nicht öffnen");
+			console.log("Failed to open URL: " + this.url);
 		}
 	});
 	
@@ -68,8 +74,22 @@ define([
 				uri.path("/webservice" + path);
 			}
 			
-			new MoodleFile({url: uri.toString()}).open();
-		}
+			var file = new MoodleFile({url: uri.toString()});
+			this.listenTo(file, "sync", this.openFile);
+			file.fetch();
+		},
+		
+		openFile: function(model) {
+			console.log("download complete: " + model.targetUrl);
+			
+			window.plugins.webintent.startActivity({
+					action: window.plugins.webintent.ACTION_VIEW,
+					url: model.targetUrl,
+					type: model.contentType
+				},
+				function() { },
+				function() { alert("Konnte Datei nicht öffnen"); });
+		},
 	});
 	
 	MoodleDownload.isMoodleFileUrl = function(url) {

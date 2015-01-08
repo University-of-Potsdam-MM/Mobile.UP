@@ -236,8 +236,7 @@ define([
 		openWindow.addEventListener('loadstart', function(event) {
 			var url = event.url;
 			if (MoodleDownload.isMoodleFileUrl(url)) {
-				var download = new MoodleDownload;
-				download.openMoodleFileUrl(url);
+				new MoodleDownload().openMoodleFileUrl(url);
 			}
 		});
 	};
