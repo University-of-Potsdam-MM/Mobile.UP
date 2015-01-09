@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 			var meals = new Menu({location: this.location});
 			this.listenTo(meals, "sync", this.prepare);
 			this.listenTo(meals, "error", function() { this.trigger("error"); });
-			meals.fetch();
+			meals.fetch(utils.cacheDefaults());
 		},
 		
 		prepare: function(meals) {
@@ -99,9 +99,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		},
 		
 		render: function() {
-			var html = this.template({meals: this.model.meals});
-			this.$el.append(html);
+			this.$el.html(this.template({meals: this.model.meals}));
 			this.$el.trigger("create");
+			return this;
 		}
 	});
 
@@ -147,14 +147,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		    
 		    new utils.LoadingView({model: loader, el: this.$("#" + uniqueDivId + " #loadingSpinner")});
 		    new DayView({model: loader, el: this.$("#" + uniqueDivId + " #content")});
-		    this.listenTo(loader, "error", requestFail);
+		    this.listenTo(loader, "error", this.requestFail);
 		    
 		    loader.fetch();
 		},
 
 		requestFail: function(error) {
 			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
-		}
+		},
 
 		dateBox: function(ev){
 			ev.preventDefault();
