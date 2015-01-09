@@ -26,9 +26,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 	    Q(clearTodaysMenu(uniqueDivId))
 			.then(utils.addLoadingSpinner(uniqueDivId))
-	        .then(function () { return loadMenu(mensa); })
-			.then(filterByDate(date))
-	        .then(drawMeals(uniqueDivId))
+	        .then(function () { return loadMenu(mensa, date); })
+			.then(drawMeals(uniqueDivId))
 			.fin(utils.removeLoadingSpinner(uniqueDivId))
 	        .fail(function (error) {
 	            var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
@@ -39,6 +38,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 	    $("#todaysMenu").empty();
 		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
 	};
+	
+	var MenuLoader = Backbone.Model.extend({
+		
+		fetch: function() {
+			var meals = new Menu({location: this.location});
+			this.listenTo(meals, "sync", this.prepare);
+			this.listenTo(meals, "error", function() { this.trigger("error"); });
+			meals.fetch();
+		},
+		
+		prepare: function(meals) {
+			var date = this.date;
+			this.meals = meals.chain()
+							.filter(function(meal) { return new Date(meal.get("date")).toDateString() == date.toDateString(); })
+							.sortBy('order')
+							.map(function(data) { return data.toJSON(); })
+							.value();
+			this.trigger("sync");
+		}
+	});
 	
 	var Menu = Backbone.Collection.extend({
 		
@@ -57,8 +76,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		parse: function(response) {
 			var icons = response.readCurrentMealsResponse.meals.iconHashMap.entry;
 			var meals = response.readCurrentMealsResponse.meals.meal;
-			var result = _.map(meals, this.mapToMeal(icons));
-			return this.sort(result);
+			return _.map(meals, this.mapToMeal(icons));
 		},
 		
 		convertToMap: function(icons) {
@@ -71,19 +89,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		    return result;
 		},
 		
-		sort: function(meals) {
-			var meals = meals.sort(function (a, b) {
-		        var first = new Date(a.key);
-		        var second = new Date(b.key);
-		        return first - second;
-		    });
-			return meals.sort(function (a, b) {
-				var first = a["@order"];
-				var second = b["@order"];
-				return first - second;
-			});
-		},
-		
 		mapToMeal: function(icons) {
 		    return function (meal) {
 		        var mealData = {};
@@ -91,6 +96,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		        mealData.title = meal.title;
 		        mealData.description = meal.description.replace(/\(.*\)/g, "");
 				mealData.date = meal.date;
+				mealData.order = meal["@order"];
 
 				mealData.prices = {};
 				if (meal.prices) {
@@ -121,28 +127,23 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 	 * Loads all meals and some meta data for a given mensa.
 	 * @param location One of the values ["Griebnitzsee", "NeuesPalais", "Golm"]
 	 */
-	function loadMenu(location) {
+	function loadMenu(location, date) {
 	    var d = Q.defer();
 	    
-	    var menu = new Menu({location: location});
-	    menu.on("error", function(error){
-			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
-		});
-	    menu.on("sync", function() {
-	    	d.resolve(menu);
+	    var loader = new MenuLoader();
+	    loader.location = location;
+	    loader.date = date;
+	    
+	    loader.on("error", function(error){
+	    	var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
 	    });
-	    menu.fetch();
+	    loader.on("sync", function() {
+	    	d.resolve(loader.meals);
+	    });
+	    
+	    loader.fetch();
 	    
 	    return d.promise;
-	};
-
-	function filterByDate(date) {
-		return function(meals) {
-			var result = meals.filter(function(meal) {
-				return new Date(meal.get("date")).toDateString() == date.toDateString();
-			});
-			return _.map(result, function(data) { return data.toJSON(); });
-		};
 	};
 	
 	var DayView = Backbone.View.extend({
@@ -155,27 +156,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 			var html = this.template({meals: this.collection});
 			this.$el.append(html);
 			this.$el.trigger("create");
-			
-			if (this.collection.length == 0) {
-				showNoMealsToday(this.$el);
-			}
 		}
 	});
 
 	function drawMeals(uniqueDiv) {
 		return function(meals) {
-			meals = _.sortBy(meals, 'title');
 			new DayView({collection: meals, el: $("#" + uniqueDiv)}).render();
 		}
 	};
-
-	function showNoMealsToday(host) {
-		var insDiv = $("<div>");
-		insDiv.append('<br />');
-		insDiv.append('<img src="img/up/hinweis.png" class="alignleft">');
-		insDiv.append('<p class="blau" style="margin-left:55px;">Heute gibt es kein Essensangebot. Vielleicht ist die Mensa geschlossen?</p>');
-		insDiv.appendTo(host);
-	}
 
 	var MensaPageView = Backbone.View.extend({
 		attributes: {"id": 'mensa'},

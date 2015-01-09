@@ -1,3 +1,4 @@
+<% if (meals.length > 0) { %>
 <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" class="speiseplan">
 	<% _.each(meals, function(meal) { %>
 	<div data-role="collapsible" data-collapsed="true" id="<%= meal.contentId %>">
@@ -34,3 +35,10 @@
 	</div>
 	<% }); %>
 </div>
+<% } else { %>
+<div>
+	<br />
+	<img src="img/up/hinweis.png" class="alignleft">
+	<p class="blau" style="margin-left:55px;">Heute gibt es kein Essensangebot. Vielleicht ist die Mensa geschlossen?</p>
+</div>
+<% } %>
