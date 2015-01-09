@@ -52,7 +52,8 @@ define([
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
 									"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
 									"https://api.uni-potsdam.de/endpoints/errorAPI",
-									"https://api.uni-potsdam.de/endpoints/personAPI"];
+									"https://api.uni-potsdam.de/endpoints/personAPI",
+									"https://api.uni-potsdam.de/endpoints/mensaAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
