@@ -1,47 +1,15 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.de.utf8'], function($, _, Backbone, utils, Q, campusmenu, datebox){
 
-	$(document).on("pageinit", "#mensa", function () {
-		$("div[data-role='campusmenu']").campusmenu({ onChange: updateMenuData });
-
-		$("#mydate").bind("datebox", function(e, p) {
-			if (p.method === "set") {
-				var source = $("div[data-role='campusmenu']").campusmenu("getActive");
-				var date = p.date;
-				updateMenu(source, date);
-			}
-		});
-	});
-
 	$(document).on("pageshow", "#mensa", function () {
+		console.log("pageshow started");
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
+		console.log("pageshow finished");
 	});
 
-	function updateMenuData(options) {
-			var date = $("#mydate").datebox('getTheDate');
-			updateMenu(options.campusName, date);
-		};
-
-	function updateMenu(mensa, date) {
-	    uniqueDivId = _.uniqueId("id_");
-
-	    Q(clearTodaysMenu(uniqueDivId))
-			.then(utils.addLoadingSpinner(uniqueDivId))
-	        .then(function () { return loadMenu(mensa, date); })
-			.then(drawMeals(uniqueDivId))
-			.fin(utils.removeLoadingSpinner(uniqueDivId))
-	        .fail(function (error) {
-	            var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
-	        });
-	};
-
-	function clearTodaysMenu(uniqueDivId) {
-	    $("#todaysMenu").empty();
-		$("#todaysMenu").append("<div id=\"" + uniqueDivId + "\"></div>");
-	};
-	
 	var MenuLoader = Backbone.Model.extend({
 		
 		fetch: function() {
+			this.trigger("request");
 			var meals = new Menu({location: this.location});
 			this.listenTo(meals, "sync", this.prepare);
 			this.listenTo(meals, "error", function() { this.trigger("error"); });
@@ -123,47 +91,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		}
 	});
 
-	/**
-	 * Loads all meals and some meta data for a given mensa.
-	 * @param location One of the values ["Griebnitzsee", "NeuesPalais", "Golm"]
-	 */
-	function loadMenu(location, date) {
-	    var d = Q.defer();
-	    
-	    var loader = new MenuLoader();
-	    loader.location = location;
-	    loader.date = date;
-	    
-	    loader.on("error", function(error){
-	    	var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
-	    });
-	    loader.on("sync", function() {
-	    	d.resolve(loader.meals);
-	    });
-	    
-	    loader.fetch();
-	    
-	    return d.promise;
-	};
-	
 	var DayView = Backbone.View.extend({
 		
 		initialize: function() {
 			this.template = utils.rendertmpl('mensa_detail');
+			this.listenTo(this.model, "sync", this.render);
 		},
 		
 		render: function() {
-			var html = this.template({meals: this.collection});
+			var html = this.template({meals: this.model.meals});
 			this.$el.append(html);
 			this.$el.trigger("create");
 		}
 	});
-
-	function drawMeals(uniqueDiv) {
-		return function(meals) {
-			new DayView({collection: meals, el: $("#" + uniqueDiv)}).render();
-		}
-	};
 
 	var MensaPageView = Backbone.View.extend({
 		attributes: {"id": 'mensa'},
@@ -173,9 +113,48 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		},
 
 		initialize: function() {
-			_.bindAll(this, 'render');
+			_.bindAll(this, 'render', 'updateMenuData', 'updateMenuCampus');
 			this.template = utils.rendertmpl('mensa');
 		},
+
+		delegateCustomEvents: function() {
+			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateMenuData });
+			this.$("#mydate").bind("datebox", this.updateMenuCampus);
+		},
+
+		updateMenuData: function(options) {
+			var date = this.$("#mydate").datebox('getTheDate');
+			this.updateMenu(options.campusName, date);
+		},
+
+		updateMenuCampus: function(e, p) {
+			if (p.method === "set") {
+				var source = this.$("div[data-role='campusmenu']").campusmenu("getActive");
+				var date = p.date;
+				this.updateMenu(source, date);
+			}
+		},
+
+		updateMenu: function(mensa, date) {
+		    uniqueDivId = _.uniqueId("id_");
+		    
+		    this.$("#todaysMenu").empty();
+			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"><div id="loadingSpinner"></div><div id="content"></div></div>');
+			
+			var loader = new MenuLoader();
+		    loader.location = mensa;
+		    loader.date = date;
+		    
+		    new utils.LoadingView({model: loader, el: this.$("#" + uniqueDivId + " #loadingSpinner")});
+		    new DayView({model: loader, el: this.$("#" + uniqueDivId + " #content")});
+		    this.listenTo(loader, "error", requestFail);
+		    
+		    loader.fetch();
+		},
+
+		requestFail: function(error) {
+			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
+		}
 
 		dateBox: function(ev){
 			ev.preventDefault();
@@ -184,6 +163,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		render: function() {
 			$(this.el).html(this.template({}));
 			this.$el.trigger("create");
+			this.delegateCustomEvents();
 			return this;
 		}
 	});
