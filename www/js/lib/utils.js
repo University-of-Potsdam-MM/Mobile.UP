@@ -5,8 +5,9 @@ define([
 	'app',
 	'Session',
 	'hammerjs',
-	'uri/URI'
-], function($, _, Backbone, app, Session, Hammer, URI){
+	'uri/URI',
+	'moodle.download'
+], function($, _, Backbone, app, Session, Hammer, URI, MoodleDownload){
 
 	/*
 	 * Template Loading Functions
@@ -223,7 +224,6 @@ define([
 			}
 		}
 	});
-	
 
 	// At most one InAppBrowser window should be opened at any time
 	var hasOpenInAppBrowser = false;
@@ -232,6 +232,12 @@ define([
 		var openWindow = window.open(url, "_blank", "enableViewportScale=yes");
 		openWindow.addEventListener('exit', function(event) {
 			hasOpenInAppBrowser = false;
+		});
+		openWindow.addEventListener('loadstart', function(event) {
+			var url = event.url;
+			if (MoodleDownload.isMoodleFileUrl(url)) {
+				new MoodleDownload().openMoodleFileUrl(url);
+			}
 		});
 	};
 	
