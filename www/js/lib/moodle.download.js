@@ -36,8 +36,9 @@ define([
 					that.contentType = jqHXR.getResponseHeader("content-type");
 					that.trigger("syncContentMeta", that);
 				},
-				error: function() {
-					that.trigger("error");
+				error: function(jqXHR, textStatus, errorThrown) {
+					var error = {code: textStatus, http_status: errorThrown};
+					that.trigger("error", that, error);
 				}
 			});
 		},
@@ -51,14 +52,15 @@ define([
 				function() {
 					that.trigger("sync", that);
 				},
-			    function() {
-					that.trigger("error", that);
+			    function(error) {
+					that.trigger("error", that, error);
 				});
 		},
 		
-		onError: function(error) {
+		onError: function(model, error) {
+			logMessage = _.template("Failed to download <%= error.source %> to <%= error.target %>. Error code is <%= error.code %>, http status code is <%= error.http_status %>");
+			console.log(logMessage({error: error}));
 			alert("Konnte Datei nicht herunterladen");
-			console.log("Failed to save " + this.url + " to " + this.targetUrl);
 		}
 	});
 	
