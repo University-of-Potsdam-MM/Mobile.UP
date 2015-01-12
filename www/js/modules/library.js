@@ -265,6 +265,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
     initialize: function(){
       this.listenTo(this, "error", this.requestFail);
+      this.listenTo(this, "emptyResult", this.emptyResult);
     },
 
     paginationPossible: function(){
@@ -290,6 +291,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
     },
 
+    emptyResult: function(){
+      var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Keine Ergebnisse gefunden.', module: 'library'});
+    },
+
     byTagNS: function(xml,tag,ns) {
       return xml.getElementsByTagNameNS ?
         xml.getElementsByTagNameNS(ns,tag) :
@@ -301,6 +306,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       if(data.getElementsByTagNameNS) {
         if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
           this.set('numberOfRecords',0);
+          this.trigger("emptyResult");
         }else{
           var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
           this.set('numberOfRecords',numberOfRecords);
@@ -393,11 +399,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
     initialize: function(){
       this.template = utils.rendertmpl('library_detail_view');
-      
+
       this.backBoundToThis = _.bind(this.back, this);
       $(document).on("click", ".backToList", this.backBoundToThis);
     },
-    
+
     stopListening: function() {
     	$(document).off("click", ".backToList", this.backBoundToThis);
     	Backbone.Events.stopListening.apply(this, arguments);
@@ -423,7 +429,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       this.$el.trigger('create');
       return this;
     },
-    
+
     back: function(ev){
         ev.preventDefault();
         libraryPageEventBus.trigger("openView", new LibraryPageView);
