@@ -44,7 +44,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		parse: function(response) {
 			var icons = response.readCurrentMealsResponse.meals.iconHashMap.entry;
 			var meals = response.readCurrentMealsResponse.meals.meal;
-			return _.map(meals, this.mapToMeal(icons));
+			return _.map(meals, this.mapToMeal(this.convertToMap(icons)));
 		},
 		
 		convertToMap: function(icons) {
