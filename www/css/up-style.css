@@ -70,8 +70,9 @@ p {
 .ui-bar-a .ui-btn:visited,
 .ui-body-a .ui-btn:visited,
 body .ui-group-theme-a .ui-btn:visited,
-.ui-btn.ui-btn-a:visited {
+.ui-btn.ui-btn-a:visited , ui-btn:visited{
 	background:#014260;
+	text-decoration:none !important;
 }
 
 /*header*/
@@ -365,28 +366,28 @@ label.showfirst {
 /*login - logout
 -------------------- */
 .ui-icon-login:after {
-	background-image: url(../img/up/login.svg);
+	background-image: url(../img/up/login.png);
 	background-color: #fff !important;
 	top: 25%;
 	left: .1em !important;
 }
 
 .ui-icon-logout:after {
-	background-image: url(../img/up/logout.svg);
+	background-image: url(../img/up/logout.png);
 	background-color: #fff !important;
 	top: 25%;
 	left: .1em !important;
 }
 
 .ui-icon-login-blue:after {
-	background-image: url(../img/up/login-white.svg);
+	background-image: url(../img/up/login-white.png);
 	background-color: #014260 !important;
 	top: 55%;
 	left: .1em !important;
 }
 
 .ui-icon-logout-blue:after {
-	background-image: url(../img/up/logout-white.svg);
+	background-image: url(../img/up/logout-white.png);
 	background-color: #014260 !important;
 	top: 55%;
 	left: .1em !important;
@@ -474,11 +475,27 @@ label.showfirst {
 	font-size: 1.3em;
 }
 
-.up-loadingSpinner img {
+.up-loadingSpinner {
+	width: 40px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.up-loadingSpinner.extensive-spinner {
+	margin-top: 50px;
+	margin-bottom: 50px;
 	height: 40px;
+}
+
+.up-loadingSpinner.compact-spinner {
+	margin-top: 10px;
+	margin-bottom: 3px;
+	height: 25px;
+}
+
+.up-loadingSpinner img {
+	height: 100%;
 }
 
 /* mensa piktogramme */
@@ -517,9 +534,8 @@ label.showfirst {
 
 .speiseplan .ui-collapsible-inset .ui-collapsible-heading-collapsed .ui-btn .mensatext
 	{
-	text-overflow: ellipsis;
+	
 	overflow: hidden;
-	white-space: nowrap;
 	padding-right: 30px;
 }
 
@@ -614,6 +630,7 @@ label.showfirst {
 	font-weight: normal;
 	height: 10px;
 	width:80px;
+	text-decoration:none;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -622,7 +639,7 @@ label.showfirst {
 }
 
 .ui-page-theme-a .ui-btn.settings:before {
-	background-image: url(../img/up/logout.svg);
+	background-image: url(../img/up/logout.png);
 	background-repeat: no-repeat;
 	content: ".";
 	display: inline-block;
@@ -634,6 +651,11 @@ label.showfirst {
 
 .ui-page-theme-a .ui-btn.settings2 {
 	right: 30px;
+	text-decoration:none;
+}
+
+.ui-page-theme-a .ui-btn.settings:visited {
+	text-decoration:none !important;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star {
@@ -977,6 +999,12 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 /*route*/
 #transport2 .ui-table {
 	max-width: 600px;
+}
+
+#opening .ui-table td,
+#transport2 .ui-table td {
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 #transport_rides a.ui-btn span {
@@ -1695,12 +1723,17 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	right: .5em;
 }
 
+#people-list .ui-btn-icon-left:after{
+	top: 2em;
+	left: 0.9em;
+}
+
 .mail {
 	background-image: url(../img/up/mail-small.png) !important;
 	background-repeat: no-repeat;
 	background-position: 0px .2em;
 	text-indent: 20px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
 .phone {
@@ -1708,7 +1741,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	background-repeat: no-repeat;
 	background-position: 0px .2em;
 	text-indent: 20px;
-	padding-left: 20px;
+	padding-left: 50px;
 }
 
 #emergency-list .ui-collapsible-content p,#people-list .ui-collapsible-content p
@@ -1823,7 +1856,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 a#selectLevel-button {
-	padding-right: 305px;
+	padding-right: 30px;
 	padding-left: 5px;
 	text-align: left;
 }
@@ -2097,6 +2130,12 @@ p.event-description {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
+		
+	.ui-page-theme-a .ui-btn.settings:before {
+		background-image: url(../img/up/logout_hr.png);
+		background-size: 18px 18px;
+	}
+		
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 		{
 		background-image: url(../img/up/menubutton-hres.png) !important;

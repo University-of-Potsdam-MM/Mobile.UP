@@ -16,7 +16,7 @@ require.config({
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
-        'cache': 'vendor/backbone.fetch-cache.min',
+        'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
         'moment': 'vendor/moment.min',
@@ -24,7 +24,11 @@ require.config({
 		'date': 'lib/date',
 		'LocalStore': 'lib/ls-store',
         'fastclick': 'vendor/fastclick.min',
-        'hammerjs': 'vendor/hammer.min'
+        'hammerjs': 'vendor/hammer.min',
+        'uri': 'vendor/src',
+        'history': 'lib/history',
+        'moodle.download': 'lib/moodle.download',
+        'headerParser': 'lib/headerParser'
     },
     shim: {
         // use namespace Backbone
@@ -49,13 +53,12 @@ require.config({
             deps: ['jquery', 'jquerymobile'],
             exports: 'datebox'
         },
-
+        
         'lib/jqm-datebox.mode.calbox.min' : ['jquery', 'datebox'],
         'lib/jqm-datebox.mode.datebox.min' : ['jquery', 'datebox'],
         'lib/jquery.mobile.datebox.i18n.de.utf8' : ['jquery', 'datebox'],
         'cache': ['backbone', 'underscore']
     }
-
 });
 
 requirejs.onError = function(error){

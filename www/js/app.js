@@ -9,7 +9,8 @@ define([
 	'underscore-string',
 	'utils',
 	'fastclick',
-	'jquerymobile'], function($, _, Backbone, Router, _str, utils, FastClick){
+	'history',
+	'jquerymobile'], function($, _, Backbone, Router, _str, utils, FastClick, customHistory){
 
 
 		var Application = Backbone.Model.extend({
@@ -30,15 +31,13 @@ define([
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
     				document.addEventListener("backbutton", function(e){
-    					if(window.approuter.history.length == 1){
+    					if(customHistory.length() == 1){
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
     						$.mobile.changePage.defaults.transition = 'slidefade';
     						$.mobile.changePage.defaults.reverse = 'reverse';
-    						var lastPage = window.approuter.history[window.approuter.history.length-2].name;
-    						window.approuter.history.splice(-2);
-    						Backbone.history.navigate(lastPage, {trigger:true});
+    						customHistory.goBack();
     					}
     				}, false);
 				}
@@ -52,7 +51,9 @@ define([
 									"https://api.uni-potsdam.de/endpoints/pulsAPI",
 									"https://api.uni-potsdam.de/endpoints/moodleAPI",
 									"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
-									"https://api.uni-potsdam.de/endpoints/errorAPI"];
+									"https://api.uni-potsdam.de/endpoints/errorAPI",
+									"https://api.uni-potsdam.de/endpoints/personAPI",
+									"https://api.uni-potsdam.de/endpoints/mensaAPI"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
 							return _.str.startsWith(url, authUrl);
@@ -73,8 +74,8 @@ define([
 				$(overrideBackboneSync);
 
 				// Initialize external link override
-				$(document).on("click", "a[rel=external]", utils.overrideExternalLinks);
-				
+				$(document).on("click", "a", utils.overrideExternalLinks);
+
 				// Activate extended ajax error logging on console
 				//utils.activateExtendedAjaxLogging();
 

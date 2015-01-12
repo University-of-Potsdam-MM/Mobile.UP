@@ -1,6 +1,6 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
-  <a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
+  <a href="#" class="ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all back" data-transition="slidefade" data-direction="reverse" data-rel="back">Zurück</a>
 
    <%  if(store.get('up.session.authenticated')){ %>
 	<h1 class="loggedin">Neuigkeiten</h1>
@@ -8,7 +8,7 @@
     <%  } else { %> 
     <h1>Neuigkeiten</h1>   
     <% } %> 
-  <a data-icon="star" data-role="button" class="settings" href="#news/set_sources" role="button" title="settings" alt="settings"></a>
+  <a class="settings ui-link ui-btn ui-icon-star ui-btn-icon-left ui-shadow ui-corner-all" href="#news/set_sources" role="button" title="settings" alt="settings"></a>
 </div>
 <!-- End Header -->
 <!-- Start Main - Navigation -->

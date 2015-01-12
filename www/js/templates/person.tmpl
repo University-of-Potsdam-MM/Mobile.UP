@@ -1,11 +1,17 @@
 	<h3>
 		<span class="blau"><%= person.get('Titel') %> <%= person.get('Vorname') %> <%= person.get('Nachname') %></span><br />
-		<span class="black normal"><%= _.compact([person.get('Abteilung'), person.get('Struktureinheit')]).join(', ') %></span>
-		<span class="mail"><%= person.get('Email') %></span><br />
-		<span class="phone"><%= person.get('Telefon') %></span>
+		<span class="black normal"><%= _.compact([person.get('Abteilung'), person.get('Struktureinheit')]).join(', ') %></span><br />
 	</h3>
 	<div>
 		<p>
+			<span class="mail"><a href="mailto:<%= person.get('Email') %>"><%= person.get('Email') %></a></span><br />
+			<% if (person.get('Telefon')){
+				var tel = person.get('Telefon');
+				if(person.get('Telefon').length == 4){
+					var tel = '+49331977'+person.get('Telefon');
+				} %>
+			<span class="phone"><a href="tel:<%= tel.replace(/[\s-]/g, '').replace(/\+/g, '00') %>"><%= person.get('Telefon') %></a></span><br />
+			<% } %>
 			<%= (person.get('Raum')) ? 'Raum:'+person.get('Raum')+'<br />' : '' %>
 			<%= (person.get('Fax')) ? 'Fax:'+person.get('Fax')+'<br />' : '' %>
 		</p>

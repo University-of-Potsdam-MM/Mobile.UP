@@ -98,7 +98,7 @@ define([
 
         _.each(this.models, function(model){
       		// get the time of last known journey
-      		var lastDepartingTime = model.getMaxDepartingTime();
+      		var lastDepartingTime = model.getMaxDepartingTime().add(1,'minute');
       		var timeString = lastDepartingTime.format('HH:mm:ss');
 
           model.fetch({	data: abgehendeVerbindungen(model.get('externalId'), timeString),
@@ -195,7 +195,6 @@ define([
   function verbindungVonNach(fromExternalId, toExternalId, moment) {
 
     var rflags = tag('RFlags', {b: 0, f: 5, a: 0 })
-
 
     var xml =
       tag('ConReq', {},
@@ -348,9 +347,8 @@ define([
   function mapSTBJourney(journey){
     var $journey = $(journey);
     var tmp = {
-      id:               $journey.attr('trainId'),
       stationName:      $journey.find('MainStop Station').attr('name'),
-      departingTime:    moment($journey.find('Date').text()+' '+$journey.find('MainStop BasicStop Dep Time').text(), "YYYYMMDD HH:mm"),
+      departingTime:    moment($journey.find('Date').text()+' '+($journey.find('MainStop BasicStop Dep Time').text()).slice(3), "YYYYMMDD HH:mm"),
       name:             $journey.find('JourneyAttribute Attribute[type=NAME] Text').text(),
       category:         $journey.find('JourneyAttribute Attribute[type=CATEGORY] Text').text(),
       internalcategory: $journey.find('JourneyAttribute Attribute[type=INTERNALCATEGORY] Text').text(),

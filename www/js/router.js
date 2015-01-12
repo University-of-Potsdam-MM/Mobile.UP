@@ -8,14 +8,13 @@ define([
 	'BaseRouter',
 	'Session',
 	'utils',
+	'history',
 	'modules/home',
 	'modules/news',
 	'modules/events',
-	'modules/study',
 	'modules/calendar',
 	'modules/moodle',
 	'modules/emergency',
-	'modules/campus',
 	'modules/sitemap',
 	'modules/room',
 	'modules/opening',
@@ -28,7 +27,7 @@ define([
 	'modules/impressum',
 	'modules/options',
 	'modules/people'
-], function($, _, Backbone, BaseRouter, Session, utils, HomePageView, NewsView, EventsView, StudyPageView, CalendarPageView, MoodlePageView, EmergencyPageView, CampusPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
+], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -40,12 +39,10 @@ define([
 			"news": "news",
 			"events": "events",
 			"events/*id": "events",
-			"study": "study",
 			"calendar": "calendar",
 			"calendar/*day": "calendar",
 			"moodle": "moodle",
 			"moodle/*courseid": "moodle",
-			"campus": "campus",
 			"library": "library",
 			// Routes for Campus - Page
 			"sitemap": "sitemap",
@@ -63,8 +60,6 @@ define([
 			"people": "people"
 		},
 
-		history: [],
-
 		routesToScrollPositions: {},
 
 		// routes that need authentication
@@ -76,8 +71,10 @@ define([
 		initialize: function(){
 			this.session = new Session;
 			this.listenTo(this, 'route', function(route, params){
-				this.history.push({name: route});
+				customHistory.push(route);
 			});
+
+			customHistory.startTracking();
 		},
 
 		before: function(params, next, name){
@@ -112,8 +109,8 @@ define([
 		},
 
 		saveScrollPosition: function() {
-			if (this.history.length > 0){
-				var name = this.history[this.history.length-1].name;
+			if (customHistory.hasHistory()){
+				var name = customHistory.currentRoute();
     			this.routesToScrollPositions[name] = $(window).scrollTop();
     		}
 		},
@@ -135,7 +132,7 @@ define([
 		},
 
 		currentPage: function(){
-			return this.history[this.history.length-1].name;
+			return customHistory.currentRoute();
 		},
 
 		news: function(id){
@@ -156,13 +153,12 @@ define([
 			if(hideSettings)
 				$('.settings').hide();
 		},
-
 		events: function(id){
 			var page = new EventsView.EventsPage;
 			//console.log(page);
 			var hideFooter = false;
 			if(!id || id.indexOf('index') > -1){
-				var filter = id ? (id.split('/')[1] ? id.split('/')[1] : 'next') : 'next'
+				var filter = id ? (id.split('/')[1] ? id.split('/')[1] : false) : false;
 				new EventsView.EventsIndex({page:page, filter: filter});
 			} else {
 				hideFooter = true;
@@ -181,20 +177,12 @@ define([
 			}
 		},
 
-		study: function(){
-			this.changePage(new StudyPageView);
-		},
-
 		calendar: function(day){
 			this.changePage(new CalendarPageView({day: day}));
 		},
 
 		moodle: function (courseid) {
 			this.changePage(new MoodlePageView({model: this.session, courseid: courseid}));
-		},
-
-		campus: function(){
-			this.changePage(new CampusPageView);
 		},
 
 		lectures: function(vvzUrls){
@@ -211,7 +199,7 @@ define([
 				var param = JSON.stringify(vvzHistory.toJSON());
 				var url = "lectures/" + encodeURIComponent(param)
 				this.navigate(url);
-				this.history.push({name: url});
+				customHistory.push(url);
 			});
 		},
 
@@ -221,8 +209,13 @@ define([
 
 		library: function(){
 			// later on Search View and PersonPageView and LibraryPageView
-			this.changePage(new LibraryPageView);
+			this.listenToLibraryChange();
+			this.changePage(new LibraryPageView.View);
 		},
+
+		listenToLibraryChange: _.once(function() {
+			this.listenTo(LibraryPageView.Bus, "openView", this.changePage);
+		}),
 
 		// Routes for Campus - Page
 		sitemap: function(){

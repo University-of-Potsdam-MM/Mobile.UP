@@ -73,12 +73,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.template = utils.rendertmpl('news.view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
-			this.model.fetch({
+			this.model.fetch(utils.cacheDefaults({
 				success: this.render,
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeit konnte nicht abgerufen werden.', module: 'news'});
 				},
-				dataType: 'json' });
+				dataType: 'json' }));
 		},
 
 		render:function(){
@@ -102,12 +102,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.page  = p.page;
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
-			this.collection.fetch({
+			this.collection.fetch(utils.cacheDefaults({
 				success: this.render,
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
 				},
-				dataType: 'json' });
+				dataType: 'json' }));
 		},
 
 		render:function(){
@@ -165,12 +165,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.page  = p.page;
 			this.collection = new app.models.News();
 			//this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
-			this.collection.fetch({
+			this.collection.fetch(utils.cacheDefaults({
 				success: this.render,
 				error: function(){
 					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
 				},
-				dataType: 'json' });
+				dataType: 'json' }));
 		},
 
 		render: function(){

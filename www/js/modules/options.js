@@ -77,13 +77,12 @@ define([
             				that.model.set('up.session.password', password);
 							that.model.set('up.session.MoodleToken', response['token']);
 
+							var path = '';
 							if(that.model.get('up.session.redirectFrom')){
-		                		var path = that.model.get('up.session.redirectFrom');
+		                		path = that.model.get('up.session.redirectFrom');
 		                		that.model.unset('up.session.redirectFrom');
-		                		Backbone.history.navigate(path, { trigger : true });
-		            		}else{
-		                		Backbone.history.navigate('', { trigger : true });
 		            		}
+							Backbone.history.navigate(path, { trigger : true, replace: true });
 						}
 
 					},
@@ -105,7 +104,8 @@ define([
             this.model.unset('up.session.username');
             this.model.unset('up.session.password');
             this.model.unset('up.session.MoodleToken');
-			Backbone.history.navigate('', { trigger : true });
+            this.model.clearPrivateCache();
+			Backbone.history.navigate('', { trigger : true, replace: true });
 		},
 
 		errorHandler: function(){

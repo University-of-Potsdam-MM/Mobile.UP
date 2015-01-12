@@ -24,7 +24,11 @@ define([
 		model: Person,
 
 		parse:function(response){
-			return response.people;
+			if (response.people[0] && response.people[0].length != 0){
+				return response.people;
+			}else{
+				return null;
+			}
 		}
 	});
 
@@ -62,8 +66,13 @@ define([
 			this.session = new Session();
 			this.template = utils.rendertmpl('people'),
 			this.listenTo(this.collection, "error", this.requestFail);
+			this.listenTo(this.collection, "sync", this.enableSearch);
 			this.collection.bind("reset", this.clearList);
 			this.collection.bind("add", this.addPerson);
+		},
+
+		enableSearch: function(){
+			$("input[type='submit']").removeAttr('disabled');
 		},
 
 		clearList: function(){
@@ -79,11 +88,12 @@ define([
 
 		submit: function(ev){
 			ev.preventDefault();
+			$("input[type='submit']").prop("disabled", true);
 			// get search query
 			var inputs = $('#query-form :input').serializeArray();
       		var query = inputs[0].value;
 			// generate url and set collection url
-			var url = 'https://www.intern.uni-potsdam.de/personsearch/app/webroot/index.php/person/.json';
+			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
 			url += '?value='+query;
 			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
 			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));

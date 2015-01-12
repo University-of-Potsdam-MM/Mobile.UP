@@ -4,8 +4,10 @@ define([
 	'backbone',
 	'app',
 	'Session',
-	'hammerjs'
-], function($, _, Backbone, app, Session, Hammer){
+	'hammerjs',
+	'uri/URI',
+	'moodle.download'
+], function($, _, Backbone, app, Session, Hammer, URI, MoodleDownload){
 
 	/*
 	 * Template Loading Functions
@@ -56,7 +58,7 @@ define([
  	// instead of an id - Richard
 	var addLoadingSpinner = function(uniqueDivId) {
 		return function() {
-			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner\"> \
+			$("#" + uniqueDivId).append("<div class=\"up-loadingSpinner extensive-spinner\"> \
 											<img src=\"img/loadingspinner.gif\"></img> \
 										</div>");
 		};
@@ -176,11 +178,14 @@ define([
 	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
 	 */
 	var LoadingView = Backbone.View.extend({
+		
+		runningCounter: 0,
 
 		initialize: function() {
 			var subject = this.findSubject();
 			if (subject){
 				this.listenTo(subject, "request", this.spinnerOn);
+				this.listenTo(subject, "cachesync", this.spinnerHold)
 				this.listenTo(subject, "sync", this.spinnerOff);
 				this.listenTo(subject, "error", this.spinnerOff);
 			}
@@ -198,16 +203,28 @@ define([
 		},
 
 		spinnerOn: function() {
-			this.$el.append("<div class=\"up-loadingSpinner\" style=\"margin: 50px;\">" +
+			this.runningCounter++;
+			this.$el.append("<div class=\"up-loadingSpinner extensive-spinner\">" +
 								"<img src=\"img/loadingspinner.gif\"></img>" +
 							"</div>");
 		},
+		
+		spinnerHold: function(model, attr, opts) {
+			// backbone-fetch-cache is used, we should be aware of prefill requests
+			if (opts.prefill) {
+				this.runningCounter++;
+				this.$(".up-loadingSpinner").removeClass("extensive-spinner").addClass("compact-spinner");
+			}
+		},
 
 		spinnerOff: function() {
-			this.$el.empty();
+			this.runningCounter--;
+			if (this.runningCounter <= 0) {
+				this.$el.empty();
+			}
 		}
 	});
-	
+
 	// At most one InAppBrowser window should be opened at any time
 	var hasOpenInAppBrowser = false;
 	
@@ -216,46 +233,69 @@ define([
 		openWindow.addEventListener('exit', function(event) {
 			hasOpenInAppBrowser = false;
 		});
+		openWindow.addEventListener('loadstart', function(event) {
+			var url = event.url;
+			if (MoodleDownload.isMoodleFileUrl(url)) {
+				new MoodleDownload().openMoodleFileUrl(url);
+			}
+		});
 	};
+	
+	var openInTab = function(url) {
+		if (hasOpenInAppBrowser) {
+			console.log("InAppBrowser open, " + url + " won't be opened");
+		} else {
+			hasOpenInAppBrowser = true;
+		}
+		
+		var moodlePage = "https://moodle2.uni-potsdam.de/";
+		if (url.indexOf(moodlePage) != -1){
+			var session = new Session();
 
+			$.post("https://moodle2.uni-potsdam.de/login/index.php",
+				{
+					username: session.get('up.session.username'),
+					password: session.get('up.session.password')
+				}
+			).done(function(response) {
+				openInAppBrowser(url);
+			}).fail(function() {
+				hasOpenInAppBrowser = false;
+			});
+		} else {
+			openInAppBrowser(url);
+		}
+	}
+	
 	/**
-	 * Opens external links (identified by rel="external") according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
+	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
 	var overrideExternalLinks = function(event) {
 		var url = $(event.currentTarget).attr("href");
+		var uri = new URI(url);
 		
-		if (hasOpenInAppBrowser) {
-			console.log("InAppBrowser open, " + url + " won't be opened");
+		var internalProtocols = ["http", "https"];
+		var isInternalProtocol = internalProtocols.indexOf(uri.protocol()) >= 0;
+		var hasProtocol = uri.protocol() !== '' && uri.protocol() !== "javascript";
+		
+		// In the app we consider three cases:
+		// 1. Protocol is empty (URL is relative): we let the browser handle it
+		// 2. Protocol is http or https and URL is absolute: we let an InAppBrowser tab handle it
+		// 3. Protocol is something other: we let the system handle it
+		// In the browser, we let the browser handle everything
+		if (window.cordova && isInternalProtocol) {
+			console.log("Opening " + uri + " in new tab");
+			openInTab(url);
 			return false;
-		}
-		
-		if (window.cordova) {
-			hasOpenInAppBrowser = true;
-			console.log("Opening " + url + " externally");
-			
-			var moodlePage = "https://moodle2.uni-potsdam.de/";
-			if (url.indexOf(moodlePage) != -1){
-				var session = new Session();
-
-				$.post("https://moodle2.uni-potsdam.de/login/index.php",
-					{
-						username: session.get('up.session.username'),
-						password: session.get('up.session.password')
-					}
-				).done(function(response) {
-					openInAppBrowser(url);
-				}).fail(function() {
-					hasOpenInAppBrowser = false;
-				});
-			} else {
-				openInAppBrowser(url);
-			}
+		} else if (window.cordova && hasProtocol && !isInternalProtocol) {
+			console.log("Opening " + uri + " in system");
+			window.open(url, "_system");
 			return false;
 		} else {
 			console.log("Opening " + url + " internally");
 		}
 	};
-
+	
 	/**
 	 * Generates a uuid v4. Code is taken from broofas answer in http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 	 */
@@ -408,6 +448,17 @@ define([
 			console.log("Authorization: " + ajaxSettings.headers["Authorization"]);
 		});
 	};
+	
+	// Hold cached data for five minutes, then do a background update
+	var prefillExpires = 5 * 60;
+	var cacheDefaults = function(opts) {
+		var defaults = {cache: true, expires: false, prefill: true, prefillExpires: prefillExpires};
+		if (opts) {
+			return _.defaults(opts, defaults);
+		} else {
+			return defaults;
+		}
+	};
 
 	return {
 			rendertmpl: rendertmpl,
@@ -422,6 +473,7 @@ define([
 			onError: onError,
 			LocalStore: LocalStore,
 			GesturesView: GesturesView,
-			activateExtendedAjaxLogging: activateExtendedAjaxLogging
+			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
+			cacheDefaults: cacheDefaults
 		};
 });

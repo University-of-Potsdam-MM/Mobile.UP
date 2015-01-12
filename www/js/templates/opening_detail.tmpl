@@ -11,11 +11,15 @@
   		</tr>
   	</thead>
   	<tbody>
-  		<%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'" data-rel="external">'+opening.mail+'</a></td></tr>' : ''  %>
-  		<%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel: '+opening.telephone+'">'+opening.telephone+'</a></td></tr>' : '' %>
-    	<% if (opening.link) { %>
-	        <tr><th>Link:</th><td><a href="<%= opening.link %>" target="_blank" rel="external"><%= opening.link %></a></td></tr>
+      <tr><th>Name:</th><td>
+      <% if (opening.link) { %>
+          <a href="<%= opening.link %>" target="_blank" rel="external"><%= opening.name %></a></td></tr>
+        <% }else{ %>
+        <%= opening.name %></a></td></tr>
         <% } %>
+  		<%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'" data-rel="external">'+opening.mail+'</a></td></tr>' : ''  %>
+  		<%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel:'+opening.telephone.replace(/[\s-]/g, '').replace(/\+/g, '00')+'">'+opening.telephone+'</a></td></tr>' : '' %>
+
   	</tbody>
   </table>
   <% } %>
