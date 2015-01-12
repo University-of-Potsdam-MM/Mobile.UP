@@ -434,5 +434,61 @@
         "opening": [["09:00", "16:00"]]
       }
     ]
+  },
+  {
+    "name": "Cafeteria Am Neuen Palais",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
+    "mail": "gutewort@studentenwerk-potsdam.de",
+    "telephone": "+49 331 977-1275",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["08:00", "19:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["08:00", "19:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["08:00", "19:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["08:00", "19:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["08:00", "14:30"]]
+      }
+    ]
+  },
+  {
+    "name": "Cafeteria IKMZ",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
+    "mail": "habermann@studentenwerk-potsdam.de",
+    "telephone": "+49 331 977-2531",
+    "times": [
+      {
+        "day": "Montag",
+        "opening": [["09:00", "19:00"]]
+      },
+      {
+        "day": "Dienstag",
+        "opening": [["09:00", "19:00"]]
+      },
+      {
+        "day": "Mittwoch",
+        "opening": [["09:00", "19:00"]]
+      },
+      {
+        "day": "Donnerstag",
+        "opening": [["09:00", "19:00"]]
+      },
+      {
+        "day": "Freitag",
+        "opening": [["09:00", "15:00"]]
+      }
+    ]
   }
 ]
