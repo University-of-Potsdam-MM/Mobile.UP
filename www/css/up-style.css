@@ -41,6 +41,10 @@ body,.ui-page {
 	padding: 0;
 }
 
+.ui-fixed-hidden{
+	position: fixed !important;
+}
+
 p {
 	margin: 0;
 }
@@ -534,7 +538,7 @@ label.showfirst {
 
 .speiseplan .ui-collapsible-inset .ui-collapsible-heading-collapsed .ui-btn .mensatext
 	{
-	
+
 	overflow: hidden;
 	padding-right: 30px;
 }
@@ -2130,12 +2134,12 @@ p.event-description {
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
-		
+
 	.ui-page-theme-a .ui-btn.settings:before {
 		background-image: url(../img/up/logout_hr.png);
 		background-size: 18px 18px;
 	}
-		
+
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 		{
 		background-image: url(../img/up/menubutton-hres.png) !important;

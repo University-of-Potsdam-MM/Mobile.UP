@@ -24,3 +24,6 @@ phonegap plugin add https://github.com/apache/cordova-plugin-file.git
 
 phonegap plugin remove org.apache.cordova.file-transfer
 phonegap plugin add https://github.com/apache/cordova-plugin-file-transfer.git
+
+phonegap plugin remove nl.x-services.plugins.toast
+phonegap plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git

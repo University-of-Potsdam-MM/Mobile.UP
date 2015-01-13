@@ -252,6 +252,7 @@ define([
 		if (url.indexOf(moodlePage) != -1){
 			var session = new Session();
 
+			window.plugins.toast.showShortBottom("Starte Moodle-Login");
 			$.post("https://moodle2.uni-potsdam.de/login/index.php",
 				{
 					username: session.get('up.session.username'),
