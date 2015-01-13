@@ -23,6 +23,7 @@ define([
 		},
 		
 		fetch: function() {
+			window.plugins.toast.showShortBottom("Starte Download");
 			this.loadContentType();
 		},
 		
