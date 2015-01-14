@@ -2496,6 +2496,53 @@ p.event-description {
 	float: right !important;
 }
 
+.grades-li-static {
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 13px;
+	padding-top: 13px;
+}
+
+.grades-li-divider {
+	padding-top: 8px;
+}
+
+.grades-data {
+	display: block;
+}
+
+.grades-lp {
+	float: right;
+	text-align: right;
+}
+
+.grades-status {
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	text-align: center;
+}
+
+.grades-grade {
+	float: left;
+	text-align: left;
+}
+
+.grades-name {
+	font-weight: bold;
+}
+
+#gradesTable li:nth-child(odd) {
+	background-color: rgb(207, 218, 227);
+}
+
+#gradesTable .wordwrap { 
+	white-space: pre-wrap;      /* CSS3 */   
+	white-space: -moz-pre-wrap; /* Firefox */   
+	white-space: -o-pre-wrap;   /* Opera 7 */    
+	word-wrap: break-word;      /* IE */
+}
+
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;

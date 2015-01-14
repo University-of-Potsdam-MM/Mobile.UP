@@ -1,23 +1,25 @@
-<% _.each(grades, function(model) { %>
-<li>
-	<div class="grades-li-static">
-		<% function printIfExists(prefix, data, alternative) {
-			print(prefix);
+<ul data-role="listview" data-inset="true" data-theme="c" data-filter="true" data-filter-placeholder="Filterbegriff eingeben...">
+	<% _.each(grades, function(model) { %>
+	<li>
+		<div class="grades-li-static">
+			<% function printIfExists(prefix, data, alternative) {
+				print(prefix);
+				
+				if (data) {
+					print(data);
+				} else if (alternative) {
+					print(alternative);
+				}
+			} %>
 			
-			if (data) {
-				print(data);
-			} else if (alternative) {
-				print(alternative);
-			}
-		} %>
-		
-		<div class="grades-name"><%= model.name %></div>
-		<div>
-			<div class="grades-data grades-lp"><% printIfExists("LP: ", model.lp, "-"); %></div>
-			<div class="grades-data grades-grade"><% printIfExists("Note: ", model.grade, "-") %></div>
-			<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>
+			<div class="grades-name wordwrap"><%= model.name %></div>
+			<div class="grades-li-divider">
+				<div class="grades-data grades-lp"><% printIfExists("LP: ", model.lp, "-"); %></div>
+				<div class="grades-data grades-grade"><% printIfExists("Note: ", model.grade, "-") %></div>
+				<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>
+			</div>
+			<div style="clear: both;"></div>
 		</div>
-		<div style="clear: both;"></div>
-	</div>
-</li>
-<% }); %>
+	</li>
+	<% }); %>
+</ul>
