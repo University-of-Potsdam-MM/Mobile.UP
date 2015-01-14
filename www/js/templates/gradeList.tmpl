@@ -1,33 +1,6 @@
 <% _.each(grades, function(model) { %>
-<tr>
-	<td>
-		<style>
-			.grades-data {
-				display: block;
-			}
-			
-			.grades-lp {
-				float: right;
-				text-align: right;
-			}
-			
-			.grades-status {
-				margin-left: auto;
-				margin-right: auto;
-				width: 50%;
-				text-align: center;
-			}
-			
-			.grades-grade {
-				float: left;
-				text-align: left;
-			}
-			
-			.grades-name {
-				font-weight: bold;
-				
-			}
-		</style>
+<li>
+	<div class="grades-li-static">
 		<% function printIfExists(prefix, data, alternative) {
 			print(prefix);
 			
@@ -44,6 +17,7 @@
 			<div class="grades-data grades-grade"><% printIfExists("Note: ", model.grade, "-") %></div>
 			<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>
 		</div>
-	</td>
-</tr>
+		<div style="clear: both;"></div>
+	</div>
+</li>
 <% }); %>

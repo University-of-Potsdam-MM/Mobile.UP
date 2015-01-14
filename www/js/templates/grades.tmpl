@@ -26,10 +26,46 @@
  	<div id="gradesHost"></div>
  	
  	<div id="averageData" class="gradeAverages"></div>
+ 	
+ 	<style>
+ 		.grades-li-static {
+ 			padding-left: 8px;
+ 			padding-right: 8px;
+ 			padding-bottom: 13px;
+ 			padding-top: 13px;
+ 		}
+ 		
+ 		.grades-data {
+			display: block;
+		}
+		
+		.grades-lp {
+			float: right;
+			text-align: right;
+		}
+		
+		.grades-status {
+			margin-left: auto;
+			margin-right: auto;
+			width: 50%;
+			text-align: center;
+		}
+		
+		.grades-grade {
+			float: left;
+			text-align: left;
+		}
+		
+		.grades-name {
+			font-weight: bold;
+		}
+		
+		#gradesTable li:nth-child(odd) {
+			background-color: rgb(207, 218, 227);
+		}
+ 	</style>
 	
-	<table data-role="table" id="grades" data-mode="reflow" class="table-stripe ui-responsive" data-theme="c" >
-	  <tbody id="gradesTable">
-	  </tbody>
-	</table>
+	<ul data-role="listview" id="gradesTable" data-inset="true" data-theme="c">
+	</ul>
 
 </div> <!-- ende content -->

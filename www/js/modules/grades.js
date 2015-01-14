@@ -25,7 +25,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		render: function() {
 			this.$el.empty();
 			this.$el.append(this.template({grades: this.model.get("grades")}));
-			this.$el.trigger("create");
+			this.$el.listview("refresh");
 		}
 	});
 	
