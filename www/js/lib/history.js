@@ -15,7 +15,7 @@ define([
 			var savedNavigate = Backbone.history.navigate;
 			Backbone.history.navigate = function(fragment, options) {
 				// Pop current history entry if {replace: true}
-				if (options.replace) {
+				if (options && options.replace) {
 					that.history.pop();
 				}
 				
