@@ -155,7 +155,10 @@ define([
 
             if(!this.LoadingView){
                 this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
-                this.LoadingView.spinnerOn();
+            }
+            
+            if (!this.model.get('contents')){
+            	this.LoadingView.spinnerOn();
             }else{
                 this.LoadingView.spinnerOff();
             }
