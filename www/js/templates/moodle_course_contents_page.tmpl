@@ -30,10 +30,14 @@
 					<ul>
 						<% _.each(c.get('modules'), function(m){ %>
 						<li>
+							<% if (m.url) { %>
 							<a href="<%= m.url %>" target="_blank" rel="external">
+							<% } %>
 								<img src="<%= m.modicon %>" alt="<%= m.modname %>" />
 								<%= m.name %>
+							<% if (m.url) { %>
 							</a>
+							<% } %>
 						</li>
 						<% }); %>
 					</ul>
