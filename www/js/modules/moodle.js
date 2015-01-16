@@ -40,6 +40,7 @@ define([
 
         fetch: function(){
             var collection = this;
+            collection.isLoading = true;
             moodleAPI.api.core_course_get_contents({courseid: this.courseid}).then(function(contents){
                 var token = moodleAPI.api.token();
 
@@ -49,6 +50,7 @@ define([
                     return contents;
                 }
             }).done(function(contents){
+            	collection.isLoading = false;
                 collection.reset(contents);
             });
 
@@ -157,7 +159,7 @@ define([
                 this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
             }
             
-            if (!this.model.get('contents')){
+            if (this.collection.isLoading){
             	this.LoadingView.spinnerOn();
             }else{
                 this.LoadingView.spinnerOff();
