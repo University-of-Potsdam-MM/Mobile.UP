@@ -7,6 +7,11 @@ cd platforms
 rm -rf $1
 cd ..
 
+cd plugins
+rm -rf */
+rm -rf $1.json
+cd ..
+
 phonegap build $1
 sh script/add-plugins.sh
 sh script/copy-resources.sh
