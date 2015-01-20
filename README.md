@@ -1,6 +1,28 @@
 Mobile.UP
 ======
 
+Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.floriangoessler.upapp).
+
+Die ganze Uni in deiner Hand: Finde dich auf dem Campus zurecht, habe immer den aktuellsten Speiseplan der Mensen dabei, hole dir Infos aus dem Vorlesungsverzeichnis, schau in deinen Stundenplan, checke deine Leistungen und vieles mehr!
+Features:
+
+- aktueller Mensaplan
+- deinen Stundenplan direkt aktuell aus PULS
+- deine bisherigen Leistungen direkt aus PULS
+- das gesamte Vorlesungsverzeichnis 
+- aktuelle News von AStA, Uni und Co.
+- aktuelle Veranstaltungen von Nil, Waschhaus und Co.
+- durchsuchbare Öffnungszeiten für Büros, Sekretariate, Bibliotheken, Mensa und mehr
+- durchsuchbare Karten der Campusse
+- Zugriff auf Moodle2 ohne erneuten Login
+- freie Räume auf den Campussen
+- Bus und Bahn von, zu und zwischen den Campussen
+- Notrufnummern direkt zur Hand
+- Bibliothekssuche
+- direkter Link zum Hochschulsport
+
+Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam präsentiert!
+
 ## Weiterführende Informationen
 
 * [Wiki](https://github.com/University-of-Potsdam-MM/UP.App/wiki)
