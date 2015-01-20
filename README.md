@@ -11,7 +11,7 @@ Mobile.UP
 
 ## Kontakt
 
-Bei Interesse kontaktieren Sie mobileup-serivce@uni-potsdam.de
+Bei Interesse kontaktieren Sie mobileup-service@uni-potsdam.de
 
 ## Lizenz
 
