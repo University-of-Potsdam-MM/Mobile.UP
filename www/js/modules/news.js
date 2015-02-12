@@ -177,9 +177,10 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			app.data.newsSources = this.collection.response.newsSources;
 			this.$el = this.page.$el.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
-			this.$el.trigger("create");
 			$.mobile.changePage.defaults.reverse = false;
-			$('.back').attr('href', '#home');
+			$(".back").addClass("menubutton").removeClass("back");
+			$('.menubutton').attr('href', '#home');
+			this.$el.trigger("create");
 			return this;
 		}
 

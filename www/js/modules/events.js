@@ -212,7 +212,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			});
 			this.filterIndex(this.filter);
 			$.mobile.changePage.defaults.reverse = false;
-			$('.back').attr('href', '#home');
+			$(".back").addClass("menubutton").removeClass("back");
+			$('.menubutton').attr('href', '#home');
 			this.$el.trigger("create");
 			return this;
 		},
