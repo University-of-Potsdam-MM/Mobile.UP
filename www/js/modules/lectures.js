@@ -189,7 +189,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
+			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Zurzeit nicht verfügbar.', module: 'lectures', err: error});
 		},
 
 		render: function() {
@@ -253,7 +253,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'lectures', err: error});
+			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Zurzeit nicht verfügbar.', module: 'lectures', err: error});
 		},
 
 		selectMenu: function(ev) {
