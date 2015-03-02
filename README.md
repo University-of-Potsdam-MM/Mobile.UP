@@ -29,7 +29,7 @@ Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam p
 
 ## Demo Version
 
-* [Demo Mobile.UP](https://erdmaennchen.soft.cs.uni-potsdam.de/UP-App/www/)
+* [Mobile.UP](https://mobileup.uni-potsdam.de/)
 
 ## Kontakt
 
