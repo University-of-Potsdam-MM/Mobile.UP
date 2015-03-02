@@ -1,30 +1,22 @@
 <!-- Start Header -->
 <div data-role="header" data-position="fixed" data-tap-toggle="false">
 	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
-	
+
 	<%  if(store.get('up.session.authenticated')){ %>
 	<h1 class="loggedin">Leistungsübersicht </h1>
 	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %> 
+    <%  } else { %>
     <h1>Leistungsübersicht </h1>
-    <% } %>    
+    <% } %>
 </div>
 <!-- End Header -->
 
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c">
 
-  <!-- <div data-role="navbar">
-    <ul>
-      <li><a href="" class="ui-btn-active">Studiengang..</a></li>
-      <li><a href="" >Studiengang b </a></li>
-      <li><a href="" >Studiengang c </a></li>
-    </ul>
-  </div> -->
- 	
  	<div id="loadingSpinner"></div>
  	<div id="gradesHost"></div>
- 	
+
  	<div id="averageData" class="gradeAverages"></div>
 	<div id="gradesTable"></div>
 
