@@ -4,19 +4,20 @@
 		<div class="grades-li-static">
 			<% function printIfExists(prefix, data, alternative) {
 				print(prefix);
-				
+
 				if (data) {
 					print(data);
 				} else if (alternative) {
 					print(alternative);
 				}
 			} %>
-			
+
 			<div class="grades-name wordwrap"><%= model.name %></div>
 			<div class="grades-li-divider">
-				<div class="grades-data grades-lp"><% printIfExists("LP: ", model.lp, "-"); %></div>
+				<!--<div class="grades-data grades-lp"><% printIfExists("LP: ", model.lp, "-"); %></div> -->
+				<div class="grades-data grades-lp"><% if (model.status) { print(model.status); } %></div>
 				<div class="grades-data grades-grade"><% printIfExists("Note: ", model.grade, "-") %></div>
-				<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>
+				<!--<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>-->
 			</div>
 			<div style="clear: both;"></div>
 		</div>
