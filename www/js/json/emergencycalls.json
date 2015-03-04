@@ -23,5 +23,6 @@
 {"name": "Betriebsst&ouml;rungen (Wasser)","telephone": "+493319772790","description": "Frau Lange"},
 {"name": "Betriebsst&ouml;rungen (Elektro)","telephone": "+493319772332","description": "Herr Dankworth"},
 {"name": "Betriebsst&ouml;rungen (au&szlig;erhalb der Dienstzeiten)","telephone": "+493319772010", "description": "Leitzentrale UP"},
-{"name": "Sicherheitswesen der UP","telephone": "+493319772383", "street": "Karl-Liebknecht-Str. 24 /25 Haus 8c, Zi. 2.04","postal": "14476 Potsdam / Golm"}
+{"name": "Sicherheitswesen der UP","telephone": "+493319772383", "street": "Karl-Liebknecht-Str. 24 /25 Haus 8c, Zi. 2.04","postal": "14476 Potsdam / Golm"},
+{"name": "Wache","telephone": "+493319773231","description": ""}
 ]
