@@ -45,7 +45,15 @@ define([
 
 		login: function(ev){
 			ev.preventDefault();
-			if(this.loginAttempts < 3){
+			waitingTime = 0;
+
+			if(this.model.get('up.session.loginFailureTime')){	//loginFailureTime ist gesetzt denn login wurde bereits drei mal falsch eingegeben
+				waitingTime = Math.floor(((parseInt(failureTime)+7*60*1000)-(new Date().getTime()))/60000)+1;	//insgesammt 7min
+			}
+
+			if(this.loginAttempts < 3 && waitingTime <= 0){
+				this.$("#error3").css('display', 'none');
+						
 				var username = $('#username').val();
 				var password = $('#password').val();
 				
@@ -76,6 +84,7 @@ define([
 							that.model.set('up.session.username', username);
             				that.model.set('up.session.password', password);
 							that.model.set('up.session.MoodleToken', response['token']);
+							this.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
 
 							var path = '';
 							if(that.model.get('up.session.redirectFrom')){
@@ -93,8 +102,12 @@ define([
 					}
 				});
 			}else{
+				if(this.loginAttempts==3){
+					this.model.set('up.session.loginFailureTime', new Date().getTime());
+					this.loginAttempts=0;
+				}
 				this.$("#error3").css('display', 'block');
-				this.$('#login').attr('disabled', 'disabled');
+				// this.$('#login').attr('disabled', 'disabled');
 			}
 		},
 
