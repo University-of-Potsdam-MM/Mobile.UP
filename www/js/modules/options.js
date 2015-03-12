@@ -34,6 +34,11 @@ define([
 			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
 
+		stopListening: function() {
+			clearInterval(this.timer);
+			Backbone.View.prototype.stopListening.apply(this, arguments);
+		},
+
 		render: function(){
 			this.updateCountdown();
 			if (this.model.get('up.session.authenticated')){
@@ -134,7 +139,7 @@ define([
 
 		updateCountdown: function() {
 			if(this.model.get('up.session.loginFailureTime')){
-				this.loginCountdown = Math.floor(((parseInt(this.model.get('up.session.loginFailureTime'))+60000)-(new Date().getTime()))/1000)+1;
+				this.loginCountdown = Math.floor(((parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000)-(new Date().getTime()))/1000)+1;
 				if(this.loginCountdown < 0){
 					this.loginCountdown = 0;
 					this.model.unset('up.session.loginFailureTime');
@@ -155,7 +160,7 @@ define([
 		formatCountdown: function(sec){
 			min = Math.floor(sec/60);
 			sec = sec%60;
-			return sec>9 ? "0"+min+":"+sec : min+":0"+sec;
+			return sec>9 ? "0"+min+":"+sec : "0"+min+":0"+sec;
 		}
 
 	});
