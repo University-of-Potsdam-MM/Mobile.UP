@@ -52,9 +52,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 	});
 
 	var Openings = Backbone.Collection.extend({
-		model: Opening,
-		url: 'js/json/opening.json',
-    comparator: 'name'
+    model: Opening,
+    url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/opening.json',
+    comparator: 'name',
+
+    fetch: function(options) {
+      options = utils.cacheDefaults(options);
+      Backbone.Collection.prototype.fetch.apply(this, [options]);
+    } 
 	});
 
 	var OpeningView = Backbone.View.extend({
@@ -75,12 +80,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 	var OpeningsView = Backbone.View.extend({
 		anchor: '#opening-list',
 
-		initialize: function(){
-			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
-			this.collection.fetch({
-				success: this.fetchSuccess,
-				error: this.fetchError
-			});
+		initialize: function(params){
+      _.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
+      this.listenTo(this.collection, "sync", this.fetchSuccess);
+      this.listenTo(this.collection, "error", this.fetchError);
+
+      var loadingEl = params.parentEl.find("#loadingSpinner");
+      new utils.LoadingView({el: loadingEl, collection: this.collection});
+      this.collection.fetch();
 		},
 
 		fetchSuccess: function() {
@@ -91,7 +98,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
         model.attributes.statusOpenNow = dateutils.statusAtPlaceAndDate(model.attributes, now);
       });
 
-			this.render();
+      this.render();
 		},
 
 		addTextToTimes: function (collection) {
@@ -131,11 +138,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     },
 
 		fetchError: function() {
-			throw new Error('Error loading Opening-JSON file');
+      console.log('Error loading Opening-JSON file');
 		},
 
 		render: function() {
+      console.log("render OpeningsView");
 			this.el = $(this.anchor);
+      $(this.el).empty();
 			// iterate over collection and call EmergencyCallViews render method
 			this.collection.each(function(opening){
 				var openingView = new OpeningView({model: opening});
@@ -160,7 +169,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     	render: function(){
     		this.$el.html(this.template({}));
     		var openings = new Openings();
-    		var openingsView = new OpeningsView({collection: openings});
+    		var openingsView = new OpeningsView({collection: openings, parentEl: this.$el});
     		this.$el.trigger("create");
     		return this;
 		}
