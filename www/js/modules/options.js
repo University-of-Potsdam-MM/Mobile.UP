@@ -25,34 +25,37 @@ define([
 
 		initialize: function(){
 			this.loginAttempts = 0;
+			this.loginCountdown = 0;
 			this.logintemplate = utils.rendertmpl('login');
 			this.logouttemplate = utils.rendertmpl('logout');
 
 			this.listenTo(this.model,'change', this.render);
 			this.listenTo(this, "errorHandler", this.errorHandler);
+			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
 
 		render: function(){
+			this.updateCountdown();
 			if (this.model.get('up.session.authenticated')){
-				this.$el.html(this.logouttemplate({}));
+				this.$el.html(this.logouttemplate({countdown: this.formatCountdown(this.loginCountdown)}));
 			}else{
-				this.$el.html(this.logintemplate({}));
+				this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.loginCountdown)}));
 			}
 
+			if(this.loginCountdown > 0){
+				this.$("#error3").css('display', 'block');
+			}else{
+				this.$("#error3").css('display', 'none');
+			}
 			this.$el.trigger("create");
 			return this;
 		},
 
 		login: function(ev){
 			ev.preventDefault();
-			waitingTime = 0;
+			this.updateCountdown();
 
-			if(this.model.get('up.session.loginFailureTime')){	//loginFailureTime ist gesetzt denn login wurde bereits drei mal falsch eingegeben
-				waitingTime = Math.floor(((parseInt(failureTime)+7*60*1000)-(new Date().getTime()))/60000)+1;	//insgesammt 7min
-			}
-
-			if(this.loginAttempts < 3 && waitingTime <= 0){
-				this.$("#error3").css('display', 'none');
+			if(this.loginAttempts < 3 && this.loginCountdown == 0){
 						
 				var username = $('#username').val();
 				var password = $('#password').val();
@@ -106,8 +109,7 @@ define([
 					this.model.set('up.session.loginFailureTime', new Date().getTime());
 					this.loginAttempts=0;
 				}
-				this.$("#error3").css('display', 'block');
-				// this.$('#login').attr('disabled', 'disabled');
+				this.render();
 			}
 		},
 
@@ -128,6 +130,32 @@ define([
 
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
+		},
+
+		updateCountdown: function() {
+			if(this.model.get('up.session.loginFailureTime')){
+				this.loginCountdown = Math.floor(((parseInt(this.model.get('up.session.loginFailureTime'))+60000)-(new Date().getTime()))/1000)+1;
+				if(this.loginCountdown < 0){
+					this.loginCountdown = 0;
+					this.model.unset('up.session.loginFailureTime');
+					clearInterval(this.timer);
+					this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
+				}else{
+					this.trigger('registerTimer');
+				}
+			}
+		},
+
+		registerCountdownTimer: function() {
+			this.timer=setInterval(function() {
+				this.render();
+			}.bind(this), 1000);
+		},
+
+		formatCountdown: function(sec){
+			min = Math.floor(sec/60);
+			sec = sec%60;
+			return sec>9 ? "0"+min+":"+sec : min+":0"+sec;
 		}
 
 	});
