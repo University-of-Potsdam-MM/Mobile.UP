@@ -139,7 +139,7 @@ define([
 
 		updateCountdown: function() {
 			if(this.model.get('up.session.loginFailureTime')){
-				this.loginCountdown = Math.floor(((parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000)-(new Date().getTime()))/1000)+1;
+				this.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
 				if(this.loginCountdown < 0){
 					this.loginCountdown = 0;
 					this.model.unset('up.session.loginFailureTime');
@@ -157,10 +157,12 @@ define([
 			}.bind(this), 1000);
 		},
 
-		formatCountdown: function(sec){
-			min = Math.floor(sec/60);
-			sec = sec%60;
-			return sec>9 ? "0"+min+":"+sec : "0"+min+":0"+sec;
+		formatCountdown: function(milsec){
+			var sec = Math.floor(milsec/1000);
+			var formatLeadingZeroes = function(value) { return value < 10 ? "0"+value : value; };
+			var min = formatLeadingZeroes(Math.floor(sec/60));
+			sec = formatLeadingZeroes(sec%60);
+			return min+":"+sec;
 		}
 
 	});
