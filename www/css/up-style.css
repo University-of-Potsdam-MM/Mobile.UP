@@ -79,6 +79,13 @@ body .ui-group-theme-a .ui-btn:visited,
 	text-decoration:none !important;
 }
 
+
+/*footer*/
+.ui-footer-fixed {
+bottom: 0px;
+padding-bottom: 0px;
+}
+
 /*header*/
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
