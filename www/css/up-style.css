@@ -227,6 +227,11 @@ body .ui-btn.ui-btn-a.back:visited {
 	border-right: 2px solid #fff;
 }
 
+.ui-navbar li:last-child {
+	border-right: 0px;
+}
+
+
 .ui-navbar .ui-page-theme-c .ui-btn, .ui-bar-c .ui-navbar .ui-btn, .ui-body-c .ui-navbar .ui-btn, body .ui-group-theme-c  .ui-navbar .ui-btn, body .ui-navbar .ui-btn.ui-btn-c,.ui-page-theme-c .ui-navbar .ui-btn:visited, .ui-bar-c .ui-navbar .ui-btn:visited, .ui-body-c .ui-navbar .ui-btn:visited, body .ui-group-theme-c .ui-navbar .ui-btn:visited, body .ui-navbar.ui-btn.ui-btn-c:visited
 	{
 	border: none;
