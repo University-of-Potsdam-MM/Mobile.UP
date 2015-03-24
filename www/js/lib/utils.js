@@ -462,8 +462,8 @@ define([
 	};
 
 	var defaultTransition = function() {
-		var device = device || {};
-		if (device.platform == "ios" || device.platform == "iOS") {
+		var device = window.device || {data: 'none'};
+		if (device.platform === "ios" || device.platform === "iOS") {
 			$.mobile.changePage.defaults.transition = "fade";
 		} else {
 			$.mobile.changePage.defaults.transition =  "slidefade";
