@@ -35,7 +35,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-    						$.mobile.changePage.defaults.transition = 'slidefade';
+    						$.mobile.changePage.defaults.transition = utils.defaultTransition();
     						$.mobile.changePage.defaults.reverse = 'reverse';
     						customHistory.goBack();
     					}

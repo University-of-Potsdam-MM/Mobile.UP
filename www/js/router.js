@@ -276,7 +276,7 @@ define([
 			$('body').css('overflow', 'hidden');
 			$('#pagecontainer').append(pageContent);
 
-			var transition = $.mobile.changePage.defaults.transition;
+			var transition = utils.defaultTransition();
 			var reverse = $.mobile.changePage.defaults.reverse;
 
 			// dont slide first page
