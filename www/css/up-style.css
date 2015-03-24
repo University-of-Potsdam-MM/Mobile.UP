@@ -2558,5 +2558,5 @@ p.event-description {
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;
-	-webkit-animation-duration: 300ms !important;
+	-webkit-animation-duration: 100ms !important;
 }
