@@ -159,7 +159,7 @@ define([
 
 		formatCountdown: function(milsec){
 			var sec = Math.floor(milsec/1000);
-			var formatLeadingZeroes = function(value) { return value < 10 ? "0"+value : value; };
+			var formatLeadingZeroes = function(value){ return value < 10 ? "0"+value : value; };
 			var min = formatLeadingZeroes(Math.floor(sec/60));
 			sec = formatLeadingZeroes(sec%60);
 			return min+":"+sec;
