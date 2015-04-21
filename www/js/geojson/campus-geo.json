@@ -2973,6 +2973,22 @@
               52.4003028970798
             ],
             [
+              13.013292253017426,
+              52.40032826321968
+            ],
+            [
+              13.012844324111938,
+              52.40031107970717
+            ],
+            [
+              13.012833595275879,
+              52.400442001538615
+            ],
+            [
+              13.013280183076859,
+              52.400458366740246
+            ],
+            [
               13.013276159763334,
               52.400496824940134
             ],
@@ -3187,12 +3203,12 @@
               52.40079876155774
             ],
             [
-              13.013521581888199,
-              52.4007652131467
+              13.013521917164326,
+              52.40076500858314
             ],
             [
-              13.01342636346817,
-              52.40076439489244
+              13.013426698744297,
+              52.400762758383905
             ],
             [
               13.013423681259155,
@@ -4477,122 +4493,440 @@
 			},
 			"type" : "name"
 		},
-		"features" : [ {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "Mitarbeiterparkplatz \/Schranke",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010661005973816, 52.40269379623663, 0.0 ], [ 13.010693192481995, 52.4030079910113, 0.0 ], [ 13.010087013244629, 52.40300144530964, 0.0 ], [ 13.010108470916748, 52.40262179295228, 0.0 ], [ 13.010661005973816, 52.40269379623663, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010956048965454, 52.40251706069262, 0.0 ], [ 13.011224269866943, 52.40253669801023, 0.0 ], [ 13.011181354522705, 52.40293926109554, 0.0 ], [ 13.01105797290802, 52.40290653252659, 0.0 ], [ 13.010929226875305, 52.40275270792731, 0.0 ], [ 13.010956048965454, 52.40251706069262, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010854125022888, 52.40265779460914, 0.0 ], [ 13.010907769203186, 52.40180029261725, 0.0 ], [ 13.010972142219543, 52.4018035655573, 0.0 ], [ 13.010918498039246, 52.4026610674856, 0.0 ], [ 13.010854125022888, 52.40265779460914, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010913133621216, 52.4017610173177, 0.0 ], [ 13.01106333732605, 52.400314352757675, 0.0 ], [ 13.011116981506348, 52.400314352757675, 0.0 ], [ 13.010982871055603, 52.4017610173177, 0.0 ], [ 13.010913133621216, 52.4017610173177, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.011996746063232, 52.40341054979633, 0.0 ], [ 13.012028932571411, 52.4033123650655, 0.0 ], [ 13.0122971534729, 52.40337782157701, 0.0 ], [ 13.012232780456543, 52.40347600616216, 0.0 ], [ 13.011996746063232, 52.40341054979633, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Parkplatz",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.012608289718628, 52.39843721842561, 0.0 ], [ 13.013745546340942, 52.3982621024322, 0.0 ], [ 13.013767004013062, 52.39812462770746, 0.0 ], [ 13.013125956058502, 52.39805752679344, 0.0 ], [ 13.013193011283875, 52.39777111930577, 0.0 ], [ 13.014625310897827, 52.397911868360566, 0.0 ], [ 13.014512658119202, 52.398193365123404, 0.0 ], [ 13.013986945152283, 52.39814099376858, 0.0 ], [ 13.013949394226074, 52.398281741643615, 0.0 ], [ 13.014121055603027, 52.398530504231815, 0.0 ], [ 13.013874292373657, 52.398654885, 0.0 ], [ 13.013332486152649, 52.398769445923676, 0.0 ], [ 13.012769222259521, 52.39883654575517, 0.0 ], [ 13.012608289718628, 52.39843721842561, 0.0 ] ] ]
-			}
-		} ],
-		"type" : "FeatureCollection"
+		"type": "FeatureCollection",
+	  "features": [
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": "Mitarbeiterparkplatz /Schranke",
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.010661005973816,
+	              52.40269379623663
+	            ],
+	            [
+	              13.010693192481995,
+	              52.4030079910113
+	            ],
+	            [
+	              13.010087013244629,
+	              52.40300144530964
+	            ],
+	            [
+	              13.010108470916748,
+	              52.40262179295228
+	            ],
+	            [
+	              13.010661005973816,
+	              52.40269379623663
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.010956048965454,
+	              52.40251706069262
+	            ],
+	            [
+	              13.011224269866943,
+	              52.40253669801023
+	            ],
+	            [
+	              13.011181354522705,
+	              52.40293926109554
+	            ],
+	            [
+	              13.01105797290802,
+	              52.40290653252659
+	            ],
+	            [
+	              13.010929226875305,
+	              52.40275270792731
+	            ],
+	            [
+	              13.010956048965454,
+	              52.40251706069262
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.010854125022888,
+	              52.40265779460914
+	            ],
+	            [
+	              13.010907769203186,
+	              52.40180029261725
+	            ],
+	            [
+	              13.010972142219543,
+	              52.4018035655573
+	            ],
+	            [
+	              13.010918498039246,
+	              52.4026610674856
+	            ],
+	            [
+	              13.010854125022888,
+	              52.40265779460914
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.010913133621216,
+	              52.4017610173177
+	            ],
+	            [
+	              13.01106333732605,
+	              52.400314352757675
+	            ],
+	            [
+	              13.011116981506348,
+	              52.400314352757675
+	            ],
+	            [
+	              13.010982871055603,
+	              52.4017610173177
+	            ],
+	            [
+	              13.010913133621216,
+	              52.4017610173177
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.011996746063232,
+	              52.40341054979633
+	            ],
+	            [
+	              13.012028932571411,
+	              52.4033123650655
+	            ],
+	            [
+	              13.0122971534729,
+	              52.40337782157701
+	            ],
+	            [
+	              13.012232780456543,
+	              52.40347600616216
+	            ],
+	            [
+	              13.011996746063232,
+	              52.40341054979633
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.012608289718628,
+	              52.39843721842561
+	            ],
+	            [
+	              13.013745546340942,
+	              52.3982621024322
+	            ],
+	            [
+	              13.013767004013062,
+	              52.39812462770746
+	            ],
+	            [
+	              13.013125956058502,
+	              52.39805752679344
+	            ],
+	            [
+	              13.013193011283875,
+	              52.39777111930577
+	            ],
+	            [
+	              13.014625310897827,
+	              52.397911868360566
+	            ],
+	            [
+	              13.014512658119202,
+	              52.398193365123404
+	            ],
+	            [
+	              13.013986945152283,
+	              52.39814099376858
+	            ],
+	            [
+	              13.013949394226074,
+	              52.398281741643615
+	            ],
+	            [
+	              13.014121055603027,
+	              52.398530504231815
+	            ],
+	            [
+	              13.013874292373657,
+	              52.398654885
+	            ],
+	            [
+	              13.013332486152649,
+	              52.398769445923676
+	            ],
+	            [
+	              13.012769222259521,
+	              52.39883654575517
+	            ],
+	            [
+	              13.012608289718628,
+	              52.39843721842561
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "type": "Feature",
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.012672662734985,
+	              52.3993356998352
+	            ],
+	            [
+	              13.013262748718262,
+	              52.3993618848114
+	            ],
+	            [
+	              13.013316392898558,
+	              52.39893637702289
+	            ],
+	            [
+	              13.012694120407104,
+	              52.39903457149211
+	            ],
+	            [
+	              13.012672662734985,
+	              52.3993356998352
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "type": "Feature",
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.009089231491089,
+	              52.40523020058933
+	            ],
+	            [
+	              13.009105324745178,
+	              52.40502402090649
+	            ],
+	            [
+	              13.011031150817871,
+	              52.40509929296586
+	            ],
+	            [
+	              13.010998964309692,
+	              52.405511650664344
+	            ],
+	            [
+	              13.010237216949463,
+	              52.405433106638
+	            ],
+	            [
+	              13.009089231491089,
+	              52.40523020058933
+	            ]
+	          ]
+	        ]
+	      }
+	    },
+	    {
+	      "type": "Feature",
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              13.011358380317688,
+	              52.39827846844233
+	            ],
+	            [
+	              13.01156759262085,
+	              52.398285014844674
+	            ],
+	            [
+	              13.011631965637205,
+	              52.39766964877847
+	            ],
+	            [
+	              13.011428117752075,
+	              52.39766964877847
+	            ],
+	            [
+	              13.011358380317688,
+	              52.39827846844233
+	            ]
+	          ]
+	        ]
+	      }
+	    }
+	  ]
 	}
 }, {
 	"campus" : "golm",
