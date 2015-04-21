@@ -25,27 +25,43 @@ define([
 
 		initialize: function(){
 			this.loginAttempts = 0;
+			this.loginCountdown = 0;
 			this.logintemplate = utils.rendertmpl('login');
 			this.logouttemplate = utils.rendertmpl('logout');
 
 			this.listenTo(this.model,'change', this.render);
 			this.listenTo(this, "errorHandler", this.errorHandler);
+			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
+		},
+
+		stopListening: function() {
+			clearInterval(this.timer);
+			Backbone.View.prototype.stopListening.apply(this, arguments);
 		},
 
 		render: function(){
+			this.updateCountdown();
 			if (this.model.get('up.session.authenticated')){
-				this.$el.html(this.logouttemplate({}));
+				this.$el.html(this.logouttemplate({countdown: this.formatCountdown(this.loginCountdown)}));
 			}else{
-				this.$el.html(this.logintemplate({}));
+				this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.loginCountdown)}));
 			}
 
+			if(this.loginCountdown > 0){
+				this.$("#error3").css('display', 'block');
+			}else{
+				this.$("#error3").css('display', 'none');
+			}
 			this.$el.trigger("create");
 			return this;
 		},
 
 		login: function(ev){
 			ev.preventDefault();
-			if(this.loginAttempts < 3){
+			this.updateCountdown();
+
+			if(this.loginAttempts < 3 && this.loginCountdown == 0){
+						
 				var username = $('#username').val();
 				var password = $('#password').val();
 				
@@ -76,6 +92,7 @@ define([
 							that.model.set('up.session.username', username);
             				that.model.set('up.session.password', password);
 							that.model.set('up.session.MoodleToken', response['token']);
+							this.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
 
 							var path = '';
 							if(that.model.get('up.session.redirectFrom')){
@@ -93,8 +110,11 @@ define([
 					}
 				});
 			}else{
-				this.$("#error3").css('display', 'block');
-				this.$('#login').attr('disabled', 'disabled');
+				if(this.loginAttempts==3){
+					this.model.set('up.session.loginFailureTime', new Date().getTime());
+					this.loginAttempts=0;
+				}
+				this.render();
 			}
 		},
 
@@ -115,6 +135,34 @@ define([
 
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
+		},
+
+		updateCountdown: function() {
+			if(this.model.get('up.session.loginFailureTime')){
+				this.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
+				if(this.loginCountdown < 0){
+					this.loginCountdown = 0;
+					this.model.unset('up.session.loginFailureTime');
+					clearInterval(this.timer);
+					this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
+				}else{
+					this.trigger('registerTimer');
+				}
+			}
+		},
+
+		registerCountdownTimer: function() {
+			this.timer=setInterval(function() {
+				this.render();
+			}.bind(this), 1000);
+		},
+
+		formatCountdown: function(milsec){
+			var sec = Math.floor(milsec/1000);
+			var formatLeadingZeroes = function(value) { return value < 10 ? "0"+value : value; };
+			var min = formatLeadingZeroes(Math.floor(sec/60));
+			sec = formatLeadingZeroes(sec%60);
+			return min+":"+sec;
 		}
 
 	});
