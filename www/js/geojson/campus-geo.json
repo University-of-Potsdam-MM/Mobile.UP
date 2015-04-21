@@ -2499,330 +2499,1214 @@
 			},
 			"type" : "name"
 		},
-		"features" : [ {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 1",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Dezernat 1 (Planung, Statistik, Forschungsangelegenheiten, Organisation)\n- Institut für Künste und Medien\n- Institut für Slavistik",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010510802268982, 52.39973911040027, 0.0 ], [ 13.010545670986176, 52.399407708482336, 0.0 ], [ 13.010754883289337, 52.39941670955496, 0.0 ], [ 13.010721355676651, 52.399746474859036, 0.0 ], [ 13.010510802268982, 52.39973911040027, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 2",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- AG eLearning\n- Poststelle (Z\/AVZ)\n- Jüdische Studien\n- Studiumplus\n- Zentrale Abteilung\/Audiovisuelles Zentrum (Z\/AVZ)\n- Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010288178920746, 52.40018506707751, 0.0 ], [ 13.010289520025253, 52.40018015748725, 0.0 ], [ 13.010324388742447, 52.39985939640665, 0.0 ], [ 13.010536283254623, 52.39986839738714, 0.0 ], [ 13.010502755641937, 52.400194067991556, 0.0 ], [ 13.010288178920746, 52.40018506707751, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 3",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Dezernat 3 \/ Personal- und - Rechtsangelegenheiten\n- Dezernat 4 \/ Haushalt und Beschaffung",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010411560535431, 52.40065638519875, 0.0 ], [ 13.010441064834595, 52.40032253538292, 0.0 ], [ 13.010654971003532, 52.40033194540007, 0.0 ], [ 13.010618090629578, 52.400664567760565, 0.0 ], [ 13.010411560535431, 52.40065638519875, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 5",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "Institut für Germanistik",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.010223805904388, 52.40233705154036, 0.0 ], [ 13.010258674621582, 52.40200976029099, 0.0 ], [ 13.01047258079052, 52.40202121552573, 0.0 ], [ 13.010430335998535, 52.40234523379047, 0.0 ], [ 13.010223805904388, 52.40233705154036, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 6",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Koordinationsbüro für Chancengleichheit\n- Personalräte\n- Studierendenvertretung - AStA\n- UP Transfer - Zentraler universitärer Partner für Wissens- und Technologietransfer\n- Zentrale Abteilung\/Audiovisuelles Zentrum (Z\/AVZ)",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009203895926476, 52.400823718285956, 0.0 ], [ 13.009218648076057, 52.40069647973711, 0.0 ], [ 13.009830191731453, 52.40072430041582, 0.0 ], [ 13.009878471493721, 52.400400270247026, 0.0 ], [ 13.009651154279709, 52.40038881459143, 0.0 ], [ 13.009625002741814, 52.40069934363132, 0.0 ], [ 13.009415119886398, 52.400688297181226, 0.0 ], [ 13.009470775723457, 52.40025461954743, 0.0 ], [ 13.010082319378853, 52.4002840770311, 0.0 ], [ 13.010023981332779, 52.40085808490504, 0.0 ], [ 13.009203895926476, 52.400823718285956, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 8",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Auditorium Maximum \"Audimax\"\n- Büro der französischen Botschaft für die akademischen Beziehungen\n- Cafeteria\n- Dezernat 2 (Studentische Angelegenheiten - Zentrale Studienberatung, - Studierendensekretariate, Prüfungsamt, Akademisches Auslandsamt)\n- Dezernat 2 (Chipkarten-Service)\n- Institut für Mathematik\n- Welcome Center Potsdam\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.01155149936676, 52.400300442291304, 0.0 ], [ 13.011599779129028, 52.399856941593484, 0.0 ], [ 13.011492490768433, 52.399845485796824, 0.0 ], [ 13.011508584022522, 52.39969901499192, 0.0 ], [ 13.011610507965088, 52.39970228808784, 0.0 ], [ 13.011653423309326, 52.39925714481339, 0.0 ], [ 13.012393712997437, 52.399276783581946, 0.0 ], [ 13.012353479862213, 52.3997472931322, 0.0 ], [ 13.01216907799244, 52.39974320176642, 0.0 ], [ 13.012205958366394, 52.39940443536456, 0.0 ], [ 13.011849224567413, 52.3993946160098, 0.0 ], [ 13.011813014745712, 52.39971456219539, 0.0 ], [ 13.011953830718994, 52.39971865356384, 0.0 ], [ 13.011943101882935, 52.399862669490666, 0.0 ], [ 13.0117928981781, 52.39985939640665, 0.0 ], [ 13.011771440505981, 52.400199795845005, 0.0 ], [ 13.012125492095947, 52.40021288807865, 0.0 ], [ 13.012152314186096, 52.39989212723598, 0.0 ], [ 13.012350797653198, 52.39989458204722, 0.0 ], [ 13.01230788230896, 52.40032744495733, 0.0 ], [ 13.01155149936676, 52.400300442291304, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 9",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Eltern-Kind-Raum (Raum 1.01 )\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzlerin\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.012527152895927, 52.40218690698116, 0.0 ], [ 13.01258347928524, 52.40167796630875, 0.0 ], [ 13.01331840455532, 52.40170251342128, 0.0 ], [ 13.013323098421097, 52.40164114561444, 0.0 ], [ 13.01307700574398, 52.4016305085192, 0.0 ], [ 13.012792691588402, 52.40147340650669, 0.0 ], [ 13.012741059064865, 52.40130484851709, 0.0 ], [ 13.012760505080223, 52.40107655778606, 0.0 ], [ 13.01284834742546, 52.40092109030376, 0.0 ], [ 13.013144731521606, 52.40077666870456, 0.0 ], [ 13.013343885540962, 52.400773804815366, 0.0 ], [ 13.013341873884201, 52.40072430041582, 0.0 ], [ 13.012670651078224, 52.40069975275909, 0.0 ], [ 13.012732341885567, 52.40022107072277, 0.0 ], [ 13.013414964079857, 52.40024480038195, 0.0 ], [ 13.01339752972126, 52.40045222979032, 0.0 ], [ 13.013711348176003, 52.40046286716962, 0.0 ], [ 13.01370732486248, 52.400513599250864, 0.0 ], [ 13.013735488057137, 52.400505007531535, 0.0 ], [ 13.01378108561039, 52.40050562122585, 0.0 ], [ 13.013811931014061, 52.40050787143819, 0.0 ], [ 13.013837411999702, 52.40052178183917, 0.0 ], [ 13.01385048776865, 52.40053323746023, 0.0 ], [ 13.013860210776329, 52.400546738724096, 0.0 ], [ 13.01386658102274, 52.40055533043531, 0.0 ], [ 13.01387295126915, 52.40056596778973, 0.0 ], [ 13.01384411752224, 52.400742711149434, 0.0 ], [ 13.013840094208717, 52.400752939331454, 0.0 ], [ 13.013807237148285, 52.40077053179893, 0.0 ], [ 13.01378209143877, 52.40077748695856, 0.0 ], [ 13.013758286833763, 52.400779532593525, 0.0 ], [ 13.013718724250793, 52.40077912346666, 0.0 ], [ 13.013687878847122, 52.400768486163614, 0.0 ], [ 13.013667091727257, 52.40094318308472, 0.0 ], [ 13.013359978795052, 52.40092886369097, 0.0 ], [ 13.01303543150425, 52.401082285524936, 0.0 ], [ 13.013016656041145, 52.40130975798224, 0.0 ], [ 13.013267442584038, 52.40146154200914, 0.0 ], [ 13.013604059815407, 52.401474224747815, 0.0 ], [ 13.01357589662075, 52.40171233226249, 0.0 ], [ 13.013639599084854, 52.40170414989503, 0.0 ], [ 13.01366575062275, 52.401706400046194, 0.0 ], [ 13.013721406459808, 52.401720923746694, 0.0 ], [ 13.013743786141276, 52.401736930495616, 0.0 ], [ 13.013746719807386, 52.40176971107195, 0.0 ], [ 13.013737834990025, 52.4018254533377, 0.0 ], [ 13.013721406459808, 52.40194511998223, 0.0 ], [ 13.013702107127756, 52.4019551305426, 0.0 ], [ 13.0136553151533, 52.401969641376354, 0.0 ], [ 13.013618057593703, 52.4019716613863, 0.0 ], [ 13.013582434505224, 52.40196670085536, 0.0 ], [ 13.013550080358982, 52.40195350686307, 0.0 ], [ 13.013545721769333, 52.40197375810537, 0.0 ], [ 13.013227209448814, 52.40196312109033, 0.0 ], [ 13.013200387358665, 52.40220408976315, 0.0 ], [ 13.012527152895927, 52.40218690698116, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 10",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "Universitätsbibliothek",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Point",
-				"coordinates" : [ 13.013096451759338, 52.40043218241473, 0.0 ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 11",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Dekanat der Philosophischen Fakultät\n- Historisches Institut\n- Institut für Jüdische Studien\/Jewish Studies\n- Institut für Lebensgestaltung-Ethik-Religionskunde\n- Institut für Philosophie\n- Institut für Religionswissenschaft\n- Klassische Philologie\n- Studentenkeller\n- Universitätsbibliothek",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Point",
-				"coordinates" : [ 13.012919425964355, 52.40182647613086, 0.0 ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 12",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Department Sport- und Gesundheitswissenschaften\n- Sportpsychologie\n- Sport- und Gesundheitssoziologie\n- Trainings- und Bewegungswissenschaft\n- Hochschulambulanz\n- Rehabilitationswissenschaften \n - Sozial- und Präventivmedizin\n - Sportmedizin und Sportorthopädie\n- Mensa\n- Turnhalle",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.011202812194824, 52.40297526249334, 0.0 ], [ 13.011261820793152, 52.40251706069259, 0.0 ], [ 13.011181354522705, 52.402510514918085, 0.0 ], [ 13.011192083358765, 52.40237959922443, 0.0 ], [ 13.011279255151749, 52.40238287212151, 0.0 ], [ 13.01132619380951, 52.4019279370993, 0.0 ], [ 13.012138903141022, 52.401954120537155, 0.0 ], [ 13.012087941169739, 52.40238614501835, 0.0 ], [ 13.011868000030518, 52.40237796277579, 0.0 ], [ 13.011900186538696, 52.40205312652106, 0.0 ], [ 13.011542111635208, 52.40203758014163, 0.0 ], [ 13.011504560709, 52.40236896230725, 0.0 ], [ 13.01163598895073, 52.40237305342954, 0.0 ], [ 13.011618554592133, 52.40252687935249, 0.0 ], [ 13.01147773861885, 52.40252524290932, 0.0 ], [ 13.011440187692642, 52.402854575873555, 0.0 ], [ 13.01180899143219, 52.40286398535067, 0.0 ], [ 13.011834472417831, 52.40258906414785, 0.0 ], [ 13.012070506811142, 52.402592337029375, 0.0 ], [ 13.012028262019157, 52.40300103620324, 0.0 ], [ 13.011202812194824, 52.40297526249334, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 13",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Bauverwaltung\n - Hochschulgebäudemanagement, Bereich Am Neuen Palais\n- Zentrum für Hochschulsport",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.008005619049072, 52.402297776718626, 0.0 ], [ 13.008016347885132, 52.40224213732799, 0.0 ], [ 13.008107542991638, 52.40224541023527, 0.0 ], [ 13.008115589618683, 52.402187316095066, 0.0 ], [ 13.00912007689476, 52.4022666841266, 0.0 ], [ 13.009083867073059, 52.40238778146666, 0.0 ], [ 13.008005619049072, 52.402297776718626, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 14",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "Sport- und Gerätelager",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009432554244995, 52.402319050584715, 0.0 ], [ 13.009448647499084, 52.40217217887695, 0.0 ], [ 13.009850978851318, 52.40218649786718, 0.0 ], [ 13.009859696030617, 52.40233050573913, 0.0 ], [ 13.009432554244995, 52.402319050584715, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 15",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009260892868042, 52.40272488852762, 0.0 ], [ 13.009274303913116, 52.4026119743135, 0.0 ], [ 13.009805381298065, 52.402625065831394, 0.0 ], [ 13.009794652462006, 52.402741252882514, 0.0 ], [ 13.009260892868042, 52.40272488852762, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 16",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "Sport- und Gerätelager",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009388968348503, 52.401306075883426, 0.0 ], [ 13.009388968348503, 52.401229569983585, 0.0 ], [ 13.010028004646301, 52.401253708223, 0.0 ], [ 13.010025322437286, 52.401327350227696, 0.0 ], [ 13.009388968348503, 52.401306075883426, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 19",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Institut für Anglistik\/Amerikanistik\n- Institut für Romanistik\n- Zentrum für Sprachen und Schlüsselkompetenzen (Zessko)",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.011701703071594, 52.39849122602165, 0.0 ], [ 13.011776804924011, 52.39788568252391, 0.0 ], [ 13.011733889579773, 52.39788240929323, 0.0 ], [ 13.011755347251892, 52.397650009294615, 0.0 ], [ 13.011910915374756, 52.397650009294615, 0.0 ], [ 13.011873364448547, 52.39788240929323, 0.0 ], [ 13.01197662949562, 52.39788731913916, 0.0 ], [ 13.011902868747711, 52.39850022728123, 0.0 ], [ 13.011701703071594, 52.39849122602165, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 22",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : null,
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009539172053337, 52.400191204064555, 0.0 ], [ 13.009561970829964, 52.3999845916977, 0.0 ], [ 13.009743019938469, 52.39999154698122, 0.0 ], [ 13.009718209505081, 52.40019734105076, 0.0 ], [ 13.009539172053337, 52.400191204064555, 0.0 ] ] ]
-			}
-		}, {
-			"properties" : {
-				"extrude" : -1,
-				"timestamp" : null,
-				"Name" : "Haus 22",
-				"icon" : null,
-				"visibility" : -1,
-				"description" : "- Institut für Mathematik\n- Institut für Physik\n- Netzwerk Studienqualität Brandenburg (sqb)\n- Zentrale Studienberatung, Studierendenmarketing und Alumniprogramm",
-				"tessellate" : -1,
-				"drawOrder" : null,
-				"end" : null,
-				"altitudeMode" : null,
-				"begin" : null
-			},
-			"type" : "Feature",
-			"geometry" : {
-				"type" : "Polygon",
-				"coordinates" : [ [ [ 13.009834885597229, 52.40020593283001, 0.0 ], [ 13.009885847568512, 52.39966628401933, 0.0 ], [ 13.010075613856316, 52.3996781489997, 0.0 ], [ 13.010062202811241, 52.39980579962118, 0.0 ], [ 13.010156080126762, 52.39981398234072, 0.0 ], [ 13.010143339633942, 52.39989253637124, 0.0 ], [ 13.010129928588867, 52.39997231766527, 0.0 ], [ 13.010054156184196, 52.39996658978228, 0.0 ], [ 13.010021299123764, 52.40021411547536, 0.0 ], [ 13.009834885597229, 52.40020593283001, 0.0 ] ] ]
-			}
-		} ],
+		"features": [
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 1",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Dezernat 1 (Planung, Statistik, Forschungsangelegenheiten, Organisation)\n- Institut für Künste und Medien\n- Institut für Slavistik",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.010510802268982,
+              52.39973911040027
+            ],
+            [
+              13.010545670986176,
+              52.399407708482336
+            ],
+            [
+              13.010754883289337,
+              52.39941670955496
+            ],
+            [
+              13.010721355676651,
+              52.399746474859036
+            ],
+            [
+              13.010510802268982,
+              52.39973911040027
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 2",
+        "icon": null,
+        "visibility": -1,
+        "description": "- AG eLearning\n- Poststelle (Z/AVZ)\n- Jüdische Studien\n- Studiumplus\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)\n- Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.010288178920746,
+              52.40018506707751
+            ],
+            [
+              13.010289520025253,
+              52.40018015748725
+            ],
+            [
+              13.010324388742447,
+              52.39985939640665
+            ],
+            [
+              13.010536283254623,
+              52.39986839738714
+            ],
+            [
+              13.010502755641937,
+              52.400194067991556
+            ],
+            [
+              13.010288178920746,
+              52.40018506707751
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 3",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Dezernat 3 / Personal- und - Rechtsangelegenheiten\n- Dezernat 4 / Haushalt und Beschaffung",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.010411560535431,
+              52.40065638519875
+            ],
+            [
+              13.010441064834595,
+              52.40032253538292
+            ],
+            [
+              13.010654971003532,
+              52.40033194540007
+            ],
+            [
+              13.010618090629578,
+              52.400664567760565
+            ],
+            [
+              13.010411560535431,
+              52.40065638519875
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 5",
+        "icon": null,
+        "visibility": -1,
+        "description": "Institut für Germanistik",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.010223805904388,
+              52.40233705154036
+            ],
+            [
+              13.010258674621582,
+              52.40200976029099
+            ],
+            [
+              13.01047258079052,
+              52.40202121552573
+            ],
+            [
+              13.010430335998535,
+              52.40234523379047
+            ],
+            [
+              13.010223805904388,
+              52.40233705154036
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 6",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Koordinationsbüro für Chancengleichheit\n- Personalräte\n- Studierendenvertretung - AStA\n- UP Transfer - Zentraler universitärer Partner für Wissens- und Technologietransfer\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.009203895926476,
+              52.400823718285956
+            ],
+            [
+              13.009220659732819,
+              52.40068584241416
+            ],
+            [
+              13.00984427332878,
+              52.400706298802184
+            ],
+            [
+              13.009878471493721,
+              52.400400270247026
+            ],
+            [
+              13.009651154279709,
+              52.40038881459143
+            ],
+            [
+              13.00961896777153,
+              52.40069893450359
+            ],
+            [
+              13.009417802095413,
+              52.40069157020377
+            ],
+            [
+              13.009470775723457,
+              52.40025461954743
+            ],
+            [
+              13.010082319378853,
+              52.4002840770311
+            ],
+            [
+              13.010023981332779,
+              52.40085808490504
+            ],
+            [
+              13.009203895926476,
+              52.400823718285956
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 8",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Auditorium Maximum \"Audimax\"\n- Büro der französischen Botschaft für die akademischen Beziehungen\n- Cafeteria\n- Dezernat 2 (Studentische Angelegenheiten - Zentrale Studienberatung, - Studierendensekretariate, Prüfungsamt, Akademisches Auslandsamt)\n- Dezernat 2 (Chipkarten-Service)\n- Institut für Mathematik\n- Welcome Center Potsdam\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.01155149936676,
+              52.400300442291304
+            ],
+            [
+              13.011599779129028,
+              52.399856941593484
+            ],
+            [
+              13.011492490768433,
+              52.399845485796824
+            ],
+            [
+              13.011508584022522,
+              52.39969901499192
+            ],
+            [
+              13.011610507965088,
+              52.39970228808784
+            ],
+            [
+              13.011653423309326,
+              52.39925714481339
+            ],
+            [
+              13.012393712997437,
+              52.399276783581946
+            ],
+            [
+              13.012353479862213,
+              52.3997472931322
+            ],
+            [
+              13.01216907799244,
+              52.39974320176642
+            ],
+            [
+              13.012205958366394,
+              52.39940443536456
+            ],
+            [
+              13.011849224567413,
+              52.3993946160098
+            ],
+            [
+              13.011813014745712,
+              52.39971456219539
+            ],
+            [
+              13.011953830718994,
+              52.39971865356384
+            ],
+            [
+              13.011943101882935,
+              52.399862669490666
+            ],
+            [
+              13.0117928981781,
+              52.39985939640665
+            ],
+            [
+              13.011771440505981,
+              52.400199795845005
+            ],
+            [
+              13.012125492095947,
+              52.40021288807865
+            ],
+            [
+              13.012152314186096,
+              52.39989212723598
+            ],
+            [
+              13.012350797653198,
+              52.39989458204722
+            ],
+            [
+              13.01230788230896,
+              52.40032744495733
+            ],
+            [
+              13.01155149936676,
+              52.400300442291304
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 9",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Career-Service\n- Eltern-Kind-Raum (Raum 1.01)\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzlerin\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.013370037078857,
+              52.40076112187532
+            ],
+            [
+              13.013632893562317,
+              52.400767667909335
+            ],
+            [
+              13.013638257980347,
+              52.400664567760536
+            ],
+            [
+              13.013713359832764,
+              52.400667840784834
+            ],
+            [
+              13.013724088668821,
+              52.40055819433867
+            ],
+            [
+              13.013654351234436,
+              52.40055655782248
+            ],
+            [
+              13.013665080070496,
+              52.40045345718039
+            ],
+            [
+              13.013370707631111,
+              52.40044404718915
+            ],
+            [
+              13.013364672660828,
+              52.400499279717735
+            ],
+            [
+              13.012683391571045,
+              52.4004812780123
+            ],
+            [
+              13.01266461610794,
+              52.40069075194814
+            ],
+            [
+              13.013372719287872,
+              52.4007169361202
+            ],
+            [
+              13.013370037078857,
+              52.40076112187532
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 10",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Universitätsbibliothek",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.013364672660828,
+              52.40049968884729
+            ],
+            [
+              13.013396859169005,
+              52.4002014323744
+            ],
+            [
+              13.012699484825133,
+              52.400188340137376
+            ],
+            [
+              13.012683391571045,
+              52.4004812780123
+            ],
+            [
+              13.012798726558685,
+              52.40048414192047
+            ],
+            [
+              13.012809455394745,
+              52.40028489529426
+            ],
+            [
+              13.01329493522644,
+              52.4003028970798
+            ],
+            [
+              13.013276159763334,
+              52.400496824940134
+            ],
+            [
+              13.013364672660828,
+              52.40049968884729
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 11",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Dekanat der Philosophischen Fakultät\n- Historisches Institut\n- Institut für Jüdische Studien/Jewish Studies\n- Institut für Lebensgestaltung-Ethik-Religionskunde\n- Institut für Philosophie\n- Institut für Religionswissenschaft\n- Klassische Philologie\n- Studentenkeller\n- Universitätsbibliothek",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.012498319149017,
+              52.40216276925226
+            ],
+            [
+              13.0131796002388,
+              52.4021864978672
+            ],
+            [
+              13.013190329074858,
+              52.40209158333095
+            ],
+            [
+              13.01266461610794,
+              52.4020801281145
+            ],
+            [
+              13.01268070936203,
+              52.40189193484687
+            ],
+            [
+              13.013187646865845,
+              52.40190502657844
+            ],
+            [
+              13.013165853917599,
+              52.40209096965872
+            ],
+            [
+              13.013190329074858,
+              52.40209158333095
+            ],
+            [
+              13.013209104537964,
+              52.40196230285829
+            ],
+            [
+              13.013498783111572,
+              52.40197375810535
+            ],
+            [
+              13.013512194156647,
+              52.401846113755866
+            ],
+            [
+              13.013565838336945,
+              52.40184693199004
+            ],
+            [
+              13.01357388496399,
+              52.40174137965481
+            ],
+            [
+              13.01352024078369,
+              52.401738106710155
+            ],
+            [
+              13.013525605201721,
+              52.401662010678294
+            ],
+            [
+              13.013253360986708,
+              52.40165628301467
+            ],
+            [
+              13.013252019882202,
+              52.401685739562545
+            ],
+            [
+              13.012547940015793,
+              52.401669374816166
+            ],
+            [
+              13.012498319149017,
+              52.40216276925226
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.013378083705902,
+              52.40165791949008
+            ],
+            [
+              13.013449162244797,
+              52.40166037420304
+            ],
+            [
+              13.013451844453812,
+              52.40160718872454
+            ],
+            [
+              13.013504147529602,
+              52.40160718872454
+            ],
+            [
+              13.013498783111572,
+              52.40151227294207
+            ],
+            [
+              13.013370037078857,
+              52.40151227294207
+            ],
+            [
+              13.013203740119934,
+              52.40150245405635
+            ],
+            [
+              13.013123273849487,
+              52.40148936220534
+            ],
+            [
+              13.01305890083313,
+              52.40145990552637
+            ],
+            [
+              13.012994527816772,
+              52.40142472113406
+            ],
+            [
+              13.012956976890564,
+              52.401371535371496
+            ],
+            [
+              13.012951612472534,
+              52.40129952992923
+            ],
+            [
+              13.012994527816772,
+              52.40129952992923
+            ],
+            [
+              13.013015985488892,
+              52.40106551143035
+            ],
+            [
+              13.012978434562683,
+              52.40106714792767
+            ],
+            [
+              13.012989163398743,
+              52.401008233986296
+            ],
+            [
+              13.013022691011429,
+              52.40096486672921
+            ],
+            [
+              13.01307499408722,
+              52.400929681942124
+            ],
+            [
+              13.013148754835129,
+              52.40089613363065
+            ],
+            [
+              13.013235926628113,
+              52.40088385985177
+            ],
+            [
+              13.013412952423096,
+              52.40088385985177
+            ],
+            [
+              13.01357388496399,
+              52.4008912241195
+            ],
+            [
+              13.013580590486525,
+              52.40080039806492
+            ],
+            [
+              13.01352024078369,
+              52.40079876155774
+            ],
+            [
+              13.013521581888199,
+              52.4007652131467
+            ],
+            [
+              13.01342636346817,
+              52.40076439489244
+            ],
+            [
+              13.013423681259155,
+              52.40079548854313
+            ],
+            [
+              13.013235926628113,
+              52.400794670289436
+            ],
+            [
+              13.013069629669188,
+              52.40081839964016
+            ],
+            [
+              13.012983798980711,
+              52.400847856747404
+            ],
+            [
+              13.012881875038147,
+              52.400926408937245
+            ],
+            [
+              13.012844324111938,
+              52.401001687987986
+            ],
+            [
+              13.01282823085785,
+              52.40105732894292
+            ],
+            [
+              13.012794703245163,
+              52.40105651069408
+            ],
+            [
+              13.012774586677551,
+              52.4012962569518
+            ],
+            [
+              13.01280677318573,
+              52.4012962569518
+            ],
+            [
+              13.01280677318573,
+              52.40136826239941
+            ],
+            [
+              13.012855052947998,
+              52.40145990552637
+            ],
+            [
+              13.012944906949997,
+              52.40153600190682
+            ],
+            [
+              13.013046830892561,
+              52.401572004449676
+            ],
+            [
+              13.013198375701904,
+              52.401597369859964
+            ],
+            [
+              13.013379424810408,
+              52.40160718872454
+            ],
+            [
+              13.013378083705902,
+              52.40165791949008
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 12",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Department Sport- und Gesundheitswissenschaften\n- Sportpsychologie\n- Sport- und Gesundheitssoziologie\n- Trainings- und Bewegungswissenschaft\n- Hochschulambulanz\n- Rehabilitationswissenschaften \n - Sozial- und Präventivmedizin\n - Sportmedizin und Sportorthopädie\n- Mensa\n- Turnhalle",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.011202812194824,
+              52.40297526249334
+            ],
+            [
+              13.011261820793152,
+              52.40251706069259
+            ],
+            [
+              13.011181354522705,
+              52.402510514918085
+            ],
+            [
+              13.011192083358765,
+              52.40237959922443
+            ],
+            [
+              13.011279255151749,
+              52.40238287212151
+            ],
+            [
+              13.01132619380951,
+              52.4019279370993
+            ],
+            [
+              13.012138903141022,
+              52.401954120537155
+            ],
+            [
+              13.012087941169739,
+              52.40238614501835
+            ],
+            [
+              13.011868000030518,
+              52.40237796277579
+            ],
+            [
+              13.011900186538696,
+              52.40205312652106
+            ],
+            [
+              13.011542111635208,
+              52.40203758014163
+            ],
+            [
+              13.011504560709,
+              52.40236896230725
+            ],
+            [
+              13.01163598895073,
+              52.40237305342954
+            ],
+            [
+              13.011618554592133,
+              52.40252687935249
+            ],
+            [
+              13.01147773861885,
+              52.40252524290932
+            ],
+            [
+              13.011440187692642,
+              52.402854575873555
+            ],
+            [
+              13.01180899143219,
+              52.40286398535067
+            ],
+            [
+              13.011834472417831,
+              52.40258906414785
+            ],
+            [
+              13.012070506811142,
+              52.402592337029375
+            ],
+            [
+              13.012028262019157,
+              52.40300103620324
+            ],
+            [
+              13.011202812194824,
+              52.40297526249334
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 13",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Bauverwaltung\n - Hochschulgebäudemanagement, Bereich Am Neuen Palais\n- Zentrum für Hochschulsport",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.008005619049072,
+              52.402297776718626
+            ],
+            [
+              13.008016347885132,
+              52.40224213732799
+            ],
+            [
+              13.008107542991638,
+              52.40224541023527
+            ],
+            [
+              13.008115589618683,
+              52.402187316095066
+            ],
+            [
+              13.00912007689476,
+              52.4022666841266
+            ],
+            [
+              13.009083867073059,
+              52.40238778146666
+            ],
+            [
+              13.008005619049072,
+              52.402297776718626
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 14",
+        "icon": null,
+        "visibility": -1,
+        "description": "Sport- und Gerätelager",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.009432554244995,
+              52.402319050584715
+            ],
+            [
+              13.009448647499084,
+              52.40217217887695
+            ],
+            [
+              13.009850978851318,
+              52.40218649786718
+            ],
+            [
+              13.009859696030617,
+              52.40233050573913
+            ],
+            [
+              13.009432554244995,
+              52.402319050584715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 15",
+        "icon": null,
+        "visibility": -1,
+        "description": null,
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.009260892868042,
+              52.40272488852762
+            ],
+            [
+              13.009274303913116,
+              52.4026119743135
+            ],
+            [
+              13.009805381298065,
+              52.402625065831394
+            ],
+            [
+              13.009794652462006,
+              52.402741252882514
+            ],
+            [
+              13.009260892868042,
+              52.40272488852762
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 16",
+        "icon": null,
+        "visibility": -1,
+        "description": "Sport- und Gerätelager",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.009388968348503,
+              52.401306075883426
+            ],
+            [
+              13.009388968348503,
+              52.401229569983585
+            ],
+            [
+              13.010028004646301,
+              52.401253708223
+            ],
+            [
+              13.010025322437286,
+              52.401327350227696
+            ],
+            [
+              13.009388968348503,
+              52.401306075883426
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 19",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Institut für Anglistik/Amerikanistik\n- Institut für Romanistik\n- Zentrum für Sprachen und Schlüsselkompetenzen (Zessko)",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.011701703071594,
+              52.39849122602165
+            ],
+            [
+              13.011776804924011,
+              52.39788568252391
+            ],
+            [
+              13.011733889579773,
+              52.39788240929323
+            ],
+            [
+              13.011755347251892,
+              52.397650009294615
+            ],
+            [
+              13.011910915374756,
+              52.397650009294615
+            ],
+            [
+              13.011873364448547,
+              52.39788240929323
+            ],
+            [
+              13.01197662949562,
+              52.39788731913916
+            ],
+            [
+              13.011902868747711,
+              52.39850022728123
+            ],
+            [
+              13.011701703071594,
+              52.39849122602165
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "properties": {
+        "extrude": -1,
+        "timestamp": null,
+        "Name": "Haus 22",
+        "icon": null,
+        "visibility": -1,
+        "description": "- Institut für Mathematik\n- Institut für Physik\n- Netzwerk Studienqualität Brandenburg (sqb)\n- Zentrale Studienberatung, Studierendenmarketing und Alumniprogramm",
+        "tessellate": -1,
+        "drawOrder": null,
+        "end": null,
+        "altitudeMode": null,
+        "begin": null
+      },
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.009834885597229,
+              52.40020593283001
+            ],
+            [
+              13.009842932224274,
+              52.400113059698974
+            ],
+            [
+              13.009722232818604,
+              52.4001081501007
+            ],
+            [
+              13.009714186191559,
+              52.40019243146185
+            ],
+            [
+              13.009529113769531,
+              52.4001858853425
+            ],
+            [
+              13.009551912546156,
+              52.39997231766524
+            ],
+            [
+              13.009731620550156,
+              52.399976409009795
+            ],
+            [
+              13.009724915027618,
+              52.40008196556736
+            ],
+            [
+              13.009845614433289,
+              52.40008687516853
+            ],
+            [
+              13.009885847568512,
+              52.39966628401933
+            ],
+            [
+              13.010075613856316,
+              52.3996781489997
+            ],
+            [
+              13.010062202811241,
+              52.39980579962118
+            ],
+            [
+              13.010156080126762,
+              52.39981398234072
+            ],
+            [
+              13.010143339633942,
+              52.39989253637124
+            ],
+            [
+              13.010129928588867,
+              52.39997231766527
+            ],
+            [
+              13.010054156184196,
+              52.39996658978228
+            ],
+            [
+              13.010021299123764,
+              52.40021411547536
+            ],
+            [
+              13.009834885597229,
+              52.40020593283001
+            ]
+          ]
+        ]
+      }
+    }],
 		"type" : "FeatureCollection"
 	}
 }, {
