@@ -237,6 +237,19 @@ define([
 							}
 						}
 					}
+				} else if (courseStarting && !courseEnding) {
+					if (courseStarting <= day) {
+						// iterate over all dates of a course
+						var coursedates = course.get('dates');
+						for(var i=0; i < coursedates.length; i++){
+							var split = (coursedates[i].timespan).split(' ');
+							var dayContent = moment(split[1], "DD.MM.YYYY");
+							if (dayContent.isSame(day)) {
+								containsCurrentDay = true;
+								course.set('currentDate', i);
+							}
+						}
+					}
 				}
 				return containsCurrentDay;
 
