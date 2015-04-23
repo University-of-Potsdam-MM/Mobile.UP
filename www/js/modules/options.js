@@ -92,7 +92,7 @@ define([
 							that.model.set('up.session.username', username);
             				that.model.set('up.session.password', password);
 							that.model.set('up.session.MoodleToken', response['token']);
-							this.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
+							that.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
 
 							var path = '';
 							if(that.model.get('up.session.redirectFrom')){
