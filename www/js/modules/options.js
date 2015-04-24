@@ -112,10 +112,6 @@ define([
 					}
 				});
 			}else{
-				if(this.loginAttempts==3){
-					this.model.set('up.session.loginFailureTime', new Date().getTime());
-					this.loginAttempts=0;
-				}
 				this.render();
 			}
 		},
@@ -133,6 +129,7 @@ define([
 		errorHandler: function(){
 			this.loginAttempts++;
 			this.$("#error").css('display', 'block');
+			this.updateCountdown();
 		},
 
 		clearForm: function(){
@@ -140,6 +137,14 @@ define([
 		},
 
 		updateCountdown: function() {
+			if(this.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
+				this.model.set('up.session.loginFailureTime', new Date().getTime());
+				this.loginAttempts=0;
+
+				this.render();
+				return;
+			}
+
 			if(this.model.get('up.session.loginFailureTime')){
 				this.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
 				if(this.loginCountdown < 0){
