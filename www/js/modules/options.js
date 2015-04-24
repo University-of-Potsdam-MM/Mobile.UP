@@ -52,6 +52,8 @@ define([
 			}else{
 				this.$("#error3").css('display', 'none');
 			}
+			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+
 			this.$el.trigger("create");
 			return this;
 		},
@@ -77,7 +79,7 @@ define([
 				$('#username').val(username);
 				
 				this.model.generateLoginURL({username: username, password: password});
-				if (!this.LoadingView) {this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});}
+
 				var that = this;
 				this.model.fetch({
 					success: function(model, response, options){
