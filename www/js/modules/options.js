@@ -52,6 +52,8 @@ define([
 			}else{
 				this.$("#error3").css('display', 'none');
 			}
+			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+
 			this.$el.trigger("create");
 			return this;
 		},
@@ -77,7 +79,7 @@ define([
 				$('#username').val(username);
 				
 				this.model.generateLoginURL({username: username, password: password});
-				if (!this.LoadingView) {this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});}
+
 				var that = this;
 				this.model.fetch({
 					success: function(model, response, options){
@@ -110,10 +112,6 @@ define([
 					}
 				});
 			}else{
-				if(this.loginAttempts==3){
-					this.model.set('up.session.loginFailureTime', new Date().getTime());
-					this.loginAttempts=0;
-				}
 				this.render();
 			}
 		},
@@ -131,6 +129,7 @@ define([
 		errorHandler: function(){
 			this.loginAttempts++;
 			this.$("#error").css('display', 'block');
+			this.updateCountdown();
 		},
 
 		clearForm: function(){
@@ -138,6 +137,14 @@ define([
 		},
 
 		updateCountdown: function() {
+			if(this.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
+				this.model.set('up.session.loginFailureTime', new Date().getTime());
+				this.loginAttempts=0;
+
+				this.render();
+				return;
+			}
+
 			if(this.model.get('up.session.loginFailureTime')){
 				this.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
 				if(this.loginCountdown < 0){
@@ -159,7 +166,7 @@ define([
 
 		formatCountdown: function(milsec){
 			var sec = Math.floor(milsec/1000);
-			var formatLeadingZeroes = function(value) { return value < 10 ? "0"+value : value; };
+			var formatLeadingZeroes = function(value){ return value < 10 ? "0"+value : value; };
 			var min = formatLeadingZeroes(Math.floor(sec/60));
 			sec = formatLeadingZeroes(sec%60);
 			return min+":"+sec;

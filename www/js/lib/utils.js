@@ -204,9 +204,11 @@ define([
 
 		spinnerOn: function() {
 			this.runningCounter++;
-			this.$el.append("<div class=\"up-loadingSpinner extensive-spinner\">" +
-								"<img src=\"img/loadingspinner.gif\"></img>" +
-							"</div>");
+			if (this.runningCounter == 1) {
+				this.$el.append("<div class=\"up-loadingSpinner extensive-spinner\">" +
+									"<img src=\"img/loadingspinner.gif\"></img>" +
+								"</div>");
+			}
 		},
 		
 		spinnerHold: function(model, attr, opts) {
