@@ -79,6 +79,13 @@ body .ui-group-theme-a .ui-btn:visited,
 	text-decoration:none !important;
 }
 
+
+/*footer*/
+.ui-footer-fixed {
+bottom: 0px;
+padding-bottom: 0px;
+}
+
 /*header*/
 .ui-header .ui-title {
 	background-image: url(../img/up/seperator.png);
@@ -219,6 +226,11 @@ body .ui-btn.ui-btn-a.back:visited {
 .ui-navbar li {
 	border-right: 2px solid #fff;
 }
+
+.ui-navbar li:last-child {
+	border-right: 0px;
+}
+
 
 .ui-navbar .ui-page-theme-c .ui-btn, .ui-bar-c .ui-navbar .ui-btn, .ui-body-c .ui-navbar .ui-btn, body .ui-group-theme-c  .ui-navbar .ui-btn, body .ui-navbar .ui-btn.ui-btn-c,.ui-page-theme-c .ui-navbar .ui-btn:visited, .ui-bar-c .ui-navbar .ui-btn:visited, .ui-body-c .ui-navbar .ui-btn:visited, body .ui-group-theme-c .ui-navbar .ui-btn:visited, body .ui-navbar.ui-btn.ui-btn-c:visited
 	{
@@ -2546,5 +2558,5 @@ p.event-description {
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;
-	-webkit-animation-duration: 300ms !important;
+	-webkit-animation-duration: 200ms !important;
 }

@@ -344,11 +344,15 @@
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Samstag",
         "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Sonntag",
+        "opening": [["12:00", "18:00"]]
       }
     ]
   },
@@ -386,19 +390,19 @@
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Freitag",
@@ -415,23 +419,23 @@
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       }
     ]
   },

@@ -461,6 +461,17 @@ define([
 		}
 	};
 
+	var defaultTransition = function() {
+		var device = window.device || {data: 'none'};
+		if (device.platform === "ios" || device.platform === "iOS") {
+			$.mobile.changePage.defaults.transition = "fade";
+		} else {
+			$.mobile.changePage.defaults.transition =  "slidefade";
+		}
+
+		return $.mobile.changePage.defaults.transition;
+	};
+
 	return {
 			rendertmpl: rendertmpl,
 			removeTabs: removeTabs,
@@ -475,6 +486,7 @@ define([
 			LocalStore: LocalStore,
 			GesturesView: GesturesView,
 			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
-			cacheDefaults: cacheDefaults
+			cacheDefaults: cacheDefaults,
+			defaultTransition: defaultTransition
 		};
 });

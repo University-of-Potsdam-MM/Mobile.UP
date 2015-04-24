@@ -180,10 +180,10 @@
 	background-image: url(../img/up/search.png);
 }
 
-#home .impressum {
+#home .imprint {
 	background-image: url(../img/up/impressum-index.png);
-	background-repeat: no-repeat;
-	background-position: bottom left;
+	/*background-repeat: no-repeat;
+	background-position: bottom left;*/
 }
 
 /*3. icons studium onlinedienste*/
@@ -282,9 +282,9 @@ ul.nav-search li a.ui-icon-gear {
 		background-image: url(../img/up/grades_hr.png);
 		background-size: 70px 70px;
 	}
-	#home .impressum  {
+	#home .imprint  {
 		background-image: url(../img/up/impressum-index_hr.png);
-		background-size: 20px 20px;
+		background-size: 70px 70px;
 	}
 	
 	#home .home-impressum {

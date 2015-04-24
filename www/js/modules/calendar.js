@@ -215,6 +215,12 @@ define([
 
 		// get current selected day and filter relevant courses to display
 		getCoursesForDay: function(){
+			var isBefore = function(a, b) {
+				if (a)
+					return a >= b;
+				else
+					return true;
+			};
 
 			// filter out all courses relevant for the current date
 			var coursesForDay = _.filter(this.CourseList.models, function(course){
@@ -226,12 +232,27 @@ define([
 				}
 				var containsCurrentDay = false;
 
-				if (courseStarting && courseEnding){
-					if ((courseStarting <= day) && (courseEnding >= day)){
-						// iterate over all dates of a course
-						var coursedates = course.get('dates');
-						for(var i=0; i < coursedates.length; i++){
-							if (coursedates[i].weekdaynr == day.day()){
+				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
+					// iterate over all dates of a course
+					var coursedates = course.get('dates');
+					for(var i=0; i < coursedates.length; i++){
+						var focusDate = coursedates[i];
+
+						if (focusDate.rythm === "Einzeltermin") {
+							var split = focusDate.timespan.split(' ');
+							var dayContent = moment(split[1], "DD.MM.YYYY");
+							if (dayContent.isSame(day)) {
+								containsCurrentDay = true;
+								course.set('currentDate', i);
+							}
+						} else if (focusDate.rythm === "wöchentlich") {
+							if (focusDate.weekdaynr == day.day()) {
+								containsCurrentDay = true;
+								course.set('currentDate', i);
+							}
+						} else {
+							console.log("Unknown rhythm " + focusDate.rythm)
+							if (focusDate.weekdaynr == day.day()) {
 								containsCurrentDay = true;
 								course.set('currentDate', i);
 							}

@@ -3,7 +3,6 @@
 	<h2><%= error.msg %></h2>
 	<p>
 	<% if (error.error) { %>
-		<%= error.error %><%= error.error.message %>
 		<% console.log(error.error.stack) %>
 		<b>Fehlerbeschreibung:</b> <%= error.msg %><br />
 	<% } %>
