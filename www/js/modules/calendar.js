@@ -122,15 +122,26 @@ define([
 				var timeSlotCourses = new Courses();
 				//console.log(timeSlotCourses);
 				_.each(that.collection.models, function(course){
-					var currentDate = course.get('currentDate');
-					var courseBegin = course.get('dates')[currentDate].begin;
-					var courseEnd = course.get('dates')[currentDate].end;
+					var addToTimeslot = function(course, courseTimes) {
+						var courseBegin = courseTimes.begin;
+						var courseEnd = courseTimes.end;
 
-					//if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
-					if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
-						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
-						timeSlotCourses.add(course);
-						//console.log(timeSlotCourses);
+						//if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
+						if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
+							((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
+							timeSlotCourses.add(course);
+							//console.log(timeSlotCourses);
+						}
+					};
+
+					var currentDate = course.get('currentDate');
+					if ($.isArray(currentDate)) {
+						for (var i = 0; i < currentDate.length; i++) {
+							var courseTimes = course.get('dates')[currentDate[i]];
+							addToTimeslot(course, courseTimes);
+						}
+					} else {
+						console.log("currentDate should be an array");
 					}
 				});
 				courseslot.set({collection: timeSlotCourses});
@@ -235,6 +246,7 @@ define([
 				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
 					// iterate over all dates of a course
 					var coursedates = course.get('dates');
+					var result = [];
 					for(var i=0; i < coursedates.length; i++){
 						var focusDate = coursedates[i];
 
@@ -243,18 +255,21 @@ define([
 							var dayContent = moment(split[1], "DD.MM.YYYY");
 							if (dayContent.isSame(day)) {
 								containsCurrentDay = true;
-								course.set('currentDate', i);
+								result.push(i);
+								course.set('currentDate', result);
 							}
 						} else if (focusDate.rythm === "wöchentlich") {
 							if (focusDate.weekdaynr == day.day()) {
 								containsCurrentDay = true;
-								course.set('currentDate', i);
+								result.push(i);
+								course.set('currentDate', result);
 							}
 						} else {
 							console.log("Unknown rhythm " + focusDate.rythm)
 							if (focusDate.weekdaynr == day.day()) {
 								containsCurrentDay = true;
-								course.set('currentDate', i);
+								result.push(i);
+								course.set('currentDate', result);
 							}
 						}
 					}

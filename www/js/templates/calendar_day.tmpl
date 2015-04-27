@@ -9,29 +9,31 @@
     <%
             _.each(courses.models, function(course){
                 var currentDate = course.get('currentDate');
+                for (var i = 0; i < currentDate.length; i++) {
     %>
     <li data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="<%= course.cid %>">
         <h2>
         	<span class="smaller italic">
-            <%= moment(course.get('dates')[currentDate].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate].end, 'HH:mm').format('HH:mm') %>
+            <%= moment(course.get('dates')[currentDate[i]].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate[i]].end, 'HH:mm').format('HH:mm') %>
             </span>
             <br />
             <em>
             <%= course.get('name') %> </em>
             <br />
-            <%= course.get('dates')[currentDate].lecturer %>
+            <%= course.get('dates')[currentDate[i]].lecturer %>
             <br /><span>Raum:
-            <%= course.get('dates')[currentDate].room %></span>
+            <%= course.get('dates')[currentDate[i]].room %></span>
 
         </h2>
         <p>
-            Zeitspanne: <%= course.get('dates')[currentDate].timespan %><br />
+            Zeitspanne: <%= course.get('dates')[currentDate[i]].timespan %><br />
             Status: <%= course.get('status') %><br />
-            Rhythmus: <%= course.get('dates')[currentDate].rythm %><br />
+            Rhythmus: <%= course.get('dates')[currentDate[i]].rythm %><br />
             Webseite: <a href="<%= course.get('weblink') %>" rel="external"><%= course.get('weblink') %></a><br />
         </p>
     </li>
     <%
+                }
             });
             }else{
     %>
