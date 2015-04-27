@@ -50,6 +50,58 @@ define([
 
 		parse: function(response) {
 			return response.jsonArray.jsonElement;
+		},
+
+		filterByDay: function(day) {
+			var isBefore = function(a, b) {
+				if (a)
+					return a >= b;
+				else
+					return true;
+			};
+
+			return _.filter(this.models, function(course){
+				if (course.get('starting')){
+					var courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
+				}
+				if (course.get('ending')){
+					var courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
+				}
+				var containsCurrentDay = false;
+
+				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
+					// iterate over all dates of a course
+					var coursedates = course.get('dates');
+					var result = [];
+					for(var i=0; i < coursedates.length; i++){
+						var focusDate = coursedates[i];
+
+						if (focusDate.rythm === "Einzeltermin") {
+							var split = focusDate.timespan.split(' ');
+							var dayContent = moment(split[1], "DD.MM.YYYY");
+							if (dayContent.isSame(day)) {
+								containsCurrentDay = true;
+								result.push(i);
+								course.set('currentDate', result);
+							}
+						} else if (focusDate.rythm === "wöchentlich") {
+							if (focusDate.weekdaynr == day.day()) {
+								containsCurrentDay = true;
+								result.push(i);
+								course.set('currentDate', result);
+							}
+						} else {
+							console.log("Unknown rhythm " + focusDate.rythm)
+							if (focusDate.weekdaynr == day.day()) {
+								containsCurrentDay = true;
+								result.push(i);
+								course.set('currentDate', result);
+							}
+						}
+					}
+				}
+				return containsCurrentDay;
+			});
 		}
 	});
 
@@ -226,57 +278,8 @@ define([
 
 		// get current selected day and filter relevant courses to display
 		getCoursesForDay: function(){
-			var isBefore = function(a, b) {
-				if (a)
-					return a >= b;
-				else
-					return true;
-			};
-
 			// filter out all courses relevant for the current date
-			var coursesForDay = _.filter(this.CourseList.models, function(course){
-				if (course.get('starting')){
-					var courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
-				}
-				if (course.get('ending')){
-					var courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
-				}
-				var containsCurrentDay = false;
-
-				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
-					// iterate over all dates of a course
-					var coursedates = course.get('dates');
-					var result = [];
-					for(var i=0; i < coursedates.length; i++){
-						var focusDate = coursedates[i];
-
-						if (focusDate.rythm === "Einzeltermin") {
-							var split = focusDate.timespan.split(' ');
-							var dayContent = moment(split[1], "DD.MM.YYYY");
-							if (dayContent.isSame(day)) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						} else if (focusDate.rythm === "wöchentlich") {
-							if (focusDate.weekdaynr == day.day()) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						} else {
-							console.log("Unknown rhythm " + focusDate.rythm)
-							if (focusDate.weekdaynr == day.day()) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						}
-					}
-				}
-				return containsCurrentDay;
-
-			});
+			var coursesForDay = this.CourseList.filterByDay(day);
 
 			this.CoursesForDay.reset(coursesForDay);
 		},
