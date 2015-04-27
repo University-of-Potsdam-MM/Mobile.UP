@@ -8,32 +8,29 @@
     <li data-role="list-divider" class="up-divider"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
     <%
             _.each(courses.models, function(course){
-                var currentDate = course.get('currentDate');
-                for (var i = 0; i < currentDate.length; i++) {
     %>
     <li data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="<%= course.cid %>">
         <h2>
         	<span class="smaller italic">
-            <%= moment(course.get('dates')[currentDate[i]].begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates')[currentDate[i]].end, 'HH:mm').format('HH:mm') %>
+            <%= moment(course.get('dates').begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates').end, 'HH:mm').format('HH:mm') %>
             </span>
             <br />
             <em>
             <%= course.get('name') %> </em>
             <br />
-            <%= course.get('dates')[currentDate[i]].lecturer %>
+            <%= course.get('dates').lecturer %>
             <br /><span>Raum:
-            <%= course.get('dates')[currentDate[i]].room %></span>
+            <%= course.get('dates').room %></span>
 
         </h2>
         <p>
-            Zeitspanne: <%= course.get('dates')[currentDate[i]].timespan %><br />
+            Zeitspanne: <%= course.get('dates').timespan %><br />
             Status: <%= course.get('status') %><br />
-            Rhythmus: <%= course.get('dates')[currentDate[i]].rythm %><br />
+            Rhythmus: <%= course.get('dates').rythm %><br />
             Webseite: <a href="<%= course.get('weblink') %>" rel="external"><%= course.get('weblink') %></a><br />
         </p>
     </li>
     <%
-                }
             });
             }else{
     %>

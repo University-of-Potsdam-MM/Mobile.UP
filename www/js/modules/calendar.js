@@ -181,8 +181,10 @@ define([
 						//if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
 						if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
 							((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
-							timeSlotCourses.add(course);
-							//console.log(timeSlotCourses);
+
+							var clonedCourse = course.clone();
+							clonedCourse.set("dates", courseTimes);
+							timeSlotCourses.add(clonedCourse);
 						}
 					};
 
