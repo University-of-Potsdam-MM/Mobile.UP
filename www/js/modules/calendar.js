@@ -172,32 +172,35 @@ define([
 				var timeslotBegin = courseslot.get('timeslotbegin');
 				var timeslotEnd = courseslot.get('timeslotend');
 				var timeSlotCourses = new Courses();
-				//console.log(timeSlotCourses);
-				_.each(that.collection.models, function(course){
-					var addToTimeslot = function(course, courseTimes) {
-						var courseBegin = courseTimes.begin;
-						var courseEnd = courseTimes.end;
+				
+				var clonedCourses = _.chain(that.collection.models)
+					.map(function(course) {
+						var result = [];
 
-						//if ((timeslotbegin <= courseBegin) && (courseEnd <= timeslotend)){
-						if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
-							((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
-
-							var clonedCourse = course.clone();
-							clonedCourse.set("dates", courseTimes);
-							timeSlotCourses.add(clonedCourse);
-						}
-					};
-
-					var currentDate = course.get('currentDate');
-					if ($.isArray(currentDate)) {
+						var currentDate = course.get('currentDate');
 						for (var i = 0; i < currentDate.length; i++) {
 							var courseTimes = course.get('dates')[currentDate[i]];
-							addToTimeslot(course, courseTimes);
+							var clonedCourse = course.clone();
+							clonedCourse.set("dates", courseTimes);
+							result.push(clonedCourse);
 						}
-					} else {
-						console.log("currentDate should be an array");
-					}
-				});
+
+						return result;
+					})
+					.flatten(true)
+					.filter(function(course) {
+						var courseBegin = course.get("dates").begin;
+						var courseEnd = course.get("dates").end;
+
+						if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
+							((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
+							return true;
+						}
+					})
+					.value();
+
+				timeSlotCourses.add(clonedCourses);
+
 				courseslot.set({collection: timeSlotCourses});
 			});
 			this.trigger("render");
