@@ -112,8 +112,36 @@ define([
 	 *			ordering will be done by timeslots
 	 */
 	var CoursesForDay = Backbone.Collection.extend({
-		model: Course
+		model: Course,
 		//comparator: ''
+
+		findByTimeslot: function(timeslotBegin, timeslotEnd) {
+			return _.chain(this.models)
+				.map(function(course) {
+					var result = [];
+
+					var currentDate = course.get('currentDate');
+					for (var i = 0; i < currentDate.length; i++) {
+						var courseTimes = course.get('dates')[currentDate[i]];
+						var clonedCourse = course.clone();
+						clonedCourse.set("dates", courseTimes);
+						result.push(clonedCourse);
+					}
+
+					return result;
+				})
+				.flatten(true)
+				.filter(function(course) {
+					var courseBegin = course.get("dates").begin;
+					var courseEnd = course.get("dates").end;
+
+					if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
+						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
+						return true;
+					}
+				})
+				.value();
+		}
 	});
 
 
@@ -173,34 +201,8 @@ define([
 				var timeslotEnd = courseslot.get('timeslotend');
 				var timeSlotCourses = new Courses();
 				
-				var clonedCourses = _.chain(that.collection.models)
-					.map(function(course) {
-						var result = [];
-
-						var currentDate = course.get('currentDate');
-						for (var i = 0; i < currentDate.length; i++) {
-							var courseTimes = course.get('dates')[currentDate[i]];
-							var clonedCourse = course.clone();
-							clonedCourse.set("dates", courseTimes);
-							result.push(clonedCourse);
-						}
-
-						return result;
-					})
-					.flatten(true)
-					.filter(function(course) {
-						var courseBegin = course.get("dates").begin;
-						var courseEnd = course.get("dates").end;
-
-						if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
-							((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
-							return true;
-						}
-					})
-					.value();
-
+				var clonedCourses = that.collection.findByTimeslot(timeslotBegin, timeslotEnd);
 				timeSlotCourses.add(clonedCourses);
-
 				courseslot.set({collection: timeSlotCourses});
 			});
 			this.trigger("render");
