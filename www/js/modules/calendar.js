@@ -248,7 +248,6 @@ define([
 			this.listenTo(this.CourseList, "error", this.errorHandler);
 
 			this.listenToOnce(this, "prepareCourses", this.prepareCourses);
-			this.listenTo(this, 'getCoursesForDay', this.getCoursesForDay);
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 
 			this.template = utils.rendertmpl('calendar');
@@ -277,20 +276,12 @@ define([
 			if (this.CourseList.length ==0){
 				var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Keine Kurse gefunden', module: 'calendar'});
 			}else{
-				this.trigger('getCoursesForDay');
+				this.CoursesForDay.reset(this.CourseList.filterByDay(day));
 			}
 		},
 
 		errorHandler: function(error){
 			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
-		},
-
-		// get current selected day and filter relevant courses to display
-		getCoursesForDay: function(){
-			// filter out all courses relevant for the current date
-			var coursesForDay = this.CourseList.filterByDay(day);
-
-			this.CoursesForDay.reset(coursesForDay);
 		},
 
 		render: function(){
