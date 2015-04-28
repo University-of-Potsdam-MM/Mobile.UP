@@ -174,6 +174,19 @@ define([
 				this.add(courseslot);
 			}
 			this.models[0].set('timeslotbegin', '0800');
+		},
+
+		sortIntoTimeslots: function(courses) {
+			// iterate over collection and paste into timetable array
+			_.each(this.models, function(courseslot) {
+				var timeslotBegin = courseslot.get('timeslotbegin');
+				var timeslotEnd = courseslot.get('timeslotend');
+				var timeSlotCourses = new Courses();
+				
+				var clonedCourses = courses.findByTimeslot(timeslotBegin, timeslotEnd);
+				timeSlotCourses.add(clonedCourses);
+				courseslot.set({collection: timeSlotCourses});
+			});
 		}
 	});
 
@@ -193,18 +206,7 @@ define([
 		},
 
 		prepareDaySchedule: function(){
-			// TODO: Better to transform it to collection
-			var that = this;
-			// iterate over collection and paste into timetable array
-			_.each(this.CourseSlots.models, function(courseslot){
-				var timeslotBegin = courseslot.get('timeslotbegin');
-				var timeslotEnd = courseslot.get('timeslotend');
-				var timeSlotCourses = new Courses();
-				
-				var clonedCourses = that.collection.findByTimeslot(timeslotBegin, timeslotEnd);
-				timeSlotCourses.add(clonedCourses);
-				courseslot.set({collection: timeSlotCourses});
-			});
+			this.CourseSlots.sortIntoTimeslots(this.collection);
 			this.trigger("render");
 		},
 
