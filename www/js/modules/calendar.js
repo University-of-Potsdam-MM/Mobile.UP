@@ -107,16 +107,57 @@ define([
 
 
 	/**
-	 *	CalendarDay - Backbone.Model
-	 *	@desc	model for one selected day containing all relevant courses
-	 *			ordering will be done by timeslots
+	 *	CourseSlot - BackboneModel
+	 *	@desc	model for a courseslot / timeslot for a given day
+	 *			consists of a timeslot and a course model if available
 	 */
-	var CoursesForDay = Backbone.Collection.extend({
-		model: Course,
-		//comparator: ''
+	var CourseSlot = Backbone.Model.extend({
+		defaults: {
+			"timeslotbegin": "",
+			"timeslotend": "",
+			collection: Courses
+		}
+	});
+
+
+	/**
+	 *	CourseSlots - BackboneCollection
+	 *	@desc	colletion holding all timeslots for a day
+	 */
+	var CourseSlots = Backbone.Collection.extend({
+		model: CourseSlot,
+
+		initialize: function(models, options){
+			this.coursesForDay = new Backbone.Collection();
+			this.courseList = options.courseList;
+
+			this.listenTo(this.coursesForDay, "reset", this.sortIntoTimeslots);
+			this.listenTo(this.courseList, "sync", this.triggerReset);
+
+			for (var i=0; i<7; i++){
+				var courseslot = new CourseSlot();
+				courseslot.set('timeslotbegin', (parseInt("0800", 10)+i*200).toString());
+				courseslot.set('timeslotend', (parseInt("1000", 10)+i*200).toString());
+				this.add(courseslot);
+			}
+			this.models[0].set('timeslotbegin', '0800');
+		},
+
+		triggerReset: function() {
+			this.resetCoursesForDay();
+		},
+
+		resetCoursesForDay: function() {
+			if (this.courseList.length == 0) {
+				this.reset();
+				this.trigger("timeslotsReady");
+			} else {
+				this.coursesForDay.reset(this.courseList.filterByDay(day));
+			}
+		},
 
 		findByTimeslot: function(timeslotBegin, timeslotEnd) {
-			return _.chain(this.models)
+			return _.chain(this.coursesForDay.models)
 				.map(function(course) {
 					var result = [];
 
@@ -141,52 +182,20 @@ define([
 					}
 				})
 				.value();
-		}
-	});
-
-
-	/**
-	 *	CourseSlot - BackboneModel
-	 *	@desc	model for a courseslot / timeslot for a given day
-	 *			consists of a timeslot and a course model if available
-	 */
-	var CourseSlot = Backbone.Model.extend({
-		defaults: {
-			"timeslotbegin": "",
-			"timeslotend": "",
-			collection: Courses
-		}
-	});
-
-
-	/**
-	 *	CourseSlots - BackboneCollection
-	 *	@desc	colletion holding all timeslots for a day
-	 */
-	var CourseSlots = Backbone.Collection.extend({
-		model: CourseSlot,
-
-		initialize: function(){
-			for (var i=0; i<7; i++){
-				var courseslot = new CourseSlot();
-				courseslot.set('timeslotbegin', (parseInt("0800", 10)+i*200).toString());
-				courseslot.set('timeslotend', (parseInt("1000", 10)+i*200).toString());
-				this.add(courseslot);
-			}
-			this.models[0].set('timeslotbegin', '0800');
 		},
 
-		sortIntoTimeslots: function(courses) {
+		sortIntoTimeslots: function() {
 			// iterate over collection and paste into timetable array
 			_.each(this.models, function(courseslot) {
 				var timeslotBegin = courseslot.get('timeslotbegin');
 				var timeslotEnd = courseslot.get('timeslotend');
 				var timeSlotCourses = new Courses();
 				
-				var clonedCourses = courses.findByTimeslot(timeslotBegin, timeslotEnd);
+				var clonedCourses = this.findByTimeslot(timeslotBegin, timeslotEnd);
 				timeSlotCourses.add(clonedCourses);
 				courseslot.set({collection: timeSlotCourses});
-			});
+			}, this);
+			this.trigger("timeslotsReady");
 		}
 	});
 
@@ -196,23 +205,19 @@ define([
 	 * 	@desc	view for one specific day
 	 */
 	var CalendarDayView = Backbone.View.extend({
-		collection: CoursesForDay,
 
 		initialize: function(){
 			this.template = utils.rendertmpl('calendar_day');
-			this.listenTo(this.collection, "reset", this.prepareDaySchedule);
-			this.listenTo(this, "render", this.render);
-			this.CourseSlots = new CourseSlots();
-		},
-
-		prepareDaySchedule: function(){
-			this.CourseSlots.sortIntoTimeslots(this.collection);
-			this.trigger("render");
+			this.listenTo(this.collection, "timeslotsReady", this.render);
 		},
 
 		render: function(){
-			this.$el.html(this.template({CourseSlots: this.CourseSlots}));
-			this.$el.trigger("create");
+			if (this.collection.length == 0) {
+				var errorPage = new utils.ErrorView({el: this.$el, msg: 'Keine Kurse gefunden', module: 'calendar'});
+			} else {
+				this.$el.html(this.template({CourseSlots: this.collection}));
+				this.$el.trigger("create");
+			}
 			return this;
 		}
 	});
@@ -242,9 +247,7 @@ define([
 
 			//check if response request present
 			this.CourseList = new CourseList();
-			this.CoursesForDay = new CoursesForDay();
 
-			this.listenTo(this.CourseList, "sync", this.renderDay);
 			this.listenTo(this.CourseList, "error", this.errorHandler);
 
 			this.listenToOnce(this, "prepareCourses", this.prepareCourses);
@@ -266,18 +269,12 @@ define([
 		},
 
 		prepareCourses: function(){
-			new CalendarDayView({collection: this.CoursesForDay, el: this.$("#coursesForDay")});
+			var courseSlots = new CourseSlots(undefined, { courseList: this.CourseList });
+
+			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
 			this.CourseList.fetch(utils.cacheDefaults());
-		},
-
-		renderDay: function(){
-			if (this.CourseList.length ==0){
-				var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Keine Kurse gefunden', module: 'calendar'});
-			}else{
-				this.CoursesForDay.reset(this.CourseList.filterByDay(day));
-			}
 		},
 
 		errorHandler: function(error){
