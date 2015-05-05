@@ -4,15 +4,25 @@
 	</h3>
 	<div>
 		<p>
+			<% if (person.get('Raum')){
+				var room = person.get('Raum');
+				room = room.replace(/NP/, 'Neues Palais, ').replace(/GO/, 'Golm, ').replace(/GR/, 'Griebnitzsee, ');
+				room = room.replace(/_/, 'Haus ').replace(/_/, ', Raum ')+'<br />'; %>
+				<span class="office" style="color: #014260"><%= room %></span><br />
+			<% } %>
+
 			<span class="mail"><a href="mailto:<%= person.get('Email') %>"><%= person.get('Email') %></a></span><br />
+			
 			<% if (person.get('Telefon')){
 				var tel = person.get('Telefon');
 				if(person.get('Telefon').length == 4){
 					var tel = '+49331977'+person.get('Telefon');
 				} %>
-			<span class="phone"><a href="tel:<%= tel.replace(/[\s-]/g, '').replace(/\+/g, '00') %>"><%= person.get('Telefon') %></a></span><br />
+				<span class="phone"><a href="tel:<%= tel.replace(/[\s-]/g, '').replace(/\+/g, '00') %>"><%= person.get('Telefon') %></a></span><br />
 			<% } %>
-			<%= (person.get('Raum')) ? 'Raum:'+person.get('Raum')+'<br />' : '' %>
-			<%= (person.get('Fax')) ? 'Fax:'+person.get('Fax')+'<br />' : '' %>
+			
+			<% if (person.get('Fax')){ %>
+				<span class="fax" style="color: #014260"> Fax: <%= person.get('Fax') %></span><br /><br />
+			<% } %>
 		</p>
-	</div>
+	</di
