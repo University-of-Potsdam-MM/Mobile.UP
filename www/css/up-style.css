@@ -2201,11 +2201,11 @@ p.event-description {
 		background-size: 25px 25px;
 	}
 	.mail {
-		background-image: url(../img/up/mail-small^_hr.png) !important;
+		background-image: url(../img/up/mail-small^_hr.png);
 		background-size: 20px 11px;
 	}
 	.phone {
-		background-image: url(../img/up/phone-small_hr.png) !important;
+		background-image: url(../img/up/phone-small_hr.png);
 		background-size: 20px 11px;
 	}
 	#libraryContent li.ui-state-active:after {
