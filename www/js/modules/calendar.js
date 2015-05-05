@@ -130,6 +130,7 @@ define([
 		initialize: function(models, options){
 			this.coursesForDay = new Backbone.Collection();
 			this.courseList = options.courseList;
+			this.day = options.day;
 
 			this.listenTo(this.coursesForDay, "reset", this.sortIntoTimeslots);
 			this.listenTo(this.courseList, "sync", this.triggerReset);
@@ -152,7 +153,7 @@ define([
 				this.reset();
 				this.trigger("timeslotsReady");
 			} else {
-				this.coursesForDay.reset(this.courseList.filterByDay(day));
+				this.coursesForDay.reset(this.courseList.filterByDay(this.day));
 			}
 		},
 
@@ -269,7 +270,7 @@ define([
 		},
 
 		prepareCourses: function(){
-			var courseSlots = new CourseSlots(undefined, { courseList: this.CourseList });
+			var courseSlots = new CourseSlots(undefined, { courseList: this.CourseList, day: day });
 
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
 			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
