@@ -102,6 +102,13 @@ define([
 				}
 				return containsCurrentDay;
 			});
+		},
+
+		exportToCalendar: function() {
+			var currentCourses = this.filter(function(course) { return course.get("current") === "true"; });
+
+			var courseNames = _.map(currentCourses, function(course) { return course.get("name"); });
+			console.log("Current courses: ", courseNames);
 		}
 	});
 
@@ -234,7 +241,8 @@ define([
 
 		events: {
 			'swipeleft': 'navigateForward',
-			'swiperight': 'navigateBackward'
+			'swiperight': 'navigateBackward',
+			'click #export': 'exportToCalendar'
 		},
 
 		initialize: function(vars){
@@ -280,6 +288,11 @@ define([
 
 		errorHandler: function(error){
 			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
+		},
+
+		exportToCalendar: function(event) {
+			event.preventDefault();
+			this.CourseList.exportToCalendar();
 		},
 
 		render: function(){
