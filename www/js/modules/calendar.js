@@ -61,11 +61,13 @@ define([
 			};
 
 			return _.filter(this.models, function(course){
+				var courseStarting = undefined;
 				if (course.get('starting')){
-					var courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
+					courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
 				}
+				var courseEnding = undefined;
 				if (course.get('ending')){
-					var courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
+					courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
 				}
 				var containsCurrentDay = false;
 
@@ -86,6 +88,13 @@ define([
 							}
 						} else if (focusDate.rythm === "wöchentlich") {
 							if (focusDate.weekdaynr == day.day()) {
+								containsCurrentDay = true;
+								result.push(i);
+								course.set('currentDate', result);
+							}
+						} else if (focusDate.rythm === "14-täglich") {
+							var weeksSinceStart = day.diff(courseStarting, "weeks");
+							if (weeksSinceStart % 2 == 0 && focusDate.weekdaynr == day.day()) {
 								containsCurrentDay = true;
 								result.push(i);
 								course.set('currentDate', result);
