@@ -78,39 +78,29 @@ define([
 					for(var i=0; i < coursedates.length; i++){
 						var focusDate = coursedates[i];
 
-						if (focusDate.rythm === "Einzeltermin") {
-							var split = focusDate.timespan.split(' ');
-							var dayContent = moment(split[1], "DD.MM.YYYY");
-							if (dayContent.isSame(day)) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						} else if (focusDate.rythm === "wöchentlich") {
-							if (focusDate.weekdaynr == day.day()) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						} else if (focusDate.rythm === "14-täglich") {
-							var weeksSinceStart = day.diff(courseStarting, "weeks");
-							if (weeksSinceStart % 2 == 0 && focusDate.weekdaynr == day.day()) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
-						} else {
-							console.log("Unknown rhythm " + focusDate.rythm)
-							if (focusDate.weekdaynr == day.day()) {
-								containsCurrentDay = true;
-								result.push(i);
-								course.set('currentDate', result);
-							}
+						var dateModel = this.dateFactory(focusDate);
+						if (dateModel.isOnDay(day, courseStarting)) {
+							containsCurrentDay = true;
+							result.push(i);
+							course.set('currentDate', result);
 						}
 					}
 				}
 				return containsCurrentDay;
-			});
+			}, this);
+		},
+
+		dateFactory: function(date) {
+			if (date.rythm === "Einzeltermin") {
+				return new SingleDate(date);
+			} else if (date.rythm === "wöchentlich") {
+				return new WeeklyDate(date);
+			} else if (date.rythm === "14-täglich") {
+				return new BiWeeklyDate(date);
+			} else {
+				console.log("Unknown rhythm " + focusDate.rythm);
+				return new WeeklyDate(date);
+			}
 		},
 
 		exportToCalendar: function() {
@@ -118,6 +108,30 @@ define([
 
 			var courseNames = _.map(currentCourses, function(course) { return course.get("name"); });
 			console.log("Current courses: ", courseNames);
+		}
+	});
+
+	var SingleDate = Backbone.Model.extend({
+
+		isOnDay: function(day, courseStarting) {
+			var split = this.get("timespan").split(' ');
+			var dayContent = moment(split[1], "DD.MM.YYYY");
+			return dayContent.isSame(day);
+		}
+	});
+
+	var WeeklyDate = Backbone.Model.extend({
+
+		isOnDay: function(day, courseStarting) {
+			return this.get("weekdaynr") == day.day();
+		}
+	});
+
+	var BiWeeklyDate = Backbone.Model.extend({
+		
+		isOnDay: function(day, courseStarting) {
+			var weeksSinceStart = day.diff(courseStarting, "weeks");
+			return weeksSinceStart % 2 == 0 && this.get("weekdaynr") == day.day();
 		}
 	});
 
