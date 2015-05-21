@@ -68,13 +68,13 @@ define([
 		},
 
 		navigateBackward: function(ev){
-			var route = '#calendar/'+moment(day).add(-1, 'd').format('YYYY-MM-DD');
+			var route = '#calendar/day/'+moment(day).add(-1, 'd').format('YYYY-MM-DD');
 			$.mobile.changePage.defaults.reverse = 'reverse';
 			Backbone.history.navigate(route, { trigger : true });
 		},
 
 		navigateForward: function(ev){
-			var route = '#calendar/'+moment(day).add(1, 'd').format('YYYY-MM-DD');
+			var route = '#calendar/day/'+moment(day).add(1, 'd').format('YYYY-MM-DD');
 			$.mobile.changePage.defaults.reverse = false;
 			Backbone.history.navigate(route, { trigger : true });
 		},

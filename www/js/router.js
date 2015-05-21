@@ -40,7 +40,7 @@ define([
 			"events": "events",
 			"events/*id": "events",
 			"calendar": "calendar",
-			"calendar/*day": "calendar",
+			"calendar/day/*day": "calendar",
 			"moodle": "moodle",
 			"moodle/*courseid": "moodle",
 			"library": "library",

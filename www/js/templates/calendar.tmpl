@@ -20,11 +20,11 @@
 <div data-role="footer" data-position="fixed" data-tap-toggle="false" class="footer calendar-footer">
 	<div data-role="navbar" data-tap-toggle="false">
 		<ul>
-			<li><a href="#calendar/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
+			<li><a href="#calendar/day/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
 			<% if (window.cordova || true) { %>
 			<li><a href="#calendar" data-icon="arrow-d" data-role="button" id="export">Export</a></li>
 			<% } %>
-			<li><a href="#calendar/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" data-role="button">Nächster Tag</a></li>
+			<li><a href="#calendar/day/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" data-role="button">Nächster Tag</a></li>
 		</ul>
 	</div>
 </div>
