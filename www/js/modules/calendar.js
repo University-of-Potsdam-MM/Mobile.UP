@@ -92,11 +92,6 @@ define([
 			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
 		},
 
-		exportToCalendar: function(event) {
-			event.preventDefault();
-			this.CourseList.exportToCalendar();
-		},
-
 		render: function(){
 			this.$el.html(this.template({day: this.day}));
 			this.$el.trigger("create");

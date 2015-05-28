@@ -101,12 +101,6 @@ define([
 				}
 				return containsCurrentDay;
 			}, this);
-
-		exportToCalendar: function() {
-			var currentCourses = this.filter(function(course) { return course.get("current") === "true"; });
-
-			var courseNames = _.map(currentCourses, function(course) { return course.get("name"); });
-			console.log("Current courses: ", courseNames);
 		}
 	});
 
