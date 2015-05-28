@@ -26,6 +26,21 @@ define([
 			(split[1]) ? this.set('starting', split[1]) : '';
 			(split[3]) ? this.set('ending', split[3]) : '';
 			return course;
+		},
+
+		getDates: function() {
+			return _.map(this.get("dates"), function(date) {
+				if (date.rythm === "Einzeltermin") {
+					return new SingleDate(date);
+				} else if (date.rythm === "wöchentlich") {
+					return new WeeklyDate(date);
+				} else if (date.rythm === "14-täglich") {
+					return new BiWeeklyDate(date);
+				} else {
+					console.log("Unknown rhythm " + focusDate.rythm);
+					return new WeeklyDate(date);
+				}
+			});
 		}
 	});
 
@@ -73,12 +88,10 @@ define([
 
 				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
 					// iterate over all dates of a course
-					var coursedates = course.get('dates');
+					var coursedates = course.getDates();
 					var result = [];
 					for(var i=0; i < coursedates.length; i++){
-						var focusDate = coursedates[i];
-
-						var dateModel = this.dateFactory(focusDate);
+						var dateModel = coursedates[i];
 						if (dateModel.isOnDay(day, courseStarting)) {
 							containsCurrentDay = true;
 							result.push(i);
@@ -88,20 +101,6 @@ define([
 				}
 				return containsCurrentDay;
 			}, this);
-		},
-
-		dateFactory: function(date) {
-			if (date.rythm === "Einzeltermin") {
-				return new SingleDate(date);
-			} else if (date.rythm === "wöchentlich") {
-				return new WeeklyDate(date);
-			} else if (date.rythm === "14-täglich") {
-				return new BiWeeklyDate(date);
-			} else {
-				console.log("Unknown rhythm " + focusDate.rythm);
-				return new WeeklyDate(date);
-			}
-		},
 
 		exportToCalendar: function() {
 			var currentCourses = this.filter(function(course) { return course.get("current") === "true"; });
