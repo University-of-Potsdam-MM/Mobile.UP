@@ -26,8 +26,9 @@ define([
 	'modules/grades',
 	'modules/impressum',
 	'modules/options',
-	'modules/people'
-], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView){
+	'modules/people',
+	'modules/calendar.export'
+], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView, CalendarExportPageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -41,6 +42,7 @@ define([
 			"events/*id": "events",
 			"calendar": "calendar",
 			"calendar/day/*day": "calendar",
+			"calendar/export": "calendarexport",
 			"moodle": "moodle",
 			"moodle/*courseid": "moodle",
 			"library": "library",
@@ -189,6 +191,10 @@ define([
 
 		calendar: function(day){
 			this.changePage(new CalendarPageView({day: day}));
+		},
+
+		calendarexport: function() {
+			this.changePage(new CalendarExportPageView());
 		},
 
 		moodle: function (courseid) {

@@ -110,6 +110,10 @@ define([
 			var split = this.get("timespan").split(' ');
 			var dayContent = moment(split[1], "DD.MM.YYYY");
 			return dayContent.isSame(day);
+		},
+
+		exportToCalendar: function(entry, callback) {
+			callback(entry);
 		}
 	});
 
@@ -117,6 +121,10 @@ define([
 
 		isOnDay: function(day, courseStarting) {
 			return this.get("weekdaynr") == day.day();
+		},
+
+		exportToCalendar: function(entry, callback) {
+			callback(entry);
 		}
 	});
 
@@ -125,6 +133,10 @@ define([
 		isOnDay: function(day, courseStarting) {
 			var weeksSinceStart = day.diff(courseStarting, "weeks");
 			return weeksSinceStart % 2 == 0 && this.get("weekdaynr") == day.day();
+		},
+
+		exportToCalendar: function(entry, callback) {
+			callback(entry);
 		}
 	});
 

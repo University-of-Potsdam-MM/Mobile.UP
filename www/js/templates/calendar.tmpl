@@ -22,7 +22,7 @@
 		<ul>
 			<li><a href="#calendar/day/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
 			<% if (window.cordova || true) { %>
-			<li><a href="#calendar" data-icon="arrow-d" data-role="button" id="export">Export</a></li>
+			<li><a href="#calendar/export" data-icon="arrow-d" data-role="button">Export</a></li>
 			<% } %>
 			<li><a href="#calendar/day/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" data-role="button">Nächster Tag</a></li>
 		</ul>
