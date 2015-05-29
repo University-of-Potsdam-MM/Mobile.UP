@@ -17,15 +17,26 @@ define([
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
 					console.log(entry);
+					if (window.cordova) {
+						window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, function() { alert("success"); }, function() { alert("error"); });
+					}
 				};
 
 				_.each(course.getDates(), function(date) {
 					var entry = {};
 					entry.title = course.get("name");
 					entry.location = date.get("room");
-					date.exportToCalendar(entry, writeToCalendar);
-				});
-			});
+
+					entry.options = {};
+					if (window.cordova) {
+						entry.options = window.plugins.calendar.getCalendarOptions();
+					}
+					entry.options.calendarName = this.get("name");
+					entry.options.calendarId = parseInt(this.get("id"));
+
+					date.exportToCalendar(entry, course, writeToCalendar);
+				}, this);
+			}, this);
 		}
 	});
 

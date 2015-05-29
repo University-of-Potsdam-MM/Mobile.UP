@@ -41,6 +41,22 @@ define([
 					return new WeeklyDate(date);
 				}
 			});
+		},
+
+		getStarting: function() {
+			var courseStarting = undefined;
+			if (this.get('starting')){
+				courseStarting = moment(this.get('starting'), "DD.MM.YYYY");
+			}
+			return courseStarting;
+		},
+
+		getEnding: function() {
+			var courseEnding = undefined;
+			if (this.get('ending')){
+				courseEnding = moment(this.get('ending'), "DD.MM.YYYY");
+			}
+			return courseEnding;
 		}
 	});
 
@@ -76,14 +92,9 @@ define([
 			};
 
 			return _.filter(this.models, function(course){
-				var courseStarting = undefined;
-				if (course.get('starting')){
-					courseStarting = moment(course.get('starting'), "DD.MM.YYYY");
-				}
-				var courseEnding = undefined;
-				if (course.get('ending')){
-					courseEnding = moment(course.get('ending'), "DD.MM.YYYY");
-				}
+				var courseStarting = course.getStarting();
+				var courseEnding = course.getEnding();
+
 				var containsCurrentDay = false;
 
 				if (courseStarting && courseStarting <= day && isBefore(courseEnding, day)) {
@@ -104,7 +115,30 @@ define([
 		}
 	});
 
-	var SingleDate = Backbone.Model.extend({
+	var CourseDate = Backbone.Model.extend({
+
+		_parseDuration: function(day, rawDuration) {
+			var hours = parseInt(rawDuration.slice(0,2));
+			var minutes = parseInt(rawDuration.slice(2,4));
+
+			var duration = moment.duration({
+				minutes: minutes,
+				hours: hours
+			});
+
+			return moment(day).add(duration);
+		},
+
+		getBegin: function(day) {
+			return this._parseDuration(day, this.get("begin"));
+		},
+
+		getEnd: function(day) {
+			return this._parseDuration(day, this.get("end"));
+		}
+	});
+
+	var SingleDate = CourseDate.extend({
 
 		isOnDay: function(day, courseStarting) {
 			var split = this.get("timespan").split(' ');
@@ -112,31 +146,38 @@ define([
 			return dayContent.isSame(day);
 		},
 
-		exportToCalendar: function(entry, callback) {
-			callback(entry);
+		exportToCalendar: function(entry, course, callback) {
+			//callback(entry);
 		}
 	});
 
-	var WeeklyDate = Backbone.Model.extend({
+	var WeeklyDate = CourseDate.extend({
 
 		isOnDay: function(day, courseStarting) {
 			return this.get("weekdaynr") == day.day();
 		},
 
-		exportToCalendar: function(entry, callback) {
+		exportToCalendar: function(entry, course, callback) {
+			entry.startDate = this.getBegin(course.getStarting()).toDate();
+			entry.endDate = this.getEnd(course.getStarting()).toDate();
+
+			entry.options.recurrence = "weekly";
+			//add one day to make sure last event is also synced!
+			entry.options.recurrenceEndDate = moment(course.getEnding()).add(1, "days").toDate();
+			
 			callback(entry);
 		}
 	});
 
-	var BiWeeklyDate = Backbone.Model.extend({
+	var BiWeeklyDate = CourseDate.extend({
 		
 		isOnDay: function(day, courseStarting) {
 			var weeksSinceStart = day.diff(courseStarting, "weeks");
 			return weeksSinceStart % 2 == 0 && this.get("weekdaynr") == day.day();
 		},
 
-		exportToCalendar: function(entry, callback) {
-			callback(entry);
+		exportToCalendar: function(entry, course, callback) {
+			//callback(entry);
 		}
 	});
 
