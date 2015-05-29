@@ -33,6 +33,8 @@ define([
 					}
 					entry.options.calendarName = this.get("name");
 					entry.options.calendarId = parseInt(this.get("id"));
+					// Delete reminder
+					entry.options.firstReminderMinutes = 0;
 
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
