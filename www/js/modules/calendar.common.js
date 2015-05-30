@@ -257,8 +257,13 @@ define([
 					var courseBegin = course.get("dates").begin;
 					var courseEnd = course.get("dates").end;
 
+					// A course should belong to a timeslot if one of the following is true
+					// 1. The course starts within the timeslot
+					// 2. The course ends within the timeslot
+					// 3. The course starts before and ends after the timeslot
 					if (((courseBegin < timeslotEnd) && (courseBegin >= timeslotBegin)) ||
-						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin))){
+						((courseEnd <= timeslotEnd) && (courseEnd > timeslotBegin)) ||
+						((courseBegin < timeslotBegin) && (courseEnd > timeslotEnd))) {
 						return true;
 					}
 				})
