@@ -30,7 +30,7 @@ define([
 
 		getDates: function() {
 			return _.map(this.get("dates"), function(date) {
-				if (date.rythm === "Einzeltermin") {
+				if (date.rythm === "Einzeltermin" || date.rythm === "Termin") {
 					return new SingleDate(date);
 				} else if (date.rythm === "wöchentlich") {
 					return new WeeklyDate(date);
