@@ -22,7 +22,11 @@ define([
 				course.dates = [course.dates];
 			}
 
-			var split = (course.dates[0].timespan).split(' ');
+			var date = _.find(course.dates, function(date) {
+				return date.timespan && date.timespan !== "";
+			});
+			var timespan = date ? date.timespan : "";
+			var split = timespan.split(' ');
 			(split[1]) ? this.set('starting', split[1]) : '';
 			(split[3]) ? this.set('ending', split[3]) : '';
 			return course;
