@@ -37,7 +37,7 @@ define([
 				} else if (date.rythm === "14-täglich") {
 					return new BiWeeklyDate(date);
 				} else {
-					console.log("Unknown rhythm " + focusDate.rythm);
+					console.log("Unknown rhythm " + date.rythm);
 					return new WeeklyDate(date);
 				}
 			});
