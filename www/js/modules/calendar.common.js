@@ -153,7 +153,7 @@ define([
 		exportToCalendar: function(entry, course, callback) {
 			var split = this.get("timespan").split(' ');
 			var dayContent = moment(split[1], "DD.MM.YYYY");
-			
+
 			entry.startDate = this.getBegin(dayContent).toDate();
 			entry.endDate = this.getEnd(dayContent).toDate();
 
@@ -186,7 +186,19 @@ define([
 		},
 
 		exportToCalendar: function(entry, course, callback) {
-			//callback(entry);
+			var currentDate = course.getStarting();
+			var lastDate = moment(course.getEnding()).add(1, "days");
+
+			// Android doesn't know bi-weekly dates so we have to save all dates ourselves
+			// Generate new dates as long we haven't got to the end
+			while (currentDate.isBefore(lastDate)) {
+				var temp = _.clone(entry);
+				temp.startDate = this.getBegin(currentDate).toDate();
+				temp.endDate = this.getEnd(currentDate).toDate();
+				callback(temp);
+
+				currentDate.add(2, "weeks");
+			}
 		}
 	});
 
