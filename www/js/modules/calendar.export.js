@@ -6,9 +6,10 @@ define([
 	'moment',
 	'Session',
 	'modules/calendar.common',
+	'uri/URI',
 	'cache',
 	'hammerjs'
-], function($, _, Backbone, utils, moment, Session, calendar){
+], function($, _, Backbone, utils, moment, Session, calendar, URI){
 
 	var Calendar = Backbone.Model.extend({
 
@@ -33,12 +34,24 @@ define([
 					}
 					entry.options.calendarName = this.get("name");
 					entry.options.calendarId = parseInt(this.get("id"));
+					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
 					entry.options.firstReminderMinutes = 0;
 
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
+		},
+
+		_cleanPulsLink: function(pulsLink) {
+			var link = new URI(_.unescape(pulsLink));
+			var filename = link.filename();
+			var sessionIndex = filename.indexOf(";")
+			if (sessionIndex >= 0) {
+				filename = filename.substring(0, sessionIndex);
+			}
+			link.filename(filename);
+			return link.toString();
 		}
 	});
 
