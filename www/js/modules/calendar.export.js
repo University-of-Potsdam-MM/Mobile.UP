@@ -14,6 +14,11 @@ define([
 	var Calendar = Backbone.Model.extend({
 
 		importCourses: function(courses, calendarEntries) {
+			var options = {};
+			if (window.cordova) {
+				options = window.plugins.calendar.getCalendarOptions();
+			}
+
 			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
@@ -25,10 +30,7 @@ define([
 					entry.title = course.get("name");
 					entry.location = date.get("room");
 
-					entry.options = {};
-					if (window.cordova) {
-						entry.options = window.plugins.calendar.getCalendarOptions();
-					}
+					entry.options = options;
 					entry.options.calendarName = this.get("name");
 					entry.options.calendarId = parseInt(this.get("id"));
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
@@ -62,6 +64,8 @@ define([
 			var entry = this.attributes;
 			if (window.cordova) {
 				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
+			} else {
+				this._error();
 			}
 		},
 
@@ -81,29 +85,34 @@ define([
 
 		initialize: function() {
 			this.listenTo(this, "add", function(model) {
-				this.listenTo(model, "sync", this._triggerUpdate);
-				this.listenTo(model, "error", this._triggerUpdate);
-				this._triggerUpdate();
+				this.listenTo(model, "sync", this._saveNext);
+				this.listenTo(model, "error", this._saveNext);
 			});
 			this.listenTo(this, "remove", function(model) {
 				this.stopListening(model);
-				this._triggerUpdate();
 			});
 		},
 
-		_triggerUpdate: function() {
+		_saveNext: function() {
 			this.trigger("saveStatusUpdated");
+
+			if (this.size() > this.saveIndex) {
+				var model = this.at(this.saveIndex);
+				this.saveIndex++;
+				_.defer(function() { model.save(); });
+			}
 		},
 
 		getSaveStatus: function() {
 			var status = this.countBy(function(model) { return model.get("saveStatus"); });
-			return _.defaults(status, {success: 0, error: 0, all: this.size()});
+			var result = _.defaults(status, { success: 0, error: 0, all: this.size() });
+			result.syncCompleted = (result.success + result.error === result.all) && !this.isEmpty();
+			return result;
 		},
 
 		save: function() {
-			this.each(function(model) {
-				model.save();
-			});
+			this.saveIndex = 0;
+			this._saveNext();
 		}
 	});
 
@@ -215,10 +224,8 @@ define([
 				var calendarEntries = new CalendarEntries();
 				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendarEntries}).render();
 
-				setTimeout(_.bind(function() {
-					calendar.importCourses(this.model.courses, calendarEntries);
-					calendarEntries.save();
-				}, this), 500);
+				calendar.importCourses(this.model.courses, calendarEntries);
+				calendarEntries.save();
 			}
 		},
 

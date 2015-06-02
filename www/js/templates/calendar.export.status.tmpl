@@ -1,3 +1,8 @@
 <div>
-	<p><%= status.success %> von <%= status.all %> Kalendereinträgen erfolgreich gespeichert.</p>
+	<p><%= status.success %> von <%= status.all %> Kalendereinträgen erfolgreich gespeichert. Es sind <%= status.error %> Fehler aufgetreten.</p>
+	<% if (status.syncCompleted) { %>
+	<br>
+	<br>
+	<p>Export abgeschlossen</p>
+	<% } %>
 </div>
