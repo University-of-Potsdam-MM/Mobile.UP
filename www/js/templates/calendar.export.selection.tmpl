@@ -1,0 +1,14 @@
+<div>
+	<div><p>Bitte wähle einen Kalender aus, in den alle Veranstaltungen exportiert werden sollen, um den Export zu starten.</p></dvi>
+
+	<div id="loadingSpinner"></div>
+	<div id="loadingError"></div>
+
+	<% if (!calendars.isEmpty()) { %>
+	<ul data-role="listview" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+	<% calendars.each(function(calendar) { %>
+		<li><a href="#<%= calendar.attributes.id %>" class="calendar-link"><%= calendar.attributes.name %></a></li>
+	<% }) %>
+	</ul>
+	<% } %>
+</div>

@@ -14,13 +14,12 @@ define([
 	var Calendar = Backbone.Model.extend({
 
 		importCourses: function(courses) {
+			var calendarEntries = new CalendarEntries();
+
 			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
-					console.log(entry);
-					if (window.cordova) {
-						window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, function() { alert("success"); }, function() { alert("error"); });
-					}
+					calendarEntries.add(entry);
 				};
 
 				_.each(course.getDates(), function(date) {
@@ -41,6 +40,8 @@ define([
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
+
+			return calendarEntries;
 		},
 
 		_cleanPulsLink: function(pulsLink) {
@@ -52,6 +53,40 @@ define([
 			}
 			link.filename(filename);
 			return link.toString();
+		}
+	});
+
+	var CalendarEntry = Backbone.Model.extend({
+
+		initialize: function() {
+			_.bindAll(this, "_success", "_error");
+		},
+
+		save: function() {
+			var entry = this.attributes;
+
+			console.log(entry);
+			if (window.cordova) {
+				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
+			}
+		},
+
+		_success: function() {
+			alert("success");
+		},
+
+		_error: function() {
+			alert("error");
+		}
+	});
+
+	var CalendarEntries = Backbone.Collection.extend({
+		model: CalendarEntry,
+
+		save: function() {
+			this.each(function(model) {
+				model.save();
+			});
 		}
 	});
 
@@ -119,18 +154,24 @@ define([
 		}
 	});
 
-	/**
-	 *	CalendarPageView - BackboneView
-	 * 	Main View fpr calendar
-	 */
-	var CalendarExportPageView = Backbone.View.extend({
-		
-		attributes: {"id": "calendarexport"},
+	var CalendarExportStatusPageView = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = utils.rendertmpl('calendar.export.status');
+		},
+
+		render: function() {
+			this.$el.html(this.template({}));
+			return this;
+		}
+	});
+
+	var CalendarSelectionPageView = Backbone.View.extend({
 
 		events: {"click .calendar-link": "calendarSelected"},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('calendar.export');
+			this.template = utils.rendertmpl('calendar.export.selection');
 			this.model = new CalendarsAndCourses();
 
 			this.listenTo(this.model, "sync", this.render);
@@ -153,14 +194,35 @@ define([
 			var calendarId = $(event.target).attr("href").slice(1);
 			var calendar = this.model.calendars.find(function(calendar) { return calendar.get("id") === calendarId });
 			if (calendar) {
-				calendar.importCourses(this.model.courses);
+				var calendarEntries = calendar.importCourses(this.model.courses);
+				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendarEntries}).render();
+				calendarEntries.save();
 			}
 		},
 
-		render: function(){
+		render: function() {
 			this.$el.html(this.template({calendars: this.model.calendars}));
 			this.$el.trigger("create");
 			this.trigger("loadData");
+			return this;
+		}
+	});
+
+	/**
+	 *	CalendarPageView - BackboneView
+	 * 	Main View fpr calendar
+	 */
+	var CalendarExportPageView = Backbone.View.extend({
+		
+		attributes: {"id": "calendarexport"},
+
+		initialize: function(){
+			this.template = utils.rendertmpl('calendar.export');
+		},
+
+		render: function(){
+			this.$el.html(this.template({}));
+			new CalendarSelectionPageView({el: this.$("#selectionStatus")}).render();
 			return this;
 		}
 	});
