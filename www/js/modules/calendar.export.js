@@ -13,9 +13,7 @@ define([
 
 	var Calendar = Backbone.Model.extend({
 
-		importCourses: function(courses) {
-			var calendarEntries = new CalendarEntries();
-
+		importCourses: function(courses, calendarEntries) {
 			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
@@ -40,8 +38,6 @@ define([
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
-
-			return calendarEntries;
 		},
 
 		_cleanPulsLink: function(pulsLink) {
@@ -64,24 +60,45 @@ define([
 
 		save: function() {
 			var entry = this.attributes;
-
-			console.log(entry);
 			if (window.cordova) {
 				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
 			}
 		},
 
 		_success: function() {
-			alert("success");
+			this.set("saveStatus", "success");
+			this.trigger("sync");
 		},
 
 		_error: function() {
-			alert("error");
+			this.set("saveStatus", "error");
+			this.trigger("error");
 		}
 	});
 
 	var CalendarEntries = Backbone.Collection.extend({
 		model: CalendarEntry,
+
+		initialize: function() {
+			this.listenTo(this, "add", function(model) {
+				this.listenTo(model, "sync", this._triggerUpdate);
+				this.listenTo(model, "error", this._triggerUpdate);
+				this._triggerUpdate();
+			});
+			this.listenTo(this, "remove", function(model) {
+				this.stopListening(model);
+				this._triggerUpdate();
+			});
+		},
+
+		_triggerUpdate: function() {
+			this.trigger("saveStatusUpdated");
+		},
+
+		getSaveStatus: function() {
+			var status = this.countBy(function(model) { return model.get("saveStatus"); });
+			return _.defaults(status, {success: 0, error: 0, all: this.size()});
+		},
 
 		save: function() {
 			this.each(function(model) {
@@ -158,10 +175,11 @@ define([
 
 		initialize: function() {
 			this.template = utils.rendertmpl('calendar.export.status');
+			this.listenTo(this.collection, "saveStatusUpdated", this.render);
 		},
 
 		render: function() {
-			this.$el.html(this.template({}));
+			this.$el.html(this.template({status: this.collection.getSaveStatus()}));
 			return this;
 		}
 	});
@@ -194,9 +212,13 @@ define([
 			var calendarId = $(event.target).attr("href").slice(1);
 			var calendar = this.model.calendars.find(function(calendar) { return calendar.get("id") === calendarId });
 			if (calendar) {
-				var calendarEntries = calendar.importCourses(this.model.courses);
+				var calendarEntries = new CalendarEntries();
 				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendarEntries}).render();
-				calendarEntries.save();
+
+				setTimeout(_.bind(function() {
+					calendar.importCourses(this.model.courses, calendarEntries);
+					calendarEntries.save();
+				}, this), 500);
 			}
 		},
 
