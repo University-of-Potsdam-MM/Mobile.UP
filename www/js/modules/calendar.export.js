@@ -30,7 +30,7 @@ define([
 					entry.title = course.get("name");
 					entry.location = date.get("room");
 
-					entry.options = options;
+					entry.options = _.clone(options);
 					entry.options.calendarName = this.get("name");
 					entry.options.calendarId = parseInt(this.get("id"));
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
@@ -65,6 +65,7 @@ define([
 			if (window.cordova) {
 				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
 			} else {
+				console.log(entry);
 				this._error();
 			}
 		},
