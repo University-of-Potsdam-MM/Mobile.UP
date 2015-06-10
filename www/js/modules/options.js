@@ -30,7 +30,8 @@ define([
 			this.logouttemplate = utils.rendertmpl('logout');
 
 			this.listenTo(this.model,'change', this.render);
-			this.listenTo(this, "errorHandler", this.errorHandler);
+			this.listenTo(this, 'errorHandler', this.errorHandler);
+			this.listenTo(this, 'missingConnection', this.missingInternetConnectionHandler);
 			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
 
@@ -42,7 +43,7 @@ define([
 		render: function(){
 			this.updateCountdown();
 			if (this.model.get('up.session.authenticated')){
-				this.$el.html(this.logouttemplate({countdown: this.formatCountdown(this.loginCountdown)}));
+				this.$el.html(this.logouttemplate({}));
 			}else{
 				this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.loginCountdown)}));
 			}
@@ -108,7 +109,7 @@ define([
 					error: function(model, response, options){
 						console.log(response);
 						// render error view
-						that.trigger("errorHandler");
+						that.trigger("missingConnection");
 					}
 				});
 			}else{
@@ -132,8 +133,13 @@ define([
 			this.updateCountdown();
 		},
 
+		missingInternetConnectionHandler: function(){
+			this.$("#error0").css('display', 'block');
+		},
+
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
+			this.$("#error0").css('display', 'none');
 		},
 
 		updateCountdown: function() {

@@ -101,7 +101,7 @@ padding-bottom: 0px;
 	}
 }
 */
-#error,#error3 {
+#error,#error3, #error0 {
 	padding: .5em;
 	background: #ff9999;
 	border: 1px solid red;
