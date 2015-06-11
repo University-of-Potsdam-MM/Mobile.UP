@@ -3,9 +3,9 @@
 	<% _.each(reservations, function(reservation) { %>
 	<li>
 
-			<% print(("00" + reservation.startTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.startTime.getMinutes()).slice(-2)); %>
+			<% print(reservation.startMoment.format("HH:mm")); %>
 			-
-			<% print(("00" + reservation.endTime.getHours()).slice(-2)); %>:<% print(("00" + reservation.endTime.getMinutes()).slice(-2)); %>
+			<% print(reservation.endMoment.format("HH:mm")); %>
 			<% if (reservation.title) { %>
 				<%= reservation.title %>
 			<% } %>
