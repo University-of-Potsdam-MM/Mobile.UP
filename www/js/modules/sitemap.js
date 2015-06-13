@@ -274,7 +274,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		host.trigger("create");
 
 		var similars = similarHouses.concat(similarDescriptions);
-		similars = _.uniq(similars, false, function(item) { return item.data; });
+		similars = _.uniq(similars, false, function(item) {
+			if (item && item.geo && item.geo.properties)
+				return item.geo.properties.id;
+			else
+				return item.data;
+		});
 
 		_.each(similars, function(item) {
 			$("#similarlocations").append("<li><a onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
