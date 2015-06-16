@@ -82,7 +82,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
       this.listenTo(this.collection.where(view_state)[0], "sync", _.once(this.renderTransportList));
-      this.trigger("renderTransportList");
     },
 
     renderTransportList: function(){
