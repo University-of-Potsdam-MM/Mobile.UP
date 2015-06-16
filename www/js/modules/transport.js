@@ -26,6 +26,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
       _.bindAll(this, 'addOne');
     },
 
+    updateContent: function(stationJourneys, stationName, stationTime) {
+      this.stationName = stationName;
+      this.stationTime = stationTime;
+
+      // Forget the old collection
+      this.collection.off(null, null, this);
+      this.collection = stationJourneys;
+
+      // Listen to changes in the new collection
+      this.collection.on("reset", this.render, this);
+      this.collection.on("add", this.addOne, this);
+    },
+
     addOne: function(journey) {
       this.$ul.append(this.template({journey: journey}));
     },
@@ -115,11 +128,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
       });
       var that = this;
       transportViewNavbar.on('select', function(buttonName){
-        view_state = {campus: buttonName}
-        first_journey = that.collection.where(view_state)[0]
-        transportViewTransportList.collection  = first_journey.get('journeys');
-        transportViewTransportList.stationName = first_journey.get('name');
-        transportViewTransportList.stationTime = first_journey.get('stationTime');
+        view_state = {campus: buttonName};
+        first_journey = that.collection.where(view_state)[0];
+        transportViewTransportList.updateContent(first_journey.get('journeys'), first_journey.get('name'), first_journey.get('stationTime'));
         transportViewTransportList.render();
       });
 
