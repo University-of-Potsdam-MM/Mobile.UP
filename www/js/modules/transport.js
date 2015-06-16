@@ -15,14 +15,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
 
     initialize: function(options) {
       this.stations = options.stations;
-      this.stationName = options.stationName;
-      this.stationTime = options.stationTime;
+      this.updateContent(options.collection, options.stationName, options.stationTime);
 
       this.template = utils.rendertmpl('transport_listitem_view');
 
       this.$ul = this.$el.find('ul#transport-list');
-      this.collection.on("reset", this.render, this);
-      this.collection.on("add", this.addOne, this);
       _.bindAll(this, 'addOne');
     },
 
