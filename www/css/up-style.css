@@ -624,6 +624,10 @@ label.showfirst {
 	background-color: #897cc2 !important;
 }
 
+.sitemap-sport {
+	background-color: #B6B6B4 !important;
+}
+
 /*icons akkordion*/
 .speiseplan .ui-icon-plus:after {
 	background-image: url(../img/up/arrow-down.png);
