@@ -103,8 +103,9 @@ define([
 			this.collection.fetch();
 		},
 
-		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: error});
+		requestFail: function(collection, response, options) {
+			console.log("error: "+response.status);
+			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
 		},
 
 		render: function(){
