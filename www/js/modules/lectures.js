@@ -294,8 +294,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 				level.prepend(node);
 			});
 			level.find('option').last().attr('selected', 'selected');
-			
-			level.selectmenu('refresh', true);
+			level.selectmenu().selectmenu('refresh', true);
 		},
 
 		render: function(){
