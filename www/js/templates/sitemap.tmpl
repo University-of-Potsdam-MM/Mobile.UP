@@ -1,39 +1,30 @@
-<div data-role="panel" style="background-color:#ededed;" data-position="right" data-display="overlay" id="sitemaps-settings" data-theme="b" data-dismissible="false">
-	<fieldset data-role="controlgroup">
-		<h3 class="blau">Folgende Orte anzeigen:</h3>
-		<input type="checkbox" name="Terminals" id="Terminals" checked="true">
-		<label for="Terminals" class="sitemap-terminals">Terminals</label>
-		<input type="checkbox" name="Institute" id="Institute" checked="true">
-		<label for="Institute" class="sitemap-institutes">Institute</label>
-		<input type="checkbox" name="An-Institute" id="AnInstitute" checked="true">
-		<label for="AnInstitute" class="sitemap-associateinstitutes">An-Institute</label>
-		<input type="checkbox" name="Parking" id="Parking" checked="true">
-		<label for="Parking" class="sitemap-parking">Parkpl&auml;tze</label>
-		<input type="checkbox" name="Mensen" id="Mensen" checked="true">
-		<label for="Mensen" class="sitemap-canteens">Mensen &amp; Cafeterien</label>
-		<input type="checkbox" name="Studentenwohnheime" id="Living" checked="true">
-		<label for="Living" class="sitemap-living">Studentenwohnheime</label>
-		<input type="checkbox" name="Sportplaetze" id="Sport" checked="true">
-		<label for="Sport" class="sitemap-sport">Sportpl&auml;tze</label>
-	</fieldset>
-	<a href="#header" data-role="button" data-theme="a" data-rel="close" class="options-close">Schlie&szlig;en</a>
+<meta name="title" content="Lagepläne" />
+<meta name="settingsUrl" content="javascript:;" />
+
+<div data-role="panel" class="ui-panel ui-panel-position-right ui-panel-display-overlay ui-body-b ui-panel-animate ui-panel-closed" style="background-color:#ededed;" data-position="right" data-display="overlay" id="sitemaps-settings" data-theme="b" data-dismissible="false">
+	<div class="ui-panel-inner">
+		<fieldset data-role="controlgroup" class="ui-controlgroup ui-controlgroup-vertical ui-corner-all">
+			<h3 class="blau">Folgende Orte anzeigen:</h3>
+			<% _.each([ //name, ID, class, Label
+				["Terminals", "Terminals", "sitemap-terminals", "Terminals"], 
+				["Institute","Institute","sitemap-institutes","Institute"], 
+				["An-Institute","AnInstitute","sitemap-associateinstitutes","An-Institute"],
+				["Parking","Parking","sitemap-parking","Parkpl&auml;tze"],
+				["Mensen","Mensen","sitemap-canteens","Mensen &amp; Cafeterien"],
+				["Studentenwohnheime", "Living", "sitemap-living", "Studentenwohnheime"],
+				["Sportplaetze", "Sport", "sitemap-sport", "Sportplätze"]
+			], function(e) { %>
+			<div class="ui-checkbox">
+				<input type="checkbox" name="<%=e[0]%>" id="<%=e[1]%>" checked="true">
+				<label for="<%=e[1]%>" class="<%=e[2]%> ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left"><%=e[3]%></label>
+			</div>
+			<% }); %>
+		</fieldset>
+		<a href="javascript:;" data-role="button" data-theme="a" data-rel="close" class="options-close ui-link ui-btn ui-btn-a ui-shadow ui-corner-all">Schlie&szlig;en</a>
+	</div>
 </div>
-<!-- Start Header -->
-<div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<a href="#" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="menubutton ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
-	    
-    <%  if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin">Lagepl&auml;ne </h1>
-	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %> 
-    <h1>Lagepl&auml;ne </h1>   
-    <% } %> 
-    
-    <a data-icon="star" data-role="button" class="settings" href="#sitemaps-settings" role="button" title="settings" alt="settings"></a>
-</div>
-<!-- End Header -->
 <!-- Start Main - Navigation -->
-<div data-role="content" data-theme="c">
+<div data-role="content" data-theme="c" class="ui-content ui-body-c">
 	<div data-role="campusmenu" data-store="up.mensa.default"></div>
 	<div id="error-placeholder"></div>
 	<div id="currentCampus"></div>

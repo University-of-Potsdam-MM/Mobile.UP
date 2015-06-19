@@ -66,6 +66,10 @@ p {
 	margin: .3em;
 }
 
+a{
+	cursor:pointer;
+}
+
 .nomargin {
 	margin: 0 !important;
 }
