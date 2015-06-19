@@ -2,12 +2,11 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
-	'app',
 	'Session',
 	'hammerjs',
 	'uri/URI',
 	'moodle.download'
-], function($, _, Backbone, app, Session, Hammer, URI, MoodleDownload){
+], function($, _, Backbone, Session, Hammer, URI, MoodleDownload){
 
 	/*
 	 * Template Loading Functions

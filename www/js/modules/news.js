@@ -19,7 +19,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		}
 	});
 
-	/*
+	/**
 	 *	Backbone Model - NewsListItem
 	 *	can be Source or NewsEntry
 	 */
@@ -65,24 +65,17 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	})
 
 	app.views.NewsView = Backbone.View.extend({
-		el: '#news',
 		inCollection : 'news.index.news', //controller.action.variable
 		idInCollection : 'id', //name oder . getrennter Pfad, wo die id in der collection steht für ein objekt
 		initialize: function(p){
 			this.page  = p.page;
-			this.template = utils.rendertmpl('news.view');
+			this.template = utils.rendertmpl('news_view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
-			this.model.fetch(utils.cacheDefaults({
-				success: this.render,
-				error: function(){
-					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeit konnte nicht abgerufen werden.', module: 'news'});
-				},
-				dataType: 'json' }));
 		},
 
 		render:function(){
-			this.$el = this.page.$el.find('#news');
+			this.$el = this.page.find('#news');
 			var vars = $.extend(this.model.toJSON(), this.p);
 			if(!vars.news)
 				vars.news = vars;
@@ -95,23 +88,15 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	});
 
 	app.views.NewsSource = Backbone.View.extend({
-		el: '#news',
 
 		initialize: function(p){
 			this.template = utils.rendertmpl('news_source');
-			this.page  = p.page;
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
-			this.collection.fetch(utils.cacheDefaults({
-				success: this.render,
-				error: function(){
-					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
-				},
-				dataType: 'json' }));
 		},
 
 		render:function(){
-			this.$el = this.page.$el.find('#news');
+			this.$el = this.page.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON()}));
 			this.$el.trigger("create");
 			$.mobile.changePage.defaults.reverse = true;
@@ -121,17 +106,14 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	});
 
 	app.views.NewsSet_sources = Backbone.View.extend({
-		el: '#news',
 
 		initialize: function(p){
-			this.template = utils.rendertmpl('news.set_sources');
-			this.page  = p.page;
-			_.bindAll(this, 'render');
-			this.render();
+			this.template = utils.rendertmpl('news_set_sources');
+			_.bindAll(this, 'render', 'toggleNews');
 		},
 
 		render:function(){
-			this.$el = this.page.$el.find('#news');
+			this.$el = this.page.find('#news');
 			//console.log(utils.LocalStore.get('disabledNews', {}));
 			this.$el.html(this.template({newsSources: app.data.newsSources, disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			$('.ch-news').change(this.toggleNews);
@@ -157,69 +139,39 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	});
 
 	app.views.NewsIndex = Backbone.View.extend({
-		el: '#news',
 
 		initialize: function(p){
 			this.template = utils.rendertmpl('news_index');
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
-			//this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
-			this.collection.fetch(utils.cacheDefaults({
-				success: this.render,
-				error: function(){
-					var errorPage = new utils.ErrorView({el: '#news', msg: 'Die Neuigkeiten konnten nicht abgerufen werden.', module: 'news'});
-				},
-				dataType: 'json' }));
 		},
 
 		render: function(){
 			app.data.newsSources = this.collection.response.newsSources;
-			this.$el = this.page.$el.find('#news');
+			this.$el = this.page.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
-			$.mobile.changePage.defaults.reverse = false;
-			$(".back").addClass("menubutton").removeClass("back");
-			$('.menubutton').attr('href', '#home');
 			this.$el.trigger("create");
+			$.mobile.changePage.defaults.reverse = false;
+			$('.back').attr('href', '#home');
 			return this;
 		}
 
 	});
 
 	app.views.NewsPage = Backbone.View.extend({
-		attributes: {"id": "news-container"},
-
-		initialize: function(options){
-			this.options = options || {};
+		
+		initialize: function(){
 			this.template = utils.rendertmpl('news');
 		},
 
 		render: function(){
-
-			this.$el.html(this.template({}));
-			//console.log(this.options.action);
-			//console.log(this.options.aid);
-
-			/*if (!this.options.action){
-				var news = new app.models.News();
-				var newsView = new NewsView({collection: news, el: $("#news-content", this.el)});
-			} else {
-				// handle page action
-				if(this.options.action='view'){
-					var newsEntry = new NewsEntry({id: this.options.aid});
-					var newsEntryView = new NewsEntryView({model: newsEntry, el: $("#news-content", this.el)});
-				}
-			}*/
-
-			this.$el.trigger("create");
+			var $el = $(this.el); 
+			$el.html(this.template({}));
+			$el.trigger("create");
 			return this;
-		},
-
-		news: function(page, id){
-			console.log(page);
-			console.log(id);
 		}
 	});
 
-	return app.views; //NewsPageView;
+	return app.views;
 });

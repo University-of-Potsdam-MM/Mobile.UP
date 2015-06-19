@@ -1,18 +1,8 @@
-<!-- Start Header -->
-<div data-role="header" data-position="fixed" data-tap-toggle="false">
-  <a href="#" class="ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all back" data-transition="slidefade" data-direction="reverse" data-rel="back">Zurück</a>
+<meta name="title" content="Neuigkeiten" />
 
-   <%  if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin">Neuigkeiten</h1>
-	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %> 
-    <h1>Neuigkeiten</h1>   
-    <% } %> 
-  <a class="settings ui-link ui-btn ui-icon-star ui-btn-icon-left ui-shadow ui-corner-all" href="#news/set_sources" role="button" title="settings" alt="settings"></a>
-</div>
-<!-- End Header -->
 <!-- Start Main - Navigation -->
 <div id="news" data-role="content" data-theme="c">
+	<div class="test1"></div>
 	<div style="margin-top:40px;" class="up-loadingSpinner">
 		<img src="img/loadingspinner.gif"></img>
 	</div>
