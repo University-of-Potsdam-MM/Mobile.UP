@@ -1,3 +1,5 @@
+<meta name="title" content="Events" />
+<meta name="settingsUrl" content="events/set_locations" />
 <ul id="eventlist" data-role="listview" class="" data-inset="true" data-icon="true" data-icon-pos="right">
 <%  var place = -1;
 	_.each(events, function(event) {
@@ -35,3 +37,12 @@
 				</li>
 	<% }); %>
 </ul>
+<div data-tap-toggle="false" class="footer ui-footer ui-bar-inherit ui-footer-fixed slideup">
+	<div class="ui-navbar" data-tap-toggle="false">
+		<ul class="ui-grid-b">
+			<li class="ui-block-a"><a class="btn-filter-events ui-link ui-btn" data-filter="all" href="#events/index/all" id="btn-all-events">Alle</a></li>
+			<li class="ui-block-b"><a class="btn-filter-events ui-link ui-btn" data-filter="today" href="#events/index/today" id="btn-today-events">Heute</a></li>
+			<li class="ui-block-c"><a class="btn-filter-events ui-link ui-btn" data-filter="next" href="#events/index/next" id="btn-next-events">Nächste</a></li>
+		</ul>
+	</div>
+</div>
