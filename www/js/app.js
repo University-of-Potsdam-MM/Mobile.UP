@@ -142,8 +142,9 @@ define([
 			* @param url: zu routende URL
 			* @param noTrigger: true: nur url ändern aber nicht Aktion ausführen
 			*/
-			route:function(url, noTrigger){
+			route:function(url, noTrigger, replace){
 				var trigger = !noTrigger;
+				replace = !!replace;
 				if(trigger) {
 					this.history.push(url);
 				}
@@ -151,7 +152,7 @@ define([
 					url = url.slice(1); 
 				if(url == 'home' || url == '')
 					url = 'main/menu';
-				this.router.navigate(url, {trigger: trigger, replace: false}); //Url auf Controller routen
+				this.router.navigate(url, {trigger: trigger, replace: replace}); //Url auf Controller routen
 			},
 			/*
 			* Initialisiert den Refresh einer URL vom Server

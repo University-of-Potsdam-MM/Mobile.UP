@@ -24,8 +24,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     views:       {}, // actual view instances
   };
 
-  // Communicate openView events
-  var libraryPageEventBus = _.clone(Backbone.Events);
 
   /**
    *  Backbone Model - Book
@@ -265,7 +263,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
     initialize: function(){
       this.listenTo(this, "error", this.requestFail);
-      this.listenTo(this, "emptyResult", this.emptyResult);
     },
 
     paginationPossible: function(){
@@ -291,10 +288,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Bibliothekssuche ist momentan nicht erreichbar.', module: 'library', err: error});
     },
 
-    emptyResult: function(){
-      var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Keine Ergebnisse gefunden.', module: 'library'});
-    },
-
     byTagNS: function(xml,tag,ns) {
       return xml.getElementsByTagNameNS ?
         xml.getElementsByTagNameNS(ns,tag) :
@@ -306,7 +299,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       if(data.getElementsByTagNameNS) {
         if (!data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0]){
           this.set('numberOfRecords',0);
-          this.trigger("emptyResult");
         }else{
           var numberOfRecords=data.getElementsByTagNameNS('http://www.loc.gov/zing/srw/','numberOfRecords')[0].textContent;
           this.set('numberOfRecords',numberOfRecords);
@@ -383,8 +375,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       var book = App.collections.searchResults.get(bookId);
 
       var BookDetailView = new App.view.BookDetailView({model: book});
-      libraryPageEventBus.trigger("openView", BookDetailView);
-
+      BookDetailView.render();
+	  app.route('campus/library/detail', true);
       book.updateLocation();
     }
   });
@@ -395,18 +387,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
    * displays the detail information of a given book
    */
   App.view.BookDetailView = Backbone.View.extend({
+    el: '#library',
     model: App.model.Book,
 
     initialize: function(){
       this.template = utils.rendertmpl('library_detail_view');
-
-      this.backBoundToThis = _.bind(this.back, this);
-      $(document).on("click", ".backToList", this.backBoundToThis);
-    },
-
-    stopListening: function() {
-    	$(document).off("click", ".backToList", this.backBoundToThis);
-    	Backbone.Events.stopListening.apply(this, arguments);
     },
 
     render: function(){
@@ -427,12 +412,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
         }
       });
       this.$el.trigger('create');
+	  app.updateHeader(this.$el);
       return this;
-    },
-
-    back: function(ev){
-        ev.preventDefault();
-        libraryPageEventBus.trigger("openView", new LibraryPageView);
     }
   });
 
@@ -616,11 +597,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
    * Backbone View - Search
    * Main View for submitting search requests
    */
-  var LibraryPageView = Backbone.View.extend({
+  app.views.LibraryIndex = Backbone.View.extend({
     attributes: {"id": 'library'},
 
     events: {
-      'submit form': 'loadSearch'
+      'submit form': 'loadSearch',
+      'click .backToList': 'back'
     },
 
     initialize: function(){
@@ -629,7 +611,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
     render: function(){
       this.$el.html(this.template({keyword: App.models.currentSearch.get('query')}));
-
+	  this.page.html(this.$el);
       // initialize Main Views
       App.view.SearchResults = new App.view.BookList({
         model: App.models.currentSearch,
@@ -660,11 +642,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       });
       // on adding books render BookListView
       var loading = search.loadNext();
+    },
+
+     back: function(ev){
+        ev.preventDefault();
+        this.render();
     }
   });
 
-  return {
-	  View: LibraryPageView,
-	  Bus: libraryPageEventBus
-  };
+  return app.views;
 });

@@ -401,7 +401,7 @@ define([
 		var isInternalProtocol = internalProtocols.indexOf(uri.protocol()) >= 0;
 		var isJavascript = uri.protocol().indexOf('javascript') >= 0;
 		var hasProtocol = uri.protocol() !== '';
-		
+
 		// In the app we consider three cases:
 		// 1. Protocol is empty (URL is relative): we let the browser handle it
 		// 2. Protocol is http or https and URL is absolute: we let an InAppBrowser tab handle it
@@ -431,7 +431,9 @@ define([
 			app.route(url);
 			e.preventDefault();
 			console.log("Opening " + url + " internally");
-		} 
+		} else if(rel == 'norout') {
+			e.preventDefault();
+		}
 	};
 	
 	/**

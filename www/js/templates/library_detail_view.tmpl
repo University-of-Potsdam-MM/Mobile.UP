@@ -1,14 +1,5 @@
-<!-- Start Header -->
-<div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<a href="#library" data-role="button" data-icon="false" data-iconpos="left" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back backToList ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Back</a>
-    <%  if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin"><%= book.get('title') %></h1>
-	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %>
-    <h1><%= book.get('title') %> </h1>
-    <% } %>
-</div>
-<!-- End Header -->
+<meta name="title" content="<%= book.get('title') %>" /><!-- Start Header -->
+<meta name="back" content="1" />
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c" class="ui-content ui-body-c" role="main">
 	<div id="libraryContent">
@@ -49,8 +40,8 @@
 		<div data-role="tabs">
 		  <div data-role="navbar">
 		    <ul id="search-results">
-		      <li><a href="#book-locations" data-ajax="false" class="ui-btn-active">Standort</a></li>
-		      <li><a href="#book-details" data-ajax="false">Details</a></li>
+		      <li><a rel="norout" href="#book-locations" data-ajax="false" class="ui-btn-active">Standort</a></li>
+		      <li><a rel="norout" href="#book-details" data-ajax="false">Details</a></li>
 		    </ul>
 		  </div>
 		  <div id="book-locations" class="ui-content"></div>
