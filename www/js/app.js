@@ -216,7 +216,6 @@ define([
 					params = {};
 				var pageName = utils.capitalize(c) + 'Page';
 				if(!app.views[pageName]) {
-					console.log('NOT');
 					app.views[pageName] = Backbone.View.extend({
 						render: function(){
 							this.$el.html('');
@@ -330,6 +329,7 @@ define([
 							//console.log(app.cache);
 						}
 						content.render();
+
 						var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
 						
 						if($metas.length > 0){
@@ -430,6 +430,7 @@ define([
 						}
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						app.currentView = page;
+						app.updateHeader(page.$el);
 						success();
 					}
 				}
@@ -445,6 +446,22 @@ define([
 				});
 
 				return q.promise;
+			},
+			
+			updateHeader: function($el){
+				var $metas = $el.find('meta'); //Meta infos aus Seite in den Header integrieren
+				console.log($el[0]);
+				$header = $('.ui-header');
+				if($metas.length > 0){
+					var metas = {};
+					$metas.each(function(){
+						metas[$(this).attr('name')] = $(this).attr('content');
+					});
+					if(!metas.title) 
+						metas.title = $header.find('h1').html();
+					var header = utils.renderheader(metas);
+					$header.replaceWith(header);
+				}
 			},
 			
 			checkAuth: function(name){

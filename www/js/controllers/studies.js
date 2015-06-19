@@ -46,7 +46,7 @@ app.controllers.studies = BackboneMVC.Controller.extend({
     },
 	
 	moodle:function(action, id){ //action ist immer index, bis jemand das ändern möchte
-		action =  'index';
+		action = 'index';
 		app.loadPage('moodle', action, {model: app.session, courseid: id});
     },
 	

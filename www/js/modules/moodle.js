@@ -151,6 +151,7 @@ define([
                 //news: this.news.get(this.model.id)
             };
             this.$el.html(this.template(data));
+			
             if (this.collection.models[0].get('errorcode')){
                 var errorPage = new utils.ErrorView({el: '#loadingSpinner', msg: 'Fehler beim Abruf des Kurses. Bitte greifen Sie direkt auf den Kurs mit obigen Link zu.', module: 'moodle'});
             }
@@ -175,7 +176,7 @@ define([
     * Backbone View - MoodlePage
     * Startview for Moodle
     */
-    var MoodlePageView = Backbone.View.extend({
+    app.views.MoodlePage = Backbone.View.extend({
         attributes: {"id": "moodle"},
         model: Session,
 
@@ -239,7 +240,6 @@ define([
                 this.$el.html(this.template({}));
                 var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Dieser Kurs existiert nicht oder Sie sind nicht eingeschrieben.', module: 'moodle'});
             }
-
             this.$el.trigger("create");
             return this;
         },
@@ -277,6 +277,6 @@ define([
         }
     });
 
-  return MoodlePageView;
+  return app.views.MoodlePage;
 
 });
