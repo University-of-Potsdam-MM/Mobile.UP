@@ -42,14 +42,16 @@ define([
 			data: {},
 			requiresAuth: ['calendar', 'moodle', 'grades', 'people'],// routes that need authentication
 			preventAccessWhenAuth: [],// routes to prevent authentication when already authenticated
-			authUrls: ["https://api.uni-potsdam.de/endpoints/roomsAPI",
-					"https://api.uni-potsdam.de/endpoints/libraryAPI",
-					"https://api.uni-potsdam.de/endpoints/pulsAPI",
-					"https://api.uni-potsdam.de/endpoints/moodleAPI",
-					"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
-					"https://api.uni-potsdam.de/endpoints/errorAPI",
-					"https://api.uni-potsdam.de/endpoints/personAPI"
-			],
+			authUrls: [
+				"https://api.uni-potsdam.de/endpoints/roomsAPI",
+				"https://api.uni-potsdam.de/endpoints/libraryAPI",
+				"https://api.uni-potsdam.de/endpoints/pulsAPI",
+				"https://api.uni-potsdam.de/endpoints/moodleAPI",
+				"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
+				"https://api.uni-potsdam.de/endpoints/errorAPI",
+				"https://api.uni-potsdam.de/endpoints/personAPI",
+				"https://api.uni-potsdam.de/endpoints/mensaAPI",
+				"https://api.uni-potsdam.de/endpoints/staticContent"],
 			cache: {},
 			viewFileExt: 'js', //Dateiendung der View files
 			router : new AppRouter(), //Router zuweisen

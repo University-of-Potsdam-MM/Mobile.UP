@@ -159,7 +159,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 	/**
 	 *	BackboneView - Opening Page View
 	 */
-	var OpeningPageView = Backbone.View.extend({
+	app.views.OpeningPage = Backbone.View.extend({
     attributes: {"id": "opening"},
 
 		initialize: function(){
@@ -175,6 +175,4 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		}
 
   });
-
-  return OpeningPageView;
 });
