@@ -54,7 +54,7 @@ define([
 	/**
 	 *	BackvoneView - PeoplePageView
 	 */
-	var PeoplePageView = Backbone.View.extend({
+	app.views.PeoplePage = Backbone.View.extend({
 		attributes: {"id": "people"},
 
 		events: {
@@ -115,5 +115,5 @@ define([
 		}
 	});
 
-  return PeoplePageView;
+  return app.views.PeoplePage;
 });
