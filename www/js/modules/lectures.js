@@ -232,7 +232,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 	var vvzHistory = new VvzHistory;
 
-	var LecturesPageView = Backbone.View.extend({
+	app.views.LecturesPage = Backbone.View.extend({
 		attributes: {"id": "lectures"},
 
 		events: {
@@ -250,6 +250,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			this.listenTo(vvzHistory, "vvzChange", this.triggerOpenVvzUrl);
 
 			this.listenTo(currentVvz.items, "error", this.requestFail);
+			
+			_.bindAll(this, 'render', 'requestFail', 'selectMenu', 'selectLevel', 'prepareVvz', 'triggerOpenVvzUrl', 'createPopupMenu');
 		},
 
 		requestFail: function(error) {
@@ -284,14 +286,15 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		createPopupMenu: function(history) {
 			var level = this.$("#selectLevel");
 
-			this.$('#selectLevel option').remove();
+			level.find('option').remove();
 			history.each(function(option) {
 				var node = $("<option>");
 				node.attr("value", option.get("suburl"));
 				node.text(option.get("name"));
 				level.prepend(node);
 			});
-			this.$('#selectLevel option').last().attr('selected', 'selected');
+			level.find('option').last().attr('selected', 'selected');
+			
 			level.selectmenu('refresh', true);
 		},
 
@@ -300,12 +303,12 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			$(this.el).trigger("create");
 
 			this.trigger("render");
-
+			$('#selectLevel-button').attr('href', '#');
 			return this;
 		}
 	});
 
-	return LecturesPageView;
+	return app.views.LecturesPage;
 });
 
 function asArray(subject) {

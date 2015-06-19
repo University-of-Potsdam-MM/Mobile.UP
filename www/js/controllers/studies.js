@@ -27,6 +27,7 @@ app.controllers.studies = BackboneMVC.Controller.extend({
 		var _this = this;
 		app.loadPage('lectures', 'index').done(function(){
 			var vvzHistory = app.currentView.vvzHistory;
+			console.log(vvzUrls);
 			if (vvzUrls != undefined) {
 				vvzHistory.reset(JSON.parse(vvzUrls));
 			} else {
