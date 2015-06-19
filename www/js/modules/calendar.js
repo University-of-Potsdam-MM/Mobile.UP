@@ -37,7 +37,7 @@ define([
 	 *	CalendarPageView - BackboneView
 	 * 	Main View fpr calendar
 	 */
-	var CalendarPageView = utils.GesturesView.extend({
+	app.views.CalendarPage = utils.GesturesView.extend({
 		
 		attributes: {"id": "calendar"},
 
@@ -100,5 +100,5 @@ define([
 		}
 	});
 
-	return CalendarPageView;
+	return app.views.CalendarPage;
 });

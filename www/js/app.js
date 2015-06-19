@@ -226,7 +226,7 @@ define([
 				}
 				console.log(pageName);
 				
-				var page = new app.views[pageName]; console.log(page);
+				var page = new app.views[pageName](params); console.log(page);
 				var allowed = app.checkAuth(c) && app.checkAuth(a);
 				if(!allowed) {
 					q.resolve();
@@ -361,12 +361,10 @@ define([
 				* Wird nach Pagetransition ausgeführt
 				*/
 				var afterTransition = function(){
-					console.log('DD');
-					console.log(app.views);
-					console.log(utils.capitalize(c) + utils.capitalize(a));
+					//console.log(app.views);
+					//console.log(utils.capitalize(c) + utils.capitalize(a));
 					if(app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						app.currentView = {};
-						console.log('dd');
 						params.page = page.$el;
 						app.currentView = content = new app.views[utils.capitalize(c) + utils.capitalize(a)](params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
 						content.page = page.$el;
@@ -423,7 +421,6 @@ define([
 										},
 										dataType: 'json'
 									}));
-									console.log('FF');
 								} else {
 									success();
 								}
