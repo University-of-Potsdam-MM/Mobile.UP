@@ -1,14 +1,10 @@
-/**
- *  file contains all Require.JS dependencies
- */
-var app = {models:{}, views:{}, data:{}};
 require.config({
     //Standardmäßig alles aus dem lib-Pfad laden
     baseUrl: 'js',
     //waitSeconds: 10,
     paths: {
     	'templates': '../templates',
-    	'controllers': '../controllers',
+    	'controllers': 'controllers',
     	'jquery': 'vendor/jquery.min',
         'jquerymobile-config': 'jqm-config',
     	'jquerymobile': 'vendor/jquery.mobile.min',
@@ -16,6 +12,7 @@ require.config({
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
+		'backboneMVC': 'vendor/backbone-mvc',
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
@@ -73,6 +70,6 @@ requirejs.onError = function(error){
 
 require(['jquery', 'app', 'jquerymobile', 'jquerymobile-config'], function($, App){
     $(function(){
-
+		app.initialize();
     });
 });
