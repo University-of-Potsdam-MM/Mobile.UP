@@ -9,11 +9,11 @@
 <div data-position="fixed" data-tap-toggle="false" class="footer ui-footer ui-bar-inherit ui-footer-fixed calendar-footer slideup">
 	<div data-role="navbar" data-tap-toggle="false">
 		<ul>
-			<li><a rel="norout" href="#studies/calendar/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" class="ui-link ui-btn ui-icon-arrow-l ui-btn-icon-top ui-shadow ui-corner-all" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
+			<li><a rel="" href="#studies/calendar/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" class="ui-link ui-btn ui-icon-arrow-l ui-btn-icon-top ui-shadow ui-corner-all" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
 			<% if (window.cordova) { %>
 			<li><a href="#calendar/export" data-icon="arrow-d" data-role="button">Export</a></li>
 			<% } %>
-			<li><a rel="norout" href="#studies/calendar/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" class="ui-link ui-btn ui-icon-arrow-r ui-btn-icon-top ui-shadow ui-corner-all" data-role="button">Nächster Tag</a></li>
+			<li><a rel="" href="#studies/calendar/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" class="ui-link ui-btn ui-icon-arrow-r ui-btn-icon-top ui-shadow ui-corner-all" data-role="button">Nächster Tag</a></li>
 		</ul>
 	</div>
 </div>
