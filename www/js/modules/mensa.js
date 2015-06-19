@@ -105,7 +105,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		}
 	});
 
-	var MensaPageView = Backbone.View.extend({
+	app.views.MensaPage= Backbone.View.extend({
 		attributes: {"id": 'mensa'},
 
 		events: {
@@ -168,5 +168,5 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		}
 	});
 
-	return MensaPageView;
+	return app.views.MensaPage;
 });
