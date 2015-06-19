@@ -37,7 +37,7 @@ define([
 	 * 	BackboneView - PersonView
 	 */
 	var PersonView = Backbone.View.extend({
-		attributes: {"data-role": 'collapsible'},
+		attributes: {"data-role": 'collapsible', "data-iconpos" : 'right', "data-collapsed-icon" : 'arrow-down', "data-expanded-icon" : 'arrow-up' },
 		model: Person,
 
 		initialize: function(){
