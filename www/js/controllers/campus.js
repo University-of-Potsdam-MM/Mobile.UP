@@ -39,7 +39,7 @@ app.controllers.campus = BackboneMVC.Controller.extend({
 	
 	transport:function(type, campus){
 		if(type == 'plan')
-			app.loadPage('transport', 'plan');
+			app.loadPage('transport2', 'index');
     	else
 			app.loadPage('transport', 'index');
     },

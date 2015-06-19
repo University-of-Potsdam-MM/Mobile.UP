@@ -83,7 +83,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
   /**
    *  Transport Page View
    */
-  var TransportPageView = Backbone.View.extend({
+  app.views.TransportPage = Backbone.View.extend({
     attributes: {"id": "transport"},
 
     initialize: function(){
@@ -138,6 +138,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
 
   });
 
-  return TransportPageView;
+  return app.views.TransportPage;
 
 });

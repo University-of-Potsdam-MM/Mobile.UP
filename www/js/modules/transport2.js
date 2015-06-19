@@ -270,7 +270,7 @@ define([
    * BackboneView - Transport2PageView
    * Main View for complex transport search
    */
-  var Transport2PageView = Backbone.View.extend({
+  app.views.Transport2Page = Backbone.View.extend({
     attributes: {"id": "transport2"},
 
     events: {
@@ -333,6 +333,6 @@ define([
     }
   });
 
-  return Transport2PageView;
+  return  app.views.Transport2Page;
 
 });
