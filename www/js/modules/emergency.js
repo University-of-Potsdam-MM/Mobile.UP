@@ -66,7 +66,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	});
 
 	// view for the emergency page
-	var EmergencyPageView = Backbone.View.extend({
+	app.views.EmergencyPage = Backbone.View.extend({
 
 		initialize: function() {
 			this.template = utils.rendertmpl('emergency');
@@ -81,5 +81,5 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		}
 	});
 
-	return EmergencyPageView;
+	return app.views.EmergencyPage;
 });
