@@ -421,7 +421,9 @@ label.showfirst {
 	top: 55%;
 	left: .1em !important;
 }
-
+.home-id a {
+	color:#FFF !important;
+}
 #home .ui-btn.settings:active {
 	background-color: transparent;
 }
