@@ -48,7 +48,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		}
 	});
 
-	var GradesPageView = Backbone.View.extend({
+	app.views.GradesPage = Backbone.View.extend({
 
 		attributes: {"id": "grades"},
 
@@ -80,5 +80,5 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		}
 	});
 
-	return GradesPageView;
+	return app.views.GradesPage;
 });
