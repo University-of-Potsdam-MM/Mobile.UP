@@ -33,6 +33,11 @@ require.config({
     		deps: ['jquery', 'underscore'],
     		exports: 'Backbone'
     	},
+		
+		'backboneMVC': {
+    		deps: ['backbone'],
+    		exports: 'BackboneMVC'
+    	},
         // use namespace _
     	'underscore': {
     		exports: '_'

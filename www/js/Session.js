@@ -1,7 +1,6 @@
 define([
   'jquery',
   'backbone',
-  'router',
   'uri/URI'
 ], function($, Backbone, Router, URI){
 	

@@ -57,6 +57,7 @@ define([
 			* Intitialisierung
 			*/
 			initialize: function(){
+				alert(1);
 				app.session = new Session;
 				detectUA($, navigator.userAgent);
 					/**
@@ -135,10 +136,10 @@ define([
 				this.loadControllers(this.controllerList); //Alle Controller laden
 			},
 			history:[], //trackt aufgerufene URLs unabhängig von Backbone um auf Fehler besser reagieren zu können
-			/*
+			/**
 			* Wrapper für die Backbone route Funktion
-			* @url: zu routende URL
-			* @noTrigger: true: nur url ändern aber nicht Aktion ausführen
+			* @param url: zu routende URL
+			* @param noTrigger: true: nur url ändern aber nicht Aktion ausführen
 			*/
 			route:function(url, noTrigger){
 				var trigger = !noTrigger;
