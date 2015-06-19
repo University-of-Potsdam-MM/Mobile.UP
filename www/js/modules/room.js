@@ -292,7 +292,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
 	}
 
-	var RoomPageView = Backbone.View.extend({
+	app.views.RoomPage = Backbone.View.extend({
 		attributes: {"id": 'room'},
 
 		initialize: function(){
@@ -322,5 +322,4 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		}
 	});
 
-	return RoomPageView;
 });

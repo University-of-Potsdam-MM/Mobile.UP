@@ -38,7 +38,7 @@ define(['jquery', 'underscore', 'backbone', 'jquerymobile', 'underscore-string']
 		},
 
 		render: function() {
-			var href = $('<a href="#select" class="time-menu"></a>');
+			var href = $('<a href="#" class="time-menu"></a>');
 			href.append(this.createLabel());
 
 			if (this.model.get("isDefault")) {
