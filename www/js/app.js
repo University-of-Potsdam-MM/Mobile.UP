@@ -57,7 +57,6 @@ define([
 			* Intitialisierung
 			*/
 			initialize: function(){
-				alert(1);
 				app.session = new Session;
 				detectUA($, navigator.userAgent);
 					/**

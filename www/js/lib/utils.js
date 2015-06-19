@@ -46,6 +46,81 @@ define([
 	    	return templateFunction(params);
 	    };
 	};
+	
+	/*
+	 * Template Loading Function, Synchronous AJAX Calls are deprecated and should be replace by a async loading function like this one:
+	 */
+	var loadTemplates = function(tmpl_names) {
+		var q = Q.defer();
+		if (!rendertmpl.tmpl_cache) {
+	    	rendertmpl.tmpl_cache = {};
+	    }
+		var tmpl_name = tmpl_names.shift();
+		/*var renderObj = function(params) {
+	    	var templateFunction = rendertmpl.tmpl_cache[tmpl_name];
+	    	if (params.store == undefined){
+	    		params.store = LocalStore;
+	    	}else{
+	    		throw new error('Variable store already defined in function rendertmpl');
+	    	}
+	    	return templateFunction(params);
+	    };*/
+		
+		if ( !this.tmpl_cache[tmpl_name] ) {
+			var tmpl_string;
+			var _this = this;
+			var tmpl_dir = 'templates';
+	        var tmpl_url = tmpl_dir + '/' + tmpl_name + '.html';
+			$.ajax({
+				url: tmpl_url,
+				method: 'GET',
+				dataType: 'html',
+				async: true, //Async da Sync deprecated
+				success: function(data) {
+					tmpl_string = data;
+					tmpl_string = tmpl_string.replace(/\t/g, '');
+					_this.tmpl_cache[tmpl_name] = _.template(tmpl_string);
+					if(tmpl_names.length > 0) {
+						utils.rendertmpl(tmpl_names).done(function(){
+							q.resolve(_this.tmpl_cache[tmpl_name]);	
+						});
+					} else
+						q.resolve(_this.tmpl_cache[tmpl_name]);
+				}
+			});
+		} else
+			q.resolve(this.tmpl_cache[tmpl_name]);
+		return q.promise;
+	};
+	
+	var renderheader = function(d){
+		if ( !renderheader.headerTemplateLoaded ) {
+			var tmpl_dir = 'js/templates';
+			var tmpl_url = tmpl_dir + '/header.tmpl';
+			var tmpl_string;
+
+			$.ajax({
+				url: tmpl_url,
+				method: 'GET',
+				dataType: 'html',
+				async: false, //Synchron, also eigentlich nicht AJAX- sondern SJAX-Call
+				success: function(data) {
+					tmpl_string = data;
+				}
+			});
+
+			renderheader.headerTemplateString = tmpl_string.replace(/\t/g, '');
+			renderheader.headerTemplateLoaded = true;
+		}
+		d.settingsUrl = d.settingsUrl ? d.settingsUrl : false;
+		d.back = d.back ? d.back : false;
+		d.backCaption = d.backCaption ? d.backCaption : false;
+		d.title = d.title ? d.title : '';
+		d.klass = d.klass ? ' ' + d.klass : '';
+		d.home = d.home ? d.home : false;
+		d.store = LocalStore;
+		return _.template(renderheader.headerTemplateString, d);
+	};
 
 	var removeTabs = function(tmpl) {
 		return tmpl.replace(/\t/g, '');
@@ -138,6 +213,11 @@ define([
 			return this;
 		}
 	});
+	
+	var capitalize = function(string)
+	{
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	};
 
 	/*
 	* Betriebssystem/UserAgent ermitteln
@@ -309,30 +389,50 @@ define([
 	/**
 	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
-	var overrideExternalLinks = function(event) {
-		var url = $(event.currentTarget).attr("href");
+	var overrideExternalLinks = function(e) {
+		var $this = $(e.target);
+		var href = $this.attr('href') || '';
+		var rel = $this.attr('rel') || false;
+		var target = $this.attr('target');
+		
+		var url = ''+$(e.currentTarget).attr("href");
 		var uri = new URI(url);
 		
 		var internalProtocols = ["http", "https"];
 		var isInternalProtocol = internalProtocols.indexOf(uri.protocol()) >= 0;
-		var hasProtocol = uri.protocol() !== '' && uri.protocol() !== "javascript";
+		var isJavascript = uri.protocol().indexOf('javascript') >= 0;
+		var hasProtocol = uri.protocol() !== '';
 		
 		// In the app we consider three cases:
 		// 1. Protocol is empty (URL is relative): we let the browser handle it
 		// 2. Protocol is http or https and URL is absolute: we let an InAppBrowser tab handle it
 		// 3. Protocol is something other: we let the system handle it
 		// In the browser, we let the browser handle everything
-		if (window.cordova && isInternalProtocol) {
+		if (/*window.cordova && */isInternalProtocol) {
 			console.log("Opening " + uri + " in new tab");
-			openInTab(url);
-			return false;
-		} else if (window.cordova && hasProtocol && !isInternalProtocol) {
+			if(window.cordova) {
+				openInTab(url);
+				e.preventDefault();
+				return false;
+			} else {
+				if(target != '_blank') {
+					var openWindow = window.open(url, "_blank", "enableViewportScale=yes");
+					e.preventDefault();
+					return false;
+				}
+			}
+		} else if (window.cordova && hasProtocol && !isInternalProtocol && !isJavascript) {
 			console.log("Opening " + uri + " in system");
 			window.open(url, "_system");
+			e.preventDefault();
 			return false;
-		} else {
+		} else if(href && !isJavascript && rel != 'norout' && href != '#') {
+			$this.addClass('ui-btn-active');
+			$('.ui-btn-active', app.activePage()).removeClass('ui-btn-active');
+			app.route(url);
+			e.preventDefault();
 			console.log("Opening " + url + " internally");
-		}
+		} 
 	};
 	
 	/**
@@ -512,7 +612,9 @@ define([
 
 	return {
 			rendertmpl: rendertmpl,
+			renderheader: renderheader,
 			removeTabs: removeTabs,
+			capitalize: capitalize,
 			addLoadingSpinner: addLoadingSpinner,
 			removeLoadingSpinner: removeLoadingSpinner,
 			getAuthHeader: getAuthHeader,
