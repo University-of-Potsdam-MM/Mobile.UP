@@ -92,15 +92,20 @@ define([
 			// get search query
 			var inputs = $('#query-form :input').serializeArray();
       		var query = inputs[0].value;
-			// generate url and set collection url
-			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
-			url += '?value='+query;
-			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
-			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
 
-			this.collection.reset();
-			this.collection.url = url;
-			this.collection.fetch();
+      		if (query){
+      			// generate url and set collection url
+				var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
+				url += '?value='+query;
+				url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
+				url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
+
+				this.collection.reset();
+				this.collection.url = url;
+				this.collection.fetch();
+			} else {
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
+			}
 		},
 
 		requestFail: function(collection, response, options) {
