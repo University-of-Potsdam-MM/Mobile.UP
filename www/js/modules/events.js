@@ -85,7 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			if(!e.Event)
 				e = e.event;
 			var saved = false;
-			window.plugins.calendar.createEvent(e.Event.name, e.Place.name, e.Event.description, new Date(parseInt(e.Event.startTime) * 1000), new Date((parseInt(e.Event.startTime) + 3600) * 1000 ),
+			window.plugins.calendar.createEventInteractively(e.Event.name, e.Place.name, e.Event.description, new Date(parseInt(e.Event.startTime) * 1000), new Date((parseInt(e.Event.startTime) + 3600) * 1000 ),
 				function(m){ //Bei erfolgreichem Speichern ausgeführt, unter Android leider nicht ausgeführt
 					navigator.notification.alert(e.Event.name + ' am ' + e.Event.DateString + ' wurde deinem Kalender hinzugefügt.', null, 'Gespeichert'); //Nachricht ausgeben
 					utils.LocalStore.set('going', e.Event.id, e.Event.id); //Vorgemerkt im Local Storage speichern
