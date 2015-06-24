@@ -39,6 +39,7 @@ define([
 			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
 			testcode: '', //Testcode
 			routesToScrollPositions: {},
+			history:[],
 			views:{},
 			models:{},
 			data: {},
