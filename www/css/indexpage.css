@@ -353,18 +353,6 @@ They are rewritten to adapt to a container with the home-id class
 The rewrite was necessary to cope with the new page header structure
 See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 */
-.home-id .ui-btn {
-	font-size: 16px;
-	margin: 0 0;
-	padding-right: 1em;
-	text-align: right;
-	text-transform: uppercase;
-	font-weight: normal;
-	/* vertikal zentrieren*/
-	display: block;
-	vertical-align: middle;
-}
-
 .home-id .ui-btn.settings.ui-icon-gear {
 	height: 15px;
 	margin-right: 10px;
@@ -386,13 +374,6 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 
 .home-id .ui-btn.settings:before {
 	background-image: url(../img/up/logout-white.png);
-	background-repeat: no-repeat;
-	content: ".";
-	display: inline-block;
-	width: 18px;
-	height: 22px;
-	text-indent: 100px;
-	background-position: 0px 0px
 }
 
 .home-id.ui-header .ui-title {
