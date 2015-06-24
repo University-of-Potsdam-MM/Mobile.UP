@@ -1,15 +1,5 @@
-<!-- Start Header -->
-<div data-role="header" data-position="fixed" data-tap-toggle="false">
-	<a href="javascript:history.back()" data-role="button" data-icon="false" data-inline="true" data-transition="slidefade" data-direction="reverse" class="back ui-btn ui-btn-inline ui-link ui-shadow ui-corner-all">Menue</a>
-	
-	<% if(store.get('up.session.authenticated')){ %>
-	<h1 class="loggedin">Stundenplanexport </h1>
-	<a href="#options" class="settings ui-btn" data-role="button" data-icon="false" title="logout" alt="logout">Logout</a>
-    <%  } else { %>
-    <h1>Stundenplanexport</h1>
-    <% } %>
-</div>
-<!-- End Header -->
+<meta name="title" content="Stundenplanexport" />
+<meta name="back" content="1" />
 
 <!-- Start Main - Navigation -->
 <div data-role="content" data-theme="c" id="calendarexport">

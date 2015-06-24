@@ -9,14 +9,21 @@ define([
 	'q',
 	'fastclick',
 	'Session',
+	'history',
 	'jquerymobile',
 	'datebox',
-	'LocalStore',
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session){
+	'LocalStore'
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory){
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
+			initialize: function(){
+				this.listenTo(this, 'route', function(route, params){
+					customHistory.push(app.serializeRoute(route, params));
+				});
+				customHistory.startTracking();
+			},
 			before:function(route){ //wird komischerweise nur ausgeführt, wenn zurücknavigiert wird. Und genau dafür wird diese Funktion benutzt.
-				window.backDetected = true; 
+				window.backDetected = true;
 			}
 		});
 		
@@ -37,6 +44,7 @@ define([
 			jsonUrl: 'http://headkino.de/potsdamevents/json/', //Base-Url, die auf dem Server angefragt wird
 			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
 			testcode: '', //Testcode
+			routesToScrollPositions: {},
 			views:{},
 			models:{},
 			data: {},
@@ -78,15 +86,16 @@ define([
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
     				document.addEventListener("backbutton", function(e){
-    					if(window.approuter.history.length == 1){
+    					if(customHistory.length() == 1){
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
     						$.mobile.changePage.defaults.transition = 'slidefade';
     						$.mobile.changePage.defaults.reverse = 'reverse';
-    						var lastPage = app.router.history[app.router.history.length-2].name;
-    						app.router.history.splice(-2);
-    						Backbone.history.navigate(lastPage, {trigger:true});
+    						//var lastPage = app.router.history[app.router.history.length-2].name;
+    						//app.router.history.splice(-2);
+    						//Backbone.history.navigate(lastPage, {trigger:true});
+							customHistory.goBack();
     					}
     				}, false);
 				}
@@ -216,6 +225,7 @@ define([
 				if(!params)
 					params = {};
 				var pageName = utils.capitalize(c) + 'Page';
+				console.log(app.views[pageName]);
 				if(!app.views[pageName]) {
 					app.views[pageName] = Backbone.View.extend({
 						render: function(){
@@ -225,7 +235,6 @@ define([
 					});
 				}
 				console.log(pageName);
-				
 				var page = new app.views[pageName](params); console.log(page);
 				var allowed = app.checkAuth(c) && app.checkAuth(a);
 				if(!allowed) {
@@ -435,7 +444,8 @@ define([
 						success();
 					}
 				}
-				
+				app.saveScrollPosition();
+				app.prepareScrollPositionFor(app.serializeRoute(c+'/'+a, params));
 				Q($.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse})).done(function(){
 					if(!app.currentView){
 						//$('#pagecontainer').children().first().remove();
@@ -489,14 +499,17 @@ define([
 			},
 			
 			saveScrollPosition: function() {
-				if (this.history.length > 0){
-					var name = this.history[this.history.length-1].name;
+				console.log(customHistory);
+				if (customHistory.hasHistory()){
+					var name = customHistory.currentRoute();
+					//alert(name);
 					this.routesToScrollPositions[name] = $(window).scrollTop();
 				}
 			},
 	
 			prepareScrollPositionFor: function(route) {
 				var pos = 0;
+				//alert(route);
 				if (this.routesToScrollPositions[route]) {
 					pos = this.routesToScrollPositions[route];
 					delete this.routesToScrollPositions[route]
@@ -507,9 +520,19 @@ define([
 				activePage.lastScroll = pos;
 			},
 			
+			serializeRoute: function(route, params) {
+				var result = route;
+				for (var count in params) {
+					if (params[count] != null) {
+						result += " " + params[count];
+					}
+				}
+				return result;
+			},
+			
 			/**
 			* Daten vom Server laden
-			* @zu ladende URL
+			* @param url zu ladende URL
 			*/
 			get: function(url){
 				var q = Q.defer();

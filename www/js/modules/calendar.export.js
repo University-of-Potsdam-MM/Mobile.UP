@@ -242,7 +242,7 @@ define([
 	 *	CalendarPageView - BackboneView
 	 * 	Main View fpr calendar
 	 */
-	var CalendarExportPageView = Backbone.View.extend({
+	app.views.CalendarExportPage = Backbone.View.extend({
 		
 		attributes: {"id": "calendarexport"},
 
@@ -257,5 +257,5 @@ define([
 		}
 	});
 
-	return CalendarExportPageView;
+	return app.CalendarExportPage;
 });

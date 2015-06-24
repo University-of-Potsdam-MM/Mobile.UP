@@ -5,6 +5,7 @@ app.controllers.studies = BackboneMVC.Controller.extend({
     name: 'studies',
 	modules: {
 		'calendar' : 'calendarView',
+		'calendar.export' : 'calendarExportView',
 		'lectures' : 'lecturesView',
 		'grades' : 'gradesView',
 		'moodle' : 'moodleView'
@@ -20,7 +21,11 @@ app.controllers.studies = BackboneMVC.Controller.extend({
 	},
 	
 	calendar:function(day){
-		app.loadPage('calendar', 'index', {day:day});
+		if(day == 'export') {
+			app.loadPage('calendarExport', 'index', {day:day});
+		} else {
+			app.loadPage('calendar', 'index', {day:day});
+		}
     },
 
     lectures:function(vvzUrls){
