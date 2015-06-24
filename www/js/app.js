@@ -16,12 +16,6 @@ define([
 	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory){
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
-			initialize: function(){
-				this.listenTo(this, 'route', function(route, params){
-					customHistory.push(app.serializeRoute(route, params));
-				});
-				customHistory.startTracking();
-			},
 			before:function(route){ //wird komischerweise nur ausgeführt, wenn zurücknavigiert wird. Und genau dafür wird diese Funktion benutzt.
 				window.backDetected = true;
 			}
@@ -144,8 +138,8 @@ define([
 					}
 				});
 				this.loadControllers(this.controllerList); //Alle Controller laden
+				customHistory.startTracking();
 			},
-			history:[], //trackt aufgerufene URLs unabhängig von Backbone um auf Fehler besser reagieren zu können
 			/**
 			* Wrapper für die Backbone route Funktion
 			* @param url: zu routende URL
@@ -445,7 +439,8 @@ define([
 					}
 				}
 				app.saveScrollPosition();
-				app.prepareScrollPositionFor(app.serializeRoute(c+'/'+a, params));
+				app.prepareScrollPositionFor(Backbone.history.fragment);
+				customHistory.push(Backbone.history.fragment);
 				Q($.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse})).done(function(){
 					if(!app.currentView){
 						//$('#pagecontainer').children().first().remove();
@@ -502,7 +497,6 @@ define([
 				console.log(customHistory);
 				if (customHistory.hasHistory()){
 					var name = customHistory.currentRoute();
-					//alert(name);
 					this.routesToScrollPositions[name] = $(window).scrollTop();
 				}
 			},
