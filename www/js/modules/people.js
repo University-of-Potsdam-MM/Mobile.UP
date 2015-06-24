@@ -105,6 +105,7 @@ define([
 				this.collection.fetch();
 			} else {
 				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
+				this.enableSearch();
 			}
 		},
 
