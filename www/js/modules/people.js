@@ -27,6 +27,7 @@ define([
 			if (response.people[0] && response.people[0].length != 0){
 				return response.people;
 			}else{
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
 				return null;
 			}
 		}
@@ -112,6 +113,7 @@ define([
 		requestFail: function(collection, response, options) {
 			console.log("error: "+response.status);
 			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			this.enableSearch();
 		},
 
 		render: function(){
