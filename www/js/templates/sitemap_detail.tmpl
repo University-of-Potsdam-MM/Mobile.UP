@@ -1,6 +1,6 @@
 <% _.each(items, function(item) { %>
 <li class="ui-screen-hidden" data-icon="arrow-darkblue">
-	<a data-tag="<%= item.index %>">
+	<a data-tag="<%= item.index %>" href="#<%= item.index %>">
 		<h3><%= item.name %></h3>
 		<p><%= item.description %></p>
 	</a>

@@ -118,7 +118,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
 
 			var widgetHost = this;
-			$(document).on("click", "#filterable-locations a", function () {
+			$(document).on("click", "#filterable-locations a", function (ev) {
+				ev.preventDefault();
+
 				// Retreive context
 				var source = $(this);
 				var href = source.attr("data-tag");
