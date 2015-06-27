@@ -125,8 +125,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			this.reservations = new RoomDetailsCollections;
 			this.reservations.url = this.createUrl();
 
-			this.reservations.on("reset", _.bind(this.triggerChanged, this));
-			this.reservations.on("error", _.bind(this.triggerChanged, this));
+			this.listenTo(this.reservations, "reset", this.triggerChanged);
+			this.listenTo(this.reservations, "error", this.triggerChanged);
 		},
 
 		triggerChanged: function() {
@@ -144,6 +144,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 
 			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
 			return _.str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+		},
+
+		getSortedReservations: function() {
+			var reservations = this.reservations.map(function(d) { return d.attributes; });
+			return _.sortBy(reservations, "startMoment");
 		}
 	});
 
@@ -237,6 +242,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 	var RoomDetailsView = Backbone.View.extend({
 
 		initialize: function() {
+			this.template = utils.rendertmpl('roomDetails');
+
 			this.listenTo(this.model, "change", this.render);
 		},
 
@@ -252,19 +259,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			$("#roomsOverviewHint").hide();
 			$("#roomsDetailsHint").show();
 
-			var host = this.$el;
-			host.empty();
+			var reservations = this.model.getSortedReservations();
+			var attributes = this.model.attributes;
 
-			var reservations = this.model.reservations.map(function(d) { return d.attributes; });
-			reservations = _.sortBy(reservations, "startMoment");
-
-			// Create and add html
-			var createDetails = utils.rendertmpl('roomDetails');
-			var htmlDay = createDetails({reservations: reservations, room: this.model.attributes});
-			host.append(htmlDay);
-
-			// Refresh html
-			host.trigger("create");
+			this.$el.empty();
+			this.$el.append(this.template({reservations: reservations, room: attributes}));
+			this.$el.trigger("create");
 		}
 	});
 
