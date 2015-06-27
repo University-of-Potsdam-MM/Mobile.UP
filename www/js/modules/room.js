@@ -54,12 +54,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			this.rooms.startTime = this.get("startTime");
 			this.rooms.endTime = this.get("endTime");
 
-			this.rooms.on("reset", _.bind(this.triggerChanged, this));
-			this.rooms.on("error", this.requestFail);
+			this.listenTo(this.rooms, "reset", this.triggerChanged);
+			this.listenTo(this.rooms, "error", this.requestFail);
 		},
 
 		triggerChanged: function() {
-			this.trigger("change");
+			this.trigger("success");
+		},
+
+		requestFail: function(error) {
+			this.trigger("error", error);
 		},
 
 		mapToId: function(campusName) {
@@ -85,15 +89,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 				request = request + "&building=%s";
 			}
 			return _.str.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
-		},
-
-		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
-			$("#roomsHost").empty();
 		}
 	});
 
 	var RoomDetailsCollections = Backbone.Collection.extend({
+
 		model: function(attrs, options) {
 			attrs.startTime = new Date(attrs.startTime);
 			attrs.endTime = new Date(attrs.endTime);
@@ -198,10 +198,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 
 		initialize: function() {
 			this.listenTo(this.model, "change", this.render);
+			this.listenTo(this.model, "success", this.render);
+			this.listenTo(this.model, "error", this.renderError);
+		},
+
+		renderError: function(error) {
+			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
+			$("#roomsHost").empty();
 		},
 
 		render: function() {
 			$("#errorHost").empty();
+
 			$("#roomsDetailsHint").hide();
 			$("#roomsOverviewHint").show();
 
