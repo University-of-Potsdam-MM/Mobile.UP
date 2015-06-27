@@ -88,7 +88,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#roomsHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
+			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
+			$("#roomsHost").empty();
 		}
 	});
 
@@ -200,6 +201,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		render: function() {
+			$("#errorHost").empty();
 			$("#roomsDetailsHint").hide();
 			$("#roomsOverviewHint").show();
 
