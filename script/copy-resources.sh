@@ -18,5 +18,5 @@ cp www/res/screen/ios/screen-iphone-portrait-2x.png platforms/ios/Mobile.UP/Reso
 cp www/res/screen/ios/screen-iphone-portrait.png platforms/ios/Mobile.UP/Resources/splash/Default~iphone.png
 
 # StatusBar settings ios
-/usr/libexec/PlistBuddy -c "Add :UIStatusBarHidden bool true" platforms/ios/Mobile.UP/Mobile.UP-Info.plist
+/usr/libexec/PlistBuddy -c "Add :UIStatusBarHidden bool false" platforms/ios/Mobile.UP/Mobile.UP-Info.plist
 /usr/libexec/PlistBuddy -c "Add :UIViewControllerBasedStatusBarAppearance bool false" platforms/ios/Mobile.UP/Mobile.UP-Info.plist

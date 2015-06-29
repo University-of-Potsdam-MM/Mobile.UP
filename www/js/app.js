@@ -64,6 +64,9 @@ define([
 			initialize: function(){
 				app.session = new Session;
 				detectUA($, navigator.userAgent);
+				if($.os.ios7) {
+					$('body').addClass('ios-statusbar');
+				}
 					/**
 				 * Override Backbone.sync to automatically include auth headers according to the url in use
 				 */
@@ -680,7 +683,7 @@ var detectUA = function($, userAgent) {
 	$.os.androidICS = $.os.android && userAgent.match(/(Android)\s4/) ? true : false;
 	$.os.ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/) ? true : false;
 	$.os.iphone = !$.os.ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/) ? true : false;
-	$.os.ios7 = userAgent.match(/(iPhone\sOS)\s([7_]+)/) ? true : false;
+	$.os.ios7 = userAgent.match(/(iPhone\sOS)\s([789_]+)/) ? true : false;
 	$.os.webos = userAgent.match(/(webOS|hpwOS)[\s\/]([\d.]+)/) ? true : false;
 	$.os.touchpad = $.os.webos && userAgent.match(/TouchPad/) ? true : false;
 	$.os.ios = $.os.ipad || $.os.iphone;

@@ -2579,3 +2579,12 @@ p.event-description {
 	-webkit-animation-timing-function: ease-in-out;
 	-webkit-animation-duration: 200ms !important;
 }
+
+/*OS Differences*/
+
+.ios-statusbar .ui-header, .ios-statusbar .ui-content{
+	padding-top:25px !important;
+}
+.ios-statusbar .settings{
+	margin-top:40px !important;
+}
