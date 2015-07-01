@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'lib/jqm-datebox.mode.calbox.min', 'lib/jqm-datebox.mode.datebox.min', 'lib/jquery.mobile.datebox.i18n.de.utf8'], function($, _, Backbone, utils, Q, campusmenu, datebox){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox'], function($, _, Backbone, utils, Q, campusmenu, datebox){
 
 	$(document).on("pageshow", "#mensa", function () {
 		console.log("pageshow started");
