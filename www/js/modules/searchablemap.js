@@ -87,6 +87,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			return elements;
 		};
 	};
+	
+	var resize_map = function(){
+		var minus = $.os.ios7 ? 25 : 0;
+		$('#map-canvas').css("height", $(window).height() - 165 - minus);
+	};
 
 
 	$.widget("up.searchablemap", {
@@ -112,7 +117,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					<div id='map-canvas' class='gmap3'></div> \
 				</div>");
 			this.element.trigger("create");
-			$('#map-canvas').css("height",$(window).height()-165);
+			resize_map();
 
 			// Initialize filter
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
@@ -130,7 +135,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 			// when window resizing set new center and resize map
 			$(window).resize(function(){
-				$('#map-canvas').css("height",$(window).height()-165);
+				resize_map();
 		        var center = widgetHost._map.getCenter();
 		        google.maps.event.trigger(widgetHost._map, 'resize');
 		        widgetHost._map.setCenter(center);
