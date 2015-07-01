@@ -1,9 +1,9 @@
 <meta name="back" content="events" />
-<% if (event.Event.pic) { %>
+
 <div class="event-image-container">
-  <img class="event-image" height="100" src="<%= event.Event.pic %>" />
-   <h2><%= event.Event.name %></h2></div>
-<% } %>
+  <img class="event-image" height="100" src="<%= event.Event.pic ? event.Event.pic : 'img/up/calendar_hr.png' %>" />
+  <h2><%= event.Event.name %></h2>
+</div>
 <div class="floatR right-event-detail">
 	<div class="clear floatR" <% if(!going) { %>style="display:none"<% } %> id="savedInCal<%=event.Event.id%>">
 
@@ -29,6 +29,7 @@
 </p>
 <%
 var description = event.Event.description;
+description = description.replace(/\\n/g, '<br />');
 var d = description.split(' '), lim = 50;
 if(d.length - lim > 25) {
 	var d2 = d.splice(lim, d.length - lim);
@@ -43,16 +44,19 @@ if(d.length - lim > 25) {
 <% } %>
 <br />
 <div class="event-detail">
-
-		<%=event.Place.name%><br />
-		<%=event.Place.adresse%><br />
-		<%=event.Place.plz%> <%=event.Place.ort%><br />
+		<% if(event.Event.venue) { var q = event.Event.venue.replace(/Universität Potsdam,|,.?Raum.*/g, ''); %>
+			<%= event.Event.venue %><br />
+		<% } else { var q = event.Place.lat+','+event.Place.lng; %>
+			<%=event.Place.name%><br />
+			<%=event.Place.adresse%><br />
+			<%=event.Place.plz%> <%=event.Place.ort%><br />
+		<% } %>
 		<% if($.os.ios) { %>
-			<a href="maps:q=<%=event.Place.lat%>,+<%=event.Place.lng%>" target="_system">Auf Karte anzeigen</a>
+			<a href="maps:q=<%=q%>" target="_system">Auf Karte anzeigen</a>
 		<% } else if($.os.android) { %>
-			<a target="_system" href="geo:<%=event.Place.lat%>,+<%=event.Place.lng%>?q=<%=event.Place.name%>, <%=event.Place.adresse%>, <%=event.Place.plz%> <%=event.Place.ort%>" rel="external">Auf Karte anzeigen</a>
+			<a target="_system" href="geo:<%=q%>" rel="external">Auf Karte anzeigen</a>
 		<% } else { %>
-			<a target="_system" href="http://maps.google.com/?q=<%=event.Place.lat%>,+<%=event.Place.lng%>+(<%=event.Place.name%>)"  rel="external">Auf Karte anzeigen</a>
+			<a target="_system" href="http://maps.google.com/?q=<%=q%>"  rel="external">Auf Karte anzeigen</a>
 		<% } %>
 
 </div>
