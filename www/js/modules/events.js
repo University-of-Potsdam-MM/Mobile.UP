@@ -1,6 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Backbone, utils, date){
 	var server = 'https://musang.soft.cs.uni-potsdam.de'
-	server = 'http://headkino.de';
 	/*
 	 *
 	 */
