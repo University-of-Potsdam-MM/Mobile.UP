@@ -9,10 +9,10 @@ require.config({
     paths: {
     	'templates': '../templates',
     	'controllers': '../controllers',
-    	'jquery': 'vendor/jquery.min',
+    	'jquery': 'vendor/jquery',
         'jquerymobile-config': 'jqm-config',
-    	'jquerymobile': 'vendor/jquery.mobile.min',
-        'datebox': 'lib/jqm-datebox.core.min',
+    	'jquerymobile': 'vendor/jquery.mobile',
+        'datebox': 'lib/jqm-datebox',
     	'underscore': 'vendor/underscore-min',
         'underscore-string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
@@ -24,39 +24,13 @@ require.config({
 		'date': 'lib/date',
 		'LocalStore': 'lib/ls-store',
         'fastclick': 'vendor/fastclick.min',
-        'hammerjs': 'vendor/hammer.min',
+        'hammerjs': 'vendor/hammer',
         'uri': 'vendor/src',
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
         'headerParser': 'lib/headerParser'
     },
     shim: {
-        // use namespace Backbone
-    	'backbone': {
-    		deps: ['jquery', 'underscore'],
-    		exports: 'Backbone'
-    	},
-        // use namespace _
-    	'underscore': {
-    		exports: '_'
-    	},
-        // use namespace _str.
-        'underscore-string': {
-            deps: ['underscore']
-        },
-
-        'jquerymobile-config': ['jquery'],
-
-        'jquerymobile': ['jquery', 'jquerymobile-config'],
-
-        'datebox': {
-            deps: ['jquery', 'jquerymobile'],
-            exports: 'datebox'
-        },
-        
-        'lib/jqm-datebox.mode.calbox.min' : ['jquery', 'datebox'],
-        'lib/jqm-datebox.mode.datebox.min' : ['jquery', 'datebox'],
-        'lib/jquery.mobile.datebox.i18n.de.utf8' : ['jquery', 'datebox'],
         'cache': ['backbone', 'underscore']
     }
 });
