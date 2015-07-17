@@ -188,10 +188,13 @@ body .ui-btn.ui-btn-a.back:visited {
 }
 
 /*Backbutton mit Text statt Pfeil*/
-.ui-btn.back.back-caption {
+.back-caption {
   width: 50px !important;
   text-indent: 0 !important;
   color: #014260 !important;
+  background-image:none !important;
+  background-repeat:no-repeat !important;
+  background-position:-400px;
   background: none !important;
   margin-top: 20px !important;
 }
