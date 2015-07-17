@@ -44,7 +44,7 @@ if(d.length - lim > 25) {
 <% } %>
 <br />
 <div class="event-detail">
-		<% if(event.Event.venue) { var q = event.Event.venue.replace(/Universität Potsdam,|,.?Raum.*/g, ''); %>
+		<% if(event.Event.venue) { var q = event.Event.venue.replace(/Universität Potsdam,|,.?Raum.*/g, '').replace(/\n/, ' '); %>
 			<%= event.Event.venue %><br />
 		<% } else { var q = event.Place.lat+','+event.Place.lng; %>
 			<%=event.Place.name%><br />
@@ -52,7 +52,7 @@ if(d.length - lim > 25) {
 			<%=event.Place.plz%> <%=event.Place.ort%><br />
 		<% } %>
 		<% if($.os.ios) { %>
-			<a href="maps:q=<%=q%>" target="_system">Auf Karte anzeigen</a>
+			<a href="maps://q=<%=q%>" target="_system">Auf Karte anzeigen</a>
 		<% } else if($.os.android) { %>
 			<a target="_system" href="geo:<%=q%>" rel="external">Auf Karte anzeigen</a>
 		<% } else { %>
