@@ -4,8 +4,9 @@ define([
 	'backbone',
 	'uri/URI',
 	'Session',
-	'headerParser'
-], function($, _, Backbone, URI, Session, headerParser){
+	'headerParser',
+	'underscore.string'
+], function($, _, Backbone, URI, Session, headerParser, _str){
 	
 	/**
 	 * Steps to open file:
@@ -74,7 +75,7 @@ define([
 			}
 			
 			var path = uri.path();
-			if (!_.str.startsWith(path, "/webservice")) {
+			if (!_str.startsWith(path, "/webservice")) {
 				uri.path("/webservice" + path);
 			}
 			
@@ -97,7 +98,7 @@ define([
 	});
 	
 	MoodleDownload.isMoodleFileUrl = function(url) {
-		return _.str.startsWith(url, "https://moodle2.uni-potsdam.de/pluginfile.php/") || _.str.startsWith(url, "https://moodle2.uni-potsdam.de/webservice/pluginfile.php/");
+		return _str.startsWith(url, "https://moodle2.uni-potsdam.de/pluginfile.php/") || _str.startsWith(url, "https://moodle2.uni-potsdam.de/webservice/pluginfile.php/");
 	};
 	
 	return MoodleDownload;

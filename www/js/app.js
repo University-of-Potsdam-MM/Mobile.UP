@@ -6,7 +6,7 @@ define([
 	'underscore',
 	'backbone',
 	'router',
-	'underscore-string',
+	'underscore.string',
 	'utils',
 	'fastclick',
 	'history',
@@ -57,7 +57,7 @@ define([
 									"https://api.uni-potsdam.de/endpoints/staticContent"];
 					var isStartOf = function(url) {
 						return function(authUrl) {
-							return _.str.startsWith(url, authUrl);
+							return _str.startsWith(url, authUrl);
 						};
 					};
 

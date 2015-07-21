@@ -14,7 +14,7 @@ require.config({
     	'jquerymobile': 'vendor/jquery.mobile',
         'datebox': 'lib/jqm-datebox',
     	'underscore': 'vendor/underscore-min',
-        'underscore-string': 'vendor/underscore.string.min',
+        'underscore.string': 'vendor/underscore.string.min',
     	'backbone': 'vendor/backbone-min',
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',

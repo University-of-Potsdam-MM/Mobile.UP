@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore-string'], function($, _, Backbone, utils, campusmenu, timeselection){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore.string'], function($, _, Backbone, utils, campusmenu, timeselection, _str){
 
 	$(document).on("pageinit", "#room", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
@@ -88,7 +88,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			if (building) {
 				request = request + "&building=%s";
 			}
-			return _.str.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
+			return _str.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
 		}
 	});
 
@@ -143,7 +143,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			endTime = endTime.toISOString();
 
 			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-			return _.str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+			return _str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
 		},
 
 		getSortedReservations: function() {
