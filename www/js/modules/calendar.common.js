@@ -88,9 +88,9 @@ define([
 		},
 
 		filterByDay: function(day) {
-			var isBefore = function(a, b) {
-				if (a)
-					return a >= b;
+			var isBefore = function(ending, today) {
+				if (ending)
+					return today.isBefore(ending, "day") || today.isSame(ending, "day");
 				else
 					return true;
 			};
