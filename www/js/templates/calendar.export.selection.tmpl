@@ -7,7 +7,7 @@
 	<% if (!calendars.isEmpty()) { %>
 	<ul data-role="listview" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
 	<% calendars.each(function(calendar) { %>
-		<li><a href="#<%= calendar.attributes.id %>" class="calendar-link"><%= calendar.attributes.name %></a></li>
+		<li data-icon="arrow-darkblue"><a href="#<%= calendar.attributes.id %>" class="calendar-link"><%= calendar.attributes.name %></a></li>
 	<% }) %>
 	</ul>
 	<% } %>

@@ -2564,6 +2564,22 @@ p.event-description {
 	word-wrap: break-word;      /* IE */
 }
 
+/*calendar export*/
+#calendarexport p {
+	    color: #fff;
+    font-size: .9em;
+    margin-bottom: 1em;
+   
+    padding: .3em;
+    color: #014260;
+    font-family: georgia,serif;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1em;
+}
+#calendarexport p.finished {
+	font-weight:bold;
+}
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;
