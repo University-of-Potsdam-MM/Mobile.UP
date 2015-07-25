@@ -120,26 +120,23 @@ define([
 	var Calendars = Backbone.Collection.extend({
 		model: Calendar,
 
-		initialize: function() {
-			_.bindAll(this, "success", "error");
-		},
+		fetch: function(options) {
+			var success = _.bind(function(response) {
+				this.set(response);
+				if (options.success) options.success.call(this, this);
+				this.trigger("sync");
+			}, this);
 
-		error: function() {
-			this.trigger("error");
-		},
+			var error = _.bind(function() {
+				if (options.error) options.error(this);
+				this.trigger("error");
+			}, this);
 
-		success: function(response) {
-			this.set(response);
-			this.trigger("sync");
-		},
-
-		fetch: function() {
 			if (window.cordova) {
-				window.plugins.calendar.listCalendars(this.success, this.error);
+				window.plugins.calendar.listCalendars(success, error);
 			} else {
 				alert("Der Kalenderexport funktioniert nur in der App.");
-				//this.error();
-				this.success([{"id": "1", "name": "Testeintrage"}]);
+				success([{"id": "1", "name": "Testeintrage"}]);
 			}
 		}
 	});
@@ -152,32 +149,26 @@ define([
 		initialize: function() {
 			this.calendars = new Calendars();
 			this.courses = new calendar.CourseList();
-			var coursesAdapter = new utils.FullySyncedAdapter(undefined, {subject: this.courses});
-
-			this.listenTo(coursesAdapter, "fullysynced", this.coursesSynced);
-			this.listenTo(this.calendars, "sync", this.calendarsSynced);
-			this.listenTo(this.calendars, "error", this.calendarsError);
-		},
-
-		coursesSynced: function() {
-			if (this.courses.isEmpty()) {
-				this.trigger("error");
-			} else {
-				this.calendars.fetch();
-			}
-		},
-
-		calendarsSynced: function() {
-			this.trigger("sync");
-		},
-
-		calendarsError: function() {
-			this.trigger("error");
 		},
 
 		fetch: function() {
 			this.trigger("request");
-			this.courses.fetch(utils.cacheDefaults());
+
+			var fetchCalendars = function() {
+				if (this.courses.isEmpty()) {
+					this.trigger("error");
+				}
+
+				this.calendars.fetch({
+					success: _.bind(this.trigger, this, "sync"),
+					error: _.bind(this.trigger, this, "error")
+				});
+			};
+
+			this.courses.fetch(utils.cacheDefaults({
+				success: _.bind(fetchCalendars, this),
+				error: _.bind(this.trigger, this, "error")
+			}));
 		}
 	});
 
