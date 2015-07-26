@@ -11,53 +11,6 @@ define([
 	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session, calendar, URI){
 
-	var Calendar = Backbone.Model.extend({
-
-		initialize: function() {
-			this.entries = new CalendarEntries();
-		},
-
-		importCourses: function(courses) {
-			var options = {};
-			if (window.cordova) {
-				options = window.plugins.calendar.getCalendarOptions();
-			}
-
-			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
-			_.each(currentCourses, function(course) {
-				var writeToCalendar = _.bind(function(entry) {
-					this.entries.add(entry);
-				}, this);
-
-				_.each(course.getDates(), function(date) {
-					var entry = {};
-					entry.title = course.get("name");
-					entry.location = date.get("room");
-
-					entry.options = _.clone(options);
-					entry.options.calendarName = this.get("name");
-					entry.options.calendarId = parseInt(this.get("id"));
-					entry.options.url = this._cleanPulsLink(course.get("weblink"));
-					// Delete reminder
-					entry.options.firstReminderMinutes = 0;
-
-					date.exportToCalendar(entry, course, writeToCalendar);
-				}, this);
-			}, this);
-		},
-
-		_cleanPulsLink: function(pulsLink) {
-			var link = new URI(_.unescape(pulsLink));
-			var filename = link.filename();
-			var sessionIndex = filename.indexOf(";")
-			if (sessionIndex >= 0) {
-				filename = filename.substring(0, sessionIndex);
-			}
-			link.filename(filename);
-			return link.toString();
-		}
-	});
-
 	var CalendarEntry = Backbone.Model.extend({
 
 		initialize: function() {
@@ -85,6 +38,17 @@ define([
 		}
 	});
 
+	var Calendar = Backbone.Model.extend({
+
+		initialize: function() {
+			this.entries = new CalendarEntries();
+		},
+
+		importCourses: function(courses) {
+			this.entries.set(courses, {parse: true});
+		}
+	});
+
 	var CalendarEntries = Backbone.Collection.extend({
 		model: CalendarEntry,
 
@@ -96,6 +60,50 @@ define([
 			this.listenTo(this, "remove", function(model) {
 				this.stopListening(model);
 			});
+		},
+
+		parse: function(courses) {
+			var result = [];
+
+			var options = {};
+			if (window.cordova) {
+				options = window.plugins.calendar.getCalendarOptions();
+			}
+
+			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
+			_.each(currentCourses, function(course) {
+				var writeToCalendar = function(entry) {
+					result.push(entry);
+				};
+
+				_.each(course.getDates(), function(date) {
+					var entry = {};
+					entry.title = course.get("name");
+					entry.location = date.get("room");
+
+					entry.options = _.clone(options);
+					entry.options.calendarName = this.get("name");
+					entry.options.calendarId = parseInt(this.get("id"));
+					entry.options.url = this._cleanPulsLink(course.get("weblink"));
+					// Delete reminder
+					entry.options.firstReminderMinutes = 0;
+
+					date.exportToCalendar(entry, course, writeToCalendar);
+				}, this);
+			}, this);
+
+			return result;
+		},
+
+		_cleanPulsLink: function(pulsLink) {
+			var link = new URI(_.unescape(pulsLink));
+			var filename = link.filename();
+			var sessionIndex = filename.indexOf(";")
+			if (sessionIndex >= 0) {
+				filename = filename.substring(0, sessionIndex);
+			}
+			link.filename(filename);
+			return link.toString();
 		},
 
 		_saveNext: function() {
