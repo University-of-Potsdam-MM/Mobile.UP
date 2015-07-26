@@ -45,7 +45,11 @@ define([
 		},
 
 		importCourses: function(courses) {
-			this.entries.set(courses, {parse: true});
+			var data = {courses: courses};
+			data.id = this.get("id");
+			data.name = this.get("name");
+
+			this.entries.set(data, {parse: true});
 		}
 	});
 
@@ -62,7 +66,7 @@ define([
 			});
 		},
 
-		parse: function(courses) {
+		parse: function(response) {
 			var result = [];
 
 			var options = {};
@@ -70,7 +74,7 @@ define([
 				options = window.plugins.calendar.getCalendarOptions();
 			}
 
-			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
+			var currentCourses = response.courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
 					result.push(entry);
@@ -82,8 +86,8 @@ define([
 					entry.location = date.get("room");
 
 					entry.options = _.clone(options);
-					entry.options.calendarName = this.get("name");
-					entry.options.calendarId = parseInt(this.get("id"));
+					entry.options.calendarName = response.name;
+					entry.options.calendarId = parseInt(response.id);
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
 					entry.options.firstReminderMinutes = 0;
