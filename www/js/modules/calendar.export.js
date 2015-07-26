@@ -13,7 +13,11 @@ define([
 
 	var Calendar = Backbone.Model.extend({
 
-		importCourses: function(courses, calendarEntries) {
+		initialize: function() {
+			this.entries = new CalendarEntries();
+		},
+
+		importCourses: function(courses) {
 			var options = {};
 			if (window.cordova) {
 				options = window.plugins.calendar.getCalendarOptions();
@@ -21,9 +25,9 @@ define([
 
 			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
-				var writeToCalendar = function(entry) {
-					calendarEntries.add(entry);
-				};
+				var writeToCalendar = _.bind(function(entry) {
+					this.entries.add(entry);
+				}, this);
 
 				_.each(course.getDates(), function(date) {
 					var entry = {};
@@ -213,11 +217,10 @@ define([
 			var calendarId = $(event.target).attr("href").slice(1);
 			var calendar = this.model.calendars.find(function(calendar) { return calendar.get("id") === calendarId });
 			if (calendar) {
-				var calendarEntries = new CalendarEntries();
-				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendarEntries}).render();
+				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendar.entries}).render();
 
-				calendar.importCourses(this.model.courses, calendarEntries);
-				calendarEntries.save();
+				calendar.importCourses(this.model.courses);
+				calendar.entries.save();
 			}
 		},
 
