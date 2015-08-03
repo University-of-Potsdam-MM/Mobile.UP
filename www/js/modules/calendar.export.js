@@ -13,28 +13,26 @@ define([
 
 	var CalendarEntry = Backbone.Model.extend({
 
-		initialize: function() {
-			_.bindAll(this, "_success", "_error");
-		},
+		save: function(options) {
+			var success = _.bind(function() {
+				this.set("saveStatus", "success");
+				if (options.success) options.success.call(this, this);
+				this.trigger("sync");
+			}, this);
 
-		save: function() {
+			var error = _.bind(function() {
+				this.set("saveStatus", "error");
+				if (options.error) options.error.call(this, this);
+				this.trigger("error");
+			}, this);
+
 			var entry = this.attributes;
 			if (window.cordova) {
-				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
+				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, success, error);
 			} else {
 				console.log(entry);
-				this._error();
+				error();
 			}
-		},
-
-		_success: function() {
-			this.set("saveStatus", "success");
-			this.trigger("sync");
-		},
-
-		_error: function() {
-			this.set("saveStatus", "error");
-			this.trigger("error");
 		}
 	});
 
@@ -55,16 +53,6 @@ define([
 
 	var CalendarEntries = Backbone.Collection.extend({
 		model: CalendarEntry,
-
-		initialize: function() {
-			this.listenTo(this, "add", function(model) {
-				this.listenTo(model, "sync", this._saveNext);
-				this.listenTo(model, "error", this._saveNext);
-			});
-			this.listenTo(this, "remove", function(model) {
-				this.stopListening(model);
-			});
-		},
 
 		parse: function(response) {
 			var result = [];
@@ -110,16 +98,6 @@ define([
 			return link.toString();
 		},
 
-		_saveNext: function() {
-			this.trigger("saveStatusUpdated");
-
-			if (this.size() > this.saveIndex) {
-				var model = this.at(this.saveIndex);
-				this.saveIndex++;
-				_.defer(function() { model.save(); });
-			}
-		},
-
 		getSaveStatus: function() {
 			var status = this.countBy(function(model) { return model.get("saveStatus"); });
 			var result = _.defaults(status, { success: 0, error: 0, all: this.size() });
@@ -128,8 +106,18 @@ define([
 		},
 
 		save: function() {
+			var saveNext = _.bind(function() {
+				this.trigger("saveStatusUpdated");
+
+				if (this.size() > this.saveIndex) {
+					var model = this.at(this.saveIndex);
+					this.saveIndex++;
+					_.defer(function() { model.save({success: saveNext, error: saveNext}); });
+				}
+			}, this);
+
 			this.saveIndex = 0;
-			this._saveNext();
+			saveNext();
 		}
 	});
 
