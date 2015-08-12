@@ -7,4 +7,9 @@
 		<b>Fehlerbeschreibung:</b> <%= error.msg %><br />
 		</p>
 	<% } %>
+	<% if (hasReload) { %>
+	<p>
+		<input class="error-reload" type="button" value="Nochmal versuchen">
+	</p>
+	<% } %>
 </div>

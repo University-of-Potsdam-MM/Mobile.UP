@@ -126,14 +126,26 @@ define([
 	 var ErrorView = Backbone.View.extend({
 		model: Error,
 
+		events: {
+			"click .error-reload": "reload"
+		},
+
 		initialize: function(options){
+			this.reloadCallback = options.reloadCallback;
+
 			error = new Error({msg: options.msg, module: options.module, error: options.err})
 			this.template = rendertmpl('error');
 			this.render();
 		},
 
+		reload: function(ev) {
+			ev.preventDefault();
+			this.undelegateEvents();
+			this.reloadCallback();
+		},
+
 		render: function(){
-			this.$el.html(this.template({model: this.model}));
+			this.$el.html(this.template({model: this.model, hasReload: this.reloadCallback}));
 			this.$el.trigger("create");
 			return this;
 		}
