@@ -42,7 +42,7 @@ define([
       "externalId": ""
     },
 
-    url: 'https://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+    url: endpoint(),
 
     initialize: function(){
       this.set('journeys', new Journeys);
@@ -123,7 +123,7 @@ define([
   		"moment": ""
   	},
 
-  	url: 'https://api.uni-potsdam.de/endpoints/transportAPI/1.0/',
+  	url: endpoint(),
 
 
   	parse: function(){
