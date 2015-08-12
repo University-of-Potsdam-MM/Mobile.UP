@@ -131,21 +131,27 @@ define([
 		},
 
 		initialize: function(options){
-			this.reloadCallback = options.reloadCallback;
+			this.hasReload = options.hasReload;
 
 			error = new Error({msg: options.msg, module: options.module, error: options.err})
 			this.template = rendertmpl('error');
 			this.render();
 		},
 
+		empty: function() {
+			this.$el.empty();
+			this.stopListening();
+			this.undelegateEvents();
+			return this;
+		},
+
 		reload: function(ev) {
 			ev.preventDefault();
-			this.undelegateEvents();
-			this.reloadCallback();
+			this.trigger("reload");
 		},
 
 		render: function(){
-			this.$el.html(this.template({model: this.model, hasReload: this.reloadCallback}));
+			this.$el.html(this.template({model: this.model, hasReload: this.hasReload}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -201,6 +207,12 @@ define([
 				this.listenTo(subject, "sync", this.spinnerOff);
 				this.listenTo(subject, "error", this.spinnerOff);
 			}
+		},
+
+		empty: function() {
+			this.$el.empty();
+			this.stopListening();
+			return this;
 		},
 
 		findSubject: function() {
