@@ -248,7 +248,7 @@ define([
 		resetCoursesForDay: function() {
 			if (this.courseList.length == 0) {
 				this.reset();
-				this.trigger("timeslotsReady");
+				this.trigger("coursesEmpty");
 			} else {
 				this.coursesForDay.reset(this.courseList.filterByDay(this.day));
 			}
