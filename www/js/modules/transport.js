@@ -1,5 +1,7 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util'],
-  function($, _, Backbone, utils, transport){
+define(['jquery', 'underscore', 'backbone', 'utils'],
+  function($, _, Backbone, utils){
+
+  var view_state = {campus: 'G-see'};
 
   /**
    *  Backbone View - NavigationView
@@ -24,8 +26,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util
       this.trigger('select', buttonName);
     }
   });
-
-  var view_state = {campus: 'G-see'};
 
   /**
    *  Backbone View - TransportListView
@@ -84,7 +84,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util
     attributes: {"id": "transport"},
 
     initialize: function(){
-      this.collection = new transport.TransportStations();
+      this.collection = new TransportStations();
       this.template = utils.rendertmpl('transport');
       this.listenTo(this, "prepareDepartures", this.prepareDepartures);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
@@ -92,7 +92,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util
     },
 
     renderTransportList: function(){
-
       transportViewTransportList = new TransportListView({
         el: this.$el.find('#search-results'),
         stations: this.collection,
@@ -117,11 +116,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util
     render: function(){
       this.$el.html(this.template({}));
 
-      transportViewNavbar = new NavigationView({
+      fromStation = new NavigationView({
         el: this.$el.find("#from-station-navbar")
       });
       var that = this;
-      transportViewNavbar.on('select', function(buttonName){
+      fromStation.on('select', function(buttonName){
         view_state = {campus: buttonName};
         first_departure = that.collection.where(view_state)[0];
         transportViewTransportList.updateContent(first_departure.get('departures'), first_departure.get('name'), first_departure.get('stationTime'));
@@ -132,8 +131,113 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util
       this.trigger("prepareDepartures");
       return this;
     }
-
   });
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  function endpoint(){
+      return 'https://esb.soft.cs.uni-potsdam.de:8243/services/transportTestAPI/';
+  }
+
+  /**
+   *  Departure
+   */
+  var Departure = Backbone.Model.extend({
+    defaults:{ "time": ""}
+  });
+
+  var Departures = Backbone.Collection.extend({
+    model: Departure
+  });
+
+
+  /**
+   *  TransportStation
+   */
+  var TransportStation = Backbone.Model.extend({
+    defaults:{
+      "campus": "",
+      "name": "",
+      "externalId": ""
+    },
+
+    url: endpoint()+"departureBoard",
+
+    initialize: function(){
+      this.set('departures', new Departures);
+    },
+
+    getMaxDepartingTime: function(){
+      var times= _.map(this.get('departures').pluck('time'), function(time){return moment(time,'HH:mm');})
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var max = _.last(sortedTimes);
+      return max;
+
+    },
+
+    getMinDepartingTime: function(){
+      var times= _.map(this.get('departures').pluck('time'), function(time){return moment(time,'HH:mm');})
+      times.push(moment()); // add now()
+      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
+      var min = _.first(sortedTimes);
+      return min;
+    },
+
+    parse: function(data, options){
+      this.get('departures').add(data.Departure);
+      this.set('stationTime', this.getMinDepartingTime().format('HH:mm') + " - " + this.getMaxDepartingTime().format('HH:mm'));
+      return this;
+    }
+  });
+
+  /**
+   *  Backbone Collection - TransportStations
+   *  holding all stations and delegates fetch to station models
+   */
+  var TransportStations = Backbone.Collection.extend({
+
+      model: TransportStation,
+
+      initialize: function(){
+        this.add(new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003"}));
+        this.add(new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010"}));
+        this.add(new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132"}));
+      },
+
+      fetch: function(){
+        this.trigger("request");
+        var that = this;
+
+        var successORerror = _.after(3, function(){
+          that.trigger("sync");
+        });
+
+        _.each(this.models, function(model){
+          // get the time of last known departure
+          var lastDepartingTime = model.getMaxDepartingTime().add(1,'minute');
+          var timeString = lastDepartingTime.format('HH:mm:ss');
+
+          model.fetch({ data: abgehendeVerbindungen(model.get('externalId'), timeString),
+                        dataType: 'json',
+                        success: function(){ successORerror(); },
+                        error: function(error, a, b){
+                          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
+                          successORerror();
+                        }
+                      });
+        });
+      }
+  });
+
+  // Suche abgehende Verbindungen
+  function abgehendeVerbindungen(externalId, timeString){
+    return { accessId: '41f30658-b439-4529-9922-beb13567932c', //TODO: HIDE?!?!
+          format: 'json', 
+          id: externalId,
+          time: timeString};
+  }
+
 
   return TransportPageView;
 

@@ -7,103 +7,8 @@ define([
 ], function($, _, Backbone, utils, moment){
 
   function endpoint(){
-      // return 'http://demo.hafas.de/openapi/vbb-proxy/';
       return 'https://esb.soft.cs.uni-potsdam.de:8243/services/transportTestAPI/';
   }
-
-///////////////////////////////////////////////////////////////////// --> Nächste Abfahrten:
-  var Departure = Backbone.Model.extend({
-    defaults:{ "time": ""}
-  });
-
-  var Departures = Backbone.Collection.extend({
-    model: Departure
-  });
-
-  var TransportStation = Backbone.Model.extend({
-    defaults:{
-      "campus": "",
-      "name": "",
-      "externalId": ""
-    },
-
-    url: endpoint()+"departureBoard",
-
-    initialize: function(){
-      this.set('departures', new Departures);
-    },
-
-    getMaxDepartingTime: function(){
-      var times= _.map(this.get('departures').pluck('time'), function(time){return moment(time,'HH:mm');})
-      times.push(moment()); // add now()
-      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
-      var max = _.last(sortedTimes);
-      return max;
-
-    },
-
-    getMinDepartingTime: function(){
-      var times= _.map(this.get('departures').pluck('time'), function(time){return moment(time,'HH:mm');})
-      times.push(moment()); // add now()
-      var sortedTimes = _.sortBy(times, function(moment){return moment.valueOf()});
-      var min = _.first(sortedTimes);
-      return min;
-    },
-
-    parse: function(data, options){
-      this.get('departures').add(data.Departure);
-      this.set('stationTime', this.getMinDepartingTime().format('HH:mm') + " - " + this.getMaxDepartingTime().format('HH:mm'));
-      return this;
-    }
-  });
-
-  /**
-   *  Backbone Collection - TransportStations
-   *  holding all stations and delegates fetch to station models
-   */
-  var TransportStations = Backbone.Collection.extend({
-
-      model: TransportStation,
-
-      initialize: function(){
-        this.add(new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003"}));
-        this.add(new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010"}));
-        this.add(new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132"}));
-      },
-
-      fetch: function(){
-        this.trigger("request");
-        var that = this;
-
-        var successORerror = _.after(3, function(){
-          that.trigger("sync");
-        });
-
-        _.each(this.models, function(model){
-          // get the time of last known departure
-          var lastDepartingTime = model.getMaxDepartingTime().add(1,'minute');
-          var timeString = lastDepartingTime.format('HH:mm:ss');
-
-          model.fetch({ data: abgehendeVerbindungen(model.get('externalId'), timeString),
-                        dataType: 'json',
-                        success: function(){ successORerror(); },
-                        error: function(error, a, b){
-                          var errorPage = new utils.ErrorView({el: '#search-results', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport'});
-                          successORerror();
-                        }
-                      });
-        });
-      }
-  });
-
-  // Suche abgehende Verbindungen
-  function abgehendeVerbindungen(externalId, timeString){
-    return { accessId: '41f30658-b439-4529-9922-beb13567932c', //TODO: HIDE?!?!
-          format: 'json', 
-          id: externalId,
-          time: timeString};
-  }
-
 
 ///////////////////////////////////////////////////////////////////// --> Fahrt Planen:
   var Connection = new Backbone.Model.extend({
@@ -113,9 +18,9 @@ define([
       "time": ""}
   });
 
-  // var Connections = new Backbone.Collection.extend({
-  //   model: Connection;
-  // });
+  var Connections = new Backbone.Collection.extend({
+    model: Connection
+  });
 
 
   /**
@@ -317,7 +222,6 @@ define([
 
 
   return {
-    TransportStations: TransportStations,
     getVerbindung: getVerbindung
   };
 
