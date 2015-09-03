@@ -158,7 +158,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'],
     defaults:{
       "campus": "",
       "name": "",
-      "externalId": ""
+      "externalId": "",
+      "stationTime": "",
+      "departures": ""
     },
 
     url: endpoint()+"departureBoard",
