@@ -1,8 +1,8 @@
 <div data-role="collapsible">
 
   <h3 class="complex_transport">
-    <span>ab <%= trip.get('depTime').format('HH:mm') %></span> <%= trip.get('depStation') %> <br />
-    <span>an <%= trip.get('arrTime').format('HH:mm') %></span> <%= trip.get('arrStation') %>
+    <span>ab <%= connection.get('depTime').format('HH:mm') %></span> <%= connection.get('depStation') %> <br />
+    <span>an <%= connection.get('arrTime').format('HH:mm') %></span> <%= connection.get('arrStation') %>
   </h3>
 
   <table data-role="table" data-mode="reflow" class="ui-responsive table-stripe ">
@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(trip.get('sections'), function(section, i) { %>
+      <% _.each(connection.get('sections'), function(section, i) { %>
 
         <% if (i > 0) { %>
          <tr>

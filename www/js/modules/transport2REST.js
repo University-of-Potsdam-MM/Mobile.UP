@@ -1,6 +1,9 @@
 define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util', 'moment'], 
   function($, _, Backbone, utils, transport, moment){
 
+  // var view_state_from = {campus: 'G-see'};
+  // var view_state_to = {campus: 'Palais'};
+
   /**
    * Backbone View - NavigationView
    */
@@ -30,7 +33,6 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
   var TransportListView = Backbone.View.extend({
 
     events: {
-      "click #searchButton" : "searchTrips",
       "click #earlierButton": "searchEarlier",
       "click #laterButton"  : "searchLater"
     },
@@ -51,8 +53,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       _.bindAll(this, 'addOne');
     },
 
-    addOne: function(trip) {
-      this.$ul.append(this.template({trip: trip}));
+    addOne: function(connection) {
+      this.$ul.append(this.template({connection: connection}));
     },
 
     searchTrips: function(ev){
@@ -86,14 +88,35 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     attributes: {"id": "transport2"},
 
     events: {
-      'click .ui-input-datebox a': 'datetimeBox'
+      'click #transportationDate': 'setDate',
+      'click #transportationTime': 'setTime',
+      'click #searchButton': 'searchTrips'
     },
 
     initialize: function(){
       this.model = new CampusTrip();
       this.template = utils.rendertmpl('transport2');
-      this.listenTo(this, "prepareTrips", this.prepareTrips);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
+    },
+    
+    setDate: function(){
+      this.model.set('date', this.$el.find('#transportationDate').val());
+    },
+
+    setTime: function(){
+      this.model.set('time', this.$el.find('#transportationTime').val());
+    },
+
+    searchTrips: function(){
+      this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+
+      // check for existing trips otherwise fetch
+      if (this.model.get('connections').length == 0){
+        this.model.setURL();
+        this.model.fetch();
+      }else{
+        this.trigger("renderTransportList");
+      }
     },
 
     renderTransportList: function(){
@@ -105,43 +128,21 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       transportViewTransportList.render();
     },
 
-    datetimeBox: function(ev){
-      ev.preventDefault();
-    },
-
-    prepareTrips: function(){
-      this.LoadingView = new utils.LoadingView({collection: this.collection.where(view_state_from)[0], el: this.$("#loadingSpinner")});
-
-      // check for existing trips otherwise fetch
-      if (this.collection.where(view_state_from)[0].get('trips').length == 0){
-        this.collection.fetch();
-      }else{
-        this.trigger("renderTransportList");
-      }
-    },
-
     render: function(){
       this.$el.html(this.template({}));
       var that = this;
 
       fromStation = new NavigationView({el: this.$el.find("#fromStation2")});
       fromStation.on('select', function(buttonName){
-        view_state_from = {campus: buttonName};
-        console.log(view_state_from);
-        first_trip = that.collection.where(view_state_from)[0];
-        transportViewTransportList.updateContent(first_trip.get('trips'), first_trip.get('name'), first_trip.get('stationTime'));
-        transportViewTransportList.render();
+        this.model.setOriginId(buttonName);
       });
 
       toStation = new NavigationView({el: this.$el.find("#toStation2")});
       toStation.on('select', function(buttonName){
-        view_state_to = {campus: buttonName};
-        console.log(view_state_to);
-
+        this.model.setDestId(buttonName);
       });
 
       this.$el.trigger("create");
-      this.trigger('prepareTrips');
       return this;
     }
   });
@@ -149,3 +150,64 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
   return Transport2RESTPageView;
 
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  function endpoint(){
+      return 'https://esb.soft.cs.uni-potsdam.de:8243/services/transportTestAPI/';
+  }
+
+  var Connection = Backbone.Model.extend({
+  });
+
+  // "Trip": [...]
+  var Connections = Backbone.Collection.extend({
+    model: Connection
+  })
+
+  // VBB-Request
+  var CampusTrip = Backbone.Model.extend({
+    defaults: {
+      "originId": "",
+      "destId": "",
+      "date": moment().format('YYYY-MM-DD'),
+      "time": moment().format('HH:MM'),
+      "connections": ""
+    },
+
+    url: endpoint()+'trip',
+
+    initialize: function(){
+      this.set({"originId": this.getOriginId(),
+                "destId": this.getDestId(),
+                "connections": new Connections});
+    },
+
+    setOriginId: function(campus){
+      if(campus == 'G-see') var id = "009230003";
+      else if (campus == 'Golm') var id = "009220010";
+      else var id = "009230132";
+      this.set('originId', id);
+    },
+
+    setDestId: function(campus){
+      if(campus == 'G-see') var id = "009230003";
+      else if (campus == 'Golm') var id = "009220010";
+      else var id = "009230132";
+      this.set('destId', id);
+    },
+
+    setURL: function(){
+      this.url = endpoint()+'trip?format=json&accessId=41f30658-b439-4529-9922-beb13567932c&originId='+this.get('originId')+'&destId='+this.get('destId')+'&date'+this.get('date')+'&time='+this.get('time');
+    },
+
+    parse: function(data, options){
+      this.get('connections').add(data.Trip);
+      return this;
+    };
+
+    // fetch: function(){
+    //   this.trigger("request");
+    //   var that = this;
+
+    // };
+  });
