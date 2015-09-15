@@ -47,7 +47,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       this.collection.on("reset", this.render, this);
       this.collection.on("add", this.addOne, this);
 
-      this.template = utils.rendertmpl('complex_transport_listitem');
+      this.template = utils.rendertmpl('transport2_listitem');
 
       this.$ul = this.$el.find('transport_rides');
       _.bindAll(this, 'addOne');
@@ -128,6 +128,14 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       transportViewTransportList.render();
     },
 
+    toggleScrollButtons: function(){
+      if (this.model.get('connections').length == 0){
+        this.$el.find('#result .scrollbutton').hide();
+      }else{
+        this.$el.find('#result .scrollbutton').show();
+      }
+    },
+
     render: function(){
       this.$el.html(this.template({}));
       var that = this;
@@ -141,6 +149,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       toStation.on('select', function(buttonName){
         this.model.setDestId(buttonName);
       });
+
+      this.toggleScrollButtons();
 
       this.$el.trigger("create");
       return this;
@@ -167,18 +177,20 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
   // VBB-Request
   var CampusTrip = Backbone.Model.extend({
     defaults: {
-      "originId": "",
-      "destId": "",
-      "date": moment().format('YYYY-MM-DD'),
-      "time": moment().format('HH:MM'),
-      "connections": ""
+      "originId": "009230003",
+      "destId": "009230132"//,
+      // "date": "",
+      // "time": "",
+      // "connections": ""
     },
 
     url: endpoint()+'trip',
 
     initialize: function(){
-      this.set({"originId": this.getOriginId(),
-                "destId": this.getDestId(),
+      this.set({//"originId": this.getOriginId(),
+                //"destId": this.getDestId(),
+                "date": moment().format('YYYY-MM-DD'),
+                "time": moment().format('HH:MM'),
                 "connections": new Connections});
     },
 
@@ -201,9 +213,11 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     },
 
     parse: function(data, options){
+      console.log(data.Trip);
       this.get('connections').add(data.Trip);
+      console.log(this.get("connections"));
       return this;
-    };
+    }
 
     // fetch: function(){
     //   this.trigger("request");
