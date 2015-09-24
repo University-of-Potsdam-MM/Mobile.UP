@@ -1,8 +1,9 @@
 define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.util', 'moment'], 
   function($, _, Backbone, utils, transport, moment){
 
-  // var view_state_from = {campus: 'G-see'};
-  // var view_state_to = {campus: 'Palais'};
+  // window.transport2RESTDateBoxEvent = function(){
+
+  // };
 
   /**
    * Backbone View - NavigationView
@@ -112,6 +113,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     searchTrips: function(){
       this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
+      this.model.get('connections').reset(null);
       this.model.buildURL();
       this.model.fetch();
     },
@@ -136,17 +138,22 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
 
     render: function(){
       this.$el.html(this.template({}));
-      var that = this;
 
       fromStation = new NavigationView({el: this.$el.find("#fromStation2")});
-      fromStation.on('select', function(buttonName){
-        this.model.setOriginId(buttonName);
-      });
-
       toStation = new NavigationView({el: this.$el.find("#toStation2")});
-      toStation.on('select', function(buttonName){
-        this.model.setDestId(buttonName);
-      });
+
+      fromStation.on('select', _.bind(function(buttonName){
+        this.model.setOrigin(buttonName);
+        toStation.activeButton(this.model.get('destCampus'));
+      }, this));
+
+      toStation.on('select', _.bind(function(buttonName){
+        this.model.setDest(buttonName);
+        fromStation.activeButton(this.model.get('originCampus'));
+      }, this));
+
+      fromStation.activeButton(this.model.get('originCampus'));
+      toStation.activeButton(this.model.get('destCampus'));
 
       this.$el.trigger("create");
       this.toggleListView();
@@ -187,9 +194,18 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
 
   // VBB-Request
   var CampusTrip = Backbone.Model.extend({
+
+    campus: {
+      "G-see": "009230003",
+      "Golm": "009220010",
+      "Palais": "009230132"
+    },
+
     defaults: {
       "originId": "009230003",
-      "destId": "009230132"
+      "originCampus": "G-see",
+      "destId": "009230132",
+      "destCampus": "Palais"
     },
 
     url: endpoint()+'trip',
@@ -200,18 +216,22 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       this.set('time', moment().format('HH:MM'));
     },
 
-    setOriginId: function(campus){
-      if(campus == 'G-see') var id = "009230003";
-      else if (campus == 'Golm') var id = "009220010";
-      else var id = "009230132";
-      this.set('originId', id);
+    setOrigin: function(campus){
+      if(this.get('destCampus') == campus){
+        this.set('destId', this.get('originId'));
+        this.set('destCampus', this.get('originCampus'));
+      }
+      this.set('originId', this.campus[campus]);
+      this.set('originCampus', campus);
     },
 
-    setDestId: function(campus){
-      if(campus == 'G-see') var id = "009230003";
-      else if (campus == 'Golm') var id = "009220010";
-      else var id = "009230132";
-      this.set('destId', id);
+    setDest: function(campus){
+      if(this.get('originCampus') == campus){
+        this.set('originId', this.get('destId'));
+        this.set('originCampus', this.get('destCampus'));
+      }
+      this.set('destId', this.campus[campus]);
+      this.set('destCampus', campus);
     },
 
     buildURL: function(){
@@ -220,8 +240,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
 
     parse: function(data, options){
       var tripResponse = data;
-      var that = this;
-      _.each(tripResponse.Trip, function(con){
+      _.each(tripResponse.Trip, _.bind(function(con){
         var sections = new Sections();
         _.each(con.LegList.Leg, function(sec){
           var depTime = moment(sec.Origin.date + ' ' + sec.Origin.time);
@@ -236,8 +255,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
           sections.add(section);
         });
         var connection = new Connection({sections: sections});
-        that.get('connections').add(connection);
-      });
+        this.get('connections').add(connection);
+      }, this));
       this.trigger('change');
       return this;
     }
