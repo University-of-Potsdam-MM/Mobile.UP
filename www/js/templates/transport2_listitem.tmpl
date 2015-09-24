@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <% _.each(connection.get('sections'), function(section, i) { %>
+      <% _.each(connection.get('sections').models, function(section, i) { %>
 
         <% if (i > 0) { %>
          <tr>
@@ -23,15 +23,15 @@
         <% } %>
         </tr>
         <tr>
-          <td>ab <%= section.depTime.format('HH:mm') %></td>
-          <td><%= section.depStation %></td>
-          <td><%= section.depPlatform %></td>
-          <td><%= section.journey.name %></td>
+          <td>ab <%= section.get('depTime').format('HH:mm') %></td>
+          <td><%= section.get('depStation') %></td>
+          <td><%= section.get('depPlatform') %></td>
+          <td><%= section.get('name') %></td>
         </tr>
         <tr>
-          <td>an <%= section.arrTime.format('HH:mm') %></td>
-          <td><%= section.arrStation %></td>
-          <td><%= section.arrPlatform %></td>
+          <td>an <%= section.get('arrTime').format('HH:mm') %></td>
+          <td><%= section.get('arrStation') %></td>
+          <td><%= section.get('arrPlatform') %></td>
           <td></td>
         </tr>
 

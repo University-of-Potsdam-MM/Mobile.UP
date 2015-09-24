@@ -32,6 +32,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
    */
   var TransportListView = Backbone.View.extend({
 
+    anchor: '#transport_rides',
+
     events: {
       "click #earlierButton": "searchEarlier",
       "click #laterButton"  : "searchLater"
@@ -39,22 +41,20 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
 
     initialize: function(options) {
       this.trip = options.campusTrip;
-      // Forget the old collection
-      this.collection.off(null, null, this);
-      this.collection = options.campusTrip.connections;
+      this.connections = this.trip.get('connections');
 
       // Listen to changes in the new collection
-      this.collection.on("reset", this.render, this);
-      this.collection.on("add", this.addOne, this);
+      this.connections.on("reset", this.render, this);
+      this.connections.on("add", this.addOne, this);
 
       this.template = utils.rendertmpl('transport2_listitem');
 
-      this.$ul = this.$el.find('transport_rides');
+      this.el = $(this.anchor);
       _.bindAll(this, 'addOne');
     },
 
     addOne: function(connection) {
-      this.$ul.append(this.template({connection: connection}));
+      $(this.el).append(this.template({connection: connection}));
     },
 
     searchTrips: function(ev){
@@ -73,8 +73,9 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     },
 
     render: function() {
-      this.$ul.empty();
-      this.collection.each(this.addOne);
+      $(this.el).empty();
+      this.connections.each(this.addOne);
+      $(this.el).trigger('create');
       return this;
     }
   });
@@ -96,11 +97,12 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     initialize: function(){
       this.model = new CampusTrip();
       this.template = utils.rendertmpl('transport2');
-      this.listenTo(this, "renderTransportList", this.renderTransportList);
+      this.listenTo(this.model, 'sync', this.render);
     },
     
     setDate: function(){
       this.model.set('date', this.$el.find('#transportationDate').val());
+      console.log(this.$el.find('#transportationDate').val());
     },
 
     setTime: function(){
@@ -110,13 +112,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
     searchTrips: function(){
       this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
-      // check for existing trips otherwise fetch
-      if (this.model.get('connections').length == 0){
-        this.model.setURL();
-        this.model.fetch();
-      }else{
-        this.trigger("renderTransportList");
-      }
+      this.model.buildURL();
+      this.model.fetch();
     },
 
     renderTransportList: function(){
@@ -128,11 +125,12 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       transportViewTransportList.render();
     },
 
-    toggleScrollButtons: function(){
+    toggleListView: function(){
       if (this.model.get('connections').length == 0){
         this.$el.find('#result .scrollbutton').hide();
       }else{
         this.$el.find('#result .scrollbutton').show();
+        this.renderTransportList();
       }
     },
 
@@ -150,9 +148,8 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
         this.model.setDestId(buttonName);
       });
 
-      this.toggleScrollButtons();
-
       this.$el.trigger("create");
+      this.toggleListView();
       return this;
     }
   });
@@ -166,7 +163,21 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       return 'https://esb.soft.cs.uni-potsdam.de:8243/services/transportTestAPI/';
   }
 
+  var Section = Backbone.Model.extend({
+  });
+
+  var Sections = Backbone.Collection.extend({
+    model: Section
+  });
+
   var Connection = Backbone.Model.extend({
+    initialize: function(options){
+      this.set('depTime', options.sections.first().get('depTime'));
+      this.set('depStation', options.sections.first().get('depStation'));
+      this.set('arrTime', options.sections.last().get('arrTime'));
+      this.set('arrStation', options.sections.last().get('arrStation'));
+      this.set('sections', options.sections);
+    }
   });
 
   // "Trip": [...]
@@ -178,20 +189,15 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
   var CampusTrip = Backbone.Model.extend({
     defaults: {
       "originId": "009230003",
-      "destId": "009230132"//,
-      // "date": "",
-      // "time": "",
-      // "connections": ""
+      "destId": "009230132"
     },
 
     url: endpoint()+'trip',
 
     initialize: function(){
-      this.set({//"originId": this.getOriginId(),
-                //"destId": this.getDestId(),
-                "date": moment().format('YYYY-MM-DD'),
-                "time": moment().format('HH:MM'),
-                "connections": new Connections});
+      this.set('connections', new Connections());
+      this.set('date', moment().format('YYYY-MM-DD'));
+      this.set('time', moment().format('HH:MM'));
     },
 
     setOriginId: function(campus){
@@ -208,20 +214,31 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'modules/transportREST.uti
       this.set('destId', id);
     },
 
-    setURL: function(){
-      this.url = endpoint()+'trip?format=json&accessId=41f30658-b439-4529-9922-beb13567932c&originId='+this.get('originId')+'&destId='+this.get('destId')+'&date'+this.get('date')+'&time='+this.get('time');
+    buildURL: function(){
+      this.url = endpoint()+'trip?format=json&accessId=41f30658-b439-4529-9922-beb13567932c&originId='+this.get('originId')+'&destId='+this.get('destId')+'&date='+this.get('date')+'&time='+this.get('time');
     },
 
     parse: function(data, options){
-      console.log(data.Trip);
-      this.get('connections').add(data.Trip);
-      console.log(this.get("connections"));
+      var tripResponse = data;
+      var that = this;
+      _.each(tripResponse.Trip, function(con){
+        var sections = new Sections();
+        _.each(con.LegList.Leg, function(sec){
+          var depTime = moment(sec.Origin.date + ' ' + sec.Origin.time);
+          var arrTime = moment(sec.Destination.date + ' ' + sec.Destination.time);
+          var section = new Section({'depTime': depTime,
+                                    'depStation': sec.Origin.name,
+                                    'depPlatform': sec.Origin.track,
+                                    'arrTime': arrTime,
+                                    'arrStation': sec.Destination.name,
+                                    'arrPlatform': sec.Destination.track,
+                                    'name': sec.name});
+          sections.add(section);
+        });
+        var connection = new Connection({sections: sections});
+        that.get('connections').add(connection);
+      });
+      this.trigger('change');
       return this;
     }
-
-    // fetch: function(){
-    //   this.trigger("request");
-    //   var that = this;
-
-    // };
   });
