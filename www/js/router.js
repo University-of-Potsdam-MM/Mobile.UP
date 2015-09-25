@@ -20,7 +20,6 @@ define([
 	'modules/opening',
 	'modules/transport',
 	'modules/transport2',
-	'modules/transport2REST',
 	'modules/mensa',
 	'modules/library',
 	'modules/lectures',
@@ -29,7 +28,7 @@ define([
 	'modules/options',
 	'modules/people',
 	'modules/calendar.export'
-], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, Transport2RESTPageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView, CalendarExportPageView){
+], function($, _, Backbone, BaseRouter, Session, utils, customHistory, HomePageView, NewsView, EventsView, CalendarPageView, MoodlePageView, EmergencyPageView, SitemapPageView, RoomPageView, OpeningPageView, TransportPageView, Transport2PageView, MensaPageView, LibraryPageView, LecturesPageView, GradesPageView, ImpressumPageView, OptionsPageView, PeoplePageView, CalendarExportPageView){
 
 	var AppRouter = BaseRouter.extend({
 
@@ -52,7 +51,6 @@ define([
 			"room": "room",
 			"transport": "transport",
 			"transport2": "transport2",
-			"transport2REST": "transport2REST",
 			"opening": "opening",
 			"mensa": "mensa",
 			"emergency": "emergency",
@@ -250,10 +248,6 @@ define([
 
 		transport2: function(){
 			this.changePage(new Transport2PageView);
-		},
-
-		transport2REST: function(){
-			this.changePage(new Transport2RESTPageView);
 		},
 
 		opening: function(){
