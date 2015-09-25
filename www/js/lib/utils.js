@@ -226,12 +226,19 @@ define([
 			}
 		},
 
-		spinnerOn: function() {
+		_miniSpinner: function() {
+			this.$(".up-loadingSpinner").removeClass("extensive-spinner").addClass("compact-spinner");
+		},
+
+		spinnerOn: function(useMini) {
 			this.runningCounter++;
 			if (this.runningCounter == 1) {
 				this.$el.append("<div class=\"up-loadingSpinner extensive-spinner\">" +
 									"<img src=\"img/loadingspinner.gif\"></img>" +
 								"</div>");
+
+				// Make sure to check for "true" because the request event fills in a parameter but we only want to check for truth values
+				if (useMini === true) this._miniSpinner();
 			}
 		},
 		
@@ -239,7 +246,7 @@ define([
 			// backbone-fetch-cache is used, we should be aware of prefill requests
 			if (opts.prefill) {
 				this.runningCounter++;
-				this.$(".up-loadingSpinner").removeClass("extensive-spinner").addClass("compact-spinner");
+				this._miniSpinner();
 			}
 		},
 

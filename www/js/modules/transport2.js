@@ -44,7 +44,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
 
       _.bindAll(this, 'addOne');
 
-      this.upperLoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")}); //TODO:bei später spinner unten!
+      this.upperLoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")});
       this.lowerLoadingView = new utils.LoadingView({el: this.$("#spaeterLoadingSpinner")});
     },
 
@@ -54,7 +54,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
 
     searchEarlier: function(ev){
       this.currentLoadingView = this.upperLoadingView;
-      this.currentLoadingView.spinnerOn();
+      this.currentLoadingView.spinnerOn(true);
 
       this.trip.buildURL({earlier: true});
       this.trip.fetch({earlier: true});
@@ -62,7 +62,7 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
 
     searchLater: function(ev){
       this.currentLoadingView = this.lowerLoadingView;
-      this.currentLoadingView.spinnerOn();
+      this.currentLoadingView.spinnerOn(true);
 
       this.trip.buildURL({later: true});
       this.trip.fetch({later: true});
