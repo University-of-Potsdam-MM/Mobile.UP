@@ -72,6 +72,9 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
       this.currentLoadingView = this.upperLoadingView;
       this.currentLoadingView.spinnerOn();
 
+      this.$el.find('#transport_rides').empty();
+      this.$el.find('.scrollbutton').hide();
+
       this.trip.set('date', dateTime.format('YYYY-MM-DD'));
       this.trip.set('time', dateTime.format('HH:mm'));
 
