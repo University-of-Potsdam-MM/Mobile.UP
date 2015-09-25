@@ -37,9 +37,15 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
       this.trip = options.campusTrip;
       this.connections = this.trip.get('connections');
       this.template = utils.rendertmpl('transport2_listitem');
+
       this.listenTo(this.trip, 'sync', this.render);
       this.listenTo(this.trip, 'error', this.renderErrorMessage);
+      this.listenTo(this.trip, 'sync error', this.spinnerOff);
+
       _.bindAll(this, 'addOne');
+
+      this.upperLoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")}); //TODO:bei später spinner unten!
+      this.lowerLoadingView = new utils.LoadingView({el: this.$("#spaeterLoadingSpinner")});
     },
 
     addOne: function(connection) {
@@ -47,13 +53,35 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
     },
 
     searchEarlier: function(ev){
+      this.currentLoadingView = this.upperLoadingView;
+      this.currentLoadingView.spinnerOn();
+
       this.trip.buildURL({earlier: true});
       this.trip.fetch({earlier: true});
     },
 
     searchLater: function(ev){
+      this.currentLoadingView = this.lowerLoadingView;
+      this.currentLoadingView.spinnerOn();
+
       this.trip.buildURL({later: true});
       this.trip.fetch({later: true});
+    },
+
+    search: function(dateTime) {
+      this.currentLoadingView = this.upperLoadingView;
+      this.currentLoadingView.spinnerOn();
+
+      this.trip.set('date', dateTime.format('YYYY-MM-DD'));
+      this.trip.set('time', dateTime.format('HH:mm'));
+
+      this.trip.get('connections').reset(null);
+      this.trip.buildURL({});
+      this.trip.fetch({earlier: true, later: true});
+    },
+
+    spinnerOff: function() {
+      this.currentLoadingView.spinnerOff();
     },
 
     render: function() {
@@ -78,8 +106,6 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
     attributes: {"id": "transport2"},
 
     events: {
-      'click #transportationDate': 'setDate',
-      'click #transportationTime': 'setTime',
       'click #searchButton': 'searchTrips'
     },
 
@@ -88,28 +114,13 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
       this.template = utils.rendertmpl('transport2');
     },
     
-    setDate: function(){
-      this.model.set('date', this.$el.find('#transportationDate').val());
-      console.log(this.$el.find('#transportationDate').val());
-    },
-
-    setTime: function(){
-      this.model.set('time', this.$el.find('#transportationTime').val());
+    getDateTime: function(){
+      return moment(this.$el.find('#transportationDate').val()+ ' ' + this.$el.find('#transportationTime').val(), 'DD.MM.YYYY HH:mm');
     },
 
     searchTrips: function(){
-      this.model.get('connections').reset(null);
-      this.model.buildURL({});
-      this.model.fetch({earlier: true, later: true});
-    },
-
-    renderTransportList: function(){
-      this.$el.find('#result .scrollbutton').show();
-      // transportViewTransportList = new TransportListView({
-      //   el: this.$el.find('#result'),
-      //   campusTrip: this.model
-      // });
-      this.transportListView.render();
+      var dateTime = this.getDateTime();
+      this.transportListView.search(dateTime);
     },
 
     render: function(){
@@ -128,7 +139,6 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
       }, this));
 
       this.$el.find('#result .scrollbutton').hide();
-      this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")}); //TODO:bei später spinner unten!
       this.transportListView = new TransportListView({
         el: this.$el.find('#result'),
         campusTrip: this.model
