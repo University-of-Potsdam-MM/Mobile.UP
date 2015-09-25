@@ -28,8 +28,6 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
    *  Backbone View - TransportListView
    */
   var TransportListView = Backbone.View.extend({
-    anchor: '#transport_rides',
-
     events: {
       "click #earlierButton": "searchEarlier",
       "click #laterButton"  : "searchLater"
@@ -39,30 +37,35 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
       this.trip = options.campusTrip;
       this.connections = this.trip.get('connections');
       this.template = utils.rendertmpl('transport2_listitem');
-      this.el = $(this.anchor);
+      this.listenTo(this.trip, 'sync', this.render);
+      this.listenTo(this.trip, 'error', this.renderErrorMessage);
       _.bindAll(this, 'addOne');
     },
 
     addOne: function(connection) {
-      $(this.el).append(this.template({connection: connection}));
+      this.$el.find('#transport_rides').append(this.template({connection: connection}));
     },
 
     searchEarlier: function(ev){
-      this.LoadingView = new utils.LoadingView({model: this.trip, el: this.$("#loadingSpinner")});
       this.trip.buildURL({earlier: true});
       this.trip.fetch({earlier: true});
     },
 
     searchLater: function(ev){
-      this.LoadingView = new utils.LoadingView({model: this.trip, el: this.$("#spaeterLoadingSpinner")});
       this.trip.buildURL({later: true});
       this.trip.fetch({later: true});
     },
 
     render: function() {
-      $(this.el).empty();
+      this.$el.find('#transport_rides').empty();
+      this.$el.find('.scrollbutton').show();
       this.connections.each(this.addOne);
+      this.$el.trigger("create");
       return this;
+    },
+
+    renderErrorMessage: function(){
+      var errorPage = new utils.ErrorView({el: this.$el, msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport2'});
     }
   });
 
@@ -83,8 +86,6 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
     initialize: function(){
       this.model = new CampusTrip();
       this.template = utils.rendertmpl('transport2');
-      this.listenTo(this.model, 'sync', this.render);
-      this.listenTo(this.model, 'error', this.renderErrorMessage);
     },
     
     setDate: function(){
@@ -97,29 +98,18 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
     },
 
     searchTrips: function(){
-      this.LoadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
-
       this.model.get('connections').reset(null);
       this.model.buildURL({});
       this.model.fetch({earlier: true, later: true});
     },
 
     renderTransportList: function(){
-      transportViewTransportList = new TransportListView({
-        el: this.$el.find('#result'),
-        campusTrip: this.model
-      });
-
-      transportViewTransportList.render();
-    },
-
-    toggleListView: function(){
-      if (this.model.get('connections').length == 0){
-        this.$el.find('#result .scrollbutton').hide();
-      }else{
-        this.$el.find('#result .scrollbutton').show();
-        this.renderTransportList();
-      }
+      this.$el.find('#result .scrollbutton').show();
+      // transportViewTransportList = new TransportListView({
+      //   el: this.$el.find('#result'),
+      //   campusTrip: this.model
+      // });
+      this.transportListView.render();
     },
 
     render: function(){
@@ -132,22 +122,19 @@ define([ 'jquery', 'underscore', 'backbone', 'utils', 'moment'],
         this.model.setOrigin(buttonName);
         toStation.activeButton(this.model.get('destCampus'));
       }, this));
-
       toStation.on('select', _.bind(function(buttonName){
         this.model.setDest(buttonName);
         fromStation.activeButton(this.model.get('originCampus'));
       }, this));
 
-      fromStation.activeButton(this.model.get('originCampus'));
-      toStation.activeButton(this.model.get('destCampus'));
-
-      this.toggleListView();
+      this.$el.find('#result .scrollbutton').hide();
+      this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")}); //TODO:bei später spinner unten!
+      this.transportListView = new TransportListView({
+        el: this.$el.find('#result'),
+        campusTrip: this.model
+      });
       this.$el.trigger("create");
       return this;
-    },
-
-    renderErrorMessage: function(){
-      var errorPage = new utils.ErrorView({el: '#result', msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport2'});
     }
   });
 
