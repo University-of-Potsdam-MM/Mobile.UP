@@ -203,12 +203,21 @@ define([
 		},
 
 		loadData: function() {
-			new utils.LoadingView({collection: this.model, el: this.$("#loadingSpinner")});
+			if (this.loadingView) this.loadingView.empty();
+			if (this.errorView) this.errorView.empty();
+
+			this.loadingView = new utils.LoadingView({collection: this.model, el: this.$("#loadingSpinner")});
 			this.model.fetch();
 		},
 
-		errorHandler: function(error){
-			var errorPage = new utils.ErrorView({el: '#loadingError', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendarexport', err: error});
+		errorHandler: function(error) {
+			this.errorView = new utils.ErrorView({
+				el: '#loadingError',
+				msg: 'Der PULS-Dienst ist momentan nicht erreichbar.',
+				module: 'calendarexport',
+				err: error,
+				hasReload: true
+			}).on("reload", this.loadData, this);
 		},
 
 		calendarSelected: function(event) {
