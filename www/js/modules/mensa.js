@@ -37,6 +37,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 				location = "NeuesPalais";
 			} else if (location == "golm") {
 				location = "Golm";
+			} else if (location == "UlfsCafe") {
+				location = "UlfsCafe";
 			}
 			this.url = "https://api.uni-potsdam.de/endpoints/mensaAPI/1.0/readCurrentMeals?format=json&location=" + location;
 		},
@@ -99,7 +101,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		},
 		
 		render: function() {
-			this.$el.html(this.template({meals: this.model.meals}));
+			this.$el.html(this.template({meals: this.model.meals, location: this.model.location}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -139,7 +141,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		    uniqueDivId = _.uniqueId("id_");
 		    
 		    this.$("#todaysMenu").empty();
-			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"><div id="loadingSpinner"></div><div id="content"></div></div>');
+			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"><div id="loadingSpinner"></div><div id="content"></div><div id="secondLoadingSpinner"></div><div id="secondContent"></div></div>');
 			
 			var loader = new MenuLoader();
 		    loader.location = mensa;
@@ -148,8 +150,21 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		    new utils.LoadingView({model: loader, el: this.$("#" + uniqueDivId + " #loadingSpinner")});
 		    new DayView({model: loader, el: this.$("#" + uniqueDivId + " #content")});
 		    this.listenTo(loader, "error", this.requestFail);
-		    
+
 		    loader.fetch();
+
+		    if (mensa === "griebnitzsee") {
+		    	// Load Ulfs Cafe in second view
+		    	var secondLoader = new MenuLoader();
+		    	secondLoader.location = "UlfsCafe";
+		    	secondLoader.date = date;
+
+		    	new utils.LoadingView({model: secondLoader, el: this.$("#" + uniqueDivId + " #secondLoadingSpinner")});
+		    	new DayView({model: secondLoader, el: this.$("#" + uniqueDivId + " #secondContent")});
+		    	this.listenTo(secondLoader, "error", this.requestFail);
+
+		    	secondLoader.fetch();
+		    }
 		},
 
 		requestFail: function(error) {
