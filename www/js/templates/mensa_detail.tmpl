@@ -31,9 +31,15 @@
 		</div>
 	
 		<p>
+			<% if (meal.prices.students) { %>
 			Studierende: <% print(Number(meal.prices.students).toFixed(2)); %> €<br />
+			<% } %>
+			<% if (meal.prices.staff) { %>
 			Bedienstete: <% print(Number(meal.prices.staff).toFixed(2)); %> €<br />
+			<% } %>
+			<% if (meal.prices.guests) { %>
 			Gäste: <% print(Number(meal.prices.guests).toFixed(2)); %> €
+			<% } %>
 		</p>
 	</div>
 	<% }); %>
