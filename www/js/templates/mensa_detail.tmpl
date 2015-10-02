@@ -1,8 +1,6 @@
 <% if (meals.length > 0) { %>
 	<% if (location === "UlfsCafe") { %>
-	<div style="background-size: 52px 49px; background-image: url('http://www.ulfscafe.de/img/top-bg.png');">
-		<div style="height: 52px; width: 49px; background-size: 52px 49px; background-repeat: no-repeat; margin: 0 auto; background-image: url('http://www.ulfscafe.de/img/ulf-logo.jpg');"></div>
-	</div>
+	<div class="up-mensa-name">Ulf's Café im HPI</div>
 	<% } %>
 <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" class="speiseplan">
 	<% _.each(meals, function(meal) { %>

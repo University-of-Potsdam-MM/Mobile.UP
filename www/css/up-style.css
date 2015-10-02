@@ -2580,6 +2580,17 @@ p.event-description {
 #calendarexport p.finished {
 	font-weight:bold;
 }
+
+.up-mensa-name {
+	background-color: #014260;
+	color: #fff;
+	padding-top: 0.7em;
+	padding-right: 1em;
+	padding-bottom: 0.7em;
+	padding-left: 1em;
+	margin-top: 0.5em;
+}
+
 /* Slide transition speed */
 .in, .out {
 	-webkit-animation-timing-function: ease-in-out;
