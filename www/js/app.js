@@ -36,7 +36,6 @@ define([
 			viewType:"text/x-underscore-template", //Templateenginekennung (Underscore)
 			jsonUrl: 'http://headkino.de/potsdamevents/json/', //Base-Url, die auf dem Server angefragt wird
 			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
-			testcode: '', //Testcode
 			routesToScrollPositions: {},
 			history:[],
 			views:{},
