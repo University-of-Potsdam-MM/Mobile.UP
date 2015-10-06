@@ -10,10 +10,11 @@ define([
 	'fastclick',
 	'Session',
 	'history',
+	'appCache',
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache){
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
 			before:function(route){ //wird komischerweise nur ausgeführt, wenn zurücknavigiert wird. Und genau dafür wird diese Funktion benutzt.
@@ -33,8 +34,6 @@ define([
 				"controllers/studies", //"Onepager" in einem Controller um platz zu sparen
 			], //In der app vorhandene Controller
 			viewType:"text/x-underscore-template", //Templateenginekennung (Underscore)
-			requests : [], //Speichert die Rückgabe für jede URL (Cache)
-			cacheTimes: [], //Speichert für jede URL die letzte Zeit, wann diese vom Server geladen wurde
 			jsonUrl: 'http://headkino.de/potsdamevents/json/', //Base-Url, die auf dem Server angefragt wird
 			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
 			testcode: '', //Testcode
@@ -55,9 +54,9 @@ define([
 				"https://api.uni-potsdam.de/endpoints/personAPI",
 				"https://api.uni-potsdam.de/endpoints/mensaAPI",
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
-			cache: {},
 			viewFileExt: 'js', //Dateiendung der View files
 			router : new AppRouter(), //Router zuweisen
+			appCache : new AppCache(),
 			/*
 			* Intitialisierung
 			*/
@@ -330,9 +329,9 @@ define([
 							//console.log(app.data[c]);
 							app.data[c][a] = response; //Daten speichern
 							if(content.model)
-								app.cache[content.model.url] = response;
+								app.appCache.setCache(content.model.url, response);
 							else if(content.collection) {
-								app.cache[content.collection.url] = response;
+								app.appCache.setCache(content.collection.url, response);
 							}
 							//console.log(app.cache);
 						}
@@ -400,8 +399,8 @@ define([
 								d = filteredList[0];
 						}
 						if(content.collection) { //Content hat eine Collection
-							if(app.cache[content.collection.url]) {
-								success('cached', app.cache[content.collection.url]);
+							if(app.appCache.getCache(content.collection.url)) {
+								success('cached', app.appCache.getCache(content.collection.url));
 							} else if(content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
 								content.collection.fetch({
 									success: success,
@@ -419,8 +418,8 @@ define([
 									success('set', d);
 								}
 								else
-								if(app.cache[content.model.url]) { //Model in cache
-									success('cached', app.cache[content.model.url]);
+								if(app.appCache.getCache(content.model.url)) { //Model in cache
+									success('cached', app.appCache.getCache(content.model.url));
 								} else if(content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
 									console.log(content.model);
 									content.model.fetch($.extend(utils.cacheDefaults(), {
@@ -534,10 +533,10 @@ define([
 			*/
 			get: function(url){
 				var q = Q.defer();
-				if(app.requests[url] && !this.refreshing && app.cacheTimes[url] && Date.now() - app.cacheTimes[url] < 5 * 3600000) { //Alle 5 Stunden wird aktualisiert, sonst aus dem Cache holen, wenn vorhanden
-					q.resolve(app.requests[url]);
+				if(!this.refreshing && app.appCache.hasValidRequestEntry(url)) { //Alle 5 Stunden wird aktualisiert, sonst aus dem Cache holen, wenn vorhanden
+					q.resolve(app.appCache.getRequest(url));
 				} else {
-					$.getJSON(this.jsonUrl + url).done(function(d){ app.requests[url] = d; app.cacheTimes[url] = Date.now(); q.resolve(d);}); //Url anfragen
+					$.getJSON(this.jsonUrl + url).done(function(d){ app.appCache.setRequest(url); q.resolve(d);}); //Url anfragen
 				}
 				return q.promise;
 			},

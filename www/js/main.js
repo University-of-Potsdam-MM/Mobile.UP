@@ -25,7 +25,8 @@ require.config({
         'uri': 'vendor/src',
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
-        'headerParser': 'lib/headerParser'
+        'headerParser': 'lib/headerParser',
+        'appCache': 'lib/appCache'
     },
     shim: {
         // use namespace Backbone
