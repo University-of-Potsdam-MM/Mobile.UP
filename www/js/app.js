@@ -88,9 +88,6 @@ define([
     					}else{
     						$.mobile.changePage.defaults.transition = 'slidefade';
     						$.mobile.changePage.defaults.reverse = 'reverse';
-    						//var lastPage = app.router.history[app.router.history.length-2].name;
-    						//app.router.history.splice(-2);
-    						//Backbone.history.navigate(lastPage, {trigger:true});
 							customHistory.goBack();
     					}
     				}, false);
@@ -199,7 +196,6 @@ define([
 				var temp = this.template(view); //Template-String aus dem DOM holen
 				if(d && d.vars)
 					d = d.vars;
-				//var temp = _.template(t); //Underscore-Template laden
 				return temp(d); //Template mit Daten parsen und zurückgeben
 			},
 			
@@ -214,10 +210,7 @@ define([
 			*/
 			loadPage: function(c, a, params, transition){
 				var q = Q.defer();
-				
-				/*if(!this.currentView){
-					$('#pagecontainer').children().first().remove();
-				}*/
+
 				if(!params)
 					params = {};
 				var pageName = utils.capitalize(c) + 'Page';
@@ -237,18 +230,13 @@ define([
 					q.resolve();
 					return {done:function(d){}};
 				}
-				//console.log(page.el);
 				// prepare new view for DOM display
-				//$(page.el).attr(page.attributes);
 				page.render();
 				console.log(utils.capitalize(c) + utils.capitalize(a));
 
 				var d = {};
 				var response = {};
-			
-				/*$('body').css('overflow', 'hidden');
-				$('#nav-panel').css('display', 'none');*/
-				
+
 				var pageContent = page.$el.attr("data-role", "page");
 				var pageTitle = pageContent.find('meta[name="title"]').attr('content');
 
@@ -266,9 +254,7 @@ define([
 				}
 				var transition = $.mobile.changePage.defaults.transition;
 				var reverse = $.mobile.changePage.defaults.reverse;
-				
-				//$('#pagecontainer').html($(page.el)); //Nur eine Seite im Container, damit keine ID-Konflikte auftreten
-				
+
 				var transition = $.mobile.defaultPageTransition;
 				// Erste Seite nicht sliden
 				if (this.firstPage){
@@ -322,17 +308,14 @@ define([
 							}
 						}
 						if(_.keys(response).length > 0) {
-							//alert('response');
 							if(!app.data[c]) 
 								app.data[c] = {};
-							//console.log(app.data[c]);
 							app.data[c][a] = response; //Daten speichern
 							if(content.model)
 								app.appCache.setCache(content.model.url, response);
 							else if(content.collection) {
 								app.appCache.setCache(content.collection.url, response);
 							}
-							//console.log(app.cache);
 						}
 						content.render();
 
@@ -346,7 +329,6 @@ define([
 							if(!metas.title) 
 								metas.title = pageTitle;
 							var header = utils.renderheader(metas);
-							//alert(header);
 							$pageContainer.find('.ui-header').replaceWith(header);
 							$footer = $pageContainer.find('.ui-footer');
 							if($footer.length > 0) {
@@ -367,8 +349,6 @@ define([
 				* Wird nach Pagetransition ausgeführt
 				*/
 				var afterTransition = function(){
-					//console.log(app.views);
-					//console.log(utils.capitalize(c) + utils.capitalize(a));
 					if(app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						app.currentView = {};
 						params.page = page.$el;
@@ -377,12 +357,10 @@ define([
 				
 						if((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
 							var parts = content.inCollection.split('.');
-							//console.log(app.data);
 							try {
 								var list = eval('app.data.' + content.inCollection);
 							} catch(e) {
 							}
-							//console.log(list);
 							if(list) {
 								try {
 									var filteredList = _.filter(list, function(item){
@@ -393,7 +371,6 @@ define([
 								} catch(e){
 								}
 							}
-							//console.log(filteredList);
 							if(filteredList) //Element in Liste gefunden
 								d = filteredList[0];
 						}
@@ -445,7 +422,6 @@ define([
 				customHistory.push(Backbone.history.fragment);
 				Q($.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse})).done(function(){
 					if(!app.currentView){
-						//$('#pagecontainer').children().first().remove();
 						$('body').css('overflow', 'auto');
 						$("body").fadeIn(100);
 					}
@@ -561,15 +537,6 @@ define([
 					if(typeof(a.toPage) == 'string') return;
 					var header = $('.header', toPage);
 					var footer = $('.footer', toPage);
-					/*if($.os.ios) { //Unter iOS Headerinhalt langsam ein- und ausblenden bei Seitenwechesel
-						var dur = 300;
-						self.headerContent.fadeOut(dur, function(){
-							self.headerContent[0].innerHTML = header[0].innerHTML;
-							self.headerContent.fadeIn(dur);
-						});
-					} else { //Unter Android und anderen den Headerinhalt einfach einfügen (Performancegründe)
-						self.headerContent[0].innerHTML = header[0].innerHTML;
-					}*/
 					var duration = 350, animating = 'footer';
 					window.footerAnimating = true;
 					var dir = window.reverseTransition ? 1 : -1; //Transitionsrichtung für Footeranimation ermitteln
@@ -656,7 +623,6 @@ define([
 			*/
 			getTemplateID: function(url){
 				return url.replace(/\//g, '.');
-				return url.replace(/\//g, '-').replace(/\./g, '__');
 			},
 			/*
 			* Templatestring für einen View zurückgeben
