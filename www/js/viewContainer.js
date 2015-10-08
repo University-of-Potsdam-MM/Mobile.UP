@@ -121,6 +121,48 @@ define([
                 navigator.notification.alert(s, null, 'Kein Internet'); //Fehlermeldung ausgeben
             else
                 alert(s); //Für Browser
+        },
+
+        prepareViewForDomDisplay: function (page, c, a, $, utils) {
+            // prepare new view for DOM display
+            page.render();
+            console.log(utils.capitalize(c) + utils.capitalize(a));
+
+            var d = {};
+            var response = {};
+
+            var pageContent = page.$el.attr("data-role", "page");
+            var pageTitle = pageContent.find('meta[name="title"]').attr('content');
+
+            var header = utils.renderheader({title: pageTitle});
+
+            pageContent.css('padding-top', '54px');
+            $pageContainer = $('#pagecontainer');
+            var $header = $pageContainer.find('.ui-header');
+            $pageContainer.append(pageContent);
+            $pageContainer.trigger("create");
+            if ($header.length > 0) {
+                $header.replaceWith(header);
+            } else {
+                $pageContainer.append(header);
+            }
+            var transition = $.mobile.changePage.defaults.transition;
+            var reverse = $.mobile.changePage.defaults.reverse;
+
+            var transition = $.mobile.defaultPageTransition;
+            // Erste Seite nicht sliden
+            if (this.firstPage) {
+                transition = 'none';
+                this.firstPage = false;
+            }
+            return {
+                d: d,
+                response: response,
+                pageContent: pageContent,
+                pageTitle: pageTitle,
+                reverse: reverse,
+                transition: transition
+            };
         }
     };
 
