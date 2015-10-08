@@ -1,30 +1,4 @@
 var app = {models:{},views:{},controllers:{}};
-
-var scrollManager = {
-	routesToScrollPositions: {},
-
-	saveScrollPositionExtract: function (customHistory, $) {
-		console.log(customHistory);
-		if (customHistory.hasHistory()) {
-			var name = customHistory.currentRoute();
-			this.routesToScrollPositions[name] = $(window).scrollTop();
-		}
-	},
-
-	prepareScrollPositionExtract: function (route, $) {
-		var pos = 0;
-		//alert(route);
-		if (this.routesToScrollPositions[route]) {
-			pos = this.routesToScrollPositions[route];
-			delete this.routesToScrollPositions[route]
-		}
-
-		// We only have one active page because jQuery mobiles custom history is disabled
-		var activePage = $.mobile.navigate.history.getActive();
-		activePage.lastScroll = pos;
-	}
-};
-
 define([
 	'jquery',
 	'underscore',
@@ -41,7 +15,10 @@ define([
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewContainer){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper){
+		var ViewContainer = ViewHelper.viewContainer;
+		var scrollManager = ViewHelper.scrollManager;
+
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
 			before:function(route){ //wird komischerweise nur ausgeführt, wenn zurücknavigiert wird. Und genau dafür wird diese Funktion benutzt.
