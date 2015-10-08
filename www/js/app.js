@@ -352,7 +352,7 @@ define([
 						q.resolve(response, content);
 					else
 						q.resolve(d, content);
-				}
+				};
 
 				/**
 				 * Wird nach Pagetransition ausgeführt
@@ -419,7 +419,7 @@ define([
 						ViewContainer.usePageAsView(page, app);
 						success();
 					}
-				}
+				};
 				ViewContainer.saveAndPrepareScrollPosition(app, Backbone);
 				customHistory.push(Backbone.history.fragment);
 				ViewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
@@ -542,7 +542,7 @@ define([
 					});
 				});
 			}
-		}	
+		};
 
 		return app;
 });
@@ -579,4 +579,4 @@ var detectUA = function($, userAgent) {
 	$.feat.cssTransformEnd = !$.os.opera ? ",0)" : ")";
 	if ($.os.android && !$.os.webkit)
 		$.os.android = false;
-}
+};
