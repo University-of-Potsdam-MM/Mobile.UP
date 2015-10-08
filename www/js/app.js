@@ -1,24 +1,30 @@
 var app = {models:{},views:{},controllers:{}};
 
-var saveScrollPositionExtract = function (customHistory, $) {
-	console.log(customHistory);
-	if (customHistory.hasHistory()) {
-		var name = customHistory.currentRoute();
-		this.routesToScrollPositions[name] = $(window).scrollTop();
-	}
-};
-var prepareScrollPositionExtract = function (route, $) {
-	var pos = 0;
-	//alert(route);
-	if (this.routesToScrollPositions[route]) {
-		pos = this.routesToScrollPositions[route];
-		delete this.routesToScrollPositions[route]
-	}
+var scrollManager = {
+	routesToScrollPositions: {},
 
-	// We only have one active page because jQuery mobiles custom history is disabled
-	var activePage = $.mobile.navigate.history.getActive();
-	activePage.lastScroll = pos;
+	saveScrollPositionExtract: function (customHistory, $) {
+		console.log(customHistory);
+		if (customHistory.hasHistory()) {
+			var name = customHistory.currentRoute();
+			this.routesToScrollPositions[name] = $(window).scrollTop();
+		}
+	},
+
+	prepareScrollPositionExtract: function (route, $) {
+		var pos = 0;
+		//alert(route);
+		if (this.routesToScrollPositions[route]) {
+			pos = this.routesToScrollPositions[route];
+			delete this.routesToScrollPositions[route]
+		}
+
+		// We only have one active page because jQuery mobiles custom history is disabled
+		var activePage = $.mobile.navigate.history.getActive();
+		activePage.lastScroll = pos;
+	}
 };
+
 define([
 	'jquery',
 	'underscore',
@@ -57,7 +63,6 @@ define([
 			viewType:"text/x-underscore-template", //Templateenginekennung (Underscore)
 			jsonUrl: 'http://headkino.de/potsdamevents/json/', //Base-Url, die auf dem Server angefragt wird
 			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
-			routesToScrollPositions: {},
 			history:[],
 			views:{},
 			models:{},
@@ -414,11 +419,11 @@ define([
 			},
 			
 			saveScrollPosition: function() {
-				saveScrollPositionExtract.call(this, customHistory, $);
+				scrollManager.saveScrollPositionExtract(customHistory, $);
 			},
 	
 			prepareScrollPositionFor: function(route) {
-				prepareScrollPositionExtract.call(this, route, $);
+				scrollManager.prepareScrollPositionExtract(route, $);
 			},
 			
 			/**
