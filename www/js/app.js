@@ -1,10 +1,5 @@
 var app = {models:{},views:{},controllers:{}};
-var renderExtract = function (view, d) {
-	var temp = this.template(view); //Template-String aus dem DOM holen
-	if (d && d.vars)
-		d = d.vars;
-	return temp(d); //Template mit Daten parsen und zurückgeben
-};
+
 var prepareViewForDomDisplay = function (page, c, a, $, utils) {
 // prepare new view for DOM display
 	page.render();
@@ -251,15 +246,6 @@ define([
 					self.callback = function(){};
 				}
 			},
-			/*
-			* Daten und Template verbinden
-			* @view: View Url
-			* @d: Daten Objekt (vom Server)
-			*/
-			render: function(view, d){
-				return renderExtract.call(this, view, d);
-			},
-			
 			
 			/*
 			* Wenn nötig Daten vom Server laden, Seite rendern und Seitenübergang vollführen
@@ -588,21 +574,6 @@ define([
 						$(document).trigger('app:controllersLoaded');
 					});
 				});
-			},
-			/*
-			* Templatename im DOM codieren, damit keine Fehler auftreten
-			* @url: View-URL
-			*/
-			getTemplateID: function(url){
-				return url.replace(/\//g, '.');
-			},
-			/*
-			* Templatestring für einen View zurückgeben
-			* @url: View-URL
-			*/
-			template: function(url){
-				var id = this.getTemplateID(url);
-				return utils.rendertmpl(id);
 			}
 		}	
 
