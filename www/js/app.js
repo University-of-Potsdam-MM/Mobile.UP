@@ -16,7 +16,7 @@ define([
 	'datebox',
 	'LocalStore'
 	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper){
-		var ViewContainer = ViewHelper.viewContainer;
+		var viewContainer = ViewHelper.viewContainer;
 		var scrollManager = ViewHelper.scrollManager;
 
 		//AppRouter-Klasse erstellen
@@ -65,8 +65,8 @@ define([
 			initialize: function(){
 				app.session = new Session;
 				utils.detectUA($, navigator.userAgent);
-				ViewContainer.setIosHeaderFix($);
-					/**
+				viewContainer.setIosHeaderFix($);
+				/**
 				 * Override Backbone.sync to automatically include auth headers according to the url in use
 				 */
 				new FastClick(document.body);
@@ -87,7 +87,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-							ViewContainer.setReverseSlidefadeTransition($);
+							viewContainer.setReverseSlidefadeTransition($);
 							customHistory.goBack();
     					}
     				}, false);
@@ -223,7 +223,7 @@ define([
 					};
 				}
 
-				var __ret = ViewContainer.prepareViewForDomDisplay(page, c, a, $, utils);
+				var __ret = viewContainer.prepareViewForDomDisplay(page, c, a, $, utils);
 				var d = __ret.d;
 				var response = __ret.response;
 				var pageContent = __ret.pageContent;
@@ -287,7 +287,7 @@ define([
 								app.appCache.setCache(content.collection.url, response);
 							}
 						}
-						ViewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer, utils, $);
+						viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer, utils, $);
 					}
 					if (_.keys(response).length > 0)
 						q.resolve(response, content);
@@ -300,7 +300,7 @@ define([
 				 */
 				var afterTransition = function () {
 					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-						content = ViewContainer.setCurrentView(params, page, content, c, a, app, utils);
+						content = viewContainer.setCurrentView(params, page, content, c, a, app, utils);
 						if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
 							var parts = content.inCollection.split('.');
 							try {
@@ -357,19 +357,19 @@ define([
 							}
 						}
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
-						ViewContainer.usePageAsView(page, app);
+						viewContainer.usePageAsView(page, app);
 						success();
 					}
 				};
-				ViewContainer.saveAndPrepareScrollPosition(app, Backbone);
+				viewContainer.saveAndPrepareScrollPosition(app, Backbone);
 				customHistory.push(Backbone.history.fragment);
-				ViewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
+				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
 
 				return q.promise;
 			},
 			
 			updateHeader: function($el){
-				ViewContainer.updateHeaderExtract($el, $, utils);
+				viewContainer.updateHeaderExtract($el, $, utils);
 			},
 			
 			checkAuth: function(name){
@@ -424,11 +424,11 @@ define([
 				$.ajaxSetup({
 					  "error":function() { //Globale AJAX-Fehlerfunktion, wenn z.B. keine Internetverbindung besteht
 						  app.locked = false;
-						  ViewContainer.notifyMissingServerConnection(app, $);
+						  viewContainer.notifyMissingServerConnection(app, $);
 					  }
 				});
 				$(document).on('pagebeforechange', function(e, a){ //Bevor zur nächsten Seite gewechselt wird
-					ViewContainer.animateHeaderAndFooter(a, $);
+					viewContainer.animateHeaderAndFooter(a, $);
 				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
@@ -439,13 +439,13 @@ define([
 			* Momentan aktive Seite zurückgeben
 			*/
 			activePage: function(){
-				return ViewContainer.activePageExtract($);
+				return viewContainer.activePageExtract($);
 			},
 			/*
 			* InhaltsContainer der momentan aktiven Seite zurückgeben
 			*/
 			activeCon:function(){
-				return ViewContainer.activeConExtract.call(this, $);
+				return viewContainer.activeConExtract.call(this, $);
 			},
 			/*
 			* Alle Controllers und deren Viewtemplates laden
