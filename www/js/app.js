@@ -1,4 +1,83 @@
 var app = {models:{},views:{},controllers:{}};
+var setIosHeaderFix = function ($) {
+	if ($.os.ios7) {
+		$('body').addClass('ios-statusbar');
+	}
+};
+var setReverseSlidefadeTransition = function ($) {
+	$.mobile.changePage.defaults.transition = 'slidefade';
+	$.mobile.changePage.defaults.reverse = 'reverse';
+};
+var renderExtract = function (view, d) {
+	var temp = this.template(view); //Template-String aus dem DOM holen
+	if (d && d.vars)
+		d = d.vars;
+	return temp(d); //Template mit Daten parsen und zurückgeben
+};
+var prepareViewForDomDisplay = function (page, c, a, $, utils) {
+// prepare new view for DOM display
+	page.render();
+	console.log(utils.capitalize(c) + utils.capitalize(a));
+
+	var d = {};
+	var response = {};
+
+	var pageContent = page.$el.attr("data-role", "page");
+	var pageTitle = pageContent.find('meta[name="title"]').attr('content');
+
+	var header = utils.renderheader({title: pageTitle});
+
+	pageContent.css('padding-top', '54px');
+	$pageContainer = $('#pagecontainer');
+	var $header = $pageContainer.find('.ui-header');
+	$pageContainer.append(pageContent);
+	$pageContainer.trigger("create");
+	if ($header.length > 0) {
+		$header.replaceWith(header);
+	} else {
+		$pageContainer.append(header);
+	}
+	var transition = $.mobile.changePage.defaults.transition;
+	var reverse = $.mobile.changePage.defaults.reverse;
+
+	var transition = $.mobile.defaultPageTransition;
+	// Erste Seite nicht sliden
+	if (this.firstPage) {
+		transition = 'none';
+		this.firstPage = false;
+	}
+	return {
+		d: d,
+		response: response,
+		pageContent: pageContent,
+		pageTitle: pageTitle,
+		reverse: reverse,
+		transition: transition
+	};
+};
+var finishRendering = function (content, pageTitle, pageContent, utils, $) {
+	content.render();
+
+	var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
+
+	if ($metas.length > 0) {
+		var metas = {};
+		$metas.each(function () {
+			metas[$(this).attr('name')] = $(this).attr('content');
+		});
+		if (!metas.title)
+			metas.title = pageTitle;
+		var header = utils.renderheader(metas);
+		$pageContainer.find('.ui-header').replaceWith(header);
+		$footer = $pageContainer.find('.ui-footer');
+		if ($footer.length > 0) {
+			pageContent.addClass('ui-page-footer-fixed');
+		}
+	}
+	if (content.afterRender)
+		content.afterRender();
+	$pageContainer.trigger("create");
+};
 define([
 	'jquery',
 	'underscore',
@@ -21,8 +100,8 @@ define([
 				window.backDetected = true;
 			}
 		});
-		
-		
+
+
 		app = {
 			c: {}, //Controller-Objekte werden in diesem Array abgelegt
 			controllers: {}, //Controllerklassen
@@ -62,9 +141,7 @@ define([
 			initialize: function(){
 				app.session = new Session;
 				detectUA($, navigator.userAgent);
-				if($.os.ios7) {
-					$('body').addClass('ios-statusbar');
-				}
+				setIosHeaderFix($);
 					/**
 				 * Override Backbone.sync to automatically include auth headers according to the url in use
 				 */
@@ -86,8 +163,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-    						$.mobile.changePage.defaults.transition = 'slidefade';
-    						$.mobile.changePage.defaults.reverse = 'reverse';
+							setReverseSlidefadeTransition($);
 							customHistory.goBack();
     					}
     				}, false);
@@ -193,10 +269,7 @@ define([
 			* @d: Daten Objekt (vom Server)
 			*/
 			render: function(view, d){
-				var temp = this.template(view); //Template-String aus dem DOM holen
-				if(d && d.vars)
-					d = d.vars;
-				return temp(d); //Template mit Daten parsen und zurückgeben
+				return renderExtract.call(this, view, d);
 			},
 			
 			
@@ -208,179 +281,141 @@ define([
 			* @transition: Als String: jQueryMobile-Pagetransitionsname (Standard: slide), 
 						   Oder als Objekt: Parameter für das Rendern des View
 			*/
-			loadPage: function(c, a, params, transition){
+			loadPage: function(c, a, params, transition) {
 				var q = Q.defer();
 
-				if(!params)
+				if (!params)
 					params = {};
 				var pageName = utils.capitalize(c) + 'Page';
 				console.log(app.views[pageName]);
-				if(!app.views[pageName]) {
+				if (!app.views[pageName]) {
 					app.views[pageName] = Backbone.View.extend({
-						render: function(){
+						render: function () {
 							this.$el.html('');
 							return this;
 						}
 					});
 				}
 				console.log(pageName);
-				var page = new app.views[pageName](params); console.log(page);
+				var page = new app.views[pageName](params);
+				console.log(page);
 				var allowed = app.checkAuth(c) && app.checkAuth(a);
-				if(!allowed) {
+				if (!allowed) {
 					q.resolve();
-					return {done:function(d){}};
+					return {
+						done: function (d) {
+						}
+					};
 				}
-				// prepare new view for DOM display
-				page.render();
-				console.log(utils.capitalize(c) + utils.capitalize(a));
 
-				var d = {};
-				var response = {};
+				var __ret = prepareViewForDomDisplay.call(this, page, c, a, $, utils);
+				var d = __ret.d;
+				var response = __ret.response;
+				var pageContent = __ret.pageContent;
+				var pageTitle = __ret.pageTitle;
+				var reverse = __ret.reverse;
+				var transition = __ret.transition;
 
-				var pageContent = page.$el.attr("data-role", "page");
-				var pageTitle = pageContent.find('meta[name="title"]').attr('content');
-
-				var header = utils.renderheader({title:pageTitle});
-				
-				pageContent.css('padding-top', '54px'); 
-				$pageContainer = $('#pagecontainer');
-				var $header = $pageContainer.find('.ui-header');
-				$pageContainer.append(pageContent);
-				$pageContainer.trigger("create");
-				if($header.length > 0) {
-					$header.replaceWith(header);
-				} else {
-					$pageContainer.append(header);
-				}
-				var transition = $.mobile.changePage.defaults.transition;
-				var reverse = $.mobile.changePage.defaults.reverse;
-
-				var transition = $.mobile.defaultPageTransition;
-				// Erste Seite nicht sliden
-				if (this.firstPage){
-					transition = 'none';
-					this.firstPage = false;
-				}
 				var content = false;
-				if(!app.data[c]) 
+				if (!app.data[c])
 					app.data[c] = {};
-				
+
 				/**
-				* Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
-				* @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
-				* @param d data object
-				*/
-				var success = function(s, d){ 
-					if(content) {
+				 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
+				 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
+				 * @param d data object
+				 */
+				var success = function (s, d) {
+					if (content) {
 						console.log('content');
-						if(content.fetchSuccess)
+						if (content.fetchSuccess)
 							content.fetchSuccess(s, d);
 						content.p = params;
-						if(content.beforeRender)
+						if (content.beforeRender)
 							content.beforeRender();
-						if(s == 'set') { //Model aus collection geholt
-							if(content.model) {
+						if (s == 'set') { //Model aus collection geholt
+							if (content.model) {
 								content.model.set(d);
 								content.model.p = params;
 							}
-						} else if(s == 'cached') { //Daten aus dem Cache geholt
-							if(content.model) {
+						} else if (s == 'cached') { //Daten aus dem Cache geholt
+							if (content.model) {
 								content.model.set(content.model.parse(d));
 								content.model.p = params;
 							}
-							if(content.collection) {
+							if (content.collection) {
 								content.collection.set(content.collection.parse(d));
 								content.collection.p = params;
 							}
 						} else { //Daten vom Server geholt
-							if(content.collection) {
+							if (content.collection) {
 								response = d = content.collection.toJSON();
 								content.collection.p = params;
-								if(content.collection.response)
+								if (content.collection.response)
 									response = content.collection.response;
 							}
-							
-							if(content.model && content.model.toJSON) {
+
+							if (content.model && content.model.toJSON) {
 								response = d = content.model.toJSON();
 								content.model.p = params;
-								if(content.model.response)
+								if (content.model.response)
 									response = content.model.response;
 							}
 						}
-						if(_.keys(response).length > 0) {
-							if(!app.data[c]) 
+						if (_.keys(response).length > 0) {
+							if (!app.data[c])
 								app.data[c] = {};
 							app.data[c][a] = response; //Daten speichern
-							if(content.model)
+							if (content.model)
 								app.appCache.setCache(content.model.url, response);
-							else if(content.collection) {
+							else if (content.collection) {
 								app.appCache.setCache(content.collection.url, response);
 							}
 						}
-						content.render();
-
-						var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
-						
-						if($metas.length > 0){
-							var metas = {};
-							$metas.each(function(){
-								metas[$(this).attr('name')] = $(this).attr('content');
-							});
-							if(!metas.title) 
-								metas.title = pageTitle;
-							var header = utils.renderheader(metas);
-							$pageContainer.find('.ui-header').replaceWith(header);
-							$footer = $pageContainer.find('.ui-footer');
-							if($footer.length > 0) {
-								pageContent.addClass('ui-page-footer-fixed');
-							}
-						}
-						if(content.afterRender)
-							content.afterRender();
-						$pageContainer.trigger("create");
+						finishRendering(content, pageTitle, pageContent, utils, $);
 					}
-					if(_.keys(response).length > 0)
-							q.resolve(response, content);
-						else
-							q.resolve(d, content);
+					if (_.keys(response).length > 0)
+						q.resolve(response, content);
+					else
+						q.resolve(d, content);
 				}
-				
-				/** 
-				* Wird nach Pagetransition ausgeführt
-				*/
-				var afterTransition = function(){
-					if(app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
+
+				/**
+				 * Wird nach Pagetransition ausgeführt
+				 */
+				var afterTransition = function () {
+					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						app.currentView = {};
 						params.page = page.$el;
 						app.currentView = content = new app.views[utils.capitalize(c) + utils.capitalize(a)](params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
 						content.page = page.$el;
-				
-						if((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
+
+						if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
 							var parts = content.inCollection.split('.');
 							try {
 								var list = eval('app.data.' + content.inCollection);
-							} catch(e) {
+							} catch (e) {
 							}
-							if(list) {
+							if (list) {
 								try {
-									var filteredList = _.filter(list, function(item){
-										return _.some(item, function(item){
+									var filteredList = _.filter(list, function (item) {
+										return _.some(item, function (item) {
 											return eval('item.' + content.idInCollection) == params.id;
 										});
 									});
-								} catch(e){
+								} catch (e) {
 								}
 							}
-							if(filteredList) //Element in Liste gefunden
+							if (filteredList) //Element in Liste gefunden
 								d = filteredList[0];
 						}
-						if(content.collection) { //Content hat eine Collection
-							if(app.appCache.getCache(content.collection.url)) {
+						if (content.collection) { //Content hat eine Collection
+							if (app.appCache.getCache(content.collection.url)) {
 								success('cached', app.appCache.getCache(content.collection.url));
-							} else if(content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
+							} else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
 								content.collection.fetch({
 									success: success,
-									error: function(){
+									error: function () {
 									},
 									dataType: 'json'
 								});
@@ -388,19 +423,18 @@ define([
 								success();
 							}
 						} else {
-							if(content.model) { //Content hat ein Model
+							if (content.model) { //Content hat ein Model
 								console.log('Model');
-								if(_.keys(d).length > 0) { //Model bereits in Collection gefunden
+								if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
 									success('set', d);
 								}
-								else
-								if(app.appCache.getCache(content.model.url)) { //Model in cache
+								else if (app.appCache.getCache(content.model.url)) { //Model in cache
 									success('cached', app.appCache.getCache(content.model.url));
-								} else if(content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
+								} else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
 									console.log(content.model);
 									content.model.fetch($.extend(utils.cacheDefaults(), {
 										success: success,
-										error: function(){
+										error: function () {
 										},
 										dataType: 'json'
 									}));
@@ -420,8 +454,12 @@ define([
 				app.saveScrollPosition();
 				app.prepareScrollPositionFor(Backbone.history.fragment);
 				customHistory.push(Backbone.history.fragment);
-				Q($.mobile.changePage(pageContent, {changeHash: false, transition: transition, reverse: reverse})).done(function(){
-					if(!app.currentView){
+				Q($.mobile.changePage(pageContent, {
+					changeHash: false,
+					transition: transition,
+					reverse: reverse
+				})).done(function () {
+					if (!app.currentView) {
 						$('body').css('overflow', 'auto');
 						$("body").fadeIn(100);
 					}
