@@ -513,23 +513,6 @@ define([
 				return ViewContainer.getPageExtract(id, $);
 			},
 			/*
-			* @Url in Geräteinternem Browser öffnen
-			*/
-			openBrowser:function(url){
-				track(url);
-				try {
-					//Für Android
-					var ref = navigator.app.loadUrl(url, { openExternal:true });
-				} catch (e){
-				}
-				try {
-					//Für iOS
-					var ref = window.open(url, '_system'); 
-				} catch (e){
-					
-				}
-			},
-			/*
 			* Alle Controllers und deren Viewtemplates laden
 			* @urls: Liste der URLs zu den Controller Dateien
 			*/
