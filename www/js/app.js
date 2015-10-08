@@ -462,16 +462,6 @@ define([
 				prepareScrollPositionExtract.call(this, route, $);
 			},
 			
-			serializeRoute: function(route, params) {
-				var result = route;
-				for (var count in params) {
-					if (params[count] != null) {
-						result += " " + params[count];
-					}
-				}
-				return result;
-			},
-			
 			/**
 			* Daten vom Server laden
 			* @param url zu ladende URL
