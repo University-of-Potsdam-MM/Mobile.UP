@@ -102,10 +102,6 @@ define([
             return $('.ui-content', this.activePage());
         },
 
-        getPageExtract: function (id, $) {
-            return $('#' + id);
-        },
-
         animateHeaderAndFooter: function (a, $) {
             var toPage = a.toPage;
             if (typeof(a.toPage) != 'string') {

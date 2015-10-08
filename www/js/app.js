@@ -507,12 +507,6 @@ define([
 				return ViewContainer.activeConExtract.call(this, $);
 			},
 			/*
-			* SeitenContainer mit @id zurückgeben
-			*/
-			getPage:function(id){
-				return ViewContainer.getPageExtract(id, $);
-			},
-			/*
 			* Alle Controllers und deren Viewtemplates laden
 			* @urls: Liste der URLs zu den Controller Dateien
 			*/
