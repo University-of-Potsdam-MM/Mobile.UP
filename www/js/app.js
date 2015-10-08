@@ -1,4 +1,64 @@
 var app = {models:{},views:{},controllers:{}};
+var initContentAndData = function (c) {
+	var content = false;
+	if (!app.data[c])
+		app.data[c] = {};
+	return content;
+};
+var setFetchedContent = function (content, s, d, params, response, c, a, _) {
+	console.log('content');
+	if (content.fetchSuccess)
+		content.fetchSuccess(s, d);
+	content.p = params;
+	if (content.beforeRender)
+		content.beforeRender();
+	if (s == 'set') { //Model aus collection geholt
+		if (content.model) {
+			content.model.set(d);
+			content.model.p = params;
+		}
+	} else if (s == 'cached') { //Daten aus dem Cache geholt
+		if (content.model) {
+			content.model.set(content.model.parse(d));
+			content.model.p = params;
+		}
+		if (content.collection) {
+			content.collection.set(content.collection.parse(d));
+			content.collection.p = params;
+		}
+	} else { //Daten vom Server geholt
+		if (content.collection) {
+			response = d = content.collection.toJSON();
+			content.collection.p = params;
+			if (content.collection.response)
+				response = content.collection.response;
+		}
+
+		if (content.model && content.model.toJSON) {
+			response = d = content.model.toJSON();
+			content.model.p = params;
+			if (content.model.response)
+				response = content.model.response;
+		}
+	}
+	if (_.keys(response).length > 0) {
+		if (!app.data[c])
+			app.data[c] = {};
+		app.data[c][a] = response; //Daten speichern
+		if (content.model)
+			app.appCache.setCache(content.model.url, response);
+		else if (content.collection) {
+			app.appCache.setCache(content.collection.url, response);
+		}
+	}
+	return {d: d, response: response};
+};
+var resolveWithContent = function (response, q, content, d, _) {
+	if (_.keys(response).length > 0)
+		q.resolve(response, content);
+	else
+		q.resolve(d, content);
+};
 define([
 	'jquery',
 	'underscore',
@@ -231,10 +291,7 @@ define([
 				var reverse = __ret.reverse;
 				var transition = __ret.transition;
 
-				var content = false;
-				if (!app.data[c])
-					app.data[c] = {};
-
+				var content = initContentAndData(c);
 				/**
 				 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
 				 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
@@ -242,57 +299,12 @@ define([
 				 */
 				var success = function (s, d) {
 					if (content) {
-						console.log('content');
-						if (content.fetchSuccess)
-							content.fetchSuccess(s, d);
-						content.p = params;
-						if (content.beforeRender)
-							content.beforeRender();
-						if (s == 'set') { //Model aus collection geholt
-							if (content.model) {
-								content.model.set(d);
-								content.model.p = params;
-							}
-						} else if (s == 'cached') { //Daten aus dem Cache geholt
-							if (content.model) {
-								content.model.set(content.model.parse(d));
-								content.model.p = params;
-							}
-							if (content.collection) {
-								content.collection.set(content.collection.parse(d));
-								content.collection.p = params;
-							}
-						} else { //Daten vom Server geholt
-							if (content.collection) {
-								response = d = content.collection.toJSON();
-								content.collection.p = params;
-								if (content.collection.response)
-									response = content.collection.response;
-							}
-
-							if (content.model && content.model.toJSON) {
-								response = d = content.model.toJSON();
-								content.model.p = params;
-								if (content.model.response)
-									response = content.model.response;
-							}
-						}
-						if (_.keys(response).length > 0) {
-							if (!app.data[c])
-								app.data[c] = {};
-							app.data[c][a] = response; //Daten speichern
-							if (content.model)
-								app.appCache.setCache(content.model.url, response);
-							else if (content.collection) {
-								app.appCache.setCache(content.collection.url, response);
-							}
-						}
+						var __ret = setFetchedContent(content, s, d, params, response, c, a, _);
+						d = __ret.d;
+						response = __ret.response;
 						viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer, utils, $);
 					}
-					if (_.keys(response).length > 0)
-						q.resolve(response, content);
-					else
-						q.resolve(d, content);
+					resolveWithContent(response, q, content, d, _);
 				};
 
 				/**
