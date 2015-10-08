@@ -228,7 +228,7 @@ define([
 		$.os.androidICS = $.os.android && userAgent.match(/(Android)\s4/) ? true : false;
 		$.os.ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/) ? true : false;
 		$.os.iphone = !$.os.ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/) ? true : false;
-		$.os.ios7 = userAgent.match(/(iPhone\sOS)\s([7_]+)/) ? true : false;
+		$.os.ios7 = userAgent.match(/(iPhone\sOS)\s([789_]+)/) ? true : false;
 		$.os.webos = userAgent.match(/(webOS|hpwOS)[\s\/]([\d.]+)/) ? true : false;
 		$.os.touchpad = $.os.webos && userAgent.match(/TouchPad/) ? true : false;
 		$.os.ios = $.os.ipad || $.os.iphone;
@@ -249,8 +249,8 @@ define([
 		$.feat.cssTransformStart = !$.os.opera ? "3d(" : "(";
 		$.feat.cssTransformEnd = !$.os.opera ? ",0)" : ")";
 		if ($.os.android && !$.os.webkit)
-		$.os.android = false;
-	}
+			$.os.android = false;
+	};
 
 	/**
 	 * Takes a model or collection ("subject") and triggers an event if the subject doesn't have any sync processes running in the background.
