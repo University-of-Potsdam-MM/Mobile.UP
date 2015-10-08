@@ -1,13 +1,4 @@
 var app = {models:{},views:{},controllers:{}};
-var setIosHeaderFix = function ($) {
-	if ($.os.ios7) {
-		$('body').addClass('ios-statusbar');
-	}
-};
-var setReverseSlidefadeTransition = function ($) {
-	$.mobile.changePage.defaults.transition = 'slidefade';
-	$.mobile.changePage.defaults.reverse = 'reverse';
-};
 var renderExtract = function (view, d) {
 	var temp = this.template(view); //Template-String aus dem DOM holen
 	if (d && d.vars)
@@ -55,73 +46,6 @@ var prepareViewForDomDisplay = function (page, c, a, $, utils) {
 		transition: transition
 	};
 };
-var finishRendering = function (content, pageTitle, pageContent, utils, $) {
-	content.render();
-
-	var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
-
-	if ($metas.length > 0) {
-		var metas = {};
-		$metas.each(function () {
-			metas[$(this).attr('name')] = $(this).attr('content');
-		});
-		if (!metas.title)
-			metas.title = pageTitle;
-		var header = utils.renderheader(metas);
-		$pageContainer.find('.ui-header').replaceWith(header);
-		$footer = $pageContainer.find('.ui-footer');
-		if ($footer.length > 0) {
-			pageContent.addClass('ui-page-footer-fixed');
-		}
-	}
-	if (content.afterRender)
-		content.afterRender();
-	$pageContainer.trigger("create");
-};
-var setCurrentView = function (params, page, content, c, a, utils) {
-	app.currentView = {};
-	params.page = page.$el;
-	app.currentView = content = new app.views[utils.capitalize(c) + utils.capitalize(a)](params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
-	content.page = page.$el;
-	return content;
-};
-var usePageAsView = function (page) {
-	app.currentView = page;
-	app.updateHeader(page.$el);
-};
-var saveAndPrepareScrollPosition = function (Backbone) {
-	app.saveScrollPosition();
-	app.prepareScrollPositionFor(Backbone.history.fragment);
-};
-var executeTransition = function (pageContent, transition, reverse, page, afterTransition, Q, $) {
-	Q($.mobile.changePage(pageContent, {
-		changeHash: false,
-		transition: transition,
-		reverse: reverse
-	})).done(function () {
-		if (!app.currentView) {
-			$('body').css('overflow', 'auto');
-			$("body").fadeIn(100);
-		}
-		app.currentView = page;
-		afterTransition();
-	});
-};
-var updateHeaderExtract = function ($el, $, utils) {
-	var $metas = $el.find('meta'); //Meta infos aus Seite in den Header integrieren
-	console.log($el[0]);
-	$header = $('.ui-header');
-	if ($metas.length > 0) {
-		var metas = {};
-		$metas.each(function () {
-			metas[$(this).attr('name')] = $(this).attr('content');
-		});
-		if (!metas.title)
-			metas.title = $header.find('h1').html();
-		var header = utils.renderheader(metas);
-		$header.replaceWith(header);
-	}
-};
 var saveScrollPositionExtract = function (customHistory, $) {
 	console.log(customHistory);
 	if (customHistory.hasHistory()) {
@@ -141,34 +65,6 @@ var prepareScrollPositionExtract = function (route, $) {
 	var activePage = $.mobile.navigate.history.getActive();
 	activePage.lastScroll = pos;
 };
-var notifyMissingServerConnection = function ($) {
-	$('.ui-btn-active', app.activePage()).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
-	app.previous(true);
-	var s = 'Es konnte keine Verbindung zum Server hergestellt werden. Bitte überprüfe deine Internetverbindung';
-	if (navigator.notification) //Über Plugin für App
-		navigator.notification.alert(s, null, 'Kein Internet'); //Fehlermeldung ausgeben
-	else
-		alert(s); //Für Browser
-};
-var animateHeaderAndFooter = function (a, $) {
-	var toPage = a.toPage;
-	if (typeof(a.toPage) != 'string') {
-		var header = $('.header', toPage);
-		var footer = $('.footer', toPage);
-		var duration = 350, animating = 'footer';
-		window.footerAnimating = true;
-		var dir = window.reverseTransition ? 1 : -1; //Transitionsrichtung für Footeranimation ermitteln
-	}
-};
-var activePageExtract = function ($) {
-	return $.mobile.activePage;
-};
-var activeConExtract = function ($) {
-	return $('.ui-content', this.activePage());
-};
-var getPageExtract = function (id, $) {
-	return $('#' + id);
-};
 define([
 	'jquery',
 	'underscore',
@@ -181,10 +77,11 @@ define([
 	'Session',
 	'history',
 	'appCache',
+	'viewContainer',
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewContainer){
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
 			before:function(route){ //wird komischerweise nur ausgeführt, wenn zurücknavigiert wird. Und genau dafür wird diese Funktion benutzt.
@@ -232,7 +129,7 @@ define([
 			initialize: function(){
 				app.session = new Session;
 				detectUA($, navigator.userAgent);
-				setIosHeaderFix($);
+				ViewContainer.setIosHeaderFix($);
 					/**
 				 * Override Backbone.sync to automatically include auth headers according to the url in use
 				 */
@@ -254,7 +151,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-							setReverseSlidefadeTransition($);
+							ViewContainer.setReverseSlidefadeTransition($);
 							customHistory.goBack();
     					}
     				}, false);
@@ -463,7 +360,7 @@ define([
 								app.appCache.setCache(content.collection.url, response);
 							}
 						}
-						finishRendering(content, pageTitle, pageContent, utils, $);
+						ViewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer, utils, $);
 					}
 					if (_.keys(response).length > 0)
 						q.resolve(response, content);
@@ -476,7 +373,7 @@ define([
 				 */
 				var afterTransition = function () {
 					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-						content = setCurrentView(params, page, content, c, a, utils);
+						content = ViewContainer.setCurrentView(params, page, content, c, a, app, utils);
 						if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
 							var parts = content.inCollection.split('.');
 							try {
@@ -533,19 +430,19 @@ define([
 							}
 						}
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
-						usePageAsView(page);
+						ViewContainer.usePageAsView(page, app);
 						success();
 					}
 				}
-				saveAndPrepareScrollPosition(Backbone);
+				ViewContainer.saveAndPrepareScrollPosition(app, Backbone);
 				customHistory.push(Backbone.history.fragment);
-				executeTransition(pageContent, transition, reverse, page, afterTransition, Q, $);
+				ViewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
 
 				return q.promise;
 			},
 			
 			updateHeader: function($el){
-				updateHeaderExtract($el, $, utils);
+				ViewContainer.updateHeaderExtract($el, $, utils);
 			},
 			
 			checkAuth: function(name){
@@ -610,11 +507,11 @@ define([
 				$.ajaxSetup({
 					  "error":function() { //Globale AJAX-Fehlerfunktion, wenn z.B. keine Internetverbindung besteht
 						  app.locked = false;
-						  notifyMissingServerConnection($);
+						  ViewContainer.notifyMissingServerConnection(app, $);
 					  }
 				});
 				$(document).on('pagebeforechange', function(e, a){ //Bevor zur nächsten Seite gewechselt wird
-					animateHeaderAndFooter(a, $);
+					ViewContainer.animateHeaderAndFooter(a, $);
 				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
@@ -625,19 +522,19 @@ define([
 			* Momentan aktive Seite zurückgeben
 			*/
 			activePage: function(){
-				return activePageExtract($);
+				return ViewContainer.activePageExtract($);
 			},
 			/*
 			* InhaltsContainer der momentan aktiven Seite zurückgeben
 			*/
 			activeCon:function(){
-				return activeConExtract.call(this, $);
+				return ViewContainer.activeConExtract.call(this, $);
 			},
 			/*
 			* SeitenContainer mit @id zurückgeben
 			*/
 			getPage:function(id){
-				return getPageExtract(id, $);
+				return ViewContainer.getPageExtract(id, $);
 			},
 			/*
 			* @Url in Geräteinternem Browser öffnen
