@@ -135,7 +135,6 @@ define([
 	'LocalStore'
 	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper){
 		var viewContainer = ViewHelper.viewContainer;
-		var scrollManager = ViewHelper.scrollManager;
 
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
