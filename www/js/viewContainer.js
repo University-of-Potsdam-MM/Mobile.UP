@@ -5,8 +5,9 @@ define([
     'backboneMVC',
     'underscore-string',
     'utils',
-    'q'
-], function($, _, Backbone, BackboneMVC, _str, utils, Q) {
+    'q',
+    'history'
+], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
 
     var viewContainer = {
 
@@ -51,8 +52,8 @@ define([
         },
 
         saveAndPrepareScrollPosition: function (app, Backbone) {
-            app.saveScrollPosition();
-            app.prepareScrollPositionFor(Backbone.history.fragment);
+            scrollManager.saveScrollPositionExtract(customHistory);
+            scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
         },
 
         executeTransition: function (pageContent, transition, reverse, page, afterTransition, app, Q, $) {
@@ -169,7 +170,7 @@ define([
     var scrollManager = {
         routesToScrollPositions: {},
 
-        saveScrollPositionExtract: function (customHistory, $) {
+        saveScrollPositionExtract: function (customHistory) {
             console.log(customHistory);
             if (customHistory.hasHistory()) {
                 var name = customHistory.currentRoute();
@@ -177,7 +178,7 @@ define([
             }
         },
 
-        prepareScrollPositionExtract: function (route, $) {
+        prepareScrollPositionExtract: function (route) {
             var pos = 0;
             //alert(route);
             if (this.routesToScrollPositions[route]) {

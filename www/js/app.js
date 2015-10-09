@@ -412,14 +412,6 @@ define([
 				}
 			},
 			
-			saveScrollPosition: function() {
-				scrollManager.saveScrollPositionExtract(customHistory, $);
-			},
-	
-			prepareScrollPositionFor: function(route) {
-				scrollManager.prepareScrollPositionExtract(route, $);
-			},
-
 			/**
 			* Globale Events setzen
 			*/
