@@ -1,4 +1,42 @@
 var app = {models:{},views:{},controllers:{}};
+
+var controllerLoader = {
+	viewFileExt: 'js', //Dateiendung der View files
+
+	loadControllersExtract: function (context, urls, $) {
+		var that = this;
+		require(urls, function () {
+			var views = [], modules = [], classNames = [], viewNames = [], appc = [];
+			var c = 0, d = 0;
+			for (var i in app.controllers) {
+				context.controllersLoaded = true;
+				app.c[i] = appc[i] = (new app.controllers[i]);
+				console.log(app.c[i]);
+				if (app.c[i].init) {
+					console.log(app.c[i].init);
+					app.c[i].init();
+				}
+				for (var j in appc[i].views) {
+					views[c] = 'text!' + appc[i].views[j] + '.' + that.viewFileExt;
+					viewNames[c] = appc[i].views[j];
+					c++;
+				}
+				if (appc[i].modules)
+					for (var name in appc[i].modules) {
+						modules[d] = 'js/modules/' + name + '.' + that.viewFileExt;
+						//alert(modules[d]);
+						//classNames[d] = appc[i].modules[name]; //deprectaed
+
+						d++;
+					}
+			}
+			require(modules, function () {
+				$(document).trigger('app:controllersLoaded');
+			});
+		});
+	}
+};
+
 define([
 	'jquery',
 	'underscore',
@@ -55,7 +93,6 @@ define([
 				"https://api.uni-potsdam.de/endpoints/personAPI",
 				"https://api.uni-potsdam.de/endpoints/mensaAPI",
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
-			viewFileExt: 'js', //Dateiendung der View files
 			router : new AppRouter(), //Router zuweisen
 			/*
 			* Intitialisierung
@@ -134,7 +171,7 @@ define([
 						app.history.push(Backbone.history.fragment); 
 					}
 				});
-				this.loadControllers(this.controllerList); //Alle Controller laden
+				this.loadControllers(this.controllerList, this); //Alle Controller laden
 				customHistory.startTracking();
 			},
 			/**
@@ -327,37 +364,8 @@ define([
 			* Alle Controllers und deren Viewtemplates laden
 			* @urls: Liste der URLs zu den Controller Dateien
 			*/
-			loadControllers: function(urls) {
-				var that = this;
-				require(urls, function(){
-					var views = [], modules = [], classNames = [], viewNames = [], appc = [];
-					var c = 0, d = 0;
-					for(var i in app.controllers) {
-						that.controllersLoaded = true;
-						app.c[i] = appc[i] = (new app.controllers[i]);
-						console.log(app.c[i]);
-						if(app.c[i].init) {
-							console.log(app.c[i].init);
-							app.c[i].init();
-						}
-						for(var j in appc[i].views) {
-							views[c] = 'text!'+appc[i].views[j]+'.' + that.viewFileExt;
-							viewNames[c] = appc[i].views[j];
-							c++;
-						}
-						if(appc[i].modules) 
-						for(var name in appc[i].modules) {
-							modules[d] = 'js/modules/'+name+'.' + that.viewFileExt;
-							//alert(modules[d]);
-							//classNames[d] = appc[i].modules[name]; //deprectaed
-							
-							d++;
-						}
-					}
-					require(modules, function(){
-						$(document).trigger('app:controllersLoaded');
-					});
-				});
+			loadControllers: function(urls, context) {
+				controllerLoader.loadControllersExtract(context, urls, $);
 			}
 		};
 
