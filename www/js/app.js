@@ -59,6 +59,64 @@ var resolveWithContent = function (response, q, content, d, _) {
 	else
 		q.resolve(d, content);
 };
+var retreiveElementFromLoadedCollection = function (content, params, d, _) {
+	if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
+		var parts = content.inCollection.split('.');
+		try {
+			var list = eval('app.data.' + content.inCollection);
+		} catch (e) {
+		}
+		if (list) {
+			try {
+				var filteredList = _.filter(list, function (item) {
+					return _.some(item, function (item) {
+						return eval('item.' + content.idInCollection) == params.id;
+					});
+				});
+			} catch (e) {
+			}
+		}
+		if (filteredList) //Element in Liste gefunden
+			d = filteredList[0];
+	}
+	return d;
+};
+var retreiveOrFetchContent = function (content, success, d, $, utils, _) {
+	if (content.collection) { //Content hat eine Collection
+		if (app.appCache.getCache(content.collection.url)) {
+			success('cached', app.appCache.getCache(content.collection.url));
+		} else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
+			content.collection.fetch({
+				success: success,
+				error: function () {
+				},
+				dataType: 'json'
+			});
+		} else {
+			success();
+		}
+	} else if (content.model) { //Content hat ein Model
+		console.log('Model');
+		if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
+			success('set', d);
+		}
+		else if (app.appCache.getCache(content.model.url)) { //Model in cache
+			success('cached', app.appCache.getCache(content.model.url));
+		} else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
+			console.log(content.model);
+			content.model.fetch($.extend(utils.cacheDefaults(), {
+				success: success,
+				error: function () {
+				},
+				dataType: 'json'
+			}));
+		} else {
+			success();
+		}
+	} else { //Content einfach so
+		success();
+	}
+};
 define([
 	'jquery',
 	'underscore',
@@ -313,59 +371,8 @@ define([
 				var afterTransition = function () {
 					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						content = viewContainer.setCurrentView(params, page, content, c, a, app, utils);
-						if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
-							var parts = content.inCollection.split('.');
-							try {
-								var list = eval('app.data.' + content.inCollection);
-							} catch (e) {
-							}
-							if (list) {
-								try {
-									var filteredList = _.filter(list, function (item) {
-										return _.some(item, function (item) {
-											return eval('item.' + content.idInCollection) == params.id;
-										});
-									});
-								} catch (e) {
-								}
-							}
-							if (filteredList) //Element in Liste gefunden
-								d = filteredList[0];
-						}
-						if (content.collection) { //Content hat eine Collection
-							if (app.appCache.getCache(content.collection.url)) {
-								success('cached', app.appCache.getCache(content.collection.url));
-							} else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
-								content.collection.fetch({
-									success: success,
-									error: function () {
-									},
-									dataType: 'json'
-								});
-							} else {
-								success();
-							}
-						} else if (content.model) { //Content hat ein Model
-							console.log('Model');
-							if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
-								success('set', d);
-							}
-							else if (app.appCache.getCache(content.model.url)) { //Model in cache
-								success('cached', app.appCache.getCache(content.model.url));
-							} else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
-								console.log(content.model);
-								content.model.fetch($.extend(utils.cacheDefaults(), {
-									success: success,
-									error: function () {
-									},
-									dataType: 'json'
-								}));
-							} else {
-								success();
-							}
-						} else { //Content einfach so
-							success();
-						}
+						d = retreiveElementFromLoadedCollection(content, params, d, _);
+						retreiveOrFetchContent(content, success, d, $, utils, _);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
 						success();
