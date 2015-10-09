@@ -130,10 +130,11 @@ define([
 	'history',
 	'appCache',
 	'viewContainer',
+	'contentLoader',
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper, contentLoader){
 		var viewContainer = ViewHelper.viewContainer;
 
 		//AppRouter-Klasse erstellen
