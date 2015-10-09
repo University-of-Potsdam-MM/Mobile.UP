@@ -419,20 +419,7 @@ define([
 			prepareScrollPositionFor: function(route) {
 				scrollManager.prepareScrollPositionExtract(route, $);
 			},
-			
-			/**
-			* Daten vom Server laden
-			* @param url zu ladende URL
-			*/
-			get: function(url){
-				var q = Q.defer();
-				if(!this.refreshing && app.appCache.hasValidRequestEntry(url)) { //Alle 5 Stunden wird aktualisiert, sonst aus dem Cache holen, wenn vorhanden
-					q.resolve(app.appCache.getRequest(url));
-				} else {
-					$.getJSON(this.jsonUrl + url).done(function(d){ app.appCache.setRequest(url); q.resolve(d);}); //Url anfragen
-				}
-				return q.promise;
-			},
+
 			/**
 			* Globale Events setzen
 			*/
