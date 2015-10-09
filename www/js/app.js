@@ -6,10 +6,9 @@ var controllerLoader = {
 	loadControllersExtract: function (context, urls, $) {
 		var that = this;
 		require(urls, function () {
-			var views = [], modules = [], classNames = [], viewNames = [], appc = [];
+			var views = [], modules = [], viewNames = [], appc = [];
 			var c = 0, d = 0;
 			for (var i in app.controllers) {
-				context.controllersLoaded = true;
 				app.c[i] = appc[i] = (new app.controllers[i]);
 				console.log(app.c[i]);
 				if (app.c[i].init) {
@@ -24,9 +23,6 @@ var controllerLoader = {
 				if (appc[i].modules)
 					for (var name in appc[i].modules) {
 						modules[d] = 'js/modules/' + name + '.' + that.viewFileExt;
-						//alert(modules[d]);
-						//classNames[d] = appc[i].modules[name]; //deprectaed
-
 						d++;
 					}
 			}
