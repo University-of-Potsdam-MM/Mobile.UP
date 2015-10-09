@@ -10,13 +10,12 @@ define([
 	'fastclick',
 	'Session',
 	'history',
-	'appCache',
 	'viewContainer',
 	'contentLoader',
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, AppCache, ViewHelper, contentLoader){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader){
 		var viewContainer = ViewHelper.viewContainer;
 
 		//AppRouter-Klasse erstellen
@@ -58,7 +57,6 @@ define([
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
 			viewFileExt: 'js', //Dateiendung der View files
 			router : new AppRouter(), //Router zuweisen
-			appCache : new AppCache(),
 			/*
 			* Intitialisierung
 			*/

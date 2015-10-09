@@ -9,7 +9,22 @@ define([
     'history'
 ], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
 
+    var AppCache = Backbone.Model.extend({
+        cacheTimes: [], //Speichert für jede URL die letzte Zeit, wann diese vom Server geladen wurde
+        cache: {},
+
+        setCache: function(url, response) {
+            this.cache[url] = response;
+        },
+
+        getCache: function(url) {
+            return this.cache[url];
+        }
+    });
+
     var ContentLoader = {
+        appCache : new AppCache(),
+
         initContentAndData: function (c) {
             var content = false;
             if (!app.data[c])
@@ -58,9 +73,9 @@ define([
                     app.data[c] = {};
                 app.data[c][a] = response; //Daten speichern
                 if (content.model)
-                    app.appCache.setCache(content.model.url, response);
+                    this.appCache.setCache(content.model.url, response);
                 else if (content.collection) {
-                    app.appCache.setCache(content.collection.url, response);
+                    this.appCache.setCache(content.collection.url, response);
                 }
             }
             return {d: d, response: response};
@@ -98,8 +113,8 @@ define([
 
         retreiveOrFetchContent: function (content, success, d, $, utils, _) {
             if (content.collection) { //Content hat eine Collection
-                if (app.appCache.getCache(content.collection.url)) {
-                    success('cached', app.appCache.getCache(content.collection.url));
+                if (this.appCache.getCache(content.collection.url)) {
+                    success('cached', this.appCache.getCache(content.collection.url));
                 } else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
                     content.collection.fetch({
                         success: success,
@@ -115,8 +130,8 @@ define([
                 if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
                     success('set', d);
                 }
-                else if (app.appCache.getCache(content.model.url)) { //Model in cache
-                    success('cached', app.appCache.getCache(content.model.url));
+                else if (this.appCache.getCache(content.model.url)) { //Model in cache
+                    success('cached', this.appCache.getCache(content.model.url));
                 } else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
                     console.log(content.model);
                     content.model.fetch($.extend(utils.cacheDefaults(), {
