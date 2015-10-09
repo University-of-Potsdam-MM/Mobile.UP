@@ -345,28 +345,26 @@ define([
 							} else {
 								success();
 							}
-						} else {
-							if (content.model) { //Content hat ein Model
-								console.log('Model');
-								if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
-									success('set', d);
-								}
-								else if (app.appCache.getCache(content.model.url)) { //Model in cache
-									success('cached', app.appCache.getCache(content.model.url));
-								} else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
-									console.log(content.model);
-									content.model.fetch($.extend(utils.cacheDefaults(), {
-										success: success,
-										error: function () {
-										},
-										dataType: 'json'
-									}));
-								} else {
-									success();
-								}
-							} else { //Content einfach so
+						} else if (content.model) { //Content hat ein Model
+							console.log('Model');
+							if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
+								success('set', d);
+							}
+							else if (app.appCache.getCache(content.model.url)) { //Model in cache
+								success('cached', app.appCache.getCache(content.model.url));
+							} else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
+								console.log(content.model);
+								content.model.fetch($.extend(utils.cacheDefaults(), {
+									success: success,
+									error: function () {
+									},
+									dataType: 'json'
+								}));
+							} else {
 								success();
 							}
+						} else { //Content einfach so
+							success();
 						}
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
