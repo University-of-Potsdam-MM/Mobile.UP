@@ -1,38 +1,4 @@
 var app = {models:{},views:{},controllers:{}};
-
-var controllerLoader = {
-	viewFileExt: 'js', //Dateiendung der View files
-
-	loadControllersExtract: function (context, urls, $) {
-		var that = this;
-		require(urls, function () {
-			var views = [], modules = [], viewNames = [], appc = [];
-			var c = 0, d = 0;
-			for (var i in app.controllers) {
-				app.c[i] = appc[i] = (new app.controllers[i]);
-				console.log(app.c[i]);
-				if (app.c[i].init) {
-					console.log(app.c[i].init);
-					app.c[i].init();
-				}
-				for (var j in appc[i].views) {
-					views[c] = 'text!' + appc[i].views[j] + '.' + that.viewFileExt;
-					viewNames[c] = appc[i].views[j];
-					c++;
-				}
-				if (appc[i].modules)
-					for (var name in appc[i].modules) {
-						modules[d] = 'js/modules/' + name + '.' + that.viewFileExt;
-						d++;
-					}
-			}
-			require(modules, function () {
-				$(document).trigger('app:controllersLoaded');
-			});
-		});
-	}
-};
-
 define([
 	'jquery',
 	'underscore',
@@ -46,10 +12,11 @@ define([
 	'history',
 	'viewContainer',
 	'contentLoader',
+	'controllerLoader',
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader, controllerLoader){
 		var viewContainer = ViewHelper.viewContainer;
 
 		//AppRouter-Klasse erstellen
@@ -167,7 +134,7 @@ define([
 						app.history.push(Backbone.history.fragment); 
 					}
 				});
-				this.loadControllers(this.controllerList, this); //Alle Controller laden
+				controllerLoader.loadControllersExtract(this.controllerList); //Alle Controller laden
 				customHistory.startTracking();
 			},
 			/**
@@ -355,13 +322,6 @@ define([
 			*/
 			activeCon:function(){
 				return viewContainer.activeConExtract.call(this, $);
-			},
-			/*
-			* Alle Controllers und deren Viewtemplates laden
-			* @urls: Liste der URLs zu den Controller Dateien
-			*/
-			loadControllers: function(urls, context) {
-				controllerLoader.loadControllersExtract(context, urls, $);
 			}
 		};
 
