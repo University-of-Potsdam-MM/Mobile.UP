@@ -30,16 +30,6 @@ define([
 		app = {
 			c: {}, //Controller-Objekte werden in diesem Array abgelegt
 			controllers: {}, //Controllerklassen
-			controllerList: [ 
-				"controllers/main",
-				"controllers/events", 
-				"controllers/news", 
-				"controllers/campus", //"Onepager" in einem Controller um platz zu sparen
-				"controllers/studies", //"Onepager" in einem Controller um platz zu sparen
-			], //In der app vorhandene Controller
-			viewType:"text/x-underscore-template", //Templateenginekennung (Underscore)
-			jsonUrl: 'http://headkino.de/potsdamevents/json/', //Base-Url, die auf dem Server angefragt wird
-			going : {}, //Liste aller Event-IDs zu denen der Benutzer geht
 			history:[],
 			views:{},
 			models:{},
@@ -134,7 +124,7 @@ define([
 						app.history.push(Backbone.history.fragment); 
 					}
 				});
-				controllerLoader.loadControllersExtract(this.controllerList); //Alle Controller laden
+				controllerLoader.loadControllersExtract(); //Alle Controller laden
 				customHistory.startTracking();
 			},
 			/**

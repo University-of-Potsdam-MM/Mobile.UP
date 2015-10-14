@@ -11,14 +11,20 @@ define([
 
     var ControllerLoader = {
         viewFileExt: 'js', //Dateiendung der View files
+        controllerList: [
+            "controllers/main",
+            "controllers/events",
+            "controllers/news",
+            "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
+            "controllers/studies" //"Onepager" in einem Controller um platz zu sparen
+        ], //In der app vorhandene Controller
 
         /*
          * Alle Controllers und deren Viewtemplates laden
-         * @urls: Liste der URLs zu den Controller Dateien
          */
-        loadControllersExtract: function (urls) {
+        loadControllersExtract: function () {
             var that = this;
-            require(urls, function () {
+            require(this.controllerList, function () {
                 var views = [], modules = [], viewNames = [], appc = [];
                 var c = 0, d = 0;
                 for (var i in app.controllers) {
