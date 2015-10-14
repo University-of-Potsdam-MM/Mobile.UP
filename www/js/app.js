@@ -56,9 +56,6 @@ define([
 				app.session = new Session;
 				utils.detectUA($, navigator.userAgent);
 				viewContainer.setIosHeaderFix($);
-				/**
-				 * Override Backbone.sync to automatically include auth headers according to the url in use
-				 */
 				new FastClick(document.body);
 				
 				$(document).ready(function() {
