@@ -110,8 +110,15 @@ define([
             return $.mobile.activePage;
         },
 
+        activeCon: function() {
+            return this.activeConExtract($);
+        },
+
+        /*
+         * InhaltsContainer der momentan aktiven Seite zurückgeben
+         */
         activeConExtract: function ($) {
-            return $('.ui-content', this.activePage());
+            return $('.ui-content', this.activePageExtract($));
         },
 
         animateHeaderAndFooter: function (a, $) {

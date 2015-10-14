@@ -11,7 +11,7 @@ app.controllers.events = BackboneMVC.Controller.extend({
 		app.loadPage(this.name, 'view', {id:id, going:Boolean(LocalStore.get('going', {})[id])}).done(function(d){
 			if(d)
 				self.currentEvent = d.event;
-			app.activeCon().scrollTop(0); //View nach oben scrollen
+			app.viewManager.activeCon().scrollTop(0); //View nach oben scrollen
 		});
     },
 	
@@ -94,7 +94,7 @@ app.controllers.events = BackboneMVC.Controller.extend({
 	* Eventliste Pull to Refresh hinzufügen unter iOS
 	*/
 	addPullToRefresh:function(){
-		app.activeCon().pullToRefresh({
+		app.viewManager.activeCon().pullToRefresh({
 			refresh: function (callback) {
 				app.refresh(callback);
 			}

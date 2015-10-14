@@ -298,12 +298,6 @@ define([
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
 					window.history.back();
 				});
-			},
-			/*
-			* InhaltsContainer der momentan aktiven Seite zurückgeben
-			*/
-			activeCon:function(){
-				return viewContainer.activeConExtract.call(this, $);
 			}
 		};
 

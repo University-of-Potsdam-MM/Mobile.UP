@@ -64,7 +64,7 @@ app.controllers.news = BackboneMVC.Controller.extend({
 	* Newsliste Pull to Refresh hinzufügen unter iOS
 	*/
 	addPullToRefresh:function(){
-		app.activeCon().pullToRefresh({
+		app.viewManager.activeCon().pullToRefresh({
 			refresh: function (callback) {
 				app.refresh(callback);
 			}
