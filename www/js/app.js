@@ -48,6 +48,7 @@ define([
 				"https://api.uni-potsdam.de/endpoints/mensaAPI",
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
 			router : new AppRouter(), //Router zuweisen
+			viewManager: viewContainer,
 			/*
 			* Intitialisierung
 			*/
@@ -254,10 +255,6 @@ define([
 				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
 
 				return q.promise;
-			},
-			
-			updateHeader: function($el){
-				viewContainer.updateHeaderExtract($el, $, utils);
 			},
 			
 			checkAuth: function(name){

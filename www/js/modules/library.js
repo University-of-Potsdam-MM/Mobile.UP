@@ -412,7 +412,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
         }
       });
       this.$el.trigger('create');
-	  app.updateHeader(this.$el);
+      app.viewManager.updateHeader(this.$el);
       return this;
     }
   });

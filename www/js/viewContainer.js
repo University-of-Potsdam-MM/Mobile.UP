@@ -52,7 +52,7 @@ define([
 
         usePageAsView: function (page, app) {
             app.currentView = page;
-            app.updateHeader(page.$el);
+            this.updateHeaderExtract(page.$el, $, utils);
         },
 
         saveAndPrepareScrollPosition: function (app, Backbone) {
@@ -73,6 +73,10 @@ define([
                 app.currentView = page;
                 afterTransition();
             });
+        },
+
+        updateHeader: function ($el) {
+            this.updateHeaderExtract($el, $, utils);
         },
 
         updateHeaderExtract: function ($el, $, utils) {
