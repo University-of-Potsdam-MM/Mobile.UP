@@ -210,9 +210,10 @@ define([
 					};
 				}
 
-				var __ret = viewContainer.prepareViewForDomDisplay(page, c, a);
-				var d = __ret.d;
-				var response = __ret.response;
+				console.log(utils.capitalize(c) + utils.capitalize(a));
+				var __ret = viewContainer.prepareViewForDomDisplay(page);
+				var d = {};
+				var response = {};
 				var pageContent = __ret.pageContent;
 				var pageTitle = __ret.pageTitle;
 				var reverse = __ret.reverse;
