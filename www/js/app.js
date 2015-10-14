@@ -18,6 +18,7 @@ define([
 	'LocalStore'
 	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader, controllerLoader){
 		var viewContainer = ViewHelper.viewContainer;
+		viewContainer.initialize();
 
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
@@ -107,7 +108,7 @@ define([
 				$(overrideBackboneSync);
 
 				// Initialize external link override
-				$(document).on("click", "a", utils.overrideExternalLinks);
+				$(document).on("click", "a", _.partial(utils.overrideExternalLinks, _, viewContainer.removeActiveElementsOnCurrentPage));
 
 				// Register global error handler
 				window.onerror = utils.onError;
@@ -300,12 +301,6 @@ define([
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
 					window.history.back();
 				});
-			},
-			/*
-			* Momentan aktive Seite zurückgeben
-			*/
-			activePage: function(){
-				return viewContainer.activePageExtract($);
 			},
 			/*
 			* InhaltsContainer der momentan aktiven Seite zurückgeben

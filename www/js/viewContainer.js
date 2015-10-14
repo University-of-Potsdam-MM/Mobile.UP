@@ -11,6 +11,10 @@ define([
 
     var viewContainer = {
 
+        initialize: function() {
+            _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
+        },
+
         setIosHeaderFix: function ($) {
             if ($.os.ios7) {
                 $('body').addClass('ios-statusbar');
@@ -95,6 +99,9 @@ define([
             return content;
         },
 
+        /*
+         * Momentan aktive Seite zurückgeben
+         */
         activePageExtract: function ($) {
             return $.mobile.activePage;
         },
@@ -115,13 +122,17 @@ define([
         },
 
         notifyMissingServerConnection: function (app, $) {
-            $('.ui-btn-active', app.activePage()).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
+            $('.ui-btn-active', this.activePageExtract($)).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
             app.previous(true);
             var s = 'Es konnte keine Verbindung zum Server hergestellt werden. Bitte überprüfe deine Internetverbindung';
             if (navigator.notification) //Über Plugin für App
                 navigator.notification.alert(s, null, 'Kein Internet'); //Fehlermeldung ausgeben
             else
                 alert(s); //Für Browser
+        },
+
+        removeActiveElementsOnCurrentPage: function() {
+            $('.ui-btn-active', this.activePageExtract($)).removeClass('ui-btn-active');
         },
 
         prepareViewForDomDisplay: function (page, c, a, $, utils) {

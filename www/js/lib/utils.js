@@ -388,7 +388,7 @@ define([
 	/**
 	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
-	var overrideExternalLinks = function(e) {
+	var overrideExternalLinks = function(e, removeActiveElementsOnCurrentPage) {
 		var $this = $(e.target);
 		var href = $this.attr('href') || '';
 		var rel = $this.attr('rel') || false;
@@ -427,7 +427,7 @@ define([
 			return false;
 		} else if(href && !isJavascript && rel != 'norout' && href != '#') {
 			$this.addClass('ui-btn-active');
-			$('.ui-btn-active', app.activePage()).removeClass('ui-btn-active');
+			removeActiveElementsOnCurrentPage();
 			app.route(url);
 			e.preventDefault();
 			console.log("Opening " + url + " internally");
