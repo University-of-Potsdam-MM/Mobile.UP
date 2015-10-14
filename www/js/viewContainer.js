@@ -146,7 +146,7 @@ define([
             $('.ui-btn-active', this.activePageExtract($)).removeClass('ui-btn-active');
         },
 
-        prepareViewForDomDisplay: function (page, c, a, $, utils) {
+        prepareViewForDomDisplay: function (page, c, a) {
             // prepare new view for DOM display
             page.render();
             console.log(utils.capitalize(c) + utils.capitalize(a));

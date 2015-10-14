@@ -210,7 +210,7 @@ define([
 					};
 				}
 
-				var __ret = viewContainer.prepareViewForDomDisplay(page, c, a, $, utils);
+				var __ret = viewContainer.prepareViewForDomDisplay(page, c, a);
 				var d = __ret.d;
 				var response = __ret.response;
 				var pageContent = __ret.pageContent;
