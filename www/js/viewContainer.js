@@ -95,7 +95,7 @@ define([
             }
         },
 
-        setCurrentView: function (params, page, content, c, a, app, utils) {
+        setCurrentView: function (params, page, content, c, a, app) {
             app.currentView = {};
             params.page = page.$el;
             app.currentView = content = new app.views[utils.capitalize(c) + utils.capitalize(a)](params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden

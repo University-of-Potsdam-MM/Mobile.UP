@@ -188,29 +188,35 @@ define([
 
 				if (!params)
 					params = {};
-				var pageName = utils.capitalize(c) + 'Page';
-				console.log(app.views[pageName]);
-				if (!app.views[pageName]) {
-					app.views[pageName] = Backbone.View.extend({
-						render: function () {
-							this.$el.html('');
-							return this;
-						}
-					});
-				}
-				console.log(pageName);
-				var page = new app.views[pageName](params);
-				console.log(page);
+
+				var getPage = function(c, views, utils) {
+					var pageName = utils.capitalize(c) + 'Page';
+
+					// Making sure a page is found
+					console.log("Looking for view", pageName, views[pageName]);
+					if (!views[pageName]) {
+						views[pageName] = Backbone.View.extend({
+							render: function () {
+								this.$el.html('');
+								return this;
+							}
+						});
+					}
+
+					return new views[pageName](params);
+				};
+
+				var page = getPage(c, app.views, utils);
+
+				// Check if access to the page is allowed
 				var allowed = app.checkAuth(c) && app.checkAuth(a);
 				if (!allowed) {
 					q.resolve();
 					return {
-						done: function (d) {
-						}
+						done: function (d) { }
 					};
 				}
 
-				console.log(utils.capitalize(c) + utils.capitalize(a));
 				var __ret = viewContainer.prepareViewForDomDisplay(page);
 				var d = {};
 				var response = {};
@@ -220,6 +226,7 @@ define([
 				var transition = __ret.transition;
 
 				var content = contentLoader.initContentAndData(c);
+
 				/**
 				 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
 				 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
@@ -240,14 +247,15 @@ define([
 				 */
 				var afterTransition = function () {
 					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-						content = viewContainer.setCurrentView(params, page, content, c, a, app, utils);
-						d = contentLoader.retreiveElementFromLoadedCollection(content, params, d, _);
-						contentLoader.retreiveOrFetchContent(content, success, d, $, utils, _);
+						content = viewContainer.setCurrentView(params, page, content, c, a, app);
+						d = contentLoader.retreiveElementFromLoadedCollection(content, params, d);
+						contentLoader.retreiveOrFetchContent(content, success, d);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
 						success();
 					}
 				};
+
 				viewContainer.saveAndPrepareScrollPosition(app, Backbone);
 				customHistory.push(Backbone.history.fragment);
 				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);

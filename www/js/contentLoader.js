@@ -88,7 +88,7 @@ define([
                 q.resolve(d, content);
         },
 
-        retreiveElementFromLoadedCollection: function (content, params, d, _) {
+        retreiveElementFromLoadedCollection: function (content, params, d) {
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
                 var parts = content.inCollection.split('.');
                 try {
@@ -111,7 +111,7 @@ define([
             return d;
         },
 
-        retreiveOrFetchContent: function (content, success, d, $, utils, _) {
+        retreiveOrFetchContent: function (content, success, d) {
             if (content.collection) { //Content hat eine Collection
                 if (this.appCache.getCache(content.collection.url)) {
                     success('cached', this.appCache.getCache(content.collection.url));
