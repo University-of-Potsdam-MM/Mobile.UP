@@ -189,24 +189,7 @@ define([
 				if (!params)
 					params = {};
 
-				var getPage = function(c, views, utils) {
-					var pageName = utils.capitalize(c) + 'Page';
-
-					// Making sure a page is found
-					console.log("Looking for view", pageName, views[pageName]);
-					if (!views[pageName]) {
-						views[pageName] = Backbone.View.extend({
-							render: function () {
-								this.$el.html('');
-								return this;
-							}
-						});
-					}
-
-					return new views[pageName](params);
-				};
-
-				var page = getPage(c, app.views, utils);
+				var page = viewContainer.getPage(c, app.views, params);
 
 				// Check if access to the page is allowed
 				var allowed = app.checkAuth(c) && app.checkAuth(a);

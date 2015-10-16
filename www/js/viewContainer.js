@@ -184,6 +184,23 @@ define([
                 reverse: reverse,
                 transition: transition
             };
+        },
+
+        getPage: function(c, views, params) {
+            var pageName = utils.capitalize(c) + 'Page';
+
+            // Making sure a page is found
+            console.log("Looking for view", pageName, views[pageName]);
+            if (!views[pageName]) {
+                views[pageName] = Backbone.View.extend({
+                    render: function () {
+                        this.$el.html('');
+                        return this;
+                    }
+                });
+            }
+
+            return new views[pageName](params);
         }
     };
 
