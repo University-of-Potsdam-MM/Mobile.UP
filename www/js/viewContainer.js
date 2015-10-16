@@ -15,18 +15,18 @@ define([
             _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
         },
 
-        setIosHeaderFix: function ($) {
+        setIosHeaderFix: function () {
             if ($.os.ios7) {
                 $('body').addClass('ios-statusbar');
             }
         },
 
-        setReverseSlidefadeTransition: function ($) {
+        setReverseSlidefadeTransition: function () {
             $.mobile.changePage.defaults.transition = 'slidefade';
             $.mobile.changePage.defaults.reverse = 'reverse';
         },
 
-        finishRendering: function (content, pageTitle, pageContent, $pageContainer, utils, $) {
+        finishRendering: function (content, pageTitle, pageContent, $pageContainer) {
             content.render();
 
             var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
@@ -52,15 +52,15 @@ define([
 
         usePageAsView: function (page, app) {
             app.currentView = page;
-            this.updateHeaderExtract(page.$el, $, utils);
+            this.updateHeaderExtract(page.$el);
         },
 
-        saveAndPrepareScrollPosition: function (app, Backbone) {
+        saveAndPrepareScrollPosition: function () {
             scrollManager.saveScrollPositionExtract(customHistory);
             scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
         },
 
-        executeTransition: function (pageContent, transition, reverse, page, afterTransition, app, Q, $) {
+        executeTransition: function (pageContent, transition, reverse, page, afterTransition, app) {
             Q($.mobile.changePage(pageContent, {
                 changeHash: false,
                 transition: transition,
@@ -76,10 +76,10 @@ define([
         },
 
         updateHeader: function ($el) {
-            this.updateHeaderExtract($el, $, utils);
+            this.updateHeaderExtract($el);
         },
 
-        updateHeaderExtract: function ($el, $, utils) {
+        updateHeaderExtract: function ($el) {
             var $metas = $el.find('meta'); //Meta infos aus Seite in den Header integrieren
             console.log($el[0]);
             var $header = $('.ui-header');
@@ -106,22 +106,22 @@ define([
         /*
          * Momentan aktive Seite zurückgeben
          */
-        activePageExtract: function ($) {
+        activePageExtract: function () {
             return $.mobile.activePage;
         },
 
         activeCon: function() {
-            return this.activeConExtract($);
+            return this.activeConExtract();
         },
 
         /*
          * InhaltsContainer der momentan aktiven Seite zurückgeben
          */
-        activeConExtract: function ($) {
-            return $('.ui-content', this.activePageExtract($));
+        activeConExtract: function () {
+            return $('.ui-content', this.activePageExtract());
         },
 
-        animateHeaderAndFooter: function (a, $) {
+        animateHeaderAndFooter: function (a) {
             var toPage = a.toPage;
             if (typeof(a.toPage) != 'string') {
                 var header = $('.header', toPage);
@@ -132,8 +132,8 @@ define([
             }
         },
 
-        notifyMissingServerConnection: function (app, $) {
-            $('.ui-btn-active', this.activePageExtract($)).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
+        notifyMissingServerConnection: function (app) {
+            $('.ui-btn-active', this.activePageExtract()).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
             app.previous(true);
             var s = 'Es konnte keine Verbindung zum Server hergestellt werden. Bitte überprüfe deine Internetverbindung';
             if (navigator.notification) //Über Plugin für App
@@ -143,7 +143,7 @@ define([
         },
 
         removeActiveElementsOnCurrentPage: function() {
-            $('.ui-btn-active', this.activePageExtract($)).removeClass('ui-btn-active');
+            $('.ui-btn-active', this.activePageExtract()).removeClass('ui-btn-active');
         },
 
         /**

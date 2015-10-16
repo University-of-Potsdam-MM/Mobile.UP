@@ -32,7 +32,7 @@ define([
             return content;
         },
 
-        setFetchedContent: function (content, s, d, params, response, c, a, _) {
+        setFetchedContent: function (content, s, d, params, response, c, a) {
             console.log('content');
             if (content.fetchSuccess)
                 content.fetchSuccess(s, d);
@@ -81,7 +81,7 @@ define([
             return {d: d, response: response};
         },
 
-        resolveWithContent: function (response, q, content, d, _) {
+        resolveWithContent: function (response, q, content, d) {
             if (_.keys(response).length > 0)
                 q.resolve(response, content);
             else
@@ -90,7 +90,6 @@ define([
 
         retreiveOrFetchContent: function (content, success, d, params) {
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
-                var parts = content.inCollection.split('.');
                 try {
                     var list = eval('app.data.' + content.inCollection);
                 } catch (e) {

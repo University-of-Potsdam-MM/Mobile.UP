@@ -55,7 +55,7 @@ define([
 			initialize: function(){
 				app.session = new Session;
 				utils.detectUA($, navigator.userAgent);
-				viewContainer.setIosHeaderFix($);
+				viewContainer.setIosHeaderFix();
 				new FastClick(document.body);
 				
 				$(document).ready(function() {
@@ -74,7 +74,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-							viewContainer.setReverseSlidefadeTransition($);
+							viewContainer.setReverseSlidefadeTransition();
 							customHistory.goBack();
     					}
     				}, false);
@@ -234,12 +234,12 @@ define([
 				 */
 				var success = function (s, d) {
 					if (content) {
-						var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a, _);
+						var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
 						d = __ret.d;
 						response = __ret.response;
-						viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer, utils, $);
+						viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer);
 					}
-					contentLoader.resolveWithContent(response, q, content, d, _);
+					contentLoader.resolveWithContent(response, q, content, d);
 				};
 
 				/**
@@ -255,9 +255,9 @@ define([
 					}
 				};
 
-				viewContainer.saveAndPrepareScrollPosition(app, Backbone);
+				viewContainer.saveAndPrepareScrollPosition();
 				customHistory.push(Backbone.history.fragment);
-				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app, Q, $);
+				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app);
 
 				return q.promise;
 			},
@@ -293,11 +293,11 @@ define([
 				$.ajaxSetup({
 					  "error":function() { //Globale AJAX-Fehlerfunktion, wenn z.B. keine Internetverbindung besteht
 						  app.locked = false;
-						  viewContainer.notifyMissingServerConnection(app, $);
+						  viewContainer.notifyMissingServerConnection(app);
 					  }
 				});
 				$(document).on('pagebeforechange', function(e, a){ //Bevor zur nächsten Seite gewechselt wird
-					viewContainer.animateHeaderAndFooter(a, $);
+					viewContainer.animateHeaderAndFooter(a);
 				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
