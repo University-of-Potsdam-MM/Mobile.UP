@@ -200,6 +200,7 @@ define([
 					};
 				}
 
+				// FIXME Transition parameter is ignored
 				var __ret = viewContainer.prepareViewForDomDisplay(page);
 				var d = {};
 				var response = {};

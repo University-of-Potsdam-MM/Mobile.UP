@@ -125,8 +125,7 @@ define([
                 console.log('Model');
                 if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
                     success('set', d);
-                }
-                else if (this.appCache.getCache(content.model.url)) { //Model in cache
+                } else if (this.appCache.getCache(content.model.url)) { //Model in cache
                     success('cached', this.appCache.getCache(content.model.url));
                 } else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
                     console.log(content.model);
