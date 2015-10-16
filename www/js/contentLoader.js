@@ -25,11 +25,9 @@ define([
     var ContentLoader = {
         appCache : new AppCache(),
 
-        initContentAndData: function (c) {
-            var content = false;
+        initData: function (c) {
             if (!app.data[c])
                 app.data[c] = {};
-            return content;
         },
 
         setFetchedContent: function (content, s, d, params, response, c, a) {

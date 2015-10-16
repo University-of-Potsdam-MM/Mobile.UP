@@ -95,12 +95,12 @@ define([
             }
         },
 
-        setCurrentView: function (params, page, content, c, a, app) {
+        setCurrentView: function (params, page, c, a, app) {
             var view = this.getView(c, a);
 
             app.currentView = {};
             params.page = page.$el;
-            app.currentView = content = new view(params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
+            var content = app.currentView = new view(params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
             content.page = page.$el;
             return content;
         },

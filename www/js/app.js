@@ -209,21 +209,21 @@ define([
 				var reverse = __ret.reverse;
 				var transition = __ret.transition;
 
-				var content = contentLoader.initContentAndData(c);
-
-				/**
-				 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
-				 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
-				 * @param d data object
-				 */
-				var success = function (s, d) {
-					if (content) {
-						var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
-						d = __ret.d;
-						response = __ret.response;
-						viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer);
+				var success = function(content) {
+					/**
+					 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
+					 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
+					 * @param d data object
+					 */
+					return function (s, d) {
+						if (content) {
+							var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
+							d = __ret.d;
+							response = __ret.response;
+							viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer);
+						}
+						contentLoader.resolveWithContent(response, q, content, d);
 					}
-					contentLoader.resolveWithContent(response, q, content, d);
 				};
 
 				// afterTransition is called first, success is called afterwards
@@ -231,12 +231,15 @@ define([
 				 * Wird nach Pagetransition ausgeführt
 				 */
 				var afterTransition = function () {
+					contentLoader.initData(c);
+
 					if (viewContainer.getView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-						content = viewContainer.setCurrentView(params, page, content, c, a, app);
-						d = contentLoader.retreiveOrFetchContent(content, success, d, params);
+						var content = viewContainer.setCurrentView(params, page, c, a, app);
+						d = contentLoader.retreiveOrFetchContent(content, success(content), d, params);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
-						success();
+						var callback = success(false);
+						callback();
 					}
 				};
 
