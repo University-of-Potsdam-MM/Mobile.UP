@@ -96,9 +96,11 @@ define([
         },
 
         setCurrentView: function (params, page, content, c, a, app) {
+            var view = this.getView(c, a);
+
             app.currentView = {};
             params.page = page.$el;
-            app.currentView = content = new app.views[utils.capitalize(c) + utils.capitalize(a)](params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
+            app.currentView = content = new view(params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
             content.page = page.$el;
             return content;
         },
@@ -201,6 +203,10 @@ define([
             }
 
             return new views[pageName](params);
+        },
+
+        getView: function (c, a) {
+            return app.views[utils.capitalize(c) + utils.capitalize(a)];
         }
     };
 

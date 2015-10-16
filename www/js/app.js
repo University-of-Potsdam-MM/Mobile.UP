@@ -226,11 +226,12 @@ define([
 					contentLoader.resolveWithContent(response, q, content, d);
 				};
 
+				// afterTransition is called first, success is called afterwards
 				/**
 				 * Wird nach Pagetransition ausgeführt
 				 */
 				var afterTransition = function () {
-					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
+					if (viewContainer.getView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						content = viewContainer.setCurrentView(params, page, content, c, a, app);
 						d = contentLoader.retreiveOrFetchContent(content, success, d, params);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
