@@ -88,7 +88,7 @@ define([
                 q.resolve(d, content);
         },
 
-        retreiveElementFromLoadedCollection: function (content, params, d) {
+        retreiveOrFetchContent: function (content, success, d, params) {
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
                 var parts = content.inCollection.split('.');
                 try {
@@ -108,10 +108,7 @@ define([
                 if (filteredList) //Element in Liste gefunden
                     d = filteredList[0];
             }
-            return d;
-        },
 
-        retreiveOrFetchContent: function (content, success, d) {
             if (content.collection) { //Content hat eine Collection
                 if (this.appCache.getCache(content.collection.url)) {
                     success('cached', this.appCache.getCache(content.collection.url));
@@ -146,6 +143,8 @@ define([
             } else { //Content einfach so
                 success();
             }
+
+            return d;
         }
     };
 

@@ -248,8 +248,7 @@ define([
 				var afterTransition = function () {
 					if (app.views[utils.capitalize(c) + utils.capitalize(a)]) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						content = viewContainer.setCurrentView(params, page, content, c, a, app);
-						d = contentLoader.retreiveElementFromLoadedCollection(content, params, d);
-						contentLoader.retreiveOrFetchContent(content, success, d);
+						d = contentLoader.retreiveOrFetchContent(content, success, d, params);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
 						success();
