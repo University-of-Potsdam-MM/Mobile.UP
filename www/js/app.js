@@ -202,8 +202,6 @@ define([
 
 				// FIXME Transition parameter is ignored
 				var __ret = viewContainer.prepareViewForDomDisplay(page);
-				var d = {};
-				var response = {};
 				var pageContent = __ret.pageContent;
 				var pageTitle = __ret.pageTitle;
 				var reverse = __ret.reverse;
@@ -216,6 +214,7 @@ define([
 					 * @param d data object
 					 */
 					return function (s, d) {
+						var response = {};
 						if (content) {
 							var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
 							d = __ret.d;
@@ -235,7 +234,7 @@ define([
 
 					if (viewContainer.getView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
 						var content = viewContainer.setCurrentView(params, page, c, a, app);
-						d = contentLoader.retreiveOrFetchContent(content, success(content), d, params);
+						contentLoader.retreiveOrFetchContent(content, success(content), {}, params);
 					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
 						viewContainer.usePageAsView(page, app);
 						var callback = success(false);
