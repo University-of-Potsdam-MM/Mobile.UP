@@ -201,12 +201,8 @@ define([
 				}
 
 				// FIXME Transition parameter is ignored
-				var __ret = viewContainer.prepareViewForDomDisplay(page);
-				var pageContent = __ret.pageContent;
-				var pageTitle = __ret.pageTitle;
-				var reverse = __ret.reverse;
-				var transition = __ret.transition;
-
+				var transitionOptions = viewContainer.prepareViewForDomDisplay(page);
+				
 				var success = function(content) {
 					/**
 					 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
@@ -219,7 +215,7 @@ define([
 							var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
 							d = __ret.d;
 							response = __ret.response;
-							viewContainer.finishRendering(content, pageTitle, pageContent, $pageContainer);
+							viewContainer.finishRendering(content, transitionOptions.page, $pageContainer);
 						}
 						contentLoader.resolveWithContent(response, q, content, d);
 					}
@@ -229,7 +225,7 @@ define([
 				/**
 				 * Wird nach Pagetransition ausgeführt
 				 */
-				var afterTransition = function () {
+				transitionOptions.afterTransition = function () {
 					contentLoader.initData(c);
 
 					if (viewContainer.getView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
@@ -244,7 +240,7 @@ define([
 
 				viewContainer.saveAndPrepareScrollPosition();
 				customHistory.push(Backbone.history.fragment);
-				viewContainer.executeTransition(pageContent, transition, reverse, page, afterTransition, app);
+				viewContainer.executeTransition(app, transitionOptions);
 
 				return q.promise;
 			},

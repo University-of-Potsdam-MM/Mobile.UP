@@ -26,7 +26,7 @@ define([
             $.mobile.changePage.defaults.reverse = 'reverse';
         },
 
-        finishRendering: function (content, pageTitle, pageContent, $pageContainer) {
+        finishRendering: function (content, page, $pageContainer) {
             content.render();
 
             var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
@@ -37,12 +37,12 @@ define([
                     metas[$(this).attr('name')] = $(this).attr('content');
                 });
                 if (!metas.title)
-                    metas.title = pageTitle;
+                    metas.title = page.title;
                 var header = utils.renderheader(metas);
                 $pageContainer.find('.ui-header').replaceWith(header);
                 var $footer = $pageContainer.find('.ui-footer');
                 if ($footer.length > 0) {
-                    pageContent.addClass('ui-page-footer-fixed');
+                    page.content.addClass('ui-page-footer-fixed');
                 }
             }
             if (content.afterRender)
@@ -60,18 +60,18 @@ define([
             scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
         },
 
-        executeTransition: function (pageContent, transition, reverse, page, afterTransition, app) {
-            Q($.mobile.changePage(pageContent, {
+        executeTransition: function (app, transitionOptions) {
+            Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
-                transition: transition,
-                reverse: reverse
+                transition: transitionOptions.transition,
+                reverse: transitionOptions.reverse
             })).done(function () {
                 if (!app.currentView) {
                     $('body').css('overflow', 'auto');
                     $("body").fadeIn(100);
                 }
-                app.currentView = page;
-                afterTransition();
+                app.currentView = transitionOptions.page.view;
+                transitionOptions.afterTransition();
             });
         },
 
@@ -181,10 +181,13 @@ define([
             }
 
             return {
-                pageContent: pageContent,
-                pageTitle: pageTitle,
+                transition: transition,
                 reverse: reverse,
-                transition: transition
+                page: {
+                    title: pageTitle,
+                    content: pageContent,
+                    view: page
+                }
             };
         },
 
