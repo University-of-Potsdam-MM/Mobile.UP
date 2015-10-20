@@ -228,14 +228,9 @@ define([
 				transitionOptions.afterTransition = function () {
 					contentLoader.initData(c);
 
-					if (viewContainer.getView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-						var content = viewContainer.setCurrentView(params, page, c, a, app);
-						contentLoader.retreiveOrFetchContent(content, success(content), {}, params);
-					} else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
-						viewContainer.usePageAsView(page, app);
-						var callback = success(false);
-						callback();
-					}
+					params.page = page.$el;
+					var content = viewContainer.createViewForName(c, a, page, params);
+					contentLoader.retreiveOrFetchContent(content, success(content), {}, params);
 				};
 
 				viewContainer.saveAndPrepareScrollPosition();

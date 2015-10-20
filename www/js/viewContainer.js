@@ -50,11 +50,6 @@ define([
             $pageContainer.trigger("create");
         },
 
-        usePageAsView: function (page, app) {
-            app.currentView = page;
-            this.updateHeaderExtract(page.$el);
-        },
-
         saveAndPrepareScrollPosition: function () {
             scrollManager.saveScrollPositionExtract(customHistory);
             scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
@@ -95,13 +90,28 @@ define([
             }
         },
 
-        setCurrentView: function (params, page, c, a, app) {
-            var view = this.getView(c, a);
+        /**
+         * @param c Controllername
+         * @param a Actionsname
+         * @param page
+         * @param params
+         * @returns Instance of Backbone.View or false
+         */
+        createViewForName: function (c, a, page, params) {
+            var content;
 
-            app.currentView = {};
-            params.page = page.$el;
-            var content = app.currentView = new view(params); //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
-            content.page = page.$el;
+            var view = this.getView(c, a);
+            if (view) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
+                view = new view(params);
+                content = view;
+                content.page = page.$el;
+            } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
+                view = page;
+                content = false;
+                this.updateHeaderExtract(page.$el);
+            }
+            app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
+
             return content;
         },
 
