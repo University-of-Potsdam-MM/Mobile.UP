@@ -22,13 +22,32 @@ define([
 				course.dates = [course.dates];
 			}
 
-			var date = _.find(course.dates, function(date) {
-				return date.timespan && date.timespan !== "";
+			// We need to find the earliest and the latest date available
+			// We expect the following formats:
+			// 1. empty string
+			// 2. "vom 13.10.2015 bis 02.02.2016"
+			// 3. "am 22.01.2016"
+			var result = _.chain(course.dates).filter(function(date) {
+				return date && date.timespan;
+			}).map(function(date) {
+				var split = date.timespan.split(' ');
+				return [split[1], split[3]];
+			}).flatten().filter(function(date) {
+				return date;
+			}).map(function(date) {
+				return moment(date, "DD.MM.YYYY");
+			}).value().sort(function(a, b) {
+				if (a.isBefore(b)) return -1;
+				else if (a.isAfter(b)) return 1;
+				else return 0;
 			});
-			var timespan = date ? date.timespan : "";
-			var split = timespan.split(' ');
-			(split[1]) ? this.set('starting', split[1]) : '';
-			(split[3]) ? this.set('ending', split[3]) : '';
+
+			var starting = _.first(result);
+			var ending = _.last(result);
+
+			if (starting) this.set('starting', starting.format("DD.MM.YYYY"));
+			if (ending) this.set('ending', ending.format("DD.MM.YYYY"));
+
 			return course;
 		},
 
