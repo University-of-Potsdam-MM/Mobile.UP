@@ -98,6 +98,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		loadChildren: function(ev) {
+			ev.preventDefault();
+			
 			console.log("Lade " + this.model.get("suburl"));
 			vvzHistory.openVvz(this.model);
 		}
