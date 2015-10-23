@@ -295,7 +295,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		});
 
 		_.each(similars, function(item) {
-			$("#similarlocations").append("<li><a onclick='require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
+			$("#similarlocations").append("<li><a href='#' onclick='event.preventDefault(); require([\"modules/sitemap\"], function(Sitemap) { new Sitemap().sitemapNavigateTo(\"" + item.geo.properties.id + "\"); });'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
 		});
 
 		$("#similarlocations").listview("refresh");
