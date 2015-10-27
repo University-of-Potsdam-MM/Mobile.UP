@@ -37,35 +37,46 @@ define([
             content.p = params;
             if (content.beforeRender)
                 content.beforeRender();
+
+            var setDataCallback = function() {};
             if (s == 'set') { //Model aus collection geholt
                 if (content.model) {
-                    content.model.set(d);
-                    content.model.p = params;
+                    setDataCallback = function() {
+                        content.model.set(d);
+                        content.model.p = params;
+                    };
                 }
             } else if (s == 'cached') { //Daten aus dem Cache geholt
                 if (content.model) {
-                    content.model.set(content.model.parse(d));
-                    content.model.p = params;
-                }
-                if (content.collection) {
-                    content.collection.set(content.collection.parse(d));
-                    content.collection.p = params;
+                    setDataCallback = function() {
+                        content.model.set(content.model.parse(d));
+                        content.model.p = params;
+                    };
+                } else if (content.collection) {
+                    setDataCallback = function() {
+                        content.collection.set(content.collection.parse(d));
+                        content.collection.p = params;
+                    };
                 }
             } else { //Daten vom Server geholt
                 if (content.collection) {
-                    response = d = content.collection.toJSON();
-                    content.collection.p = params;
-                    if (content.collection.response)
-                        response = content.collection.response;
-                }
-
-                if (content.model && content.model.toJSON) {
-                    response = d = content.model.toJSON();
-                    content.model.p = params;
-                    if (content.model.response)
-                        response = content.model.response;
+                    setDataCallback = function() {
+                        response = d = content.collection.toJSON();
+                        content.collection.p = params;
+                        if (content.collection.response)
+                            response = content.collection.response;
+                    };
+                } else if (content.model && content.model.toJSON) {
+                    setDataCallback = function() {
+                        response = d = content.model.toJSON();
+                        content.model.p = params;
+                        if (content.model.response)
+                            response = content.model.response;
+                    };
                 }
             }
+            setDataCallback();
+
             if (_.keys(response).length > 0) {
                 if (!app.data[c])
                     app.data[c] = {};
