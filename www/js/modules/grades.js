@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		initialize: function(){
 			// get Session information for username / password
 			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json2";
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json2";
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 		},

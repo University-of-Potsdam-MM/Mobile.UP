@@ -97,7 +97,7 @@ define([
 
 		initialize: function(){
 			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 		},
