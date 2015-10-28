@@ -39,24 +39,18 @@ define([
                 content.beforeRender();
 
             var setDataCallback = function() {};
-            if (s == 'set') { //Model aus collection geholt
+
+            if (typeof(s) == "function") {
+                s();
+            } else if (s == 'set') { //Model aus collection geholt
                 if (content.model) {
-                    setDataCallback = function() {
-                        content.model.set(d);
-                        content.model.p = params;
-                    };
+                    // Is already handled by function call
                 }
             } else if (s == 'cached') { //Daten aus dem Cache geholt
                 if (content.model) {
-                    setDataCallback = function() {
-                        content.model.set(content.model.parse(d));
-                        content.model.p = params;
-                    };
+                    // Is already handled by function call
                 } else if (content.collection) {
-                    setDataCallback = function() {
-                        content.collection.set(content.collection.parse(d));
-                        content.collection.p = params;
-                    };
+                    // Is already handled by function call
                 }
             } else { //Daten vom Server geholt
                 if (content.collection) {
@@ -119,7 +113,11 @@ define([
 
             if (content.collection) { //Content hat eine Collection
                 if (this.appCache.getCache(content.collection.url)) {
-                    success('cached', this.appCache.getCache(content.collection.url));
+                    success(_.bind(function() {
+                        var d = this.appCache.getCache(content.collection.url);
+                        content.collection.set(content.collection.parse(d));
+                        content.collection.p = params;
+                    }, this), this.appCache.getCache(content.collection.url));
                 } else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
                     content.collection.fetch({
                         success: success,
@@ -133,9 +131,16 @@ define([
             } else if (content.model) { //Content hat ein Model
                 console.log('Model');
                 if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
-                    success('set', d);
+                    success(_.bind(function() {
+                        content.model.set(d);
+                        content.model.p = params;
+                    }, this), d);
                 } else if (this.appCache.getCache(content.model.url)) { //Model in cache
-                    success('cached', this.appCache.getCache(content.model.url));
+                    success(_.bind(function() {
+                        var d = this.appCache.getCache(content.model.url);
+                        content.model.set(content.model.parse(d));
+                        content.model.p = params;
+                    }, this), this.appCache.getCache(content.model.url));
                 } else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
                     console.log(content.model);
                     content.model.fetch($.extend(utils.cacheDefaults(), {
