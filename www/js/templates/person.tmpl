@@ -22,7 +22,8 @@
 			<% } %>
 			
 			<% if (person.get('Fax')){ %>
-				<span class="fax" style="color: #014260"> Fax: <%= person.get('Fax') %></span><br /><br />
+				<span class="fax-text">Fax:</span>
+				<span class="fax"><%= person.get('Fax') %></span><br /><br />
 			<% } %>
 		</p>
 	</div>
