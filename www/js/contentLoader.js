@@ -30,7 +30,8 @@ define([
                 app.data[c] = {};
         },
 
-        setFetchedContent: function (content, s, d, params, response, c, a) {
+        setFetchedContent: function (content, s, d, params, c, a) {
+            var response = {};
             console.log('content');
             if (content.fetchSuccess)
                 content.fetchSuccess(s, d);
@@ -71,7 +72,10 @@ define([
             }
             setDataCallback();
 
+            // If we have a response from a server call -> save it
             if (_.keys(response).length > 0) {
+                d = response;
+
                 if (!app.data[c])
                     app.data[c] = {};
                 app.data[c][a] = response; //Daten speichern
@@ -81,14 +85,7 @@ define([
                     this.appCache.setCache(content.collection.url, response);
                 }
             }
-            return {d: d, response: response};
-        },
-
-        resolveWithContent: function (response, q, content, d) {
-            if (_.keys(response).length > 0)
-                q.resolve(response, content);
-            else
-                q.resolve(d, content);
+            return d;
         },
 
         retreiveOrFetchContent: function (content, success, d, params) {

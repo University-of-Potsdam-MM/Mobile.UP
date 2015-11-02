@@ -210,14 +210,11 @@ define([
 					 * @param d data object
 					 */
 					return function (s, d) {
-						var response = {};
 						if (content) {
-							var __ret = contentLoader.setFetchedContent(content, s, d, params, response, c, a);
-							d = __ret.d;
-							response = __ret.response;
+							d = contentLoader.setFetchedContent(content, s, d, params, c, a);
 							viewContainer.finishRendering(content, transitionOptions.page, $pageContainer);
 						}
-						contentLoader.resolveWithContent(response, q, content, d);
+						q.resolve(d, content);
 					}
 				};
 
