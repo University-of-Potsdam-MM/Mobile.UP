@@ -212,7 +212,7 @@ define([
 					return function (s, d) {
 						if (content) {
 							d = contentLoader.setFetchedContent(content, s, d, params, c, a);
-							viewContainer.finishRendering(content, transitionOptions.page, $pageContainer);
+							viewContainer.finishRendering(content, transitionOptions.page);
 						}
 						q.resolve(d, content);
 					}

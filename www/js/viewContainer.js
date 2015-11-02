@@ -26,7 +26,7 @@ define([
             $.mobile.changePage.defaults.reverse = 'reverse';
         },
 
-        finishRendering: function (content, page, $pageContainer) {
+        finishRendering: function (content, page) {
             content.render();
 
             var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
