@@ -56,26 +56,29 @@ define([
             } else { //Daten vom Server geholt
                 if (content.collection) {
                     setDataCallback = function() {
-                        response = d = content.collection.toJSON();
+                        var response = content.collection.toJSON();
                         content.collection.p = params;
                         if (content.collection.response)
                             response = content.collection.response;
+                        return response;
                     };
                 } else if (content.model && content.model.toJSON) {
                     setDataCallback = function() {
-                        response = d = content.model.toJSON();
+                        var response = content.model.toJSON();
                         content.model.p = params;
                         if (content.model.response)
                             response = content.model.response;
+                        return response;
                     };
                 }
             }
-            setDataCallback();
+            var tmp = setDataCallback();
+            if (tmp) {
+                response = d = tmp;
+            }
 
             // If we have a response from a server call -> save it
             if (_.keys(response).length > 0) {
-                d = response;
-
                 if (!app.data[c])
                     app.data[c] = {};
                 app.data[c][a] = response; //Daten speichern
@@ -88,7 +91,7 @@ define([
             return d;
         },
 
-        retreiveOrFetchContent: function (content, success, d, params) {
+        retreiveOrFetchContent: function (content, d, params, success) {
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
                 try {
                     var list = eval('app.data.' + content.inCollection);

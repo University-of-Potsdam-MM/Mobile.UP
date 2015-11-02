@@ -227,7 +227,7 @@ define([
 
 					params.page = page.$el;
 					var content = viewContainer.createViewForName(c, a, page, params);
-					contentLoader.retreiveOrFetchContent(content, success(content), {}, params);
+					contentLoader.retreiveOrFetchContent(content, {}, params, success(content));
 				};
 
 				viewContainer.saveAndPrepareScrollPosition();
