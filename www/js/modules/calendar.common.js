@@ -61,9 +61,18 @@ define([
 					return new BiWeeklyDate(date);
 				} else {
 					console.log("Unknown rhythm " + date.rythm);
+					this.logUnknownCourseRhythm(date.rythm);
 					return new WeeklyDate(date);
 				}
-			});
+			}, this);
+		},
+
+		logUnknownCourseRhythm: function(rhythm) {
+			var model = new Backbone.Model();
+			model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
+			model.set("courseName", this.get("name"));
+			model.set("rhythm", rhythm);
+			model.save();
 		},
 
 		getStarting: function() {
