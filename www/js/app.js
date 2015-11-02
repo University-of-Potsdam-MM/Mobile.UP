@@ -202,23 +202,7 @@ define([
 
 				// FIXME Transition parameter is ignored
 				var transitionOptions = viewContainer.prepareViewForDomDisplay(page);
-				
-				var success = function(content) {
-					/**
-					 * Success function, die nachdem Daten vom Server oder aus dem Cache geholt wurden, oder wenn nichts zu holen ist, ausgeführt wird.
-					 * @param s state object (After request with model.fetch or collection.fetch or custom: 'cached' or 'set' to indicate whether it was fetched from cache or from a collection)
-					 * @param d data object
-					 */
-					return function (s, d) {
-						if (content) {
-							d = contentLoader.setFetchedContent(content, s, d, params, c, a);
-							viewContainer.finishRendering(content, transitionOptions.page);
-						}
-						q.resolve(d, content);
-					}
-				};
 
-				// afterTransition is called first, success is called afterwards
 				/**
 				 * Wird nach Pagetransition ausgeführt
 				 */
@@ -227,7 +211,12 @@ define([
 
 					params.page = page.$el;
 					var content = viewContainer.createViewForName(c, a, page, params);
-					contentLoader.retreiveOrFetchContent(content, {}, params, success(content));
+					contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
+						if (content) {
+							viewContainer.finishRendering(content, transitionOptions.page);
+						}
+						q.resolve(d, content);
+					});
 				};
 
 				viewContainer.saveAndPrepareScrollPosition();

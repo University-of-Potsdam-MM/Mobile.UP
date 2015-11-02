@@ -91,7 +91,16 @@ define([
             return d;
         },
 
-        retreiveOrFetchContent: function (content, d, params, success) {
+        retreiveOrFetchContent: function (content, d, params, c, a, success) {
+            // Save the original callback so we can call it as soon as the fetch is processed
+            var originalSave = success;
+            success = _.bind(function(s, d) {
+                if (content) {
+                    d = this.setFetchedContent(content, s, d, params, c, a);
+                }
+                originalSave(d);
+            }, this);
+
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
                 try {
                     var list = eval('app.data.' + content.inCollection);
