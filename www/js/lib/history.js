@@ -7,6 +7,7 @@ define([
 	var History = Backbone.Model.extend({
 		
 		history: [],
+		secondHistory: [],
 		
 		startTracking: function() {
 			// Because we track our own history, we have to consider the replace option
@@ -28,6 +29,17 @@ define([
 			var lastPage = this.history[this.history.length-2].name;
 			this.history.pop();
 			Backbone.history.navigate(lastPage, {trigger:true});
+		},
+
+		executeBack: function(callback) {
+			if(this.secondHistory[this.secondHistory.length - 2]) {
+				this.secondHistory.pop();
+				callback(this.secondHistory[this.secondHistory.length - 1]);
+			}
+		},
+
+		pushSecondHistory: function(fragment) {
+			this.secondHistory.push(fragment);
 		},
 		
 		push: function(route) {

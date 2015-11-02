@@ -31,7 +31,6 @@ define([
 		app = {
 			c: {}, //Controller-Objekte werden in diesem Array abgelegt
 			controllers: {}, //Controllerklassen
-			history:[],
 			views:{},
 			models:{},
 			data: {},
@@ -120,7 +119,7 @@ define([
 					if(!window.location.hash) { //Wenn keine URL übergeben wurde, das Hauptmenü aufrufen
 						that.route("main/menu"); 
 					} else { //Sonst aktuelle URL in die app.history aufnehmen
-						app.history.push(Backbone.history.fragment); 
+						customHistory.pushSecondHistory(Backbone.history.fragment);
 					}
 				});
 				controllerLoader.loadControllersExtract(); //Alle Controller laden
@@ -135,7 +134,7 @@ define([
 				var trigger = !noTrigger;
 				replace = !!replace;
 				if(trigger) {
-					this.history.push(url);
+					customHistory.pushSecondHistory(url);
 				}
 				if(url.charAt(0) == '#')
 					url = url.slice(1); 
@@ -157,10 +156,9 @@ define([
 			* @noTrigger: Aktion ausführen: false, sonst true
 			*/
 			previous: function(noTrigger){
-				if(this.history[this.history.length - 2]) {
-					this.history.pop();
-					this.route(this.history[this.history.length - 1], noTrigger);
-				}
+                customHistory.executeBack(_.bind(function(previous) {
+                    this.route(previous, noTrigger);
+                }, this));
 			},
 			callback : function(){},
 			/*
