@@ -39,42 +39,13 @@ define([
             if (content.beforeRender)
                 content.beforeRender();
 
-            var setDataCallback = function() {};
-
             if (typeof(s) == "function") {
-                s();
-            } else if (s == 'set') { //Model aus collection geholt
-                if (content.model) {
-                    // Is already handled by function call
+                var tmp = s();
+                if (tmp) {
+                    response = d = tmp;
                 }
-            } else if (s == 'cached') { //Daten aus dem Cache geholt
-                if (content.model) {
-                    // Is already handled by function call
-                } else if (content.collection) {
-                    // Is already handled by function call
-                }
-            } else { //Daten vom Server geholt
-                if (content.collection) {
-                    setDataCallback = function() {
-                        var response = content.collection.toJSON();
-                        content.collection.p = params;
-                        if (content.collection.response)
-                            response = content.collection.response;
-                        return response;
-                    };
-                } else if (content.model && content.model.toJSON) {
-                    setDataCallback = function() {
-                        var response = content.model.toJSON();
-                        content.model.p = params;
-                        if (content.model.response)
-                            response = content.model.response;
-                        return response;
-                    };
-                }
-            }
-            var tmp = setDataCallback();
-            if (tmp) {
-                response = d = tmp;
+            } else {
+                console.error("s should have been a function", s);
             }
 
             // If we have a response from a server call -> save it
@@ -129,13 +100,27 @@ define([
                     }, this), this.appCache.getCache(content.collection.url));
                 } else if (content.collection.url && (!content.model || typeof content.model.url != 'function')) { //Collection abrufbar von URL
                     content.collection.fetch({
-                        success: success,
+                        success: function(collection, response) {
+                            success(function() {
+                                var response = content.collection.toJSON();
+                                content.collection.p = params;
+                                if (content.collection.response)
+                                    response = content.collection.response;
+                                return response;
+                            }, response);
+                        },
                         error: function () {
                         },
                         dataType: 'json'
                     });
                 } else {
-                    success();
+                    success(function() {
+                        var response = content.collection.toJSON();
+                        content.collection.p = params;
+                        if (content.collection.response)
+                            response = content.collection.response;
+                        return response;
+                    });
                 }
             } else if (content.model) { //Content hat ein Model
                 console.log('Model');
@@ -153,16 +138,34 @@ define([
                 } else if (content.model.url && typeof content.model.url != 'function') { //Model abrufbar von URL
                     console.log(content.model);
                     content.model.fetch($.extend(utils.cacheDefaults(), {
-                        success: success,
+                        success: function(model, response) {
+                            success(function() {
+                                if (content.model.toJSON) {
+                                    var response = content.model.toJSON();
+                                    content.model.p = params;
+                                    if (content.model.response)
+                                        response = content.model.response;
+                                    return response;
+                                }
+                            }, response);
+                        },
                         error: function () {
                         },
                         dataType: 'json'
                     }));
                 } else {
-                    success();
+                    success(function() {
+                        if (content.model.toJSON) {
+                            var response = content.model.toJSON();
+                            content.model.p = params;
+                            if (content.model.response)
+                                response = content.model.response;
+                            return response;
+                        }
+                    });
                 }
             } else { //Content einfach so
-                success();
+                success(function() {});
             }
 
             return d;
