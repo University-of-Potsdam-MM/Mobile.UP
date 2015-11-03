@@ -129,6 +129,7 @@ define([
 			* Wrapper für die Backbone route Funktion
 			* @param url: zu routende URL
 			* @param noTrigger: true: nur url ändern aber nicht Aktion ausführen
+            * @param replace
 			*/
 			route:function(url, noTrigger, replace){
 				var trigger = !noTrigger;
@@ -136,11 +137,20 @@ define([
 				if(trigger) {
 					customHistory.pushSecondHistory(url);
 				}
+				url = this.cleanUrl(url);
+				this.router.navigate(url, {trigger: trigger, replace: replace}); //Url auf Controller routen
+			},
+			/**
+			 * Removes leading # and ensures the right entry point
+			 * @param url Raw url
+			 * @returns Cleaned url
+			 */
+			cleanUrl: function(url) {
 				if(url.charAt(0) == '#')
-					url = url.slice(1); 
+					url = url.slice(1);
 				if(url == 'home' || url == '')
 					url = 'main/menu';
-				this.router.navigate(url, {trigger: trigger, replace: replace}); //Url auf Controller routen
+				return url;
 			},
 			/*
 			* Initialisiert den Refresh einer URL vom Server
