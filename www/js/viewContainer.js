@@ -29,22 +29,24 @@ define([
         finishRendering: function (content, page) {
             content.render();
 
-            var $metas = content.$el.find('meta'); //Meta infos aus Seite in den Header integrieren
-
+            //Meta infos aus Seite in den Header integrieren
+            var $metas = content.$el.find('meta');
             if ($metas.length > 0) {
                 var metas = {};
                 $metas.each(function () {
                     metas[$(this).attr('name')] = $(this).attr('content');
                 });
-                if (!metas.title)
-                    metas.title = page.title;
+                metas.title = metas.title ? metas.title : page.title;
+
                 var header = utils.renderheader(metas);
                 $pageContainer.find('.ui-header').replaceWith(header);
-                var $footer = $pageContainer.find('.ui-footer');
-                if ($footer.length > 0) {
-                    page.content.addClass('ui-page-footer-fixed');
-                }
             }
+
+            var $footer = $pageContainer.find('.ui-footer');
+            if ($footer.length > 0) {
+                page.content.addClass('ui-page-footer-fixed');
+            }
+
             if (content.afterRender)
                 content.afterRender();
             $pageContainer.trigger("create");
