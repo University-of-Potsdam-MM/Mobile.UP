@@ -55,7 +55,10 @@ define([
             scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
         },
 
-        executeTransition: function (app, transitionOptions) {
+        executeTransition: function (transitionOptions) {
+            if (transitionOptions.beforeTransition)
+                transitionOptions.beforeTransition();
+
             Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
                 transition: transitionOptions.transition,
@@ -98,16 +101,16 @@ define([
          * @returns Instance of Backbone.View or false
          */
         createViewForName: function (c, a, page, params) {
-            var content;
+            params.page = page.$el;
 
+            var content = false;
             var view = this.getView(c, a);
             if (view) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
                 view = new view(params);
+                view.page = page.$el;
                 content = view;
-                content.page = page.$el;
             } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
                 view = page;
-                content = false;
                 this.updateHeaderExtract(page.$el);
             }
             app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden

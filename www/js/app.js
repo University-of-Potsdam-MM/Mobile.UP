@@ -216,8 +216,6 @@ define([
 				 */
 				transitionOptions.afterTransition = function () {
 					contentLoader.initData(c);
-
-					params.page = page.$el;
 					var content = viewContainer.createViewForName(c, a, page, params);
 					contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
 						if (content) {
@@ -227,9 +225,12 @@ define([
 					});
 				};
 
-				viewContainer.saveAndPrepareScrollPosition();
-				customHistory.push(Backbone.history.fragment);
-				viewContainer.executeTransition(app, transitionOptions);
+				transitionOptions.beforeTransition = function() {
+					viewContainer.saveAndPrepareScrollPosition();
+					customHistory.push(Backbone.history.fragment);
+				};
+
+				viewContainer.executeTransition(transitionOptions);
 
 				return q.promise;
 			},
