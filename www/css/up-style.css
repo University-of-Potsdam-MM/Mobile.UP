@@ -1764,15 +1764,20 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 	padding-left: 50px;
 }
 
-.fax-text {
-	color: #014260;
-	float: left;
-	width: 0px;
-}
-
 .fax {
+	background-image: url(../img/up/fax.png) !important;
+	background-repeat: no-repeat;
+	background-position: 0px 0em;
 	text-indent: 20px;
 	padding-left: 50px;
+}
+
+.office {
+	background-image: url(../img/up/room.png) !important;
+	background-repeat: no-repeat;
+	background-position: 0px 0em;
+	text-indent: 25px;
+	display:block;
 }
 
 #emergency-list .ui-collapsible-content p,#people-list .ui-collapsible-content p
@@ -2413,6 +2418,38 @@ p.event-description {
 	div.media_x_big {
 		background-image: url(..img/red/media_x_big_hr.png) !important;
 		background-size: 55px 55px;
+	}
+	
+	.mail {
+	background-image: url(../img/up/mail-small_hr.png) !important;
+	background-repeat: no-repeat;
+	background-position: 0px .2em;
+	text-indent: 20px;
+	padding-left: 50px;
+	}
+
+	.phone {
+		background-image: url(../img/up/phone-small_hr.png) !important;
+		background-repeat: no-repeat;
+		background-position: 0px .2em;
+		text-indent: 20px;
+		padding-left: 50px;
+	}
+
+	.fax {
+		background-image: url(../img/up/fax_hr.png) !important;
+		background-repeat: no-repeat;
+		background-position: 0px 0em;
+		text-indent: 20px;
+		padding-left: 50px;
+	}
+
+	.office {
+		background-image: url(../img/up/room_hr.png) !important;
+		background-repeat: no-repeat;
+		background-position: 0px 0em;
+		text-indent: 25px;
+		display:block;
 	}
 }
 
