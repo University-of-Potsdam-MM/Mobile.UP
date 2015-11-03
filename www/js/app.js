@@ -182,6 +182,16 @@ define([
 					self.callback = function(){};
 				}
 			},
+
+			/**
+			 *
+			 * @param c Controllername
+			 * @param a Actionsname
+			 * @returns true is access is allowed, false otherwise
+			 */
+			isAllowed: function(c, a) {
+				return this.checkAuth(c) && this.checkAuth(a);
+			},
 			
 			/*
 			* Wenn nötig Daten vom Server laden, Seite rendern und Seitenübergang vollführen
@@ -192,16 +202,11 @@ define([
 						   Oder als Objekt: Parameter für das Rendern des View
 			*/
 			loadPage: function(c, a, params, transition) {
+				params = params || {};
 				var q = Q.defer();
 
-				if (!params)
-					params = {};
-
-				var page = viewContainer.getPage(c, app.views, params);
-
 				// Check if access to the page is allowed
-				var allowed = app.checkAuth(c) && app.checkAuth(a);
-				if (!allowed) {
+				if (!app.isAllowed(c, a)) {
 					q.resolve();
 					return {
 						done: function (d) { }
@@ -209,6 +214,7 @@ define([
 				}
 
 				// FIXME Transition parameter is ignored
+				var page = viewContainer.getPage(c, app.views, params);
 				var transitionOptions = viewContainer.prepareViewForDomDisplay(page);
 
 				/**
