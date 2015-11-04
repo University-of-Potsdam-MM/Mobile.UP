@@ -2426,6 +2426,7 @@ p.event-description {
 	background-position: 0px .2em;
 	text-indent: 20px;
 	padding-left: 50px;
+	background-size: 20px 11px;
 	}
 
 	.phone {
@@ -2434,6 +2435,7 @@ p.event-description {
 		background-position: 0px .2em;
 		text-indent: 20px;
 		padding-left: 50px;
+		background-size: 20px 11px;
 	}
 
 	.fax {
@@ -2442,6 +2444,7 @@ p.event-description {
 		background-position: 0px 0em;
 		text-indent: 20px;
 		padding-left: 50px;
+		background-size: 20px 20px;
 	}
 
 	.office {
@@ -2450,6 +2453,7 @@ p.event-description {
 		background-position: 0px 0em;
 		text-indent: 25px;
 		display:block;
+		background-size: 20px 11px;
 	}
 }
 
