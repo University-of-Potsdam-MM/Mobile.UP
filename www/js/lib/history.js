@@ -51,7 +51,11 @@ define([
 		},
 		
 		currentRoute: function() {
-			return this.history[this.history.length-1].name;
+			if (this.hasHistory()) {
+				return this.history[this.history.length-1].name;
+			} else {
+				return undefined;
+			}
 		},
 		
 		length: function() {

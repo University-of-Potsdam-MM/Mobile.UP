@@ -64,14 +64,14 @@ define([
             $pageContainer.trigger("create");
         },
 
-        saveAndPrepareScrollPosition: function () {
-            scrollManager.saveScrollPositionExtract(customHistory);
-            scrollManager.prepareScrollPositionExtract(Backbone.history.fragment);
+        saveAndPrepareScrollPosition: function (transitionOptions) {
+            scrollManager.saveScrollPositionExtract(transitionOptions);
+            scrollManager.prepareScrollPositionExtract(transitionOptions.route.to);
         },
 
         executeTransition: function (transitionOptions) {
             if (transitionOptions.beforeTransition)
-                transitionOptions.beforeTransition();
+                transitionOptions.beforeTransition(transitionOptions);
 
             Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
@@ -227,10 +227,9 @@ define([
     var scrollManager = {
         routesToScrollPositions: {},
 
-        saveScrollPositionExtract: function (customHistory) {
-            console.log(customHistory);
-            if (customHistory.hasHistory()) {
-                var name = customHistory.currentRoute();
+        saveScrollPositionExtract: function (transitionOptions) {
+            var name = transitionOptions.route.from;
+            if (name) {
                 this.routesToScrollPositions[name] = $(window).scrollTop();
             }
         },

@@ -231,11 +231,14 @@ define([
 					});
 				};
 
-				transitionOptions.beforeTransition = function() {
-					viewContainer.saveAndPrepareScrollPosition();
-					customHistory.push(Backbone.history.fragment);
+				transitionOptions.beforeTransition = function(options) {
+					viewContainer.saveAndPrepareScrollPosition(options);
+					customHistory.push(options.route.to);
 				};
 
+				transitionOptions.route = {};
+				transitionOptions.route.from = customHistory.currentRoute();
+				transitionOptions.route.to = Backbone.history.fragment;
 				viewContainer.executeTransition(transitionOptions);
 
 				return q.promise;
