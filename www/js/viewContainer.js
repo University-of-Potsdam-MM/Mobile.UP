@@ -9,10 +9,13 @@ define([
     'history'
 ], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
 
-    var viewContainer = {
+    var viewContainer = _.extend({
 
         initialize: function() {
             _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
+
+            this.listenTo(this, "beforeTransition", this.saveAndPrepareScrollPosition);
+            this.listenTo(this, "beforeTransition", function(options) { customHistory.push(options.route.to); });
         },
 
         setIosHeaderFix: function () {
@@ -70,8 +73,7 @@ define([
         },
 
         executeTransition: function (transitionOptions) {
-            if (transitionOptions.beforeTransition)
-                transitionOptions.beforeTransition(transitionOptions);
+            this.trigger("beforeTransition", transitionOptions);
 
             Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
@@ -222,7 +224,7 @@ define([
         getView: function (c, a) {
             return app.views[utils.capitalize(c) + utils.capitalize(a)];
         }
-    };
+    }, Backbone.Events);
 
     var scrollManager = {
         routesToScrollPositions: {},

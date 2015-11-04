@@ -231,11 +231,6 @@ define([
 					});
 				};
 
-				transitionOptions.beforeTransition = function(options) {
-					viewContainer.saveAndPrepareScrollPosition(options);
-					customHistory.push(options.route.to);
-				};
-
 				transitionOptions.route = {};
 				transitionOptions.route.from = customHistory.currentRoute();
 				transitionOptions.route.to = Backbone.history.fragment;
