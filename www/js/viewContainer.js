@@ -26,26 +26,38 @@ define([
             $.mobile.changePage.defaults.reverse = 'reverse';
         },
 
-        finishRendering: function (content, page) {
-            content.render();
-
+        _updateHeaderWithMetaInfos: function($el, page) {
             //Meta infos aus Seite in den Header integrieren
-            var $metas = content.$el.find('meta');
+            var $metas = $el.find('meta');
             if ($metas.length > 0) {
                 var metas = {};
                 $metas.each(function () {
                     metas[$(this).attr('name')] = $(this).attr('content');
                 });
-                metas.title = metas.title ? metas.title : page.title;
+
+                if (!metas.title && page) {
+                    metas.title = page.title;
+                } else if (!metas.title && !page) {
+                    metas.title = $('.ui-header').find('h1').html();
+                }
 
                 var header = utils.renderheader(metas);
                 $pageContainer.find('.ui-header').replaceWith(header);
             }
+        },
 
+        _ensureFooterFixed: function(page) {
             var $footer = $pageContainer.find('.ui-footer');
             if ($footer.length > 0) {
                 page.content.addClass('ui-page-footer-fixed');
             }
+        },
+
+        finishRendering: function (content, page) {
+            content.render();
+
+            this._updateHeaderWithMetaInfos(content.$el, page);
+            this._ensureFooterFixed(page);
 
             if (content.afterRender)
                 content.afterRender();
@@ -76,23 +88,7 @@ define([
         },
 
         updateHeader: function ($el) {
-            this.updateHeaderExtract($el);
-        },
-
-        updateHeaderExtract: function ($el) {
-            var $metas = $el.find('meta'); //Meta infos aus Seite in den Header integrieren
-            console.log($el[0]);
-            var $header = $('.ui-header');
-            if ($metas.length > 0) {
-                var metas = {};
-                $metas.each(function () {
-                    metas[$(this).attr('name')] = $(this).attr('content');
-                });
-                if (!metas.title)
-                    metas.title = $header.find('h1').html();
-                var header = utils.renderheader(metas);
-                $header.replaceWith(header);
-            }
+            this._updateHeaderWithMetaInfos($el);
         },
 
         /**
@@ -113,7 +109,7 @@ define([
                 content = view;
             } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
                 view = page;
-                this.updateHeaderExtract(page.$el);
+                this._updateHeaderWithMetaInfos(page.$el);
             }
             app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
 
