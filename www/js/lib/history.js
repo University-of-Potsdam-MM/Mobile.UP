@@ -24,6 +24,10 @@ define([
 				savedNavigate.apply(this, arguments);
 			};
 		},
+
+		startSecond: function(baseUrl) {
+			Backbone.history.start({pushState: false, root: baseUrl});
+		},
 		
 		goBack: function() {
 			var lastPage = this.history[this.history.length-2].name;

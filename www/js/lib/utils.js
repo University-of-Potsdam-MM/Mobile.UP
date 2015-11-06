@@ -611,6 +611,27 @@ define([
 		return $.mobile.changePage.defaults.transition;
 	};
 
+	/**
+	 * Override Backbone.sync to automatically include auth headers according to the url in use
+	 */
+	var overrideBackboneSync = function() {
+		var authUrls = app.authUrls;
+		var isStartOf = function(url) {
+			return function(authUrl) {
+				return _.str.startsWith(url, authUrl);
+			};
+		};
+
+		var sync = Backbone.sync;
+		Backbone.sync = function(method, model, options) {
+			var url = options.url || _.result(model, "url");
+			if (url && _.any(authUrls, isStartOf(url))) {
+				options.headers = _.extend(options.headers || {}, { "Authorization": getAuthHeader() });
+			}
+			return sync(method, model, options);
+		};
+	};
+
 	return {
 			rendertmpl: rendertmpl,
 			renderheader: renderheader,
@@ -629,6 +650,7 @@ define([
 			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
 			cacheDefaults: cacheDefaults,
 			defaultTransition: defaultTransition,
-			FullySyncedAdapter: FullySyncedAdapter
+			FullySyncedAdapter: FullySyncedAdapter,
+			overrideBackboneSync: overrideBackboneSync
 		};
 });

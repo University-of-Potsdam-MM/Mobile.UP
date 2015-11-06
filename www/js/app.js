@@ -78,53 +78,39 @@ define([
     					}
     				}, false);
 				}
-				/**
-		 	 	 * Override Backbone.sync to automatically include auth headers according to the url in use
-		 	 	 */
-				function overrideBackboneSync() {
-					var authUrls = app.authUrls;
-					var isStartOf = function(url) {
-						return function(authUrl) {
-							return _.str.startsWith(url, authUrl);
-						};
-					};
 
-					var sync = Backbone.sync;
-					Backbone.sync = function(method, model, options) {
-						var url = options.url || _.result(model, "url");
-						if (url && _.any(authUrls, isStartOf(url))) {
-							options.headers = _.extend(options.headers || {}, { "Authorization": utils.getAuthHeader() });
-						}
-						return sync(method, model, options);
-					};
-				}
-
-				/**
-			 	 * Initialize Backbone override
-			 	 */
-				$(overrideBackboneSync);
+				// Initialize Backbone override
+				$(utils.overrideBackboneSync);
 
 				// Initialize external link override
 				$(document).on("click", "a", _.partial(utils.overrideExternalLinks, _, viewContainer.removeActiveElementsOnCurrentPage));
 
 				// Register global error handler
 				window.onerror = utils.onError;
-				
-				this.baseUrl = document.location.pathname; 
-				this.baseUrl = this.baseUrl.replace(/\/index\.html/, ''); //Anwendungsurl ermitteln
-				var that = this;
-				$(document).one('app:controllersLoaded', function(){ //Wird ausgeführt wenn alle Controller und Viewtemplates geladen wurden
-					that.bindEvents(); //Globale Events zuordnen
-					Backbone.history.start({pushState: false, root: that.baseUrl}); //Backbone URL-Routing-Funktion starten
-					if(!window.location.hash) { //Wenn keine URL übergeben wurde, das Hauptmenü aufrufen
-						that.route("main/menu"); 
-					} else { //Sonst aktuelle URL in die app.history aufnehmen
-						customHistory.pushSecondHistory(Backbone.history.fragment);
-					}
-				});
+
+				//Anwendungsurl ermitteln
+				var baseUrl = document.location.pathname.replace(/\/index\.html/, '');
+
+				$(document).one('app:controllersLoaded', _.bind(function(){ //Wird ausgeführt wenn alle Controller und Viewtemplates geladen wurden
+					//Globale Events zuordnen
+					this.bindEvents();
+					//Backbone URL-Routing-Funktion starten
+					customHistory.startSecond(baseUrl);
+
+					this.gotoEntryPoint();
+				}, this));
 				controllerLoader.loadControllersExtract(); //Alle Controller laden
 				customHistory.startTracking();
 			},
+
+			gotoEntryPoint: function() {
+				if(!window.location.hash) { //Wenn keine URL übergeben wurde, das Hauptmenü aufrufen
+					this.route("main/menu");
+				} else { //Sonst aktuelle URL in die app.history aufnehmen
+					customHistory.pushSecondHistory(Backbone.history.fragment);
+				}
+			},
+
 			/**
 			* Wrapper für die Backbone route Funktion
 			* @param url: zu routende URL
