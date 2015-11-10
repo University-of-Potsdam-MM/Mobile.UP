@@ -13,6 +13,7 @@ define([
     var pageContainer = _.extend({
 
         initialize: function() {
+            this.listenTo(this, "beforeTransition", this.prepareViewForTransition);
         },
 
         addToContainer: function(pageContent) {
@@ -35,8 +36,30 @@ define([
             scrollManager.prepareScrollPositionExtract(transitionOptions.route.to);
         },
 
+        prepareViewForTransition: function(transitionOptions) {
+            var page = transitionOptions.page.view;
+
+            // Render page
+            page.render();
+
+            // Add padding for the header and append it to the pagecontainer
+            var pageContent = page.$el.attr("data-role", "page");
+            pageContent.css('padding-top', '54px');
+
+            pageContainer.addToContainer(pageContent);
+
+            // Retrieve header title, render header and replace it
+            var pageTitle = pageContent.find('meta[name="title"]').attr('content');
+            var header = utils.renderheader({title: pageTitle});
+
+            pageContainer.switchHeaders(header);
+
+            transitionOptions.page.title = pageTitle;
+            transitionOptions.page.content = pageContent;
+        },
+
         executeTransition: function (transitionOptions) {
-            viewContainer.trigger("beforeTransition", transitionOptions);
+            this.trigger("beforeTransition", transitionOptions);
 
             Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
@@ -49,7 +72,7 @@ define([
                 }
                 app.currentView = transitionOptions.page.view;
 
-                viewContainer.trigger("afterTransition", transitionOptions);
+                this.trigger("afterTransition", transitionOptions);
             }, this));
         },
 
@@ -81,14 +104,16 @@ define([
         }
     }, Backbone.Events);
 
+    pageContainer.initialize();
+
     var viewContainer = _.extend({
 
         initialize: function() {
             _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
 
-            this.listenTo(this, "beforeTransition", pageContainer.saveAndPrepareScrollPosition);
-            this.listenTo(this, "beforeTransition", function(options) { customHistory.push(options.route.to); });
-            this.listenTo(this, "afterTransition", this.afterTransition);
+            this.listenTo(pageContainer, "beforeTransition", pageContainer.saveAndPrepareScrollPosition);
+            this.listenTo(pageContainer, "beforeTransition", function(options) { customHistory.push(options.route.to); });
+            this.listenTo(pageContainer, "afterTransition", this.afterTransition);
         },
 
         setIosHeaderFix: function () {
@@ -217,29 +242,12 @@ define([
         prepareViewForDomDisplay: function (c, params) {
             var page = this.instanciatePage(c, params);
 
-            // Render page
-            page.render();
-
-            // Add padding for the header and append it to the pagecontainer
-            var pageContent = page.$el.attr("data-role", "page");
-            pageContent.css('padding-top', '54px');
-
-            pageContainer.addToContainer(pageContent);
-
-            // Retrieve header title, render header and replace it
-            var pageTitle = pageContent.find('meta[name="title"]').attr('content');
-            var header = utils.renderheader({title: pageTitle});
-
-            pageContainer.switchHeaders(header);
-
             var transitionChoice = this._chooseTransition();
 
             return {
                 transition: transitionChoice.transition,
                 reverse: transitionChoice.reverse,
                 page: {
-                    title: pageTitle,
-                    content: pageContent,
                     view: page
                 }
             };
