@@ -223,21 +223,14 @@ define([
 				}
 
 				// FIXME Transition parameter is ignored
-				var page = viewContainer.getPage(c, app.views, params);
-				var transitionOptions = viewContainer.prepareViewForDomDisplay(page);
+				var transitionOptions = viewContainer.prepareViewForDomDisplay(c, params);
 
-				/**
-				 * Wird nach Pagetransition ausgeführt
-				 */
-				transitionOptions.afterTransition = function () {
-					contentLoader.initData(c);
-					var content = viewContainer.createViewForName(c, a, page, params);
-					contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
-						if (content) {
-							viewContainer.finishRendering(content, transitionOptions.page);
-						}
-						q.resolve(d, content);
-					});
+				transitionOptions.extras = {
+					c: c,
+					a: a,
+					page: transitionOptions.page.view,
+					params: params,
+					q: q
 				};
 
 				transitionOptions.route = {};

@@ -632,6 +632,13 @@ define([
 		};
 	};
 
+	var EmptyPage = Backbone.View.extend({
+		render: function () {
+			this.$el.html('');
+			return this;
+		}
+	});
+
 	return {
 			rendertmpl: rendertmpl,
 			renderheader: renderheader,
@@ -651,6 +658,7 @@ define([
 			cacheDefaults: cacheDefaults,
 			defaultTransition: defaultTransition,
 			FullySyncedAdapter: FullySyncedAdapter,
-			overrideBackboneSync: overrideBackboneSync
+			overrideBackboneSync: overrideBackboneSync,
+			EmptyPage: EmptyPage
 		};
 });

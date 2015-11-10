@@ -6,8 +6,9 @@ define([
     'underscore-string',
     'utils',
     'q',
-    'history'
-], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
+    'history',
+    'contentLoader'
+], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoader) {
 
     var viewContainer = _.extend({
 
@@ -16,6 +17,7 @@ define([
 
             this.listenTo(this, "beforeTransition", this.saveAndPrepareScrollPosition);
             this.listenTo(this, "beforeTransition", function(options) { customHistory.push(options.route.to); });
+            this.listenTo(this, "afterTransition", this.afterTransition);
         },
 
         setIosHeaderFix: function () {
@@ -79,13 +81,34 @@ define([
                 changeHash: false,
                 transition: transitionOptions.transition,
                 reverse: transitionOptions.reverse
-            })).done(function () {
+            })).done(_.bind(function () {
                 if (!app.currentView) {
                     $('body').css('overflow', 'auto');
                     $("body").fadeIn(100);
                 }
                 app.currentView = transitionOptions.page.view;
-                transitionOptions.afterTransition();
+
+                this.trigger("afterTransition", transitionOptions);
+            }, this));
+        },
+
+        /**
+         * Wird nach Pagetransition ausgeführt
+         */
+        afterTransition: function(transitionOptions) {
+            var c = transitionOptions.extras.c;
+            var a = transitionOptions.extras.a;
+            var page = transitionOptions.extras.page;
+            var params = transitionOptions.extras.params;
+            var q = transitionOptions.extras.q;
+
+            contentLoader.initData(c);
+            var content = viewContainer.createViewForName(c, a, page, params);
+            contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
+                if (content) {
+                    viewContainer.finishRendering(content, transitionOptions.page);
+                }
+                q.resolve(d, content);
             });
         },
 
@@ -104,9 +127,9 @@ define([
             params.page = page.$el;
 
             var content = false;
-            var view = this.getView(c, a);
-            if (view) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-                view = new view(params);
+            var view;
+            if (this.hasView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
+                view = this.instanciateView(c, a, params);
                 view.page = page.$el;
                 content = view;
             } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
@@ -164,9 +187,13 @@ define([
         /**
          * prepare new view for DOM display
          */
-        prepareViewForDomDisplay: function (page) {
-            // Render page, add padding for the header and append it to the pagecontainer
+        prepareViewForDomDisplay: function (c, params) {
+            var page = this.instanciatePage(c, params);
+
+            // Render page
             page.render();
+
+            // Add padding for the header and append it to the pagecontainer
             var pageContent = page.$el.attr("data-role", "page");
             pageContent.css('padding-top', '54px');
             $pageContainer = $('#pagecontainer');
@@ -204,25 +231,25 @@ define([
             };
         },
 
-        getPage: function(c, views, params) {
-            var pageName = utils.capitalize(c) + 'Page';
+        instanciatePage: function(c, params) {
+           return this.instanciateView(c, 'Page', params);
+        },
 
-            // Making sure a page is found
-            console.log("Looking for view", pageName, views[pageName]);
-            if (!views[pageName]) {
-                views[pageName] = Backbone.View.extend({
-                    render: function () {
-                        this.$el.html('');
-                        return this;
-                    }
-                });
-            }
+        instanciateView: function(c, a, params) {
+            var View = this.getView(c, a);
+            return new View(params);
+        },
 
-            return new views[pageName](params);
+        hasView: function(c, a) {
+            return app.views[utils.capitalize(c) + utils.capitalize(a)];
         },
 
         getView: function (c, a) {
-            return app.views[utils.capitalize(c) + utils.capitalize(a)];
+            var pageName = utils.capitalize(c) + utils.capitalize(a);
+            if (!app.views[pageName]) {
+                app.views[pageName] = utils.EmptyPage;
+            }
+            return app.views[pageName];
         }
     }, Backbone.Events);
 
