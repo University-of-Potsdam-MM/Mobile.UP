@@ -37,11 +37,6 @@ define([
     var ContentLoader = {
         appCache : new AppCache(),
 
-        initData: function (c) {
-            if (!app.data.has(c))
-                app.data.set(c, {});
-        },
-
         setFetchedContent: function (content, s, d, params, c, a) {
             var response = {};
             console.log('content');

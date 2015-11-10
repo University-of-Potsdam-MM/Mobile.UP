@@ -166,14 +166,12 @@ define([
             var params = transitionOptions.extras.params;
             var q = transitionOptions.extras.q;
 
-            contentLoader.initData(c);
             var contentAndView = viewContainer.createViewForName(c, a, page, params);
 
             var content = contentAndView.content;
             var view = contentAndView.view;
 
             contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
-                console.log("Finished rendering");
                 viewContainer.finishRendering(content, transitionOptions.page, view);
                 q.resolve(d, content);
             });
