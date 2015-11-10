@@ -13,61 +13,81 @@ define([
     var pageContainer = _.extend({
 
         initialize: function() {
-            this.listenTo(this, "beforeTransition", this.prepareViewForTransition);
+            this.listenTo(this, "beforeTransition", this._prepareViewForTransition);
+            this.listenTo(this, "beforeTransition", this._chooseTransition);
+            this.listenTo(this, "beforeTransition", this._saveAndPrepareScrollPosition);
+            this.listenTo(this, "afterTransition", this._updateCurrentView);
         },
 
-        getPageContainer: function () {
+        _getPageContainer: function () {
             if (!this.$pageContainer) {
                 this.$pageContainer = $('#pagecontainer');
             }
             return this.$pageContainer;
         },
 
-        addToContainer: function(pageContent) {
-            this.getPageContainer().append(pageContent);
-            this.getPageContainer().trigger("create");
+        _addToContainer: function(pageContent) {
+            this._getPageContainer().append(pageContent);
+            this._getPageContainer().trigger("create");
         },
 
-        switchHeaders: function(header) {
-            var $header = this.getPageContainer().find('.ui-header');
+        _switchHeaders: function(header) {
+            var $header = this._getPageContainer().find('.ui-header');
             if ($header.length > 0) {
                 $header.replaceWith(header);
             } else {
-                this.getPageContainer().append(header);
+                this._getPageContainer().append(header);
             }
         },
 
-        saveAndPrepareScrollPosition: function (transitionOptions) {
+        _saveAndPrepareScrollPosition: function (transitionOptions) {
             scrollManager.saveScrollPositionExtract(transitionOptions);
             scrollManager.prepareScrollPositionExtract(transitionOptions.route.to);
         },
 
-        prepareViewForTransition: function(transitionOptions) {
+        _prepareViewForTransition: function(transitionOptions) {
             var page = transitionOptions.page;
 
-            // Render page, add padding for the header and update it
+            // Render page, add padding for the header and update the header
             page.render();
             var pageContent = page.$el.attr("data-role", "page").css('padding-top', '54px');
             this.updateHeader(pageContent);
         },
 
+        _chooseTransition: function(transitionOptions) {
+            // Retrieve transitions
+            var transition = $.mobile.defaultPageTransition;
+            var reverse = $.mobile.changePage.defaults.reverse;
+
+            // Erste Seite nicht sliden
+            if (this.firstPage) {
+                transition = 'none';
+                this.firstPage = false;
+            }
+
+            transitionOptions.transition = transition;
+            transitionOptions.reverse = reverse;
+        },
+
         executeTransition: function (transitionOptions) {
             this.trigger("beforeTransition", transitionOptions);
 
-            this.addToContainer(transitionOptions.page.$el);
+            this._addToContainer(transitionOptions.page.$el);
             Q($.mobile.changePage(transitionOptions.page.$el, {
                 changeHash: false,
                 transition: transitionOptions.transition,
                 reverse: transitionOptions.reverse
             })).done(_.bind(function () {
-                if (!app.currentView) {
-                    $('body').css('overflow', 'auto');
-                    $("body").fadeIn(100);
-                }
-                app.currentView = transitionOptions.page;
-
                 this.trigger("afterTransition", transitionOptions);
             }, this));
+        },
+
+        _updateCurrentView: function(transitionOptions) {
+            if (!app.currentView) {
+                $('body').css('overflow', 'auto');
+                $("body").fadeIn(100);
+            }
+            app.currentView = transitionOptions.page;
         },
 
         updateHeader: function($el) {
@@ -84,12 +104,12 @@ define([
                 }
 
                 var header = utils.renderheader(metas);
-                this.switchHeaders(header);
+                this._switchHeaders(header);
             }
         },
 
         ensureFooterFixed: function(page) {
-            var $footer = this.getPageContainer().find('.ui-footer');
+            var $footer = this._getPageContainer().find('.ui-footer');
             if ($footer.length > 0) {
                 page.$el.addClass('ui-page-footer-fixed');
             }
@@ -103,7 +123,6 @@ define([
         initialize: function() {
             _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
 
-            this.listenTo(pageContainer, "beforeTransition", pageContainer.saveAndPrepareScrollPosition);
             this.listenTo(pageContainer, "beforeTransition", function(options) { customHistory.push(options.route.to); });
             this.listenTo(pageContainer, "afterTransition", this.afterTransition);
         },
@@ -132,7 +151,7 @@ define([
 
             if (content.afterRender)
                 content.afterRender();
-            pageContainer.getPageContainer().trigger("create");
+            pageContainer._getPageContainer().trigger("create");
         },
 
         /**
@@ -225,36 +244,11 @@ define([
          * prepare new view for DOM display
          */
         prepareViewForDomDisplay: function (c, params) {
-            var page = this.instanciatePage(c, params);
-
-            var transitionChoice = this._chooseTransition();
+            var page = this.instanciateView(c, 'Page', params);
 
             return {
-                transition: transitionChoice.transition,
-                reverse: transitionChoice.reverse,
                 page: page
             };
-        },
-
-        _chooseTransition: function() {
-            // Retrieve transitions
-            var transition = $.mobile.defaultPageTransition;
-            var reverse = $.mobile.changePage.defaults.reverse;
-
-            // Erste Seite nicht sliden
-            if (this.firstPage) {
-                transition = 'none';
-                this.firstPage = false;
-            }
-
-            return {
-                transition: transition,
-                reverse: reverse
-            };
-        },
-
-        instanciatePage: function(c, params) {
-           return this.instanciateView(c, 'Page', params);
         },
 
         instanciateView: function(c, a, params) {
