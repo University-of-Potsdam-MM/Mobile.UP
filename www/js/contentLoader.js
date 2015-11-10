@@ -10,7 +10,6 @@ define([
 ], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
 
     var AppCache = Backbone.Model.extend({
-        cacheTimes: [], //Speichert für jede URL die letzte Zeit, wann diese vom Server geladen wurde
         cache: {},
 
         setCache: function(url, response) {
