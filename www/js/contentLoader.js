@@ -26,8 +26,8 @@ define([
         appCache : new AppCache(),
 
         initData: function (c) {
-            if (!app.data[c])
-                app.data[c] = {};
+            if (!app.data.has(c))
+                app.data.set(c, {});
         },
 
         setFetchedContent: function (content, s, d, params, c, a) {
@@ -50,9 +50,9 @@ define([
 
             // If we have a response from a server call -> save it
             if (_.keys(response).length > 0) {
-                if (!app.data[c])
-                    app.data[c] = {};
-                app.data[c][a] = response; //Daten speichern
+                if (!app.data.has(c))
+                    app.data.set(c, {});
+                app.data.get(c)[a] = response; //Daten speichern
                 if (content.model)
                     this.appCache.setCache(content.model.url, response);
                 else if (content.collection) {
@@ -74,7 +74,7 @@ define([
 
             if ((content.model || content.collection) && content.inCollection) { //Element aus der geladenen Collection holen und nicht vom Server
                 try {
-                    var list = eval('app.data.' + content.inCollection);
+                    var list = app.data.get(content.inCollection);
                 } catch (e) {
                 }
                 if (list) {

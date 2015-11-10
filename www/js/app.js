@@ -34,7 +34,7 @@ define([
 			controllers: {}, //Controllerklassen
 			views:{},
 			models:{},
-			data: {},
+			data: new Backbone.Model,
 			requiresAuth: ['calendar', 'moodle', 'grades', 'people'],// routes that need authentication
 			preventAccessWhenAuth: [],// routes to prevent authentication when already authenticated
 			authUrls: [

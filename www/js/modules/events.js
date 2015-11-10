@@ -110,7 +110,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.collection = new app.models.Place(p);
 			this.page = p.page;
 			this.filter = p.filter;
-			app.data.events = p.events;
+			app.data.set("events", p.events);
 			_.bindAll(this, 'render');
 		},
 		
@@ -139,7 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 
 		render:function(){
 			this.$el = this.page.find('#events');
-			this.$el.html(this.template({places: app.data.places, disabledLocations: utils.LocalStore.get('disabledLocations', {})}));
+			this.$el.html(this.template({places: app.data.get("places"), disabledLocations: utils.LocalStore.get('disabledLocations', {})}));
 			$('.ch-location').change(this.toggleLocation);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#events');
@@ -174,7 +174,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 		},
 
 		render: function(){
-			app.data.places = this.collection.response.places;
+			app.data.set("places", this.collection.response.places);
 			this.$el = this.page.find('#events');
 			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var $footer = this.$el.find('.footer');
