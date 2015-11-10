@@ -36,44 +36,39 @@ define([
     var ContentLoader = {
         appCache : new AppCache(),
 
-        setFetchedContent: function (content, s, d, params, c, a) {
-            var response = {};
-            console.log('content');
-            if (content.fetchSuccess)
-                content.fetchSuccess(s, d);
-            content.p = params;
-            if (content.beforeRender)
-                content.beforeRender();
-
-            if (typeof(s) == "function") {
-                var tmp = s();
-                if (tmp) {
-                    response = d = tmp;
-                }
-            } else {
-                console.error("s should have been a function", s);
-            }
-
-            // If we have a response from a server call -> save it
-            if (_.keys(response).length > 0) {
-                if (!app.data.has(c))
-                    app.data.set(c, {});
-                app.data.get(c)[a] = response; //Daten speichern
-                if (content.model)
-                    this.appCache.setCache(content.model.url, response);
-                else if (content.collection) {
-                    this.appCache.setCache(content.collection.url, response);
-                }
-            }
-            return d;
-        },
-
         retreiveOrFetchContent: function (content, d, params, c, a, success) {
             // Save the original callback so we can call it as soon as the fetch is processed
             var originalSave = success;
             success = _.bind(function(s, d) {
                 if (content) {
-                    d = this.setFetchedContent(content, s, d, params, c, a);
+                    var response = {};
+
+                    if (content.fetchSuccess)
+                        content.fetchSuccess(s, d);
+                    content.p = params;
+                    if (content.beforeRender)
+                        content.beforeRender();
+
+                    if (typeof(s) == "function") {
+                        var tmp = s();
+                        if (tmp) {
+                            response = d = tmp;
+                        }
+                    } else {
+                        console.error("s should have been a function", s);
+                    }
+
+                    // If we have a response from a server call -> save it
+                    if (_.keys(response).length > 0) {
+                        if (!app.data.has(c))
+                            app.data.set(c, {});
+                        app.data.get(c)[a] = response; //Daten speichern
+                        if (content.model)
+                            this.appCache.setCache(content.model.url, response);
+                        else if (content.collection) {
+                            this.appCache.setCache(content.collection.url, response);
+                        }
+                    }
                 }
                 originalSave(d);
             }, this);
@@ -87,7 +82,7 @@ define([
                     try {
                         var filteredList = _.filter(list, function (item) {
                             return _.some(item, function (item) {
-                                return eval('item.' + content.idInCollection) == params.id;
+                                return item[content.idInCollection] == params.id;
                             });
                         });
                     } catch (e) {
@@ -129,7 +124,6 @@ define([
                     });
                 }
             } else if (content.model) { //Content hat ein Model
-                console.log('Model');
                 if (_.keys(d).length > 0) { //Model bereits in Collection gefunden
                     success(_.bind(function() {
                         content.model.set(d);
