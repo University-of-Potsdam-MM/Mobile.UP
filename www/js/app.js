@@ -176,7 +176,30 @@ define([
 			 * @returns true is access is allowed, false otherwise
 			 */
 			isAllowed: function(c, a) {
-				return this.checkAuth(c) && this.checkAuth(a);
+				var checkAuth = function(name){
+					var isAuth = app.session.get('up.session.authenticated');
+					var path = Backbone.history.location.hash;
+					var needAuth = _.contains(app.requiresAuth, name);
+					var cancelAccess = _.contains(app.preventAccessWhenAuth, name);
+					if(needAuth && !isAuth){
+						// If user gets redirect to login because wanted to access
+						// to a route that requires login, save the path in session
+						// to redirect the user back to path after successful login
+						app.session.set('up.session.redirectFrom', path);
+						Backbone.history.navigate('main/options', { trigger : true });
+						return false;
+					}else if(isAuth && cancelAccess){
+						// User is authenticated and tries to go to login, register ...
+						// so redirect the user to home page
+						Backbone.history.navigate('', { trigger : true });
+						return false;
+					}else{
+						//No problem, handle the route!!
+						return true;
+					}
+				};
+
+				return checkAuth(c) && checkAuth(a);
 			},
 			
 			/*
@@ -223,29 +246,6 @@ define([
 				viewContainer.executeTransition(transitionOptions);
 
 				return q.promise;
-			},
-			
-			checkAuth: function(name){
-				var isAuth = app.session.get('up.session.authenticated');
-				var path = Backbone.history.location.hash;
-				var needAuth = _.contains(app.requiresAuth, name);
-				var cancelAccess = _.contains(app.preventAccessWhenAuth, name);
-				if(needAuth && !isAuth){
-					// If user gets redirect to login because wanted to access
-					// to a route that requires login, save the path in session
-					// to redirect the user back to path after successful login
-					app.session.set('up.session.redirectFrom', path);
-					Backbone.history.navigate('main/options', { trigger : true });
-					return false;
-				}else if(isAuth && cancelAccess){
-					// User is authenticated and tries to go to login, register ...
-					// so redirect the user to home page
-					Backbone.history.navigate('', { trigger : true });
-					return false;
-				}else{
-					//No problem, handle the route!!
-					return true;
-				}
 			},
 			
 			/**
