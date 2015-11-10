@@ -45,20 +45,11 @@ define([
         prepareViewForTransition: function(transitionOptions) {
             var page = transitionOptions.page.view;
 
-            // Render page
+            // Render page, add padding for the header and update it
             page.render();
+            var pageContent = page.$el.attr("data-role", "page").css('padding-top', '54px');
+            this.updateHeader(pageContent);
 
-            // Add padding for the header and append it to the pagecontainer
-            var pageContent = page.$el.attr("data-role", "page");
-            pageContent.css('padding-top', '54px');
-
-            // Retrieve header title, render header and replace it
-            var pageTitle = pageContent.find('meta[name="title"]').attr('content');
-            var header = utils.renderheader({title: pageTitle});
-
-            pageContainer.switchHeaders(header);
-
-            transitionOptions.page.title = pageTitle;
             transitionOptions.page.content = pageContent;
         },
 
@@ -90,14 +81,12 @@ define([
                     metas[$(this).attr('name')] = $(this).attr('content');
                 });
 
-                if (!metas.title && page) {
-                    metas.title = page.title;
-                } else if (!metas.title && !page) {
+                if (!metas.title) {
                     metas.title = $('.ui-header').find('h1').html();
                 }
 
                 var header = utils.renderheader(metas);
-                $pageContainer.find('.ui-header').replaceWith(header);
+                this.switchHeaders(header);
             }
         },
 
