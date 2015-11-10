@@ -253,9 +253,6 @@ define([
 						  viewContainer.notifyMissingServerConnection(app);
 					  }
 				});
-				$(document).on('pagebeforechange', function(e, a){ //Bevor zur nächsten Seite gewechselt wird
-					viewContainer.animateHeaderAndFooter(a);
-				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
 					window.history.back();

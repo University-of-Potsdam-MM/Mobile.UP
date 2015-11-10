@@ -197,17 +197,6 @@ define([
             return $('.ui-content', this.activePageExtract());
         },
 
-        animateHeaderAndFooter: function (a) {
-            var toPage = a.toPage;
-            if (typeof(a.toPage) != 'string') {
-                var header = $('.header', toPage);
-                var footer = $('.footer', toPage);
-                var duration = 350, animating = 'footer';
-                window.footerAnimating = true;
-                var dir = window.reverseTransition ? 1 : -1; //Transitionsrichtung für Footeranimation ermitteln
-            }
-        },
-
         notifyMissingServerConnection: function (app) {
             $('.ui-btn-active', this.activePageExtract()).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
             app.previous(true);
