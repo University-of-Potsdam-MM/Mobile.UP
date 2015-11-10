@@ -16,18 +16,24 @@ define([
             this.listenTo(this, "beforeTransition", this.prepareViewForTransition);
         },
 
+        getPageContainer: function () {
+            if (!this.$pageContainer) {
+                this.$pageContainer = $('#pagecontainer');
+            }
+            return this.$pageContainer;
+        },
+
         addToContainer: function(pageContent) {
-            $pageContainer = $('#pagecontainer');
-            $pageContainer.append(pageContent);
-            $pageContainer.trigger("create");
+            this.getPageContainer().append(pageContent);
+            this.getPageContainer().trigger("create");
         },
 
         switchHeaders: function(header) {
-            var $header = $pageContainer.find('.ui-header');
+            var $header = this.getPageContainer().find('.ui-header');
             if ($header.length > 0) {
                 $header.replaceWith(header);
             } else {
-                $pageContainer.append(header);
+                this.getPageContainer().append(header);
             }
         },
 
@@ -46,8 +52,6 @@ define([
             var pageContent = page.$el.attr("data-role", "page");
             pageContent.css('padding-top', '54px');
 
-            pageContainer.addToContainer(pageContent);
-
             // Retrieve header title, render header and replace it
             var pageTitle = pageContent.find('meta[name="title"]').attr('content');
             var header = utils.renderheader({title: pageTitle});
@@ -61,6 +65,7 @@ define([
         executeTransition: function (transitionOptions) {
             this.trigger("beforeTransition", transitionOptions);
 
+            this.addToContainer(transitionOptions.page.content);
             Q($.mobile.changePage(transitionOptions.page.content, {
                 changeHash: false,
                 transition: transitionOptions.transition,
@@ -97,7 +102,7 @@ define([
         },
 
         ensureFooterFixed: function(page) {
-            var $footer = $pageContainer.find('.ui-footer');
+            var $footer = this.getPageContainer().find('.ui-footer');
             if ($footer.length > 0) {
                 page.content.addClass('ui-page-footer-fixed');
             }
@@ -147,7 +152,7 @@ define([
 
             if (content.afterRender)
                 content.afterRender();
-            $pageContainer.trigger("create");
+            pageContainer.getPageContainer().trigger("create");
         },
 
         /**
