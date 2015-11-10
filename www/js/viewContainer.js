@@ -10,28 +10,50 @@ define([
     'contentLoader'
 ], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoader) {
 
-    var viewContainer = _.extend({
+    var pageContainer = _.extend({
 
         initialize: function() {
-            _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
-
-            this.listenTo(this, "beforeTransition", this.saveAndPrepareScrollPosition);
-            this.listenTo(this, "beforeTransition", function(options) { customHistory.push(options.route.to); });
-            this.listenTo(this, "afterTransition", this.afterTransition);
         },
 
-        setIosHeaderFix: function () {
-            if ($.os.ios7) {
-                $('body').addClass('ios-statusbar');
+        addToContainer: function(pageContent) {
+            $pageContainer = $('#pagecontainer');
+            $pageContainer.append(pageContent);
+            $pageContainer.trigger("create");
+        },
+
+        switchHeaders: function(header) {
+            var $header = $pageContainer.find('.ui-header');
+            if ($header.length > 0) {
+                $header.replaceWith(header);
+            } else {
+                $pageContainer.append(header);
             }
         },
 
-        setReverseSlidefadeTransition: function () {
-            $.mobile.changePage.defaults.transition = 'slidefade';
-            $.mobile.changePage.defaults.reverse = 'reverse';
+        saveAndPrepareScrollPosition: function (transitionOptions) {
+            scrollManager.saveScrollPositionExtract(transitionOptions);
+            scrollManager.prepareScrollPositionExtract(transitionOptions.route.to);
         },
 
-        _updateHeaderWithMetaInfos: function($el, page) {
+        executeTransition: function (transitionOptions) {
+            viewContainer.trigger("beforeTransition", transitionOptions);
+
+            Q($.mobile.changePage(transitionOptions.page.content, {
+                changeHash: false,
+                transition: transitionOptions.transition,
+                reverse: transitionOptions.reverse
+            })).done(_.bind(function () {
+                if (!app.currentView) {
+                    $('body').css('overflow', 'auto');
+                    $("body").fadeIn(100);
+                }
+                app.currentView = transitionOptions.page.view;
+
+                viewContainer.trigger("afterTransition", transitionOptions);
+            }, this));
+        },
+
+        updateHeader: function($el, page) {
             //Meta infos aus Seite in den Header integrieren
             var $metas = $el.find('meta');
             if ($metas.length > 0) {
@@ -51,45 +73,56 @@ define([
             }
         },
 
-        _ensureFooterFixed: function(page) {
+        ensureFooterFixed: function(page) {
             var $footer = $pageContainer.find('.ui-footer');
             if ($footer.length > 0) {
                 page.content.addClass('ui-page-footer-fixed');
             }
+        }
+    }, Backbone.Events);
+
+    var viewContainer = _.extend({
+
+        initialize: function() {
+            _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
+
+            this.listenTo(this, "beforeTransition", pageContainer.saveAndPrepareScrollPosition);
+            this.listenTo(this, "beforeTransition", function(options) { customHistory.push(options.route.to); });
+            this.listenTo(this, "afterTransition", this.afterTransition);
         },
 
-        finishRendering: function (content, page) {
-            content.render();
+        setIosHeaderFix: function () {
+            if ($.os.ios7) {
+                $('body').addClass('ios-statusbar');
+            }
+        },
 
-            this._updateHeaderWithMetaInfos(content.$el, page);
-            this._ensureFooterFixed(page);
+        setReverseSlidefadeTransition: function () {
+            $.mobile.changePage.defaults.transition = 'slidefade';
+            $.mobile.changePage.defaults.reverse = 'reverse';
+        },
+
+        finishRendering: function (content, page, view) {
+            if (content) {
+                content.render();
+            }
+
+            var headerUpdate = {};
+            if (content) {
+                headerUpdate.$el = content.$el;
+                headerUpdate.page = page;
+            } else {
+                headerUpdate.$el = view.$el;
+            }
+            pageContainer.updateHeader(headerUpdate.$el, headerUpdate.page);
+
+            if (content) {
+                pageContainer.ensureFooterFixed(page);
+            }
 
             if (content.afterRender)
                 content.afterRender();
             $pageContainer.trigger("create");
-        },
-
-        saveAndPrepareScrollPosition: function (transitionOptions) {
-            scrollManager.saveScrollPositionExtract(transitionOptions);
-            scrollManager.prepareScrollPositionExtract(transitionOptions.route.to);
-        },
-
-        executeTransition: function (transitionOptions) {
-            this.trigger("beforeTransition", transitionOptions);
-
-            Q($.mobile.changePage(transitionOptions.page.content, {
-                changeHash: false,
-                transition: transitionOptions.transition,
-                reverse: transitionOptions.reverse
-            })).done(_.bind(function () {
-                if (!app.currentView) {
-                    $('body').css('overflow', 'auto');
-                    $("body").fadeIn(100);
-                }
-                app.currentView = transitionOptions.page.view;
-
-                this.trigger("afterTransition", transitionOptions);
-            }, this));
         },
 
         /**
@@ -103,17 +136,20 @@ define([
             var q = transitionOptions.extras.q;
 
             contentLoader.initData(c);
-            var content = viewContainer.createViewForName(c, a, page, params);
+            var contentAndView = viewContainer.createViewForName(c, a, page, params);
+
+            var content = contentAndView.content;
+            var view = contentAndView.view;
+
             contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
-                if (content) {
-                    viewContainer.finishRendering(content, transitionOptions.page);
-                }
+                console.log("Finish rendering");
+                viewContainer.finishRendering(content, transitionOptions.page, view);
                 q.resolve(d, content);
             });
         },
 
         updateHeader: function ($el) {
-            this._updateHeaderWithMetaInfos($el);
+            pageContainer.updateHeader($el);
         },
 
         /**
@@ -134,11 +170,13 @@ define([
                 content = view;
             } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
                 view = page;
-                this._updateHeaderWithMetaInfos(page.$el);
             }
             app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
 
-            return content;
+            return {
+                content: content,
+                view: view
+            };
         },
 
         /*
@@ -196,20 +234,29 @@ define([
             // Add padding for the header and append it to the pagecontainer
             var pageContent = page.$el.attr("data-role", "page");
             pageContent.css('padding-top', '54px');
-            $pageContainer = $('#pagecontainer');
-            $pageContainer.append(pageContent);
-            $pageContainer.trigger("create");
+
+            pageContainer.addToContainer(pageContent);
 
             // Retrieve header title, render header and replace it
             var pageTitle = pageContent.find('meta[name="title"]').attr('content');
-            var $header = $pageContainer.find('.ui-header');
             var header = utils.renderheader({title: pageTitle});
-            if ($header.length > 0) {
-                $header.replaceWith(header);
-            } else {
-                $pageContainer.append(header);
-            }
 
+            pageContainer.switchHeaders(header);
+
+            var transitionChoice = this._chooseTransition();
+
+            return {
+                transition: transitionChoice.transition,
+                reverse: transitionChoice.reverse,
+                page: {
+                    title: pageTitle,
+                    content: pageContent,
+                    view: page
+                }
+            };
+        },
+
+        _chooseTransition: function() {
             // Retrieve transitions
             var transition = $.mobile.defaultPageTransition;
             var reverse = $.mobile.changePage.defaults.reverse;
@@ -222,12 +269,7 @@ define([
 
             return {
                 transition: transition,
-                reverse: reverse,
-                page: {
-                    title: pageTitle,
-                    content: pageContent,
-                    view: page
-                }
+                reverse: reverse
             };
         },
 
@@ -279,6 +321,7 @@ define([
 
     return {
         viewContainer: viewContainer,
-        scrollManager: scrollManager
+        scrollManager: scrollManager,
+        pageContainer: pageContainer
     };
 });

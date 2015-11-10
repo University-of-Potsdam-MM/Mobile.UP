@@ -19,6 +19,7 @@ define([
 	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader, controllerLoader){
 		var viewContainer = ViewHelper.viewContainer;
 		viewContainer.initialize();
+		var pageContainer = ViewHelper.pageContainer;
 
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
@@ -236,7 +237,7 @@ define([
 				transitionOptions.route = {};
 				transitionOptions.route.from = customHistory.currentRoute();
 				transitionOptions.route.to = Backbone.history.fragment;
-				viewContainer.executeTransition(transitionOptions);
+				pageContainer.executeTransition(transitionOptions);
 
 				return q.promise;
 			},
