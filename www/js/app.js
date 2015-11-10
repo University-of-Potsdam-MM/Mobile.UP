@@ -123,7 +123,7 @@ define([
 				if(trigger) {
 					customHistory.pushSecondHistory(url);
 				}
-				url = this.cleanUrl(url);
+				url = this._cleanUrl(url);
 				this.router.navigate(url, {trigger: trigger, replace: replace}); //Url auf Controller routen
 			},
 			/**
@@ -131,7 +131,7 @@ define([
 			 * @param url Raw url
 			 * @returns Cleaned url
 			 */
-			cleanUrl: function(url) {
+			_cleanUrl: function(url) {
 				if(url.charAt(0) == '#')
 					url = url.slice(1);
 				if(url == 'home' || url == '')
@@ -144,7 +144,7 @@ define([
 			refresh:function(callback){
 				var url = Backbone.history.fragment; //Aktuelle URL
 				this.refreshing = true; //Globales Refreshing aktivieren
-				this.setCallback(callback); //Callback setzten
+				this._setCallback(callback); //Callback setzten
 				this.route(url); //Zu refreshende Url routen
 			},
 			/*
@@ -161,7 +161,7 @@ define([
 			* Globale Callback-Funktion setzen, die nach Request ausgeführt wird
 			* @callback: Zu setzende Callback-Funktion
 			*/
-			setCallback:function(callback){
+			_setCallback:function(callback){
 				var self = this;
 				this.callback = function(){
 					callback(arguments);
