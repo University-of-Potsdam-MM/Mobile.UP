@@ -22,6 +22,18 @@ define([
         }
     });
 
+    var InMemoryCache = Backbone.Model.extend({
+
+        get: function(key) {
+            var result = Backbone.Model.prototype.get.apply(this, arguments);
+            if (!result) {
+                return {};
+            } else {
+                return result;
+            }
+        }
+    });
+
     var ContentLoader = {
         appCache : new AppCache(),
 
@@ -172,5 +184,8 @@ define([
         }
     };
 
-    return ContentLoader;
+    return {
+        ContentLoader: ContentLoader,
+        InMemoryCache: InMemoryCache
+    };
 });

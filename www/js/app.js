@@ -16,10 +16,13 @@ define([
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoader, controllerLoader){
+	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, contentLoaderHelper, controllerLoader){
 		var viewContainer = ViewHelper.viewContainer;
 		viewContainer.initialize();
 		var pageContainer = ViewHelper.pageContainer;
+
+		var contentLoader = contentLoaderHelper.ContentLoader;
+		var InMemoryCache = contentLoaderHelper.InMemoryCache;
 
 		//AppRouter-Klasse erstellen
 		var AppRouter = BackboneMVC.Router.extend({
@@ -34,7 +37,7 @@ define([
 			controllers: {}, //Controllerklassen
 			views:{},
 			models:{},
-			data: new Backbone.Model,
+			data: new InMemoryCache,
 			requiresAuth: ['calendar', 'moodle', 'grades', 'people'],// routes that need authentication
 			preventAccessWhenAuth: [],// routes to prevent authentication when already authenticated
 			authUrls: [

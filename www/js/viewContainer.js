@@ -8,7 +8,9 @@ define([
     'q',
     'history',
     'contentLoader'
-], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoader) {
+], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoaderHelper) {
+
+    var contentLoader = contentLoaderHelper.ContentLoader;
 
     var pageContainer = _.extend({
 
