@@ -229,7 +229,7 @@ define([
 				transitionOptions.extras = {
 					c: c,
 					a: a,
-					page: transitionOptions.page.view,
+					page: transitionOptions.page,
 					params: params,
 					q: q
 				};

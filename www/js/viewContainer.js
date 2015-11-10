@@ -43,21 +43,19 @@ define([
         },
 
         prepareViewForTransition: function(transitionOptions) {
-            var page = transitionOptions.page.view;
+            var page = transitionOptions.page;
 
             // Render page, add padding for the header and update it
             page.render();
             var pageContent = page.$el.attr("data-role", "page").css('padding-top', '54px');
             this.updateHeader(pageContent);
-
-            transitionOptions.page.content = pageContent;
         },
 
         executeTransition: function (transitionOptions) {
             this.trigger("beforeTransition", transitionOptions);
 
-            this.addToContainer(transitionOptions.page.content);
-            Q($.mobile.changePage(transitionOptions.page.content, {
+            this.addToContainer(transitionOptions.page.$el);
+            Q($.mobile.changePage(transitionOptions.page.$el, {
                 changeHash: false,
                 transition: transitionOptions.transition,
                 reverse: transitionOptions.reverse
@@ -66,13 +64,13 @@ define([
                     $('body').css('overflow', 'auto');
                     $("body").fadeIn(100);
                 }
-                app.currentView = transitionOptions.page.view;
+                app.currentView = transitionOptions.page;
 
                 this.trigger("afterTransition", transitionOptions);
             }, this));
         },
 
-        updateHeader: function($el, page) {
+        updateHeader: function($el) {
             //Meta infos aus Seite in den Header integrieren
             var $metas = $el.find('meta');
             if ($metas.length > 0) {
@@ -93,7 +91,7 @@ define([
         ensureFooterFixed: function(page) {
             var $footer = this.getPageContainer().find('.ui-footer');
             if ($footer.length > 0) {
-                page.content.addClass('ui-page-footer-fixed');
+                page.$el.addClass('ui-page-footer-fixed');
             }
         }
     }, Backbone.Events);
@@ -126,14 +124,7 @@ define([
                 content.render();
             }
 
-            var headerUpdate = {};
-            if (content) {
-                headerUpdate.$el = content.$el;
-                headerUpdate.page = page;
-            } else {
-                headerUpdate.$el = view.$el;
-            }
-            pageContainer.updateHeader(headerUpdate.$el, headerUpdate.page);
+            pageContainer.updateHeader(content ? content.$el : view.$el);
 
             if (content) {
                 pageContainer.ensureFooterFixed(page);
@@ -161,7 +152,7 @@ define([
             var view = contentAndView.view;
 
             contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
-                console.log("Finish rendering");
+                console.log("Finished rendering");
                 viewContainer.finishRendering(content, transitionOptions.page, view);
                 q.resolve(d, content);
             });
@@ -241,9 +232,7 @@ define([
             return {
                 transition: transitionChoice.transition,
                 reverse: transitionChoice.reverse,
-                page: {
-                    view: page
-                }
+                page: page
             };
         },
 
