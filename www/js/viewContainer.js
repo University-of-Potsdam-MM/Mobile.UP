@@ -18,6 +18,7 @@ define([
             this.listenTo(this, "beforeTransition", this._prepareViewForTransition);
             this.listenTo(this, "beforeTransition", this._chooseTransition);
             this.listenTo(this, "beforeTransition", this._saveAndPrepareScrollPosition);
+            this.listenTo(this, "beforeTransition", this._addToContainer);
             this.listenTo(this, "afterTransition", this._updateCurrentView);
         },
 
@@ -28,8 +29,8 @@ define([
             return this.$pageContainer;
         },
 
-        _addToContainer: function(pageContent) {
-            this._getPageContainer().append(pageContent);
+        _addToContainer: function(transitionOptions) {
+            this._getPageContainer().append(transitionOptions.page.$el);
             this._getPageContainer().trigger("create");
         },
 
@@ -74,14 +75,13 @@ define([
         executeTransition: function (transitionOptions) {
             this.trigger("beforeTransition", transitionOptions);
 
-            this._addToContainer(transitionOptions.page.$el);
-            Q($.mobile.changePage(transitionOptions.page.$el, {
+            $.mobile.changePage(transitionOptions.page.$el, {
                 changeHash: false,
                 transition: transitionOptions.transition,
                 reverse: transitionOptions.reverse
-            })).done(_.bind(function () {
-                this.trigger("afterTransition", transitionOptions);
-            }, this));
+            });
+
+            this.trigger("afterTransition", transitionOptions);
         },
 
         _updateCurrentView: function(transitionOptions) {
@@ -171,10 +171,16 @@ define([
             var content = contentAndView.content;
             var view = contentAndView.view;
 
-            contentLoader.retreiveOrFetchContent(content, {}, params, c, a, function(d) {
+            var finishRendering = function(d) {
                 viewContainer.finishRendering(content, transitionOptions.page, view);
                 q.resolve(d, content);
-            });
+            };
+
+            if (content) {
+                contentLoader.retreiveOrFetchContent(content, {}, params, c, a, finishRendering);
+            } else {
+                finishRendering(undefined);
+            }
         },
 
         updateHeader: function ($el) {
@@ -192,13 +198,9 @@ define([
             params.page = page.$el;
 
             var content = false;
-            var view;
+            var view = page; //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
             if (this.hasView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
-                view = this.instanciateView(c, a, params);
-                view.page = page.$el;
-                content = view;
-            } else { //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
-                view = page;
+                content = view = this.instanciateView(c, a, params);
             }
             app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
 
@@ -215,14 +217,10 @@ define([
             return $.mobile.activePage;
         },
 
-        activeCon: function() {
-            return this.activeConExtract();
-        },
-
         /*
          * InhaltsContainer der momentan aktiven Seite zurückgeben
          */
-        activeConExtract: function () {
+        activeCon: function() {
             return $('.ui-content', this.activePageExtract());
         },
 
@@ -244,16 +242,16 @@ define([
          * prepare new view for DOM display
          */
         prepareViewForDomDisplay: function (c, params) {
-            var page = this.instanciateView(c, 'Page', params);
-
-            return {
-                page: page
-            };
+            return this.instanciateView(c, 'Page', params);
         },
 
         instanciateView: function(c, a, params) {
             var View = this.getView(c, a);
-            return new View(params);
+            var result = new View(params);
+            if (params.page) {
+                result.page = params.page;
+            }
+            return result;
         },
 
         hasView: function(c, a) {

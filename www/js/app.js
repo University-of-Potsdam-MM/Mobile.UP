@@ -226,20 +226,23 @@ define([
 					};
 				}
 
+				var page = viewContainer.prepareViewForDomDisplay(c, params);
+
 				// FIXME Transition parameter is ignored
-				var transitionOptions = viewContainer.prepareViewForDomDisplay(c, params);
-
-				transitionOptions.extras = {
-					c: c,
-					a: a,
-					page: transitionOptions.page,
-					params: params,
-					q: q
+				var transitionOptions = {
+					page: page,
+					extras: {
+						c: c,
+						a: a,
+						page: page,
+						params: params,
+						q: q
+					},
+					route: {
+						from: customHistory.currentRoute(),
+						to: Backbone.history.fragment
+					}
 				};
-
-				transitionOptions.route = {};
-				transitionOptions.route.from = customHistory.currentRoute();
-				transitionOptions.route.to = Backbone.history.fragment;
 				pageContainer.executeTransition(transitionOptions);
 
 				return q.promise;
