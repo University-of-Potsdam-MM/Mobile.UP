@@ -5,8 +5,9 @@ define([
 	'Session',
 	'hammerjs',
 	'uri/URI',
-	'moodle.download'
-], function($, _, Backbone, Session, Hammer, URI, MoodleDownload){
+	'moodle.download',
+	'underscore.string'
+], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, _str){
 
 	/*
 	 * Template Loading Functions
@@ -605,7 +606,7 @@ define([
 		var authUrls = app.authUrls;
 		var isStartOf = function(url) {
 			return function(authUrl) {
-				return _.str.startsWith(url, authUrl);
+				return _str.startsWith(url, authUrl);
 			};
 		};
 

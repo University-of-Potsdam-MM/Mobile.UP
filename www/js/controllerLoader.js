@@ -3,7 +3,7 @@ define([
     'underscore',
     'backbone',
     'backboneMVC',
-    'underscore-string',
+    'underscore.string',
     'utils',
     'q',
     'history'
