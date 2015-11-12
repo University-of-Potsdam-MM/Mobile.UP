@@ -27,6 +27,7 @@ define([
 			if (response.people[0] && response.people[0].length != 0){
 				return response.people;
 			}else{
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
 				return null;
 			}
 		}
@@ -37,7 +38,7 @@ define([
 	 * 	BackboneView - PersonView
 	 */
 	var PersonView = Backbone.View.extend({
-		attributes: {"data-role": 'collapsible'},
+		attributes: {"data-role": 'collapsible', "data-iconpos" : 'right', "data-collapsed-icon" : 'arrow-down', "data-expanded-icon" : 'arrow-up' },
 		model: Person,
 
 		initialize: function(){
@@ -92,19 +93,27 @@ define([
 			// get search query
 			var inputs = $('#query-form :input').serializeArray();
       		var query = inputs[0].value;
-			// generate url and set collection url
-			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
-			url += '?value='+query;
-			url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
-			url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
 
-			this.collection.reset();
-			this.collection.url = url;
-			this.collection.fetch();
+      		if (query){
+      			// generate url and set collection url
+				var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
+				url += '?value='+query;
+				url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
+				url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
+
+				this.collection.reset();
+				this.collection.url = url;
+				this.collection.fetch();
+			} else {
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
+				this.enableSearch();
+			}
 		},
 
-		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: error});
+		requestFail: function(collection, response, options) {
+			console.log("error: "+response.status);
+			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			this.enableSearch();
 		},
 
 		render: function(){

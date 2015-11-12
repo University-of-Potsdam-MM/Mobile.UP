@@ -3,7 +3,7 @@
 		<span class="black normal"><%= _.compact([person.get('Abteilung'), person.get('Struktureinheit')]).join(', ') %></span><br />
 	</h3>
 	<div>
-		<p>
+		<p id="person-room">
 			<% if (person.get('Raum')){
 				var room = person.get('Raum');
 				room = room.replace(/NP/, 'Neues Palais, ').replace(/GO/, 'Golm, ').replace(/GR/, 'Griebnitzsee, ');
@@ -22,7 +22,8 @@
 			<% } %>
 			
 			<% if (person.get('Fax')){ %>
-				<span class="fax" style="color: #014260"> Fax: <%= person.get('Fax') %></span><br /><br />
+			
+				<span class="fax"><%= person.get('Fax') %></span><br /><br />
 			<% } %>
 		</p>
 	</div>

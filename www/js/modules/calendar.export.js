@@ -11,18 +11,61 @@ define([
 	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session, calendar, URI){
 
+	var CalendarEntry = Backbone.Model.extend({
+
+		save: function(options) {
+			var success = _.bind(function() {
+				this.set("saveStatus", "success");
+				if (options.success) options.success.call(this, this);
+				this.trigger("sync");
+			}, this);
+
+			var error = _.bind(function() {
+				this.set("saveStatus", "error");
+				if (options.error) options.error.call(this, this);
+				this.trigger("error");
+			}, this);
+
+			var entry = this.attributes;
+			if (window.cordova) {
+				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, success, error);
+			} else {
+				console.log(entry);
+				error();
+			}
+		}
+	});
+
 	var Calendar = Backbone.Model.extend({
 
-		importCourses: function(courses, calendarEntries) {
+		initialize: function() {
+			this.entries = new CalendarEntries();
+		},
+
+		importCourses: function(courses) {
+			var data = {courses: courses};
+			data.id = this.get("id");
+			data.name = this.get("name");
+
+			this.entries.set(data, {parse: true});
+		}
+	});
+
+	var CalendarEntries = Backbone.Collection.extend({
+		model: CalendarEntry,
+
+		parse: function(response) {
+			var result = [];
+
 			var options = {};
 			if (window.cordova) {
 				options = window.plugins.calendar.getCalendarOptions();
 			}
 
-			var currentCourses = courses.filter(function(course) { return course.get("current") === "true"; });
+			var currentCourses = response.courses.filter(function(course) { return course.get("current") === "true"; });
 			_.each(currentCourses, function(course) {
 				var writeToCalendar = function(entry) {
-					calendarEntries.add(entry);
+					result.push(entry);
 				};
 
 				_.each(course.getDates(), function(date) {
@@ -31,8 +74,8 @@ define([
 					entry.location = date.get("room");
 
 					entry.options = _.clone(options);
-					entry.options.calendarName = this.get("name");
-					entry.options.calendarId = parseInt(this.get("id"));
+					entry.options.calendarName = response.name;
+					entry.options.calendarId = parseInt(response.id);
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
 					entry.options.firstReminderMinutes = 0;
@@ -40,6 +83,8 @@ define([
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
+
+			return result;
 		},
 
 		_cleanPulsLink: function(pulsLink) {
@@ -51,57 +96,6 @@ define([
 			}
 			link.filename(filename);
 			return link.toString();
-		}
-	});
-
-	var CalendarEntry = Backbone.Model.extend({
-
-		initialize: function() {
-			_.bindAll(this, "_success", "_error");
-		},
-
-		save: function() {
-			var entry = this.attributes;
-			if (window.cordova) {
-				window.plugins.calendar.createEventWithOptions(entry.title, entry.location, "", entry.startDate, entry.endDate, entry.options, this._success, this._error);
-			} else {
-				console.log(entry);
-				this._error();
-			}
-		},
-
-		_success: function() {
-			this.set("saveStatus", "success");
-			this.trigger("sync");
-		},
-
-		_error: function() {
-			this.set("saveStatus", "error");
-			this.trigger("error");
-		}
-	});
-
-	var CalendarEntries = Backbone.Collection.extend({
-		model: CalendarEntry,
-
-		initialize: function() {
-			this.listenTo(this, "add", function(model) {
-				this.listenTo(model, "sync", this._saveNext);
-				this.listenTo(model, "error", this._saveNext);
-			});
-			this.listenTo(this, "remove", function(model) {
-				this.stopListening(model);
-			});
-		},
-
-		_saveNext: function() {
-			this.trigger("saveStatusUpdated");
-
-			if (this.size() > this.saveIndex) {
-				var model = this.at(this.saveIndex);
-				this.saveIndex++;
-				_.defer(function() { model.save(); });
-			}
 		},
 
 		getSaveStatus: function() {
@@ -112,34 +106,41 @@ define([
 		},
 
 		save: function() {
+			var saveNext = _.bind(function() {
+				this.trigger("saveStatusUpdated");
+
+				if (this.size() > this.saveIndex) {
+					var model = this.at(this.saveIndex);
+					this.saveIndex++;
+					_.defer(function() { model.save({success: saveNext, error: saveNext}); });
+				}
+			}, this);
+
 			this.saveIndex = 0;
-			this._saveNext();
+			saveNext();
 		}
 	});
 
 	var Calendars = Backbone.Collection.extend({
 		model: Calendar,
 
-		initialize: function() {
-			_.bindAll(this, "success", "error");
-		},
+		fetch: function(options) {
+			var success = _.bind(function(response) {
+				this.set(response);
+				if (options.success) options.success.call(this, this);
+				this.trigger("sync");
+			}, this);
 
-		error: function() {
-			this.trigger("error");
-		},
+			var error = _.bind(function() {
+				if (options.error) options.error(this);
+				this.trigger("error");
+			}, this);
 
-		success: function(response) {
-			this.set(response);
-			this.trigger("sync");
-		},
-
-		fetch: function() {
 			if (window.cordova) {
-				window.plugins.calendar.listCalendars(this.success, this.error);
+				window.plugins.calendar.listCalendars(success, error);
 			} else {
 				alert("Der Kalenderexport funktioniert nur in der App.");
-				//this.error();
-				this.success([{"id": "1", "name": "Testeintrage"}]);
+				success([{"id": "1", "name": "Testeintrage"}]);
 			}
 		}
 	});
@@ -152,32 +153,26 @@ define([
 		initialize: function() {
 			this.calendars = new Calendars();
 			this.courses = new calendar.CourseList();
-			var coursesAdapter = new utils.FullySyncedAdapter(undefined, {subject: this.courses});
-
-			this.listenTo(coursesAdapter, "fullysynced", this.coursesSynced);
-			this.listenTo(this.calendars, "sync", this.calendarsSynced);
-			this.listenTo(this.calendars, "error", this.calendarsError);
-		},
-
-		coursesSynced: function() {
-			if (this.courses.isEmpty()) {
-				this.trigger("error");
-			} else {
-				this.calendars.fetch();
-			}
-		},
-
-		calendarsSynced: function() {
-			this.trigger("sync");
-		},
-
-		calendarsError: function() {
-			this.trigger("error");
 		},
 
 		fetch: function() {
 			this.trigger("request");
-			this.courses.fetch(utils.cacheDefaults());
+
+			var fetchCalendars = function() {
+				if (this.courses.isEmpty()) {
+					this.trigger("error");
+				}
+
+				this.calendars.fetch({
+					success: _.bind(this.trigger, this, "sync"),
+					error: _.bind(this.trigger, this, "error")
+				});
+			};
+
+			this.courses.fetch(utils.cacheDefaults({
+				success: _.bind(fetchCalendars, this),
+				error: _.bind(this.trigger, this, "error")
+			}));
 		}
 	});
 
@@ -208,12 +203,21 @@ define([
 		},
 
 		loadData: function() {
-			new utils.LoadingView({collection: this.model, el: this.$("#loadingSpinner")});
+			if (this.loadingView) this.loadingView.empty();
+			if (this.errorView) this.errorView.empty();
+
+			this.loadingView = new utils.LoadingView({collection: this.model, el: this.$("#loadingSpinner")});
 			this.model.fetch();
 		},
 
-		errorHandler: function(error){
-			var errorPage = new utils.ErrorView({el: '#loadingError', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendarexport', err: error});
+		errorHandler: function(error) {
+			this.errorView = new utils.ErrorView({
+				el: '#loadingError',
+				msg: 'Der PULS-Dienst ist momentan nicht erreichbar.',
+				module: 'calendarexport',
+				err: error,
+				hasReload: true
+			}).on("reload", this.loadData, this);
 		},
 
 		calendarSelected: function(event) {
@@ -222,11 +226,10 @@ define([
 			var calendarId = $(event.target).attr("href").slice(1);
 			var calendar = this.model.calendars.find(function(calendar) { return calendar.get("id") === calendarId });
 			if (calendar) {
-				var calendarEntries = new CalendarEntries();
-				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendarEntries}).render();
+				new CalendarExportStatusPageView({el: $("#selectionStatus"), collection: calendar.entries}).render();
 
-				calendar.importCourses(this.model.courses, calendarEntries);
-				calendarEntries.save();
+				calendar.importCourses(this.model.courses);
+				calendar.entries.save();
 			}
 		},
 

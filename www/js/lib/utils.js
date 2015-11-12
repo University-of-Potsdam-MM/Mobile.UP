@@ -200,14 +200,32 @@ define([
 	 var ErrorView = Backbone.View.extend({
 		model: Error,
 
+		events: {
+			"click .error-reload": "reload"
+		},
+
 		initialize: function(options){
+			this.hasReload = options.hasReload;
+
 			error = new Error({msg: options.msg, module: options.module, error: options.err})
 			this.template = rendertmpl('error');
 			this.render();
 		},
 
+		empty: function() {
+			this.$el.empty();
+			this.stopListening();
+			this.undelegateEvents();
+			return this;
+		},
+
+		reload: function(ev) {
+			ev.preventDefault();
+			this.trigger("reload");
+		},
+
 		render: function(){
-			this.$el.html(this.template({model: this.model}));
+			this.$el.html(this.template({model: this.model, hasReload: this.hasReload}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -253,42 +271,6 @@ define([
 	};
 
 	/**
-	 * Takes a model or collection ("subject") and triggers an event if the subject doesn't have any sync processes running in the background.
-	 * This helps if you want to be sure that you don't work on previously cached data if a fetch for fresh data is still going on. The triggered event is named "fullysynced" and has the given subject as first parameter
-	 */
-	var FullySyncedAdapter = Backbone.Model.extend({
-
-		runningCounter: 0,
-
-		initialize: function(properties, options) {
-			this.subject = options.subject;
-
-			this.listenTo(this.subject, "request", this.spinnerOn);
-			this.listenTo(this.subject, "cachesync", this.spinnerHold)
-			this.listenTo(this.subject, "sync", this.spinnerOff);
-			this.listenTo(this.subject, "error", this.spinnerOff);
-		},
-
-		spinnerOn: function() {
-			this.runningCounter++;
-		},
-		
-		spinnerHold: function(model, attr, opts) {
-			// backbone-fetch-cache is used, we should be aware of prefill requests
-			if (opts.prefill) {
-				this.runningCounter++;
-			}
-		},
-
-		spinnerOff: function() {
-			this.runningCounter--;
-			if (this.runningCounter <= 0) {
-				this.trigger("fullysynced", this.subject);
-			}
-		}
-	});
-
-	/**
 	 * Loading View, that listens to a given model or collection.
 	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
 	 */
@@ -304,6 +286,12 @@ define([
 				this.listenTo(subject, "sync", this.spinnerOff);
 				this.listenTo(subject, "error", this.spinnerOff);
 			}
+		},
+
+		empty: function() {
+			this.$el.empty();
+			this.stopListening();
+			return this;
 		},
 
 		findSubject: function() {
@@ -656,7 +644,6 @@ define([
 			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
 			cacheDefaults: cacheDefaults,
 			defaultTransition: defaultTransition,
-			FullySyncedAdapter: FullySyncedAdapter,
 			overrideBackboneSync: overrideBackboneSync,
 			EmptyPage: EmptyPage
 		};

@@ -22,13 +22,32 @@ define([
 				course.dates = [course.dates];
 			}
 
-			var date = _.find(course.dates, function(date) {
-				return date.timespan && date.timespan !== "";
+			// We need to find the earliest and the latest date available
+			// We expect the following formats:
+			// 1. empty string
+			// 2. "vom 13.10.2015 bis 02.02.2016"
+			// 3. "am 22.01.2016"
+			var result = _.chain(course.dates).filter(function(date) {
+				return date && date.timespan;
+			}).map(function(date) {
+				var split = date.timespan.split(' ');
+				return [split[1], split[3]];
+			}).flatten().filter(function(date) {
+				return date;
+			}).map(function(date) {
+				return moment(date, "DD.MM.YYYY");
+			}).value().sort(function(a, b) {
+				if (a.isBefore(b)) return -1;
+				else if (a.isAfter(b)) return 1;
+				else return 0;
 			});
-			var timespan = date ? date.timespan : "";
-			var split = timespan.split(' ');
-			(split[1]) ? this.set('starting', split[1]) : '';
-			(split[3]) ? this.set('ending', split[3]) : '';
+
+			var starting = _.first(result);
+			var ending = _.last(result);
+
+			if (starting) this.set('starting', starting.format("DD.MM.YYYY"));
+			if (ending) this.set('ending', ending.format("DD.MM.YYYY"));
+
 			return course;
 		},
 
@@ -42,9 +61,18 @@ define([
 					return new BiWeeklyDate(date);
 				} else {
 					console.log("Unknown rhythm " + date.rythm);
+					this.logUnknownCourseRhythm(date.rythm);
 					return new WeeklyDate(date);
 				}
-			});
+			}, this);
+		},
+
+		logUnknownCourseRhythm: function(rhythm) {
+			var model = new Backbone.Model();
+			model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
+			model.set("courseName", this.get("name"));
+			model.set("rhythm", rhythm);
+			model.save();
 		},
 
 		getStarting: function() {
@@ -78,7 +106,7 @@ define([
 
 		initialize: function(){
 			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=course&auth=H2LHXK5N9RDBXMB&datatype=json";
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 		},
@@ -88,9 +116,9 @@ define([
 		},
 
 		filterByDay: function(day) {
-			var isBefore = function(a, b) {
-				if (a)
-					return a >= b;
+			var isBefore = function(ending, today) {
+				if (ending)
+					return today.isBefore(ending, "day") || today.isSame(ending, "day");
 				else
 					return true;
 			};
@@ -248,7 +276,7 @@ define([
 		resetCoursesForDay: function() {
 			if (this.courseList.length == 0) {
 				this.reset();
-				this.trigger("timeslotsReady");
+				this.trigger("coursesEmpty");
 			} else {
 				this.coursesForDay.reset(this.courseList.filterByDay(this.day));
 			}

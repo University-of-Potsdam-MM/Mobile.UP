@@ -14,7 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		createSubUrl: function() {
-			var result = "https://api.uni-potsdam.de/endpoints/pulsAPI?action=vvz";
+			var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=vvz";
 			result += "&auth=H2LHXK5N9RDBXMB";
 			result += this.getIfAvailable("url", "&url=");
 			result += this.getIfAvailable("level", "&level=");
@@ -98,6 +98,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		loadChildren: function(ev) {
+			ev.preventDefault();
+			
 			console.log("Lade " + this.model.get("suburl"));
 			vvzHistory.openVvz(this.model);
 		}

@@ -367,6 +367,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
       ev.preventDefault();
       $('#loadNext').attr('disabled', 'disabled');
       App.models.currentSearch.loadNext();
+      $('html, body').animate({scrollTop: $(document).height()}, 300);
     },
 
     renderDetail: function(ev) {

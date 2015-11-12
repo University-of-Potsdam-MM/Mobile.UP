@@ -1,10 +1,15 @@
 <div class="error" style="text-align:center;">
 	<img src="img/up/404.png" />
 	<h2><%= error.msg %></h2>
-	<p>
 	<% if (error.error) { %>
+		<p>
 		<% console.log(error.error.stack) %>
 		<b>Fehlerbeschreibung:</b> <%= error.msg %><br />
+		</p>
 	<% } %>
+	<% if (hasReload) { %>
+	<p>
+		<input class="error-reload" type="button" value="Nochmal versuchen">
 	</p>
+	<% } %>
 </div>

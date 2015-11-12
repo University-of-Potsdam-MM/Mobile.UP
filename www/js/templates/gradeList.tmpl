@@ -23,4 +23,12 @@
 		</div>
 	</li>
 	<% }); %>
+	<% if (!grades || grades.length === 0) { %>
+	<div>
+	<br />
+	<img src="img/up/hinweis.png" class="alignleft">
+	<p class="blau" style="margin-left:55px;">Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?</p>
+	<div style="clear: both;"></div>
+</div>
+	<% } %>
 </ul>

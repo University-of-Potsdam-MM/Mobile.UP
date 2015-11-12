@@ -22,12 +22,8 @@ define([
 		},
 
 		render: function(){
-			if (this.collection.length == 0) {
-				var errorPage = new utils.ErrorView({el: this.$el, msg: 'Keine Kurse gefunden', module: 'calendar'});
-			} else {
-				this.$el.html(this.template({CourseSlots: this.collection}));
-				this.$el.trigger("create");
-			}
+			this.$el.html(this.template({CourseSlots: this.collection}));
+			this.$el.trigger("create");
 			return this;
 		}
 	});
@@ -60,8 +56,9 @@ define([
 			this.CourseList = new calendar.CourseList();
 
 			this.listenTo(this.CourseList, "error", this.errorHandler);
+			this.listenTo(this.CourseList, "coursesEmpty", this.coursesEmpty);
 
-			this.listenToOnce(this, "prepareCourses", this.prepareCourses);
+			this.listenToOnce(this, "prepareCourses", this.loadData);
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 
 			this.template = utils.rendertmpl('calendar');
@@ -79,17 +76,36 @@ define([
 			Backbone.history.navigate(route, { trigger : true });
 		},
 
-		prepareCourses: function(){
+		loadData: function() {
+			if (this.loadingView) this.loadingView.empty();
+			if (this.errorView) this.errorView.empty();
+
 			var courseSlots = new calendar.CourseSlots(undefined, { courseList: this.CourseList, day: day });
 
+			this.loadingView = new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
-			new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 
 			this.CourseList.fetch(utils.cacheDefaults());
 		},
 
 		errorHandler: function(error){
-			var errorPage = new utils.ErrorView({el: '#coursesForDay', msg: 'Der PULS-Dienst ist momentan nicht erreichbar.', module: 'calendar', err: error});
+			this.errorView = new utils.ErrorView({
+				el: this.$('#coursesForDay'),
+				msg: 'Der PULS-Dienst ist momentan nicht erreichbar.',
+				module: 'calendar',
+				err: error,
+				hasReload: true
+			}).on("reload", this.loadData, this);
+		},
+
+		coursesEmpty: function() {
+			this.errorView = new utils.ErrorView({
+				el: this.$('#coursesForDay'),
+				msg: 'Keine Kurse gefunden.',
+				module: 'calendar',
+				err: error,
+				hasReload: true
+			}).on("reload", this.loadData, this);
 		},
 
 		render: function(){

@@ -278,7 +278,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		});
 
 		_.each(similars, function(item) {
-			$("#similarlocations").append("<li><a onclick='app.currentView.sitemapNavigateTo(\"" + item.geo.properties.id + "\");'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
+			$("#similarlocations").append("<li><a href='#' onclick='event.preventDefault(); app.currentView.sitemapNavigateTo(\"" + item.geo.properties.id + "\");'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
 		});
 
 		$("#similarlocations").listview("refresh");

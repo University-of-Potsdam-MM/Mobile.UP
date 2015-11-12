@@ -1,4 +1,7 @@
 <% if (meals.length > 0) { %>
+	<% if (location === "UlfsCafe") { %>
+	<div class="up-mensa-name">Ulf's Café im HPI</div>
+	<% } %>
 <div data-role="collapsible-set" data-collapsed="false" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" class="speiseplan">
 	<% _.each(meals, function(meal) { %>
 	<div data-role="collapsible" data-collapsed="true" id="<%= meal.contentId %>">
@@ -28,17 +31,24 @@
 		</div>
 	
 		<p>
+			<% if (meal.prices.students) { %>
 			Studierende: <% print(Number(meal.prices.students).toFixed(2)); %> €<br />
+			<% } %>
+			<% if (meal.prices.staff) { %>
 			Bedienstete: <% print(Number(meal.prices.staff).toFixed(2)); %> €<br />
+			<% } %>
+			<% if (meal.prices.guests) { %>
 			Gäste: <% print(Number(meal.prices.guests).toFixed(2)); %> €
+			<% } %>
 		</p>
 	</div>
 	<% }); %>
 </div>
-<% } else { %>
+<% } else if(location !== "UlfsCafe") { %>
 <div>
 	<br />
 	<img src="img/up/hinweis.png" class="alignleft">
 	<p class="blau" style="margin-left:55px;">Heute gibt es kein Essensangebot. Vielleicht ist die Mensa geschlossen?</p>
+	<div style="clear: both;"></div>
 </div>
 <% } %>

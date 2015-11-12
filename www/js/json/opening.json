@@ -203,7 +203,7 @@
       },
       {
         "day": "Freitag",
-        "opening": "kein Betrieb"
+        "opening": [["09:30", "16:00"]]
       }
     ]
   },
@@ -215,23 +215,23 @@
     "times": [
       {
         "day": "Montag",
-        "opening": [["08:30", "17:30"]]
+        "opening": [["08:30", "17:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["08:30", "17:30"]]
+        "opening": [["08:30", "17:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["08:30", "17:30"]]
+        "opening": [["08:30", "17:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["08:30", "17:30"]]
+        "opening": [["08:30", "17:00"]]
       },
       {
         "day": "Freitag",
-        "opening": [["08:30", "14:30"]]
+        "opening": [["08:30", "15:00"]]
       }
     ]
   },
@@ -243,19 +243,19 @@
     "times": [
       {
         "day": "Montag",
-        "opening": [["10:00", "19:00"]]
+        "opening": [["10:00", "16:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["10:00", "19:00"]]
+        "opening": [["10:00", "16:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["10:00", "19:00"]]
+        "opening": [["10:00", "16:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["10:00", "19:00"]]
+        "opening": [["10:00", "16:00"]]
       },
       {
         "day": "Freitag",
@@ -303,19 +303,19 @@
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "17:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "17:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "17:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "17:00"]]
       },
       {
         "day": "Freitag",
@@ -344,7 +344,7 @@
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "22:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Samstag",

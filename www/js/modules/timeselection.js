@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'jquerymobile', 'underscore-string'], function($, _, Backbone){
+define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile'], function($, _, Backbone, _str){
 
 	var TimeSlot = Backbone.Model.extend({
 		defaults: {
@@ -53,7 +53,7 @@ define(['jquery', 'underscore', 'backbone', 'jquerymobile', 'underscore-string']
 			var upper = this.model.get("bounds").upper;
 			var lower = this.model.get("bounds").lower;
 			var name = this.model.get("name");
-			return _.str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
+			return _str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 		},
 
 		activate: function(e) {
