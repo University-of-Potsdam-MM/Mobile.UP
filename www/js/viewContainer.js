@@ -262,6 +262,7 @@ define([
             var pageName = utils.capitalize(c) + utils.capitalize(a);
             if (!app.views[pageName]) {
                 app.views[pageName] = utils.EmptyPage;
+                console.warn("Did not find", pageName, "used EmptyPage instead");
             }
             return app.views[pageName];
         }
