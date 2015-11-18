@@ -29,9 +29,7 @@ define([
                 var c = 0, d = 0;
                 for (var i in app.controllers) {
                     app.c[i] = appc[i] = (new app.controllers[i]);
-                    console.log(app.c[i]);
                     if (app.c[i].init) {
-                        console.log(app.c[i].init);
                         app.c[i].init();
                     }
                     for (var j in appc[i].views) {
