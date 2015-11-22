@@ -1,4 +1,4 @@
-phonegap plugin add https://github.com/apache/cordova-plugin-inappbrowser
+phonegap plugin add https://github.com/apache/cordova-plugin-inappbrowser#r1.0.1
 phonegap plugin add https://github.com/apache/cordova-plugin-splashscreen
 phonegap plugin add https://github.com/apache/cordova-plugin-dialogs.git
 phonegap plugin add https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git
