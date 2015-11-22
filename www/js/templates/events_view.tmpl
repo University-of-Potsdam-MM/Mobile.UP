@@ -54,7 +54,7 @@ if(d.length - lim > 25) {
 		<% if($.os.ios) { %>
 			<a href="maps://q=<%=q%>" target="_system">Auf Karte anzeigen</a>
 		<% } else if($.os.android) { %>
-			<a target="_system" href="geo:<%=q%>" rel="external">Auf Karte anzeigen</a>
+			<a target="_system" href="geo:0,0?q=<% print(encodeURIComponent(q)) %>" rel="external">Auf Karte anzeigen</a>
 		<% } else { %>
 			<a target="_system" href="http://maps.google.com/?q=<%=q%>"  rel="external">Auf Karte anzeigen</a>
 		<% } %>
