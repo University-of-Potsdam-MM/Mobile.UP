@@ -627,6 +627,41 @@ define([
 		}
 	});
 
+	var cacheModelsOnSync = function(collection, saveCallback) {
+		var isCachedResponse = false;
+		collection.listenTo(collection, "cachesync", function() {
+			// The following sync event will deliver cached data
+			isCachedResponse = true;
+		});
+		collection.listenTo(collection, "sync", function(collection, response, options) {
+			// If we get cached data we don't want to cache the models
+			if (isCachedResponse) {
+				isCachedResponse = false;
+				return;
+			}
+
+			var start = new Date().getTime();
+
+			// Deactivate localStorage caching for significantly better performance
+			var localStorage = Backbone.fetchCache.localStorage;
+			Backbone.fetchCache.localStorage = false;
+			try {
+				// Iterate over all models...
+				for (i = 0; i < this.models.length; i++) {
+					// ...and save each one separately
+					saveCallback.call(this, this.models[i], i, options);
+				}
+			} finally {
+				// Restore localStorage caching
+				Backbone.fetchCache.localStorage = localStorage;
+				Backbone.fetchCache.setLocalStorage();
+			}
+
+			var end = new Date().getTime();
+			console.log("SetCache dauerte " + (end-start) + "ms");
+		});
+	};
+
 	return {
 			rendertmpl: rendertmpl,
 			renderheader: renderheader,
@@ -646,6 +681,7 @@ define([
 			cacheDefaults: cacheDefaults,
 			defaultTransition: defaultTransition,
 			overrideBackboneSync: overrideBackboneSync,
-			EmptyPage: EmptyPage
+			EmptyPage: EmptyPage,
+			cacheModelsOnSync: cacheModelsOnSync
 		};
 });
