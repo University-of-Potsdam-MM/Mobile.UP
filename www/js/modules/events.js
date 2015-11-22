@@ -4,13 +4,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 	 *
 	 */
 	app.models.Event = Backbone.Model.extend({
-		url: server+'/potsdamevents/json/events/view/',
-		initialize: function(){
-			this.url = this.url + this.id;
+		url: function() {
+			var id = this.id;
+			if (!id && this.response && this.response.Event)
+				id = this.response.Event.id;
+			return server+'/potsdamevents/json/events/view/' + id;
 		},
 		parse: function(response){
 			if(response.vars)
 				response = response.vars;
+			this.response = response;
 			return response;
 		}
 	});
