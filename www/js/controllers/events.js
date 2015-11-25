@@ -8,11 +8,12 @@ app.controllers.events = BackboneMVC.Controller.extend({
 	
     view:function(id){
 		var self = this;
-		app.loadPage(this.name, 'view', {id:id, going:Boolean(LocalStore.get('going', {})[id])}).done(function(d){
+		app.loadPage(this.name, 'view', {id:id, going:Boolean(LocalStore.get('going', {})[id]), fetchCallback: function(model) {
+			var d = model.response;
 			if(d)
 				self.currentEvent = d.event;
 			app.viewManager.activeCon().scrollTop(0); //View nach oben scrollen
-		});
+		}});
     },
 	
 	/*
@@ -32,14 +33,15 @@ app.controllers.events = BackboneMVC.Controller.extend({
     index:function(filter){
 		var self = this;
 		this.filter = filter;
-		app.loadPage(this.name, 'index', {filter:this.filter, going:this.going}).done(function(d, view){
+		app.loadPage(this.name, 'index', {filter:this.filter, going:this.going, fetchCallback: function(collection) {
+			var d = collection.response;
 			if(!d) return;
 			self.events = d.events;
 			self.places = d.places; //places-liste lokal speichern
 			//self.filterIndex(); //Events filtern nach locations und gewählter Zeitraum
 			//self.setActiveBtn(); //Aktiven Button markieren im Footer
 			console.log(self.places);
-		});
+		}});
     },
 	
 	/*

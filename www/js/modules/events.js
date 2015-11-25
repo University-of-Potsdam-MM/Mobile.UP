@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Backbone, utils, date){
+define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], function($, _, Backbone, utils, date, viewContainer){
 	var server = 'https://musang.soft.cs.uni-potsdam.de'
 	/*
 	 *
@@ -22,6 +22,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 		model: app.models.Event,
 		url: server + '/potsdamevents/json/events/',
 		//url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/',
+
+		initialize: function() {
+			utils.cacheModelsOnSync(this, this.cacheModels);
+		},
+
+		cacheModels: function(cache) {
+			cache.response = this.response.events[cache.index];
+		},
 
 		parse: function(response){
 			if(response.vars)
@@ -51,13 +59,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 
 	app.views.EventsView = Backbone.View.extend({
 		events : {'click .saveToCal': 'saveToCalendar'},
-		inCollection : 'events.index.events', //controller.action.variable
-		idInCollection : 'id', //name oder . getrennter Pfad, wo die id in der collection steht für ein objekt
+
 		initialize: function(p){
 			this.template = utils.rendertmpl('events_view');
 			_.bindAll(this, 'render');
 			this.page = p.page;
 			this.model = new app.models.Event(p);
+
+			this.model.p = p;
+			this.listenToOnce(this.model, "sync", this.render);
+			this.listenToOnce(this.model, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.model.fetch({success: p.fetchCallback, cache: true, expires: 60*60});
 		},
 		
 		fetchError: function(){
@@ -65,6 +79,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 		},
 
 		render:function(){
+			// No data? No view!
+			if (!this.model.has("Event") && !this.model.has("event")) {
+				return;
+			}
+
 			this.undelegateEvents();
 			var vars = this.model.toJSON();
 			if(!vars.event)
@@ -170,6 +189,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 			this.collection = new app.models.Events(p);
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
+
+			this.collection.p = p;
+			this.listenToOnce(this.collection, "sync", this.render);
+			this.listenToOnce(this.collection, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.collection.fetch(utils.cacheDefaults({success: p.fetchCallback}));
 		},
 
 		fetchError: function(){
@@ -177,6 +203,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date'], function($, _, Bac
 		},
 
 		render: function(){
+			// No data? No view!
+			if (!this.collection.response)
+				return this;
+
 			app.data.set("places", this.collection.response.places);
 			this.$el = this.page.find('#events');
 			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));

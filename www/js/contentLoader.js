@@ -37,6 +37,14 @@ define([
         appCache : new AppCache(),
 
         retreiveOrFetchContent: function (content, d, params, c, a, success) {
+            if (c == "events" && a == "index") {
+                success(d);
+                return d;
+            } else if (c == "events" && a == "view") {
+                success(d);
+                return d;
+            }
+
             // Save the original callback so we can call it as soon as the fetch is processed
             var originalSave = success;
             success = _.bind(function(s, d) {
