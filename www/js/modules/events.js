@@ -134,6 +134,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			this.filter = p.filter;
 			app.data.set("events", p.events);
 			_.bindAll(this, 'render');
+
+			this.collection.p = p;
+			this.listenToOnce(this.collection, "sync", this.render);
+			this.listenToOnce(this.collection, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.collection.fetch({cache: true, expires: 60*60});
 		},
 		
 		fetchError: function(){
@@ -142,6 +149,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 
 
 		render: function(){
+			// No data? No view!
+			if (!this.collection.response) {
+				return;
+			}
+
 			this.$el = this.page.find('#events');
 			this.$el.html(this.template({events: this.collection.toJSON(), date:date, going:utils.LocalStore.get('going', {})}));
 			var self = this;

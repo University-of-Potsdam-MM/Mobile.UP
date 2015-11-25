@@ -43,6 +43,9 @@ define([
             } else if (c == "events" && a == "view") {
                 success(d);
                 return d;
+            } else if (c == "events" && a == "place") {
+                success(d);
+                return d;
             }
 
             // Save the original callback so we can call it as soon as the fetch is processed
