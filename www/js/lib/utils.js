@@ -640,6 +640,7 @@ define([
 				return;
 			}
 
+			// Start the profiling timer
 			var start = new Date().getTime();
 
 			// Deactivate localStorage caching for significantly better performance
@@ -648,8 +649,16 @@ define([
 			try {
 				// Iterate over all models...
 				for (i = 0; i < this.models.length; i++) {
+					var cache = {
+						model: this.models[i],
+						options: options,
+						index: i,
+						response: {}
+					};
+
 					// ...and save each one separately
-					saveCallback.call(this, this.models[i], i, options);
+					saveCallback.call(this, cache);
+					Backbone.fetchCache.setCache(cache.model, cache.options, cache.response);
 				}
 			} finally {
 				// Restore localStorage caching
@@ -657,8 +666,9 @@ define([
 				Backbone.fetchCache.setLocalStorage();
 			}
 
+			// Stop the profiling timer and output its result
 			var end = new Date().getTime();
-			console.log("SetCache dauerte " + (end-start) + "ms");
+			console.log("SetCache took " + (end-start) + "ms");
 		});
 	};
 
