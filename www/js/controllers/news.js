@@ -34,10 +34,11 @@ app.controllers.news = BackboneMVC.Controller.extend({
 	*/
     index:function(){
 		var self = this;
-		app.loadPage(this.name, 'index', {}, 'slide').done(function(d){
+		app.loadPage(this.name, 'index', {fetchCallback: function(collection) {
+			var d = collection.response;
 			console.log(d);
 			self.newsSources = d.newsSources; //Newsquellen lokal speichern
-		});
+		}}, 'slide');
     },
 	
 	/*

@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function($, _, Backbone, utils, viewContainer){
 	var classes = {};
 
 	/*
@@ -145,9 +145,21 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
+
+			this.collection.p = p;
+			this.listenToOnce(this.collection, "sync", this.render);
+			this.listenToOnce(this.collection, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.collection.fetch({cache: true, expires: 60*60, success: p.fetchCallback});
 		},
 
 		render: function(){
+			// No data? No view!
+			if (!this.collection.response) {
+				return this;
+			}
+
 			app.data.set("newsSources", this.collection.response.newsSources);
 			this.$el = this.page.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
