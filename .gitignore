@@ -4,6 +4,7 @@ node_modules/
 .settings/
 .DS_Store
 .cordova/
+.idea/
 
 plugins/
 
