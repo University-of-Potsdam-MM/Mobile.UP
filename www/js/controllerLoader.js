@@ -1,13 +1,6 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'backboneMVC',
-    'underscore.string',
-    'utils',
-    'q',
-    'history'
-], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
+    'jquery'
+], function($) {
 
     var ControllerLoader = {
         viewFileExt: 'js', //Dateiendung der View files
