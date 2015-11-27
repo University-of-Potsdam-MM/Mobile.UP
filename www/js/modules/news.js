@@ -112,9 +112,21 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 			this.template = utils.rendertmpl('news_source');
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
+
+			this.collection.p = p;
+			this.listenToOnce(this.collection, "sync", this.render);
+			this.listenToOnce(this.collection, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.collection.fetch({cache: true, expires: 60*60});
 		},
 
 		render:function(){
+			// No data? No view!
+			if (!this.collection.response) {
+				return this;
+			}
+
 			this.$el = this.page.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON()}));
 			this.$el.trigger("create");
