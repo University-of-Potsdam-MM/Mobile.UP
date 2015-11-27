@@ -10,12 +10,6 @@ define([
 	app.controllers.main = BackboneMVC.Controller.extend({
 		name: 'main',
 
-		/*
-		 * Um evt. Initialisierungsfunktionen auszuführen
-		 */
-		init: function () {
-		},
-
 		default: function () {
 			this.index();
 		},

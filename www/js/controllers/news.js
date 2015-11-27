@@ -12,8 +12,7 @@ define([
 		newsSources: false,
 		views: ["news.index", "news.view", "news.set_sources", "news.source"], //Viewfiles des Controllers
 
-
-		init: function () {
+		initialize: function () {
 			this.disabledNews = LocalStore.get('disabledNews', {}); //Alle deaktivierten Newsquellen aus dem local Storage laden oder initialisieren
 		},
 

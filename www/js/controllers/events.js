@@ -23,7 +23,7 @@ define([
 		/*
 		* Um Initialisierungsfunktionen auszuführen
 		*/
-		init:function(){
+		initialize:function(){
 		   this.going = LocalStore.get('going', {}); //Liste der vorgemerkten Events laden
 		   this.disabledLocations = LocalStore.get('disabledLocations', {}); //
 		},

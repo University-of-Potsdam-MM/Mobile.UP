@@ -18,11 +18,6 @@ define([
 	 */
 	app.controllers.campus = BackboneMVC.Controller.extend({
 		name: 'campus',
-		/*
-		 * Um Initialisierungsfunktionen auszuführen
-		 */
-		init:function(){
-		},
 
 		default:function(){
 			this.index();

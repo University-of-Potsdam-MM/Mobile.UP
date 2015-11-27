@@ -12,11 +12,6 @@ define([
 	 */
 	app.controllers.studies = BackboneMVC.Controller.extend({
 		name: 'studies',
-		/*
-		 * Um Initialisierungsfunktionen auszuführen
-		 */
-		init: function () {
-		},
 
 		default: function () {
 

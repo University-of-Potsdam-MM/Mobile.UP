@@ -26,9 +26,6 @@ define([
             require(this.controllerList, function () {
                 for (var i in app.controllers) {
                     app.c[i] = (new app.controllers[i]);
-                    if (app.c[i].init) {
-                        app.c[i].init();
-                    }
                 }
                 $(document).trigger('app:controllersLoaded');
             });
