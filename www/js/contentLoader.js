@@ -49,6 +49,9 @@ define([
             } else if (c == "news" && a == "index") {
                 success(d);
                 return d;
+            } else if (c == "news" && a == "view") {
+                success(d);
+                return d;
             }
 
             // Save the original callback so we can call it as soon as the fetch is processed

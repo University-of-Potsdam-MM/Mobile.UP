@@ -5,17 +5,17 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	 *	Backbone Model - NewsEntry
 	 */
 	app.models.NewsEntry = Backbone.Model.extend({
-		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/',
-
-		initialize: function(){
-			this.url = this.url+this.id;
+		url: function() {
+			return 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/' + this.id;
 		},
 
 		parse: function(response){
 			//console.log(response);
 			if(response.vars)
 				response = response.vars;
-			return response;
+
+			// Add the ID if it exists
+			return _.extend(response, response.News ? {id: response.News.id} : {});
 		}
 	});
 
@@ -34,6 +34,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
 		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
+
+		initialize: function() {
+			utils.cacheModelsOnSync(this, this.cacheModels);
+		},
+
+		cacheModels: function(cache) {
+			cache.response = this.response.news[cache.index];
+		},
 
 		parse: function(response){
 			if(response.vars)
@@ -65,16 +73,27 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	})
 
 	app.views.NewsView = Backbone.View.extend({
-		inCollection : 'news.index.news', //controller.action.variable
-		idInCollection : 'id', //name oder . getrennter Pfad, wo die id in der collection steht für ein objekt
+
 		initialize: function(p){
 			this.page  = p.page;
 			this.template = utils.rendertmpl('news_view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
+
+			this.model.p = p;
+			this.listenToOnce(this.model, "sync", this.render);
+			this.listenToOnce(this.model, "sync", function() {
+				viewContainer.pageContainer.updateHeader(this.$el);
+			});
+			this.model.fetch({cache: true, expires: 60*60});
 		},
 
 		render:function(){
+			// No data? No view!
+			if (!this.model.has("News") && !this.model.has("news")) {
+				return this;
+			}
+
 			this.$el = this.page.find('#news');
 			var vars = $.extend(this.model.toJSON(), this.p);
 			if(!vars.news)
