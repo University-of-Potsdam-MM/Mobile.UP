@@ -10,7 +10,7 @@
 	<div data-role="navbar" data-tap-toggle="false">
 		<ul>
 			<li><a rel="" href="#studies/calendar/<%= moment(day).add(-1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-l" class="ui-link ui-btn ui-icon-arrow-l ui-btn-icon-top ui-shadow ui-corner-all" data-role="button" data-direction="reverse">Vorheriger Tag</a></li>
-			<% if (window.cordova || true) { %>
+			<% if (window.cordova) { %>
 			<li><a href="#studies/calendar/export" data-icon="arrow-d" data-role="button" class="ui-link ui-btn ui-icon-arrow-d ui-btn-icon-top ui-shadow ui-corner-all">Export</a></li>
 			<% } %>
 			<li><a rel="" href="#studies/calendar/<%= moment(day).add(1, 'd').format('YYYY-MM-DD') %>" data-icon="arrow-r" class="ui-link ui-btn ui-icon-arrow-r ui-btn-icon-top ui-shadow ui-corner-all" data-role="button">Nächster Tag</a></li>
