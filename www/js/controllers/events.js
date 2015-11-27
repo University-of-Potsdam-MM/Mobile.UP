@@ -1,4 +1,7 @@
-define(["backboneMVC"], function(BackboneMVC) {
+define([
+	"backboneMVC",
+	"modules/events"
+], function(BackboneMVC) {
 
 	/*
 	* EventController
@@ -6,7 +9,6 @@ define(["backboneMVC"], function(BackboneMVC) {
 	app.controllers.events = BackboneMVC.Controller.extend({
 		name: 'events',
 		places: false,
-		modules : {'events' : ''},
 
 		view:function(id){
 			var self = this;

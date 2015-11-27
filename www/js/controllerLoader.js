@@ -23,24 +23,14 @@ define([
          * Alle Controllers und deren Viewtemplates laden
          */
         loadControllersExtract: function () {
-            var that = this;
             require(this.controllerList, function () {
-                var modules = [];
-                var d = 0;
                 for (var i in app.controllers) {
                     app.c[i] = (new app.controllers[i]);
                     if (app.c[i].init) {
                         app.c[i].init();
                     }
-                    if (app.c[i].modules)
-                        for (var name in app.c[i].modules) {
-                            modules[d] = 'js/modules/' + name + '.' + that.viewFileExt;
-                            d++;
-                        }
                 }
-                require(modules, function () {
-                    $(document).trigger('app:controllersLoaded');
-                });
+                $(document).trigger('app:controllersLoaded');
             });
         }
     };

@@ -1,22 +1,23 @@
-define(["backboneMVC", "backbone"], function(BackboneMVC, Backbone) {
+define([
+	"backboneMVC",
+	"backbone",
+	"modules/sitemap",
+	"modules/room",
+	"modules/opening",
+	"modules/transport",
+	"modules/transport2",
+	"modules/mensa",
+	"modules/emergency",
+	"modules/library",
+	"modules/people",
+	"modules/impressum"
+], function(BackboneMVC, Backbone) {
 
 	/*
 	 * CampusController
 	 */
 	app.controllers.campus = BackboneMVC.Controller.extend({
 		name: 'campus',
-		modules: {
-			'sitemap' : 'sitemapView',
-			'room' : 'roomView',
-			'opening' : 'openingView',
-			'transport' : 'transportView',
-			'transport2' : 'transportPlanView',
-			'mensa' : 'mensaView',
-			'emergency' : 'emergencyView',
-			'library' : 'libraryView',
-			'people' : 'peopleView',
-			'impressum' : 'impressumView',
-		},
 		/*
 		 * Um Initialisierungsfunktionen auszuführen
 		 */

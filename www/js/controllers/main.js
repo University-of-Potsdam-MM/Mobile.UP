@@ -1,11 +1,14 @@
-define(["backboneMVC"], function(BackboneMVC) {
+define([
+	"backboneMVC",
+	"modules/home",
+	"modules/options"
+], function(BackboneMVC) {
 
 	/*
 	 * MainController
 	 */
 	app.controllers.main = BackboneMVC.Controller.extend({
 		name: 'main',
-		modules: {"home": "HomePageView", "options": "OptionsPageView"},
 
 		/*
 		 * Um evt. Initialisierungsfunktionen auszuführen

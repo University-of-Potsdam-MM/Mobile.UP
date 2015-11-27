@@ -1,17 +1,17 @@
-define(["backboneMVC"], function(BackboneMVC) {
+define([
+	"backboneMVC",
+	"modules/calendar",
+	"modules/calendar.export",
+	"modules/lectures",
+	"modules/grades",
+	"modules/moodle"
+], function(BackboneMVC) {
 
 	/*
 	 * studiesController
 	 */
 	app.controllers.studies = BackboneMVC.Controller.extend({
 		name: 'studies',
-		modules: {
-			'calendar': 'calendarView',
-			'calendar.export': 'calendarExportView',
-			'lectures': 'lecturesView',
-			'grades': 'gradesView',
-			'moodle': 'moodleView'
-		},
 		/*
 		 * Um Initialisierungsfunktionen auszuführen
 		 */

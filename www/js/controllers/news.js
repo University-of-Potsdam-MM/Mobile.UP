@@ -1,4 +1,7 @@
-define(["backboneMVC"], function(BackboneMVC) {
+define([
+	"backboneMVC",
+	"modules/news"
+], function(BackboneMVC) {
 
 	/*
 	 * NewsController
@@ -8,7 +11,6 @@ define(["backboneMVC"], function(BackboneMVC) {
 		filter: 'recent', //Standardfilter für die News (recent), bis jetzt nur dieser
 		newsSources: false,
 		views: ["news.index", "news.view", "news.set_sources", "news.source"], //Viewfiles des Controllers
-		modules: {'news': 'NewsPageView'},
 
 
 		init: function () {
