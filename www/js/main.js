@@ -28,11 +28,6 @@ require.config({
         'headerParser': 'lib/headerParser'
     },
     shim: {
-		
-		'backboneMVC': {
-    		deps: ['backbone'],
-    		exports: 'BackboneMVC'
-    	},
         'cache': ['backbone', 'underscore']
     }
 });
