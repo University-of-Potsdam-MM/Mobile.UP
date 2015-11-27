@@ -1,6 +1,8 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function($, _, Backbone, utils, viewContainer){
 	var classes = {};
 
+	var newsSources = {};
+
 	/*
 	 *	Backbone Model - NewsEntry
 	 */
@@ -146,7 +148,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 		render:function(){
 			this.$el = this.page.find('#news');
 			//console.log(utils.LocalStore.get('disabledNews', {}));
-			this.$el.html(this.template({newsSources: app.data.get("newsSources"), disabledNews: utils.LocalStore.get('disabledNews', {})}));
+			this.$el.html(this.template({newsSources: newsSources, disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			$('.ch-news').change(this.toggleNews);
 			this.$el.trigger("create");
 			$('.back').attr('href', '#news');
@@ -191,7 +193,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 				return this;
 			}
 
-			app.data.set("newsSources", this.collection.response.newsSources);
+			newsSources = this.collection.response.newsSources;
 			this.$el = this.page.find('#news');
 			this.$el.html(this.template({news: this.collection.toJSON(), disabledNews: utils.LocalStore.get('disabledNews', {})}));
 			this.$el.trigger("create");
