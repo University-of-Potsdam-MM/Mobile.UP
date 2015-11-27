@@ -21,7 +21,6 @@ define([
 		viewContainer.initialize();
 		var pageContainer = ViewHelper.pageContainer;
 
-		var contentLoader = contentLoaderHelper.ContentLoader;
 		var InMemoryCache = contentLoaderHelper.InMemoryCache;
 
 		//AppRouter-Klasse erstellen

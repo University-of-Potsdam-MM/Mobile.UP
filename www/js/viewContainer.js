@@ -10,8 +10,6 @@ define([
     'contentLoader'
 ], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoaderHelper) {
 
-    var contentLoader = contentLoaderHelper.ContentLoader;
-
     var pageContainer = _.extend({
 
         initialize: function() {
@@ -171,16 +169,8 @@ define([
             var content = contentAndView.content;
             var view = contentAndView.view;
 
-            var finishRendering = function(d) {
-                viewContainer.finishRendering(content, transitionOptions.page, view);
-                q.resolve(d, content);
-            };
-
-            if (content) {
-                contentLoader.retreiveOrFetchContent(content, {}, params, c, a, finishRendering);
-            } else {
-                finishRendering(undefined);
-            }
+            viewContainer.finishRendering(content, transitionOptions.page, view);
+            q.resolve(undefined, content);
         },
 
         updateHeader: function ($el) {
