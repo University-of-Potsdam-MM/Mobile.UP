@@ -6,10 +6,8 @@ define([
     'underscore.string',
     'utils',
     'q',
-    'history',
-    'contentLoader'
-], function($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory, contentLoaderHelper) {
-
+    'history'
+], function ($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
     var pageContainer = _.extend({
 
         initialize: function() {
