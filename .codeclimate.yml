@@ -1,5 +1,17 @@
-ratings:
-   paths:
-   - www/**
+languages:
+   JavaScript: true
+#engines:
+#  csslint:
+#    enabled: true
+#  eslint:
+#    enabled: true
+#  fixme:
+#    enabled: true
+#ratings:
+#   paths:
+#   - "www/**"
 exclude_paths:
-- vendor/*
+- "node_modules/*"
+- "script/*"
+- "www/js/vendor/*"
+- "www/spec/*"
