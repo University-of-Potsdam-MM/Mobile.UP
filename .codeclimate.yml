@@ -1,0 +1,5 @@
+ratings:
+   paths:
+   - www/**
+exclude_paths:
+- vendor/*
