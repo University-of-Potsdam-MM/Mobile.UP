@@ -84,19 +84,16 @@ define([
 				// Register global error handler
 				window.onerror = utils.onError;
 
+				customHistory.startTracking();
+
+				//Globale Events zuordnen
+				this.bindEvents();
 				//Anwendungsurl ermitteln
 				var baseUrl = document.location.pathname.replace(/\/index\.html/, '');
+				//Backbone URL-Routing-Funktion starten
+				customHistory.startSecond(baseUrl);
 
-				$(document).one('app:controllersLoaded', _.bind(function(){ //Wird ausgeführt wenn alle Controller und Viewtemplates geladen wurden
-					//Globale Events zuordnen
-					this.bindEvents();
-					//Backbone URL-Routing-Funktion starten
-					customHistory.startSecond(baseUrl);
-
-					this.gotoEntryPoint();
-				}, this));
-				$(document).trigger('app:controllersLoaded');
-				customHistory.startTracking();
+				this.gotoEntryPoint();
 			},
 
 			gotoEntryPoint: function() {
