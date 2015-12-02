@@ -44,8 +44,8 @@ requirejs.onError = function(error){
 
 // Unfortunately, requirejs cannot force jquerymobile
 // to load after jqm-config. Therefore, we have to
-// force this dependency on our own and pray for the
-// proper loading order. See
+// force this dependency by modifying the jQuery Mobile
+// code base. See
 // 
 // https://github.com/jrburke/requirejs/issues/358
 // 
