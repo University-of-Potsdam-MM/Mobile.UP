@@ -95,7 +95,7 @@ define([
 
 					this.gotoEntryPoint();
 				}, this));
-				controllerLoader.loadControllersExtract(); //Alle Controller laden
+				$(document).trigger('app:controllersLoaded');
 				customHistory.startTracking();
 			},
 
