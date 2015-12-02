@@ -9,7 +9,7 @@ define([
 		history: [],
 		secondHistory: [],
 		
-		startTracking: function() {
+		startTracking: function(baseUrl) {
 			// Because we track our own history, we have to consider the replace option
 			// See http://backbonejs.org/#Router-navigate and {replace: true} for details
 			var that = this;
@@ -23,9 +23,7 @@ define([
 				// Call original function
 				savedNavigate.apply(this, arguments);
 			};
-		},
 
-		startSecond: function(baseUrl) {
 			Backbone.history.start({pushState: false, root: baseUrl});
 		},
 		

@@ -84,14 +84,12 @@ define([
 				// Register global error handler
 				window.onerror = utils.onError;
 
-				customHistory.startTracking();
-
 				//Globale Events zuordnen
 				this.bindEvents();
 				//Anwendungsurl ermitteln
 				var baseUrl = document.location.pathname.replace(/\/index\.html/, '');
 				//Backbone URL-Routing-Funktion starten
-				customHistory.startSecond(baseUrl);
+				customHistory.startTracking(baseUrl);
 
 				this.gotoEntryPoint();
 			},
