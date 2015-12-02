@@ -28,11 +28,8 @@ define([
 		});
 
 
-		app = {
+		_.extend(app, {
 			c: {}, //Controller-Objekte werden in diesem Array abgelegt
-			controllers: {}, //Controllerklassen
-			views:{},
-			models:{},
 			requiresAuth: ['calendar', 'moodle', 'grades', 'people'],// routes that need authentication
 			preventAccessWhenAuth: [],// routes to prevent authentication when already authenticated
 			authUrls: [
@@ -259,7 +256,7 @@ define([
 					window.history.back();
 				});
 			}
-		};
+		});
 
 		return app;
 });
