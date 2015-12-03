@@ -40,6 +40,10 @@ define([
 			}
 		},
 
+		executeWindowBack: function() {
+			window.history.back();
+		},
+
 		pushSecondHistory: function(fragment) {
 			this.secondHistory.push(fragment);
 		},

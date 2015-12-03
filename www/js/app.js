@@ -248,7 +248,7 @@ define([
 				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
-					window.history.back();
+					customHistory.executeWindowBack();
 				});
 			}
 		});
