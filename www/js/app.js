@@ -30,8 +30,6 @@ define([
 
 		_.extend(app, {
 			c: {}, //Controller-Objekte werden in diesem Array abgelegt
-			requiresAuth: ['calendar', 'moodle', 'grades', 'people'],// routes that need authentication
-			preventAccessWhenAuth: [],// routes to prevent authentication when already authenticated
 			authUrls: [
 				"https://api.uni-potsdam.de/endpoints/roomsAPI",
 				"https://api.uni-potsdam.de/endpoints/libraryAPI",
@@ -159,39 +157,6 @@ define([
 					self.callback = function(){};
 				}
 			},
-
-			/**
-			 *
-			 * @param c Controllername
-			 * @param a Actionsname
-			 * @returns true is access is allowed, false otherwise
-			 */
-			isAllowed: function(c, a) {
-				var checkAuth = function(name){
-					var isAuth = app.session.get('up.session.authenticated');
-					var path = Backbone.history.location.hash;
-					var needAuth = _.contains(app.requiresAuth, name);
-					var cancelAccess = _.contains(app.preventAccessWhenAuth, name);
-					if(needAuth && !isAuth){
-						// If user gets redirect to login because wanted to access
-						// to a route that requires login, save the path in session
-						// to redirect the user back to path after successful login
-						app.session.set('up.session.redirectFrom', path);
-						Backbone.history.navigate('main/options', { trigger : true });
-						return false;
-					}else if(isAuth && cancelAccess){
-						// User is authenticated and tries to go to login, register ...
-						// so redirect the user to home page
-						Backbone.history.navigate('', { trigger : true });
-						return false;
-					}else{
-						//No problem, handle the route!!
-						return true;
-					}
-				};
-
-				return checkAuth(c) && checkAuth(a);
-			},
 			
 			/*
 			* Wenn nötig Daten vom Server laden, Seite rendern und Seitenübergang vollführen
@@ -204,14 +169,6 @@ define([
 			loadPage: function(c, a, params, transition) {
 				params = params || {};
 				var q = Q.defer();
-
-				// Check if access to the page is allowed
-				if (!app.isAllowed(c, a)) {
-					q.resolve();
-					return {
-						done: function (d) { }
-					};
-				}
 
 				var page = viewContainer.prepareViewForDomDisplay(c, params);
 

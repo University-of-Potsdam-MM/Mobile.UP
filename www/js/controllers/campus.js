@@ -1,6 +1,7 @@
 define([
 	"backboneMVC",
 	"backbone",
+	"controllers/baseController",
 	"modules/sitemap",
 	"modules/room",
 	"modules/opening",
@@ -11,12 +12,12 @@ define([
 	"modules/library",
 	"modules/people",
 	"modules/impressum"
-], function(BackboneMVC, Backbone) {
+], function(BackboneMVC, Backbone, BaseController) {
 
 	/*
 	 * CampusController
 	 */
-	app.controllers.campus = BackboneMVC.Controller.extend({
+	app.controllers.campus = BaseController.extend({
 		name: 'campus',
 
 		default:function(){
@@ -57,7 +58,7 @@ define([
 			app.loadPage('library', 'index');
 		},
 
-		people:function(){
+		user_people:function(){
 			app.loadPage('people', 'index');
 		},
 

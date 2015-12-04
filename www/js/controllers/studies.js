@@ -1,23 +1,24 @@
 define([
 	"backboneMVC",
+	"controllers/baseController",
 	"modules/calendar",
 	"modules/calendar.export",
 	"modules/lectures",
 	"modules/grades",
 	"modules/moodle"
-], function(BackboneMVC) {
+], function(BackboneMVC, BaseController) {
 
 	/*
 	 * studiesController
 	 */
-	app.controllers.studies = BackboneMVC.Controller.extend({
+	app.controllers.studies = BaseController.extend({
 		name: 'studies',
 
 		default: function () {
 
 		},
 
-		calendar: function (day) {
+		user_calendar: function (day) {
 			if (day == 'export') {
 				app.loadPage('calendarExport', 'index', {day: day});
 			} else {
@@ -43,11 +44,11 @@ define([
 			});
 		},
 
-		grades: function () {
+		user_grades: function () {
 			app.loadPage('grades', 'index');
 		},
 
-		moodle: function (action, id) { //action ist immer index, bis jemand das ändern möchte
+		user_moodle: function (action, id) { //action ist immer index, bis jemand das ändern möchte
 			action = 'index';
 			app.loadPage('moodle', action, {model: app.session, courseid: id});
 		},
