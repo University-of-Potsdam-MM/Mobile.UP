@@ -89,10 +89,10 @@ define([
 				//Backbone URL-Routing-Funktion starten
 				customHistory.startTracking(baseUrl);
 
-				this.gotoEntryPoint();
+				this._gotoEntryPoint();
 			},
 
-			gotoEntryPoint: function() {
+			_gotoEntryPoint: function() {
 				if(!window.location.hash) { //Wenn keine URL übergeben wurde, das Hauptmenü aufrufen
 					this.route("main/menu");
 				} else { //Sonst aktuelle URL in die app.history aufnehmen
