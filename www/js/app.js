@@ -128,15 +128,6 @@ define([
 				return url;
 			},
 			/*
-			* Initialisiert den Refresh einer URL vom Server
-			*/
-			refresh:function(callback){
-				var url = Backbone.history.fragment; //Aktuelle URL
-				this.refreshing = true; //Globales Refreshing aktivieren
-				this._setCallback(callback); //Callback setzten
-				this.route(url); //Zu refreshende Url routen
-			},
-			/*
 			* Zur letzten URL zurückwechseln, die in app.history gespeichert ist 
 			* @noTrigger: Aktion ausführen: false, sonst true
 			*/
