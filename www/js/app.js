@@ -136,19 +136,6 @@ define([
                     this.route(previous, noTrigger);
                 }, this));
 			},
-			callback : function(){},
-			/*
-			* Globale Callback-Funktion setzen, die nach Request ausgeführt wird
-			* @callback: Zu setzende Callback-Funktion
-			*/
-			_setCallback:function(callback){
-				var self = this;
-				this.callback = function(){
-					callback(arguments);
-					self.callback = function(){};
-				}
-			},
-			
 			/*
 			* Wenn nötig Daten vom Server laden, Seite rendern und Seitenübergang vollführen
 			* @c: Controllername
