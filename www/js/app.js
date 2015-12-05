@@ -29,7 +29,6 @@ define([
 
 
 		_.extend(app, {
-			c: {}, //Controller-Objekte werden in diesem Array abgelegt
 			authUrls: [
 				"https://api.uni-potsdam.de/endpoints/roomsAPI",
 				"https://api.uni-potsdam.de/endpoints/libraryAPI",
