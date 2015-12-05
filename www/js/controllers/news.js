@@ -67,18 +67,6 @@ define([
 		},
 
 		/*
-		 * Newsliste Pull to Refresh hinzufügen unter iOS
-		 */
-		addPullToRefresh: function () {
-			app.viewManager.activeCon().pullToRefresh({
-				refresh: function (callback) {
-					app.refresh(callback);
-				}
-			});
-		},
-
-
-		/*
 		 * News filtern nach gewählten Quellen
 		 * @w: könnte in Zukunft weitere Filter sein als recent
 		 */

@@ -97,17 +97,6 @@ define([
 		},
 
 		/*
-		* Eventliste Pull to Refresh hinzufügen unter iOS
-		*/
-		addPullToRefresh:function(){
-			app.viewManager.activeCon().pullToRefresh({
-				refresh: function (callback) {
-					app.refresh(callback);
-				}
-			});
-		},
-
-		/*
 		* Sticky Headers in der Eventliste hinzufügen (Feature ist deaktiviert aufgrund von nicht befriedigenden Ergebnissen)
 		*/
 		stickListDividers: function(){
