@@ -43,10 +43,6 @@ define([
 				app.loadPage('transport', 'index');
 		},
 
-		mensa:function(){
-			app.loadPage('mensa', 'index');
-		},
-
 		emergency:function(){
 			app.loadPage('emergency', 'index');
 		},
