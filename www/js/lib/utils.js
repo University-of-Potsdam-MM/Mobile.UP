@@ -47,52 +47,6 @@ define([
 	    };
 	};
 	
-	/*
-	 * Template Loading Function, Synchronous AJAX Calls are deprecated and should be replace by a async loading function like this one:
-	 */
-	var loadTemplates = function(tmpl_names) {
-		var q = Q.defer();
-		if (!rendertmpl.tmpl_cache) {
-	    	rendertmpl.tmpl_cache = {};
-	    }
-		var tmpl_name = tmpl_names.shift();
-		/*var renderObj = function(params) {
-	    	var templateFunction = rendertmpl.tmpl_cache[tmpl_name];
-	    	if (params.store == undefined){
-	    		params.store = LocalStore;
-	    	}else{
-	    		throw new error('Variable store already defined in function rendertmpl');
-	    	}
-	    	return templateFunction(params);
-	    };*/
-		
-		if ( !this.tmpl_cache[tmpl_name] ) {
-			var tmpl_string;
-			var _this = this;
-			var tmpl_dir = 'templates';
-	        var tmpl_url = tmpl_dir + '/' + tmpl_name + '.html';
-			$.ajax({
-				url: tmpl_url,
-				method: 'GET',
-				dataType: 'html',
-				async: true, //Async da Sync deprecated
-				success: function(data) {
-					tmpl_string = data;
-					tmpl_string = tmpl_string.replace(/\t/g, '');
-					_this.tmpl_cache[tmpl_name] = _.template(tmpl_string);
-					if(tmpl_names.length > 0) {
-						utils.rendertmpl(tmpl_names).done(function(){
-							q.resolve(_this.tmpl_cache[tmpl_name]);	
-						});
-					} else
-						q.resolve(_this.tmpl_cache[tmpl_name]);
-				}
-			});
-		} else
-			q.resolve(this.tmpl_cache[tmpl_name]);
-		return q.promise;
-	};
-	
 	var renderheader = function(d){
 		if ( !renderheader.headerTemplateLoaded ) {
 			var tmpl_dir = 'js/templates';
