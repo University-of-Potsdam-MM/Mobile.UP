@@ -1,6 +1,6 @@
 define([
     "controllers/baseController",
-    "modules/mensa"
+    "pmodules/mensa/views"
 ], function(BaseController) {
 
     return BaseController.extend({

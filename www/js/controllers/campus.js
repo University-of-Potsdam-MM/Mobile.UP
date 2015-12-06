@@ -7,7 +7,6 @@ define([
 	"modules/opening",
 	"modules/transport",
 	"modules/transport2",
-	"modules/mensa",
 	"modules/emergency",
 	"modules/library",
 	"modules/people",
