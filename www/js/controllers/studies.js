@@ -1,8 +1,6 @@
 define([
 	"backboneMVC",
 	"controllers/baseController",
-	"modules/calendar",
-	"modules/calendar.export",
 	"modules/lectures",
 	"modules/grades",
 	"modules/moodle"
@@ -16,14 +14,6 @@ define([
 
 		default: function () {
 
-		},
-
-		user_calendar: function (day) {
-			if (day == 'export') {
-				app.loadPage('calendarExport', 'index', {day: day});
-			} else {
-				app.loadPage('calendar', 'index', {day: day});
-			}
 		},
 
 		lectures: function (vvzUrls) {

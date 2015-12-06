@@ -5,11 +5,12 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	'modules/calendar.common',
+	'pmodules/calendar/calendar.common',
 	'uri/URI',
 	'cache',
 	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session, calendar, URI){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/calendar");
 
 	var CalendarEntry = Backbone.Model.extend({
 
@@ -179,7 +180,7 @@ define([
 	var CalendarExportStatusPageView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl('calendar.export.status');
+			this.template = rendertmpl('calendar.export.status');
 			this.listenTo(this.collection, "saveStatusUpdated", this.render);
 		},
 
@@ -194,7 +195,7 @@ define([
 		events: {"click .calendar-link": "calendarSelected"},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('calendar.export.selection');
+			this.template = rendertmpl('calendar.export.selection');
 			this.model = new CalendarsAndCourses();
 
 			this.listenTo(this.model, "sync", this.render);
@@ -250,7 +251,7 @@ define([
 		attributes: {"id": "calendarexport"},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('calendar.export');
+			this.template = rendertmpl('calendar.export');
 		},
 
 		render: function(){

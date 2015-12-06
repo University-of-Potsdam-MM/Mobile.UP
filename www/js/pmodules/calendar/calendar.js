@@ -5,10 +5,11 @@ define([
 	'utils',
 	'moment',
 	'Session',
-	'modules/calendar.common',
+	'pmodules/calendar/calendar.common',
 	'cache',
 	'hammerjs'
 ], function($, _, Backbone, utils, moment, Session, calendar){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/calendar");
 
 	/**
 	 *	CalendarDayView - BackboneView
@@ -17,7 +18,7 @@ define([
 	var CalendarDayView = Backbone.View.extend({
 
 		initialize: function(){
-			this.template = utils.rendertmpl('calendar_day');
+			this.template = rendertmpl('calendar_day');
 			this.listenTo(this.collection, "timeslotsReady", this.render);
 		},
 
@@ -61,7 +62,7 @@ define([
 			this.listenToOnce(this, "prepareCourses", this.loadData);
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 
-			this.template = utils.rendertmpl('calendar');
+			this.template = rendertmpl('calendar');
 		},
 
 		navigateBackward: function(ev){

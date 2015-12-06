@@ -1,6 +1,7 @@
 //In der app vorhandene Controller
 define([
     "pmodules/mensa/controller",
+    "pmodules/calendar/controller",
     "controllers/main",
     "controllers/events",
     "controllers/news",
