@@ -12,14 +12,14 @@ define([
 	/*
 	 * Template Loading Functions
 	 */
-	var rendertmpl = function(tmpl_name) {
+	var rendertmpl = function(tmpl_name, tmpl_dir) {
 
 	    if ( !rendertmpl.tmpl_cache ) {
 	    	rendertmpl.tmpl_cache = {};
 	    }
 
 		    if ( ! rendertmpl.tmpl_cache[tmpl_name] ) {
-	        var tmpl_dir = 'js/templates';
+	        tmpl_dir = tmpl_dir || 'js/templates';
 	        var tmpl_url = tmpl_dir + '/' + tmpl_name + '.tmpl';
 		        var tmpl_string;
 
@@ -46,7 +46,7 @@ define([
 	    	return templateFunction(params);
 	    };
 	};
-	
+
 	var renderheader = function(d){
 		if ( !renderheader.headerTemplateLoaded ) {
 			var tmpl_dir = 'js/templates';

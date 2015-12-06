@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox'], function($, _, Backbone, utils, Q, campusmenu, datebox){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/mensa");
 
 	$(document).on("pageshow", "#mensa", function () {
 		console.log("pageshow started");
@@ -96,7 +97,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 	var DayView = Backbone.View.extend({
 		
 		initialize: function() {
-			this.template = utils.rendertmpl('mensa_detail');
+			this.template = rendertmpl('mensa_detail');
 			this.listenTo(this.model, "sync", this.render);
 		},
 		
@@ -116,7 +117,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 
 		initialize: function() {
 			_.bindAll(this, 'render', 'updateMenuData', 'updateMenuCampus');
-			this.template = utils.rendertmpl('mensa');
+			this.template = rendertmpl('mensa');
 		},
 
 		delegateCustomEvents: function() {
