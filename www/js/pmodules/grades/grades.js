@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, Backbone, utils, Session){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/grades");
 
 	var Grades = Backbone.Model.extend({
 
@@ -18,7 +19,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 	var GradesView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl("gradeList");
+			this.template = rendertmpl("gradeList");
 			this.listenTo(this.model, "sync", this.render);
 		},
 
@@ -32,7 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 	var GradeAveragesView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl("gradeAverages");
+			this.template = rendertmpl("gradeAverages");
 			this.listenTo(this.model, "sync", this.render);
 		},
 
@@ -53,7 +54,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		attributes: {"id": "grades"},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('grades');
+			this.template = rendertmpl('grades');
 			this.listenToOnce(this, "render", this.prepareGrade);
 
 			this.grades = new Grades();

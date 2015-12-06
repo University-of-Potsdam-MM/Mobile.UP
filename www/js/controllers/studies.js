@@ -2,7 +2,6 @@ define([
 	"backboneMVC",
 	"controllers/baseController",
 	"modules/lectures",
-	"modules/grades",
 	"modules/moodle"
 ], function(BackboneMVC, BaseController) {
 
@@ -32,10 +31,6 @@ define([
 				 var url = "studies/lectures/" + encodeURIComponent(param)
 				 });*/
 			});
-		},
-
-		user_grades: function () {
-			app.loadPage('grades', 'index');
 		},
 
 		user_moodle: function (action, id) { //action ist immer index, bis jemand das ändern möchte

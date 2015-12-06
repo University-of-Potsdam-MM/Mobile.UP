@@ -2,6 +2,7 @@
 define([
     "pmodules/mensa/controller",
     "pmodules/calendar/controller",
+    "pmodules/grades/controller",
     "controllers/main",
     "controllers/events",
     "controllers/news",
