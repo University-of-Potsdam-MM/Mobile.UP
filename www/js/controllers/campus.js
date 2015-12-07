@@ -2,7 +2,6 @@ define([
 	"backboneMVC",
 	"backbone",
 	"controllers/baseController",
-	"modules/sitemap",
 	"modules/room",
 	"modules/opening",
 	"modules/transport",
@@ -21,10 +20,6 @@ define([
 
 		default:function(){
 			this.index();
-		},
-
-		sitemap:function(){
-			app.loadPage('sitemap', 'index');
 		},
 
 		room:function(){

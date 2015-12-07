@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, Backbone, utils, GeoJSON){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/sitemap");
 
 	var CategoryMarker = function (marker, map, category, categoryStore, markerShadow) {
 
@@ -192,7 +193,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		},
 
 		_insertSearchables: function(searchables) {
-			var createSearchables = utils.rendertmpl("sitemap_detail");
+			var createSearchables = rendertmpl("sitemap_detail");
 			var host = $("#filterable-locations");
 
 			// Add items to search list

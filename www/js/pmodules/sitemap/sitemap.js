@@ -1,4 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'modules/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'pmodules/sitemap/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/sitemap");
 
 	var settings = {};
 
@@ -427,7 +428,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	app.views.SitemapIndex = Backbone.View.extend({
 
 		initialize: function(){
-			this.template = utils.rendertmpl('sitemap');
+			this.template = rendertmpl('sitemap');
 			$.getScript('https://www.google.com/jsapi').done(function(){
 				google.load('maps', '3', {other_params: 'sensor=false', callback: function(){
 					settings.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
