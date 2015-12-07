@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore.string'], function($, _, Backbone, utils, campusmenu, timeselection, _str){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
 
 	$(document).on("pageinit", "#room", function () {
 		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
@@ -159,7 +160,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		},
 
 		initialize: function() {
-			this.template = utils.rendertmpl("roomListElement");
+			this.template = rendertmpl("roomListElement");
 		},
 
 		render: function() {
@@ -180,7 +181,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 	var RoomListGroupView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl("roomList");
+			this.template = rendertmpl("roomList");
 		},
 
 		render: function() {
@@ -224,7 +225,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
 
 			// Create and add html
-			var createRooms = utils.rendertmpl('rooms');
+			var createRooms = rendertmpl('rooms');
 			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
 			host.append(htmlDay);
 
@@ -242,7 +243,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 	var RoomDetailsView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl('roomDetails');
+			this.template = rendertmpl('roomDetails');
 
 			this.listenTo(this.model, "change", this.render);
 		},
@@ -306,7 +307,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modu
 		attributes: {"id": 'room'},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('room');
+			this.template = rendertmpl('room');
 		},
 
 		render: function(){

@@ -2,7 +2,6 @@ define([
 	"backboneMVC",
 	"backbone",
 	"controllers/baseController",
-	"modules/room",
 	"modules/opening",
 	"modules/transport",
 	"modules/transport2",
@@ -19,10 +18,6 @@ define([
 
 		default:function(){
 			this.index();
-		},
-
-		room:function(){
-			app.loadPage('room', 'index');
 		},
 
 		opening:function(){
