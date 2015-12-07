@@ -1,4 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], function($, _, Backbone, utils, date, viewContainer){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/events");
+
 	var server = 'https://musang.soft.cs.uni-potsdam.de';
 
 	var events = {};
@@ -65,7 +67,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 		events : {'click .saveToCal': 'saveToCalendar'},
 
 		initialize: function(p){
-			this.template = utils.rendertmpl('events_view');
+			this.template = rendertmpl('events_view');
 			_.bindAll(this, 'render');
 			this.page = p.page;
 			this.model = new app.models.Event(p);
@@ -132,7 +134,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 	app.views.EventsPlace = Backbone.View.extend({
 		el: '#events',
 		initialize: function(p){
-			this.template = utils.rendertmpl('events_place');
+			this.template = rendertmpl('events_place');
 			this.collection = new app.models.Place(p);
 			this.page = p.page;
 			this.filter = p.filter;
@@ -171,7 +173,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 	app.views.EventsSet_locations = Backbone.View.extend({
 	
 		initialize: function(p){
-			this.template = utils.rendertmpl('events_set_locations');
+			this.template = rendertmpl('events_set_locations');
 			_.bindAll(this, 'render', 'toggleLocation');
 		},
 
@@ -201,7 +203,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 
 	app.views.EventsIndex = Backbone.View.extend({
 		initialize: function(p){
-			this.template = utils.rendertmpl('events_index');
+			this.template = rendertmpl('events_index');
 			this.collection = new app.models.Events(p);
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
@@ -274,7 +276,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 	app.views.EventsPage = Backbone.View.extend({
 
 		initialize: function(vars){
-			this.template = utils.rendertmpl('events');
+			this.template = rendertmpl('events');
 		},
 
 		render: function(){

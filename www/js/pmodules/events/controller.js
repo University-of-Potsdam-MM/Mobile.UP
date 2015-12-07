@@ -1,6 +1,6 @@
 define([
 	"backboneMVC",
-	"modules/events"
+	"pmodules/events/events"
 ], function(BackboneMVC) {
 
 	/*
