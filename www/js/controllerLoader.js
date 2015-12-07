@@ -4,8 +4,8 @@ define([
     "pmodules/calendar/controller",
     "pmodules/grades/controller",
     "pmodules/events/controller",
+    "pmodules/news/controller",
     "controllers/main",
-    "controllers/news",
     "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
     "controllers/studies" //"Onepager" in einem Controller um platz zu sparen
 ], function() {

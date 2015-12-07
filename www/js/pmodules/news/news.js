@@ -1,4 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function($, _, Backbone, utils, viewContainer){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/news");
+
 	var classes = {};
 
 	var newsSources = {};
@@ -78,7 +80,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 
 		initialize: function(p){
 			this.page  = p.page;
-			this.template = utils.rendertmpl('news_view');
+			this.template = rendertmpl('news_view');
 			_.bindAll(this, 'render');
 			this.model = new app.models.NewsEntry(p);
 
@@ -111,7 +113,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	app.views.NewsSource = Backbone.View.extend({
 
 		initialize: function(p){
-			this.template = utils.rendertmpl('news_source');
+			this.template = rendertmpl('news_source');
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
 
@@ -141,7 +143,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	app.views.NewsSet_sources = Backbone.View.extend({
 
 		initialize: function(p){
-			this.template = utils.rendertmpl('news_set_sources');
+			this.template = rendertmpl('news_set_sources');
 			_.bindAll(this, 'render', 'toggleNews');
 		},
 
@@ -174,7 +176,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	app.views.NewsIndex = Backbone.View.extend({
 
 		initialize: function(p){
-			this.template = utils.rendertmpl('news_index');
+			this.template = rendertmpl('news_index');
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
@@ -207,7 +209,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	app.views.NewsPage = Backbone.View.extend({
 		
 		initialize: function(){
-			this.template = utils.rendertmpl('news');
+			this.template = rendertmpl('news');
 		},
 
 		render: function(){

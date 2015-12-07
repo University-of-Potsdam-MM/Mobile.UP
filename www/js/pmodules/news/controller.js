@@ -1,6 +1,6 @@
 define([
 	"backboneMVC",
-	"modules/news"
+	"pmodules/news/news"
 ], function(BackboneMVC) {
 
 	/*
