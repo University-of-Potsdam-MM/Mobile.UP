@@ -6,7 +6,6 @@ define([
 	"modules/opening",
 	"modules/transport",
 	"modules/transport2",
-	"modules/emergency",
 	"modules/library",
 	"modules/people",
 	"modules/impressum"
@@ -35,10 +34,6 @@ define([
 				app.loadPage('transport2', 'index');
 			else
 				app.loadPage('transport', 'index');
-		},
-
-		emergency:function(){
-			app.loadPage('emergency', 'index');
 		},
 
 		library:function(detail){

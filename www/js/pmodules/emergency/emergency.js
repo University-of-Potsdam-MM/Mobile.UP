@@ -1,4 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/emergency");
+
 	/*
 	 * Models
 	*/
@@ -23,7 +25,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = utils.rendertmpl('emergencycall');
+			this.template = rendertmpl('emergencycall');
 		},
 
 		render: function(){
@@ -69,7 +71,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	app.views.EmergencyPage = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl('emergency');
+			this.template = rendertmpl('emergency');
 		},
 
 		render: function() {
