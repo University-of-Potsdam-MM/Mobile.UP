@@ -5,6 +5,7 @@ define([
 		'utils',
 		'Session'
 ], function($, _, Backbone, utils, Session){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/people");
 
 
 	/**
@@ -42,7 +43,7 @@ define([
 		model: Person,
 
 		initialize: function(){
-			this.template = utils.rendertmpl('person');
+			this.template = rendertmpl('person');
 		},
 
 		render: function(){
@@ -65,7 +66,7 @@ define([
 		initialize: function(){
 			this.collection = new PersonList();
 			this.session = new Session();
-			this.template = utils.rendertmpl('people'),
+			this.template = rendertmpl('people'),
 			this.listenTo(this.collection, "error", this.requestFail);
 			this.listenTo(this.collection, "sync", this.enableSearch);
 			this.collection.bind("reset", this.clearList);

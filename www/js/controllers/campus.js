@@ -4,7 +4,6 @@ define([
 	"controllers/baseController",
 	"modules/transport",
 	"modules/transport2",
-	"modules/people",
 	"modules/impressum"
 ], function(BackboneMVC, Backbone, BaseController) {
 
@@ -23,10 +22,6 @@ define([
 				app.loadPage('transport2', 'index');
 			else
 				app.loadPage('transport', 'index');
-		},
-
-		user_people:function(){
-			app.loadPage('people', 'index');
 		},
 
 		impressum:function(){
