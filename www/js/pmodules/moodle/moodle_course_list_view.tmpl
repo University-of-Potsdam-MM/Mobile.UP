@@ -1,6 +1,6 @@
 <% _.each(courses, function(course){ %>
     <li class='moodle-course'  courseid='<%= course.get('id') %>'><h3>
-      <a href="#studies/moodle/index/<%= course.get('id') %>" data-role="button" data-iconpos="right" data-icon="arrow-darkblue" data-transition="slidefade">
+      <a href="#moodle/moodle/index/<%= course.get('id') %>" data-role="button" data-iconpos="right" data-icon="arrow-darkblue" data-transition="slidefade">
         <%= course.get('fullname') %> (<%= course.get('shortname') %>)
       </a></h3>
     </li>

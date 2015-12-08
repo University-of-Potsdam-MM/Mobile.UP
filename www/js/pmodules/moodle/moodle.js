@@ -3,10 +3,11 @@ define([
         'underscore',
         'backbone',
         'utils',
-        'modules/moodle.api',
-        'modules/moodle.utils',
+        'pmodules/moodle/moodle.api',
+        'pmodules/moodle/moodle.utils',
         'Session'
 ], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
+    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
 
     "use strict";
 
@@ -113,7 +114,7 @@ define([
     initialize: function(options){
         this.courses = options.courses;
         this.news = options.news;
-        this.template = utils.rendertmpl('moodle_course_list_view');
+        this.template = rendertmpl('moodle_course_list_view');
         this.courses.on('reset', this.render, this);
         //this.news.on('reset', this.render, this);
         this.render();
@@ -135,7 +136,7 @@ define([
 
         initialize: function(options){
             this.news = options.news;
-            this.template = utils.rendertmpl('moodle_course_contents_page');
+            this.template = rendertmpl('moodle_course_contents_page');
 
             this.model.on('change', this.render, this);
             this.collection.on('change', this.render, this);
@@ -236,7 +237,7 @@ define([
                 });
                 this.$el.html(this.courseView.render().el);
             }else{
-                this.template = utils.rendertmpl('moodle');
+                this.template = rendertmpl('moodle');
                 this.$el.html(this.template({}));
                 var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Dieser Kurs existiert nicht oder Sie sind nicht eingeschrieben.', module: 'moodle'});
             }
@@ -265,7 +266,7 @@ define([
                     this.renderCourseView();
                 }
             }else{
-              this.template = utils.rendertmpl('moodle');
+              this.template = rendertmpl('moodle');
               this.$el.html(this.template({}));
               if(MoodleApp.courses){
                 this.renderCourseList();
