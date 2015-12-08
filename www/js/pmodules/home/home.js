@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/home");
 	
 	app.views.MainPage = Backbone.View.extend({
 		initialize: function(){
@@ -16,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 
 		initialize: function(p){
 			this.page = p.page;
-			this.template = utils.rendertmpl('home');
+			this.template = rendertmpl('home');
 			_.bindAll(this, 'render');
 		},
 
