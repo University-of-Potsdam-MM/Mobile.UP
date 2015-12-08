@@ -6,7 +6,8 @@ define([
 	'hammerjs',
 	'uri/URI',
 	'moodle.download',
-	'underscore.string'
+	'underscore.string',
+	'cache'
 ], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, _str){
 
 	/*

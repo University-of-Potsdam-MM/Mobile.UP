@@ -26,9 +26,6 @@ require.config({
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
         'headerParser': 'lib/headerParser'
-    },
-    shim: {
-        'cache': ['backbone', 'underscore']
     }
 });
 
