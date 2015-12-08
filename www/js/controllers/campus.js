@@ -1,9 +1,7 @@
 define([
 	"backboneMVC",
 	"backbone",
-	"controllers/baseController",
-	"modules/transport",
-	"modules/transport2"
+	"controllers/baseController"
 ], function(BackboneMVC, Backbone, BaseController) {
 
 	/*
@@ -14,13 +12,6 @@ define([
 
 		default:function(){
 			this.index();
-		},
-
-		transport:function(type, campus){
-			if(type == 'plan')
-				app.loadPage('transport2', 'index');
-			else
-				app.loadPage('transport', 'index');
-		},
+		}
 	});
 });

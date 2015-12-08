@@ -3,9 +3,11 @@ define([
   'underscore',
   'backbone',
   'utils',
-  'modules/transport.util',
+  'pmodules/transport/transport.util',
   'moment'
 ], function($, _, Backbone, utils, transport, moment){
+  var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/transport");
+
  /*
   ## Dependencies
   - jQuery
@@ -114,7 +116,7 @@ define([
     initialize: function(){
       var query = this.model;
       var resultList = this.collection;
-      this.templateListItem =utils.rendertmpl('complex_transport_listitem');
+      this.templateListItem =rendertmpl('complex_transport_listitem');
       resultList.on('reset', this.renderResults, this);
       resultList.on('add', this.render, this);
       _.bindAll(this, 'spinnerOn', 'spinnerOff');
@@ -278,7 +280,7 @@ define([
     },
 
     initialize: function(){
-      this.template = utils.rendertmpl('transport2');
+      this.template = rendertmpl('transport2');
 
       this.collection = new transport.TransportStations();
 

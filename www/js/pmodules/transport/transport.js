@@ -1,5 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
+define(['jquery', 'underscore', 'backbone', 'utils', 'pmodules/transport/transport.util'],
   function($, _, Backbone, utils, transport){
+    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/transport");
 
 
   var view_state = {campus: 'G-see'};
@@ -17,7 +18,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
       this.stations = options.stations;
       this.updateContent(options.collection, options.stationName, options.stationTime);
 
-      this.template = utils.rendertmpl('transport_listitem_view');
+      this.template = rendertmpl('transport_listitem_view');
 
       this.$ul = this.$el.find('ul#transport-list');
       _.bindAll(this, 'addOne');
@@ -88,7 +89,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/transport.util'],
 
     initialize: function(){
       this.collection = new transport.TransportStations();
-      this.template = utils.rendertmpl('transport');
+      this.template = rendertmpl('transport');
       this.listenTo(this, "prepareJouneys", this.prepareJouneys);
       this.listenTo(this, "renderTransportList", this.renderTransportList);
       this.listenTo(this.collection.where(view_state)[0], "sync", _.once(this.renderTransportList));

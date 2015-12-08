@@ -16,6 +16,7 @@ define([
     "pmodules/impressum/controller",
     "pmodules/options/controller",
     "pmodules/home/controller",
+    "pmodules/transport/controller",
     "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
     "controllers/studies" //"Onepager" in einem Controller um platz zu sparen
 ], function() {
