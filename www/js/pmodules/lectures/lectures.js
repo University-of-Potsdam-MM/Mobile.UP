@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/lectures");
 
 	// Helping the eclipse JS Tools by declaring the variable here
 	var VvzCollection = undefined;
@@ -84,7 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		initialize: function() {
-			this.template = utils.rendertmpl('lectures_items');
+			this.template = rendertmpl('lectures_items');
 		},
 
 		render: function() {
@@ -112,7 +113,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		initialize: function() {
-			this.template = utils.rendertmpl('lectures_courses');
+			this.template = rendertmpl('lectures_courses');
 		},
 
 		render: function() {
@@ -185,7 +186,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	var LectureSingleCourseView = Backbone.View.extend({
 
 		initialize: function() {
-			this.template = utils.rendertmpl('lectures_course');
+			this.template = rendertmpl('lectures_course');
 			this.listenTo(this.model, "sync", this.render);
 			this.listenTo(this.model, "error", this.requestFail);
 		},
@@ -243,7 +244,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('lectures');
+			this.template = rendertmpl('lectures');
 			this.listenToOnce(this, "render", this.prepareVvz);
 
 			this.vvzHistory = vvzHistory;

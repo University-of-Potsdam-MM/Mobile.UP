@@ -8,6 +8,7 @@ define([
     "pmodules/sitemap/controller",
     "pmodules/emergency/controller",
     "pmodules/rooms/controller",
+    "pmodules/lectures/controller",
     "controllers/main",
     "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
     "controllers/studies" //"Onepager" in einem Controller um platz zu sparen
