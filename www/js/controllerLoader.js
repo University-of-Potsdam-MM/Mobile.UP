@@ -14,6 +14,7 @@ define([
     "pmodules/opening/controller",
     "pmodules/people/controller",
     "pmodules/impressum/controller",
+    "pmodules/options/controller",
     "controllers/main",
     "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
     "controllers/studies" //"Onepager" in einem Controller um platz zu sparen

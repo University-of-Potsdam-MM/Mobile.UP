@@ -20,7 +20,7 @@ define([
                 // to a route that requires login, save the path in session
                 // to redirect the user back to path after successful login
                 app.session.set('up.session.redirectFrom', path);
-                Backbone.history.navigate('main/options', { trigger : true });
+                Backbone.history.navigate('options/login', { trigger : true });
                 return false;
             } else {
                 return true;

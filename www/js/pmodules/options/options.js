@@ -7,6 +7,7 @@ define([
 		'Session',
 		'utils'
 ], function($, _, Backbone, Session, utils){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
 
 	app.views.OptionsLogin = Backbone.View.extend({
 		model: Session,
@@ -139,7 +140,7 @@ define([
 		
 		render: function(){
 			this.updateCountdown();
-			this.logintemplate = utils.rendertmpl('login');
+			this.logintemplate = rendertmpl('login');
 			console.log(this.page)
 			this.setElement(this.page.find('#options'));
 			this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.loginCountdown)}));
@@ -174,7 +175,7 @@ define([
 		},
 		
 		render: function(){
-			this.logouttemplate = utils.rendertmpl('logout');
+			this.logouttemplate = rendertmpl('logout');
 			this.setElement(this.page.find('#options'));
 			this.$el.html(this.logouttemplate({}));
 
@@ -195,7 +196,7 @@ define([
 		attributes: {"id": 'options'},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('options');
+			this.template = rendertmpl('options');
 		},
 
 		
