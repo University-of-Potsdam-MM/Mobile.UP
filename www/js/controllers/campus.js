@@ -5,7 +5,6 @@ define([
 	"modules/opening",
 	"modules/transport",
 	"modules/transport2",
-	"modules/library",
 	"modules/people",
 	"modules/impressum"
 ], function(BackboneMVC, Backbone, BaseController) {
@@ -29,13 +28,6 @@ define([
 				app.loadPage('transport2', 'index');
 			else
 				app.loadPage('transport', 'index');
-		},
-
-		library:function(detail){
-			console.log(Backbone.history.fragment.replace('detail', ''));
-			if(detail == 'detail')
-				app.route(Backbone.history.fragment.replace('detail', ''), true, true);
-			app.loadPage('library', 'index');
 		},
 
 		user_people:function(){

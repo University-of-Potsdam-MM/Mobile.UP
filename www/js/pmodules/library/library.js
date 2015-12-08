@@ -13,6 +13,7 @@ previously working functionality. Please don't judge.
 
 "use strict";
 define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($, _, Backbone, utils, Q, moment){
+  var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/library");
 
 
   window.App = {
@@ -344,7 +345,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     },
 
     initialize: function(){
-      this.template = utils.rendertmpl('library_list_view');
+      this.template = rendertmpl('library_list_view');
       this.model.on('change', this.render, this);
       this.collection.on('add', this.render, this);
     },
@@ -377,7 +378,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
 
       var BookDetailView = new App.view.BookDetailView({model: book});
       BookDetailView.render();
-	  app.route('campus/library/detail', true);
+	  app.route('library/library/detail', true);
       book.updateLocation();
     }
   });
@@ -392,7 +393,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     model: App.model.Book,
 
     initialize: function(){
-      this.template = utils.rendertmpl('library_detail_view');
+      this.template = rendertmpl('library_detail_view');
     },
 
     render: function(){
@@ -428,7 +429,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     collection: App.collection.BookLocationList,
 
     initialize: function(){
-      this.template = utils.rendertmpl('library_location_view');
+      this.template = rendertmpl('library_location_view');
     },
 
     render: function(){
@@ -607,7 +608,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($,
     },
 
     initialize: function(){
-      this.template = utils.rendertmpl('library');
+      this.template = rendertmpl('library');
     },
 
     render: function(){
