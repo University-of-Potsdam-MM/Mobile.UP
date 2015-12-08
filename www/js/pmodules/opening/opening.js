@@ -1,4 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
+    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/opening");
 
 	var dateutils = {
             // I give this function a German name,
@@ -68,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 
 		initialize: function(){
 			_.bindAll(this, 'render');
-			this.template = utils.rendertmpl('opening_detail');
+			this.template = rendertmpl('opening_detail');
 		},
 
 		render: function(){
@@ -163,7 +164,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
     attributes: {"id": "opening"},
 
 		initialize: function(){
-			this.template = utils.rendertmpl('opening');
+			this.template = rendertmpl('opening');
 		},
 
     	render: function(){

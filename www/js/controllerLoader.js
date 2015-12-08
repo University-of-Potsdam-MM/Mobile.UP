@@ -11,6 +11,7 @@ define([
     "pmodules/lectures/controller",
     "pmodules/moodle/controller",
     "pmodules/library/controller",
+    "pmodules/opening/controller",
     "controllers/main",
     "controllers/campus", //"Onepager" in einem Controller um platz zu sparen
     "controllers/studies" //"Onepager" in einem Controller um platz zu sparen

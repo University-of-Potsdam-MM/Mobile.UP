@@ -2,7 +2,6 @@ define([
 	"backboneMVC",
 	"backbone",
 	"controllers/baseController",
-	"modules/opening",
 	"modules/transport",
 	"modules/transport2",
 	"modules/people",
@@ -17,10 +16,6 @@ define([
 
 		default:function(){
 			this.index();
-		},
-
-		opening:function(){
-			app.loadPage('opening', 'index');
 		},
 
 		transport:function(type, campus){
