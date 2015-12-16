@@ -333,27 +333,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	});
 
 	var GeoCollection = Backbone.Collection.extend({
-
+		url: "js/geojson/campus-geo.json",
 		model: GeoBlock,
 
 		initialize: function() {
 			// Workaround for overwriting of "this"
-			this.loadSuccess = _.bind(this.loaded, this);
-			this.loadFail = _.bind(this.failed, this);
+			this.listenTo(this, "error", this.failed);
 		},
 
 		loadAll: function() {
 			console.log("executing GeoCollection.loadAll()");
-			return Q.fcall(this.callAjax)
-					.then(this.loadSuccess)
-					.fail(this.loadFail);
-		},
-
-		callAjax: function() {
-			var url = "js/geojson/campus-geo.json";
 
 			var d = Q.defer();
-			$.getJSON(url).done(d.resolve).fail(d.reject);
+			this.fetch({success: d.resolve, error: d.reject});
 			return d.promise;
 		},
 
@@ -364,12 +356,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			return this.loadAllOncePromise;
 		},
 
-		loaded: function(result) {
-			this.add(result);
-		},
-
 		failed: function(error) {
-			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
+			new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
 		}
 	});
 
