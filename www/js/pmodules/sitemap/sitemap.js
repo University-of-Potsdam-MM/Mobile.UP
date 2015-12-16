@@ -149,12 +149,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		}
 
 		clearMenu(uniqueDivId);
-		geo.loadAllOnce().then(function() {
+		geo.fetch({success: function() {
 			drawCampus(uniqueDivId, campus);
 			setSearchValue(search);
-		}).fail(function (error) {
-			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
-		});
+		}});
 	}
 
 	function clearMenu(uniqueDivId) {
@@ -341,21 +339,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			this.listenTo(this, "error", this.failed);
 		},
 
-		loadAll: function() {
-			console.log("executing GeoCollection.loadAll()");
-
-			var d = Q.defer();
-			this.fetch({success: d.resolve, error: d.reject});
-			return d.promise;
-		},
-
-		loadAllOnce: function() {
-			if (this.loadAllOncePromise == undefined) {
-				this.loadAllOncePromise = this.loadAll();
-			}
-			return this.loadAllOncePromise;
-		},
-
 		failed: function(error) {
 			new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
 		}
@@ -420,7 +403,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			}).fail(function(){
 				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
 			});
-			geo.loadAllOnce();
 		},
 
 		render: function(){
