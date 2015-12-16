@@ -351,7 +351,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		model: GeoBlock,
 
 		initialize: function() {
-			// Workaround for overwriting of "this"
 			this.listenTo(this, "error", this.failed);
 		},
 
@@ -408,16 +407,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 		initialize: function(){
 			this.template = rendertmpl('sitemap');
+			this._loadMap();
+		},
+
+		_loadMap: function() {
 			$.getScript('https://www.google.com/jsapi').done(function(){
 				google.load('maps', '3', {other_params: 'sensor=false', callback: function(){
 					settings.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
 					settings.url.neuespalais.center = new google.maps.LatLng(52.400933, 13.011653);
 					settings.url.golm.center = new google.maps.LatLng(52.408716, 12.976138);
-	
+
 					oneSidedGuard.disableBlock();
 				}});
 			}).fail(function(){
-				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
+				new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
 			});
 		},
 
