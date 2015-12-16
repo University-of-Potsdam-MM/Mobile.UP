@@ -158,12 +158,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		},
 
 		render: function() {
-			var drawCategory = function(options, category, campus, data) {
-				if (data) {
-					this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
-				}
-			};
-
 			var url = this.model.get("campus");
 
 			this.$el.append("<div data-role='searchablemap'></div>");
@@ -176,7 +170,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 			var getAndDrawCategory = function(categoryName) {
 				var categoryData = getGeoByCategory(data, categoryName);
-				drawCategory(settings.options[categoryName], categoryName, url.campus, categoryData);
+
+				var options = settings.options[categoryName];
+				var category = categoryName;
+				var campus = url.campus;
+				var data = categoryData;
+
+				if (data) {
+					this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
+				}
 			};
 
 			getAndDrawCategory(terminals);
