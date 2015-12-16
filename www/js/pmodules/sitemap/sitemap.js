@@ -148,13 +148,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			search = options.meta;
 		}
 
-		Q(clearMenu(uniqueDivId))
-			.then(function() { return geo.loadAllOnce(); })
-			.then(drawCampus(uniqueDivId, campus))
-			.spread(setSearchValue(search))
-			.fail(function (error) {
-				var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
-			});
+		clearMenu(uniqueDivId);
+		geo.loadAllOnce().then(function() {
+			drawCampus(uniqueDivId, campus);
+			setSearchValue(search);
+		}).fail(function (error) {
+			var errorPage = new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein unerwarteter Fehler aufgetreten.', module:'sitemap', err: error});
+		});
 	}
 
 	function clearMenu(uniqueDivId) {
@@ -169,39 +169,35 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	}
 
 	function drawCampus(uniqueDiv, url) {
-		return function() {
-			var host = $("#" + uniqueDiv);
-			host.append("<div data-role='searchablemap'></div>");
-			host.trigger("create");
+		var host = $("#" + uniqueDiv);
+		host.append("<div data-role='searchablemap'></div>");
+		host.trigger("create");
 
-			$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
-			$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
+		$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
+		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
 
-			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
+		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
 
-			var terminalsData = getGeoByCategory(data, terminals);
-			drawCategory(settings.options.terminals, terminals, url.campus, terminalsData);
+		var terminalsData = getGeoByCategory(data, terminals);
+		drawCategory(settings.options.terminals, terminals, url.campus, terminalsData);
 
-			var institutesData = getGeoByCategory(data, institutes);
-			drawCategory(settings.options.institutes, institutes, url.campus, institutesData);
+		var institutesData = getGeoByCategory(data, institutes);
+		drawCategory(settings.options.institutes, institutes, url.campus, institutesData);
 
-			var canteensData = getGeoByCategory(data, canteens);
-			drawCategory(settings.options.canteens, canteens, url.campus, canteensData);
+		var canteensData = getGeoByCategory(data, canteens);
+		drawCategory(settings.options.canteens, canteens, url.campus, canteensData);
 
-			var parkingData = getGeoByCategory(data, parking);
-			drawCategory(settings.options.parking, parking, url.campus, parkingData);
+		var parkingData = getGeoByCategory(data, parking);
+		drawCategory(settings.options.parking, parking, url.campus, parkingData);
 
-			var associateinstitutesData = getGeoByCategory(data, associateinstitutes);
-			drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus, associateinstitutesData);
+		var associateinstitutesData = getGeoByCategory(data, associateinstitutes);
+		drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus, associateinstitutesData);
 
-			var studentData = getGeoByCategory(data, student);
-			drawCategory(settings.options.student, student, url.campus, studentData);
-								
-			var sportData = getGeoByCategory(data, sport);
-			drawCategory(settings.options.sport, sport, url.campus, sportData);
+		var studentData = getGeoByCategory(data, student);
+		drawCategory(settings.options.student, student, url.campus, studentData);
 
-			return [];
-		};
+		var sportData = getGeoByCategory(data, sport);
+		drawCategory(settings.options.sport, sport, url.campus, sportData);
 	}
 
 	function getGeoByCategory(data, category) {
@@ -217,12 +213,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	}
 
 	function setSearchValue(search) {
-		return function(terminals, institutes, canteens) {
-			if (search !== undefined) {
-				searchView.setSearchValue(search);
-				$("div[data-role='searchablemap']").searchablemap("viewByName", search);
-			}
-		};
+		if (search !== undefined) {
+			searchView.setSearchValue(search);
+			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
+		}
 	}
 
 	function drawCategory(options, category, campus, data) {
