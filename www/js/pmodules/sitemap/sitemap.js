@@ -174,26 +174,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
 
-			var terminalsData = getGeoByCategory(data, terminals);
-			drawCategory(settings.options.terminals, terminals, url.campus, terminalsData);
+			var getAndDrawCategory = function(categoryName) {
+				var categoryData = getGeoByCategory(data, categoryName);
+				drawCategory(settings.options[categoryName], categoryName, url.campus, categoryData);
+			};
 
-			var institutesData = getGeoByCategory(data, institutes);
-			drawCategory(settings.options.institutes, institutes, url.campus, institutesData);
-
-			var canteensData = getGeoByCategory(data, canteens);
-			drawCategory(settings.options.canteens, canteens, url.campus, canteensData);
-
-			var parkingData = getGeoByCategory(data, parking);
-			drawCategory(settings.options.parking, parking, url.campus, parkingData);
-
-			var associateinstitutesData = getGeoByCategory(data, associateinstitutes);
-			drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus, associateinstitutesData);
-
-			var studentData = getGeoByCategory(data, student);
-			drawCategory(settings.options.student, student, url.campus, studentData);
-
-			var sportData = getGeoByCategory(data, sport);
-			drawCategory(settings.options.sport, sport, url.campus, sportData);
+			getAndDrawCategory(terminals);
+			getAndDrawCategory(institutes);
+			getAndDrawCategory(canteens);
+			getAndDrawCategory(parking);
+			getAndDrawCategory(associateinstitutes);
+			getAndDrawCategory(student);
+			getAndDrawCategory(sport);
 
 			setSearchValue(this.model.get("search"));
 		}
