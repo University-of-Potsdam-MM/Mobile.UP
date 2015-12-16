@@ -129,30 +129,91 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		settings.options.sport.fillColor = $(".sitemap-sport").css("background-color");
 	});
 
+	var Campus = Backbone.Model.extend({
+
+		initialize: function(options) {
+			var campus = undefined;
+			if (options.campusName === "griebnitzsee") {
+				campus = settings.url.griebnitzsee;
+			} else if (options.campusName === "neuespalais") {
+				campus = settings.url.neuespalais;
+			} else {
+				campus = settings.url.golm;
+			}
+			this.set("campus", campus);
+
+			var search = undefined;
+			if (options["meta"] !== undefined) {
+				search = options.meta;
+			}
+			this.set("search", search);
+		}
+	});
+
+	var CampusMapView = Backbone.View.extend({
+
+		initialize: function () {
+			this.listenToOnce(this.collection, "sync", this.render);
+			this.collection.fetch();
+		},
+
+		render: function() {
+			var drawCategory = function(options, category, campus, data) {
+				if (data) {
+					this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
+				}
+			};
+
+			var url = this.model.get("campus");
+
+			this.$el.append("<div data-role='searchablemap'></div>");
+			this.$el.trigger("create");
+
+			this.$("div[data-role='searchablemap']").searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
+			this.$("div[data-role='searchablemap']").searchablemap("pageshow", url.center);
+
+			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
+
+			var terminalsData = getGeoByCategory(data, terminals);
+			drawCategory(settings.options.terminals, terminals, url.campus, terminalsData);
+
+			var institutesData = getGeoByCategory(data, institutes);
+			drawCategory(settings.options.institutes, institutes, url.campus, institutesData);
+
+			var canteensData = getGeoByCategory(data, canteens);
+			drawCategory(settings.options.canteens, canteens, url.campus, canteensData);
+
+			var parkingData = getGeoByCategory(data, parking);
+			drawCategory(settings.options.parking, parking, url.campus, parkingData);
+
+			var associateinstitutesData = getGeoByCategory(data, associateinstitutes);
+			drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus, associateinstitutesData);
+
+			var studentData = getGeoByCategory(data, student);
+			drawCategory(settings.options.student, student, url.campus, studentData);
+
+			var sportData = getGeoByCategory(data, sport);
+			drawCategory(settings.options.sport, sport, url.campus, sportData);
+
+			setSearchValue(this.model.get("search"));
+		}
+	});
+
+	function setSearchValue(search) {
+		if (search !== undefined) {
+			searchView.setSearchValue(search);
+			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
+		}
+	}
+
 	function drawSelectedCampus(options) {
 		uniqueDivId = _.uniqueId("id_");
+		clearMenu(uniqueDivId);
+
 		lastFinderId = uniqueDivId;
 		lastCampus = options.campusName;
 
-		var campus = undefined;
-		if (options.campusName === "griebnitzsee") {
-			campus = settings.url.griebnitzsee;
-		} else if (options.campusName === "neuespalais") {
-			campus = settings.url.neuespalais;
-		} else {
-			campus = settings.url.golm;
-		}
-
-		var search = undefined;
-		if (options["meta"] !== undefined) {
-			search = options.meta;
-		}
-
-		clearMenu(uniqueDivId);
-		geo.fetch({success: function() {
-			drawCampus(uniqueDivId, campus);
-			setSearchValue(search);
-		}});
+		new CampusMapView({el: $("#" + uniqueDivId), collection: geo, model: new Campus(options)});
 	}
 
 	function clearMenu(uniqueDivId) {
@@ -166,38 +227,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		// $("div[data-role='searchablemap']").searchablemap("viewByName", selection);
 	}
 
-	function drawCampus(uniqueDiv, url) {
-		var host = $("#" + uniqueDiv);
-		host.append("<div data-role='searchablemap'></div>");
-		host.trigger("create");
-
-		$("div[data-role='searchablemap']", host).searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
-		$("div[data-role='searchablemap']", host).searchablemap("pageshow", url.center);
-
-		var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
-
-		var terminalsData = getGeoByCategory(data, terminals);
-		drawCategory(settings.options.terminals, terminals, url.campus, terminalsData);
-
-		var institutesData = getGeoByCategory(data, institutes);
-		drawCategory(settings.options.institutes, institutes, url.campus, institutesData);
-
-		var canteensData = getGeoByCategory(data, canteens);
-		drawCategory(settings.options.canteens, canteens, url.campus, canteensData);
-
-		var parkingData = getGeoByCategory(data, parking);
-		drawCategory(settings.options.parking, parking, url.campus, parkingData);
-
-		var associateinstitutesData = getGeoByCategory(data, associateinstitutes);
-		drawCategory(settings.options.associateinstitutes, associateinstitutes, url.campus, associateinstitutesData);
-
-		var studentData = getGeoByCategory(data, student);
-		drawCategory(settings.options.student, student, url.campus, studentData);
-
-		var sportData = getGeoByCategory(data, sport);
-		drawCategory(settings.options.sport, sport, url.campus, sportData);
-	}
-
 	function getGeoByCategory(data, category) {
 		var result = _.chain(data)
 					.filter(function(element) { return element.get("category") === category; })
@@ -207,19 +236,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			return result.get("geo");
 		} else {
 			return undefined;
-		}
-	}
-
-	function setSearchValue(search) {
-		if (search !== undefined) {
-			searchView.setSearchValue(search);
-			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
-		}
-	}
-
-	function drawCategory(options, category, campus, data) {
-		if (data) {
-			$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
 		}
 	}
 
