@@ -231,16 +231,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 				this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollectionObject", model);
 			}, this);
 
-			setSearchValue(this.model.get("search"));
+			// Set search value
+			var search = this.model.get("search");
+			if (search !== undefined) {
+				searchView.setSearchValue(search);
+				$("div[data-role='searchablemap']").searchablemap("viewByName", search);
+			}
 		}
 	});
-
-	function setSearchValue(search) {
-		if (search !== undefined) {
-			searchView.setSearchValue(search);
-			$("div[data-role='searchablemap']").searchablemap("viewByName", search);
-		}
-	}
 
 	function drawSelectedCampus(options) {
 		uniqueDivId = _.uniqueId("id_");
