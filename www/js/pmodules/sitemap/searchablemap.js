@@ -205,6 +205,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			host.trigger("updatelayout");
 		},
 
+		insertSearchableFeatureCollectionObject: function(model) {
+			this.insertSearchableFeatureCollection(model.get("displayOptions"), model.get("featureCollection"), model.get("category"), model.get("hasSimilarsCallback"));
+		},
+
 		insertSearchableFeatureCollection: function(options, collection, category, hasSimilarsCallback) {
 			var widgetHost = this;
 			var items = _.map(collection.features, function(item) {

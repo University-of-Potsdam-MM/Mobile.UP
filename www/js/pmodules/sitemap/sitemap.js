@@ -150,6 +150,66 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		}
 	});
 
+	/**
+	 * - displayOptions
+	 * - featureCollection
+	 * - category
+	 * - hasSimilarsCallback
+	 */
+	var CampusMapModel = Backbone.Model.extend({});
+
+	var CampusMapCollection = Backbone.Collection.extend({
+
+		initialize: function(models, options) {
+			this.geo = options.geo;
+			this.campus = options.campus;
+		},
+
+		fetch: function(options) {
+			options = options || {};
+
+			var success = _.bind(function() {
+				if (options.success) options.success.call(options.context, this, undefined, options);
+				this.trigger("sync", this, undefined, options);
+			}, this);
+
+			var error = _.bind(function() {
+				if (options.error) options.error.call(options.context, this, undefined, options);
+				this.trigger("error", this, undefined, options);
+			}, this);
+
+			var fetchSuccess = _.bind(function() {
+				var campus = this.campus;
+				var data = this.geo.filter(function(element) { return element.get("campus") === campus; });
+
+				var insertCategory = _.bind(function(categoryName) {
+					var categoryData = getGeoByCategory(data, categoryName);
+					var options = settings.options[categoryName];
+					var category = categoryName;
+					var campus = this.campus;
+
+					var model = new CampusMapModel({displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)});
+
+					if (model.get("featureCollection")) {
+						this.add(model);
+					}
+				}, this);
+
+				insertCategory(terminals);
+				insertCategory(institutes);
+				insertCategory(canteens);
+				insertCategory(parking);
+				insertCategory(associateinstitutes);
+				insertCategory(student);
+				insertCategory(sport);
+
+				success();
+			}, this);
+
+			this.geo.fetch({success: fetchSuccess, error: error});
+		}
+	});
+
 	var CampusMapView = Backbone.View.extend({
 
 		initialize: function () {
@@ -166,28 +226,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			this.$("div[data-role='searchablemap']").searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
 			this.$("div[data-role='searchablemap']").searchablemap("pageshow", url.center);
 
-			var data = geo.filter(function(element) { return element.get("campus") === url.campus; });
-
-			var getAndDrawCategory = function(categoryName) {
-				var categoryData = getGeoByCategory(data, categoryName);
-
-				var options = settings.options[categoryName];
-				var category = categoryName;
-				var campus = url.campus;
-				var data = categoryData;
-
-				if (data) {
-					this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollection", options, data, category, hasSimilarLocations(campus));
-				}
-			};
-
-			getAndDrawCategory(terminals);
-			getAndDrawCategory(institutes);
-			getAndDrawCategory(canteens);
-			getAndDrawCategory(parking);
-			getAndDrawCategory(associateinstitutes);
-			getAndDrawCategory(student);
-			getAndDrawCategory(sport);
+			// Add map objects
+			this.collection.each(function(model) {
+				this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollectionObject", model);
+			}, this);
 
 			setSearchValue(this.model.get("search"));
 		}
@@ -207,7 +249,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		lastFinderId = uniqueDivId;
 		lastCampus = options.campusName;
 
-		new CampusMapView({el: $("#" + uniqueDivId), collection: geo, model: new Campus(options)});
+		var model = new Campus(options);
+		var collection = new CampusMapCollection([], {geo: geo, campus: model.get("campus").campus});
+		new CampusMapView({el: $("#" + uniqueDivId), collection: collection, model: model});
 	}
 
 	function clearMenu(uniqueDivId) {
