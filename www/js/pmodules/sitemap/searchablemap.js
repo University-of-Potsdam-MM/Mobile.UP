@@ -88,12 +88,36 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			return elements;
 		};
 	};
-	
-	var resize_map = function(){
-		var minus = $.os.ios7 ? 25 : 0;
-		$('#map-canvas').css("height", $(window).height() - 165 - minus);
-	};
 
+	var MapFragment = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = rendertmpl("map_fragment");
+
+			// When window resizing resize map
+			$(window).resize(_.bind(function(){ this.resizeMap(true); }, this));
+		},
+
+		resizeMap: function(triggerMapsResizeEvent) {
+			var iosStatusBarHeight = $.os.ios7 ? 25 : 0;
+			this.$("#map-canvas").css("height", $(window).height() - 165 - iosStatusBarHeight);
+
+			// Resize map, but keeper current center?
+			if (triggerMapsResizeEvent && this._map) {
+				var center = this._map.getCenter();
+				google.maps.event.trigger(this._map, 'resize');
+				this._map.setCenter(center);
+			}
+		},
+
+		render: function() {
+			this.$el.html(this.template({}));
+			this.$el.trigger("create");
+
+			this.resizeMap(false);
+			return this;
+		}
+	});
 
 	$.widget("up.searchablemap", {
 		options: {
@@ -101,30 +125,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			categoryStore: undefined
 		},
 
-		_map: undefined,
 		_markers: undefined,
 		_allMarkers: undefined,
+		_mapView: undefined,
 
 		_create: function() {
+			this._mapView = new MapFragment();
 			// create html code
-			this.element.append(
-				"<div> \
-					<ul id='filterable-locations' data-role='listview' data-filter='true' data-filter-reveal='true' data-filter-placeholder='Suchbegriff eingeben...' data-inset='true'></ul> \
-					<div class='ui-controlgroup ui-controlgroup-vertical ui-corner-all' data-role='controlgroup' data-filter='true' data-input='#filterable-locations' data-filter-reveal='true' data-enhanced='true'> \
-						<div class='ui-controlgroup-controls'></div> \
-					</div> \
-					<div id='error-placeholder'></div> \
-					<!-- map loads here... --> \
-					<div id='map-canvas' class='gmap3'></div> \
-				</div>");
+			this.element.append(this._mapView.render().$el);
 			this.element.trigger("create");
-			resize_map();
 
 			// Initialize filter
 			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
 
-			var widgetHost = this;
-			$(document).on("click", "#filterable-locations a", function (ev) {
+			$(document).on("click", "#filterable-locations a", _.bind(function (ev) {
 				ev.preventDefault();
 
 				// Retreive context
@@ -132,17 +146,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				var href = source.attr("data-tag");
 				var index = parseInt(href);
 
-				widgetHost._showIndex(index);
-				widgetHost.options.onSelected(widgetHost._markers[index].context.features[0].properties.Name);
-			});
-
-			// when window resizing set new center and resize map
-			$(window).resize(function(){
-				resize_map();
-		        var center = widgetHost._map.getCenter();
-		        google.maps.event.trigger(widgetHost._map, 'resize');
-		        widgetHost._map.setCenter(center);
-		   });
+				this._showIndex(index);
+				this.options.onSelected(this._markers[index].context.features[0].properties.Name);
+			}, this));
 		},
 
 		_showIndex: function(index) {
@@ -189,7 +195,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					center: latlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-			this._map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+			this._mapView._map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
 		},
 
 		_insertSearchables: function(searchables) {
@@ -268,15 +274,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				var m = this._loadMarker(items[i].index);
 
 				m.options.zIndex = 2;
-				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
-				var bMarkers = new GeoJSON(this._shadowOfContext(m.context), this._shadowOfOptions(m.options), this._map, hasSimilarsCallback);
+				var gMarkers = new GeoJSON(m.context, m.options, this._mapView._map, hasSimilarsCallback);
+				var bMarkers = new GeoJSON(this._shadowOfContext(m.context), this._shadowOfOptions(m.options), this._mapView._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
 				} else if (bMarkers.error) {
 					console.log(bMarkers.error);
 				} else {
-					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, this.options.categoryStore, bMarkers[0]);
+					var gMarker = new CategoryMarker(gMarkers[0], this._mapView._map, m.category, this.options.categoryStore, bMarkers[0]);
 					gMarker.reset();
 
 					var tmpMarkers = allMarkers.getElements();
