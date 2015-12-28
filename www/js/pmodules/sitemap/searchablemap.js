@@ -269,7 +269,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 				m.options.zIndex = 2;
 				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
-				var bMarkers = this._shadowOf(m.context, m.options, this._map, hasSimilarsCallback);
+				var bMarkers = new GeoJSON(this._shadowOfContext(m.context), this._shadowOfOptions(m.options), this._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
@@ -285,10 +285,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			}
 		},
 
-		_shadowOf: function(context, options, map, hasSimilarsCallback) {
+		_shadowOfContext: function(context) {
 			context = JSON.parse(JSON.stringify(context));
 			context.properties = {};
+			return context;
+		},
 
+		_shadowOfOptions: function(options) {
 			options = JSON.parse(JSON.stringify(options));
 			options.strokeColor = "#000000";
 			options.strokeOpacity = 0.3;
@@ -296,8 +299,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			options.fillColor = "#000000";
 			options.fillOpacity = 0.5;
 			options.zIndex = -1;
-
-			return new GeoJSON(context, options, map, hasSimilarsCallback);
+			return options;
 		},
 
 		_saveMarker: function(options, context, category) {
