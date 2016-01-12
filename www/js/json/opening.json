@@ -4,435 +4,120 @@
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
     "mail": "infoaaa@uni-potsdam.de",
     "telephone": "+49 331 977-1760",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["13:00", "17:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00; Di 10:00-12:00 13:00-17:00"
   },
   {
     "name": "Akademisches Auslandsamt (Beratung und Zulassung internationaler Studienbewerber, Äquivalenzen)",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
     "mail": "infoaaa@uni-potsdam.de",
     "telephone": "+49 331 977-1676",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["13:00", "17:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,13:00-17:00; Th 10:00-12:00; PH off"
   },
   {
     "name": "Zentrale Studienberatung",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zsb\/kontakt.html",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"], ["13:00", "15:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": "keine offenen Beratungszeiten"
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "12:00"], ["13:00", "15:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We 10:00-12:00,13:00-15:00 \"keine offenen Beratungszeiten\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Zentrale Studienberatung (telefonisch)",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zsb\/kontakt.html",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
-    "times": [
-      {
-        "day": "Dienstag",
-        "opening": [["14:00", "17:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "PUCK-Servicestelle",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/puck.html",
     "mail": "puck@uni-potsdam.de",
     "telephone": "+49 331 977-4100",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"], ["13:00", "15:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": "keine Sprechzeit"
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "12:00"], ["13:00", "15:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Psychologische Beratung",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/psychologische-beratung.html",
     "mail": "psychologische-beratung@uni-potsdam.de",
     "telephone": "+49 331 977-1830",
-    "times": [
-      {
-        "day": "Dienstag",
-        "opening": [["14:00", "17:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Studierendensekretariat",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/studierendensekretariat.html",
     "mail": "",
     "telephone": "+49 331 977-1231",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": "keine Sprechzeit"
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Zentrales Pr\u00fcfungsamt",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zentrales-pruefungsamt.html",
     "mail": "pruefungsamt@uni-potsdam.de",
     "telephone": "+49 331 977-1497",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "12:00"], ["14:00", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": "keine Sprechzeit"
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "12:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "12:00"]]
-      }
-    ]
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Kaffeebar 'Die Bohne'",
     "link": "",
     "mail": "",
     "telephone": "",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:30", "18:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:30", "18:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:30", "18:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["09:30", "18:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["09:30", "16:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; PH off"
   },
   {
     "name": "Cafeteria 'filmriss'",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/cafeterien.html",
     "mail": "cafefilm@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["08:30", "17:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["08:30", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["08:30", "17:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["08:30", "17:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["08:30", "15:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-15:00; PH off"
   },
   {
     "name": "Mensa Am Neuen Palais",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-am-neuen-palais.html",
     "mail": "ehrlich@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1292",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["10:00", "16:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["10:00", "16:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["10:00", "16:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["10:00", "16:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["10:00", "15:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-15:00; PH off"
   },
   {
     "name": "Mensa Griebnitzsee",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-griebnitzsee.html",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["08:00", "15:00"]]
-      },
-      {
-        "day": "Samstag",
-        "opening": [["09:30", "13:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 08:00-19:00; Fr 09:30-13:00; PH off"
   },
   {
     "name": "Mensa Golm",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-golm.html",
     "mail": "habermann@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:00", "17:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:00", "17:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:00", "17:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["09:00", "17:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["09:00", "15:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; PH off"
   },
   {
     "name": "Bereichsbibliothek Babelsberg",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:00", "22:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:00", "18:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:00", "13:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 12:00-18:00; PH off"
   },
   {
     "name": "Bereichsbibliothek Golm",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:00", "22:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:00", "18:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:00", "13:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 10:00-18:00; PH off"
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 10)",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:00", "22:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:00", "18:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:00", "13:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 10:00-15:00; PH off"
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 9 und 11)",
-    "times": [
-    ]
+    "opening_hours": "Mo-Fr 09:00-18:00; PH off"
   },
   {
     "name": "Cafeteria Am Neuen Palais",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
     "mail": "gutewort@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1275",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["08:00", "19:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["08:00", "14:30"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-14:30; PH off"
   },
   {
     "name": "Cafeteria IKMZ",
     "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
     "mail": "habermann@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2531",
-    "times": [
-      {
-        "day": "Montag",
-        "opening": [["09:00", "19:00"]]
-      },
-      {
-        "day": "Dienstag",
-        "opening": [["09:00", "19:00"]]
-      },
-      {
-        "day": "Mittwoch",
-        "opening": [["09:00", "19:00"]]
-      },
-      {
-        "day": "Donnerstag",
-        "opening": [["09:00", "19:00"]]
-      },
-      {
-        "day": "Freitag",
-        "opening": [["09:00", "15:00"]]
-      }
-    ]
+    "opening_hours": "Mo-Th 09:00-19:00; Fr 09:00-15:00; PH off"
   }
 ]
