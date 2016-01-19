@@ -213,7 +213,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			this.listenToOnce(this.collection, "sync", function() {
 				viewContainer.pageContainer.updateHeader(this.$el);
 			});
-			this.collection.fetch(utils.cacheDefaults({success: p.fetchCallback}));
+			this.collection.fetch({success: p.fetchCallback, cache: true, expires: 60*60});
 		},
 
 		fetchError: function(){
