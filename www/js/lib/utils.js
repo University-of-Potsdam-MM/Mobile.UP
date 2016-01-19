@@ -543,6 +543,15 @@ define([
 		}
 	};
 
+	/**
+	 * Removes a cache entry if the given predicate function returns <true>
+	 * @param predicate Removes given element on <true>. Parameters: element, url
+	 */
+	var cacheRemoveIf = function(predicate) {
+		Backbone.fetchCache._cache = _.omit(Backbone.fetchCache._cache, predicate);
+		Backbone.fetchCache.setLocalStorage();
+	};
+
 	var defaultTransition = function() {
 		var device = window.device || {data: 'none'};
 		if (device.platform === "ios" || device.platform === "iOS") {
@@ -644,6 +653,7 @@ define([
 			GesturesView: GesturesView,
 			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
 			cacheDefaults: cacheDefaults,
+			cacheRemoveIf: cacheRemoveIf,
 			defaultTransition: defaultTransition,
 			overrideBackboneSync: overrideBackboneSync,
 			EmptyPage: EmptyPage,

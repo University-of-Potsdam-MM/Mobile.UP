@@ -208,12 +208,22 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
 
+			// Working around bug #480
+			this._removeNonExpiringElements();
+
 			this.collection.p = p;
 			this.listenToOnce(this.collection, "sync", this.render);
 			this.listenToOnce(this.collection, "sync", function() {
 				viewContainer.pageContainer.updateHeader(this.$el);
 			});
 			this.collection.fetch({success: p.fetchCallback, cache: true, expires: 60*60});
+		},
+
+		_removeNonExpiringElements: function() {
+			var faultyUrl = this.collection.url;
+			utils.cacheRemoveIf(function(element, url) {
+				return url.startsWith(faultyUrl) && !element.expires;
+			});
 		},
 
 		fetchError: function(){
