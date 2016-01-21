@@ -548,7 +548,16 @@ define([
 	 * @param predicate Removes given element on <true>. Parameters: element, url
 	 */
 	var cacheRemoveIf = function(predicate) {
-		Backbone.fetchCache._cache = _.omit(Backbone.fetchCache._cache, predicate);
+		var cache = Backbone.fetchCache._cache;
+		var result = {};
+
+		for (var key in cache) {
+			if (cache.hasOwnProperty(key) && !predicate(cache[key], key)) {
+				result[key] = cache[key];
+			}
+		}
+
+		Backbone.fetchCache._cache = result;
 		Backbone.fetchCache.setLocalStorage();
 	};
 
