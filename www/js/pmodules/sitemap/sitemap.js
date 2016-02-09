@@ -17,6 +17,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	var searchView = undefined;
 
 	settings =	{
+		getCampus: function(name) {
+			var result = this.url[name];
+			return result || this.url.golm;
+		},
 		url: {
 			griebnitzsee: {
 				campus: "griebnitzsee"
@@ -94,12 +98,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 	function checkUncheck(category) {
 		return function() {
-			var visibility;
-			if ($(this).is(':checked')) {
-				visibility = true;
-			} else {
-				visibility = false;
-			}
+			var visibility = $(this).is(':checked');
 			categoryStore.setVisibility(category, visibility);
 			_.each(allMarkers.getElements(), function(a) { a.reset(); });
 		};
@@ -132,20 +131,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	var Campus = Backbone.Model.extend({
 
 		initialize: function(options) {
-			var campus = undefined;
-			if (options.campusName === "griebnitzsee") {
-				campus = settings.url.griebnitzsee;
-			} else if (options.campusName === "neuespalais") {
-				campus = settings.url.neuespalais;
-			} else {
-				campus = settings.url.golm;
-			}
+			var campus = settings.getCampus(options.campusName);
 			this.set("campus", campus);
 
-			var search = undefined;
-			if (options["meta"] !== undefined) {
-				search = options.meta;
-			}
+			var search = options.meta;
 			this.set("search", search);
 		}
 	});
