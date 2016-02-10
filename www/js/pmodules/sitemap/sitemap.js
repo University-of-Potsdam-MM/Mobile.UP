@@ -230,7 +230,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	});
 
 	function drawSelectedCampus(options) {
-		uniqueDivId = _.uniqueId("id_");
+		var uniqueDivId = _.uniqueId("id_");
 		clearMenu(uniqueDivId);
 
 		lastFinderId = uniqueDivId;
@@ -242,8 +242,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	}
 
 	function clearMenu(uniqueDivId) {
-		$("#currentCampus").empty();
-		$("#currentCampus").append("<div id=\"" + uniqueDivId + "\"></div>");
+		$("#currentCampus").empty().append("<div id=\"" + uniqueDivId + "\"></div>");
 	}
 
 	function onItemSelected(selection) {
@@ -368,7 +367,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			_.each(geo.features, function(feature) {
 				feature.properties.id = _.uniqueId();
 			});
-		},
+		}
 	});
 
 	var GeoCollection = Backbone.Collection.extend({
@@ -452,10 +451,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		render: function(){
 			this.$el = this.page;
 			this.$el.html(this.template({}));
-			$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } });
-			$("div[data-role='campusmenu']").campusmenu("pageshow");
-			$('#sitemaps-settings').panel();
-			$('#sitemaps-settings').trigger('create');
+			$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } }).campusmenu("pageshow");
+			$('#sitemaps-settings').panel().trigger('create');
 			return this;
 		},
 		afterRender: function(){
