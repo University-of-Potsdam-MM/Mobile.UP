@@ -289,16 +289,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		};
 	}
 
-	function searchSimilarLocations(id) {
+	var SimilarLocationsView = Backbone.View.extend({
+
+		render: function() {
+			this.$el.empty();
+			this.$el.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
+			this.$el.append("<button data-theme='a' onclick='app.currentView.sitemapReset();'>Zurück</button>");
+			this.$el.trigger("create");
+
+			_.each(this.collection, function(item) {
+				$("#similarlocations").append("<li><a href='#' onclick='event.preventDefault(); app.currentView.sitemapNavigateTo(\"" + item.geo.properties.id + "\");'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
+			});
+
+			$("#similarlocations").listview("refresh");
+		}
+	});
+
+	function findSimilarLocations(id) {
 		var entry = geo.findEntryById(id);
 		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, lastCampus);
 		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, lastCampus);
-
-		var host = $("#" + lastFinderId);
-		host.empty();
-		host.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
-		host.append("<button data-theme='a' onclick='app.currentView.sitemapReset();'>Zurück</button>");
-		host.trigger("create");
 
 		var similars = similarHouses.concat(similarDescriptions);
 		similars = _.uniq(similars, false, function(item) {
@@ -308,11 +318,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 				return item.data;
 		});
 
-		_.each(similars, function(item) {
-			$("#similarlocations").append("<li><a href='#' onclick='event.preventDefault(); app.currentView.sitemapNavigateTo(\"" + item.geo.properties.id + "\");'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
-		});
+		return similars;
+	}
 
-		$("#similarlocations").listview("refresh");
+	function searchSimilarLocations(id) {
+		var similars = findSimilarLocations(id);
+		var el =  $("#" + lastFinderId);
+
+		var host = new SimilarLocationsView({el: el, collection: similars});
+		host.render();
 	}
 
 	function sitemapReset() {
