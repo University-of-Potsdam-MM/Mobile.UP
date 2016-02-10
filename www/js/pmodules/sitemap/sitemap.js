@@ -291,17 +291,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 
 	var SimilarLocationsView = Backbone.View.extend({
 
+		initialize: function() {
+			this.template = rendertmpl("sitemap_similar_locations");
+		},
+
 		render: function() {
 			this.$el.empty();
-			this.$el.append("<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'></ul>");
-			this.$el.append("<button data-theme='a' onclick='app.currentView.sitemapReset();'>Zurück</button>");
+			this.$el.append(this.template({similars: this.collection}));
 			this.$el.trigger("create");
-
-			_.each(this.collection, function(item) {
-				$("#similarlocations").append("<li><a href='#' onclick='event.preventDefault(); app.currentView.sitemapNavigateTo(\"" + item.geo.properties.id + "\");'>" + item.geo.properties.Name + " (" + item.campus + ")</a></li>");
-			});
-
-			$("#similarlocations").listview("refresh");
 		}
 	});
 

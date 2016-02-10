@@ -1,0 +1,6 @@
+<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'>
+    <% _.each(similars, function(item) { %>
+    <li><a href='#' onclick='event.preventDefault(); app.currentView.sitemapNavigateTo("<%= item.geo.properties.id %>");'><%= item.geo.properties.Name %> (<%= item.campus %>)</a></li>
+    <% }); %>
+</ul>
+<button data-theme='a' onclick='app.currentView.sitemapReset();'>Zurück</button>
