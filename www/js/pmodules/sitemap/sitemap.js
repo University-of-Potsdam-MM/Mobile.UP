@@ -21,6 +21,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 			var result = this.url[name];
 			return result || this.url.golm;
 		},
+		initColors: function() {
+			this.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
+			this.options.parking.fillColor = $(".sitemap-parking").css("background-color");
+			this.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
+			this.options.student.fillColor = $(".sitemap-living").css("background-color");
+			this.options.sport.fillColor = $(".sitemap-sport").css("background-color");
+		},
+		initCenters: function() {
+			this.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
+			this.url.neuespalais.center = new google.maps.LatLng(52.400933, 13.011653);
+			this.url.golm.center = new google.maps.LatLng(52.408716, 12.976138);
+		},
 		url: {
 			griebnitzsee: {
 				campus: "griebnitzsee"
@@ -121,11 +133,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		$('#Living:checkbox').click(checkUncheck(student));
 		$('#Sport:checkbox').click(checkUncheck(sport));
 
-		settings.options.institutes.fillColor = $(".sitemap-institutes").css("background-color");
-		settings.options.parking.fillColor = $(".sitemap-parking").css("background-color");
-		settings.options.associateinstitutes.fillColor = $(".sitemap-associateinstitutes").css("background-color");
-		settings.options.student.fillColor = $(".sitemap-living").css("background-color");
-		settings.options.sport.fillColor = $(".sitemap-sport").css("background-color");
+		settings.initColors();
 	});
 
 	var Campus = Backbone.Model.extend({
@@ -454,10 +462,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		_loadMap: function() {
 			$.getScript('https://www.google.com/jsapi').done(function(){
 				google.load('maps', '3', {other_params: 'sensor=false', callback: function(){
-					settings.url.griebnitzsee.center = new google.maps.LatLng(52.39345677934452, 13.128039836883545);
-					settings.url.neuespalais.center = new google.maps.LatLng(52.400933, 13.011653);
-					settings.url.golm.center = new google.maps.LatLng(52.408716, 12.976138);
-
+					settings.initCenters();
 					oneSidedGuard.disableBlock();
 				}});
 			}).fail(function(){
