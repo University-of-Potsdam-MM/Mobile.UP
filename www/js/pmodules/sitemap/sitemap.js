@@ -148,54 +148,60 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	var CampusMapModel = Backbone.Model.extend({});
 
 	var CampusMapCollection = Backbone.Collection.extend({
+		model: CampusMapModel,
 
 		initialize: function(models, options) {
 			this.geo = options.geo;
 			this.campus = options.campus;
 		},
 
-		fetch: function(options) {
-			options = options || {};
+		parse: function(geo) {
+			var result = [];
 
-			var success = _.bind(function() {
-				if (options.success) options.success.call(options.context, this, undefined, options);
-				this.trigger("sync", this, undefined, options);
-			}, this);
+			var campus = this.campus;
+			var data = geo.filter(function(element) { return element.get("campus") === campus; });
 
-			var error = _.bind(function() {
-				if (options.error) options.error.call(options.context, this, undefined, options);
-				this.trigger("error", this, undefined, options);
-			}, this);
-
-			var fetchSuccess = _.bind(function() {
+			var insertCategory = _.bind(function(categoryName) {
+				var categoryData = getGeoByCategory(data, categoryName);
+				var options = settings.options[categoryName];
+				var category = categoryName;
 				var campus = this.campus;
-				var data = this.geo.filter(function(element) { return element.get("campus") === campus; });
 
-				var insertCategory = _.bind(function(categoryName) {
-					var categoryData = getGeoByCategory(data, categoryName);
-					var options = settings.options[categoryName];
-					var category = categoryName;
-					var campus = this.campus;
+				var model = {displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)};
 
-					var model = new CampusMapModel({displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)});
-
-					if (model.get("featureCollection")) {
-						this.add(model);
-					}
-				}, this);
-
-				insertCategory(terminals);
-				insertCategory(institutes);
-				insertCategory(canteens);
-				insertCategory(parking);
-				insertCategory(associateinstitutes);
-				insertCategory(student);
-				insertCategory(sport);
-
-				success();
+				if (model.featureCollection) {
+					result.push(model);
+				}
 			}, this);
 
-			this.geo.fetch({success: fetchSuccess, error: error});
+			insertCategory(terminals);
+			insertCategory(institutes);
+			insertCategory(canteens);
+			insertCategory(parking);
+			insertCategory(associateinstitutes);
+			insertCategory(student);
+			insertCategory(sport);
+
+			return result;
+		},
+
+		sync: function(method, collection, options) {
+			if (method !== 'read') {
+				return Backbone.Collection.prototype.sync.apply(this, arguments);
+			}
+
+			var result = new $.Deferred();
+
+			this.geo.fetch({
+				success: function(data) {
+					result.resolve(data);
+					options.success(data);
+				}, error: function(error) {
+					result.reject(error);
+					options.error(error);
+				}});
+
+			return result.promise();
 		}
 	});
 
@@ -437,7 +443,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 	});
 
 	var geo = new SearchableGeoCollection();
-	
+
 	app.views.SitemapIndex = Backbone.View.extend({
 
 		initialize: function(){
