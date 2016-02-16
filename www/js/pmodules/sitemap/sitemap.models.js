@@ -9,14 +9,6 @@ define([
     'pmodules/sitemap/searchablemap'
 ], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap) {
 
-    var terminals = "terminals";
-    var institutes = "institutes";
-    var canteens = "canteens";
-    var parking = "parking";
-    var associateinstitutes = "associateinstitutes";
-    var student = "student";
-    var sport = "sport";
-
     /**
      * - displayOptions
      * - featureCollection
@@ -75,13 +67,9 @@ define([
                 }
             }, this);
 
-            insertCategory(terminals);
-            insertCategory(institutes);
-            insertCategory(canteens);
-            insertCategory(parking);
-            insertCategory(associateinstitutes);
-            insertCategory(student);
-            insertCategory(sport);
+            _.each(this.settings.options, function(categoryValue, categoryName) {
+                insertCategory(categoryName);
+            });
 
             return result;
         },
