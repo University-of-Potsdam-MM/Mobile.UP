@@ -142,12 +142,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				ev.preventDefault();
 
 				// Retreive context
-				var source = $(this);
+				var source = $(ev.currentTarget);
 				var href = source.attr("data-tag");
 				var index = parseInt(href);
 
 				this._showIndex(index);
-				this.options.onSelected(this._markers[index].context.features[0].properties.Name);
+				this.options.onSelected(this._markers[index].features[0].properties.Name);
 			}, this));
 		},
 
@@ -216,21 +216,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		},
 
 		insertSearchableFeatureCollection: function(options, collection, category, hasSimilarsCallback) {
-			var widgetHost = this;
 			var items = _.map(collection.features, function(item) {
-				var result = {};
-				result.name = item.properties.Name;
-				result.description = item.properties.description;
-
 				// Save item context
-				var context = JSON.parse(JSON.stringify(collection));
+				var context = _.omit(collection, "features");
 				context.features = [item];
+				context.name = item.properties.Name;
+				context.description = item.properties.description;
+				context.options = options;
+				context.category = category;
 
 				// Save marker and get its index
-				result.index = widgetHost._saveMarker(options, context, category);
+				context.index = this._markers.push(context) - 1;
 
-				return result;
-			});
+				return context;
+			}, this);
 
 			this._insertSearchables(items);
 			this._insertMapsMarkers(items, hasSimilarsCallback);
@@ -238,7 +237,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		viewByName: function(name) {
 			var first = _.chain(this._markers)
-							.filter(function(marker) { return marker.context.features[0].properties.Name === name; })
+							.filter(function(marker) { return marker.features[0].properties.Name === name; })
 							.first()
 							.value();
 			var index = _.indexOf(this._markers, first);
@@ -271,11 +270,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_insertMapsMarkers: function(items, hasSimilarsCallback) {
 			for (var i in items) {
-				var m = this._loadMarker(items[i].index);
+				var m = this._markers[items[i].index];
 
 				m.options.zIndex = 2;
-				var gMarkers = new GeoJSON(m.context, m.options, this._mapView._map, hasSimilarsCallback);
-				var bMarkers = new GeoJSON(this._shadowOfContext(m.context), this._shadowOfOptions(m.options), this._mapView._map, hasSimilarsCallback);
+				var gMarkers = new GeoJSON(m, m.options, this._mapView._map, hasSimilarsCallback);
+				var bMarkers = new GeoJSON(this._shadowOfContext(m), this._shadowOfOptions(m.options), this._mapView._map, hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);
@@ -306,15 +305,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			options.fillOpacity = 0.5;
 			options.zIndex = -1;
 			return options;
-		},
-
-		_saveMarker: function(options, context, category) {
-			this._markers.push({options: options, context: context, category: category});
-			return this._markers.length - 1;
-		},
-
-		_loadMarker: function(index) {
-			return this._markers[index];
 		}
 	});
 });
