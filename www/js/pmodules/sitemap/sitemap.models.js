@@ -9,6 +9,32 @@ define([
     'pmodules/sitemap/searchablemap'
 ], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap) {
 
+    var GeoBlock = Backbone.Model.extend({
+
+        initialize: function() {
+            this.insertId(this.get("geo"));
+        },
+
+        /**
+         * Inserts IDs into the properties objects of the given parameter.
+         *
+         * The expected structure is:
+         * "geo": {
+		 *     features: [ {
+		 *         "properties": {
+		 *             "Name": ...,
+		 *             "description": ...
+		 *         }
+		 *     } ]
+		 * }
+         */
+        insertId: function(geo) {
+            _.each(geo.features, function(feature) {
+                feature.properties.id = _.uniqueId();
+            });
+        }
+    });
+
     /**
      * - displayOptions
      * - featureCollection
@@ -99,6 +125,7 @@ define([
     return {
         CampusMapModel: CampusMapModel,
         CampusMapCollection: CampusMapCollection,
-        Campus: Campus
+        Campus: Campus,
+        GeoBlock: GeoBlock
     };
 });

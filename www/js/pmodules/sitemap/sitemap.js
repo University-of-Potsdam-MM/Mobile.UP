@@ -287,35 +287,9 @@ define([
 		}
 	});
 
-	var GeoBlock = Backbone.Model.extend({
-
-		initialize: function() {
-			this.insertId(this.get("geo"));
-		},
-
-		/**
-		 * Inserts IDs into the properties objects of the given parameter.
-		 *
-		 * The expected structure is:
-		 * "geo": {
-		 *     features: [ {
-		 *         "properties": {
-		 *             "Name": ...,
-		 *             "description": ...
-		 *         }
-		 *     } ]
-		 * }
-		 */
-		insertId: function(geo) {
-			_.each(geo.features, function(feature) {
-				feature.properties.id = _.uniqueId();
-			});
-		}
-	});
-
 	var GeoCollection = Backbone.Collection.extend({
 		url: "js/geojson/campus-geo.json",
-		model: GeoBlock,
+		model: models.GeoBlock,
 
 		initialize: function() {
 			this.listenTo(this, "error", this.failed);
