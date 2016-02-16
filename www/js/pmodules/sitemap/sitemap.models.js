@@ -94,8 +94,11 @@ define([
         }
     });
 
+    var Campus = Backbone.Model.extend({});
+
     return {
         CampusMapModel: CampusMapModel,
-        CampusMapCollection: CampusMapCollection
+        CampusMapCollection: CampusMapCollection,
+        Campus: Campus
     };
 });

@@ -146,17 +146,6 @@ define([
 		settings.initColors();
 	});
 
-	var Campus = Backbone.Model.extend({
-
-		initialize: function(options) {
-			var campus = settings.getCampus(options.campusName);
-			this.set("campus", campus);
-
-			var search = options.meta;
-			this.set("search", search);
-		}
-	});
-
 	var CampusMapView = Backbone.View.extend({
 
 		initialize: function () {
@@ -194,7 +183,10 @@ define([
 		lastFinderId = uniqueDivId;
 		lastCampus = options.campusName;
 
-		var model = new Campus(options);
+		var model = new models.Campus({
+			campus: settings.getCampus(options.campusName),
+			search: options.meta
+		});
 		var collection = new models.CampusMapCollection([], {
 			geo: geo,
 			campus: model.get("campus").campus,
