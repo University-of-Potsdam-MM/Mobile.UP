@@ -292,49 +292,7 @@ define([
 		}
 	});
 
-	var SearchableGeoCollection = models.GeoCollection.extend({
-
-		findHouseNumberOnOtherCampuses: function(house, currentCampus) {
-			return this.chain()
-						.filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
-						.map(function(item) {
-							return _.chain(item.get("geo").features)
-									.filter(function(feature) { return feature.properties.Name == house; })
-									.map(function(feature) { return _.extend(_.clone(item.attributes), {geo: feature}); })
-									.value();
-						})
-						.flatten()
-						.value();
-		},
-
-		findDescriptionOnOtherCampuses: function(search, currentCampus) {
-			return this.chain()
-						.filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
-						.map(function(item) {
-							return _.chain(item.get("geo").features)
-									.filter(function(feature) { return (feature.properties.description || "").indexOf(search) !== -1; })
-									.map(function(feature) { return _.extend(_.clone(item.attributes), {geo: feature}); })
-									.value();
-						})
-						.flatten()
-						.value();
-		},
-
-		findEntryById: function(id) {
-			return this.chain()
-						.map(function(item) {
-							return _.chain(item.get("geo").features)
-									.filter(function(feature) { return feature.properties.id == id; })
-									.map(function(feature) { return _.extend(_.clone(item.attributes), {geo: feature}); })
-									.value();
-						})
-						.flatten()
-						.first()
-						.value();
-		}
-	});
-
-	var geo = new SearchableGeoCollection();
+	var geo = new models.SearchableGeoCollection();
 
 	app.views.SitemapIndex = Backbone.View.extend({
 
