@@ -35,6 +35,11 @@ define([
         }
     });
 
+    var GeoCollection = Backbone.Collection.extend({
+        url: "js/geojson/campus-geo.json",
+        model: GeoBlock
+    });
+
     /**
      * - displayOptions
      * - featureCollection
@@ -126,6 +131,7 @@ define([
         CampusMapModel: CampusMapModel,
         CampusMapCollection: CampusMapCollection,
         Campus: Campus,
-        GeoBlock: GeoBlock
+        GeoBlock: GeoBlock,
+        GeoCollection: GeoCollection
     };
 });

@@ -150,7 +150,12 @@ define([
 
 		initialize: function () {
 			this.listenToOnce(this.collection, "sync", this.render);
+			this.listenTo(this.collection, "error", this.fetchFailed);
 			this.collection.fetch();
+		},
+
+		fetchFailed: function(error) {
+			new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
 		},
 
 		render: function() {
@@ -287,20 +292,7 @@ define([
 		}
 	});
 
-	var GeoCollection = Backbone.Collection.extend({
-		url: "js/geojson/campus-geo.json",
-		model: models.GeoBlock,
-
-		initialize: function() {
-			this.listenTo(this, "error", this.failed);
-		},
-
-		failed: function(error) {
-			new utils.ErrorView({el: '#error-placeholder', msg: 'Die Daten konnten nicht geladen werden.', module:'sitemap', err: error});
-		}
-	});
-
-	var SearchableGeoCollection = GeoCollection.extend({
+	var SearchableGeoCollection = models.GeoCollection.extend({
 
 		findHouseNumberOnOtherCampuses: function(house, currentCampus) {
 			return this.chain()
