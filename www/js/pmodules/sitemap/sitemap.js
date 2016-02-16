@@ -1,4 +1,14 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'pmodules/sitemap/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'utils',
+	'q',
+	'modules/campusmenu',
+	'modules/timeselection',
+	'pmodules/sitemap/sitemap.models',
+	'pmodules/sitemap/searchablemap'
+], function($, _, Backbone, utils, Q, campusmenu, timeselection, models, searchablemap){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/sitemap");
 
 	var settings = {};
@@ -147,16 +157,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
 		}
 	});
 
-	/**
-	 * - displayOptions
-	 * - featureCollection
-	 * - category
-	 * - hasSimilarsCallback
-	 */
-	var CampusMapModel = Backbone.Model.extend({});
-
 	var CampusMapCollection = Backbone.Collection.extend({
-		model: CampusMapModel,
+		model: models.CampusMapModel,
 
 		initialize: function(models, options) {
 			this.geo = options.geo;
