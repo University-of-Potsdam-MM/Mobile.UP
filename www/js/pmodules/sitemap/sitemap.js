@@ -157,64 +157,6 @@ define([
 		}
 	});
 
-	var CampusMapCollection = Backbone.Collection.extend({
-		model: models.CampusMapModel,
-
-		initialize: function(models, options) {
-			this.geo = options.geo;
-			this.campus = options.campus;
-		},
-
-		parse: function(geo) {
-			var result = [];
-
-			var campus = this.campus;
-			var data = geo.filter(function(element) { return element.get("campus") === campus; });
-
-			var insertCategory = _.bind(function(categoryName) {
-				var categoryData = getGeoByCategory(data, categoryName);
-				var options = settings.options[categoryName];
-				var category = categoryName;
-				var campus = this.campus;
-
-				var model = {displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)};
-
-				if (model.featureCollection) {
-					result.push(model);
-				}
-			}, this);
-
-			insertCategory(terminals);
-			insertCategory(institutes);
-			insertCategory(canteens);
-			insertCategory(parking);
-			insertCategory(associateinstitutes);
-			insertCategory(student);
-			insertCategory(sport);
-
-			return result;
-		},
-
-		sync: function(method, collection, options) {
-			if (method !== 'read') {
-				return Backbone.Collection.prototype.sync.apply(this, arguments);
-			}
-
-			var result = new $.Deferred();
-
-			this.geo.fetch({
-				success: function(data) {
-					result.resolve(data);
-					options.success(data);
-				}, error: function(error) {
-					result.reject(error);
-					options.error(error);
-				}});
-
-			return result.promise();
-		}
-	});
-
 	var CampusMapView = Backbone.View.extend({
 
 		initialize: function () {
@@ -253,7 +195,11 @@ define([
 		lastCampus = options.campusName;
 
 		var model = new Campus(options);
-		var collection = new CampusMapCollection([], {geo: geo, campus: model.get("campus").campus});
+		var collection = new models.CampusMapCollection([], {
+			geo: geo,
+			campus: model.get("campus").campus,
+			settings: settings
+		});
 		new CampusMapView({el: $("#" + uniqueDivId), collection: collection, model: model});
 	}
 
@@ -265,28 +211,6 @@ define([
 		searchView.setSearchValue(selection);
 		searchView.hideAllItems();
 		// $("div[data-role='searchablemap']").searchablemap("viewByName", selection);
-	}
-
-	function getGeoByCategory(data, category) {
-		var result = _.chain(data)
-					.filter(function(element) { return element.get("category") === category; })
-					.first()
-					.value();
-		if (result) {
-			return result.get("geo");
-		} else {
-			return undefined;
-		}
-	}
-
-	function hasSimilarLocations(campus) {
-		return function(id) {
-			var entry = geo.findEntryById(id);
-			var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
-			var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
-
-			return similarHouses.length + similarDescriptions.length > 0;
-		};
 	}
 
 	function CategoryStore() {

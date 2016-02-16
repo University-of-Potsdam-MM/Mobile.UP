@@ -1,4 +1,21 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 'modules/timeselection', 'pmodules/sitemap/searchablemap'], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'utils',
+    'q',
+    'modules/campusmenu',
+    'modules/timeselection',
+    'pmodules/sitemap/searchablemap'
+], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap) {
+
+    var terminals = "terminals";
+    var institutes = "institutes";
+    var canteens = "canteens";
+    var parking = "parking";
+    var associateinstitutes = "associateinstitutes";
+    var student = "student";
+    var sport = "sport";
 
     /**
      * - displayOptions
@@ -8,6 +25,89 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu', 
      */
     var CampusMapModel = Backbone.Model.extend({});
 
-    return {CampusMapModel: CampusMapModel};
-});
+    var CampusMapCollection = Backbone.Collection.extend({
+        model: CampusMapModel,
 
+        initialize: function(models, options) {
+            this.geo = options.geo;
+            this.campus = options.campus;
+            this.settings = options.settings;
+        },
+
+        parse: function(geo) {
+            var result = [];
+
+            var campus = this.campus;
+            var data = geo.filter(function(element) { return element.get("campus") === campus; });
+
+            var getGeoByCategory = function(data, category) {
+                var result = _.chain(data)
+                    .filter(function(element) { return element.get("category") === category; })
+                    .first()
+                    .value();
+                if (result) {
+                    return result.get("geo");
+                } else {
+                    return undefined;
+                }
+            };
+
+            var hasSimilarLocations = function(campus) {
+                return function(id) {
+                    var entry = geo.findEntryById(id);
+                    var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
+                    var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
+
+                    return similarHouses.length + similarDescriptions.length > 0;
+                };
+            };
+
+            var insertCategory = _.bind(function(categoryName) {
+                var categoryData = getGeoByCategory(data, categoryName);
+                var options = this.settings.options[categoryName];
+                var category = categoryName;
+                var campus = this.campus;
+
+                var model = {displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)};
+
+                if (model.featureCollection) {
+                    result.push(model);
+                }
+            }, this);
+
+            insertCategory(terminals);
+            insertCategory(institutes);
+            insertCategory(canteens);
+            insertCategory(parking);
+            insertCategory(associateinstitutes);
+            insertCategory(student);
+            insertCategory(sport);
+
+            return result;
+        },
+
+        sync: function(method, collection, options) {
+            if (method !== 'read') {
+                return Backbone.Collection.prototype.sync.apply(this, arguments);
+            }
+
+            var result = new $.Deferred();
+
+            this.geo.fetch({
+                success: function(data) {
+                    result.resolve(data);
+                    options.success(data);
+                }, error: function(error) {
+                    result.reject(error);
+                    options.error(error);
+                }});
+
+            return result.promise();
+        }
+    });
+
+    return {
+        CampusMapModel: CampusMapModel,
+        CampusMapCollection: CampusMapCollection
+    };
+});
