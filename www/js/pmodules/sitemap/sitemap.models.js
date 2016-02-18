@@ -37,7 +37,36 @@ define([
 
     var GeoCollection = Backbone.Collection.extend({
         url: "js/geojson/campus-geo.json",
-        model: GeoBlock
+        model: GeoBlock,
+
+        /**
+         * Ensures that each GeoBlock contains exactly one element in its features array.
+         * If more elements are present, the GeoBlock is split into several GeoBlocks with
+         * one element per array.
+         *
+         * @param campusAndCategory Attributes of one GeoBlock
+         * @returns {*} Array of GeoBlock
+         * @private
+         */
+        _isolateFeatures: function(campusAndCategory) {
+            if (!campusAndCategory || !campusAndCategory.geo || !campusAndCategory.geo.features) {
+                return campusAndCategory;
+            }
+
+            return _.map(campusAndCategory.geo.features, function(feature) {
+                var result = _.omit(campusAndCategory, "geo");
+                result.geo = _.omit(campusAndCategory.geo, "features");
+                result.geo.features = [feature];
+                return result;
+            });
+        },
+
+        parse: function(response) {
+            return _.chain(response)
+                .map(this._isolateFeatures)
+                .flatten()
+                .value();
+        }
     });
 
     var SearchableGeoCollection = GeoCollection.extend({
@@ -106,12 +135,18 @@ define([
             var data = geo.filter(function(element) { return element.get("campus") === campus; });
 
             var getGeoByCategory = function(data, category) {
-                var result = _.chain(data)
-                    .filter(function(element) { return element.get("category") === category; })
-                    .first()
+                var categories = _.chain(data)
+                    .filter(function(element) { return element.get("category") === category})
+                    .map(function(element) { return element.get("geo"); })
                     .value();
-                if (result) {
-                    return result.get("geo");
+
+                if (categories.length > 0) {
+                    var base = categories[0];
+                    var geoByCategory = _.omit(base, "features");
+                    geoByCategory.features = _.map(categories, function(category) {
+                        return category.features[0];
+                    });
+                    return geoByCategory;
                 } else {
                     return undefined;
                 }
