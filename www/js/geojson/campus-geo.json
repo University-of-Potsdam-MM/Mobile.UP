@@ -3852,7 +3852,7 @@
 			"properties" : {
 				"extrude" : -1,
 				"timestamp" : null,
-				"Name" : "Mensa\n",
+				"Name" : "Mensa",
 				"icon" : null,
 				"visibility" : -1,
 				"description" : "Haus 3.: Mensa",
@@ -3890,7 +3890,7 @@
 			"properties" : {
 				"extrude" : -1,
 				"timestamp" : null,
-				"Name" : "Ulf´s Cafeteria am HPI\n",
+				"Name" : "Ulf´s Cafeteria am HPI",
 				"icon" : null,
 				"visibility" : -1,
 				"description" : null,
