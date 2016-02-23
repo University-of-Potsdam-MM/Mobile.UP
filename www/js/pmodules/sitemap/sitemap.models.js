@@ -89,14 +89,6 @@ define([
                 .filter(function(item) { return (item.get("description") || "").indexOf(search) !== -1; })
                 .map(function(item) { return _.extend(_.clone(item.attributes), {geo: item.get("geo").features[0]}); })
                 .value();
-        },
-
-        findEntryById: function(id) {
-            return this.chain()
-                .filter(function(item) { return item.get("id") === id})
-                .map(function(item) { return _.extend(_.clone(item.attributes), {geo: item.get("geo").features[0]}); })
-                .first()
-                .value();
         }
     });
 
@@ -143,9 +135,9 @@ define([
 
             var hasSimilarLocations = function(campus) {
                 return function(id) {
-                    var entry = geo.findEntryById(id);
-                    var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, campus);
-                    var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, campus);
+                    var entry = geo.get(id);
+                    var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.get("name"), campus);
+                    var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.get("description"), campus);
 
                     return similarHouses.length + similarDescriptions.length > 0;
                 };

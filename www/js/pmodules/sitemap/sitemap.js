@@ -240,9 +240,9 @@ define([
 	});
 
 	function findSimilarLocations(id) {
-		var entry = geo.findEntryById(id);
-		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.geo.properties.Name, lastCampus);
-		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.geo.properties.description, lastCampus);
+		var entry = geo.get(id);
+		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.get("name"), lastCampus);
+		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.get("description"), lastCampus);
 
 		var similars = similarHouses.concat(similarDescriptions);
 		similars = _.uniq(similars, false, function(item) {
@@ -268,8 +268,8 @@ define([
 	}
 
 	function sitemapNavigateTo(id) {
-		var entry = geo.findEntryById(id);
-		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.campus, entry.geo.properties.Name);
+		var entry = geo.get(id);
+		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
 	}
 
 	var SearchView = Backbone.View.extend({
