@@ -108,28 +108,8 @@ define([
         },
 
         parse: function(geo) {
-            var result = [];
-
             var campus = this.campus;
             var data = geo.filter(function(element) { return element.get("campus") === campus; });
-
-            var getGeoByCategory = function(data, category) {
-                var categories = _.chain(data)
-                    .filter(function(element) { return element.get("category") === category})
-                    .map(function(element) { return element.get("geo"); })
-                    .value();
-
-                if (categories.length > 0) {
-                    var base = categories[0];
-                    var geoByCategory = _.omit(base, "features");
-                    geoByCategory.features = _.map(categories, function(category) {
-                        return category.features[0];
-                    });
-                    return geoByCategory;
-                } else {
-                    return undefined;
-                }
-            };
 
             var hasSimilarLocations = function(campus) {
                 return function(id) {
@@ -141,24 +121,13 @@ define([
                 };
             };
 
-            var insertCategory = _.bind(function(categoryName) {
-                var categoryData = getGeoByCategory(data, categoryName);
-                var options = this.settings.options[categoryName];
-                var category = categoryName;
-                var campus = this.campus;
-
-                var model = {displayOptions: options, featureCollection: categoryData, category: category, hasSimilarsCallback: hasSimilarLocations(campus)};
-
-                if (model.featureCollection) {
-                    result.push(model);
-                }
+            return _.map(data, function(geoBlock) {
+                var attr = geoBlock.attributes;
+                return _.extend({
+                    options: this.settings.options[attr.category],
+                    hasSimilarsCallback: hasSimilarLocations(attr.campus)
+                }, attr);
             }, this);
-
-            _.each(this.settings.options, function(categoryValue, categoryName) {
-                insertCategory(categoryName);
-            });
-
-            return result;
         },
 
         sync: function(method, collection, options) {

@@ -147,7 +147,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				var index = parseInt(href);
 
 				this._showIndex(index);
-				this.options.onSelected(this._markers[index].features[0].properties.Name);
+				this.options.onSelected(this._markers[index].name);
 			}, this));
 		},
 
@@ -211,33 +211,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			host.trigger("updatelayout");
 		},
 
-		insertSearchableFeatureCollectionObject: function(model) {
-			this.insertSearchableFeatureCollection(model.get("displayOptions"), model.get("featureCollection"), model.get("category"), model.get("hasSimilarsCallback"));
-		},
-
-		insertSearchableFeatureCollection: function(options, collection, category, hasSimilarsCallback) {
-			var items = _.map(collection.features, function(item) {
-				// Save item context
-				var context = _.omit(collection, "features");
-				context.features = [item];
-				context.name = item.properties.Name;
-				context.description = item.properties.description;
-				context.options = options;
-				context.category = category;
-
-				// Save marker and get its index
-				context.index = this._markers.push(context) - 1;
-
-				return context;
+		insertSFC: function(collection) {
+			var items = collection.toJSON();
+			_.each(items, function(item) {
+				item.index = this._markers.push(item) - 1;
 			}, this);
 
 			this._insertSearchables(items);
-			this._insertMapsMarkers(items, hasSimilarsCallback);
+			this._insertMapsMarkers(items);
 		},
 
 		viewByName: function(name) {
 			var first = _.chain(this._markers)
-							.filter(function(marker) { return marker.features[0].properties.Name === name; })
+							.filter(function(marker) { return marker.name === name; })
 							.first()
 							.value();
 			var index = _.indexOf(this._markers, first);
@@ -268,13 +254,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			return result;
 		},
 
-		_insertMapsMarkers: function(items, hasSimilarsCallback) {
+		_insertMapsMarkers: function(items) {
 			for (var i in items) {
 				var m = this._markers[items[i].index];
 
 				m.options.zIndex = 2;
-				var gMarkers = new GeoJSON(m, m.options, this._mapView._map, hasSimilarsCallback);
-				var bMarkers = new GeoJSON(this._shadowOfContext(m), this._shadowOfOptions(m.options), this._mapView._map, hasSimilarsCallback);
+				var gMarkers = new GeoJSON(m.geo, m.options, this._mapView._map, m.hasSimilarsCallback);
+				var bMarkers = new GeoJSON(this._shadowOfContext(m.geo), this._shadowOfOptions(m.options), this._mapView._map, m.hasSimilarsCallback);
 
 				if (gMarkers.error) {
 					console.log(gMarkers.error);

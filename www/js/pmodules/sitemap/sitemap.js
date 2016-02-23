@@ -168,9 +168,7 @@ define([
 			this.$("div[data-role='searchablemap']").searchablemap("pageshow", url.center);
 
 			// Add map objects
-			this.collection.each(function(model) {
-				this.$("div[data-role='searchablemap']").searchablemap("insertSearchableFeatureCollectionObject", model);
-			}, this);
+			this.$("div[data-role='searchablemap']").searchablemap("insertSFC", this.collection);
 
 			// Set search value
 			var search = this.model.get("search");
