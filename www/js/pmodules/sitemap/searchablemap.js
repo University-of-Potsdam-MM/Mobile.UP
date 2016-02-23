@@ -203,7 +203,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			var host = this.element.find("#filterable-locations");
 
 			// Add items to search list
-			var htmlSearch = createSearchables({items: searchables});
+			var htmlSearch = createSearchables({items: searchables.toJSON()});
 			host.append(htmlSearch);
 
 			// Tell search list to refresh itself
@@ -218,7 +218,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			}, this);
 			this._markerCollection.reset(items);
 
-			this._insertSearchables(items);
+			this._insertSearchables(this._markerCollection);
 			this._insertMapsMarkers(items);
 		},
 
