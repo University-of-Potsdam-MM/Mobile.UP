@@ -136,9 +136,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this.element.trigger("create");
 
 			// Initialize filter
-			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
+			this.element.find("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
 
-			$(document).on("click", "#filterable-locations a", _.bind(function (ev) {
+			this.element.on("click", "#filterable-locations a", _.bind(function (ev) {
 				ev.preventDefault();
 
 				// Retreive context
@@ -200,7 +200,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_insertSearchables: function(searchables) {
 			var createSearchables = rendertmpl("sitemap_detail");
-			var host = $("#filterable-locations");
+			var host = this.element.find("#filterable-locations");
 
 			// Add items to search list
 			var htmlSearch = createSearchables({items: searchables});
