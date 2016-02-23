@@ -56,6 +56,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 	var SEARCH_MODE = 0;
 	var SHOW_MODE = 1;
 
+	var SearchableMarkerCollection2 = Backbone.Collection.extend({
+	});
+
 	var SearchableMarkerCollection = function() {
 
 		var elements = [];
@@ -136,7 +139,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this.element.trigger("create");
 
 			// Initialize filter
-			this.element.find("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
+			this.element.find("#filterable-locations").filterable("option", "filterCallback", _.partial(this._filterLocations, this));
 
 			this.element.on("click", "#filterable-locations a", _.bind(function (ev) {
 				ev.preventDefault();
@@ -153,15 +156,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_showIndex: function(index) {
 			// Hide all markers
-			var tmpMarkers = allMarkers.getElements();
-			for (var i = 0; i < tmpMarkers.length; i++) {
-				tmpMarkers[i].setVisibility(false, true);
-			}
+			this._markerCollection.each(function(tmpMarker) {
+				tmpMarker.get("marker").setVisibility(false, true);
+			});
 
 			// Show the selected marker
-			tmpMarkers[index].setVisibility(true, true);
-			tmpMarkers[index].centerOnMap();
-			tmpMarkers[index].openInfoWindow();
+			var selectedMarker = this._markerCollection.at(index).get("marker");
+			selectedMarker.setVisibility(true, true);
+			selectedMarker.centerOnMap();
+			selectedMarker.openInfoWindow();
 		},
 
 		_destroy: function() {
@@ -181,7 +184,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		 */
 		_initializeMap: function(center) {
 			this._drawMap(center);
-			this._markerCollection = new Backbone.Collection();
+			this._markerCollection = new SearchableMarkerCollection2();
 			allMarkers = new SearchableMarkerCollection();
 		},
 
@@ -219,7 +222,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this._markerCollection.reset(items);
 
 			this._insertSearchables(this._markerCollection);
-			this._insertMapsMarkers(items);
+			this._insertMapsMarkers(this._markerCollection);
 		},
 
 		viewByName: function(name) {
@@ -228,7 +231,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this._showIndex(index);
 		},
 
-		_filterLocations: function(index, searchValue) {
+		_filterLocations: function(widgetHost, index, searchValue) {
 			var text = $(this).text();
 			var result = text.toLowerCase().indexOf(searchValue) === -1;
 
@@ -237,13 +240,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 				// Don't show all markers, only the matching one
 				var source = $("a", this);
-				var href = source.attr("data-tag");
-				var index = parseInt(href);
-				var searchedMarkers = allMarkers.getElements();
+				var markerId = source.attr("data-id");
+				var marker = widgetHost._markerCollection.get(markerId).get("marker");
 				if (!result) {
-					searchedMarkers[index].setVisibility(true, true);
+					marker.setVisibility(true, true);
 				} else {
-					searchedMarkers[index].setVisibility(false, true);
+					marker.setVisibility(false, true);
 				}
 			} else {
 				allMarkers.switchMode(SHOW_MODE);
@@ -253,8 +255,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		},
 
 		_insertMapsMarkers: function(items) {
-			for (var i in items) {
-				var m = items[i];
+			items.each(function(item) {
+				var m = item.attributes;
 
 				m.options.zIndex = 2;
 				var gMarkers = new GeoJSON(m.geo, m.options, this._mapView._map, m.hasSimilarsCallback);
@@ -269,9 +271,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					gMarker.reset();
 
 					var tmpMarkers = allMarkers.getElements();
-					tmpMarkers[items[i].index] = gMarker;
+					tmpMarkers[m.index] = gMarker;
+					item.set("marker", gMarker);
 				}
-			}
+			}, this);
 		},
 
 		_shadowOfContext: function(context) {
