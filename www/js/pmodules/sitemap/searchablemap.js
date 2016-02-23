@@ -57,40 +57,31 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 	var SHOW_MODE = 1;
 
 	var SearchableMarkerCollection2 = Backbone.Collection.extend({
-	});
+		mode: SHOW_MODE,
 
-	var SearchableMarkerCollection = function() {
-
-		var elements = [];
-		var mode = SHOW_MODE;
-
-		this.switchMode = function(targetMode) {
-			if (mode === targetMode) {
+		switchMode: function(targetMode) {
+			if (this.mode === targetMode) {
 				return;
 			}
 
 			switch (targetMode) {
-			case SEARCH_MODE:
-				// Don't show all markers, only the matching one
-				for (var i = 0; i < elements.length; i++) {
-					elements[i].setVisibility(false, true);
-				}
-				break;
-			case SHOW_MODE:
-				// Show all markers
-				for (var i = 0; i < elements.length; i++) {
-					elements[i].reset();
-				}
-				break;
+				case SEARCH_MODE:
+					// Don't show all markers, only the matching one
+					this.each(function(element) {
+						element.get("marker").setVisibility(false, true);
+					});
+					break;
+				case SHOW_MODE:
+					// Show all markers
+					this.each(function(element) {
+						element.reset();
+					});
+					break;
 			}
 
-			mode = targetMode;
-		};
-
-		this.getElements = function() {
-			return elements;
-		};
-	};
+			this.mode = targetMode;
+		}
+	});
 
 	var MapFragment = Backbone.View.extend({
 
@@ -129,7 +120,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		},
 
 		_markerCollection: undefined,
-		_allMarkers: undefined,
 		_mapView: undefined,
 
 		_create: function() {
@@ -185,7 +175,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		_initializeMap: function(center) {
 			this._drawMap(center);
 			this._markerCollection = new SearchableMarkerCollection2();
-			allMarkers = new SearchableMarkerCollection();
 		},
 
 		/**
@@ -236,7 +225,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			var result = text.toLowerCase().indexOf(searchValue) === -1;
 
 			if (searchValue) {
-				allMarkers.switchMode(SEARCH_MODE);
+				widgetHost._markerCollection.switchMode(SEARCH_MODE);
 
 				// Don't show all markers, only the matching one
 				var source = $("a", this);
@@ -248,7 +237,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					marker.setVisibility(false, true);
 				}
 			} else {
-				allMarkers.switchMode(SHOW_MODE);
+				widgetHost._markerCollection.switchMode(SHOW_MODE);
 			}
 
 			return result;
@@ -270,8 +259,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 					var gMarker = new CategoryMarker(gMarkers[0], this._mapView._map, m.category, this.options.categoryStore, bMarkers[0]);
 					gMarker.reset();
 
-					var tmpMarkers = allMarkers.getElements();
-					tmpMarkers[m.index] = gMarker;
 					item.set("marker", gMarker);
 				}
 			}, this);
