@@ -228,8 +228,24 @@ define([
 
 	var SimilarLocationsView = Backbone.View.extend({
 
+		events: {
+			"click .similar-location": "navigateTo",
+			"click .similar-locations-reset": "resetSitemap"
+		},
+
 		initialize: function() {
 			this.template = rendertmpl("sitemap_similar_locations");
+		},
+
+		navigateTo: function(ev) {
+			ev.preventDefault();
+			var itemId = $(ev.currentTarget).attr("data-tag");
+			sitemapNavigateTo(itemId);
+		},
+
+		resetSitemap: function(ev) {
+			ev.preventDefault();
+			sitemapReset();
 		},
 
 		render: function() {
@@ -322,14 +338,6 @@ define([
 
 		searchSimilarLocations: function(id) {
 			searchSimilarLocations(id);
-		},
-
-		sitemapReset: function() {
-			sitemapReset();
-		},
-
-		sitemapNavigateTo: function(id) {
-			sitemapNavigateTo(id);
 		}
 	});
 
