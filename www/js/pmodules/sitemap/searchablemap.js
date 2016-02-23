@@ -125,7 +125,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			categoryStore: undefined
 		},
 
-		_markers: undefined,
+		_markerCollection: undefined,
 		_allMarkers: undefined,
 		_mapView: undefined,
 
@@ -143,11 +143,11 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 				// Retreive context
 				var source = $(ev.currentTarget);
-				var href = source.attr("data-tag");
-				var index = parseInt(href);
+				var markerId = source.attr("data-id");
 
-				this._showIndex(index);
-				this.options.onSelected(this._markers[index].name);
+				var marker = this._markerCollection.get(markerId);
+				this._showIndex(this._markerCollection.indexOf(marker));
+				this.options.onSelected(marker.get("name"));
 			}, this));
 		},
 
@@ -181,7 +181,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		 */
 		_initializeMap: function(center) {
 			this._drawMap(center);
-			this._markers = [];
+			this._markerCollection = new Backbone.Collection();
 			allMarkers = new SearchableMarkerCollection();
 		},
 
@@ -213,20 +213,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		insertSFC: function(collection) {
 			var items = collection.toJSON();
-			_.each(items, function(item) {
-				item.index = this._markers.push(item) - 1;
+			_.each(items, function(item, index) {
+				item.index = index;
 			}, this);
+			this._markerCollection.reset(items);
 
 			this._insertSearchables(items);
 			this._insertMapsMarkers(items);
 		},
 
 		viewByName: function(name) {
-			var first = _.chain(this._markers)
-							.filter(function(marker) { return marker.name === name; })
-							.first()
-							.value();
-			var index = _.indexOf(this._markers, first);
+			var first = this._markerCollection.find(function(marker) { return marker.get("name") === name; });
+			var index = this._markerCollection.indexOf(first);
 			this._showIndex(index);
 		},
 
@@ -256,7 +254,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_insertMapsMarkers: function(items) {
 			for (var i in items) {
-				var m = this._markers[items[i].index];
+				var m = items[i];
 
 				m.options.zIndex = 2;
 				var gMarkers = new GeoJSON(m.geo, m.options, this._mapView._map, m.hasSimilarsCallback);
