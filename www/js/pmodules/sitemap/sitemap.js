@@ -234,7 +234,7 @@ define([
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(this.template({similars: this.collection}));
+			this.$el.append(this.template({similars: this.collection.toJSON()}));
 			this.$el.trigger("create");
 		}
 	});
@@ -245,14 +245,9 @@ define([
 		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.get("description"), lastCampus);
 
 		var similars = similarHouses.concat(similarDescriptions);
-		similars = _.uniq(similars, false, function(item) {
-			if (item && item.geo && item.geo.properties)
-				return item.geo.properties.id;
-			else
-				return item.data;
-		});
+		similars = _.uniq(similars);
 
-		return similars;
+		return new Backbone.Collection(similars);
 	}
 
 	function searchSimilarLocations(id) {

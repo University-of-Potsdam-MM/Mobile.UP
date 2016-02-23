@@ -79,7 +79,6 @@ define([
             return this.chain()
                 .filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
                 .filter(function(item) { return item.get("name") === house; })
-                .map(function(item) { return _.extend(_.clone(item.attributes), {geo: item.get("geo").features[0]}); })
                 .value();
         },
 
@@ -87,7 +86,6 @@ define([
             return this.chain()
                 .filter(function(item) { return item.get("campus").toLowerCase() != currentCampus.toLowerCase(); })
                 .filter(function(item) { return (item.get("description") || "").indexOf(search) !== -1; })
-                .map(function(item) { return _.extend(_.clone(item.attributes), {geo: item.get("geo").features[0]}); })
                 .value();
         }
     });
