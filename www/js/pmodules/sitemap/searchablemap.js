@@ -56,7 +56,47 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 	var SEARCH_MODE = 0;
 	var SHOW_MODE = 1;
 
+	var SearchableMarker = Backbone.Model.extend({
+
+		createMarker: function(map, categoryStore) {
+			var m = this.attributes;
+
+			m.options.zIndex = 2;
+			var gMarkers = new GeoJSON(m.geo, m.options, map, m.hasSimilarsCallback);
+			var bMarkers = new GeoJSON(this._shadowOfContext(m.geo), this._shadowOfOptions(m.options), map, m.hasSimilarsCallback);
+
+			if (gMarkers.error) {
+				console.log(gMarkers.error);
+			} else if (bMarkers.error) {
+				console.log(bMarkers.error);
+			} else {
+				var gMarker = new CategoryMarker(gMarkers[0], map, m.category, categoryStore, bMarkers[0]);
+				gMarker.reset();
+
+				this.set("marker", gMarker);
+			}
+		},
+
+		_shadowOfContext: function(context) {
+			context = JSON.parse(JSON.stringify(context));
+			context.properties = {};
+			return context;
+		},
+
+		_shadowOfOptions: function(options) {
+			options = JSON.parse(JSON.stringify(options));
+			options.strokeColor = "#000000";
+			options.strokeOpacity = 0.3;
+			options.strokeWeight = 20;
+			options.fillColor = "#000000";
+			options.fillOpacity = 0.5;
+			options.zIndex = -1;
+			return options;
+		}
+	});
+
 	var SearchableMarkerCollection2 = Backbone.Collection.extend({
+		model: SearchableMarker,
 		mode: SHOW_MODE,
 
 		switchMode: function(targetMode) {
@@ -243,40 +283,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_insertMapsMarkers: function(items) {
 			items.each(function(item) {
-				var m = item.attributes;
-
-				m.options.zIndex = 2;
-				var gMarkers = new GeoJSON(m.geo, m.options, this._mapView._map, m.hasSimilarsCallback);
-				var bMarkers = new GeoJSON(this._shadowOfContext(m.geo), this._shadowOfOptions(m.options), this._mapView._map, m.hasSimilarsCallback);
-
-				if (gMarkers.error) {
-					console.log(gMarkers.error);
-				} else if (bMarkers.error) {
-					console.log(bMarkers.error);
-				} else {
-					var gMarker = new CategoryMarker(gMarkers[0], this._mapView._map, m.category, this.options.categoryStore, bMarkers[0]);
-					gMarker.reset();
-
-					item.set("marker", gMarker);
-				}
+				item.createMarker(this._mapView._map, this.options.categoryStore);
 			}, this);
-		},
-
-		_shadowOfContext: function(context) {
-			context = JSON.parse(JSON.stringify(context));
-			context.properties = {};
-			return context;
-		},
-
-		_shadowOfOptions: function(options) {
-			options = JSON.parse(JSON.stringify(options));
-			options.strokeColor = "#000000";
-			options.strokeOpacity = 0.3;
-			options.strokeWeight = 20;
-			options.fillColor = "#000000";
-			options.fillOpacity = 0.5;
-			options.zIndex = -1;
-			return options;
 		}
 	});
 });
