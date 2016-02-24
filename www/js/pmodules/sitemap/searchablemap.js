@@ -132,6 +132,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			$(window).resize(_.bind(function(){ this.resizeMap(true); }, this));
 		},
 
+		/**
+		 * draws the initial map and centers on the given coordinate
+		 * @param center an object of google maps latlng object
+		 */
+		createMap: function(center) {
+			var myOptions = {
+				zoom: 16,
+				center: center,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			this._map = new google.maps.Map(this.$("#map-canvas")[0], myOptions);
+		},
+
 		resizeMap: function(triggerMapsResizeEvent) {
 			var iosStatusBarHeight = $.os.ios7 ? 25 : 0;
 			this.$("#map-canvas").css("height", $(window).height() - 165 - iosStatusBarHeight);
@@ -212,21 +225,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		 * initializes the map and draws all markers which are currently selected
 		 */
 		_initializeMap: function(center) {
-			this._drawMap(center);
+			this._mapView.createMap(center);
 			this._markerCollection = new SearchableMarkerCollection2();
-		},
-
-		/**
-		 * draws the initial map and centers on the given coordinate
-		 * @param {latlng} an object of google maps latlng object
-		 */
-		_drawMap: function(latlng) {
-			var myOptions = {
-					zoom: 16,
-					center: latlng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-			this._mapView._map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
 		},
 
 		_insertSearchables: function(searchables) {
