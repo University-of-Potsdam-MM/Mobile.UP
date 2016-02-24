@@ -139,19 +139,18 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				var markerId = source.attr("data-id");
 
 				var marker = this._markerCollection.get(markerId);
-				this._showIndex(this._markerCollection.indexOf(marker));
+				this._showMarker(marker.get("marker"));
 				this.options.onSelected(marker.get("name"));
 			}, this));
 		},
 
-		_showIndex: function(index) {
+		_showMarker: function(selectedMarker) {
 			// Hide all markers
 			this._markerCollection.each(function(tmpMarker) {
 				tmpMarker.get("marker").setVisibility(false, true);
 			});
 
 			// Show the selected marker
-			var selectedMarker = this._markerCollection.at(index).get("marker");
 			selectedMarker.setVisibility(true, true);
 			selectedMarker.centerOnMap();
 			selectedMarker.openInfoWindow();
@@ -216,8 +215,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		viewByName: function(name) {
 			var first = this._markerCollection.find(function(marker) { return marker.get("name") === name; });
-			var index = this._markerCollection.indexOf(first);
-			this._showIndex(index);
+			this._showMarker(first.get("marker"));
 		},
 
 		_filterLocations: function(widgetHost, index, searchValue) {
