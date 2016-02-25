@@ -1,0 +1,6 @@
+<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'>
+    <% _.each(similars, function(item) { %>
+    <li><a href='#' class='similar-location' data-tag='<%= item.id %>'><%= item.name %> (<%= item.campus %>)</a></li>
+    <% }); %>
+</ul>
+<button data-theme='a' class='similar-locations-reset'>Zurück</button>
