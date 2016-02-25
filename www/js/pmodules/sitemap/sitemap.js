@@ -244,23 +244,11 @@ define([
 		}
 	});
 
-	function findSimilarLocations(id) {
-		var entry = geo.get(id);
-		var similarHouses = geo.findHouseNumberOnOtherCampuses(entry.get("name"), lastCampus);
-		var similarDescriptions = geo.findDescriptionOnOtherCampuses(entry.get("description"), lastCampus);
-
-		var similars = similarHouses.concat(similarDescriptions);
-		similars = _.uniq(similars);
-
-		return new Backbone.Collection(similars);
-	}
-
 	function searchSimilarLocations(id) {
-		var similars = findSimilarLocations(id);
+		var similars = new Backbone.Collection(geo.get(id).findSimilarLocations());
 		var el =  $("#" + lastFinderId);
 
-		var host = new SimilarLocationsView({el: el, collection: similars});
-		host.render();
+		new SimilarLocationsView({el: el, collection: similars}).render();
 	}
 
 	function sitemapReset() {

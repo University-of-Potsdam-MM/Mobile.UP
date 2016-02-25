@@ -12,7 +12,7 @@ define([
     var GeoBlock = Backbone.Model.extend({
 
         initialize: function() {
-            this.insertId(this.get("geo"));
+            this._insertId(this.get("geo"));
 
             this.set("id", this.get("geo").features[0].properties.id);
             this.set("name", this.get("geo").features[0].properties.Name);
@@ -32,10 +32,23 @@ define([
 		 *     } ]
 		 * }
          */
-        insertId: function(geo) {
+        _insertId: function(geo) {
             _.each(geo.features, function(feature) {
                 feature.properties.id = _.uniqueId();
             });
+        },
+
+        findSimilarLocations: function() {
+            if (this.collection) {
+                var similarHouses = this.collection.findHouseNumberOnOtherCampuses(this.get("name"), this.get("campus"));
+                var similarDescriptions = this.collection.findDescriptionOnOtherCampuses(this.get("description"), this.get("campus"));
+
+                var similars = similarHouses.concat(similarDescriptions);
+                return _.uniq(similars);
+            } else {
+                console.log("There's no collection for this model so findSimilarLocations() won't work here.");
+                return [];
+            }
         }
     });
 
