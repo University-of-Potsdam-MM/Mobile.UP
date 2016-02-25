@@ -114,7 +114,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				case SHOW_MODE:
 					// Show all markers
 					this.each(function(element) {
-						element.reset();
+						element.get("marker").reset();
 					});
 					break;
 			}
