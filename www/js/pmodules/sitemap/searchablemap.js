@@ -280,6 +280,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this._showMarker(first.get("marker"));
 		},
 
+		resetAllMarkers: function() {
+			this._markerCollection.each(function(a) {
+				a.get("marker").reset();
+			});
+		},
+
 		_filterLocations: function(widgetHost, index, searchValue) {
 			var text = $(this).text();
 			var result = text.toLowerCase().indexOf(searchValue) === -1;

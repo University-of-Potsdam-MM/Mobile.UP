@@ -121,7 +121,7 @@ define([
 		return function() {
 			var visibility = $(this).is(':checked');
 			categoryStore.setVisibility(category, visibility);
-			_.each(allMarkers.getElements(), function(a) { a.reset(); });
+			$("div[data-role='searchablemap']").searchablemap("resetAllMarkers");
 		};
 	}
 
