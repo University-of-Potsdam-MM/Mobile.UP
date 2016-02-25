@@ -166,14 +166,34 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		}
 	});
 
+	var SearchView = Backbone.View.extend({
+
+		initialize: function(options) {
+			this.query = options.query;
+			this.children = options.children;
+		},
+
+		setSearchValue: function(search, updateView) {
+			$(this.query).val(search);
+			if (updateView) {
+				$(this.query).trigger("keyup");
+			}
+		},
+
+		hideAllItems: function() {
+			var host = $(this.children);
+			$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
+		}
+	});
+
 	$.widget("up.searchablemap", {
 		options: {
-			onSelected: function(selection) {},
 			categoryStore: undefined
 		},
 
 		_markerCollection: undefined,
 		_mapView: undefined,
+		_searchView: undefined,
 
 		_create: function() {
 			this._mapView = new MapFragment();
@@ -193,8 +213,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 				var marker = this._markerCollection.get(markerId);
 				this._showMarker(marker.get("marker"));
-				this.options.onSelected(marker.get("name"));
+				this._onSelected(marker.get("name"));
 			}, this));
+
+			this._searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
+		},
+
+		_onSelected: function(selection) {
+			this._searchView.setSearchValue(selection);
+			this._searchView.hideAllItems();
 		},
 
 		_showMarker: function(selectedMarker) {
@@ -251,6 +278,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 			this._insertSearchables(this._markerCollection);
 			this._insertMapsMarkers(this._markerCollection);
+		},
+
+		setSearchValue: function(search) {
+			this._searchView.setSearchValue(search);
 		},
 
 		viewByName: function(name) {

@@ -24,7 +24,6 @@ define([
 	var categoryStore = new CategoryStore();
 	var lastFinderId = undefined;
 	var lastCampus = undefined;
-	var searchView = undefined;
 
 	settings =	{
 		getCampus: function(name) {
@@ -133,7 +132,6 @@ define([
 	 */
 	$(document).on("pageshow", "#sitemap", function() {
 		$("div[data-role='campusmenu']").campusmenu("pageshow");
-		searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
 
 		$('#Terminals:checkbox').click(checkUncheck(terminals));
 		$('#Institute:checkbox').click(checkUncheck(institutes));
@@ -164,7 +162,7 @@ define([
 			this.$el.append("<div data-role='searchablemap'></div>");
 			this.$el.trigger("create");
 
-			this.$("div[data-role='searchablemap']").searchablemap({ onSelected: onItemSelected, categoryStore: categoryStore });
+			this.$("div[data-role='searchablemap']").searchablemap({ categoryStore: categoryStore });
 			this.$("div[data-role='searchablemap']").searchablemap("pageshow", url.center);
 
 			// Add map objects
@@ -173,7 +171,7 @@ define([
 			// Set search value
 			var search = this.model.get("search");
 			if (search !== undefined) {
-				searchView.setSearchValue(search);
+				$("div[data-role='searchablemap']").searchablemap("setSearchValue", search);
 				$("div[data-role='searchablemap']").searchablemap("viewByName", search);
 			}
 		}
@@ -200,12 +198,6 @@ define([
 
 	function clearMenu(uniqueDivId) {
 		$("#currentCampus").empty().append("<div id=\"" + uniqueDivId + "\"></div>");
-	}
-
-	function onItemSelected(selection) {
-		searchView.setSearchValue(selection);
-		searchView.hideAllItems();
-		// $("div[data-role='searchablemap']").searchablemap("viewByName", selection);
 	}
 
 	function CategoryStore() {
@@ -280,26 +272,6 @@ define([
 		var entry = geo.get(id);
 		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
 	}
-
-	var SearchView = Backbone.View.extend({
-
-		initialize: function(options) {
-			this.query = options.query;
-			this.children = options.children;
-		},
-
-		setSearchValue: function(search, updateView) {
-			$(this.query).val(search);
-			if (updateView) {
-				$(this.query).trigger("keyup");
-			}
-		},
-
-		hideAllItems: function() {
-			var host = $(this.children);
-			$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
-		}
-	});
 
 	var geo = new models.SearchableGeoCollection();
 
