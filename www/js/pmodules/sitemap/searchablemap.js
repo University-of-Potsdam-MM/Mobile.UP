@@ -168,21 +168,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 	var SearchView = Backbone.View.extend({
 
-		initialize: function(options) {
-			this.query = options.query;
-			this.children = options.children;
-		},
-
 		setSearchValue: function(search, updateView) {
-			$(this.query).val(search);
+			this.$("input[data-type='search']").val(search);
 			if (updateView) {
-				$(this.query).trigger("keyup");
+				this.$("input[data-type='search']").trigger("keyup");
 			}
 		},
 
 		hideAllItems: function() {
-			var host = $(this.children);
-			$("li", host).removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
+			this.$("#filterable-locations li").removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
 		}
 	});
 
@@ -216,7 +210,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 				this._onSelected(marker.get("name"));
 			}, this));
 
-			this._searchView = new SearchView({query: "input[data-type='search']", children: "#filterable-locations"});
+			this._searchView = new SearchView({el: this.element});
 		},
 
 		_onSelected: function(selection) {
