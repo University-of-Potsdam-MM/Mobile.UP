@@ -274,11 +274,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this._insertMapsMarkers(this._markerCollection);
 		},
 
-		setSearchValue: function(search) {
-			this._searchView.setSearchValue(search);
-		},
-
 		viewByName: function(name) {
+			this._searchView.setSearchValue(name);
 			var first = this._markerCollection.find(function(marker) { return marker.get("name") === name; });
 			this._showMarker(first.get("marker"));
 		},

@@ -171,7 +171,6 @@ define([
 			// Set search value
 			var search = this.model.get("search");
 			if (search !== undefined) {
-				$("div[data-role='searchablemap']").searchablemap("setSearchValue", search);
 				$("div[data-role='searchablemap']").searchablemap("viewByName", search);
 			}
 		}
