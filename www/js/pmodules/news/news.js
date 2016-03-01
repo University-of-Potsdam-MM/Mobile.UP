@@ -117,6 +117,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 			_.bindAll(this, 'render');
 			this.collection = new app.models.NewsSource(p);
 
+			utils.removeNonExpiringElements(this.collection);
+
 			this.collection.p = p;
 			this.listenToOnce(this.collection, "sync", this.render);
 			this.listenToOnce(this.collection, "sync", function() {
@@ -180,6 +182,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 			_.bindAll(this, 'render');
 			this.page  = p.page;
 			this.collection = new app.models.News();
+
+			utils.removeNonExpiringElements(this.collection);
 
 			this.collection.p = p;
 			this.listenToOnce(this.collection, "sync", this.render);

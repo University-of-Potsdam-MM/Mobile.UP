@@ -561,6 +561,17 @@ define([
 		Backbone.fetchCache.setLocalStorage();
 	};
 
+	/**
+	 * Working around bug #480
+	 * @param collectionOrModel
+	 */
+	var removeNonExpiringElements = function(collectionOrModel) {
+		var faultyUrl = collectionOrModel.url;
+		cacheRemoveIf(function(element, url) {
+			return url.startsWith(faultyUrl) && !element.expires;
+		});
+	};
+
 	var defaultTransition = function() {
 		var device = window.device || {data: 'none'};
 		if (device.platform === "ios" || device.platform === "iOS") {
@@ -663,6 +674,7 @@ define([
 			activateExtendedAjaxLogging: activateExtendedAjaxLogging,
 			cacheDefaults: cacheDefaults,
 			cacheRemoveIf: cacheRemoveIf,
+			removeNonExpiringElements: removeNonExpiringElements,
 			defaultTransition: defaultTransition,
 			overrideBackboneSync: overrideBackboneSync,
 			EmptyPage: EmptyPage,
