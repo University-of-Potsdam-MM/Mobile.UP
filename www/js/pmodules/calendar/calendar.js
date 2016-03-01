@@ -19,10 +19,11 @@ define([
 
 		initialize: function(){
 			this.template = rendertmpl('calendar_day');
-			this.listenTo(this.collection, "timeslotsReady", this.render);
+			this.listenTo(this.collection, "timeSlotsReady", this.render);
 		},
 
 		render: function(){
+			console.log(this.collection);
 			this.$el.html(this.template({CourseSlots: this.collection}));
 			this.$el.trigger("create");
 			return this;
@@ -35,7 +36,7 @@ define([
 	 * 	Main View fpr calendar
 	 */
 	app.views.CalendarPage = utils.GesturesView.extend({
-		
+
 		attributes: {"id": "calendar"},
 
 		events: {
@@ -86,7 +87,27 @@ define([
 			this.loadingView = new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
 
-			this.CourseList.fetch(utils.cacheDefaults());
+			console.log('load data');
+
+/*
+			this.CourseList.fetch({
+				//data: {"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "hgessner", "password": ""}},
+				data: {"condition": {"semester": "0"}},
+				type: 'POST',
+				parse: true,
+				headers: {"Authorization": "Bearer c06156e119040a27a4b43fa933f130"},
+				processData: true,
+				contentType: 'application/json',
+				success: function(collection, response, options){
+					console.log('success');
+					console.log(collection, response, options);
+				},
+				error: function(collection, response, options){
+					console.log(collection, response, options);
+				},
+
+			});*/
+			this.CourseList.fetch();
 		},
 
 		errorHandler: function(error){
