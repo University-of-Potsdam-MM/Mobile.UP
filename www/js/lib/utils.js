@@ -186,7 +186,7 @@ define([
 			return this;
 		}
 	});
-	
+
 	var capitalize = function(string)
 	{
 		return string.charAt(0).toUpperCase() + string.slice(1);
@@ -231,7 +231,7 @@ define([
 	 * As long as the model is loading data from the server, a loading spinner is shown on the given element.
 	 */
 	var LoadingView = Backbone.View.extend({
-		
+
 		runningCounter: 0,
 
 		initialize: function() {
@@ -269,7 +269,7 @@ define([
 								"</div>");
 			}
 		},
-		
+
 		spinnerHold: function(model, attr, opts) {
 			// backbone-fetch-cache is used, we should be aware of prefill requests
 			if (opts.prefill) {
@@ -288,7 +288,7 @@ define([
 
 	// At most one InAppBrowser window should be opened at any time
 	var hasOpenInAppBrowser = false;
-	
+
 	var openInAppBrowser = function(url) {
 		var openWindow = window.open(url, "_blank", "enableViewportScale=yes");
 		openWindow.addEventListener('exit', function(event) {
@@ -301,14 +301,14 @@ define([
 			}
 		});
 	};
-	
+
 	var openInTab = function(url) {
 		if (hasOpenInAppBrowser) {
 			console.log("InAppBrowser open, " + url + " won't be opened");
 		} else {
 			hasOpenInAppBrowser = true;
 		}
-		
+
 		var moodlePage = "https://moodle2.uni-potsdam.de/";
 		if (url.indexOf(moodlePage) != -1){
 			var session = new Session();
@@ -328,7 +328,7 @@ define([
 			openInAppBrowser(url);
 		}
 	}
-	
+
 	/**
 	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
@@ -337,10 +337,10 @@ define([
 		var href = $this.attr('href') || '';
 		var rel = $this.attr('rel') || false;
 		var target = $this.attr('target');
-		
+
 		var url = ''+$(e.currentTarget).attr("href");
 		var uri = new URI(url);
-		
+
 		var internalProtocols = ["http", "https"];
 		var isInternalProtocol = internalProtocols.indexOf(uri.protocol()) >= 0;
 		var isJavascript = uri.protocol().indexOf('javascript') >= 0;
@@ -379,7 +379,7 @@ define([
 			e.preventDefault();
 		}
 	};
-	
+
 	/**
 	 * Generates a uuid v4. Code is taken from broofas answer in http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 	 */
@@ -454,13 +454,13 @@ define([
 		},
 
 	};
-	
+
 	var GesturesView = Backbone.View.extend({
-		
+
 		delegateEventSplitter: /^(\S+)\s*(.*)$/,
 		gestures: ["swipeleft", "swiperight"],
 		gesturesCleanup: [],
-		
+
 		/**
 		 * Code taken from original implementation
 		 */
@@ -471,11 +471,11 @@ define([
 				var method = events[key];
 				if (!_.isFunction(method)) method = this[events[key]];
 				if (!method) continue;
-				
+
 				var match = key.match(this.delegateEventSplitter);
 				var eventName = match[1], selector = match[2];
 				method = _.bind(method, this);
-				
+
 				/** This block is new */
 				if (_.contains(this.gestures, eventName)) {
 					var elements = undefined;
@@ -484,17 +484,17 @@ define([
 					} else {
 						elements = this.$(selector).get();
 					}
-					
+
 					var that = this;
 					$.each(elements, function(index, el) {
 						var hammer = new Hammer(el);
 						hammer.on(eventName, method);
 						that.gesturesCleanup.push(function() { hammer.off(eventName); });
 					});
-					
+
 					continue;
 				}
-				
+
 				eventName += '.delegateEvents' + this.cid;
 				if (selector === '') {
 					this.$el.on(eventName, method);
@@ -504,23 +504,23 @@ define([
 			}
 			return this;
 		},
-		
+
 		/**
 		 * Code taken from original implementation
 		 */
 		undelegateEvents: function() {
 			this.$el.off('.delegateEvents' + this.cid);
-			
+
 			/** This block is new */
 			for (var count = 0; count < this.gesturesCleanup.length; count++) {
 				this.gesturesCleanup[count].apply(this);
 			}
 			this.gesturesCleanup = [];
-			
+
 			return this;
 		},
 	});
-	
+
 	var activateExtendedAjaxLogging = function() {
 		$(document).ajaxError(function(event, jqHXR, ajaxSettings, thrownError) {
 			console.log("Error handler activated");
@@ -531,7 +531,7 @@ define([
 			console.log("Authorization: " + ajaxSettings.headers["Authorization"]);
 		});
 	};
-	
+
 	// Hold cached data for five minutes, then do a background update
 	var prefillExpires = 5 * 60;
 	var cacheDefaults = function(opts) {
