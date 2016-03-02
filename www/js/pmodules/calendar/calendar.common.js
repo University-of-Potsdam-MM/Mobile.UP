@@ -212,17 +212,15 @@ define([
 	 */
 	var CourseList = Backbone.Collection.extend({
 		model: Course,
-		url: 'js/json/hgessner.json',
 
 		initialize: function(){
-			//console.log(this);
 			this.session = new Session();
-			//this.url = "https://esb.soft.cs.uni-potsdam.de:8244/services/pulsTest/getStudentCourses";
-			//this.url= "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot";
-			//this.request = '{"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "'+this.session.get('up.session.username')+'", "password": "'+this.session.get('up.session.password')+'"}}';
+			this.url = "https://esb.soft.cs.uni-potsdam.de:8244/services/pulsTest/getStudentCourses";
 		},
 
 		parse: function(response) {
+
+			// TODO: refactor this to merge current and past Courses
 			return response.studentCourses.student.pastCourses.course;
 		},
 

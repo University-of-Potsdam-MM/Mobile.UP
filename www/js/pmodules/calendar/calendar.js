@@ -89,25 +89,14 @@ define([
 
 			console.log('load data');
 
-/*
 			this.CourseList.fetch({
-				//data: {"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "hgessner", "password": ""}},
-				data: {"condition": {"semester": "0"}},
-				type: 'POST',
-				parse: true,
-				headers: {"Authorization": "Bearer c06156e119040a27a4b43fa933f130"},
-				processData: true,
-				contentType: 'application/json',
-				success: function(collection, response, options){
-					console.log('success');
-					console.log(collection, response, options);
-				},
-				error: function(collection, response, options){
-					console.log(collection, response, options);
-				},
-
-			});*/
-			this.CourseList.fetch();
+				type:'POST',
+				// TODO substitute username and password with session
+				data: '{"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "hgessner", "password": ""}}',
+				beforeSend: function(xhr) {
+      				xhr.setRequestHeader('Content-type', 'application/json');
+    			}
+			});
 		},
 
 		errorHandler: function(error){
