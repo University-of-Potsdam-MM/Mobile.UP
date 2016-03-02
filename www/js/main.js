@@ -11,7 +11,7 @@ require.config({
         'datebox': 'vendor/jqm-datebox',
     	'underscore': 'vendor/underscore',
         'underscore.string': 'vendor/underscore.string',
-    	'backbone': 'vendor/backbone-min',
+    	'backbone': 'vendor/backbone',
 		'backboneMVC': 'vendor/backbone-mvc',
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
