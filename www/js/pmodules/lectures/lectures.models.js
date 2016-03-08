@@ -1,5 +1,23 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 
+    /**
+     * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
+     *
+     * If it's a course the following properties are set
+     * - isCourse
+     * - suburl
+     * - name
+     * - url
+     * - coursetyp
+     * - type
+     *
+     * If it's a category the following properties are set
+     * - isCategory
+     * - suburl
+     * - name
+     * - url
+     * - level
+     */
     var VvzItem = Backbone.Model.extend({
         defaults: {
             "name": "Vorlesungsverzeichnis"
@@ -39,6 +57,9 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
         }
     });
 
+    /**
+     * Holds all courses and categories for a given url. The current url can be changed by calling CurrentVvz.load(vvzHistory) with the first entry in vvzHistory containing the new url.
+     */
     var CurrentVvz = Backbone.Model.extend({
 
         initialize: function() {
