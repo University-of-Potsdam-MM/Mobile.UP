@@ -1,9 +1,4 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
-    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/lectures");
-
-    // Helping the eclipse JS Tools by declaring the variable here
-    var VvzCollection = undefined;
-    var VvzCourseCollection = undefined;
 
     var VvzItem = Backbone.Model.extend({
         defaults: {
@@ -28,6 +23,19 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
             } else {
                 return "";
             }
+        },
+
+        ensureSubmodelLoaded: function(createAction) {
+            var submodel = this.get("submodel");
+            if (!submodel) {
+                // Create model
+                submodel = new Backbone.Model;
+                submodel.url = this.get("suburl");
+                submodel.parse = function(response) { return response.course; };
+                this.set("submodel", submodel);
+
+                createAction(submodel);
+            }
         }
     });
 
@@ -38,15 +46,13 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
         },
 
         load: function(vvzHistory) {
-            var vvzUrl = vvzHistory.first().get("suburl")
-
-            this.items.url = vvzUrl;
+            this.items.url = vvzHistory.first().get("suburl");
             this.items.reset();
             this.items.fetch(utils.cacheDefaults({reset: true}));
         }
     });
 
-    VvzCollection = Backbone.Collection.extend({
+    var VvzCollection = Backbone.Collection.extend({
         model: VvzItem,
 
         parse: function(response) {

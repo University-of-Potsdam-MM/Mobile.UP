@@ -58,23 +58,14 @@ define([
 		},
 
 		loadChildren: function() {
-			//console.log("loadChildren ausgelöst");
-
-			var submodel = this.model.get("submodel");
-			if (!submodel) {
-				// Create model
-				submodel = new Backbone.Model;
-				submodel.url = this.model.get("suburl");
-				submodel.parse = function(response) { return response.course; };
-				this.model.set("submodel", submodel);
-
+			this.model.ensureSubmodelLoaded(_.bind(function(submodel) {
 				// Create view
 				new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
 				new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
 
 				// Fetch from server
 				submodel.fetch(utils.cacheDefaults());
-			}
+			}, this));
 		}
 	});
 
