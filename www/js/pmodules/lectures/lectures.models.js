@@ -3,9 +3,8 @@ define([
     'underscore',
     'backbone',
     'utils',
-    'uri/URI',
-    'underscore.string'
-], function($, _, Backbone, utils, URI, _str){
+    'uri/URI'
+], function($, _, Backbone, utils, URI){
     Backbone.fetchCache.enabled = false;
 
     /**
