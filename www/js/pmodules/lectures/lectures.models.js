@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'utils',
-    'uri/URI'
-], function($, _, Backbone, utils, URI){
+    'uri/URI',
+    'underscore.string'
+], function($, _, Backbone, utils, URI, _str){
     Backbone.fetchCache.enabled = false;
 
     /**
@@ -15,7 +16,6 @@ define([
      * - suburl
      * - name
      * - url
-     * - coursetyp
      * - type
      *
      * If it's a category the following properties are set
@@ -36,12 +36,15 @@ define([
 
         createSubUrl: function() {
             var result = "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/";
-            if (!this.has("headerId")) {
-                // No header known -> we are at the root
+            if (!this.has("headerId") && !this.has("courseId")) {
+                // No id known -> we are at the root
                 result += "getLectureScheduleRoot";
-            } else {
+            } else if (this.has("headerId")) {
                 // There are children -> we have to dig deeper
                 result += "getLectureScheduleSubTree#" + this.get("headerId");
+            } else if (this.has("courseId")) {
+                // There is a course id -> course details next
+                result += "getCourseData#" + this.get("courseId");
             }
             return result;
         },
@@ -66,10 +69,59 @@ define([
         }
     });
 
+    /**
+     * Holds all details for a lecture course. The following properties are set
+     * - groups (array)
+     *   - name
+     *   - dates (array)
+     *     - weekday
+     *     - time
+     *     - rhythm
+     *     - timespan
+     *     - room
+     *     - lecturer
+     *
+     */
     var VvzCourseContent = Backbone.Model.extend({
 
         parse: function(response) {
-            return response;
+            // Events have to be grouped by groupId to know which dates belong together
+            var groups = response.courseData.course[0].events.event;
+            var groupedEvents = _.groupBy(this.ensureArray(groups), "groupId");
+
+            var joinLecturers = function(lecturers) {
+                return _.map(lecturers, function (l) {
+                    return (l.lecturerTitle ? l.lecturerTitle + " " : "") + l.lecturerLastname;
+                }).join(", ");
+            };
+
+            return {
+                groups: _.map(groupedEvents, function(dates) {
+                    return {
+                        name: dates[0].group,
+                        dates: _.map(dates, function(date) {
+                            return {
+                                weekday: date.daySC,
+                                time: date.startTime + " bis " + date.endTime,
+                                rhythm: date.rhythm,
+                                timespan: date.startDate + " bis " + date.endDate,
+                                room: (date.roomSc || "").replace(/_/g, "."),
+                                lecturer: joinLecturers(this.ensureArray(date.lecturers.lecturer))
+                            };
+                        }, this)
+                    }
+                }, this)
+            };
+        },
+
+        ensureArray: function(param) {
+            if (!param) {
+                return param;
+            } else if (Array.isArray(param)) {
+                return param;
+            } else {
+                return [param];
+            }
         },
 
         sync: function(method, model, options) {
@@ -83,11 +135,7 @@ define([
         _selectRequestData: function(url) {
             var uri = new URI(url);
             var data = {condition: {}};
-            if (uri.fragment()) {
-                data.condition.headerId = uri.fragment();
-            } else {
-                data.condition.semester = 0;
-            }
+            data.condition.courseId = uri.fragment();
             return JSON.stringify(data);
         }
     });
@@ -132,7 +180,7 @@ define([
         parse: function(response) {
             if (response.lectureScheduleRoot) {
                 var models = response.lectureScheduleRoot.rootNode.childNodes.childNode;
-                return _.map(models, function(model) {
+                return _.map(this.ensureArray(models), function(model) {
                     return {
                         name: model.headerName,
                         headerId: model.headerId,
@@ -141,7 +189,7 @@ define([
                 });
             } else if (response.lectureScheduleSubTree) {
                 var models = response.lectureScheduleSubTree.currentNode.childNodes.childNode;
-                return _.map(models, function(model) {
+                return _.map(this.ensureArray(models), function(model) {
                     return {
                         name: model.headerName,
                         headerId: model.headerId,
@@ -150,12 +198,12 @@ define([
                 });
             } else if (response.lectureScheduleCourses) {
                 var models = response.lectureScheduleCourses.currentNode.courses.course;
-                return _.map(models, function(model) {
+                return _.map(this.ensureArray(models), function(model) {
                     return {
                         name: model.courseName,
                         type: model.courseType,
                         isCourse: true,
-                        suburl: "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getLectureScheduleCourses#" + model.courseId
+                        courseId: model.courseId
                     };
                 });
             }
