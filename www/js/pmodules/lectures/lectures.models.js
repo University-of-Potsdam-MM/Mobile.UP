@@ -1,4 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'utils',
+    'uri/URI'
+], function($, _, Backbone, utils, URI){
+    Backbone.fetchCache.enabled = false;
 
     /**
      * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
@@ -28,32 +35,60 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
         },
 
         createSubUrl: function() {
-            var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=vvz";
-            result += "&auth=H2LHXK5N9RDBXMB";
-            result += this.getIfAvailable("url", "&url=");
-            result += this.getIfAvailable("level", "&level=");
+            var result = "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/";
+            if (!this.has("headerId")) {
+                // No header known -> we are at the root
+                result += "getLectureScheduleRoot";
+            } else {
+                // There are children -> we have to dig deeper
+                result += "getLectureScheduleSubTree#" + this.get("headerId");
+            }
             return result;
         },
 
-        getIfAvailable: function(attribute, pretext) {
-            if (this.get(attribute)) {
-                return pretext + encodeURIComponent(this.get(attribute));
-            } else {
-                return "";
-            }
+        createCourseUrl: function(url) {
+            var headerId = new URI(url).fragment();
+            var result = "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/";
+            result += "getLectureScheduleCourses#" + headerId;
+            return result;
         },
 
         ensureSubmodelLoaded: function(createAction) {
             var submodel = this.get("submodel");
             if (!submodel) {
                 // Create model
-                submodel = new Backbone.Model;
+                submodel = new VvzCourseContent;
                 submodel.url = this.get("suburl");
-                submodel.parse = function(response) { return response.course; };
                 this.set("submodel", submodel);
 
                 createAction(submodel);
             }
+        }
+    });
+
+    var VvzCourseContent = Backbone.Model.extend({
+
+        parse: function(response) {
+            return response;
+        },
+
+        sync: function(method, model, options) {
+            options.url = _.result(model, 'url');
+            options.contentType = "application/json";
+            options.method = "POST";
+            options.data = this._selectRequestData(options.url);
+            return Backbone.Model.prototype.sync.call(this, method, model, options);
+        },
+
+        _selectRequestData: function(url) {
+            var uri = new URI(url);
+            var data = {condition: {}};
+            if (uri.fragment()) {
+                data.condition.headerId = uri.fragment();
+            } else {
+                data.condition.semester = 0;
+            }
+            return JSON.stringify(data);
         }
     });
 
@@ -67,9 +102,27 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
         },
 
         load: function(vvzHistory) {
+            // We can't detect whether we have a category or course so we try loading a category first. If that fails we try loading a course
+            var reloadOnEmpty = _.bind(function(collection, response, options) {
+                if (collection.isEmpty()) {
+                    // Second try: loading a course
+                    var model = vvzHistory.first();
+                    model.set("suburl", VvzItem.prototype.createCourseUrl(model.get("suburl")));
+                    this._loadOnce(vvzHistory);
+                }
+            }, this);
+
+            // First try: loading a category
+            this._loadOnce(vvzHistory, reloadOnEmpty);
+        },
+
+        _loadOnce: function(vvzHistory, success) {
             this.items.url = vvzHistory.first().get("suburl");
             this.items.reset();
-            this.items.fetch(utils.cacheDefaults({reset: true}));
+            this.items.fetch(utils.cacheDefaults({
+                reset: true,
+                success: success
+            }));
         }
     });
 
@@ -77,19 +130,35 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
         model: VvzItem,
 
         parse: function(response) {
-            var rawCategories = this.ensureArray(response.listitem.subitems.listitem);
-            var categories = _.map(rawCategories, function(model) {
-                model.isCategory = true;
-                return model;
-            });
-
-            var rawCourses = this.ensureArray(response.listitem.subitems.course);
-            var courses = _.map(rawCourses, function(model) {
-                model.isCourse = true;
-                return model;
-            });
-
-            return _.union(categories, courses);
+            if (response.lectureScheduleRoot) {
+                var models = response.lectureScheduleRoot.rootNode.childNodes.childNode;
+                return _.map(models, function(model) {
+                    return {
+                        name: model.headerName,
+                        headerId: model.headerId,
+                        isCategory: true
+                    };
+                });
+            } else if (response.lectureScheduleSubTree) {
+                var models = response.lectureScheduleSubTree.currentNode.childNodes.childNode;
+                return _.map(models, function(model) {
+                    return {
+                        name: model.headerName,
+                        headerId: model.headerId,
+                        isCategory: true
+                    };
+                });
+            } else if (response.lectureScheduleCourses) {
+                var models = response.lectureScheduleCourses.currentNode.courses.course;
+                return _.map(models, function(model) {
+                    return {
+                        name: model.courseName,
+                        type: model.courseType,
+                        isCourse: true,
+                        suburl: "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getLectureScheduleCourses#" + model.courseId
+                    };
+                });
+            }
         },
 
         ensureArray: function(param) {
@@ -100,6 +169,25 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
             } else {
                 return [param];
             }
+        },
+
+        sync: function(method, model, options) {
+            options.url = _.result(model, 'url');
+            options.contentType = "application/json";
+            options.method = "POST";
+            options.data = this._selectRequestData(options.url);
+            return Backbone.Model.prototype.sync.call(this, method, model, options);
+        },
+
+        _selectRequestData: function(url) {
+            var uri = new URI(url);
+            var data = {condition: {}};
+            if (uri.fragment()) {
+                data.condition.headerId = uri.fragment();
+            } else {
+                data.condition.semester = 0;
+            }
+            return JSON.stringify(data);
         }
     });
 
