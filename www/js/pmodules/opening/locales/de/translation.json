@@ -7,7 +7,7 @@
         "pt": "Portugiesisch",
         "it": "Italienisch",
         "uk": "Ukrainisch",
-        "choose": "Wähle eine Sprache",
+        "choose": "Wähle eine Sprache"
     },
 
     "weekdays": {
@@ -18,7 +18,7 @@
             "we": "nächsten",
             "th": "nächsten",
             "fr": "nächsten",
-            "sa": "nächsten",
+            "sa": "nächsten"
         }
     },
 
@@ -31,7 +31,7 @@
             "open": "Nur Einrichtungen welche jetzt geöffnet sind",
             "unknown": "Nur Einrichtungen die möglicherweise jetzt geöffnet sind",
             "closed": "Nur Einrichtungen die jetzt geschlossen sind",
-            "openOrUnknown": "Nur Einrichtungen die jetzt geöffnet oder unbekannt sind",
+            "openOrUnknown": "Nur Einrichtungen die jetzt geöffnet oder unbekannt sind"
         },
         "title": "opening_hours Auswertewerkzeug",
         "open always": "Die Einrichtung hat immer geöffnet.",
@@ -77,7 +77,7 @@
         "rule separator  ||": "Begrenzungszeichen für Regeln (es folgt eine Oder-Verknüpfte Regel die nur auf Zeiten zutrifft, die nicht bereits von vorherigen Regeln behandelt werden)",
         "rule separator ,": "Begrenzungszeichen für Regeln (es folgt eine additive Regel deren Zeiten vorherige Regeln erweitern und nicht überschreiben wie bei normalen Regeln)",
         "JOSM remote conn error": "Es konnte keine Verbindung zu JOSM aufgebaut werden. Bitte prüfe, ob JOSM ausgeführt wird und Fernsteuerung auf dem Standard tcp Port 8111 erlaubt ist.",
-        "refer to yohours": "Dieser Wert kann auch von YoHours verarbeitet werden. YoHours ist ein benutzerfreundlicher Editor für die opening_hours Syntax. Falls keine fortschrittlichen Funktionen der Syntax benötigt werden ist YoHours eine einsteigerfreundliche Alternative. <a href=\"__href__\">Ausprobieren</a>.",
+        "refer to yohours": "Dieser Wert kann auch von YoHours verarbeitet werden. YoHours ist ein benutzerfreundlicher Editor für die opening_hours Syntax. Falls keine fortschrittlichen Funktionen der Syntax benötigt werden ist YoHours eine einsteigerfreundliche Alternative. <a href=\"__href__\">Ausprobieren</a>."
     },
 
     "words": {
@@ -101,7 +101,6 @@
         "comment": "Kommentar",
         "today": "heute",
         "tomorrow": "morgen",
-        // "on weekday": "on", // not needed in this context
         "on weekday": " ",
         "region": "Region",
         "position": "Position",
@@ -113,7 +112,7 @@
         "examples": "Beispiele",
         "none": "keine",
         "date": "Datum",
-        "time": { // __count__ Can not cover need for Russian language (one, several, many).
+        "time": {
             "minute": "Minute",
             "minute_plural": "Minuten",
             "minute many": "Minuten",
@@ -128,7 +127,7 @@
             "years many": "Jahre",
             "hours minutes sep": "und ",
             "now": "Jetzt",
-            "time": "Zeit",
+            "time": "Zeit"
         }
     }
 }
