@@ -1,6 +1,25 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 'i18next'], function($, _, Backbone, utils, opening_hours, moment, i18n){
+define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 'i18next', 'i18next-xhr-backend'], function($, _, Backbone, utils, opening_hours, moment, i18n, i18nXhr){
 
 //  'i18n!pmodules/opening/labels'
+
+    i18n.use(i18nXhr).init({
+        lng: 'de',
+        debug: true,
+        fallbackLng: false,
+        backend: {
+            loadPath: "js/pmodules/opening/locales/{{lng}}/{{ns}}.json",
+            allowMultiLoading: false,
+            crossDomain: false
+        }
+    }, function(err, t) {
+        // initialized and ready to go!
+        var hw = i18n.t('key'); // hw = 'hello world'
+        console.log("i18n", hw);
+
+        var closed = i18n.t("words.closed");
+        var closedNow = i18n.t("texts.closed now");
+        console.warn("i18n geladen, falls hier Uebersetzung steht:", closed, closedNow);
+    });
 
 
     "use strict";
