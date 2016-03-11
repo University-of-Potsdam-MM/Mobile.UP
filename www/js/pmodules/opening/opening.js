@@ -25,8 +25,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
     "use strict";
     var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/opening");
 
-    opening_hours = window.opening_hours;
-
 
     var OpeningHoursTable = {
 
