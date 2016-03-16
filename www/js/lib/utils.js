@@ -48,6 +48,34 @@ define([
 	    };
 	};
 
+	var renderheader = function(d){
+		if ( !renderheader.headerTemplateLoaded ) {
+			var tmpl_dir = 'js/templates';
+			var tmpl_url = tmpl_dir + '/header.tmpl';
+			var tmpl_string;
+
+			$.ajax({
+				url: tmpl_url,
+				method: 'GET',
+				dataType: 'html',
+				async: false, //Synchron, also eigentlich nicht AJAX- sondern SJAX-Call
+				success: function(data) {
+					tmpl_string = data;
+				}
+			});
+
+			renderheader.headerTemplateString = tmpl_string.replace(/\t/g, '');
+			renderheader.headerTemplateLoaded = true;
+		}
+		d.settingsUrl = d.settingsUrl ? d.settingsUrl : false;
+		d.back = d.back ? d.back : false;
+		d.backCaption = d.backCaption ? d.backCaption : false;
+		d.title = d.title ? d.title : '';
+		d.klass = d.klass ? ' ' + d.klass : '';
+		d.home = d.home ? d.home : false;
+		d.store = LocalStore;
+		return _.template(renderheader.headerTemplateString, d);
+	};
 
 	var removeTabs = function(tmpl) {
 		return tmpl.replace(/\t/g, '');
@@ -630,6 +658,7 @@ define([
 
 	return {
 			rendertmpl: rendertmpl,
+			renderheader: renderheader,
 			removeTabs: removeTabs,
 			capitalize: capitalize,
 			addLoadingSpinner: addLoadingSpinner,

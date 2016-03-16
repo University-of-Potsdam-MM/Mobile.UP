@@ -101,8 +101,8 @@ define([
                     metas.title = $('.ui-header').find('h1').html();
                 }
 
-                var header = utils.rendertmpl('header');
-                this._switchHeaders(header({metas: metas}));
+                var header = utils.renderheader(metas);
+                this._switchHeaders(header);
             }
         },
 
