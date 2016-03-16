@@ -11,7 +11,7 @@
     define(['underscore', 'backbone', 'jquery'], function (_, Backbone, $) {
       return (root.Backbone = factory(_, Backbone, $));
     });
-  } else if (typeof exports !== 'undefined') {
+  } else if (typeof exports !== 'undefined' && typeof require !== 'undefined') {
     module.exports = factory(require('underscore'), require('backbone'), require('jquery'));
   } else {
     // Browser globals
@@ -74,32 +74,36 @@
   }
 
   // Shared methods
-  function getCacheKey(instance, opts) {
-    var url;
-
-    if(opts && opts.url) {
-      url = opts.url;
-    } else {
-      url = _.isFunction(instance.url) ? instance.url() : instance.url;
-    }
-
-    // Need url to use as cache key so return if we can't get it
-    if(!url) { return; }
-
-    if(opts && opts.data) {
-      if(typeof opts.data === 'string') {
-        return url + '?' + opts.data;
+  function getCacheKey(key, opts) {
+    if (key && _.isObject(key)) {
+      // If the model has its own, custom, cache key function, use it.
+      if (_.isFunction(key.getCacheKey)) {
+        return key.getCacheKey(opts);
+      }
+      // else, use the URL
+      if (opts && opts.url) {
+        key = opts.url;
       } else {
-        return url + '?' + $.param(opts.data);
+        key = _.isFunction(key.url) ? key.url() : key.url;
+      }
+    } else if (_.isFunction(key)) {
+      return key(opts);
+    }
+    if (opts && opts.data) {
+      if(typeof opts.data === 'string') {
+        return key + '?' + opts.data;
+      } else {
+        return key + '?' + $.param(opts.data);
       }
     }
-    return url;
+    return key;
   }
 
   function setCache(instance, opts, attrs) {
     opts = (opts || {});
     var key = Backbone.fetchCache.getCacheKey(instance, opts),
         expires = false,
+        lastSync = (opts.lastSync || (new Date()).getTime()),
         prefillExpires = false;
 
     // Need url to use as cache key so return if we can't get it
@@ -121,6 +125,7 @@
 
     Backbone.fetchCache._cache[key] = {
       expires: expires,
+      lastSync : lastSync,
       prefillExpires: prefillExpires,
       value: attrs
     };
@@ -128,10 +133,33 @@
     Backbone.fetchCache.setLocalStorage();
   }
 
-  function clearItem(key) {
-    if (_.isFunction(key)) { key = key(); }
+  function getCache(key, opts) {
+    if (_.isFunction(key)) {
+      key = key();
+    } else if (key && _.isObject(key)) {
+      key = getCacheKey(key, opts);
+    }
+
+    return Backbone.fetchCache._cache[key];
+  }
+
+  function getLastSync(key, opts) {
+    return getCache(key).lastSync;
+  }
+
+  function clearItem(key, opts) {
+    if (_.isFunction(key)) {
+      key = key();
+    } else if (key && _.isObject(key)) {
+      key = getCacheKey(key, opts);
+    }
     delete Backbone.fetchCache._cache[key];
     Backbone.fetchCache.setLocalStorage();
+  }
+
+  function reset() {
+    // Clearing all cache items
+    Backbone.fetchCache._cache = {};
   }
 
   function setLocalStorage() {
@@ -140,7 +168,7 @@
       localStorage.setItem(Backbone.fetchCache.getLocalStorageKey(), JSON.stringify(Backbone.fetchCache._cache));
     } catch (err) {
       var code = err.code || err.number || err.message;
-      if (code === 22) {
+      if (code === 22 || code === 1014) {
         this._deleteCacheWithPriority();
       } else {
         throw(err);
@@ -166,11 +194,12 @@
     }
     opts = _.defaults(opts || {}, { parse: true });
     var key = Backbone.fetchCache.getCacheKey(this, opts),
-        data = Backbone.fetchCache._cache[key],
+        data = getCache(key),
         expired = false,
         prefillExpired = false,
         attributes = false,
         deferred = new $.Deferred(),
+        context = opts.context || this,
         self = this;
 
     function isPrefilling() {
@@ -183,18 +212,18 @@
       }
 
       self.set(attributes, opts);
-      if (_.isFunction(opts.prefillSuccess)) { opts.prefillSuccess(self, attributes, opts); }
+      if (_.isFunction(opts.prefillSuccess)) { opts.prefillSuccess.call(context, self, attributes, opts); }
 
       // Trigger sync events
       self.trigger('cachesync', self, attributes, opts);
       self.trigger('sync', self, attributes, opts);
 
       // Notify progress if we're still waiting for an AJAX call to happen...
-      if (isPrefilling()) { deferred.notify(self); }
+      if (isPrefilling()) { deferred.notifyWith(context, [self]); }
       // ...finish and return if we're not
       else {
-        if (_.isFunction(opts.success)) { opts.success(self, attributes, opts); }
-        deferred.resolve(self);
+        if (_.isFunction(opts.success)) { opts.success.call(context, self, attributes, opts); }
+        deferred.resolveWith(context, [self]);
       }
     }
 
@@ -217,23 +246,23 @@
       }
 
       if (!isPrefilling()) {
-        return deferred;
+        return deferred.promise();
       }
     }
 
     // Delegate to the actual fetch method and store the attributes in the cache
     var jqXHR = superMethods.modelFetch.apply(this, arguments);
     // resolve the returned promise when the AJAX call completes
-    jqXHR.done( _.bind(deferred.resolve, this, this) )
+    jqXHR.done( _.bind(deferred.resolve, context, this) )
       // Set the new data in the cache
       .done( _.bind(Backbone.fetchCache.setCache, null, this, opts) )
       // Reject the promise on fail
-      .fail( _.bind(deferred.reject, this, this) );
+      .fail( _.bind(deferred.reject, context, this) );
 
     deferred.abort = jqXHR.abort;
 
     // return a promise which provides the same methods as a jqXHR object
-    return deferred;
+    return deferred.promise();
   };
 
   // Override Model.prototype.sync and try to clear cache items if it looks
@@ -271,11 +300,12 @@
 
     opts = _.defaults(opts || {}, { parse: true });
     var key = Backbone.fetchCache.getCacheKey(this, opts),
-        data = Backbone.fetchCache._cache[key],
+        data = getCache(key),
         expired = false,
         prefillExpired = false,
         attributes = false,
         deferred = new $.Deferred(),
+        context = opts.context || this,
         self = this;
 
     function isPrefilling() {
@@ -284,18 +314,18 @@
 
     function setData() {
       self[opts.reset ? 'reset' : 'set'](attributes, opts);
-      if (_.isFunction(opts.prefillSuccess)) { opts.prefillSuccess(self); }
+      if (_.isFunction(opts.prefillSuccess)) { opts.prefillSuccess.call(context, self); }
 
       // Trigger sync events
       self.trigger('cachesync', self, attributes, opts);
       self.trigger('sync', self, attributes, opts);
 
       // Notify progress if we're still waiting for an AJAX call to happen...
-      if (isPrefilling()) { deferred.notify(self); }
+      if (isPrefilling()) { deferred.notifyWith(context, [self]); }
       // ...finish and return if we're not
       else {
-        if (_.isFunction(opts.success)) { opts.success(self, attributes, opts); }
-        deferred.resolve(self);
+        if (_.isFunction(opts.success)) { opts.success.call(context, self, attributes, opts); }
+        deferred.resolveWith(context, [self]);
       }
     }
 
@@ -318,23 +348,23 @@
       }
 
       if (!isPrefilling()) {
-        return deferred;
+        return deferred.promise();
       }
     }
 
     // Delegate to the actual fetch method and store the attributes in the cache
     var jqXHR = superMethods.collectionFetch.apply(this, arguments);
     // resolve the returned promise when the AJAX call completes
-    jqXHR.done( _.bind(deferred.resolve, this, this) )
+    jqXHR.done( _.bind(deferred.resolve, context, this) )
       // Set the new data in the cache
       .done( _.bind(Backbone.fetchCache.setCache, null, this, opts) )
       // Reject the promise on fail
-      .fail( _.bind(deferred.reject, this, this) );
+      .fail( _.bind(deferred.reject, context, this) );
 
     deferred.abort = jqXHR.abort;
 
     // return a promise which provides the same methods as a jqXHR object
-    return deferred;
+    return deferred.promise();
   };
 
   // Prime the cache from localStorage on initialization
@@ -344,8 +374,11 @@
 
   Backbone.fetchCache._superMethods = superMethods;
   Backbone.fetchCache.setCache = setCache;
+  Backbone.fetchCache.getCache = getCache;
   Backbone.fetchCache.getCacheKey = getCacheKey;
+  Backbone.fetchCache.getLastSync = getLastSync;
   Backbone.fetchCache.clearItem = clearItem;
+  Backbone.fetchCache.reset = reset;
   Backbone.fetchCache.setLocalStorage = setLocalStorage;
   Backbone.fetchCache.getLocalStorage = getLocalStorage;
 

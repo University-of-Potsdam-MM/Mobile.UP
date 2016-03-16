@@ -290,10 +290,11 @@ body .ui-btn.ui-btn-a.back:visited {
 }
 
 /* Datebox*/
-.ui-input-datebox {
-	width: 100% !important;
+#mensa .ui-input-text,
+#transport2 .ui-input-text {
 	color: #fff;
 	background-color: #014260;
+    padding: .4em;
 }
 
 label.showfirst {
@@ -932,7 +933,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	color: #FFF;
 }
 
-.buttons_pt .ui-input-datebox input {
+#transport2 .buttons_pt .ui-input-text input {
 	width: 60% !important;
 	text-align: left;
 	float: left;
@@ -944,30 +945,31 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	font-weight: bold;
 }
 
-.buttons_pt .ui-input-datebox {
+#transport2 .ui-btn.ui-input-clear.ui-icon-clock,
+#transport2 .ui-btn.ui-input-clear.ui-icon-calendar {
+	right: auto;
+	top: auto;
+	margin: 0;
+}
+#transport2 .buttons_pt .ui-input-text {
 	background: transparent;
 }
 
-.buttons_pt .ui-input-datebox a.ui-btn {
+#transport2 .buttons_pt .ui-input-text a.ui-btn {
 	background: transparent;
 	width: 22px !important;
 	float: left;
-	/*margin-right:10%;*/
 }
 
-.buttons_pt .ui-input-datebox a.ui-btn:after {
+#transport2 .buttons_pt .ui-input-text a.ui-btn:after {
 	background-color: transparent;
 }
 
-.buttons_pt li:last-child .ui-btn { /*margin-right:10% !important;*/
-
-}
-
-.buttons_pt .ui-grid-c .ui-input-datebox {
+#transport2 .buttons_pt .ui-grid-c .ui-input-text {
 	width: auto;
 }
 
-.buttons_pt .ui-input-datebox {
+#transport2  .buttons_pt .ui-input-text {
 	min-height: 20px;
 }
 
@@ -1017,8 +1019,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	border: none
 }
 
-.buttons_pt .ui-slider-switch .ui-slider-label-a,.buttons_pt .ui-slider-switch .ui-slider-label-b
-	{
+.buttons_pt .ui-slider-switch .ui-slider-label-a,.buttons_pt .ui-slider-switch .ui-slider-label-b {
 	text-indent: 0;
 	line-height: 40px;
 	font-size: .8em;
@@ -1804,7 +1805,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 #peopleContent .ui-collapsible-inset {
-	
+
 	margin:0 0;
 }
 
@@ -2437,7 +2438,7 @@ p.event-description {
 		background-image: url(..img/red/media_x_big_hr.png) !important;
 		background-size: 55px 55px;
 	}
-	
+
 	.mail {
 	background-image: url(../img/up/mail-small_hr.png) !important;
 	background-repeat: no-repeat;
@@ -2627,10 +2628,10 @@ p.event-description {
 	background-color: rgb(207, 218, 227);
 }
 
-#gradesTable .wordwrap { 
-	white-space: pre-wrap;      /* CSS3 */   
-	white-space: -moz-pre-wrap; /* Firefox */   
-	white-space: -o-pre-wrap;   /* Opera 7 */    
+#gradesTable .wordwrap {
+	white-space: pre-wrap;      /* CSS3 */
+	white-space: -moz-pre-wrap; /* Firefox */
+	white-space: -o-pre-wrap;   /* Opera 7 */
 	word-wrap: break-word;      /* IE */
 }
 
@@ -2639,7 +2640,7 @@ p.event-description {
 	    color: #fff;
     font-size: .9em;
     margin-bottom: 1em;
-   
+
     padding: .3em;
     color: #014260;
     font-family: georgia,serif;
