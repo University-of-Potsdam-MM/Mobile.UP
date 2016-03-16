@@ -1,6 +1,6 @@
 {
   "name": "up_app",
-  "version": "3.2.0",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,21 +12,22 @@
     "url": "git://github.com/University-of-Potsdam-MM/UP.App.git"
   },
   "author": "",
-  "license": "CC",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/University-of-Potsdam-MM/UP.App/issues"
   },
   "homepage": "https://github.com/University-of-Potsdam-MM/UP.App",
   "dependencies": {
-    "jquery": "^2.2.1",
-    "underscore": "^1.8.3",
-    "underscore.string": "^3.3.4",
-    "backbone": "^1.2.3",
-    "q": "^1.4.1",
-    "moment": "^2.22.2",
-    "requirejs": "^2.1.22",
-    "backbone-fetch-cache": "^2.0.1",
-    "fastclick": "^1.0.6"
+    "jquery": "^2.1.1",
+    "underscore": "^1.6.0",
+    "underscore.string": "^2.3.3",
+    "backbone": "^1.1.2",
+    "q": "^1.0.0",
+    "underscore.string": "^2.3.3",
+    "moment": "^2.5.1",
+    "requirejs": "^2.1.11",
+    "backbone-fetch-cache": "^1.4.1",
+    "fastclick": "^1.0.3"
   },
   "devDependencies": {
     "connect": "~2.14.4",
