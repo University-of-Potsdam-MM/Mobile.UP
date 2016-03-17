@@ -34,7 +34,7 @@ define([
         },
 
         createSubUrl: function() {
-            var result = "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/";
+            var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/";
             if (!this.has("headerId") && !this.has("courseId")) {
                 // No id known -> we are at the root
                 result += "getLectureScheduleRoot";
@@ -50,7 +50,7 @@ define([
 
         createCourseUrl: function(url) {
             var headerId = new URI(url).fragment();
-            var result = "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/";
+            var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/";
             result += "getLectureScheduleCourses#" + headerId;
             return result;
         },
