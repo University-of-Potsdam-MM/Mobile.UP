@@ -89,14 +89,7 @@ define([
 
 			console.log('load data');
 
-			this.CourseList.fetch({
-				type:'POST',
-				// TODO substitute username and password with session
-				data: '{"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "hgessner", "password": ""}}',
-				beforeSend: function(xhr) {
-      				xhr.setRequestHeader('Content-type', 'application/json');
-    			}
-			});
+			this.CourseList.fetch();
 		},
 
 		errorHandler: function(error){

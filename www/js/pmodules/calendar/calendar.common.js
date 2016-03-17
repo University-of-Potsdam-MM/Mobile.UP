@@ -215,14 +215,24 @@ define([
 
 		initialize: function(){
 			this.session = new Session();
-			this.url = "https://esb.soft.cs.uni-potsdam.de:8244/services/pulsTest/getStudentCourses";
+			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getStudentCourses";
 		},
 
 		parse: function(response) {
+			console.log(response);
 
 			// TODO: refactor this to merge current and past Courses
 			return response.studentCourses.student.pastCourses.course;
 		},
+
+		sync: function(method, model, options){
+			options.url = _.result(model, 'url');
+			options.contentType = "application/json";
+			options.method = "POST";
+			options.data = '{"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "'+this.session.get('up.session.username')+'", "password": "'+this.session.get('up.session.password')+'"}}';
+			return Backbone.Model.prototype.sync.call(this, method, model, options);
+		},
+
 
 		// filters courses and events for the day
 		// the events for the day are added as currentEvents
