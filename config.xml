@@ -16,7 +16,7 @@
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />
     <!-- see https://github.com/apache/cordova-plugin-statusbar/ -->
-    <preference name="StatusBarOverlaysWebView" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarStyle" value="blackopaque" />
     <!-- Blackberry only -->
     <preference name="disable-cursor" value="false" />
