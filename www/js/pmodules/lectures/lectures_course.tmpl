@@ -1,4 +1,4 @@
-<% _.each(asArray(model.attributes.groups.group), function(group, index, allGroups) { %>
+<% _.each(asArray(model.attributes.groups), function(group) { %>
 <li class="lecture-group-detail">
 
 	<h3 class="lecture-group-name"><%= group.name %></h3>
@@ -15,11 +15,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<% _.each(asArray(group.dates.date), function(date) { %>
+			<% _.each(asArray(group.dates), function(date) { %>
 			<tr>
 				<th><%= date.weekday %></th>
 				<th><%= date.time %></th>
-				<th><%= date.rythm %></th>
+				<th><%= date.rhythm %></th>
 				<th><%= date.timespan %></th>
 				<th><%= date.room %></th>
 				<th><%= date.lecturer %></th>
@@ -28,7 +28,8 @@
 		</tbody>
 	</table>
 </li>
-<div class="lecture-group-puls-link">
+<!-- PULS link is disabled because the new API doesn't give a link yet -->
+<!--<div class="lecture-group-puls-link">
 	<a href="<%= model.attributes.url %>" target="_blank" rel="external">In PULS öffnen</a>
-</div>
+</div>-->
 <% }); %>
