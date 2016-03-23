@@ -219,10 +219,8 @@ define([
 		},
 
 		parse: function(response) {
-			console.log(response);
-
-			// TODO: refactor this to merge current and past Courses
-			return response.studentCourses.student.pastCourses.course;
+			var student = response.studentCourses.student;
+			return student.pastCourses.course.concat(student.actualCourses.course);
 		},
 
 		sync: function(method, model, options){
