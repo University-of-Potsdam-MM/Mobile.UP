@@ -229,10 +229,22 @@ define([
 			options.url = _.result(model, 'url');
 			options.contentType = "application/json";
 			options.method = "POST";
-			options.data = '{"condition": {"semester": "0", "allLectures": "1"}, "user-auth": {"username" : "'+this.session.get('up.session.username')+'", "password": "'+this.session.get('up.session.password')+'"}}';
+			options.data = this._data(this.session.get('up.session.username'), this.session.get('up.session.password'));
 			return Backbone.Model.prototype.sync.call(this, method, model, options);
 		},
 
+		_data: function(username, password) {
+			return JSON.stringify({
+				condition: {
+					semester: 0,
+					allLectures: 1
+				},
+				"user-auth": {
+					username: username,
+					password: password
+				}
+			});
+		},
 
 		// filters courses and events for the day
 		// the events for the day are added as currentEvents
