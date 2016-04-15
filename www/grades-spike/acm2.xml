@@ -1,0 +1,135 @@
+<academicAchievements>
+    <universityAddress>
+        <name>Universität Potsdam</name>
+        <street>Am Neuen Palais 10</street>
+        <zipcode>14469</zipcode>
+        <city>Potsdam</city>
+        <formattedAddress>Universität Potsdam, D2, Prüfungsamt,  Am Neuen Palais 10, 14469 Potsdam</formattedAddress>
+    </universityAddress>
+    <student>
+        <name>...</name>
+        <firstname>...</firstname>
+        <academicDegree/>
+        <matriculationNumber>...</matriculationNumber>
+        <gender>M</gender>
+        <formOfAddress>Herrn</formOfAddress>
+        <street>...</street>
+        <zipcode>...</zipcode>
+        <city>...</city>
+    </student>
+    <degree>
+        <name>Bachelor of Science</name>
+        <studyArea>
+            <name>Computational Science</name>
+            <version>Wintersemester 2013/14</version>
+        </studyArea>
+    </degree>
+    <achievement>
+        <field>
+            <fieldName>Computational Science</fieldName>
+            <version>20132</version>
+            <allocationUnit>SWS</allocationUnit>
+            <module>
+                <level>0</level>
+                <examDesc>VII. Kernmodule Test</examDesc>
+                <examStatus>PV</examStatus>
+                <actualCreditPoints>12</actualCreditPoints>
+                <targetCreditPoints>18</targetCreditPoints>
+                <module>
+                    <level>1</level>
+                    <examNumber>INF 7030</examNumber>
+                    <examDesc>Test</examDesc>
+                    <examStatus>BE</examStatus>
+                    <actualCreditPoints>6</actualCreditPoints>
+                    <grade>1,0</grade>
+                    <examination>
+                        <nonGraded>
+                            <examNumber>552811</examNumber>
+                            <courseType>Vorlesung</courseType>
+                            <courseName>Test</courseName>
+                            <semester>SoSe 14</semester>
+                        </nonGraded>
+                        <nonGraded>
+                            <examNumber>552821</examNumber>
+                            <courseType>Übung</courseType>
+                            <courseName>Test</courseName>
+                            <semester>SoSe 14</semester>
+                        </nonGraded>
+                        <graded>
+                            <examNumber>552801</examNumber>
+                            <desc>Mündliche Prüfung</desc>
+                            <semester>SoSe 14</semester>
+                            <status>NB</status>
+                            <attempt>1</attempt>
+                            <creditPoints>0</creditPoints>
+                            <grade>5,0</grade>
+                            <examiner>
+                                <lastname>Test</lastname>
+                            </examiner>
+                        </graded>
+                        <graded>
+                            <examNumber>552801</examNumber>
+                            <desc>Mündliche Prüfung</desc>
+                            <semester>WiSe 14/15</semester>
+                            <status>BE</status>
+                            <attempt>2</attempt>
+                            <grade>1,0</grade>
+                            <examiner>
+                                <lastname>Test</lastname>
+                            </examiner>
+                        </graded>
+                    </examination>
+                </module>
+            </module>
+            <module>
+                <level>0</level>
+                <examDesc>XI. Vertiefungsmodule Test2</examDesc>
+                <examStatus>PV</examStatus>
+                <actualCreditPoints>0</actualCreditPoints>
+                <targetCreditPoints>18</targetCreditPoints>
+                <module>
+                    <level>1</level>
+                    <examDesc>Bereich Blubb</examDesc>
+                    <examStatus>PV</examStatus>
+                    <actualCreditPoints>0</actualCreditPoints>
+                    <targetCreditPoints>6</targetCreditPoints>
+                    <module>
+                        <level>2</level>
+                        <examNumber>4060</examNumber>
+                        <examDesc>Bla</examDesc>
+                        <examStatus>PV</examStatus>
+                        <actualCreditPoints>0</actualCreditPoints>
+                        <targetCreditPoints>6</targetCreditPoints>
+                        <examination>
+                            <nonGraded>
+                                <examNumber>821211</examNumber>
+                                <courseType>Vorlesung</courseType>
+                                <courseName>BlaBla</courseName>
+                                <semester>SoSe 15</semester>
+                            </nonGraded>
+                            <graded>
+                                <examNumber>821221</examNumber>
+                                <courseType>Seminar</courseType>
+                                <courseName>BlaBla</courseName>
+                                <semester>SoSe 15</semester>
+                                <status>BE</status>
+                                <attempt>1</attempt>
+                                <grade>unbenotet</grade>
+                                <examiner>
+                                    <lastname>Test</lastname>
+                                </examiner>
+                            </graded>
+                        </examination>
+                    </module>
+                </module>
+            </module>
+            <credits>
+                <accountCredits>
+                    <description>Erzielte Leistungspunkte :</description>
+                    <actualCreditPoints>42</actualCreditPoints>
+                    <targetCreditPoints>90</targetCreditPoints>
+                </accountCredits>
+            </credits>
+        </field>
+    </achievement>
+</academicAchievements>
