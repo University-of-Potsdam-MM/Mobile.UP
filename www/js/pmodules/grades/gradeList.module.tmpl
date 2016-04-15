@@ -1,0 +1,26 @@
+<tr class="module-level-<% module.level %>">
+    <%
+        var lp = module.actualCreditPoints;
+        if (module.targetCreditPoints)
+            lp += "/" + module.targetCreditPoints;
+    %>
+    <th class="name"><%= module.examDesc %></th>
+    <th class="grade"><%= module.grade %></th>
+    <th class="lp"><%= lp %></th>
+
+    <% _.each(module.examination.graded, function(graded) { %>
+    <tr>
+        <% if (graded.courseType) { %>
+            <td class="name" colspan="3"><%= graded.courseType %>: <%= graded.courseName %></td>
+        <% } else { %>
+            <td class="name"><%= graded.desc %></td>
+            <td class="grade"><%= graded.grade %></td>
+            <td class="lp"></td>
+        <% } %>
+    </tr>
+    <% }); %>
+
+    <% _.each(module.module, function(module) { %>
+        <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
+    <% }); %>
+</tr>

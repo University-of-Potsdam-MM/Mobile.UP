@@ -48,12 +48,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 
 		initialize: function() {
 			this.template = rendertmpl("gradeList");
+			this.moduleTemplate = rendertmpl("gradeList.module");
 			this.listenTo(this.model, "sync", this.render);
 		},
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(this.template({data: this.model.toJSON()}));
+			this.$el.append(this.template({
+				data: this.model.toJSON(),
+				moduleTemplate: this.moduleTemplate
+			}));
 			this.$el.trigger("create");
 		}
 	});
