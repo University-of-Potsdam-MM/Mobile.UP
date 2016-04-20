@@ -1,4 +1,8 @@
-<tr class="module-level-<% module.level %>">
+<tr class="module-pre-header module-level-<%= module.level %>">
+    <td colspan="3"></td>
+</tr>
+
+<tr class="module-header module-level-<%= module.level %>">
     <%
         var lp = module.actualCreditPoints;
         if (module.targetCreditPoints)
@@ -7,20 +11,22 @@
     <th class="name"><%= module.examDesc %></th>
     <th class="grade"><%= module.grade %></th>
     <th class="lp"><%= lp %></th>
-
-    <% _.each(module.examination.graded, function(graded) { %>
-    <tr>
-        <% if (graded.courseType) { %>
-            <td class="name" colspan="3"><%= graded.courseType %>: <%= graded.courseName %></td>
-        <% } else { %>
-            <td class="name"><%= graded.desc %></td>
-            <td class="grade"><%= graded.grade %></td>
-            <td class="lp"></td>
-        <% } %>
-    </tr>
-    <% }); %>
-
-    <% _.each(module.module, function(module) { %>
-        <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
-    <% }); %>
 </tr>
+
+<% _.each(module.examination.graded, function(graded) { %>
+<tr class="module-content module-level-<%= module.level %>">
+    <% if (graded.courseType) { %>
+        <td class="name"><%= graded.courseType %>: <%= graded.courseName %></td>
+        <td class="grade"></td>
+        <td class="lp"></td>
+    <% } else { %>
+        <td class="name"><%= graded.desc %></td>
+        <td class="grade"><%= graded.grade %></td>
+        <td class="lp"></td>
+    <% } %>
+</tr>
+<% }); %>
+
+<% _.each(module.module, function(module) { %>
+    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
+<% }); %>

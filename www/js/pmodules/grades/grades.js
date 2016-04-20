@@ -31,6 +31,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 
 			module.examination = module.examination || {};
 			module.examination.graded = module.examination.graded || [];
+			module.examination.graded = this.asArray(module.examination.graded);
 
 			return module;
 		},

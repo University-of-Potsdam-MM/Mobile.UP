@@ -12,14 +12,25 @@
         </ul>
 
         <% _.each(data.achievements.field, function(acm) { %>
-        <div id="<%= acm.id %>">
-            <p>Platz, wir brauchen Platz</p>
-            <table class="borders full-width">
+        <div id="<%= acm.id %>" class="extra-space">
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>Bezeichnung</th>
+                        <th>Note</th>
+                        <th>LP</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% _.each(acm.module, function(module) { %>
                     <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
                 <% }); %>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <% }); %>
@@ -27,86 +38,16 @@
     </div>
 
     <style scoped>
-        .float-left {
-            float: left;
-            margin-right: 20px;
-        }
-        .float-right {
-            float: right;
-            margin-left: 20px;
-        }
-        .no-icon {
-            padding-right: 24px;
-        }
-        .ui-body {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
-        .full-width {
-            width: 100%;
-        }
         .extra-space {
             margin-top: 1em;
             margin-bottom: 1em;
         }
-        .lp-progress {
-            float: right;
-            margin-left: 20px;
-            width: 50px;
-            text-align: right;
-        }
-        .header-mark {
-            float: right;
-            margin-left: 20px;
-        }
-        .ra {
-            text-align: right;
-        }
-        .la {
-            text-align: left;
-        }
-        .ca {
-            text-align: center;
-        }
-        .lb {
-            border-left: 1px solid black;
-        }
-        .rb {
-            border-right: 1px solid black;
-        }
-        .tb {
-            border-top: 1px solid black;
-        }
-        .bb {
-            border-bottom: 1px solid black;
-        }
 
-        .borders {
+        .grades-table {
             border-collapse: collapse;
-        }
-        .borders tr:first-child td,
-        .borders tr:first-child th {
-            border-top: 1px solid black;
-        }
-        .borders tr:last-child td,
-        .borders tr:last-child th {
-            border-bottom: 1px solid black;
-        }
-        .borders td:first-child,
-        .borders th:first-child {
-            border-left: 1px solid black;
-        }
-        .borders td:last-child,
-        .borders th:last-child {
-            border-right: 1px solid black;
-        }
-        /*table.borders {
             width: 100%;
+            background: #f2f2f2;
         }
-        .borders tr {
-            display: table;
-            width: 100%;
-        }*/
 
         .grade {
             text-align: center;
@@ -116,12 +57,49 @@
         }
         .name {
             text-align: left;
-            /* display: table-row; */
         }
 
-        .level-0-module {
-            background: rgb(233,233,233);
-            border: 1px solid black;
+        .grades-table thead tr {
+            color: white;
+            background-color: #3a3a3a;
+        }
+
+        .grades-table tfoot td {
+            padding-top: 10px;
+        }
+
+        tr.module-pre-header td {
+            padding-top: 10px;
+        }
+
+        tr.module-level-0 th:first-child {
+            padding-left: 0px;
+        }
+
+        tr.module-level-1 th:first-child {
+            padding-left: 10px;
+        }
+
+        tr.module-level-2 th:first-child {
+            padding-left: 20px;
+        }
+
+        /*tr.module-content.module-level-1:nth-child(odd) {
+            background-color: rgb(207, 218, 227);
+        }
+        tr.module-content.module-level-1:nth-child(even) {
+            background-color: rgb(207, 218, 227);
+        }*/
+
+        tr.module-header th.grade,
+        tr.module-header th.lp {
+            background: white;
+            border: 1px solid #adadad;
+        }
+
+        tr.module-content td {
+            background: white;
+            border: 1px solid #adadad;
         }
     </style>
 </div>
