@@ -1,7 +1,7 @@
 <div data-role="tabs">
     <div data-role="navbar">
 
-        <ul>
+        <ul class="grades-tabs">
             <% _.each(data.achievements.field, function(acm, index) { %>
             <li><a href="#<%= acm.id %>"
                     <% if (index === 0) { %>

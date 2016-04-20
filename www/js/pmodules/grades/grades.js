@@ -47,10 +47,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 
 	var GradesView = Backbone.View.extend({
 
+		events: {
+			"click .grades-tabs": "tabClick"
+		},
+
 		initialize: function() {
 			this.template = rendertmpl("gradeList");
 			this.moduleTemplate = rendertmpl("gradeList.module");
 			this.listenTo(this.model, "sync", this.render);
+		},
+
+		tabClick: function(ev) {
+			ev.preventDefault();
+			return false;
 		},
 
 		render: function() {
