@@ -22,15 +22,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                <% _.each(acm.module, function(module) { %>
-                    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
+                <% _.each(acm.module, function(module, index) { %>
+                    <% var topLevelId = index % 2; %>
+                    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate, topLevelId: topLevelId})); %>
                 <% }); %>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"></td>
-                    </tr>
-                </tfoot>
             </table>
         </div>
         <% }); %>
@@ -49,9 +45,7 @@
             background: #f2f2f2;
         }
 
-        .grade {
-            text-align: center;
-        }
+        .grade,
         .lp {
             text-align: center;
         }
@@ -64,42 +58,43 @@
             background-color: #3a3a3a;
         }
 
-        .grades-table tfoot td {
-            padding-top: 10px;
-        }
-
-        tr.module-pre-header td {
-            padding-top: 10px;
+        tr.module-pre td,
+        tr.module-post td {
+            padding-top: 5px;
         }
 
         tr.module-level-0 th:first-child {
-            padding-left: 0px;
+            padding-left: 0;
         }
 
-        tr.module-level-1 th:first-child {
+        /*tr.module-level-1 th:first-child {
             padding-left: 10px;
-        }
-
-        tr.module-level-2 th:first-child {
-            padding-left: 20px;
-        }
-
-        /*tr.module-content.module-level-1:nth-child(odd) {
-            background-color: rgb(207, 218, 227);
-        }
-        tr.module-content.module-level-1:nth-child(even) {
-            background-color: rgb(207, 218, 227);
         }*/
 
+        tr.module-level-2 th:first-child {
+            padding-left: 40px;
+        }
+
         tr.module-header th.grade,
-        tr.module-header th.lp {
-            background: white;
+        tr.module-header th.lp,
+        tr.module-content td {
+            background: rgba(255, 255, 255, 0.5);
             border: 1px solid #adadad;
         }
 
-        tr.module-content td {
-            background: white;
-            border: 1px solid #adadad;
+        .grade-collapse-expand {
+            float: left;
+            width: 20px;
+        }
+        .grade-expanded .grade-collapse-expand {
+            content:url("img/up/arrow-down.png");
+        }
+        .grade-collapsed .grade-collapse-expand {
+            content:url("img/up/arrow-up.png");
+        }
+
+        .module-top-level-1 {
+            background: #cfdae3;;
         }
     </style>
 </div>
