@@ -13,6 +13,19 @@
 
         <% _.each(data.achievements.field, function(acm) { %>
         <div id="<%= acm.id %>" class="extra-space">
+            <table class="grades-table extra-space">
+                <thead>
+                <tr>
+                    <%
+                    var ac = acm.credits.accountCredits;
+                    %>
+                    <th><%= ac.description %></th>
+                    <th></th>
+                    <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
+                </tr>
+                </thead>
+            </table>
+
             <table class="grades-table">
                 <thead>
                     <tr>
@@ -27,6 +40,16 @@
                     <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate, topLevelId: topLevelId})); %>
                 <% }); %>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <%
+                            var ac = acm.credits.accountCredits;
+                        %>
+                        <th><%= ac.description %></th>
+                        <th></th>
+                        <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <% }); %>
@@ -53,7 +76,8 @@
             text-align: left;
         }
 
-        .grades-table thead tr {
+        .grades-table thead tr,
+        .grades-table tfoot tr {
             color: white;
             background-color: #3a3a3a;
         }
@@ -67,9 +91,9 @@
             padding-left: 0;
         }
 
-        /*tr.module-level-1 th:first-child {
-            padding-left: 10px;
-        }*/
+        tr.module-level-1 th:first-child {
+            padding-left: 20px;
+        }
 
         tr.module-level-2 th:first-child {
             padding-left: 40px;
@@ -80,12 +104,6 @@
         tr.module-content td {
             background: rgba(255, 255, 255, 0.5);
             border: 1px solid #adadad;
-        }
-
-        }
-
-        .module-top-level-1 {
-            background: #cfdae3;;
         }
     </style>
 </div>
