@@ -1,12 +1,8 @@
-<tr class="module-pre module-level-<%= module.level %> module-top-level-<%= topLevelId %>">
+<tr class="module-pre module-level-<%= module.level %>">
     <td colspan="3"></td>
 </tr>
 
-<%
-    var blockId = _.uniqueId("module-block");
-%>
-
-<tr class="module-header module-level-<%= module.level %> module-top-level-<%= topLevelId %>">
+<tr class="module-header module-level-<%= module.level %>">
     <%
         var lp = module.actualCreditPoints;
         if (module.targetCreditPoints)
@@ -18,7 +14,7 @@
 </tr>
 
 <% _.each(module.examination.graded, function(graded) { %>
-<tr class="module-content module-level-<%= module.level %> module-top-level-<%= topLevelId %>" data-block-id="<%= blockId %>">
+<tr class="module-content module-level-<%= module.level %>">
     <% if (graded.courseType) { %>
         <td class="name"><%= graded.courseType %>: <%= graded.courseName %></td>
         <td class="grade"></td>
@@ -32,9 +28,9 @@
 <% }); %>
 
 <% _.each(module.module, function(module) { %>
-    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate, topLevelId: topLevelId})); %>
+    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
 <% }); %>
 
-<tr class="module-post module-level-<%= module.level %> module-top-level-<%= topLevelId %>">
+<tr class="module-post module-level-<%= module.level %>">
     <td colspan="3"></td>
 </tr>

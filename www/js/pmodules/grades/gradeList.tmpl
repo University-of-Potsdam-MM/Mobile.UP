@@ -36,8 +36,7 @@
                 </thead>
                 <tbody>
                 <% _.each(acm.module, function(module, index) { %>
-                    <% var topLevelId = index % 2; %>
-                    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate, topLevelId: topLevelId})); %>
+                    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
                 <% }); %>
                 </tbody>
                 <tfoot>
