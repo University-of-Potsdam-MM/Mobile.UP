@@ -12,14 +12,7 @@
         if (module.targetCreditPoints)
             lp += "/" + module.targetCreditPoints;
     %>
-    <% if (module.level === "1") { %>
-        <th class="name grade-expanded" data-block-id="<%= blockId %>">
-            <div class="grade-collapse-expand"></div>
-            <%= module.examDesc %>
-        </th>
-    <% } else { %>
-        <th class="name"><%= module.examDesc %></th>
-    <% } %>
+    <th class="name"><%= module.examDesc %></th>
     <th class="grade"><%= module.grade %></th>
     <th class="lp"><%= lp %></th>
 </tr>

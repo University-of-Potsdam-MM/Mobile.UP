@@ -48,9 +48,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 	var GradesView = Backbone.View.extend({
 
 		events: {
-			"click .grades-tabs": "tabClick",
-			"click th.grade-expanded": "collapseRows",
-			"click th.grade-collapsed": "expandRows"
+			"click .grades-tabs": "tabClick"
 		},
 
 		initialize: function() {
@@ -62,22 +60,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 		tabClick: function(ev) {
 			ev.preventDefault();
 			return false;
-		},
-
-		collapseRows: function(ev) {
-			var target = $(ev.currentTarget);
-			var blockId = target.data("block-id");
-
-			this.$("tr[data-block-id=" + blockId + "]").hide();
-			target.removeClass("grade-expanded").addClass("grade-collapsed");
-		},
-
-		expandRows: function(ev) {
-			var target = $(ev.currentTarget);
-			var blockId = target.data("block-id");
-
-			this.$("tr[data-block-id=" + blockId + "]").show();
-			target.removeClass("grade-collapsed").addClass("grade-expanded");
 		},
 
 		render: function() {
