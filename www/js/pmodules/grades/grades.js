@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
 			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 
-			this.url = "http://localhost/upapp/grades-spike/data.json";
+			this.url = "grades-spike/data.json";
 		},
 
 		parse: function(data) {

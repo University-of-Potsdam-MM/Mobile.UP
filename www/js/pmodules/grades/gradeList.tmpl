@@ -1,7 +1,7 @@
-<div data-role="tabs">
+<div data-role="tabs" class="grades-tabs">
     <div data-role="navbar">
 
-        <ul class="grades-tabs">
+        <ul>
             <% _.each(data.achievements.field, function(acm, index) { %>
             <li><a href="#<%= acm.id %>"
                     <% if (index === 0) { %>
@@ -63,15 +63,15 @@
     </div>
 
     <style scoped>
-        .extra-space {
-            margin-top: 1em;
-            margin-bottom: 1em;
+        .grades-tabs {
+            padding: 0;
         }
 
         .grades-table {
             border-collapse: collapse;
             width: 100%;
             background: #f2f2f2;
+            margin-top: 1px;
         }
 
         .grade,
@@ -112,13 +112,13 @@
         tbody tr th:first-child,
         tbody tr td:first-child {
             width: 2px;
-            border-left: 2px solid #3a3a3a;
+            /*border-left: 4px solid #3a3a3a;*/
         }
         thead tr.grades-header th:last-child,
         tbody tr th:last-child,
         tbody tr td:last-child {
             width: 2px;
-            border-right: 2px solid #3a3a3a;
+            /*border-right: 4px solid #3a3a3a;*/
         }
         tr.module-post.module-level-0 {
             border-bottom: 2px solid #3a3a3a;
