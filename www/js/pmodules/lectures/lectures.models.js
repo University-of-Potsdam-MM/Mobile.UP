@@ -85,7 +85,7 @@ define([
 
         parse: function(response) {
             // Events have to be grouped by groupId to know which dates belong together
-            var groups = response.courseData.course[0].events.event;
+            var groups = this.ensureArray(response.courseData.course)[0].events.event;
             var groupedEvents = _.groupBy(this.ensureArray(groups), "groupId");
 
             var joinLecturers = function(lecturers) {
