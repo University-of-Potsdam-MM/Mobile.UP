@@ -5,8 +5,6 @@ define([
     'utils',
     'uri/URI'
 ], function($, _, Backbone, utils, URI){
-    Backbone.fetchCache.enabled = false;
-
     /**
      * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
      *
