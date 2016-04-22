@@ -42,7 +42,10 @@
                 <% }); %>
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <tr class="grades-overview-pre">
+                        <th colspan="5"></th>
+                    </tr>
+                    <tr class="grades-overview">
                         <th></th>
                         <%
                             var ac = acm.credits.accountCredits;
@@ -88,14 +91,14 @@
             padding-bottom: 0.5em;
         }
 
-        .grades-header-pre th {
+        .grades-header-pre th,
+        .grades-overview-pre th {
             background: white;
             border: none;
             height: 1em;
         }
 
-        .grades-table tr.grades-header,
-        .grades-table tfoot tr {
+        .grades-table tr.grades-header {
             color: white;
             background-color: #3a3a3a;
         }
@@ -106,14 +109,12 @@
         }
 
         thead tr.grades-header th:first-child,
-        tfoot tr th:first-child,
         tbody tr th:first-child,
         tbody tr td:first-child {
             width: 2px;
             border-left: 2px solid #3a3a3a;
         }
         thead tr.grades-header th:last-child,
-        tfoot tr th:last-child,
         tbody tr th:last-child,
         tbody tr td:last-child {
             width: 2px;
