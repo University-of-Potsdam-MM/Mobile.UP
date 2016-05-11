@@ -6,51 +6,74 @@ define([
     'underscore',
     'backbone',
     'utils',
-    'Session'
-], function( $, _, Backbone, utils, Session ) {
+    'Session',
+    'uri/URI'
+], function( $, _, Backbone, utils, Session, URI) {
 
     var pluginUrl = "https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/local/mobile/launch.php?service=local_mobile&passport=1002";
+    var loginUrl = "https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/index.php";
+    var idpUrl = "https://idp.uni-potsdam.de/idp/Authn/UserPassword";
+    var tokenUrl = "moodlemobile://token=";
 
-    var followRedirects = function(url, success, error) {
-        var checkForSpecialPages = function(html, status, jqXHR) {
-            // Moodle Login Page -> go to IdP
-            var href = $(html).find("a:contains('Login via')").attr("href");
-            if (href) {
-                followRedirects(href, success, error);
-                return;
-            }
+    var startLogin = 'var links = document.getElementsByTagName("a");' +
+                     'for (var i = 0; i < links.length; i++) {' +
+                     '  if (links[i].innerHTML.indexOf("Login via") != -1)' +
+                     '    window.open(links[i].href);' +
+                     '}';
 
-            // IdP -> send login data
-            var form = $(html).find("form[action='/idp/Authn/UserPassword']");
-            form.find("input[name='j_username']").val("hgessner");
-            form.find("input[name='j_password']").val("mypassword");
-            if (form) {
-                var formData = form.serialize();
-                debugger;
-            }
-        };
+    var enterCredentials = function() {
+        var session = new Session();
+        var user = session.get("up.session.username");
+        var pw = session.get("up.session.password");
+        return 'var user = document.getElementsByName("j_username");' +
+               'user[0].value = "' + user + '";' +
+               'var pw = document.getElementsByName("j_password");' +
+               'pw[0].value = "' + pw + '";' +
+               'document.forms["login"].submit()';
+    };
 
-        $.ajax({
-            url: url,
-            success: checkForSpecialPages,
-            error: error,
-            statusCode: {
-                303: function(jqXHR) {
-                    console.log(jqXHR);
-                    debugger;
+    var openBrowser = function() {
+        var browser = window.open(pluginUrl, "_blank", "");
+        browser.addEventListener("loadstart", function(details) {
+            if (details.url.indexOf(tokenUrl) != -1 || details.url.indexOf("http://" + tokenUrl) != -1) {
+                var token = details.url;
+                token = token.replace("http://", "");
+                token = token.replace(tokenUrl, "");
+                try {
+                    token = atob(token);
+
+                    // Skip the passport validation, just trust the token
+                    console.log("Raw token: " + token);
+                    console.log("Split token: " + JSON.stringify(token.split("::")));
+
+                    token = token.split("::")[1];
+                    console.log("Moodle token found: " + token);
+                } catch (err) {
+                    // error happened
                 }
+
+                browser.close();
+            }
+        });
+
+        browser.addEventListener("loadstop", function(details) {
+            if (details.url === loginUrl) {
+                console.log("Login required");
+                browser.executeScript({ code: startLogin }, function(result) {
+                    console.log(JSON.stringify(result));
+                });
+            }
+            if (details.url === idpUrl) {
+                console.log("Login required");
+                browser.executeScript({ code: enterCredentials() }, function(result) {
+                    console.log(JSON.stringify(result));
+                });
             }
         });
     };
 
     var createToken = function(options) {
-        followRedirects(pluginUrl, function(a, b, c, d, e) {
-            console.log("Success");
-            debugger;
-        }, function (a, b, c, d, e) {
-            console.log("Error");
-            debugger;
-        })
+        openBrowser();
     };
 
     return {
