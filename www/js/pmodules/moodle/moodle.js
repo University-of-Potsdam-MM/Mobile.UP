@@ -5,9 +5,12 @@ define([
         'utils',
         'pmodules/moodle/moodle.api',
         'pmodules/moodle/moodle.utils',
-        'Session'
-], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
+        'Session',
+        'pmodules/moodle/moodle.sso.login'
+], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session, moodleSSO) {
     var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
+
+    moodleSSO.createToken();
 
     "use strict";
 
