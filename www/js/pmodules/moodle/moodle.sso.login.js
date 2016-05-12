@@ -10,6 +10,15 @@ define([
     'uri/URI'
 ], function( $, _, Backbone, utils, Session, URI) {
 
+    /*
+    Moodle token retrieval and Moodle SSO login, general process
+    1. Call the Moodle plugin
+      - If a login is required the browser gets redirected to the Moodle login page
+      - If the user is already logged in, a token is retrieved and the process ends
+    2. On the Moodle login page the SSO login link must be followed
+    3. Once in the login mask the credentials have to be inserted and the login form must be submitted. If the login succeeds we are taken back to the Moodle plugin
+     */
+
     var pluginUrl = "https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/local/mobile/launch.php?service=local_mobile&passport=1002";
     var loginUrl = "https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X/login/index.php";
     var idpUrl = "https://idp.uni-potsdam.de/idp/Authn/UserPassword";
