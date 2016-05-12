@@ -46,7 +46,7 @@ define([
                     console.log("Raw token: " + token);
                     console.log("Split token: " + JSON.stringify(token.split("::")));
 
-                    token = token.split("::")[1];
+                    token = token.split(":::")[1];
                     console.log("Moodle token found: " + token);
                 } catch (err) {
                     // error happened
