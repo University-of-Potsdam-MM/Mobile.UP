@@ -102,6 +102,9 @@ define([
             }
         },
 
+        /*
+        4. The user has to sign an attribute release to confirm that he wants Moodle to access his data. If the user disagrees, the IdP asks him to close the browser, which we detect. If the user agrees, he is taken to the Moodle token page
+         */
         attributeRelease: {
             type: "loadstop",
             predicate: function(ev) { return ev.url === attributeReleaseUrl; },
