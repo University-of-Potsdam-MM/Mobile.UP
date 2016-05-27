@@ -67,6 +67,20 @@ define([
             return this;
         },
 
+        setLogin: function(credentials) {
+            this.set('up.session.authenticated', true);
+            this.set('up.session.username', credentials.username);
+            this.set('up.session.password', credentials.password);
+            this.set('up.session.MoodleToken', credentials.token);
+        },
+
+        unsetLogin: function() {
+            this.unset('up.session.authenticated');
+            this.unset('up.session.username');
+            this.unset('up.session.password');
+            this.unset('up.session.MoodleToken');
+        },
+
         generateLoginURL: function(credentials){
             this.url = this.suburl;
             // prepare Moodle Token URL

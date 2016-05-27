@@ -15,6 +15,7 @@ define([
 			'submit #loginform': 'login',
 			'focus #loginform input': 'clearForm'
 		},
+
 		initialize: function(p){
 			this.model = new Session();
 			this.loginAttempts = 0;
@@ -26,6 +27,7 @@ define([
 			this.listenTo(this, 'missingConnection', this.missingInternetConnectionHandler);
 			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
+
 		errorHandler: function(){
 			this.loginAttempts++;
 			this.$("#error").css('display', 'block');
@@ -43,7 +45,6 @@ define([
 			Backbone.View.prototype.stopListening.apply(this, arguments);
 		},
 
-
 		registerCountdownTimer: function() {
 			this.timer=setInterval(function() {
 				this.render();
@@ -57,6 +58,7 @@ define([
 			sec = formatLeadingZeroes(sec%60);
 			return min+":"+sec;
 		},
+
 		updateCountdown: function() {
 			if(this.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
 				this.model.set('up.session.loginFailureTime', new Date().getTime());
@@ -78,6 +80,7 @@ define([
 				}
 			}
 		},
+
 		login: function(ev){
 			ev.preventDefault();
 			console.log(this);
@@ -111,11 +114,9 @@ define([
 							that.trigger("errorHandler");
 						}else{
 							// Everything fine, save Moodle Token and redirect to previous form
-							that.model.set('up.session.authenticated', true);
-							that.model.set('up.session.username', username);
-            				that.model.set('up.session.password', password);
-							that.model.set('up.session.MoodleToken', response['token']);
-							that.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
+							that.model.setLogin({username: username, password: password, token: response['token']});
+							//wenn login erfolgreich lösche failureTime
+							that.model.unset('up.session.loginFailureTime');
 
 							if(that.model.get('up.session.redirectFrom')){
 		                		var path = that.model.get('up.session.redirectFrom');
@@ -153,7 +154,7 @@ define([
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
 			return this;
-		},
+		}
 	});
 	
 	app.views.OptionsLogout = Backbone.View.extend({
@@ -161,16 +162,14 @@ define([
 		events:{
 			'submit #logoutform': 'logout'
 		},
+
 		initialize: function(){
 			this.model = new Session();
 		},
 		
 		logout: function(ev){
 			ev.preventDefault();
-			this.model.unset('up.session.authenticated');
-            this.model.unset('up.session.username');
-            this.model.unset('up.session.password');
-            this.model.unset('up.session.MoodleToken');
+			this.model.unsetLogin();
 			app.route('');
 		},
 		
@@ -182,10 +181,12 @@ define([
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 			return this;
 		},
+
 		missingInternetConnectionHandler: function(){
 			this.$("#error0").css('display', 'block');
 		}
 	});
+
 	/**
 	 *	BackboneView - OptionsPageView
 	 *	Login & Logout-Form which validates the username and password using the Moodle Webservice
@@ -199,16 +200,12 @@ define([
 			this.template = rendertmpl('options');
 		},
 
-		
 		render: function(){
 			var $el = $(this.el); 
 			$el.html(this.template({}));
 			$el.trigger("create");
 			return this;
-		},
-
-		
-
+		}
 	});
 
 	return app.views.OptionsPage;
