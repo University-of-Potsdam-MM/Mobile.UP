@@ -3,27 +3,27 @@ define([
   'backbone',
   'uri/URI'
 ], function($, Backbone, Router, URI){
-	
-	var CacheManager = Backbone.Model.extend({
-		
-		privateHost: "api.uni-potsdam.de",
-		privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
-		
-		/**
-		 * Removes all cache entries that are based on user data.
-		 */
-		clearPrivateCache: function() {
-			var privateKeys = _.filter(_.keys(Backbone.fetchCache._cache), this.isPrivate, this);
-			for (key in privateKeys) {
-				Backbone.fetchCache.clearItem(privateKeys[key]);
-			}
-		},
-		
-		isPrivate: function(value) {
-			var uri = new URI(value);
-        	return uri.host() === this.privateHost && this.privateEndpoints.indexOf(uri.path() != -1);
-		}
-	});
+
+    var CacheManager = Backbone.Model.extend({
+
+        privateHost: "api.uni-potsdam.de",
+        privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
+
+        /**
+         * Removes all cache entries that are based on user data.
+         */
+        clearPrivateCache: function() {
+            var privateKeys = _.filter(_.keys(Backbone.fetchCache._cache), this.isPrivate, this);
+            for (key in privateKeys) {
+                Backbone.fetchCache.clearItem(privateKeys[key]);
+            }
+        },
+
+        isPrivate: function(value) {
+            var uri = new URI(value);
+            return uri.host() === this.privateHost && this.privateEndpoints.indexOf(uri.path() != -1);
+        }
+    });
 
     var LocalStorageModel = Backbone.Model.extend({
 
@@ -97,8 +97,8 @@ define([
         },
 
         clearPrivateCache: function() {
-        	new CacheManager().clearPrivateCache();
-    	}
+            new CacheManager().clearPrivateCache();
+        }
   });
 
   return Session;
