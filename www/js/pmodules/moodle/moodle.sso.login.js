@@ -4,14 +4,12 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'utils',
-    'Session',
-    'uri/URI'
-], function( $, _, Backbone, utils, Session, URI) {
+    'utils'
+], function( $, _, utils) {
 
     var ERROR_TECHNICAL = 1;
     var ERROR_CREDENTIALS = 2;
+    var ERROR_USER_CANCELLED = 3;
 
     /*
     Moodle token retrieval and Moodle SSO login, general process
@@ -20,8 +18,10 @@ define([
       1.2 If the user is already logged in, a token is retrieved and the process ends
     2. On the Moodle login page the SSO / IdP login link must be followed
     3. Once in the login mask the credentials have to be inserted and the login form must be submitted.
-      3.1 If the login succeeds we are taken back to the Moodle plugin
+      3.1 If the login succeeds we are taken to the next step
       3.2 If the login fails, we are taken back to the login mask
+    4. If the user logs into Moodle for the first time, an attribute release has to be accepted before we are taken back to the Moodle plugin
+    If the user decides to close the browser window while a login is running, an error is issued.
      */
     var actions = {
 
@@ -33,7 +33,7 @@ define([
         retrieveToken: {
             type: "loadstart",
             predicate: function (ev) { return ev.url.indexOf(tokenUrl) != -1 || ev.url.indexOf("http://" + tokenUrl) != -1; },
-            action: function (ev, loginRequest, browser) {
+            action: function (ev, loginRequest) {
                 var token = ev.url;
                 token = token.replace("http://", "");
                 token = token.replace(tokenUrl, "");
@@ -41,9 +41,6 @@ define([
                     token = atob(token);
 
                     // Skip the passport validation, just trust the token
-                    console.log("Raw token: " + token);
-                    console.log("Split token: " + JSON.stringify(token.split(":::")));
-
                     token = token.split(":::")[1];
                     console.log("Moodle token found: " + token);
 
@@ -62,7 +59,7 @@ define([
         moodleLogin: {
             type: "loadstop",
             predicate: function (ev) { return ev.url === loginUrl },
-            action: function (ev, loginRequest, browser) {
+            action: function (ev, loginRequest) {
                 console.log("IdP link required");
                 var startLogin = 'var links = document.getElementsByTagName("a");' +
                                  'for (var i = 0; i < links.length; i++) {' +
@@ -70,14 +67,14 @@ define([
                                  '    window.open(links[i].href);' +
                                  '}';
 
-                browser.executeScript({code: startLogin}, function (result) {});
+                loginRequest.browser.executeScript({code: startLogin}, function (result) {});
             }
         },
 
         ssoLogin: {
             type: "loadstop",
             predicate: function (ev, loginRequest) { return ev.url === idpUrl && !loginRequest.loginAttemptStarted; },
-            action: function (ev, loginRequest, browser) {
+            action: function (ev, loginRequest) {
                 console.log("Login inject required");
 
                 var session = loginRequest.session;
@@ -90,7 +87,7 @@ define([
                                        'document.forms["login"].submit()';
 
                 loginRequest.loginAttemptStarted = true;
-                browser.executeScript({ code: enterCredentials }, function(result) {});
+                loginRequest.browser.executeScript({ code: enterCredentials }, function(result) {});
             }
         },
 
@@ -105,8 +102,16 @@ define([
             }
         },
 
+        attributeRelease: {
+            type: "loadstop",
+            predicate: function(ev) { return ev.url === attributeReleaseUrl; },
+            action: function(ev, loginRequest) {
+                loginRequest.browser.show();
+            }
+        },
+
         /*
-        Something went wrong. Propagate error. Only exception: Moodle token. We can't load that but we already handle it
+        Something went wrong. Propagate error. Only exception: Moodle token. We can't load those but we already handle them in 1.2
          */
         technicalError: {
             type: "loaderror",
@@ -114,6 +119,15 @@ define([
             action: function(ev, loginRequest) {
                 console.log("loaderror happened on " + ev.url);
                 loginRequest.error(ERROR_TECHNICAL);
+            }
+        },
+
+        browserClosed: {
+            type: "exit",
+            predicate: function(ev) { return true; },
+            action: function(ev, loginRequest) {
+                console.log("browser exit");
+                loginRequest.error(ERROR_USER_CANCELLED);
             }
         }
     };
@@ -129,11 +143,12 @@ define([
     var pluginUrl = moodleBase + "/local/mobile/launch.php?service=local_mobile&passport=1002";
     var loginUrl = moodleBase + "/login/index.php";
     var idpUrl = "https://idp.uni-potsdam.de/idp/Authn/UserPassword";
+    var attributeReleaseUrl = "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease";
     var tokenUrl = "moodlemobile://token=";
 
-    var openBrowser = function(success, error) {
+    var openBrowser = function(session, success, error) {
         var loginRequest = {
-            session: new Session,
+            session: session,
             browser: window.open(pluginUrl, "_blank", "clearcache=yes,clearsessioncache=yes,hidden=yes")
         };
         var browser = loginRequest.browser;
@@ -167,9 +182,9 @@ define([
         }
     };
 
-    var createToken = function() {
+    var createToken = function(session) {
         var promise = $.Deferred();
-        openBrowser(promise.resolve, promise.reject);
+        openBrowser(session, promise.resolve, promise.reject);
         return promise.promise();
     };
 
