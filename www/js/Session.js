@@ -25,14 +25,12 @@ define([
 		}
 	});
 
-    var Session = Backbone.Model.extend({
-
-        suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
+    var LocalStorageModel = Backbone.Model.extend({
 
         initialize: function(){
             //Check for localStorage support
             if(Storage && localStorage){
-              this.supportStorage = true;
+                this.supportStorage = true;
             }
         },
 
@@ -65,7 +63,12 @@ define([
                 Backbone.Model.prototype.unset.call(this, key);
             }
             return this;
-        },
+        }
+    });
+
+    var Session = LocalStorageModel.extend({
+
+        suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
 
         setLogin: function(credentials) {
             this.set('up.session.authenticated', true);
@@ -88,7 +91,11 @@ define([
             this.url +='&password='+encodeURIComponent(credentials.password);
             this.url +='&service=moodle_mobile_app&moodlewsrestformat=json';
         },
-        
+
+        parse: function(response) {
+            return response;
+        },
+
         clearPrivateCache: function() {
         	new CacheManager().clearPrivateCache();
     	}
