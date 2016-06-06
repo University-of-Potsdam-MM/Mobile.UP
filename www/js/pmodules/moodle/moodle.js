@@ -10,8 +10,6 @@ define([
 ], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session, moodleSSO) {
     var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
 
-    moodleSSO.createToken();
-
     "use strict";
 
     window.MoodleApp = {};
