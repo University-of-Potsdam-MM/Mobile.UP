@@ -71,7 +71,7 @@ define([
         suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
 
         setLogin: function(credentials) {
-            this.set('up.session.authenticated', true);
+            this.set('up.session.authenticated', credentials.authenticated);
             this.set('up.session.username', credentials.username);
             this.set('up.session.password', credentials.password);
             this.set('up.session.MoodleToken', credentials.token);
