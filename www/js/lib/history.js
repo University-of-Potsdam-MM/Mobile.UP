@@ -25,11 +25,14 @@ define([
 
 			Backbone.history.start({pushState: false, root: baseUrl});
 		},
-		
+
+		/**
+		 * Called by back button handler
+		 */
 		goBack: function() {
 			var lastPage = this.history[this.history.length-2].name;
 			this.history.pop();
-			Backbone.history.navigate(lastPage, {trigger:true});
+			Backbone.history.navigate(lastPage, {trigger:true, replace:true});
 		},
 
 		executeBack: function(callback) {
