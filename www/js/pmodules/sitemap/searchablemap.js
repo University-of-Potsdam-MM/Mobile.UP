@@ -56,106 +56,178 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 	var SEARCH_MODE = 0;
 	var SHOW_MODE = 1;
 
-	var SearchableMarkerCollection = function() {
+	var SearchableMarker = Backbone.Model.extend({
 
-		var elements = [];
-		var mode = SHOW_MODE;
+		createMarker: function(map, categoryStore) {
+			var m = this.attributes;
 
-		this.switchMode = function(targetMode) {
-			if (mode === targetMode) {
+			m.options.zIndex = 2;
+			var gMarkers = new GeoJSON(m.geo, m.options, map, m.hasSimilarsCallback);
+			var bMarkers = new GeoJSON(this._shadowOfContext(m.geo), this._shadowOfOptions(m.options), map, m.hasSimilarsCallback);
+
+			if (gMarkers.error) {
+				console.log(gMarkers.error);
+			} else if (bMarkers.error) {
+				console.log(bMarkers.error);
+			} else {
+				var gMarker = new CategoryMarker(gMarkers[0], map, m.category, categoryStore, bMarkers[0]);
+				gMarker.reset();
+
+				this.set("marker", gMarker);
+			}
+		},
+
+		_shadowOfContext: function(context) {
+			context = JSON.parse(JSON.stringify(context));
+			context.properties = {};
+			return context;
+		},
+
+		_shadowOfOptions: function(options) {
+			options = JSON.parse(JSON.stringify(options));
+			options.strokeColor = "#000000";
+			options.strokeOpacity = 0.3;
+			options.strokeWeight = 20;
+			options.fillColor = "#000000";
+			options.fillOpacity = 0.5;
+			options.zIndex = -1;
+			return options;
+		}
+	});
+
+	var SearchableMarkerCollection2 = Backbone.Collection.extend({
+		model: SearchableMarker,
+		mode: SHOW_MODE,
+
+		switchMode: function(targetMode) {
+			if (this.mode === targetMode) {
 				return;
 			}
 
 			switch (targetMode) {
-			case SEARCH_MODE:
-				// Don't show all markers, only the matching one
-				for (var i = 0; i < elements.length; i++) {
-					elements[i].setVisibility(false, true);
-				}
-				break;
-			case SHOW_MODE:
-				// Show all markers
-				for (var i = 0; i < elements.length; i++) {
-					elements[i].reset();
-				}
-				break;
+				case SEARCH_MODE:
+					// Don't show all markers, only the matching one
+					this.each(function(element) {
+						element.get("marker").setVisibility(false, true);
+					});
+					break;
+				case SHOW_MODE:
+					// Show all markers
+					this.each(function(element) {
+						element.get("marker").reset();
+					});
+					break;
 			}
 
-			mode = targetMode;
-		};
+			this.mode = targetMode;
+		}
+	});
 
-		this.getElements = function() {
-			return elements;
-		};
-	};
-	
-	var resize_map = function(){
-		var minus = $.os.ios7 ? 25 : 0;
-		$('#map-canvas').css("height", $(window).height() - 165 - minus);
-	};
+	var MapFragment = Backbone.View.extend({
 
+		initialize: function() {
+			this.template = rendertmpl("map_fragment");
+
+			// When window resizing resize map
+			$(window).resize(_.bind(function(){ this.resizeMap(true); }, this));
+		},
+
+		/**
+		 * draws the initial map and centers on the given coordinate
+		 * @param center an object of google maps latlng object
+		 */
+		createMap: function(center) {
+			var myOptions = {
+				zoom: 16,
+				center: center,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			this._map = new google.maps.Map(this.$("#map-canvas")[0], myOptions);
+		},
+
+		resizeMap: function(triggerMapsResizeEvent) {
+			var iosStatusBarHeight = $.os.ios7 ? 25 : 0;
+			this.$("#map-canvas").css("height", $(window).height() - 165 - iosStatusBarHeight);
+
+			// Resize map, but keeper current center?
+			if (triggerMapsResizeEvent && this._map) {
+				var center = this._map.getCenter();
+				google.maps.event.trigger(this._map, 'resize');
+				this._map.setCenter(center);
+			}
+		},
+
+		render: function() {
+			this.$el.html(this.template({}));
+			this.$el.trigger("create");
+
+			this.resizeMap(false);
+			return this;
+		}
+	});
+
+	var SearchView = Backbone.View.extend({
+
+		setSearchValue: function(search, updateView) {
+			this.$("input[data-type='search']").val(search);
+			if (updateView) {
+				this.$("input[data-type='search']").trigger("keyup");
+			}
+		},
+
+		hideAllItems: function() {
+			this.$("#filterable-locations li").removeClass("ui-first-child").remove("ui-last-child").addClass("ui-screen-hidden");
+		}
+	});
 
 	$.widget("up.searchablemap", {
 		options: {
-			onSelected: function(selection) {},
 			categoryStore: undefined
 		},
 
-		_map: undefined,
-		_markers: undefined,
-		_allMarkers: undefined,
+		_markerCollection: undefined,
+		_mapView: undefined,
+		_searchView: undefined,
 
 		_create: function() {
+			this._mapView = new MapFragment();
 			// create html code
-			this.element.append(
-				"<div> \
-					<ul id='filterable-locations' data-role='listview' data-filter='true' data-filter-reveal='true' data-filter-placeholder='Suchbegriff eingeben...' data-inset='true'></ul> \
-					<div class='ui-controlgroup ui-controlgroup-vertical ui-corner-all' data-role='controlgroup' data-filter='true' data-input='#filterable-locations' data-filter-reveal='true' data-enhanced='true'> \
-						<div class='ui-controlgroup-controls'></div> \
-					</div> \
-					<div id='error-placeholder'></div> \
-					<!-- map loads here... --> \
-					<div id='map-canvas' class='gmap3'></div> \
-				</div>");
+			this.element.append(this._mapView.render().$el);
 			this.element.trigger("create");
-			resize_map();
 
 			// Initialize filter
-			$("#filterable-locations").filterable("option", "filterCallback", this._filterLocations);
+			this.element.find("#filterable-locations").filterable("option", "filterCallback", _.partial(this._filterLocations, this));
 
-			var widgetHost = this;
-			$(document).on("click", "#filterable-locations a", function (ev) {
+			this.element.on("click", "#filterable-locations a", _.bind(function (ev) {
 				ev.preventDefault();
 
 				// Retreive context
-				var source = $(this);
-				var href = source.attr("data-tag");
-				var index = parseInt(href);
+				var source = $(ev.currentTarget);
+				var markerId = source.attr("data-id");
 
-				widgetHost._showIndex(index);
-				widgetHost.options.onSelected(widgetHost._markers[index].context.features[0].properties.Name);
-			});
+				var marker = this._markerCollection.get(markerId);
+				this._showMarker(marker.get("marker"));
+				this._onSelected(marker.get("name"));
+			}, this));
 
-			// when window resizing set new center and resize map
-			$(window).resize(function(){
-				resize_map();
-		        var center = widgetHost._map.getCenter();
-		        google.maps.event.trigger(widgetHost._map, 'resize');
-		        widgetHost._map.setCenter(center);
-		   });
+			this._searchView = new SearchView({el: this.element});
 		},
 
-		_showIndex: function(index) {
+		_onSelected: function(selection) {
+			this._searchView.setSearchValue(selection);
+			this._searchView.hideAllItems();
+		},
+
+		_showMarker: function(selectedMarker) {
 			// Hide all markers
-			var tmpMarkers = allMarkers.getElements();
-			for (var i = 0; i < tmpMarkers.length; i++) {
-				tmpMarkers[i].setVisibility(false, true);
-			}
+			this._markerCollection.each(function(tmpMarker) {
+				tmpMarker.get("marker").setVisibility(false, true);
+			});
 
 			// Show the selected marker
-			tmpMarkers[index].setVisibility(true, true);
-			tmpMarkers[index].centerOnMap();
-			tmpMarkers[index].openInfoWindow();
+			selectedMarker.setVisibility(true, true);
+			selectedMarker.centerOnMap();
+			selectedMarker.openInfoWindow();
 		},
 
 		_destroy: function() {
@@ -174,30 +246,16 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		 * initializes the map and draws all markers which are currently selected
 		 */
 		_initializeMap: function(center) {
-			this._drawMap(center);
-			this._markers = [];
-			allMarkers = new SearchableMarkerCollection();
-		},
-
-		/**
-		 * draws the initial map and centers on the given coordinate
-		 * @param {latlng} an object of google maps latlng object
-		 */
-		_drawMap: function(latlng) {
-			var myOptions = {
-					zoom: 16,
-					center: latlng,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
-				};
-			this._map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+			this._mapView.createMap(center);
+			this._markerCollection = new SearchableMarkerCollection2();
 		},
 
 		_insertSearchables: function(searchables) {
 			var createSearchables = rendertmpl("sitemap_detail");
-			var host = $("#filterable-locations");
+			var host = this.element.find("#filterable-locations");
 
 			// Add items to search list
-			var htmlSearch = createSearchables({items: searchables});
+			var htmlSearch = createSearchables({items: searchables.toJSON()});
 			host.append(htmlSearch);
 
 			// Tell search list to refresh itself
@@ -205,104 +263,56 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			host.trigger("updatelayout");
 		},
 
-		insertSearchableFeatureCollection: function(options, collection, category, hasSimilarsCallback) {
-			var widgetHost = this;
-			var items = _.map(collection.features, function(item) {
-				var result = {};
-				result.name = item.properties.Name;
-				result.description = item.properties.description;
+		insertSFC: function(collection) {
+			var items = collection.toJSON();
+			_.each(items, function(item, index) {
+				item.index = index;
+			}, this);
+			this._markerCollection.reset(items);
 
-				// Save item context
-				var context = JSON.parse(JSON.stringify(collection));
-				context.features = [item];
-
-				// Save marker and get its index
-				result.index = widgetHost._saveMarker(options, context, category);
-
-				return result;
-			});
-
-			this._insertSearchables(items);
-			this._insertMapsMarkers(items, hasSimilarsCallback);
+			this._insertSearchables(this._markerCollection);
+			this._insertMapsMarkers(this._markerCollection);
 		},
 
 		viewByName: function(name) {
-			var first = _.chain(this._markers)
-							.filter(function(marker) { return marker.context.features[0].properties.Name === name; })
-							.first()
-							.value();
-			var index = _.indexOf(this._markers, first);
-			this._showIndex(index);
+			this._searchView.setSearchValue(name);
+			var first = this._markerCollection.find(function(marker) { return marker.get("name") === name; });
+			this._showMarker(first.get("marker"));
 		},
 
-		_filterLocations: function(index, searchValue) {
+		resetAllMarkers: function() {
+			this._markerCollection.each(function(a) {
+				a.get("marker").reset();
+			});
+		},
+
+		_filterLocations: function(widgetHost, index, searchValue) {
 			var text = $(this).text();
 			var result = text.toLowerCase().indexOf(searchValue) === -1;
 
 			if (searchValue) {
-				allMarkers.switchMode(SEARCH_MODE);
+				widgetHost._markerCollection.switchMode(SEARCH_MODE);
 
 				// Don't show all markers, only the matching one
 				var source = $("a", this);
-				var href = source.attr("data-tag");
-				var index = parseInt(href);
-				var searchedMarkers = allMarkers.getElements();
+				var markerId = source.attr("data-id");
+				var marker = widgetHost._markerCollection.get(markerId).get("marker");
 				if (!result) {
-					searchedMarkers[index].setVisibility(true, true);
+					marker.setVisibility(true, true);
 				} else {
-					searchedMarkers[index].setVisibility(false, true);
+					marker.setVisibility(false, true);
 				}
 			} else {
-				allMarkers.switchMode(SHOW_MODE);
+				widgetHost._markerCollection.switchMode(SHOW_MODE);
 			}
 
 			return result;
 		},
 
-		_insertMapsMarkers: function(items, hasSimilarsCallback) {
-			for (var i in items) {
-				var m = this._loadMarker(items[i].index);
-
-				m.options.zIndex = 2;
-				var gMarkers = new GeoJSON(m.context, m.options, this._map, hasSimilarsCallback);
-				var bMarkers = this._shadowOf(m.context, m.options, this._map, hasSimilarsCallback);
-
-				if (gMarkers.error) {
-					console.log(gMarkers.error);
-				} else if (bMarkers.error) {
-					console.log(bMarkers.error);
-				} else {
-					var gMarker = new CategoryMarker(gMarkers[0], this._map, m.category, this.options.categoryStore, bMarkers[0]);
-					gMarker.reset();
-
-					var tmpMarkers = allMarkers.getElements();
-					tmpMarkers[items[i].index] = gMarker;
-				}
-			}
-		},
-
-		_shadowOf: function(context, options, map, hasSimilarsCallback) {
-			context = JSON.parse(JSON.stringify(context));
-			context.properties = {};
-
-			options = JSON.parse(JSON.stringify(options));
-			options.strokeColor = "#000000";
-			options.strokeOpacity = 0.3;
-			options.strokeWeight = 20;
-			options.fillColor = "#000000";
-			options.fillOpacity = 0.5;
-			options.zIndex = -1;
-
-			return new GeoJSON(context, options, map, hasSimilarsCallback);
-		},
-
-		_saveMarker: function(options, context, category) {
-			this._markers.push({options: options, context: context, category: category});
-			return this._markers.length - 1;
-		},
-
-		_loadMarker: function(index) {
-			return this._markers[index];
+		_insertMapsMarkers: function(items) {
+			items.each(function(item) {
+				item.createMarker(this._mapView._map, this.options.categoryStore);
+			}, this);
 		}
 	});
 });

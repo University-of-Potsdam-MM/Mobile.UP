@@ -141,6 +141,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			events = p.events;
 			_.bindAll(this, 'render');
 
+			utils.removeNonExpiringElements(this.collection);
+
 			this.collection.p = p;
 			this.listenToOnce(this.collection, "sync", this.render);
 			this.listenToOnce(this.collection, "sync", function() {
@@ -208,12 +210,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			this.filter = p.filter;
 			_.bindAll(this, 'render', 'filterIndex');
 
+			utils.removeNonExpiringElements(this.collection);
+
 			this.collection.p = p;
 			this.listenToOnce(this.collection, "sync", this.render);
 			this.listenToOnce(this.collection, "sync", function() {
 				viewContainer.pageContainer.updateHeader(this.$el);
 			});
-			this.collection.fetch(utils.cacheDefaults({success: p.fetchCallback}));
+			this.collection.fetch({success: p.fetchCallback, cache: true, expires: 60*60});
 		},
 
 		fetchError: function(){

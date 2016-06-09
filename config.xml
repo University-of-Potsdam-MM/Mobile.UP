@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="de.floriangoessler.upapp" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Mobile.UP</name>
+    <description>
+        Offizielle App der Universität Potsdam
+    </description>
+    <author email="mobileup-service@uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
+        eLiS-Team
+    </author>
+    <feature name="http://api.phonegap.com/1.0/device" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <!-- see https://github.com/apache/cordova-plugin-statusbar/ -->
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarStyle" value="blackopaque" />
+    <!-- Blackberry only -->
+    <preference name="disable-cursor" value="false" />
+    <!-- Android only -->
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-installLocation" value="auto" />
+    <!-- iOS only -->
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <!-- see https://github.com/apache/cordova-plugin-splashscreen -->
+    <preference name="show-splash-screen-spinner" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <platform name="android">
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenDelay" value="10000" />
+    </platform>
+    <platform name="ios">
+        <preference name="AutoHideSplashScreen" value="false" />
+    </platform>
+    <platform name="android">
+        <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
+        <!-- Android http://docs.build.phonegap.com/en_US/configuring_icons_and_splash.md.html -->
+        <splash qualifier="ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
+        <splash qualifier="mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
+        <splash qualifier="hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
+        <splash qualifier="xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
+    </platform>
+    <platform name="ios">
+        <icon height="60" src="www/res/icon/ios/icon-60.png" width="60" />
+        <icon height="120" src="www/res/icon/ios/icon-60@2x.png" width="120" />
+        <icon height="76" src="www/res/icon/ios/icon-76.png" width="76" />
+        <icon height="152" src="www/res/icon/ios/icon-76@2x.png" width="152" />
+        <icon height="40" src="www/res/icon/ios/icon-40.png" width="40" />
+        <icon height="80" src="www/res/icon/ios/icon-40@2x.png" width="80" />
+        <icon height="57" src="www/res/icon/ios/icon-57.png" width="57" />
+        <icon height="114" src="www/res/icon/ios/icon-57@2x.png" width="114" />
+        <icon height="72" src="www/res/icon/ios/icon-72.png" width="72" />
+        <icon height="144" src="www/res/icon/ios/icon-72@2x.png" width="144" />
+        <icon height="29" src="www/res/icon/ios/icon-29.png" width="29" />
+        <icon height="58" src="www/res/icon/ios/icon-29@2x.png" width="58" />
+        <icon height="50" src="www/res/icon/ios/icon-50.png" width="50" />
+        <icon height="100" src="www/res/icon/ios/icon-50@2x.png" width="100" />
+        <!-- iPhone and iPod Touch -->
+        <splash src="www/res/screen/ios/screen-iphone-portrait.png" width="320" height="480" />
+        <splash src="www/res/screen/ios/screen-iphone-portrait-2x.png" width="640" height="960" />
+        <!-- iPad -->
+        <splash src="www/res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
+        <splash src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" height="768" />
+    </platform>
+    <access origin="*" />
+    <content src="index.html" />
+    <engine name="android" spec="~5.1.1" />
+</widget>

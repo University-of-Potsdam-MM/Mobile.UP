@@ -12,7 +12,7 @@ rm -rf */
 rm -rf $1.json
 cd ..
 
-phonegap build $1
+phonegap build $1 --verbose --stacktrace
 sh script/add-plugins.sh
-sh script/copy-resources.sh
-phonegap run $1
+#sh script/copy-resources.sh
+phonegap run $1 --verbose --stacktrace
