@@ -7,7 +7,6 @@ define([
 	var History = Backbone.Model.extend({
 		
 		history: [],
-		secondHistory: [],
 		
 		startTracking: function(baseUrl) {
 			// Because we track our own history, we have to consider the replace option
@@ -34,18 +33,14 @@ define([
 		},
 
 		executeBack: function(callback) {
-			if(this.secondHistory[this.secondHistory.length - 2]) {
-				this.secondHistory.pop();
-				callback(this.secondHistory[this.secondHistory.length - 1]);
+			if(this.history[this.history.length - 2]) {
+				this.history.pop();
+				callback(this.history[this.history.length - 1].name);
 			}
 		},
 
 		executeWindowBack: function() {
 			window.history.back();
-		},
-
-		pushSecondHistory: function(fragment) {
-			this.secondHistory.push(fragment);
 		},
 		
 		push: function(route) {
