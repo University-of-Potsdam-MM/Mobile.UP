@@ -342,8 +342,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.closed,.close, .lent {
+.marker.closed, .marker.close, .lent {
 	display: block;
 	float: left;
 	height: 20px;
@@ -355,8 +354,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.open,.available {
+.marker.open {
 	display: block;
 	float: left;
 	height: 20px;
@@ -368,6 +366,24 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
+
+/* Time bars
+-------------------- */
+.timebar.closed {
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
+	background-color: #990808;
+}
+.timebar.open {
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
+	background-color: #459909;
+}
+
 
 .lent,.prebook,.available {
 	margin-left: 0;
