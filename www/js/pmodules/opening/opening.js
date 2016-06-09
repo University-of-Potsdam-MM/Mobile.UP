@@ -120,7 +120,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
 
             var date = new Date(date_today);
             // date.setDate(date.getDate() - date.getDay() + 7);
-            date.setDate(date.getDate() - date.getDay() - 1); // start at begin of the week
+            date.setDate(date.getDate() - date.getDay()); // start at begin of the (german) week
 
             var table = [];
 
