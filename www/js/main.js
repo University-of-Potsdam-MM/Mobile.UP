@@ -16,7 +16,7 @@ require.config({
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
-        'moment': 'vendor/moment.min',
+        'moment': 'vendor/moment-with-locales',
         'utils': 'lib/utils',
 		'date': 'vendor/date',
 		'LocalStore': 'lib/ls-store',

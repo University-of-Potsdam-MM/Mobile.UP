@@ -2,6 +2,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
 
 //  'i18n!pmodules/opening/labels'
 
+    // Somehow moment doesn't set the correct locale, so we force it
+    moment.locale("de");
+
     i18n.use(i18nXhr).init({
         lng: 'de',
         debug: true,
@@ -82,7 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
                 month_name = month_name_match[1];
             }
 
-            var atdate = nextchange.getDate() + ' ' + month_name;
+            var atdate = nextchange.getDate() + '. ' + month_name;
 
             var res = [];
 
@@ -213,6 +216,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
         },
 
         drawTableAndComments: function (oh, it, value) {
+            // We are interested in the current state (open, closed, etc) and the next state change
+            it.setDate(new Date());
+
             var prevdate          = it.getDate();
             var is_open           = it.getState();
             var unknown           = it.getUnknown();

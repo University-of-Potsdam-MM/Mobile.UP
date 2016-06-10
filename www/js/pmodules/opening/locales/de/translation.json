@@ -40,9 +40,9 @@
         "open now": "Die Einrichtung hat jetzt geöffnet",
         "unknown now": "Die Einrichtung ist möglicherweise jetzt geöffnet",
         "closed now": "Die Einrichtung ist jetzt geschlossen",
-        "will close": "aber <a href=\"{{href}}\">wird</a> {{timestring}} schließen{{comment}}.",
-        "will unknown": "aber <a href=\"{{href}}\">wird</a> eventuell {{timestring}} öffnen{{comment}}.",
-        "will open": "aber <a href=\"{{href}}\">wird</a> {{timestring}} öffnen{{comment}}.",
+        "will close": "aber wird {{timestring}} schließen{{comment}}.",
+        "will unknown": "aber wird eventuell {{timestring}} öffnen{{comment}}.",
+        "will open": "aber wird {{timestring}} öffnen{{comment}}.",
         "depends on": ", abhängig von {{comment}}.",
         "week stable": "Dieser Wochenplan gilt für jede Woche.",
         "not week stable": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
@@ -81,6 +81,7 @@
     },
 
     "words": {
+        "in duration": "in",
         "modifier": "{{name}} Regeleigenschaft",
         "selector": "{{name}} Bereichsdefinition",
         "mode": "Auswerte Modus",
