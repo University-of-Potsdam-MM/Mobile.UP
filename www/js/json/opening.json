@@ -18,7 +18,7 @@
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zsb\/kontakt.html",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
-    "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We 10:00-12:00,13:00-15:00 \"keine offenen Beratungszeiten\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off"
+    "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine offenen Beratungszeiten\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off"
   },
   {
     "name": "Zentrale Studienberatung (telefonisch)",
@@ -45,79 +45,95 @@
     "name": "Studierendensekretariat",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/studierendensekretariat.html",
     "mail": "",
-    "telephone": "+49 331 977-1231",
-    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00; Fr 10:00-12:00; PH off"
+    "telephone": "",
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed; Th 10:00-12:00; Fr 10:00-12:00; PH off"
+  },
+  {
+    "name": "Studierendensekretariat (telefonisch)",
+    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/studierendensekretariat.html",
+    "mail": "",
+    "telephone": "",
+    "opening_hours": "Mo 13:00-15:00; Th 13:00-15:00; PH off"
   },
   {
     "name": "Zentrales Pr\u00fcfungsamt",
     "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zentrales-pruefungsamt.html",
     "mail": "pruefungsamt@uni-potsdam.de",
-    "telephone": "+49 331 977-1497",
-    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00; Fr 10:00-12:00; PH off"
+    "telephone": "",
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed; Th 10:00-12:00; Fr 10:00-12:00; PH off"
   },
   {
-    "name": "Kaffeebar 'Die Bohne'",
-    "link": "",
+    "name": "Kaffeebar \"Die Bohne\"",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-griebnitzsee.html",
     "mail": "",
     "telephone": "",
     "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; PH off"
   },
   {
-    "name": "Cafeteria 'filmriss'",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/cafeterien.html",
+    "name": "Cafeteria \"filmriss\"",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html#c10608",
     "mail": "cafefilm@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
     "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-15:00; PH off"
   },
   {
     "name": "Mensa Am Neuen Palais",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-am-neuen-palais.html",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-am-neuen-palais.html",
     "mail": "ehrlich@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1292",
     "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-15:00; PH off"
   },
   {
     "name": "Mensa Griebnitzsee",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-griebnitzsee.html",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-griebnitzsee.html",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 08:00-19:00; Fr 09:30-13:00; PH off"
+    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-15:00; Sa 09:30-13:00; PH off"
   },
   {
     "name": "Mensa Golm",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/de\/mensa-golm.html",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-golm.html",
     "mail": "habermann@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
     "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; PH off"
   },
   {
-    "name": "Bereichsbibliothek Babelsberg",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 12:00-18:00; PH off"
+    "name": "Cafeteria Am Neuen Palais",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html#c10604",
+    "mail": "gutewort@studentenwerk-potsdam.de",
+    "telephone": "+49 331 977-1275",
+    "opening_hours": "Mo-Th 08:00-18:00; Fr 08:00-14:30; PH off"
   },
   {
-    "name": "Bereichsbibliothek Golm",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 10:00-18:00; PH off"
+    "name": "Cafeteria im IKMZ",
+    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-golm.html",
+    "mail": "geserich.a@studentenwerk-potsdam.de",
+    "telephone": "+49 331 977-2350",
+    "opening_hours": "Mo-Th 09:00-19:00; Fr 09:00-15:00; PH off"
+  },
+  {
+    "name": "Bereichsbibliothek Babelsberg (Haus 5)",
+    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Babelsberg%20Haus%205",
+    "opening_hours": "Mo-Fr 09:00-22:00; Sa 09:00-18:00; Su 12:00-18:00; PH off"
+  },
+  {
+    "name": "Bereichsbibliothek Golm im IKMZ",
+    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Golm%20im%20IKMZ",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-18:00; PH off"
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 10)",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr-Sa 09:00-18:00; Su 10:00-15:00; PH off"
+    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%2010",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-15:00; PH off"
   },
   {
-    "name": "Bereichsbibliothek Neues Palais (Haus 9 und 11)",
+    "name": "Bereichsbibliothek Neues Palais (Haus 9)",
+    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%209",
     "opening_hours": "Mo-Fr 09:00-18:00; PH off"
   },
   {
-    "name": "Cafeteria Am Neuen Palais",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
-    "mail": "gutewort@studentenwerk-potsdam.de",
-    "telephone": "+49 331 977-1275",
-    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-14:30; PH off"
-  },
-  {
-    "name": "Cafeteria IKMZ",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html",
-    "mail": "habermann@studentenwerk-potsdam.de",
-    "telephone": "+49 331 977-2531",
-    "opening_hours": "Mo-Th 09:00-19:00; Fr 09:00-15:00; PH off"
+    "name": "Bereichsbibliothek Neues Palais (Haus 11)",
+    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%2011",
+    "opening_hours": "Mo-Fr 09:00-18:00; PH off"
   }
 ]
