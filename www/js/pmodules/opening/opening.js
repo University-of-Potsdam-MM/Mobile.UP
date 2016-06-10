@@ -16,12 +16,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
         }
     }, function(err, t) {
         // initialized and ready to go!
-        var hw = i18n.t('key'); // hw = 'hello world'
-        console.log("i18n", hw);
-
-        var closed = i18n.t("words.closed");
-        var closedNow = i18n.t("texts.closed now");
-        console.warn("i18n geladen, falls hier Uebersetzung steht:", closed, closedNow);
     });
 
 
