@@ -732,9 +732,12 @@ label.showfirst {
 }
 
 #sitemap #sitemaps-settings .options-close {
-	background-color:#014260;
-	color:#fff;
+	background-color: #014260;
+	color: #fff;
+}
 
+.similar-locations-reset {
+	background: #ededed !important;
 }
 
 /***************Öffnungszeiten********************
