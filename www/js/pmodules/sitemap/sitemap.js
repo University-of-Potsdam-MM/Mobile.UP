@@ -256,12 +256,14 @@ define([
 		navigateTo: function(ev) {
 			ev.preventDefault();
 			var itemId = $(ev.currentTarget).attr("data-tag");
-			sitemapNavigateTo(itemId);
+
+			var entry = geo.get(itemId);
+			$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
 		},
 
 		resetSitemap: function(ev) {
 			ev.preventDefault();
-			sitemapReset();
+			$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
 		},
 
 		render: function() {
@@ -279,15 +281,6 @@ define([
 			}
 		}
 	});
-
-	function sitemapReset() {
-		$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
-	}
-
-	function sitemapNavigateTo(id) {
-		var entry = geo.get(id);
-		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
-	}
 
 	var geo = new models.SearchableGeoCollection();
 
