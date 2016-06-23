@@ -8,6 +8,10 @@ define([
 
         default: function () {
             app.loadPage('sitemap', 'index');
+        },
+
+        similars: function(locationId) {
+            app.loadPage('sitemap', 'similars', {locationId: locationId});
         }
     });
 });
