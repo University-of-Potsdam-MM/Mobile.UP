@@ -12,6 +12,13 @@ define([
 
         similars: function(locationId) {
             app.loadPage('sitemap', 'similars', {locationId: locationId});
+        },
+
+        changeto: function(campus, buildingName) {
+            app.loadPage('sitemap', 'index', {
+                campus: campus,
+                buildingName: buildingName
+            });
         }
     });
 });

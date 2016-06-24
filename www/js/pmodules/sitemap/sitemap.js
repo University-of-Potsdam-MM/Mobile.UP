@@ -131,8 +131,6 @@ define([
 	 * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
 	 */
 	$(document).on("pageshow", "#sitemap", function() {
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-
 		$('#Terminals:checkbox').click(checkUncheck(terminals));
 		$('#Institute:checkbox').click(checkUncheck(institutes));
 		$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -229,8 +227,7 @@ define([
 	app.views.SitemapSimilars = Backbone.View.extend({
 
 		events: {
-			"click .similar-location": "navigateTo",
-			"click .similar-locations-reset": "resetSitemap"
+			"click .similar-location": "navigateTo"
 		},
 
 		initialize: function(options) {
@@ -258,12 +255,9 @@ define([
 			var itemId = $(ev.currentTarget).attr("data-tag");
 
 			var entry = geo.get(itemId);
-			$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
-		},
-
-		resetSitemap: function(ev) {
-			ev.preventDefault();
-			$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
+			var campus = entry.get("campus");
+			var name = entry.get("name");
+			app.route("#sitemap/changeto/" + encodeURIComponent(campus) + "/" + encodeURIComponent(name));
 		},
 
 		render: function() {
@@ -286,9 +280,16 @@ define([
 
 	app.views.SitemapIndex = Backbone.View.extend({
 
-		initialize: function(){
+		initialize: function(options){
 			this.template = rendertmpl('sitemap');
 			this._loadMap();
+
+			if (options.campus && options.buildingName) {
+				this.changeOptions = {
+					campus: options.campus,
+					name: options.buildingName
+				};
+			}
 		},
 
 		_loadMap: function() {
@@ -307,6 +308,12 @@ define([
 			this.$el.html(this.template({}));
 			$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } }).campusmenu("pageshow");
 			$('#sitemaps-settings').panel().trigger('create');
+
+			if (this.changeOptions) {
+				$("div[data-role='campusmenu']").campusmenu("changeTo", this.changeOptions.campus, this.changeOptions.name);
+				delete this.changeOptions;
+			}
+
 			return this;
 		},
 
