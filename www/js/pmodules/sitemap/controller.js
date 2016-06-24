@@ -15,6 +15,10 @@ define([
         },
 
         changeto: function(campus, buildingName) {
+            // Somehow the parameter is decoded when using a clean refresh
+            // but not if app.route is called with the encoded parameter
+            buildingName = decodeURIComponent(buildingName);
+
             app.loadPage('sitemap', 'index', {
                 campus: campus,
                 buildingName: buildingName
