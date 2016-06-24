@@ -125,12 +125,7 @@ define([
 		};
 	}
 
-
-	/*
-	 * initialize map when page is shown
-	 * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
-	 */
-	$(document).on("pageshow", "#sitemap", function() {
+	function initPanelAndColors() {
 		$('#Terminals:checkbox').click(checkUncheck(terminals));
 		$('#Institute:checkbox').click(checkUncheck(institutes));
 		$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -140,7 +135,7 @@ define([
 		$('#Sport:checkbox').click(checkUncheck(sport));
 
 		settings.initColors();
-	});
+	}
 
 	var CampusMapView = Backbone.View.extend({
 
@@ -308,6 +303,8 @@ define([
 			this.$el.html(this.template({}));
 			$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } }).campusmenu("pageshow");
 			$('#sitemaps-settings').panel().trigger('create');
+
+			initPanelAndColors();
 
 			if (this.changeOptions) {
 				$("div[data-role='campusmenu']").campusmenu("changeTo", this.changeOptions.campus, this.changeOptions.name);
