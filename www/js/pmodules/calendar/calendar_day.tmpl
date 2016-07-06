@@ -3,38 +3,37 @@
     <% _.each(CourseSlots.models, function(courseSlot){
             if (courseSlot.get('collection').length != 0){
                 var courses = courseSlot.get('collection');
-
     %>
-    <li data-role="list-divider" class="up-divider"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
+    <li data-role="list-divider" class="up-divider"><%= moment(courseSlot.get('timeSlotBegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeSlotEnd'), 'HH:mm').format('HH:mm') %></li>
     <%
             _.each(courses.models, function(course){
     %>
     <li data-role="collapsible" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="<%= course.cid %>">
         <h2>
         	<span class="smaller italic">
-            <%= moment(course.get('dates').begin, 'HH:mm').format('HH:mm') %> - <%=moment(course.get('dates').end, 'HH:mm').format('HH:mm') %>
+            <%= moment(course.get('timeSlotEvent').get('startTime'), 'HH:mm').format('HH:mm') %> - <%=moment(course.get('timeSlotEvent').get('endTime'), 'HH:mm').format('HH:mm') %>
             </span>
             <br />
-            <em>
-            <%= course.get('name') %> </em>
+            <em><%= course.get('courseName') %> (<%= course.get('courseType') %>)</em>
             <br />
-            <%= course.get('dates').lecturer %>
-            <br /><span>Raum:
-            <%= course.get('dates').room %></span>
-
+            <% _.each(course.get('timeSlotEvent').get('lecturers'), function(lecturer){ %>
+            <%= (lecturer.lecturerTitle) ? lecturer.lecturerTitle : '' %>
+            <%= (lecturer.lecturerFirstname) ? lecturer.lecturerFirstname : '' %>
+            <%= (lecturer.lecturerLastname) ? lecturer.lecturerLastname : '' %>
+            <% }); %>
+            <br /><span>Ort:</span>&nbsp;<%= course.get('timeSlotEvent').get('location') %>&nbsp; | <span>Gebäude:</span>&nbsp;<%= course.get('timeSlotEvent').get('building') %>&nbsp; | <span>Raum:</span>&nbsp;<%= course.get('timeSlotEvent').get('room') %></span>
         </h2>
         <p>
-            Zeitspanne: <%= course.get('dates').timespan %><br />
-            Status: <%= course.get('status') %><br />
-            Rhythmus: <%= course.get('dates').rythm %><br />
-            Webseite: <a href="<%= course.get('weblink') %>" rel="external"><%= course.get('weblink') %></a><br />
+            Zeitspanne:<%= course.get('timeSlotEvent').get('startDate') %> - <%= course.get('timeSlotEvent').get('endDate') %><br />
+            Rhythmus: <%= course.get('timeSlotEvent').get('rhythm') %><br />
+            Gruppe: <%= course.get('timeSlotEvent').get('group') %><br />
         </p>
     </li>
     <%
             });
             }else{
     %>
-    <li data-role="list-divider" class="empty"><%= moment(courseSlot.get('timeslotbegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeslotend'), 'HH:mm').format('HH:mm') %></li>
+    <li data-role="list-divider" class="empty"><%= moment(courseSlot.get('timeSlotBegin'), 'HH:mm').format('HH:mm') %> - <%= moment(courseSlot.get('timeSlotEnd'), 'HH:mm').format('HH:mm') %></li>
     <%
             }
         }); %>
