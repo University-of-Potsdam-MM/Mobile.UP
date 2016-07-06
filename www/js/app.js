@@ -95,7 +95,7 @@ define([
 				if(!window.location.hash) { //Wenn keine URL übergeben wurde, das Hauptmenü aufrufen
 					this.route("main/menu");
 				} else { //Sonst aktuelle URL in die app.history aufnehmen
-					customHistory.pushSecondHistory(Backbone.history.fragment);
+					customHistory.push(Backbone.history.fragment);
 				}
 			},
 
@@ -108,9 +108,6 @@ define([
 			route:function(url, noTrigger, replace){
 				var trigger = !noTrigger;
 				replace = !!replace;
-				if(trigger) {
-					customHistory.pushSecondHistory(url);
-				}
 				url = this._cleanUrl(url);
 				this.router.navigate(url, {trigger: trigger, replace: replace}); //Url auf Controller routen
 			},
@@ -182,7 +179,7 @@ define([
 				});
 				
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
-					customHistory.executeWindowBack();
+					customHistory.goBack();
 				});
 			}
 		});

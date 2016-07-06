@@ -7,7 +7,6 @@ define([
 	var History = Backbone.Model.extend({
 		
 		history: [],
-		secondHistory: [],
 		
 		startTracking: function(baseUrl) {
 			// Because we track our own history, we have to consider the replace option
@@ -26,44 +25,43 @@ define([
 
 			Backbone.history.start({pushState: false, root: baseUrl});
 		},
-		
+
+		/**
+		 * Called by back button handler and by click on a[data-rel="back"]. Uses this.executeBack() internally
+		 */
 		goBack: function() {
-			var lastPage = this.history[this.history.length-2].name;
-			this.history.pop();
-			Backbone.history.navigate(lastPage, {trigger:true});
+			this.executeBack(function(lastPage) {
+				Backbone.history.navigate(lastPage, {trigger:true, replace:true});
+			});
 		},
 
+		/**
+		 * Called by app.previous()
+		 * @param callback
+		 */
 		executeBack: function(callback) {
-			if(this.secondHistory[this.secondHistory.length - 2]) {
-				this.secondHistory.pop();
-				callback(this.secondHistory[this.secondHistory.length - 1]);
+			if(this.history[this.history.length - 2]) {
+				this.history.pop();
+				callback(this.history[this.history.length - 1].name);
 			}
-		},
-
-		executeWindowBack: function() {
-			window.history.back();
-		},
-
-		pushSecondHistory: function(fragment) {
-			this.secondHistory.push(fragment);
 		},
 		
 		push: function(route) {
 			this.history.push({name: route});
 		},
 		
-		hasHistory: function() {
-			return this.history.length > 0;
-		},
-		
 		currentRoute: function() {
-			if (this.hasHistory()) {
+			if (this.history.length > 0) {
 				return this.history[this.history.length-1].name;
 			} else {
 				return undefined;
 			}
 		},
-		
+
+		/**
+		 * Called by back button handler
+		 * @returns {Number}
+		 */
 		length: function() {
 			return this.history.length;
 		}

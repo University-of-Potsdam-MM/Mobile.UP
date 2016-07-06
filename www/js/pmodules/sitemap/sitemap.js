@@ -125,14 +125,7 @@ define([
 		};
 	}
 
-
-	/*
-	 * initialize map when page is shown
-	 * "pageshow" is deprecated (http://api.jquerymobile.com/pageshow/) but the replacement "pagecontainershow" doesn't seem to trigger
-	 */
-	$(document).on("pageshow", "#sitemap", function() {
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-
+	function initPanelAndColors() {
 		$('#Terminals:checkbox').click(checkUncheck(terminals));
 		$('#Institute:checkbox').click(checkUncheck(institutes));
 		$('#Mensen:checkbox').click(checkUncheck(canteens));
@@ -142,7 +135,7 @@ define([
 		$('#Sport:checkbox').click(checkUncheck(sport));
 
 		settings.initColors();
-	});
+	}
 
 	var CampusMapView = Backbone.View.extend({
 
@@ -183,6 +176,17 @@ define([
 		lastFinderId = uniqueDivId;
 		lastCampus = options.campusName;
 
+		var data = createCampusMapCollection(options);
+		var model = data.model;
+		var collection = data.collection;
+		new CampusMapView({el: $("#" + uniqueDivId), collection: collection, model: model});
+	}
+
+	/**
+	 * @param options.campusName
+	 * @param options.meta
+	 */
+	function createCampusMapCollection(options) {
 		var model = new models.Campus({
 			campus: settings.getCampus(options.campusName),
 			search: options.meta
@@ -192,7 +196,7 @@ define([
 			campus: model.get("campus").campus,
 			settings: settings
 		});
-		new CampusMapView({el: $("#" + uniqueDivId), collection: collection, model: model});
+		return {model: model, collection: collection};
 	}
 
 	function clearMenu(uniqueDivId) {
@@ -215,58 +219,72 @@ define([
 		};
 	}
 
-	var SimilarLocationsView = Backbone.View.extend({
+	app.views.SitemapSimilars = Backbone.View.extend({
 
 		events: {
-			"click .similar-location": "navigateTo",
-			"click .similar-locations-reset": "resetSitemap"
+			"click .similar-location": "navigateTo"
 		},
 
-		initialize: function() {
+		initialize: function(options) {
 			this.template = rendertmpl("sitemap_similar_locations");
+
+			var id = options.locationId;
+
+			if (geo.isEmpty()) {
+				geo.fetch({
+					success: _.bind(function() { this._renderSimilarLocations(id); }, this),
+					error: function() { alert("Fehler beim Laden der Daten"); }
+				});
+			} else {
+				this._renderSimilarLocations(id);
+			}
+		},
+
+		_renderSimilarLocations: function(id) {
+			this.collection = new Backbone.Collection(geo.get(id).findSimilarLocations());
+			this.render();
 		},
 
 		navigateTo: function(ev) {
 			ev.preventDefault();
 			var itemId = $(ev.currentTarget).attr("data-tag");
-			sitemapNavigateTo(itemId);
-		},
 
-		resetSitemap: function(ev) {
-			ev.preventDefault();
-			sitemapReset();
+			var entry = geo.get(itemId);
+			var campus = entry.get("campus");
+			var name = entry.get("name");
+			app.route("#sitemap/changeto/" + encodeURIComponent(campus) + "/" + encodeURIComponent(name));
 		},
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(this.template({similars: this.collection.toJSON()}));
+			if (this.collection) {
+				this.$el.append(this.template({similars: this.collection.toJSON()}));
+			} else {
+				this.$el.append(this.template({similars: undefined}));
+			}
 			this.$el.trigger("create");
+
+			if (this.page) {
+				this.page.empty();
+				this.page.append(this.$el);
+			}
 		}
 	});
-
-	function searchSimilarLocations(id) {
-		var similars = new Backbone.Collection(geo.get(id).findSimilarLocations());
-		var el =  $("#" + lastFinderId);
-
-		new SimilarLocationsView({el: el, collection: similars}).render();
-	}
-
-	function sitemapReset() {
-		$("div[data-role='campusmenu']").campusmenu("changeTo", lastCampus);
-	}
-
-	function sitemapNavigateTo(id) {
-		var entry = geo.get(id);
-		$("div[data-role='campusmenu']").campusmenu("changeTo", entry.get("campus"), entry.get("name"));
-	}
 
 	var geo = new models.SearchableGeoCollection();
 
 	app.views.SitemapIndex = Backbone.View.extend({
 
-		initialize: function(){
+		initialize: function(options){
 			this.template = rendertmpl('sitemap');
 			this._loadMap();
+
+			if (options.campus && options.buildingName) {
+				this.changeOptions = {
+					campus: options.campus,
+					name: options.buildingName
+				};
+			}
 		},
 
 		_loadMap: function() {
@@ -285,16 +303,21 @@ define([
 			this.$el.html(this.template({}));
 			$("div[data-role='campusmenu']").campusmenu({ onChange: function(options) { oneSidedGuard.callMultiple(options); } }).campusmenu("pageshow");
 			$('#sitemaps-settings').panel().trigger('create');
+
+			initPanelAndColors();
+
+			if (this.changeOptions) {
+				$("div[data-role='campusmenu']").campusmenu("changeTo", this.changeOptions.campus, this.changeOptions.name);
+				delete this.changeOptions;
+			}
+
 			return this;
 		},
+
 		afterRender: function(){
 			$('#header-settings-btn').click(function(){
 				$('#sitemaps-settings').panel("toggle");
 			});
-		},
-
-		searchSimilarLocations: function(id) {
-			searchSimilarLocations(id);
 		}
 	});
 
