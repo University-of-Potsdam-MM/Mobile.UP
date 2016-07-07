@@ -13,8 +13,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			this.listenTo(this.model, "sync", this.render);
 		},
 
+		/**
+		 * We want to prevent the url from changing, but in return we have to change the button color of the active tab ourselves.
+		 */
 		tabClick: function(ev) {
 			ev.preventDefault();
+
+			$(".ui-btn-active", ev.currentTarget).first().removeClass("ui-btn-active");
+			$(ev.target).addClass("ui-btn-active");
+
 			return false;
 		},
 
