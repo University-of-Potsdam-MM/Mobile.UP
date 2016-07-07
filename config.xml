@@ -72,6 +72,18 @@
         <splash src="www/res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
         <splash src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" height="768" />
     </platform>
+    <plugin name="cordova-plugin-device" />
+    <plugin name="cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-splashscreen" />
+    <plugin name="cordova-plugin-statusbar" />
+    <plugin name="cordova-plugin-network-information" />
+    <plugin name="cordova-plugin-dialogs" />
+    <plugin name="cordova-plugin-file" />
+    <plugin name="cordova-plugin-file-transfer" />
+    <plugin name="cordova-plugin-x-toast" />
+    <plugin name="cordova-plugin-calendar" />
+    <plugin name="cordova-plugin-whitelist" version="1" />
+
     <access origin="*" />
     <content src="index.html" />
     <engine name="android" spec="~5.1.1" />
