@@ -82,6 +82,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			module.examination.graded = module.examination.graded || [];
 			module.examination.graded = this.asArray(module.examination.graded);
 
+			if (module.credits && module.credits.accountCredits)
+				module.credits.accountCredits = this.asArray(module.credits.accountCredits);
+
 			return module;
 		},
 

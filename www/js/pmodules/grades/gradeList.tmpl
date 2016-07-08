@@ -15,16 +15,15 @@
         <div id="<%= acm.id %>">
             <table class="grades-table">
                 <thead>
+                    <% _.each(acm.credits.accountCredits, function(ac) { %>
                     <tr class="grades-overview">
                         <th></th>
-                        <%
-                            var ac = acm.credits.accountCredits;
-                        %>
                         <th><%= ac.description %></th>
                         <th></th>
                         <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
                         <th></th>
                     </tr>
+                    <% }); %>
                     <tr class="grades-header-pre">
                         <th colspan="5"></th>
                     </tr>
@@ -45,16 +44,15 @@
                     <tr class="grades-overview-pre">
                         <th colspan="5"></th>
                     </tr>
+                    <% _.each(acm.credits.accountCredits, function(ac) { %>
                     <tr class="grades-overview">
                         <th></th>
-                        <%
-                            var ac = acm.credits.accountCredits;
-                        %>
                         <th><%= ac.description %></th>
                         <th></th>
                         <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
                         <th></th>
                     </tr>
+                    <% }); %>
                 </tfoot>
             </table>
         </div>
