@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 
 		parse: function(data) {
 			var achievements = data.academicAchievements.achievement;
-			achievements.field = _.map(achievements.field, this.parseModule, this);
+			achievements.field = _.map(this.asArray(achievements.field), this.parseModule, this);
 
 			return {
 				achievements: achievements
