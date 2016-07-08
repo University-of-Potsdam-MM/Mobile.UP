@@ -76,7 +76,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			new GradesView({model: this.grades, el: this.$("#gradesTable")});
 			new GradeAveragesView({model: this.grades, el: this.$("#averageData")});
 			new utils.LoadingView({model: this.grades, el: this.$("#loadingSpinner")});
-			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner")});
+			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner2")});
 
 			var fetchableGrades = this.grades;
 			this.studentDetails.fetch({
