@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 	var GradesView = Backbone.View.extend({
 
 		events: {
-			"click .grades-tabs": "tabClick"
+			"click .grades-tabs-links": "tabClick"
 		},
 
 		initialize: function() {
