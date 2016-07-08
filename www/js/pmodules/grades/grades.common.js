@@ -2,7 +2,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 
 	var StudentDetails = Backbone.Model.extend({
 
-		url: "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getPersonalStudyAreas#{}",
+		url: "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
 
 		initialize: function() {
 			this.session = new Session();
@@ -57,7 +57,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		 * @returns {string|*}
 		 */
 		url: function () {
-			return new URI("https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getAcademicAchievements")
+			return new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getAcademicAchievements")
 				.fragment(JSON.stringify(this.studentDetails))
 				.toString();
 		},
