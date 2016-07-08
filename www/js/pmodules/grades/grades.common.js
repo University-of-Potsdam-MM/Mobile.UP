@@ -1,15 +1,14 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, Backbone, utils, Session){
+define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], function($, _, Backbone, utils, Session, URI){
 
 	var Grades = Backbone.Model.extend({
 
 		initialize: function(){
 			// get Session information for username / password
 			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json2";
-			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
-			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
 
-			this.url = "grades-spike/data.json";
+			this.url = new URI("https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getAcademicAchievements")
+				.fragment(JSON.stringify({"Semester": "20161", "MtkNr": "751352", "StgNr": "1"}))
+				.toString();
 		},
 
 		parse: function(data) {
@@ -41,6 +40,27 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 			} else {
 				return [subject];
 			}
+		},
+
+		sync: function(method, model, options) {
+			options.url = _.result(model, 'url');
+			options.contentType = "application/json";
+			options.method = "POST";
+			options.data = this._selectRequestData(options.url, this.session);
+			return Backbone.Model.prototype.sync.call(this, method, model, options);
+		},
+
+		_selectRequestData: function(url, session) {
+			var uri = new URI(url);
+			var data = {
+				condition: JSON.parse(uri.fragment()),
+				"user-auth": {
+					username: session.get("up.session.username"),
+					password: "ddd" //session.get("up.session.password")
+				}
+			};
+
+			return JSON.stringify(data);
 		}
 	});
 
