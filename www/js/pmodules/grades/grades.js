@@ -63,7 +63,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			this.listenToOnce(this, "render", this.prepareGrade);
 
 			this.grades = new grades.Grades();
+			this.studentDetails = new grades.StudentDetails();
 			this.listenTo(this.grades, "error", this.requestFail);
+			this.listenTo(this.studentDetails, "error", this.requestFail);
 		},
 
 		requestFail: function(error) {
@@ -74,8 +76,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			new GradesView({model: this.grades, el: this.$("#gradesTable")});
 			new GradeAveragesView({model: this.grades, el: this.$("#averageData")});
 			new utils.LoadingView({model: this.grades, el: this.$("#loadingSpinner")});
+			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner")});
 
-			this.grades.fetch(utils.cacheDefaults());
+			var fetchableGrades = this.grades;
+			this.studentDetails.fetch({
+				success: function(model) {
+					fetchableGrades.studentDetails = model.pick("Semester", "MtkNr", "StgNr");
+					fetchableGrades.fetch(utils.cacheDefaults());
+				}
+			});
 		},
 
 		render: function(){

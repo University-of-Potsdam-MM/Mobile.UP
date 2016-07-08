@@ -1,13 +1,64 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], function($, _, Backbone, utils, Session, URI){
 
+	var StudentDetails = Backbone.Model.extend({
+
+		url: "https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getPersonalStudyAreas#{}",
+
+		initialize: function() {
+			this.session = new Session();
+		},
+
+		parse: function(data) {
+			data.personalStudyAreas = data.personalStudyAreas || {};
+			data.personalStudyAreas = this.asArray(data.personalStudyAreas);
+
+			return _.last(data.personalStudyAreas).Abschluss;
+		},
+
+		asArray: function(subject) {
+			if (Array.isArray(subject)) {
+				return subject;
+			} else {
+				return [subject];
+			}
+		},
+
+		sync: function(method, model, options) {
+			options.url = _.result(model, 'url');
+			options.contentType = "application/json";
+			options.method = "POST";
+			options.data = this._selectRequestData(options.url, this.session);
+			return Backbone.Model.prototype.sync.call(this, method, model, options);
+		},
+
+		_selectRequestData: function(url, session) {
+			var uri = new URI(url);
+			var data = {
+				condition: JSON.parse(uri.fragment()),
+				"user-auth": {
+					username: session.get("up.session.username"),
+					password: "ddd" //session.get("up.session.password")
+				}
+			};
+
+			return JSON.stringify(data);
+		}
+	});
+
 	var Grades = Backbone.Model.extend({
 
 		initialize: function(){
 			// get Session information for username / password
 			this.session = new Session();
+		},
 
-			this.url = new URI("https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getAcademicAchievements")
-				.fragment(JSON.stringify({"Semester": "20161", "MtkNr": "751352", "StgNr": "1"}))
+		/**
+		 * Requires student details {"Semester": ?, "MtkNr": ?, "StgNr": ?}
+		 * @returns {string|*}
+		 */
+		url: function () {
+			return new URI("https://esb.soft.cs.uni-potsdam.de:8243/services/pulsTest/getAcademicAchievements")
+				.fragment(JSON.stringify(this.studentDetails))
 				.toString();
 		},
 
@@ -65,6 +116,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 	});
 
 	return {
+		StudentDetails: StudentDetails,
 		Grades: Grades
 	};
 });
