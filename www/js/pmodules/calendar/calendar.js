@@ -89,7 +89,7 @@ define([
 
 			console.log('load data');
 
-			this.CourseList.fetch();
+			this.CourseList.fetch(utils.cacheDefaults());
 		},
 
 		errorHandler: function(error){
