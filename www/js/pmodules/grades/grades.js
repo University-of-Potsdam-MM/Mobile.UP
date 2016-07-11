@@ -79,12 +79,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner2")});
 
 			var fetchableGrades = this.grades;
-			this.studentDetails.fetch({
+			this.studentDetails.fetch(utils.cacheDefaults({
 				success: function(model) {
 					fetchableGrades.studentDetails = model.pick("Semester", "MtkNr", "StgNr");
 					fetchableGrades.fetch(utils.cacheDefaults());
 				}
-			});
+			}));
 		},
 
 		render: function(){
