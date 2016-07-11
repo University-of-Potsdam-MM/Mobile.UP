@@ -3,16 +3,4 @@ if [ -z $1 ]; then
   exit 1;
 fi
 
-cd platforms
-rm -rf $1
-cd ..
-
-cd plugins
-rm -rf */
-rm -rf $1.json
-cd ..
-
-phonegap build $1 --verbose --stacktrace
-sh script/add-plugins.sh
-#sh script/copy-resources.sh
-phonegap run $1 --verbose --stacktrace
+rm -rf platforms/$1 && rm -rf plugins && cordova prepare && cordova run $1
