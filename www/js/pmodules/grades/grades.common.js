@@ -1,19 +1,8 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], function($, _, Backbone, utils, Session, URI){
 
-	var StudentDetails = Backbone.Model.extend({
+	var PulsAPI = {};
 
-		url: "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
-
-		initialize: function() {
-			this.session = new Session();
-		},
-
-		parse: function(data) {
-			data.personalStudyAreas = data.personalStudyAreas || {};
-			data.personalStudyAreas = this.asArray(data.personalStudyAreas);
-
-			return _.last(data.personalStudyAreas).Abschluss;
-		},
+	PulsAPI.Model = Backbone.Model.extend({
 
 		asArray: function(subject) {
 			if (Array.isArray(subject)) {
@@ -27,25 +16,41 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			options.url = _.result(model, 'url');
 			options.contentType = "application/json";
 			options.method = "POST";
-			options.data = this._selectRequestData(options.url, this.session);
+			options.data = this._selectRequestData(options.url);
 			return Backbone.Model.prototype.sync.call(this, method, model, options);
 		},
 
-		_selectRequestData: function(url, session) {
+		_selectRequestData: function(url) {
+			var session = new Session();
 			var uri = new URI(url);
-			var data = {
+
+			return JSON.stringify({
 				condition: JSON.parse(uri.fragment()),
 				"user-auth": {
 					username: session.get("up.session.username"),
 					password: "ddd" //session.get("up.session.password")
 				}
-			};
-
-			return JSON.stringify(data);
+			});
 		}
 	});
 
-	var Grades = Backbone.Model.extend({
+	var StudentDetails = PulsAPI.Model.extend({
+
+		url: "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
+
+		initialize: function() {
+			this.session = new Session();
+		},
+
+		parse: function(data) {
+			data.personalStudyAreas = data.personalStudyAreas || {};
+			data.personalStudyAreas = this.asArray(data.personalStudyAreas);
+
+			return _.last(data.personalStudyAreas).Abschluss;
+		}
+	});
+
+	var Grades = PulsAPI.Model.extend({
 
 		initialize: function(){
 			// get Session information for username / password
@@ -86,35 +91,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 				module.credits.accountCredits = this.asArray(module.credits.accountCredits);
 
 			return module;
-		},
-
-		asArray: function(subject) {
-			if (Array.isArray(subject)) {
-				return subject;
-			} else {
-				return [subject];
-			}
-		},
-
-		sync: function(method, model, options) {
-			options.url = _.result(model, 'url');
-			options.contentType = "application/json";
-			options.method = "POST";
-			options.data = this._selectRequestData(options.url, this.session);
-			return Backbone.Model.prototype.sync.call(this, method, model, options);
-		},
-
-		_selectRequestData: function(url, session) {
-			var uri = new URI(url);
-			var data = {
-				condition: JSON.parse(uri.fragment()),
-				"user-auth": {
-					username: session.get("up.session.username"),
-					password: "ddd" //session.get("up.session.password")
-				}
-			};
-
-			return JSON.stringify(data);
 		}
 	});
 
