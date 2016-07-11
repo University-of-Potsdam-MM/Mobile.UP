@@ -7,8 +7,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		asArray: function(subject) {
 			if (Array.isArray(subject)) {
 				return subject;
-			} else {
+			} else if (subject) {
 				return [subject];
+			} else {
+				return [];
 			}
 		},
 
@@ -43,7 +45,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parse: function(data) {
-			data.personalStudyAreas = data.personalStudyAreas || {};
 			data.personalStudyAreas = this.asArray(data.personalStudyAreas);
 
 			return _.last(data.personalStudyAreas).Abschluss;
