@@ -171,6 +171,7 @@ define([
             this.model.unset('up.session.username');
             this.model.unset('up.session.password');
             this.model.unset('up.session.MoodleToken');
+			this.model.clearPrivateCache();
 			app.route('');
 		},
 		
