@@ -24,6 +24,16 @@ define([
 	var PersonList = Backbone.Collection.extend({
 		model: Person,
 
+		url: function() {
+			var session = new Session();
+
+			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
+			url += '?value=' + this.query;
+			url += '&username='+encodeURIComponent(session.get('up.session.username'));
+			url += '&password='+encodeURIComponent(session.get('up.session.password'));
+			return url;
+		},
+
 		parse:function(response){
 			if (response.people[0] && response.people[0].length != 0){
 				return response.people;
@@ -97,14 +107,8 @@ define([
       		var query = inputs[0].value;
 
       		if (query){
-      			// generate url and set collection url
-				var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
-				url += '?value='+query;
-				url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
-				url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
-
-				this.collection.reset();
-				this.collection.url = url;
+      			this.collection.reset();
+				this.collection.query = query;
 				this.collection.fetch();
 			} else {
 				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
