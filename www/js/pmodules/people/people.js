@@ -38,8 +38,7 @@ define([
 			if (response.people[0] && response.people[0].length != 0){
 				return response.people;
 			}else{
-				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
-				return null;
+				return [];
 			}
 		}
 	});
@@ -79,12 +78,19 @@ define([
 			this.template = rendertmpl('people');
 			this.listenTo(this.collection, "error", this.requestFail);
 			this.listenTo(this.collection, "sync", this.enableSearch);
+			this.listenTo(this.collection, "sync", this.checkForEmptyResult);
 			this.collection.bind("reset", this.clearList);
 			this.collection.bind("add", this.addPerson);
 		},
 
 		enableSearch: function(){
 			$("input[type='submit']").removeAttr('disabled');
+		},
+
+		checkForEmptyResult: function() {
+			if (this.collection.isEmpty()) {
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
+			}
 		},
 
 		clearList: function(){
