@@ -115,7 +115,10 @@ define([
       		if (query){
       			this.collection.reset();
 				this.collection.query = query;
-				this.collection.fetch();
+				this.collection.fetch(utils.cacheDefaults({
+					expires: 60 * 60, // Cache data for an hour
+					prefill: false // Do not use prefill capability
+				}));
 			} else {
 				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
 				this.enableSearch();
