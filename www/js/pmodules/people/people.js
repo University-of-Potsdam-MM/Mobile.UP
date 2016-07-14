@@ -60,13 +60,13 @@ define([
 		attributes: {"id": "people"},
 
 		events: {
-			'submit form': 'submit',
+			'submit form': 'submit'
 		},
 
 		initialize: function(){
 			this.collection = new PersonList();
 			this.session = new Session();
-			this.template = rendertmpl('people'),
+			this.template = rendertmpl('people');
 			this.listenTo(this.collection, "error", this.requestFail);
 			this.listenTo(this.collection, "sync", this.enableSearch);
 			this.collection.bind("reset", this.clearList);
@@ -82,9 +82,10 @@ define([
 		},
 
 		addPerson: function(model){
-			personView = new PersonView({model: model});
-			$("#people-list").append(personView.render().el);
-			$("#people-list").trigger("create");
+			var personView = new PersonView({model: model});
+			$("#people-list")
+				.append(personView.render().el)
+				.trigger("create");
 			return this;
 		},
 
@@ -92,7 +93,7 @@ define([
 			ev.preventDefault();
 			$("input[type='submit']").prop("disabled", true);
 			// get search query
-			var inputs = $('#query-form :input').serializeArray();
+			var inputs = $('#query-form').find(':input').serializeArray();
       		var query = inputs[0].value;
 
       		if (query){
@@ -111,9 +112,9 @@ define([
 			}
 		},
 
-		requestFail: function(collection, response, options) {
+		requestFail: function(collection, response) {
 			console.log("error: "+response.status);
-			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
 			this.enableSearch();
 		},
 
