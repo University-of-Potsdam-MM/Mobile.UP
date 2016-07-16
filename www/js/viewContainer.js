@@ -21,6 +21,7 @@ define([
         _getPageContainer: function () {
             if (!this.$pageContainer) {
                 this.$pageContainer = $('#pagecontainer');
+                $.mobile.hideUrlBar = false;
             }
             return this.$pageContainer;
         },
