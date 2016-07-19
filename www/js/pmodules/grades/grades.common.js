@@ -69,12 +69,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parse: function(data) {
-			var achievements = data.academicAchievements.achievement;
+			var achievements = this.asObject(data.academicAchievements.achievement);
 			achievements.field = _.map(this.asArray(achievements.field), this.parseModule, this);
 
 			return {
 				achievements: achievements
 			};
+		},
+
+		asObject: function (subject) {
+			if (typeof subject === "object") {
+				return subject;
+			} else {
+				return {};
+			}
 		},
 
 		parseModule: function(module) {
