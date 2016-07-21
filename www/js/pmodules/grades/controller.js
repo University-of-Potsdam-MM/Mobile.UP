@@ -10,8 +10,9 @@ define([
             app.loadPage('grades', 'selection');
         },
 
-        user_view: function () {
-            app.loadPage('grades', 'view');
+        user_view: function (Semester, MtkNr, StgNr) {
+            var studentDetails = {Semester: Semester, MtkNr: MtkNr, StgNr: StgNr};
+            app.loadPage('grades', 'view', {studentDetails: studentDetails});
         }
     });
 });

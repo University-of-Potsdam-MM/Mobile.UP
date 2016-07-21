@@ -60,24 +60,34 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			this.template = rendertmpl('grades.selection');
 			this.listenToOnce(this, "render", this.loadSelection);
 
-			this.model = new grades.StudentDetails();
+			this.collection = new grades.StudentDetails();
+			this.listenTo(this.collection, "error", this.requestFail);
 		},
 
 		loadSelection: function () {
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
-			this.model.fetch(/*utils.cacheDefaults(*/{
-				success: function(model) {
-					var data = model.pick("Semester", "MtkNr", "StgNr");
-					app.route("grades/view");
+			var that = this;
+			this.collection.fetch(utils.cacheDefaults({
+				success: function(collection) {
+					if (collection.length == 1) {
+						var first = collection.at(0);
+						app.route("grades/view/" + first.get("Semester") + "/" + first.get("MtkNr") + "/" + first.get("StgNr"));
+					} else {
+						that.render();
+					}
 				}
-			}/*)*/);
+			}));
+		},
+
+		requestFail: function(error) {
+			new utils.ErrorView({el: '#studentDetails', msg: 'Zurzeit nicht verfügbar.', module: 'grades', err: error});
 		},
 
 		render: function() {
 			this.setElement(this.page);
 
-			this.$el.html(this.template({data: []}));
+			this.$el.html(this.template({data: this.collection.toJSON()}));
 			this.$el.trigger("create");
 
 			this.trigger("render");
@@ -87,14 +97,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 
 	app.views.GradesView = Backbone.View.extend({
 
-		initialize: function(){
+		initialize: function(options){
 			this.template = rendertmpl('grades');
 			this.listenToOnce(this, "render", this.prepareGrade);
 
 			this.grades = new grades.Grades();
-			this.studentDetails = new grades.StudentDetails();
+			this.grades.studentDetails = options.studentDetails;
 			this.listenTo(this.grades, "error", this.requestFail);
-			this.listenTo(this.studentDetails, "error", this.requestFail);
 		},
 
 		requestFail: function(error) {
@@ -105,15 +114,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			new GradesView({model: this.grades, el: this.$("#gradesTable")});
 			new GradeAveragesView({model: this.grades, el: this.$("#averageData")});
 			new utils.LoadingView({model: this.grades, el: this.$("#loadingSpinner")});
-			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner2")});
 
-			var fetchableGrades = this.grades;
-			this.studentDetails.fetch(utils.cacheDefaults({
-				success: function(model) {
-					fetchableGrades.studentDetails = model.pick("Semester", "MtkNr", "StgNr");
-					fetchableGrades.fetch(utils.cacheDefaults());
-				}
-			}));
+			this.grades.fetch(utils.cacheDefaults());
 		},
 
 		render: function(){

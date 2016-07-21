@@ -36,7 +36,41 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		}
 	});
 
-	var StudentDetails = PulsAPI.Model.extend({
+	PulsAPI.Collection = Backbone.Collection.extend({
+
+		asArray: function(subject) {
+			if (Array.isArray(subject)) {
+				return subject;
+			} else if (subject) {
+				return [subject];
+			} else {
+				return [];
+			}
+		},
+
+		sync: function(method, model, options) {
+			options.url = _.result(model, 'url');
+			options.contentType = "application/json";
+			options.method = "POST";
+			options.data = this._selectRequestData(options.url);
+			return Backbone.Model.prototype.sync.call(this, method, model, options);
+		},
+
+		_selectRequestData: function(url) {
+			var session = new Session();
+			var uri = new URI(url);
+
+			return JSON.stringify({
+				condition: JSON.parse(uri.fragment()),
+				"user-auth": {
+					username: session.get("up.session.username"),
+					password: "ddd" //session.get("up.session.password")
+				}
+			});
+		}
+	});
+
+	var StudentDetails = PulsAPI.Collection.extend({
 
 		url: "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
 
@@ -45,9 +79,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parse: function(data) {
-			data.personalStudyAreas = this.asArray(data.personalStudyAreas);
-
-			return _.last(data.personalStudyAreas).Abschluss;
+			return this.asArray(data.personalStudyAreas.Abschluss);
 		}
 	});
 

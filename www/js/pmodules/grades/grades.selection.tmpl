@@ -1,15 +1,25 @@
 <meta name="title" content="Leistungsübersicht" />
 
 <!-- Start Main - Navigation -->
-<div data-role="content" data-theme="c">
+<div data-role="content" data-theme="c" id="gradesselection">
 
  	<div id="loadingSpinner"></div>
-	<ul data-role="listview">
+	<div id="studentDetails">
 		<% if (data.length > 0) { %>
-		<li>
-			<a href="#">Hier könnte Ihre Option stehen</a>
-		</li>
+		<div>
+			<p>Bitte wähle einen Abschluss aus, zu dem die Leistungen angezeigt werden sollen.</p>
+		</div>
+
+		<ul data-role="listview">
+			<% _.each(data, function(model) { %>
+			<li>
+				<a href="#grades/view/<%= model.Semester %>/<%= model.MtkNr %>/<%= model.StgNr %>">
+					<%= model.AbLtxt %>
+				</a>
+			</li>
+			<% }); %>
+		</ul>
 		<% } %>
-	</ul>
+	</div>
 
 </div> <!-- ende content -->
