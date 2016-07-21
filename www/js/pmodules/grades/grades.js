@@ -54,6 +54,37 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 		}
 	});
 
+	app.views.GradesSelection = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = rendertmpl('grades.selection');
+			this.listenToOnce(this, "render", this.loadSelection);
+
+			this.model = new grades.StudentDetails();
+		},
+
+		loadSelection: function () {
+			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+
+			this.model.fetch(/*utils.cacheDefaults(*/{
+				success: function(model) {
+					var data = model.pick("Semester", "MtkNr", "StgNr");
+					app.route("grades/view");
+				}
+			}/*)*/);
+		},
+
+		render: function() {
+			this.setElement(this.page);
+
+			this.$el.html(this.template({data: []}));
+			this.$el.trigger("create");
+
+			this.trigger("render");
+			return this;
+		}
+	});
+
 	app.views.GradesView = Backbone.View.extend({
 
 		initialize: function(){

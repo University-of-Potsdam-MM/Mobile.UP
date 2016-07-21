@@ -7,6 +7,10 @@ define([
         name: "grades",
 
         user_grades: function () {
+            app.loadPage('grades', 'selection');
+        },
+
+        user_view: function () {
             app.loadPage('grades', 'view');
         }
     });
