@@ -130,6 +130,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 
 			if (module.credits && module.credits.accountCredits)
 				module.credits.accountCredits = this.asArray(module.credits.accountCredits);
+			else
+				module.credits = {accountCredits: []};
 
 			return module;
 		}
