@@ -7,7 +7,7 @@ define([
         name: "grades",
 
         user_grades: function () {
-            app.loadPage('grades', 'index');
+            app.loadPage('grades', 'view');
         }
     });
 });

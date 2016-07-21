@@ -54,9 +54,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 		}
 	});
 
-	app.views.GradesPage = Backbone.View.extend({
-
-		attributes: {"id": "grades"},
+	app.views.GradesView = Backbone.View.extend({
 
 		initialize: function(){
 			this.template = rendertmpl('grades');
@@ -88,9 +86,21 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 		},
 
 		render: function(){
+			this.setElement(this.page);
+
 			$(this.el).html(this.template({}));
 			$(this.el).trigger("create");
 			this.trigger("render");
+			return this;
+		}
+	});
+
+	app.views.GradesPage = Backbone.View.extend({
+
+		attributes: {"id": "grades"},
+
+		render: function(){
+			this.$el.html("");
 			return this;
 		}
 	});
