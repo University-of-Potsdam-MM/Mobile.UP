@@ -18,7 +18,8 @@ define([
 				if (options && options.replace) {
 					that.history.pop();
 				}
-				
+				that.push(fragment);
+
 				// Call original function
 				savedNavigate.apply(this, arguments);
 			};
