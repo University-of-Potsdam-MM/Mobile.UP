@@ -333,7 +333,7 @@ define([
 	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
 	 */
 	var overrideExternalLinks = function(e, removeActiveElementsOnCurrentPage) {
-		var $this = $(e.target);
+		var $this = $(e.currentTarget);
 		var href = $this.attr('href') || '';
 		var rel = $this.attr('rel') || false;
 		var target = $this.attr('target');
