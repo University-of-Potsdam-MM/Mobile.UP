@@ -342,8 +342,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.closed,.lent {
+.marker.closed, .marker.close, .lent {
 	display: block;
 	float: left;
 	height: 20px;
@@ -355,8 +354,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.open,.available {
+.marker.open {
 	display: block;
 	float: left;
 	height: 20px;
@@ -368,6 +366,24 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
+
+/* Time bars
+-------------------- */
+.timebar.closed {
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
+	background-color: #990808;
+}
+.timebar.open {
+	display: block;
+	float: left;
+	height: 20px;
+	width: 20px;
+	background-color: #459909;
+}
+
 
 .lent,.prebook,.available {
 	margin-left: 0;
@@ -868,6 +884,15 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 
 .ui-table-reflow tbody th {
 	margin-top: .5em;
+}
+
+#opening td.times{
+	width: 40%;
+}
+
+#opening div.timebar {
+	margin-right: 0px;
+	margin-left: 0px;
 }
 
 /*öffnungszeiten - button hover
@@ -1807,7 +1832,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 #peopleContent .ui-collapsible-inset {
-	
+
 	margin:0 0;
 }
 
@@ -2440,7 +2465,7 @@ p.event-description {
 		background-image: url(..img/red/media_x_big_hr.png) !important;
 		background-size: 55px 55px;
 	}
-	
+
 	.mail {
 	background-image: url(../img/up/mail-small_hr.png) !important;
 	background-repeat: no-repeat;
@@ -2630,10 +2655,10 @@ p.event-description {
 	background-color: rgb(207, 218, 227);
 }
 
-#gradesTable .wordwrap { 
-	white-space: pre-wrap;      /* CSS3 */   
-	white-space: -moz-pre-wrap; /* Firefox */   
-	white-space: -o-pre-wrap;   /* Opera 7 */    
+#gradesTable .wordwrap {
+	white-space: pre-wrap;      /* CSS3 */
+	white-space: -moz-pre-wrap; /* Firefox */
+	white-space: -o-pre-wrap;   /* Opera 7 */
 	word-wrap: break-word;      /* IE */
 }
 
@@ -2642,7 +2667,7 @@ p.event-description {
 	    color: #fff;
     font-size: .9em;
     margin-bottom: 1em;
-   
+
     padding: .3em;
     color: #014260;
     font-family: georgia,serif;

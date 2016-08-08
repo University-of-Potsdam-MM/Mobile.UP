@@ -16,7 +16,7 @@ require.config({
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
         'q': 'vendor/q',
-        'moment': 'vendor/moment.min',
+        'moment': 'vendor/moment-with-locales',
         'utils': 'lib/utils',
 		'date': 'vendor/date',
 		'LocalStore': 'lib/ls-store',
@@ -26,6 +26,23 @@ require.config({
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
         'headerParser': 'lib/headerParser'
+    },
+    // "Paths configurations should only be used for folders, not modules themselves.
+    // Map configurations apply to individual modules." See
+    //
+    // http://stackoverflow.com/questions/12271152/relative-path-doesnt-work-with-paths
+    //
+    // for details
+    map: {
+        '*': {
+            // opening_hours has to be defined in map configuration, otherwise relative
+            // dependencies won't be resolved correctly
+            'opening_hours': 'vendor/opening_hours',
+            'i18next': 'vendor/i18next',
+            'i18next-xhr-backend': 'vendor/i18nextXHRBackend.min',
+            'suncalc': 'vendor/suncalc',
+            'i18next-client': 'vendor/i18next.amd'
+        }
     }
 });
 
@@ -43,9 +60,9 @@ requirejs.onError = function(error){
 // to load after jqm-config. Therefore, we have to
 // force this dependency by modifying the jQuery Mobile
 // code base. See
-// 
+//
 // https://github.com/jrburke/requirejs/issues/358
-// 
+//
 // for details
 require(['jquery', 'jquerymobile-config', 'jquerymobile', 'app'], function(){
     app.initialize();
