@@ -156,8 +156,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
                     table[row].times += '<div class="timebar ' + (is_open ? 'open' : (unknown ? 'unknown' : 'closed'))
                         + '" style="width:' + (to-fr) + '%"></div>';
                     if (is_open || unknown) {
-                        var text = i18n.t('words.' + state_string) + ' ' + this.printTime(prevdate)
-                            + ' ' + i18n.t('words.to') + ' ';
+                        /*var text = i18n.t('words.' + state_string) + ' ' + this.printTime(prevdate)
+                            + ' ' + i18n.t('words.to') + ' ';*/
+                        // Shorten textual representation
+                        var text = this.printTime(prevdate) + ' - ';
                         if (prevdate.getDay() !== curdate.getDay())
                             text += '24:00';
                         else
@@ -193,8 +195,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
                 output += this.printDate(table[row].date);
                 output += '</td><td class="times">';
                 output += table[row].times;
-                output += '</td><td>';
-                output += table[row].text.join(', ') || '&nbsp;';
+                output += '</td><td class="timestext">';
+                output += table[row].text.join(',<br>') || '&nbsp;';
                 output += '</td></tr>';
             }
             output += '</table>';

@@ -370,18 +370,31 @@ label.showfirst {
 /* Time bars
 -------------------- */
 .timebar.closed {
-	display: block;
-	float: left;
-	height: 20px;
-	width: 20px;
-	background-color: #990808;
+	background: rgba(224, 224, 224, 0.85);
+	border-top: 2px solid #e0e0e0;
+	border-bottom: 2px solid #e0e0e0;
 }
+/* background-color: #990808; */
 .timebar.open {
-	display: block;
-	float: left;
+	background: rgba(255, 255, 255, 0.85);
+	margin-left: -2px;
+	border: 1px solid #000;
+	border-radius: 5px;
+}
+td.day {
+	white-space: nowrap;
+}
+td.times {
+	width: 99%;
+	padding: 3px 0px 1px 2px;
+	background: #E0E0E0 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAAeCAYAAAD0O81IAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAEBSURBVHja7NWxDQAgDAOw9P+jw8YJCIEHrxkaVUnbAABnOQIAGGAAMMAAgAEGAAMMABhgAPh4gGem8i7JS7q5n37dT7/6uCrPAHtg99OvPvQrzwDL88Dy9CtPvwbYAT2wPvQrT7/yDLA8DyxPv/p1PwPsgB5Ynn7l6VeeAZbngfXrfvp1PwOsEA8sT7/y9CvPAHtgD6xf99OvPgywPA8sT7/y9CvPAHtg99OvPvQrzwDL88Dy9CtPvwbYAT2wPvQrT7/yDLA8DyxPv/p1PwPsgB5Ynn7l6VeeAZbngfXrfvp1PwMMABhgADDAAIABBgADDAAGGAAwwADwogUAAP//AwD7Ihe8uFAOdQAAAABJRU5ErkJggg==) no-repeat center left / 100% 80%;
+}
+td.timestext {
+	white-space: nowrap;
+}
+div.timebar {
 	height: 20px;
-	width: 20px;
-	background-color: #459909;
+	display: inline-block;
 }
 
 
@@ -886,14 +899,11 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	margin-top: .5em;
 }
 
-#opening td.times{
-	width: 40%;
-}
 
-#opening div.timebar {
+/*#opening div.timebar {
 	margin-right: 0px;
 	margin-left: 0px;
-}
+}*/
 
 /*öffnungszeiten - button hover
 #opening.ui-page-theme-a ul .ui-btn:hover {
