@@ -1,339 +1,280 @@
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'utils',
-  'pmodules/transport/transport.util',
-  'moment'
-], function($, _, Backbone, utils, transport, moment){
-  var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/transport");
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/transport");
 
- /*
-  ## Dependencies
-  - jQuery
-  - moment.js
-
-  ## Working Functionality
-  - make ajax POST request
-  - map API XML data into JavaScript objects, uses Deferreds
-  - moment.js parses and formats timestrings
-  - switch between stations
-  - 'pagination': get more departing times (journeys)
-  - started Backbone View
-  - verbindungVonNach
-
-  ## TODO
-  - verbindungVonNach: date + time, pagination
-  - parsing durations
-  - better objects
-  - event 'pagebeforeshow' -> find out if need to fetch journeys
-  - prevent breaking if buttons are renamed (Button mapping is done by simply using button text. There should be a better mapping method)
-  */
-
-  "use strict";
-
-  window.Transport = {
-    model: {},
-    collection: {},
-    views: {},
-    view: {},
-  };
-
-  Transport.collection.TransportsCollection = new Backbone.Collection();
-
-  var collection = Transport.collection.TransportsCollection;
-
-  collection.on('add', function(journey){
-    // console.log(journey.attributes);
-    // console.log("next departure " + journey.get('departingTime').fromNow())
-  });
-
-  /**
-   * Backbone Model - StateModel
-   * holds internal state for complex transport search
-   */
-  Transport.StateModel = Backbone.Model.extend({
-
-    defaults:{
-      depTime: moment(),
-      connections: new Backbone.Collection(),
-      from: "G-see",
-      to: "Palais"
-    },
-
-    addTime: function(units, value) {
-      this.get('depTime').add(units, value);
-    },
-
-    setFromStation: function(string) {
-      if (this.get('to') == string) {
-        // if to and from are equal, both should switch
-        this.set('to', this.get('from'));
-      }
-      this.set('from', string);
-    },
-
-    setToStation: function(string) {
-      if (this.get('from') == string) {
-        // if to and from are equal, both should switch
-        this.set('from', this.get('to'));
-      }
-      this.set('to', string);
-    },
-
-    fromStation: function(){
-      return this.get('stations').where({campus: this.get('from')})[0];
-    },
-
-    toStation: function(){
-      return this.get('stations').where({campus: this.get('to')})[0];
-    },
-
-    resetConnections: function(newConnections){
-      this.get('connections').reset(newConnections);
-    },
-
-    fetchConnections: function(){
-      console.log('DateTime for connection:', this.get('depTime').format('DD.MM.YYYY - HH:mm') );
-      var that = this;
-      transport.getVerbindung(
-        this.fromStation().get('externalId'),
-        this.toStation().get('externalId'),
-        this.get('depTime')
-        //this.get('arrivalMode')
-      ).done(function(connections){
-        that.resetConnections(connections);
-      });
-    }
-  });
-
-  /**
-   * BackboneView - ComplexSearchView
-   * view for the complex search view
-   */
-  Transport.views.ComplexSearchView = Backbone.View.extend({
-
-    initialize: function(){
-      var query = this.model;
-      var resultList = this.collection;
-      this.templateListItem =rendertmpl('complex_transport_listitem');
-      resultList.on('reset', this.renderResults, this);
-      resultList.on('add', this.render, this);
-      _.bindAll(this, 'spinnerOn', 'spinnerOff');
-    },
-
-    events:{
-      "click #searchButton" : "searchButton",
-      "click #earlierButton": "searchEarlier",
-      "click #laterButton"  : "searchLater",
-    },
-
-    searchButton: function() {
-      this.model.set('depTime', this.getMoment());
-      this.search();
-    },
-
-    search: function(){
-      this.spinner();
-      this.model.fetchConnections();
-      this.renderSummary();
-    },
-
-    searchEarlier: function(){
-      this.model.addTime('minutes', -30);
-      this.search();
-    },
-
-    searchLater: function(){
-      this.model.addTime('minutes', 30);
-      this.search();
-    },
-
-    spinner: function(){
-      var view = this;
-      view.spinnerOn();
-      _.each(this.collection, function(station){
-        view.collection.once('add', view.spinnerOff);
-      });
-    },
-
-    spinnerOn:  utils.addLoadingSpinner('transport_rides'),
-    spinnerOff: utils.removeLoadingSpinner('transport_rides'),
-
-    // returns a momentjs object for Transportation Date + Time
-    getMoment: function() {
-      var date = this.getDate();
-      var time = this.getTime();
-      if ('Heute' === date) {
-        if ('Jetzt' === time) {
-          // Heute & Jetzt
-          return moment();
-        } else {
-          // Heute + specific time
-          // time should be parseable in the format
-          // '09:59 AM'
-          return moment(time, 'HH:mm');
-        }
-      } else {
-        // date should be parseable
-        var mDate = moment(date, "DD MM YYYY");
-        var mTime;
-        if ('Jetzt' === time) {
-          // current time but on a specific date
-          mTime = moment();
-        } else {
-          // parse time
-          mTime = moment(time, 'HH:mm')
-        }
-
-        // setting minutes and hours on the mDate object
-        mDate.hours(mTime.hours());
-        mDate.minutes(mTime.minutes());
-        return mDate;
-      }
-    },
-
-    getDate: function(){
-      // we shouldn't store data in the DOM,
-      // but I don't know how to access this in another way
-      var val = this.$el.find('#transportationDate').val();
-      return val;
-    },
-
-    getTime: function(){
-      // we shouldn't store data in the DOM,
-      // but I don't know how to access this in another way
-      var val = this.$el.find('#transportationTime').val()
-      return val;
-    },
-
-    render: function(){
-      this.renderScrollButtons();
-      this.renderResults();
-      return this;
-    },
-
-    renderScrollButtons: function(){
-      if (this.collection.isEmpty()){
-        this.$el.find('#result .scrollbutton').hide();
-      } else {
-        this.$el.find('#result .scrollbutton').show();
-      }
-    },
-
-    renderSummary: function(){
-      var q = this.model;
-      this.$el.find('#summary .fromCampus').html(q.fromStation().name);
-      this.$el.find('#summary .toCampus').html(q.toStation().name);
-      this.$el.find('#summary .when').html(q.get('depTime').format('DD.MM.YY HH:mm'));
-    },
-
-    renderResults: function(){
-      //console.log('render results', this.collection);
-
-      this.renderScrollButtons();
-
-      var view = this;
-      var resultList = this.$el.find('#transport_rides');
-      resultList.html('');
-      this.collection.each(function(connection){
-        var html = view.templateListItem({connection: connection});
-        resultList.append(html);
-      });
-      resultList.trigger('create');
-      return this;
-    }
-  });
-
-  /**
-   * Backbone View - NavigationView
-   */
-  var NavigationView = Backbone.View.extend({
-    events: {
-      'click a' : 'selectButton'
-    },
-
-    activeButton: function(buttonText){
-      this.$el.find('a').removeClass('ui-btn-active');
-      this.$el.find('a').filter(function(){
-        return $(this).text() === buttonText;
-      }).addClass('ui-btn-active');
-    },
-
-    selectButton: function(ev){
-      ev.preventDefault();
-      var buttonName = $(ev.target).html();
-      this.trigger('select', buttonName);
-    }
-  });
+	/**
+	 *	Backbone Model - Section
+	 */
+	var Section = Backbone.Model.extend({});
 
 
-  /**
-   * BackboneView - Transport2PageView
-   * Main View for complex transport search
-   */
-  app.views.Transport2Page = Backbone.View.extend({
-    attributes: {"id": "transport2"},
+	/**
+	 *	Backbone Collection - Sections
+	 */
+	var Sections = Backbone.Collection.extend({
+		model: Section
+	});
 
-    events: {
-      'click .ui-input-datebox a': 'datetimeBox'
-    },
 
-    initialize: function(){
-      this.template = rendertmpl('transport2');
+	/**
+	 *	Backbone Model - Connection
+	 */
+	var Connection = Backbone.Model.extend({
+		initialize: function(options){
+			this.set('depTime', options.sections.first().get('depTime'));
+			this.set('depStation', options.sections.first().get('depStation'));
+			this.set('arrTime', options.sections.last().get('arrTime'));
+			this.set('arrStation', options.sections.last().get('arrStation'));
+			this.set('sections', options.sections);
+		}
+	});
 
-      this.collection = new transport.TransportStations();
 
-      if (Transport.model.State){
-        // reset Transport.model.State.reset();
-      }else{
-        Transport.model.State = new Transport.StateModel({stations: this.collection});
-      }
-    },
+	/**
+	 *	Backbone Collection - Connections
+	 *	holds all connections
+	 */
+	var Connections = Backbone.Collection.extend({
+		model: Connection,
+		comparator: 'depTime'
+	});
 
-    datetimeBox: function(ev){
-      ev.preventDefault();
-    },
 
-    render: function(){
-      this.$el.html(this.template({}));
-	    // Listen for Events from station
-	    Transport.view.FromStation = new NavigationView({
-	      el: this.$el.find("#fromStation2")
-	    });
+	/**
+	 *	Backbone Model - CampusTrip
+	 *	model holding the trip information between campus
+	 */
+	var CampusTrip = Backbone.Model.extend({
 
-	    Transport.view.FromStation.on('select', function(buttonName){
-	      Transport.model.State.setFromStation(buttonName);
-	    });
+		campus: {
+			"G-see": "009230003",
+			"Golm": "009220010",
+			"Palais": "009230132"
+		},
 
-	    Transport.model.State.on('change:from', function(ev, buttonText){
-	      Transport.view.FromStation.activeButton(buttonText);
-	    });
+		defaults: {
+			"originId": "009230003",
+			"originCampus": "G-see",
+			"destId": "009230132",
+			"destCampus": "Palais"
+		},
 
-	    // Listen for events to station
-	    Transport.view.ToStation = new NavigationView({
-	      el: this.$el.find("#toStation2"),
-	    });
+		url: 'https://api.uni-potsdam.de/endpoints/transportAPI/2.0/',
 
-	    Transport.view.ToStation.on('select', function(buttonName){
-	      Transport.model.State.setToStation(buttonName);
-	    });
+		initialize: function(){
+			this.set('connections', new Connections());
+			this.set('date', moment().format('YYYY-MM-DD'));
+			this.set('time', moment().format('HH:MM'));
+		},
 
-	    Transport.model.State.on('change:to', function(ev, buttonText){
-	      Transport.view.ToStation.activeButton(buttonText);
-	    });
+		setOrigin: function(campus){
+			if(this.get('destCampus') == campus){
+				this.set('destId', this.get('originId'));
+				this.set('destCampus', this.get('originCampus'));
+			}
+			this.set('originId', this.campus[campus]);
+			this.set('originCampus', campus);
+		},
 
-	    Transport.view.ComplexSearch = new Transport.views.ComplexSearchView({
-	      el: this.$el.find('#complexTransport'),
-	      model: Transport.model.State,
-	      collection: Transport.model.State.get('connections')
-	    });
-	    Transport.view.ComplexSearch.render();
+		setDest: function(campus){
+			if(this.get('originCampus') == campus){
+				this.set('originId', this.get('destId'));
+				this.set('originCampus', this.get('destCampus'));
+			}
+			this.set('destId', this.campus[campus]);
+			this.set('destCampus', campus);
+		},
 
-      this.$el.trigger("create");
-      return this;
-    }
-  });
+		buildURL: function(options){
+			this.url = this.url+'trip?format=json&originId='+this.get('originId')+'&destId='+this.get('destId')+'&date='+this.get('date')+'&time='+this.get('time');
+			// set flags
+			// numB = Trips before search time 0 | default 1
+			// numF = Trips after search time 0 | default 6
+			this.url = this.url+'&numB=0&numF=5'
+			if(options.earlier){
+				this.url += '&context='+this.get('earlier');
+			}
+			if(options.later){
+				this.url += '&context='+this.get('later');
+			}
+		},
+
+		parse: function(data, options){
+			_.each(data.Trip, _.bind(function(con){
+				var sections = new Sections();
+				_.each(con.LegList.Leg, function(sec){
+					var depTime = moment(sec.Origin.date + ' ' + sec.Origin.time);
+					var arrTime = moment(sec.Destination.date + ' ' + sec.Destination.time);
+					var section = new Section({
+						'depTime': depTime,
+						'depStation': sec.Origin.name,
+						'depPlatform': sec.Origin.track,
+						'arrTime': arrTime,
+						'arrStation': sec.Destination.name,
+						'arrPlatform': sec.Destination.track,
+						'name': sec.name}
+					);
+					sections.add(section);
+				});
+				this.get('connections').add(new Connection({sections: sections}));
+			}, this));
+
+			if(options.earlier) this.set('earlier', data.scrB);
+			if(options.later) this.set('later', data.scrF);
+			this.trigger('change');
+			return this;
+		}
+	});
+
+
+	/**
+	 * Backbone View - NavigationView
+	 */
+	var NavigationView = Backbone.View.extend({
+		events: {
+			'click a' : 'selectButton'
+		},
+
+		activeButton: function(buttonText){
+			this.$el.find('a').removeClass('ui-btn-active');
+			this.$el.find('a').filter(function(){
+				return $(this).text() === buttonText;
+			}).addClass('ui-btn-active');
+		},
+
+		selectButton: function(ev){
+			ev.preventDefault();
+			var buttonName = $(ev.target).html();
+			this.trigger('select', buttonName);
+		}
+	});
+
+
+	/**
+	 *  Backbone View - TransportListView
+	 */
+	var TransportListView = Backbone.View.extend({
+		events: {
+			"click #earlierButton": "searchEarlier",
+			"click #laterButton"  : "searchLater"
+		},
+
+		initialize: function(options) {
+			this.trip = options.campusTrip;
+			this.connections = this.trip.get('connections');
+			this.template = rendertmpl('transport2_listitem');
+
+			this.listenTo(this.trip, 'sync', this.render);
+			this.listenTo(this.trip, 'error', this.renderErrorMessage);
+			this.listenTo(this.trip, 'sync error', this.spinnerOff);
+
+			_.bindAll(this, 'addOne');
+
+			this.upperLoadingView = new utils.LoadingView({el: this.$("#loadingSpinner")});
+			this.lowerLoadingView = new utils.LoadingView({el: this.$("#spaeterLoadingSpinner")});
+		},
+
+		addOne: function(connection) {
+			this.$el.find('#transport_rides').append(this.template({connection: connection}));
+		},
+
+		searchEarlier: function(ev){
+			this.currentLoadingView = this.upperLoadingView;
+			this.currentLoadingView.spinnerOn(true);
+
+			this.trip.buildURL({earlier: true});
+			this.trip.fetch({earlier: true});
+		},
+
+		searchLater: function(ev){
+			this.currentLoadingView = this.lowerLoadingView;
+			this.currentLoadingView.spinnerOn(true);
+
+			this.trip.buildURL({later: true});
+			this.trip.fetch({later: true});
+		},
+
+		search: function(dateTime) {
+			this.currentLoadingView = this.upperLoadingView;
+			this.currentLoadingView.spinnerOn();
+
+			this.$el.find('#transport_rides').empty();
+			this.$el.find('.scrollbutton').hide();
+
+			this.trip.set('date', dateTime.format('YYYY-MM-DD'));
+			this.trip.set('time', dateTime.format('HH:mm'));
+
+			this.trip.get('connections').reset(null);
+			this.trip.buildURL({});
+			this.trip.fetch({earlier: true, later: true});
+		},
+
+		spinnerOff: function() {
+			this.currentLoadingView.spinnerOff();
+		},
+
+		render: function() {
+			this.$el.find('#transport_rides').empty();
+			this.$el.find('.scrollbutton').show();
+			this.connections.each(this.addOne);
+			this.$el.trigger("create");
+			return this;
+		},
+
+		renderErrorMessage: function(){
+			var errorPage = new utils.ErrorView({el: this.$el, msg: 'Die Transportsuche ist momentan nicht verfügbar', module: 'transport2'});
+		}
+	});
+
+
+	/**
+	 *	BackboneView - Transport2PageView
+	 *	Main View for complex transport search
+	 */
+	app.views.Transport2Page = Backbone.View.extend({
+		attributes: {"id": "transport2"},
+
+		events: {
+			'click #searchButton': 'searchTrips'
+		},
+
+		initialize: function(){
+			this.model = new CampusTrip();
+			this.template = rendertmpl('transport2');
+		},
+
+		getDateTime: function(){
+			return moment(this.$el.find('#transportationDate').val()+ ' ' + this.$el.find('#transportationTime').val(), 'DD.MM.YYYY HH:mm');
+		},
+
+		searchTrips: function(){
+			var dateTime = this.getDateTime();
+			this.transportListView.search(dateTime);
+		},
+
+		render: function(){
+			this.$el.html(this.template({}));
+
+			fromStation = new NavigationView({el: this.$el.find("#fromStation2")});
+			toStation = new NavigationView({el: this.$el.find("#toStation2")});
+
+			fromStation.on('select', _.bind(function(buttonName){
+				this.model.setOrigin(buttonName);
+				toStation.activeButton(this.model.get('destCampus'));
+			}, this));
+			toStation.on('select', _.bind(function(buttonName){
+				this.model.setDest(buttonName);
+				fromStation.activeButton(this.model.get('originCampus'));
+			}, this));
+
+			this.$el.find('#result .scrollbutton').hide();
+			this.transportListView = new TransportListView({
+				el: this.$el.find('#result'),
+				campusTrip: this.model
+			});
+			this.$el.trigger("create");
+			return this;
+		}
+	});
 
   return  app.views.Transport2Page;
 
