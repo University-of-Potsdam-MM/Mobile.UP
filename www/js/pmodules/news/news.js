@@ -1,6 +1,8 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function($, _, Backbone, utils, viewContainer){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/news");
 
+	var server = 'https://api.uni-potsdam.de/endpoints/newsAPI';
+
 	var classes = {};
 
 	var newsSources = {};
@@ -10,7 +12,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	 */
 	app.models.NewsEntry = Backbone.Model.extend({
 		url: function() {
-			return 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/view/' + this.id;
+			return server + '/json/news/view/' + this.id;
 		},
 
 		parse: function(response){
@@ -37,7 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	 */
 	app.models.News = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/',
+		url: server + '/json/news/',
 
 		initialize: function() {
 			utils.cacheModelsOnSync(this, this.cacheModels);
@@ -57,7 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 
 	app.models.NewsSource = Backbone.Collection.extend({
 		model: app.models.NewsEntry,
-		url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/source/',
+		url: server + '/json/news/source/',
 
 		initialize: function(p){
 			this.url = this.url+p.id;
@@ -211,13 +213,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 	});
 
 	app.views.NewsPage = Backbone.View.extend({
-		
+
 		initialize: function(){
 			this.template = rendertmpl('news');
 		},
 
 		render: function(){
-			var $el = $(this.el); 
+			var $el = $(this.el);
 			$el.html(this.template({}));
 			$el.trigger("create");
 			return this;

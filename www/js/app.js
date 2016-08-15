@@ -38,6 +38,7 @@ define([
 				"https://api.uni-potsdam.de/endpoints/errorAPI",
 				"https://api.uni-potsdam.de/endpoints/personAPI",
 				"https://api.uni-potsdam.de/endpoints/mensaAPI",
+				"https://api.uni-potsdam.de/endpoints/newsAPI",
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
 			router : new AppRouter(), //Router zuweisen
 			viewManager: viewContainer,
@@ -49,7 +50,7 @@ define([
 				utils.detectUA($, navigator.userAgent);
 				viewContainer.setIosHeaderFix();
 				new FastClick(document.body);
-				
+
 				$(document).ready(function() {
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
@@ -124,7 +125,7 @@ define([
 				return url;
 			},
 			/*
-			* Zur letzten URL zurückwechseln, die in app.history gespeichert ist 
+			* Zur letzten URL zurückwechseln, die in app.history gespeichert ist
 			* @noTrigger: Aktion ausführen: false, sonst true
 			*/
 			previous: function(noTrigger){
@@ -137,7 +138,7 @@ define([
 			* @c: Controllername
 			* @a: Actionsname
 			* @url: anzufragende URL oder Objekt mit Daten für den View
-			* @transition: Als String: jQueryMobile-Pagetransitionsname (Standard: slide), 
+			* @transition: Als String: jQueryMobile-Pagetransitionsname (Standard: slide),
 						   Oder als Objekt: Parameter für das Rendern des View
 			*/
 			loadPage: function(c, a, params, transition) {
@@ -165,7 +166,7 @@ define([
 
 				return q.promise;
 			},
-			
+
 			/**
 			* Globale Events setzen
 			*/
@@ -177,7 +178,7 @@ define([
 						  viewContainer.notifyMissingServerConnection(app);
 					  }
 				});
-				
+
 				$(document).on('click', 'a[data-rel="back"]', function(){ //Backbutton clicks auf zurücknavigieren mappen
 					customHistory.goBack();
 				});
