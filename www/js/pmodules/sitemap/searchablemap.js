@@ -196,7 +196,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			this.element.trigger("create");
 
 			// Initialize filter
-			this.element.find("#filterable-locations").filterable("option", "filterCallback", _.partial(this._filterLocations, this));
+			this.element.find("#filterable-locations").filterable().filterable("option", "filterCallback", _.partial(this._filterLocations, this));
 
 			this.element.on("click", "#filterable-locations a", _.bind(function (ev) {
 				ev.preventDefault();
@@ -259,7 +259,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			host.append(htmlSearch);
 
 			// Tell search list to refresh itself
-			host.listview("refresh");
+			host.listview().listview("refresh");
 			host.trigger("updatelayout");
 		},
 

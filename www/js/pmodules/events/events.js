@@ -261,7 +261,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			$('#eventlist').children('li.show-'+w).not(lstr).css('display', 'block');
 			$('#eventlist').trigger('resize');
 			this.filter = w;
-			Backbone.history.navigate('events/index/'+this.filter, { trigger : false });
+			Backbone.history.navigate('events/index/'+this.filter, { trigger : false, replace: true });
 			this.setActiveBtn();
 			window.setTimeout(function(){$(window).trigger('resize');}, 10);
 		},

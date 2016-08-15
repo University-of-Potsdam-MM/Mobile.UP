@@ -342,8 +342,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.closed,.lent {
+.marker.closed, .marker.close, .lent {
 	display: block;
 	float: left;
 	height: 20px;
@@ -355,8 +354,7 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
-
-.open,.available {
+.marker.open {
 	display: block;
 	float: left;
 	height: 20px;
@@ -368,6 +366,38 @@ label.showfirst {
 	margin-right: 10px;
 	margin-left: 10px;
 }
+
+/* Time bars
+-------------------- */
+.timebar.closed {
+	border-top: 2px solid #ededed;
+	border-bottom: 2px solid #ededed;
+}
+/* background-color: #990808; */
+.timebar.open {
+	background: rgba(255, 255, 255, 0.85);
+	margin-left: -2px;
+	border: 1px solid #000;
+	border-radius: 5px;
+}
+td.day {
+	white-space: nowrap;
+	background: #ededed;
+}
+td.times {
+	width: 99%;
+	padding: 3px 0px 1px 2px;
+	background: #ededed url(../img/up/opening-timesbar.png) no-repeat center left / 100% 80%;
+}
+td.timestext {
+	white-space: nowrap;
+	background: #ededed;
+}
+div.timebar {
+	height: 20px;
+	display: inline-block;
+}
+
 
 .lent,.prebook,.available {
 	margin-left: 0;
@@ -732,9 +762,12 @@ label.showfirst {
 }
 
 #sitemap #sitemaps-settings .options-close {
-	background-color:#014260;
-	color:#fff;
+	background-color: #014260;
+	color: #fff;
+}
 
+.similar-locations-reset {
+	background: #ededed !important;
 }
 
 /***************Öffnungszeiten********************
@@ -866,6 +899,12 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 .ui-table-reflow tbody th {
 	margin-top: .5em;
 }
+
+
+/*#opening div.timebar {
+	margin-right: 0px;
+	margin-left: 0px;
+}*/
 
 /*öffnungszeiten - button hover
 #opening.ui-page-theme-a ul .ui-btn:hover {
@@ -1039,7 +1078,6 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 	max-width: 600px;
 }
 
-#opening .ui-table td,
 #transport2 .ui-table td {
 	padding-top: 0px;
 	padding-bottom: 0px;
@@ -1804,7 +1842,7 @@ li.book-short:hover div.media_x,li.book-short:active div.media_x {
 }
 
 #peopleContent .ui-collapsible-inset {
-	
+
 	margin:0 0;
 }
 
@@ -2437,7 +2475,7 @@ p.event-description {
 		background-image: url(..img/red/media_x_big_hr.png) !important;
 		background-size: 55px 55px;
 	}
-	
+
 	.mail {
 	background-image: url(../img/up/mail-small_hr.png) !important;
 	background-repeat: no-repeat;
@@ -2627,10 +2665,10 @@ p.event-description {
 	background-color: rgb(207, 218, 227);
 }
 
-#gradesTable .wordwrap { 
-	white-space: pre-wrap;      /* CSS3 */   
-	white-space: -moz-pre-wrap; /* Firefox */   
-	white-space: -o-pre-wrap;   /* Opera 7 */    
+#gradesTable .wordwrap {
+	white-space: pre-wrap;      /* CSS3 */
+	white-space: -moz-pre-wrap; /* Firefox */
+	white-space: -o-pre-wrap;   /* Opera 7 */
 	word-wrap: break-word;      /* IE */
 }
 
@@ -2639,7 +2677,7 @@ p.event-description {
 	    color: #fff;
     font-size: .9em;
     margin-bottom: 1em;
-   
+
     padding: .3em;
     color: #014260;
     font-family: georgia,serif;

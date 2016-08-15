@@ -24,12 +24,21 @@ define([
 	var PersonList = Backbone.Collection.extend({
 		model: Person,
 
+		url: function() {
+			var session = new Session();
+
+			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
+			url += '?value=' + this.query;
+			url += '&username='+encodeURIComponent(session.get('up.session.username'));
+			url += '&password='+encodeURIComponent(session.get('up.session.password'));
+			return url;
+		},
+
 		parse:function(response){
 			if (response.people[0] && response.people[0].length != 0){
 				return response.people;
 			}else{
-				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
-				return null;
+				return [];
 			}
 		}
 	});
@@ -60,15 +69,16 @@ define([
 		attributes: {"id": "people"},
 
 		events: {
-			'submit form': 'submit',
+			'submit form': 'submit'
 		},
 
 		initialize: function(){
 			this.collection = new PersonList();
 			this.session = new Session();
-			this.template = rendertmpl('people'),
+			this.template = rendertmpl('people');
 			this.listenTo(this.collection, "error", this.requestFail);
 			this.listenTo(this.collection, "sync", this.enableSearch);
+			this.listenTo(this.collection, "sync", this.checkForEmptyResult);
 			this.collection.bind("reset", this.clearList);
 			this.collection.bind("add", this.addPerson);
 		},
@@ -77,14 +87,21 @@ define([
 			$("input[type='submit']").removeAttr('disabled');
 		},
 
+		checkForEmptyResult: function() {
+			if (this.collection.isEmpty()) {
+				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
+			}
+		},
+
 		clearList: function(){
 			$("#people-list").empty();
 		},
 
 		addPerson: function(model){
-			personView = new PersonView({model: model});
-			$("#people-list").append(personView.render().el);
-			$("#people-list").trigger("create");
+			var personView = new PersonView({model: model});
+			$("#people-list")
+				.append(personView.render().el)
+				.trigger("create");
 			return this;
 		},
 
@@ -92,28 +109,25 @@ define([
 			ev.preventDefault();
 			$("input[type='submit']").prop("disabled", true);
 			// get search query
-			var inputs = $('#query-form :input').serializeArray();
+			var inputs = $('#query-form').find(':input').serializeArray();
       		var query = inputs[0].value;
 
       		if (query){
-      			// generate url and set collection url
-				var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
-				url += '?value='+query;
-				url += '&username='+encodeURIComponent(this.session.get('up.session.username'));
-				url += '&password='+encodeURIComponent(this.session.get('up.session.password'));
-
-				this.collection.reset();
-				this.collection.url = url;
-				this.collection.fetch();
+      			this.collection.reset();
+				this.collection.query = query;
+				this.collection.fetch(utils.cacheDefaults({
+					expires: 60 * 60, // Cache data for an hour
+					prefill: false // Do not use prefill capability
+				}));
 			} else {
 				new utils.ErrorView({el: '#people-list', msg: 'Keine Ergebnisse gefunden.', module: 'people'});
 				this.enableSearch();
 			}
 		},
 
-		requestFail: function(collection, response, options) {
+		requestFail: function(collection, response) {
 			console.log("error: "+response.status);
-			var errorPage = new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
 			this.enableSearch();
 		},
 

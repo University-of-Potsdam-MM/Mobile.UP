@@ -1,31 +1,36 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, Backbone, utils, Session){
+define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades/grades.common'], function($, _, Backbone, utils, Session, grades){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/grades");
-
-	var Grades = Backbone.Model.extend({
-
-		initialize: function(){
-			// get Session information for username / password
-			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/1.0?action=acm&auth=H2LHXK5N9RDBXMB&datatype=json2";
-			this.url += "&user=" + encodeURIComponent(this.session.get('up.session.username'));
-			this.url += "&password=" + encodeURIComponent(this.session.get('up.session.password'));
-		},
-
-		parse: function(result) {
-			return result.jsonObject;
-		}
-	});
 
 	var GradesView = Backbone.View.extend({
 
+		events: {
+			"click .grades-tabs-links": "tabClick"
+		},
+
 		initialize: function() {
 			this.template = rendertmpl("gradeList");
+			this.moduleTemplate = rendertmpl("gradeList.module");
 			this.listenTo(this.model, "sync", this.render);
+		},
+
+		/**
+		 * We want to prevent the url from changing, but in return we have to change the button color of the active tab ourselves.
+		 */
+		tabClick: function(ev) {
+			ev.preventDefault();
+
+			$(".ui-btn-active", ev.currentTarget).first().removeClass("ui-btn-active");
+			$(ev.target).addClass("ui-btn-active");
+
+			return false;
 		},
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(this.template({grades: this.model.get("grades")}));
+			this.$el.append(this.template({
+				data: this.model.toJSON(),
+				moduleTemplate: this.moduleTemplate
+			}));
 			this.$el.trigger("create");
 		}
 	});
@@ -57,8 +62,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 			this.template = rendertmpl('grades');
 			this.listenToOnce(this, "render", this.prepareGrade);
 
-			this.grades = new Grades();
+			this.grades = new grades.Grades();
+			this.studentDetails = new grades.StudentDetails();
 			this.listenTo(this.grades, "error", this.requestFail);
+			this.listenTo(this.studentDetails, "error", this.requestFail);
 		},
 
 		requestFail: function(error) {
@@ -69,8 +76,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session'], function($, _, 
 			new GradesView({model: this.grades, el: this.$("#gradesTable")});
 			new GradeAveragesView({model: this.grades, el: this.$("#averageData")});
 			new utils.LoadingView({model: this.grades, el: this.$("#loadingSpinner")});
+			new utils.LoadingView({model: this.studentDetails, el: this.$("#loadingSpinner2")});
 
-			this.grades.fetch(utils.cacheDefaults());
+			var fetchableGrades = this.grades;
+			this.studentDetails.fetch(utils.cacheDefaults({
+				success: function(model) {
+					fetchableGrades.studentDetails = model.pick("Semester", "MtkNr", "StgNr");
+					fetchableGrades.fetch(utils.cacheDefaults());
+				}
+			}));
 		},
 
 		render: function(){

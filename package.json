@@ -27,7 +27,8 @@
     "moment": "^2.5.1",
     "requirejs": "^2.1.11",
     "backbone-fetch-cache": "^1.4.1",
-    "fastclick": "^1.0.3"
+    "fastclick": "^1.0.3",
+    "opening_hours": "^3.3.0"
   },
   "devDependencies": {
     "connect": "~2.14.4",

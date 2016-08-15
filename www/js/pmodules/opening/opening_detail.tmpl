@@ -11,36 +11,24 @@
   		</tr>
   	</thead>
   	<tbody>
-      <tr><th>Name:</th><td>
-      <% if (opening.link) { %>
-          <a href="<%= opening.link %>" target="_blank" rel="external"><%= opening.name %></a></td></tr>
-        <% }else{ %>
-        <%= opening.name %></a></td></tr>
-        <% } %>
-  		<%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'" data-rel="external">'+opening.mail+'</a></td></tr>' : ''  %>
-  		<%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel:'+opening.telephone.replace(/[\s-]/g, '').replace(/\+/g, '00')+'">'+opening.telephone+'</a></td></tr>' : '' %>
+      <tr>
+        <th>Name:</th>
+        <td>
+          <% if (opening.link) { %>
+          <a href="<%= opening.link %>" target="_blank" rel="external"><%= opening.name %></a>
+          <% }else{ %>
+          <%= opening.name %>
+          <% } %>
+        </td>
+      </tr>
+
+      <%= (opening.mail) ? '<tr><th>E-Mail:</th><td><a href="mailto:'+opening.mail+'" data-rel="external">'+opening.mail+'</a></td></tr>' : '' %>
+      <%= (opening.telephone) ? '<tr><th>Tel:</th><td><a href="tel:'+opening.telephone.replace(/[\s-]/g, '').replace(/\+/g, '00')+'">'+opening.telephone+'</a></td></tr>' : '' %>
 
   	</tbody>
   </table>
   <% } %>
-
-  <table data-role="table" data-mode="reflow"
-    class="ui-responsive table-stripe ">
-    <thead>
-      <tr>
-        <th>Wochentag</th>
-        <th>Uhrzeit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% _.each(opening.times, function(time_for_day) { %>
-        <tr>
-          <th><%= time_for_day['day'] %></th>
-          <td><%= time_for_day['opening_text'] %></td>
-        </tr>
-      <% }); %>
-    </tbody>
-  </table>
+  <%= opening.table %>
   <!--
   <a href="#" data-role="button" data-theme="a" data-icon="location">
     Auf der Karte finden</a>

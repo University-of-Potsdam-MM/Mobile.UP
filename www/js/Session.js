@@ -2,7 +2,7 @@ define([
   'jquery',
   'backbone',
   'uri/URI'
-], function($, Backbone, Router, URI){
+], function($, Backbone, URI){
 	
 	var CacheManager = Backbone.Model.extend({
 		

@@ -1,6 +1,17 @@
-<ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'>
-    <% _.each(similars, function(item) { %>
-    <li><a href='#' class='similar-location' data-tag='<%= item.id %>'><%= item.name %> (<%= item.campus %>)</a></li>
-    <% }); %>
-</ul>
-<button data-theme='a' class='similar-locations-reset'>Zurück</button>
+<meta name="title" content="Lagepläne" />
+
+<div data-role="content" data-theme="c" class="ui-content ui-body-c">
+    <% if (similars) { %>
+    <ul id='similarlocations' data-role='listview' data-icon='arrow-darkblue' style='padding-left:16px; margin-bottom:5px;margin-top:5px;'>
+        <% _.each(similars, function(item) { %>
+        <li><a href='#' class='similar-location' data-tag='<%= item.id %>'><%= item.name %> (<%= item.campus %>)</a></li>
+        <% }); %>
+    </ul>
+    <a href="#sitemap" data-role="button" role="button" data-theme="a" class="similar-locations-reset">Zurück</a>
+    <!--<button data-theme='a' class='similar-locations-reset'>Zurück</button>-->
+    <% } %>
+</div>
+
+<!--<div data-role="content" data-theme="c" class="ui-content ui-body-c">
+    <div>Content content</div>
+</div>-->

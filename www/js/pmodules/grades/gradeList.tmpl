@@ -1,34 +1,144 @@
-<ul data-role="listview" data-inset="true" data-theme="c" data-filter="true" data-filter-placeholder="Filterbegriff eingeben...">
-	<% _.each(grades, function(model) { %>
-	<li>
-		<div class="grades-li-static">
-			<% function printIfExists(prefix, data, alternative) {
-				print(prefix);
+<div data-role="tabs" class="grades-tabs">
+    <div data-role="navbar">
 
-				if (data) {
-					print(data);
-				} else if (alternative) {
-					print(alternative);
-				}
-			} %>
+        <ul class="grades-tabs-links">
+            <% _.each(data.achievements.field, function(acm, index) { %>
+            <li><a href="#<%= acm.id %>"
+                    <% if (index === 0) { %>
+                    class="ui-btn-active"
+                    <% } %>
+                ><%= acm.fieldName %></a></li>
+            <% }); %>
+        </ul>
 
-			<div class="grades-name wordwrap"><%= model.name %></div>
-			<div class="grades-li-divider">
-				<!--<div class="grades-data grades-lp"><% printIfExists("LP: ", model.lp, "-"); %></div> -->
-				<div class="grades-data grades-lp"><% if (model.status) { print(model.status); } %></div>
-				<div class="grades-data grades-grade"><% printIfExists("Note: ", model.grade, "-") %></div>
-				<!--<div class="grades-data grades-status"><% if (model.status) { print(model.status); } %></div>-->
-			</div>
-			<div style="clear: both;"></div>
-		</div>
-	</li>
-	<% }); %>
-	<% if (!grades || grades.length === 0) { %>
-	<div>
-	<br />
-	<img src="img/up/hinweis.png" class="alignleft">
-	<p class="blau" style="margin-left:55px;">Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?</p>
-	<div style="clear: both;"></div>
+        <% _.each(data.achievements.field, function(acm) { %>
+        <div id="<%= acm.id %>">
+            <table class="grades-table">
+                <thead>
+                    <% _.each(acm.credits.accountCredits, function(ac) { %>
+                    <tr class="grades-overview">
+                        <th></th>
+                        <th><%= ac.description %></th>
+                        <th></th>
+                        <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
+                        <th></th>
+                    </tr>
+                    <% }); %>
+                    <tr class="grades-header-pre">
+                        <th colspan="5"></th>
+                    </tr>
+                    <tr class="grades-header">
+                        <th></th>
+                        <th>Bezeichnung</th>
+                        <th>Note</th>
+                        <th>LP</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% _.each(acm.module, function(module, index) { %>
+                    <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
+                <% }); %>
+                </tbody>
+                <tfoot>
+                    <tr class="grades-overview-pre">
+                        <th colspan="5"></th>
+                    </tr>
+                    <% _.each(acm.credits.accountCredits, function(ac) { %>
+                    <tr class="grades-overview">
+                        <th></th>
+                        <th><%= ac.description %></th>
+                        <th></th>
+                        <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
+                        <th></th>
+                    </tr>
+                    <% }); %>
+                </tfoot>
+            </table>
+        </div>
+        <% }); %>
+
+    </div>
+
+    <style scoped>
+        .grades-tabs {
+            padding: 0;
+        }
+
+        .grades-table {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f2f2f2;
+            margin-top: 1px;
+        }
+
+        .grade,
+        .lp {
+            text-align: center;
+        }
+        .name {
+            text-align: left;
+        }
+
+        .grades-overview {
+            background-color: #014260; /*{a-active-background-color}*/
+            color: white;
+        }
+        .grades-overview th {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
+        .grades-header-pre th,
+        .grades-overview-pre th {
+            background: white;
+            border: none;
+            height: 1em;
+        }
+
+        .grades-table tr.grades-header {
+            color: white;
+            background-color: #3a3a3a;
+        }
+
+        tr.module-pre td,
+        tr.module-post td {
+            padding-top: 5px;
+        }
+
+        thead tr.grades-header th:first-child,
+        tbody tr th:first-child,
+        tbody tr td:first-child {
+            width: 2px;
+            /*border-left: 4px solid #3a3a3a;*/
+        }
+        thead tr.grades-header th:last-child,
+        tbody tr th:last-child,
+        tbody tr td:last-child {
+            width: 2px;
+            /*border-right: 4px solid #3a3a3a;*/
+        }
+        tr.module-post.module-level-0 {
+            border-bottom: 2px solid #3a3a3a;
+        }
+
+        tr.module-level-0 th.name {
+            padding-left: 0;
+        }
+        tr.module-level-1 th.name {
+            padding-left: 20px;
+        }
+        tr.module-level-2 th.name {
+            padding-left: 40px;
+        }
+
+        tr.module-header th.grade,
+        tr.module-header th.lp,
+        tr.module-content td.grade,
+        tr.module-content td.lp,
+        tr.module-content td.name {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #adadad;
+        }
+    </style>
 </div>
-	<% } %>
-</ul>

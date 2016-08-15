@@ -19,10 +19,11 @@ define([
 
 		initialize: function(){
 			this.template = rendertmpl('calendar_day');
-			this.listenTo(this.collection, "timeslotsReady", this.render);
+			this.listenTo(this.collection, "timeSlotsReady", this.render);
 		},
 
 		render: function(){
+			console.log(this.collection);
 			this.$el.html(this.template({CourseSlots: this.collection}));
 			this.$el.trigger("create");
 			return this;
@@ -35,7 +36,7 @@ define([
 	 * 	Main View fpr calendar
 	 */
 	app.views.CalendarPage = utils.GesturesView.extend({
-		
+
 		attributes: {"id": "calendar"},
 
 		events: {
@@ -85,6 +86,8 @@ define([
 
 			this.loadingView = new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
+
+			console.log('load data');
 
 			this.CourseList.fetch(utils.cacheDefaults());
 		},

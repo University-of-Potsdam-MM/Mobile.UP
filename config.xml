@@ -15,19 +15,14 @@
     <preference name="webviewbounce" value="true" />
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />
-    <!-- see https://github.com/apache/cordova-plugin-statusbar/ -->
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarStyle" value="blackopaque" />
-    <!-- Blackberry only -->
     <preference name="disable-cursor" value="false" />
-    <!-- Android only -->
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
-    <!-- iOS only -->
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="DisallowOverscroll" value="true" />
-    <!-- see https://github.com/apache/cordova-plugin-splashscreen -->
     <preference name="show-splash-screen-spinner" value="false" />
     <preference name="FadeSplashScreen" value="true" />
     <preference name="SplashScreen" value="screen" />
@@ -44,7 +39,6 @@
         <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
         <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
         <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
-        <!-- Android http://docs.build.phonegap.com/en_US/configuring_icons_and_splash.md.html -->
         <splash qualifier="ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
         <splash qualifier="mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
         <splash qualifier="hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
@@ -65,12 +59,10 @@
         <icon height="58" src="www/res/icon/ios/icon-29@2x.png" width="58" />
         <icon height="50" src="www/res/icon/ios/icon-50.png" width="50" />
         <icon height="100" src="www/res/icon/ios/icon-50@2x.png" width="100" />
-        <!-- iPhone and iPod Touch -->
-        <splash src="www/res/screen/ios/screen-iphone-portrait.png" width="320" height="480" />
-        <splash src="www/res/screen/ios/screen-iphone-portrait-2x.png" width="640" height="960" />
-        <!-- iPad -->
-        <splash src="www/res/screen/ios/screen-ipad-portrait.png" width="768" height="1024" />
-        <splash src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" height="768" />
+        <splash height="480" src="www/res/screen/ios/screen-iphone-portrait.png" width="320" />
+        <splash height="960" src="www/res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
+        <splash height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" width="768" />
+        <splash height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
     </platform>
     <plugin name="cordova-plugin-device" />
     <plugin name="cordova-plugin-inappbrowser" />
@@ -87,4 +79,16 @@
     <access origin="*" />
     <content src="index.html" />
     <engine name="android" spec="~5.1.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="https://github.com/apache/cordova-plugin-inappbrowser.git" />
+    <plugin name="cordova-plugin-splashscreen" spec="https://github.com/apache/cordova-plugin-splashscreen.git" />
+    <plugin name="cordova-plugin-dialogs" spec="https://github.com/apache/cordova-plugin-dialogs.git" />
+    <plugin name="cordova-plugin-calendar" spec="https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-device" spec="https://github.com/apache/cordova-plugin-device.git" />
+    <plugin name="cordova-plugin-network-information" spec="https://github.com/apache/cordova-plugin-network-information.git" />
+    <plugin name="com.borismus.webintent" spec="https://github.com/Initsogar/cordova-webintent.git" />
+    <plugin name="cordova-plugin-file" spec="https://github.com/apache/cordova-plugin-file.git" />
+    <plugin name="cordova-plugin-file-transfer" spec="https://github.com/apache/cordova-plugin-file-transfer.git" />
+    <plugin name="cordova-plugin-x-toast" spec="https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git" />
+    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
+    <plugin name="cordova-plugin-statusbar" spec="https://github.com/apache/cordova-plugin-statusbar.git" />
 </widget>

@@ -21,6 +21,7 @@ define([
         _getPageContainer: function () {
             if (!this.$pageContainer) {
                 this.$pageContainer = $('#pagecontainer');
+                $.mobile.hideUrlBar = false;
             }
             return this.$pageContainer;
         },
@@ -121,7 +122,6 @@ define([
         initialize: function() {
             _.bindAll(this, "notifyMissingServerConnection", "removeActiveElementsOnCurrentPage");
 
-            this.listenTo(pageContainer, "beforeTransition", function(options) { customHistory.push(options.route.to); });
             this.listenTo(pageContainer, "afterTransition", this.afterTransition);
         },
 

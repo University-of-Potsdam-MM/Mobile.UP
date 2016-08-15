@@ -83,7 +83,7 @@ define([
 
         parse: function(response) {
             // Events have to be grouped by groupId to know which dates belong together
-            var groups = response.courseData.course[0].events.event;
+            var groups = this.ensureArray(response.courseData.course)[0].events.event;
             var groupedEvents = _.groupBy(this.ensureArray(groups), "groupId");
 
             var joinLecturers = function(lecturers) {
@@ -177,32 +177,41 @@ define([
         parse: function(response) {
             if (response.lectureScheduleRoot) {
                 var models = response.lectureScheduleRoot.rootNode.childNodes.childNode;
-                return _.map(this.ensureArray(models), function(model) {
-                    return {
-                        name: model.headerName,
-                        headerId: model.headerId,
-                        isCategory: true
-                    };
-                });
+                return _.chain(this.ensureArray(models))
+                        .reject(function(model) { return model === ""; })
+                        .map(function(model) {
+                            return {
+                                name: model.headerName,
+                                headerId: model.headerId,
+                                isCategory: true
+                            };
+                        })
+                        .value();
             } else if (response.lectureScheduleSubTree) {
                 var models = response.lectureScheduleSubTree.currentNode.childNodes.childNode;
-                return _.map(this.ensureArray(models), function(model) {
-                    return {
-                        name: model.headerName,
-                        headerId: model.headerId,
-                        isCategory: true
-                    };
-                });
+                return _.chain(this.ensureArray(models))
+                        .reject(function(model) { return model === ""; })
+                        .map(function(model) {
+                            return {
+                                name: model.headerName,
+                                headerId: model.headerId,
+                                isCategory: true
+                            }
+                        })
+                        .value();
             } else if (response.lectureScheduleCourses) {
                 var models = response.lectureScheduleCourses.currentNode.courses.course;
-                return _.map(this.ensureArray(models), function(model) {
-                    return {
-                        name: model.courseName,
-                        type: model.courseType,
-                        isCourse: true,
-                        courseId: model.courseId
-                    };
-                });
+                return _.chain(this.ensureArray(models))
+                        .reject(function(model) { return model === ""; })
+                        .map(function(model) {
+                            return {
+                                name: model.courseName,
+                                type: model.courseType,
+                                isCourse: true,
+                                courseId: model.courseId
+                            };
+                        })
+                        .value();
             }
         },
 
