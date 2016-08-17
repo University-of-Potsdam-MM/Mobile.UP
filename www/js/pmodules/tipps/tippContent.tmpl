@@ -1,0 +1,21 @@
+<% if (content.logo) { %>
+	<div class="tipp-image-container">
+		<img class="tipp-image" src="<%= content.logo %>" height="100"/>
+		<h2><%= content.title %></h2>
+		<p class="tipp-detail"><%= content.detail %></p>
+	</div>
+<% } else { %>
+	<div class="tipp-title-container">
+		<h2><%= content.title %></h2>
+		<p class="tipp-detail"><%= content.detail %></p>
+	</div>
+<% } %>
+<div>
+	<p class="tipp-description"><%= content.description %></p>
+</div>
+
+<div>
+  <ul id="<%= content.anchor %>-links" data-role="listview"></ul>
+</div>
+
+<% %>

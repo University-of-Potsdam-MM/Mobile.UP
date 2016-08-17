@@ -16,6 +16,7 @@ define([
     "pmodules/impressum/controller",
     "pmodules/options/controller",
     "pmodules/home/controller",
+    "pmodules/tipps/controller",
     "pmodules/transport/controller"
 ], function() {
     return {};

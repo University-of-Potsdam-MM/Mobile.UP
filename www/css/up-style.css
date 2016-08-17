@@ -644,6 +644,76 @@ div.timebar {
 	display: block;
 }
 
+/**** Tipps ***********************************
+----------------------------------------------*/
+.tipp-title-container {
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	background-color: #014260;
+	color: #fff;
+}
+
+.tipp-title-container h2 {
+	/*color: #014260;*/
+	font-weight: bold;
+}
+
+.tipp-title-container .tipp-detail {
+	margin-left: 1em;
+	font-style: italic;
+	/*font-size: 12px;*/
+}
+
+.tipp-image-container {
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	min-height: 100px;
+	/*color: #014260;*/
+	/*background-color: #ededed;*/
+	background-color: #014260;
+	color: #fff;
+}
+
+.tipp-image {
+	width: 100px;
+	float: left;
+	margin-left: .5em;
+}
+
+.tipp-image-container h2 {
+	margin-top: .5em;
+	margin-bottom: .5em;
+	margin-left: 115px;
+	font-weight: bold;
+}
+
+.tipp-image-container .tipp-detail {
+	margin-left: 115px;
+	font-style: italic;
+	/*font-size: 12px;*/
+}
+
+p.tipp-description {
+	padding-top: .5em;
+	padding-left: .5em;
+	padding-right: .5em;
+	padding-bottom: .5em;
+	/*margin-bottom: 1em;*/
+	/*background-color: #ededed;*/
+	/*border-color: #ccc;*/
+}
+
+#tipp-content .ui-listview {
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
 /*************************************MAp************************************
 *******************************************************************************/
 
