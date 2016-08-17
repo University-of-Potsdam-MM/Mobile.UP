@@ -51,7 +51,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 		render: function(){
 			this.collection.each(function(model){
 				var tippView = new TippView({model: model});
-				this.$el.append(tippView.render().$el);
+				this.$el.append(tippView.render().$el.html());
 			}, this);
 
 			this.$el.trigger("create");
