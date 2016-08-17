@@ -27,17 +27,17 @@ define([
 			}
 		});
 
-
 		_.extend(app, {
 			authUrls: [
 				"https://api.uni-potsdam.de/endpoints/roomsAPI",
 				"https://api.uni-potsdam.de/endpoints/libraryAPI",
 				"https://api.uni-potsdam.de/endpoints/pulsAPI",
 				"https://api.uni-potsdam.de/endpoints/moodleAPI",
-				"https://api.uni-potsdam.de/endpoints/transportAPI/1.0/",
+				"https://api.uni-potsdam.de/endpoints/transportAPI/2.0/",
 				"https://api.uni-potsdam.de/endpoints/errorAPI",
 				"https://api.uni-potsdam.de/endpoints/personAPI",
 				"https://api.uni-potsdam.de/endpoints/mensaAPI",
+				"https://api.uni-potsdam.de/endpoints/newsAPI",
 				"https://api.uni-potsdam.de/endpoints/staticContent"],
 			router : new AppRouter(), //Router zuweisen
 			viewManager: viewContainer,

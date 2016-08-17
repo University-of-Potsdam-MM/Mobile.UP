@@ -1,7 +1,7 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], function($, _, Backbone, utils, date, viewContainer){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/events");
 
-	var server = 'https://musang.soft.cs.uni-potsdam.de';
+	var server = 'https://api.uni-potsdam.de/endpoints/newsAPI';
 
 	var events = {};
 	var places = {};
@@ -14,7 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			var id = this.id;
 			if (!id && this.response && this.response.Event)
 				id = this.response.Event.id;
-			return server+'/potsdamevents/json/events/view/' + id;
+			return server+'/json/events/view/' + id;
 		},
 		parse: function(response){
 			if(response.vars)
@@ -26,8 +26,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 
 	app.models.Events = Backbone.Collection.extend({
 		model: app.models.Event,
-		url: server + '/potsdamevents/json/events/',
-		//url: 'https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/events/',
+		url: server + '/json/events/',
 
 		initialize: function() {
 			utils.cacheModelsOnSync(this, this.cacheModels);
@@ -48,7 +47,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 
 	app.models.Place = Backbone.Collection.extend({
 		model: app.models.Event,
-		url: server+'/potsdamevents/json/events/place/',
+		url: server+'/json/events/place/',
 
 		initialize: function(p){
 			this.url = this.url + p.id;
@@ -79,7 +78,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			});
 			this.model.fetch({success: p.fetchCallback, cache: true, expires: 60*60});
 		},
-		
+
 		fetchError: function(){
 			var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltung konnte nicht abgerufen werden.', module: 'events'});
 		},
@@ -150,7 +149,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			});
 			this.collection.fetch({cache: true, expires: 60*60});
 		},
-		
+
 		fetchError: function(){
 			var errorPage = new utils.ErrorView({el: '#events', msg: 'Die Veranstaltungen konnten nicht abgerufen werden.', module: 'events'});
 		},
@@ -173,7 +172,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 	});
 
 	app.views.EventsSet_locations = Backbone.View.extend({
-	
+
 		initialize: function(p){
 			this.template = rendertmpl('events_set_locations');
 			_.bindAll(this, 'render', 'toggleLocation');
@@ -266,7 +265,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 			this.setActiveBtn();
 			window.setTimeout(function(){$(window).trigger('resize');}, 10);
 		},
-		
+
 		/*
 		* Aktiven Button im Footer der Eventliste anhand des aktuellen filters markieren
 		*/
@@ -284,7 +283,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 		},
 
 		render: function(){
-			var $el = $(this.el); 
+			var $el = $(this.el);
 			$el.html(this.template({}));
 			$el.trigger("create");
 			return this;
