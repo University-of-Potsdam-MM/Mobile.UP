@@ -283,8 +283,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
      */
 	var Openings = Backbone.Collection.extend({
         model: Opening,
-        //url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/opening.json',
-        url: 'js/json/opening.json',
+        url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/opening.json',
+        //url: 'js/json/opening.json',
         comparator: 'name',
 
         fetch: function(options) {
@@ -327,7 +327,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
 
             var loadingEl = params.parentEl.find("#loadingSpinner");
             new utils.LoadingView({el: loadingEl, collection: this.collection});
-            this.collection.fetch();
+            this.collection.fetch({
+                cache: true,
+                expires: 60 * 60 * 24 // Fetch once per day
+            });
 		},
 
 		fetchSuccess: function() {
