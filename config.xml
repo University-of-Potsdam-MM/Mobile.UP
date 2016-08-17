@@ -45,24 +45,44 @@
         <splash qualifier="xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
     </platform>
     <platform name="ios">
-        <icon height="60" src="www/res/icon/ios/icon-60.png" width="60" />
-        <icon height="120" src="www/res/icon/ios/icon-60@2x.png" width="120" />
-        <icon height="76" src="www/res/icon/ios/icon-76.png" width="76" />
-        <icon height="152" src="www/res/icon/ios/icon-76@2x.png" width="152" />
-        <icon height="40" src="www/res/icon/ios/icon-40.png" width="40" />
-        <icon height="80" src="www/res/icon/ios/icon-40@2x.png" width="80" />
-        <icon height="57" src="www/res/icon/ios/icon-57.png" width="57" />
-        <icon height="114" src="www/res/icon/ios/icon-57@2x.png" width="114" />
-        <icon height="72" src="www/res/icon/ios/icon-72.png" width="72" />
-        <icon height="144" src="www/res/icon/ios/icon-72@2x.png" width="144" />
-        <icon height="29" src="www/res/icon/ios/icon-29.png" width="29" />
-        <icon height="58" src="www/res/icon/ios/icon-29@2x.png" width="58" />
-        <icon height="50" src="www/res/icon/ios/icon-50.png" width="50" />
-        <icon height="100" src="www/res/icon/ios/icon-50@2x.png" width="100" />
-        <splash height="480" src="www/res/screen/ios/screen-iphone-portrait.png" width="320" />
-        <splash height="960" src="www/res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
-        <splash height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" width="768" />
-        <splash height="768" src="www/res/screen/ios/screen-ipad-landscape.png" width="1024" />
+        <!-- iOS 8.0+ -->
+        <!-- iPhone 6 Plus  -->
+        <icon height="180" width="180" src="www/res/icon/ios/icon-60@3x.png" />
+        <!-- iOS 7.0+ -->
+        <!-- iPhone / iPod Touch  -->
+        <icon height="60"  width="60"  src="www/res/icon/ios/icon-60.png" />
+        <icon height="120" width="120" src="www/res/icon/ios/icon-60@2x.png" />
+        <!-- iPad -->
+        <icon height="76"  width="76"  src="www/res/icon/ios/icon-76.png" />
+        <icon height="152" width="152" src="www/res/icon/ios/icon-76@2x.png" />
+        <!-- iOS 6.1 -->
+        <!-- Spotlight Icon -->
+        <icon height="40"  width="40"  src="www/res/icon/ios/icon-40.png" />
+        <icon height="80"  width="80"  src="www/res/icon/ios/icon-40@2x.png" />
+        <!-- iPhone / iPod Touch -->
+        <icon height="57"  width="57"  src="www/res/icon/ios/icon-57.png" />
+        <icon height="114" width="114" src="www/res/icon/ios/icon-57@2x.png" />
+        <!-- iPad -->
+        <icon height="72"  width="72"  src="www/res/icon/ios/icon-72.png" />
+        <icon height="144" width="144" src="www/res/icon/ios/icon-72@2x.png" />
+        <!-- iPhone Spotlight and Settings Icon -->
+        <icon height="29"  width="29"  src="www/res/icon/ios/icon-29.png" />
+        <icon height="58"  width="58"  src="www/res/icon/ios/icon-29@2x.png" />
+        <!-- iPad Spotlight and Settings Icon -->
+        <icon height="50"  width="50"  src="www/res/icon/ios/icon-50.png" />
+        <icon height="100" width="100" src="www/res/icon/ios/icon-50@2x.png" />
+
+        <splash width="1024" height="768"  src="www/res/screen/ios/screen-ipad-landscape.png" />
+        <splash width="2048" height="1536" src="www/res/screen/ios/screen-ipad-landscape-2x.png" />
+        <splash width="768"  height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" />
+        <splash width="1536" height="2048" src="www/res/screen/ios/screen-ipad-portrait-2x.png" />
+        <splash width="320"  height="480"  src="www/res/screen/ios/screen-iphone-portrait.png" />
+        <splash width="640"  height="960"  src="www/res/screen/ios/screen-iphone-portrait-2x.png" />
+        <splash width="640"  height="1136" src="www/res/screen/ios/screen-iphone-portrait-568h-2x.png" />
+        <!-- Dummy screens -->
+        <splash width="750"  height="1334" src="www/res/screen/ios/Default-667h.png" />
+        <splash width="1242" height="2208" src="www/res/screen/ios/Default-736h.png" />
+        <splash width="2208" height="1242" src="www/res/screen/ios/Default-Landscape-736h.png" />
     </platform>
     <plugin name="cordova-plugin-device" />
     <plugin name="cordova-plugin-inappbrowser" />
