@@ -15,7 +15,7 @@
     <preference name="webviewbounce" value="true" />
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />
-    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarOverlaysWebView" value="true" />
     <preference name="StatusBarStyle" value="blackopaque" />
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="14" />
