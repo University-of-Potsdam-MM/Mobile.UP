@@ -9,7 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	// collection for tipp items
 	var Tipps = Backbone.Collection.extend({
 		model: Tipp,
-		url: 'js/json/tipps.json',
+		url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/tipps.json',
 		comparator: 'name'
 	});
 
@@ -34,6 +34,8 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			_.bindAll(this, 'fetchSuccess', 'fetchError', 'render');
 			this.collection = new Tipps();
 			this.collection.fetch({
+				cache: true,
+				expires: 60 * 60 * 24, // Fetch once per day
 				success: this.fetchSuccess,
 				error: this.fetchError
 			});
