@@ -84,17 +84,6 @@
         <splash width="1242" height="2208" src="www/res/screen/ios/Default-736h.png" />
         <splash width="2208" height="1242" src="www/res/screen/ios/Default-Landscape-736h.png" />
     </platform>
-    <plugin name="cordova-plugin-device" />
-    <plugin name="cordova-plugin-inappbrowser" />
-    <plugin name="cordova-plugin-splashscreen" />
-    <plugin name="cordova-plugin-statusbar" />
-    <plugin name="cordova-plugin-network-information" />
-    <plugin name="cordova-plugin-dialogs" />
-    <plugin name="cordova-plugin-file" />
-    <plugin name="cordova-plugin-file-transfer" />
-    <plugin name="cordova-plugin-x-toast" />
-    <plugin name="cordova-plugin-calendar" />
-    <plugin name="cordova-plugin-whitelist" version="1" />
 
     <access origin="*" />
     <content src="index.html" />
