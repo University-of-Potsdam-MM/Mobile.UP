@@ -1,48 +1,34 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="de.floriangoessler.upapp" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Mobile.UP</name>
-    <description>
-        Offizielle App der Universität Potsdam
-    </description>
-    <author email="mobileup-service@uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">
-        eLiS-Team
-    </author>
-    <feature name="http://api.phonegap.com/1.0/device" />
-    <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
-    <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="true" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="stay-in-webview" value="false" />
-    <preference name="StatusBarOverlaysWebView" value="true" />
-    <preference name="StatusBarStyle" value="blackopaque" />
-    <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="14" />
-    <preference name="android-installLocation" value="auto" />
-    <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="false" />
-    <preference name="DisallowOverscroll" value="true" />
-    <preference name="show-splash-screen-spinner" value="false" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <description>Offizielle App der Universität Potsdam</description>
+    <author email="mobileup-service@uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">eLiS-Team</author>
+
+    <!-- Platforms -->
+    <plugin name="cordova-custom-config" spec="^2.0.3" />
+    <engine name="android" spec="~5.1.1" />
     <platform name="android">
-        <preference name="AutoHideSplashScreen" value="true" />
-        <preference name="SplashScreenDelay" value="10000" />
+        <preference name="android-minSdkVersion" value="14" />
+        <preference name="android-manifest/@android:installLocation" value="auto" />
     </platform>
+    <engine name="ios" spec="~4.1.1" />
     <platform name="ios">
-        <preference name="AutoHideSplashScreen" value="false" />
     </platform>
+
+    <!-- Fullscreen and status bar -->
+    <plugin name="cordova-plugin-statusbar" spec="^2.1.3" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="DisallowOverscroll" value="true" />
+    <platform name="ios">
+        <preference name="StatusBarStyle" value="blackopaque" />
+    </platform>
+
+    <!-- App icons -->
     <platform name="android">
         <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
         <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
         <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
         <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
-        <splash qualifier="ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
-        <splash qualifier="mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
-        <splash qualifier="hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
-        <splash qualifier="xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
     </platform>
     <platform name="ios">
         <!-- iOS 8.0+ -->
@@ -71,7 +57,19 @@
         <!-- iPad Spotlight and Settings Icon -->
         <icon height="50"  width="50"  src="www/res/icon/ios/icon-50.png" />
         <icon height="100" width="100" src="www/res/icon/ios/icon-50@2x.png" />
+    </platform>
 
+    <!-- Splash screens -->
+    <plugin name="cordova-plugin-splashscreen" spec="^3.2.2" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false"/>
+    <platform name="android">
+        <splash qualifier="ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
+        <splash qualifier="mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
+        <splash qualifier="hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
+        <splash qualifier="xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
+    </platform>
+    <platform name="ios">
         <splash width="1024" height="768"  src="www/res/screen/ios/screen-ipad-landscape.png" />
         <splash width="2048" height="1536" src="www/res/screen/ios/screen-ipad-landscape-2x.png" />
         <splash width="768"  height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" />
@@ -79,26 +77,32 @@
         <splash width="320"  height="480"  src="www/res/screen/ios/screen-iphone-portrait.png" />
         <splash width="640"  height="960"  src="www/res/screen/ios/screen-iphone-portrait-2x.png" />
         <splash width="640"  height="1136" src="www/res/screen/ios/screen-iphone-portrait-568h-2x.png" />
-        <!-- Dummy screens -->
+        <!-- FIXME: Dummy screens -->
         <splash width="750"  height="1334" src="www/res/screen/ios/Default-667h.png" />
         <splash width="1242" height="2208" src="www/res/screen/ios/Default-736h.png" />
         <splash width="2208" height="1242" src="www/res/screen/ios/Default-Landscape-736h.png" />
     </platform>
 
+    <!-- File download (Moodle) -->
+    <plugin name="cordova-plugin-file" spec="^4.2.0" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.5.1" />
+    <platform name="android">
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    </platform>
+
+    <!-- Whitelist -->
+    <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
     <access origin="*" />
+
+    <!-- Start page and access whitelist -->
     <content src="index.html" />
-    <engine name="android" spec="~5.1.1" />
-    <engine name="ios" spec="~4.1.1" />
-    <plugin name="cordova-plugin-inappbrowser" spec="https://github.com/apache/cordova-plugin-inappbrowser.git" />
-    <plugin name="cordova-plugin-splashscreen" spec="https://github.com/apache/cordova-plugin-splashscreen.git" />
-    <plugin name="cordova-plugin-dialogs" spec="https://github.com/apache/cordova-plugin-dialogs.git" />
-    <plugin name="cordova-plugin-calendar" spec="https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git" />
-    <plugin name="cordova-plugin-device" spec="https://github.com/apache/cordova-plugin-device.git" />
-    <plugin name="cordova-plugin-network-information" spec="https://github.com/apache/cordova-plugin-network-information.git" />
+
+    <!-- Remaining plugins -->
+    <plugin name="cordova-plugin-inappbrowser" spec="^1.4.0" />
+    <plugin name="cordova-plugin-dialogs" spec="^1.2.1" />
+    <plugin name="cordova-plugin-calendar" spec="^4.5.1" />
+    <plugin name="cordova-plugin-device" spec="^1.1.2" />
+    <plugin name="cordova-plugin-network-information" spec="^1.2.1" />
     <plugin name="com.borismus.webintent" spec="https://github.com/Initsogar/cordova-webintent.git" />
-    <plugin name="cordova-plugin-file" spec="https://github.com/apache/cordova-plugin-file.git" />
-    <plugin name="cordova-plugin-file-transfer" spec="https://github.com/apache/cordova-plugin-file-transfer.git" />
-    <plugin name="cordova-plugin-x-toast" spec="https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git" />
-    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
-    <plugin name="cordova-plugin-statusbar" spec="https://github.com/apache/cordova-plugin-statusbar.git" />
+    <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
 </widget>
