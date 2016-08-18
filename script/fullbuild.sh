@@ -3,4 +3,4 @@ if [ -z $1 ]; then
   exit 1;
 fi
 
-rm -rf platforms/$1 && rm -rf plugins && cordova prepare && cordova run $1
+cd platforms && rm -rf $1 && cd .. && rm -rf plugins && cordova prepare $1 && cordova run $1
