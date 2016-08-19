@@ -61,11 +61,7 @@ define([
             predicate: function (ev) { return ev.url === loginUrl },
             action: function (ev, loginRequest) {
                 console.log("IdP link required");
-                var startLogin = 'var links = document.getElementsByTagName("a");' +
-                                 'for (var i = 0; i < links.length; i++) {' +
-                                 '  if (links[i].innerHTML.indexOf("Login via") != -1)' +
-                                 '    window.open(links[i].href);' +
-                                 '}';
+                var startLogin = 'window.open("https://moodle2.uni-potsdam.de/auth/shibboleth/index.php");';
 
                 loginRequest.browser.executeScript({code: startLogin}, function (result) {});
             }
@@ -142,7 +138,7 @@ define([
             .each(function(action) { action.action(event, loginRequest, loginRequest.browser); });
     };
 
-    var moodleBase = "https://erdmaennchen.soft.cs.uni-potsdam.de/moodle_up2X";
+    var moodleBase = "https://moodle2.uni-potsdam.de";
     var pluginUrl = moodleBase + "/local/mobile/launch.php?service=local_mobile&passport=1002";
     var loginUrl = moodleBase + "/login/index.php";
     var idpUrl = "https://idp.uni-potsdam.de/idp/Authn/UserPassword";
