@@ -9,12 +9,64 @@ define([
 ], function($, _, Backbone, Session, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
 
+	/**
+	 * Handles the login of a user
+	 * @param {Object} login Login data
+	 * @param {string} login.username Username
+	 * @param {string} login.password Password
+	 * @param {Session} login.session Session object to be used
+	 * @returns {*} jQuery promise. On successful login the promise is resolved with a Session. On failed login the promise is resolved with an error object containing error message and error code. On modified login data the promise is updated / notified with the login object.
+	 */
+	var executeLogin = function(login) {
+		var result = $.Deferred();
+
+		// Remove mail suffix, only username is needed
+		var suffixIndex = login.username.indexOf("@");
+		if (suffixIndex != -1) {
+			login.username = login.username.substr(0, suffixIndex);
+			result.notify(login);
+		}
+
+		// Usernames have to be all lower case, otherwise some service logins will fail
+		login.username = login.username.toLowerCase();
+		result.notify(login);
+
+		var session = login.session;
+		session.generateLoginURL(login);
+
+		session.fetch({
+			success: function(model, response){
+
+				// Response contains error, so go to errorHandler
+				if(response['error']){
+					result.reject({message: response['error']});
+				}else{
+					// Everything fine, save Moodle Token and redirect to previous form
+					session.setLogin({
+						username: login.username,
+						password: login.password,
+						token: response['token'],
+						authenticated: true
+					});
+
+					result.resolve(session);
+				}
+			},
+			error: function(){
+				result.reject({code: "missingConnection"});
+			}
+		});
+
+		return result.promise();
+	};
+
 	app.views.OptionsLogin = Backbone.View.extend({
 		model: Session,
 		events: {
 			'submit #loginform': 'login',
 			'focus #loginform input': 'clearForm'
 		},
+
 		initialize: function(p){
 			this.model = new Session();
 			this.loginAttempts = 0;
@@ -26,6 +78,7 @@ define([
 			this.listenTo(this, 'missingConnection', this.missingInternetConnectionHandler);
 			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
+
 		errorHandler: function(){
 			this.loginAttempts++;
 			this.$("#error").css('display', 'block');
@@ -43,7 +96,6 @@ define([
 			Backbone.View.prototype.stopListening.apply(this, arguments);
 		},
 
-
 		registerCountdownTimer: function() {
 			this.timer=setInterval(function() {
 				this.render();
@@ -57,6 +109,7 @@ define([
 			sec = formatLeadingZeroes(sec%60);
 			return min+":"+sec;
 		},
+
 		updateCountdown: function() {
 			if(this.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
 				this.model.set('up.session.loginFailureTime', new Date().getTime());
@@ -78,6 +131,7 @@ define([
 				}
 			}
 		},
+
 		login: function(ev){
 			ev.preventDefault();
 			console.log(this);
@@ -87,50 +141,32 @@ define([
 						
 				var username = $('#username').val();
 				var password = $('#password').val();
-				
-				// Remove mail suffix, only username is needed
-				suffixIndex = username.indexOf("@");
-				if (suffixIndex != -1) {
-					username = username.substr(0, suffixIndex);
-					$('#username').val(username);
-				}
-				
-				// Usernames have to be all lower case, otherwise some service logins will fail
-				username = username.toLowerCase()
-				$('#username').val(username);
-				
-				this.model.generateLoginURL({username: username, password: password});
 
 				var that = this;
-				this.model.fetch({
-					success: function(model, response, options){
+				executeLogin({
+					username: username,
+					password: password,
+					session: that.model
+				}).progress(function(login) {
+					$('#username').val(login.username);
+				}).done(function(session) {
+					//wenn login erfolgreich lösche failureTime
+					that.model.unset('up.session.loginFailureTime');
 
-						// Response contains error, so go to errorHandler
-						if(response['error']){
-							console.log(response['error']);
-							that.trigger("errorHandler");
-						}else{
-							// Everything fine, save Moodle Token and redirect to previous form
-							that.model.set('up.session.authenticated', true);
-							that.model.set('up.session.username', username);
-            				that.model.set('up.session.password', password);
-							that.model.set('up.session.MoodleToken', response['token']);
-							that.model.unset('up.session.loginFailureTime');	//wenn login erfolgreich lösche failureTime
-
-							if(that.model.get('up.session.redirectFrom')){
-		                		var path = that.model.get('up.session.redirectFrom');
-		                		that.model.unset('up.session.redirectFrom');
-		                		app.route(path);
-		            		}else{
-		                		app.route('');
-		            		}
-						}
-
-					},
-					error: function(model, response, options){
-						console.log(response);
+					if(that.model.get('up.session.redirectFrom')){
+						var path = that.model.get('up.session.redirectFrom');
+						that.model.unset('up.session.redirectFrom');
+						app.route(path);
+					}else{
+						app.route('');
+					}
+				}).fail(function(error) {
+					if (error.code === "missingConnection") {
 						// render error view
 						that.trigger("missingConnection");
+					} else {
+						console.log(error.message);
+						that.trigger("errorHandler");
 					}
 				});
 			}else{
@@ -153,7 +189,7 @@ define([
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
 			return this;
-		},
+		}
 	});
 	
 	app.views.OptionsLogout = Backbone.View.extend({
@@ -161,16 +197,14 @@ define([
 		events:{
 			'submit #logoutform': 'logout'
 		},
+
 		initialize: function(){
 			this.model = new Session();
 		},
 		
 		logout: function(ev){
 			ev.preventDefault();
-			this.model.unset('up.session.authenticated');
-            this.model.unset('up.session.username');
-            this.model.unset('up.session.password');
-            this.model.unset('up.session.MoodleToken');
+			this.model.unsetLogin();
 			this.model.clearPrivateCache();
 			app.route('');
 		},
@@ -183,10 +217,12 @@ define([
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 			return this;
 		},
+
 		missingInternetConnectionHandler: function(){
 			this.$("#error0").css('display', 'block');
 		}
 	});
+
 	/**
 	 *	BackboneView - OptionsPageView
 	 *	Login & Logout-Form which validates the username and password using the Moodle Webservice
@@ -200,16 +236,12 @@ define([
 			this.template = rendertmpl('options');
 		},
 
-		
 		render: function(){
 			var $el = $(this.el); 
 			$el.html(this.template({}));
 			$el.trigger("create");
 			return this;
-		},
-
-		
-
+		}
 	});
 
 	return app.views.OptionsPage;

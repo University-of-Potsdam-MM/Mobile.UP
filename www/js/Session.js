@@ -3,36 +3,34 @@ define([
   'backbone',
   'uri/URI'
 ], function($, Backbone, URI){
-	
-	var CacheManager = Backbone.Model.extend({
-		
-		privateHost: "api.uni-potsdam.de",
-		privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
-		
-		/**
-		 * Removes all cache entries that are based on user data.
-		 */
-		clearPrivateCache: function() {
-			var privateKeys = _.filter(_.keys(Backbone.fetchCache._cache), this.isPrivate, this);
-			for (key in privateKeys) {
-				Backbone.fetchCache.clearItem(privateKeys[key]);
-			}
-		},
-		
-		isPrivate: function(value) {
-			var uri = new URI(value);
-        	return uri.host() === this.privateHost && this.privateEndpoints.indexOf(uri.path() != -1);
-		}
-	});
 
-    var Session = Backbone.Model.extend({
+    var CacheManager = Backbone.Model.extend({
 
-        suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
+        privateHost: "api.uni-potsdam.de",
+        privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
+
+        /**
+         * Removes all cache entries that are based on user data.
+         */
+        clearPrivateCache: function() {
+            var privateKeys = _.filter(_.keys(Backbone.fetchCache._cache), this.isPrivate, this);
+            for (key in privateKeys) {
+                Backbone.fetchCache.clearItem(privateKeys[key]);
+            }
+        },
+
+        isPrivate: function(value) {
+            var uri = new URI(value);
+            return uri.host() === this.privateHost && this.privateEndpoints.indexOf(uri.path() != -1);
+        }
+    });
+
+    var LocalStorageModel = Backbone.Model.extend({
 
         initialize: function(){
             //Check for localStorage support
             if(Storage && localStorage){
-              this.supportStorage = true;
+                this.supportStorage = true;
             }
         },
 
@@ -65,6 +63,25 @@ define([
                 Backbone.Model.prototype.unset.call(this, key);
             }
             return this;
+        }
+    });
+
+    var Session = LocalStorageModel.extend({
+
+        suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
+
+        setLogin: function(credentials) {
+            this.set('up.session.authenticated', credentials.authenticated);
+            this.set('up.session.username', credentials.username);
+            this.set('up.session.password', credentials.password);
+            this.set('up.session.MoodleToken', credentials.token);
+        },
+
+        unsetLogin: function() {
+            this.unset('up.session.authenticated');
+            this.unset('up.session.username');
+            this.unset('up.session.password');
+            this.unset('up.session.MoodleToken');
         },
 
         generateLoginURL: function(credentials){
@@ -74,10 +91,14 @@ define([
             this.url +='&password='+encodeURIComponent(credentials.password);
             this.url +='&service=moodle_mobile_app&moodlewsrestformat=json';
         },
-        
+
+        parse: function(response) {
+            return response;
+        },
+
         clearPrivateCache: function() {
-        	new CacheManager().clearPrivateCache();
-    	}
+            new CacheManager().clearPrivateCache();
+        }
   });
 
   return Session;
