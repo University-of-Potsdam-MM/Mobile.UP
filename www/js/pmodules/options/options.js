@@ -5,8 +5,9 @@ define([
 		'underscore',
 		'backbone',
 		'Session',
+		'pmodules/moodle/moodle.sso.login',
 		'utils'
-], function($, _, Backbone, Session, utils){
+], function($, _, Backbone, Session, moodleSSO, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
 
 	/**
@@ -32,29 +33,13 @@ define([
 		result.notify(login);
 
 		var session = login.session;
-		session.generateLoginURL(login);
+		session.set("up.session.username", login.username);
+		session.set("up.session.password", login.password);
 
-		session.fetch({
-			success: function(model, response){
-
-				// Response contains error, so go to errorHandler
-				if(response['error']){
-					result.reject({message: response['error']});
-				}else{
-					// Everything fine, save Moodle Token and redirect to previous form
-					session.setLogin({
-						username: login.username,
-						password: login.password,
-						token: response['token'],
-						authenticated: true
-					});
-
-					result.resolve(session);
-				}
-			},
-			error: function(){
-				result.reject({code: "missingConnection"});
-			}
+		moodleSSO.createToken(session).done(function() {
+			result.resolve(session);
+		}).fail(function() {
+			result.reject({code: "missingConnection"});
 		});
 
 		return result.promise();
