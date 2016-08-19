@@ -174,12 +174,12 @@ define([
         browser.addEventListener("exit", handleEvent);
 
         loginRequest.success = function() {
-            console.log("Success called");
+            console.log("Moodle SSO login succeeded");
             freeBrowser();
             success();
         };
         loginRequest.error = function() {
-            console.log("Error called");
+            console.log("Moodle SSO login failed");
             freeBrowser();
             error();
         }
