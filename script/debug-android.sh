@@ -1,1 +1,1 @@
-adb logcat CordovaLog:D *:S
+adb logcat chromium:D *:S
