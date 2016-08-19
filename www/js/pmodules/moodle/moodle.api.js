@@ -64,8 +64,8 @@ define([
 
     initialize: function(){
       this.session = new Session();
-      this.createWsFunction('moodle_webservice_get_siteinfo',[]);
-      this.createWsFunction('moodle_enrol_get_users_courses',['userid']);
+      this.createWsFunction('core_webservice_get_site_info',[]);
+      this.createWsFunction('core_enrol_get_users_courses',['userid']);
       this.createWsFunction('core_course_get_contents',['courseid']);
     },
 
@@ -75,7 +75,7 @@ define([
         var params = {
           moodlewsrestformat:'json',
           wstoken: this.token(),
-          wsfunction:'moodle_webservice_get_siteinfo',
+          wsfunction:'core_webservice_get_site_info',
         };
 
         return cors_post(this.url, params)
