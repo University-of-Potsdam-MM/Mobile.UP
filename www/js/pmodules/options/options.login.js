@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'Session',
-    'pmodules/moodle/moodle.sso.login'
-], function($, _, Session, moodleSSO) {
+    'pmodules/moodle/moodle.sso.login',
+    'utils'
+], function($, _, Session, moodleSSO, utils) {
 
     var cleanUsername = function(login, promise) {
         // Remove mail suffix, only username is needed
@@ -21,7 +22,30 @@ define([
     var executeUserPasswordLogin = function(login) {
         var result = $.Deferred();
 
-        result.reject({code: "missingConnection"});
+        cleanUsername(login, result);
+
+        var session = login.session;
+        session.set("up.session.username", login.username);
+        session.set("up.session.password", login.password);
+
+        var url = "https://api.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php";
+        url +="?username="+encodeURIComponent(login.username);
+        url +="&password="+encodeURIComponent(login.password);
+        url +="&service=moodle_mobile_app&moodlewsrestformat=json";
+
+        $.ajax({
+            url: url,
+            headers: { "Authorization": utils.getAuthHeader() }
+        }).done(function(response) {
+            if(response['error']) {
+                result.reject({ code: response.error });
+            } else {
+                session.set('up.session.authenticated', true);
+                result.resolve(session);
+            }
+        }).fail(function(jqXHR) {
+            result.reject({code: "missingConnection"});
+        });
 
         return result.promise();
     };
