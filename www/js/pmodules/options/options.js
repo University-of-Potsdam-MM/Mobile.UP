@@ -5,45 +5,10 @@ define([
 		'underscore',
 		'backbone',
 		'Session',
-		'pmodules/moodle/moodle.sso.login',
+		'pmodules/options/options.login',
 		'utils'
-], function($, _, Backbone, Session, moodleSSO, utils){
+], function($, _, Backbone, Session, login, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
-
-	/**
-	 * Handles the login of a user
-	 * @param {Object} login Login data
-	 * @param {string} login.username Username
-	 * @param {string} login.password Password
-	 * @param {Session} login.session Session object to be used
-	 * @returns {*} jQuery promise. On successful login the promise is resolved with a Session. On failed login the promise is resolved with an error object containing error message and error code. On modified login data the promise is updated / notified with the login object.
-	 */
-	var executeLogin = function(login) {
-		var result = $.Deferred();
-
-		// Remove mail suffix, only username is needed
-		var suffixIndex = login.username.indexOf("@");
-		if (suffixIndex != -1) {
-			login.username = login.username.substr(0, suffixIndex);
-			result.notify(login);
-		}
-
-		// Usernames have to be all lower case, otherwise some service logins will fail
-		login.username = login.username.toLowerCase();
-		result.notify(login);
-
-		var session = login.session;
-		session.set("up.session.username", login.username);
-		session.set("up.session.password", login.password);
-
-		moodleSSO.createToken(session).done(function() {
-			result.resolve(session);
-		}).fail(function() {
-			result.reject({code: "missingConnection"});
-		});
-
-		return result.promise();
-	};
 
 	app.views.OptionsLogin = Backbone.View.extend({
 		model: Session,
@@ -128,7 +93,7 @@ define([
 				var password = $('#password').val();
 
 				var that = this;
-				executeLogin({
+				login.executeLogin({
 					username: username,
 					password: password,
 					session: that.model
