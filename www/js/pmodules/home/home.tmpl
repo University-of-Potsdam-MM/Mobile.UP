@@ -19,7 +19,11 @@
 				<a href="#grades/grades" data-role="button">Meine<br>Leistungen</a>
 			</div>
 			<div class="flex-item iconized moodle">
+				<% if (window.cordova) { %>
 				<a href="#moodle/moodle/index" data-role="button">Moodle</a>
+				<% } else { %>
+				<a href="https://moodle2.uni-potsdam.de/" data-role="button">Moodle</a>
+				<% } %>
 			</div>
 		</div>
 	</div>
