@@ -2,6 +2,7 @@ Mobile.UP
 ======
 
 Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.floriangoessler.upapp).
+Verfügbar für [iOS](https://itunes.apple.com/de/app/mobile.up/id541440873?mt=8)
 
 Die ganze Uni in deiner Hand: Finde dich auf dem Campus zurecht, habe immer den aktuellsten Speiseplan der Mensen dabei, hole dir Infos aus dem Vorlesungsverzeichnis, schau in deinen Stundenplan, checke deine Leistungen und vieles mehr!
 Features:
@@ -38,6 +39,11 @@ Bei Interesse kontaktieren Sie mobileup-service@uni-potsdam.de
 ## CodeClimate
 
 <a href="https://codeclimate.com/github/University-of-Potsdam-MM/UP.App"><img src="https://codeclimate.com/github/University-of-Potsdam-MM/UP.App/badges/gpa.svg" /></a>
+
+## Support from [BrowserStack](https://www.browserstack.com/)
+
+- https://www.browserstack.com/
+- https://github.com/browserstack
 
 ## Lizenz
 
