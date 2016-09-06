@@ -10,6 +10,18 @@ define([
 	'cache'
 ], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, _str){
 
+	// Necessary IE workaround. See
+	//
+	// https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+	//
+	// for details
+	if (!String.prototype.startsWith) {
+		String.prototype.startsWith = function(searchString, position) {
+			position = position || 0;
+			return this.indexOf(searchString, position) === position;
+		};
+	}
+
 	/*
 	 * Template Loading Functions
 	 */
