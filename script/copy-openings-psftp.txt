@@ -1,0 +1,1 @@
+put www/js/json/opening.json /tmp/opening.json
