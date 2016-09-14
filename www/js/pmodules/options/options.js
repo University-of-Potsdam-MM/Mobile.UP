@@ -10,6 +10,11 @@ define([
 ], function($, _, Backbone, Session, login, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
 
+	function TimerHelper() {
+		this.loginAttempts = 0;
+		this.loginCountdown = 0;
+	}
+
 	app.views.OptionsLogin = Backbone.View.extend({
 		model: Session,
 		events: {
@@ -19,8 +24,7 @@ define([
 
 		initialize: function(p){
 			this.model = new Session();
-			this.loginAttempts = 0;
-			this.loginCountdown = 0;
+			this.timerHelper = new TimerHelper;
 			_.bindAll(this, 'render', 'updateCountdown');
 			//this.page = p.page;
 			this.listenTo(this.model,'change', this.render);
@@ -30,7 +34,7 @@ define([
 		},
 
 		errorHandler: function(){
-			this.loginAttempts++;
+			this.timerHelper.loginAttempts++;
 			this.$("#error").css('display', 'block');
 			this.updateCountdown();
 		},
@@ -61,18 +65,18 @@ define([
 		},
 
 		updateCountdown: function() {
-			if(this.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
+			if(this.timerHelper.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
 				this.model.set('up.session.loginFailureTime', new Date().getTime());
-				this.loginAttempts=0;
+				this.timerHelper.loginAttempts=0;
 
 				this.render();
 				return;
 			}
 			console.log(this.model);
 			if(this.model.get('up.session.loginFailureTime')){
-				this.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
-				if(this.loginCountdown < 0){
-					this.loginCountdown = 0;
+				this.timerHelper.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
+				if(this.timerHelper.loginCountdown < 0){
+					this.timerHelper.loginCountdown = 0;
 					this.model.unset('up.session.loginFailureTime');
 					clearInterval(this.timer);
 					this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
@@ -87,7 +91,7 @@ define([
 			console.log(this);
 			this.updateCountdown();
 
-			if(this.loginAttempts < 3 && this.loginCountdown == 0){
+			if(this.timerHelper.loginAttempts < 3 && this.timerHelper.loginCountdown == 0){
 						
 				var username = $('#username').val();
 				var password = $('#password').val();
@@ -129,9 +133,9 @@ define([
 			this.logintemplate = rendertmpl('login');
 			console.log(this.page)
 			this.setElement(this.page.find('#options'));
-			this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.loginCountdown)}));
+			this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.timerHelper.loginCountdown)}));
 			var _this = this;
-			if(this.loginCountdown > 0){
+			if(this.timerHelper.loginCountdown > 0){
 				this.$("#error3").css('display', 'block');
 			}else{
 				this.$("#error3").css('display', 'none');
