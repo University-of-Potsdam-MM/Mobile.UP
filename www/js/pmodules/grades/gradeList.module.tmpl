@@ -19,12 +19,18 @@
 <tr class="module-content module-level-<%= module.level %>">
     <td></td>
     <td class="name">
-        <% if (graded.courseType && graded.courseName) { %>
-            <%= graded.courseType %>: <%= graded.courseName %>
-        <% } else if (graded.additionT && graded.additionA) { %>
-            <%= graded.additionT %> <%= graded.additionA %>
-        <% } else if (graded.desc) { %>
-            <%= graded.desc %>
+        <span>
+            <% if (graded.courseType && graded.courseName) { %>
+                <%= graded.courseType %>: <%= graded.courseName %>
+            <% } else if (graded.additionT) { %>
+                <%= graded.additionT %>
+            <% } else if (graded.desc) { %>
+                <%= graded.desc %>
+            <% } %>
+        </span>
+
+        <% if (graded.additionA) { %>
+            <span class="name-additionA"><%= graded.additionA %></span>
         <% } %>
     </td>
     <td class="grade"><%= graded.grade %></td>

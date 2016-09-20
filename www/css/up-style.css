@@ -2742,6 +2742,22 @@ p.event-description {
 	word-wrap: break-word;      /* IE */
 }
 
+#gradesselection p {
+	color: #fff;
+	font-size: .9em;
+	margin-bottom: 1em;
+
+	padding: .3em;
+	color: #014260;
+	font-family: georgia,serif;
+	font-style: italic;
+	text-align: center;
+	margin-top: 1em;
+}
+#gradesselection p.finished {
+	font-weight:bold;
+}
+
 /*calendar export*/
 #calendarexport p {
 	    color: #fff;

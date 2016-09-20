@@ -1,3 +1,14 @@
+<% if (_.size(data.achievements.field) === 0) { %>
+
+<div>
+    <br />
+    <img src="img/up/hinweis.png" class="alignleft">
+    <p class="blau" style="margin-left:55px;">Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?</p>
+    <div style="clear: both;"></div>
+</div>
+
+<% } else { %>
+
 <div data-role="tabs" class="grades-tabs">
     <div data-role="navbar">
 
@@ -79,6 +90,9 @@
         .name {
             text-align: left;
         }
+        .name-additionA {
+            font-style: italic;
+        }
 
         .grades-overview {
             background-color: #014260; /*{a-active-background-color}*/
@@ -142,3 +156,5 @@
         }
     </style>
 </div>
+
+<% } %>

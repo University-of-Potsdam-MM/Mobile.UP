@@ -7,7 +7,12 @@ define([
         name: "grades",
 
         user_grades: function () {
-            app.loadPage('grades', 'index');
+            app.loadPage('grades', 'selection');
+        },
+
+        user_view: function (Semester, MtkNr, StgNr) {
+            var studentDetails = {Semester: Semester, MtkNr: MtkNr, StgNr: StgNr};
+            app.loadPage('grades', 'view', {studentDetails: studentDetails});
         }
     });
 });
