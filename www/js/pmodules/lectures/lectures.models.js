@@ -179,6 +179,7 @@ define([
                 var models = response.lectureScheduleRoot.rootNode.childNodes.childNode;
                 return _.chain(this.ensureArray(models))
                         .reject(function(model) { return model === ""; })
+                        .reject(function(model) { return !model.headerId; })
                         .map(function(model) {
                             return {
                                 name: model.headerName,
@@ -191,6 +192,7 @@ define([
                 var models = response.lectureScheduleSubTree.currentNode.childNodes.childNode;
                 return _.chain(this.ensureArray(models))
                         .reject(function(model) { return model === ""; })
+                        .reject(function(model) { return !model.headerId; })
                         .map(function(model) {
                             return {
                                 name: model.headerName,
@@ -203,6 +205,7 @@ define([
                 var models = response.lectureScheduleCourses.currentNode.courses.course;
                 return _.chain(this.ensureArray(models))
                         .reject(function(model) { return model === ""; })
+                        .reject(function(model) { return !model.headerId; })
                         .map(function(model) {
                             return {
                                 name: model.courseName,
