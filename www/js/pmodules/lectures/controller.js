@@ -7,7 +7,11 @@ define([
         name: "lectures",
 
         lectures: function (vvzUrls) {
-            var _this = this;
+            if (vvzUrls) {
+                vvzUrls = decodeURIComponent(vvzUrls);
+                vvzUrls = atob(vvzUrls);
+            }
+
             app.loadPage('lectures', 'index').done(function () {
                 var vvzHistory = app.currentView.vvzHistory;
                 console.log(vvzUrls);
@@ -17,10 +21,11 @@ define([
                     vvzHistory.reset();
                 }
 
-                /*_this.listenTo(app.currentView, "openVvzUrl", function(vvzHistory) {
-                 var param = JSON.stringify(vvzHistory.toJSON());
-                 var url = "lectures/lectures/" + encodeURIComponent(param)
-                 });*/
+                vvzHistory.on("vvzNavigateRequired", function(vvzHistory) {
+                    var param = JSON.stringify(vvzHistory.toJSON());
+                    param = btoa(param);
+                    app.route("lectures/lectures/" + encodeURIComponent(param), true);
+                });
             });
         }
     });

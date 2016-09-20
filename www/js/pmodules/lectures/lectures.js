@@ -143,11 +143,10 @@ define([
 			this.vvzHistory = vvzHistory;
 			this.listenTo(vvzHistory, "vvzChange", function(vvzHistory) { currentVvz.load(vvzHistory); });
 			this.listenTo(vvzHistory, "vvzChange", this.createPopupMenu);
-			this.listenTo(vvzHistory, "vvzChange", this.triggerOpenVvzUrl);
 
 			this.listenTo(currentVvz.items, "error", this.requestFail);
 			
-			_.bindAll(this, 'render', 'requestFail', 'selectMenu', 'selectLevel', 'prepareVvz', 'triggerOpenVvzUrl', 'createPopupMenu');
+			_.bindAll(this, 'render', 'requestFail', 'selectMenu', 'selectLevel', 'prepareVvz', 'createPopupMenu');
 		},
 
 		requestFail: function(error) {
@@ -173,10 +172,6 @@ define([
 			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
 			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
 			new utils.LoadingView({collection: currentVvz.items, el: this.$("#loadingSpinner")});
-		},
-
-		triggerOpenVvzUrl: function(vvzHistory) {
-			this.trigger("openVvzUrl", vvzHistory);
 		},
 
 		createPopupMenu: function(history) {

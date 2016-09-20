@@ -255,6 +255,7 @@ define([
         openVvz: function(vvzItem) {
             var current = vvzItem.pick("name", "suburl");
             this.add(current, {at: 0});
+            this.trigger("vvzNavigateRequired", this);
         },
 
         resetToUrl: function(modelUrl) {
@@ -262,6 +263,7 @@ define([
             var remainingModels = this.last(this.length - this.indexOf(model));
 
             this.reset(remainingModels);
+            this.trigger("vvzNavigateRequired", this);
         },
 
         triggerVvzChange: function() {
