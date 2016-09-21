@@ -2775,6 +2775,22 @@ p.event-description {
 	font-weight:bold;
 }
 
+#mail p {
+	color: #fff;
+	font-size: .9em;
+	margin-bottom: 1em;
+
+	padding: .3em;
+	color: #014260;
+	font-family: georgia,serif;
+	font-style: italic;
+	text-align: center;
+	margin-top: 1em;
+}
+#mail p.finished {
+	font-weight:bold;
+}
+
 .up-mensa-name {
 	background-color: #014260;
 	color: #fff;
