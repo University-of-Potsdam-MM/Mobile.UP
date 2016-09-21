@@ -25,6 +25,13 @@
 				<a href="https://moodle2.uni-potsdam.de/" data-role="button">Moodle</a>
 				<% } %>
 			</div>
+			<div class="flex-item iconized mail-icon">
+				<% if (window.cordova) { %>
+				<a href="#mail/mail" data-role="button">Mail</a>
+				<% } else { %>
+				<a href="https://mailup.uni-potsdam.de/" data-role="button">Mail</a>
+				<% } %>
+			</div>
 		</div>
 	</div>
 
