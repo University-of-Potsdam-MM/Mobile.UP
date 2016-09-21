@@ -24,7 +24,7 @@ define([
 
 		render: function(){
 			console.log(this.collection);
-			this.$el.html(this.template({CourseSlots: this.collection}));
+			this.$el.html(this.template({CourseSlots: this.collection, moment: moment}));
 			this.$el.trigger("create");
 			return this;
 		}
@@ -113,7 +113,7 @@ define([
 		},
 
 		render: function(){
-			this.$el.html(this.template({day: this.day}));
+			this.$el.html(this.template({day: this.day, moment: moment}));
 			this.$el.trigger("create");
 			this.trigger("prepareCourses");
 			return this;
