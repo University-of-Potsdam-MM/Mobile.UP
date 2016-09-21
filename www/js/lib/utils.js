@@ -427,7 +427,7 @@ define([
 		info.set("line", lineNumber);
 		info.set("column", columnNumber);
 
-		console.error("Unhandled error thrown", info.attributes, error.stack);
+		console.error("Unhandled error thrown", info.attributes, (error || {}).stack);
 
 		info.on("error", function(error) {
 			console.warn("Could not log error");
