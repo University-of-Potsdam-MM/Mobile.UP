@@ -240,6 +240,10 @@
 	background-image: url(../img/up/travel.png);
 }
 
+#home .mail-icon {
+	background-image: url(../img/up/mail.png);
+}
+
 /*panel*/
 .nav-search .ui-btn-icon-right:after {
 	left: 1em;
@@ -343,6 +347,10 @@ ul.nav-search li a.ui-icon-gear {
 	}
 	#home .travel {
 		background-image: url(../img/up/travel_hr.png);
+		background-size: 70px 70px;
+	}
+	#home .mail-icon {
+		background-image: url(../img/up/mail_hr.png);
 		background-size: 70px 70px;
 	}
 }
