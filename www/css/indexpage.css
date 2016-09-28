@@ -244,6 +244,10 @@
 	background-image: url(../img/up/mail.png);
 }
 
+#home .tipps {
+	background-image: url(../img/up/tipps.png);
+}
+
 /*panel*/
 .nav-search .ui-btn-icon-right:after {
 	left: 1em;
@@ -351,6 +355,10 @@ ul.nav-search li a.ui-icon-gear {
 	}
 	#home .mail-icon {
 		background-image: url(../img/up/mail_hr.png);
+		background-size: 70px 70px;
+	}
+	#home .tipps {
+		background-image: url(../img/up/tipps_hr.png);
 		background-size: 70px 70px;
 	}
 }
