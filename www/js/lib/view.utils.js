@@ -72,7 +72,26 @@ define([
         }
     });
 
+    var ElementView = Backbone.View.extend({
+
+        initialize: function (options) {
+            //this.template = options.template; //rendertmpl('mensa_meal');
+            this.postRender = this.postRender || function() {};
+            this.listenTo(this.model, "change", function(model) {
+                console.warn("model changed", model);
+            });
+        },
+
+        render: function() {
+            this.setElement(this.template({model: this.model.attributes}));
+            this.postRender();
+            //this.$el.trigger("create");
+            return this;
+        }
+    });
+
     return {
-        ListView: ListView
+        ListView: ListView,
+        ElementView: ElementView
     };
 });
