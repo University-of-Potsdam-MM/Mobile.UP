@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox'], function($, _, Backbone, utils, Q, campusmenu, datebox){
+define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'view.utils'], function($, _, Backbone, utils, Q, campusmenu, datebox, viewUtils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/mensa");
 
 	$(document).on("pageshow", "#mensa", function () {
@@ -94,6 +94,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		}
 	});
 
+	var MealView = viewUtils.ElementView.extend({
+		template: rendertmpl('mensa_meal'),
+		postRender: function() {
+			this.$el.trigger("create");
+		}
+	});
+
 	var DayView = Backbone.View.extend({
 		
 		initialize: function() {
@@ -103,6 +110,19 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		
 		render: function() {
 			this.$el.html(this.template({meals: this.model.meals, location: this.model.location}));
+
+			var list = this.$(".speiseplan");
+			if (list.length > 0) {
+				new viewUtils.ListView({
+					el: list,
+					collection: new Backbone.Collection(this.model.meals),
+					view: MealView,
+					postRender: function() {
+						this.$el.collapsibleset().collapsibleset("refresh");
+					}
+				}).render();
+			}
+
 			this.$el.trigger("create");
 			return this;
 		}
