@@ -1,4 +1,58 @@
-define(['jquery', 'underscore', 'backbone', 'jquerymobile'], function($, _, Backbone){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'jquerymobile'
+], function($, _, Backbone) {
+
+	/**
+	 * Uses the jQuery UI tabs widget. Documentation at https://api.jqueryui.com/tabs/
+	 */
+	var TabView = Backbone.View.extend({
+
+		events: {
+			"click .tabs-content-links": "tabClick"
+		},
+
+		initialize: function() {
+		},
+
+		/**
+		 * We want to prevent the url from changing, but in return we have to change the button color of the active tab ourselves.
+		 */
+		tabClick: function(ev) {
+			ev.preventDefault();
+
+			$(".ui-btn-active", ev.currentTarget).first().removeClass("ui-btn-active");
+			$(ev.target).addClass("ui-btn-active");
+
+			return false;
+		},
+
+		refresh: function() {
+			this.$el.tabs().tabs("refresh");
+		},
+
+		render: function() {
+			this.$el.empty();
+			this.$el.append(
+				'<div data-role="tabs" class="tabs-content"> \
+					<div data-role="navbar"> \
+						<ul class="tabs-content-links"> \
+							<li><a href="#griebnitzsee">Griebnitzsee</a></li> \
+							<li><a href="#neuespalais">Neues Palais</a></li> \
+							<li><a href="#golm">Golm</a></li> \
+						</ul> \
+					</div> \
+					<div id="griebnitzsee"></div> \
+					<div id="neuespalais"></div> \
+					<div id="golm"></div> \
+				</div>');
+			this.$el.trigger("create");
+			return this;
+		}
+	});
+
 	$.widget("up.campusmenu", {
 		options: {
 			onChange: function(name) {},
@@ -106,4 +160,8 @@ define(['jquery', 'underscore', 'backbone', 'jquerymobile'], function($, _, Back
 			this.options.onChange(callOptions);
 		}
 	});
+
+	return {
+		TabView: TabView
+	}
 });
