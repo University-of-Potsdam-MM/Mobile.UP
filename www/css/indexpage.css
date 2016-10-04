@@ -257,6 +257,38 @@ ul.nav-search li a.ui-icon-gear {
 	text-indent: 28px;
 }
 
+
+/*
+The following rules in indexpage.css expected to be applied within a container with the id home
+They are rewritten to adapt to a container with the home-id class
+The rewrite was necessary to cope with the new page header structure
+See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
+*/
+.home-id .ui-btn.settings.ui-icon-gear {
+	height: 15px;
+	margin-right: 10px;
+}
+
+.home-id .ui-btn.settings:before {
+	background-image: url(../img/up/logout-white.png);
+}
+
+.home-id.ui-header .ui-title {
+	background-image: none;
+	margin-left: 10px;
+	margin-left: .1em;
+	color: #FFF;
+	font-family: GEorgia, serif;
+	font-weight: normal;
+	text-transform: none;
+	letter-spacing: .1em;
+	font-style: italic;
+}
+
+.home-id.ui-header {
+	background-color: #014260 !important;
+}
+
 /**** images high resolution devices ***/
 @media only screen and (-webkit-min-device-pixel-ratio: 2) , only screen and (
 		min--moz-device-pixel-ratio: 2) , only screen and (
@@ -361,49 +393,4 @@ ul.nav-search li a.ui-icon-gear {
 		background-image: url(../img/up/tipps_hr.png);
 		background-size: 70px 70px;
 	}
-}
-
-/*
-The following rules in indexpage.css expected to be applied within a container with the id home
-They are rewritten to adapt to a container with the home-id class
-The rewrite was necessary to cope with the new page header structure
-See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
-*/
-.home-id .ui-btn.settings.ui-icon-gear {
-	height: 15px;
-	margin-right: 10px;
-}
-
-.home-id .ui-btn.settings {
-	margin: .5em 0;
-	text-transform: none;
-	font-weight: normal;
-	padding: .6em 2em .6em 1em;
-	font-size: 12.5px;
-	margin-top: 1em;
-	width: auto;
-}
-
-.home-id .ui-btn.settings:visited {
-	text-decoration:none;
-}
-
-.home-id .ui-btn.settings:before {
-	background-image: url(../img/up/logout-white.png);
-}
-
-.home-id.ui-header .ui-title {
-	background-image: none;
-	margin-left: 10px;
-	margin-left: .1em;
-	color: #FFF;
-	font-family: GEorgia, serif;
-	font-weight: normal;
-	text-transform: none;
-	letter-spacing: .1em;
-	font-style: italic;
-}
-
-.home-id.ui-header {
-	background-color: #014260 !important;
 }
