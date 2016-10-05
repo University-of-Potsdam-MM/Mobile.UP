@@ -79,7 +79,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parse: function(data) {
-			return this.asArray(data.personalStudyAreas.Abschluss);
+			return this.asArray((data.personalStudyAreas || {}).Abschluss);
 		}
 	});
 
