@@ -5,6 +5,8 @@
 <tr class="module-header module-level-<%= module.level %>">
     <th></th>
     <%
+        // check for "Schlüsselkompetenzen" 4000 and dont display credit points
+        var sk = (module.examNumber == 4000)? true : false;
         var lp = module.actualCreditPoints;
         if (module.targetCreditPoints)
             lp += "/" + module.targetCreditPoints;
@@ -12,7 +14,7 @@
     <th class="name"><%= module.examDesc %></th>
     <th class="grade"><%= module.grade %></th>
     <th class="pv"><%= module.examStatus %></th>
-    <th class="lp"><%= lp %></th>
+    <th class="lp"><% if (!sk) { lp } %></th>
     <th></th>
 </tr>
 

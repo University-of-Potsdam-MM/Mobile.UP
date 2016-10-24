@@ -53,6 +53,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			options.contentType = "application/json";
 			options.method = "POST";
 			options.data = this._selectRequestData(options.url);
+			// method to catch no user rights exception
+			var error= options.error;
+			var success = options.success;
+			options.success = function(resp){
+				console.log(resp);
+				if (resp && resp.message){
+					if (resp.message == "no user rights"){
+						resp.msg = "Die Funktion wird für Sie nicht unterstützt.";
+					}
+        			error(resp);
+				} else{
+					success(resp);
+				}
+			};
 			return Backbone.Model.prototype.sync.call(this, method, model, options);
 		},
 
