@@ -128,6 +128,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			module.examination.graded = module.examination.graded || [];
 			module.examination.graded = this.asArray(module.examination.graded);
 
+			module.examination.nonGraded = module.examination.nonGraded || [];
+			module.examination.nonGraded = this.asArray(module.examination.nonGraded);
+
 			if (module.credits && module.credits.accountCredits)
 				module.credits.accountCredits = this.asArray(module.credits.accountCredits);
 			else

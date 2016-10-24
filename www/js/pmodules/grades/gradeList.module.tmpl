@@ -41,6 +41,32 @@
 </tr>
 <% }); %>
 
+<%
+// template for nonGraded examinations, which don't have grades, creditPoints or any status
+%>
+<% _.each(module.examination.nonGraded, function(nonGraded) { %>
+<tr class="module-content module-level-<%= module.level %>">
+    <td></td>
+    <td class="name">
+        <span>
+            <% if (nonGraded.courseType && nonGraded.courseName) { %>
+                <%= nonGraded.courseType %>: <%= nonGraded.courseName %>
+            <% } else if (nonGraded.additionT) { %>
+                <%= nonGraded.additionT %>
+            <% } else if (nonGraded.desc) { %>
+                <%= nonGraded.desc %>
+            <% } %>
+        </span>
+
+        <% if (nonGraded.additionA) { %>
+            <span class="name-additionA"><%= nonGraded.additionA %></span>
+        <% } %>
+    </td>
+    <td class="grade" colspan=3>Studienleistung</td>
+    <td></td>
+</tr>
+<% }); %>
+
 <% _.each(module.module, function(module) { %>
     <% print(moduleTemplate({module: module, moduleTemplate: moduleTemplate})); %>
 <% }); %>
