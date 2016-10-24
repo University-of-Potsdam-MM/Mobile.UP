@@ -30,6 +30,7 @@
 
         <% _.each(data.achievements.field, function(acm) { %>
         <div id="<%= acm.id %>">
+            <% if (acm.credits && acm.credits.accountCredits && acm.credits.accountCredits.length > 0) { %>
             <table class="grades-table">
                 <thead>
                     <% _.each(acm.credits.accountCredits, function(ac) { %>
@@ -73,12 +74,26 @@
                     <% }); %>
                 </tfoot>
             </table>
+            <% } else { %>
+            <p class="grades-no-credits">Keine eingetragenen Leistungen</p>
+            <% } %>
         </div>
         <% }); %>
 
     </div>
 
     <style scoped>
+        p.grades-no-credits {
+            font-size: .9em;
+            margin-bottom: 1em;
+            padding: .3em;
+            color: #014260;
+            font-family: georgia,serif;
+            font-style: italic;
+            text-align: center;
+            margin-top: 1em;
+        }
+
         .grades-tabs {
             padding: 0;
         }

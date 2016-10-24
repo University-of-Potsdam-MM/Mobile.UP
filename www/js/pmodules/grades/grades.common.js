@@ -102,13 +102,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 
 		parse: function(data) {
 			var errorMessage = data.academicAchievements;
+
 			var achievements = this.asObject(data.academicAchievements.achievement);
 			achievements.field = _.map(this.asArray(achievements.field), this.parseModule, this);
 
+			var studyAreas = _.map(this.asArray(data.academicAchievements.degree.studyArea), this.parseStudyAreas, this);
+
 			return {
-				achievements: achievements,
+				achievements: this.mergeStudyAreas(achievements, studyAreas),
 				errorMessage: errorMessage
 			};
+		},
+
+		mergeStudyAreas: function(achievements, studyAreas) {
+			var fieldCopy = achievements.field;
+			achievements.field = _.map(studyAreas, function(area) {
+				var field = _.find(fieldCopy, function(f) { return f.fieldName === area.fieldName; });
+				return field || area;
+			});
+
+			return achievements;
 		},
 
 		asObject: function (subject) {
@@ -117,6 +130,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			} else {
 				return {};
 			}
+		},
+
+		parseStudyAreas: function(area) {
+			return { fieldName: area.name };
 		},
 
 		parseModule: function(module) {
