@@ -42,6 +42,7 @@
                         <th></th>
                         <th>Bezeichnung</th>
                         <th>Note</th>
+                        <th>PV</th>
                         <th>LP</th>
                         <th></th>
                     </tr>
@@ -84,9 +85,15 @@
         }
 
         .grade,
-        .lp {
+        .lp,
+        .pv {
             text-align: center;
         }
+
+        .BE { color: green; font-weight: bold; }
+        .AN { color: orange; font-weight: bold; }
+        .NB { color: red; font-weight: bold; }
+
         .name {
             text-align: left;
         }
@@ -147,8 +154,10 @@
         }
 
         tr.module-header th.grade,
+        tr.module-header th.pv,
         tr.module-header th.lp,
         tr.module-content td.grade,
+        tr.module-content td.pv,
         tr.module-content td.lp,
         tr.module-content td.name {
             background: rgba(255, 255, 255, 0.5);

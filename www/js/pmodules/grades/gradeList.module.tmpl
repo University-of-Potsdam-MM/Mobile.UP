@@ -11,6 +11,7 @@
     %>
     <th class="name"><%= module.examDesc %></th>
     <th class="grade"><%= module.grade %></th>
+    <th class="pv"><%= module.examStatus %></th>
     <th class="lp"><%= lp %></th>
     <th></th>
 </tr>
@@ -34,6 +35,7 @@
         <% } %>
     </td>
     <td class="grade"><%= graded.grade %></td>
+    <td class="pv <%= graded.status %>"><%= graded.status %></td>
     <td class="lp"><%= graded.creditPoints %></td>
     <td></td>
 </tr>
