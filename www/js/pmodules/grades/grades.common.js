@@ -101,11 +101,13 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parse: function(data) {
+			var errorMessage = data.academicAchievements;
 			var achievements = this.asObject(data.academicAchievements.achievement);
 			achievements.field = _.map(this.asArray(achievements.field), this.parseModule, this);
 
 			return {
-				achievements: achievements
+				achievements: achievements,
+				errorMessage: errorMessage
 			};
 		},
 

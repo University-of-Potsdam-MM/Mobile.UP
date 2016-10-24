@@ -3,7 +3,13 @@
 <div>
     <br />
     <img src="img/up/hinweis.png" class="alignleft">
-    <p class="blau" style="margin-left:55px;">Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?</p>
+    <p class="blau" style="margin-left:55px;">
+        <% if (data.errorMessage) { %>
+            <%= data.errorMessage %>
+        <% }else{ %>
+            Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?
+        <% } %>
+    </p>
     <div style="clear: both;"></div>
 </div>
 
@@ -92,7 +98,7 @@
 
         .BE { color: green; font-weight: bold; }
         .AN { color: orange; font-weight: bold; }
-        .NB { color: red; font-weight: bold; }
+        .NB, .EN { color: red; font-weight: bold; }
 
         .name {
             text-align: left;
