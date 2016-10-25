@@ -10,7 +10,14 @@
 	</h3>
 	<div>
 		<p id="person-room">
-			<span class="mail"><a href="mailto:<%= person.get('Email') %>"><%= person.get('Email').split(' ')[0] %></a></span><br />
+			<% if(person.get('Email')) {
+				_.each(person.get('Email').split(' '), function(email){ %>
+					<span class="mail">
+						<a href="mailto:<%= email %>"><%= email %></a>
+					</span>
+					<br />
+				<% });
+			} %>
 
 			<% if (person.get('Telefon')){
 				var tel = person.get('Telefon');

@@ -3,7 +3,13 @@
 <div>
     <br />
     <img src="img/up/hinweis.png" class="alignleft">
-    <p class="blau" style="margin-left:55px;">Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?</p>
+    <p class="blau" style="margin-left:55px;">
+        <% if (data.errorMessage) { %>
+            <%= data.errorMessage %>
+        <% }else{ %>
+            Es konnten keine Leistungen gefunden werden. Vielleicht sind in PULS keine Noten eingetragen?
+        <% } %>
+    </p>
     <div style="clear: both;"></div>
 </div>
 
@@ -24,6 +30,7 @@
 
         <% _.each(data.achievements.field, function(acm) { %>
         <div id="<%= acm.id %>">
+            <% if (acm.credits && acm.credits.accountCredits && acm.credits.accountCredits.length > 0) { %>
             <table class="grades-table">
                 <thead>
                     <% _.each(acm.credits.accountCredits, function(ac) { %>
@@ -42,6 +49,7 @@
                         <th></th>
                         <th>Bezeichnung</th>
                         <th>Note</th>
+                        <th>PV</th>
                         <th>LP</th>
                         <th></th>
                     </tr>
@@ -66,12 +74,26 @@
                     <% }); %>
                 </tfoot>
             </table>
+            <% } else { %>
+            <p class="grades-no-credits">Keine eingetragenen Leistungen</p>
+            <% } %>
         </div>
         <% }); %>
 
     </div>
 
     <style scoped>
+        p.grades-no-credits {
+            font-size: .9em;
+            margin-bottom: 1em;
+            padding: .3em;
+            color: #014260;
+            font-family: georgia,serif;
+            font-style: italic;
+            text-align: center;
+            margin-top: 1em;
+        }
+
         .grades-tabs {
             padding: 0;
         }
@@ -84,9 +106,15 @@
         }
 
         .grade,
-        .lp {
+        .lp,
+        .pv {
             text-align: center;
         }
+
+        .BE { color: green; font-weight: bold; }
+        .AN { color: orange; font-weight: bold; }
+        .NB, .EN { color: red; font-weight: bold; }
+
         .name {
             text-align: left;
         }
@@ -147,8 +175,10 @@
         }
 
         tr.module-header th.grade,
+        tr.module-header th.pv,
         tr.module-header th.lp,
         tr.module-content td.grade,
+        tr.module-content td.pv,
         tr.module-content td.lp,
         tr.module-content td.name {
             background: rgba(255, 255, 255, 0.5);

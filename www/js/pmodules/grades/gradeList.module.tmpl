@@ -5,13 +5,16 @@
 <tr class="module-header module-level-<%= module.level %>">
     <th></th>
     <%
+        // check for "Schlüsselkompetenzen" 4000 and dont display credit points
+        var sk = (module.examNumber == 4000)? true : false;
         var lp = module.actualCreditPoints;
         if (module.targetCreditPoints)
             lp += "/" + module.targetCreditPoints;
     %>
     <th class="name"><%= module.examDesc %></th>
     <th class="grade"><%= module.grade %></th>
-    <th class="lp"><%= lp %></th>
+    <th class="pv"><%= module.examStatus %></th>
+    <th class="lp"><% if (!sk) { lp } %></th>
     <th></th>
 </tr>
 
@@ -34,7 +37,34 @@
         <% } %>
     </td>
     <td class="grade"><%= graded.grade %></td>
+    <td class="pv <%= graded.status %>"><%= graded.status %></td>
     <td class="lp"><%= graded.creditPoints %></td>
+    <td></td>
+</tr>
+<% }); %>
+
+<%
+// template for nonGraded examinations, which don't have grades, creditPoints or any status
+%>
+<% _.each(module.examination.nonGraded, function(nonGraded) { %>
+<tr class="module-content module-level-<%= module.level %>">
+    <td></td>
+    <td class="name">
+        <span>
+            <% if (nonGraded.courseType && nonGraded.courseName) { %>
+                <%= nonGraded.courseType %>: <%= nonGraded.courseName %>
+            <% } else if (nonGraded.additionT) { %>
+                <%= nonGraded.additionT %>
+            <% } else if (nonGraded.desc) { %>
+                <%= nonGraded.desc %>
+            <% } %>
+        </span>
+
+        <% if (nonGraded.additionA) { %>
+            <span class="name-additionA"><%= nonGraded.additionA %></span>
+        <% } %>
+    </td>
+    <td class="grade" colspan=3>Studienleistung</td>
     <td></td>
 </tr>
 <% }); %>

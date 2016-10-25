@@ -105,6 +105,21 @@ define([
 		renderPostAction: function() { this.$el.collapsibleset().collapsibleset("refresh"); }
 	});
 
+	var EmptyListNotifier = Backbone.View.extend({
+
+		initialize: function() {
+			this.listenTo(this.collection, "reset", this.render);
+		},
+
+		render: function() {
+			if (this.collection.isEmpty()) {
+				this.$el.show();
+			} else {
+				this.$el.hide();
+			}
+		}
+	});
+
 	var LectureSingleCourseView = Backbone.View.extend({
 
 		initialize: function() {
@@ -172,6 +187,7 @@ define([
 			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
 			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
 			new utils.LoadingView({collection: currentVvz.items, el: this.$("#loadingSpinner")});
+			new EmptyListNotifier({collection: currentVvz.items, el: this.$("#emptyListNotifier")});
 		},
 
 		createPopupMenu: function(history) {

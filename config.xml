@@ -24,10 +24,14 @@
 
     <!-- Fullscreen and status bar -->
     <plugin name="cordova-plugin-statusbar" spec="^2.1.3" />
-    <preference name="Fullscreen" value="true" />
     <preference name="DisallowOverscroll" value="true" />
     <platform name="ios">
+        <preference name="Fullscreen" value="true" />
         <preference name="StatusBarStyle" value="blackopaque" />
+    </platform>
+    <platform name="android">
+        <preference name="Fullscreen" value="false" />
+        <preference name="StatusBarBackgroundColor" value="#012333" />
     </platform>
 
     <!-- App icons -->

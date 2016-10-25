@@ -80,8 +80,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			}));
 		},
 
-		requestFail: function(error) {
-			new utils.ErrorView({el: '#studentDetails', msg: 'Zurzeit nicht verfügbar.', module: 'grades', err: error});
+		requestFail: function(error, response) {
+			if (!response.msg) { response.msg = 'Zurzeit nicht verfügbar.'; }
+			new utils.ErrorView({el: '#studentDetails', msg: response.msg, module: 'grades', err: error});
 		},
 
 		render: function() {
