@@ -57,7 +57,6 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			var error= options.error;
 			var success = options.success;
 			options.success = function(resp){
-				console.log(resp);
 				if (resp && resp.message){
 					if (resp.message == "no user rights"){
 						resp.msg = "Die Funktion wird für Sie nicht unterstützt.";
