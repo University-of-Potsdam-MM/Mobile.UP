@@ -239,9 +239,6 @@ body .ui-btn.ui-btn-a.back:visited {
 */
 
 /*tabs*/
-.ui-navbar li {
-	border-right: 2px solid #fff;
-}
 
 .ui-navbar li:last-child {
 	border-right: 0px;
@@ -257,7 +254,7 @@ body .ui-btn.ui-btn-a.back:visited {
 	width: 100%;
 	padding-left: 0;
 	padding-right: 0;
-	display: inline-block;
+	display: block;
 	line-height: 35px
 }
 
