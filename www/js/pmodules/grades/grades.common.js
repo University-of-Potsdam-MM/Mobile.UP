@@ -147,7 +147,10 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		},
 
 		parseStudyAreas: function(area) {
-			return { fieldName: area.name };
+			return {
+				id: _.uniqueId("field"),
+				fieldName: area.name
+			};
 		},
 
 		parseModule: function(module) {
