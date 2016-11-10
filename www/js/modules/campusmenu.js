@@ -5,6 +5,23 @@ define([
 	'jquerymobile'
 ], function($, _, Backbone) {
 
+	var TabModel = Backbone.Model.extend({
+
+		initialize: function() {
+			if (this.getItem() === undefined) {
+				this.setItem("griebnitzsee");
+			}
+		},
+
+		setItem: function(selection) {
+			localStorage.setItem("campusmenu.default", selection);
+		},
+
+		getItem: function() {
+			return localStorage.getItem("campusmenu.default");
+		}
+	});
+
 	/**
 	 * Uses the jQuery UI tabs widget. Documentation at https://api.jqueryui.com/tabs/
 	 */
@@ -15,6 +32,7 @@ define([
 		},
 
 		initialize: function() {
+			this.model = new TabModel();
 		},
 
 		/**
@@ -23,6 +41,11 @@ define([
 		tabClick: function(ev) {
 			ev.preventDefault();
 
+			// Store new location
+			var location = (ev.target.hash || "#").slice(1);
+			this.model.setItem(location);
+
+			// Change active tab button manually
 			$(".ui-btn-active", ev.currentTarget).first().removeClass("ui-btn-active");
 			$(ev.target).addClass("ui-btn-active");
 
@@ -31,6 +54,19 @@ define([
 
 		refresh: function() {
 			this.$el.tabs().tabs("refresh");
+		},
+
+		_indexForLocation: function(location) {
+			switch (location) {
+				case "griebnitzsee":
+					return 0;
+				case "neuespalais":
+					return 1;
+				case "golm":
+					return 2;
+				default:
+					return 0;
+			}
 		},
 
 		render: function() {
@@ -44,11 +80,16 @@ define([
 							<li><a href="#golm">Golm</a></li> \
 						</ul> \
 					</div> \
-					<div id="griebnitzsee"></div> \
-					<div id="neuespalais"></div> \
-					<div id="golm"></div> \
+					<div id="griebnitzsee">Griebnitzsee</div> \
+					<div id="neuespalais">Neues Palais</div> \
+					<div id="golm">Golm</div> \
 				</div>');
-			this.$el.trigger("create");
+
+			// Select stored tab
+			var location = this.model.getItem();
+			this.$("a[href=#" + location + "]").addClass("ui-btn-active");
+			this.$(".tabs-content").tabs({ active: this._indexForLocation(location) });
+
 			return this;
 		}
 	});
