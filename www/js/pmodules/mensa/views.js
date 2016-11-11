@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','datebox', 'view.utils'], function($, _, Backbone, utils, Q, campusmenu, datebox, viewUtils){
+define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','datebox', 'view.utils'], function($, _, Backbone, utils, campusmenu, datebox, viewUtils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/mensa");
 
 	$(document).on("pageshow", "#mensa", function () {

@@ -5,9 +5,8 @@ define([
     'backboneMVC',
     'underscore.string',
     'utils',
-    'q',
     'history'
-], function ($, _, Backbone, BackboneMVC, _str, utils, Q, customHistory) {
+], function ($, _, Backbone, BackboneMVC, _str, utils, customHistory) {
     var pageContainer = _.extend({
 
         initialize: function() {

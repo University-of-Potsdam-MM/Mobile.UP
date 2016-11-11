@@ -12,7 +12,7 @@ previously working functionality. Please don't judge.
 */
 
 "use strict";
-define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'moment'], function($, _, Backbone, utils, Q, moment){
+define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, Backbone, utils, moment){
   var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/library");
 
 

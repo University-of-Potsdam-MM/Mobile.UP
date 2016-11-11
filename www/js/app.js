@@ -6,7 +6,6 @@ define([
 	'backboneMVC',
 	'underscore.string',
 	'utils',
-	'q',
 	'fastclick',
 	'Session',
 	'history',
@@ -15,7 +14,7 @@ define([
 	'jquerymobile',
 	'datebox',
 	'LocalStore'
-	], function($, _, Backbone, BackboneMVC, _str, utils, Q, FastClick, Session, customHistory, ViewHelper, controllerLoader){
+	], function($, _, Backbone, BackboneMVC, _str, utils, FastClick, Session, customHistory, ViewHelper, controllerLoader){
 		var viewContainer = ViewHelper.viewContainer;
 		viewContainer.initialize();
 		var pageContainer = ViewHelper.pageContainer;
@@ -143,7 +142,7 @@ define([
 			*/
 			loadPage: function(c, a, params, transition) {
 				params = params || {};
-				var q = Q.defer();
+				var q = $.Deferred();
 
 				var page = viewContainer.prepareViewForDomDisplay(c, params);
 
@@ -164,7 +163,7 @@ define([
 				};
 				pageContainer.executeTransition(transitionOptions);
 
-				return q.promise;
+				return q.promise();
 			},
 
 			/**

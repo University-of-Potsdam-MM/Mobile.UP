@@ -3,11 +3,10 @@ define([
     'underscore',
     'backbone',
     'utils',
-    'q',
     'modules/campusmenu',
     'modules/timeselection',
     'pmodules/sitemap/searchablemap'
-], function($, _, Backbone, utils, Q, campusmenu, timeselection, searchablemap) {
+], function($, _, Backbone, utils, campusmenu, timeselection, searchablemap) {
 
     var GeoBlock = Backbone.Model.extend({
 
