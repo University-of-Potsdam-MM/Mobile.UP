@@ -239,6 +239,10 @@ body .ui-btn.ui-btn-a.back:visited {
 */
 
 /*tabs*/
+.ui-tabs {
+	padding: 0;
+}
+
 .ui-navbar li {
 	border-right: 2px solid #fff;
 }
