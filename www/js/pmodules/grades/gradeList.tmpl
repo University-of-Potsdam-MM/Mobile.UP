@@ -38,12 +38,13 @@
                         <th></th>
                         <th><%= ac.description %></th>
                         <th></th>
+                        <th></th>
                         <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
                         <th></th>
                     </tr>
                     <% }); %>
                     <tr class="grades-header-pre">
-                        <th colspan="5"></th>
+                        <th colspan="6"></th>
                     </tr>
                     <tr class="grades-header">
                         <th></th>
@@ -61,12 +62,13 @@
                 </tbody>
                 <tfoot>
                     <tr class="grades-overview-pre">
-                        <th colspan="5"></th>
+                        <th colspan="6"></th>
                     </tr>
                     <% _.each(acm.credits.accountCredits, function(ac) { %>
                     <tr class="grades-overview">
                         <th></th>
                         <th><%= ac.description %></th>
+                        <th></th>
                         <th></th>
                         <th><%= ac.actualCreditPoints %>/<%= ac.targetCreditPoints %></th>
                         <th></th>
@@ -148,6 +150,10 @@
             padding-top: 5px;
         }
 
+        tbody {
+            font-size: .9em;
+        }
+
         thead tr.grades-header th:first-child,
         tbody tr th:first-child,
         tbody tr td:first-child {
@@ -168,10 +174,10 @@
             padding-left: 0;
         }
         tr.module-level-1 th.name {
-            padding-left: 20px;
+            padding-left: 10px;
         }
         tr.module-level-2 th.name {
-            padding-left: 40px;
+            padding-left: 20px;
         }
 
         tr.module-header th.grade,
