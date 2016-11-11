@@ -128,6 +128,48 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		}
 	});
 
+	var LocationTabView = Backbone.View.extend({
+
+		initialize: function(params) {
+			this.mensa = params.mensa;
+			this.date = params.date;
+		},
+
+		requestFail: function(error) {
+			this.trigger("requestFail", error);
+		},
+
+		render: function() {
+			this.$el.append('<div id="loadingSpinner"></div> \
+				<div id="content"></div> \
+				<div id="secondLoadingSpinner"></div> \
+				<div id="secondContent"></div>');
+
+			var loader = new MenuLoader();
+			loader.location = this.mensa;
+			loader.date = this.date;
+
+			new utils.LoadingView({model: loader, el: this.$("#loadingSpinner")});
+			new DayView({model: loader, el: this.$("#content")});
+			this.listenTo(loader, "error", this.requestFail);
+
+			loader.fetch();
+
+			if (mensa === "griebnitzsee") {
+				// Load Ulfs Cafe in second view
+				var secondLoader = new MenuLoader();
+				secondLoader.location = "UlfsCafe";
+				secondLoader.date = this.date;
+
+				new utils.LoadingView({model: secondLoader, el: this.$("#secondLoadingSpinner")});
+				new DayView({model: secondLoader, el: this.$("#secondContent")});
+				this.listenTo(secondLoader, "error", this.requestFail);
+
+				secondLoader.fetch();
+			}
+		}
+	});
+
 	app.views.MensaPage= Backbone.View.extend({
 		attributes: {"id": 'mensa'},
 
@@ -159,33 +201,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'q', 'modules/campusmenu','
 		},
 
 		updateMenu: function(mensa, date) {
-		    uniqueDivId = _.uniqueId("id_");
+		    var uniqueDivId = _.uniqueId("id_");
 		    
 		    this.$("#todaysMenu").empty();
-			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"><div id="loadingSpinner"></div><div id="content"></div><div id="secondLoadingSpinner"></div><div id="secondContent"></div></div>');
-			
-			var loader = new MenuLoader();
-		    loader.location = mensa;
-		    loader.date = date;
-		    
-		    new utils.LoadingView({model: loader, el: this.$("#" + uniqueDivId + " #loadingSpinner")});
-		    new DayView({model: loader, el: this.$("#" + uniqueDivId + " #content")});
-		    this.listenTo(loader, "error", this.requestFail);
+			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"></div>');
 
-		    loader.fetch();
-
-		    if (mensa === "griebnitzsee") {
-		    	// Load Ulfs Cafe in second view
-		    	var secondLoader = new MenuLoader();
-		    	secondLoader.location = "UlfsCafe";
-		    	secondLoader.date = date;
-
-		    	new utils.LoadingView({model: secondLoader, el: this.$("#" + uniqueDivId + " #secondLoadingSpinner")});
-		    	new DayView({model: secondLoader, el: this.$("#" + uniqueDivId + " #secondContent")});
-		    	this.listenTo(secondLoader, "error", this.requestFail);
-
-		    	secondLoader.fetch();
-		    }
+			var locationTab = new LocationTabView({el: this.$("#" + uniqueDivId), mensa: mensa, date: date});
+			this.listenTo(locationTab, "requestFail", this.requestFail);
+			locationTab.render();
 		},
 
 		requestFail: function(error) {
