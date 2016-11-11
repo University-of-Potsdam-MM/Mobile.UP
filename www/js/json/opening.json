@@ -377,8 +377,8 @@
   },
   {
     "name": "Bereichsbibliothek Babelsberg (Haus 5)",
-    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Babelsberg%20Haus%205",
-    "opening_hours": "Mo-Fr 09:00-22:00; Sa 09:00-18:00; Su 12:00-18:00; Aug 08-Oct 02 Fr 09:00-18:00; Aug 08-Oct 02 Su off; Sep 14 off; PH off",
+    "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-iii-babelsberg.html",
+    "opening_hours": "Mo-Fr 09:00-22:00; Sa 09:00-18:00; Su 12:00-18:00; PH off",
     "times": [
       {
         "day": "Montag",
@@ -398,34 +398,38 @@
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "18:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Samstag",
         "opening": [["09:00", "18:00"]]
+      },
+      {
+        "day": "Sonntag",
+        "opening": [["12:00", "18:00"]]
       }
     ]
   },
   {
     "name": "Bereichsbibliothek Golm im IKMZ",
-    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Golm%20im%20IKMZ",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-18:00; Aug 08-Oct 02 Mo-Th 09:00-20:00; Aug 08-Oct 02 Sa 10:00-15:00; Sep 14 off; PH off",
+    "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-ii-golm-ikmz.html",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-18:00; PH off",
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "20:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "20:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "20:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "20:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Freitag",
@@ -433,30 +437,30 @@
       },
       {
         "day": "Samstag",
-        "opening": [["10:00", "15:00"]]
+        "opening": [["10:00", "18:00"]]
       }
     ]
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 10)",
-    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%2010",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-15:00; Aug 08-Oct 02 Mo-Th 09:00-19:00; Sep 14 off; PH off",
+    "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-15:00; PH off",
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "19:00"]]
+        "opening": [["09:00", "22:00"]]
       },
       {
         "day": "Freitag",
@@ -470,55 +474,55 @@
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 9)",
-    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%209",
-    "opening_hours": "Mo-Fr 09:00-18:00; Aug 08-Oct 02 Mo-Fr 09:00-16:00; Sep 14 off; PH off",
+    "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
+    "opening_hours": "Mo-Fr 09:00-18:00; PH off",
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       }
     ]
   },
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 11)",
-    "link": "http:\/\/info.ub.uni-potsdam.de\/standorte\/standort.php?bibliothek=Bereichsbibliothek%20Neues%20Palais%20Haus%2011",
-    "opening_hours": "Mo-Fr 09:00-18:00; Aug 08-Oct 02 Mo-Fr 09:00-16:00; Sep 14 off; PH off",
+    "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
+    "opening_hours": "Mo-Fr 09:00-18:00; PH off",
     "times": [
       {
         "day": "Montag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Dienstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Mittwoch",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Donnerstag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       },
       {
         "day": "Freitag",
-        "opening": [["09:00", "16:00"]]
+        "opening": [["09:00", "18:00"]]
       }
     ]
   }
