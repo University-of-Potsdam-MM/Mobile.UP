@@ -214,7 +214,8 @@ define([
 		$.os.androidICS = $.os.android && userAgent.match(/(Android)\s4/) ? true : false;
 		$.os.ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/) ? true : false;
 		$.os.iphone = !$.os.ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/) ? true : false;
-		$.os.ios7 = userAgent.match(/(iPhone\sOS)\s([789_]+)/) || ($.os.ipad && userAgent.match(/(CPU\sOS)\s([789_]+)/)) ? true : false;
+		var version = device.version.split(".");
+		$.os.ios7 = device.platform === "iOS" && parseInt(version[0]) >= 7;
 		$.os.webos = userAgent.match(/(webOS|hpwOS)[\s\/]([\d.]+)/) ? true : false;
 		$.os.touchpad = $.os.webos && userAgent.match(/TouchPad/) ? true : false;
 		$.os.ios = $.os.ipad || $.os.iphone;
