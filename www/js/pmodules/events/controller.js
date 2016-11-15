@@ -101,15 +101,6 @@ define([
 		*/
 		stickListDividers: function(){
 			return;
-			$('body').stacks({
-				body: '.ui-content', // This is the container that will house your floating element.
-				title: '.up-divider', // The identifier for the elements you want to be fixed, can be any type of jQuery selector
-				margin: 0,
-				offset: 0,
-				fixAndroid: $.os.android,
-				touch: $.os.ios,
-				fixiOS: $.os.ios
-			})
 		},
 
 		/*
