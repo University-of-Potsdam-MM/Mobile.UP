@@ -320,6 +320,7 @@ define([
 			if (this.courseList.length == 0) {
 				this.reset();
 				this.trigger("coursesEmpty");
+				this.stopListening();
 			} else {
 				this.coursesForDay.reset(this.courseList.filterByDay(this.day));
 			}
@@ -368,6 +369,7 @@ define([
 				this.findByTimeslot(courseslot);
 			}, this);
 			this.trigger("timeSlotsReady");
+			this.stopListening();
 		}
 	});
 
