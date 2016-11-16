@@ -208,6 +208,8 @@ define([
 	* Betriebssystem/UserAgent ermitteln
 	*/
 	var detectUA = function($, userAgent) {
+		var device = window.device || {version: userAgent, platform: "Browser"};
+		
 		$.os = {};
 		$.os.webkit = userAgent.match(/WebKit\/([\d.]+)/) ? true : false;
 		$.os.android = userAgent.match(/(Android)\s+([\d.]+)/) || userAgent.match(/Silk-Accelerated/) ? true : false;
