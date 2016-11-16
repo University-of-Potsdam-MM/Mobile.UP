@@ -220,7 +220,7 @@ define([
 
 		parse: function(response) {
 			var student = response.studentCourses.student;
-			return student.pastCourses.course.concat(student.actualCourses.course);
+			return (student.pastCourses.course || []).concat(student.actualCourses.course || []);
 		},
 
 		sync: function(method, model, options){

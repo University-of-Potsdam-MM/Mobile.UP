@@ -58,7 +58,6 @@ define([
 			this.CourseList = new calendar.CourseList();
 
 			this.listenTo(this.CourseList, "error", this.errorHandler);
-			this.listenTo(this.CourseList, "coursesEmpty", this.coursesEmpty);
 
 			this.listenToOnce(this, "prepareCourses", this.loadData);
 			this.listenTo(this, 'errorHandler', this.errorHandler);
@@ -86,6 +85,7 @@ define([
 
 			this.loadingView = new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});
+			this.listenTo(courseSlots, "coursesEmpty", this.coursesEmpty);
 
 			console.log('load data');
 
@@ -107,7 +107,6 @@ define([
 				el: this.$('#coursesForDay'),
 				msg: 'Keine Kurse gefunden.',
 				module: 'calendar',
-				err: error,
 				hasReload: true
 			}).on("reload", this.loadData, this);
 		},
