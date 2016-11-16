@@ -75,10 +75,14 @@
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false"/>
     <platform name="android">
-        <splash qualifier="ldpi" src="www/res/screen/android/screen-ldpi-portrait.png" />
-        <splash qualifier="mdpi" src="www/res/screen/android/screen-mdpi-portrait.png" />
-        <splash qualifier="hdpi" src="www/res/screen/android/screen-hdpi-portrait.png" />
-        <splash qualifier="xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
+        <splash density="port-ldpi"  src="www/res/screen/android/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi"  src="www/res/screen/android/screen-mdpi-portrait.png" />
+        <splash density="port-hdpi"  src="www/res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
+        <splash density="land-ldpi"  src="www/res/screen/android/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi"  src="www/res/screen/android/screen-mdpi-landscape.png" />
+        <splash density="land-hdpi"  src="www/res/screen/android/screen-hdpi-landscape.png" />
+        <splash density="land-xhdpi" src="www/res/screen/android/screen-xhdpi-landscape.png" />
     </platform>
     <platform name="ios">
         <splash width="1024" height="768"  src="www/res/screen/ios/screen-ipad-landscape.png" />
