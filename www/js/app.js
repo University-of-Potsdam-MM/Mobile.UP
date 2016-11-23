@@ -47,8 +47,6 @@ define([
 
 			initialize: function(){
 				app.session = new Session;
-				utils.detectUA($, navigator.userAgent);
-				viewContainer.setIosHeaderFix();
 				new FastClick(document.body);
 
 				$(document).ready(function() {
@@ -59,6 +57,9 @@ define([
 				 *	functions get exectuted when device is ready and handles hiding of splashscreen and backButton navigation
 				 */
 				function onDeviceReady() {
+					utils.detectUA($, navigator.userAgent);
+					viewContainer.setIosHeaderFix();
+
     				// hide splashscreen
     				navigator.splashscreen.hide();
     				// EventListener for BackButton
