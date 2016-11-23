@@ -1,4 +1,6 @@
 define([], function(){
+	var lastInfoWindow = undefined;
+
 	var GeoJSON = function( geojson, options, map, hasSimilarsCallback ){
 
 		var map = map;
@@ -26,7 +28,14 @@ define([], function(){
 					googleObj.info.setPosition(position);
 
 					google.maps.event.addListener(googleObj,'click',function() {
+						// Close other InfoWindow
+						if (lastInfoWindow) {
+							lastInfoWindow.close();
+						}
+
+						// Open this InfoWindow
 						googleObj.info.open(map);
+						lastInfoWindow = googleObj.info;
 					});
 				}
 			}
