@@ -2149,12 +2149,10 @@ li.news-entry a p span.news-date{
 }
 
 .newssource {
+	text-align: left;
 	margin: 0;
-	text-indent: .8em;
-	background: #014260;
-	padding-top: .6em;
-	padding-bottom: .6em;
-	color: #FFF
+	border-right-width: 0;
+	border-left-width: 0;
 }
 
 #news #news-content .ui-btn {
@@ -2234,14 +2232,10 @@ p.event-description {
 }
 
 #events h3 {
-	background-color: #014260;
-	font-weight: bold;
-	min-height: 40px;
-	line-height: 40px;
-	margin-bottom: 0px;
-	margin-top: 0px;
-	padding-left: .1em;
-	color: #fff !important;
+	text-align: left;
+	margin: 0;
+	border-right-width: 0;
+	border-left-width: 0;
 }
 
 .event-list li a.ui-icon-carat-r:after {
@@ -2628,8 +2622,8 @@ p.event-description {
 }
 
 .up-divider {
-	background-color: #014260;
-	color: #fff;
+	background-color: #014260 !important;
+	color: #fff !important;
 }
 
 .ui-listview>.ui-li-divider.empty {

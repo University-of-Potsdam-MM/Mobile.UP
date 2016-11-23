@@ -1,5 +1,5 @@
 <meta name="back" content="news" />
-<h3 class="newssource"><%= news[0].NewsSource.name %></h3>
+<h3 class="newssource ui-btn up-divider"><%= news[0].NewsSource.name %></h3>
 <ul id="sourcenews" class="list" data-inset="true" data-role="listview" >
   <% var source = -1, epCount = 0, html = '', extra = '', allHtml = '', img = '';
 _.each(news, function(n, i) {
