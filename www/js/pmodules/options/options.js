@@ -172,6 +172,8 @@ define([
 			}
 			this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
+			this.$el.trigger("create");
+
 			return this;
 		}
 	});
