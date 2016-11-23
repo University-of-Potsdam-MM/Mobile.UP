@@ -49,6 +49,10 @@ define([
 				app.session = new Session;
 				new FastClick(document.body);
 
+				if (!window.device) {
+					utils.detectUA($, navigator.userAgent);
+				}
+
 				$(document).ready(function() {
   					document.addEventListener("deviceready", onDeviceReady, false);
 				});
