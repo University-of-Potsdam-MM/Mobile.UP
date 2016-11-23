@@ -10,9 +10,64 @@ define([
 ], function($, _, Backbone, Session, login, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
 
-	function TimerHelper() {
+	function TimerHelper(model, view) {
 		this.loginAttempts = 0;
 		this.loginCountdown = 0;
+
+		this.incrementLoginAttempt = function() {
+			this.loginAttempts++;
+			this.updateCountdown();
+		};
+
+		this.start = function(callback) {
+			this.timer = setInterval(function() {
+				callback();
+			}, 1000);
+		};
+
+		this.stop = function() {
+			clearInterval(this.timer);
+		};
+
+		this.unsetFailureTimer = function() {
+			//wenn login erfolgreich lösche failureTime
+			model.unset('up.session.loginFailureTime');
+		};
+
+		this.isLoginAllowed = function() {
+			return this.loginAttempts < 3 && this.loginCountdown == 0;
+		};
+
+		this.isCountdownActive = function() {
+			return this.loginCountdown > 0;
+		};
+
+		this.updateCountdown = function() {
+			if(this.loginAttempts >= 3 && !model.get('up.session.loginFailureTime')) {
+				model.set('up.session.loginFailureTime', new Date().getTime());
+				this.loginAttempts = 0;
+
+				view.render();
+				return;
+			}
+			if(model.get('up.session.loginFailureTime')){
+				this.loginCountdown = parseInt(model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
+				if (this.loginCountdown < 0) {
+					this.loginCountdown = 0;
+					model.unset('up.session.loginFailureTime');
+					clearInterval(this.timer);
+
+					this.registerCountdownTimerOnce = _.once(_.bind(this.registerCountdownTimer, this));
+				} else {
+					this.registerCountdownTimerOnce();
+				}
+			}
+		};
+
+		this.registerCountdownTimer = function() {
+			this.start(_.bind(view.render, view));
+		};
+		this.registerCountdownTimerOnce = _.once(_.bind(this.registerCountdownTimer, this));
 	}
 
 	app.views.OptionsLogin = Backbone.View.extend({
@@ -23,37 +78,30 @@ define([
 		},
 
 		initialize: function(p){
+			this.logintemplate = rendertmpl('login');
+
 			this.model = new Session();
-			this.timerHelper = new TimerHelper;
-			_.bindAll(this, 'render', 'updateCountdown');
+			this.timerHelper = new TimerHelper(this.model, this);
+			_.bindAll(this, 'render');
 			//this.page = p.page;
 			this.listenTo(this.model,'change', this.render);
 			this.listenTo(this, 'errorHandler', this.errorHandler);
 			this.listenTo(this, 'missingConnection', this.missingInternetConnectionHandler);
-			this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
 		},
 
 		errorHandler: function(){
-			this.timerHelper.loginAttempts++;
 			this.$("#error").css('display', 'block');
-			this.updateCountdown();
+			this.timerHelper.incrementLoginAttempt();
 		},
 
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
 			this.$("#error0").css('display', 'none');
-			
 		},
 
 		stopListening: function() {
-			clearInterval(this.timer);
+			this.timerHelper.stop();
 			Backbone.View.prototype.stopListening.apply(this, arguments);
-		},
-
-		registerCountdownTimer: function() {
-			this.timer=setInterval(function() {
-				this.render();
-			}.bind(this), 1000);
 		},
 
 		formatCountdown: function(milsec){
@@ -64,35 +112,12 @@ define([
 			return min+":"+sec;
 		},
 
-		updateCountdown: function() {
-			if(this.timerHelper.loginAttempts>=3 && !this.model.get('up.session.loginFailureTime')){
-				this.model.set('up.session.loginFailureTime', new Date().getTime());
-				this.timerHelper.loginAttempts=0;
-
-				this.render();
-				return;
-			}
-			console.log(this.model);
-			if(this.model.get('up.session.loginFailureTime')){
-				this.timerHelper.loginCountdown = parseInt(this.model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
-				if(this.timerHelper.loginCountdown < 0){
-					this.timerHelper.loginCountdown = 0;
-					this.model.unset('up.session.loginFailureTime');
-					clearInterval(this.timer);
-					this.listenToOnce(this, 'registerTimer', this.registerCountdownTimer);
-				}else{
-					this.trigger('registerTimer');
-				}
-			}
-		},
-
 		login: function(ev){
 			ev.preventDefault();
-			console.log(this);
-			this.updateCountdown();
 
-			if(this.timerHelper.loginAttempts < 3 && this.timerHelper.loginCountdown == 0){
-						
+			this.timerHelper.updateCountdown();
+			if (this.timerHelper.isLoginAllowed()) {
+
 				var username = $('#username').val();
 				var password = $('#password').val();
 
@@ -108,8 +133,7 @@ define([
 				}).progress(function(login) {
 					$('#username').val(login.username);
 				}).done(function(session) {
-					//wenn login erfolgreich lösche failureTime
-					that.model.unset('up.session.loginFailureTime');
+					that.timerHelper.unsetFailureTimer();
 
 					if(that.model.get('up.session.redirectFrom')){
 						var path = that.model.get('up.session.redirectFrom');
@@ -137,15 +161,13 @@ define([
 		},
 		
 		render: function(){
-			this.updateCountdown();
-			this.logintemplate = rendertmpl('login');
-			console.log(this.page)
+			this.timerHelper.updateCountdown();
 			this.setElement(this.page.find('#options'));
 			this.$el.html(this.logintemplate({countdown: this.formatCountdown(this.timerHelper.loginCountdown)}));
-			var _this = this;
-			if(this.timerHelper.loginCountdown > 0){
+
+			if (this.timerHelper.isCountdownActive()) {
 				this.$("#error3").css('display', 'block');
-			}else{
+			} else {
 				this.$("#error3").css('display', 'none');
 			}
 			this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
