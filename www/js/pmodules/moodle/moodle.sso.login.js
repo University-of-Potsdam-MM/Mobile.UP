@@ -156,12 +156,14 @@ define([
             handle(actions, loginRequest, event);
         };
 
-        var freeBrowser = function() {
+        var freeBrowser = function(callback) {
             browser.removeEventListener("loadstart", handleEvent);
             browser.removeEventListener("loadstop", handleEvent);
             browser.removeEventListener("loaderror", handleEvent);
             browser.removeEventListener("exit", handleEvent);
             browser.close();
+            // Waiting for browser to finish closing. Otherwise we might get a NullPointerExeption in the next InAppBrowser instance
+            setTimeout(callback, 2000);
         };
 
         browser.addEventListener("loadstart", handleEvent);
@@ -171,13 +173,11 @@ define([
 
         loginRequest.success = function() {
             console.log("Moodle SSO login succeeded");
-            freeBrowser();
-            success();
+            freeBrowser(success);
         };
         loginRequest.error = function() {
             console.log("Moodle SSO login failed");
-            freeBrowser();
-            error();
+            freeBrowser(error);
         }
     };
 
