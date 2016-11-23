@@ -96,6 +96,10 @@ define([
 				var username = $('#username').val();
 				var password = $('#password').val();
 
+				if (this.loadingView) {
+					this.loadingView.spinnerOn();
+				}
+
 				var that = this;
 				login.executeLogin({
 					username: username,
@@ -122,6 +126,10 @@ define([
 						console.log(error.message);
 						that.trigger("errorHandler");
 					}
+				}).always(function() {
+					if (that.loadingView) {
+						that.loadingView.spinnerOff();
+					}
 				});
 			}else{
 				this.render();
@@ -140,7 +148,7 @@ define([
 			}else{
 				this.$("#error3").css('display', 'none');
 			}
-			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
+			this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 
 			return this;
 		}
