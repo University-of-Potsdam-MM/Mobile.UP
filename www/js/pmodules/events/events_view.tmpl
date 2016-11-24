@@ -51,9 +51,9 @@ if(d.length - lim > 25) {
 			<%=event.Place.adresse%><br />
 			<%=event.Place.plz%> <%=event.Place.ort%><br />
 		<% } %>
-		<% if($.os.ios) { %>
+		<% if(window.device.platform === "iOS") { %>
 			<a href="maps://q=<%=q%>" target="_system">Auf Karte anzeigen</a>
-		<% } else if($.os.android) { %>
+		<% } else if(window.device.platform === "Android") { %>
 			<a target="_system" href="geo:0,0?q=<% print(encodeURIComponent(q)) %>" rel="external">Auf Karte anzeigen</a>
 		<% } else { %>
 			<a target="_system" href="http://maps.google.com/?q=<%=q%>"  rel="external">Auf Karte anzeigen</a>

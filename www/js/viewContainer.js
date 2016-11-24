@@ -126,7 +126,7 @@ define([
         },
 
         setIosHeaderFix: function () {
-            if ($.os.ios7) {
+            if (window.device.ios7) {
                 $('body').addClass('ios-statusbar');
             }
         },

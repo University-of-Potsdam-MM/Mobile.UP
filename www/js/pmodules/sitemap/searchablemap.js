@@ -146,7 +146,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		},
 
 		resizeMap: function(triggerMapsResizeEvent) {
-			var iosStatusBarHeight = $.os.ios7 ? 25 : 0;
+			var iosStatusBarHeight = window.device.ios7 ? 25 : 0;
 			this.$("#map-canvas").css("height", $(window).height() - 165 - iosStatusBarHeight);
 
 			// Resize map, but keeper current center?

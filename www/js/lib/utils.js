@@ -208,37 +208,17 @@ define([
 	* Betriebssystem/UserAgent ermitteln
 	*/
 	var detectUA = function($, userAgent) {
-		var device = window.device || {version: userAgent, platform: "Browser"};
-		
-		$.os = {};
-		$.os.webkit = userAgent.match(/WebKit\/([\d.]+)/) ? true : false;
-		$.os.android = userAgent.match(/(Android)\s+([\d.]+)/) || userAgent.match(/Silk-Accelerated/) ? true : false;
-		$.os.androidICS = $.os.android && userAgent.match(/(Android)\s4/) ? true : false;
-		$.os.ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/) ? true : false;
-		$.os.iphone = !$.os.ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/) ? true : false;
-		var version = device.version.split(".");
-		$.os.ios7 = device.platform === "iOS" && parseInt(version[0]) >= 7;
-		$.os.webos = userAgent.match(/(webOS|hpwOS)[\s\/]([\d.]+)/) ? true : false;
-		$.os.touchpad = $.os.webos && userAgent.match(/TouchPad/) ? true : false;
-		$.os.ios = $.os.ipad || $.os.iphone;
-		$.os.playbook = userAgent.match(/PlayBook/) ? true : false;
-		$.os.blackberry10 = userAgent.match(/BB10/) ? true : false;
-		$.os.blackberry = $.os.playbook || $.os.blackberry10|| userAgent.match(/BlackBerry/) ? true : false;
-		$.os.chrome = userAgent.match(/Chrome/) ? true : false;
-		$.os.opera = userAgent.match(/Opera/) ? true : false;
-		$.os.fennec = userAgent.match(/fennec/i) ? true : userAgent.match(/Firefox/) ? true : false;
-		$.os.ie = userAgent.match(/MSIE 10.0/i) ? true : false;
-		$.os.ieTouch = $.os.ie && userAgent.toLowerCase().match(/touch/i) ? true : false;
-		$.os.supportsTouch = ((window.DocumentTouch && document instanceof window.DocumentTouch) || 'ontouchstart' in window);
-		//features
-		$.feat = {};
-		var head = document.documentElement.getElementsByTagName("head")[0];
-		$.feat.nativeTouchScroll = typeof(head.style["-webkit-overflow-scrolling"]) !== "undefined" && ($.os.ios||$.os.blackberry10);
-		$.feat.cssPrefix = $.os.webkit ? "Webkit" : $.os.fennec ? "Moz" : $.os.ie ? "ms" : $.os.opera ? "O" : "";
-		$.feat.cssTransformStart = !$.os.opera ? "3d(" : "(";
-		$.feat.cssTransformEnd = !$.os.opera ? ",0)" : ")";
-		if ($.os.android && !$.os.webkit)
-			$.os.android = false;
+		// Fill in some details if necessary
+		if (!window.device) {
+			window.device = {
+				platform: "browser",
+				version: userAgent
+			};
+		}
+
+		// Add flag for iOS 7 and higher
+		var version = window.device.version.split(".");
+		window.device.ios7 = window.device.platform === "iOS" && parseInt(version[0]) >= 7;
 	};
 
 	/**

@@ -2,9 +2,9 @@
 	<% if (typeof tipplink.link == 'string') { %>
 		<a href="<%= tipplink.link %>"> <%= tipplink.name %> </a>
 	<% } else { %>
-		<% if ($.os.ios) { %>
+		<% if (window.device.platform === "iOS") { %>
 			<a href="<%= tipplink.link.ios %>"> <%= tipplink.name %> </a>
-		<% } else if($.os.android) { %>
+		<% } else { %>
 			<a href="<%= tipplink.link.android %>"> <%= tipplink.name %> </a>
 		<% } %>
 	<% } %>
