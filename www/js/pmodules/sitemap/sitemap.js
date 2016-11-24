@@ -3,12 +3,11 @@ define([
 	'underscore',
 	'backbone',
 	'utils',
-	'q',
 	'modules/campusmenu',
 	'modules/timeselection',
 	'pmodules/sitemap/sitemap.models',
 	'pmodules/sitemap/searchablemap'
-], function($, _, Backbone, utils, Q, campusmenu, timeselection, models, searchablemap){
+], function($, _, Backbone, utils, campusmenu, timeselection, models, searchablemap){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/sitemap");
 
 	var settings = {};

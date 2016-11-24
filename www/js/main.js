@@ -15,7 +15,6 @@ require.config({
 		'backboneMVC': 'vendor/backbone-mvc',
         'cache': 'vendor/backbone.fetch-cache',
         'geojson': 'lib/GeoJSON',
-        'q': 'vendor/q',
         'moment': 'vendor/moment-with-locales',
         'utils': 'lib/utils',
         'view.utils': 'lib/view.utils',
