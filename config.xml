@@ -2,8 +2,10 @@
 <widget
     id="de.floriangoessler.upapp"
     android-packageName="de.floriangoessler.upapp"
+    version="4.0.1"
+    android-versionCode="40002"
+    ios-CFBundleVersion="201611251530"
     ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam"
-    version="4.0.0"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:gap="http://phonegap.com/ns/1.0">
 
