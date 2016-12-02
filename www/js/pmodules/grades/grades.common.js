@@ -30,7 +30,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 				condition: JSON.parse(uri.fragment()),
 				"user-auth": {
 					username: session.get("up.session.username"),
-					password: "ddd" //session.get("up.session.password")
+					password: session.get("up.session.password")
 				}
 			});
 		}
