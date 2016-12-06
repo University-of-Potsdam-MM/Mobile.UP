@@ -162,7 +162,7 @@ define([
 						q: q
 					},
 					route: {
-						from: customHistory.currentRoute(),
+						from: customHistory.currentRouteInTransition(),
 						to: Backbone.history.fragment
 					}
 				};
