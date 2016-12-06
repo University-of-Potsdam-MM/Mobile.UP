@@ -796,12 +796,12 @@ p.tipp-description {
 	text-decoration:none !important;
 }
 
-.ui-page-theme-a .ui-btn.settings.ui-icon-star {
+.ui-page-theme-a .ui-btn.settings.ui-icon-gear {
 	right: -90px;
 	margin-top: 15px;
 }
 
-.ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
+.ui-page-theme-a .ui-btn.settings.ui-icon-gear:before {
 	display: none;
 }
 
