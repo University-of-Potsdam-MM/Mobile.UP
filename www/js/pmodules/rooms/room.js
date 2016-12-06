@@ -1,4 +1,13 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu', 'modules/timeselection', 'underscore.string'], function($, _, Backbone, utils, campusmenu, timeselection, _str){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'utils',
+	'modules/campusmenu',
+	'modules/timeselection',
+	'underscore.string',
+	'moment'
+], function($, _, Backbone, utils, campusmenu, timeselection, _str, moment){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
 
 	$(document).on("pageinit", "#room", function () {
