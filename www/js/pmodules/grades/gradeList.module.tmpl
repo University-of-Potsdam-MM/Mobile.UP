@@ -12,9 +12,9 @@
             lp += "/" + module.targetCreditPoints;
     %>
     <th class="name"><%= module.examDesc %></th>
-    <th class="grade"><% if (module.grade == 'unbenotet') { %>-<% }else{ module.grade } %></th>
+    <th class="grade"><% if (module.grade == 'unbenotet') { %>-<% } else { %><%= module.grade %><% } %></th>
     <th class="pv"><%= module.examStatus %></th>
-    <th class="lp"><% if (!sk) { lp } %></th>
+    <th class="lp"><% if (!sk) { %><%= lp %><% } %></th>
     <th></th>
 </tr>
 
@@ -36,7 +36,7 @@
             <span class="name-additionA"><%= graded.additionA %></span>
         <% } %>
     </td>
-    <td class="grade"><% if (graded.grade == 'unbenotet') { %>-<% }else{ graded.grade } %></td>
+    <td class="grade"><% if (graded.grade == 'unbenotet') { %>-<% } else { %><%= graded.grade %><% } %></td>
     <td class="pv <%= graded.status %>"><%= graded.status %></td>
     <td class="lp"><%= graded.creditPoints %></td>
     <td></td>
