@@ -16,4 +16,4 @@ if [ -z $2 ]; then
   action="run";
 fi
 
-cd platforms && rm -rf $1 && cd .. && rm -rf plugins && cordova prepare $1 && cordova $action $1
+cordova clean && cordova prepare $1 && cordova $action $1

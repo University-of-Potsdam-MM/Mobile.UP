@@ -126,6 +126,7 @@
     <plugin name="cordova-plugin-console" spec="^1.0.4" />
 
     <!-- Hooks -->
+    <hook type="after_clean" src="scripts/removePluginsAndPlatforms.js" />
     <platform name="ios">
         <hook type="after_prepare" src="scripts/addPlistEntries.js" />
     </platform>
