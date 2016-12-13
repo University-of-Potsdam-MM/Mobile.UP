@@ -124,4 +124,9 @@
     <plugin name="com.borismus.webintent" spec="https://github.com/Initsogar/cordova-webintent.git" />
     <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
     <plugin name="cordova-plugin-console" spec="^1.0.4" />
+
+    <!-- Hooks -->
+    <platform name="ios">
+        <hook type="after_prepare" src="scripts/addPlistEntries.js" />
+    </platform>
 </widget>
