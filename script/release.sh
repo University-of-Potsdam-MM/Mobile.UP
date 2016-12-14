@@ -8,18 +8,4 @@ if [ -z $1 ]; then
   exit 1;
 fi
 
-# Optimize JS code
-# Needs requirejs optimizer. See http://requirejs.org/docs/optimization.html
-cd www
-r.js -o baseUrl=js mainConfigFile=js/main.js name=main out=main-built.js
-cd ..
-
-script/fullbuild.sh $1 build
-
-if [ $1 == "android" ]; then
-  cd platforms
-  cp release-signing.properties android
-  cd ..
-fi
-
-cordova build $1 --release
+cordova clean && cordova prepare $1 && cordova build $1 --release --buildConfig=release-config.json
