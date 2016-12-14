@@ -127,6 +127,7 @@
 
     <!-- Hooks -->
     <hook type="after_clean" src="scripts/removePluginsAndPlatforms.js" />
+    <hook type="before_build" src="scripts/optimizeJavascript.js" />
     <platform name="ios">
         <hook type="after_prepare" src="scripts/addPlistEntries.js" />
     </platform>
