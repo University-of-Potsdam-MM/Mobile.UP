@@ -359,12 +359,12 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 }
 
 .home-id .ui-btn.settings {
-	margin: .5em 0;
-	text-transform: none;
+	/*margin: .5em 0;*/
+	/*text-transform: none;
 	font-weight: normal;
 	padding: .6em 2em .6em 1em;
-	font-size: 12.5px;
-	margin-top: 1em;
+	font-size: 12.5px; */
+	/*margin-top: 1em;*/
 	width: auto;
 }
 

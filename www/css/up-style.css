@@ -114,22 +114,22 @@ padding-bottom: 0px;
 /*SCHRIFT*/
 .ui-header .ui-title,.ui-footer .ui-title {
 	font-size: 1em;
-	min-height: 2.2em;
-	text-align: left;
-	display: block;
-	margin: 0 0.5em;
-	padding: .7em 0 .6em 0;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	outline: 0 !important;
-	font-weight: normal;
-	font-family: Georgia, serif;
-	margin-left: 45px;
-	text-indent: 15px;
-	line-height: 2em;
-	letter-spacing: .1em;
-	font-style: italic;
+    min-height: 2.2em;
+    text-align: left;
+    display: block;
+    margin: 0 0.5em;
+    padding: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0 !important;
+    font-weight: normal;
+    font-family: Georgia, serif;
+    margin-left: 45px;
+    text-indent: 15px;
+    line-height: 55px;
+    letter-spacing: .1em;
+    font-style: italic;
 }
 
 .ui-header .ui-title.loggedin {
@@ -657,18 +657,19 @@ label.showfirst {
 
 .ui-page-theme-a .ui-btn.settings {
 	position: absolute;
-	right: 10px;
-	top: 0;
-	background: none;
-	border: none;
-	/*padding: .6em 2em .6em 1em;*/
-	margin-top: 1em;
-	color: #014260;
-	font-family: georgia, serif;
-	font-weight: normal;
-	height: 10px;
-	width:80px;
-	text-decoration:none;
+    right: 15px;
+    top: 0;
+    background: none;
+    border: none;
+    padding: 0em 15px 0 5px;
+ 
+    color: #014260;
+    font-family: arial, sans-serif;
+    font-weight: normal;
+    height: 10px;
+    width: 80px;
+    height: 55px;
+    line-height: 55px;
 }
 
 .ui-btn-icon-left.settings:after {
@@ -697,9 +698,21 @@ label.showfirst {
 	text-decoration:none !important;
 }
 
+.ios-statusbar .ui-header .ui-btn.settings.ui-icon-star {
+	top:-2px;
+	
+}
+
 .ui-page-theme-a .ui-btn.settings.ui-icon-star {
-	right: -90px;
-	margin-top: 15px;
+	    right: -20px;
+    top: -7px;
+    /* margin-top: 16px !important; */
+    padding: 0;
+    height: 55px;
+    width: 55px;
+    /* text-align: right; */
+    /* line-height: 55px; */
+    padding: 0;
 }
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-star:before {
@@ -2674,5 +2687,5 @@ p.event-description {
 	padding-top:25px !important;
 }
 .ios-statusbar .settings{
-	margin-top:40px !important;
+	margin-top:25px !important;
 }
