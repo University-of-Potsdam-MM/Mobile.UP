@@ -2206,7 +2206,7 @@ p.event-description {
 	}
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited
 		{
-		background-image: url(../img/up/arrow-back_hr.png) !important;
+		/*background-image: url(../img/up/arrow-back_hr.png) !important;*/
 		background-size: 25px 25px;
 	}
 	#nav-panel ul.nav-search  li a,#nav-panel2 ul.nav-search  li a,#nav-panel3 ul.nav-search  li a
