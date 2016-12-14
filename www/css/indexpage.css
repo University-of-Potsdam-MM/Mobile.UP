@@ -25,12 +25,12 @@
 }
 
 #home .ui-btn.settings {
-	margin: .5em 0;
+	/*margin: .5em 0;
 	text-transform: none;
 	font-weight: normal;
 	padding: .6em 2em .6em 1em;
 	font-size: 12.5px;
-	margin-top: 1em;
+	margin-top: 1em;*/
 }
 
 #home .ui-btn.settings:before {
