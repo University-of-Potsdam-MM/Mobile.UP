@@ -311,7 +311,7 @@ define([
 			hasOpenInAppBrowser = true;
 		}
 
-		var moodlePage = "https://moodle2.uni-potsdam.de/";
+		/*var moodlePage = "https://moodle2.uni-potsdam.de/";
 		if (url.indexOf(moodlePage) != -1){
 			var session = new Session();
 
@@ -326,10 +326,10 @@ define([
 			}).fail(function() {
 				hasOpenInAppBrowser = false;
 			});
-		} else {
+		} else {*/
 			openInAppBrowser(url);
-		}
-	}
+		/*}*/
+	};
 
 	/**
 	 * Opens external links according to the platform we are on. For apps this means using the InAppBrowser, for desktop browsers this means opening a new tab.
