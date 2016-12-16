@@ -25,6 +25,7 @@ require.config({
         'uri': 'vendor/src',
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
+        'login.sso': 'lib/login.sso',
         'headerParser': 'lib/headerParser'
     },
     // "Paths configurations should only be used for folders, not modules themselves.
