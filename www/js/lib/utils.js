@@ -6,9 +6,10 @@ define([
 	'hammerjs',
 	'uri/URI',
 	'moodle.download',
+	'pmodules/moodle/moodle.sso.login',
 	'underscore.string',
 	'cache'
-], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, _str){
+], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, moodleSso, _str){
 
 	// Necessary IE workaround. See
 	//
@@ -293,6 +294,8 @@ define([
 
 	var openInAppBrowser = function(url) {
 		var openWindow = window.open(url, "_blank", "enableViewportScale=yes");
+		// Always ensure user is logged into Moodle
+		moodleSso.loginUser(new Session, openWindow);
 		openWindow.addEventListener('exit', function(event) {
 			hasOpenInAppBrowser = false;
 		});
@@ -310,25 +313,7 @@ define([
 		} else {
 			hasOpenInAppBrowser = true;
 		}
-
-		/*var moodlePage = "https://moodle2.uni-potsdam.de/";
-		if (url.indexOf(moodlePage) != -1){
-			var session = new Session();
-
-			window.plugins.toast.showShortBottom("Starte Moodle-Login");
-			$.post("https://moodle2.uni-potsdam.de/login/index.php",
-				{
-					username: session.get('up.session.username'),
-					password: session.get('up.session.password')
-				}
-			).done(function(response) {
-				openInAppBrowser(url);
-			}).fail(function() {
-				hasOpenInAppBrowser = false;
-			});
-		} else {*/
-			openInAppBrowser(url);
-		/*}*/
+		openInAppBrowser(url);
 	};
 
 	/**

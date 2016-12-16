@@ -82,13 +82,35 @@ define([
         });
     };
 
+    var openBrowser2 = function(session, browser, success, error) {
+        var loginRequest = {
+            session: session,
+            browser: browser
+        };
+
+        loginSso.executeSsoLogin(actions, loginRequest).done(function() {
+            console.log("Moodle SSO login succeeded");
+            success();
+        }).fail(function() {
+            console.log("Moodle SSO login failed");
+            error();
+        });
+    };
+
     var createToken = function(session) {
         var promise = $.Deferred();
         openBrowser(session, promise.resolve, promise.reject);
         return promise.promise();
     };
 
+    var loginUser = function(session, browser) {
+        var promise = $.Deferred();
+        openBrowser2(session, browser, promise.resolve, promise.reject);
+        return promise.promise();
+    };
+
     return {
-        createToken: createToken
+        createToken: createToken,
+        loginUser: loginUser
     };
 });
