@@ -170,31 +170,38 @@ body .ui-btn.ui-btn-a.back,
 body .ui-group-theme-a .ui-btn.back:visited,
 body .ui-btn.ui-btn-a.back:visited {
 	border: none;
-	color: #cfdae3;
-	background-color: transparent;
-	background-image: url(../img/up/arrow-back.png);
-	background-repeat: no-repeat;
-	text-indent: -400000px;
-	position: relative;
-	float: left;
-	height: 100%;
-	width: 12px;
-	background-position: 10px 11px;
-	top: 0;
-	padding-top: 0px;
-	padding-bottom: 0px;
+    background-color: transparent;
+    position: relative;
+    float: left;
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+}
+
+.ui-page-theme-a .ui-btn.back i {
+	font-size: 18px;
+    height: 36px;
+    width: 40px;
+    padding-top: 18px;
 }
 
 /*Backbutton mit Text statt Pfeil*/
 .back-caption {
-  width: 50px !important;
-  text-indent: 0 !important;
-  color: #014260 !important;
-  background-image:none !important;
-  background-repeat:no-repeat !important;
-  background-position:-400px;
-  background: none !important;
-  margin-top: 20px !important;
+     width: 50px !important;
+    color: #014260 !important;
+    background-image: none !important;
+    background-repeat: no-repeat !important;
+    background-position: -400px;
+    background: none !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+    line-height: 55px;
+    top: 0;
+    left:0;
+}
+
+.back-caption i{
+	display:none;
 }
 
 /*default buttons links */
@@ -207,24 +214,47 @@ body .ui-btn.ui-btn-a.back:visited {
 }
 
 /*Menubutton*/
+/*
+.menubutton.ui-link.ui-btn-left.ui-btn,
+.menubutton.ui-link.ui-btn-left.ui-btn:visited {
+	    position: relative;
+    float: left;
+  
+    text-indent: -40000px;
+    background-image: url(../img/up/menubutton.png) !important;
+    background-repeat: no-repeat;
+    background-position: 0 2px;
+    background-color: transparent;
+    border: none;
+    left: 0;
+    top: 0;
+    margin: 0;
+    height: 55px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 40px;
+    padding: 0;
+} */
+
+
 .menubutton.ui-link.ui-btn-left.ui-btn,
 .menubutton.ui-link.ui-btn-left.ui-btn:visited {
 	position: relative;
-	float: left;
-	padding-left: 33px;
-	text-indent: -40000px;
-	background-image: url(../img/up/menubutton.png) !important;
-	background-repeat: no-repeat;
-	background-position: top right;
-	background-color: transparent;
-	border: none;
-	left: 0;
-	top: 0;
-	margin: 0;
-	height: 100%;
-	padding-top: 0px;
-	padding-bottom: 0px;
+    float: left;
+    background-color: transparent;
+    border: none;
+    font-size: 0;
+
+} 
+
+.menubutton.ui-link.ui-btn-left.ui-btn i {
+	text-indent: 0;
+    font-size: 18px;
+    height: 36px;
+    width: 40px;
+    padding-top: 18px;
 }
+
 
 /* Evil error producer, see https://github.com/University-of-Potsdam-MM/UP.App/issues/216 for details
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
@@ -776,15 +806,7 @@ p.tipp-description {
 }
 
 .ui-page-theme-a .ui-btn.settings:before {
-	background-image: url(../img/up/logout.png);
-	background-repeat: no-repeat;
-	content: ".";
-	display: inline-block;
-	width: 18px;
-	height: 22px;
-	text-indent: -222222px;
-	background-position: 0px 0px;
-	line-height:1.6em;
+	font: normal normal normal 14px/1 FontAwesome;
 }
 
 .ui-page-theme-a .ui-btn.settings2 {
@@ -803,13 +825,11 @@ p.tipp-description {
 
 .ui-page-theme-a .ui-btn.settings.ui-icon-gear {
 	right: -20px;
-	top: -7px;
-	/* margin-top: 16px !important; */
+	top: 0px;
+	margin:0;
 	padding: 0;
 	height: 55px;
 	width: 55px;
-	/* text-align: right; */
-	/* line-height: 55px; */
 	padding: 0;
 }
 
@@ -2305,14 +2325,15 @@ p.event-description {
 		, only screen and ( min-resolution: 2dppx) {
 
 	.ui-page-theme-a .ui-btn.settings:before {
-		background-image: url(../img/up/logout_hr.png);
-		background-size: 18px 18px;
+		/* background-image: url(../img/up/logout_hr.png);
+		background-size: 18px 18px; */
 	}
 
 	.menubutton.ui-link.ui-btn-left.ui-btn,.menubutton.ui-link.ui-btn-left.ui-btn:visited
 		{
-		background-image: url(../img/up/menubutton-hres.png) !important;
+		/* background-image: url(../img/up/menubutton-hres.png) !important;
 		background-size: 46px 55px;
+		background-position: 5px 2px; */
 	}
 	.ui-header .ui-title {
 		background-image: url(../img/up/seperator-hres.png);
@@ -2320,8 +2341,9 @@ p.event-description {
 	}
 	.ui-page-theme-a .ui-btn.back,html .ui-bar-a .ui-btn.back,html .ui-body-a .ui-btn.back,html body .ui-group-theme-a .ui-btn.back,html head+body .ui-btn.ui-btn-a.back,.ui-page-theme-a .ui-btn.back:visited,html .ui-bar-a .ui-btn.back:visited,html .ui-body-a .ui-btn.back:visited,html body .ui-group-theme-a .ui-btn.back:visited,html head+body .ui-btn.ui-btn-a.back:visited
 		{
-		/*background-image: url(../img/up/arrow-back_hr.png) !important;*/up
-		background-size: 25px 25px;
+		
+		/* background-image: url(../img/up/arrow-back_hr.png) !important;
+		background-size: 25px 25px; */
 	}
 	#nav-panel ul.nav-search  li a,#nav-panel2 ul.nav-search  li a,#nav-panel3 ul.nav-search  li a
 		{
