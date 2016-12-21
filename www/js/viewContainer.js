@@ -49,7 +49,7 @@ define([
 
             // Render page, add padding for the header and update the header
             page.render();
-            var pageContent = page.$el.attr("data-role", "page").css('padding-top', '54px');
+            var pageContent = page.$el.attr("data-role", "page").css('padding-top', window.device.ios7 ? '79px' : '54px');
             this.updateHeader(pageContent);
         },
 
