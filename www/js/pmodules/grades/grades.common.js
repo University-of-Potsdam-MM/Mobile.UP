@@ -131,7 +131,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			var fieldCopy = achievements.field;
 			achievements.field = _.map(studyAreas, function(area) {
 				var field = _.find(fieldCopy, function(f) { return f.fieldName === area.fieldName; });
-				return field || area;
+				return _.extend({}, field, area);
 			});
 
 			return achievements;
@@ -148,7 +148,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 		parseStudyAreas: function(area) {
 			return {
 				id: _.uniqueId("field"),
-				fieldName: area.name
+				fieldName: area.name,
+				hint: area.hint
 			};
 		},
 

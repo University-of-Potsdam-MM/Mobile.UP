@@ -43,9 +43,17 @@
                         <th></th>
                     </tr>
                     <% }); %>
+
+                    <% if (acm.hint) { %>
+                    <tr class="grades-header-pre">
+                        <th colspan="6"><p class="grades-hint"><%= acm.hint %></p></th>
+                    </tr>
+                    <% } else { %>
                     <tr class="grades-header-pre">
                         <th colspan="6"></th>
                     </tr>
+                    <% } %>
+
                     <tr class="grades-header">
                         <th></th>
                         <th>Bezeichnung</th>
@@ -76,9 +84,14 @@
                     <% }); %>
                 </tfoot>
             </table>
+
             <% } else { %>
+                <% if (acm.hint) { %>
+                <p class="grades-hint"><%= acm.hint %></p>
+                <% } %>
             <p class="grades-no-credits">Keine eingetragenen Leistungen</p>
             <% } %>
+
         </div>
         <% }); %>
 
@@ -86,6 +99,17 @@
 
     <style scoped>
         p.grades-no-credits {
+            font-size: .9em;
+            margin-bottom: 1em;
+            padding: .3em;
+            color: #014260;
+            font-family: georgia,serif;
+            font-style: italic;
+            text-align: center;
+            margin-top: 1em;
+        }
+
+        p.grades-hint {
             font-size: .9em;
             margin-bottom: 1em;
             padding: .3em;
