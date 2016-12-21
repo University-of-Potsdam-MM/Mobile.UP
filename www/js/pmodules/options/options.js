@@ -51,7 +51,7 @@ define([
 				return;
 			}
 			if(model.get('up.session.loginFailureTime')){
-				this.loginCountdown = parseInt(model.get('up.session.loginFailureTime'))+10*60*1000 - new Date().getTime();
+				this.loginCountdown = parseInt(model.get('up.session.loginFailureTime'))+2*60*1000 - new Date().getTime();
 				if (this.loginCountdown < 0) {
 					this.loginCountdown = 0;
 					model.unset('up.session.loginFailureTime');
