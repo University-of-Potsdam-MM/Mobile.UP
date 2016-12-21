@@ -269,6 +269,9 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 	margin-right: 10px;
 }
 
+.home-id .ui-btn.settings:before {
+	background-image: url(../img/up/logout-white.png);
+}
 
 .home-id.ui-header .ui-title {
 	background-image: none;
