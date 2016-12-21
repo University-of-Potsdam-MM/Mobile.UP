@@ -170,7 +170,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 			var disabledNews = {};
 			elements.each(function(i, el) {
 				if(!el.checked)
-					disabledNews[$(el).data('id')] = $(el).data('id');
+					disabledNews[$(el).data('id')] = 1;
 			});
 			//console.log(disabledNews);
 			utils.LocalStore.set('disabledNews', disabledNews);
