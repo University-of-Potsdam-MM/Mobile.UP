@@ -107,8 +107,34 @@ define([
 
 	var EmptyListNotifier = Backbone.View.extend({
 
+		runningCounter: 0,
+
 		initialize: function() {
-			this.listenTo(this.collection, "reset", this.render);
+			this.listenTo(this.collection, "request", this.loadingOn);
+			this.listenTo(this.collection, "cachesync", this.loadingHold);
+			this.listenTo(this.collection, "sync", this.loadingOff);
+			this.listenTo(this.collection, "error", this.loadingError);
+		},
+
+		loadingOn: function() {
+			this.runningCounter++;
+		},
+
+		loadingHold: function(model, attr, opts) {
+			if (opts.prefill) {
+				this.runningCounter++;
+			}
+		},
+
+		loadingOff: function() {
+			this.runningCounter--;
+			if (this.runningCounter <= 0) {
+				this.render();
+			}
+		},
+
+		loadingError: function() {
+			this.runningCounter--;
 		},
 
 		render: function() {
