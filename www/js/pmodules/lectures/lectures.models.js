@@ -164,10 +164,10 @@ define([
         _loadOnce: function(vvzHistory, success) {
             this.items.url = vvzHistory.first().get("suburl");
             this.items.reset();
-            this.items.fetch(utils.cacheDefaults({
+            this.items.fetch({
                 reset: true,
                 success: success
-            }));
+            });
         }
     });
 
@@ -205,7 +205,7 @@ define([
                 var models = response.lectureScheduleCourses.currentNode.courses.course;
                 return _.chain(this.ensureArray(models))
                         .reject(function(model) { return model === ""; })
-                        .reject(function(model) { return !model.headerId; })
+                        .reject(function(model) { return !model.courseId; })
                         .map(function(model) {
                             return {
                                 name: model.courseName,
