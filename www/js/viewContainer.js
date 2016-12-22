@@ -152,7 +152,7 @@ define([
         },
 
         /**
-         * Wird nach Pagetransition ausgeführt
+         * Wird nach Pagetransition ausgefÃ¼hrt
          */
         afterTransition: function(transitionOptions) {
             var c = transitionOptions.extras.c;
@@ -186,7 +186,7 @@ define([
 
             var content = false;
             var view = page; //Wenn keine Viewklasse vorhanden ist, die page als view nehmen
-            if (this.hasView(c, a)) { //Wenn eine View-Klasse für Content vorhanden ist: ausführen
+            if (this.hasView(c, a)) { //Wenn eine View-Klasse fÃ¼r Content vorhanden ist: ausfÃ¼hren
                 content = view = this.instanciateView(c, a, params);
             }
             app.currentView = view; //app.currentView kann als Referenz im HTML z.b. im onclick-Event verwendet werden
@@ -198,14 +198,14 @@ define([
         },
 
         /*
-         * Momentan aktive Seite zurückgeben
+         * Momentan aktive Seite zurÃ¼ckgeben
          */
         activePageExtract: function () {
             return $.mobile.activePage;
         },
 
         /*
-         * InhaltsContainer der momentan aktiven Seite zurückgeben
+         * InhaltsContainer der momentan aktiven Seite zurÃ¼ckgeben
          */
         activeCon: function() {
             return $('.ui-content', this.activePageExtract());
@@ -214,11 +214,11 @@ define([
         notifyMissingServerConnection: function (app) {
             $('.ui-btn-active', this.activePageExtract()).removeClass('ui-btn-active'); //Aktuell fokussierten Button deaktivieren, dass die selektierungsfarbe verschwindet
             app.previous(true);
-            var s = 'Es konnte keine Verbindung zum Server hergestellt werden. Bitte überprüfe deine Internetverbindung';
-            if (navigator.notification) //Über Plugin für App
+            var s = 'Es konnte keine Verbindung zum Server hergestellt werden. Bitte Ã¼berprÃ¼fe deine Internetverbindung';
+            if (navigator.notification) //Ã¼ber Plugin fÃ¼r App
                 navigator.notification.alert(s, null, 'Kein Internet'); //Fehlermeldung ausgeben
             else
-                alert(s); //Für Browser
+                alert(s); //FÃ¼r Browser
         },
 
         removeActiveElementsOnCurrentPage: function() {
