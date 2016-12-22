@@ -61,8 +61,16 @@ define([
 
         moodleSSO.createToken(session).done(function() {
             result.resolve(session);
-        }).fail(function() {
-            result.reject({code: "missingConnection"});
+        }).fail(function(loginRequest) {
+            var errors = {
+                1: "missingConnection",
+                2: "wrongPassword",
+                3: "userCancelled"
+            };
+
+            result.reject({
+                code: errors[loginRequest.errorCode]
+            });
         });
 
         return result.promise();

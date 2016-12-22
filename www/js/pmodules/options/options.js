@@ -94,6 +94,10 @@ define([
 			this.timerHelper.incrementLoginAttempt();
 		},
 
+		missingInternetConnectionHandler: function(){
+			this.$("#error0").css('display', 'block');
+		},
+
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
 			this.$("#error0").css('display', 'none');
@@ -202,10 +206,6 @@ define([
 
 			new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 			return this;
-		},
-
-		missingInternetConnectionHandler: function(){
-			this.$("#error0").css('display', 'block');
 		}
 	});
 

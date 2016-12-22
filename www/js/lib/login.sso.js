@@ -97,10 +97,6 @@ define([
     var attributeReleaseUrl = "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease";
 
     var openBrowser = function(actions, loginRequest, success, error) {
-        /*var loginRequest = {
-            session: session,
-            browser: window.open("SHOULDALREADYBESET", "_blank", "clearcache=yes,clearsessioncache=yes,hidden=yes")
-        };*/
         var browser = loginRequest.browser;
 
         var handleEvent = function(event) {
@@ -124,8 +120,9 @@ define([
             console.log("SSO login succeeded");
             freeBrowser(success);
         };
-        loginRequest.error = function() {
-            console.log("SSO login failed");
+        loginRequest.error = function(reason) {
+            console.log("SSO login failed, reason " + reason);
+            loginRequest.errorCode = reason;
             freeBrowser(error);
         }
     };
@@ -133,7 +130,7 @@ define([
     /**
      * @param customActions
      * @param {Object} options
-     * @param {string} options.browser
+     * @param {Object} options.browser
      * @param {Object} options.session
      * @param {Function} options.errorPredicate
      */

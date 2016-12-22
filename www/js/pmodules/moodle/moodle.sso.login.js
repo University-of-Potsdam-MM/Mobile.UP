@@ -73,12 +73,12 @@ define([
             setTimeout(callback, 2000);
         };
 
-        loginSso.executeSsoLogin(actions, loginRequest).done(function() {
+        loginSso.executeSsoLogin(actions, loginRequest).done(function(loginRequest) {
             console.log("Moodle SSO login succeeded");
-            freeBrowser(success);
-        }).fail(function() {
-            console.log("Moodle SSO login failed");
-            freeBrowser(error);
+            freeBrowser(_.partial(success, loginRequest));
+        }).fail(function(loginRequest) {
+            console.log("Moodle SSO login failed, reason " + loginRequest.errorCode);
+            freeBrowser(_.partial(error, loginRequest));
         });
     };
 
@@ -88,12 +88,12 @@ define([
             browser: browser
         };
 
-        loginSso.executeSsoLogin(actions, loginRequest).done(function() {
+        loginSso.executeSsoLogin(actions, loginRequest).done(function(loginRequest) {
             console.log("Moodle SSO login succeeded");
-            success();
-        }).fail(function() {
+            success(loginRequest);
+        }).fail(function(loginRequest) {
             console.log("Moodle SSO login failed");
-            error();
+            error(loginRequest);
         });
     };
 
