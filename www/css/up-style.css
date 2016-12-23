@@ -2832,7 +2832,7 @@ p.event-description {
 
 /*OS Differences*/
 
-.ios-statusbar .ui-header, .ios-statusbar .ui-content{
+.ios-statusbar .ui-header {
 	padding-top:25px !important;
 }
 .ios-statusbar .settings{
