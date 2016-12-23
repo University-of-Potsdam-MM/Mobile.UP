@@ -1,7 +1,7 @@
 [
   {
     "name": "Akademisches Auslandsamt (Beratung und Betreuung internationaler Gastwissenschaftler / Welcome Center Potsdam)",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/aaa/kontakt.html",
     "mail": "welcome-center@uni-potsdam.de",
     "telephone": "+49 331 977-1382",
     "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,13:00-17:00; Th 13:00-15:00; PH off",
@@ -22,7 +22,7 @@
   },
   {
     "name": "Akademisches Auslandsamt (Beratung und Zulassung internationaler Bachelor- und Masterstudierender)",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/aaa\/kontakt.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/aaa/kontakt.html",
     "mail": "nadja.romanova@uni-potsdam.de",
     "telephone": "+49 331 977-1674",
     "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,13:00-17:00; Th 10:00-12:00; PH off",
@@ -43,7 +43,7 @@
   },
   {
     "name": "Zentrale Studienberatung",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zsb\/kontakt.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/zsb/kontakt.html",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
     "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine offenen Beratungszeiten\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off",
@@ -68,7 +68,7 @@
   },
   {
     "name": "Zentrale Studienberatung (telefonisch)",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zsb\/kontakt.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/zsb/kontakt.html",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
     "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off",
@@ -85,7 +85,7 @@
   },
   {
     "name": "PUCK-Servicestelle",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/puck.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/puck.html",
     "mail": "puck@uni-potsdam.de",
     "telephone": "+49 331 977-4100",
     "opening_hours": "Mo 10:00-12:00,13:00-15:00; Tu 10:00-12:00,14:00-17:00; We closed \"keine Sprechzeit\"; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off",
@@ -110,7 +110,7 @@
   },
   {
     "name": "Psychologische Beratung",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/psychologische-beratung.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/psychologische-beratung.html",
     "mail": "psychologische-beratung@uni-potsdam.de",
     "telephone": "+49 331 977-1830",
     "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off",
@@ -127,7 +127,7 @@
   },
   {
     "name": "Studierendensekretariat",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/studierendensekretariat.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat.html",
     "mail": "",
     "telephone": "",
     "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off",
@@ -144,7 +144,7 @@
   },
   {
     "name": "Studierendensekretariat (telefonisch)",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/studierendensekretariat.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat.html",
     "mail": "",
     "telephone": "",
     "opening_hours": "Mo 10:00-13:00; Tu 10:00-14:00; We 10:00-15:00; Th 10:00-13:00; PH off",
@@ -169,7 +169,7 @@
   },
   {
     "name": "Zentrales Pr\u00fcfungsamt",
-    "link": "http:\/\/www.uni-potsdam.de\/studium\/beratung\/zentrales-pruefungsamt.html",
+    "link": "http://www.uni-potsdam.de/studium/beratung/zentrales-pruefungsamt.html",
     "mail": "pruefungsamt@uni-potsdam.de",
     "telephone": "",
     "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; We closed; Th 10:00-12:00; Fr 10:00-12:00; PH off",
@@ -194,7 +194,7 @@
   },
   {
     "name": "Kaffeebar \"Die Bohne\"",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-griebnitzsee.html",
+    "link": "http://www.studentenwerk-potsdam.de/mensa-griebnitzsee.html",
     "mail": "",
     "telephone": "",
     "opening_hours": "Mo-Fr closed; PH off",
@@ -203,7 +203,7 @@
   },
   {
     "name": "Cafeteria \"filmriss\"",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html#c10608",
+    "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c10608",
     "mail": "cafefilm@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
     "opening_hours": "Mo-Fr 08:30-15:00; PH off",
@@ -232,7 +232,7 @@
   },
   {
     "name": "Mensa Am Neuen Palais",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-am-neuen-palais.html",
+    "link": "http://www.studentenwerk-potsdam.de/mensa-am-neuen-palais.html",
     "mail": "ehrlich@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1292",
     "opening_hours": "Mo-Th 10:00-15:00; Fr 10:00-14:30; PH off",
@@ -261,7 +261,7 @@
   },
   {
     "name": "Mensa Griebnitzsee",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-griebnitzsee.html",
+    "link": "http://www.studentenwerk-potsdam.de/mensa-griebnitzsee.html",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
     "opening_hours": "Mo-Fr 08:00-15:00; PH off",
@@ -290,7 +290,7 @@
   },
   {
     "name": "Mensa Golm",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/mensa-golm.html",
+    "link": "http://www.studentenwerk-potsdam.de/mensa-golm.html",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
     "opening_hours": "Mo-Fr 09:00-15:00; PH off",
@@ -319,7 +319,7 @@
   },
   {
     "name": "Cafeteria Am Neuen Palais",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html#c10604",
+    "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c10604",
     "mail": "gutewort@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1277",
     "opening_hours": "Mo-Th 08:00-16:00; Fr 08:00-14:30; PH off",
@@ -348,7 +348,7 @@
   },
   {
     "name": "Cafeteria im IKMZ",
-    "link": "http:\/\/www.studentenwerk-potsdam.de\/cafeterien.html#c16459",
+    "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c16459",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
     "opening_hours": "Mo-Fr 09:00-15:00; PH off",
