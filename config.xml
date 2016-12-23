@@ -76,6 +76,8 @@
     <plugin name="cordova-plugin-splashscreen" spec="^3.2.2" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false"/>
+    <preference name="FadeSplashScreen" value="true"/>
+    <preference name="FadeSplashScreenDuration" value="500"/>
     <platform name="android">
         <splash density="port-ldpi"  src="www/res/screen/android/screen-ldpi-portrait.png" />
         <splash density="port-mdpi"  src="www/res/screen/android/screen-mdpi-portrait.png" />
