@@ -126,14 +126,32 @@ define([
 		},
 
 		requestFail: function(collection, response) {
-			console.log("error: "+response.status);
-			new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			// Search error, maybe query contained umlauts?
+			if (response && response.responseText && response.responseText.startsWith('<pre class="cake-error">')) {
+				new SearchErrorView({el: '#people-list'}).render();
+			} else {
+				new utils.ErrorView({el: '#people-list', msg: 'Die Personensuche ist momentan nicht erreichbar.', module: 'people', err: response.error});
+			}
+
 			this.enableSearch();
 		},
 
 		render: function(){
 			this.$el.html(this.template({}));
 			this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
+			this.$el.trigger("create");
+			return this;
+		}
+	});
+
+	var SearchErrorView = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = rendertmpl('search.error');
+		},
+
+		render: function(){
+			this.$el.html(this.template({}));
 			this.$el.trigger("create");
 			return this;
 		}
