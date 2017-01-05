@@ -10,17 +10,6 @@ define([
 ], function($, _, Backbone, utils, campusmenu, timeselection, _str, moment){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
 
-	$(document).on("pageinit", "#room", function () {
-		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
-		$("div[data-role='timeselection']").timeselection({ onChange: updateTimeData });
-	});
-
-	$(document).on("pageshow", "#room", function () {
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-		$("div[data-role='timeselection']").timeselection("pageshow");
-	});
-
-
 	function selector(li) {
 		var house = li.attr("data-house");
 		return "Haus " + house;
@@ -183,7 +172,17 @@ define([
 
 		loadRoom: function(event) {
 			event.preventDefault();
-			showRoomDetails(this.model);
+			this.showRoomDetails(this.model);
+		},
+
+		showRoomDetails: function(room) {
+			currentView && currentView.remove();
+			var div = $("<div></div>").appendTo("#roomsHost");
+
+			var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
+			currentView = new RoomDetailsView({el: div, model: roomDetails});
+
+			roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
 		}
 	});
 
@@ -223,8 +222,10 @@ define([
 		},
 
 		render: function() {
+			// Clear error
 			$("#errorHost").empty();
 
+			// Show hint for rooms overview
 			$("#roomsDetailsHint").hide();
 			$("#roomsOverviewHint").show();
 
@@ -253,7 +254,6 @@ define([
 
 		initialize: function() {
 			this.template = rendertmpl('roomDetails');
-
 			this.listenTo(this.model, "change", this.render);
 		},
 
@@ -266,9 +266,6 @@ define([
 		},
 
 		render: function() {
-			$("#roomsOverviewHint").hide();
-			$("#roomsDetailsHint").show();
-
 			var reservations = this.model.getSortedReservations();
 			var attributes = this.model.attributes;
 
@@ -278,66 +275,100 @@ define([
 		}
 	});
 
-	function updateTimeData(bounds) {
-		var campus = $("div[data-role='campusmenu']").campusmenu("getActive");
-		updateRoom(campus, bounds);
-	}
-
-	function updateRoomData(campus) {
-		var timeBounds = $("div[data-role='timeselection']").timeselection("getActive");
-		updateRoom(campus.campusName, timeBounds);
-	}
-
-	function showRoomDetails(room) {
-		currentView && currentView.remove();
-		var div = $("<div></div>").appendTo("#roomsHost");
-
-		var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
-		currentView = new RoomDetailsView({el: div, model: roomDetails});
-
-		roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
-	}
-
 	var lastRoomsCampus = undefined;
 	var currentView = undefined;
 
-	function updateRoom(campusName, timeBounds) {
-		lastRoomsCampus = campusName;
-		currentView && currentView.remove();
-		var div = $("<div></div>").appendTo("#roomsHost");
+	app.views.RoomReservations = Backbone.View.extend({
 
-		var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-		currentView = new RoomsOverview({el: div, model: roomsModel});
+		initialize: function() {
+		},
 
-		roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
-	}
+		render: function() {
+			this.setElement(this.page);
+			this.$el.html("<div>Reservierungen hier</div>");
+		}
+	});
+
+	app.views.RoomIndex = Backbone.View.extend({
+
+		initialize: function(){
+		},
+
+		render: function(){
+			this.setElement(this.page);
+
+			this.$("div[data-role='campusmenu']").campusmenu("pageshow", true);
+			this.$("div[data-role='timeselection']").timeselection("pageshow", true);
+
+			var campusName = this.$("div[data-role='campusmenu']").campusmenu("getActive");
+			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
+
+			lastRoomsCampus = campusName;
+
+			var host = this.$("#roomsHost");
+			host.empty();
+			var div = $("<div></div>").appendTo(host);
+
+			var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+			currentView = new RoomsOverview({el: div, model: roomsModel});
+
+			roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
+
+			return this;
+		}
+	});
 
 	app.views.RoomPage = Backbone.View.extend({
 		attributes: {"id": 'room'},
 
 		initialize: function(){
-			this.template = rendertmpl('room');
+			this.template = rendertmpl('room.base');
+			_.bindAll(this, 'updateTimeData', 'updateRoomData');
+		},
+
+		updateTimeData: function(bounds) {
+			var campus = this.$("div[data-role='campusmenu']").campusmenu("getActive");
+			this.updateRoom(campus, bounds);
+		},
+
+		updateRoomData: function(campus) {
+			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
+			this.updateRoom(campus.campusName, timeBounds);
+		},
+
+		updateRoom: function(campusName, timeBounds) {
+			lastRoomsCampus = campusName;
+			currentView && currentView.remove();
+			var div = $("<div></div>").appendTo("#roomsHost");
+
+			var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+			currentView = new RoomsOverview({el: div, model: roomsModel});
+
+			roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
 		},
 
 		render: function(){
 			this.$el.html(this.template({}));
-			
+
 			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
 			this.$(".infotext-header-show").show();
 			this.$(".infotext-header-hide").hide();
 			this.$(".infotext").collapsible({
-				
+
 				collapse: function() {
 					$(".infotext-header-show").show();
 					$(".infotext-header-hide").hide();
 				},
-				
+
 				expand: function() {
 					$(".infotext-header-show").hide();
 					$(".infotext-header-hide").show();
 				}
 			});
-			
+
+			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateRoomData });
+			this.$("div[data-role='timeselection']").timeselection({ onChange: this.updateTimeData });
+
 			return this;
 		}
 	});

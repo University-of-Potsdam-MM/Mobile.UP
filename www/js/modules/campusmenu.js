@@ -136,9 +136,12 @@ define([
 			this.element.children().last().remove();
 		},
 
-		pageshow: function() {
+		pageshow: function(notrigger) {
 			var selection = this._activateDefaultSelection();
-			this.options.onChange({ campusName: selection });
+
+			if (!notrigger) {
+				this.options.onChange({campusName: selection});
+			}
 		},
 
 		_setOption: function(key, value) {

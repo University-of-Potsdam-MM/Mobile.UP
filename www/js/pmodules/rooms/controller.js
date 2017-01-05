@@ -8,6 +8,10 @@ define([
 
         default: function () {
             app.loadPage('room', 'index');
+        },
+
+        reservations: function(reservations) {
+            app.loadPage('room', 'reservations', {reservations: reservations});
         }
     });
 });
