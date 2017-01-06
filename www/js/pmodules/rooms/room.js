@@ -62,29 +62,6 @@ define([
 		}
 	});
 
-	var FreeRooms = Backbone.Model.extend({
-
-		initialize: function() {
-			this.rooms = new RoomsCollection(null, {
-				startTime: this.get("startTime"),
-				endTime: this.get("endTime"),
-				campus: this.get("campus"),
-				building: this.get("building")
-			});
-
-			this.listenTo(this.rooms, "reset", this.triggerChanged);
-			this.listenTo(this.rooms, "error", this.requestFail);
-		},
-
-		triggerChanged: function() {
-			this.trigger("success");
-		},
-
-		requestFail: function(error) {
-			this.trigger("error", error);
-		}
-	});
-
 	var RoomDetailsCollections = Backbone.Collection.extend({
 
 		model: function(attrs, options) {
@@ -152,9 +129,8 @@ define([
 		},
 
 		initialize: function() {
-			this.listenTo(this.model, "change", this.render);
-			this.listenTo(this.model, "success", this.render);
-			this.listenTo(this.model, "error", this.renderError);
+			this.listenTo(this.collection, "reset", this.render);
+			this.listenTo(this.collection, "error", this.renderError);
 		},
 
 		renderError: function(error) {
@@ -173,7 +149,7 @@ define([
 			var host = this.$el;
 			host.empty();
 
-			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
+			var attributes = this.collection.map(function(model) { return model.attributes; });
 
 			// Create and add html
 			var createRooms = rendertmpl('rooms');
@@ -188,7 +164,7 @@ define([
 			event.preventDefault();
 
 			var rawRoom = $(event.currentTarget).data("room");
-			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
+			var attributes = this.collection.map(function(model) { return model.attributes; });
 			var roomModel =_.find(attributes, function(model) { return model.raw === rawRoom; });
 
 			this._showRoomDetails(roomModel);
@@ -264,10 +240,10 @@ define([
 			host.empty();
 			var div = $("<div></div>").appendTo(host);
 
-			var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-			currentView = new RoomsOverview({el: div, model: roomsModel});
+			var roomsModel = new RoomsCollection(null, {campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+			currentView = new RoomsOverview({el: div, collection: roomsModel});
 
-			roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
+			roomsModel.fetch(utils.cacheDefaults({reset: true}));
 
 			return this;
 		}
@@ -296,10 +272,10 @@ define([
 			currentView && currentView.remove();
 			var div = $("<div></div>").appendTo("#roomsHost");
 
-			var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-			currentView = new RoomsOverview({el: div, model: roomsModel});
+			var roomsModel = new RoomsCollection(null, {campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
+			currentView = new RoomsOverview({el: div, collection: roomsModel});
 
-			roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
+			roomsModel.fetch(utils.cacheDefaults({reset: true}));
 		},
 
 		render: function(){
