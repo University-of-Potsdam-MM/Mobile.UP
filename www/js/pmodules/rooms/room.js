@@ -21,7 +21,7 @@ define([
 		},
 
 		renderError: function(error) {
-			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
+			new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
 			this.$el.empty();
 		},
 
@@ -68,7 +68,7 @@ define([
 				house: room.house,
 				room: room.room
 			});
-			currentView = new RoomDetailsView({el: div, collection: roomDetails});
+			new RoomDetailsView({el: div, collection: roomDetails});
 
 			roomDetails.fetch(utils.cacheDefaults({reset: true}));
 		}
@@ -102,7 +102,6 @@ define([
 	});
 
 	var lastRoomsCampus = undefined;
-	var currentView = undefined;
 
 	app.views.RoomReservations = Backbone.View.extend({
 
@@ -131,12 +130,14 @@ define([
 
 			lastRoomsCampus = campusName;
 
-			var host = this.$("#roomsHost");
-			host.empty();
-			var div = $("<div></div>").appendTo(host);
+			this.$("#roomsHost").empty();
 
-			var roomsModel = new models.RoomsCollection(null, {campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-			currentView = new RoomsOverview({el: div, collection: roomsModel});
+			var roomsModel = new models.RoomsCollection(null, {
+				startTime: timeBounds.from,
+				endTime: timeBounds.to,
+				campus: campusName
+			});
+			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
 
 			roomsModel.fetch(utils.cacheDefaults({reset: true}));
 
@@ -164,11 +165,10 @@ define([
 
 		updateRoom: function(campusName, timeBounds) {
 			lastRoomsCampus = campusName;
-			currentView && currentView.remove();
-			var div = $("<div></div>").appendTo("#roomsHost");
+			this.$("#roomsHost").empty();
 
 			var roomsModel = new models.RoomsCollection(null, {campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-			currentView = new RoomsOverview({el: div, collection: roomsModel});
+			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
 
 			roomsModel.fetch(utils.cacheDefaults({reset: true}));
 		},
