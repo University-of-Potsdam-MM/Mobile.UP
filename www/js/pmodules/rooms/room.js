@@ -12,10 +12,17 @@ define([
 
 	var RoomsCollection = Backbone.Collection.extend({
 
+		initialize: function(models, options) {
+			this.startTime = options.startTime;
+			this.endTime = options.endTime;
+			this.campus = options.campus;
+			this.building = options.building;
+		},
+
 		/*
 		 * Code taken from http://area51-php.erstmal.com/rauminfo/static/js/ShowRooms.js?cb=1395329676756 with slight modifications
 		 */
-		model: function(attrs, options) {
+		model: function(attrs) {
 			var room_match = attrs.raw.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
 
 	        if (room_match) {
@@ -37,16 +44,33 @@ define([
 				startTime: this.startTime.toISOString(),
 				endTime: this.endTime.toISOString()
 			};
+		},
+
+		url: function() {
+			var campusId = {
+				"griebnitzsee": 3,
+				"neuespalais": 1,
+				"golm": 2
+			};
+			var campus = campusId[this.campus] || 2;
+
+			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+			if (this.building) {
+				request = request + "&building=%s";
+			}
+			return _str.sprintf(request, encodeURIComponent(this.startTime.toISOString()), encodeURIComponent(this.endTime.toISOString()), campus, this.building);
 		}
 	});
 
 	var FreeRooms = Backbone.Model.extend({
 
 		initialize: function() {
-			this.rooms = new RoomsCollection();
-			this.rooms.url = this.createUrl();
-			this.rooms.startTime = this.get("startTime");
-			this.rooms.endTime = this.get("endTime");
+			this.rooms = new RoomsCollection(null, {
+				startTime: this.get("startTime"),
+				endTime: this.get("endTime"),
+				campus: this.get("campus"),
+				building: this.get("building")
+			});
 
 			this.listenTo(this.rooms, "reset", this.triggerChanged);
 			this.listenTo(this.rooms, "error", this.requestFail);
@@ -58,31 +82,6 @@ define([
 
 		requestFail: function(error) {
 			this.trigger("error", error);
-		},
-
-		mapToId: function(campusName) {
-			var campusId;
-			if (campusName === "griebnitzsee") {
-				campusId = 3;
-			} else if (campusName === "neuespalais") {
-				campusId = 1;
-			} else {
-				campusId = 2;
-			}
-			return campusId;
-		},
-
-		createUrl: function() {
-			var campus = this.mapToId(this.get("campus"));
-			var building = this.get("building");
-			var startTime = this.get("startTime");
-			var endTime = this.get("endTime");
-
-			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
-			if (building) {
-				request = request + "&building=%s";
-			}
-			return _str.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
 		}
 	});
 
