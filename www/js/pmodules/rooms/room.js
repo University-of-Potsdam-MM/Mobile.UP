@@ -10,11 +10,6 @@ define([
 ], function($, _, Backbone, utils, campusmenu, timeselection, _str, moment){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
 
-	function selector(li) {
-		var house = li.attr("data-house");
-		return "Haus " + house;
-	};
-
 	var RoomsCollection = Backbone.Collection.extend({
 
 		/*
@@ -41,7 +36,7 @@ define([
 				raw: result,
 				startTime: this.startTime.toISOString(),
 				endTime: this.endTime.toISOString()
-				};
+			};
 		}
 	});
 
@@ -151,64 +146,11 @@ define([
 		}
 	});
 
-	var RoomListElementView = Backbone.View.extend({
+	var RoomsOverview = Backbone.View.extend({
 
 		events: {
-			"click": "loadRoom"
+			"click .room-link": "loadRoom"
 		},
-
-		initialize: function() {
-			this.template = rendertmpl("roomListElement");
-		},
-
-		render: function() {
-			this.undelegateEvents();
-			//console.log(this.model);
-			this.$el = $(this.template({room: this.model}));
-			this.delegateEvents();
-
-			return this;
-		},
-
-		loadRoom: function(event) {
-			event.preventDefault();
-			this.showRoomDetails(this.model);
-		},
-
-		showRoomDetails: function(room) {
-			currentView && currentView.remove();
-			var div = $("<div></div>").appendTo("#roomsHost");
-
-			var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
-			currentView = new RoomDetailsView({el: div, model: roomDetails});
-
-			roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
-		}
-	});
-
-	var RoomListGroupView = Backbone.View.extend({
-
-		initialize: function() {
-			this.template = rendertmpl("roomList");
-		},
-
-		render: function() {
-			var roomIndex = _.first(this.collection).house;
-
-			this.undelegateEvents();
-			this.$el = $(this.template({roomIndex: roomIndex, rooms: this.collection}));
-			this.delegateEvents();
-
-			_.each(this.collection, function(model) {
-				var view = new RoomListElementView({model: model});
-				this.$(".rooms-subview").append(view.render().$el);
-			}, this);
-
-			return this;
-		}
-	});
-
-	var RoomsOverview = Backbone.View.extend({
 
 		initialize: function() {
 			this.listenTo(this.model, "change", this.render);
@@ -218,7 +160,7 @@ define([
 
 		renderError: function(error) {
 			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
-			$("#roomsHost").empty();
+			this.$el.empty();
 		},
 
 		render: function() {
@@ -236,17 +178,31 @@ define([
 
 			// Create and add html
 			var createRooms = rendertmpl('rooms');
-			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
+			var htmlDay = createRooms({groupedRooms: _.groupBy(attributes, "house")});
 			host.append(htmlDay);
-
-			// Add room groups
-			_.each(_.groupBy(attributes, "house"), function(collection) {
-				var view = new RoomListGroupView({collection: collection});
-				this.$("#roomsOverviewList").append(view.render().$el);
-			});
 
 			// Refresh html
 			host.trigger("create");
+		},
+
+		loadRoom: function(event) {
+			event.preventDefault();
+
+			var rawRoom = $(event.currentTarget).data("room");
+			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
+			var roomModel =_.find(attributes, function(model) { return model.raw === rawRoom; });
+
+			this._showRoomDetails(roomModel);
+		},
+
+		_showRoomDetails: function(room) {
+			this.$el.empty();
+			var div = $("<div></div>").appendTo(this.$el);
+
+			var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
+			currentView = new RoomDetailsView({el: div, model: roomDetails});
+
+			roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
 		}
 	});
 
