@@ -63,8 +63,16 @@ define([
 	});
 
 	var RoomDetailsCollections = Backbone.Collection.extend({
+		
+		initialize: function (models, options) {
+			this.startTime = options.startTime;
+			this.endTime = options.endTime;
+			this.campus = options.campus;
+			this.house = options.house;
+			this.room = options.room;
+		},
 
-		model: function(attrs, options) {
+		model: function(attrs) {
 			attrs.startTime = new Date(attrs.startTime);
 			attrs.endTime = new Date(attrs.endTime);
 			attrs.startMoment = moment(attrs.startTime);
@@ -86,38 +94,23 @@ define([
 			} else {
 				return [];
 			}
-		}
-	});
-
-	var RoomDetailsModel = Backbone.Model.extend({
-
-		initialize: function() {
-			this.reservations = new RoomDetailsCollections;
-			this.reservations.url = this.createUrl();
-
-			this.listenTo(this.reservations, "reset", this.triggerChanged);
-			this.listenTo(this.reservations, "error", this.triggerChanged);
 		},
 
-		triggerChanged: function() {
-			this.trigger("change");
-		},
-
-		createUrl: function() {
+		url: function() {
 			// Set start and end time
-			var startTime = this.get("startTime");
+			var startTime = this.startTime;
 			startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
 			startTime = startTime.toISOString();
-			var endTime = this.get("endTime");
+			var endTime = this.endTime;
 			endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
 			endTime = endTime.toISOString();
 
 			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-			return _str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
+			return _str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.campus), encodeURIComponent(this.house), encodeURIComponent(this.room));
 		},
 
 		getSortedReservations: function() {
-			var reservations = this.reservations.map(function(d) { return d.attributes; });
+			var reservations = this.map(function(d) { return d.attributes; });
 			return _.sortBy(reservations, "startMoment");
 		}
 	});
@@ -174,10 +167,16 @@ define([
 			this.$el.empty();
 			var div = $("<div></div>").appendTo(this.$el);
 
-			var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
-			currentView = new RoomDetailsView({el: div, model: roomDetails});
+			var roomDetails = new RoomDetailsCollections(null, {
+				startTime: new Date(room.startTime),
+				endTime: new Date(room.endTime),
+				campus: room.campus,
+				house: room.house,
+				room: room.room
+			});
+			currentView = new RoomDetailsView({el: div, collection: roomDetails});
 
-			roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
+			roomDetails.fetch(utils.cacheDefaults({reset: true}));
 		}
 	});
 
@@ -185,7 +184,9 @@ define([
 
 		initialize: function() {
 			this.template = rendertmpl('roomDetails');
-			this.listenTo(this.model, "change", this.render);
+
+			this.listenTo(this.collection, "reset", this.render);
+			this.listenTo(this.collection, "error", this.render);
 		},
 
 		events: {
@@ -197,8 +198,8 @@ define([
 		},
 
 		render: function() {
-			var reservations = this.model.getSortedReservations();
-			var attributes = this.model.attributes;
+			var reservations = this.collection.getSortedReservations();
+			var attributes = this.collection;
 
 			this.$el.empty();
 			this.$el.append(this.template({reservations: reservations, room: attributes}));
