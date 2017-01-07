@@ -10,7 +10,8 @@
 
             <% _.each(rooms, function(room) { %>
             <li data-theme="b">
-                <a href="#" class="room-link" data-room="<%= room.raw %>"><%= room.room %></a>
+                <% var roomLink = encodeURIComponent(btoa(JSON.stringify(room))); %>
+                <a href="#room/reservations/<%= roomLink %>" class="room-link" data-room="<%= room.raw %>"><%= room.room %></a>
             </li>
             <% }); %>
 

@@ -11,10 +11,6 @@ define([
 
 	var RoomsOverview = Backbone.View.extend({
 
-		events: {
-			"click .room-link": "loadRoom"
-		},
-
 		initialize: function() {
 			this.listenTo(this.collection, "reset", this.render);
 			this.listenTo(this.collection, "error", this.renderError);
@@ -45,32 +41,6 @@ define([
 
 			// Refresh html
 			host.trigger("create");
-		},
-
-		loadRoom: function(event) {
-			event.preventDefault();
-
-			var rawRoom = $(event.currentTarget).data("room");
-			var attributes = this.collection.map(function(model) { return model.attributes; });
-			var roomModel =_.find(attributes, function(model) { return model.raw === rawRoom; });
-
-			this._showRoomDetails(roomModel);
-		},
-
-		_showRoomDetails: function(room) {
-			this.$el.empty();
-			var div = $("<div></div>").appendTo(this.$el);
-
-			var roomDetails = new models.RoomDetailsCollections(null, {
-				startTime: new Date(room.startTime),
-				endTime: new Date(room.endTime),
-				campus: room.campus,
-				house: room.house,
-				room: room.room
-			});
-			new RoomDetailsView({el: div, collection: roomDetails});
-
-			roomDetails.fetch(utils.cacheDefaults({reset: true}));
 		}
 	});
 
@@ -88,7 +58,7 @@ define([
 		},
 
 		roomsReset: function(){
-			$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
+			app.previous();
 		},
 
 		render: function() {
@@ -105,50 +75,55 @@ define([
 
 	app.views.RoomReservations = Backbone.View.extend({
 
-		initialize: function() {
+		initialize: function(options) {
+			this.template = rendertmpl('room.reservations');
+			this.room = options.room;
+
+			this.listenTo(this, "rendered", this._showRoomDetails);
+		},
+
+		_showRoomDetails: function() {
+			var roomDetails = new models.RoomDetailsCollections(null, {
+				startTime: new Date(this.room.startTime),
+				endTime: new Date(this.room.endTime),
+				campus: this.room.campus,
+				house: this.room.house,
+				room: this.room.room
+			});
+			new RoomDetailsView({el: this.$("#roomsHost"), collection: roomDetails});
+
+			roomDetails.fetch(utils.cacheDefaults({reset: true}));
 		},
 
 		render: function() {
 			this.setElement(this.page);
-			this.$el.html("<div>Reservierungen hier</div>");
+			this.$el.html(this.template({}));
+			this.$el.trigger("create");
+
+			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
+			this.$(".infotext-header-show").show();
+			this.$(".infotext-header-hide").hide();
+			this.$(".infotext").collapsible({
+
+				collapse: function() {
+					$(".infotext-header-show").show();
+					$(".infotext-header-hide").hide();
+				},
+
+				expand: function() {
+					$(".infotext-header-show").hide();
+					$(".infotext-header-hide").show();
+				}
+			});
+
+			this.trigger("rendered");
+			return this;
 		}
 	});
 
 	app.views.RoomIndex = Backbone.View.extend({
 
-		initialize: function(){
-		},
-
-		render: function(){
-			this.setElement(this.page);
-
-			this.$("div[data-role='campusmenu']").campusmenu("pageshow", true);
-			this.$("div[data-role='timeselection']").timeselection("pageshow", true);
-
-			var campusName = this.$("div[data-role='campusmenu']").campusmenu("getActive");
-			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
-
-			lastRoomsCampus = campusName;
-
-			this.$("#roomsHost").empty();
-
-			var roomsModel = new models.RoomsCollection(null, {
-				startTime: timeBounds.from,
-				endTime: timeBounds.to,
-				campus: campusName
-			});
-			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
-
-			roomsModel.fetch(utils.cacheDefaults({reset: true}));
-
-			return this;
-		}
-	});
-
-	app.views.RoomPage = Backbone.View.extend({
-		attributes: {"id": 'room'},
-
-		initialize: function(){
+		initialize: function() {
 			this.template = rendertmpl('room.base');
 			_.bindAll(this, 'updateTimeData', 'updateRoomData');
 		},
@@ -174,7 +149,10 @@ define([
 		},
 
 		render: function(){
+			this.setElement(this.page);
+
 			this.$el.html(this.template({}));
+			this.$el.trigger("create");
 
 			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
 			this.$(".infotext-header-show").show();
@@ -195,6 +173,32 @@ define([
 			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateRoomData });
 			this.$("div[data-role='timeselection']").timeselection({ onChange: this.updateTimeData });
 
+			this.$("div[data-role='campusmenu']").campusmenu("pageshow", true);
+			this.$("div[data-role='timeselection']").timeselection("pageshow", true);
+
+			var campusName = this.$("div[data-role='campusmenu']").campusmenu("getActive");
+			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
+
+			lastRoomsCampus = campusName;
+
+			var roomsModel = new models.RoomsCollection(null, {
+				startTime: timeBounds.from,
+				endTime: timeBounds.to,
+				campus: campusName
+			});
+			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
+
+			roomsModel.fetch(utils.cacheDefaults({reset: true}));
+
+			return this;
+		}
+	});
+
+	app.views.RoomPage = Backbone.View.extend({
+		attributes: {"id": 'room'},
+
+		render: function() {
+			this.$el.html('');
 			return this;
 		}
 	});

@@ -10,8 +10,11 @@ define([
             app.loadPage('room', 'index');
         },
 
-        reservations: function(reservations) {
-            app.loadPage('room', 'reservations', {reservations: reservations});
+        reservations: function(room) {
+            room = decodeURIComponent(room);
+            room = atob(room);
+
+            app.loadPage('room', 'reservations', {room: JSON.parse(room)});
         }
     });
 });
