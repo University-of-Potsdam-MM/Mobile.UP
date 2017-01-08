@@ -164,14 +164,14 @@ define([
 			var defaultSelection = this._getDefaultSelection();
 
 			if (!defaultSelection) {
-				var source = $(".location-menu-default");
+				var source = $(".location-menu-default", this.element);
 				defaultSelection = this._retrieveSelection(source);
 				this._setDefaultSelection(defaultSelection);
 			}
 
 			$(".location-menu", this.element).removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + defaultSelection + "']";
-			$(searchExpression).addClass("ui-btn-active");
+			$(searchExpression, this.element).addClass("ui-btn-active");
 
 			return defaultSelection;
 		},
@@ -183,7 +183,7 @@ define([
 		},
 
 		getActive: function() {
-			return this._retrieveSelection($(".ui-btn-active"));
+			return this._retrieveSelection($(".ui-btn-active", this.element));
 		},
 
 		changeTo: function(campusName, meta) {
@@ -191,7 +191,7 @@ define([
 
 			$(".location-menu", this.element).removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + target + "']";
-			$(searchExpression).addClass("ui-btn-active");
+			$(searchExpression, this.element).addClass("ui-btn-active");
 
 			// prepare call options
 			var callOptions = { campusName: target };
