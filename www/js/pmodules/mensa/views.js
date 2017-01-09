@@ -1,12 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','datebox', 'view.utils'], function($, _, Backbone, utils, campusmenu, datebox, viewUtils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/mensa");
 
-	$(document).on("pageshow", "#mensa", function () {
-		console.log("pageshow started");
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-		console.log("pageshow finished");
-	});
-	
 	var Menu = Backbone.Collection.extend({
 		
 		initialize: function(models, options) {
@@ -164,7 +158,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		}
 	});
 
-	app.views.MensaPage= Backbone.View.extend({
+	app.views.MensaPage = Backbone.View.extend({
 		attributes: {"id": 'mensa'},
 
 		events: {
@@ -182,7 +176,14 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		},
 
 		updateMenuData: function(options) {
-			var date = this.$("#mydate").datebox('getTheDate');
+			// The datebox may not be initiated yet, use the current date as default value
+			var date;
+			try {
+				date = this.$("#mydate").datebox('getTheDate');
+			} catch(error) {
+				date = new Date();
+			}
+
 			this.updateMenu(options.campusName, date);
 		},
 
@@ -214,9 +215,12 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		},
 
 		render: function() {
-			$(this.el).html(this.template({}));
+			this.$el.html(this.template({}));
 			this.$el.trigger("create");
+
 			this.delegateCustomEvents();
+			this.$("div[data-role='campusmenu']").campusmenu("pageshow");
+
 			return this;
 		}
 	});
