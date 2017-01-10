@@ -79,7 +79,27 @@ define([
         }
     });
 
+    var createMenus = function(mensa, date) {
+        var result = [];
+
+        result.push(new Menu(null, {
+            location: mensa,
+            date: date
+        }));
+
+        if (mensa === "griebnitzsee") {
+            // Load Ulfs Cafe in second view
+            result.push(new Menu(null, {
+                location: "UlfsCafe",
+                date: date
+            }));
+        }
+
+        return result;
+    };
+
     return {
-        Menu: Menu
+        Menu: Menu,
+        createMenus: createMenus
     };
 });

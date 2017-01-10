@@ -56,35 +56,16 @@ define([
 		},
 
 		render: function() {
-			this.$el.append('<div id="loadingSpinner"></div> \
-				<div id="content"></div> \
-				<div id="secondLoadingSpinner"></div> \
-				<div id="secondContent"></div>');
+			_.each(models.createMenus(this.mensa, this.date), function(menu, index) {
+				this.$el.append('<div id="loadingSpinner' + index + '"></div>');
+				this.$el.append('<div id="content' + index + '"></div>');
 
-			var loader = new models.Menu([], {
-				location: this.mensa,
-				date: this.date
-			});
+				new utils.LoadingView({collection: menu, el: this.$('#loadingSpinner' + index)});
+				new DayView({collection: menu, el: this.$('#content' + index)});
+				this.listenTo(menu, "error", this.requestFail);
 
-			new utils.LoadingView({collection: loader, el: this.$("#loadingSpinner")});
-			new DayView({collection: loader, el: this.$("#content")});
-			this.listenTo(loader, "error", this.requestFail);
-
-			loader.fetch(utils.cacheDefaults());
-
-			if (this.mensa === "griebnitzsee") {
-				// Load Ulfs Cafe in second view
-				var secondLoader = new models.Menu([], {
-					location: "UlfsCafe",
-					date: this.date
-				});
-
-				new utils.LoadingView({collection: secondLoader, el: this.$("#secondLoadingSpinner")});
-				new DayView({collection: secondLoader, el: this.$("#secondContent")});
-				this.listenTo(secondLoader, "error", this.requestFail);
-
-				secondLoader.fetch(utils.cacheDefaults());
-			}
+				menu.fetch(utils.cacheDefaults());
+			}, this);
 		}
 	});
 
