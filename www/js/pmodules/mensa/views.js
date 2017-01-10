@@ -47,6 +47,7 @@ define([
 	var LocationTabView = Backbone.View.extend({
 
 		initialize: function(params) {
+			this.template = rendertmpl("mensa.tab");
 			this.mensa = params.mensa;
 			this.date = params.date;
 		},
@@ -56,9 +57,12 @@ define([
 		},
 
 		render: function() {
+			this.$el.html(this.template({}));
+
+			// Add all meal sources
 			_.each(models.createMenus(this.mensa, this.date), function(menu, index) {
-				this.$el.append('<div id="loadingSpinner' + index + '"></div>');
-				this.$el.append('<div id="content' + index + '"></div>');
+				this.$("#menu-list").append('<div id="loadingSpinner' + index + '"></div>');
+				this.$("#menu-list").append('<div id="content' + index + '"></div>');
 
 				new utils.LoadingView({collection: menu, el: this.$('#loadingSpinner' + index)});
 				new DayView({collection: menu, el: this.$('#content' + index)});
@@ -66,6 +70,9 @@ define([
 
 				menu.fetch(utils.cacheDefaults());
 			}, this);
+
+			this.$el.trigger("create");
+			return this;
 		}
 	});
 
