@@ -21,26 +21,42 @@ define([
 		
 		initialize: function() {
 			this.template = rendertmpl('mensa_detail');
-			this.listenTo(this.collection, "sync", this.render);
+			this.subviews = [];
 		},
 		
 		render: function() {
-			this.$el.html(this.template({meals: this.collection.toJSON(), location: this.collection.location}));
+			this._cleanSubviews();
+			this.$el.html(this.template({
+				meals: this.collection.toJSON(),
+				location: this.collection.location
+			}));
 
 			var list = this.$(".speiseplan");
 			if (list.length > 0) {
-				new viewUtils.ListView({
+				this.subviews.push(new viewUtils.ListView({
 					el: list,
 					collection: this.collection,
 					view: MealView,
 					postRender: function() {
 						this.$el.collapsibleset().collapsibleset("refresh");
 					}
-				}).render();
+				}).render());
 			}
 
 			this.$el.trigger("create");
 			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
+			});
+			this.subviews = [];
+		},
+
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 
@@ -48,8 +64,13 @@ define([
 
 		initialize: function(params) {
 			this.template = rendertmpl("mensa.tab");
-			this.mensa = params.mensa;
-			this.date = params.date;
+			this.menus = params.menus;
+			this.subviews = [];
+
+			_.each(this.menus, function(menu) {
+				this.listenTo(menu, "sync", this.render);
+				this.listenTo(menu, "error", this.requestFail);
+			}, this);
 		},
 
 		requestFail: function(error) {
@@ -57,22 +78,32 @@ define([
 		},
 
 		render: function() {
+			this._cleanSubviews();
 			this.$el.html(this.template({}));
 
 			// Add all meal sources
-			_.each(models.createMenus(this.mensa, this.date), function(menu, index) {
+			_.each(this.menus, function(menu, index) {
 				this.$("#menu-list").append('<div id="loadingSpinner' + index + '"></div>');
 				this.$("#menu-list").append('<div id="content' + index + '"></div>');
 
-				new utils.LoadingView({collection: menu, el: this.$('#loadingSpinner' + index)});
-				new DayView({collection: menu, el: this.$('#content' + index)});
-				this.listenTo(menu, "error", this.requestFail);
-
-				menu.fetch(utils.cacheDefaults());
+				this.subviews.push(new utils.LoadingView({collection: menu, el: this.$('#loadingSpinner' + index)}));
+				this.subviews.push(new DayView({collection: menu, el: this.$('#content' + index)}).render());
 			}, this);
 
 			this.$el.trigger("create");
 			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
+			});
+			this.subviews = [];
+		},
+
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 
@@ -86,6 +117,8 @@ define([
 		initialize: function() {
 			_.bindAll(this, 'render', 'updateMenuData', 'updateMenuCampus');
 			this.template = rendertmpl('mensa');
+			this.model = new models.AllMenus;
+			this.subviews = [];
 		},
 
 		delegateCustomEvents: function() {
@@ -109,19 +142,27 @@ define([
 			if (p.method === "set") {
 				var source = this.$("div[data-role='campusmenu']").campusmenu("getActive");
 				var date = p.date;
-				this.updateMenu(source, date);
+
+				this.model.set("date", date);
+				//this.updateMenu(source, date);
 			}
 		},
 
 		updateMenu: function(mensa, date) {
 		    var uniqueDivId = _.uniqueId("id_");
-		    
+
+			this._cleanSubviews();
 		    this.$("#todaysMenu").empty();
 			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"></div>');
 
-			var locationTab = new LocationTabView({el: this.$("#" + uniqueDivId), mensa: mensa, date: date});
+			var locationTab = new LocationTabView({
+				el: this.$("#" + uniqueDivId),
+				menus: this.model.get(mensa)
+			});
+			this.subviews.push(locationTab);
 			this.listenTo(locationTab, "requestFail", this.requestFail);
 			locationTab.render();
+			this.model.fetchAll(utils.cacheDefaults());
 		},
 
 		requestFail: function(error) {
@@ -140,6 +181,18 @@ define([
 			this.$("div[data-role='campusmenu']").campusmenu("pageshow");
 
 			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
+			});
+			this.subviews = [];
+		},
+
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 

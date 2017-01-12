@@ -1,8 +1,9 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function($, _, Backbone) {
+    'backbone',
+    'utils'
+], function($, _, Backbone, utils) {
 
     var Menu = Backbone.Collection.extend({
 
@@ -79,6 +80,44 @@ define([
         }
     });
 
+    var locations = ["griebnitzsee", "neuespalais", "golm"];
+
+    var AllMenus = Backbone.Model.extend({
+
+        initialize: function() {
+            this.listenTo(this, "change:date", this._updateDate);
+
+            _.each(locations, function(location) {
+                var menus = createMenus(location, new Date());
+                this.set(location, menus);
+            }, this);
+        },
+
+        _updateDate: function(model, value) {
+            console.log("_updateDate called");
+
+            _.each(locations, function(location) {
+                var menus = this.get(location);
+                _.each(menus, function(menu) {
+                    menu.date = value;
+                });
+            }, this);
+
+            this.fetchAll();
+        },
+
+        fetchAll: function (options) {
+            options = options || utils.cacheDefaults();
+
+            _.each(locations, function(location) {
+                var menus = this.get(location);
+                _.each(menus, function(menu) {
+                    menu.fetch(options);
+                });
+            }, this);
+        }
+    });
+
     var createMenus = function(mensa, date) {
         var result = [];
 
@@ -100,6 +139,7 @@ define([
 
     return {
         Menu: Menu,
+        AllMenus: AllMenus,
         createMenus: createMenus
     };
 });
