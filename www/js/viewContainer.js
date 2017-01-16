@@ -127,6 +127,7 @@ define([
         setIosHeaderFix: function () {
             if (window.device.ios7) {
                 $('body').addClass('ios-statusbar');
+                $("div[data-role='page']").css('padding-top', '79px');
             }
         },
 
