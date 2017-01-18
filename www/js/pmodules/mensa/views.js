@@ -115,14 +115,13 @@ define([
 		},
 
 		initialize: function() {
-			_.bindAll(this, 'render', 'updateMenuCampus', 'updateMenu');
+			_.bindAll(this, 'render', 'updateMenuCampus');
 			this.template = rendertmpl('mensa');
 			this.model = new models.AllMenus;
 			this.subviews = [];
 		},
 
 		delegateCustomEvents: function() {
-			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateMenu });
 			this.$("#mydate").bind("datebox", this.updateMenuCampus);
 		},
 
@@ -132,21 +131,8 @@ define([
 			}
 		},
 
-		updateMenu: function(options) {
-			var mensa = options.campusName;
-
-			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
-				var element = this.$("#" + campus + "-speiseplan");
-				if (campus === mensa) {
-					element.show();
-				} else {
-					element.hide();
-				}
-			}, this);
-		},
-
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
+			var errorPage = new utils.ErrorView({el: '#error', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
 		},
 
 		dateBox: function(ev){
@@ -156,12 +142,18 @@ define([
 		render: function() {
 			this._cleanSubviews();
 			this.$el.html(this.template({}));
-			this.$el.trigger("create");
+
+			var tabview = new campusmenu.TabView({
+				el: this.$("#campusmenu-host")
+			}).render();
+			this.subviews.push(tabview);
+
+			this.$("input#mydate").detach().appendTo(tabview.$(".before-content"));
 
 			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
 
 				var locationTab = new LocationTabView({
-					el: this.$("#" + campus + "-speiseplan"),
+					el: tabview.$("#" + campus),
 					menus: this.model.get(campus)
 				});
 				this.subviews.push(locationTab);
@@ -171,8 +163,8 @@ define([
 			}, this);
 			this.model.fetchAll(utils.cacheDefaults());
 
+			this.$el.trigger("create");
 			this.delegateCustomEvents();
-			this.$("div[data-role='campusmenu']").campusmenu("pageshow");
 
 			return this;
 		},

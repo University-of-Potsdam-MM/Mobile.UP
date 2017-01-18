@@ -14,11 +14,11 @@ define([
 		},
 
 		setItem: function(selection) {
-			localStorage.setItem("campusmenu.default", selection);
+			localStorage.setItem("up.mensa.default", selection);
 		},
 
 		getItem: function() {
-			return localStorage.getItem("campusmenu.default");
+			return localStorage.getItem("up.mensa.default");
 		}
 	});
 
@@ -80,9 +80,12 @@ define([
 							<li><a href="#golm">Golm</a></li> \
 						</ul> \
 					</div> \
-					<div id="griebnitzsee">Griebnitzsee</div> \
-					<div id="neuespalais">Neues Palais</div> \
-					<div id="golm">Golm</div> \
+					\
+					<div class="before-content"></div> \
+					\
+					<div id="griebnitzsee"></div> \
+					<div id="neuespalais"></div> \
+					<div id="golm"></div> \
 				</div>');
 
 			// Select stored tab
