@@ -134,20 +134,15 @@ define([
 
 		updateMenu: function(options) {
 			var mensa = options.campusName;
-		    var uniqueDivId = _.uniqueId("id_");
 
-			this._cleanSubviews();
-		    this.$("#todaysMenu").empty();
-			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"></div>');
-
-			var locationTab = new LocationTabView({
-				el: this.$("#" + uniqueDivId),
-				menus: this.model.get(mensa)
-			});
-			this.subviews.push(locationTab);
-			this.listenTo(locationTab, "requestFail", this.requestFail);
-			locationTab.render();
-			this.model.fetchAll(utils.cacheDefaults());
+			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
+				var element = this.$("#" + campus + "-speiseplan");
+				if (campus === mensa) {
+					element.show();
+				} else {
+					element.hide();
+				}
+			}, this);
 		},
 
 		requestFail: function(error) {
@@ -159,8 +154,22 @@ define([
 		},
 
 		render: function() {
+			this._cleanSubviews();
 			this.$el.html(this.template({}));
 			this.$el.trigger("create");
+
+			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
+
+				var locationTab = new LocationTabView({
+					el: this.$("#" + campus + "-speiseplan"),
+					menus: this.model.get(campus)
+				});
+				this.subviews.push(locationTab);
+				this.listenTo(locationTab, "requestFail", this.requestFail);
+				locationTab.render();
+
+			}, this);
+			this.model.fetchAll(utils.cacheDefaults());
 
 			this.delegateCustomEvents();
 			this.$("div[data-role='campusmenu']").campusmenu("pageshow");
