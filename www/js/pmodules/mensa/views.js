@@ -115,40 +115,25 @@ define([
 		},
 
 		initialize: function() {
-			_.bindAll(this, 'render', 'updateMenuData', 'updateMenuCampus');
+			_.bindAll(this, 'render', 'updateMenuCampus', 'updateMenu');
 			this.template = rendertmpl('mensa');
 			this.model = new models.AllMenus;
 			this.subviews = [];
 		},
 
 		delegateCustomEvents: function() {
-			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateMenuData });
+			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateMenu });
 			this.$("#mydate").bind("datebox", this.updateMenuCampus);
-		},
-
-		updateMenuData: function(options) {
-			// The datebox may not be initiated yet, use the current date as default value
-			var date;
-			try {
-				date = this.$("#mydate").datebox('getTheDate');
-			} catch(error) {
-				date = new Date();
-			}
-
-			this.updateMenu(options.campusName, date);
 		},
 
 		updateMenuCampus: function(e, p) {
 			if (p.method === "set") {
-				var source = this.$("div[data-role='campusmenu']").campusmenu("getActive");
-				var date = p.date;
-
-				this.model.set("date", date);
-				//this.updateMenu(source, date);
+				this.model.set("date", p.date);
 			}
 		},
 
-		updateMenu: function(mensa, date) {
+		updateMenu: function(options) {
+			var mensa = options.campusName;
 		    var uniqueDivId = _.uniqueId("id_");
 
 			this._cleanSubviews();
