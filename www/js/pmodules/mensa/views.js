@@ -132,7 +132,7 @@ define([
 		},
 
 		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#error', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
+			this.subviews.push(new utils.ErrorView({el: '#error', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error}));
 		},
 
 		dateBox: function(ev){
