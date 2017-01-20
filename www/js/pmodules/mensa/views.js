@@ -27,7 +27,7 @@ define([
 		render: function() {
 			this._cleanSubviews();
 			this.$el.html(this.template({
-				meals: this.collection.toJSON(),
+				meals: this.collection,
 				location: this.collection.location
 			}));
 
@@ -68,13 +68,19 @@ define([
 			this.subviews = [];
 
 			_.each(this.menus, function(menu) {
+				this.listenTo(menu, "request", this.requestClear);
 				this.listenTo(menu, "sync", this.render);
 				this.listenTo(menu, "error", this.requestFail);
 			}, this);
 		},
 
+		requestClear: function() {
+			this.$('.menu-error').empty();
+		},
+
 		requestFail: function(error) {
-			this.trigger("requestFail", error);
+			var anchor = $('<div class="menu-error"></div>').prependTo(this.$el);
+			this.subviews.push(new utils.ErrorView({el: anchor, msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error}));
 		},
 
 		render: function() {
@@ -131,10 +137,6 @@ define([
 			}
 		},
 
-		requestFail: function(error) {
-			this.subviews.push(new utils.ErrorView({el: '#error', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error}));
-		},
-
 		dateBox: function(ev){
 			ev.preventDefault();
 		},
@@ -152,13 +154,10 @@ define([
 
 			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
 
-				var locationTab = new LocationTabView({
+				this.subviews.push(new LocationTabView({
 					el: tabview.$("#" + campus),
 					menus: this.model.get(campus)
-				});
-				this.subviews.push(locationTab);
-				this.listenTo(locationTab, "requestFail", this.requestFail);
-				locationTab.render();
+				}).render());
 
 			}, this);
 			this.model.fetchAll(utils.cacheDefaults());
