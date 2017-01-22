@@ -7,18 +7,13 @@ define([
 
 	var TabModel = Backbone.Model.extend({
 
-		initialize: function() {
-			if (this.getItem() === undefined) {
-				this.setItem("griebnitzsee");
-			}
-		},
-
 		setItem: function(selection) {
 			localStorage.setItem("up.mensa.default", selection);
 		},
 
 		getItem: function() {
-			return localStorage.getItem("up.mensa.default");
+			var result = localStorage.getItem("up.mensa.default");
+			return result || "griebnitzsee";
 		}
 	});
 
