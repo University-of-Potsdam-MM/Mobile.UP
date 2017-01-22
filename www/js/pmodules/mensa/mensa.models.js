@@ -77,6 +77,25 @@ define([
 
                 return mealData;
             };
+        },
+
+        sync: function(method, model, options) {
+            // Clear loading error
+            this.loadError = undefined;
+
+            var that = this;
+            var error = options.error || _.noop;
+            options.error = function(jqXHR, textStatus, errorThrown) {
+                // Log loading error
+                that.loadError = {
+                    jqXHR: jqXHR,
+                    textStatus: textStatus,
+                    errorThrown: errorThrown
+                };
+                error.apply(this, arguments);
+            };
+
+            return Backbone.Collection.prototype.sync.apply(this, arguments);
         }
     });
 

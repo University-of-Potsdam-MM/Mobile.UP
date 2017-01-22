@@ -31,6 +31,12 @@ define([
 				location: this.collection.location
 			}));
 
+			this.subviews.push(new utils.ErrorView({
+				el: this.$(".error-host"),
+				msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.',
+				module: 'mensa'
+			}));
+
 			var list = this.$(".speiseplan");
 			if (list.length > 0) {
 				this.subviews.push(new viewUtils.ListView({
@@ -68,19 +74,9 @@ define([
 			this.subviews = [];
 
 			_.each(this.menus, function(menu) {
-				this.listenTo(menu, "request", this.requestClear);
 				this.listenTo(menu, "sync", this.render);
-				this.listenTo(menu, "error", this.requestFail);
+				this.listenTo(menu, "error", this.render);
 			}, this);
-		},
-
-		requestClear: function() {
-			this.$('.menu-error').empty();
-		},
-
-		requestFail: function(error) {
-			var anchor = $('<div class="menu-error"></div>').prependTo(this.$el);
-			this.subviews.push(new utils.ErrorView({el: anchor, msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error}));
 		},
 
 		render: function() {
