@@ -2,18 +2,29 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'utils',
 	'jquerymobile'
-], function($, _, Backbone) {
+], function($, _, Backbone, utils) {
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/modules");
 
 	var TabModel = Backbone.Model.extend({
 
+		defaults: {
+			locations: [
+				{ id: "griebnitzsee", name: "Griebnitzsee" },
+				{ id: "neuespalais", name: "Neues Palais" },
+				{ id: "golm", name: "Golm" }
+			],
+			activeLocation: "up.mensa.default"
+		},
+
 		setItem: function(selection) {
-			localStorage.setItem("up.mensa.default", selection);
+			localStorage.setItem(this.get("activeLocation"), selection);
 		},
 
 		getItem: function() {
-			var result = localStorage.getItem("up.mensa.default");
-			return result || "griebnitzsee";
+			var result = localStorage.getItem(this.get("activeLocation"));
+			return result || this.get("locations")[0].id;
 		}
 	});
 
@@ -27,7 +38,8 @@ define([
 		},
 
 		initialize: function() {
-			this.model = new TabModel();
+			this.template = rendertmpl("campusmenu");
+			this.model = this.model || new TabModel();
 		},
 
 		/**
@@ -52,36 +64,16 @@ define([
 		},
 
 		_indexForLocation: function(location) {
-			switch (location) {
-				case "griebnitzsee":
-					return 0;
-				case "neuespalais":
-					return 1;
-				case "golm":
-					return 2;
-				default:
-					return 0;
-			}
+			var result = _.chain(this.model.get("locations"))
+				.map(function(l) { return l.id === location; })
+				.indexOf(true)
+				.value();
+			return result < 0 ? 0 : result;
 		},
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(
-				'<div data-role="tabs" class="tabs-content"> \
-					<div data-role="navbar"> \
-						<ul class="tabs-content-links"> \
-							<li><a href="#griebnitzsee">Griebnitzsee</a></li> \
-							<li><a href="#neuespalais">Neues Palais</a></li> \
-							<li><a href="#golm">Golm</a></li> \
-						</ul> \
-					</div> \
-					\
-					<div class="before-content"></div> \
-					\
-					<div id="griebnitzsee"></div> \
-					<div id="neuespalais"></div> \
-					<div id="golm"></div> \
-				</div>');
+			this.$el.append(this.template({locations: this.model.get("locations")}));
 
 			// Select stored tab
 			var location = this.model.getItem();
@@ -204,6 +196,7 @@ define([
 	});
 
 	return {
-		TabView: TabView
+		TabView: TabView,
+		TabModel: TabModel
 	}
 });
