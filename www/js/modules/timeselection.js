@@ -1,4 +1,26 @@
-define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile'], function($, _, Backbone, _str){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'underscore.string',
+	'modules/campusmenu',
+	'jquerymobile'
+], function($, _, Backbone, _str, campusmenu) {
+
+	var TimeSlots = campusmenu.TabModel.extend({
+
+		initialize: function() {
+			// Create tab data
+			var now = new TimeSlot({name: "Jetzt", isDefault: true});
+			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
+
+			this.set("locations", [
+				{ id: "now", name: now.get("label"), bounds: now.get("bounds") },
+				{ id: "then", name: then.get("label"), bounds: then.get("bounds") }
+			]);
+			this.set("activeLocation", "up.rooms.default");
+		}
+	});
 
 	var TimeSlot = Backbone.Model.extend({
 		defaults: {
@@ -18,6 +40,14 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 
 			this.set("center", then);
 			this.set("bounds", bounds);
+			this.set("label", this.createLabel());
+		},
+
+		createLabel: function() {
+			var upper = this.get("bounds").upper;
+			var lower = this.get("bounds").lower;
+			var name = this.get("name");
+			return _str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 		},
 
 		calculateUpperAndLowerDate: function(center) {
@@ -39,7 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 
 		render: function() {
 			var href = $('<a href="#" class="time-menu"></a>');
-			href.append(this.createLabel());
+			href.append(this.model.get("label"));
 
 			if (this.model.get("isDefault")) {
 				href.addClass("ui-btn-active");
@@ -47,13 +77,6 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 
 			this.$el.append(href);
 			return this;
-		},
-
-		createLabel: function() {
-			var upper = this.model.get("bounds").upper;
-			var lower = this.model.get("bounds").lower;
-			var name = this.model.get("name");
-			return _str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 		},
 
 		activate: function(e) {
@@ -122,4 +145,8 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 			return { from: bounds.lower, to: bounds.upper };
 		}
 	});
+
+	return {
+		TimeSlots: TimeSlots
+	}
 });

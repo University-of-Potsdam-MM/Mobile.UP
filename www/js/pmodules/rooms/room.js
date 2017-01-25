@@ -125,27 +125,41 @@ define([
 
 		initialize: function() {
 			this.template = rendertmpl('room.base');
-			_.bindAll(this, 'updateTimeData', 'updateRoomData');
-		},
-
-		updateTimeData: function(bounds) {
-			var campus = this.$("div[data-role='campusmenu']").campusmenu("getActive");
-			this.updateRoom(campus, bounds);
+			_.bindAll(this, 'updateRoomData');
 		},
 
 		updateRoomData: function(campus) {
-			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
-			this.updateRoom(campus.campusName, timeBounds);
+			this.updateRoom(campus.campusName);
 		},
 
-		updateRoom: function(campusName, timeBounds) {
+		updateRoom: function(campusName) {
 			lastRoomsCampus = campusName;
 			this.$("#roomsHost").empty();
+			this.createTimeSlotTabs(this.$("#roomsHost"), campusName);
+		},
 
-			var roomsModel = new models.RoomsCollection(null, {campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
+		createTimeSlotTabs: function(host, campusName) {
+			// Create time slots view
+			var timeSlots = new timeselection.TimeSlots();
+			var timeSlotsView = new campusmenu.TabView({
+				el: host,
+				model: timeSlots
+			}).render();
 
-			roomsModel.fetch(utils.cacheDefaults({reset: true}));
+			_.each(timeSlots.get("locations"), function(location) {
+				var locationModel = new models.RoomsCollection(null, {
+					startTime: location.bounds.lower,
+					endTime: location.bounds.upper,
+					campus: campusName
+				});
+				new RoomsOverview({
+					el: timeSlotsView.$("#" + location.id),
+					collection: locationModel
+				});
+				locationModel.fetch(utils.cacheDefaults({reset: true}));
+			}, this);
+
+			host.trigger("create");
 		},
 
 		render: function(){
@@ -171,24 +185,13 @@ define([
 			});
 
 			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateRoomData });
-			this.$("div[data-role='timeselection']").timeselection({ onChange: this.updateTimeData });
-
 			this.$("div[data-role='campusmenu']").campusmenu("pageshow", true);
-			this.$("div[data-role='timeselection']").timeselection("pageshow", true);
 
 			var campusName = this.$("div[data-role='campusmenu']").campusmenu("getActive");
-			var timeBounds = this.$("div[data-role='timeselection']").timeselection("getActive");
 
 			lastRoomsCampus = campusName;
 
-			var roomsModel = new models.RoomsCollection(null, {
-				startTime: timeBounds.from,
-				endTime: timeBounds.to,
-				campus: campusName
-			});
-			new RoomsOverview({el: this.$("#roomsHost"), collection: roomsModel});
-
-			roomsModel.fetch(utils.cacheDefaults({reset: true}));
+			this.createTimeSlotTabs(this.$("#roomsHost"), campusName);
 
 			return this;
 		}
