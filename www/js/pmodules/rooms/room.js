@@ -12,6 +12,8 @@ define([
 	var RoomsOverview = Backbone.View.extend({
 
 		initialize: function() {
+			this.template = rendertmpl('rooms');
+
 			this.listenTo(this.collection, "reset", this.render);
 			this.listenTo(this.collection, "error", this.renderError);
 		},
@@ -29,18 +31,10 @@ define([
 			$("#roomsDetailsHint").hide();
 			$("#roomsOverviewHint").show();
 
-			var host = this.$el;
-			host.empty();
+			var groupedRooms = _.groupBy(this.collection.toJSON(), "house");
 
-			var attributes = this.collection.map(function(model) { return model.attributes; });
-
-			// Create and add html
-			var createRooms = rendertmpl('rooms');
-			var htmlDay = createRooms({groupedRooms: _.groupBy(attributes, "house")});
-			host.append(htmlDay);
-
-			// Refresh html
-			host.trigger("create");
+			this.$el.html(this.template({groupedRooms: groupedRooms}));
+			this.$el.trigger("create");
 		}
 	});
 
