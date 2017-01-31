@@ -55,7 +55,7 @@ define([
         },
 
         onSort: function() {
-            console.warn("onSort not implemented", arguments);
+            this.onReset();
         },
 
         onUpdate: function() {

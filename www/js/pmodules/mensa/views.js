@@ -1,90 +1,14 @@
-define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','datebox', 'view.utils'], function($, _, Backbone, utils, campusmenu, datebox, viewUtils){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'utils',
+	'modules/campusmenu',
+	'datebox',
+	'view.utils',
+	'pmodules/mensa/mensa.models'
+], function($, _, Backbone, utils, campusmenu, datebox, viewUtils, models) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/mensa");
-
-	$(document).on("pageshow", "#mensa", function () {
-		console.log("pageshow started");
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-		console.log("pageshow finished");
-	});
-	
-	var Menu = Backbone.Collection.extend({
-		
-		initialize: function(models, options) {
-			this.location = options.location;
-			this.date = options.date;
-		},
-
-		url: function() {
-			var location = this.location;
-			if (location == "griebnitzsee") {
-				location = "Griebnitzsee";
-			} else if (location == "neuespalais") {
-				location = "NeuesPalais";
-			} else if (location == "golm") {
-				location = "Golm";
-			} else if (location == "UlfsCafe") {
-				location = "UlfsCafe";
-			}
-			return "https://api.uni-potsdam.de/endpoints/mensaAPI/1.0/readCurrentMeals?format=json&location=" + location;
-		},
-		
-		parse: function(response) {
-			// Map data format
-			var date = this.date;
-			var icons = response.readCurrentMealsResponse.meals.iconHashMap.entry;
-			var meals = response.readCurrentMealsResponse.meals.meal;
-			var mappedMeals = _.map(meals, this.mapToMeal(this.convertToMap(icons)));
-
-			// Filter for correct day
-			return _.chain(mappedMeals)
-				.filter(function(meal) { return new Date(meal.date).toDateString() == date.toDateString(); })
-				.sortBy('order')
-				.value();
-		},
-		
-		convertToMap: function(icons) {
-		    var result = {};
-		    for (var index in icons) {
-		        var key = icons[index].key;
-		        var value = icons[index].value;
-		        result[key] = value;
-		    }
-		    return result;
-		},
-		
-		mapToMeal: function(icons) {
-		    return function (meal) {
-		        var mealData = {};
-				mealData.contentId = _.uniqueId("id_");
-		        mealData.title = meal.title;
-		        mealData.description = meal.description.replace(/\(.*\)/g, "");
-				mealData.date = meal.date;
-				mealData.order = meal["@order"];
-
-				mealData.prices = {};
-				if (meal.prices) {
-					mealData.prices.students = meal.prices.student;
-					mealData.prices.staff = meal.prices.staff;
-					mealData.prices.guests = meal.prices.guest;
-				} else {
-					mealData.prices.students = "?";
-					mealData.prices.staff = "?";
-					mealData.prices.guests = "?";
-				}
-
-		        mealData.ingredients = [];
-		        if ($.isArray(meal.type)) {
-		            for (var typIndex in meal.type) {
-		                mealData.ingredients.push(icons[meal.type[typIndex]]);
-		            }
-		        } else if (meal.type) {
-		            mealData.ingredients.push(icons[meal.type]);
-		        }
-
-		        return mealData;
-		    };
-		}
-	});
 
 	var MealView = viewUtils.ElementView.extend({
 		template: rendertmpl('mensa_meal'),
@@ -97,74 +21,95 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		
 		initialize: function() {
 			this.template = rendertmpl('mensa_detail');
-			this.listenTo(this.collection, "sync", this.render);
+			this.subviews = [];
 		},
 		
 		render: function() {
-			this.$el.html(this.template({meals: this.collection.toJSON(), location: this.collection.location}));
+			this._cleanSubviews();
+			this.$el.html(this.template({
+				meals: this.collection,
+				location: this.collection.location
+			}));
+
+			this.subviews.push(new utils.ErrorView({
+				el: this.$(".error-host"),
+				msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.',
+				module: 'mensa'
+			}));
 
 			var list = this.$(".speiseplan");
 			if (list.length > 0) {
-				new viewUtils.ListView({
+				this.subviews.push(new viewUtils.ListView({
 					el: list,
 					collection: this.collection,
 					view: MealView,
 					postRender: function() {
 						this.$el.collapsibleset().collapsibleset("refresh");
 					}
-				}).render();
+				}).render());
 			}
 
 			this.$el.trigger("create");
 			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
+			});
+			this.subviews = [];
+		},
+
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 
 	var LocationTabView = Backbone.View.extend({
 
 		initialize: function(params) {
-			this.mensa = params.mensa;
-			this.date = params.date;
-		},
+			this.template = rendertmpl("mensa.tab");
+			this.menus = params.menus;
+			this.subviews = [];
 
-		requestFail: function(error) {
-			this.trigger("requestFail", error);
+			_.each(this.menus, function(menu) {
+				this.listenTo(menu, "sync", this.render);
+				this.listenTo(menu, "error", this.render);
+			}, this);
 		},
 
 		render: function() {
-			this.$el.append('<div id="loadingSpinner"></div> \
-				<div id="content"></div> \
-				<div id="secondLoadingSpinner"></div> \
-				<div id="secondContent"></div>');
+			this._cleanSubviews();
+			this.$el.html(this.template({}));
 
-			var loader = new Menu([], {
-				location: this.mensa,
-				date: this.date
+			// Add all meal sources
+			_.each(this.menus, function(menu, index) {
+				this.$("#menu-list").append('<div id="loadingSpinner' + index + '"></div>');
+				this.$("#menu-list").append('<div id="content' + index + '"></div>');
+
+				this.subviews.push(new utils.LoadingView({collection: menu, el: this.$('#loadingSpinner' + index)}));
+				this.subviews.push(new DayView({collection: menu, el: this.$('#content' + index)}).render());
+			}, this);
+
+			this.$el.trigger("create");
+			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
 			});
+			this.subviews = [];
+		},
 
-			new utils.LoadingView({collection: loader, el: this.$("#loadingSpinner")});
-			new DayView({collection: loader, el: this.$("#content")});
-			this.listenTo(loader, "error", this.requestFail);
-
-			loader.fetch(utils.cacheDefaults());
-
-			if (this.mensa === "griebnitzsee") {
-				// Load Ulfs Cafe in second view
-				var secondLoader = new Menu([], {
-					location: "UlfsCafe",
-					date: this.date
-				});
-
-				new utils.LoadingView({collection: secondLoader, el: this.$("#secondLoadingSpinner")});
-				new DayView({collection: secondLoader, el: this.$("#secondContent")});
-				this.listenTo(secondLoader, "error", this.requestFail);
-
-				secondLoader.fetch(utils.cacheDefaults());
-			}
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 
-	app.views.MensaPage= Backbone.View.extend({
+	app.views.MensaPage = Backbone.View.extend({
 		attributes: {"id": 'mensa'},
 
 		events: {
@@ -172,41 +117,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		},
 
 		initialize: function() {
-			_.bindAll(this, 'render', 'updateMenuData', 'updateMenuCampus');
+			_.bindAll(this, 'render', 'updateMenuCampus');
 			this.template = rendertmpl('mensa');
+			this.model = new models.AllMenus;
+			this.subviews = [];
 		},
 
 		delegateCustomEvents: function() {
-			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateMenuData });
 			this.$("#mydate").bind("datebox", this.updateMenuCampus);
-		},
-
-		updateMenuData: function(options) {
-			var date = this.$("#mydate").datebox('getTheDate');
-			this.updateMenu(options.campusName, date);
 		},
 
 		updateMenuCampus: function(e, p) {
 			if (p.method === "set") {
-				var source = this.$("div[data-role='campusmenu']").campusmenu("getActive");
-				var date = p.date;
-				this.updateMenu(source, date);
+				this.model.set("date", p.date);
 			}
-		},
-
-		updateMenu: function(mensa, date) {
-		    var uniqueDivId = _.uniqueId("id_");
-		    
-		    this.$("#todaysMenu").empty();
-			this.$("#todaysMenu").append('<div id="' + uniqueDivId + '"></div>');
-
-			var locationTab = new LocationTabView({el: this.$("#" + uniqueDivId), mensa: mensa, date: date});
-			this.listenTo(locationTab, "requestFail", this.requestFail);
-			locationTab.render();
-		},
-
-		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#todaysMenu', msg: 'Der Mensa-Dienst ist momentan nicht erreichbar.', module: 'mensa', err: error});
 		},
 
 		dateBox: function(ev){
@@ -214,10 +138,42 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'modules/campusmenu','dateb
 		},
 
 		render: function() {
-			$(this.el).html(this.template({}));
+			this._cleanSubviews();
+			this.$el.html(this.template({}));
+
+			var tabview = new campusmenu.TabView({
+				el: this.$("#campusmenu-host")
+			}).render();
+			this.subviews.push(tabview);
+
+			this.$("input#mydate").detach().appendTo(tabview.$(".before-content"));
+
+			_.each(["griebnitzsee", "neuespalais", "golm"], function(campus) {
+
+				this.subviews.push(new LocationTabView({
+					el: tabview.$("#" + campus),
+					menus: this.model.get(campus)
+				}).render());
+
+			}, this);
+			this.model.fetchAll(utils.cacheDefaults());
+
 			this.$el.trigger("create");
 			this.delegateCustomEvents();
+
 			return this;
+		},
+
+		_cleanSubviews: function() {
+			_.each(this.subviews, function(view) {
+				view.remove();
+			});
+			this.subviews = [];
+		},
+
+		remove: function() {
+			this._cleanSubviews();
+			Backbone.View.prototype.remove.apply(this, arguments);
 		}
 	});
 

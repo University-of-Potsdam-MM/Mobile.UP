@@ -560,6 +560,11 @@ div.timebar {
 	height: 100%;
 }
 
+/* datebox highlight of selected day */
+#mensa .ui-datebox-container .ui-btn-b {
+	background: #cfdae3;
+}
+
 /* mensa piktogramme */
 .speiseplan h3 img {
 	display: inline-block;

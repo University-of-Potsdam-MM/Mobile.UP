@@ -1,4 +1,26 @@
-define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile'], function($, _, Backbone, _str){
+define([
+	'jquery',
+	'underscore',
+	'backbone',
+	'underscore.string',
+	'modules/campusmenu',
+	'jquerymobile'
+], function($, _, Backbone, _str, campusmenu) {
+
+	var TimeSlots = campusmenu.TabModel.extend({
+
+		initialize: function() {
+			// Create tab data
+			var now = new TimeSlot({name: "Jetzt", isDefault: true});
+			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
+
+			this.set("locations", [
+				{ id: "now", name: now.get("label"), bounds: now.get("bounds") },
+				{ id: "then", name: then.get("label"), bounds: then.get("bounds") }
+			]);
+			this.set("activeLocation", "up.rooms.default");
+		}
+	});
 
 	var TimeSlot = Backbone.Model.extend({
 		defaults: {
@@ -18,6 +40,14 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 
 			this.set("center", then);
 			this.set("bounds", bounds);
+			this.set("label", this.createLabel());
+		},
+
+		createLabel: function() {
+			var upper = this.get("bounds").upper;
+			var lower = this.get("bounds").lower;
+			var name = this.get("name");
+			return _str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
 		},
 
 		calculateUpperAndLowerDate: function(center) {
@@ -30,96 +60,7 @@ define(['jquery', 'underscore', 'backbone', 'underscore.string', 'jquerymobile']
 		}
 	});
 
-	var TabButtonView = Backbone.View.extend({
-		tagName: "li",
-
-		events: {
-			"click": "activate"
-		},
-
-		render: function() {
-			var href = $('<a href="#" class="time-menu"></a>');
-			href.append(this.createLabel());
-
-			if (this.model.get("isDefault")) {
-				href.addClass("ui-btn-active");
-			}
-
-			this.$el.append(href);
-			return this;
-		},
-
-		createLabel: function() {
-			var upper = this.model.get("bounds").upper;
-			var lower = this.model.get("bounds").lower;
-			var name = this.model.get("name");
-			return _str.sprintf("%s (%02d:%02d-%02d:%02d)", name, lower.getHours(), lower.getMinutes(), upper.getHours(), upper.getMinutes());
-		},
-
-		activate: function(e) {
-			event.preventDefault();
-			this.trigger("activate", this);
-		}
-	});
-
-	$.widget("up.timeselection", {
-		options: {
-			onChange: function(bounds) {}
-		},
-
-		_create: function() {
-			// Create HTML basis
-			this.element.append(
-				'<div data-role="controlgroup"> \
-					<h3>Zeitraum:</h3> \
-					<div data-role="navbar" id="timeNavbar"> \
-						<ul></ul> \
-					</div> \
-				</div>');
-
-			// Create tab data
-			var now = new TimeSlot({name: "Jetzt", isDefault: true});
-			var then = new TimeSlot({name: "Demnächst", hourOffset: 2});
-
-			// Create tab views
-			_.each([now, then], function(model) {
-				var view = new TabButtonView({model: model});
-				$(this.element).find("ul").append(view.render().el);
-
-				var localActivate = $.proxy(this.activate, this);
-				view.on("activate", localActivate);
-			}, this);
-
-			// Activate jQuery magic
-			this.element.trigger("create");
-			this.activeModel = now;
-		},
-
-		_destroy: function() {
-		},
-
-		_setOption: function(key, value) {
-			this._super(key, value);
-		},
-
-		activate: function(view) {
-			this.activeModel = view.model;
-
-			var bounds = this.activeModel.get("bounds");
-			this.options.onChange({ from: bounds.lower, to: bounds.upper });
-
-			// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
-			var target = view.$el.find("a");
-			$("a", this.element).removeClass("ui-btn-active");
-			target.addClass("ui-btn-active");
-		},
-
-		pageshow: function() {
-		},
-
-		getActive: function() {
-			var bounds = this.activeModel.get("bounds");
-			return { from: bounds.lower, to: bounds.upper };
-		}
-	});
+	return {
+		TimeSlots: TimeSlots
+	}
 });

@@ -133,9 +133,14 @@ define([
 			* @noTrigger: Aktion ausführen: false, sonst true
 			*/
 			previous: function(noTrigger){
-                customHistory.executeBack(_.bind(function(previous) {
-                    this.route(previous, noTrigger);
-                }, this));
+				if (noTrigger) {
+					customHistory.executeBack(_.bind(function(previous) {
+						this.route(previous, noTrigger);
+					}, this));
+				} else {
+					customHistory.goBack();
+				}
+
 			},
 			/*
 			* Wenn nötig Daten vom Server laden, Seite rendern und Seitenübergang vollführen

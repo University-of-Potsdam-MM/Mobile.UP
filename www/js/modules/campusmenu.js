@@ -2,23 +2,29 @@ define([
 	'jquery',
 	'underscore',
 	'backbone',
+	'utils',
 	'jquerymobile'
-], function($, _, Backbone) {
+], function($, _, Backbone, utils) {
+	var rendertmpl = _.partial(utils.rendertmpl, _, "js/modules");
 
 	var TabModel = Backbone.Model.extend({
 
-		initialize: function() {
-			if (this.getItem() === undefined) {
-				this.setItem("griebnitzsee");
-			}
+		defaults: {
+			locations: [
+				{ id: "griebnitzsee", name: "Griebnitzsee" },
+				{ id: "neuespalais", name: "Neues Palais" },
+				{ id: "golm", name: "Golm" }
+			],
+			activeLocation: "up.mensa.default"
 		},
 
 		setItem: function(selection) {
-			localStorage.setItem("campusmenu.default", selection);
+			localStorage.setItem(this.get("activeLocation"), selection);
 		},
 
 		getItem: function() {
-			return localStorage.getItem("campusmenu.default");
+			var result = localStorage.getItem(this.get("activeLocation"));
+			return result || this.get("locations")[0].id;
 		}
 	});
 
@@ -32,7 +38,8 @@ define([
 		},
 
 		initialize: function() {
-			this.model = new TabModel();
+			this.template = rendertmpl("campusmenu");
+			this.model = this.model || new TabModel();
 		},
 
 		/**
@@ -57,33 +64,16 @@ define([
 		},
 
 		_indexForLocation: function(location) {
-			switch (location) {
-				case "griebnitzsee":
-					return 0;
-				case "neuespalais":
-					return 1;
-				case "golm":
-					return 2;
-				default:
-					return 0;
-			}
+			var result = _.chain(this.model.get("locations"))
+				.map(function(l) { return l.id === location; })
+				.indexOf(true)
+				.value();
+			return result < 0 ? 0 : result;
 		},
 
 		render: function() {
 			this.$el.empty();
-			this.$el.append(
-				'<div data-role="tabs" class="tabs-content"> \
-					<div data-role="navbar"> \
-						<ul class="tabs-content-links"> \
-							<li><a href="#griebnitzsee">Griebnitzsee</a></li> \
-							<li><a href="#neuespalais">Neues Palais</a></li> \
-							<li><a href="#golm">Golm</a></li> \
-						</ul> \
-					</div> \
-					<div id="griebnitzsee">Griebnitzsee</div> \
-					<div id="neuespalais">Neues Palais</div> \
-					<div id="golm">Golm</div> \
-				</div>');
+			this.$el.append(this.template({locations: this.model.get("locations")}));
 
 			// Select stored tab
 			var location = this.model.getItem();
@@ -136,9 +126,12 @@ define([
 			this.element.children().last().remove();
 		},
 
-		pageshow: function() {
+		pageshow: function(notrigger) {
 			var selection = this._activateDefaultSelection();
-			this.options.onChange({ campusName: selection });
+
+			if (!notrigger) {
+				this.options.onChange({campusName: selection});
+			}
 		},
 
 		_setOption: function(key, value) {
@@ -161,14 +154,14 @@ define([
 			var defaultSelection = this._getDefaultSelection();
 
 			if (!defaultSelection) {
-				var source = $(".location-menu-default");
+				var source = $(".location-menu-default", this.element);
 				defaultSelection = this._retrieveSelection(source);
 				this._setDefaultSelection(defaultSelection);
 			}
 
 			$(".location-menu", this.element).removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + defaultSelection + "']";
-			$(searchExpression).addClass("ui-btn-active");
+			$(searchExpression, this.element).addClass("ui-btn-active");
 
 			return defaultSelection;
 		},
@@ -180,7 +173,7 @@ define([
 		},
 
 		getActive: function() {
-			return this._retrieveSelection($(".ui-btn-active"));
+			return this._retrieveSelection($(".ui-btn-active", this.element));
 		},
 
 		changeTo: function(campusName, meta) {
@@ -188,7 +181,7 @@ define([
 
 			$(".location-menu", this.element).removeClass("ui-btn-active");
 			var searchExpression = "a[href='#" + target + "']";
-			$(searchExpression).addClass("ui-btn-active");
+			$(searchExpression, this.element).addClass("ui-btn-active");
 
 			// prepare call options
 			var callOptions = { campusName: target };
@@ -203,6 +196,7 @@ define([
 	});
 
 	return {
-		TabView: TabView
+		TabView: TabView,
+		TabModel: TabModel
 	}
 });

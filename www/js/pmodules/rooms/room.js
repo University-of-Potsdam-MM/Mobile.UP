@@ -5,247 +5,36 @@ define([
 	'utils',
 	'modules/campusmenu',
 	'modules/timeselection',
-	'underscore.string',
-	'moment'
-], function($, _, Backbone, utils, campusmenu, timeselection, _str, moment){
+	'pmodules/rooms/room.models'
+], function($, _, Backbone, utils, campusmenu, timeselection, models) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
-
-	$(document).on("pageinit", "#room", function () {
-		$("div[data-role='campusmenu']").campusmenu({ onChange: updateRoomData });
-		$("div[data-role='timeselection']").timeselection({ onChange: updateTimeData });
-	});
-
-	$(document).on("pageshow", "#room", function () {
-		$("div[data-role='campusmenu']").campusmenu("pageshow");
-		$("div[data-role='timeselection']").timeselection("pageshow");
-	});
-
-
-	function selector(li) {
-		var house = li.attr("data-house");
-		return "Haus " + house;
-	};
-
-	var RoomsCollection = Backbone.Collection.extend({
-
-		/*
-		 * Code taken from http://area51-php.erstmal.com/rauminfo/static/js/ShowRooms.js?cb=1395329676756 with slight modifications
-		 */
-		model: function(attrs, options) {
-			var room_match = attrs.raw.match(/^([^\.]+)\.([^\.]+)\.(.+)/);
-
-	        if (room_match) {
-	        	attrs.campus = room_match[1];
-	        	attrs.house = parseInt(room_match[2], 10);
-	        	attrs.room = room_match[3];
-	        }
-			return new Backbone.Model(attrs);
-		},
-
-		parse: function(response) {
-			var results = response.rooms4TimeResponse["return"];
-			return _.map(results, this.enrichData, this);
-		},
-
-		enrichData: function(result) {
-			return {
-				raw: result,
-				startTime: this.startTime.toISOString(),
-				endTime: this.endTime.toISOString()
-				};
-		}
-	});
-
-	var FreeRooms = Backbone.Model.extend({
-
-		initialize: function() {
-			this.rooms = new RoomsCollection();
-			this.rooms.url = this.createUrl();
-			this.rooms.startTime = this.get("startTime");
-			this.rooms.endTime = this.get("endTime");
-
-			this.listenTo(this.rooms, "reset", this.triggerChanged);
-			this.listenTo(this.rooms, "error", this.requestFail);
-		},
-
-		triggerChanged: function() {
-			this.trigger("success");
-		},
-
-		requestFail: function(error) {
-			this.trigger("error", error);
-		},
-
-		mapToId: function(campusName) {
-			var campusId;
-			if (campusName === "griebnitzsee") {
-				campusId = 3;
-			} else if (campusName === "neuespalais") {
-				campusId = 1;
-			} else {
-				campusId = 2;
-			}
-			return campusId;
-		},
-
-		createUrl: function() {
-			var campus = this.mapToId(this.get("campus"));
-			var building = this.get("building");
-			var startTime = this.get("startTime");
-			var endTime = this.get("endTime");
-
-			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
-			if (building) {
-				request = request + "&building=%s";
-			}
-			return _str.sprintf(request, encodeURIComponent(startTime.toISOString()), encodeURIComponent(endTime.toISOString()), campus, building);
-		}
-	});
-
-	var RoomDetailsCollections = Backbone.Collection.extend({
-
-		model: function(attrs, options) {
-			attrs.startTime = new Date(attrs.startTime);
-			attrs.endTime = new Date(attrs.endTime);
-			attrs.startMoment = moment(attrs.startTime);
-			attrs.endMoment = moment(attrs.endTime);
-			attrs.title = attrs.veranstaltung;
-			return new Backbone.Model(_.omit(attrs, "veranstaltung"));
-		},
-
-		parse: function(response) {
-			if (typeof response.reservations4RoomResponse === "object" && response.reservations4RoomResponse  != null) {
-				// The response is non-empty
-				var reservations = response.reservations4RoomResponse["return"];
-
-				if (Array.isArray(reservations)) {
-					return reservations;
-				} else {
-					return [reservations];
-				}
-			} else {
-				return [];
-			}
-		}
-	});
-
-	var RoomDetailsModel = Backbone.Model.extend({
-
-		initialize: function() {
-			this.reservations = new RoomDetailsCollections;
-			this.reservations.url = this.createUrl();
-
-			this.listenTo(this.reservations, "reset", this.triggerChanged);
-			this.listenTo(this.reservations, "error", this.triggerChanged);
-		},
-
-		triggerChanged: function() {
-			this.trigger("change");
-		},
-
-		createUrl: function() {
-			// Set start and end time
-			var startTime = this.get("startTime");
-			startTime = new Date(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(), 0, 0, 0, 0);
-			startTime = startTime.toISOString();
-			var endTime = this.get("endTime");
-			endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
-			endTime = endTime.toISOString();
-
-			var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
-			return _str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.get("campus")), encodeURIComponent(this.get("house")), encodeURIComponent(this.get("room")));
-		},
-
-		getSortedReservations: function() {
-			var reservations = this.reservations.map(function(d) { return d.attributes; });
-			return _.sortBy(reservations, "startMoment");
-		}
-	});
-
-	var RoomListElementView = Backbone.View.extend({
-
-		events: {
-			"click": "loadRoom"
-		},
-
-		initialize: function() {
-			this.template = rendertmpl("roomListElement");
-		},
-
-		render: function() {
-			this.undelegateEvents();
-			//console.log(this.model);
-			this.$el = $(this.template({room: this.model}));
-			this.delegateEvents();
-
-			return this;
-		},
-
-		loadRoom: function(event) {
-			event.preventDefault();
-			showRoomDetails(this.model);
-		}
-	});
-
-	var RoomListGroupView = Backbone.View.extend({
-
-		initialize: function() {
-			this.template = rendertmpl("roomList");
-		},
-
-		render: function() {
-			var roomIndex = _.first(this.collection).house;
-
-			this.undelegateEvents();
-			this.$el = $(this.template({roomIndex: roomIndex, rooms: this.collection}));
-			this.delegateEvents();
-
-			_.each(this.collection, function(model) {
-				var view = new RoomListElementView({model: model});
-				this.$(".rooms-subview").append(view.render().$el);
-			}, this);
-
-			return this;
-		}
-	});
 
 	var RoomsOverview = Backbone.View.extend({
 
 		initialize: function() {
-			this.listenTo(this.model, "change", this.render);
-			this.listenTo(this.model, "success", this.render);
-			this.listenTo(this.model, "error", this.renderError);
+			this.template = rendertmpl('rooms');
+
+			this.listenTo(this.collection, "reset", this.render);
+			this.listenTo(this.collection, "error", this.renderError);
 		},
 
 		renderError: function(error) {
-			var errorPage = new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
-			$("#roomsHost").empty();
+			new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
+			this.$el.empty();
 		},
 
 		render: function() {
+			// Clear error
 			$("#errorHost").empty();
 
+			// Show hint for rooms overview
 			$("#roomsDetailsHint").hide();
 			$("#roomsOverviewHint").show();
 
-			var host = this.$el;
-			host.empty();
+			var groupedRooms = _.groupBy(this.collection.toJSON(), "house");
 
-			var attributes = this.model.rooms.map(function(model) { return model.attributes; });
-
-			// Create and add html
-			var createRooms = rendertmpl('rooms');
-			var htmlDay = createRooms({rooms: _.groupBy(attributes, "house")});
-			host.append(htmlDay);
-
-			// Add room groups
-			_.each(_.groupBy(attributes, "house"), function(collection) {
-				var view = new RoomListGroupView({collection: collection});
-				this.$("#roomsOverviewList").append(view.render().$el);
-			});
-
-			// Refresh html
-			host.trigger("create");
+			this.$el.html(this.template({groupedRooms: groupedRooms}));
+			this.$el.trigger("create");
 		}
 	});
 
@@ -254,7 +43,8 @@ define([
 		initialize: function() {
 			this.template = rendertmpl('roomDetails');
 
-			this.listenTo(this.model, "change", this.render);
+			this.listenTo(this.collection, "reset", this.render);
+			this.listenTo(this.collection, "error", this.render);
 		},
 
 		events: {
@@ -262,15 +52,12 @@ define([
 		},
 
 		roomsReset: function(){
-			$("div[data-role='campusmenu']").campusmenu("changeTo", lastRoomsCampus);
+			app.previous();
 		},
 
 		render: function() {
-			$("#roomsOverviewHint").hide();
-			$("#roomsDetailsHint").show();
-
-			var reservations = this.model.getSortedReservations();
-			var attributes = this.model.attributes;
+			var reservations = this.collection.getSortedReservations();
+			var attributes = this.collection;
 
 			this.$el.empty();
 			this.$el.append(this.template({reservations: reservations, room: attributes}));
@@ -278,66 +65,137 @@ define([
 		}
 	});
 
-	function updateTimeData(bounds) {
-		var campus = $("div[data-role='campusmenu']").campusmenu("getActive");
-		updateRoom(campus, bounds);
-	}
-
-	function updateRoomData(campus) {
-		var timeBounds = $("div[data-role='timeselection']").timeselection("getActive");
-		updateRoom(campus.campusName, timeBounds);
-	}
-
-	function showRoomDetails(room) {
-		currentView && currentView.remove();
-		var div = $("<div></div>").appendTo("#roomsHost");
-
-		var roomDetails = new RoomDetailsModel({campus: room.campus, house: room.house, room: room.room, startTime: new Date(room.startTime), endTime: new Date(room.endTime)});
-		currentView = new RoomDetailsView({el: div, model: roomDetails});
-
-		roomDetails.reservations.fetch(utils.cacheDefaults({reset: true}));
-	}
-
 	var lastRoomsCampus = undefined;
-	var currentView = undefined;
 
-	function updateRoom(campusName, timeBounds) {
-		lastRoomsCampus = campusName;
-		currentView && currentView.remove();
-		var div = $("<div></div>").appendTo("#roomsHost");
+	app.views.RoomReservations = Backbone.View.extend({
 
-		var roomsModel = new FreeRooms({campus: campusName, startTime: timeBounds.from, endTime: timeBounds.to});
-		currentView = new RoomsOverview({el: div, model: roomsModel});
+		initialize: function(options) {
+			this.template = rendertmpl('room.reservations');
+			this.room = options.room;
 
-		roomsModel.rooms.fetch(utils.cacheDefaults({reset: true}));
-	}
-
-	app.views.RoomPage = Backbone.View.extend({
-		attributes: {"id": 'room'},
-
-		initialize: function(){
-			this.template = rendertmpl('room');
+			this.listenTo(this, "rendered", this._showRoomDetails);
 		},
 
-		render: function(){
+		_showRoomDetails: function() {
+			var roomDetails = new models.RoomDetailsCollections(null, {
+				startTime: new Date(this.room.startTime),
+				endTime: new Date(this.room.endTime),
+				campus: this.room.campus,
+				house: this.room.house,
+				room: this.room.room
+			});
+			new RoomDetailsView({el: this.$("#roomsHost"), collection: roomDetails});
+
+			roomDetails.fetch(utils.cacheDefaults({reset: true}));
+		},
+
+		render: function() {
+			this.setElement(this.page);
 			this.$el.html(this.template({}));
-			
+			this.$el.trigger("create");
+
 			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
 			this.$(".infotext-header-show").show();
 			this.$(".infotext-header-hide").hide();
 			this.$(".infotext").collapsible({
-				
+
 				collapse: function() {
 					$(".infotext-header-show").show();
 					$(".infotext-header-hide").hide();
 				},
-				
+
 				expand: function() {
 					$(".infotext-header-show").hide();
 					$(".infotext-header-hide").show();
 				}
 			});
-			
+
+			this.trigger("rendered");
+			return this;
+		}
+	});
+
+	app.views.RoomIndex = Backbone.View.extend({
+
+		initialize: function() {
+			this.template = rendertmpl('room.base');
+			_.bindAll(this, 'updateRoomData');
+		},
+
+		updateRoomData: function(campus) {
+			this.updateRoom(campus.campusName);
+		},
+
+		updateRoom: function(campusName) {
+			lastRoomsCampus = campusName;
+			this.$("#roomsHost").empty();
+			this.createTimeSlotTabs(this.$("#roomsHost"), campusName);
+		},
+
+		createTimeSlotTabs: function(host, campusName) {
+			// Create time slots view
+			var timeSlots = new timeselection.TimeSlots();
+			var timeSlotsView = new campusmenu.TabView({
+				el: host,
+				model: timeSlots
+			}).render();
+
+			_.each(timeSlots.get("locations"), function(location) {
+				var locationModel = new models.RoomsCollection(null, {
+					startTime: location.bounds.lower,
+					endTime: location.bounds.upper,
+					campus: campusName
+				});
+				new RoomsOverview({
+					el: timeSlotsView.$("#" + location.id),
+					collection: locationModel
+				});
+				locationModel.fetch(utils.cacheDefaults({reset: true}));
+			}, this);
+
+			host.trigger("create");
+		},
+
+		render: function(){
+			this.setElement(this.page);
+
+			this.$el.html(this.template({}));
+			this.$el.trigger("create");
+
+			// Switch infotext header according to view state (collapsible expanded or collapsible collapsed)
+			this.$(".infotext-header-show").show();
+			this.$(".infotext-header-hide").hide();
+			this.$(".infotext").collapsible({
+
+				collapse: function() {
+					$(".infotext-header-show").show();
+					$(".infotext-header-hide").hide();
+				},
+
+				expand: function() {
+					$(".infotext-header-show").hide();
+					$(".infotext-header-hide").show();
+				}
+			});
+
+			this.$("div[data-role='campusmenu']").campusmenu({ onChange: this.updateRoomData });
+			this.$("div[data-role='campusmenu']").campusmenu("pageshow", true);
+
+			var campusName = this.$("div[data-role='campusmenu']").campusmenu("getActive");
+
+			lastRoomsCampus = campusName;
+
+			this.createTimeSlotTabs(this.$("#roomsHost"), campusName);
+
+			return this;
+		}
+	});
+
+	app.views.RoomPage = Backbone.View.extend({
+		attributes: {"id": 'room'},
+
+		render: function() {
+			this.$el.html('');
 			return this;
 		}
 	});
