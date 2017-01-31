@@ -2,10 +2,11 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'utils'
-], function($, _, Backbone, utils) {
+    'utils',
+    'stateful.models'
+], function($, _, Backbone, utils, models) {
 
-    var Menu = Backbone.Collection.extend({
+    var Menu = models.StatefulCollection.extend({
 
         initialize: function(models, options) {
             this.location = options.location;
@@ -77,25 +78,6 @@ define([
 
                 return mealData;
             };
-        },
-
-        sync: function(method, model, options) {
-            // Clear loading error
-            this.loadError = undefined;
-
-            var that = this;
-            var error = options.error || _.noop;
-            options.error = function(jqXHR, textStatus, errorThrown) {
-                // Log loading error
-                that.loadError = {
-                    jqXHR: jqXHR,
-                    textStatus: textStatus,
-                    errorThrown: errorThrown
-                };
-                error.apply(this, arguments);
-            };
-
-            return Backbone.Collection.prototype.sync.apply(this, arguments);
         }
     });
 
