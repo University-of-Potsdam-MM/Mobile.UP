@@ -16,6 +16,11 @@
         <link rel="stylesheet" type="text/css" href="css/jqm-datebox.min.css" />
         <link rel="stylesheet" type="text/css" href="css/up-style.css" />
         <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
+        <!-- For embedding Mobile.UP functionality in Campus.UP -->
+        <script type="text/javascript">
+            if (window.location.search.indexOf('?view=withoutHeader') != 0)
+                document.write('<link rel="stylesheet" type="text/css" href="css/campusup.css" />');
+        </script>
 
         <!-- Core Libraries -->
         <script type="text/javascript" src="cordova.js"></script>
