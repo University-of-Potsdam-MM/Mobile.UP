@@ -214,6 +214,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'viewContainer'], function(
 
 	app.views.NewsPage = Backbone.View.extend({
 
+		attributes: {"id": 'news'},
+
 		initialize: function(){
 			this.template = rendertmpl('news');
 		},

@@ -278,6 +278,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], f
 
 	app.views.EventsPage = Backbone.View.extend({
 
+		attributes: {"id": 'events'},
+
 		initialize: function(vars){
 			this.template = rendertmpl('events');
 		},

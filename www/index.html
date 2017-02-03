@@ -18,8 +18,9 @@
         <link rel="stylesheet" type="text/css" href="css/indexpage.css" />
         <!-- For embedding Mobile.UP functionality in Campus.UP -->
         <script type="text/javascript">
-            if (window.location.search.indexOf('?view=withoutHeader') != 0)
+            if (window.location.href.indexOf('?view=withoutHeader') != -1){
                 document.write('<link rel="stylesheet" type="text/css" href="css/campusup.css" />');
+            }
         </script>
 
         <!-- Core Libraries -->
