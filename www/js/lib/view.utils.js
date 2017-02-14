@@ -90,7 +90,7 @@ define([
         }
     });
 
-    var ParentView = Backbone.View.extent({
+    var ParentView = Backbone.View.extend({
         subviews: [],
 
         _cleanSubviews: function() {
