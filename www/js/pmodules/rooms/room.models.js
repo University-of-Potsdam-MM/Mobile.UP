@@ -4,10 +4,11 @@ define([
     'backbone',
     'utils',
     'underscore.string',
-    'moment'
-], function($, _, Backbone, utils, _str, moment) {
+    'moment',
+    'stateful.models'
+], function($, _, Backbone, utils, _str, moment, models) {
 
-    var RoomsCollection = Backbone.Collection.extend({
+    var RoomsCollection = models.StatefulCollection.extend({
 
         initialize: function(models, options) {
             this.startTime = options.startTime;
@@ -59,7 +60,7 @@ define([
         }
     });
 
-    var RoomDetailsCollections = Backbone.Collection.extend({
+    var RoomDetailsCollections = models.StatefulCollection.extend({
 
         initialize: function (models, options) {
             this.startTime = options.startTime;

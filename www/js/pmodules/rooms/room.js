@@ -5,22 +5,18 @@ define([
 	'utils',
 	'modules/campusmenu',
 	'modules/timeselection',
-	'pmodules/rooms/room.models'
-], function($, _, Backbone, utils, campusmenu, timeselection, models) {
+	'pmodules/rooms/room.models',
+	'view.utils'
+], function($, _, Backbone, utils, campusmenu, timeselection, models, viewUtils) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/rooms");
 
-	var RoomsOverview = Backbone.View.extend({
+	var RoomsOverview = viewUtils.ParentView.extend({
 
 		initialize: function() {
 			this.template = rendertmpl('rooms');
 
 			this.listenTo(this.collection, "reset", this.render);
-			this.listenTo(this.collection, "error", this.renderError);
-		},
-
-		renderError: function(error) {
-			new utils.ErrorView({el: '#errorHost', msg: 'Der Raum-Dienst ist momentan nicht erreichbar.', module: 'room', err: error});
-			this.$el.empty();
+			this.listenTo(this.collection, "error", this.render);
 		},
 
 		render: function() {
@@ -32,9 +28,19 @@ define([
 			$("#roomsOverviewHint").show();
 
 			var groupedRooms = _.groupBy(this.collection.toJSON(), "house");
-
 			this.$el.html(this.template({groupedRooms: groupedRooms}));
+
+			if (this.collection.loadError) {
+				this.subviews.push(new utils.ErrorView({
+					el: this.$(".error-host"),
+					msg: 'Der Raum-Dienst ist momentan nicht erreichbar.',
+					module: 'room',
+					error: this.collection.loadError.errorThrown
+				}));
+			}
+
 			this.$el.trigger("create");
+			return this;
 		}
 	});
 
