@@ -165,8 +165,8 @@ define([
 				} else if (event.rhythm === "14-täglich") {
 					return new BiWeeklyEvent(event);
 				} else {
-					console.log("Unknown rhythm " + event.rythm);
-					this.logUnknownCourseRhythm(event.rythm);
+					console.log("Unknown rhythm " + event.rhythm);
+					this.logUnknownCourseRhythm(event.rhythm);
 					return new WeeklyEvent(event);
 				}
 			}, this);
