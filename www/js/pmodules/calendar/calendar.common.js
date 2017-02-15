@@ -5,9 +5,10 @@ define([
 	'utils',
 	'moment',
 	'Session',
+    'pmodules/impressum/impressum.models',
 	'cache',
 	'hammerjs'
-], function($, _, Backbone, utils, moment, Session){
+], function($, _, Backbone, utils, moment, Session, versionModel){
 
 	/**
 	 *	CourseEvent - Backbone Model
@@ -172,11 +173,15 @@ define([
 		},
 
 		logUnknownCourseRhythm: function(rhythm) {
-			var model = new Backbone.Model();
-			model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
-			model.set("courseName", this.get("name"));
-			model.set("rhythm", rhythm);
-			model.save();
+            new versionModel.VersionModel().fetch().done(_.bind(function(version) {
+                var model = new Backbone.Model();
+                model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
+                model.set("uuid", utils.getUniqueIdentifier());
+                model.set("courseName", this.get("name"));
+                model.set("rhythm", rhythm);
+                model.set("buildNumber", version.versionCode);
+                model.save();
+			}, this));
 		},
 
 		getStarting: function() {

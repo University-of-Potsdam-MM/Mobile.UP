@@ -367,6 +367,15 @@ define([
 		}
 	};
 
+	var getUniqueIdentifier = function() {
+        var uuid = localStorage.getItem("user-uuid");
+        if (!uuid) {
+            uuid = uuid4();
+            localStorage.setItem("user-uuid", uuid);
+        }
+        return uuid;
+	};
+
 	/**
 	 * Generates a uuid v4. Code is taken from broofas answer in http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 	 */
@@ -375,21 +384,15 @@ define([
 		    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 		    return v.toString(16);
 		});
-	}
+	};
 
 	/**
 	 * Handles unhandled errors and prevents them from bubbling to the top
 	 */
 	var onError = function(errorMessage, errorUrl, lineNumber, columnNumber, error) {
-		var uuid = localStorage.getItem("user-uuid");
-		if (!uuid) {
-			uuid = uuid4();
-			localStorage.setItem("user-uuid", uuid);
-		}
-
 		var info = new Backbone.Model;
 		info.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
-		info.set("uuid", uuid);
+		info.set("uuid", getUniqueIdentifier());
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);
 		info.set("line", lineNumber);
@@ -654,7 +657,8 @@ define([
 			ErrorView: ErrorView,
 			LoadingView: LoadingView,
 			overrideExternalLinks: overrideExternalLinks,
-			detectUA:detectUA,
+			detectUA: detectUA,
+        	getUniqueIdentifier: getUniqueIdentifier,
 			onError: onError,
 			LocalStore: LocalStore,
 			GesturesView: GesturesView,
