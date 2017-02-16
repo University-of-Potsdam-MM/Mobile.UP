@@ -47,12 +47,21 @@ define([
 
 		initialize: function(vars){
 			// get passed day parameter and init collections
-			this.day = vars.day;
+			this.day = vars.day ? moment(vars.day) : undefined;
 			// check for valid date otherwise use current day
-			if (!this.day || !moment(this.day, "YYYY-MM-DD", true).isValid()){
-				this.day = new Date();
+			if (!this.day || !this.day.isValid()){
+				this.day = moment();
 			}
-			day = moment(this.day);
+			// remove time component, leave date
+			this.day.set({
+				"hour": 0,
+				"minute": 0,
+				"second": 0,
+				"millisecond": 0
+			});
+
+			// TODO remove global variable (used in calendar_day.tmpl)
+			day = this.day;
 
 			//check if response request present
 			this.CourseList = new calendar.CourseList();
@@ -81,7 +90,7 @@ define([
 			if (this.loadingView) this.loadingView.empty();
 			if (this.errorView) this.errorView.empty();
 
-			var courseSlots = new calendar.CourseSlots(undefined, { courseList: this.CourseList, day: day });
+			var courseSlots = new calendar.CourseSlots(undefined, { courseList: this.CourseList, day: this.day });
 
 			this.loadingView = new utils.LoadingView({collection: this.CourseList, el: this.$("#loadingSpinner")});
 			new CalendarDayView({collection: courseSlots, el: this.$("#coursesForDay")});

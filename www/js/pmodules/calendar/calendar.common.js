@@ -116,6 +116,24 @@ define([
 	});
 
 
+	var BlockEvent = CourseEvent.extend({
+
+		isOnDay: function(day, courseStarting) {
+			moment.locale("de");
+
+			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
+			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
+			var isWeekend = day.day() == 0 || day.day() == 6;
+
+			return startedYet && !endedYet && !isWeekend;
+		},
+
+		exportToCalendar: function(entry, course, callback) {
+			// TODO implement Block export
+		}
+	});
+
+
 	/**
 	 *	Course - BackboneModel
 	 *	@desc	holding one single course with all events
@@ -164,6 +182,8 @@ define([
 					return new WeeklyEvent(event);
 				} else if (event.rhythm === "14-täglich") {
 					return new BiWeeklyEvent(event);
+				} else if (event.rhythm === "Block") {
+					return new BlockEvent(event);
 				} else {
 					console.log("Unknown rhythm " + event.rhythm);
 					this.logUnknownCourseRhythm(event.rhythm);
