@@ -150,6 +150,40 @@ define([
 	});
 
 
+	var BlockInclSatEvent = CourseEvent.extend({
+
+		isOnDay: function(day, courseStarting) {
+			moment.locale("de");
+
+			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
+			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
+			var isSunday = day.day() == 0;
+
+			return startedYet && !endedYet && !isSunday;
+		},
+
+		exportToCalendar: function(entry, course, callback) {
+			var currentDate = course.getStarting();
+			var lastDate = moment(course.getEnding()).add(1, "days");
+
+			// Android doesn't know daily dates without sunday so we have to save all dates ourselves
+			// Generate new dates as long we haven't got to the end
+			while (currentDate.isBefore(lastDate)) {
+				var temp = _.clone(entry);
+				temp.startDate = this.getBegin(currentDate).toDate();
+				temp.endDate = this.getEnd(currentDate).toDate();
+				callback(temp);
+
+				currentDate.add(1, "day");
+				// Skip sundays
+				while (currentDate.day() == 0) {
+					currentDate.add(1, "day");
+				}
+			}
+		}
+	});
+
+
 	/**
 	 *	Course - BackboneModel
 	 *	@desc	holding one single course with all events
@@ -201,6 +235,8 @@ define([
 					return new BiWeeklyEvent(event);
 				} else if (event.rhythm === "Block") {
 					return new BlockEvent(event);
+				} else if (event.rhythm === "Block (inkl. Sa)") {
+					return new BlockInclSatEvent(event);
 				} else {
 					console.log("Unknown rhythm " + event.rhythm);
 					this.logUnknownCourseRhythm(event.rhythm);
