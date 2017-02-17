@@ -183,6 +183,33 @@ define([
 		}
 	});
 
+	var BlockInclSunEvent = CourseEvent.extend({
+
+		isOnDay: function(day, courseStarting) {
+			moment.locale("de");
+
+			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
+			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
+
+			return startedYet && !endedYet;
+		},
+
+		exportToCalendar: function(entry, course, callback) {
+			var currentDate = course.getStarting();
+			var lastDate = moment(course.getEnding()).add(1, "days");
+
+			// Generate new dates as long we haven't got to the end
+			while (currentDate.isBefore(lastDate)) {
+				var temp = _.clone(entry);
+				temp.startDate = this.getBegin(currentDate).toDate();
+				temp.endDate = this.getEnd(currentDate).toDate();
+				callback(temp);
+
+				currentDate.add(1, "day");
+			}
+		}
+	});
+
 
 	/**
 	 *	Course - BackboneModel
@@ -237,6 +264,8 @@ define([
 					return new BlockEvent(event);
 				} else if (event.rhythm === "Block (inkl. Sa)") {
 					return new BlockInclSatEvent(event);
+				} else if (event.rhythm === "Block (inkl. Sa,So)") {
+					return new BlockInclSunEvent(event);
 				} else {
 					console.log("Unknown rhythm " + event.rhythm);
 					this.logUnknownCourseRhythm(event.rhythm);
