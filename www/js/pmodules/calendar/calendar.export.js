@@ -69,17 +69,17 @@ define([
 					result.push(entry);
 				};
 
-				_.each(course.getDates(), function(date) {
+				_.each(course.getEvents(), function(date) {
 					var entry = {};
-					entry.title = course.get("name");
-					entry.location = date.get("room");
+					entry.title = course.get("courseName");
+					entry.location = date.get("building") + "." + date.get("room");
 
 					entry.options = _.clone(options);
 					entry.options.calendarName = response.name;
 					entry.options.calendarId = parseInt(response.id);
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
-					entry.options.firstReminderMinutes = 0;
+					entry.options.firstReminderMinutes = null;
 
 					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);

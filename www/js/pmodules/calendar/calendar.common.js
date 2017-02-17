@@ -176,6 +176,7 @@ define([
 		getEvents: function() {
 			return _.map(this.get("events").event, function(event) {
 				//console.log(event);
+				event = _.extend({}, event, this.attributes);
 				if (event.rhythm === "Einzeltermin" || event.rhythm === "Termin") {
 					return new SingleEvent(event);
 				} else if (event.rhythm === "wöchentlich") {
@@ -197,7 +198,7 @@ define([
                 var model = new Backbone.Model();
                 model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
                 model.set("uuid", utils.getUniqueIdentifier());
-                model.set("courseName", this.get("name"));
+                model.set("courseName", this.get("courseName"));
                 model.set("rhythm", rhythm);
                 model.set("buildNumber", version.versionCode);
                 model.save();
@@ -243,9 +244,22 @@ define([
 			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getStudentCourses";
 		},
 
+		_asArray: function(data) {
+			if (!data) {
+				return []
+			} else if ($.isArray(data)) {
+				return data;
+			} else {
+				return [data];
+			}
+		},
+
 		parse: function(response) {
 			var student = response.studentCourses.student;
-			return (student.pastCourses.course || []).concat(student.actualCourses.course || []);
+
+			return _.map(this._asArray(student.actualCourses.course), function(course) {
+				return _.extend({current: "true"}, course);
+			}).concat(this._asArray(student.pastCourses.course));
 		},
 
 		sync: function(method, model, options){
