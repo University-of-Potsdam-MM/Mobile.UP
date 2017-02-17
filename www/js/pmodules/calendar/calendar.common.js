@@ -116,23 +116,31 @@ define([
 	});
 
 
-	var BlockEvent = CourseEvent.extend({
+	var BlockBase = CourseEvent.extend({
+
+		/**
+		 * Return true if the given day is part of the block rhythm, false otherwise. "Block (inkl. Sa)" would return true on sundays, "Block" would return true on weekends.
+		 * @param day
+		 * @returns {boolean}
+		 */
+		isBlockRhythmException: function(day) {
+			return false;
+		},
 
 		isOnDay: function(day, courseStarting) {
 			moment.locale("de");
 
 			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
 			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
-			var isWeekend = day.day() == 0 || day.day() == 6;
 
-			return startedYet && !endedYet && !isWeekend;
+			return startedYet && !endedYet && !this.isBlockRhythmException(day);
 		},
 
 		exportToCalendar: function(entry, course, callback) {
 			var currentDate = course.getStarting();
 			var lastDate = moment(course.getEnding()).add(1, "days");
 
-			// Android doesn't know daily dates without weekend so we have to save all dates ourselves
+			// Android doesn't know block rhythms so we have to save all dates ourselves
 			// Generate new dates as long we haven't got to the end
 			while (currentDate.isBefore(lastDate)) {
 				var temp = _.clone(entry);
@@ -141,8 +149,7 @@ define([
 				callback(temp);
 
 				currentDate.add(1, "day");
-				// Skip weekends
-				while (currentDate.day() == 0 || currentDate.day() == 6) {
+				while (this.isBlockRhythmException(currentDate)) {
 					currentDate.add(1, "day");
 				}
 			}
@@ -150,63 +157,29 @@ define([
 	});
 
 
-	var BlockInclSatEvent = CourseEvent.extend({
+	var BlockEvent = BlockBase.extend({
 
-		isOnDay: function(day, courseStarting) {
-			moment.locale("de");
-
-			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
-			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
-			var isSunday = day.day() == 0;
-
-			return startedYet && !endedYet && !isSunday;
-		},
-
-		exportToCalendar: function(entry, course, callback) {
-			var currentDate = course.getStarting();
-			var lastDate = moment(course.getEnding()).add(1, "days");
-
-			// Android doesn't know daily dates without sunday so we have to save all dates ourselves
-			// Generate new dates as long we haven't got to the end
-			while (currentDate.isBefore(lastDate)) {
-				var temp = _.clone(entry);
-				temp.startDate = this.getBegin(currentDate).toDate();
-				temp.endDate = this.getEnd(currentDate).toDate();
-				callback(temp);
-
-				currentDate.add(1, "day");
-				// Skip sundays
-				while (currentDate.day() == 0) {
-					currentDate.add(1, "day");
-				}
-			}
+		isBlockRhythmException: function(day) {
+			// Skip weekends
+			return day.day() == 0 || day.day() == 6;
 		}
 	});
 
-	var BlockInclSunEvent = CourseEvent.extend({
 
-		isOnDay: function(day, courseStarting) {
-			moment.locale("de");
+	var BlockInclSatEvent = BlockBase.extend({
 
-			var startedYet = day.isSameOrAfter(moment(this.get("startDate"), "DD.MM.YYYY"));
-			var endedYet = day.isAfter(moment(this.get("endDate"), "DD.MM.YYYY"));
+		isBlockRhythmException: function(day) {
+			// Skip sundays
+			return day.day() == 0;
+		}
+	});
 
-			return startedYet && !endedYet;
-		},
 
-		exportToCalendar: function(entry, course, callback) {
-			var currentDate = course.getStarting();
-			var lastDate = moment(course.getEnding()).add(1, "days");
+	var BlockInclSunEvent = BlockBase.extend({
 
-			// Generate new dates as long we haven't got to the end
-			while (currentDate.isBefore(lastDate)) {
-				var temp = _.clone(entry);
-				temp.startDate = this.getBegin(currentDate).toDate();
-				temp.endDate = this.getEnd(currentDate).toDate();
-				callback(temp);
-
-				currentDate.add(1, "day");
-			}
+		isBlockRhythmException: function(day) {
+			// Don't skip anything
+			return false;
 		}
 	});
 
