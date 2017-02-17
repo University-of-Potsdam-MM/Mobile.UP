@@ -129,7 +129,23 @@ define([
 		},
 
 		exportToCalendar: function(entry, course, callback) {
-			// TODO implement Block export
+			var currentDate = course.getStarting();
+			var lastDate = moment(course.getEnding()).add(1, "days");
+
+			// Android doesn't know daily dates without weekend so we have to save all dates ourselves
+			// Generate new dates as long we haven't got to the end
+			while (currentDate.isBefore(lastDate)) {
+				var temp = _.clone(entry);
+				temp.startDate = this.getBegin(currentDate).toDate();
+				temp.endDate = this.getEnd(currentDate).toDate();
+				callback(temp);
+
+				currentDate.add(1, "day");
+				// Skip weekends
+				while (currentDate.day() == 0 || currentDate.day() == 6) {
+					currentDate.add(1, "day");
+				}
+			}
 		}
 	});
 
