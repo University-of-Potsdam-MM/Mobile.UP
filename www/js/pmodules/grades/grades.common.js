@@ -3,6 +3,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 	var PulsAPI = {};
 
 	PulsAPI.Model = Backbone.Model.extend({
+        noAuth: false,
 
 		asArray: function(subject) {
 			if (Array.isArray(subject)) {
@@ -18,25 +19,29 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			options.url = _.result(model, 'url');
 			options.contentType = "application/json";
 			options.method = "POST";
-			options.data = this._selectRequestData(options.url);
+			options.data = this._selectRequestData(options.url, this.noAuth);
 			return Backbone.Model.prototype.sync.call(this, method, model, options);
 		},
 
-		_selectRequestData: function(url) {
+		_selectRequestData: function(url, noAuth) {
 			var session = new Session();
 			var uri = new URI(url);
 
-			return JSON.stringify({
-				condition: JSON.parse(uri.fragment()),
+			var auth = noAuth ? {} : {
 				"user-auth": {
 					username: session.get("up.session.username"),
 					password: session.get("up.session.password")
 				}
-			});
+			};
+
+			return JSON.stringify(_.extend({
+                condition: JSON.parse(uri.fragment()),
+            }, auth));
 		}
 	});
 
 	PulsAPI.Collection = Backbone.Collection.extend({
+		noAuth: false,
 
 		asArray: function(subject) {
 			if (Array.isArray(subject)) {
@@ -52,7 +57,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			options.url = _.result(model, 'url');
 			options.contentType = "application/json";
 			options.method = "POST";
-			options.data = this._selectRequestData(options.url);
+			options.data = this._selectRequestData(options.url, this.noAuth);
 			// method to catch no user rights exception
 			var error= options.error;
 			var success = options.success;
@@ -69,17 +74,20 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'uri/URI'], func
 			return Backbone.Model.prototype.sync.call(this, method, model, options);
 		},
 
-		_selectRequestData: function(url) {
-			var session = new Session();
-			var uri = new URI(url);
+		_selectRequestData: function(url, noAuth) {
+            var session = new Session();
+            var uri = new URI(url);
 
-			return JSON.stringify({
-				condition: JSON.parse(uri.fragment()),
-				"user-auth": {
-					username: session.get("up.session.username"),
-					password: session.get("up.session.password")
-				}
-			});
+            var auth = noAuth ? {} : {
+                    "user-auth": {
+                        username: session.get("up.session.username"),
+                        password: session.get("up.session.password")
+                    }
+                };
+
+            return JSON.stringify(_.extend({
+                condition: JSON.parse(uri.fragment()),
+            }, auth));
 		}
 	});
 
