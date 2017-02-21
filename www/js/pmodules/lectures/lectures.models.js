@@ -147,37 +147,24 @@ define([
         noAuth: true,
 
         parse: function(response) {
-            if (response.lectureScheduleRoot) {
-                var models = response.lectureScheduleRoot.rootNode.childNodes.childNode;
-                return _.chain(this.ensureArray(models))
-                        .reject(function(model) { return model === ""; })
-                        .reject(function(model) { return !model.headerId; })
-                        .map(function(model) {
-                            return {
-                                name: model.headerName,
-                                headerId: model.headerId,
-                                isCategory: true,
-                                hasSubtree: model.subNodes.count !== "0"
-                            };
-                        })
-                        .value();
-            } else if (response.lectureScheduleSubTree) {
-                var models = response.lectureScheduleSubTree.currentNode.childNodes.childNode;
-                return _.chain(this.ensureArray(models))
-                        .reject(function(model) { return model === ""; })
-                        .reject(function(model) { return !model.headerId; })
-                        .map(function(model) {
-                            return {
-                                name: model.headerName,
-                                headerId: model.headerId,
-                                isCategory: true,
-                                hasSubtree: model.subNodes.count !== "0"
-                            }
-                        })
-                        .value();
+            if (response.lectureScheduleRoot || response.lectureScheduleSubTree) {
+                var models = response.lectureScheduleRoot ? response.lectureScheduleRoot.rootNode : response.lectureScheduleSubTree.currentNode;
+                models = models.childNodes.childNode;
+                return _.chain(this.asArray(models))
+                    .reject(function(model) { return model === ""; })
+                    .reject(function(model) { return !model.headerId; })
+                    .map(function(model) {
+                        return {
+                            name: model.headerName,
+                            headerId: model.headerId,
+                            isCategory: true,
+                            hasSubtree: model.subNodes.count !== "0"
+                        };
+                    })
+                    .value();
             } else if (response.lectureScheduleCourses) {
                 var models = response.lectureScheduleCourses.currentNode.courses.course;
-                return _.chain(this.ensureArray(models))
+                return _.chain(this.asArray(models))
                         .reject(function(model) { return model === ""; })
                         .reject(function(model) { return !model.courseId; })
                         .map(function(model) {
@@ -189,16 +176,6 @@ define([
                             };
                         })
                         .value();
-            }
-        },
-
-        ensureArray: function(param) {
-            if (!param) {
-                return param;
-            } else if (Array.isArray(param)) {
-                return param;
-            } else {
-                return [param];
             }
         }
     });
