@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'utils',
+    'PulsAPI',
     'uri/URI'
-], function($, _, Backbone, utils, URI){
+], function($, _, Backbone, utils, PulsAPI, URI){
     /**
      * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
      *
@@ -32,28 +33,25 @@ define([
         },
 
         createSubUrl: function() {
-            var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/";
+            var result = new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/");
             if (!this.has("headerId") && !this.has("courseId")) {
                 // No id known -> we are at the root
-                result += "getLectureScheduleRoot";
+                result.filename("getLectureScheduleRoot")
+                    .fragment(JSON.stringify({semester: 0}));
             } else if (this.has("headerId") && this.get("hasSubtree")) {
                 // There are children -> we have to dig deeper
-                result += "getLectureScheduleSubTree#" + this.get("headerId");
+                result.filename("getLectureScheduleSubTree")
+                    .fragment(JSON.stringify({headerId: this.get("headerId")}));
             } else if (this.has("headerId") && !this.get("hasSubtree")) {
                 // No more children -> courses next
-                result += "getLectureScheduleCourses#" + this.get("headerId");
+                result.filename("getLectureScheduleCourses")
+                    .fragment(JSON.stringify({headerId: this.get("headerId")}));
             } else if (this.has("courseId")) {
                 // There is a course id -> course details next
-                result += "getCourseData#" + this.get("courseId");
+                result.filename("getCourseData")
+                    .fragment(JSON.stringify({courseId: this.get("courseId")}));
             }
-            return result;
-        },
-
-        createCourseUrl: function(url) {
-            var headerId = new URI(url).fragment();
-            var result = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/";
-            result += "getLectureScheduleCourses#" + headerId;
-            return result;
+            return result.toString();
         },
 
         ensureSubmodelLoaded: function(createAction) {
@@ -82,7 +80,8 @@ define([
      *     - lecturer
      *
      */
-    var VvzCourseContent = Backbone.Model.extend({
+    var VvzCourseContent = PulsAPI.Model.extend({
+        noAuth: true,
 
         parse: function(response) {
             // Events have to be grouped by groupId to know which dates belong together
@@ -122,21 +121,6 @@ define([
             } else {
                 return [param];
             }
-        },
-
-        sync: function(method, model, options) {
-            options.url = _.result(model, 'url');
-            options.contentType = "application/json";
-            options.method = "POST";
-            options.data = this._selectRequestData(options.url);
-            return Backbone.Model.prototype.sync.call(this, method, model, options);
-        },
-
-        _selectRequestData: function(url) {
-            var uri = new URI(url);
-            var data = {condition: {}};
-            data.condition.courseId = uri.fragment();
-            return JSON.stringify(data);
         }
     });
 
@@ -158,8 +142,9 @@ define([
         }
     });
 
-    var VvzCollection = Backbone.Collection.extend({
+    var VvzCollection = PulsAPI.Collection.extend({
         model: VvzItem,
+        noAuth: true,
 
         parse: function(response) {
             if (response.lectureScheduleRoot) {
@@ -215,25 +200,6 @@ define([
             } else {
                 return [param];
             }
-        },
-
-        sync: function(method, model, options) {
-            options.url = _.result(model, 'url');
-            options.contentType = "application/json";
-            options.method = "POST";
-            options.data = this._selectRequestData(options.url);
-            return Backbone.Model.prototype.sync.call(this, method, model, options);
-        },
-
-        _selectRequestData: function(url) {
-            var uri = new URI(url);
-            var data = {condition: {}};
-            if (uri.fragment()) {
-                data.condition.headerId = uri.fragment();
-            } else {
-                data.condition.semester = 0;
-            }
-            return JSON.stringify(data);
         }
     });
 
