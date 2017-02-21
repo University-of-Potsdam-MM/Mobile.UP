@@ -36,9 +36,12 @@ define([
             if (!this.has("headerId") && !this.has("courseId")) {
                 // No id known -> we are at the root
                 result += "getLectureScheduleRoot";
-            } else if (this.has("headerId")) {
+            } else if (this.has("headerId") && this.get("hasSubtree")) {
                 // There are children -> we have to dig deeper
                 result += "getLectureScheduleSubTree#" + this.get("headerId");
+            } else if (this.has("headerId") && !this.get("hasSubtree")) {
+                // No more children -> courses next
+                result += "getLectureScheduleCourses#" + this.get("headerId");
             } else if (this.has("courseId")) {
                 // There is a course id -> course details next
                 result += "getCourseData#" + this.get("courseId");
@@ -147,26 +150,10 @@ define([
         },
 
         load: function(vvzHistory) {
-            // We can't detect whether we have a category or course so we try loading a category first. If that fails we try loading a course
-            var reloadOnEmpty = _.bind(function(collection, response, options) {
-                if (collection.isEmpty()) {
-                    // Second try: loading a course
-                    var model = vvzHistory.first();
-                    model.set("suburl", VvzItem.prototype.createCourseUrl(model.get("suburl")));
-                    this._loadOnce(vvzHistory);
-                }
-            }, this);
-
-            // First try: loading a category
-            this._loadOnce(vvzHistory, reloadOnEmpty);
-        },
-
-        _loadOnce: function(vvzHistory, success) {
             this.items.url = vvzHistory.first().get("suburl");
             this.items.reset();
             this.items.fetch({
-                reset: true,
-                success: success
+                reset: true
             });
         }
     });
@@ -184,7 +171,8 @@ define([
                             return {
                                 name: model.headerName,
                                 headerId: model.headerId,
-                                isCategory: true
+                                isCategory: true,
+                                hasSubtree: model.subNodes.count !== "0"
                             };
                         })
                         .value();
@@ -197,7 +185,8 @@ define([
                             return {
                                 name: model.headerName,
                                 headerId: model.headerId,
-                                isCategory: true
+                                isCategory: true,
+                                hasSubtree: model.subNodes.count !== "0"
                             }
                         })
                         .value();
