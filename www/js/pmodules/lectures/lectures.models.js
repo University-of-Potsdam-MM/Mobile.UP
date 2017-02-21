@@ -6,7 +6,7 @@ define([
     'uri/URI'
 ], function($, _, Backbone, utils, URI){
     /**
-     * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
+     * Represents a lecture course (Kurs) or lecture category (Kategorie / Ãœberschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
      *
      * If it's a course the following properties are set
      * - isCourse
