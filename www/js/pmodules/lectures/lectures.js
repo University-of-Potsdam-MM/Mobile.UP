@@ -3,12 +3,9 @@ define([
 	'underscore',
 	'backbone',
 	'utils',
-	'view.utils',
-	'pmodules/lectures/lectures.models'
-], function($, _, Backbone, utils, viewUtils, lectures) {
+	'view.utils'
+], function($, _, Backbone, utils, viewUtils) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/lectures");
-
-	var currentVvz = new lectures.CurrentVvz;
 
 	var LectureNodeView = Backbone.View.extend({
 
@@ -149,9 +146,7 @@ define([
 		}
 	});
 
-    var vvzHistory = new lectures.VvzHistory;
-
-	app.views.LecturesPage = Backbone.View.extend({
+    app.views.LecturesPage = Backbone.View.extend({
 		attributes: {"id": "lectures"},
 
 		events: {

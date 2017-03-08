@@ -16,12 +16,9 @@ define([
             } catch(ex) {
             }
 
-            var url = "lectures/lectures";
-            if (headerId) {
-                url += "/" + headerId + "/" + hasSubtree + "/" + encodeURIComponent(name);
-            }
-            customHistory.resetTo(url);
+            var url = "lectures/lectures" + (headerId ? "/" + headerId + "/" + hasSubtree + "/" + encodeURIComponent(name) : "");
 
+            customHistory.resetTo(url);
             var data = vvzNavigation.addOrReset(headerId, name, hasSubtree === "true");
             var model = new models.VvzCategory(null, data);
 
