@@ -1,9 +1,10 @@
 define([
     "controllers/baseController",
     "history",
+    "utils",
     "pmodules/lectures/lectures.models",
     "pmodules/lectures/lectures"
-], function(BaseController, customHistory, models) {
+], function(BaseController, customHistory, utils, models) {
 
     var vvzNavigation = models.VvzNavigation;
 
@@ -26,7 +27,7 @@ define([
                 currentNode: model,
                 vvzNavigation: vvzNavigation
             }).done(function() {
-                model.fetch();
+                model.fetch(utils.cacheDefaults({prefillExpires: 120 * 1000}));
             });
         }
     });

@@ -44,8 +44,8 @@ define([
             new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
             new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
 
-            // Fetch from server
-            submodel.fetch();
+            // Fetch from server, cache for 2 hours
+            submodel.fetch(utils.cacheDefaults({prefillExpires: 120 * 1000}));
 		}
 	});
 
