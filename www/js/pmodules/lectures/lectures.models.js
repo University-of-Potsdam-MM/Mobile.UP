@@ -25,8 +25,8 @@ define([
 
         parse: function(response) {
             // Events have to be grouped by groupId to know which dates belong together
-            var groups = this.ensureArray(response.courseData.course)[0].events.event;
-            var groupedEvents = _.groupBy(this.ensureArray(groups), "groupId");
+            var groups = this.asArray(response.courseData.course)[0].events.event;
+            var groupedEvents = _.groupBy(this.asArray(groups), "groupId");
 
             var joinLecturers = function(lecturers) {
                 return _.map(lecturers, function (l) {
@@ -45,22 +45,12 @@ define([
                                 rhythm: date.rhythm,
                                 timespan: date.startDate + " bis " + date.endDate,
                                 room: (date.roomSc || "").replace(/_/g, "."),
-                                lecturer: joinLecturers(this.ensureArray(date.lecturers.lecturer))
+                                lecturer: joinLecturers(this.asArray(date.lecturers.lecturer))
                             };
                         }, this)
                     }
                 }, this)
             };
-        },
-
-        ensureArray: function(param) {
-            if (!param) {
-                return param;
-            } else if (Array.isArray(param)) {
-                return param;
-            } else {
-                return [param];
-            }
         }
     });
 
