@@ -71,7 +71,7 @@ define([
     						e.preventDefault();
     						navigator.app.exitApp();
     					}else{
-							viewContainer.setReverseSlidefadeTransition();
+							viewContainer.setReverseSlidefadeTransition(true);
 							customHistory.goBack();
     					}
     				}, false);
@@ -132,7 +132,9 @@ define([
 			* Zur letzten URL zurückwechseln, die in app.history gespeichert ist
 			* @noTrigger: Aktion ausführen: false, sonst true
 			*/
-			previous: function(noTrigger){
+			previous: function(noTrigger) {
+				viewContainer.setReverseSlidefadeTransition(true);
+
 				if (noTrigger) {
 					customHistory.executeBack(_.bind(function(previous) {
 						this.route(previous, noTrigger);

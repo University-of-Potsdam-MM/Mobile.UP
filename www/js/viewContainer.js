@@ -15,6 +15,7 @@ define([
             this.listenTo(this, "beforeTransition", this._saveAndPrepareScrollPosition);
             this.listenTo(this, "beforeTransition", this._addToContainer);
             this.listenTo(this, "afterTransition", this._updateCurrentView);
+            this.listenTo(this, "afterTransition", this._resetTransition);
         },
 
         _getPageContainer: function () {
@@ -88,6 +89,10 @@ define([
             app.currentView = transitionOptions.page;
         },
 
+        _resetTransition: function () {
+            viewContainer.setReverseSlidefadeTransition(false);
+        },
+
         updateHeader: function($el) {
             //Meta infos aus Seite in den Header integrieren
             var $metas = $el.find('meta');
@@ -131,9 +136,9 @@ define([
             }
         },
 
-        setReverseSlidefadeTransition: function () {
+        setReverseSlidefadeTransition: function (on) {
             $.mobile.changePage.defaults.transition = 'slidefade';
-            $.mobile.changePage.defaults.reverse = 'reverse';
+            $.mobile.changePage.defaults.reverse = on ? 'reverse' : false;
         },
 
         finishRendering: function (content, page, view) {
