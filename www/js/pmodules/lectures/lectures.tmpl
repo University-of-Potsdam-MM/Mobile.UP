@@ -1,23 +1,38 @@
 <meta name="title" content="Vorlesungsverzeichnis" />
+<% if (!isRoot) { %>
+<meta name="back" content="1" />
+<% } %>
+
 <!-- Start Main - Navigation -->
 <div data-role="content">
 	<select name="selectLevel" id="selectLevel" data-native-menu="false" data-inline="true" data-icon="bars">
-		<option value="">Zurück zu ...</option>
+		<% _.each(vvzHierarchy, function(item, index, list) { %>
+		<option
+			<% if (list.length - 1 === index) { %>
+			selected="selected"
+			<% } %>
+			value="<%= item.headerId || 0 %>"
+			><%= item.name %></option>
+		<% }); %>
 	</select>
 
-	<!-- Anzeige für leere Liste -->
-	<div id="emptyListNotifier" style="display: none">
-		<p>Keine Elemente gefunden</p>
-	</div>
-	<div id="loadingSpinner"></div>
-	<div id="lecturesHost"></div>
+	<div id="lecturesHost">
 
-	<!-- liste -->
-	<ul class="lecture-category-list" data-role="listview" data-inset="true" data-theme="b" id="lectureCategoryList">
-	</ul>
+		<!-- Anzeige für leere Liste -->
+		<div id="emptyListNotifier" style="display: none">
+			<p>Keine Elemente gefunden</p>
+		</div>
 
-	<!-- liste -->
-	<div data-role="collapsible-set" data-inset="true" data-theme="b" data-collapsed="true" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="lectureCourseList">
+		<div id="loadingSpinner"></div>
+
+		<!-- liste -->
+		<ul class="lecture-category-list" data-role="listview" data-inset="true" data-theme="b" id="lectureCategoryList">
+		</ul>
+
+		<!-- liste -->
+		<div data-role="collapsible-set" data-inset="true" data-theme="b" data-collapsed="true" data-iconpos="right" data-collapsed-icon="arrow-down" data-expanded-icon="arrow-up" id="lectureCourseList">
+		</div>
+
 	</div>
 
 </div>

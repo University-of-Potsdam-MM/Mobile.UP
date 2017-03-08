@@ -5,7 +5,8 @@ define([
     'utils',
     'PulsAPI',
     'uri/URI'
-], function($, _, Backbone, utils, PulsAPI, URI){
+], function($, _, Backbone, utils, PulsAPI, URI) {
+
     /**
      * Represents a lecture course (Kurs) or lecture category (Kategorie / Überschrift). You can distinguish between these two by checking the boolean properties isCategory and isCourse.
      *
@@ -211,10 +212,187 @@ define([
         }
     });
 
+    /**
+     * Possible types of VvzCategory models
+     * @enum {string}
+     * @type {{CATEGORY: string, COURSE: string}}
+     */
+    var VvzCategoryTypes = {
+        CATEGORY: "category",
+        COURSE: "course"
+    };
+
+    /**
+     * @class
+     * @property {VvzCategoryTypes} type
+     * @property {string} name
+     * @property {string} courseId
+     */
+    var VvzCourseItem = Backbone.Model.extend({
+        defaults: {
+            type: VvzCategoryTypes.COURSE
+        },
+
+        /**
+         * @returns {VvzCourseContent}
+         */
+        createCourse: function() {
+            var submodel = new VvzCourseContent;
+            submodel.url = this._createSubUrl();
+            return submodel;
+        },
+
+        _createSubUrl: function() {
+            return new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/")
+                .filename("getCourseData")
+                .fragment(JSON.stringify({courseId: this.get("courseId")}))
+                .toString();
+        }
+    });
+
+    /**
+     * @class
+     * @property {VvzCategoryTypes} type
+     * @property {string} name
+     * @property {string} headerId
+     * @property {boolean} hasSubtree
+     */
+    var VvzCategoryItem = Backbone.Model.extend({
+        defaults: {
+            type: VvzCategoryTypes.CATEGORY
+        },
+
+        /**
+         * @returns {VvzCategory}
+         */
+        createSubtree: function() {
+            return new VvzCategory(null, {name: this.get("name"), headerId: this.get("headerId"), hasSubtree: this.get("hasSubtree")});
+        }
+    });
+
+    /**
+     * @class
+     * @property {string} name
+     * @property {string} headerId
+     * @property {hasSubtree}
+     */
+    var VvzCategory = PulsAPI.Collection.extend({
+        noAuth: true,
+
+        model: function (attrs, options) {
+            if (attrs.headerId) {
+                return new VvzCategoryItem(attrs, options);
+            } else {
+                return new VvzCourseItem(attrs, options);
+            }
+        },
+
+        initialize: function(models, options) {
+            _.extend(this, _.pick(options, "headerId", "name", "hasSubtree"));
+        },
+
+        url: function() {
+            var result = new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/");
+            if (!this.headerId) {
+                // No id known -> we are at the root
+                result.filename("getLectureScheduleRoot")
+                    .fragment(JSON.stringify({semester: 0}));
+            } else if (this.hasSubtree) {
+                // There are children -> we have to dig deeper
+                result.filename("getLectureScheduleSubTree")
+                    .fragment(JSON.stringify({headerId: this.headerId}));
+            } else {
+                // No more children -> courses next
+                result.filename("getLectureScheduleCourses")
+                    .fragment(JSON.stringify({headerId: this.headerId}));
+            }
+            return result.toString();
+        },
+
+        parse: function(response) {
+            if (response.lectureScheduleRoot || response.lectureScheduleSubTree) {
+                var models = response.lectureScheduleRoot ? response.lectureScheduleRoot.rootNode : response.lectureScheduleSubTree.currentNode;
+                models = models.childNodes.childNode;
+                return _.chain(this.asArray(models))
+                    .reject(function(model) { return model === ""; })
+                    .reject(function(model) { return !model.headerId; })
+                    .map(function(model) {
+                        return {
+                            name: model.headerName,
+                            headerId: model.headerId,
+                            hasSubtree: model.subNodes.count !== "0"
+                        };
+                    })
+                    .value();
+            } else if (response.lectureScheduleCourses) {
+                var models = response.lectureScheduleCourses.currentNode.courses.course;
+                return _.chain(this.asArray(models))
+                    .reject(function(model) { return model === ""; })
+                    .reject(function(model) { return !model.courseId; })
+                    .map(function(model) {
+                        return {
+                            name: model.courseName,
+                            courseType: model.courseType,
+                            courseId: model.courseId
+                        };
+                    })
+                    .value();
+            }
+        }
+    });
+
+    /**
+     * @type {{name: string, headerId: string, hasSubtree: boolean}}
+     */
+    var VvzNavigationItem = {
+    };
+
+    /**
+     * @type {{hierarchy: Array.<VvzNavigationItem>}}
+     */
+    var VvzNavigation = {
+        hierarchy: [{headerId: undefined, name: "Vorlesungsverzeichnis", hasSubtree: true}],
+
+        /**
+         * Checks if the given headerId is contained within the hierarchy list. If it is, all entries after the item are discarded. If not, the item is added to the list. The empty id is always contained and reserved for the lectures root
+         * @param headerId
+         * @param name
+         * @param hasSubtree
+         * @returns VvzNavigationItem Last item of the new hierarchy
+         */
+        addOrReset: function(headerId, name, hasSubtree) {
+            var existingItemIndex = _.findIndex(this.hierarchy, function(item) { return item.headerId === headerId; });
+            if (existingItemIndex !== -1) {
+                this.hierarchy.splice(existingItemIndex + 1);
+            } else {
+                this.hierarchy.push({
+                    headerId: headerId,
+                    name: name,
+                    hasSubtree: hasSubtree
+                });
+            }
+            return this.hierarchy[this.hierarchy.length - 1];
+        },
+
+        /**
+         * Finds the given headerId within the hierarchy list and returns the entry
+         * @param headerId
+         * @returns VvzNavigationItem
+         */
+        find: function(headerId) {
+            return _.find(this.hierarchy, function(item) { return item.headerId === headerId; });
+        }
+    };
+
     return {
         VvzItem: VvzItem,
         CurrentVvz: CurrentVvz,
         VvzCollection: VvzCollection,
-        VvzHistory: VvzHistory
+        VvzHistory: VvzHistory,
+        VvzCategoryTypes: VvzCategoryTypes,
+        VvzCourseItem: VvzCourseItem,
+        VvzCategoryItem: VvzCategoryItem,
+        VvzCategory: VvzCategory,
+        VvzNavigation: VvzNavigation
     };
 });

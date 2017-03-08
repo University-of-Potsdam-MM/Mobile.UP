@@ -3,37 +3,23 @@ define([
 	'underscore',
 	'backbone',
 	'utils',
+	'view.utils',
 	'pmodules/lectures/lectures.models'
-], function($, _, Backbone, utils, lectures){
+], function($, _, Backbone, utils, viewUtils, lectures) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/lectures");
 
 	var currentVvz = new lectures.CurrentVvz;
 
 	var LectureNodeView = Backbone.View.extend({
 
-		events: {
-			"click": "loadChildren"
-		},
-
 		initialize: function() {
 			this.template = rendertmpl('lectures_items');
 		},
 
 		render: function() {
-			var html = this.template({model: this.model});
-
-			this.undelegateEvents();
-			this.$el = $(html);
-			this.delegateEvents();
-
+			this.setElement(this.template({model: this.model}));
+			this.$el.trigger("create");
 			return this;
-		},
-
-		loadChildren: function(ev) {
-			ev.preventDefault();
-			
-			console.log("Lade " + this.model.get("suburl"));
-			vvzHistory.openVvz(this.model);
 		}
 	});
 
@@ -45,64 +31,25 @@ define([
 
 		initialize: function() {
 			this.template = rendertmpl('lectures_courses');
+			this.loadChildren = _.once(_.bind(this.loadChildren, this));
 		},
 
 		render: function() {
-			var html = this.template({model: this.model});
-
-			this.undelegateEvents();
-			this.$el = $(html);
-			this.delegateEvents();
-
+			this.setElement(this.template({model: this.model}));
+			this.$el.trigger("create");
 			return this;
 		},
 
 		loadChildren: function() {
-			this.model.ensureSubmodelLoaded(_.bind(function(submodel) {
-				// Create view
-				new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
-				new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
+			var submodel = this.model.createCourse();
 
-				// Fetch from server
-				submodel.fetch(utils.cacheDefaults());
-			}, this));
+            // Create view
+            new LectureSingleCourseView({model: submodel, el: this.$("[data-role=listview]")});
+            new utils.LoadingView({model: submodel, el: this.$(".loading-host")});
+
+            // Fetch from server
+            submodel.fetch();
 		}
-	});
-
-	var LectureView = Backbone.View.extend({
-		childView: undefined,
-		childPredicate: undefined,
-		renderPostAction: undefined,
-
-		initialize: function() {
-			this.listenTo(this.collection, "reset", this.render);
-		},
-
-		render: function() {
-			this.$el.empty();
-
-			var that = this;
-			var children = this.collection.filter(this.childPredicate);
-			_.each(children, function(model) {
-				var view = new that.childView({model: model});
-				that.$el.append(view.render().$el);
-			});
-
-			this.renderPostAction();
-			return this;
-		}
-	});
-
-	var LectureNodesView = LectureView.extend({
-		childView: LectureNodeView,
-		childPredicate: function(model) { return model.get("isCategory"); },
-		renderPostAction: function() { this.$el.listview().listview("refresh"); }
-	});
-
-	var LectureCoursesView = LectureView.extend({
-		childView: LectureCourseView,
-		childPredicate: function(model) { return model.get("isCourse"); },
-		renderPostAction: function() { this.$el.collapsibleset().collapsibleset("refresh"); }
 	});
 
 	var EmptyListNotifier = Backbone.View.extend({
@@ -159,7 +106,6 @@ define([
 		},
 
 		render: function() {
-			//console.log("sync ausgelöst");
 			this.$el.append(this.template({model: this.model}));
 			this.$el.listview().listview("refresh");
 
@@ -167,7 +113,43 @@ define([
 		}
 	});
 
-	var vvzHistory = new lectures.VvzHistory;
+	app.views.LecturesCategory = Backbone.View.extend({
+
+		initialize: function(options) {
+			this.collection = options.currentNode;
+			this.setElement(options.page.find("#lecturesHost"));
+		},
+
+		render: function() {
+			if (this.collection.hasSubtree) {
+                new viewUtils.ListView({
+                    el: this.$("#lectureCategoryList"),
+                    collection: this.collection,
+                    view: LectureNodeView,
+                    postRender: function () {
+                        this.$el.listview().listview("refresh");
+                    }
+                }).render();
+			} else {
+                new viewUtils.ListView({
+                    el: this.$("#lectureCourseList"),
+                    collection: this.collection,
+                    view: LectureCourseView,
+                    postRender: function () {
+                        this.$el.collapsibleset().collapsibleset("refresh");
+                    }
+                }).render();
+			}
+
+			// TODO: Move loading anchor and empty anchor down so that the lists are always on top
+            new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
+            new EmptyListNotifier({collection: this.collection, el: this.$("#emptyListNotifier")});
+
+			return this;
+		}
+	});
+
+    var vvzHistory = new lectures.VvzHistory;
 
 	app.views.LecturesPage = Backbone.View.extend({
 		attributes: {"id": "lectures"},
@@ -177,65 +159,41 @@ define([
 			"click #selectLevel-menu li": "selectLevel"
 		},
 
-		initialize: function(){
+		initialize: function(options) {
 			this.template = rendertmpl('lectures');
-			this.listenToOnce(this, "render", this.prepareVvz);
+			this.vvzNavigation = options.vvzNavigation;
 
-			this.vvzHistory = vvzHistory;
-			this.listenTo(vvzHistory, "vvzChange", function(vvzHistory) { currentVvz.load(vvzHistory); });
-			this.listenTo(vvzHistory, "vvzChange", this.createPopupMenu);
-
-			this.listenTo(currentVvz.items, "error", this.requestFail);
-			
-			_.bindAll(this, 'render', 'requestFail', 'selectMenu', 'selectLevel', 'prepareVvz', 'createPopupMenu');
-		},
-
-		requestFail: function(error) {
-			var errorPage = new utils.ErrorView({el: '#lecturesHost', msg: 'Zurzeit nicht verfügbar.', module: 'lectures', err: error});
+			_.bindAll(this, 'selectMenu', 'selectLevel');
 		},
 
 		selectMenu: function(ev) {
 			ev.preventDefault();
-			$('#selectLevel-listbox').popup({ theme: "b" });
-			$('#selectLevel-listbox').popup("open");
+
+			this.$('#selectLevel-listbox').popup({ theme: "b" });
+			this.$('#selectLevel-listbox').popup("open");
+
+			return true;
 		},
 
 		selectLevel: function(ev) {
 			ev.preventDefault();
-			var selectedUrl = $('#selectLevel').find(":selected").attr("value");
-			vvzHistory.resetToUrl(selectedUrl);
+
+			var headerId = $('#selectLevel').find(":selected").attr("value");
+			if (headerId !== "0") {
+				var item = this.vvzNavigation.find(headerId);
+                app.route("#lectures/lectures/" + item.headerId + "/" + item.hasSubtree + "/" + encodeURIComponent(item.name));
+			} else {
+				app.route("#lectures/lectures");
+			}
+
+			return true;
 		},
 
-		/**
-		 * Initializes the views for the lecture course lists. This function may only be called after rendering the template because the views depend on anchors that are defined within the template.
-		 */
-		prepareVvz: function() {
-			new LectureNodesView({collection: currentVvz.items, el: this.$("#lectureCategoryList")});
-			new LectureCoursesView({collection: currentVvz.items, el: this.$("#lectureCourseList")});
-			new utils.LoadingView({collection: currentVvz.items, el: this.$("#loadingSpinner")});
-			new EmptyListNotifier({collection: currentVvz.items, el: this.$("#emptyListNotifier")});
-		},
+		render: function() {
+			this.$el.html(this.template({isRoot: this.vvzNavigation.hierarchy.length === 1, vvzHierarchy: this.vvzNavigation.hierarchy}));
+			this.$el.trigger("create");
+			this.$('#selectLevel-button').attr('href', '#');
 
-		createPopupMenu: function(history) {
-			var level = this.$("#selectLevel");
-
-			level.find('option').remove();
-			history.each(function(option) {
-				var node = $("<option>");
-				node.attr("value", option.get("suburl"));
-				node.text(option.get("name"));
-				level.prepend(node);
-			});
-			level.find('option').last().attr('selected', 'selected');
-			level.selectmenu().selectmenu('refresh', true);
-		},
-
-		render: function(){
-			$(this.el).html(this.template({}));
-			$(this.el).trigger("create");
-
-			this.trigger("render");
-			$('#selectLevel-button').attr('href', '#');
 			return this;
 		}
 	});

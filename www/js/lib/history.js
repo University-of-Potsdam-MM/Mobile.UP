@@ -46,6 +46,13 @@ define([
 				callback(this.history[this.history.length - 1].name);
 			}
 		},
+
+		resetTo: function(url) {
+            var existingItemIndex = _.findIndex(this.history, function(item) { return item.name === url; });
+            if (existingItemIndex !== -1) {
+                this.history.splice(existingItemIndex + 1);
+            }
+		},
 		
 		push: function(route) {
 			this.history.push({name: route});

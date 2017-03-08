@@ -1,31 +1,35 @@
 define([
     "controllers/baseController",
+    "history",
+    "pmodules/lectures/lectures.models",
     "pmodules/lectures/lectures"
-], function(BaseController) {
+], function(BaseController, customHistory, models) {
+
+    var vvzNavigation = models.VvzNavigation;
 
     return BaseController.extend({
         name: "lectures",
 
-        lectures: function (vvzUrls) {
-            if (vvzUrls) {
-                vvzUrls = decodeURIComponent(vvzUrls);
-                vvzUrls = atob(vvzUrls);
+        lectures: function(headerId, hasSubtree, name) {
+            try {
+                name = decodeURIComponent(name);
+            } catch(ex) {
             }
 
-            app.loadPage('lectures', 'index').done(function () {
-                var vvzHistory = app.currentView.vvzHistory;
-                console.log(vvzUrls);
-                if (vvzUrls != undefined) {
-                    vvzHistory.reset(JSON.parse(vvzUrls));
-                } else {
-                    vvzHistory.reset();
-                }
+            var url = "lectures/lectures";
+            if (headerId) {
+                url += "/" + headerId + "/" + hasSubtree + "/" + encodeURIComponent(name);
+            }
+            customHistory.resetTo(url);
 
-                vvzHistory.on("vvzNavigateRequired", function(vvzHistory) {
-                    var param = JSON.stringify(vvzHistory.toJSON());
-                    param = btoa(param);
-                    app.route("lectures/lectures/" + encodeURIComponent(param), true);
-                });
+            var data = vvzNavigation.addOrReset(headerId, name, hasSubtree === "true");
+            var model = new models.VvzCategory(null, data);
+
+            app.loadPage('lectures', 'category', {
+                currentNode: model,
+                vvzNavigation: vvzNavigation
+            }).done(function() {
+                model.fetch();
             });
         }
     });
