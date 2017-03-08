@@ -87,7 +87,7 @@ define([
 		d.klass = d.klass ? ' ' + d.klass : '';
 		d.home = d.home ? d.home : false;
 		d.store = LocalStore;
-		return _.template(renderheader.headerTemplateString, d);
+		return _.template(renderheader.headerTemplateString)(d);
 	};
 
 	var removeTabs = function(tmpl) {
