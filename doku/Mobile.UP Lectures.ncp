@@ -1,0 +1,164 @@
+<Project>
+  <Name>Mobile.UP Lectures</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Models</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>PulsAPI_Model</Name>
+        <Access>Public</Access>
+        <Location left="289" top="57" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PulsAPI_Collection</Name>
+        <Access>Public</Access>
+        <Location left="495" top="57" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>LecturesController</Name>
+        <Access>Public</Access>
+        <Location left="822" top="930" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Comment">
+        <Text>creates</Text>
+        <Location left="892" top="468" />
+        <Size width="160" height="75" />
+      </Entity>
+      <Entity type="Class">
+        <Name>VvzCategory</Name>
+        <Access>Public</Access>
+        <Location left="495" top="336" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String name</Member>
+        <Member type="Field">String headerId</Member>
+        <Member type="Method">public String url()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>VvzCategoryItem</Name>
+        <Access>Public</Access>
+        <Location left="822" top="605" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String type</Member>
+        <Member type="Field">String name</Member>
+        <Member type="Field">String headerId</Member>
+        <Member type="Field">boolean hasSubtree</Member>
+        <Member type="Method">VvzCategory createSubtree()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Comment">
+        <Text>creates</Text>
+        <Location left="1015" top="840" />
+        <Size width="160" height="75" />
+      </Entity>
+      <Entity type="Class">
+        <Name>VvzCourseItem</Name>
+        <Access>Public</Access>
+        <Location left="495" top="605" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">String type</Member>
+        <Member type="Field">String name</Member>
+        <Member type="Field">String courseId</Member>
+        <Member type="Field">String courseType</Member>
+        <Member type="Method">public VvzCourseContent createCourse()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>VvzCourseContent</Name>
+        <Access>Public</Access>
+        <Location left="495" top="930" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Comment">
+        <Text>creates</Text>
+        <Location left="583" top="840" />
+        <Size width="160" height="75" />
+      </Entity>
+      <Entity type="Class">
+        <Name>VvzNavigation</Name>
+        <Access>Public</Access>
+        <Location left="822" top="57" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">VvzNavigationItem[] hierarchy</Member>
+        <Member type="Method">public void addOrReset(String headerId)</Member>
+        <Member type="Method">public VvzNavigationItem find(String headerId)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="4" second="5">
+        <Label>models</Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Dependency" first="5" second="4">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>886</X>
+          <Y>573</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>834</X>
+          <Y>359</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="4" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>575</X>
+          <Y>309</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="7" second="8">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>577</X>
+          <Y>905</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="4" second="7">
+        <Label>models</Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>739</X>
+          <Y>444</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+      </Relationship>
+      <Relationship type="Generalization" first="8" second="0">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>373</X>
+          <Y>1045</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Dependency" first="2" second="5">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
