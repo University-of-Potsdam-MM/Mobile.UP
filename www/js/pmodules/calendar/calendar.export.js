@@ -37,7 +37,20 @@ define([
 		}
 	});
 
+    /**
+	 * A native calendar. Can import courses
+	 * @class
+     * @property {string} id Calendar id, necessary for native calendar API
+	 * @property {string] name Calendar name
+	 * @property {string} type Calendar type ("Local", "Subscription" or "Birthday" on iOS, empty on Android)
+	 * @property {CalendarEntries} entries
+     */
 	var Calendar = Backbone.Model.extend({
+		defaults: {
+			id: "-",
+			name: "-",
+			type: "-"
+		},
 
 		initialize: function() {
 			this.entries = new CalendarEntries();

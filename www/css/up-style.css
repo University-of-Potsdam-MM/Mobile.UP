@@ -2791,6 +2791,19 @@ p.event-description {
 #calendarexport p.finished {
 	font-weight:bold;
 }
+#calendarexport div.calendar-id {
+	float: left;
+	font-style: italic;
+	font-size: .9em;
+	font-weight: normal;
+}
+#calendarexport div.calendar-type {
+	float: right;
+	font-style: italic;
+	font-size: .9em;
+	font-weight: normal;
+	margin-right: 1em;
+}
 
 #emptyListNotifier p {
 	font-size: .9em;

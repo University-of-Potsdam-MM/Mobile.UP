@@ -7,7 +7,11 @@
 	<% if (!calendars.isEmpty()) { %>
 	<ul data-role="listview" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
 	<% calendars.each(function(calendar) { %>
-		<li data-icon="arrow-darkblue"><a href="#<%= calendar.attributes.id %>" class="calendar-link"><%= calendar.attributes.name %></a></li>
+		<li data-icon="arrow-darkblue"><a href="#<%= calendar.attributes.id %>" class="calendar-link">
+			<div class="calendar-name"><%= calendar.attributes.name %></div>
+			<div class="calendar-id">ID: <%= calendar.attributes.id %></div>
+			<div class="calendar-type">Typ: <%= calendar.attributes.type %></div>
+		</a></li>
 	<% }) %>
 	</ul>
 	<% } %>
