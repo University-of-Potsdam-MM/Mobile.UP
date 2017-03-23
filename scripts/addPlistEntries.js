@@ -9,6 +9,7 @@ module.exports = function (context) {
     var obj = plist.parse(xml);
 
     obj.NSCalendarsUsageDescription = 'Schreibzugriff auf Kalender für Stundenplan-Export';
+    obj.ITSAppUsesNonExemptEncryption = false;
 
     xml = plist.build(obj);
     fs.writeFileSync(FILEPATH, xml, { encoding: 'utf8' });
