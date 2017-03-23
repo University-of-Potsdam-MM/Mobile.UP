@@ -2,7 +2,7 @@ var fs        = require('fs');        // nodejs.org/api/fs.html
 var requirejs = require('requirejs'); // http://requirejs.org/docs/node.html#optimizer
 
 var TARGET_PATH = {
-    'ios': 'platforms/ios/assets/www/js/main.js', // TODO: check path
+    'ios': 'platforms/ios/www/js/main.js',
     'android': 'platforms/android/assets/www/js/main.js'
 };
 
