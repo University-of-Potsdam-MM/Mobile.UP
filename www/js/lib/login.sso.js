@@ -17,6 +17,7 @@ define([
      3. The caller must handle the redirection after a successful login
      If the user decides to close the browser window while a login is running, an error is issued.
      */
+    // TODO half of these actions do not work anymore because the IdP changed its URLs
     var basicActions = {
 
         /*
@@ -24,27 +25,36 @@ define([
          */
         ssoLogin: {
             type: "loadstop",
-            predicate: function (ev, loginRequest) { return ev.url === idpUrl && !loginRequest.loginAttemptStarted; },
+            predicate: function (ev, loginRequest) { return ev.url.startsWith(idpBaseUrl) && !loginRequest.loginAttemptStarted; },
             action: function (ev, loginRequest) {
-                console.log("Login inject required");
+                console.log("Testing for login injection");
 
-                var session = loginRequest.session;
-                var user = session.get("up.session.username");
-                var pw = session.get("up.session.password");
-                var enterCredentials = 'var user = document.getElementsByName("j_username");' +
-                    'user[0].value = ' + JSON.stringify(user) + ';' +
-                    'var pw = document.getElementsByName("j_password");' +
-                    'pw[0].value = ' + JSON.stringify(pw) + ';' +
-                    'document.forms["login"].submit()';
+                // Test for a login form
+                var testForLoginForm = '$("form#login").length;';
+                loginRequest.browser.executeScript({ code: testForLoginForm }, function(result) {
+                    console.log("Testing result is " + result);
+                    if (parseInt(result, 10) >= 1) {
+                        console.log("Login form found. Login injection starts now");
 
-                loginRequest.loginAttemptStarted = true;
-                loginRequest.browser.executeScript({ code: enterCredentials }, function(result) {});
+                        var session = loginRequest.session;
+                        var user = session.get("up.session.username");
+                        var pw = session.get("up.session.password");
+                        var enterCredentials =
+                            '$("form#login #username").val(' + JSON.stringify(user) + ');' +
+                            '$("form#login #password").val(' + JSON.stringify(pw) + ');' +
+                            '$("form#login .loginbutton").click();';
+
+                        loginRequest.loginAttemptStarted = true;
+                        loginRequest.browser.executeScript({ code: enterCredentials }, function(result) {})
+                    }
+                });
             }
         },
 
         /*
          1.2 Although there already was a login attempt, we are taken to the login mask. There could be a technical problem, but we assume the login data was invalid. We have to listen for loadstop because posting the login data the first time results in a loadstart on the IdP url
          */
+        // TODO doesn't work anymore
         loginFailed: {
             type: "loadstop",
             predicate: function(ev, loginRequest) { return ev.url === idpUrl && loginRequest.loginAttemptStarted; },
@@ -56,6 +66,7 @@ define([
         /*
          2. The user has to sign an attribute release to confirm that he wants the platform to access his data. If the user disagrees, the IdP asks him to close the browser, which we detect. If the user agrees, he is taken to the platform he came from
          */
+        // TODO doesn't work anymore
         attributeRelease: {
             type: "loadstop",
             predicate: function(ev) { return ev.url === attributeReleaseUrl; },
@@ -93,6 +104,7 @@ define([
             .each(function(action) { action.action(event, loginRequest, loginRequest.browser); });
     };
 
+    var idpBaseUrl = "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO";
     var idpUrl = "https://idp.uni-potsdam.de/idp/Authn/UserPassword";
     var attributeReleaseUrl = "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease";
 
