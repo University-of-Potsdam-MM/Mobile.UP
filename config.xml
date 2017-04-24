@@ -2,9 +2,9 @@
 <widget
     id="de.floriangoessler.upapp"
     android-packageName="de.floriangoessler.upapp"
-    version="4.1.0"
-    android-versionCode="40102"
-    ios-CFBundleVersion="201703091636"
+    version="4.1.3"
+    android-versionCode="40103"
+    ios-CFBundleVersion="201704240846"
     ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:gap="http://phonegap.com/ns/1.0">
@@ -123,7 +123,7 @@
     <plugin name="cordova-plugin-device" spec="^1.1.2" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-network-information" spec="^1.2.1" />
-    <plugin name="com.borismus.webintent" spec="https://github.com/Initsogar/cordova-webintent.git" />
+    <plugin name="com.borismus.webintent" spec="https://github.com/InQBarna/WebIntent.git" />
     <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
     <plugin name="cordova-plugin-console" spec="^1.0.4" />
 
