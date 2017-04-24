@@ -75,7 +75,7 @@ define([
         var params = {
           moodlewsrestformat:'json',
           wstoken: this.token(),
-          wsfunction:'core_webservice_get_siteinfo',
+          wsfunction:'core_webservice_get_site_info',
         };
 
         return cors_post(this.url, params)
