@@ -62,7 +62,8 @@ define([
     var openBrowser = function(session, success, error) {
         var loginRequest = {
             session: session,
-            browser: window.open(pluginUrl, "_blank", "clearcache=yes,clearsessioncache=yes,hidden=yes"),
+            // TODO we don't hide the browser window because we can't detect the necessary manual steps like accepting EULAs
+            browser: window.open(pluginUrl, "_blank", "clearcache=yes,clearsessioncache=yes"),
             // No error on Moodle token. We can't load those but we already handle them in actions.retrieveToken
             errorPredicate: function(ev) { return ev.url.indexOf(tokenUrl) === -1 && ev.url.indexOf("http://" + tokenUrl) === -1; }
         };
