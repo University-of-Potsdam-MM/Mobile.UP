@@ -647,6 +647,15 @@ div.timebar {
 	display: block;
 }
 
+.speiseplan .mensa-prices {
+	margin-bottom: 14px !important;
+	margin-top: 7px !important;
+}
+
+.speiseplan .mensa-allergens {
+	font-size: smaller;
+}
+
 /**** Tipps ***********************************
 ----------------------------------------------*/
 .tipp-title-container {

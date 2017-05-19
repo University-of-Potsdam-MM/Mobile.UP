@@ -55,6 +55,7 @@ define([
                 mealData.description = meal.description.replace(/\(.*\)/g, "");
                 mealData.date = meal.date;
                 mealData.order = meal["@order"];
+                mealData.allergens = meal.allergens;
 
                 mealData.prices = {};
                 if (meal.prices) {
