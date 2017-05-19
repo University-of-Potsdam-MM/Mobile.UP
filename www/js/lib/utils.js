@@ -126,6 +126,9 @@ define([
 	function checkOffline() {
 		var networkState = navigator.connection.type;
 
+		if (typeof Connection === "undefined")
+			return false;
+
 		var states = {};
 		states[Connection.UNKNOWN]  = 'Unknown connection';
 		states[Connection.ETHERNET] = 'Ethernet connection';
