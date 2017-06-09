@@ -20,14 +20,14 @@ define([
                 "golm": "Golm",
                 "UlfsCafe": "UlfsCafe"
             };
-            return "https://api.uni-potsdam.de/endpoints/mensaAPI/1.0/readCurrentMeals?format=json&location=" + mapper[this.location];
+            return "https://api.uni-potsdam.de/endpoints/mensaAPI/2.0/meals?location=" + mapper[this.location];
         },
 
         parse: function(response) {
             // Map data format
             var date = this.date;
-            var icons = response.readCurrentMealsResponse.meals.iconHashMap.entry;
-            var meals = response.readCurrentMealsResponse.meals.meal;
+            var icons = response.iconHashMap.entry;
+            var meals = response.meal;
             var mappedMeals = _.map(meals, this.mapToMeal(this.convertToMap(icons)));
 
             // Filter for correct day
