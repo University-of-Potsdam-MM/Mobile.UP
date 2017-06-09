@@ -24,6 +24,7 @@
 		<% } %>
 	</div>
 
+	<% if (model.prices) { %>
 	<p class="mensa-prices">
 		<% if (model.prices.students) { %>
 		Studierende: <% print(Number(model.prices.students).toFixed(2)); %> €<br />
@@ -35,6 +36,7 @@
 		Gäste: <% print(Number(model.prices.guests).toFixed(2)); %> €
 		<% } %>
 	</p>
+	<% } %>
 
 	<% if (model.allergens) { %>
 	<%   for (var count = 0; count < model.allergens.length; count++) { %>

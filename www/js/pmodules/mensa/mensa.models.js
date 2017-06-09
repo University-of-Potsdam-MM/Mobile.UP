@@ -57,15 +57,11 @@ define([
                 mealData.order = meal["@order"];
                 mealData.allergens = meal.allergens;
 
-                mealData.prices = {};
                 if (meal.prices) {
+                    mealData.prices = {};
                     mealData.prices.students = meal.prices.student;
                     mealData.prices.staff = meal.prices.staff;
                     mealData.prices.guests = meal.prices.guest;
-                } else {
-                    mealData.prices.students = "?";
-                    mealData.prices.staff = "?";
-                    mealData.prices.guests = "?";
                 }
 
                 mealData.ingredients = [];
