@@ -321,7 +321,7 @@ define([
 			options.contentType = "application/json";
 			options.method = "POST";
 			options.data = this._data(this.session.get('up.session.username'), this.session.get('up.session.password'));
-			return Backbone.Model.prototype.sync.call(this, method, model, options);
+			return Backbone.Collection.prototype.sync.call(this, method, model, options);
 		},
 
 		_data: function(username, password) {
