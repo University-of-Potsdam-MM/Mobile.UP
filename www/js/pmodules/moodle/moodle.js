@@ -5,9 +5,8 @@ define([
         'utils',
         'pmodules/moodle/moodle.api',
         'pmodules/moodle/moodle.utils',
-        'Session',
-        'pmodules/moodle/moodle.sso.login'
-], function( $, _, Backbone, utils, moodleAPI, moodleUtils, Session, moodleSSO) {
+        'Session'
+], function($, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
     var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
 
     "use strict";
