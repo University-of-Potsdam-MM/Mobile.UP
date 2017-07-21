@@ -91,12 +91,23 @@ define([
         });
     };
 
+    /**
+     * Creates a login token and writes it into the given session
+     * @param session
+     * @returns {*}
+     */
     var createToken = function(session) {
         var promise = $.Deferred();
         openBrowser2(session, undefined, promise.resolve, promise.reject);
         return promise.promise();
     };
 
+    /**
+     * Executes a login if the browser visits a moodle page
+     * @param session
+     * @param browser
+     * @returns {*}
+     */
     var loginUser = function(session, browser) {
         var promise = $.Deferred();
         openBrowser2(session, browser, promise.resolve, promise.reject);
