@@ -59,48 +59,41 @@ define([
     var loginUrl = moodleBase + "/login/index.php";
     var tokenUrl = "moodlemobile://token=";
 
-    var openBrowser = function(session, success, error) {
-        var loginRequest = {
-            session: session,
-            // TODO we don't hide the browser window because we can't detect the necessary manual steps like accepting EULAs
-            browser: window.open(pluginUrl, "_blank", "clearcache=yes,clearsessioncache=yes"),
-            // No error on Moodle token. We can't load those but we already handle them in actions.retrieveToken
-            errorPredicate: function(ev) { return ev.url.indexOf(tokenUrl) === -1 && ev.url.indexOf("http://" + tokenUrl) === -1; }
-        };
-
-        var freeBrowser = function(callback) {
-            loginRequest.browser.close();
-            // Waiting for browser to finish closing. Otherwise we might get a NullPointerExeption in the next InAppBrowser instance
-            setTimeout(callback, 2000);
-        };
-
-        loginSso.executeSsoLogin(actions, loginRequest).done(function(loginRequest) {
-            console.log("Moodle SSO login succeeded");
-            freeBrowser(_.partial(success, loginRequest));
-        }).fail(function(loginRequest) {
-            console.log("Moodle SSO login failed, reason " + loginRequest.errorCode);
-            freeBrowser(_.partial(error, loginRequest));
-        });
-    };
-
     var openBrowser2 = function(session, browser, success, error) {
         var loginRequest = {
             session: session,
             browser: browser
         };
 
+        var cleanup = function(callback) {
+            callback();
+        };
+
+        if (!browser) {
+            // TODO we don't hide the browser window because we can't detect the necessary manual steps like accepting EULAs
+            loginRequest.browser = window.open(pluginUrl, "_blank", "clearcache=yes,clearsessioncache=yes");
+            // No error on Moodle token. We can't load those but we already handle them in actions.retrieveToken
+            loginRequest.errorPredicate = function(ev) { return ev.url.indexOf(tokenUrl) === -1 && ev.url.indexOf("http://" + tokenUrl) === -1; };
+
+            cleanup = function(callback) {
+                loginRequest.browser.close();
+                // Waiting for browser to finish closing. Otherwise we might get a NullPointerExeption in the next InAppBrowser instance
+                setTimeout(callback, 2000);
+            };
+        }
+
         loginSso.executeSsoLogin(actions, loginRequest).done(function(loginRequest) {
             console.log("Moodle SSO login succeeded");
-            success(loginRequest);
+            cleanup(_.partial(success, loginRequest));
         }).fail(function(loginRequest) {
-            console.log("Moodle SSO login failed");
-            error(loginRequest);
+            console.log("Moodle SSO login failed, reason " + loginRequest.errorCode);
+            cleanup(_.partial(error, loginRequest));
         });
     };
 
     var createToken = function(session) {
         var promise = $.Deferred();
-        openBrowser(session, promise.resolve, promise.reject);
+        openBrowser2(session, undefined, promise.resolve, promise.reject);
         return promise.promise();
     };
 
