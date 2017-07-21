@@ -122,20 +122,18 @@ define([
 			this.timerHelper.updateCountdown();
 			if (this.timerHelper.isLoginAllowed()) {
 
-				var username = $('#username').val();
-				var password = $('#password').val();
+                this.model.set("up.session.username", $('#username').val());
+                this.model.set("up.session.password", $('#password').val());
 
 				if (this.loadingView) {
 					this.loadingView.spinnerOn();
 				}
 
 				var that = this;
-				login.executeLogin({
-					username: username,
-					password: password,
-					session: that.model
-				}).progress(function(login) {
-					$('#username').val(login.username);
+				login.executeLogin(
+                    this.model
+				).progress(function(session) {
+					$('#username').val(session.get("up.session.username"));
 				}).done(function(session) {
 					that.timerHelper.unsetFailureTimer();
 

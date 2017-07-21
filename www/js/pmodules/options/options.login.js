@@ -6,31 +6,33 @@ define([
     'utils'
 ], function($, _, Session, moodleSSO, utils) {
 
-    var cleanUsername = function(login, promise) {
+    var cleanUsername = function(session, promise) {
+        var username = session.get("up.session.username");
+
         // Remove mail suffix, only username is needed
-        var suffixIndex = login.username.indexOf("@");
+        var suffixIndex = username.indexOf("@");
         if (suffixIndex != -1) {
-            login.username = login.username.substr(0, suffixIndex);
-            promise.notify(login);
+            username = username.substr(0, suffixIndex);
+
+            session.set("up.session.username", username);
+            promise.notify(session);
         }
 
         // Usernames have to be all lower case, otherwise some service logins will fail
-        login.username = login.username.toLowerCase();
-        promise.notify(login);
+        username = username.toLowerCase();
+
+        session.set("up.session.username", username);
+        promise.notify(session);
     };
 
-    var executeUserPasswordLogin = function(login) {
+    var executeUserPasswordLogin = function(session) {
         var result = $.Deferred();
 
-        cleanUsername(login, result);
-
-        var session = login.session;
-        session.set("up.session.username", login.username);
-        session.set("up.session.password", login.password);
+        cleanUsername(session, result);
 
         var url = "https://api.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php";
-        url +="?username="+encodeURIComponent(login.username);
-        url +="&password="+encodeURIComponent(login.password);
+        url +="?username="+encodeURIComponent(session.get("up.session.username"));
+        url +="&password="+encodeURIComponent(session.get("up.session.password"));
         url +="&service=moodle_mobile_app&moodlewsrestformat=json";
 
         $.ajax({
@@ -50,14 +52,10 @@ define([
         return result.promise();
     };
 
-    var executeSsoLogin = function(login) {
+    var executeSsoLogin = function(session) {
         var result = $.Deferred();
 
-        cleanUsername(login, result);
-
-        var session = login.session;
-        session.set("up.session.username", login.username);
-        session.set("up.session.password", login.password);
+        cleanUsername(session, result);
 
         moodleSSO.createToken(session).done(function() {
             result.resolve(session);
@@ -78,17 +76,14 @@ define([
 
     /**
      * Handles the login of a user. If in browser, a simple login is performed. If in app, a SSO login is performed and a Moodle token is fetched.
-     * @param {Object} login Login data
-     * @param {string} login.username Username
-     * @param {string} login.password Password
-     * @param {Session} login.session Session object to be used
+     * @param {Session} session Session object with username and password
      * @returns {*} jQuery promise. On successful login the promise is resolved with a Session. On failed login the promise is resolved with an error object containing error message and error code. On modified login data the promise is updated / notified with the login object.
      */
-    var executeLogin = function(login) {
+    var executeLogin = function(session) {
         if (window.cordova) {
-            return executeSsoLogin(login);
+            return executeSsoLogin(session);
         } else {
-            return executeUserPasswordLogin(login);
+            return executeUserPasswordLogin(session);
         }
     };
 
