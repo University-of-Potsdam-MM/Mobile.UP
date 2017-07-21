@@ -25,7 +25,7 @@ require.config({
         'uri': 'vendor/src',
         'history': 'lib/history',
         'moodle.download': 'lib/moodle.download',
-        'login.sso': 'lib/login.sso',
+        'login.sso': 'lib/sso/login.sso',
         'stateful.models': 'lib/StatefulModels',
         'PulsAPI': 'lib/PulsAPI',
         'headerParser': 'lib/headerParser'
