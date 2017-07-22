@@ -4,8 +4,8 @@
 define([
     'jquery',
     'underscore',
-    'login.sso'
-], function( $, _, loginSso) {
+    './login.sso'
+], function($, _, loginSso) {
 
     var ERROR_TECHNICAL = 1;
 

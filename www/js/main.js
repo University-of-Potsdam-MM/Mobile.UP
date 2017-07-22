@@ -24,8 +24,8 @@ require.config({
         'hammerjs': 'vendor/hammer',
         'uri': 'vendor/src',
         'history': 'lib/history',
+        'UpApi': 'lib/UpApi',
         'moodle.download': 'lib/moodle.download',
-        'login.sso': 'lib/sso/login.sso',
         'stateful.models': 'lib/StatefulModels',
         'PulsAPI': 'lib/PulsAPI',
         'headerParser': 'lib/headerParser'
@@ -44,7 +44,9 @@ require.config({
             'i18next': 'vendor/i18next',
             'i18next-xhr-backend': 'vendor/i18nextXHRBackend.min',
             'suncalc': 'vendor/suncalc',
-            'i18next-client': 'vendor/i18next.amd'
+            'i18next-client': 'vendor/i18next.amd',
+            // SSO login has relative dependencies, too
+            'login': 'lib/sso/login.sso.common'
         }
     }
 });

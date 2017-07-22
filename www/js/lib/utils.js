@@ -6,10 +6,11 @@ define([
 	'hammerjs',
 	'uri/URI',
 	'moodle.download',
-	'pmodules/moodle/moodle.sso.login',
+	'login',
+	'UpApi',
 	'underscore.string',
 	'cache'
-], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, moodleSso, _str){
+], function($, _, Backbone, Session, Hammer, URI, MoodleDownload, moodleSso, upApi, _str){
 
 	// Necessary IE workaround. See
 	//
@@ -117,7 +118,7 @@ define([
 	 * Retreive authorization token
 	 */
 	var getAuthHeader = function() {
-		return "Bearer c06156e119040a27a4b43fa933f130";
+		return upApi.getAuthHeader();
 	};
 
 	/**

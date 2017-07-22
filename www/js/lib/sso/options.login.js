@@ -2,9 +2,9 @@ define([
     'jquery',
     'underscore',
     'Session',
-    'pmodules/moodle/moodle.sso.login',
-    'utils'
-], function($, _, Session, moodleSSO, utils) {
+    './moodle.sso.login',
+    'UpApi'
+], function($, _, Session, moodleSSO, upApi) {
 
     var cleanUsername = function(session, promise) {
         var username = session.get("up.session.username");
@@ -37,7 +37,7 @@ define([
 
         $.ajax({
             url: url,
-            headers: { "Authorization": utils.getAuthHeader() }
+            headers: { "Authorization": upApi.getAuthHeader() }
         }).done(function(response) {
             if(response['error']) {
                 result.reject({ code: response.error });

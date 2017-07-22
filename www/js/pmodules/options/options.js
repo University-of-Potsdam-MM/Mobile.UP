@@ -5,7 +5,7 @@ define([
 		'underscore',
 		'backbone',
 		'Session',
-		'pmodules/options/options.login',
+		'login',
 		'utils'
 ], function($, _, Backbone, Session, login, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/options");
