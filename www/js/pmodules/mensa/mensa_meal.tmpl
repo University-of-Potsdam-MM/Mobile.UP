@@ -38,12 +38,12 @@
 	</p>
 	<% } %>
 
-	<% if (model.allergens) { %>
-	<%   for (var count = 0; count < model.allergens.length; count++) { %>
 	<p class="mensa-allergens">
-		<% var allergen = model.allergens[count]; %>
-		(<%= allergen.shortName %>) <%= allergen.longName %>, <%= allergen.descriptionType %>: <%= allergen.description %>
+		<% if (model.allergens) { %>
+		<%   for (var count = 0; count < model.allergens.length; count++) { %>
+		<%     var allergen = model.allergens[count]; %>
+		<a href="http://studentenwerk-potsdam.de/?id=649#<%= allergen.shortName.toLowerCase() %>">(<%= allergen.shortName %>)</a>
+		<%   } %>
+		<% } %>
 	</p>
-	<%   } %>
-	<% } %>
 </div>
