@@ -234,7 +234,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c17411",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; Aug 14-Oct 08 closed; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -321,7 +321,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c16459",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
-    "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-15:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-15:00; Aug 14-Oct 08 Mo-Th 10:00-16:00; Aug 14-Oct 08 Fr 10:00-15:00; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -350,7 +350,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-am-neuen-palais.html",
     "mail": "ehrlich@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1292",
-    "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-15:00; PH off; Dec 21-22 08:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 10:00-16:00; Fr 10:00-15:00; Aug 14-Oct 08 Mo-Th 10:00-15:00; Aug 14-Oct 08 Fr 10:00-14:30; PH off; Dec 21-22 08:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -379,7 +379,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-griebnitzsee.html",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-15:00; Sa 09:30-13:00; PH off; Dec 19-22 08:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-15:00; Sa 09:30-13:00; Aug 14-Oct 08 Mo-Fr 08:00-15:00; Aug 14-Oct 08 Sa closed; PH off; Dec 19-22 08:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -412,7 +412,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-golm.html",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
-    "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; PH off; Dec 19-22 09:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; Aug 14-Oct 08 Mo-Fr 09:00-15:00; PH off; Dec 19-22 09:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -439,7 +439,7 @@
   {
     "name": "Bereichsbibliothek Babelsberg (Haus 5)",
     "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-iii-babelsberg.html",
-    "opening_hours": "Mo-Fr 09:00-22:00; Sa 09:00-18:00; Su 12:00-18:00; PH off; Dec 21-22 09:00-18:00; Dec 23 09:00-13:00; Dec 24-Jan 01 closed",
+    "opening_hours": "Mo-Fr 09:00-22:00; Sa 09:00-18:00; Su 12:00-18:00; Aug 14-Oct 08 Mo-Th 09:00-22:00; Aug 14-Oct 08 Fr 09:00-18:00; Aug 14-Oct 08 Sa 09:00-18:00; Aug 14-Oct 08 Su closed; PH off; Dec 21-22 09:00-18:00; Dec 23 09:00-13:00; Dec 24-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -472,9 +472,9 @@
     ]
   },
   {
-    "name": "Bereichsbibliothek Golm im IKMZ",
+    "name": "Bereichsbibliothek Golm im IKMZ (Haus 18)",
     "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-ii-golm-ikmz.html",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-18:00; PH off; Dec 21-22 09:00-18:00; Dec 23 09:00-13:00; Dec 24-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-18:00; Aug 14-Oct 08 Mo-Th 09:00-20:00; Aug 14-Oct 08 Fr 09:00-18:00; Aug 14-Oct 08 Sa 10:00-15:00; PH off; Dec 21-22 09:00-18:00; Dec 23 09:00-13:00; Dec 24-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -505,7 +505,7 @@
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 10)",
     "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
-    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-15:00; PH off; Dec 21-22 09:00-18:00; Dec 23 09:00-13:00; Dec 24-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-22:00; Fr 09:00-18:00; Sa 10:00-15:00; Aug 14-Oct 08 Mo-Th 09:00-19:00; Aug 14-Oct 08 Fr 09:00-18:00; Aug 14-Oct 08 Sa 10:00-15:00; PH off; Dec 21-23 closed; Dec 24-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -536,7 +536,7 @@
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 9)",
     "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
-    "opening_hours": "Mo-Fr 09:00-18:00; PH off; Dec 21-23 closed; Dec 24-Jan 01 closed",
+    "opening_hours": "Mo-Fr 09:00-18:00; Aug 14-Oct 08 Mo-Fr 09:00-16:00; PH off; Dec 21-23 closed; Dec 24-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -563,7 +563,7 @@
   {
     "name": "Bereichsbibliothek Neues Palais (Haus 11)",
     "link": "http://www.ub.uni-potsdam.de/benutzung/standorte-und-oeffnungszeiten/campus-i-neues-palais.html",
-    "opening_hours": "Mo-Fr 09:00-18:00; PH off; Dec 21-23 closed; Dec 24-Jan 01 closed",
+    "opening_hours": "Mo-Fr 09:00-18:00; Aug 14-Oct 08 Mo-Fr 09:00-16:00; PH off; Dec 21-23 closed; Dec 24-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
