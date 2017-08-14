@@ -652,8 +652,8 @@ div.timebar {
 	margin-top: 7px !important;
 }
 
-.speiseplan .mensa-allergens {
-	font-size: smaller;
+.speiseplan .mensa-allergens a {
+	font-size: 1em;
 }
 
 /**** Tipps ***********************************
