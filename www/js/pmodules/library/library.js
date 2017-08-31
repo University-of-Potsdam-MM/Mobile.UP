@@ -260,7 +260,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
       maximumRecords: 10
     },
 
-    baseUrl: 'https://api.uni-potsdam.de/endpoints/libraryAPI/1.0',
+    baseUrl: 'https://apiup.uni-potsdam.de/endpoints/libraryAPI',
 
     initialize: function(){
       this.listenTo(this, "error", this.requestFail);

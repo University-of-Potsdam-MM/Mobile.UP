@@ -20,7 +20,7 @@ define([
                 "golm": "Golm",
                 "UlfsCafe": "UlfsCafe"
             };
-            return "https://api.uni-potsdam.de/endpoints/mensaAPI/2.0/meals?location=" + mapper[this.location];
+            return "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals?location=" + mapper[this.location];
         },
 
         parse: function(response) {
