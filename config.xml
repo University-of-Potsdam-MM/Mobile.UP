@@ -38,38 +38,38 @@
 
     <!-- App icons -->
     <platform name="android">
-        <icon density="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
-        <icon density="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
-        <icon density="hdpi" src="www/res/icon/android/icon-72-hdpi.png" />
-        <icon density="xhdpi" src="www/res/icon/android/icon-96-xhdpi.png" />
+        <icon density="ldpi" src="res/icon/android/icon-36-ldpi.png" />
+        <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
     </platform>
     <platform name="ios">
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
-        <icon height="180" width="180" src="www/res/icon/ios/icon-60@3x.png" />
+        <icon height="180" width="180" src="res/icon/ios/icon-60@3x.png" />
         <!-- iOS 7.0+ -->
         <!-- iPhone / iPod Touch  -->
-        <icon height="60"  width="60"  src="www/res/icon/ios/icon-60.png" />
-        <icon height="120" width="120" src="www/res/icon/ios/icon-60@2x.png" />
+        <icon height="60"  width="60"  src="res/icon/ios/icon-60.png" />
+        <icon height="120" width="120" src="res/icon/ios/icon-60@2x.png" />
         <!-- iPad -->
-        <icon height="76"  width="76"  src="www/res/icon/ios/icon-76.png" />
-        <icon height="152" width="152" src="www/res/icon/ios/icon-76@2x.png" />
+        <icon height="76"  width="76"  src="res/icon/ios/icon-76.png" />
+        <icon height="152" width="152" src="res/icon/ios/icon-76@2x.png" />
         <!-- iOS 6.1 -->
         <!-- Spotlight Icon -->
-        <icon height="40"  width="40"  src="www/res/icon/ios/icon-40.png" />
-        <icon height="80"  width="80"  src="www/res/icon/ios/icon-40@2x.png" />
+        <icon height="40"  width="40"  src="res/icon/ios/icon-40.png" />
+        <icon height="80"  width="80"  src="res/icon/ios/icon-40@2x.png" />
         <!-- iPhone / iPod Touch -->
-        <icon height="57"  width="57"  src="www/res/icon/ios/icon-57.png" />
-        <icon height="114" width="114" src="www/res/icon/ios/icon-57@2x.png" />
+        <icon height="57"  width="57"  src="res/icon/ios/icon-57.png" />
+        <icon height="114" width="114" src="res/icon/ios/icon-57@2x.png" />
         <!-- iPad -->
-        <icon height="72"  width="72"  src="www/res/icon/ios/icon-72.png" />
-        <icon height="144" width="144" src="www/res/icon/ios/icon-72@2x.png" />
+        <icon height="72"  width="72"  src="res/icon/ios/icon-72.png" />
+        <icon height="144" width="144" src="res/icon/ios/icon-72@2x.png" />
         <!-- iPhone Spotlight and Settings Icon -->
-        <icon height="29"  width="29"  src="www/res/icon/ios/icon-29.png" />
-        <icon height="58"  width="58"  src="www/res/icon/ios/icon-29@2x.png" />
+        <icon height="29"  width="29"  src="res/icon/ios/icon-29.png" />
+        <icon height="58"  width="58"  src="res/icon/ios/icon-29@2x.png" />
         <!-- iPad Spotlight and Settings Icon -->
-        <icon height="50"  width="50"  src="www/res/icon/ios/icon-50.png" />
-        <icon height="100" width="100" src="www/res/icon/ios/icon-50@2x.png" />
+        <icon height="50"  width="50"  src="res/icon/ios/icon-50.png" />
+        <icon height="100" width="100" src="res/icon/ios/icon-50@2x.png" />
     </platform>
 
     <!-- Splash screens -->
@@ -79,27 +79,27 @@
     <preference name="FadeSplashScreen" value="true"/>
     <preference name="FadeSplashScreenDuration" value="500"/>
     <platform name="android">
-        <splash density="port-ldpi"  src="www/res/screen/android/screen-ldpi-portrait.png" />
-        <splash density="port-mdpi"  src="www/res/screen/android/screen-mdpi-portrait.png" />
-        <splash density="port-hdpi"  src="www/res/screen/android/screen-hdpi-portrait.png" />
-        <splash density="port-xhdpi" src="www/res/screen/android/screen-xhdpi-portrait.png" />
-        <splash density="land-ldpi"  src="www/res/screen/android/screen-ldpi-landscape.png" />
-        <splash density="land-mdpi"  src="www/res/screen/android/screen-mdpi-landscape.png" />
-        <splash density="land-hdpi"  src="www/res/screen/android/screen-hdpi-landscape.png" />
-        <splash density="land-xhdpi" src="www/res/screen/android/screen-xhdpi-landscape.png" />
+        <splash density="port-ldpi"  src="res/screen/android/screen-ldpi-portrait.png" />
+        <splash density="port-mdpi"  src="res/screen/android/screen-mdpi-portrait.png" />
+        <splash density="port-hdpi"  src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
+        <splash density="land-ldpi"  src="res/screen/android/screen-ldpi-landscape.png" />
+        <splash density="land-mdpi"  src="res/screen/android/screen-mdpi-landscape.png" />
+        <splash density="land-hdpi"  src="res/screen/android/screen-hdpi-landscape.png" />
+        <splash density="land-xhdpi" src="res/screen/android/screen-xhdpi-landscape.png" />
     </platform>
     <platform name="ios">
-        <splash width="1024" height="768"  src="www/res/screen/ios/screen-ipad-landscape.png" />
-        <splash width="2048" height="1536" src="www/res/screen/ios/screen-ipad-landscape-2x.png" />
-        <splash width="768"  height="1024" src="www/res/screen/ios/screen-ipad-portrait.png" />
-        <splash width="1536" height="2048" src="www/res/screen/ios/screen-ipad-portrait-2x.png" />
-        <splash width="320"  height="480"  src="www/res/screen/ios/screen-iphone-portrait.png" />
-        <splash width="640"  height="960"  src="www/res/screen/ios/screen-iphone-portrait-2x.png" />
-        <splash width="640"  height="1136" src="www/res/screen/ios/screen-iphone-portrait-568h-2x.png" />
+        <splash width="1024" height="768"  src="res/screen/ios/screen-ipad-landscape.png" />
+        <splash width="2048" height="1536" src="res/screen/ios/screen-ipad-landscape-2x.png" />
+        <splash width="768"  height="1024" src="res/screen/ios/screen-ipad-portrait.png" />
+        <splash width="1536" height="2048" src="res/screen/ios/screen-ipad-portrait-2x.png" />
+        <splash width="320"  height="480"  src="res/screen/ios/screen-iphone-portrait.png" />
+        <splash width="640"  height="960"  src="res/screen/ios/screen-iphone-portrait-2x.png" />
+        <splash width="640"  height="1136" src="res/screen/ios/screen-iphone-portrait-568h-2x.png" />
         <!-- FIXME: Dummy screens -->
-        <splash width="750"  height="1334" src="www/res/screen/ios/Default-667h.png" />
-        <splash width="1242" height="2208" src="www/res/screen/ios/Default-736h.png" />
-        <splash width="2208" height="1242" src="www/res/screen/ios/Default-Landscape-736h.png" />
+        <splash width="750"  height="1334" src="res/screen/ios/Default-667h.png" />
+        <splash width="1242" height="2208" src="res/screen/ios/Default-736h.png" />
+        <splash width="2208" height="1242" src="res/screen/ios/Default-Landscape-736h.png" />
     </platform>
 
     <!-- File download (Moodle) -->
