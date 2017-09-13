@@ -283,7 +283,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'opening_hours', 'moment', 
      */
 	var Openings = Backbone.Collection.extend({
         model: Opening,
-        url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/opening.json',
+        url: 'https://apiup.uni-potsdam.de/endpoints/staticContent/1.0/opening.json',
         //url: 'js/json/opening.json',
         comparator: 'name',
 

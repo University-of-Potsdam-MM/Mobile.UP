@@ -9,7 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 	// collection for tipp items
 	var Tipps = Backbone.Collection.extend({
 		model: Tipp,
-		url: 'https://api.uni-potsdam.de/endpoints/staticContent/1.0/tipps.json',
+		url: 'https://apiup.uni-potsdam.de/endpoints/staticContent/1.0/tipps.json',
 		comparator: 'name'
 	});
 

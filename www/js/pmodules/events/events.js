@@ -1,7 +1,7 @@
 define(['jquery', 'underscore', 'backbone', 'utils', 'date', 'viewContainer'], function($, _, Backbone, utils, date, viewContainer){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/events");
 
-	var server = 'https://api.uni-potsdam.de/endpoints/newsAPI';
+	var server = 'https://apiup.uni-potsdam.de/endpoints/newsAPI';
 
 	var events = {};
 	var places = {};
