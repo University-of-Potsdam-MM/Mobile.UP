@@ -20,7 +20,7 @@
 				"description": "* Studierendenausweis <br>* Semesterticket <br>* Bibliotheksausweis <br>* Kopier- und Druckkarte <br>* Geldkarte zur Bezahlung in Mensen, Cafeterien und Bibliotheken der Uni Potsdam",
 				"anchor": "puck",
 				"links": [
-					{ 
+					{
 						"name": "weitere Infos",
 						"link": "http://www.uni-potsdam.de/studium/konkret/studienorganisation/puck.html"
 					}
@@ -46,13 +46,13 @@
 							"android": "http://www.uni-potsdam.de/mailup/thema3/android.html"
 						}
 					},
-					{ 
+					{
 						"name": "Login",
 						"link": "https://mailup.uni-potsdam.de/"
 					},
-					{ 
+					{
 						"name": "Mail.UP-Support Webseite",
-						"link": "http://www.uni-potsdam.de/mailup/" 
+						"link": "http://www.uni-potsdam.de/mailup/"
 					}
 				]
 			},
@@ -70,13 +70,13 @@
 							"android": "https://play.google.com/store/apps/details?id=com.owncloud.android"
 						}
 					},
-					{ 
+					{
 						"name": "Login",
 						"link": "https://boxup.uni-potsdam.de/"
 					},
-					{ 
+					{
 						"name": "Box.UP Webseite",
-						"link": "http://www.uni-potsdam.de/boxup/" 
+						"link": "http://www.uni-potsdam.de/boxup/"
 					}
 				]
 			},
@@ -87,7 +87,7 @@
 				"description": "Nutze den kollaborativen Editor um gemeinsam mit Kommilitoninnen und Kommilitonen Dateien zu bearbeiten",
 				"anchor": "pad",
 				"links": [
-					{ 
+					{
 						"name": "Login",
 						"link": "https://idp.cs.uni-potsdam.de/idp/Authn/UserPassword"
 					}
@@ -100,9 +100,9 @@
 				"description": "Schaue dir von überall aus Videos an",
 				"anchor": "media",
 				"links": [
-					{ 
+					{
 						"name": "Media.UP-Webseite",
-						"link": "https://mediaup.uni-potsdam.de/" 
+						"link": "https://mediaup.uni-potsdam.de/"
 					}
 				]
 			}
@@ -111,30 +111,17 @@
 	{
 		"id": "3",
 		"name": "Zentrale Einrichtungen",
-		"content":[  
-			{
-				"logo":"img/logo-avz.jpg",
-				"title": "AVZ",
-				"detail": "Audiovisuelles Zentrum der Uni Potsdam",
-				"description": "Das AVZ bietet ein breites Spektrum an Dienstleistungen in den Bereichen AV-Technik, Druckerei, Multimediaprodukte, Poststelle und Telefonzentrale. <br>Der Service richtet sich an universitäre Einrichtungen und alle Angehörigen der Universität Potsdam.",
-				"anchor": "avz",
-				"links": [
-					{ 
-						"name": "AVZ Webseite",
-						"link": "http://www.uni-potsdam.de/zavz.html"
-					}
-				]
-			},
+		"content":[
 			{
 				"logo": "img/logo-zeik.png",
-				"title": "ZEIK",
-				"detail": "Zentrale Einrichtung für Informationsverarbeitung und Kommunikation",
-				"description": "Die ZEIK ist das Rechenzentrum der Universität Potsdam und bietet sowohl Dienste in den Bereichen Datennetze, Kommunikation, Internet, Rechnerleistung, Multimedia als auch technische Betreuung und Beratung sowie Kurse und Tutorien für alle Studierenden und Mitarbeiter der Universität an.",
-				"anchor": "zeik",
+				"title": "ZIM",
+				"detail": "Zentrum für Informationstechnologie und Medienmanagement",
+				"description": "Das ZIM der Universität Potsdam und bietet sowohl Dienste in den Bereichen Datennetze, Kommunikation, Internet, Rechnerleistung, Multimedia, AV-Technik, Druckerei, Multimediaprodukte, Poststelle und Telefonzentrale als auch technische Betreuung und Beratung sowie Kurse und Tutorien für alle Studierenden und Mitarbeiter der Universität an.",
+				"anchor": "zim",
 				"links": [
-					{ 
-						"name": "ZEIK Webseite",
-						"link": "http://www.zeik.uni-potsdam.de/"
+					{
+						"name": "ZIM Webseite",
+						"link": "https://www.uni-potsdam.de/zim/"
 					}
 				]
 			},
@@ -145,7 +132,7 @@
 				"description": "Das ZfQ unterstützt die Fakultäten und zentralen Einrichtungen der Universität Potsdam bei Prozessen der Qualitätssicherung.",
 				"anchor": "zfq",
 				"links": [
-					{ 
+					{
 						"name": "ZfQ Webseite",
 						"link": "http://www.zeik.uni-potsdam.de/"
 					}
@@ -158,7 +145,7 @@
 				"description": "Das PEP ist das zentrale Portal für die Evaluation von Studium und Lehre an der Universität Potsdam. Es bietet sowohl den Studierenden als auch den Lehrenden verschiedene Möglichkeiten, an der Verbesserung der Qualität von Studium und Lehre mitzuwirken.",
 				"anchor": "pep",
 				"links": [
-					{ 
+					{
 						"name": "PEP Webseite",
 						"link": "http://www.zeik.uni-potsdam.de/"
 					}
@@ -171,7 +158,7 @@
 				"description": "Die Universitätsbibliothek Potsdam ist die größte wissenschaftliche Bibliothek des Landes Brandenburgs. Sie versorgt als zentrale Infrastruktureinrichtung Forschende, Lehrende und Studierende der Universität Potsdam mit Literatur und weiteren Informationsressourcen. <br>Interessierten anderer Potsdamer und Berliner Hochschulen und außeruniversitärer Einrichtungen sowie Bürgern der Region steht sie ebenfalls offen.",
 				"anchor": "bib",
 				"links": [
-					{ 
+					{
 						"name": "Bibliotheks Webseite",
 						"link": "http://info.ub.uni-potsdam.de/"
 					}
