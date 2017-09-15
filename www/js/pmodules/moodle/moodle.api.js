@@ -38,7 +38,7 @@ define([
    */
   var BasicAPI = Backbone.Model.extend({
 
-    url: 'https://api.uni-potsdam.de/endpoints/moodleAPI/1.1',
+    url: 'https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.1',
 
     token: function() {
       return this.session.get('up.session.MoodleToken');

@@ -52,7 +52,7 @@ define([
             };
             var campus = campusId[this.campus] || 2;
 
-            var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
+            var request = "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=%s&endTime=%s&campus=%d";
             if (this.building) {
                 request = request + "&building=%s";
             }
@@ -103,7 +103,7 @@ define([
             endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate() + 1, 0, 0, 0, 0);
             endTime = endTime.toISOString();
 
-            var request = "https://api.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
+            var request = "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations4Room?format=json&startTime=%s&endTime=%s&campus=%s&building=%s&room=%s";
             return _str.sprintf(request, encodeURIComponent(startTime), encodeURIComponent(endTime), encodeURIComponent(this.campus), encodeURIComponent(this.house), encodeURIComponent(this.room));
         },
 

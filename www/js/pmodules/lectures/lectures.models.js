@@ -87,7 +87,7 @@ define([
         },
 
         _createSubUrl: function() {
-            return new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/")
+            return new URI("https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/")
                 .filename("getCourseData")
                 .fragment(JSON.stringify({courseId: this.get("courseId")}))
                 .toString();
@@ -138,7 +138,7 @@ define([
         },
 
         url: function() {
-            var result = new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/");
+            var result = new URI("https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/");
             if (!this.headerId) {
                 // No id known -> we are at the root
                 result.filename("getLectureScheduleRoot")

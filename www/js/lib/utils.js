@@ -395,7 +395,7 @@ define([
 	 */
 	var onError = function(errorMessage, errorUrl, lineNumber, columnNumber, error) {
 		var info = new Backbone.Model;
-		info.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/log";
+		info.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log";
 		info.set("uuid", getUniqueIdentifier());
 		info.set("message", errorMessage);
 		info.set("url", errorUrl);

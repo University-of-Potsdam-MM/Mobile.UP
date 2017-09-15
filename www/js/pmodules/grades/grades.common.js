@@ -10,7 +10,7 @@ define([
 
 	var StudentDetails = PulsAPI.Collection.extend({
 
-		url: "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
+		url: "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas#{}",
 
 		initialize: function() {
 			this.session = new Session();
@@ -33,7 +33,7 @@ define([
 		 * @returns {string|*}
 		 */
 		url: function () {
-			return new URI("https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getAcademicAchievements")
+			return new URI("https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getAcademicAchievements")
 				.fragment(JSON.stringify(this.studentDetails))
 				.toString();
 		},

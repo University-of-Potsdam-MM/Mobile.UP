@@ -250,7 +250,7 @@ define([
 		logUnknownCourseRhythm: function(rhythm) {
             new versionModel.VersionModel().fetch().done(_.bind(function(version) {
                 var model = new Backbone.Model();
-                model.url = "https://api.uni-potsdam.de/endpoints/errorAPI/rest/courses";
+                model.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/courses";
                 model.set("uuid", utils.getUniqueIdentifier());
                 model.set("courseName", this.get("courseName"));
                 model.set("rhythm", rhythm);
@@ -295,7 +295,7 @@ define([
 
 		initialize: function(){
 			this.session = new Session();
-			this.url = "https://api.uni-potsdam.de/endpoints/pulsAPI/2.0/getStudentCourses";
+			this.url = "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getStudentCourses";
 		},
 
 		_asArray: function(data) {
