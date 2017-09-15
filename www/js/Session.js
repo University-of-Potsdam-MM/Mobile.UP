@@ -6,7 +6,7 @@ define([
 
     var CacheManager = Backbone.Model.extend({
 
-        privateHost: "api.uni-potsdam.de",
+        privateHost: "apiup.uni-potsdam.de",
         privateEndpoints: ["/endpoints/pulsAPI", "/endpoints/moodleAPI"],
 
         /**
@@ -68,7 +68,7 @@ define([
 
     var Session = LocalStorageModel.extend({
 
-        suburl: 'https://api.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
+        suburl: 'https://apiup.uni-potsdam.de/endpoints/moodleAPI/login/token.php',
 
         setLogin: function(credentials) {
             this.set('up.session.authenticated', credentials.authenticated);

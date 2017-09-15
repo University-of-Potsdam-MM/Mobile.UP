@@ -27,7 +27,7 @@ define([
 		url: function() {
 			var session = new Session();
 
-			var url = 'https://api.uni-potsdam.de/endpoints/personAPI/.json';
+			var url = 'https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json';
 			url += '?value=' + this.query;
 			url += '&username='+encodeURIComponent(session.get('up.session.username'));
 			url += '&password='+encodeURIComponent(session.get('up.session.password'));

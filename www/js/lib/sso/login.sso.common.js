@@ -30,7 +30,7 @@ define([
 
         cleanUsername(session, result);
 
-        var url = "https://api.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php";
+        var url = "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php";
         url +="?username="+encodeURIComponent(session.get("up.session.username"));
         url +="&password="+encodeURIComponent(session.get("up.session.password"));
         url +="&service=moodle_mobile_app&moodlewsrestformat=json";

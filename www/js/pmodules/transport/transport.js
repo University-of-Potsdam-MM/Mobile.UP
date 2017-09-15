@@ -34,7 +34,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 			"departures": ""
 		},
 
-		url: 'https://api.uni-potsdam.de/endpoints/transportAPI/2.0/departureBoard?maxJourneys=10',
+		url: 'https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard?maxJourneys=10',
 
 		initialize: function(){
 			this.set('departures', new Departures);

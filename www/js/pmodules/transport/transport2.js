@@ -58,7 +58,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 			"destCampus": "Palais"
 		},
 
-		url: 'https://api.uni-potsdam.de/endpoints/transportAPI/2.0/',
+		url: 'https://apiup.uni-potsdam.de/endpoints/transportAPI/',
 
 		initialize: function(){
 			this.set('connections', new Connections());
