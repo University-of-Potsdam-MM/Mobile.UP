@@ -32,13 +32,6 @@
 				<a href="https://mailup.uni-potsdam.de/" data-role="button">Mail</a>
 				<% } %>
 			</div>
-			<div class="flex-item iconized reflectapp">
-				<% if (window.cordova) { %>
-				<a href="#" data-role="button">Reflect.UP</a>
-				<% } else { %>
-				<a href="#" data-role="button">Reflect.UP</a>
-				<% } %>
-			</div>
 		</div>
 	</div>
 
@@ -82,10 +75,17 @@
 				<a href="#people/people" data-role="button">Personen-<br>suche</a>
 			</div>
 			<div class="flex-item iconized tipps">
-				<a href="#tipp" data-role="button">Tipps<br>& Tricks</a>
+				<a href="#tipp" data-role="button">Tipps<br /> &amp; Tricks</a>
 			</div>
 			<div class="flex-item iconized imprint">
 				<a href="#impressum" data-role="button">Impressum</a>
+			</div>
+				<div class="flex-item iconized reflectapp">
+				<% if (window.cordova) { %>
+				<a href="#" data-role="button">Reflect.UP</a>
+				<% } else { %>
+				<a href="http://musang.soft.cs.uni-potsdam.de/reflectup/www/" data-role="button">Reflect.UP</a>
+				<% } %>
 			</div>
 		</div>
 	</div>
