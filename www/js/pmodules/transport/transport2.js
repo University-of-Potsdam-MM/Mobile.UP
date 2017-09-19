@@ -46,15 +46,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 	var CampusTrip = Backbone.Model.extend({
 
 		campus: {
-			"G-see": "009230003",
-			"Golm": "009220010",
-			"Palais": "009230132"
+			"G-see": "900230003",
+			"Golm": "900220365",
+			"Palais": "900230133"
 		},
 
 		defaults: {
-			"originId": "009230003",
+			"originId": "900230003",
 			"originCampus": "G-see",
-			"destId": "009230132",
+			"destId": "900230133",
 			"destCampus": "Palais"
 		},
 

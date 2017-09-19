@@ -74,9 +74,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
 		model: TransportStation,
 
 		initialize: function(){
-			this.add(new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "009230003"}));
-			this.add(new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "009220010"}));
-			this.add(new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "009230132"}));
+			this.add(new TransportStation({campus: "G-see", name: "S Griebnitzsee Bhf", externalId: "900230003"}));
+			this.add(new TransportStation({campus: "Golm", name: "Potsdam, Golm Bhf", externalId: "900220365"}));
+			this.add(new TransportStation({campus: "Palais", name: "Potsdam, Neues Palais", externalId: "900230133"}));
 		},
 
 		fetch: function(){
