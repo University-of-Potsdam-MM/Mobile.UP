@@ -1,3 +1,4 @@
+<% if (!_.isEmpty(model.attributes)){ %>
 <% _.each(asArray(model.attributes.groups), function(group) { %>
 <li class="lecture-group-detail">
 
@@ -33,3 +34,4 @@
 	<a href="<%= model.attributes.url %>" target="_blank" rel="external">In PULS öffnen</a>
 </div>-->
 <% }); %>
+<% }else{ console.log("empty")} %>

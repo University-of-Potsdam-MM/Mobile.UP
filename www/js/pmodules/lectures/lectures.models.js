@@ -25,32 +25,36 @@ define([
 
         parse: function(response) {
             // Events have to be grouped by groupId to know which dates belong together
-            var groups = this.asArray(response.courseData.course)[0].events.event;
-            var groupedEvents = _.groupBy(this.asArray(groups), "groupId");
+            if (response.courseData && response.courseData !=""){
+                var groups = this.asArray(response.courseData.course)[0].events.event;
+                var groupedEvents = _.groupBy(this.asArray(groups), "groupId");
 
-            var joinLecturers = function(lecturers) {
-                return _.map(lecturers, function (l) {
-                    return (l.lecturerTitle ? l.lecturerTitle + " " : "") + l.lecturerLastname;
-                }).join(", ");
-            };
+                var joinLecturers = function(lecturers) {
+                    return _.map(lecturers, function (l) {
+                        return (l.lecturerTitle ? l.lecturerTitle + " " : "") + l.lecturerLastname;
+                    }).join(", ");
+                };
 
-            return {
-                groups: _.map(groupedEvents, function(dates) {
-                    return {
-                        name: dates[0].group,
-                        dates: _.map(dates, function(date) {
-                            return {
-                                weekday: date.daySC,
-                                time: date.startTime + " bis " + date.endTime,
-                                rhythm: date.rhythm,
-                                timespan: date.startDate + " bis " + date.endDate,
-                                room: (date.roomSc || "").replace(/_/g, "."),
-                                lecturer: joinLecturers(this.asArray(date.lecturers.lecturer))
-                            };
-                        }, this)
-                    }
-                }, this)
-            };
+                return {
+                    groups: _.map(groupedEvents, function(dates) {
+                        return {
+                            name: dates[0].group,
+                            dates: _.map(dates, function(date) {
+                                return {
+                                    weekday: date.daySC,
+                                    time: date.startTime + " bis " + date.endTime,
+                                    rhythm: date.rhythm,
+                                    timespan: date.startDate + " bis " + date.endDate,
+                                    room: (date.roomSc || "").replace(/_/g, "."),
+                                    lecturer: joinLecturers(this.asArray(date.lecturers.lecturer))
+                                };
+                            }, this)
+                        }
+                    }, this)
+                };
+            }else{
+                return null;
+            }
         }
     });
 
