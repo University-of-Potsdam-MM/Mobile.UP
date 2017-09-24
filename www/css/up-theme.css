@@ -578,3 +578,9 @@ button[disabled],
 	outline-width: 0px;
 	outline-style: auto;
 }
+
+/* something */
+
+.ui-collapsible-inset.ui-collapsible-themed-content .ui-collapsible-content {
+	border-color:transparent;
+}
