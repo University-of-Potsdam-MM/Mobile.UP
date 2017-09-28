@@ -1,6 +1,7 @@
 [
   {
     "name": "International Office (Incoming)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/international/service/center/io/incoming.html",
     "mail": "international-office@uni-potsdam.de",
     "telephone": "+49 331 977-1760",
@@ -22,6 +23,7 @@
   },
   {
     "name": "International Office (Outgoing)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/international/service/center/io/outgoing.html",
     "mail": "international-office@uni-potsdam.de",
     "telephone": "+49 331 977-1760",
@@ -43,6 +45,7 @@
   },
   {
     "name": "International Office (Welcome Center Potsdam)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/welcomecenter/",
     "mail": "welcome-center@uni-potsdam.de",
     "telephone": "+49 331 977-1382",
@@ -64,6 +67,7 @@
   },
   {
     "name": "International Office (Buddy-UP)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/international/service/buddy.html",
     "mail": "buddy@uni-potsdam.de",
     "telephone": "+49 331 977-1760",
@@ -72,6 +76,7 @@
   },
   {
     "name": "International Office (coUP)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/international/service/center/coup.html",
     "mail": "kursinfo@uni-potsdam.de",
     "telephone": "+49 331 977-4283",
@@ -80,6 +85,7 @@
   },
   {
     "name": "Zentrale Studienberatung",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/zsb/",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
@@ -105,6 +111,7 @@
   },
   {
     "name": "Zentrale Studienberatung (telefonisch)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/zsb/",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
@@ -122,6 +129,7 @@
   },
   {
     "name": "PUCK-Servicestelle",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/puck/",
     "mail": "puck@uni-potsdam.de",
     "telephone": "+49 331 977-4100",
@@ -147,6 +155,7 @@
   },
   {
     "name": "Psychologische Beratung",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/psychologische-beratung/",
     "mail": "psychologische-beratung@uni-potsdam.de",
     "telephone": "+49 331 977-1830",
@@ -164,6 +173,7 @@
   },
   {
     "name": "Studierendensekretariat",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat/",
     "mail": "",
     "telephone": "+49 331 977-1065",
@@ -189,6 +199,7 @@
   },
   {
     "name": "Studierendensekretariat (telefonisch)",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat/",
     "mail": "",
     "telephone": "+49 331 977-1231",
@@ -206,6 +217,7 @@
   },
   {
     "name": "Zentrales Prüfungsamt",
+    "displayWarning" : "true",
     "link": "http://www.uni-potsdam.de/studium/beratung/pruefungsamt/",
     "mail": "pruefungsamt@uni-potsdam.de",
     "telephone": "+49 331 977-1065",

@@ -947,7 +947,7 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 
 #opening .ui-collapsible-inset .ui-collapsible-heading .ui-btn {
 	padding-left: 0px !important;
-	padding-right: 15px !important;
+	padding-right: 25px !important;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -994,6 +994,10 @@ ui-collapsible-heading-toggle,li.ui-collapsible h3.ui-collapsible-heading a,ui-c
 
 .ui-table-reflow tbody th {
 	margin-top: .5em;
+}
+
+#opening .spacer {
+	width: 14px;
 }
 
 
