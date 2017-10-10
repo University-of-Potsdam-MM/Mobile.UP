@@ -17,7 +17,7 @@
             "Name": "Max-Planck-Institut",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Max-Planck-Institut für Gravitationsphysik (Albert-Einstein-Institut)\n- Max Planck Institute for Molecular Plant Physiology\n- Max-Planck-Institut für Kolloid- und Grenzflächenforschung\n- Max-Planck-Campus",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -907,10 +907,10 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
-            "Name": "Frauenhofer-Institut für angewandte Polymerforschung IAP",
+            "Name": "Frauenhofer-Institut",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Frauenhofer-Institut für angewandte Polymerforschung IAP",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1165,10 +1165,10 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
-            "Name": "Frauenhofer-Institut für angewandte Polymerforschung IAP",
+            "Name": "Frauenhofer-Institut",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description":  "Frauenhofer-Institut für angewandte Polymerforschung IAP",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1213,10 +1213,10 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
-            "Name": "Frauenhofer-Institut für angewandte Polymerforschung IAP",
+            "Name": "Frauenhofer-Institut",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Frauenhofer-Institut für angewandte Polymerforschung IAP",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1261,10 +1261,10 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
-            "Name": "Frauenhofer Institut für Biomedizinische Technik",
+            "Name": "Frauenhofer Institut",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Frauenhofer Institut für Biomedizinische Technik",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1322,7 +1322,7 @@
             "Name": "Innovationszentrum Golm",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Naturwissenschaftlich orientiertes Innovations- und Gründerzentrum",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1471,54 +1471,7 @@
             ]
           }
         },
-        {
-          "properties": {
-            "extrude": -1,
-            "timestamp": null,
-            "Name": "Haus 2",
-            "icon": null,
-            "visibility": -1,
-            "description": "- Kunst",
-            "tessellate": -1,
-            "drawOrder": null,
-            "end": null,
-            "altitudeMode": null,
-            "begin": null
-          },
-          "type": "Feature",
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  12.977832108736038,
-                  52.408137886031405,
-                  0
-                ],
-                [
-                  12.97765038907528,
-                  52.40815343026126,
-                  0
-                ],
-                [
-                  12.977614179253578,
-                  52.407987761213725,
-                  0
-                ],
-                [
-                  12.977791875600815,
-                  52.4079722169255,
-                  0
-                ],
-                [
-                  12.977832108736038,
-                  52.408137886031405,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+
         {
           "properties": {
             "extrude": -1,
@@ -1727,7 +1680,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 6.",
-            "description": "- Department für Lehrerbildung / Musik\n- Kunst",
+            "description": "- Department für Lehrerbildung - Musik und Musikpädagogik\n- Fachbereich Grundschulpädagogik / Kunst",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -1798,7 +1751,7 @@
             "Name": "Haus 8",
             "icon": null,
             "visibility": -1,
-            "description": "Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam ZIM - Zentrum für Informationstechnologie und Medienmanagement ",
+            "description": "- Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam \n- ZIM - Zentrum für Informationstechnologie und Medienmanagement ",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -1883,7 +1836,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 9 und 10",
-            "description": "- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)\n- Computerpool (Arbeitslehre/Technik)\n- Grundschulpädagogik\n- Geografie/ Fuhrpark\n- Versuchsräume (Arbeitslehre/Technik)\n- Vorlesungsräume",
+            "description": "- Institut für Mathematik \n- Exchange, Project and Innovation-Center - EPI-Center \n- Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam - Fuhrpark \n- Pädagogische Werkstatt (Haus 10a) \n- Zentrum für Lehrerbildung und Bildungsforschung (Haus 10a) ",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -2789,7 +2742,7 @@
             "Name": "Haus 11",
             "icon": null,
             "visibility": -1,
-            "description": "- Alte Sporthalle\n- Arbeitslehre/Technik (Haus 11b)",
+            "description": "- Alte Sporthalle\n- Lehreinheit für Wirtschaft-Arbeit-Technik (Haus 11b)",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -2950,7 +2903,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 14",
-            "description": "- Lesecafé (14a)\n- Dekanat der Humanwissenschaftlichen Fakultät\n- Department Erziehungswissenschaft\n- Department Linguistik\n- Department Psychologie\n- Sprachenzentrum",
+            "description": "- Lesecafé (14a)\n- Dekanat der Humanwissenschaftlichen Fakultät\n- Department Erziehungswissenschaft\n- Department Linguistik\n- Department Psychologie\n- Druckerei / Kopierservice (ZIM)\n- Poststelle\n- Zentrum für Sprachen und Schlüsselkompetenzen (Zessko)",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -3051,87 +3004,7 @@
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  12.972910925745964,
-                  52.40851319584023,
-                  0
-                ],
-                [
-                  12.973022907972336,
-                  52.40849294759962,
-                  0
-                ],
-                [
-                  12.973050400614738,
-                  52.40858662120047,
-                  0
-                ],
-                [
-                  12.973462119698524,
-                  52.40854755646972,
-                  0
-                ],
-                [
-                  12.97343596816063,
-                  52.40842279453244,
-                  0
-                ],
-                [
-                  12.973292134702206,
-                  52.40845429184171,
-                  0
-                ],
-                [
-                  12.973266653716564,
-                  52.40835427758075,
-                  0
-                ],
-                [
-                  12.972882762551308,
-                  52.40838904739043,
-                  0
-                ],
-                [
-                  12.972911125581959,
-                  52.40851315954255,
-                  0
-                ],
-                [
-                  12.972859293222427,
-                  52.40872447238233,
-                  0
-                ],
-                [
-                  12.972750663757324,
-                  52.40828432882173,
-                  0
-                ],
-                [
-                  12.97347754240036,
-                  52.40821233466152,
-                  0
-                ],
-                [
-                  12.973599582910538,
-                  52.4086524789405,
-                  0
-                ],
-                [
-                  12.972860634326935,
-                  52.40872365427568,
-                  0
-                ],
-                [
-                  12.972910925745964,
-                  52.40851319584023,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 12.972857281565666, 52.408723245222355, 0.0 ], [ 12.972748652100563, 52.408280647305027, 0.0 ], [ 12.973476201295853, 52.408209880313095, 0.0 ], [ 12.973600924015045, 52.408652069886514, 0.0 ], [ 12.972857281565666, 52.408723245222355, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -3290,7 +3163,7 @@
             "Name": "Haus 24",
             "icon": null,
             "visibility": -1,
-            "description": "Department Lehrerbildung - Abteilung Primarstufe - Department Linguistik/Allgemeine Sprachwissenschaft - Department Psychologie - Institut für Erd- und Umweltwissenschaften - Geographie und Naturrisikenforschung- Institut für Geographie",
+            "description": "Department Lehrerbildung - Abteilung Primarstufe \n- Department Linguistik/Allgemeine Sprachwissenschaft \n- Department Psychologie \n- Institut für Erd- und Umweltwissenschaften - Geographie und Naturrisikenforschung \n- Institut für Geographie",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -3355,7 +3228,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 25",
-            "description": "- Institut für Biochemie und Biologie\n- Institut für Chemie",
+            "description": "Institut für Biochemie und Biologie\n- Institut für Chemie",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -3522,8 +3395,8 @@
         {
           "type": "Feature",
           "properties": {
-            "Name": "Shape",
-            "description": "Shape",
+            "Name": "Haus 25",
+            "description": "- Institut für Biochemie und Biologie\n- Institut für Chemie",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -3900,7 +3773,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 29",
-            "description": "- Exzellenzbereich Kognitionswissenschaften\n- Institut für Biochemie und Biologie\n- Institut für Chemie\n- Institut für Erd- und Umweltwissenschaften\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- UP TRANSFER GmbH",
+            "description": "- Institut für Biochemie und Biologie\n- Institut für Chemie\n- Institut für Erd- und Umweltwissenschaften\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Strukturbereich Kognitionswissenschaften\n- UP TRANSFER GmbH",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -4073,7 +3946,7 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
-            "Name": "Neubau",
+            "Name": "Haus 31",
             "icon": null,
             "visibility": -1,
             "description": "Lehrerbildung mit dem Schwerpunkt Inklusionspädagogik",
@@ -4138,7 +4011,7 @@
             "Name": "Mensa",
             "icon": null,
             "visibility": -1,
-            "description": "Mensa",
+            "description": "Auswahl delikater Köstlichkeiten internationaler Küche",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -4162,7 +4035,7 @@
             "Name": "Cafeteria",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Kaffee, Kuchen und Snacks",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -4186,7 +4059,7 @@
             "Name": "Cafeteria",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Kaffee, Kuchen und Snacks",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -4225,7 +4098,7 @@
             "Name": "Aufladestation",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Aufladestation für die Aufwertung der Geldbörse",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -4249,7 +4122,7 @@
             "Name": "Validierungsstation",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Validierungsstation für die PUCK",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -5047,7 +4920,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 2",
-            "description": "- AG eLearning\n- Poststelle (Z/AVZ)\n- Jüdische Studien\n- Studiumplus\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)\n- Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)",
+            "description": "- Bauverwaltung, Sicherheitswesen, Organisation (BSO)\n- Poststelle \n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -5183,7 +5056,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 5",
-            "description": "-Institut für Germanistik",
+            "description": "- Institut für Germanistik",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -5251,7 +5124,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 6",
-            "description": "- Koordinationsbüro für Chancengleichheit\n- Personalräte\n- Studierendenvertretung - AStA\n- UP Transfer - Zentraler universitärer Partner für Wissens- und Technologietransfer\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)",
+            "description": "- Koordinationsbüro für Chancengleichheit\n- Netzwerk Studienqualität Brandenburg (sqb)\n- Personalräte\n- Studierendenvertretung - AStA\n- Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -5342,7 +5215,7 @@
             "Name": "Haus 8",
             "icon": null,
             "visibility": -1,
-            "description": "- Auditorium Maximum \"Audimax\"\n- Büro der französischen Botschaft für die akademischen Beziehungen\n- Cafeteria\n- Dezernat 2 (Studentische Angelegenheiten - Zentrale Studienberatung, - Studierendensekretariate, Prüfungsamt, Akademisches Auslandsamt)\n- Dezernat 2 (Chipkarten-Service)\n- Institut für Mathematik\n- Welcome Center Potsdam\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+            "description": "- Auditorium Maximum \"Audimax\"\n-  Cafeteria\n- Dezernat 2: Studentische Angelegenheiten \n&nbsp;&nbsp;- Zentrale Studienberatung \n&nbsp;&nbsp;- Studierendensekretariate \n&nbsp;&nbsp;- Prüfungsamt \n&nbsp;&nbsp;- Akademisches Auslandsamt \n&nbsp;&nbsp;- Chipkarten-Service\n- Institut für Mathematik\n- Welcome Center Potsdam\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -5450,7 +5323,7 @@
             "Name": "Haus 9",
             "icon": null,
             "visibility": -1,
-            "description": "- Career-Service\n- Eltern-Kind-Raum (Raum 1.01)\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzler\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+            "description": "- Career-Service\n- Eltern-Kind-Raum (Raum 1.01)\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzler\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- Universitätsbibliothek \n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -6303,7 +6176,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 12",
-            "description": "- Department Sport- und Gesundheitswissenschaften\n- Sportpsychologie\n- Sport- und Gesundheitssoziologie\n- Trainings- und Bewegungswissenschaft\n- Hochschulambulanz\n- Rehabilitationswissenschaften \n - Sozial- und Präventivmedizin\n - Sportmedizin und Sportorthopädie\n- Mensa\n- Turnhalle",
+            "description": "- Department Sport- und Gesundheitswissenschaften\n- Hochschulambulanz\n- Mensa",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -6919,7 +6792,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 22",
-            "description": "- Institut für Mathematik\n- Institut für Physik\n- Netzwerk Studienqualität Brandenburg (sqb)\n- Zentrale Studienberatung, Studierendenmarketing und Alumniprogramm",
+            "description": "- Institut für Mathematik\n- Institut für Physik",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -7045,7 +6918,7 @@
             "Name": "Mensa",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Auswahl delikater Köstlichkeiten internationaler Küche",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7069,7 +6942,7 @@
             "Name": "Cafeteria",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Kaffee, Kuchen und Snacks",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7108,7 +6981,7 @@
             "Name": "Haus 7",
             "icon": null,
             "visibility": -1,
-            "description": "- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Potsdam Centrum für Politik und Management (PCPM)\n- Kommunalwissenschaftliches Institut (KWI)\n- Mathematisch - und Naturwissenschaftliche Fakultät",
+            "description": "- Institut für Informatik und Computational Science\n- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Joint Lab Wireless and Embedded System Design\n- Kommunalwissenschaftliches Institut (KWI)\n- Mathematisch - und Naturwissenschaftliche Fakultät\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Universitätsgesellschaft Potsdam e.V. \n- UP Transfer GmbH",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7206,7 +7079,7 @@
             "Name": "Haus 3",
             "icon": null,
             "visibility": -1,
-            "description": "- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- FSR Politik und Verwaltung/Jura\n- FSR Soziologie\n- FSR WiSo\n- Hochschulgebäudemanagement (HGP) Bereich - - UP-Babelsberg",
+            "description": "- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- FSR Politik und Verwaltung/Jura\n- FSR Soziologie\n- FSR WiSo\n- Hochschulgebäudemanagement (HGP) Bereich - UP-Babelsberg",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7216,77 +7089,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.128994703292847,
-                  52.39372439198709,
-                  0
-                ],
-                [
-                  13.129010796546936,
-                  52.393563988273826,
-                  0
-                ],
-                [
-                  13.12915027141571,
-                  52.393574627313704,
-                  0
-                ],
-                [
-                  13.12915027141571,
-                  52.393560714722646,
-                  0
-                ],
-                [
-                  13.129242807626724,
-                  52.39356480666161,
-                  0
-                ],
-                [
-                  13.129238784313202,
-                  52.3935762640888,
-                  0
-                ],
-                [
-                  13.129371553659439,
-                  52.39358199280132,
-                  0
-                ],
-                [
-                  13.12936082482338,
-                  52.39364255343071,
-                  0
-                ],
-                [
-                  13.129430562257767,
-                  52.393645826975906,
-                  0
-                ],
-                [
-                  13.129421174526215,
-                  52.39372684714142,
-                  0
-                ],
-                [
-                  13.12935546040535,
-                  52.393725619564286,
-                  0
-                ],
-                [
-                  13.129348754882812,
-                  52.39374157806465,
-                  0
-                ],
-                [
-                  13.128994703292847,
-                  52.39372439198709,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates":[ [ [ 13.128994032740593, 52.393613909900139, 0.0 ], [ 13.12933936715126, 52.393625367314613, 0.0 ], [ 13.129330649971962, 52.393741168872396, 0.0 ], [ 13.128983303904533, 52.393729711488007, 0.0 ], [ 13.128994032740593, 52.393613909900139, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -7294,7 +7097,7 @@
             "Name": "Haus 4",
             "icon": null,
             "visibility": -1,
-            "description": "Institut für Informatik",
+            "description": "Institut für Informatik und Computational Science",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7420,47 +7223,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.129761815071106,
-                  52.394098392258286,
-                  0
-                ],
-                [
-                  13.129772543907166,
-                  52.39390198113247,
-                  0
-                ],
-                [
-                  13.131832480430603,
-                  52.39399036624726,
-                  0
-                ],
-                [
-                  13.131821751594543,
-                  52.39409348199077,
-                  0
-                ],
-                [
-                  13.131625950336456,
-                  52.39408611658852,
-                  0
-                ],
-                [
-                  13.131607174873352,
-                  52.39418022996936,
-                  0
-                ],
-                [
-                  13.129761815071106,
-                  52.394098392258286,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.129801042377949, 52.394103302525217, 0.0 ], [ 13.129819817841053, 52.393915893615976, 0.0 ], [ 13.1318723782897, 52.393998550045211, 0.0 ], [ 13.131863661110401, 52.394093481990772, 0.0 ], [ 13.131655119359493, 52.394086934966616, 0.0 ], [ 13.131644390523434, 52.394179820781176, 0.0 ], [ 13.129801042377949, 52.394103302525217, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -7468,7 +7231,7 @@
             "Name": "Haus 1",
             "icon": null,
             "visibility": -1,
-            "description": "- Eltern-Kind-Raum (Eingang von außen neben dem Universitätsarchiv)\n- Hörsäle, Seminarräume\n- Juristische Fakultät\n- Mensa\n- MenschenRechtsZentrum\n- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Zentrale Enrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+            "description": "- Eltern-Kind-Raum (Eingang von außen neben dem Universitätsarchiv)\n- Hörsäle, Seminarräume\n- Juristische Fakultät\n- Mensa\n- MenschenRechtsZentrum\n- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -7778,7 +7541,7 @@
           "type": "Feature",
           "properties": {
             "Name": "Haus 6",
-            "description": "- Hörsaalgebäude\n- Studienbüro der Juristischen Fakultät\n- Zentrum für Sprachen und Schlüsselkompetenzen\n- AVZ-Multimedialabor",
+            "description": "- Hörsaalgebäude\n- Studienbüro der Juristischen Fakultät\n- Zentrum für Sprachen und Schlüsselkompetenzen\n- ZIM - Zentrum für Informationstechnologie und Medienmanagement",
             "timestamp": null,
             "begin": null,
             "end": null,
@@ -7791,360 +7554,7 @@
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.128228262066841,
-                  52.392163704569775,
-                  0
-                ],
-                [
-                  13.12808208167553,
-                  52.392162067742255,
-                  0
-                ],
-                [
-                  13.128072526305914,
-                  52.39236646610934,
-                  0
-                ],
-                [
-                  13.128038663417101,
-                  52.39236646610934,
-                  0
-                ],
-                [
-                  13.128038328140974,
-                  52.39239879329193,
-                  0
-                ],
-                [
-                  13.127943780273199,
-                  52.39239736107548,
-                  0
-                ],
-                [
-                  13.127944450825453,
-                  52.39236401087931,
-                  0
-                ],
-                [
-                  13.127522002905607,
-                  52.39235541757317,
-                  0
-                ],
-                [
-                  13.12751965597272,
-                  52.39243152965522,
-                  0
-                ],
-                [
-                  13.127503897994757,
-                  52.39243132505301,
-                  0
-                ],
-                [
-                  13.127511106431484,
-                  52.39245505890134,
-                  0
-                ],
-                [
-                  13.127298038452864,
-                  52.39245178526785,
-                  0
-                ],
-                [
-                  13.12719276174903,
-                  52.39211398590675,
-                  0
-                ],
-                [
-                  13.127160239964724,
-                  52.39211664575434,
-                  0
-                ],
-                [
-                  13.12711263075471,
-                  52.39196073749431,
-                  0
-                ],
-                [
-                  13.1274308077991,
-                  52.3919210442273,
-                  0
-                ],
-                [
-                  13.127398956567049,
-                  52.39180401026318,
-                  0
-                ],
-                [
-                  13.126538302749395,
-                  52.39189751469651,
-                  0
-                ],
-                [
-                  13.126576524227858,
-                  52.39202109574431,
-                  0
-                ],
-                [
-                  13.126986231654882,
-                  52.39198181174014,
-                  0
-                ],
-                [
-                  13.127031829208136,
-                  52.3921326048365,
-                  0
-                ],
-                [
-                  13.126997966319323,
-                  52.39213608309723,
-                  0
-                ],
-                [
-                  13.127149175852537,
-                  52.392618535664965,
-                  0
-                ],
-                [
-                  13.127144817262888,
-                  52.392619354070284,
-                  0
-                ],
-                [
-                  13.127152193337679,
-                  52.392654750085136,
-                  0
-                ],
-                [
-                  13.127097543329,
-                  52.392661297321744,
-                  0
-                ],
-                [
-                  13.127106260508299,
-                  52.39269301048544,
-                  0
-                ],
-                [
-                  13.12711363658309,
-                  52.39269219208149,
-                  0
-                ],
-                [
-                  13.127138782292604,
-                  52.3927811934208,
-                  0
-                ],
-                [
-                  13.127135094255209,
-                  52.392781602621966,
-                  0
-                ],
-                [
-                  13.127145152539015,
-                  52.39281781690832,
-                  0
-                ],
-                [
-                  13.127199802547693,
-                  52.39281167889578,
-                  0
-                ],
-                [
-                  13.12721086665988,
-                  52.39284093674789,
-                  0
-                ],
-                [
-                  13.12721723690629,
-                  52.392840527547285,
-                  0
-                ],
-                [
-                  13.12737112864852,
-                  52.39333565749275,
-                  0
-                ],
-                [
-                  13.12744790688157,
-                  52.393327678169875,
-                  0
-                ],
-                [
-                  13.127503897994757,
-                  52.39351283900798,
-                  0
-                ],
-                [
-                  13.127092514187098,
-                  52.393559691737764,
-                  0
-                ],
-                [
-                  13.127120677381754,
-                  52.3936503281001,
-                  0
-                ],
-                [
-                  13.127569947391748,
-                  52.39360102030531,
-                  0
-                ],
-                [
-                  13.127573635429144,
-                  52.39361636506063,
-                  0
-                ],
-                [
-                  13.12769902870059,
-                  52.39360204328917,
-                  0
-                ],
-                [
-                  13.127696011215448,
-                  52.39358731231938,
-                  0
-                ],
-                [
-                  13.127739261835814,
-                  52.393582401995026,
-                  0
-                ],
-                [
-                  13.127777986228466,
-                  52.39371293459833,
-                  0
-                ],
-                [
-                  13.12798049300909,
-                  52.39369042900462,
-                  0
-                ],
-                [
-                  13.127973787486553,
-                  52.39365973954015,
-                  0
-                ],
-                [
-                  13.128046207129955,
-                  52.39365073729319,
-                  0
-                ],
-                [
-                  13.128038831055164,
-                  52.39361759264082,
-                  0
-                ],
-                [
-                  13.128018714487553,
-                  52.393618820220986,
-                  0
-                ],
-                [
-                  13.128015361726284,
-                  52.3936040892568,
-                  0
-                ],
-                [
-                  13.128342591226101,
-                  52.39356726182482,
-                  0
-                ],
-                [
-                  13.128347285091877,
-                  52.39346087129315,
-                  0
-                ],
-                [
-                  13.128583319485188,
-                  52.39346250807251,
-                  0
-                ],
-                [
-                  13.128591366112232,
-                  52.39324849865725,
-                  0
-                ],
-                [
-                  13.128543756902218,
-                  52.393246861869976,
-                  0
-                ],
-                [
-                  13.128545098006725,
-                  52.393150700510155,
-                  0
-                ],
-                [
-                  13.128714077174664,
-                  52.39315315569642,
-                  0
-                ],
-                [
-                  13.128728158771992,
-                  52.39280901909006,
-                  0
-                ],
-                [
-                  13.128609471023083,
-                  52.39280779148737,
-                  0
-                ],
-                [
-                  13.128625564277172,
-                  52.39242723300892,
-                  0
-                ],
-                [
-                  13.128517605364323,
-                  52.39242682380447,
-                  0
-                ],
-                [
-                  13.128518275916576,
-                  52.39241045562414,
-                  0
-                ],
-                [
-                  13.128472678363323,
-                  52.39241045562414,
-                  0
-                ],
-                [
-                  13.128472175449133,
-                  52.39241904891958,
-                  0
-                ],
-                [
-                  13.128253240138292,
-                  52.39241434306751,
-                  0
-                ],
-                [
-                  13.128252904862165,
-                  52.39243050664424,
-                  0
-                ],
-                [
-                  13.128217030316591,
-                  52.39242989283763,
-                  0
-                ],
-                [
-                  13.128228262066841,
-                  52.392163704569775,
-                  0
-                ]
-              ]
-            ]
-          }
-        }
-      ]
-    }
-  },
+            "coordinates": [ [ [ 13.127521499991417, 52.392355622175707, 0.0 ], [ 13.127519488334656, 52.392431529655219, 0.0 ], [ 13.127503395080566, 52.39243112045083, 0.0 ], [ 13.127522505819798, 52.392494751688083, 0.0 ], [ 13.128033131361008, 52.392502526559674, 0.0 ], [ 13.128029778599739, 52.392573318748369, 0.0 ], [ 13.128078728914261, 52.392573114146821, 0.0 ], [ 13.128078058362007, 52.392606873387749, 0.0 ], [ 13.128058277070522, 52.392606054982195, 0.0 ], [ 13.12804888933897, 52.392831729733594, 0.0 ], [ 13.128065317869186, 52.392831729733594, 0.0 ], [ 13.128060288727283, 52.392933211385277, 0.0 ], [ 13.12801469117403, 52.392932392985792, 0.0 ], [ 13.128011673688889, 52.393001343089061, 0.0 ], [ 13.128058277070522, 52.393001547688627, 0.0 ], [ 13.128052242100239, 52.393148449922613, 0.0 ], [ 13.128215856850147, 52.393149882114685, 0.0 ], [ 13.128209821879864, 52.393308036753623, 0.0 ], [ 13.128351643681526, 52.393310901127379, 0.0 ], [ 13.128349967300892, 52.393394581678351, 0.0 ], [ 13.128330521285534, 52.393396218460175, 0.0 ], [ 13.128333203494549, 52.393412995470236, 0.0 ], [ 13.128348290920258, 52.39341074489608, 0.0 ], [ 13.12834694981575, 52.393459029916308, 0.0 ], [ 13.128583319485188, 52.393462098877691, 0.0 ], [ 13.128591366112232, 52.393248089460421, 0.0 ], [ 13.128541745245457, 52.393247066468369, 0.0 ], [ 13.128544427454472, 52.393150700510155, 0.0 ], [ 13.12871340662241, 52.393152746498721, 0.0 ], [ 13.128728158771992, 52.392809019090059, 0.0 ], [ 13.128608800470829, 52.392806973085563, 0.0 ], [ 13.128624893724918, 52.392426619202261, 0.0 ], [ 13.128517605364323, 52.392425800793383, 0.0 ], [ 13.128517270088196, 52.392410046419542, 0.0 ], [ 13.128472343087196, 52.392410046419542, 0.0 ], [ 13.128471672534943, 52.392418844317312, 0.0 ], [ 13.128253072500229, 52.392413933862962, 0.0 ], [ 13.128252737224102, 52.39243030204203, 0.0 ], [ 13.128216862678528, 52.392429892837633, 0.0 ], [ 13.128226920962334, 52.39216922886218, 0.0 ], [ 13.128079399466515, 52.392167387431471, 0.0 ], [ 13.128072693943977, 52.392366261506851, 0.0 ], [ 13.128038160502911, 52.392366466109337, 0.0 ], [ 13.128038495779037, 52.392398588689566, 0.0 ], [ 13.127943612635136, 52.3923967472684, 0.0 ], [ 13.127944618463516, 52.392363806276826, 0.0 ], [ 13.127522170543671, 52.392355622175707, 0.0 ], [ 13.127521499991417, 52.392355622175707, 0.0 ] ] ] } }]}},
   {
     "campus": "griebnitzsee",
     "category": "parking",
@@ -9185,7 +8595,7 @@
             "Name": "Validierungsstation",
             "icon": null,
             "visibility": -1,
-            "description": "Validierungsstation für die Puck",
+            "description": "Validierungsstation für die PUCK",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -9657,147 +9067,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.131704404950142,
-                  52.3936515556796,
-                  0
-                ],
-                [
-                  13.131720498204231,
-                  52.393493606869114,
-                  0
-                ],
-                [
-                  13.131609857082367,
-                  52.39349197009089,
-                  0
-                ],
-                [
-                  13.131607845425606,
-                  52.39352961597399,
-                  0
-                ],
-                [
-                  13.131434842944145,
-                  52.3935193861177,
-                  0
-                ],
-                [
-                  13.131433501839638,
-                  52.39348787814529,
-                  0
-                ],
-                [
-                  13.131162598729134,
-                  52.39347478391604,
-                  0
-                ],
-                [
-                  13.13118003308773,
-                  52.393252181428565,
-                  0
-                ],
-                [
-                  13.13174195587635,
-                  52.393275914835556,
-                  0
-                ],
-                [
-                  13.131729885935783,
-                  52.39345718853957,
-                  0
-                ],
-                [
-                  13.13183918595314,
-                  52.393457597734646,
-                  0
-                ],
-                [
-                  13.131847903132439,
-                  52.39340849432215,
-                  0
-                ],
-                [
-                  13.132013529539108,
-                  52.3934158598375,
-                  0
-                ],
-                [
-                  13.1320121884346,
-                  52.39346741841056,
-                  0
-                ],
-                [
-                  13.132123500108719,
-                  52.393468236800125,
-                  0
-                ],
-                [
-                  13.132147639989853,
-                  52.39329351028422,
-                  0
-                ],
-                [
-                  13.132575452327728,
-                  52.393313151707105,
-                  0
-                ],
-                [
-                  13.132562711834908,
-                  52.39350260914787,
-                  0
-                ],
-                [
-                  13.132523149251938,
-                  52.39350097237034,
-                  0
-                ],
-                [
-                  13.132517114281654,
-                  52.393532071139255,
-                  0
-                ],
-                [
-                  13.13240110874176,
-                  52.39352961597399,
-                  0
-                ],
-                [
-                  13.132396414875984,
-                  52.393566443437365,
-                  0
-                ],
-                [
-                  13.132227435708046,
-                  52.39356153311061,
-                  0
-                ],
-                [
-                  13.132225424051285,
-                  52.39352061370031,
-                  0
-                ],
-                [
-                  13.132122159004211,
-                  52.393512020619426,
-                  0
-                ],
-                [
-                  13.132098689675331,
-                  52.39366464985633,
-                  0
-                ],
-                [
-                  13.131704404950142,
-                  52.3936515556796,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.131193108856678, 52.393483377003946, 0.0 ], [ 13.131462000310421, 52.393489514923083, 0.0 ], [ 13.131462000310421, 52.393528797585283, 0.0 ], [ 13.131626956164837, 52.393532889527251, 0.0 ], [ 13.131630979478359, 52.393497698813924, 0.0 ], [ 13.131749667227268, 52.393500972369814, 0.0 ], [ 13.131736926734447, 52.393652374065482, 0.0 ], [ 13.132125847041607, 52.393667514206506, 0.0 ], [ 13.132138587534428, 52.393518976923005, 0.0 ], [ 13.132260628044605, 52.393520613700211, 0.0 ], [ 13.132258616387844, 52.393564806661587, 0.0 ], [ 13.132420890033245, 52.393570944569397, 0.0 ], [ 13.132426925003529, 52.393531661944714, 0.0 ], [ 13.132538236677647, 52.393536981468827, 0.0 ], [ 13.132544942200184, 52.393499335591891, 0.0 ], [ 13.132589869201183, 52.393501381564299, 0.0 ], [ 13.13260730355978, 52.393335248296722, 0.0 ], [ 13.13217144459486, 52.393316834472415, 0.0 ], [ 13.132152669131756, 52.393486241366311, 0.0 ], [ 13.132032640278339, 52.393482149419995, 0.0 ], [ 13.132033981382847, 52.393440820741155, 0.0 ], [ 13.131876401603222, 52.393434682815261, 0.0 ], [ 13.131871037185192, 52.393476829889259, 0.0 ], [ 13.131750337779522, 52.393473556331543, 0.0 ], [ 13.131766431033611, 52.393295556265855, 0.0 ], [ 13.131204508244991, 52.39328000680073, 0.0 ], [ 13.131193108856678, 52.393483377003946, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -9815,157 +9085,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.133019357919693,
-                  52.394186776979694,
-                  0
-                ],
-                [
-                  13.133024722337723,
-                  52.39412621709708,
-                  0
-                ],
-                [
-                  13.133046180009842,
-                  52.394065657131335,
-                  0
-                ],
-                [
-                  13.133054226636887,
-                  52.394038650633355,
-                  0
-                ],
-                [
-                  13.13307836651802,
-                  52.39404274252807,
-                  0
-                ],
-                [
-                  13.133212476968765,
-                  52.394052563073764,
-                  0
-                ],
-                [
-                  13.133298307657242,
-                  52.394036195496334,
-                  0
-                ],
-                [
-                  13.133355975151062,
-                  52.39399445814642,
-                  0
-                ],
-                [
-                  13.13334658741951,
-                  52.39394453695057,
-                  0
-                ],
-                [
-                  13.132854402065277,
-                  52.393541073410056,
-                  0
-                ],
-                [
-                  13.132862448692322,
-                  52.39338148742169,
-                  0
-                ],
-                [
-                  13.133237287402153,
-                  52.39361636506065,
-                  0
-                ],
-                [
-                  13.133409954607487,
-                  52.39372643794912,
-                  0
-                ],
-                [
-                  13.13358798623085,
-                  52.39385615174401,
-                  0
-                ],
-                [
-                  13.133655041456223,
-                  52.39394453695063,
-                  0
-                ],
-                [
-                  13.133681863546371,
-                  52.39399282138685,
-                  0
-                ],
-                [
-                  13.133700639009476,
-                  52.39404274252807,
-                  0
-                ],
-                [
-                  13.13370332121849,
-                  52.39407302253705,
-                  0
-                ],
-                [
-                  13.13369795680046,
-                  52.39410002901404,
-                  0
-                ],
-                [
-                  13.133671134710312,
-                  52.39412212521013,
-                  0
-                ],
-                [
-                  13.133659064769745,
-                  52.39413399168125,
-                  0
-                ],
-                [
-                  13.133636265993118,
-                  52.39414422139517,
-                  0
-                ],
-                [
-                  13.133583962917328,
-                  52.394162225685946,
-                  0
-                ],
-                [
-                  13.133528977632523,
-                  52.394175319710975,
-                  0
-                ],
-                [
-                  13.13345119357109,
-                  52.394186776979694,
-                  0
-                ],
-                [
-                  13.133349269628525,
-                  52.39419086886067,
-                  0
-                ],
-                [
-                  13.133255392313004,
-                  52.39419168723683,
-                  0
-                ],
-                [
-                  13.133138716220856,
-                  52.394191687236805,
-                  0
-                ],
-                [
-                  13.133019357919693,
-                  52.394186776979694,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.133024387061596, 52.394198643433441, 0.0 ], [ 13.133049868047237, 52.394047243611759, 0.0 ], [ 13.133209459483624, 52.394060337670915, 0.0 ], [ 13.133298642933369, 52.394048880369368, 0.0 ], [ 13.133344240486622, 52.394022283050766, 0.0 ], [ 13.133359663188457, 52.393991593817049, 0.0 ], [ 13.133348934352398, 52.393951493186172, 0.0 ], [ 13.132850043475628, 52.393551712455434, 0.0 ], [ 13.132861442863941, 52.393391308114552, 0.0 ], [ 13.133350275456905, 52.393695748509629, 0.0 ], [ 13.133519254624844, 52.393817687756247, 0.0 ], [ 13.133624531328678, 52.393913438472161, 0.0 ], [ 13.133669458329678, 52.393976044597153, 0.0 ], [ 13.133692927658558, 52.394018191154146, 0.0 ], [ 13.133701644837856, 52.39405215388441, 0.0 ], [ 13.133700303733349, 52.39409634631356, 0.0 ], [ 13.133689574897289, 52.394117624134026, 0.0 ], [ 13.133656717836857, 52.394147085714657, 0.0 ], [ 13.133613131940365, 52.394163862439306, 0.0 ], [ 13.133526630699635, 52.394186367791576, 0.0 ], [ 13.133466951549053, 52.394192914800989, 0.0 ], [ 13.133254386484623, 52.394204372065161, 0.0 ], [ 13.133024387061596, 52.394198643433441, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -9983,77 +9103,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.132001459598541,
-                  52.3942563389045,
-                  0
-                ],
-                [
-                  13.13201755285263,
-                  52.39409921063612,
-                  0
-                ],
-                [
-                  13.13204973936081,
-                  52.3941008473918,
-                  0
-                ],
-                [
-                  13.132071197032928,
-                  52.39395844942067,
-                  0
-                ],
-                [
-                  13.132586181163788,
-                  52.39397563540708,
-                  0
-                ],
-                [
-                  13.132582157850266,
-                  52.393997731665486,
-                  0
-                ],
-                [
-                  13.132819533348083,
-                  52.39401000735983,
-                  0
-                ],
-                [
-                  13.13280075788498,
-                  52.394173682958076,
-                  0
-                ],
-                [
-                  13.132505714893341,
-                  52.39416304406264,
-                  0
-                ],
-                [
-                  13.132505714893341,
-                  52.39417122782858,
-                  0
-                ],
-                [
-                  13.132394403219223,
-                  52.39416468081595,
-                  0
-                ],
-                [
-                  13.132379651069641,
-                  52.39427270640027,
-                  0
-                ],
-                [
-                  13.132001459598541,
-                  52.3942563389045,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.132831938564777, 52.394185549415333, 0.0 ], [ 13.132849372923374, 52.394016554395414, 0.0 ], [ 13.13210841268301, 52.393989138677419, 0.0 ], [ 13.132095672190189, 52.394120079266507, 0.0 ], [ 13.132056780159473, 52.394118851700277, 0.0 ], [ 13.132042698562145, 52.394262067528729, 0.0 ], [ 13.1324128434062, 52.394275979898701, 0.0 ], [ 13.13242357224226, 52.394170818640326, 0.0 ], [ 13.132831938564777, 52.394185549415333, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -10071,77 +9121,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.123520314693451,
-                  52.39233229747922,
-                  0
-                ],
-                [
-                  13.123539090156555,
-                  52.39225209316572,
-                  0
-                ],
-                [
-                  13.123796582221985,
-                  52.39227173505188,
-                  0
-                ],
-                [
-                  13.123807311058044,
-                  52.39221608301836,
-                  0
-                ],
-                [
-                  13.123748302459717,
-                  52.39221608301836,
-                  0
-                ],
-                [
-                  13.123769760131836,
-                  52.39211050764428,
-                  0
-                ],
-                [
-                  13.123818039894104,
-                  52.392119510205404,
-                  0
-                ],
-                [
-                  13.123834133148193,
-                  52.39206385797993,
-                  0
-                ],
-                [
-                  13.123576641082764,
-                  52.39204912649675,
-                  0
-                ],
-                [
-                  13.123590052127838,
-                  52.391964011164234,
-                  0
-                ],
-                [
-                  13.123984336853027,
-                  52.391986926846826,
-                  0
-                ],
-                [
-                  13.123906552791595,
-                  52.3923633970718,
-                  0
-                ],
-                [
-                  13.123520314693451,
-                  52.39233229747922,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.123494330793619, 52.392328614631289, 0.0 ], [ 13.123505394905806, 52.392264573948587, 0.0 ], [ 13.123769257217646, 52.392280328374341, 0.0 ], [ 13.123806472867727, 52.392060788921349, 0.0 ], [ 13.123546298593283, 52.392044216001253, 0.0 ], [ 13.123559709638357, 52.391966875625215, 0.0 ], [ 13.123969417065382, 52.391992655765634, 0.0 ], [ 13.123946618288755, 52.392132809440078, 0.0 ], [ 13.124080058187246, 52.392140788978942, 0.0 ], [ 13.124051559716463, 52.392236338729873, 0.0 ], [ 13.123930525034666, 52.392228563811415, 0.0 ], [ 13.123909067362547, 52.392354394560421, 0.0 ], [ 13.123494330793619, 52.392328614631289, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -10159,37 +9139,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.124021887779236,
-                  52.39233229747922,
-                  0
-                ],
-                [
-                  13.124075531959534,
-                  52.392019663515605,
-                  0
-                ],
-                [
-                  13.124362528324127,
-                  52.392036031840895,
-                  0
-                ],
-                [
-                  13.124304860830307,
-                  52.392357668201136,
-                  0
-                ],
-                [
-                  13.124021887779236,
-                  52.39233229747922,
-                  0
-                ]
-              ]
-            ]
-          }
-        },
+            "coordinates": [ [ [ 13.124035634100437, 52.39233352509514, 0.0 ], [ 13.124292455613613, 52.392349484098901, 0.0 ], [ 13.124336712062359, 52.392081044704099, 0.0 ], [ 13.124092631042004, 52.39206672243445, 0.0 ], [ 13.124035634100437, 52.39233352509514, 0.0 ] ] ] } },
         {
           "properties": {
             "extrude": -1,
@@ -10207,38 +9157,7 @@
           "type": "Feature",
           "geometry": {
             "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  13.123764395713806,
-                  52.391896900882486,
-                  0
-                ],
-                [
-                  13.12378853559494,
-                  52.3917381273706,
-                  0
-                ],
-                [
-                  13.124405443668365,
-                  52.391769227381815,
-                  0
-                ],
-                [
-                  13.124365210533142,
-                  52.391936184962226,
-                  0
-                ],
-                [
-                  13.123764395713806,
-                  52.391896900882486,
-                  0
-                ]
-              ]
-            ]
-          }
-        }
-      ],
+            "coordinates": [ [ [ 13.124325983226299, 52.391919816599909, 0.0 ], [ 13.124347440898418, 52.391794598427389, 0.0 ], [ 13.123767413198948, 52.391758997117407, 0.0 ], [ 13.123746626079082, 52.391883396971991, 0.0 ], [ 13.124325983226299, 52.391919816599909, 0.0 ] ] ] } } ],
       "type": "FeatureCollection"
     }
   },
@@ -10260,7 +9179,7 @@
             "Name": "Mensa",
             "icon": null,
             "visibility": -1,
-            "description": "Haus 3.: Mensa",
+            "description": "Auswahl delikater Köstlichkeiten internationaler Küche",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
@@ -11152,7 +10071,7 @@
             "Name": "Validierungsstation",
             "icon": null,
             "visibility": -1,
-            "description": null,
+            "description": "Validierungsstation für die PUCK",
             "tessellate": -1,
             "drawOrder": null,
             "end": null,
