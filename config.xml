@@ -113,6 +113,15 @@
     <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
     <access origin="*" />
 
+    <!-- for iOS -->
+    <feature name="Launcher">
+        <param name="ios-package" value="Launcher" />
+    </feature>
+    <!-- for Android -->
+    <feature name="Launcher">
+        <param name="android-package" value="com.hutchind.cordova.plugins.launcher.Launcher" />
+    </feature>
+
     <!-- Start page and access whitelist -->
     <content src="index.html" />
 
@@ -126,6 +135,8 @@
     <plugin name="com.borismus.webintent" spec="https://github.com/InQBarna/WebIntent.git" />
     <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
     <plugin name="cordova-plugin-console" spec="^1.0.4" />
+    <plugin name="cordova-plugin-app-launcher" spec="^0.3.1" />
+    <plugin name="cordova-plugin-queries-schemes" spec="^0.1.1" />
 
     <!-- Hooks -->
     <hook type="after_clean" src="scripts/removePluginsAndPlatforms.js" />

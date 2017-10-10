@@ -1,6 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, utils){
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/home");
-	
+
 	app.views.MainPage = Backbone.View.extend({
 		initialize: function(){
 			_.bindAll(this, 'render');
@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			return this;
 		}
 	});
-	
+
 	app.views.MainMenu = Backbone.View.extend({
 		attributes: {"id": 'home'},
 
@@ -29,8 +29,7 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			return this;
 		}
 	});
-	
-	
+
 	app.views.MainLogout = Backbone.View.extend({
 
 		initialize: function(p){
@@ -50,5 +49,5 @@ define(['jquery', 'underscore', 'backbone', 'utils'], function($, _, Backbone, u
 			return this;
 		},
 	});
-	
+
 });
