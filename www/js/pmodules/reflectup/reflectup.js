@@ -33,7 +33,7 @@ define([
 			var appCanLaunchSuccessCallback = _.bind(function(data){
 				// try to launch app
 				app.route("main/menu", false, true);
-				window.plugins.launcher.launch({uri:'reflectup://'}, appLaunchSuccessCallback, appLaunchErrorCallback);
+				window.plugins.launcher.launch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
 			}, this);
 
 			var appCanLaunchErrorCallback = _.bind(function(errMsg){
@@ -62,7 +62,7 @@ define([
 
 			if (window.cordova){
 				console.log('trying launch');
-				window.plugins.launcher.canLaunch({uri:'reflectup://'}, appCanLaunchSuccessCallback, appCanLaunchErrorCallback);
+				window.plugins.launcher.canLaunch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appCanLaunchSuccessCallback, appCanLaunchErrorCallback);
 			}else{
 				// in web view simply open webpage on click
 				this.$el.find(".reflectup-message").hide();

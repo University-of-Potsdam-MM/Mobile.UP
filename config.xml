@@ -135,7 +135,7 @@
     <plugin name="com.borismus.webintent" spec="https://github.com/InQBarna/WebIntent.git" />
     <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
     <plugin name="cordova-plugin-console" spec="^1.0.4" />
-    <plugin name="cordova-plugin-app-launcher" spec="^0.3.1" />
+    <plugin name="cordova-plugin-app-launcher" spec="https://github.com/mmey3k/cordova-plugin-app-launcher.git" />
     <plugin name="cordova-plugin-queries-schemes" spec="^0.1.1" />
 
     <!-- Hooks -->
