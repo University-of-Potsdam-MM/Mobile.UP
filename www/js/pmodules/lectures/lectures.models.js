@@ -35,7 +35,7 @@ define([
                     }).join(", ");
                 };
 
-                return {
+                return _.extend({}, {
                     groups: _.map(groupedEvents, function(dates) {
                         return {
                             name: dates[0].group,
@@ -51,7 +51,7 @@ define([
                             }, this)
                         }
                     }, this)
-                };
+                }, response.courseData.course[0]);
             }else{
                 return null;
             }
@@ -180,11 +180,7 @@ define([
                     .reject(function(model) { return model === ""; })
                     .reject(function(model) { return !model.courseId; })
                     .map(function(model) {
-                        return {
-                            name: model.courseName,
-                            courseType: model.courseType,
-                            courseId: model.courseId
-                        };
+                        return model
                     })
                     .value();
             }
