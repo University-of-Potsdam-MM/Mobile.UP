@@ -2,19 +2,15 @@
 
 <div data-role="content" class="ui-content">
 
-	<div class="reflectup-message">
-		<p>Login läuft</p>
-	</div>
-
 	<div class="reflectup-message reflectup-website" style="display: none">
-		<a href="http://musang.soft.cs.uni-potsdam.de/reflectup/www/" data-role="button">Reflect.UP</a>
+		<a href="<%= this.model.get('web-url') %>" data-role="button">Reflect.UP</a>
 	</div>
 
 	<div class="reflectup-message reflectup-appstore" style="display: none">
 		<% 	if (device.platform == "Android"){ %>
-		<a href="https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de" data-role="button">Reflect.UP</a>
+		<a href="<%= this.model.get('android-store-url') %>" data-role="button">Reflect.UP</a>
 		<% 	} else if(device.platform == "iOS") { %>
-		<a href="https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8" data-role="button">Reflect.UP</a>
+		<a href="<%= this.model.get('ios-store-url') %>" data-role="button">Reflect.UP</a>
 		<%	} %>
 	</div>
 

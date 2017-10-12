@@ -1,283 +1,89 @@
 define([
-        'jquery',
-        'underscore',
-        'backbone',
-        'utils',
-        'pmodules/moodle/moodle.api',
-        'pmodules/moodle/moodle.utils',
-        'Session'
-], function($, _, Backbone, utils, moodleAPI, moodleUtils, Session) {
-    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
+    'jquery',
+    'underscore',
+    'backbone',
+    'utils',
+    'Session'
+], function($, _, Backbone, utils, Session) {
 
-    "use strict";
-
-    window.MoodleApp = {};
-
-    // TODO: Refactor this code with use of Backbone fetch method
-    MoodleApp.Course = Backbone.Model.extend({
-
-        fetchContents: function(){
-            // Contents is a Collection
-            var contents = new MoodleApp.CourseContents({courseid: this.id});
-            this.set('contents', contents);
-            return contents.fetch();
-        }
-    });
-
-    MoodleApp.CourseContent = Backbone.Model.extend({});
-
-
-    /**
-    *  Backbone Collection - Moodle CourseContents
-    *  for holding the whole course content
-    */
-    MoodleApp.CourseContents = Backbone.Collection.extend({
-
-        model: MoodleApp.CourseContent,
-
-        initialize: function(options){
-          this.courseid = options.courseid;
-        },
-
-        fetch: function(){
-            var collection = this;
-            collection.isLoading = true;
-            moodleAPI.api.core_course_get_contents({courseid: this.courseid}).then(function(contents){
-                var token = moodleAPI.api.token();
-
-                if (contents.errorcode != 'invalidresponse'){
-                    return moodleUtils.fixPluginfileForCourseContents(token, contents);
-                }else{
-                    return contents;
-                }
-            }).done(function(contents){
-            	collection.isLoading = false;
-                collection.reset(contents);
-            });
-
-            return this;
-        }
-    });
-
-  /**
-   *  Backbone Collection - Moodle CourseList
-   *  displays all courses in the starting list
-   */
-  MoodleApp.CourseList = Backbone.Collection.extend({
-    model: MoodleApp.Course,
-    comparator: 'fullname',
-
-    fetch: function(){
-        var collection = this;
-        moodleAPI.api.core_enrol_get_users_courses().done(function(content){
-            collection.reset(content);
-        });
-        return this;
-    }
-  });
-
-  /**
-   *  Backbone Collection - Moodle Newslist
-   *  for displaying all news (still not productive)
-   */
-  MoodleApp.NewsList = Backbone.Collection.extend({
-
-    fetch: function() {
-      var collection = this;
-      moodleAPI.news_api.webservice_get_latest_coursenews()
-        .done(function(news){
-          console.log('newslist fetch returns', news);
-          var courses = _.map(news.courses, function(course){
-            course.id = course.courseid;
-
-            var realnews = _.reject(course.coursenews, function(cn){
-              // remove all where this condition holds
-              return ((cn.modulename == null) && (cn.news == 'no news'));
-            });
-            course.coursenews = new Backbone.Collection(realnews);
-
-            return new Backbone.Model(course);
-          })
-          collection.reset(courses);
-        });
-      return this;
-    },
-
-  });
-
-
-  /**
-   * Backbone View - CourseList
-   */
-  MoodleApp.CourseListView = Backbone.View.extend({
-
-    initialize: function(options){
-        this.courses = options.courses;
-        this.news = options.news;
-        this.template = rendertmpl('moodle_course_list_view');
-        this.courses.on('reset', this.render, this);
-        //this.news.on('reset', this.render, this);
-        this.render();
-    },
-
-    render: function(){
-        this.$el.html(this.template({courses:this.courses.models}));
-        this.$el.trigger('create')
-        return this;
-    }
-  });
-
-
-    /**
-    *  Backbone View - CourseView
-    *  view for single courses
-    */
-    MoodleApp.CourseView = Backbone.View.extend({
-
-        initialize: function(options){
-            this.news = options.news;
-            this.template = rendertmpl('moodle_course_contents_page');
-
-            this.model.on('change', this.render, this);
-            this.collection.on('change', this.render, this);
-            this.collection.on('reset', this.render, this);
-            //this.news.on('change', this.render, this);
-        },
-
-        render: function(){
-            //console.log('render CourseContentsPage', this.el, this.model, this.collection);
-            var data = {
-                course:this.model,
-                contents: this.collection,
-                //news: this.news.get(this.model.id)
-            };
-            this.$el.html(this.template(data));
-			
-            if (this.collection.models[0].get('errorcode')){
-                var errorPage = new utils.ErrorView({el: '#loadingSpinner', msg: 'Fehler beim Abruf des Kurses. Bitte greifen Sie direkt auf den Kurs mit obigen Link zu.', module: 'moodle'});
-            }
-
-            if(!this.LoadingView){
-                this.LoadingView = new utils.LoadingView({collection: this.collection, el: this.$("#loadingSpinner")});
-            }
-            
-            if (this.collection.isLoading){
-            	this.LoadingView.spinnerOn();
-            }else{
-                this.LoadingView.spinnerOff();
-            }
-
-            this.$el.trigger('create');
-            return this;
-        }
-    });
-
-
-    /**
-    * Backbone View - MoodlePage
-    * Startview for Moodle
-    */
     app.views.MoodlePage = Backbone.View.extend({
-        attributes: {"id": "moodle"},
-        model: Session,
-
-        initialize: function(options){
-            this.courseid = options.courseid;
-            this.listenToOnce(this, "authorize", this.authorize);
-            this.listenToOnce(this, "fetchContent", this.fetchContent);
-            this.listenTo(this, "renderView", this.renderView);
-            this.listenTo(this, "renderCourseList", this.renderCourseList);
-            if (!MoodleApp.courses){
-                // authoize and fetch
-                this.trigger("authorize");
-              }
-        },
-
-        authorize: function(){
-
-            //moodleAPI.news_api.set(credentials);
-            var that = this;
-            $.when(moodleAPI.api.fetchUserid()).done(function(){
-                // moodleAPI.api should be authorized and has userId, moodleAPI.news_api should be authorized
-                that.trigger("fetchContent");
-            }).fail(function(error){
-                var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Fehler beim Abruf der Kurse. Bitte loggen Sie sich erneut ein.', module: 'moodle', err: error});
-            });
-        },
-
-        fetchContent: function(){
-            MoodleApp.courses = new MoodleApp.CourseList();
-            //MoodleApp.news = new MoodleApp.NewsList();
-            //$.when(MoodleApp.courses.fetch(), MoodleApp.news.fetch())
-
-            this.LoadingView = new utils.LoadingView({collection: MoodleApp.courses, el: this.$("#loadingSpinner")});
-            this.LoadingView.spinnerOn();
-
-            // fetch all necessary information
-            MoodleApp.courses.fetch();
-            MoodleApp.courses.bind("reset", this.renderView, this)
-        },
-
-        renderView: function(){
-            if(this.courseid){
-                this.renderCourseView();
-            }else{
-                this.renderCourseList();
-            }
-        },
-
-        renderCourseView: function(){
-            if (MoodleApp.courses.get(this.courseid)){
-                var course = MoodleApp.courses.get(this.courseid);
-                // render course
-                this.courseView = new MoodleApp.CourseView({
-                    model: course,
-                    collection: course.get('contents') || course.fetchContents(),
-                    //news: MoodleApp.news,
-                });
-                this.$el.html(this.courseView.render().el);
-            }else{
-                this.template = rendertmpl('moodle');
-                this.$el.html(this.template({}));
-                var errorPage = new utils.ErrorView({el: '#courselist', msg: 'Dieser Kurs existiert nicht oder Sie sind nicht eingeschrieben.', module: 'moodle'});
-            }
-            this.$el.trigger("create");
-            return this;
-        },
-
-        renderCourseList: function(){
-            if (this.LoadingView){
-                this.LoadingView.spinnerOff();
-            }
-            MoodleApp.listview = new MoodleApp.CourseListView({
-                el: this.$('ul#moodle_courses'),
-                courses: MoodleApp.courses
-                //news: MoodleApp.news
-            });
-
-            MoodleApp.courses.on('add', function(course){
-                course.fetchContents();
-            });
-        },
 
         render: function(){
-            if (this.courseid){
-                if(MoodleApp.courses){
-                    this.renderCourseView();
-                }
-            }else{
-              this.template = rendertmpl('moodle');
-              this.$el.html(this.template({}));
-              if(MoodleApp.courses){
-                this.renderCourseList();
-              }
-            }
-
-            this.$el.trigger("create");
+            this.$el.html('');
             return this;
         }
     });
 
-  return app.views.MoodlePage;
+    app.views.MoodleIndex = Backbone.View.extend({
+        attributes: {"id": 'moodle'},
 
+        initialize: function(p){
+            this.page = p.page;
+            this.template = rendertmpl('moodle');
+
+            this.model = new AppModel({
+                "android-store-url" : "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
+                "ios-store-url" : "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+                "web-url" : "https://moodle2.uni-potsdam.de"
+            });
+
+            this.listenToOnce(this, "afterRender", this.startAppLaunch);
+        },
+
+        startAppLaunch: function() {
+            /*
+             *  handlers for trying to app launch
+             */
+            var appCanLaunchSuccessCallback = _.bind(function(data){
+                // try to launch app
+                app.route("main/menu", false, true);
+                window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
+            }, this);
+
+            var appCanLaunchErrorCallback = _.bind(function(errMsg){
+                // app not installed try to open app store
+                this.$el.find(".moodle-message").hide();
+                this.$el.find(".moodle-appstore").show();
+
+                if (device.platform == "Android"){
+                    window.open(this.model.get('android-store-url'), "_system");
+                }else if(device.platform == "iOS"){
+                    window.open(this.model.get('ios-store-url'), "_system");
+                }
+            }, this);
+
+            /*
+             *  handlers for app launching
+             */
+            var appLaunchSuccessCallback = _.bind(function(data){
+                console.log(data);
+            }, this);
+
+            var appLaunchErrorCallback = _.bind(function(errMsg){
+                this.$el.find(".moodle-error").show();
+            }, this);
+
+
+            if (window.cordova){
+                console.log('trying launch');
+                window.plugins.launcher.canLaunch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appCanLaunchSuccessCallback, appCanLaunchErrorCallback);
+            }else{
+                // in web view simply open webpage on click
+                this.$el.find(".moodle-message").hide();
+                this.$el.find(".moodle-website").show();
+            }
+        },
+
+        render: function(){
+            this.$el = this.page;
+            this.$el.attr('id', 'moodle');
+            this.$el.html(this.template({model: this.model}));
+            this.$el.trigger("create");
+
+            this.trigger("afterRender");
+            return this;
+        }
+    });
+
+    return app.views;
 });

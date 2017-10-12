@@ -1,12 +1,21 @@
 <meta name="title" content="Moodle" />
-<!-- Start Main - Navigation -->
-<div data-role="content" data-theme="c">
-	<div id="courselist">
-		<form>
-			<input data-type="search" id="searchForMoodleCourses" placeholder="Eintr&auml;ge filtern" />
-		</form>
-		<ul id='moodle_courses' data-role="listview" data-theme="c" data-filter="true" data-input="#searchForMoodleCourses" >
-		</ul>
+
+<div data-role="content" class="ui-content">
+
+	<div class="moodle-message moodle-website" style="display: none">
+		<a href="<%= this.model.get('web-url') %>" data-role="button">Moodle 2.UP</a>
 	</div>
-	<div id="loadingSpinner"></div>
+
+	<div class="moodle-message moodle-appstore" style="display: none">
+		<% 	if (device.platform == "Android"){ %>
+		<a href="<%= this.model.get('android-store-url') %>" data-role="button">Moodle Mobile</a>
+		<% 	} else if(device.platform == "iOS") { %>
+		<a href="<%= this.model.get('ios-store-url') %>" data-role="button">Moodle Mobile</a>
+		<%	} %>
+	</div>
+
+	<div class="moodle-message moodle-error" style="display: none">
+		<p>Konnte Moodle App nicht öffnen.</p>
+	</div>
+
 </div>

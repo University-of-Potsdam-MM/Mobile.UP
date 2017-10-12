@@ -19,9 +19,14 @@ define([
 		attributes: {"id": 'reflectup'},
 
 		initialize: function(p){
-			console.log('in');
 			this.page = p.page;
 			this.template = rendertmpl('reflectup');
+
+            this.model = new AppModel({
+                "android-store-url" : "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
+                "ios-store-url" : "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
+                "web-url" : "http://musang.soft.cs.uni-potsdam.de/reflectup/www/"
+            });
 
 			this.listenToOnce(this, "afterRender", this.startAppLaunch);
 		},
@@ -42,9 +47,9 @@ define([
 				this.$el.find(".reflectup-appstore").show();
 
 				if (device.platform == "Android"){
-					window.open("https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de", "_system");
-				}else if(device.platform == "iOS"){
-					window.open("https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8", "_system");
+                    window.open(this.model.get('android-store-url'), "_system");
+                }else if(device.platform == "iOS"){
+                    window.open(this.model.get('ios-store-url'), "_system");
 				}
 			}, this);
 
