@@ -1,0 +1,21 @@
+<meta name="title" content="Reflect.UP" />
+
+<div data-role="content" class="ui-content">
+
+	<div class="reflectup-message reflectup-website" style="display: none">
+		<a href="<%= this.model.get('web-url') %>" data-role="button">Reflect.UP</a>
+	</div>
+
+	<div class="reflectup-message reflectup-appstore" style="display: none">
+		<% 	if (device.platform == "Android"){ %>
+		<a href="<%= this.model.get('android-store-url') %>" data-role="button">Reflect.UP</a>
+		<% 	} else if(device.platform == "iOS") { %>
+		<a href="<%= this.model.get('ios-store-url') %>" data-role="button">Reflect.UP</a>
+		<%	} %>
+	</div>
+
+	<div class="reflectup-message reflectup-error" style="display: none">
+		<p>Konnte Reflect.UP nicht öffnen.</p>
+	</div>
+
+</div>
