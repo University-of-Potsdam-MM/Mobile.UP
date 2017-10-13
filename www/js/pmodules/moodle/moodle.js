@@ -5,9 +5,17 @@ define([
     'utils',
     'Session'
 ], function($, _, Backbone, utils, Session) {
+    var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/moodle");
+
+    var AppModel = Backbone.Model.extend({
+        defaults: {
+            iosStoreUrl : 'https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8',
+            androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de',
+            webUrl: 'https://moodle2.uni-potsdam.de'
+        }
+    });
 
     app.views.MoodlePage = Backbone.View.extend({
-
         render: function(){
             this.$el.html('');
             return this;
@@ -16,17 +24,12 @@ define([
 
     app.views.MoodleIndex = Backbone.View.extend({
         attributes: {"id": 'moodle'},
+        model: AppModel,
 
         initialize: function(p){
             this.page = p.page;
             this.template = rendertmpl('moodle');
-
-            this.model = new AppModel({
-                "android-store-url" : "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
-                "ios-store-url" : "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
-                "web-url" : "https://moodle2.uni-potsdam.de"
-            });
-
+            this.model = new AppModel();
             this.listenToOnce(this, "afterRender", this.startAppLaunch);
         },
 
@@ -44,33 +47,39 @@ define([
                 // app not installed try to open app store
                 this.$el.find(".moodle-message").hide();
                 this.$el.find(".moodle-appstore").show();
-
-                if (device.platform == "Android"){
-                    window.open(this.model.get('android-store-url'), "_system");
-                }else if(device.platform == "iOS"){
-                    window.open(this.model.get('ios-store-url'), "_system");
-                }
+                this.launchAppStore();
             }, this);
 
             /*
              *  handlers for app launching
              */
             var appLaunchSuccessCallback = _.bind(function(data){
-                console.log(data);
+                this.$el.find(".moodle-message").hide();
+                this.$el.find(".moodle-appstore").show();
             }, this);
 
             var appLaunchErrorCallback = _.bind(function(errMsg){
-                this.$el.find(".moodle-error").show();
+                this.$el.find(".moodle-message").hide();
+                this.$el.find(".moodle-appstore").show();
+                this.launchAppStore();
             }, this);
 
 
             if (window.cordova){
-                console.log('trying launch');
-                window.plugins.launcher.canLaunch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appCanLaunchSuccessCallback, appCanLaunchErrorCallback);
+                //console.log('trying launch');
+                window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
             }else{
                 // in web view simply open webpage on click
                 this.$el.find(".moodle-message").hide();
                 this.$el.find(".moodle-website").show();
+            }
+        },
+
+        launchAppStore: function(){
+            if (device.platform == "Android"){
+                window.open(this.model.get('androidStoreUrl'), "_system");
+            }else if(device.platform == "iOS"){
+                window.open(this.model.get('iosStoreUrl'), "_system");
             }
         },
 

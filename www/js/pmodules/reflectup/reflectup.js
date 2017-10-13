@@ -7,8 +7,15 @@ define([
 ], function($, _, Backbone, utils, Session) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/pmodules/reflectup");
 
-	app.views.ReflectupPage = Backbone.View.extend({
+	var AppModel = Backbone.Model.extend({
+		defaults: {
+			iosStoreUrl : 'https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8',
+			androidStoreUrl: 'https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de',
+			webUrl: 'http://musang.soft.cs.uni-potsdam.de/reflectup/www/'
+		}
+	});
 
+	app.views.ReflectupPage = Backbone.View.extend({
 		render: function(){
 			this.$el.html('');
 			return this;
@@ -17,17 +24,12 @@ define([
 
 	app.views.ReflectupIndex = Backbone.View.extend({
 		attributes: {"id": 'reflectup'},
+		model: AppModel,
 
 		initialize: function(p){
 			this.page = p.page;
 			this.template = rendertmpl('reflectup');
-
-            this.model = new AppModel({
-                "android-store-url" : "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
-                "ios-store-url" : "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
-                "web-url" : "http://musang.soft.cs.uni-potsdam.de/reflectup/www/"
-            });
-
+			this.model = new AppModel();
 			this.listenToOnce(this, "afterRender", this.startAppLaunch);
 		},
 
@@ -45,29 +47,27 @@ define([
 				// app not installed try to open app store
 				this.$el.find(".reflectup-message").hide();
 				this.$el.find(".reflectup-appstore").show();
-
-				if (device.platform == "Android"){
-                    window.open(this.model.get('android-store-url'), "_system");
-                }else if(device.platform == "iOS"){
-                    window.open(this.model.get('ios-store-url'), "_system");
-				}
+				this.launchAppStore();
 			}, this);
 
 			/*
 			 *	handlers for app launching
 			 */
 			var appLaunchSuccessCallback = _.bind(function(data){
-				console.log(data);
+				this.$el.find(".reflectup-message").hide();
+				this.$el.find(".reflectup-appstore").show();
 			}, this);
 
 			var appLaunchErrorCallback = _.bind(function(errMsg){
-				this.$el.find(".reflectup-error").show();
+				this.$el.find(".reflectup-message").hide();
+				this.$el.find(".reflectup-appstore").show();
+				this.launchAppStore();
 			}, this);
 
 
 			if (window.cordova){
-				console.log('trying launch');
-				window.plugins.launcher.canLaunch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appCanLaunchSuccessCallback, appCanLaunchErrorCallback);
+				//console.log('trying launch');
+				window.plugins.launcher.launch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
 			}else{
 				// in web view simply open webpage on click
 				this.$el.find(".reflectup-message").hide();
@@ -75,10 +75,18 @@ define([
 			}
 		},
 
+		launchAppStore: function(){
+			if (device.platform == "Android"){
+				window.open(this.model.get('androidStoreUrl'), "_system");
+			}else if(device.platform == "iOS"){
+				window.open(this.model.get('iosStoreUrl'), "_system");
+			}
+		},
+
 		render: function(){
 			this.$el = this.page;
 			this.$el.attr('id', 'reflectup');
-			this.$el.html(this.template({}));
+			this.$el.html(this.template({model: this.model}));
 			this.$el.trigger("create");
 
 			this.trigger("afterRender");
