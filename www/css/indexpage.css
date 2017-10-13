@@ -248,8 +248,8 @@
 	background-image: url(../img/up/tipps.png);
 }
 
-#home .reflectapp {
-	background-image: url(../img/up/reflectapp.png);
+#home .reflectup {
+	background-image: url(../img/up/reflectup.png);
 }
 
 /*panel*/
@@ -299,13 +299,13 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 		-o-min-device-pixel-ratio: 2/1) , only screen and (
 		min-device-pixel-ratio: 2) , only screen and ( min-resolution: 192dpi)
 		, only screen and ( min-resolution: 2dppx) {
-		
-		
-	
+
+
+
 	.home-id .ui-btn.settings:before {
 		background-image: url(../img/up/logout-white_hr.png);
 		background-size: 18px 18px;
-	}	
+	}
 	#home .around {
 		background-image: url(../img/up/around_hr.png) !important;
 		background-size: 70px 70px;
@@ -330,13 +330,13 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 		background-image: url(../img/up/impressum-index_hr.png);
 		background-size: 70px 70px;
 	}
-	
+
 	#home .home-impressum {
-	
-		background-image:url(../img/up/impressum-index_hr.png); 
+
+		background-image:url(../img/up/impressum-index_hr.png);
 		background-size:20px 20px;
 	}
-	
+
 	#home .person {
 		background-image: url(../img/up/person_hr.png);
 		background-size: 70px 70px;
@@ -397,9 +397,9 @@ See https://github.com/University-of-Potsdam-MM/UP.App/issues/238 for details
 		background-image: url(../img/up/tipps_hr.png);
 		background-size: 70px 70px;
 	}
-	
-	#home .reflectapp {
-		background-image: url(../img/up/reflectapp_hr.png);
+
+	#home .reflectup {
+		background-image: url(../img/up/reflectup_hr.png);
 		background-size: 70px 70px;
 	}
 }

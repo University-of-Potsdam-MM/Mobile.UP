@@ -18,7 +18,8 @@ define([
     "pmodules/home/controller",
     "pmodules/tipps/controller",
     "pmodules/mail/controller",
-    "pmodules/transport/controller"
+    "pmodules/transport/controller",
+    "pmodules/reflectup/controller",
 ], function() {
     return {};
 });
