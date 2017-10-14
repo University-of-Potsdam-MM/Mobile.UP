@@ -2,10 +2,6 @@
 
 <div data-role="content" class="ui-content">
 
-	<div class="moodle-message moodle-website" style="display: none">
-		<a href="<%= model.get('webUrl') %>" data-role="button">Moodle 2.UP</a>
-	</div>
-
 	<div class="moodle-message moodle-appstore" style="display: none">
 		<% 	if (device.platform == "Android"){ %>
 		<a href="<%= model.get('androidStoreUrl') %>" data-role="button">Moodle Mobile</a>

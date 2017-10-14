@@ -10,8 +10,7 @@ define([
 	var AppModel = Backbone.Model.extend({
 		defaults: {
 			iosStoreUrl : 'https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8',
-			androidStoreUrl: 'https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de',
-			webUrl: 'http://musang.soft.cs.uni-potsdam.de/reflectup/www/'
+			androidStoreUrl: 'https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de'
 		}
 	});
 
@@ -64,15 +63,7 @@ define([
 				this.launchAppStore();
 			}, this);
 
-
-			if (window.cordova){
-				//console.log('trying launch');
-				window.plugins.launcher.launch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
-			}else{
-				// in web view simply open webpage on click
-				this.$el.find(".reflectup-message").hide();
-				this.$el.find(".reflectup-website").show();
-			}
+			window.plugins.launcher.launch({uri:'reflectup://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
 		},
 
 		launchAppStore: function(){

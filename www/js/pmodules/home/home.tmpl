@@ -20,7 +20,7 @@
 			</div>
 			<div class="flex-item iconized moodle">
 				<% if (window.cordova) { %>
-				<a href="#moodle/moodle/index" data-role="button">Moodle</a>
+				<a href="#moodle/moodle" data-role="button">Moodle</a>
 				<% } else { %>
 				<a href="https://moodle2.uni-potsdam.de/" data-role="button">Moodle</a>
 				<% } %>
@@ -81,7 +81,11 @@
 				<a href="#impressum" data-role="button">Impressum</a>
 			</div>
 			<div class="flex-item iconized reflectup">
+				<% if (window.cordova) { %>
 				<a href="#reflectup" data-role="button">Reflect.UP</a>
+				<% } else { %>
+				<a href="http://musang.soft.cs.uni-potsdam.de/reflectup/www/" data-role="button">Reflect.UP</a>
+				<% } %>
 			</div>
 		</div>
 	</div>

@@ -10,8 +10,7 @@ define([
     var AppModel = Backbone.Model.extend({
         defaults: {
             iosStoreUrl : 'https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8',
-            androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de',
-            webUrl: 'https://moodle2.uni-potsdam.de'
+            androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de'
         }
     });
 
@@ -64,15 +63,7 @@ define([
                 this.launchAppStore();
             }, this);
 
-
-            if (window.cordova){
-                //console.log('trying launch');
-                window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
-            }else{
-                // in web view simply open webpage on click
-                this.$el.find(".moodle-message").hide();
-                this.$el.find(".moodle-website").show();
-            }
+            window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
         },
 
         launchAppStore: function(){

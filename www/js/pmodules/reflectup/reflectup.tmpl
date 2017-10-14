@@ -2,10 +2,6 @@
 
 <div data-role="content" class="ui-content">
 
-	<div class="reflectup-message reflectup-website" style="display: none">
-		<a href="<%= model.get('webUrl') %>" data-role="button">Reflect.UP</a>
-	</div>
-
 	<div class="reflectup-message reflectup-appstore" style="display: none">
 		<% 	if (device.platform == "Android"){ %>
 		<a href="<%= model.get('androidStoreUrl') %>" data-role="button">Reflect.UP</a>
