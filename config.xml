@@ -2,16 +2,16 @@
 <widget
     id="de.floriangoessler.upapp"
     android-packageName="de.floriangoessler.upapp"
-    version="4.1.3"
-    android-versionCode="40103"
-    ios-CFBundleVersion="201704240846"
+    version="5.0.0"
+    android-versionCode="50000"
+    ios-CFBundleVersion="201710160900"
     ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:gap="http://phonegap.com/ns/1.0">
 
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
-    <author email="mobileup-service@uni-potsdam.de" href="http://www.elis.uni-potsdam.de/">eLiS-Team</author>
+    <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS-Team</author>
 
     <!-- Platforms -->
     <plugin name="cordova-custom-config" spec="^2.0.3" />
@@ -25,7 +25,7 @@
     </platform>
 
     <!-- Fullscreen and status bar -->
-    <plugin name="cordova-plugin-statusbar" spec="^2.1.3" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.2.2" />
     <preference name="DisallowOverscroll" value="true" />
     <platform name="ios">
         <preference name="Fullscreen" value="true" />
@@ -73,7 +73,7 @@
     </platform>
 
     <!-- Splash screens -->
-    <plugin name="cordova-plugin-splashscreen" spec="^3.2.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="ShowSplashScreenSpinner" value="false"/>
     <preference name="FadeSplashScreen" value="true"/>
@@ -89,17 +89,16 @@
         <splash density="land-xhdpi" src="res/screen/android/screen-xhdpi-landscape.png" />
     </platform>
     <platform name="ios">
-        <splash width="1024" height="768"  src="res/screen/ios/screen-ipad-landscape.png" />
-        <splash width="2048" height="1536" src="res/screen/ios/screen-ipad-landscape-2x.png" />
-        <splash width="768"  height="1024" src="res/screen/ios/screen-ipad-portrait.png" />
-        <splash width="1536" height="2048" src="res/screen/ios/screen-ipad-portrait-2x.png" />
         <splash width="320"  height="480"  src="res/screen/ios/screen-iphone-portrait.png" />
         <splash width="640"  height="960"  src="res/screen/ios/screen-iphone-portrait-2x.png" />
         <splash width="640"  height="1136" src="res/screen/ios/screen-iphone-portrait-568h-2x.png" />
-        <!-- FIXME: Dummy screens -->
-        <splash width="750"  height="1334" src="res/screen/ios/Default-667h.png" />
-        <splash width="1242" height="2208" src="res/screen/ios/Default-736h.png" />
-        <splash width="2208" height="1242" src="res/screen/ios/Default-Landscape-736h.png" />
+        <splash width="750"  height="1334" src="res/screen/ios/screen-iphone-portrait-750.png" />
+        <splash width="1242" height="2208" src="res/screen/ios/screen-iphone-portrait-1242.png" />
+        <splash width="2208" height="1242" src="res/screen/ios/screen-iphone-landscape-2208.png" />
+        <splash width="768"  height="1024" src="res/screen/ios/screen-ipad-portrait.png" />
+        <splash width="1024" height="768"  src="res/screen/ios/screen-ipad-landscape.png" />
+        <splash width="1536" height="2048" src="res/screen/ios/screen-ipad-portrait-2x.png" />
+        <splash width="2048" height="1536" src="res/screen/ios/screen-ipad-landscape-2x.png" />
     </platform>
 
     <!-- File download (Moodle) -->
@@ -126,15 +125,15 @@
     <content src="index.html" />
 
     <!-- Remaining plugins -->
-    <plugin name="cordova-plugin-inappbrowser" spec="^1.4.0" />
-    <plugin name="cordova-plugin-dialogs" spec="^1.2.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^1.7.0" />
+    <plugin name="cordova-plugin-dialogs" spec="^1.3.2" />
     <plugin name="cordova-plugin-calendar" spec="^4.5.5" />
-    <plugin name="cordova-plugin-device" spec="^1.1.2" />
+    <plugin name="cordova-plugin-device" spec="^1.1.5" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
-    <plugin name="cordova-plugin-network-information" spec="^1.2.1" />
+    <plugin name="cordova-plugin-network-information" spec="^1.3.2" />
     <plugin name="com.borismus.webintent" spec="https://github.com/InQBarna/WebIntent.git" />
     <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
-    <plugin name="cordova-plugin-console" spec="^1.0.4" />
+    <plugin name="cordova-plugin-console" spec="^1.0.6" />
     <plugin name="cordova-plugin-app-launcher" spec="https://github.com/mmey3k/cordova-plugin-app-launcher.git" />
     <plugin name="cordova-plugin-queries-schemes" spec="^0.1.1" />
 
