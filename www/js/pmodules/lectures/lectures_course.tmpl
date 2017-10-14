@@ -1,4 +1,28 @@
 <% if (!_.isEmpty(model.attributes)){ %>
+<table data-role="table" data-mode="reflow" class="ui-responsive">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    	<%= (model.attributes.enrolmentBegin && model.attributes.enrolmentEnd) ? '<tr><th>Einschreibezeitraum:</th><td>'+model.attributes.enrolmentBegin+' - '+model.attributes.enrolmentEnd+'</td></tr>' : '' %>
+    	<%= (model.attributes.language) ? '<tr><th>Sprache:</th><td>'+model.attributes.language+'</td></tr>' : '' %>
+    	<%= (model.attributes.facilityName) ? '<tr><th>Einrichtung:</th><td>'+model.attributes.facilityName+'</td></tr>' : '' %>
+        <%= (model.attributes.comment) ? '<tr><th>Kommentar:</th><td>'+model.attributes.comment+'</td></tr>' : '' %>
+        <%= (model.attributes.note) ? '<tr><th>Informationen:</th><td>'+model.attributes.note+'</td></tr>' : '' %>
+        <%= (model.attributes.literature) ? '<tr><th>Literatur:</th><td>'+model.attributes.literature+'</td></tr>' : '' %>
+        <%= (model.attributes.qualification) ? '<tr><th>Vorraussetzung:</th><td>'+model.attributes.qualification+'</td></tr>' : '' %>
+        <%= (model.attributes.examination) ? '<tr><th>Prüfungsleistung:</th><td>'+model.attributes.examination+'</td></tr>' : '' %>
+    </tbody>
+</table>
 <% _.each(asArray(model.attributes.groups), function(group) { %>
 <li class="lecture-group-detail">
 
@@ -29,13 +53,7 @@
 		</tbody>
 	</table>
 </li>
-<!-- PULS link is disabled because the new API doesn't give a link yet -->
-<!--<div class="lecture-group-puls-link">
-	<a href="<%= model.attributes.url %>" target="_blank" rel="external">In PULS öffnen</a>
-</div>-->
 <% }); %>
 <% }else{ %>
-	
 <p><i class="fa fa-info-circle"></i> Zu dieser Veranstaltung stehen noch keine Informationen zur Verfügung</p>
-
 <% } %>
