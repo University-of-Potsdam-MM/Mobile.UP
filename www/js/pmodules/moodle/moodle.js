@@ -33,17 +33,20 @@ define([
         },
 
         startAppLaunch: function() {
+            //console.log('startAppLaunch');
             /*
              *  handlers for trying to app launch
              */
             var appCanLaunchSuccessCallback = _.bind(function(data){
                 // try to launch app
+                //console.log('app found');
                 app.route("main/menu", false, true);
                 window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
             }, this);
 
             var appCanLaunchErrorCallback = _.bind(function(errMsg){
                 // app not installed try to open app store
+                //console.log('app not found', errMsg);
                 this.$el.find(".moodle-message").hide();
                 this.$el.find(".moodle-appstore").show();
                 this.launchAppStore();
@@ -53,17 +56,20 @@ define([
              *  handlers for app launching
              */
             var appLaunchSuccessCallback = _.bind(function(data){
+                //console.log('app launched', data);
                 this.$el.find(".moodle-message").hide();
-                this.$el.find(".moodle-appstore").show();
+                this.$el.find(".moodle-app").show();
             }, this);
 
             var appLaunchErrorCallback = _.bind(function(errMsg){
+                //console.log('app can not be started', errMsg);
                 this.$el.find(".moodle-message").hide();
                 this.$el.find(".moodle-appstore").show();
                 this.launchAppStore();
             }, this);
-
-            window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
+            if (window.cordova){
+                window.plugins.launcher.launch({uri:'moodlemobile://', flags: window.plugins.launcher.FLAG_ACTIVITY_NEW_TASK}, appLaunchSuccessCallback, appLaunchErrorCallback);
+            }
         },
 
         launchAppStore: function(){
@@ -77,6 +83,7 @@ define([
         render: function(){
             this.$el = this.page;
             this.$el.attr('id', 'moodle');
+            this.$el.on('click .moodle-app', this.startAppLaunch);
             this.$el.html(this.template({model: this.model}));
             this.$el.trigger("create");
 

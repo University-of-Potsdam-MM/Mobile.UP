@@ -2,11 +2,15 @@
 
 <div data-role="content" class="ui-content">
 
+	<div class="moodle-message moodle-app">
+		<a href="#" data-role="button">Moodle Mobile öffnen</a>
+	</div>
+
 	<div class="moodle-message moodle-appstore" style="display: none">
 		<% 	if (device.platform == "Android"){ %>
-		<a href="<%= model.get('androidStoreUrl') %>" data-role="button">Moodle Mobile</a>
+		<a href="<%= model.get('androidStoreUrl') %>" data-role="button">Moodle Mobile installieren</a>
 		<% 	} else if(device.platform == "iOS") { %>
-		<a href="<%= model.get('iosStoreUrl') %>" data-role="button">Moodle Mobile</a>
+		<a href="<%= model.get('iosStoreUrl') %>" data-role="button">Moodle Mobile installieren</a>
 		<%	} %>
 	</div>
 
