@@ -171,7 +171,7 @@ define([
 				this.$("#error3").css('display', 'block');
 				// Makes the login prompt invisble and thus not reachable if
 				// timer is running
-				this,$("#loginform_container").css('display', 'none');
+				this.$("#loginform_container").css('display', 'none');
 			} else {
 				this.$("#error3").css('display', 'none');
 				// Makes the login prompt visible if timer is not running
