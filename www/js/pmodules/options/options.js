@@ -103,12 +103,13 @@ define([
 				if (version.length > 0 && parseInt(version[0], 10) <= 4) {
 					// Android 4 or lower detected
 					this.$("#error1").css('display', 'block');
+					return;
 				}
-			} else {
-				// Show general error message
-				this.$("#error").css('display', 'block');
-				this.timerHelper.incrementLoginAttempt();
 			}
+
+			// Show general error message
+			this.$("#error").css('display', 'block');
+			this.timerHelper.incrementLoginAttempt();
 		},
 
 		missingInternetConnectionHandler: function(){
