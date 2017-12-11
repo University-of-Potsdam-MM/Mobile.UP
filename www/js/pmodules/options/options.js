@@ -74,7 +74,8 @@ define([
 		model: Session,
 		events: {
 			'submit #loginform': 'login',
-			'focus #loginform input': 'clearForm'
+			'focus #loginform input': 'clearForm',
+			'click #android4help': 'openAndroidHelp'
 		},
 
 		initialize: function(p){
@@ -89,9 +90,25 @@ define([
 			this.listenTo(this, 'missingConnection', this.missingInternetConnectionHandler);
 		},
 
+		openAndroidHelp: function(e) {
+			window.open("http://uni-potsdam.de/de/mobileup/fragen-antworten-materialien.html", "_system");
+			e.preventDefault();
+			return false;
+		},
+
 		errorHandler: function(){
-			this.$("#error").css('display', 'block');
-			this.timerHelper.incrementLoginAttempt();
+			// If we are on Android 4 or lower we may have a problem with certificates
+			if (window.cordova && device.platform.toLowerCase().startsWith("android")) {
+				var version = device.version.split(".");
+				if (version.length > 0 && parseInt(version[0], 10) <= 4) {
+					// Android 4 or lower detected
+					this.$("#error1").css('display', 'block');
+				}
+			} else {
+				// Show general error message
+				this.$("#error").css('display', 'block');
+				this.timerHelper.incrementLoginAttempt();
+			}
 		},
 
 		missingInternetConnectionHandler: function(){
@@ -101,6 +118,7 @@ define([
 		clearForm: function(){
 			this.$("#error").css('display', 'none');
 			this.$("#error0").css('display', 'none');
+			this.$("#error1").css('display', 'none');
 		},
 
 		stopListening: function() {
