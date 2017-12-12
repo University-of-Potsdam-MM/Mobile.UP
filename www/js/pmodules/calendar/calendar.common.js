@@ -50,7 +50,7 @@ define([
 			return dayContent.isSame(day);
 		},
 
-		exportToCalendar: function(entry, course, callback) {z
+		exportToCalendar: function(entry, course, callback) {
 			if (this.get("timespan")){
 				var split = this.get("timespan").split(' ');
 				var dayContent = moment(split[1], "DD.MM.YYYY");
