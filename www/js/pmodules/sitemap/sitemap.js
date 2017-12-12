@@ -293,7 +293,7 @@ define([
 					oneSidedGuard.disableBlock();
 				}});
 			}).fail(function(){
-				new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
+				new utils.ErrorView({el: '#error-placeholder', msg: 'Es ist ein Fehler aufgetreten, wahrscheinlich besteht keine Internetverbindung.', module:'sitemap'});
 			});
 		},
 
