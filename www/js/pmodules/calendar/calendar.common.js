@@ -51,8 +51,15 @@ define([
 		},
 
 		exportToCalendar: function(entry, course, callback) {
-			var split = this.get("timespan").split(' ');
-			var dayContent = moment(split[1], "DD.MM.YYYY");
+			if (this.get("timespan")){
+				var split = this.get("timespan").split(' ');
+				var dayContent = moment(split[1], "DD.MM.YYYY");
+			} else {
+				var dayContent = {
+					startTime: this.get("startTime"),
+					endTime: this.get("endTime")
+				};
+			}
 
 			entry.startDate = this.getBegin(dayContent).toDate();
 			entry.endDate = this.getEnd(dayContent).toDate();
