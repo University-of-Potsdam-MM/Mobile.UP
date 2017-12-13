@@ -288,7 +288,7 @@ define([
 
 		_loadMap: function() {
 			$.getScript('https://www.google.com/jsapi').done(function(){
-				google.load('maps', '3', {other_params: 'sensor=false', callback: function(){
+				google.load('maps', '3', {callback: function(){
 					settings.initCenters();
 					oneSidedGuard.disableBlock();
 				}});
