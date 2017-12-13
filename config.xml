@@ -136,6 +136,7 @@
     <plugin name="cordova-plugin-console" spec="^1.0.6" />
     <plugin name="cordova-plugin-app-launcher" spec="https://github.com/mmey3k/cordova-plugin-app-launcher.git" />
     <plugin name="cordova-plugin-queries-schemes" spec="^0.1.1" />
+    <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
 
     <!-- Hooks -->
     <hook type="after_clean" src="scripts/removePluginsAndPlatforms.js" />
@@ -144,4 +145,8 @@
     <platform name="ios">
         <hook type="after_prepare" src="scripts/addPlistEntries.js" />
     </platform>
+
+    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Positionsbestimmung für eigenen Standort auf Lageplan</string>
+    </edit-config>
 </widget>

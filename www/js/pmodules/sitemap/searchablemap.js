@@ -188,6 +188,8 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		_markerCollection: undefined,
 		_mapView: undefined,
 		_searchView: undefined,
+		_geolocationId: undefined,
+		_geolocationMarker: undefined,
 
 		_create: function() {
 			this._mapView = new MapFragment();
@@ -211,6 +213,26 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 			}, this));
 
 			this._searchView = new SearchView({el: this.element});
+
+			// start location tracking
+			this._geolocationId = navigator.geolocation.watchPosition(_.bind(this._onUserLocationUpdated, this), undefined, {
+				timeout: 2000,
+				enableHighAccuracy: true
+			});
+		},
+
+		_onUserLocationUpdated: function(pos) {
+			// Update marker on map
+			if (this._geolocationMarker) {
+				var coords = pos.coords;
+				var lat = coords.latitude;
+				var lng = coords.longitude;
+
+				if (typeof lat !== "number") lat = parseFloat(lat);
+				if (typeof lng !== "number") lng = parseFloat(lng);
+
+				this._geolocationMarker.setPosition({lat: lat, lng: lng});
+			}
 		},
 
 		_onSelected: function(selection) {
@@ -232,6 +254,9 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 
 		_destroy: function() {
 			this.element.children().last().remove();
+
+			// end location tracking
+			navigator.geolocation.clearWatch(this._geolocationId);
 		},
 
 		_setOption: function(key, value) {
@@ -248,6 +273,15 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'geojson'], function($, _, 
 		_initializeMap: function(center) {
 			this._mapView.createMap(center);
 			this._markerCollection = new SearchableMarkerCollection2();
+
+			// Create user location marker if necessary
+			if (!this._geolocationMarker) {
+				this._geolocationMarker = new google.maps.Marker({
+					clickable: false,
+					icon: "img/up/user-marker.png",
+					map: this._mapView._map
+				});
+			}
 		},
 
 		_insertSearchables: function(searchables) {
