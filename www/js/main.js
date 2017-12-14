@@ -28,6 +28,7 @@ require.config({
         'moodle.download': 'lib/moodle.download',
         'stateful.models': 'lib/StatefulModels',
         'PulsAPI': 'lib/PulsAPI',
+        'turf': 'vendor/turf.min',
         'headerParser': 'lib/headerParser'
     },
     // "Paths configurations should only be used for folders, not modules themselves.

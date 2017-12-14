@@ -3,8 +3,10 @@ define([
 	'underscore',
 	'backbone',
 	'utils',
+	'pmodules/sitemap/settings',
+	'turf',
 	'jquerymobile'
-], function($, _, Backbone, utils) {
+], function($, _, Backbone, utils, settings, turf) {
 	var rendertmpl = _.partial(utils.rendertmpl, _, "js/modules");
 
 	var TabModel = Backbone.Model.extend({
@@ -86,8 +88,7 @@ define([
 
 	$.widget("up.campusmenu", {
 		options: {
-			onChange: function(name) {},
-			store: "campusmenu.default"
+			onChange: function(name) {}
 		},
 
 		_create: function() {
@@ -104,9 +105,6 @@ define([
                 </div>");
 			this.element.trigger("create");
 
-			// read local storage
-			this.options.store = this.element.attr("data-store");
-
 			// bind to click events
 			var widgetParent = this;
 			$(".location-menu", this.element).bind("click", function (event) {
@@ -114,7 +112,6 @@ define([
 				var target = widgetParent._retrieveSelection(source);
 
 				// call onChange callback
-				widgetParent._setDefaultSelection(target);
 				widgetParent.options.onChange({ campusName: target });
 
 				// For some unknown reason the usual tab selection code doesn't provide visual feedback, so we have to use a custom fix
@@ -127,43 +124,67 @@ define([
 		},
 
 		pageshow: function(notrigger) {
-			var selection = this._activateDefaultSelection();
-
-			if (!notrigger) {
-				this.options.onChange({campusName: selection});
-			}
+			this._activateDefaultSelection(_.bind(function(selection) {
+				if (!notrigger) {
+					this.options.onChange({campusName: selection});
+				}
+			}, this));
 		},
 
 		_setOption: function(key, value) {
 			this._super(key, value);
 		},
 
-		_setDefaultSelection: function(selection) {
-			localStorage.setItem(this.options.store, selection);
-		},
+		_getDefaultSelection: function(callback) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				// Position received
+				var places = [
+					settings.url.golm,
+					settings.url.griebnitzsee,
+					settings.url.neuespalais
+				];
 
-		_getDefaultSelection: function() {
-			return localStorage.getItem(this.options.store);
+				var user = turf.point([position.coords.longitude, position.coords.latitude]);
+
+				var nearestCampus = _.chain(places)
+					// Calculate campus distances
+					.map(function(place) {
+						var center = turf.point([place.center.lng, place.center.lat]);
+
+						return {
+							campus: place.campus,
+							distance: turf.distance(user, center, "kilometers")
+						};
+					})
+					// Find minimum distance
+					.min(function(place) { return place.distance; })
+					// Get associated name
+					.value().campus;
+
+				callback(nearestCampus);
+			}, function() {
+				// No location available
+				callback(undefined);
+			});
 		},
 
 		_retrieveSelection: function(selectionSource) {
 			return selectionSource.attr("href").slice(1);
 		},
 
-		_activateDefaultSelection: function() {
-			var defaultSelection = this._getDefaultSelection();
+		_activateDefaultSelection: function(callback) {
+			this._getDefaultSelection(_.bind(function(defaultSelection) {
+				if (!defaultSelection) {
+					var source = $(".location-menu-default", this.element);
+					defaultSelection = this._retrieveSelection(source);
+				}
 
-			if (!defaultSelection) {
-				var source = $(".location-menu-default", this.element);
-				defaultSelection = this._retrieveSelection(source);
-				this._setDefaultSelection(defaultSelection);
-			}
+				$(".location-menu", this.element).removeClass("ui-btn-active");
+				var searchExpression = "a[href='#" + defaultSelection + "']";
+				$(searchExpression, this.element).addClass("ui-btn-active");
 
-			$(".location-menu", this.element).removeClass("ui-btn-active");
-			var searchExpression = "a[href='#" + defaultSelection + "']";
-			$(searchExpression, this.element).addClass("ui-btn-active");
-
-			return defaultSelection;
+				callback(defaultSelection);
+			}, this));
 		},
 
 		_fixActiveTab: function(target, event) {
@@ -190,7 +211,6 @@ define([
 			}
 
 			// call onChange callback
-			this._setDefaultSelection(target);
 			this.options.onChange(callOptions);
 		}
 	});
