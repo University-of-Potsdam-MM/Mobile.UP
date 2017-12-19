@@ -15,7 +15,7 @@
   },
   "android": {
     "release": {
-      "keystore": "C:/Users/hgessner/Documents/android-keys.keystore",
+      "keystore": "up-release-key.keystore",
       "alias": "/my-release-key",
       "keystoreType": ""
     }

@@ -93,8 +93,13 @@ define([
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
 					entry.options.firstReminderMinutes = null;
+					
+					try {
+						date.exportToCalendar(entry, course, writeToCalendar);						
+					} catch (error) {
+						course.logCalendarExportError(error);
+					}
 
-					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
 
