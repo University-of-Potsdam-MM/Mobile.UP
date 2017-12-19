@@ -97,7 +97,6 @@ define([
 					try {
 						date.exportToCalendar(entry, course, writeToCalendar);						
 					} catch (error) {
-						console.log("ERROR");
 						course.logCalendarExportError(error);
 					}
 
