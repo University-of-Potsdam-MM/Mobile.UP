@@ -271,8 +271,10 @@ define([
 		 */
 		logCalendarExportError: function(error) {
 			new versionModel.VersionModel().fetch().done(_.bind(function(version) {
-				var stack = e.stack.toString().split(/\r\n|\n/);
-                var model = new Backbone.Model();
+				
+				var stack = error.stack.toString().split(/\r\n|\n/);
+				
+				var model = new Backbone.Model();
                 model.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log";
 				model.set("uuid", utils.getUniqueIdentifier());
 				model.set(
@@ -282,7 +284,6 @@ define([
 					+ "(" + this.get("courseType") + ")" + " "
 					+ "[" + stack[1] + "]"
 				);
-				model.set("message", errorMessage);
                 model.set("buildNumber", version.versionCode);
                 model.save();
 			}, this));

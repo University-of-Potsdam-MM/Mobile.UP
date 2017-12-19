@@ -102,8 +102,8 @@ define([
 						try {
 							date.exportToCalendar(entry, course, writeToCalendar);
 						} catch(error) {
-							// this is here to catch other cases we dont't
-							// know about yet
+							// this is here to catch other cases we don't know
+							// about
 							course.logCalendarExportError(error)
 						}
 					} 
