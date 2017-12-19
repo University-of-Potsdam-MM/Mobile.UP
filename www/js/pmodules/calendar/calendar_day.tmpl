@@ -1,5 +1,5 @@
 <ul data-role="listview"  data-inset="true" data-theme="c">
-    <li data-role="list-divider" class="calendar-date"><%= moment().format('LLLL') %></li>
+    <li data-role="list-divider" class="calendar-date"><%= day.locale('de').format('LL') %></li>
     
     <% _.each(CourseSlots.models, function(courseSlot){
             if (courseSlot.get('collection').length != 0){
