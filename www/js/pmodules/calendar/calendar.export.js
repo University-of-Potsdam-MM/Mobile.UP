@@ -99,9 +99,13 @@ define([
 					if (course.get("starting") != "Invalid date" && 
 						course.get("ending") != "Invalid date") {
 						
-						date.exportToCalendar(entry, course, writeToCalendar);
-					} else {
-						console.log(course.get("courseName"));
+						try {
+							date.exportToCalendar(entry, course, writeToCalendar);
+						} catch(error) {
+							// this is here to catch other cases we dont't
+							// know about yet
+							course.logCalendarExportError(error)
+						}
 					} 
 
 				}, this);

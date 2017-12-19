@@ -266,27 +266,22 @@ define([
 			}, this));
 		},
 
+		/**
+		 * Logs courses that have invalid start and/or ending dates
+		 */
 		logCalendarExportError: function(error) {
-
-			consoleLog = function(error, msg) {//See https://stackoverflow.com/a/27074218/470749
-				var e = error;
-				var stack = e.stack.toString().split(/\r\n|\n/);
-				return ('[' + stack[1] + ']');        
-			}
-
 			new versionModel.VersionModel().fetch().done(_.bind(function(version) {
+				var stack = e.stack.toString().split(/\r\n|\n/);
                 var model = new Backbone.Model();
                 model.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log";
 				model.set("uuid", utils.getUniqueIdentifier());
-				
-				var stack = error.stack.toString().split(/\r\n|\n/);
-				
-				errorMessage = 
-					"[Calendar Export Exception]: " + "'"+error.message+"'"
-					+ " in course " + this.get("courseName")
-					+ " ("+this.get("courseType")+") | "
-					+ ('[' + stack[1] + ']');
-
+				model.set(
+					"message", 
+					"[Calendar export exception] in" + " " 
+					+ this.get("courseName") + " " 
+					+ "(" + this.get("courseType") + ")" + " "
+					+ "[" + stack[1] + "]"
+				);
 				model.set("message", errorMessage);
                 model.set("buildNumber", version.versionCode);
                 model.save();
