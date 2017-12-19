@@ -94,11 +94,15 @@ define([
 					// Delete reminder
 					entry.options.firstReminderMinutes = null;
 					
-					try {
-						date.exportToCalendar(entry, course, writeToCalendar);						
-					} catch (error) {
-						course.logCalendarExportError(error);
-					}
+					// There seem to be courses with invalid dates, we can
+					// ignore them, since those can't be calendar entries
+					if (course.get("starting") != "Invalid date" && 
+						course.get("ending") != "Invalid date") {
+						
+						date.exportToCalendar(entry, course, writeToCalendar);
+					} else {
+						console.log(course.get("courseName"));
+					} 
 
 				}, this);
 			}, this);
