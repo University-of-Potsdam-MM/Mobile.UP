@@ -259,6 +259,22 @@ define([
 			}, this));
 		},
 
+		logCalendarExportError: function(error) {
+			new versionModel.VersionModel().fetch().done(_.bind(function(version) {
+                var model = new Backbone.Model();
+                model.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log";
+				model.set("uuid", utils.getUniqueIdentifier());
+				errorMessage = 
+					"Calendar Export Exception: " + "'"+error.message+"'"
+					+ " in course " + this.get("courseName")
+					+ " ("+this.get("courseType")+") | "
+					+ this.get("ending") + " - " + this.get("ending");
+				model.set("message", errorMessage);
+                model.set("buildNumber", version.versionCode);
+                model.save();
+			}, this));
+		},
+
 		getStarting: function() {
 			var courseStarting = undefined;
 			if (this.get('starting')){
