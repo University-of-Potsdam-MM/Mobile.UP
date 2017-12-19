@@ -267,11 +267,12 @@ define([
 		},
 
 		/**
-		 * Logs courses that have invalid start and/or ending dates
+		 * Logs courses that trigger an exception when being exported to the
+		 * calendar
 		 */
 		logCalendarExportError: function(error) {
 			new versionModel.VersionModel().fetch().done(_.bind(function(version) {
-				
+
 				var stack = error.stack.toString().split(/\r\n|\n/);
 				
 				var model = new Backbone.Model();
