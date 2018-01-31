@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>{{texts.pageTitle}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div>
+  <ion-row class="logo-row">
+    <ion-col></ion-col>
+    <ion-col width-67>
+      <img src="http://placehold.it/300x200"/>
+    </ion-col>
+    <ion-col></ion-col>
+  </ion-row>
+
+  <div>
+    <div>
+      {{texts.question}}
+    </div>
+    <button ion-button block (click)="doLogout()">
+      {{texts.buttons.confirm}}
+    </button>
+    <button ion-button block (click)="goBack()">
+      {{texts.buttons.cancel}}
+    </button>
+  </div>
+  </div>
+</ion-content>

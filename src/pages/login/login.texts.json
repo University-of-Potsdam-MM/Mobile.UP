@@ -1,0 +1,25 @@
+{
+    "pageTitle": "Login",
+    "placeholder": {
+      "id": "Uni-Potsdam Benutzer-ID",
+      "password": "Passwort"
+    },
+    "buttons": {
+      "login": "Login",
+      "cancel": "Abbrechen"
+    },
+    "loading": {
+      "text": "Bitte warten"
+    },
+    "alert": {
+      "text": "Fehler beim Login",
+      "subtitles": {
+        "network": "Es besteht keine Verbindung zum Netzwerk",
+        "credentials": "Benutzername und/oder Passwort falsch",
+        "other": "Was weiß ich"
+      },
+      "button": {
+        "continue": "Weiter"
+      } 
+    }
+  }

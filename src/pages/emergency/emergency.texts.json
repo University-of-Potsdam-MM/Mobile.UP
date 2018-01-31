@@ -1,0 +1,10 @@
+{
+  "pageTitle": "Notrufnummern",
+  "placeholder": {
+    "search": "Suche"
+  },
+  "item": {
+    "postal": "Ort:",
+    "street": "Straße:"
+  }
+}

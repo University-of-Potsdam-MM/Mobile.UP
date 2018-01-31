@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{pageTitle}}</ion-title>
+  </ion-navbar>
+
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="texts.placeholder.search"
+    (input)="filterItems(query)"> 
+  </ion-searchbar>
+
+</ion-header>
+
+<ion-content>
+  <!-- list of emergencyCalls -->
+  <ion-list>
+
+    <!-- template for emergencyCalls -->
+    <ion-card *ngFor="let emergencyCall of displayedList">
+
+      <ion-card-header left color="primary">
+        <ion-icon name="person" padding-right></ion-icon>
+        {{emergencyCall.name}}
+      </ion-card-header>
+
+      <ion-card-content right>
+
+        <div *ngIf="emergencyCall.description">
+          {{emergencyCall.description}}
+        </div>
+
+        <div>
+          <ion-icon name="call" padding-right></ion-icon>
+          <a>{{emergencyCall.contact.telephone}}</a>
+        </div>
+
+        <div *ngIf="emergencyCall.contact.mail">
+          <ion-icon name="mail" padding-right></ion-icon>
+          <a>{{emergencyCall.contact.mail}}</a>
+        </div>
+
+        <div *ngIf="emergencyCall.address">
+          <p *ngIf="emergencyCall.address.postal">
+            <b>{{texts.item.postal}}</b> 
+            {{emergencyCall.address.postal}}
+          </p>
+          <p *ngIf="emergencyCall.address.street">
+            <b>{{texts.item.street}}</b> 
+            {{emergencyCall.address.street}}
+          </p>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+
+  </ion-list>
+</ion-content>

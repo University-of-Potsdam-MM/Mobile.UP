@@ -1,0 +1,11 @@
+{
+  "pageTitle": "Home",
+  "statements": {
+    "logged_in": "Du bist eingeloggt!",
+    "not_looged_in": "Du bist nicht eingeloggt!"
+  },
+  "buttons": {
+    "login": "Login",
+    "logout": "Logout"
+  }
+}
