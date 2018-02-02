@@ -2,13 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav } from 'ionic-angular';
 
-import { HomePage } from '../pages/home/home';
-import { ImpressumPage } from '../pages/impressum/impressum';
-import { EmergencyPage } from '../pages/emergency/emergency';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+/* Pages */
+import { HomePage } from '../pages/home/home';
+import { ImpressumPage } from '../pages/impressum/impressum';
+import { EmergencyPage } from '../pages/emergency/emergency';
+import { PersonsPage } from '../pages/persons/persons';
 
 @Component({
   templateUrl: 'app.html'
@@ -41,6 +43,10 @@ export class MobileUPApp {
       {  
         title: 'Notrufnummern', 
         component: EmergencyPage 
+      },
+      {
+        title: "Personensuche",
+        component: PersonsPage
       }
     ];
   }
