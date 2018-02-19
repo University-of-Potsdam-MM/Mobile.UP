@@ -31,11 +31,13 @@ export class Credentials {
 export class User {
   id: string;
   token: Token;
-
+  password:string;
   constructor(
       id: string,
-      token: Token) {
-                
+      token: Token,
+      password: string) {
+
+    this.password = password;
     this.id = id;
     this.token = token;
   }
@@ -112,7 +114,7 @@ export class AuthServiceProvider {
         .subscribe(
           token => {
             // We got a token, now we can create a user 
-            this.currentUser = new User(credentials.id, token);
+            this.currentUser = new User(credentials.id, token, credentials.password);
             
             observer.next(AuthState.OK);
             observer.complete();

@@ -8,10 +8,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
+import { PersonsPage } from '../pages/persons/persons';
+import { EmergencyPage } from '../pages/emergency/emergency';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { EmergencyPage } from '../pages/emergency/emergency';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 
@@ -20,7 +21,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     MobileUPApp,
     HomePage,
     ImpressumPage,
-    EmergencyPage
+    EmergencyPage,
+    PersonsPage
   ],
   imports: [
     HttpClientModule,
@@ -32,7 +34,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     MobileUPApp,
     HomePage,
     ImpressumPage,
-    EmergencyPage
+    EmergencyPage,
+    PersonsPage
   ],
   providers: [
     StatusBar,
