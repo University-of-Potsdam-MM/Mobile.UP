@@ -3,7 +3,20 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Token } from "../../library/interfaces";
 import { AuthState } from '../../library/enums';
+import { HttpParameterCodec} from '@angular/common/http'
 
+/**
+ * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
+ * serialize and parse URL parameter keys and values.
+ *
+ * see https://github.com/angular/angular/issues/11058
+ */
+export class WebHttpUrlEncodingCodec implements HttpParameterCodec {
+  encodeKey(k: string): string { return encodeURIComponent(k); }
+  encodeValue(v: string): string { return encodeURIComponent(v); }
+  decodeKey(k: string): string { return decodeURIComponent(k); }
+  decodeValue(v: string) { return decodeURIComponent(v); }
+}
 // Might want to rename this to SessionProvider, because this service
 // provides more than just authentication, as it is now.
 
@@ -70,8 +83,8 @@ export class AuthServiceProvider {
     return new HttpHeaders()
       .append(
         this.authParameters.headers.authorization.name, 
-        this.authParameters.headers.authorization.value
-      ).append(
+        this.authParameters.headers.authorization.value)
+      .append(
         this.authParameters.headers.contentType.name, 
         this.authParameters.headers.contentType.value
     );
@@ -94,7 +107,7 @@ export class AuthServiceProvider {
     var headers = this.createHttpHeaders();
 
     
-    var params:HttpParams = new HttpParams()
+    var params:HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
       .append(
         this.authParameters.body.grant_type.name, 
         this.authParameters.body.grant_type.values.password
