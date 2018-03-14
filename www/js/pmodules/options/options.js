@@ -188,8 +188,15 @@ define([
 
 			if (this.timerHelper.isCountdownActive()) {
 				this.$("#error3").css('display', 'block');
+				// Makes the login prompt invisble and thus not reachable if
+				// timer is running
+				this.$("#loginform_container").css('display', 'none');
+				this.$("#tooltip").css('display', 'none');
 			} else {
 				this.$("#error3").css('display', 'none');
+				// Makes the login prompt visible if timer is not running
+				this.$("#loginform_container").css('display', 'block');
+				this.$("#tooltip").css('display', 'block');				
 			}
 			this.loadingView = new utils.LoadingView({model: this.model, el: this.$("#loadingSpinner")});
 

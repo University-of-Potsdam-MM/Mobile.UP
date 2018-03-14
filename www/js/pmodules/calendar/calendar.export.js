@@ -93,8 +93,21 @@ define([
 					entry.options.url = this._cleanPulsLink(course.get("weblink"));
 					// Delete reminder
 					entry.options.firstReminderMinutes = null;
+					
+					// There seem to be courses with invalid dates, we can
+					// ignore them, since those can't be calendar entries
+					if (course.get("starting") != "Invalid date" && 
+						course.get("ending") != "Invalid date") {
+						
+						try {
+							date.exportToCalendar(entry, course, writeToCalendar);
+						} catch(error) {
+							// this is here to catch other cases we don't know
+							// about
+							course.logCalendarExportError(error)
+						}
+					} 
 
-					date.exportToCalendar(entry, course, writeToCalendar);
 				}, this);
 			}, this);
 

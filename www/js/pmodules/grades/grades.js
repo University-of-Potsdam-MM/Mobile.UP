@@ -70,12 +70,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'Session', 'pmodules/grades
 			var that = this;
 			this.collection.fetch(utils.cacheDefaults({
 				success: function(collection) {
-					if (collection.length == 1) {
-						var first = collection.at(0);
-						app.route("grades/view/" + first.get("Semester") + "/" + first.get("MtkNr") + "/" + first.get("StgNr"));
-					} else {
-						that.render();
-					}
+					that.render();
 				}
 			}));
 		},

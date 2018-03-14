@@ -266,6 +266,30 @@ define([
 			}, this));
 		},
 
+		/**
+		 * Logs courses that trigger an exception when being exported to the
+		 * calendar
+		 */
+		logCalendarExportError: function(error) {
+			new versionModel.VersionModel().fetch().done(_.bind(function(version) {
+
+				var stack = error.stack.toString().split(/\r\n|\n/);
+				
+				var model = new Backbone.Model();
+                model.url = "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log";
+				model.set("uuid", utils.getUniqueIdentifier());
+				model.set(
+					"message", 
+					"[Calendar export exception] in" + " " 
+					+ this.get("courseName") + " " 
+					+ "(" + this.get("courseType") + ")" + " "
+					+ "[" + stack[1] + "]"
+				);
+                model.set("buildNumber", version.versionCode);
+                model.save();
+			}, this));
+		},
+
 		getStarting: function() {
 			var courseStarting = undefined;
 			if (this.get('starting')){

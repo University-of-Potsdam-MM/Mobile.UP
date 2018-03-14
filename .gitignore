@@ -1,3 +1,4 @@
+// Cordova project
 platforms/**/
 node_modules/
 /.project
@@ -5,7 +6,5 @@ node_modules/
 .DS_Store
 .cordova/
 .idea/
-
 plugins/
-
 config.json

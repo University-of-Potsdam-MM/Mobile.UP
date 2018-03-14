@@ -14,7 +14,8 @@
 			<% _.each(data, function(model) { %>
 			<li>
 				<a href="#grades/view/<%= model.Semester %>/<%= model.MtkNr %>/<%= model.StgNr %>">
-					<%= model.AbLtxt %>
+					<%= model.Abschl %>
+					<%= model.Studiengaenge.dtxt %>
 				</a>
 			</li>
 			<% }); %>
