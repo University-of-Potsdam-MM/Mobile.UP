@@ -246,7 +246,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c17411",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; Aug 14-Oct 08 closed; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:30-18:00; Fr 09:30-16:00; Aug 14-Oct 08 closed; Feb 10-Apr 08 08:00-15:00; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -275,7 +275,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c10608",
     "mail": "cafefilm@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-15:00; PH off; Dec 22-Jan 01 closed",
+    "opening_hours": "Mo-Th 08:30-17:00; Fr 08:30-15:00; Feb 10-Apr 08 Mo-Fr 08:30-15:00; PH off; Dec 22-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -304,7 +304,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c10604",
     "mail": "gutewort@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1277",
-    "opening_hours": "Mo-Th 08:00-18:00; Fr 08:00-14:30; PH off",
+    "opening_hours": "Mo-Th 08:00-18:00; Fr 08:00-14:30; Feb 10-Apr 08 Mo-Th 08:00-16:00; Feb 10-Apr 08 Fr 08:00-14:30; PH off",
     "times": [
       {
         "day": "Montag",
@@ -333,7 +333,7 @@
     "link": "http://www.studentenwerk-potsdam.de/cafeterien.html#c16459",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
-    "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-15:00; Aug 14-Oct 08 Mo-Th 10:00-16:00; Aug 14-Oct 08 Fr 10:00-15:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-15:00; Feb 10-Apr 08 Mo-Th 09:00-17:00; Feb 10-Apr 08 Fr 09:00-15:00; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -362,7 +362,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-am-neuen-palais.html",
     "mail": "ehrlich@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-1292",
-    "opening_hours": "Mo-Th 10:00-15:00; Fr 10:00-15:00; Aug 14-Oct 08 Mo-Th 10:00-15:00; Aug 14-Oct 08 Fr 10:00-14:30; PH off; Dec 21-22 08:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 10:00-15:00; Fr 10:00-15:00; Feb 10-Apr 08 Mo-Th 10:00-15:00; Feb 10-Apr 08 Fr 10:00-14:30; PH off; Dec 21-22 08:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -391,7 +391,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-griebnitzsee.html",
     "mail": "kaehler@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-3748",
-    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-15:00; Sa 09:30-13:00; Aug 14-Oct 08 Mo-Fr 08:00-15:00; Aug 14-Oct 08 Sa closed; PH off; Dec 19-22 08:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 08:00-19:00; Fr 08:00-15:00; Sa 09:30-13:00; Feb 10-Apr 08 Mo-Fr 08:00-15:00; Feb 10-Apr 08 Sa closed; PH off; Dec 19-22 08:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -424,7 +424,7 @@
     "link": "http://www.studentenwerk-potsdam.de/mensa-golm.html",
     "mail": "geserich.a@studentenwerk-potsdam.de",
     "telephone": "+49 331 977-2350",
-    "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; Aug 14-Oct 08 Mo-Fr 09:00-15:00; PH off; Dec 19-22 09:00-15:00; Dec 23-Jan 01 closed",
+    "opening_hours": "Mo-Th 09:00-17:00; Fr 09:00-15:00; Feb 10-Apr 08 Mo-Fr 09:00-15:00; PH off; Dec 19-22 09:00-15:00; Dec 23-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
