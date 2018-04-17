@@ -555,7 +555,7 @@ define(['jquery', 'underscore', 'backbone', 'utils', 'moment'], function($, _, B
                 }else{
                   // print loanUnavailable.expected in human readable form
                   statusInfo += "ausgeliehen bis ";
-                  statusInfo += moment(loanUnavailable.expected, "YYYY-DD-MM").format("DD.MM.YYYY");
+                  statusInfo += moment(loanUnavailable.expected, "YYYY-MM-DD").format("DD.MM.YYYY");
                   statusInfo += ", Vormerken möglich";
                 }
               }
