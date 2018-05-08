@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { AuthState } from '../../library/enums';
 import { Location } from '@angular/common';
 
-// Reference: https://devdactic.com/login-ionic-2/
-
 /**
  * LoginPage
- * 
+ *
  * this page manages logging into the application. It shows a login mask
  * and uses AuthServiceProvider to manage authentication.
  */
@@ -23,10 +20,10 @@ export class LoginPage {
 
   loading: Loading;
   texts = require("./login.texts.json");
-  
+
   // This object will hold the data the user enters in the login form
   loginCredentials = {
-    id: '', 
+    id: '',
     password: ''
   };
 
@@ -40,7 +37,7 @@ export class LoginPage {
 
   /**
    * login
-   * 
+   *
    * Uses AuthServiceProvider to execute login. If login is successful the user
    * is taken back to the previous page. If not, an alert is shown.
    */
@@ -52,7 +49,7 @@ export class LoginPage {
     this.auth.login(this.loginCredentials)
       .subscribe(
         authStateResponse => {
-          // now we got a response and can end the loading animation 
+          // now we got a response and can end the loading animation
           this.endLoading();
 
           if (authStateResponse == AuthState.OK) {
@@ -60,7 +57,7 @@ export class LoginPage {
             this.location.back();
           } else {
             // show an alert fitting the response
-            this.showAlert(authStateResponse); 
+            this.showAlert(authStateResponse);
           }
         }
       );
@@ -68,7 +65,7 @@ export class LoginPage {
 
   /**
    * showLoading
-   * 
+   *
    * shows a loading animation
    */
   private showLoading(): void {
@@ -79,10 +76,10 @@ export class LoginPage {
     });
     this.loading.present();
   }
-  
+
   /**
    * endLoading
-   * 
+   *
    * ends the loading animation
    */
   private endLoading(): void {
@@ -91,11 +88,11 @@ export class LoginPage {
 
   /**
    * showAlert
-   * 
+   *
    * shows an alert
    */
   private showAlert(state: AuthState): void {
-    
+
     // mapping of AuthStates to according alert texts. Might be outsourced, but
     // it does not hurt to keep it in here, I guess.
     const subTitles = new Map<number, string>([
