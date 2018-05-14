@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { TranslateService } from "@ngx-translate/core";
 
 /**
  * HomePage
- * 
- * the page that is shown when the app is opened. Right now it just tells you
- * whether you are logged in and allows you to log in or out.
  */
 @IonicPage()
 @Component({
@@ -15,19 +12,16 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 })
 export class HomePage {
 
-  texts = require("./home.texts");
-
   constructor(
-      public navCtrl: NavController, 
+      public navCtrl: NavController,
       public navParams: NavParams,
-      public auth: AuthServiceProvider) {
-    
-    this.auth.getUserInfo();
+      public translate: TranslateService) {
+    console.log(this.translate.instant("hello"));
   }
 
   /**
    * openLoginPage
-   * 
+   *
    * opens the LoginPage
    */
   openLoginPage(): void {
@@ -36,7 +30,7 @@ export class HomePage {
 
   /**
    * openLogoutPage
-   * 
+   *
    * opens the LogoutPage
    */
   openLogoutPage(): void {

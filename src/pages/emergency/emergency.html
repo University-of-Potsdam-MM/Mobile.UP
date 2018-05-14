@@ -3,13 +3,13 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{pageTitle}}</ion-title>
+    <ion-title>{{"hello"|translate}}</ion-title>
   </ion-navbar>
 
   <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="texts.placeholder.search"
-    (input)="filterItems(query)"> 
+    (input)="filterItems(query)">
   </ion-searchbar>
 
 </ion-header>
@@ -44,11 +44,11 @@
 
         <div *ngIf="emergencyCall.address">
           <p *ngIf="emergencyCall.address.postal">
-            <b>{{texts.item.postal}}</b> 
+            <b>{{texts.item.postal}}</b>
             {{emergencyCall.address.postal}}
           </p>
           <p *ngIf="emergencyCall.address.street">
-            <b>{{texts.item.street}}</b> 
+            <b>{{texts.item.street}}</b>
             {{emergencyCall.address.street}}
           </p>
         </div>

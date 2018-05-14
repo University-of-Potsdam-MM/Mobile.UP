@@ -30,8 +30,8 @@ export class EmergencyPage {
 
   /**
    * Constructor of EmergencyPage
-   * @param navCtrl 
-   * @param navParams 
+   * @param navCtrl
+   * @param navParams
    */
   constructor(
     public navCtrl: NavController,
@@ -43,7 +43,7 @@ export class EmergencyPage {
 
   /**
    * initializeList
-   * 
+   *
    * initializes the list that is to be displayed with default values
    */
   public initializeList(): void {
@@ -52,7 +52,7 @@ export class EmergencyPage {
 
   /**
    * loadData
-   * 
+   *
    * loads default items from json file
    */
   public loadData(): void {
@@ -61,10 +61,10 @@ export class EmergencyPage {
 
   /**
    * contains
-   * 
+   *
    * checks, whether y is a substring of x
-   * 
-   * @param x:string String that does or does not contain string y 
+   *
+   * @param x:string String that does or does not contain string y
    * @param y:string String that is or is not contained in string y
    * @returns boolean Whether string x contains string y
    */
@@ -74,12 +74,12 @@ export class EmergencyPage {
 
   /**
    * filterItems
-   * 
+   *
    * when a query is typed into the searchbar this method is called. It
-   * filters the complete list of items with the query and modifies the 
-   * displayed list accordingly. 
-   * 
-   * @param query:string A query string the items will be filtered with 
+   * filters the complete list of items with the query and modifies the
+   * displayed list accordingly.
+   *
+   * @param query:string A query string the items will be filtered with
    */
   public filterItems(query: string): void {
     this.initializeList();

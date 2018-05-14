@@ -8,6 +8,7 @@ import { EmergencyPage } from '../pages/emergency/emergency';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -21,31 +22,36 @@ export class MobileUPApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(
-    public platform: Platform,
-    public menu: MenuController,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    private platform: Platform,
+    private menu: MenuController,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private translate: TranslateService
   ) {
     this.initializeApp();
+  }
 
+  initPages(){
     // set our app's pages
     this.pages = [
-      { 
+      {
         title: 'Home',
-        component: HomePage 
+        component: HomePage
       },
-      { 
-        title: 'Impressum', 
-        component: ImpressumPage 
+      {
+        title: 'Impressum',
+        component: ImpressumPage
       },
-      {  
-        title: 'Notrufnummern', 
-        component: EmergencyPage 
+      {
+        title: 'Notrufnummern',
+        component: EmergencyPage
       }
     ];
   }
 
   initializeApp() {
+    this.initPages();
+    this.translate.setDefaultLang('de');
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

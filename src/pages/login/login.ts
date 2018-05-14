@@ -4,12 +4,17 @@ import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { AuthState } from '../../library/enums';
 import { Location } from '@angular/common';
+import { UPLoginProvider } from "../../providers/login-provider/login";
+import {
+  ICredentials,
+  ISession
+} from "../../providers/login-provider/interfaces";
 
 /**
  * LoginPage
  *
  * this page manages logging into the application. It shows a login mask
- * and uses AuthServiceProvider to manage authentication.
+ * and uses UPLoginProvider to manage authentication.
  */
 @IonicPage()
 @Component({
@@ -18,21 +23,22 @@ import { Location } from '@angular/common';
 })
 export class LoginPage {
 
+  // TODO: Add i18n
+
   loading: Loading;
   texts = require("./login.texts.json");
 
   // This object will hold the data the user enters in the login form
-  loginCredentials = {
-    id: '',
+  loginCredentials:ICredentials = {
+    username: '',
     password: ''
   };
 
   constructor(
       public loadingCtrl: LoadingController,
-      public alertCtrl: AlertController,
-      private auth: AuthServiceProvider,
-      private location: Location) {
-
+      public alertCtrl:   AlertController,
+      private upLogin:    UPLoginProvider,
+      private storage:    Storage) {
   }
 
   /**
@@ -42,25 +48,18 @@ export class LoginPage {
    * is taken back to the previous page. If not, an alert is shown.
    */
   public login () {
-    // show nice loading animation while logging in, although it should not take
-    // too long
+
     this.showLoading();
 
-    this.auth.login(this.loginCredentials)
-      .subscribe(
-        authStateResponse => {
-          // now we got a response and can end the loading animation
-          this.endLoading();
+    this.upLogin.login(this.loginCredentials, {}).subscribe(
+      (session:ISession) => {
+        this.storage.set("session", session);
+      },
+      error => {
+        console.log(error);
+      }
+    );
 
-          if (authStateResponse == AuthState.OK) {
-            // take back user to previous page
-            this.location.back();
-          } else {
-            // show an alert fitting the response
-            this.showAlert(authStateResponse);
-          }
-        }
-      );
   }
 
   /**
