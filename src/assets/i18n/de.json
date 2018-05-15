@@ -1,10 +1,92 @@
 {
-  "pageTitle": {
-    "home": "Home",
-    "impress": "Impressum",
-    "Login": "Login",
-    "Logout": "Logout",
-    "personSearch": "Personensuche",
-    "emergency": "Notrufnummern"
+  "page":{
+    "home":{
+      "title": "Home"
+    },
+    "impress":{
+      "title":"Impressum"
+    },
+    "login":{
+      "title":"login",
+      "loginInProgress": "Login läuft",
+      "placeHolder":{
+        "username": "Benutzername (ohne @uni-potsdam.de)",
+        "password": "Passwort"
+      },
+      "loginError": {
+        "0": "Benutzername und Passwort stimmen nicht überein",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Etwicklerteam",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Etwicklerteam",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Etwicklerteam"
+      }
+    },
+    "logout":{
+      "title":"Logout",
+      "text": "Sie sind dabei sich abzumelden",
+      "affirmativeQuestion": "Sind Sie sicher?"
+    },
+    "emergency":{
+      "title":"Notrufnummern"
+    },
+    "personSearch":{
+      "title":"Personensuche"
+    },
+    "grades":{
+      "title":"Meine Leistungen"
+    },
+    "library":{
+      "title":"Bibliothekssuche"
+    },
+    "events":{
+      "title":"Events"
+    },
+    "moodle":{
+      "title":"Moodle"
+    },
+    "lectures":{
+      "title":"Vorlesungsverzeichnis"
+    },
+    "timetable":{
+      "title": "Stundenplan"
+    },
+    "mail":{
+      "title":"Mail"
+    },
+    "news":{
+      "title":"Neuigkeiten"
+    },
+    "maps":{
+      "title":"Lagepläne"
+    },
+    "tipps":{
+      "title":"Tipps & Tricks"
+    },
+    "reflectUP":{
+      "title":"Reflect.UP"
+    },
+    "sports":{
+      "title":"Hochschulsport"
+    },
+    "rooms":{
+      "title":"Raumbelegung"
+    },
+    "openingHours":{
+      "title":"Öffnungszeiten"
+    }
+  },
+  "button":{
+    "ok": "Ok",
+    "cancel": "Abbrechen",
+    "yes": "Ja",
+    "no": "Nein",
+    "login": "Login",
+    "continue": "Weiter"
+  },
+  "alert":{
+    "title": {
+      "error": "Fehler"
+    }
   }
+
 }

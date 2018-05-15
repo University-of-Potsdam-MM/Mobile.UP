@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import { Location } from '@angular/common';
+import {HomePage} from "../home/home";
+import {Storage} from "@ionic/storage";
 
 /**
  * LogoutPage
@@ -14,28 +16,23 @@ import { Location } from '@angular/common';
 })
 export class LogoutPage {
 
-  texts = require("./logout.texts.json");
-
   constructor(
-      private location: Location) {
+      private storage: Storage,
+      private navCtrl: NavController) {
   }
 
   /**
-   * doLogout
-   *
-   * uses AuthServiceProvider do do logout and take user back to the previous
-   * page
+   * performs logout by simply deleting the current session
    */
   public doLogout() {
-
+    this.storage.set("session", null);
+    this.goHome();
   }
 
   /**
-   * goBack
-   *
    * takes the user back to the previous page
    */
-  public goBack() {
-    this.location.back();
+  public goHome() {
+    this.navCtrl.setRoot(HomePage);
   }
 }

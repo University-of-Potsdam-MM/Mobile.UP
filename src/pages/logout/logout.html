@@ -3,7 +3,7 @@
       <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-title>{{texts.pageTitle}}</ion-title>
+      <ion-title>{{ "page.logout.title" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -20,13 +20,13 @@
 
   <div>
     <div>
-      {{texts.question}}
+      {{ "page.logout.affirmativeQuestion" | translate }}
     </div>
     <button ion-button block (click)="doLogout()">
-      {{texts.buttons.confirm}}
+      {{ "button.yes" | translate }}
     </button>
-    <button ion-button block (click)="goBack()">
-      {{texts.buttons.cancel}}
+    <button ion-button block (click)="goHome()">
+      {{ "button.cancel" | translate }}
     </button>
   </div>
   </div>

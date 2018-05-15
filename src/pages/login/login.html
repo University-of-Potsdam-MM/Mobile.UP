@@ -3,7 +3,7 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>{{texts.pageTitle}}</ion-title>
+        <ion-title>{{"page.login.title"|translate}}</ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -21,39 +21,39 @@
         <ion-row>
           <ion-col>
             <ion-list inset>
-              
+
               <ion-item>
-                <ion-input 
-                  type="text" 
-                  [placeholder]="texts.placeholder.id" 
-                  name="id" 
-                  [(ngModel)]="loginCredentials.id" 
+                <ion-input
+                  type="text"
+                  [placeholder]="'page.login.placeHolder.username' | translate"
+                  name="id"
+                  [(ngModel)]="loginCredentials.username"
                   required
                 ></ion-input>
               </ion-item>
-              
+
               <ion-item>
-                <ion-input 
-                  type="password" 
-                  [placeholder]="texts.placeholder.password" 
-                  name="password" 
-                  [(ngModel)]="loginCredentials.password" 
+                <ion-input
+                  type="password"
+                  [placeholder]="'page.login.placeHolder.password' |translate"
+                  name="password"
+                  [(ngModel)]="loginCredentials.password"
                   required
                 ></ion-input>
               </ion-item>
-              
+
             </ion-list>
           </ion-col>
         </ion-row>
-        
+
         <ion-row>
           <ion-col>
             <button ion-button class="submit-btn" full type="submit">
-              {{texts.buttons.login}}
+              {{ "common.button.login" | translate }}
             </button>
           </ion-col>
         </ion-row>
-        
+
       </form>
     </div>
   </ion-content>

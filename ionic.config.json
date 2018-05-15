@@ -4,11 +4,5 @@
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  },
-  "proxies": [
-    {
-      "path": "/token",
-      "proxyUrl": "https://apiup.uni-potsdam.de/endpoints/token"
-    }
-  ]
+  }
 }

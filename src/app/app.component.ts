@@ -5,11 +5,18 @@ import { Platform, MenuController, Nav } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { EmergencyPage } from '../pages/emergency/emergency';
+import { LoginPage } from "../pages/login/login";
+import { LogoutPage } from "../pages/logout/logout";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {TranslateService} from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 
+interface IPage {
+  title:string;
+  component:any;
+  thumbnail?:string;
+}
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +26,9 @@ export class MobileUPApp {
 
   // make HomePage the root page
   rootPage = HomePage;
-  pages: Array<{title: string, component: any}>;
+
+  // TODO: Add thumbnail to array
+  pages: Array<IPage>;
 
   constructor(
     private platform: Platform,
@@ -31,36 +40,51 @@ export class MobileUPApp {
     this.initializeApp();
   }
 
-  initPages(){
-    // set our app's pages
+  private initPages(){
+
+    // set our app's pages. Titles can be used for translation when showing the
+    // tiles
     this.pages = [
       {
-        title: 'Home',
+        title: "home",
         component: HomePage
       },
       {
-        title: 'Impressum',
+        title: "impress",
         component: ImpressumPage
       },
       {
-        title: 'Notrufnummern',
+        title: "emergency",
         component: EmergencyPage
+      },
+      {
+        title: "login",
+        component: LoginPage
+      },
+      {
+        title: "logout",
+        component: LogoutPage
       }
     ];
   }
 
-  initializeApp() {
+  /**
+   * initializes the app and hides splashscreen when it's done
+   */
+  private initializeApp() {
     this.initPages();
     this.translate.setDefaultLang('de');
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
 
-  openPage(page) {
+  /**
+   * opens a page when link is clicked
+   * @param page
+   */
+  public openPage(page) {
     // close the menu when clicking a link from the menu
     this.menu.close();
     // navigate to the new page if it is not the current page
