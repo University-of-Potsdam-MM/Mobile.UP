@@ -7,7 +7,6 @@ import {
 } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
-import { AuthState } from '../../library/enums';
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,
