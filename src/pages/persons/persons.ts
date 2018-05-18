@@ -34,33 +34,27 @@ export class PersonsPage {
    * observed.
    * @param query
    */
-  private sendRequest(query: string): Observable < Object > {
-    let headers: HttpHeaders = new HttpHeaders();
-    let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()});
+  private async sendRequest(query: string) {
 
-    headers.set("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
+    let session:ISession = await this.storage.get("session");
+    if(session) {
 
-    params.set("value", query);
-    //params.set("username", this.auth.getUserInfo().id); // temporary
-    //params.set("password", this.auth.getUserInfo().id); // temporary
+      let headers: HttpHeaders = new HttpHeaders();
+      let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()});
 
-    params.set("username", "elistest");
-    params.set("password", "%2B_eLiS%3F14");
+      // TODO: outsource to config
+      headers.set("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
 
-    // creates an Observable and returns it so that the receiver can access the
-    // results
-    return Observable.create(
-      observer => {
-        this.http.get(
-          this.url, {headers: headers,params: params}
-        ).subscribe(
-          results => {
-            console.log(results);
+      params.set("value", query);
+      params.set("username", session.credentials.username);
+      params.set("password", session.credentials.password);
 
-          }
-        );
-      }
-    );
+
+
+    } else {
+      this.navCtrl.push(LoginPage);
+    }
+
   }
 
   private showResults() {
@@ -72,13 +66,7 @@ export class PersonsPage {
   }
 
   ionViewDidLoad() {
-    this.storage.get("session").then(
-      (session:ISession) => {
-        if(!session) {
-          this.navCtrl.push(LoginPage);
-        }
-      }
-    )
+
   }
 
 }
