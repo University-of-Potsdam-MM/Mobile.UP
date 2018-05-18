@@ -15,7 +15,7 @@ import {LoginPage} from "../login/login";
 export class PersonsPage {
 
 
-  url: string = "https://apiup.uni-potsdam.de/endpoints/personsAPI/1.0/";
+  url: string = "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/";
   private resultsList: Array < Object > ;
   private query: string;
 
@@ -39,18 +39,24 @@ export class PersonsPage {
     let session:ISession = await this.storage.get("session");
     if(session) {
 
-      let headers: HttpHeaders = new HttpHeaders();
-      let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()});
-
       // TODO: outsource to config
-      headers.set("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
+      let headers: HttpHeaders = new HttpHeaders()
+        .append("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
 
-      params.set("value", query);
-      params.set("username", session.credentials.username);
-      params.set("password", session.credentials.password);
+      let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
+        .append("value", query)
+        .append("username", session.credentials.username)
+        .append("password", session.credentials.password);
 
-
-
+      this.http.get(this.url, {headers:headers, params:params}).subscribe(
+        response => {
+          console.log(response);
+          // TODO: do something!
+        },
+        error => {
+          console.log(error)
+        }
+      );
     } else {
       this.navCtrl.push(LoginPage);
     }
@@ -66,7 +72,7 @@ export class PersonsPage {
   }
 
   ionViewDidLoad() {
-
+    this.search("dieter")
   }
 
 }
