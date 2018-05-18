@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 import {Storage} from "@ionic/storage";
+import {ISession} from "../../providers/login-provider/interfaces";
 
 /**
  * HomePage
@@ -15,6 +16,8 @@ import {Storage} from "@ionic/storage";
 })
 export class HomePage {
 
+  session:string = "";
+
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
@@ -22,12 +25,7 @@ export class HomePage {
 
     this.storage.get("session").then(
       session => {
-        if(session) {
-          console.log("Session found:")
-          console.log(session);
-        } else {
-          console.log("No session")
-        }
+        this.session = JSON.stringify(session);
       }
     )
   }
