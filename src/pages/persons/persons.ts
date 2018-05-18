@@ -47,7 +47,7 @@ export class PersonsPage {
     params.set("username", "elistest");
     params.set("password", "%2B_eLiS%3F14");
 
-    // creates an Observable and returns it so that the reciever can access the
+    // creates an Observable and returns it so that the receiver can access the
     // results
     return Observable.create(
       observer => {
