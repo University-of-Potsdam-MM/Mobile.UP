@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import {IonicPage, NavController} from 'ionic-angular';
 import { Location } from '@angular/common';
+import {HomePage} from "../home/home";
+import {Storage} from "@ionic/storage";
 
 /**
  * LogoutPage
- * 
+ *
  * page that asks the user whether he/she really wants to be logged out
  */
 @IonicPage()
@@ -15,40 +16,23 @@ import { Location } from '@angular/common';
 })
 export class LogoutPage {
 
-  texts = require("./logout.texts.json");
-
   constructor(
-      private location: Location,
-      public auth: AuthServiceProvider) {
+      private storage: Storage,
+      private navCtrl: NavController) {
   }
 
   /**
-   * doLogout
-   * 
-   * uses AuthServiceProvider do do logout and take user back to the previous
-   * page
+   * performs logout by simply deleting the current session
    */
   public doLogout() {
-    this.auth.logout().subscribe(
-      next => {
-        if(next == true){
-          this.goBack();
-        } else {
-          // figure out what went wrong. But what can go wrong here anyway?
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    )
+    this.storage.set("session", null);
+    this.goHome();
   }
 
   /**
-   * goBack
-   * 
    * takes the user back to the previous page
    */
-  public goBack() {
-    this.location.back();
+  public goHome() {
+    this.navCtrl.setRoot(HomePage);
   }
 }

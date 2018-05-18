@@ -3,23 +3,10 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{texts.pageTitle}}</ion-title>
+    <ion-title>{{ "page.home.title" | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  
-  <div *ngIf="auth.isLoggedIn">
-    {{texts.statements.logged_in}}
-    <button ion-button block clear (click)="openLogoutPage()">
-      {{texts.buttons.logout}}      
-    </button>  
-  </div>
-  <div *ngIf="!auth.isLoggedIn">
-    {{texts.statements.not_looged_in}}
-    <button ion-button block clear (click)="openLoginPage()">
-      {{texts.buttons.login}}
-    </button>  
-  </div>
 
 </ion-content>

@@ -1,18 +1,7 @@
-import {
-  Component
-} from '@angular/core';
-import {
-  IonicPage,
-  NavController,
-  NavParams
-} from 'ionic-angular';
-import {
-  AuthServiceProvider
-} from '../../providers/auth-service/auth-service';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import {
-  Observable
-} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({
@@ -21,29 +10,24 @@ import {
 })
 export class PersonsPage {
 
-  
+
   url: string = "https://apiup.uni-potsdam.de/endpoints/personsAPI/1.0/";
   private resultsList: Array < Object > ;
   private query: string;
-  
-  texts:Object;
 
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private auth: AuthServiceProvider,
     private http: HttpClient) {
 
-      this.texts = require("./persons.texts.json");
-      console.log(this.texts);
-    }
+  }
 
   /**
    * sendRequest
-   * 
+   *
    * sends a HTTP-request and returns an Observable in which the response can be
    * observed.
-   * @param query 
+   * @param query
    */
   private sendRequest(query: string): Observable < Object > {
     var headers: HttpHeaders = new HttpHeaders();
@@ -60,8 +44,8 @@ export class PersonsPage {
     //params.set("username", this.auth.getUserInfo().id); // temporary
     //params.set("password", this.auth.getUserInfo().id); // temporary
 
-    params.set("username", "elistest"); 
-    params.set("password", "%2B_eLiS%3F14"); 
+    params.set("username", "elistest");
+    params.set("password", "%2B_eLiS%3F14");
 
     // creates an Observable and returns it so that the reciever can access the
     // results

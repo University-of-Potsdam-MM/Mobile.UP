@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { IonicPage, NavController } from 'ionic-angular';
+import { TranslateService } from "@ngx-translate/core";
+import {Storage} from "@ionic/storage";
 
 /**
  * HomePage
- * 
- * the page that is shown when the app is opened. Right now it just tells you
- * whether you are logged in and allows you to log in or out.
+ *
+ * TODO: Add gridster or similar here
  */
 @IonicPage()
 @Component({
@@ -15,32 +15,20 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 })
 export class HomePage {
 
-  texts = require("./home.texts");
-
   constructor(
-      public navCtrl: NavController, 
-      public navParams: NavParams,
-      public auth: AuthServiceProvider) {
-    
-    this.auth.getUserInfo();
-  }
+      public navCtrl: NavController,
+      public translate: TranslateService,
+      private storage: Storage) {
 
-  /**
-   * openLoginPage
-   * 
-   * opens the LoginPage
-   */
-  openLoginPage(): void {
-    this.navCtrl.push("LoginPage");
+    this.storage.get("session").then(
+      session => {
+        if(session) {
+          console.log("Session found:")
+          console.log(session);
+        } else {
+          console.log("No session")
+        }
+      }
+    )
   }
-
-  /**
-   * openLogoutPage
-   * 
-   * opens the LogoutPage
-   */
-  openLogoutPage(): void {
-    this.navCtrl.push("LogoutPage");
-  }
-
 }
