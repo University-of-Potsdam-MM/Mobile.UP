@@ -11,6 +11,7 @@ import { LogoutPage } from "../pages/logout/logout";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
+import {PersonsPage} from "../pages/persons/persons";
 
 interface IPage {
   title:string;
@@ -56,6 +57,10 @@ export class MobileUPApp {
       {
         title: "emergency",
         component: EmergencyPage
+      },
+      {
+        title: "personSearch",
+        component: PersonsPage
       },
       {
         title: "login",
