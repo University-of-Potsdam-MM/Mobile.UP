@@ -89,7 +89,7 @@ export class LoginPage {
       (session:ISession) => {
         this.storage.set("session", session);
         this.endLoading();
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.pop();
       },
       error => {
         console.log(error);
