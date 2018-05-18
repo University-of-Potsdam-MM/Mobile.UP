@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import {WebHttpUrlEncodingCodec} from "../../library/util";
+import {Storage} from "@ionic/storage";
+import {ISession} from "../../providers/login-provider/interfaces";
+import {LoginPage} from "../login/login";
 
 @IonicPage()
 @Component({
@@ -18,7 +22,8 @@ export class PersonsPage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private storage: Storage) {
 
   }
 
@@ -30,15 +35,10 @@ export class PersonsPage {
    * @param query
    */
   private sendRequest(query: string): Observable < Object > {
-    var headers: HttpHeaders = new HttpHeaders();
-    var params: HttpParams = new HttpParams();
+    let headers: HttpHeaders = new HttpHeaders();
+    let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()});
 
     headers.set("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
-
-    /*
-      Here it should be checked, whether the user is already logged in. If so, the
-      token can be used, if not the user should be redirected to the login page
-    */
 
     params.set("value", query);
     //params.set("username", this.auth.getUserInfo().id); // temporary
@@ -72,8 +72,13 @@ export class PersonsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PersonsPage, not testing');
-    this.search("Dieter");
+    this.storage.get("session").then(
+      (session:ISession) => {
+        if(!session) {
+          this.navCtrl.push(LoginPage);
+        }
+      }
+    )
   }
 
 }
