@@ -1,3 +1,3 @@
 [submodule "src/providers/login-provider"]
 	path = src/providers/login-provider
-	url = https://gitup.uni-potsdam.de/kraeh/login-provider.git
+	url = https://gitup.uni-potsdam.de/elis/login-provider.git
