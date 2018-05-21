@@ -16,8 +16,6 @@
 
 <ion-content padding>
 
-  Personensuche
-
   <!-- Input for search -->
   <form>
 
@@ -25,7 +23,10 @@
 
   <!-- Display results -->
   <ion-list>
+    <ion-item *ngFor="let person of people">
 
+      Person: {{person.Vorname}}
+    </ion-item>
   </ion-list>
 
 </ion-content>

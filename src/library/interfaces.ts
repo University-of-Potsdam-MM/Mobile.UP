@@ -18,7 +18,7 @@ export interface Address {
 
 /**
  * Interface for a single EmergencyCall entry
- * An EmergencyCall always has a 'name:string' and a 'telephone:string', any 
+ * An EmergencyCall always has a 'name:string' and a 'telephone:string', any
  * other attribute is optional.
  */
 export interface EmergencyCall {
@@ -26,6 +26,39 @@ export interface EmergencyCall {
     contact:    Contact,
     address?:   Address
 }
+
+
+/* ~~~ PersonsPage ~~~ */
+
+export interface IPersonSearchResponse {
+  timer:Array<string>;
+  people:IPersonWrapper[];
+}
+
+export interface IPersonWrapper {
+  Person:IPerson
+}
+
+export interface IPerson {
+  id?:string;
+  Abteilung?:string;
+  Email?:string;
+  Fax?:number,
+  Nachname?:string;
+  Namenszusatz?:string;
+  Raum?:string;
+  show_only_altPhone?:string;
+  Struktureinheiten?:string;
+  Suchbegriffe?:string;
+  Telefon?:string;
+  Vorname?:string;
+  zweitesTelefon?:string;
+  PCFax?:string;
+  gueltigbis?:string;
+  Titel?:string;
+  Email_Langform?:string;
+}
+
 
 /* ~~~ auth-service ~~~ */
 
@@ -42,3 +75,4 @@ export interface Token {
     expires_in:     number;
     id_token?:      string;
 }
+

@@ -6,6 +6,11 @@ import {WebHttpUrlEncodingCodec} from "../../library/util";
 import {Storage} from "@ionic/storage";
 import {ISession} from "../../providers/login-provider/interfaces";
 import {LoginPage} from "../login/login";
+import {
+  IPerson,
+  IPersonSearchResponse,
+  IPersonWrapper
+} from "../../library/interfaces";
 
 @IonicPage()
 @Component({
@@ -14,10 +19,8 @@ import {LoginPage} from "../login/login";
 })
 export class PersonsPage {
 
-
-  url: string = "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/";
-  private resultsList: Array < Object > ;
-  private query: string;
+  people:IPerson[] = [];
+  url:string = "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json";
 
   constructor(
     private navCtrl: NavController,
@@ -28,10 +31,7 @@ export class PersonsPage {
   }
 
   /**
-   * sendRequest
-   *
-   * sends a HTTP-request and returns an Observable in which the response can be
-   * observed.
+   * sends a HTTP-GET-request to get
    * @param query
    */
   private async sendRequest(query: string) {
@@ -44,34 +44,39 @@ export class PersonsPage {
         .append("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
 
       let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-        .append("value", query)
-        .append("username", session.credentials.username)
-        .append("password", session.credentials.password);
+        .append("value",        query)
+        .append("username",     session.credentials.username)
+        .append("password",     session.credentials.password);
 
       this.http.get(this.url, {headers:headers, params:params}).subscribe(
-        response => {
-          console.log(response);
-          // TODO: do something!
+        (response:IPersonSearchResponse) => {
+          // use inner object only because it's wrapped in another object
+          for(let person of response.people) {
+            this.people.push(person.Person);
+          }
         },
         error => {
           console.log(error)
         }
       );
     } else {
+      // send user to LoginPage if no session has been found
       this.navCtrl.push(LoginPage);
     }
 
-  }
-
-  private showResults() {
 
   }
 
+  /**
+   *
+   * @param {string} query
+   */
   private search(query: string) {
     this.sendRequest(query);
   }
 
   ionViewDidLoad() {
+    // Test
     this.search("dieter")
   }
 
