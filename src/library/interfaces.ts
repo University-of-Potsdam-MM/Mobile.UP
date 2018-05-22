@@ -58,21 +58,3 @@ export interface IPerson {
   Titel?:string;
   Email_Langform?:string;
 }
-
-
-/* ~~~ auth-service ~~~ */
-
-/* Login and Authentification */
-
-/**
- * Interface for a Token that a User class can possess
- */
-export interface Token {
-    access_token:   string;
-    refresh_token:  string;
-    scope:          string;
-    token_type:     string;
-    expires_in:     number;
-    id_token?:      string;
-}
-
