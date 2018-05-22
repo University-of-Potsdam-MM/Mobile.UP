@@ -17,16 +17,22 @@
 <ion-content padding>
 
   <!-- Input for search -->
-  <form>
+  <form (ngSubmit)="search(query)">
+    <div>
+      <button ion-button type="submit"></button>
+      <ion-item>
+        <ion-input type="text" [(ngModel)]="query" name="query"></ion-input>
+      </ion-item>
+    </div>
 
   </form>
 
   <!-- Display results -->
   <ion-list>
-    <ion-item *ngFor="let person of people">
+    <ion-card *ngFor="let person of personsFound">
+      <ion-card-title>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</ion-card-title>
+    </ion-card>
 
-      Person: {{person.Vorname}}
-    </ion-item>
   </ion-list>
 
 </ion-content>
