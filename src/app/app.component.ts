@@ -12,6 +12,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import {PersonsPage} from "../pages/persons/persons";
+import {Storage} from "@ionic/storage";
+import {HttpClient} from "@angular/common/http";
+import {IConfig} from "../library/interfaces";
 
 interface IPage {
   title:string;
@@ -36,9 +39,24 @@ export class MobileUPApp {
     private menu: MenuController,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private storage: Storage,
+    private http: HttpClient
   ) {
     this.initializeApp();
+  }
+
+  private async initConfig() {
+    let config:IConfig = await this.storage.get("config");
+    if(!config){
+      // load config if not in storage
+      this.http.get<IConfig>("assets/config.json").subscribe(
+        config => {
+          console.log(config);
+          this.storage.set("config", config);
+        }
+      );
+    }
   }
 
   private initPages(){
@@ -78,6 +96,7 @@ export class MobileUPApp {
    */
   private initializeApp() {
     this.initPages();
+    this.initConfig();
     this.translate.setDefaultLang('de');
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

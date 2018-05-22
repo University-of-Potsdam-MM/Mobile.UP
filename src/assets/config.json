@@ -1,16 +1,27 @@
 {
-  "authorization": [
-    {
+  "authorization": {
+    "credentials": {
       "method": "credentials",
-      "parameters": {
-
-      }
+      "moodleLoginEndpoint": "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
+      "accessToken": "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
+      "service": "moodle_mobile_app",
+      "moodlewsrestformat": "json"
     },
-    {
-      "method": "sso",
-      "parameters": {
-
+    "sso": {
+      "ssoURLs": {
+        "plugin": "https://moodle2.uni-potsdam.de/local/mobile/launch.php?service=local_mobile&passport=1002",
+        "login": "https://moodle2.uni-potsdam.de/login/index.php",
+        "token": "moodlemobile://token=",
+        "idpBase": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
+        "idp": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
+        "attributeRelease": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease"
       }
     }
-  ]
+  },
+  "webservices": {
+    "endpoint":{
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json"
+    },
+    "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  }
 }

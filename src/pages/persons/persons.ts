@@ -5,7 +5,11 @@ import { WebHttpUrlEncodingCodec } from "../../library/util";
 import { Storage } from "@ionic/storage";
 import { ISession } from "../../providers/login-provider/interfaces";
 import { LoginPage } from "../login/login";
-import { IPerson, IPersonSearchResponse } from "../../library/interfaces";
+import {
+  IConfig,
+  IPerson,
+  IPersonSearchResponse
+} from "../../library/interfaces";
 
 
 /**
@@ -40,22 +44,24 @@ export class PersonsPage {
    */
   public async search(query: string) {
     if(query) {
-      console.log(`LoginPage: Searching for ${query}`);
+      console.log(`[PersonsPage]: Searching for \"${query}\"`);
+
       let session:ISession = await this.storage.get("session");
+      let config:IConfig = await this.storage.get("config");
+
       if(session) {
-        // TODO: outsource token and url to config
-
-        let url:string = "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json";
-
         let headers: HttpHeaders = new HttpHeaders()
-          .append("Authorization", "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf");
+          .append("Authorization", config.webservices.apiToken);
 
         let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
           .append("value",        query)
           .append("username",     session.credentials.username)
           .append("password",     session.credentials.password);
 
-        this.http.get(url, {headers:headers, params:params}).subscribe(
+        this.http.get(
+          config.webservices.endpoint.personSearch,
+          {headers:headers, params:params}
+          ).subscribe(
           (response:IPersonSearchResponse) => {
             // use inner object only because it's wrapped in another object
             for(let person of response.people) {
@@ -71,7 +77,7 @@ export class PersonsPage {
         this.navCtrl.push(LoginPage);
       }
     } else {
-      console.log("LoginPage: Empty query");
+      console.log("[PersonsPage]: Empty query");
     }
   }
 }

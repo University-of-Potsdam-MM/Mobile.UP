@@ -23,7 +23,6 @@ import * as jquery from "jquery";
 })
 export class EmergencyPage {
 
-  texts = require("./emergency.texts");
   jsonPath: string = "../../assets/json/pages/emergency";
   displayedList: ArrayLike < EmergencyCall > ;
   defaultList: ArrayLike < EmergencyCall > ;

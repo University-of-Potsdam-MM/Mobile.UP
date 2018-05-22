@@ -1,5 +1,7 @@
 /* ~~~ EmergencyPage ~~~ */
 
+import { IAuthorization } from "../providers/login-provider/interfaces";
+
 /**
  * Interface for a contact with telephone number and email address
  */
@@ -58,3 +60,20 @@ export interface IPerson {
   Titel?:string;
   Email_Langform?:string;
 }
+
+/* ~~~ config ~~~ */
+
+export interface IConfig {
+  authorization:IAuthorization; // comes from login-provider
+  webservices:IWebServices
+}
+
+export interface IWebServices {
+  endpoint:IEndpoints;
+  apiToken:string;
+}
+
+export interface IEndpoints {
+  personSearch:string;
+}
+
