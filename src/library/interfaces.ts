@@ -1,5 +1,7 @@
 /* ~~~ EmergencyPage ~~~ */
 
+import { IAuthorization } from "../providers/login-provider/interfaces";
+
 /**
  * Interface for a contact with telephone number and email address
  */
@@ -18,7 +20,7 @@ export interface Address {
 
 /**
  * Interface for a single EmergencyCall entry
- * An EmergencyCall always has a 'name:string' and a 'telephone:string', any 
+ * An EmergencyCall always has a 'name:string' and a 'telephone:string', any
  * other attribute is optional.
  */
 export interface EmergencyCall {
@@ -27,18 +29,51 @@ export interface EmergencyCall {
     address?:   Address
 }
 
-/* ~~~ auth-service ~~~ */
 
-/* Login and Authentification */
+/* ~~~ PersonsPage ~~~ */
 
-/**
- * Interface for a Token that a User class can possess
- */
-export interface Token {
-    access_token:   string;
-    refresh_token:  string;
-    scope:          string;
-    token_type:     string;
-    expires_in:     number;
-    id_token?:      string;
+export interface IPersonSearchResponse {
+  timer:Array<string>;
+  people:IPersonWrapper[];
 }
+
+export interface IPersonWrapper {
+  Person:IPerson
+}
+
+export interface IPerson {
+  id?:string;
+  Abteilung?:string;
+  Email?:string;
+  Fax?:number,
+  Nachname?:string;
+  Namenszusatz?:string;
+  Raum?:string;
+  show_only_altPhone?:string;
+  Struktureinheiten?:string;
+  Suchbegriffe?:string;
+  Telefon?:string;
+  Vorname?:string;
+  zweitesTelefon?:string;
+  PCFax?:string;
+  gueltigbis?:string;
+  Titel?:string;
+  Email_Langform?:string;
+}
+
+/* ~~~ config ~~~ */
+
+export interface IConfig {
+  authorization:IAuthorization; // comes from login-provider
+  webservices:IWebServices
+}
+
+export interface IWebServices {
+  endpoint:IEndpoints;
+  apiToken:string;
+}
+
+export interface IEndpoints {
+  personSearch:string;
+}
+

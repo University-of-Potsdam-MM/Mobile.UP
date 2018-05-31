@@ -23,10 +23,9 @@ export class HomePage {
     this.storage.get("session").then(
       session => {
         if(session) {
-          console.log("Session found:")
-          console.log(session);
+          console.log(`[HomePage]: Previous session found. Token: ${session.token}`);
         } else {
-          console.log("No session")
+          console.log("[HomePage]: No previous session found");
         }
       }
     )

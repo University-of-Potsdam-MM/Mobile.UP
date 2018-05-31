@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import { Location } from '@angular/common';
 import {HomePage} from "../home/home";
 import {Storage} from "@ionic/storage";
 

@@ -7,7 +7,6 @@ import {
 } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
-import { AuthState } from '../../library/enums';
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,
@@ -16,6 +15,7 @@ import {
 } from "../../providers/login-provider/interfaces";
 import {TranslateService} from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
+import {IConfig} from "../../library/interfaces";
 
 /**
  * LoginPage
@@ -59,7 +59,6 @@ export class LoginPage {
     this.showLoading();
 
     let method:string = "";
-
     let source:string = await this.platform.ready();
 
     switch(source){
@@ -68,25 +67,14 @@ export class LoginPage {
       default: { method = "credentials"; break; }
     }
 
-    console.log(method)
-
-    if (this.platform.is("cordova")) {
-      method = "sso";
-    } else if(this.platform.is("browser")) {
-      method = "credentials";
-    }
+    let config:IConfig = await this.storage.get("config");
 
     this.upLogin.login(
       this.loginCredentials,
-      {
-        method: method,
-        moodleLoginEndpoint: "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
-        accessToken: "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
-        service: "moodle_mobile_app",
-        moodlewsrestformat: "json"
-      }
-      ).subscribe(
+      config.authorization[method]
+    ).subscribe(
       (session:ISession) => {
+        console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
         this.storage.set("session", session);
         this.endLoading();
         this.navCtrl.setRoot(HomePage);
