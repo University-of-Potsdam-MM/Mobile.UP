@@ -17,7 +17,8 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
-import {PersonsPage} from "../pages/persons/persons";
+import { PersonsPage } from "../pages/persons/persons";
+import { AthleticsPage } from "../pages/athletics/athletics";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -31,7 +32,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
-    PersonsPage
+    PersonsPage,
+    AthleticsPage
   ],
   imports: [
     HttpClientModule,
@@ -54,7 +56,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
-    PersonsPage
+    PersonsPage,
+    AthleticsPage
   ],
   providers: [
     StatusBar,

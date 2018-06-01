@@ -1,6 +1,6 @@
 /* ~~~ EmergencyPage ~~~ */
 
-import { IAuthorization } from "../providers/login-provider/interfaces";
+import {  ILoginProvider }  from "../providers/login-provider/interfaces";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -64,7 +64,7 @@ export interface IPerson {
 /* ~~~ config ~~~ */
 
 export interface IConfig {
-  authorization:IAuthorization; // comes from login-provider
+  authorization:ILoginProvider; // comes from login-provider
   webservices:IWebServices
 }
 
