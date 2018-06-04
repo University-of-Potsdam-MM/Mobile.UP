@@ -27,7 +27,14 @@
       "affirmativeQuestion": "Sind Sie sicher?"
     },
     "emergency":{
-      "title":"Notrufnummern"
+      "title":"Notrufnummern",
+      "placeholder": {
+        "search": "Suche"
+      },
+      "item": {
+        "postal": "Ort:",
+        "street": "Straße:"
+      }
     },
     "personSearch":{
       "title":"Personensuche"
