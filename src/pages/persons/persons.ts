@@ -43,6 +43,9 @@ export class PersonsPage {
    * @param query
    */
   public async search(query: string) {
+    // reset array so new persons are displayed
+    this.personsFound = [];
+
     if(query) {
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
