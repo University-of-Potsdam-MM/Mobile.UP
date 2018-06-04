@@ -7,6 +7,7 @@ import { ImpressumPage } from '../pages/impressum/impressum';
 import { EmergencyPage } from '../pages/emergency/emergency';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
+import { MensaPage } from "../pages/mensa/mensa";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -79,6 +80,10 @@ export class MobileUPApp {
       {
         title: "personSearch",
         component: PersonsPage
+      },
+      {
+        title: "Mensa",
+        component: MensaPage
       },
       {
         title: "login",

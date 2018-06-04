@@ -1,0 +1,56 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ "page.mensa.title" |translate}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top *ngIf="demo != 'Title'">
+      <ion-segment [(ngModel)]="campus" color="primary" (ionChange)="changeCampus($event)">
+        <ion-segment-button value="campus1">
+          {{"page.mensa.campus1" | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="campus2">
+            {{"page.mensa.campus2" | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="campus3">
+            {{"page.mensa.campus3" | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>
+          <ion-thumbnail item-start>
+            <img src="img/thumbnail-totoro.png">
+          </ion-thumbnail>
+          <h2>My Neighbor Totoro</h2>
+          <p>Hayao Miyazaki • 1988</p>
+        </ion-item>
+        <ion-item>
+            <ion-thumbnail item-start>
+              <img src="img/thumbnail-totoro.png">
+            </ion-thumbnail>
+            <h2>My Neighbor Totoro</h2>
+            <p>Hayao Miyazaki • 1988</p>
+          </ion-item>
+          <ion-item>
+              <ion-thumbnail item-start>
+                <img src="img/thumbnail-totoro.png">
+              </ion-thumbnail>
+              <h2>My Neighbor Totoro</h2>
+              <p>Hayao Miyazaki • 1988</p>
+            </ion-item>
+            <ion-item>
+                <ion-thumbnail item-start>
+                  <img src="img/thumbnail-totoro.png">
+                </ion-thumbnail>
+                <h2>My Neighbor Totoro</h2>
+                <p>Hayao Miyazaki • 1988</p>
+              </ion-item>
+      </ion-list>
+
+</ion-content>

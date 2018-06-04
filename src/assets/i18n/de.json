@@ -83,6 +83,12 @@
     },
     "openingHours":{
       "title":"Öffnungszeiten"
+    },
+    "mensa":{
+      "title": "Mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm"
     }
   },
   "button":{
