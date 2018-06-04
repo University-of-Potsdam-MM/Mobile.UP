@@ -36,8 +36,11 @@
         "street": "Straße:"
       }
     },
-    "personSearch":{
-      "title":"Personensuche"
+    "persons":{
+      "title":"Personensuche",
+      "placeholder": {
+        "search": "..."
+      }
     },
     "grades":{
       "title":"Meine Leistungen"
@@ -88,7 +91,8 @@
     "yes": "Ja",
     "no": "Nein",
     "login": "Login",
-    "continue": "Weiter"
+    "continue": "Weiter",
+    "search": "Suchen"
   },
   "alert":{
     "title": {
