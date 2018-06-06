@@ -1,0 +1,12 @@
+<ion-row>
+  <ion-col>
+    <ion-card>
+      <ion-card-header text-wrap>
+        {{ article.News.headline }}
+      </ion-card-header>
+      <ion-card-content text-wrap>
+        <div [innerHTML]="article.News.text"></div>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+</ion-row>

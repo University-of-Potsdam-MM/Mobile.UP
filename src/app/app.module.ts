@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -19,6 +20,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import {PersonsPage} from "../pages/persons/persons";
 import { NewsPage } from './../pages/news/news';
+import { NewsProvider } from '../providers/news/news';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -37,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     HttpClientModule,
+    ComponentsModule,
     BrowserModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
@@ -64,7 +67,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
-    InAppBrowser
+    InAppBrowser,
+    NewsProvider
   ]
 })
 export class AppModule {}
