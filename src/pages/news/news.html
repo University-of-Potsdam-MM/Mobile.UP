@@ -34,14 +34,56 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <div [ngSwitch]="newsSource">
-    <div *ngSwitchCase="1">Case 1</div>
-    <div *ngSwitchCase="2">Case 2</div>
-    <div *ngSwitchCase="3">Case 3</div>
-    <div *ngSwitchCase="4">Case 4</div>
-    <div *ngSwitchCase="5">Case 5</div>
-    <div *ngSwitchCase="6">Case 6</div>
-    <div *ngSwitchCase="7">Case 7</div>
+
+    <div *ngSwitchCase="1">
+      <div *ngFor="let article of newsList">
+        <!-- Uni Nachrichten: id 7 -->
+        <news-article *ngIf="article.NewsSource.id == '7'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="2">
+      <div *ngFor="let article of newsList">
+        <!-- Uni Mitteilungen: id 6 -->
+        <news-article *ngIf="article.NewsSource.id == '6'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="3">
+      <div *ngFor="let article of newsList">
+        <!-- Zur QUelle: id 2 -->
+        <news-article *ngIf="article.NewsSource.id == '2'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="4">
+      <div *ngFor="let article of newsList">
+        <!-- speakUP: id 8 -->
+        <news-article *ngIf="article.NewsSource.id == '8'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="5">
+      <div *ngFor="let article of newsList">
+        <!-- AstA Pressemitteilungen: id 1 -->
+        <news-article *ngIf="article.NewsSource.id == '1'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="6">
+      <div *ngFor="let article of newsList">
+        <!-- AstA Thementexte: id 3 -->
+        <news-article *ngIf="article.NewsSource.id == '3'" [article]="article"></news-article>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="7">
+      <div *ngFor="let article of newsList">
+        <!-- AstA Protokolle: id 4 -->
+        <news-article *ngIf="article.NewsSource.id == '4'" [article]="article"></news-article>
+      </div>
+    </div>
   </div>
 </ion-content>
