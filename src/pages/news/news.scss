@@ -4,6 +4,7 @@ page-news {
         white-space: nowrap;
         font-size: 0;
         overflow: auto;
+        background-color: #f4f4f4;
 
         &::-webkit-scrollbar {
             width: 0;
