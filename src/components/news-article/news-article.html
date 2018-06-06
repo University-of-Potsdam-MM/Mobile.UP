@@ -4,8 +4,10 @@
       <ion-card-header text-wrap>
         {{ article.News.headline }}
       </ion-card-header>
-      <ion-card-content text-wrap>
-        <div [innerHTML]="article.News.text"></div>
+      <ion-card-content *ngIf="article.News.text || article.News.description" text-wrap>
+        <div *ngIf="!(article.NewsSource.id == '7' || article.NewsSource.id == '6' || article.NewsSource.id == '2' || article.NewsSource.id == '4')" [innerHTML]="article.News.description"></div>
+        <div *ngIf="article.NewsSource.id == '7' || article.NewsSource.id == '6' || article.NewsSource.id == '2'" [innerHTML]="article.News.text"></div>
+        <div *ngIf="article.NewsSource.id == '4'">Protokolle der AStA-Sitzungen werden hochschulöffentlich veröffentlicht. Dieser Link ist für Mitglieder der Universität im Universitätsnetz bzw. über VPN abrufbar.</div>
       </ion-card-content>
     </ion-card>
   </ion-col>

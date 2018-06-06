@@ -53,7 +53,7 @@
 
     <div *ngSwitchCase="3">
       <div *ngFor="let article of newsList">
-        <!-- Zur QUelle: id 2 -->
+        <!-- Zur Quelle: id 2 -->
         <news-article *ngIf="article.NewsSource.id == '2'" [article]="article"></news-article>
       </div>
     </div>
@@ -85,5 +85,6 @@
         <news-article *ngIf="article.NewsSource.id == '4'" [article]="article"></news-article>
       </div>
     </div>
+
   </div>
 </ion-content>
