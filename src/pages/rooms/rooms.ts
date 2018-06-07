@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
-import {IConfig, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
+import {IConfig, IHouse, IRoom, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -26,7 +26,7 @@ export class RoomsPage {
   refresher: any;
 
   //vars
-  roomsFound: String[] = [];
+  housesFound:IHouse[] = [];
   time_slots: any;
   current_timeslot: any;
   current_location: string;
@@ -116,7 +116,7 @@ export class RoomsPage {
   async getRoomInfo() {
     if (this.current_timeslot.error){
       this.no_timeslot = true;
-      this.roomsFound = [];
+      this.housesFound = [];
       return;
     }
     this.no_timeslot = false;
@@ -147,11 +147,35 @@ export class RoomsPage {
 
     this.http.get(url, {headers: headers, params: params}).subscribe(
       (response: IRoomRequestResponse) => {
-        this.roomsFound = [];
+        this.housesFound = [];
         this.error = null;
-        for (let room of response.rooms4TimeResponse.return) {
-          this.roomsFound.push(room);
+        for (let response_room of response.rooms4TimeResponse.return) {
+
+          let split = response_room.split(".");
+
+          let room:IRoom = {
+            lbl: split.splice(2,5).join('.')
+          };
+
+          let house:IHouse = null;
+          for (let i = 0; i < this.housesFound.length; i++) {
+            if(this.housesFound[i].lbl == split[1]){
+              house = this.housesFound[i];
+              house.rooms.push(room);
+              this.housesFound[i] = house;
+            }
+          }
+
+          if(house == null){
+            house = {
+              lbl:split[1],
+              rooms: [room]
+            };
+            this.housesFound.push(house);
+          }
+
         }
+        console.log(this.housesFound);
         if (this.refresher != null) {
           this.refresher.complete()
         }
@@ -159,7 +183,7 @@ export class RoomsPage {
       (error: HttpErrorResponse) => {
         console.log(error);
         this.error = error;
-        this.roomsFound = [];
+        this.housesFound = [];
         if (this.refresher != null) {
           this.refresher.complete()
         }

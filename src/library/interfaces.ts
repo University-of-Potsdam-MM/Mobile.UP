@@ -94,3 +94,12 @@ export interface IRoomRequestResponse {
 export interface IRoomRequestResponseReturn {
   return?:Array<string>;
 }
+
+export interface IHouse {
+  lbl:string;
+  rooms:Array<IRoom>
+}
+
+export interface IRoom {
+  lbl:string;
+}

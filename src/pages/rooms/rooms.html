@@ -31,7 +31,8 @@
   </ion-refresher>
   <ion-item>
     <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()">
-      <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}</ion-option>
+      <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
+      </ion-option>
     </ion-select>
   </ion-item>
 
@@ -44,15 +45,17 @@
   <p *ngIf="no_timeslot" style="text-align: center">
     {{ "alert.no_info_for_time" | translate }}
   </p>
-  <p *ngIf=" roomsFound.length == 0 && error == null && !no_timeslot" style="text-align: center">
+  <p *ngIf=" housesFound.length == 0 && error == null && !no_timeslot" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 
   <ion-list>
-    <ion-card *ngFor="let room of roomsFound">
-      <ion-card-title>{{room}}</ion-card-title>
+    <ion-card *ngFor="let house of housesFound">
+      <ion-card-header>{{ "words.house" | translate }} {{house.lbl}} <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
+      <button ion-item *ngFor="let room of house.rooms">
+        {{room.lbl}}
+      </button>
     </ion-card>
-
   </ion-list>
 
 </ion-content>
