@@ -104,11 +104,13 @@ export class RoomsPage {
   }
 
   switchLocation(location){
+    this.housesFound = [];
     this.current_location = location;
     this.getRoomInfo()
   }
 
-  changeTimeSlot(bla){
+  changeTimeSlot(){
+    this.housesFound = [];
     this.current_timeslot =  {"start":this.select_timeslot, "end": (this.select_timeslot + 2),"error":false};
     this.getRoomInfo();
   }
