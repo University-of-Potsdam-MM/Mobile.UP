@@ -41,7 +41,10 @@
     {{error.message}}<br/>
     {{error.error}}<br/>
   </p>
-  <p *ngIf=" roomsFound.length == 0 && error == null" style="text-align: center">
+  <p *ngIf="no_timeslot" style="text-align: center">
+    {{ "alert.no_info_for_time" | translate }}
+  </p>
+  <p *ngIf=" roomsFound.length == 0 && error == null && !no_timeslot" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 

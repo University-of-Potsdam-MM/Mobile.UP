@@ -31,6 +31,7 @@ export class RoomsPage {
   current_timeslot: any;
   current_location: string;
   error: HttpErrorResponse;
+  no_timeslot:boolean = false;
 
   constructor(
     private storage: Storage,
@@ -94,7 +95,7 @@ export class RoomsPage {
       }
     }
 
-    return {"start": 8, "end": 10, "error": true} //TODO handle error wherever this is used
+    return {"start": 0, "end": 0, "error": true}
   }
 
   async refreshRoom(refresher) {
@@ -113,6 +114,13 @@ export class RoomsPage {
   }
 
   async getRoomInfo() {
+    if (this.current_timeslot.error){
+      this.no_timeslot = true;
+      this.roomsFound = [];
+      return;
+    }
+    this.no_timeslot = false;
+
     let location = this.current_location;
 
     let config: IConfig = await this.storage.get("config");

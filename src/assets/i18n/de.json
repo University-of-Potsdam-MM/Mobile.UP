@@ -98,7 +98,8 @@
     "title": {
       "error": "Fehler"
     },
-    "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?"
+    "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
+    "no_info_for_time" : "Für den diesen Zeitraum sind keine Informationen verfügbar."
   },
   "university":{
     "location":{
