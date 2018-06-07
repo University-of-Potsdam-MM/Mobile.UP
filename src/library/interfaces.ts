@@ -97,7 +97,8 @@ export interface IRoomRequestResponseReturn {
 
 export interface IHouse {
   lbl:string;
-  rooms:Array<IRoom>
+  rooms:Array<IRoom>;
+  expanded:boolean;
 }
 
 export interface IRoom {

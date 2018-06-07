@@ -113,6 +113,16 @@ export class RoomsPage {
     this.getRoomInfo();
   }
 
+  expand(item){
+    for (let i = 0; i < this.housesFound.length; i++) {
+      if(this.housesFound[i].lbl == item){
+        this.housesFound[i].expanded = !this.housesFound[i].expanded;
+      }else{
+        this.housesFound[i].expanded = false;
+      }
+    }
+  }
+
   async getRoomInfo() {
     if (this.current_timeslot.error){
       this.no_timeslot = true;
@@ -169,7 +179,8 @@ export class RoomsPage {
           if(house == null){
             house = {
               lbl:split[1],
-              rooms: [room]
+              rooms: [room],
+              expanded: false
             };
             this.housesFound.push(house);
           }

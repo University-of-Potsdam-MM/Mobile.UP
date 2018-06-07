@@ -19,6 +19,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import {PersonsPage} from "../pages/persons/persons";
 import {RoomsPage} from "../pages/rooms/rooms";
+import {ExpandableComponent} from "../components/expandable/expandable";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -33,7 +34,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    RoomsPage
+    RoomsPage,
+    ExpandableComponent
   ],
   imports: [
     HttpClientModule,
