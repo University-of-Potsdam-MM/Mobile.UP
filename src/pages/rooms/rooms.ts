@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/c
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {IConfig, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
-import {ToastController} from 'ionic-angular';
+import {TranslateService} from "@ngx-translate/core";
 
 /**
  * Generated class for the RoomsPage page.
@@ -34,6 +34,7 @@ export class RoomsPage {
 
   constructor(
     private storage: Storage,
+    public translate : TranslateService,
     public http: HttpClient) {
   }
 
@@ -44,7 +45,7 @@ export class RoomsPage {
 
     this.time_slots = [];
     for (let i = 8; i < 22; i = i + 2) {
-      let slot = {"lbl": i + " - " + (i + 2) + " Uhr", "value": i};// TODO localize
+      let slot = {"lbl": i + " - " + (i + 2), "value": i};
       this.time_slots.push(slot)
     }
     this.select_timeslot = this.current_timeslot.start;
@@ -156,7 +157,5 @@ export class RoomsPage {
         }
       }
     );
-
   }
-
 }
