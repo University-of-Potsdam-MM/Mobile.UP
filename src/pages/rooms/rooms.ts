@@ -20,6 +20,7 @@ import {Storage} from "@ionic/storage";
 export class RoomsPage {
 
   roomsFound:String[] = [];
+  locations:string;
 
   constructor(
     private storage: Storage,
@@ -28,11 +29,11 @@ export class RoomsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoomsPage');
-    this.getRoomInfo();
+    this.getRoomInfo("3"); // TODO load default tab from user settings/history
+    this.locations = "gs"
   }
 
-
-  async getRoomInfo() {
+  async getRoomInfo(location) {
     this.roomsFound = [];
 
     let config: IConfig = await this.storage.get("config");
@@ -53,7 +54,7 @@ export class RoomsPage {
       .append("format", "json")
       .append("startTime", "2018-06-07T08:09:22.014")
       .append("endTime", "2018-06-07T10:09:22.014Z")
-      .append("campus", "3");
+      .append("campus", location);
 
     this.http.get(url, {headers: headers, params: params}).subscribe(
       (response: IRoomRequestResponse) => {

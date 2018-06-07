@@ -98,6 +98,12 @@
     "title": {
       "error": "Fehler"
     }
+  },
+  "university":{
+    "location":{
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
+    }
   }
-
 }
