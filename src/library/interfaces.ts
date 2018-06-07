@@ -1,6 +1,7 @@
 /* ~~~ EmergencyPage ~~~ */
 
 import { IAuthorization } from "../providers/login-provider/interfaces";
+import {InAppBrowserObject} from "@ionic-native/in-app-browser";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -77,3 +78,19 @@ export interface IEndpoints {
   personSearch:string;
 }
 
+/* ~~~ RoomsPage ~~~ */
+
+/** Defines a RoomRequest that is used for making requests to room API */
+export interface IRoomRequest {
+  browser?:InAppBrowserObject,
+  authToken:string
+}
+
+/** Server response for room request */
+export interface IRoomRequestResponse {
+  rooms4TimeResponse?:IRoomRequestResponseReturn;
+}
+
+export interface IRoomRequestResponseReturn {
+  return?:Array<string>;
+}
