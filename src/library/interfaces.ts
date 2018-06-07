@@ -61,6 +61,21 @@ export interface IPerson {
   Email_Langform?:string;
 }
 
+/* ~~~ PersonsPage ~~~ */
+export interface IMensaResponse {
+  meal:IMeals[];
+}
+
+export interface IMeals {
+  order?:string;
+  allergens?:Array<string>;
+  description?:string;
+  type?:Array<string>;
+  prices?:Array<string>;
+  date?:string;
+  title?:string;
+}
+
 /* ~~~ config ~~~ */
 
 export interface IConfig {
@@ -75,5 +90,6 @@ export interface IWebServices {
 
 export interface IEndpoints {
   personSearch:string;
+  mensa:string;
 }
 

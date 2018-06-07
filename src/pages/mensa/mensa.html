@@ -22,6 +22,12 @@
 
 
 <ion-content padding>
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+
+  <div *ngIf="isLoaded">
     <ion-list>
         <ion-item>
           <ion-thumbnail item-start>
@@ -52,5 +58,12 @@
                 <p>Hayao Miyazaki • 1988</p>
               </ion-item>
       </ion-list>
+    </div>
 
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>{{ "page.mensa.disclaimer" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-footer>
