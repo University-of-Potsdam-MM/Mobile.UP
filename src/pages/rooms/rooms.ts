@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/c
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {IConfig, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
-import { ToastController } from 'ionic-angular';
+import {ToastController} from 'ionic-angular';
 
 /**
  * Generated class for the RoomsPage page.
@@ -20,27 +20,46 @@ import { ToastController } from 'ionic-angular';
 })
 export class RoomsPage {
 
-  roomsFound:String[] = [];
-  current_location:string = "3"; // TODO load default tab from user settings/history
-  locations:string;
-  error:HttpErrorResponse;
+  //bindings
+  segment_locations: string;
+  select_timeslot: string;
+  refresher: any;
 
-  refresher:any;
+  //vars
+  roomsFound: String[] = [];
+  time_slots: any;
+  current_timeslot: any;
+  current_location: string;
+  error: HttpErrorResponse;
 
   constructor(
-    public toastCtrl: ToastController,
     private storage: Storage,
     public http: HttpClient) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoomsPage');
-    this.getRoomInfo(this.current_location);
-    this.locations = RoomsPage.getLocationByNum(this.current_location)
+
+    this.current_timeslot = RoomsPage.getCurrentTimeslot();
+
+    this.time_slots = [];
+    for (let i = 8; i < 22; i = i + 2) {
+      let slot = {"lbl": i + " - " + (i + 2) + " Uhr", "value": i};// TODO localize
+      this.time_slots.push(slot)
+    }
+    this.select_timeslot = this.current_timeslot.start;
+
+    this.segment_locations = RoomsPage.getLocationByNum(this.current_location);
+    this.switchLocation("3"); // TODO load default tab from user settings/history
   }
 
-  static getLocationByNum(num){
-    switch (num){
+  /**
+   * Convert campus number to short string (for localization)
+   * @param num - Campus number (1-3)
+   * @returns {string} - campus short string (gs,np,go), defaults to gs
+   */
+  static getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
+    switch (num) {
       case "1": {
         return "np"
       }
@@ -50,19 +69,50 @@ export class RoomsPage {
       case "3": {
         return "gs"
       }
-      default:{
+      default: {
         return "gs"
       }
     }
   }
 
-  async refreshRoom(refresher){
-    this.getRoomInfo(this.current_location);
+  /**
+   * gets the slot start and end time for the current time
+   * @returns {{start: number; end: number; error: boolean}} - start/end hour, error = true when out of bounds (8-22)
+   */
+  static getCurrentTimeslot() {
+    let now = new Date();
+
+    for (let i = 8; i < 22; i = i + 2) {
+      let start = new Date();
+      start.setHours(i);
+      let end = new Date();
+      end.setHours((i + 2));
+
+      if (start <= now && end > now) {
+        return {"start": i, "end": (i + 2), "error": false}
+      }
+    }
+
+    return {"start": 8, "end": 10, "error": true} //TODO handle error wherever this is used
+  }
+
+  async refreshRoom(refresher) {
+    this.getRoomInfo();
     this.refresher = refresher
   }
 
-  async getRoomInfo(location) {
+  switchLocation(location){
     this.current_location = location;
+    this.getRoomInfo()
+  }
+
+  changeTimeSlot(bla){
+    this.current_timeslot =  {"start":this.select_timeslot, "end": (this.select_timeslot + 2),"error":false};
+    this.getRoomInfo();
+  }
+
+  async getRoomInfo() {
+    let location = this.current_location;
 
     let config: IConfig = await this.storage.get("config");
 
@@ -75,21 +125,25 @@ export class RoomsPage {
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", roomRequest.authToken);
 
+    let start = new Date();
+    let end = new Date();
+    start.setHours(this.current_timeslot.start);
+    end.setHours(this.current_timeslot.end);
 
     let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
       .append("format", "json")
-      .append("startTime", "2018-06-07T08:09:22.014")
-      .append("endTime", "2018-06-07T10:09:22.014Z")
+      .append("startTime", start.toISOString())
+      .append("endTime", end.toISOString())
       .append("campus", location);
 
     this.http.get(url, {headers: headers, params: params}).subscribe(
       (response: IRoomRequestResponse) => {
         this.roomsFound = [];
         this.error = null;
-        for(let room of response.rooms4TimeResponse.return) {
+        for (let room of response.rooms4TimeResponse.return) {
           this.roomsFound.push(room);
         }
-        if (this.refresher != null){
+        if (this.refresher != null) {
           this.refresher.complete()
         }
       },
@@ -97,7 +151,7 @@ export class RoomsPage {
         console.log(error);
         this.error = error;
         this.roomsFound = [];
-        if (this.refresher != null){
+        if (this.refresher != null) {
           this.refresher.complete()
         }
       }

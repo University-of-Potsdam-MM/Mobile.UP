@@ -2,19 +2,22 @@
 
   <ion-navbar>
     <ion-title>{{ "page.rooms.title" | translate }}</ion-title>
+
   </ion-navbar>
 
-  <ion-segment class="segment segment-ios ng-valid ng-touched ng-dirty" [(ngModel)]="locations">
-    <ion-segment-button class="segment-button" role="button" tappable="" value="gs" aria-pressed="false" (ionSelect)="getRoomInfo('3')">
+  <ion-segment class="segment segment-ios ng-valid ng-touched ng-dirty" [(ngModel)]="segment_locations">
+    <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
+                        (ionSelect)="switchLocation('3')">
       {{ "university.location.gs" | translate }}
       <div class="button-effect"></div>
     </ion-segment-button>
     <ion-segment-button class="segment-button segment-activated" role="button" tappable="" value="np"
-                        aria-pressed="true" (ionSelect)="getRoomInfo('1')">
+                        (ionSelect)="switchLocation('1')">
       {{ "university.location.np" | translate }}
       <div class="button-effect"></div>
     </ion-segment-button>
-    <ion-segment-button class="segment-button" role="button" tappable="" value="go" aria-pressed="false" (ionSelect)="getRoomInfo('2')">
+    <ion-segment-button class="segment-button" role="button" tappable="" value="go"
+                        (ionSelect)="switchLocation('2')">
       {{ "university.location.go" | translate }}
       <div class="button-effect"></div>
     </ion-segment-button>
@@ -26,14 +29,21 @@
   <ion-refresher (ionRefresh)="refreshRoom($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <ion-item>
+    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()">
+      <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}}</ion-option>
+    </ion-select>
+  </ion-item>
 
-  <p *ngIf="error != null" style="text-align: center" >
+  <p *ngIf="error != null" style="text-align: center">
     {{ "alert.network" | translate }} <br/><br/>
     {{error.name}}<br/>
     {{error.message}}<br/>
     {{error.error}}<br/>
   </p>
-  <p *ngIf=" roomsFound.length == 0 && error == null" style="text-align: center" ><ion-spinner></ion-spinner></p>
+  <p *ngIf=" roomsFound.length == 0 && error == null" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
 
   <ion-list>
     <ion-card *ngFor="let room of roomsFound">
