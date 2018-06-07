@@ -23,6 +23,17 @@
 
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <p *ngIf="error != null" style="text-align: center" >
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+  <p *ngIf=" roomsFound.length == 0 && error == null" style="text-align: center" ><ion-spinner></ion-spinner></p>
 
   <ion-list>
     <ion-card *ngFor="let room of roomsFound">

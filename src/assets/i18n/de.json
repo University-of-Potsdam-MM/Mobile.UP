@@ -97,7 +97,8 @@
   "alert":{
     "title": {
       "error": "Fehler"
-    }
+    },
+    "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?"
   },
   "university":{
     "location":{

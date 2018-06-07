@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/c
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {IConfig, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
+import { ToastController } from 'ionic-angular';
 
 /**
  * Generated class for the RoomsPage page.
@@ -20,21 +21,48 @@ import {Storage} from "@ionic/storage";
 export class RoomsPage {
 
   roomsFound:String[] = [];
+  current_location:string = "3"; // TODO load default tab from user settings/history
   locations:string;
+  error:HttpErrorResponse;
+
+  refresher:any;
 
   constructor(
+    public toastCtrl: ToastController,
     private storage: Storage,
     public http: HttpClient) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoomsPage');
-    this.getRoomInfo("3"); // TODO load default tab from user settings/history
-    this.locations = "gs"
+    this.getRoomInfo(this.current_location);
+    this.locations = RoomsPage.getLocationByNum(this.current_location)
+  }
+
+  static getLocationByNum(num){
+    switch (num){
+      case "1": {
+        return "np"
+      }
+      case "2": {
+        return "go"
+      }
+      case "3": {
+        return "gs"
+      }
+      default:{
+        return "gs"
+      }
+    }
+  }
+
+  async refreshRoom(refresher){
+    this.getRoomInfo(this.current_location);
+    this.refresher = refresher
   }
 
   async getRoomInfo(location) {
-    this.roomsFound = [];
+    this.current_location = location;
 
     let config: IConfig = await this.storage.get("config");
 
@@ -43,8 +71,6 @@ export class RoomsPage {
     };
 
     let url = "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?";
-
-    // https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?format=json&startTime=2018-06-07T08:09:22.014Z&endTime=2018-06-07T10:09:22.014Z&campus=3
 
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", roomRequest.authToken);
@@ -58,14 +84,22 @@ export class RoomsPage {
 
     this.http.get(url, {headers: headers, params: params}).subscribe(
       (response: IRoomRequestResponse) => {
-        console.log(response)
+        this.roomsFound = [];
+        this.error = null;
         for(let room of response.rooms4TimeResponse.return) {
           this.roomsFound.push(room);
         }
-        console.log(this.roomsFound)
+        if (this.refresher != null){
+          this.refresher.complete()
+        }
       },
       (error: HttpErrorResponse) => {
-        console.log(error)
+        console.log(error);
+        this.error = error;
+        this.roomsFound = [];
+        if (this.refresher != null){
+          this.refresher.complete()
+        }
       }
     );
 
