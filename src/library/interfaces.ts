@@ -108,6 +108,7 @@ export interface IReservationRequestResponseDetail {
   startTime?:Date;
   roomList?:IReservationRequestResponseRoomList;
   personList?:IReservationRequestResponsePersonList;
+  veranstaltung?:string;
 }
 
 export interface IReservationRequestResponseRoomList {
@@ -125,19 +126,15 @@ export interface IHouse {
   expanded:boolean;
 }
 
-export interface IRoom {
-  lbl:string;
-}
-
 export interface IHousePlan {
   lbl:string;
-  rooms:Map<string, IRoomPlan>;
+  rooms:Map<string, IRoom>;
   expanded:boolean;
 }
 
-export interface IRoomPlan {
+export interface IRoom {
   lbl:string;
-  events:Array<IRoomEvent>;
+  events?:Array<IRoomEvent>;
 }
 
 export interface IRoomEvent {

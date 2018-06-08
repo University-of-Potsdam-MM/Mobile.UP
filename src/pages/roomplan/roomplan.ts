@@ -7,7 +7,7 @@ import {
   IHouse, IHousePlan,
   IReservationRequestResponse,
   IRoom,
-  IRoomApiRequest, IRoomPlan,
+  IRoomApiRequest, IRoomEvent,
   IRoomRequestResponse
 } from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
@@ -32,15 +32,15 @@ export class RoomplanPage {
   refresher: any;
 
   //vars
-  houseMap : Map<string, IHousePlan> = new Map<string, IHousePlan>();
-  housesFound:Array<IHousePlan>;
-  response:any;
+  houseMap: Map<string, IHousePlan> = new Map<string, IHousePlan>();
+  housesFound: Array<IHouse> = [];
+  response: any;
   current_location: string;
   error: HttpErrorResponse;
 
   constructor(
     private storage: Storage,
-    public translate : TranslateService,
+    public translate: TranslateService,
     public http: HttpClient) {
   }
 
@@ -78,36 +78,39 @@ export class RoomplanPage {
     this.refresher = refresher
   }
 
-  switchLocation(location){
+  switchLocation(location) {
     this.houseMap = new Map<string, IHousePlan>();
+    this.housesFound = [];
     this.current_location = location;
     this.getRoomInfo()
   }
 
-  expand(item){
+  expand(item) {
     for (let i = 0; i < this.houseMap.size; i++) {
-      if(this.houseMap[i].lbl == item){
+      if (this.houseMap[i].lbl == item) {
         this.houseMap[i].expanded = !this.houseMap[i].expanded;
-      }else{
+      } else {
         this.houseMap[i].expanded = false;
       }
     }
   }
 
-  addRoomToHouse(houseLbl,room:IRoomPlan){
-    let house:IHousePlan;
-    if(this.houseMap.has(houseLbl)){
+  addRoomToHouse(houseLbl, room: IRoom) {
+    let house: IHousePlan;
+    if (this.houseMap.has(houseLbl)) {
       house = this.houseMap.get(houseLbl);
-    }else{
+    } else {
       house = {
-        lbl:houseLbl,
-        rooms: new Map<string, IRoomPlan>(),
+        lbl: houseLbl,
+        rooms: new Map<string, IRoom>(),
         expanded: false
       };
     }
 
-    house.rooms.set(room.lbl,room);
-    this.houseMap.set(houseLbl,house);
+    if(house.rooms.has(room.lbl) == false){
+      house.rooms.set(room.lbl, room);
+      this.houseMap.set(houseLbl, house);
+    }
   }
 
   async getRoomInfo() {
@@ -138,30 +141,60 @@ export class RoomplanPage {
     this.http.get(url, {headers: headers, params: params}).subscribe(
       (response: IReservationRequestResponse) => {
         this.houseMap = new Map<string, IHousePlan>();
+        this.housesFound = [];
         this.error = null;
 
         for (let reservation of response.reservationsResponse.return) {
+          // API often returns basically empty reservations, we want to ignore these
+          if (reservation.veranstaltung != "" && reservation.veranstaltung != null) {
 
-          if ((reservation.roomList.room instanceof Array) == false){
-            reservation.roomList.room = [reservation.roomList.room]
-          }
+            if ((reservation.roomList.room instanceof Array) == false) {
+              reservation.roomList.room = [reservation.roomList.room]
+            }
 
-          let roomList = <Array<string>> reservation.roomList.room;
-          for(let i = 0; i < roomList.length; i++){
-            let split = roomList[i].split(".");
-            let room:IRoomPlan = {
-              lbl: split.splice(2,5).join('.'),
-              events: []
-            };
+            let roomList = <Array<string>> reservation.roomList.room;
+            for (let i = 0; i < roomList.length; i++) {
+              let split = roomList[i].split(".");
+              let room: IRoom = {
+                lbl: split.splice(2, 5).join('.'),
+                events: []
+              };
 
-            this.addRoomToHouse(split[1],room);
+              this.addRoomToHouse(split[1], room);
+
+              let event: IRoomEvent = {
+                lbl: reservation.veranstaltung,
+                startTime: new Date(reservation.startTime),
+                endTime: new Date(reservation.endTime),
+                persons: [] //TODO implement persons
+              };
+
+              this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event)
+            }
           }
         }
-        console.log(this.houseMap);
+
+        //sadly templates cannot parse maps,
+        // therefore we will generate a new data structure based on arrays and parse everything into there
+
+        let  tmpHouseList = Array.from(this.houseMap.values());
+        console.log(tmpHouseList);
+        for(let i = 0; i < tmpHouseList.length; i++){
+          let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
+          let tmpHouse:IHouse = {
+            lbl: tmpHouseList[i].lbl,
+            rooms: tmpRoomArray,
+            expanded: false
+          };
+          this.housesFound.push(tmpHouse);
+        }
+        console.log(this.housesFound);
+
         if (this.refresher != null) {
           this.refresher.complete()
         }
-      },
+      }
+      ,
       (error: HttpErrorResponse) => {
         console.log(error);
         this.error = error;
