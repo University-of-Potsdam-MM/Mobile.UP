@@ -81,6 +81,9 @@
     "rooms":{
       "title":"Freie Räume"
     },
+    "roomplan":{
+      "title":"Raumplan"
+    },
     "openingHours":{
       "title":"Öffnungszeiten"
     }

@@ -1,0 +1,59 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
+
+  </ion-navbar>
+
+  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty" [(ngModel)]="segment_locations">
+    <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
+                        (ionSelect)="switchLocation('3')">
+      {{ "university.location.gs" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button segment-activated" role="button" tappable="" value="np"
+                        (ionSelect)="switchLocation('1')">
+      {{ "university.location.np" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button" role="button" tappable="" value="go"
+                        (ionSelect)="switchLocation('2')">
+      {{ "university.location.go" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+
+  <p *ngIf=" houseMap.length == 0 && error == null" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <ion-list>
+    <ion-card *ngFor="let house of housesFound">
+      {{house.lbl}}
+      <!--
+      <ion-card-header (click)="expand(house.lbl)">{{ "words.house" | translate }} {{house.lbl}} <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
+      <expandable [expanded]="house.expanded">
+        <button ion-item *ngFor="let room of house.rooms" disabled>
+          {{room.lbl}}
+        </button>
+      </expandable>
+      -->
+    </ion-card>
+  </ion-list>
+
+</ion-content>

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
-import {IConfig, IHouse, IRoom, IRoomRequest, IRoomRequestResponse} from "../../library/interfaces";
+import {IConfig, IHouse, IRoom, IRoomApiRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
 
@@ -137,7 +137,7 @@ export class RoomsPage {
 
     let config: IConfig = await this.storage.get("config");
 
-    let roomRequest: IRoomRequest = {
+    let roomRequest: IRoomApiRequest = {
       authToken: config.authorization.credentials.accessToken,
     };
 

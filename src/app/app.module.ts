@@ -19,6 +19,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import {PersonsPage} from "../pages/persons/persons";
 import {RoomsPage} from "../pages/rooms/rooms";
+import {RoomplanPage} from "../pages/roomplan/roomplan";
 import {ExpandableComponent} from "../components/expandable/expandable";
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -35,6 +36,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmergencyPage,
     PersonsPage,
     RoomsPage,
+    RoomplanPage,
     ExpandableComponent
   ],
   imports: [
@@ -59,7 +61,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    RoomsPage
+    RoomsPage,
+    RoomplanPage
   ],
   providers: [
     StatusBar,

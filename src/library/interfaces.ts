@@ -78,23 +78,47 @@ export interface IEndpoints {
   personSearch:string;
 }
 
-/* ~~~ RoomsPage ~~~ */
+/* ~~~ RoomsPage and RoomplanPage ~~~ */
 
-/** Defines a RoomRequest that is used for making requests to room API */
-export interface IRoomRequest {
+/** API mappings for rooms4Time request (RoomsPage) */
+export interface IRoomApiRequest {
   browser?:InAppBrowserObject,
   authToken:string
 }
-
-/** Server response for room request */
-export interface IRoomRequestResponse {
-  rooms4TimeResponse?:IRoomRequestResponseReturn;
-}
-
 export interface IRoomRequestResponseReturn {
   return?:Array<string>;
 }
 
+export interface IRoomRequestResponse {
+  rooms4TimeResponse?:IRoomRequestResponseReturn;
+}
+
+
+/** API mappings for reservations request (RoomplanPage) */
+export interface IReservationRequestResponse {
+  reservationsResponse?:IReservationRequestResponseReturn;
+}
+
+export interface IReservationRequestResponseReturn {
+  return?:Array<IReservationRequestResponseDetail>;
+}
+
+export interface IReservationRequestResponseDetail {
+  endTime?:Date;
+  startTime?:Date;
+  roomList?:IReservationRequestResponseRoomList;
+  personList?:IReservationRequestResponsePersonList;
+}
+
+export interface IReservationRequestResponseRoomList {
+  room:any
+}
+
+export interface IReservationRequestResponsePersonList {
+  person:Array<String>;
+}
+
+/** Local objects for app data structure */
 export interface IHouse {
   lbl:string;
   rooms:Array<IRoom>;
@@ -103,4 +127,22 @@ export interface IHouse {
 
 export interface IRoom {
   lbl:string;
+}
+
+export interface IHousePlan {
+  lbl:string;
+  rooms:Map<string, IRoomPlan>;
+  expanded:boolean;
+}
+
+export interface IRoomPlan {
+  lbl:string;
+  events:Array<IRoomEvent>;
+}
+
+export interface IRoomEvent {
+  lbl:string;
+  persons:Array<IPerson>;
+  startTime:Date;
+  endTime:Date;
 }
