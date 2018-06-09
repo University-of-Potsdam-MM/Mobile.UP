@@ -99,6 +99,9 @@ export class RoomplanPage {
     this.housesFound = [];
     this.houseMap = new Map<string, IHousePlan>();
     this.day_offset = this.select_day;
+
+    this.default_room = null;
+    this.default_house = null;
     this.getRoomInfo();
   }
 
