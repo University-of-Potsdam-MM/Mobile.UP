@@ -255,6 +255,8 @@ export class RoomplanPage {
                 }
               }
 
+              persons = persons.filter(this.uniqueFilter);
+
               let event: IRoomEvent = {
                 lbl: reservation.veranstaltung,
                 startTime: new Date(reservation.startTime),
@@ -375,5 +377,16 @@ export class RoomplanPage {
     if (a.lbl > b.lbl)
       return 1;
     return 0;
+  }
+
+  /**
+   * Filter for person array uniqueness
+   * @param value
+   * @param index
+   * @param self
+   * @returns {boolean}
+   */
+  uniqueFilter(value, index, self) {
+    return self.indexOf(value) === index;
   }
 }
