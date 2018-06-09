@@ -31,7 +31,6 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-
   <p *ngIf="error != null" style="text-align: center">
     {{ "alert.network" | translate }} <br/><br/>
     {{error.name}}<br/>
@@ -54,10 +53,14 @@
           <ion-badge color="secondary">{{room.events.length}}</ion-badge>
           <expandable [expanded]="room.expanded">
             <ion-item *ngFor="let event of room.events">
-              <u><b>{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate
-                }}</b></u>
+              <u>
+                <b>
+                  {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
+                </b>
+              </u>
               <br/>
-              <i>{{event.lbl}}</i> <br/>
+              <i>{{event.lbl}}</i>
+              <br/>
               <p *ngFor="let person of event.persons">
                 <ion-badge color="danger">{{person}}</ion-badge>
               </p>

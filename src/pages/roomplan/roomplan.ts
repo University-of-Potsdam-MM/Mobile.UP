@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {IonicPage, NavParams, ToastController} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {
@@ -11,7 +11,6 @@ import {
 } from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
-import {strictEqual} from "assert";
 
 /**
  * Generated class for the RoomsPage page.
@@ -27,6 +26,10 @@ import {strictEqual} from "assert";
 })
 export class RoomplanPage {
 
+  //params
+  default_house:IHouse;
+  default_room:IRoom;
+
   //bindings
   segment_locations: string;
   refresher: any;
@@ -40,8 +43,12 @@ export class RoomplanPage {
 
   constructor(
     private storage: Storage,
+    public toastCtrl: ToastController,
+    public navParams: NavParams,
     public translate: TranslateService,
     public http: HttpClient) {
+    this.default_house = navParams.get("house");
+    this.default_room = navParams.get("room");
   }
 
   ionViewDidLoad() {
@@ -150,8 +157,6 @@ export class RoomplanPage {
     let end = new Date();
     start.setHours(8);
     end.setHours(22);
-    start.setDate(start.getDate() + 2);
-    end.setDate(end.getDate() + 2);
 
     let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
       .append("format", "json")
@@ -207,6 +212,35 @@ export class RoomplanPage {
           }
         }
 
+        let default_error = "";
+        if(this.default_house != null){
+          if(this.houseMap.has(this.default_house.lbl)){
+            this.houseMap.get(this.default_house.lbl).expanded = true;
+
+            if(this.default_room != null){
+              if(this.houseMap.get(this.default_house.lbl).rooms.has(this.default_room.lbl)){
+                this.houseMap.get(this.default_house.lbl).rooms.get(this.default_room.lbl).expanded = true;
+              }else{
+                default_error = "page.roomplan.no_room";
+              }
+            }
+          }else{
+            default_error = "page.roomplan.no_house";
+          }
+        }
+
+        if (default_error != ""){
+          this.translate.get(default_error).subscribe(
+            value => {
+              const toast = this.toastCtrl.create({
+                message: value,
+                duration: 5000
+              });
+              toast.present();
+            }
+          )
+        }
+
         //sadly templates cannot parse maps,
         // therefore we will generate a new data structure based on arrays and parse everything into there
 
@@ -223,7 +257,7 @@ export class RoomplanPage {
           let tmpHouse: IHouse = {
             lbl: tmpHouseList[i].lbl,
             rooms: tmpRoomArray,
-            expanded: false
+            expanded: tmpHouseList[i].expanded
           };
           this.housesFound.push(tmpHouse);
         }

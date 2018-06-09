@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {IConfig, IHouse, IRoom, IRoomApiRequest, IRoomRequestResponse} from "../../library/interfaces";
@@ -36,6 +36,7 @@ export class RoomsPage {
 
   constructor(
     private storage: Storage,
+    public navCtrl: NavController,
     public translate : TranslateService,
     public http: HttpClient) {
   }
@@ -75,6 +76,13 @@ export class RoomsPage {
     }
 
     return {"start": 0, "end": 0, "error": true}
+  }
+
+  openRoomPlan(house:IHouse, room:IRoom){
+    this.navCtrl.push(RoomplanPage, {
+      house: house,
+      room: room
+    })
   }
 
   async refreshRoom(refresher) {

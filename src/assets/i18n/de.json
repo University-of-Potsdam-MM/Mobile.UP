@@ -82,7 +82,9 @@
       "title":"Freie Räume"
     },
     "roomplan":{
-      "title":"Raumplan"
+      "title":"Raumplan",
+      "no_house": "Für das gewählte Haus gibt es heute keine Raumplanung.",
+      "no_room": "Für den gewählten Raum gibt es heute keine Raumplanung."
     },
     "openingHours":{
       "title":"Öffnungszeiten"

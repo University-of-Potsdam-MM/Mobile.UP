@@ -5,7 +5,8 @@
 
   </ion-navbar>
 
-  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty" [(ngModel)]="segment_locations">
+  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty"
+               [(ngModel)]="segment_locations">
     <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
                         (ionSelect)="switchLocation('3')">
       {{ "university.location.gs" | translate }}
@@ -23,7 +24,6 @@
     </ion-segment-button>
   </ion-segment>
 </ion-header>
-
 
 <ion-content padding>
   <ion-refresher (ionRefresh)="refreshRoom($event)">
@@ -51,16 +51,17 @@
 
   <ion-list>
     <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expand(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b> <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
+      <ion-card-header (click)="expand(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
+        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
+      </ion-card-header>
       <expandable [expanded]="house.expanded">
-        <ion-item *ngFor="let room of house.rooms">
+        <button ion-item (click)="openRoomPlan(house,room)" *ngFor="let room of house.rooms">
           {{room.lbl}}
-        </ion-item>
+        </button>
       </expandable>
 
     </ion-card>
   </ion-list>
-
 
 
 </ion-content>
