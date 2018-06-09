@@ -140,7 +140,7 @@ export interface IRoom {
 
 export interface IRoomEvent {
   lbl:string;
-  persons:Array<IPerson>;
+  persons:Array<String>;
   startTime:Date;
   endTime:Date;
 }

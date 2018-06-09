@@ -49,20 +49,25 @@
         <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
       </ion-card-header>
       <expandable [expanded]="house.expanded" *ngFor="let room of house.rooms">
-        <button ion-item (click)="expandRoom(house.lbl,room.lbl)">{{room.lbl}}
+        <ion-item (click)="expandRoom(house.lbl,room.lbl)">
+          {{room.lbl}}
           <ion-badge color="secondary">{{room.events.length}}</ion-badge>
-        </button>
-        <expandable [expanded]="room.expanded">
-          <ion-item>
-            <ion-item *ngFor="let event of room.events">
-              {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }} <br/>
-              {{event.lbl}} <br/>
-              {{event.persons}}
-            </ion-item>
-          </ion-item>
-        </expandable>
-      </expandable>
+          <expandable [expanded]="room.expanded">
 
+              <ion-item *ngFor="let event of room.events">
+                <b>{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate
+                  }}</b>
+                <br/>
+                {{event.lbl}} <br/>
+
+                <p *ngFor="let person of event.persons"><ion-badge color="danger" >{{person}}</ion-badge></p>
+
+              </ion-item>
+
+          </expandable>
+        </ion-item>
+
+      </expandable>
     </ion-card>
   </ion-list>
 

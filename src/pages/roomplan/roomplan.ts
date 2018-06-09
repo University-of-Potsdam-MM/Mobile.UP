@@ -11,6 +11,7 @@ import {
 } from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
+import {strictEqual} from "assert";
 
 /**
  * Generated class for the RoomsPage page.
@@ -178,11 +179,22 @@ export class RoomplanPage {
 
               this.addRoomToHouse(split[1], room);
 
+              let persons:Array<String> = [];
+              let personArray = reservation.personList.person;
+              for(let h = 0; h < personArray.length; h = h + 2){
+                if(personArray[h] == "N.N" ){
+                  persons.push("N.N ")
+                }
+                if(personArray[h] != "" && personArray[h + 1] != ""){
+                  persons.push(personArray[h + 1].trim() + " " + personArray[h].trim())
+                }
+              }
+
               let event: IRoomEvent = {
                 lbl: reservation.veranstaltung,
                 startTime: new Date(reservation.startTime),
                 endTime: new Date(reservation.endTime),
-                persons: [] //TODO implement persons
+                persons: persons
               };
 
               this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event)
