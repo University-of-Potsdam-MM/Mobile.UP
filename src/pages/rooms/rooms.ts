@@ -145,17 +145,14 @@ export class RoomsPage {
       this.housesFound = [];
       return;
     }
+
     this.no_timeslot = false;
-
     let location = this.current_location;
-
     let config: IConfig = await this.storage.get("config");
 
     let roomRequest: IRoomApiRequest = {
       authToken: config.authorization.credentials.accessToken,
     };
-
-    let url = "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time?";
 
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", roomRequest.authToken);
@@ -171,7 +168,7 @@ export class RoomsPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
-    this.http.get(url, {headers: headers, params: params}).subscribe(
+    this.http.get(config.webservices.endpoint.roomsSearch, {headers: headers, params: params}).subscribe(
       (response: IRoomRequestResponse) => {
         this.housesFound = [];
         this.error = null;
@@ -202,11 +199,13 @@ export class RoomsPage {
           }
 
         }
+
+        //sort elements for nicer display
         this.housesFound.sort(RoomplanPage.compareHouses);
         this.housesFound.forEach(function (house) {
           house.rooms.sort(RoomplanPage.compareRooms);
         });
-        console.log(this.housesFound);
+
         if (this.refresher != null) {
           this.refresher.complete()
         }

@@ -20,7 +20,9 @@
   },
   "webservices": {
     "endpoint":{
-      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json"
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "roomsSearch": "",
+      "roomplanSearch": ""
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   }

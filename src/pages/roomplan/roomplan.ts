@@ -99,7 +99,7 @@ export class RoomplanPage {
     this.housesFound = [];
     this.houseMap = new Map<string, IHousePlan>();
     this.day_offset = this.select_day;
-
+    //reset defaults so they don't open on new day
     this.default_room = null;
     this.default_house = null;
     this.getRoomInfo();
@@ -198,14 +198,11 @@ export class RoomplanPage {
   async getRoomInfo() {
 
     let location = this.current_location;
-
     let config: IConfig = await this.storage.get("config");
 
     let roomRequest: IRoomApiRequest = {
       authToken: config.authorization.credentials.accessToken,
     };
-
-    let url = "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations?";
 
     let headers: HttpHeaders = new HttpHeaders().append("Authorization", roomRequest.authToken);
 
@@ -222,7 +219,7 @@ export class RoomplanPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
-    this.http.get(url, {headers: headers, params: params}).subscribe(
+    this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params}).subscribe(
       (response: IReservationRequestResponse) => {
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
@@ -272,6 +269,7 @@ export class RoomplanPage {
           }
         }
 
+        // load defaults if they are passed to the page by other files
         let default_error = "";
         if(this.default_house != null){
           if(this.houseMap.has(this.default_house.lbl)){
@@ -302,8 +300,7 @@ export class RoomplanPage {
         }
 
         //sadly templates cannot parse maps,
-        // therefore we will generate a new data structure based on arrays and parse everything into there
-
+        //therefore we will generate a new data structure based on arrays and parse everything into there
         let tmpHouseList = Array.from(this.houseMap.values());
         console.log(tmpHouseList);
         for (let i = 0; i < tmpHouseList.length; i++) {
@@ -322,17 +319,19 @@ export class RoomplanPage {
           this.housesFound.push(tmpHouse);
         }
         this.housesFound.sort(RoomplanPage.compareHouses);
-        console.log(this.housesFound);
 
+        //if refresher is running complete it
         if (this.refresher != null) {
           this.refresher.complete()
         }
       }
       ,
       (error: HttpErrorResponse) => {
+        //if error reset vars and set error variable for display
         console.log(error);
         this.error = error;
         this.houseMap = new Map<string, IHousePlan>();
+        this.housesFound = [];
         if (this.refresher != null) {
           this.refresher.complete()
         }

@@ -76,6 +76,8 @@ export interface IWebServices {
 
 export interface IEndpoints {
   personSearch:string;
+  roomsSearch:string;
+  roomplanSearch:string;
 }
 
 /* ~~~ RoomsPage and RoomplanPage ~~~ */
