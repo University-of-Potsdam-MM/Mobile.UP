@@ -7,8 +7,7 @@ import {
   IHouse, IHousePlan,
   IReservationRequestResponse,
   IRoom,
-  IRoomApiRequest, IRoomEvent,
-  IRoomRequestResponse
+  IRoomApiRequest, IRoomEvent
 } from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
@@ -85,12 +84,26 @@ export class RoomplanPage {
     this.getRoomInfo()
   }
 
-  expand(item) {
-    for (let i = 0; i < this.houseMap.size; i++) {
-      if (this.houseMap[i].lbl == item) {
-        this.houseMap[i].expanded = !this.houseMap[i].expanded;
+  public expandHouse(house) {
+    for (let i = 0; i < this.housesFound.length; i++) {
+      if (this.housesFound[i].lbl == house) {
+        this.housesFound[i].expanded = !this.housesFound[i].expanded;
       } else {
-        this.houseMap[i].expanded = false;
+        this.housesFound[i].expanded = false;
+      }
+    }
+  }
+
+  public expandRoom(house, room) {
+    for (let i = 0; i < this.housesFound.length; i++) {
+      if (this.housesFound[i].lbl == house) {
+        for (let h = 0; h < this.housesFound[i].rooms.length; h++) {
+          if (this.housesFound[i].rooms[h].lbl == room) {
+            this.housesFound[i].rooms[h].expanded = !this.housesFound[i].rooms[h].expanded;
+          } else {
+            this.housesFound[i].rooms[h].expanded = false;
+          }
+        }
       }
     }
   }
@@ -107,7 +120,7 @@ export class RoomplanPage {
       };
     }
 
-    if(house.rooms.has(room.lbl) == false){
+    if (house.rooms.has(room.lbl) == false) {
       house.rooms.set(room.lbl, room);
       this.houseMap.set(houseLbl, house);
     }
@@ -131,6 +144,8 @@ export class RoomplanPage {
     let end = new Date();
     start.setHours(8);
     end.setHours(22);
+    start.setDate(start.getDate() + 2);
+    end.setDate(end.getDate() + 2);
 
     let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
       .append("format", "json")
@@ -157,7 +172,8 @@ export class RoomplanPage {
               let split = roomList[i].split(".");
               let room: IRoom = {
                 lbl: split.splice(2, 5).join('.'),
-                events: []
+                events: [],
+                expanded: false
               };
 
               this.addRoomToHouse(split[1], room);
@@ -177,11 +193,11 @@ export class RoomplanPage {
         //sadly templates cannot parse maps,
         // therefore we will generate a new data structure based on arrays and parse everything into there
 
-        let  tmpHouseList = Array.from(this.houseMap.values());
+        let tmpHouseList = Array.from(this.houseMap.values());
         console.log(tmpHouseList);
-        for(let i = 0; i < tmpHouseList.length; i++){
+        for (let i = 0; i < tmpHouseList.length; i++) {
           let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
-          let tmpHouse:IHouse = {
+          let tmpHouse: IHouse = {
             lbl: tmpHouseList[i].lbl,
             rooms: tmpRoomArray,
             expanded: false

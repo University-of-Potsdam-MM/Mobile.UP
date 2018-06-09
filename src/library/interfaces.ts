@@ -135,6 +135,7 @@ export interface IHousePlan {
 export interface IRoom {
   lbl:string;
   events?:Array<IRoomEvent>;
+  expanded?:boolean;
 }
 
 export interface IRoomEvent {

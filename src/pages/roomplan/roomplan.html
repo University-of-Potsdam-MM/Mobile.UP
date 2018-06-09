@@ -45,24 +45,24 @@
 
   <ion-list>
     <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expand(house.lbl)">{{ "words.house" | translate }} {{house.lbl}} <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
-      <p *ngFor="let room of house.rooms">
-
-        <expandable [expanded]="house.expanded">
-          -{{room.lbl}} <br/>
-          <b *ngFor="let event of room.events">
-            --{{event.lbl}} <br/>
-          </b>
+      <ion-card-header (click)="expandHouse(house.lbl)">{{ "words.house" | translate }} {{house.lbl}}
+        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
+      </ion-card-header>
+      <expandable [expanded]="house.expanded" *ngFor="let room of house.rooms">
+        <button ion-item (click)="expandRoom(house.lbl,room.lbl)">{{room.lbl}}
+          <ion-badge color="secondary">{{room.events.length}}</ion-badge>
+        </button>
+        <expandable [expanded]="room.expanded">
+          <ion-item>
+            <ion-item *ngFor="let event of room.events">
+              {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }} <br/>
+              {{event.lbl}} <br/>
+              {{event.persons}}
+            </ion-item>
+          </ion-item>
         </expandable>
+      </expandable>
 
-
-        
-      </p>
-
-      <!--
-
-
-      -->
     </ion-card>
   </ion-list>
 
