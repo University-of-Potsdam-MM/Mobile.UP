@@ -51,11 +51,11 @@
 
   <ion-list>
     <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expand(house.lbl)">{{ "words.house" | translate }} {{house.lbl}} <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
+      <ion-card-header (click)="expand(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b> <ion-badge color="primary">{{house.rooms.length}}</ion-badge></ion-card-header>
       <expandable [expanded]="house.expanded">
-        <button ion-item *ngFor="let room of house.rooms" disabled>
+        <ion-item *ngFor="let room of house.rooms">
           {{room.lbl}}
-        </button>
+        </ion-item>
       </expandable>
 
     </ion-card>

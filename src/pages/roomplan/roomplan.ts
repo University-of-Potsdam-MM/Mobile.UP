@@ -92,6 +92,11 @@ export class RoomplanPage {
       } else {
         this.housesFound[i].expanded = false;
       }
+      if(this.housesFound[i].expanded == false){
+        this.housesFound[i].rooms.forEach(function (room) {
+          room.expanded = false;
+        })
+      }
     }
   }
 
@@ -209,6 +214,12 @@ export class RoomplanPage {
         console.log(tmpHouseList);
         for (let i = 0; i < tmpHouseList.length; i++) {
           let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
+
+          tmpRoomArray.sort(RoomplanPage.compareRooms);
+          for(let h = 0; h < tmpRoomArray.length; h++){
+            tmpRoomArray[h].events.sort(RoomplanPage.compareEvents);
+          }
+
           let tmpHouse: IHouse = {
             lbl: tmpHouseList[i].lbl,
             rooms: tmpRoomArray,
@@ -216,6 +227,7 @@ export class RoomplanPage {
           };
           this.housesFound.push(tmpHouse);
         }
+        this.housesFound.sort(RoomplanPage.compareHouses);
         console.log(this.housesFound);
 
         if (this.refresher != null) {
@@ -232,5 +244,47 @@ export class RoomplanPage {
         }
       }
     );
+  }
+
+  /**
+   * Comparator for event sorting
+   * @param {IRoomEvent} a
+   * @param {IRoomEvent} b
+   * @returns {number}
+   */
+  static compareEvents(a:IRoomEvent, b:IRoomEvent) {
+    if (a.startTime < b.startTime)
+      return -1;
+    if (a.startTime > b.startTime)
+      return 1;
+    return 0;
+  }
+
+  /**
+   * Comparator for room sorting
+   * @param {IRoomEvent} a
+   * @param {IRoomEvent} b
+   * @returns {number}
+   */
+  static compareRooms(a:IRoom, b:IRoom) {
+    if (a.lbl > b.lbl) // inverted normal sort order so rooms starting with letters come first
+      return -1;
+    if (a.lbl < b.lbl)
+      return 1;
+    return 0;
+  }
+
+  /**
+   * Comparator for house
+   * @param {IRoomEvent} a
+   * @param {IRoomEvent} b
+   * @returns {number}
+   */
+  static compareHouses(a:IHouse, b:IHouse) {
+    if (a.lbl < b.lbl)
+      return -1;
+    if (a.lbl > b.lbl)
+      return 1;
+    return 0;
   }
 }

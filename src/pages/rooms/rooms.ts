@@ -5,6 +5,7 @@ import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
 import {IConfig, IHouse, IRoom, IRoomApiRequest, IRoomRequestResponse} from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
 import {TranslateService} from "@ngx-translate/core";
+import {RoomplanPage} from "../roomplan/roomplan";
 
 /**
  * Generated class for the RoomsPage page.
@@ -51,30 +52,8 @@ export class RoomsPage {
     }
     this.select_timeslot = this.current_timeslot.start;
 
-    this.segment_locations = RoomsPage.getLocationByNum(this.current_location);
+    this.segment_locations = RoomplanPage.getLocationByNum(this.current_location);
     this.switchLocation("3"); // TODO load default tab from user settings/history
-  }
-
-  /**
-   * Convert campus number to short string (for localization)
-   * @param num - Campus number (1-3)
-   * @returns {string} - campus short string (gs,np,go), defaults to gs
-   */
-  static getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
-    switch (num) {
-      case "1": {
-        return "np"
-      }
-      case "2": {
-        return "go"
-      }
-      case "3": {
-        return "gs"
-      }
-      default: {
-        return "gs"
-      }
-    }
   }
 
   /**
@@ -188,6 +167,10 @@ export class RoomsPage {
           }
 
         }
+        this.housesFound.sort(RoomplanPage.compareHouses);
+        this.housesFound.forEach(function (house) {
+          house.rooms.sort(RoomplanPage.compareRooms);
+        });
         console.log(this.housesFound);
         if (this.refresher != null) {
           this.refresher.complete()

@@ -39,13 +39,13 @@
     {{error.error}}<br/>
   </p>
 
-  <p *ngIf=" houseMap.length == 0 && error == null" style="text-align: center">
+  <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 
   <ion-list>
     <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expandHouse(house.lbl)">{{ "words.house" | translate }} {{house.lbl}}
+      <ion-card-header (click)="expandHouse(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
         <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
       </ion-card-header>
       <expandable [expanded]="house.expanded" *ngFor="let room of house.rooms">
@@ -53,22 +53,18 @@
           {{room.lbl}}
           <ion-badge color="secondary">{{room.events.length}}</ion-badge>
           <expandable [expanded]="room.expanded">
-
-              <ion-item *ngFor="let event of room.events">
-                <b>{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate
-                  }}</b>
-                <br/>
-                {{event.lbl}} <br/>
-
-                <p *ngFor="let person of event.persons"><ion-badge color="danger" >{{person}}</ion-badge></p>
-
-              </ion-item>
-
+            <ion-item *ngFor="let event of room.events">
+              <u><b>{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate
+                }}</b></u>
+              <br/>
+              <i>{{event.lbl}}</i> <br/>
+              <p *ngFor="let person of event.persons">
+                <ion-badge color="danger">{{person}}</ion-badge>
+              </p>
+            </ion-item>
           </expandable>
         </ion-item>
-
       </expandable>
     </ion-card>
   </ion-list>
-
 </ion-content>
