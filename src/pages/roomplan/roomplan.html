@@ -31,6 +31,12 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-item>
+    <ion-select [(ngModel)]="select_day" (ionChange)="changeDay()">
+      <ion-option *ngFor="let day of days" [value]="day.value">{{day.lbl | date:'dd.MM.yyyy'}}</ion-option>
+    </ion-select>
+  </ion-item>
+
   <p *ngIf="error != null" style="text-align: center">
     {{ "alert.network" | translate }} <br/><br/>
     {{error.name}}<br/>

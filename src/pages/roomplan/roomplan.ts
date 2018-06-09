@@ -32,11 +32,14 @@ export class RoomplanPage {
 
   //bindings
   segment_locations: string;
+  select_day:string;
   refresher: any;
+  days: any;
 
   //vars
   houseMap: Map<string, IHousePlan> = new Map<string, IHousePlan>();
   housesFound: Array<IHouse> = [];
+  day_offset:string;
   response: any;
   current_location: string;
   error: HttpErrorResponse;
@@ -53,9 +56,17 @@ export class RoomplanPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoomsPage');
-
     this.segment_locations = RoomplanPage.getLocationByNum(this.current_location);
     this.switchLocation("3"); // TODO load default tab from user settings/history
+    this.day_offset = "0";
+
+    this.days = [];
+    for(let i = 0; i < 7; i++){
+      let day:Date = new Date();
+      day.setDate(day.getDate() + i);
+      this.days.push({"lbl": day, "value": i.toString()})
+    }
+    this.select_day = this.day_offset
   }
 
   /**
@@ -80,11 +91,31 @@ export class RoomplanPage {
     }
   }
 
+  /**
+   * Changes the day for which to load data
+   * Day comes from DOM select element "select_day"
+   */
+  changeDay(){
+    this.housesFound = [];
+    this.houseMap = new Map<string, IHousePlan>();
+    this.day_offset = this.select_day;
+    this.getRoomInfo();
+  }
+
+  /**
+   * Called by refresher element to refresh info
+   * @param refresher - DOM refresher element, passed for later closing
+   * @returns {Promise<void>}
+   */
   async refreshRoom(refresher) {
     this.getRoomInfo();
     this.refresher = refresher
   }
 
+  /**
+   * Switch campus location and reload info for new campus
+   * @param location - number as string representing campus
+   */
   switchLocation(location) {
     this.houseMap = new Map<string, IHousePlan>();
     this.housesFound = [];
@@ -92,6 +123,11 @@ export class RoomplanPage {
     this.getRoomInfo()
   }
 
+  /**
+   * Expand house expandable to show rooms
+   * Closes rooms when house is closed
+   * @param house - lbl of house to close
+   */
   public expandHouse(house) {
     for (let i = 0; i < this.housesFound.length; i++) {
       if (this.housesFound[i].lbl == house) {
@@ -107,6 +143,11 @@ export class RoomplanPage {
     }
   }
 
+  /**
+   * Expand room expandable to show events
+   * @param house - lbl of house to close
+   * @param room - lbl of room to close
+   */
   public expandRoom(house, room) {
     for (let i = 0; i < this.housesFound.length; i++) {
       if (this.housesFound[i].lbl == house) {
@@ -121,6 +162,13 @@ export class RoomplanPage {
     }
   }
 
+  /**
+   * Adds a room to a house (specified by its lbl)
+   * If the house does not exist one is created
+   * Room is only added if house does not already have that room (identified by lbl)
+   * @param houseLbl - lbl of house to add room for
+   * @param {IRoom} room - room to add to house
+   */
   addRoomToHouse(houseLbl, room: IRoom) {
     let house: IHousePlan;
     if (this.houseMap.has(houseLbl)) {
@@ -139,6 +187,11 @@ export class RoomplanPage {
     }
   }
 
+  /**
+   * Main function to query api and build array that is later parsed to DOM
+   * Gets all its parameters from pages global vars (location, day, default house/room)
+   * @returns {Promise<void>}
+   */
   async getRoomInfo() {
 
     let location = this.current_location;
@@ -157,6 +210,8 @@ export class RoomplanPage {
     let end = new Date();
     start.setHours(8);
     end.setHours(22);
+    start.setDate(start.getDate() + +this.day_offset); // unary plus for string->num conversion
+    end.setDate(end.getDate() + +this.day_offset);
 
     let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
       .append("format", "json")

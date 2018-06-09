@@ -78,6 +78,11 @@ export class RoomsPage {
     return {"start": 0, "end": 0, "error": true}
   }
 
+  /**
+   * Called when free room entry is clicked to open page with complete plan for selected room
+   * @param {IHouse} house - current house
+   * @param {IRoom} room - selected room in current house
+   */
   openRoomPlan(house:IHouse, room:IRoom){
     this.navCtrl.push(RoomplanPage, {
       house: house,
@@ -85,26 +90,43 @@ export class RoomsPage {
     })
   }
 
+  /**
+   * Called by refresher element to refresh info
+   * @param refresher - DOM refresher element, passed for later closing
+   * @returns {Promise<void>}
+   */
   async refreshRoom(refresher) {
     this.getRoomInfo();
     this.refresher = refresher
   }
 
+  /**
+   * Switch campus location and reload info for new campus
+   * @param location - number as string representing campus
+   */
   switchLocation(location){
     this.housesFound = [];
     this.current_location = location;
     this.getRoomInfo()
   }
 
+  /**
+   * Changes timeslot of day that should be displayed
+   * Info comes from DOM select element "select_timeslot"
+   */
   changeTimeSlot(){
     this.housesFound = [];
     this.current_timeslot =  {"start":this.select_timeslot, "end": (this.select_timeslot + 2),"error":false};
     this.getRoomInfo();
   }
 
-  expand(item){
+  /**
+   * Expands house to show rooms
+   * @param house - house lbl
+   */
+  expand(house){
     for (let i = 0; i < this.housesFound.length; i++) {
-      if(this.housesFound[i].lbl == item){
+      if(this.housesFound[i].lbl == house){
         this.housesFound[i].expanded = !this.housesFound[i].expanded;
       }else{
         this.housesFound[i].expanded = false;
@@ -112,6 +134,11 @@ export class RoomsPage {
     }
   }
 
+  /**
+   * Main function to query api and build array that is later parsed to DOM
+   * Gets all its parameters from pages global vars (location, timeslot)
+   * @returns {Promise<void>}
+   */
   async getRoomInfo() {
     if (this.current_timeslot.error){
       this.no_timeslot = true;
