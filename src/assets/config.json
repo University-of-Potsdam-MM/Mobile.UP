@@ -21,8 +21,8 @@
   "webservices": {
     "endpoint":{
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
-      "roomsSearch": "",
-      "roomplanSearch": ""
+      "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
+      "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   }

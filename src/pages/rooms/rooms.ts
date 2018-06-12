@@ -1,18 +1,26 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
-import {WebHttpUrlEncodingCodec} from "../../providers/login-provider/lib";
-import {IConfig, IHouse, IRoom, IRoomApiRequest, IRoomRequestResponse} from "../../library/interfaces";
-import {Storage} from "@ionic/storage";
-import {TranslateService} from "@ngx-translate/core";
-import {RoomplanPage} from "../roomplan/roomplan";
+import { Component } from '@angular/core';
+import {
+  IonicPage,
+  NavController
+} from 'ionic-angular';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams
+} from "@angular/common/http";
+import { WebHttpUrlEncodingCodec } from "../../providers/login-provider/lib";
+import {
+  IConfig,
+  IHouse,
+  IRoom,
+  IRoomApiRequest,
+  IRoomRequestResponse
+} from "../../library/interfaces";
+import { Storage } from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
+import { RoomplanPage } from "../roomplan/roomplan";
 
-/**
- * Generated class for the RoomsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
