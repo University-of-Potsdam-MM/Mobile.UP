@@ -15,6 +15,8 @@ import {PersonsPage} from "../pages/persons/persons";
 import {Storage} from "@ionic/storage";
 import {HttpClient} from "@angular/common/http";
 import {IConfig} from "../library/interfaces";
+import {RoomsPage} from "../pages/rooms/rooms";
+import {RoomplanPage} from "../pages/roomplan/roomplan";
 
 interface IPage {
   title:string;
@@ -79,6 +81,14 @@ export class MobileUPApp {
       {
         title: "personSearch",
         component: PersonsPage
+      },
+      {
+        title: "rooms",
+        component: RoomsPage
+      },
+      {
+        title: "roomplan",
+        component: RoomplanPage
       },
       {
         title: "login",

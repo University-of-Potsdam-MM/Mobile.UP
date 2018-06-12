@@ -79,7 +79,12 @@
       "title":"Hochschulsport"
     },
     "rooms":{
-      "title":"Raumbelegung"
+      "title":"Freie Räume"
+    },
+    "roomplan":{
+      "title":"Raumplan",
+      "no_house": "Für das gewählte Haus gibt es heute keine Raumplanung.",
+      "no_room": "Für den gewählten Raum gibt es heute keine Raumplanung."
     },
     "openingHours":{
       "title":"Öffnungszeiten"
@@ -97,7 +102,19 @@
   "alert":{
     "title": {
       "error": "Fehler"
+    },
+    "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
+    "no_info_for_time" : "Für den diesen Zeitraum sind keine Informationen verfügbar."
+  },
+  "university":{
+    "location":{
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
     }
+  },
+  "words":{
+    "clock": "Uhr",
+    "house": "Haus"
   }
-
 }
