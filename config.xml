@@ -10,7 +10,6 @@
     <description>Offizielle App der Universität Potsdam</description>
     <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
 
-
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -84,8 +83,6 @@
     </platform>
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
 
-
-
     <!-- Whitelist -->
     <plugin name="cordova-plugin-whitelist" spec="1.3.1" />
     <access origin="*" />
@@ -98,4 +95,6 @@
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
     <plugin name="cordova-plugin-inappbrowser" spec="~1.7.2" />
+    <engine name="android" spec="~6.0.0" />
+    <engine name="ios" spec="~4.3.1" />
 </widget>
