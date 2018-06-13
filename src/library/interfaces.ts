@@ -80,7 +80,7 @@ export interface IEndpoints {
 
 /* ~~~ NewsPage ~~~ */
 
-export interface INewsResponse {
+export interface INewsApiResponse {
   passedArgs:string[],
   vars:INewsVars,
   errors:INewsErrors,
