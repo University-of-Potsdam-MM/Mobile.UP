@@ -1,6 +1,6 @@
 <ion-row>
   <ion-col>
-    <ion-card>
+    <ion-card (click)="openWebsite(article.News.link)">
       <ion-card-header text-wrap>
         {{ article.News.headline }}
       </ion-card-header>
