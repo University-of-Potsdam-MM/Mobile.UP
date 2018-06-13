@@ -40,7 +40,8 @@
       "title":"Personensuche",
       "placeholder": {
         "search": "..."
-      }
+      },
+      "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
     },
     "grades":{
       "title":"Meine Leistungen"

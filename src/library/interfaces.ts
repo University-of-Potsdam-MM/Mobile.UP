@@ -60,6 +60,7 @@ export interface IPerson {
   gueltigbis?:string;
   Titel?:string;
   Email_Langform?:string;
+  expanded?:boolean;
 }
 
 /* ~~~ config ~~~ */

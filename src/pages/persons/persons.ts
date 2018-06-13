@@ -28,6 +28,7 @@ import {
 export class PersonsPage {
 
   personsFound:IPerson[] = [];
+  waiting_for_response:boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -47,11 +48,12 @@ export class PersonsPage {
     this.personsFound = [];
 
     if(query) {
+      this.waiting_for_response = true;
+
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
       let session:ISession = await this.storage.get("session");
       let config:IConfig = await this.storage.get("config");
-
       if(session) {
         let headers: HttpHeaders = new HttpHeaders()
           .append("Authorization", config.webservices.apiToken);
@@ -66,21 +68,41 @@ export class PersonsPage {
           {headers:headers, params:params}
           ).subscribe(
           (response:IPersonSearchResponse) => {
+            // reset array so new persons are displayed
+            this.personsFound = [];
             // use inner object only because it's wrapped in another object
             for(let person of response.people) {
+              person.Person.expanded = false;
+              person.Person.Raum = person.Person.Raum.replace(/_/g," ");
               this.personsFound.push(person.Person);
             }
+
+            this.waiting_for_response = false;
           },
           error => {
-            console.log(error)
+            // reset array so new persons are displayed
+            this.personsFound = [];
+            console.log(error);
+            this.waiting_for_response = false;
           }
         );
       } else {
         // send user to LoginPage if no session has been found
         this.navCtrl.push(LoginPage);
       }
+
     } else {
       console.log("[PersonsPage]: Empty query");
+    }
+  }
+
+  expandPerson(person){
+    for (let i = 0; i < this.personsFound.length; i++) {
+      if(this.personsFound[i].id == person.id){
+        this.personsFound[i].expanded = !this.personsFound[i].expanded;
+      }else{
+        this.personsFound[i].expanded = false;
+      }
     }
   }
 }
