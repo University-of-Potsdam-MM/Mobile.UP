@@ -18,8 +18,10 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
-import {PersonsPage} from "../pages/persons/persons";
+import { PersonsPage } from "../pages/persons/persons";
 import { NewsPage } from './../pages/news/news';
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -34,7 +36,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    NewsPage
+    NewsPage,
+    RoomsPage,
+    RoomplanPage
   ],
   imports: [
     HttpClientModule,
@@ -59,7 +63,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    NewsPage
+    NewsPage,
+    RoomsPage,
+    RoomplanPage
   ],
   providers: [
     StatusBar,

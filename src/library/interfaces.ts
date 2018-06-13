@@ -1,6 +1,7 @@
 /* ~~~ EmergencyPage ~~~ */
 
 import { IAuthorization } from "../providers/login-provider/interfaces";
+import {InAppBrowserObject} from "@ionic-native/in-app-browser";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -76,6 +77,8 @@ export interface IWebServices {
 export interface IEndpoints {
   personSearch:string;
   news:string;
+  roomsSearch:string;
+  roomplanSearch:string;
 }
 
 /* ~~~ NewsPage ~~~ */
@@ -162,4 +165,71 @@ export interface INewsArticleSource {
   url:string,
   sourceType:string,
   rank:string
+}
+
+/* ~~~ RoomsPage and RoomplanPage ~~~ */
+
+/** API mappings for rooms4Time request (RoomsPage) */
+export interface IRoomApiRequest {
+  browser?:InAppBrowserObject,
+  authToken:string
+}
+export interface IRoomRequestResponseReturn {
+  return?:Array<string>;
+}
+
+export interface IRoomRequestResponse {
+  rooms4TimeResponse?:IRoomRequestResponseReturn;
+}
+
+
+/** API mappings for reservations request (RoomplanPage) */
+export interface IReservationRequestResponse {
+  reservationsResponse?:IReservationRequestResponseReturn;
+}
+
+export interface IReservationRequestResponseReturn {
+  return?:Array<IReservationRequestResponseDetail>;
+}
+
+export interface IReservationRequestResponseDetail {
+  endTime?:Date;
+  startTime?:Date;
+  roomList?:IReservationRequestResponseRoomList;
+  personList?:IReservationRequestResponsePersonList;
+  veranstaltung?:string;
+}
+
+export interface IReservationRequestResponseRoomList {
+  room:any
+}
+
+export interface IReservationRequestResponsePersonList {
+  person:Array<String>;
+}
+
+/** Local objects for app data structure */
+export interface IHouse {
+  lbl:string;
+  rooms:Array<IRoom>;
+  expanded:boolean;
+}
+
+export interface IHousePlan {
+  lbl:string;
+  rooms:Map<string, IRoom>;
+  expanded:boolean;
+}
+
+export interface IRoom {
+  lbl:string;
+  events?:Array<IRoomEvent>;
+  expanded?:boolean;
+}
+
+export interface IRoomEvent {
+  lbl:string;
+  persons:Array<String>;
+  startTime:Date;
+  endTime:Date;
 }
