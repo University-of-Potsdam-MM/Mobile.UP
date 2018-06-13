@@ -1,26 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MobileUPApp } from './app.component';
-import { UPLoginProvider } from "../providers/login-provider/login";
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { EmergencyPage } from '../pages/emergency/emergency';
-import { InAppBrowser } from "@ionic-native/in-app-browser";
-import { IonicStorageModule } from "@ionic/storage";
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule, ErrorHandler} from '@angular/core';
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {MobileUPApp} from './app.component';
+import {UPLoginProvider} from "../providers/login-provider/login";
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {EmergencyPage} from '../pages/emergency/emergency';
+import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {IonicStorageModule} from "@ionic/storage";
 
 /* Pages */
-import { HomePage } from '../pages/home/home';
-import { ImpressumPage } from '../pages/impressum/impressum';
-import { LoginPage } from "../pages/login/login";
-import { LogoutPage } from "../pages/logout/logout";
+import {HomePage} from '../pages/home/home';
+import {ImpressumPage} from '../pages/impressum/impressum';
+import {LoginPage} from "../pages/login/login";
+import {LogoutPage} from "../pages/logout/logout";
 import {PersonsPage} from "../pages/persons/persons";
 import {RoomsPage} from "../pages/rooms/rooms";
 import {RoomplanPage} from "../pages/roomplan/roomplan";
 import {ExpandableComponent} from "../components/expandable/expandable";
+import {SettingsPage} from "../pages/settings/settings";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -34,6 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
+    SettingsPage,
     PersonsPage,
     RoomsPage,
     RoomplanPage,
@@ -59,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginPage,
     LogoutPage,
     ImpressumPage,
+    SettingsPage,
     EmergencyPage,
     PersonsPage,
     RoomsPage,
@@ -72,4 +75,5 @@ export function HttpLoaderFactory(http: HttpClient) {
     InAppBrowser
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

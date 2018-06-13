@@ -78,6 +78,14 @@
     "sports":{
       "title":"Hochschulsport"
     },
+    "settings":{
+      "title":"Einstellungen",
+      "options": {
+        "test_1":"Test 1",
+        "test_2":"Test 2",
+        "test_3":"Test 3"
+      }
+    },
     "rooms":{
       "title":"Freie Räume"
     },

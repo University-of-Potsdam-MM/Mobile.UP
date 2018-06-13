@@ -1,27 +1,28 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import { HomePage } from '../pages/home/home';
-import { ImpressumPage } from '../pages/impressum/impressum';
-import { EmergencyPage } from '../pages/emergency/emergency';
-import { LoginPage } from "../pages/login/login";
-import { LogoutPage } from "../pages/logout/logout";
+import {HomePage} from '../pages/home/home';
+import {ImpressumPage} from '../pages/impressum/impressum';
+import {EmergencyPage} from '../pages/emergency/emergency';
+import {LoginPage} from "../pages/login/login";
+import {LogoutPage} from "../pages/logout/logout";
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { TranslateService } from "@ngx-translate/core";
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {TranslateService} from "@ngx-translate/core";
 import {PersonsPage} from "../pages/persons/persons";
 import {Storage} from "@ionic/storage";
 import {HttpClient} from "@angular/common/http";
 import {IConfig} from "../library/interfaces";
 import {RoomsPage} from "../pages/rooms/rooms";
 import {RoomplanPage} from "../pages/roomplan/roomplan";
+import {SettingsPage} from "../pages/settings/settings";
 
 interface IPage {
-  title:string;
-  component:any;
-  thumbnail?:string;
+  title: string;
+  component: any;
+  thumbnail?: string;
 }
 
 @Component({
@@ -49,8 +50,8 @@ export class MobileUPApp {
   }
 
   private async initConfig() {
-    let config:IConfig = await this.storage.get("config");
-    if(!config){
+    let config: IConfig = await this.storage.get("config");
+    if (!config) {
       // load config if not in storage
       this.http.get<IConfig>("assets/config.json").subscribe(
         config => {
@@ -61,7 +62,7 @@ export class MobileUPApp {
     }
   }
 
-  private initPages(){
+  private initPages() {
 
     // set our app's pages. Titles can be used for translation when showing the
     // tiles
@@ -89,6 +90,10 @@ export class MobileUPApp {
       {
         title: "roomplan",
         component: RoomplanPage
+      },
+      {
+        title: "settings",
+        component: SettingsPage
       },
       {
         title: "login",

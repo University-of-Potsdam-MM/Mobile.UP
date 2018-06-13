@@ -146,3 +146,18 @@ export interface IRoomEvent {
   startTime:Date;
   endTime:Date;
 }
+
+/* ~~~ Settings ~~~ */
+export enum ESettingType {
+  boolean,
+  string,
+  number
+}
+
+export interface ISetting {
+  key:string;
+  lbl:string; // identifier of localized resource under page.settings.options.??
+  value:any;
+  type:ESettingType;
+}
+

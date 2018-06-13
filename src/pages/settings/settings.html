@@ -1,0 +1,29 @@
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.settings.title" | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+
+    <div *ngFor="let setting of settings">
+      <ion-item *ngIf="getSettingType(setting) == 'boolean'">
+        <ion-label>{{ "page.settings.options." + setting.lbl | translate }}</ion-label>
+        <ion-toggle checked="true"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="getSettingType(setting) == 'number' || getSettingType(setting) == 'string'" (click)="openPrompt(setting)">
+        {{ "page.settings.options." + setting.lbl | translate }}
+      </ion-item>
+    </div>
+
+  </ion-list>
+
+</ion-content>
