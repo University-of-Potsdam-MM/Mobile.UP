@@ -96,7 +96,8 @@
   },
   "alert":{
     "title": {
-      "error": "Fehler"
+      "error": "Fehler",
+      "website": "Website öffnen?"
     }
   }
 
