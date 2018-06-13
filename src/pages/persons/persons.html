@@ -36,7 +36,7 @@
       <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>
       <expandable [expanded]="person.expanded">
         <p *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
-        <p *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> (0331 977-) {{person.Telefon}}</p>
+        <p *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
         <p *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
       </expandable>
     </ion-item>
