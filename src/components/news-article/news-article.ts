@@ -12,6 +12,17 @@ export class NewsArticleComponent {
   @Input() public article;
 
   constructor(private iap: InAppBrowser, private alertCtrl: AlertController, private translate: TranslateService) {
+
+    // hides images that could not be loaded (404)
+    // maybe show an replacement image in the future?
+    const list = document.getElementsByTagName("img");
+
+    var i;
+    for (i = 0; i < list.length; i++)
+    list[i].onerror = function() {
+      this.style.display = "none";
+    };
+
   }
 
   openWebsite(link) {
@@ -40,5 +51,6 @@ export class NewsArticleComponent {
 
 
   }
+
 
 }
