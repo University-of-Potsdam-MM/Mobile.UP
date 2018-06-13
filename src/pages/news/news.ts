@@ -33,4 +33,12 @@ export class NewsPage {
     this.newsSource = i;
   }
 
+  isActive(i) {
+    if (this.newsSource == i) {
+      return "primary"
+    } else {
+      return "secondary"
+    }
+  }
+
 }
