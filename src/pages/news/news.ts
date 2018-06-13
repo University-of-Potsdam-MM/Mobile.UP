@@ -1,4 +1,5 @@
-import { NewsProvider } from './../../providers/news/news';
+import { INewsResponse } from './../../library/interfaces';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -13,12 +14,13 @@ export class NewsPage {
   newsList;
   sourcesList = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public newsProv: NewsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
   }
 
   ngOnInit() {
 
-    this.newsProv.getNews().subscribe(response => {
+    var url = "https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/";
+    this.http.get(url).subscribe((response:INewsResponse) => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         for (var source in response.vars.newsSources) {
@@ -26,6 +28,7 @@ export class NewsPage {
         }
       }
     });
+
 
   }
 
