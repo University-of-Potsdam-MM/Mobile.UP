@@ -1,7 +1,8 @@
-import { INewsResponse } from './../../library/interfaces';
+import { INewsResponse, IConfig } from './../../library/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -14,12 +15,14 @@ export class NewsPage {
   newsList;
   sourcesList = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    var url = "https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/";
+    let config: IConfig = await this.storage.get("config");
+
+    var url = config.webservices.endpoint.news;
     this.http.get(url).subscribe((response:INewsResponse) => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;

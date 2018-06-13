@@ -75,6 +75,7 @@ export interface IWebServices {
 
 export interface IEndpoints {
   personSearch:string;
+  news:string;
 }
 
 /* ~~~ NewsPage ~~~ */
