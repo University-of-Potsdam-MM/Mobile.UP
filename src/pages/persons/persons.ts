@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+// import { NavParams } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { WebHttpUrlEncodingCodec } from "../../library/util";
 import { Storage } from "@ionic/storage";
@@ -31,7 +32,7 @@ export class PersonsPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    // private navParams: NavParams,
     private http: HttpClient,
     private storage: Storage) {
   }
