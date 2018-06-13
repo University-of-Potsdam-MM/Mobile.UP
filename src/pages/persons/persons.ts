@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import { WebHttpUrlEncodingCodec } from "../../library/util";
 import { Storage } from "@ionic/storage";
 import { ISession } from "../../providers/login-provider/interfaces";
@@ -29,6 +29,7 @@ export class PersonsPage {
 
   personsFound:IPerson[] = [];
   waiting_for_response:boolean = false;
+  error: HttpErrorResponse;
 
   constructor(
     private navCtrl: NavController,
@@ -82,6 +83,7 @@ export class PersonsPage {
           error => {
             // reset array so new persons are displayed
             this.personsFound = [];
+            this.error = error;
             console.log(error);
             this.waiting_for_response = false;
           }

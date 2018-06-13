@@ -19,8 +19,15 @@
     <ion-spinner></ion-spinner>
   </p>
 
-  <p *ngIf="waiting_for_response == false && personsFound.length == 0" style="text-align: center">
+  <p *ngIf="waiting_for_response == false && personsFound.length == 0 && error == null" style="text-align: center">
     {{ "page.persons.no_results" | translate }}
+  </p>
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
   </p>
 
   <ion-list>
