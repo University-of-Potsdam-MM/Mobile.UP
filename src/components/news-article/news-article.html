@@ -9,6 +9,9 @@
         <ng-template #descriptionOnly>
           <div [innerHTML]="article.News.description"></div>
         </ng-template>
+        <div *ngIf="article.News.DateString" align="right">
+          {{ "page.news.articlePublished" | translate }}: {{ article.News.DateString }} 
+        </div>
       </ion-card-content>
     </ion-card>
   </ion-col>

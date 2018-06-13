@@ -64,7 +64,8 @@
       "title":"Mail"
     },
     "news":{
-      "title":"Neuigkeiten"
+      "title":"Neuigkeiten",
+      "articlePublished": "Veröffentlicht"
     },
     "maps":{
       "title":"Lagepläne"

@@ -102,11 +102,31 @@ export class MobileUPApp {
   private initializeApp() {
     this.initPages();
     this.initConfig();
-    this.translate.setDefaultLang('de');
+    this.initTranslate();
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  /**
+   * initTranslate
+   *
+   * sets up translation
+   */
+  private initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang('de');
+
+    this.storage.get("appLanguage").then((value) => {
+      if (value != null) {
+        this.translate.use(value);
+      } else {
+        this.translate.use("de");
+        this.storage.set("appLanguage","de");
+      }
+    })
+
   }
 
   /**
