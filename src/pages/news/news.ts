@@ -9,8 +9,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NewsPage {
 
-  newsSource = "1";
+  newsSource = "0";
   newsList;
+  sourcesList = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public newsProv: NewsProvider) {
   }
@@ -20,9 +21,16 @@ export class NewsPage {
     this.newsProv.getNews().subscribe(response => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
+        for (var source in response.vars.newsSources) {
+          this.sourcesList.push(response.vars.newsSources[source])
+        }
       }
     });
 
+  }
+
+  setNewsSource(i) {
+    this.newsSource = i;
   }
 
 }
