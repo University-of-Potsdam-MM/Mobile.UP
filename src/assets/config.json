@@ -21,6 +21,7 @@
   "webservices": {
     "endpoint":{
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "news": "https://musang.soft.cs.uni-potsdam.de/potsdamevents/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations"
     },

@@ -40,7 +40,8 @@
       "title":"Personensuche",
       "placeholder": {
         "search": "..."
-      }
+      },
+      "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
     },
     "grades":{
       "title":"Meine Leistungen"
@@ -64,7 +65,8 @@
       "title":"Mail"
     },
     "news":{
-      "title":"Neuigkeiten"
+      "title":"Neuigkeiten",
+      "articlePublished": "Veröffentlicht"
     },
     "maps":{
       "title":"Lagepläne"
@@ -112,7 +114,8 @@
   },
   "alert":{
     "title": {
-      "error": "Fehler"
+      "error": "Fehler",
+      "website": "Website öffnen?"
     },
     "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
     "no_info_for_time" : "Für den diesen Zeitraum sind keine Informationen verfügbar."

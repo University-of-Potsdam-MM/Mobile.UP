@@ -2,21 +2,22 @@ import {Component, ViewChild} from '@angular/core';
 
 import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import {HomePage} from '../pages/home/home';
-import {ImpressumPage} from '../pages/impressum/impressum';
-import {EmergencyPage} from '../pages/emergency/emergency';
-import {LoginPage} from "../pages/login/login";
-import {LogoutPage} from "../pages/logout/logout";
+import { HomePage } from '../pages/home/home';
+import { ImpressumPage } from '../pages/impressum/impressum';
+import { EmergencyPage } from '../pages/emergency/emergency';
+import { LoginPage } from "../pages/login/login";
+import { LogoutPage } from "../pages/logout/logout";
+import { NewsPage } from './../pages/news/news';
+import { PersonsPage } from "../pages/persons/persons";
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
 
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {TranslateService} from "@ngx-translate/core";
-import {PersonsPage} from "../pages/persons/persons";
-import {Storage} from "@ionic/storage";
-import {HttpClient} from "@angular/common/http";
-import {IConfig} from "../library/interfaces";
-import {RoomsPage} from "../pages/rooms/rooms";
-import {RoomplanPage} from "../pages/roomplan/roomplan";
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateService } from "@ngx-translate/core";
+import { Storage } from "@ionic/storage";
+import { HttpClient } from "@angular/common/http";
+import { IConfig } from "../library/interfaces";
 import {SettingsPage} from "../pages/settings/settings";
 
 interface IPage {
@@ -84,6 +85,10 @@ export class MobileUPApp {
         component: PersonsPage
       },
       {
+        title: "news",
+        component: NewsPage
+      },
+      {
         title: "rooms",
         component: RoomsPage
       },
@@ -112,11 +117,31 @@ export class MobileUPApp {
   private initializeApp() {
     this.initPages();
     this.initConfig();
-    this.translate.setDefaultLang('de');
+    this.initTranslate();
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  /**
+   * initTranslate
+   *
+   * sets up translation
+   */
+  private initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang('de');
+
+    this.storage.get("appLanguage").then((value) => {
+      if (value != null) {
+        this.translate.use(value);
+      } else {
+        this.translate.use("de");
+        this.storage.set("appLanguage","de");
+      }
+    })
+
   }
 
   /**
