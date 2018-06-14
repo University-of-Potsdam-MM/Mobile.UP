@@ -151,13 +151,17 @@ export interface IRoomEvent {
 export enum ESettingType {
   boolean,
   string,
-  number
+  number,
+  number_radio,
+  string_radio,
+  checkbox
 }
 
 export interface ISetting {
   key:string;
   lbl:string; // identifier of localized resource under page.settings.options.??
   value:any;
+  options?:any;
   type:ESettingType;
 }
 

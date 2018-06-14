@@ -83,7 +83,10 @@
       "options": {
         "test_1":"Test 1",
         "test_2":"Test 2",
-        "test_3":"Test 3"
+        "test_3":"Test 3",
+        "test_4":"Test 4",
+        "test_5":"Test 5",
+        "test_6":"Test 6"
       }
     },
     "rooms":{
