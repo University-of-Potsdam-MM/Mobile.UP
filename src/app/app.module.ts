@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -17,10 +18,10 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
-import {PersonsPage} from "../pages/persons/persons";
-import {RoomsPage} from "../pages/rooms/rooms";
-import {RoomplanPage} from "../pages/roomplan/roomplan";
-import {ExpandableComponent} from "../components/expandable/expandable";
+import { PersonsPage } from "../pages/persons/persons";
+import { NewsPage } from './../pages/news/news';
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -35,19 +36,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
+    NewsPage,
     RoomsPage,
-    RoomplanPage,
-    ExpandableComponent
+    RoomplanPage
   ],
   imports: [
     HttpClientModule,
+    ComponentsModule,
     BrowserModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
     })
@@ -61,6 +63,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
+    NewsPage,
     RoomsPage,
     RoomplanPage
   ],

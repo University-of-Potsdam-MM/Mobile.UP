@@ -77,8 +77,95 @@ export interface IWebServices {
 
 export interface IEndpoints {
   personSearch:string;
+  news:string;
   roomsSearch:string;
   roomplanSearch:string;
+}
+
+/* ~~~ NewsPage ~~~ */
+
+export interface INewsApiResponse {
+  passedArgs:string[],
+  vars:INewsVars,
+  errors:INewsErrors,
+  message: string,
+  url:string,
+  action:string,
+  controller:string,
+  model:string,
+  base:string,
+  webroot:string,
+  browser:INewsBrowser,
+  here:string,
+  hereRel:string,
+  routeUrl:string
+}
+
+export interface INewsVars {
+  authUser:string,
+  flashMessage:string,
+  errors:INewsErrors,
+  requestUrl:string,
+  model:string,
+  action:string,
+  domain:string,
+  webroot:string,
+  request:INewsRequest,
+  news:INewsArticle[],
+  newsSources:INewsSources,
+  requestMethod:string,
+  browser:INewsBrowser,
+  isAjax:boolean,
+  loggedIn:boolean
+}
+
+export interface INewsErrors {
+  exist:boolean,
+  inValidation:string[]
+}
+
+export interface INewsBrowser {
+  name:string
+}
+
+export interface INewsRequest {
+  date:string
+}
+
+export interface INewsArticle {
+  News:INewsArticleInfo,
+  NewsSource:INewsArticleSource
+}
+
+export interface INewsSources {
+  0:string,
+  1:string,
+  2:string,
+  3:string,
+  4:string,
+  5:string,
+  6:string,
+  7:string
+}
+
+export interface INewsArticleInfo {
+  id:string,
+  headline:string,
+  description:string,
+  text:string,
+  link:string,
+  source_id:string,
+  time:string,
+  DateString:string
+}
+
+export interface INewsArticleSource {
+  id:string,
+  mapping:string,
+  name:string,
+  url:string,
+  sourceType:string,
+  rank:string
 }
 
 /* ~~~ RoomsPage and RoomplanPage ~~~ */
