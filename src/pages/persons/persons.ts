@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-// import { NavParams } from 'ionic-angular';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { WebHttpUrlEncodingCodec } from "../../library/util";
-import { Storage } from "@ionic/storage";
-import { ISession } from "../../providers/login-provider/interfaces";
-import { LoginPage } from "../login/login";
+import {Component} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {WebHttpUrlEncodingCodec} from "../../library/util";
+import {Storage} from "@ionic/storage";
+import {ISession} from "../../providers/login-provider/interfaces";
+import {LoginPage} from "../login/login";
 import {
   IConfig,
   IPerson,
@@ -28,11 +27,12 @@ import {
 })
 export class PersonsPage {
 
-  personsFound:IPerson[] = [];
+  personsFound: IPerson[] = [];
+  waiting_for_response: boolean = false;
+  error: HttpErrorResponse;
 
   constructor(
     private navCtrl: NavController,
-    // private navParams: NavParams,
     private http: HttpClient,
     private storage: Storage) {
   }
@@ -47,41 +47,63 @@ export class PersonsPage {
     // reset array so new persons are displayed
     this.personsFound = [];
 
-    if(query) {
+    if (query) {
+      this.waiting_for_response = true;
+
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
-      let session:ISession = await this.storage.get("session");
-      let config:IConfig = await this.storage.get("config");
-
-      if(session) {
+      let session: ISession = await this.storage.get("session");
+      let config: IConfig = await this.storage.get("config");
+      if (session) {
         let headers: HttpHeaders = new HttpHeaders()
           .append("Authorization", config.webservices.apiToken);
 
         let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append("value",        query)
-          .append("username",     session.credentials.username)
-          .append("password",     session.credentials.password);
+          .append("value", query)
+          .append("username", session.credentials.username)
+          .append("password", session.credentials.password);
 
         this.http.get(
           config.webservices.endpoint.personSearch,
-          {headers:headers, params:params}
-          ).subscribe(
-          (response:IPersonSearchResponse) => {
+          {headers: headers, params: params}
+        ).subscribe(
+          (response: IPersonSearchResponse) => {
+            // reset array so new persons are displayed
+            this.personsFound = [];
             // use inner object only because it's wrapped in another object
-            for(let person of response.people) {
+            for (let person of response.people) {
+              person.Person.expanded = false;
+              person.Person.Raum = person.Person.Raum.replace(/_/g, " ");
               this.personsFound.push(person.Person);
             }
+
+            this.waiting_for_response = false;
           },
           error => {
-            console.log(error)
+            // reset array so new persons are displayed
+            this.personsFound = [];
+            this.error = error;
+            console.log(error);
+            this.waiting_for_response = false;
           }
         );
       } else {
         // send user to LoginPage if no session has been found
         this.navCtrl.push(LoginPage);
       }
+
     } else {
       console.log("[PersonsPage]: Empty query");
+    }
+  }
+
+  expandPerson(person) {
+    for (let i = 0; i < this.personsFound.length; i++) {
+      if (this.personsFound[i].id == person.id) {
+        this.personsFound[i].expanded = !this.personsFound[i].expanded;
+      } else {
+        this.personsFound[i].expanded = false;
+      }
     }
   }
 }
