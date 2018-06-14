@@ -16,7 +16,7 @@
     <div *ngFor="let setting of settings">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
         <ion-label>{{ "page.settings.options." + setting.lbl | translate }}</ion-label>
-        <ion-toggle checked="true"></ion-toggle>
+        <ion-toggle checked="{{setting.value}}" (click)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="getSettingType(setting) == 'number' || getSettingType(setting) == 'string'" (click)="openPrompt(setting)">
