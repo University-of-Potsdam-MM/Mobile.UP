@@ -61,6 +61,7 @@ export class EventsPage {
       var currentTime = moment();
       var isToday = currentTime.isSame(timeBegin, "day");
 
+      // TODO: naechste soll max. 3 events pro kategorie anzeigen
       if (isToday) {
         if (this.timespan == 1) { return true; } else { return false; }
       } else {
