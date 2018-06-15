@@ -7,17 +7,31 @@
     <ion-title>{{ "page.events.title" | translate }}</ion-title>
   </ion-navbar>
 
-  <!-- <ion-toolbar *ngIf="sourcesList">
+  <ion-toolbar *ngIf="locationsList">
     <ion-segment color="primary">
-      <button  ion-button small *ngFor="let source of sourcesList; let i = index" (click)="setNewsSource(i)" [color]="isActive(i)">
-        {{ sourcesList[i] }}
+      <button  ion-button small *ngFor="let location of locationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)">
+        {{ locationsList[i] }}
       </button>
     </ion-segment>
-  </ion-toolbar> -->
+  </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <div *ngFor="let event of eventsList">
+    <event-view *ngIf="event.Place.name == locationsList[eventLocation]" [event]="event"></event-view>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment>
+      <div align="center">
+        <button ion-button small (click)="setTimespan(0)" [color]="isActiveTimespan(0)">{{ "page.events.eventsAll" | translate }}</button>
+        <button ion-button small (click)="setTimespan(1)" [color]="isActiveTimespan(1)">{{ "page.events.eventsToday" | translate }}</button>
+        <button ion-button small (click)="setTimespan(2)" [color]="isActiveTimespan(2)">{{ "page.events.eventsNext" | translate }}</button>
+      </div>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>
