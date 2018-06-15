@@ -1,0 +1,24 @@
+<ion-row>
+  <ion-col>
+    <ion-card (click)="toggleDescription()">
+      <ion-card-header text-wrap>
+        {{ event.Event.name }}
+      </ion-card-header>
+      <ion-card-content *ngIf="event.Event.DateString" text-wrap>
+        <strong>{{event.Event.DateString}}</strong>
+        <div align="right">
+          <div *ngIf="!descriptionShown && event.Event.description">
+            {{ "page.events.showEventDetails" | translate }}
+            <ion-icon padding-left name="add-circle"></ion-icon>
+          </div>
+          <div *ngIf="descriptionShown && event.Event.description">
+            {{ "page.events.hideEventDetails" | translate }}
+            <ion-icon padding-left name="remove-circle"></ion-icon>
+          </div>
+        </div>
+        <br *ngIf="descriptionShown && event.Event.description">
+        <div *ngIf="descriptionShown && event.Event.description" [innerHTML]="event.Event.description"></div>
+      </ion-card-content>
+    </ion-card>
+  </ion-col>
+</ion-row>
