@@ -1,3 +1,4 @@
+import { EventsPage } from './../pages/events/events';
 import { Component, ViewChild } from '@angular/core';
 
 import { Platform, MenuController, Nav } from 'ionic-angular';
@@ -94,6 +95,10 @@ export class MobileUPApp {
       {
         title: "roomplan",
         component: RoomplanPage
+      },
+      {
+        title: "events",
+        component: EventsPage
       },
       {
         title: "login",

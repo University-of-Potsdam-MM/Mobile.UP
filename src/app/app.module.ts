@@ -1,3 +1,4 @@
+import { EventsPage } from './../pages/events/events';
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -38,7 +39,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PersonsPage,
     NewsPage,
     RoomsPage,
-    RoomplanPage
+    RoomplanPage,
+    EventsPage
   ],
   imports: [
     HttpClientModule,
@@ -65,7 +67,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PersonsPage,
     NewsPage,
     RoomsPage,
-    RoomplanPage
+    RoomplanPage,
+    EventsPage
   ],
   providers: [
     StatusBar,
