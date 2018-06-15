@@ -30,7 +30,7 @@ export class NewsPage {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         for (var source in response.vars.newsSources) {
-          this.sourcesList.push(response.vars.newsSources[source])
+          this.sourcesList.push(response.vars.newsSources[source]);
         }
       }
     });
