@@ -50,7 +50,12 @@
       "title":"Bibliothekssuche"
     },
     "events":{
-      "title":"Events"
+      "title":"Events",
+      "showEventDetails": "Details anzeigen",
+      "hideEventDetails": "Details ausblenden",
+      "eventsAll": "Alle",
+      "eventsToday": "Heute",
+      "eventsNext": "Nächste"
     },
     "moodle":{
       "title":"Moodle"
