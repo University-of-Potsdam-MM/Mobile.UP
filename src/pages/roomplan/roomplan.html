@@ -1,0 +1,80 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
+
+  </ion-navbar>
+
+  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty"
+               [(ngModel)]="segment_locations">
+    <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
+                        (ionSelect)="switchLocation('3')">
+      {{ "university.location.gs" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button segment-activated" role="button" tappable="" value="np"
+                        (ionSelect)="switchLocation('1')">
+      {{ "university.location.np" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button" role="button" tappable="" value="go"
+                        (ionSelect)="switchLocation('2')">
+      {{ "university.location.go" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item>
+    <ion-select [(ngModel)]="select_day" (ionChange)="changeDay()">
+      <ion-option *ngFor="let day of days" [value]="day.value">{{day.lbl | date:'dd.MM.yyyy'}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+
+  <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <ion-list>
+    <ion-card *ngFor="let house of housesFound">
+      <ion-card-header (click)="expandHouse(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
+        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
+      </ion-card-header>
+      <expandable [expanded]="house.expanded" *ngFor="let room of house.rooms">
+        <ion-item (click)="expandRoom(house.lbl,room.lbl)">
+          {{room.lbl}}
+          <ion-badge color="secondary">{{room.events.length}}</ion-badge>
+          <expandable [expanded]="room.expanded">
+            <ion-item *ngFor="let event of room.events">
+              <u>
+                <b>
+                  {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
+                </b>
+              </u>
+              <br/>
+
+              <i text-wrap>{{event.lbl}}</i>
+              <br/>
+              <p *ngFor="let person of event.persons">
+                <ion-badge color="danger">{{person}}</ion-badge>
+              </p>
+            </ion-item>
+          </expandable>
+        </ion-item>
+      </expandable>
+    </ion-card>
+  </ion-list>
+</ion-content>
