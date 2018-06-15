@@ -20,7 +20,7 @@
 
 <ion-content padding>
   <div *ngFor="let event of eventsList">
-    <event-view *ngIf="event.Place.name == locationsList[eventLocation]" [event]="event"></event-view>
+    <event-view *ngIf="isInTimespan(event) && (event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
   </div>
 </ion-content>
 

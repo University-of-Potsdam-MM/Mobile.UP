@@ -1,8 +1,9 @@
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IConfig, INewsApiResponse } from './../../library/interfaces';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -44,6 +45,28 @@ export class EventsPage {
         }
       }
     })
+
+  }
+
+  isInTimespan(event) {
+
+    if (this.timespan == 0) {
+
+      return true;
+
+    } else {
+
+      var timeBegin = moment(event.Event.startTime * 1000);
+      var timeEnd = moment(event.Event.endTime * 1000);
+      var currentTime = moment();
+      var isToday = currentTime.isSame(timeBegin, "day");
+
+      if (isToday) {
+        if (this.timespan == 1) { return true; } else { return false; }
+      } else {
+        if (this.timespan == 1) { return false; } else { return true; }
+      }
+    }
 
   }
 
