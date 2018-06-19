@@ -25,17 +25,18 @@
 
 
 <ion-content>
-  <!-- <div *ngIf="(timespan == 1)">
+  <div *ngIf="(timespan == 1)">
     <ion-row>
       <ion-col>
-        <ion-card *ngIf="(eventsToday == 0)">
+        <ion-card *ngIf="!eventsToday">
           <ion-card-content>
             Du hast heute keine anstehenden Veranstaltungen.
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
-  </div> -->
+  </div>
+  
   <div *ngFor="let event of eventsList">
     <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
   </div>
