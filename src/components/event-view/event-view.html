@@ -7,17 +7,24 @@
       <ion-card-content *ngIf="event.Event.DateString" text-wrap>
         <strong>{{event.Event.DateString}}</strong>
         <div align="right">
-          <div *ngIf="!descriptionShown && event.Event.description">
+          <div *ngIf="!descriptionShown">
             {{ "page.events.showEventDetails" | translate }}
             <ion-icon padding-left name="add-circle"></ion-icon>
           </div>
-          <div *ngIf="descriptionShown && event.Event.description">
+          <div *ngIf="descriptionShown">
             {{ "page.events.hideEventDetails" | translate }}
             <ion-icon padding-left name="remove-circle"></ion-icon>
           </div>
         </div>
         <br *ngIf="descriptionShown && event.Event.description">
+        <div *ngIf="descriptionShown && event.Event.description"><strong>{{ "page.events.description" | translate }}: </strong></div>
         <div *ngIf="descriptionShown && event.Event.description" [innerHTML]="event.Event.description"></div>
+        <br *ngIf="descriptionShown && event.Event.description">
+        <div *ngIf="descriptionShown">
+          <strong>{{ "page.events.adress" | translate}}: </strong>
+          {{ event.Place.adresse }}, 
+          {{ event.Place.plz }} {{ event.Place.ort }}
+        </div>
       </ion-card-content>
     </ion-card>
   </ion-col>
