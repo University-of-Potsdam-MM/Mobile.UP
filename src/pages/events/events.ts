@@ -15,6 +15,7 @@ export class EventsPage {
 
   eventsList;
   todaysEventsList = [];
+  nextEventsList = [];
 
   locationsList = [];
   todaysLocationsList = [];
@@ -54,6 +55,7 @@ export class EventsPage {
             }
           }
         }
+        this.checkNextEvents();
       }
     })
 
@@ -85,6 +87,24 @@ export class EventsPage {
       }
 
     }
+  }
+
+  checkNextEvents() {
+
+    var i,j;
+    var tmpCounter = [];
+    for (i = 0; i < this.locationsList.length; i++) {
+        tmpCounter[i] = 0;
+        for (j = 0; j < this.eventsList.length; j++) {
+          if (this.eventsList[j].Place.name == this.locationsList[i]) {
+            if (tmpCounter[i] < 3) {
+              this.nextEventsList.push(this.eventsList[j]);
+              tmpCounter[i] = tmpCounter[i] + 1;
+            }
+          }
+        }
+    }
+
   }
 
   setLocation(i) {
