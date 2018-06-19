@@ -13,14 +13,23 @@ import * as moment from 'moment';
 export class EventsPage {
 
   eventsList;
+  todaysEventsList = [];
+
   locationsList = [];
+  todaysLocationsList = [];
+
   eventLocation = "0";
   timespan = 0;
+
+  eventsToday = false;
+  eventsNext = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient) {
   }
 
   async ngOnInit() {
+
+    this.todaysLocationsList.push("Kein Veranstaltungsort verfügbar");
 
     let config: IConfig = await this.storage.get("config");
 
@@ -37,6 +46,7 @@ export class EventsPage {
           for (i = 0; i < this.eventsList.length; i++) {
             // check if there are events for location
             // hide locations with zero events
+            this.checkTodaysEvents(this.eventsList[i]);
             if (response.vars.places[loc] == this.eventsList[i].Place.name) {
               this.locationsList.push(response.vars.places[loc]);
               break;
@@ -48,27 +58,32 @@ export class EventsPage {
 
   }
 
-  isInTimespan(event) {
+  checkTodaysEvents(event) {
+    var timeBegin = moment(event.Event.startTime * 1000);
+    var currentTime = moment();
+    var isToday = currentTime.isSame(timeBegin, "day");
 
-    if (this.timespan == 0) {
+    if (isToday) {
+      this.todaysEventsList.push(event);
+      this.eventsToday = true;
 
-      return true;
+      var i;
+      var alreadyAdded = false;
 
-    } else {
-
-      var timeBegin = moment(event.Event.startTime * 1000);
-      var timeEnd = moment(event.Event.endTime * 1000);
-      var currentTime = moment();
-      var isToday = currentTime.isSame(timeBegin, "day");
-
-      // TODO: naechste soll max. 3 events pro kategorie anzeigen
-      if (isToday) {
-        if (this.timespan == 1) { return true; } else { return false; }
-      } else {
-        if (this.timespan == 1) { return false; } else { return true; }
+      for (i = 0; i < this.todaysLocationsList.length; i++) {
+        if (this.todaysLocationsList[0] == "Kein Veranstaltungsort verfügbar") {
+          this.todaysLocationsList[0] = event.Place.name;
+          alreadyAdded = true;
+        } else if (this.todaysLocationsList[i] == event.Place.name) {
+          alreadyAdded = true;
+        }
       }
-    }
 
+      if (!alreadyAdded) {
+        this.todaysLocationsList.push(event.Place.name);
+      }
+
+    }
   }
 
   setLocation(i) {
@@ -76,6 +91,7 @@ export class EventsPage {
   }
 
   setTimespan(i) {
+    this.eventLocation = "0";
     this.timespan = i;
   }
 

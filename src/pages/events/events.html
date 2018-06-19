@@ -8,19 +8,39 @@
   </ion-navbar>
 
   <ion-toolbar *ngIf="locationsList">
-    <ion-segment color="primary">
+    <ion-segment *ngIf="timespan != 1" color="primary">
       <button  ion-button small *ngFor="let location of locationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)">
         {{ locationsList[i] }}
       </button>
     </ion-segment>
+    <ion-segment *ngIf="timespan == 1" color="primary">
+      <button ion-button small *ngFor="let location of todaysLocationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)" [disabled]="!eventsToday">
+        {{ todaysLocationsList[i] }}
+      </button>
+    </ion-segment>
+    
   </ion-toolbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <!-- <div *ngIf="(timespan == 1)">
+    <ion-row>
+      <ion-col>
+        <ion-card *ngIf="(eventsToday == 0)">
+          <ion-card-content>
+            Du hast heute keine anstehenden Veranstaltungen.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div> -->
   <div *ngFor="let event of eventsList">
-    <event-view *ngIf="isInTimespan(event) && (event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
+    <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
+  </div>
+  <div *ngFor="let event of todaysEventsList">
+    <event-view *ngIf="(timespan == 1) && (event.Place.name == todaysLocationsList[eventLocation])" [event]="event"></event-view>
   </div>
 </ion-content>
 
