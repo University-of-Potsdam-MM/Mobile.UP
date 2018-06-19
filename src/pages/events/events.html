@@ -37,8 +37,9 @@
     </ion-row>
   </div>
   
-  <div *ngFor="let event of eventsList">
+  <div *ngFor="let event of eventsList; let j = index">
     <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
+    <event-view *ngIf="(timespan == 2) && (j < 3) &&(event.Place.name == locationsList[eventLocation])" [event]="event"></event-view>
   </div>
   <div *ngFor="let event of todaysEventsList">
     <event-view *ngIf="(timespan == 1) && (event.Place.name == todaysLocationsList[eventLocation])" [event]="event"></event-view>
