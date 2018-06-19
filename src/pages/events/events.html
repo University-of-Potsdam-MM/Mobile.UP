@@ -30,7 +30,7 @@
       <ion-col>
         <ion-card *ngIf="!eventsToday">
           <ion-card-content>
-            Du hast heute keine anstehenden Veranstaltungen.
+            {{ "page.events.noEventsToday" | translate }}
           </ion-card-content>
         </ion-card>
       </ion-col>

@@ -55,7 +55,9 @@
       "hideEventDetails": "Details ausblenden",
       "eventsAll": "Alle",
       "eventsToday": "Heute",
-      "eventsNext": "Nächste"
+      "eventsNext": "Nächste",
+      "noEventCategory": "Heute kein Veranstaltungsort verfügbar",
+      "noEventsToday": "Du hast heute keine anstehenden Veranstaltungen."
     },
     "moodle":{
       "title":"Moodle"

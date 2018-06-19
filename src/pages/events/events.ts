@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IConfig, INewsApiResponse } from './../../library/interfaces';
 import { Storage } from '@ionic/storage';
@@ -24,12 +25,12 @@ export class EventsPage {
   eventsToday = false;
   eventsNext = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private translate: TranslateService) {
   }
 
   async ngOnInit() {
 
-    this.todaysLocationsList.push("Kein Veranstaltungsort verfügbar");
+    this.todaysLocationsList.push(this.translate.instant("page.events.noEventCategory"));
 
     let config: IConfig = await this.storage.get("config");
 
@@ -71,7 +72,7 @@ export class EventsPage {
       var alreadyAdded = false;
 
       for (i = 0; i < this.todaysLocationsList.length; i++) {
-        if (this.todaysLocationsList[0] == "Kein Veranstaltungsort verfügbar") {
+        if (this.todaysLocationsList[0] == this.translate.instant("page.events.noEventCategory")) {
           this.todaysLocationsList[0] = event.Place.name;
           alreadyAdded = true;
         } else if (this.todaysLocationsList[i] == event.Place.name) {
