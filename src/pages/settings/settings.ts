@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
-import {ESettingType, ISetting} from "../../library/interfaces";
+import {ESettingType, ISetting, ISettingOption} from "../../library/interfaces";
 import {AlertController} from 'ionic-angular';
 
 @IonicPage()
@@ -22,22 +22,28 @@ export class SettingsPage {
     console.log('ionViewDidLoad SettingsPage');
 
     //register settings for loading
-    this.settings.push({key: "test_1", lbl: "test_1", value: "", type: ESettingType.string});
-    this.settings.push({key: "test_2", lbl: "test_2", value: 0, type: ESettingType.number});
-    this.settings.push({key: "test_3", lbl: "test_3", value: false, type: ESettingType.boolean});
-    this.settings.push({key: "test_4", lbl: "test_4", value: 0, options: [1, 2, 3], type: ESettingType.number_radio});
+    this.settings.push({key: "test_1", lbl: "test_1", value: "", type: ESettingType.string, options: []});
+    this.settings.push({key: "test_2", lbl: "test_2", value: 0, type: ESettingType.number, options: []});
+    this.settings.push({key: "test_3", lbl: "test_3", value: false, type: ESettingType.boolean, options: []});
+    this.settings.push({
+      key: "test_4",
+      lbl: "test_4",
+      value: "0",
+      options: [{key: "0", lbl: "deaktivated"}, {key: "1", lbl: "1"}, {key: "2", lbl: "2"}],
+      type: ESettingType.number_radio
+    });
     this.settings.push({
       key: "test_5",
       lbl: "test_5",
       value: "test 1",
-      options: ["test 1", "test 2", "test 3"],
+      options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
       type: ESettingType.string_radio
     });
     this.settings.push({
       key: "test_6",
       lbl: "test_6",
       value: "test_1",
-      options: ["test 1", "test 2", "test 3"],
+      options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
       type: ESettingType.checkbox
     });
     //TODO add placeholder type for headers
@@ -66,8 +72,8 @@ export class SettingsPage {
    * @returns {Promise<void>}
    */
   async setSetting(setting: ISetting, value) {
-    console.log("Saved setting", setting, value);
     setting.value = value;
+    console.log("Saved setting", setting, value);
     this.storage.set("settings." + setting.key, setting);
   }
 
@@ -174,18 +180,31 @@ export class SettingsPage {
         type: type
       })
     } else {
-      for (let element in setting.options) {
+      for (let i = 0; i < setting.options.length; i++) {
+        let option:ISettingOption = setting.options[i];
+        let checked = 0;
+        if (setting.value == option.key && !(setting.value instanceof Array) ) {
+          checked = 1;
+        }else{
+          for(let h = 0; h < setting.value.length; h++){
+            if(setting.value[h] == option.key){
+              checked = 1;
+            }
+          }
+        }
+
         input.push({
-          name: setting.key + "." + element,
-          label: element.toString(), //TODO localize
-          value: 0,
+          name: setting.key + "." + option.key,
+          label: option.lbl, //TODO localize
+          value: option.key,
+          checked: checked,
           type: type
         })
       }
     }
 
     let alert = this.alertCtrl.create({
-      title: '',
+      title: setting.lbl,
       inputs: input,
       buttons: [
         {

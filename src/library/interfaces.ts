@@ -249,7 +249,11 @@ export interface ISetting {
   key:string;
   lbl:string; // identifier of localized resource under page.settings.options.??
   value:any;
-  options?:any;
+  options:Array<ISettingOption>;
   type:ESettingType;
 }
 
+export interface ISettingOption {
+  key:string;
+  lbl:string;
+}
