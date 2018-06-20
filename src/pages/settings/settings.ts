@@ -20,11 +20,13 @@ export class SettingsPage {
   }
 
   //TODO test on android (possible permission missing)
+  //TODO add visible diverders between list elements
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
 
     //register settings for loading
+    this.settings.push({key: "test_ph", value: false, type: ESettingType.placeholder});
     this.settings.push({key: "test_1", value: "", type: ESettingType.string, options: []});
     this.settings.push({key: "test_2", value: 0, type: ESettingType.number, options: []});
     this.settings.push({key: "test_3", value: false, type: ESettingType.boolean, options: []});
@@ -48,7 +50,6 @@ export class SettingsPage {
       options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
       type: ESettingType.checkbox
     });
-    //TODO add placeholder type for headers
 
     for (let i = 0; i < this.settings.length; i++) {
       this.translate.get("page.settings.setting." + this.settings[i].key).subscribe(
@@ -200,7 +201,7 @@ export class SettingsPage {
    * @param setting {ISetting} - setting to be switched
    */
   changeBoolSetting(setting: ISetting) {
-    this.setSetting(setting, !setting.value)
+    this.setSetting(setting, !setting.value);
   }
 
   /**
