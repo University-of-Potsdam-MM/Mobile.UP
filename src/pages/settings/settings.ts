@@ -19,6 +19,8 @@ export class SettingsPage {
     //TODO nav param to push setting and highlight it
   }
 
+  //TODO test on android (possible permission missing)
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
 
@@ -26,12 +28,14 @@ export class SettingsPage {
     this.settings.push({key: "test_1", value: "", type: ESettingType.string, options: []});
     this.settings.push({key: "test_2", value: 0, type: ESettingType.number, options: []});
     this.settings.push({key: "test_3", value: false, type: ESettingType.boolean, options: []});
+    this.settings.push({key: "test_ph", value: false, type: ESettingType.placeholder});
     this.settings.push({
       key: "test_4",
       value: "0",
       options: [{key: 0, lbl: "deaktivated"}, {key: 1, lbl: "1"}, {key: 2, lbl: "2"}],
       type: ESettingType.number_radio
     });
+
     this.settings.push({
       key: "test_5",
       value: "test 1",
@@ -250,6 +254,9 @@ export class SettingsPage {
       }
       case ESettingType.checkbox: {
         return "checkbox"
+      }
+      case ESettingType.placeholder: {
+        return "placeholder"
       }
       default: {
         return "string"

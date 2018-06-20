@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -11,7 +10,7 @@
 
 <ion-content padding>
 
-  <ion-list>
+  <ion-item-group>
 
     <div *ngFor="let setting of settings">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
@@ -19,11 +18,18 @@
         <ion-toggle checked="{{setting.value}}" (click)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
 
-      <ion-item *ngIf="getSettingType(setting) != 'boolean'" (click)="openPrompt(setting)">
+      <ion-item-divider color="light" *ngIf="getSettingType(setting) == 'placeholder'">
+        {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
+      </ion-item-divider>
+
+      <ion-item *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'"
+                (click)="openPrompt(setting)">
         {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
       </ion-item>
+
+
     </div>
 
-  </ion-list>
+  </ion-item-group>
 
 </ion-content>

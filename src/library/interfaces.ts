@@ -242,7 +242,8 @@ export enum ESettingType {
   number,
   number_radio,
   string_radio,
-  checkbox
+  checkbox,
+  placeholder
 }
 
 export interface ISetting {
