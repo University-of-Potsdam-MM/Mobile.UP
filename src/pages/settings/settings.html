@@ -15,12 +15,12 @@
 
     <div *ngFor="let setting of settings">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
-        <ion-label>{{ "page.settings.options." + setting.lbl | translate }}</ion-label>
+        <ion-label>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <ion-toggle checked="{{setting.value}}" (click)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
 
       <ion-item *ngIf="getSettingType(setting) != 'boolean'" (click)="openPrompt(setting)">
-        {{ "page.settings.options." + setting.lbl | translate }}
+        {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
       </ion-item>
     </div>
 

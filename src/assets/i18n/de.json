@@ -1,15 +1,15 @@
 {
-  "page":{
-    "home":{
+  "page": {
+    "home": {
       "title": "Home"
     },
-    "impress":{
-      "title":"Impressum"
+    "impress": {
+      "title": "Impressum"
     },
-    "login":{
-      "title":"login",
+    "login": {
+      "title": "login",
       "loginInProgress": "Login läuft",
-      "placeHolder":{
+      "placeHolder": {
         "username": "Benutzername (ohne @uni-potsdam.de)",
         "password": "Passwort"
       },
@@ -21,13 +21,13 @@
         "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Etwicklerteam"
       }
     },
-    "logout":{
-      "title":"Logout",
+    "logout": {
+      "title": "Logout",
       "text": "Sie sind dabei sich abzumelden",
       "affirmativeQuestion": "Sind Sie sicher?"
     },
-    "emergency":{
-      "title":"Notrufnummern",
+    "emergency": {
+      "title": "Notrufnummern",
       "placeholder": {
         "search": "Suche"
       },
@@ -36,74 +36,105 @@
         "street": "Straße:"
       }
     },
-    "persons":{
-      "title":"Personensuche",
+    "persons": {
+      "title": "Personensuche",
       "placeholder": {
         "search": "..."
       },
       "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
     },
-    "grades":{
-      "title":"Meine Leistungen"
+    "grades": {
+      "title": "Meine Leistungen"
     },
-    "library":{
-      "title":"Bibliothekssuche"
+    "library": {
+      "title": "Bibliothekssuche"
     },
-    "events":{
-      "title":"Events"
+    "events": {
+      "title": "Events"
     },
-    "moodle":{
-      "title":"Moodle"
+    "moodle": {
+      "title": "Moodle"
     },
-    "lectures":{
-      "title":"Vorlesungsverzeichnis"
+    "lectures": {
+      "title": "Vorlesungsverzeichnis"
     },
-    "timetable":{
+    "timetable": {
       "title": "Stundenplan"
     },
-    "mail":{
-      "title":"Mail"
+    "mail": {
+      "title": "Mail"
     },
-    "news":{
-      "title":"Neuigkeiten",
+    "news": {
+      "title": "Neuigkeiten",
       "articlePublished": "Veröffentlicht"
     },
-    "maps":{
-      "title":"Lagepläne"
+    "maps": {
+      "title": "Lagepläne"
     },
-    "tipps":{
-      "title":"Tipps & Tricks"
+    "tipps": {
+      "title": "Tipps & Tricks"
     },
-    "reflectUP":{
-      "title":"Reflect.UP"
+    "reflectUP": {
+      "title": "Reflect.UP"
     },
-    "sports":{
-      "title":"Hochschulsport"
+    "sports": {
+      "title": "Hochschulsport"
     },
-    "settings":{
-      "title":"Einstellungen",
-      "options": {
-        "test_1":"Test 1",
-        "test_2":"Test 2",
-        "test_3":"Test 3",
-        "test_4":"Test 4",
-        "test_5":"Test 5",
-        "test_6":"Test 6"
+    "settings": {
+      "title": "Einstellungen",
+      "setting": {
+        "test_1": {
+          "lbl": "Test 1",
+          "info": "Lorem ipsum dolor sit amet"
+        },
+        "test_2": {
+          "lbl": "Test 2",
+          "info": "Lorem ipsum dolor sit amet"
+        },
+        "test_3": {
+          "lbl": "Test 3",
+          "info": "Lorem ipsum dolor sit amet"
+        },
+        "test_4": {
+          "lbl": "Test 4",
+          "info": "Lorem ipsum dolor sit amet",
+          "options": {
+            "0": "Deaktiviert",
+            "1": 1
+          }
+        },
+        "test_5": {
+          "lbl": "Test 5",
+          "info": "Lorem ipsum dolor sit amet",
+          "options": {
+            "test_1": "Test 1",
+            "test_3": "Test 3"
+          }
+        },
+        "test_6": {
+          "lbl": "Test 6",
+          "info": "Lorem ipsum dolor sit amet",
+          "options": {
+            "test_1": "Test 1",
+            "test_2": "Test 2",
+            "test_3": "Test 3"
+          }
+        }
       }
     },
-    "rooms":{
-      "title":"Freie Räume"
+    "rooms": {
+      "title": "Freie Räume"
     },
-    "roomplan":{
-      "title":"Raumplan",
+    "roomplan": {
+      "title": "Raumplan",
       "no_house": "Für das gewählte Haus gibt es heute keine Raumplanung.",
       "no_room": "Für den gewählten Raum gibt es heute keine Raumplanung."
     },
-    "openingHours":{
-      "title":"Öffnungszeiten"
+    "openingHours": {
+      "title": "Öffnungszeiten"
     }
   },
-  "button":{
+  "button": {
     "ok": "Ok",
     "cancel": "Abbrechen",
     "yes": "Ja",
@@ -112,22 +143,22 @@
     "continue": "Weiter",
     "search": "Suchen"
   },
-  "alert":{
+  "alert": {
     "title": {
       "error": "Fehler",
       "website": "Website öffnen?"
     },
-    "network" : "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
-    "no_info_for_time" : "Für den diesen Zeitraum sind keine Informationen verfügbar."
+    "network": "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
+    "no_info_for_time": "Für den diesen Zeitraum sind keine Informationen verfügbar."
   },
-  "university":{
-    "location":{
+  "university": {
+    "location": {
       "np": "Neues Palais",
       "gs": "Griebnitzsee",
       "go": "Golm"
     }
   },
-  "words":{
+  "words": {
     "clock": "Uhr",
     "house": "Haus"
   }

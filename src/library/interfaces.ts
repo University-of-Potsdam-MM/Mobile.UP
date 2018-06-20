@@ -247,9 +247,10 @@ export enum ESettingType {
 
 export interface ISetting {
   key:string;
-  lbl:string; // identifier of localized resource under page.settings.options.??
+  lbl?:string; // identifier of localized resource under page.settings.options.??
+  info?:string; // same as lbl but for help text (shown as subtitle)
   value:any;
-  options:Array<ISettingOption>;
+  options?:Array<ISettingOption>;
   type:ESettingType;
 }
 
