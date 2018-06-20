@@ -254,6 +254,6 @@ export interface ISetting {
 }
 
 export interface ISettingOption {
-  key:string;
+  key:any;
   lbl:string;
 }

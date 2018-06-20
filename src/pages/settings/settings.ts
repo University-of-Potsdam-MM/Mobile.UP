@@ -29,7 +29,7 @@ export class SettingsPage {
       key: "test_4",
       lbl: "test_4",
       value: "0",
-      options: [{key: "0", lbl: "deaktivated"}, {key: "1", lbl: "1"}, {key: "2", lbl: "2"}],
+      options: [{key: 0, lbl: "deaktivated"}, {key: 1, lbl: "1"}, {key: 2, lbl: "2"}],
       type: ESettingType.number_radio
     });
     this.settings.push({
@@ -48,14 +48,14 @@ export class SettingsPage {
     });
     //TODO add placeholder type for headers
 
-    this.loadInitalSettings();
+    this.loadInitialSettings();
   }
 
   /**
    * Load initial values for settings from storage
    * @returns {Promise<void>}
    */
-  async loadInitalSettings() {
+  async loadInitialSettings() {
     for (let i = 0; i < this.settings.length; i++) {
       let val = await this.getSettingValue(this.settings[i].key);
       if (val != null) {
@@ -98,7 +98,10 @@ export class SettingsPage {
 
     switch (setting.type) {
       case ESettingType.number: {
-        return +setting.value
+        return +setting.value;
+      }
+      case ESettingType.number_radio: {
+        return +setting.value;
       }
       case ESettingType.boolean: {
         return setting.value == "1";
@@ -107,7 +110,7 @@ export class SettingsPage {
         return setting.value;
       }
       default: {
-        return setting.value
+        return setting.value;
       }
     }
   }
