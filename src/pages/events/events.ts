@@ -48,12 +48,14 @@ export class EventsPage {
           for (i = 0; i < this.eventsList.length; i++) {
             // check if there are events for location
             // hide locations with zero events
-            this.checkTodaysEvents(this.eventsList[i]);
             if (response.vars.places[loc] == this.eventsList[i].Place.name) {
               this.locationsList.push(response.vars.places[loc]);
               break;
             }
           }
+        }
+        for (i = 0; i < this.eventsList.length; i++) {
+          this.checkTodaysEvents(this.eventsList[i]);
         }
         this.checkNextEvents();
       }
@@ -66,7 +68,7 @@ export class EventsPage {
     var currentTime = moment();
     var isToday = currentTime.isSame(timeBegin, "day");
 
-    if (isToday) {
+    if (!isToday) {
       this.todaysEventsList.push(event);
       this.eventsToday = true;
 
