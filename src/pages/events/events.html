@@ -36,11 +36,11 @@
   <div *ngFor="let event of eventsList">
     <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
   </div>
-  <div *ngFor="let event of todaysEventsList">
-    <event-view *ngIf="(timespan == 1)" [event]="event" [seperator]="true"></event-view>
+  <div *ngFor="let event of todaysEventsList; let i = index">
+    <event-view *ngIf="(timespan == 1)" [event]="event" [seperator]="firstEventTodayForLocation[i]"></event-view>
   </div>
-  <div *ngFor="let event of nextEventsList">
-    <event-view *ngIf="(timespan == 2)" [event]="event" [seperator]="true"></event-view>
+  <div *ngFor="let event of nextEventsList; let i = index">
+    <event-view *ngIf="(timespan == 2)" [event]="event" [seperator]="firstEventForLocation[i]"></event-view>
   </div>
 </ion-content>
 

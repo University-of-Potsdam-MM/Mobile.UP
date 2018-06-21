@@ -26,6 +26,9 @@ export class EventsPage {
   eventsToday = false;
   eventsNext = [];
 
+  firstEventTodayForLocation = [];
+  firstEventForLocation = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private translate: TranslateService) {
   }
 
@@ -58,9 +61,42 @@ export class EventsPage {
           this.checkTodaysEvents(this.eventsList[i]);
         }
         this.checkNextEvents();
+        this.initSeperators();
       }
     })
 
+  }
+
+  initSeperators() {
+    var i,j;
+    var tmpCounter = [];
+    for (i = 0; i < this.todaysLocationsList.length; i++) {
+      tmpCounter[i] = 0;
+      for (j = 0; j < this.todaysEventsList.length; j++) {
+        if (this.todaysLocationsList[i] == this.todaysEventsList[j].Place.name) {
+          if (tmpCounter[i] == 0) {
+            tmpCounter [i] = 1;
+            this.firstEventTodayForLocation[j] = true;
+          } else {
+            this.firstEventTodayForLocation[j] = false;
+          }
+        }
+      }
+    }
+    
+    for (i = 0; i < this.locationsList.length; i++) {
+      tmpCounter[i] = 0;
+      for (j = 0; j < this.nextEventsList.length; j++) {
+        if (this.locationsList[i] == this.nextEventsList[j].Place.name) {
+          if (tmpCounter[i] == 0) {
+            tmpCounter[i] = 1;
+            this.firstEventForLocation[j] = true;
+          } else {
+            this.firstEventForLocation[j] = false;
+          }
+        }
+      }
+    }
   }
 
   checkTodaysEvents(event) {
@@ -68,7 +104,7 @@ export class EventsPage {
     var currentTime = moment();
     var isToday = currentTime.isSame(timeBegin, "day");
 
-    if (!isToday) {
+    if (isToday) {
       this.todaysEventsList.push(event);
       this.eventsToday = true;
 
