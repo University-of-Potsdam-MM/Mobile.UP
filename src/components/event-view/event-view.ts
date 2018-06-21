@@ -10,8 +10,15 @@ export class EventViewComponent {
   @Input() public seperator;
 
   descriptionShown = false;
+  pictureURL;
 
   constructor() {
+  }
+
+  ngOnInit() {
+    if (this.event.Event.pic) {
+      this.pictureURL = this.event.Event.pic;
+    }
   }
 
   toggleDescription() {

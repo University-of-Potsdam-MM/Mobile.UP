@@ -3,10 +3,15 @@
   <ion-col>
     <ion-card (click)="toggleDescription()">
       <ion-card-header text-wrap>
-        {{ event.Event.name }}
+        <ion-item>
+          <h2>{{ event.Event.name }}</h2>
+          <ion-avatar *ngIf="(event.Event.pic != null)" item-start>
+              <img [src]="pictureURL">
+          </ion-avatar>
+          <p>{{event.Event.DateString}}</p>
+        </ion-item>
       </ion-card-header>
       <ion-card-content *ngIf="event.Event.DateString" text-wrap>
-        <strong>{{event.Event.DateString}}</strong>
         <div align="right">
           <div *ngIf="!descriptionShown">
             {{ "page.events.showEventDetails" | translate }}
