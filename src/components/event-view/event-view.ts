@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 export class EventViewComponent {
 
   @Input() public event;
+  @Input() public seperator;
 
   descriptionShown = false;
 
