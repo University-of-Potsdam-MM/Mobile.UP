@@ -3,9 +3,8 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  NavController, Platform
+  Platform, Nav
 } from 'ionic-angular';
-import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
@@ -16,6 +15,7 @@ import {
 import {TranslateService} from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import {IConfig} from "../../library/interfaces";
+import { TabsPage } from '../tabs/tabs';
 
 /**
  * LoginPage
@@ -39,7 +39,7 @@ export class LoginPage {
   };
 
   constructor(
-      private navCtrl: NavController,
+      private nav: Nav,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
@@ -77,7 +77,7 @@ export class LoginPage {
         console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
         this.storage.set("session", session);
         this.endLoading();
-        this.navCtrl.setRoot(HomePage);
+        this.nav.setRoot(TabsPage);
       },
       error => {
         console.log(error);
