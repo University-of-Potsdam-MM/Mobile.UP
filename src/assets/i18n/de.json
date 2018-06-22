@@ -7,7 +7,7 @@
       "title":"Impressum"
     },
     "login":{
-      "title":"login",
+      "title":"Login",
       "loginInProgress": "Login läuft",
       "placeHolder":{
         "username": "Benutzername (ohne @uni-potsdam.de)",
@@ -119,5 +119,8 @@
   "words":{
     "clock": "Uhr",
     "house": "Haus"
+  },
+  "menu": {
+    "title": "Menü"
   }
 }
