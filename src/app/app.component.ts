@@ -75,7 +75,7 @@ export class MobileUPApp {
       { title: "page.logout.title", pageName: LogoutPage, index: undefined, icon: "log-out" },
 
       // hide in side menu, because they are visible in tab2 / tab3
-      // to change which page are visible in the tabs 2/3:  change tab2Root / tab3Root in tabs.ts
+      // to change which pages are visible in the tabs 2/3:  change tab2Root / tab3Root in tabs.ts
       { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 1, icon: "nuclear" },
       { title: "page.impress.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
     ];
