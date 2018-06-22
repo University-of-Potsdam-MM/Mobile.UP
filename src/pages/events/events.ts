@@ -13,6 +13,8 @@ import * as moment from 'moment';
 })
 export class EventsPage {
 
+  isLoaded = false;
+
   eventsList;
   todaysEventsList = [];
   nextEventsList = [];
@@ -62,6 +64,7 @@ export class EventsPage {
         }
         this.checkNextEvents();
         this.initSeperators();
+        this.isLoaded = true;
       }
     })
 

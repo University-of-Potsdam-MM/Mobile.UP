@@ -14,6 +14,7 @@ export class NewsPage {
   newsSource = "0";
   newsList;
   sourcesList = [];
+  isLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage) {
   }
@@ -32,6 +33,7 @@ export class NewsPage {
         for (var source in response.vars.newsSources) {
           this.sourcesList.push(response.vars.newsSources[source]);
         }
+        this.isLoaded = true;
       }
     });
 

@@ -17,6 +17,9 @@
 
 
 <ion-content>
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
   <div *ngIf="(timespan == 1) && !eventsToday">
     <ion-row>
       <ion-col>
