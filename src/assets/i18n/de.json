@@ -50,7 +50,16 @@
       "title":"Bibliothekssuche"
     },
     "events":{
-      "title":"Events"
+      "title":"Events",
+      "showEventDetails": "Details anzeigen",
+      "hideEventDetails": "Details ausblenden",
+      "eventsAll": "Alle",
+      "eventsToday": "Heute",
+      "eventsNext": "Nächste",
+      "noEventCategory": "Heute kein Veranstaltungsort verfügbar",
+      "noEventsToday": "Du hast heute keine anstehenden Veranstaltungen.",
+      "adress": "Adresse",
+      "description": "Beschreibung"
     },
     "moodle":{
       "title":"Moodle"
