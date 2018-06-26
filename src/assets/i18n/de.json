@@ -1,13 +1,13 @@
 {
-  "page": {
-    "home": {
-      "title": "Home"
+  "page":{
+    "home":{
+      "title": "Startseite"
     },
     "impress": {
       "title": "Impressum"
     },
-    "login": {
-      "title": "login",
+    "login":{
+      "title":"Login",
       "loginInProgress": "Login läuft",
       "placeHolder": {
         "username": "Benutzername (ohne @uni-potsdam.de)",
@@ -49,8 +49,17 @@
     "library": {
       "title": "Bibliothekssuche"
     },
-    "events": {
-      "title": "Events"
+    "events":{
+      "title":"Events",
+      "showEventDetails": "Details anzeigen",
+      "hideEventDetails": "Details ausblenden",
+      "eventsAll": "Alle",
+      "eventsToday": "Heute",
+      "eventsNext": "Nächste",
+      "noEventCategory": "Heute kein Veranstaltungsort verfügbar",
+      "noEventsToday": "Du hast heute keine anstehenden Veranstaltungen.",
+      "adress": "Adresse",
+      "description": "Beschreibung"
     },
     "moodle": {
       "title": "Moodle"
@@ -164,5 +173,8 @@
   "words": {
     "clock": "Uhr",
     "house": "Haus"
+  },
+  "menu": {
+    "title": "Menü"
   }
 }

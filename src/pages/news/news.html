@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
@@ -19,6 +19,9 @@
 
 <ion-content>
 
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
   <div *ngFor="let article of newsList">
     <news-article *ngIf="article.NewsSource.name == sourcesList[newsSource]" [article]="article"></news-article>
   </div>
