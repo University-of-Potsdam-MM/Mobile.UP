@@ -51,16 +51,15 @@ export class MobileUPApp {
   }
 
   private async initConfig() {
-    let config:IConfig = await this.storage.get("config");
-    if(!config){
-      // load config if not in storage
-      this.http.get<IConfig>("assets/config.json").subscribe(
-        config => {
-          console.log(config);
-          this.storage.set("config", config);
-        }
-      );
-    }
+    // TODO: maybe outsource config to a provider, so we don't need to call
+    //       storage every time
+    this.http.get<IConfig>("assets/config.json").subscribe(
+      config => {
+        this.storage.set("config", config).then(
+          config => console.log("[MobileUPApp]: Config loaded")
+        )
+      }
+    );
   }
 
   private initPages(){
