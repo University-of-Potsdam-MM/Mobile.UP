@@ -1,5 +1,5 @@
 import { INewsApiResponse, IConfig } from './../../library/interfaces';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -14,6 +14,7 @@ export class NewsPage {
   newsSource = "0";
   newsList;
   sourcesList = [];
+  isLoaded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage) {
   }
@@ -22,13 +23,17 @@ export class NewsPage {
 
     let config: IConfig = await this.storage.get("config");
 
+    let headers: HttpHeaders = new HttpHeaders()
+      .append("Authorization", config.webservices.apiToken);
+
     var url = config.webservices.endpoint.news;
-    this.http.get(url).subscribe((response:INewsApiResponse) => {
+    this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         for (var source in response.vars.newsSources) {
-          this.sourcesList.push(response.vars.newsSources[source])
+          this.sourcesList.push(response.vars.newsSources[source]);
         }
+        this.isLoaded = true;
       }
     });
 

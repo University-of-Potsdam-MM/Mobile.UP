@@ -19,6 +19,9 @@
 
 <ion-content>
 
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
   <div *ngFor="let article of newsList">
     <news-article *ngIf="article.NewsSource.name == sourcesList[newsSource]" [article]="article"></news-article>
   </div>

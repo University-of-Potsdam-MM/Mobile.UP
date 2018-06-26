@@ -1,4 +1,5 @@
 import { TabsPage } from './../pages/tabs/tabs';
+
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -21,6 +22,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { PersonsPage } from "../pages/persons/persons";
 import { NewsPage } from './../pages/news/news';
+import { EventsPage } from './../pages/events/events';
 import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
 
@@ -38,6 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmergencyPage,
     PersonsPage,
     NewsPage,
+    EventsPage,
     RoomsPage,
     RoomplanPage,
     TabsPage
@@ -66,6 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmergencyPage,
     PersonsPage,
     NewsPage,
+    EventsPage,
     RoomsPage,
     RoomplanPage,
     TabsPage

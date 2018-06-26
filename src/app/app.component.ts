@@ -1,9 +1,10 @@
-import { TabsPage } from './../pages/tabs/tabs';
 import { Component, ViewChild } from '@angular/core';
-
 import { Platform, Nav } from 'ionic-angular';
 
+import { TabsPage } from './../pages/tabs/tabs';
+
 import { HomePage } from '../pages/home/home';
+import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { EmergencyPage } from '../pages/emergency/emergency';
 import { LoginPage } from "../pages/login/login";
@@ -49,16 +50,15 @@ export class MobileUPApp {
   }
 
   private async initConfig() {
-    let config:IConfig = await this.storage.get("config");
-    if(!config){
-      // load config if not in storage
-      this.http.get<IConfig>("assets/config.json").subscribe(
-        config => {
-          console.log(config);
-          this.storage.set("config", config);
-        }
-      );
-    }
+    // TODO: maybe outsource config to a provider, so we don't need to call
+    //       storage every time
+    this.http.get<IConfig>("assets/config.json").subscribe(
+      config => {
+        this.storage.set("config", config).then(
+          config => console.log("[MobileUPApp]: Config loaded")
+        )
+      }
+    );
   }
 
   private initPages() {
@@ -69,6 +69,7 @@ export class MobileUPApp {
       { title: "page.home.title", pageName: TabsPage, tabComponent: HomePage, index: 0, icon: "home" },
       { title: "page.persons.title", pageName: TabsPage, tabComponent: PersonsPage, index: 0, icon: "people" },
       { title: "page.news.title", pageName: TabsPage, tabComponent: NewsPage, index: 0, icon: "paper" },
+      { title: "page.events.title", pageName: TabsPage, tabComponent: EventsPage, index: 0, icon: "paper" },
       { title: "page.rooms.title", pageName: TabsPage, tabComponent: RoomsPage, index: 0, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: TabsPage, tabComponent: RoomplanPage, index: 0, icon: "grid" },
       { title: "page.login.title", pageName: LoginPage, index: undefined, icon: "log-in" },

@@ -1,0 +1,21 @@
+page-events {
+    ion-segment {
+        display: block;
+        white-space: nowrap;
+        font-size: 0;
+        overflow: auto;
+        background-color: #f7f7f7;
+
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        ion-segment-button.segment-button {
+            display: inline-block!important;
+            min-width: 100px!important;
+            width: auto!important;
+        }
+    }
+}
