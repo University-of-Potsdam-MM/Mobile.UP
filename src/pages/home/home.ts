@@ -15,6 +15,8 @@ import {Storage} from "@ionic/storage";
 })
 export class HomePage {
 
+  drawerOptions:any;
+
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
@@ -29,5 +31,16 @@ export class HomePage {
         }
       }
     )
+
+    this.drawerOptions = {
+      handleHeight: 100,
+      thresholdFromBottom: 200,
+      thresholdFromTop: 400,
+      bounceBack: true
+    };
+  }
+
+  openPage(pageTitle:string){
+    this.modules
   }
 }
