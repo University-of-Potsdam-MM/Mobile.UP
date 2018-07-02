@@ -15,12 +15,12 @@ export class SettingsPage {
 
   settings: Array<ISetting> = [];
   current_setting: ISetting;
+  settings_initializes: boolean = false;
 
   constructor(private storage: Storage, private alertCtrl: AlertController, public translate: TranslateService) {
     //TODO nav param to push setting and highlight it
   }
 
-  //TODO test on android (possible permission missing)
   //TODO add visible diverders between list elements
 
   ionViewDidLoad() {
@@ -48,6 +48,9 @@ export class SettingsPage {
     }
 
     this.loadInitialSettings();
+
+    setTimeout(()=>{ this.settings_initializes = true; }, 500);
+
   }
 
   /**
@@ -169,6 +172,11 @@ export class SettingsPage {
    * @returns {Promise<void>}
    */
   async setSetting(setting: ISetting, value) {
+    // mainly so the boolean setting does not get caught in a onChange loop by loading/setting/change/change/..
+    if (!this.settings_initializes){
+      console.log("Prevented save before load");
+      return false;
+    }
     setting.value = value;
     console.log("Saved setting", setting, value);
     this.storage.set("settings." + setting.key, setting);
@@ -180,6 +188,7 @@ export class SettingsPage {
    */
   changeBoolSetting(setting: ISetting) {
     this.setSetting(setting, !setting.value);
+    return false;
   }
 
   /**
