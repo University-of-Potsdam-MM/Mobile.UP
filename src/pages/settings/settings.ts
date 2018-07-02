@@ -21,8 +21,6 @@ export class SettingsPage {
     //TODO nav param to push setting and highlight it
   }
 
-  //TODO add visible diverders between list elements
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
 
