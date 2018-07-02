@@ -14,7 +14,7 @@
     <div *ngFor="let setting of settings">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
         <ion-label>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
-        <ion-toggle checked="{{setting.value}}" (click)="changeBoolSetting(setting)"></ion-toggle>
+        <ion-toggle checked="{{setting.value}}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
 
       <ion-item-divider color="light" *ngIf="getSettingType(setting) == 'placeholder'">
