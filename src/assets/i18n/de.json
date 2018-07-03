@@ -92,46 +92,7 @@
     "settings": {
       "title": "Einstellungen",
       "setting": {
-        "test_1": {
-          "lbl": "Test 1",
-          "info": "Lorem ipsum dolor sit amet"
-        },
-        "test_2": {
-          "lbl": "Test 2",
-          "info": "Lorem ipsum dolor sit amet"
-        },
-        "test_3": {
-          "lbl": "Test 3",
-          "info": "Lorem ipsum dolor sit amet"
-        },
-        "test_4": {
-          "lbl": "Test 4",
-          "info": "Lorem ipsum dolor sit amet",
-          "options": {
-            "0": "Deaktiviert",
-            "1": 1
-          }
-        },
-        "test_5": {
-          "lbl": "Test 5",
-          "info": "Lorem ipsum dolor sit amet",
-          "options": {
-            "test_1": "Test 1",
-            "test_3": "Test 3"
-          }
-        },
-        "test_6": {
-          "lbl": "Test 6",
-          "info": "Lorem ipsum dolor sit amet",
-          "options": {
-            "test_1": "Test 1",
-            "test_2": "Test 2",
-            "test_3": "Test 3"
-          }
-        },
-        "test_ph": {
-          "lbl": "Header"
-        }
+
       }
     },
     "rooms": {
