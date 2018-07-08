@@ -22,17 +22,17 @@
     },
     "roomplan": {
       "componentName": "roomplan",
-      "icon": "grids",
+      "icon": "grid",
       "selected":false
     },
     "login": {
       "componentName": "login",
-      "icon": "login",
+      "icon": "log-in",
       "selected":true
     },
     "logout": {
       "componentName": "logout",
-      "icon": "logout",
+      "icon": "log-out",
       "selected":true
     },
     "emergency": {
