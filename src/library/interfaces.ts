@@ -66,8 +66,16 @@ export interface IPerson {
 /* ~~~ config ~~~ */
 
 export interface IConfig {
+  modules:{[moduleName:string]:IModule};
   authorization:IAuthorization; // comes from login-provider
   webservices:IWebServices
+}
+
+export interface IModule {
+  componentName:string;
+  i18nKey?:string;
+  icon:string;
+  selected?:boolean;
 }
 
 export interface IWebServices {

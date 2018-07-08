@@ -1,4 +1,51 @@
 {
+  "modules": {
+    "people": {
+      "componentName": "people",
+      "icon": "people",
+      "selected":false
+    },
+    "news": {
+      "componentName": "news",
+      "icon": "paper",
+      "selected":false
+    },
+    "events": {
+      "componentName": "events",
+      "icon": "paper",
+      "selected":false
+    },
+    "rooms": {
+      "componentName": "rooms",
+      "icon": "square-outline",
+      "selected":false
+    },
+    "roomplan": {
+      "componentName": "roomplan",
+      "icon": "grids",
+      "selected":false
+    },
+    "login": {
+      "componentName": "login",
+      "icon": "login",
+      "selected":true
+    },
+    "logout": {
+      "componentName": "logout",
+      "icon": "logout",
+      "selected":true
+    },
+    "emergency": {
+      "componentName": "emergency",
+      "icon": "nuclear",
+      "selected":true
+    },
+    "imprint": {
+      "componentName": "imprint",
+      "icon": "information-circle",
+      "selected":true
+    }
+  },
   "authorization": {
     "credentials": {
       "method": "credentials",

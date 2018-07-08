@@ -19,7 +19,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
-import { IConfig } from "../library/interfaces";
+import {IConfig, IModule} from "../library/interfaces";
+import {ComponentsProvider} from "../providers/components/components";
 
 interface IPage {
   title:string;
@@ -44,7 +45,8 @@ export class MobileUPApp {
     private splashScreen: SplashScreen,
     private translate: TranslateService,
     private storage: Storage,
-    private http: HttpClient
+    private http: HttpClient,
+    private components: ComponentsProvider
   ) {
     this.initializeApp();
   }
@@ -82,6 +84,36 @@ export class MobileUPApp {
     ];
   }
 
+  async buildModules(){
+
+    this.components.setComponents({
+      login:LoginPage,
+      logout:LogoutPage,
+      news:NewsPage,
+      imprint:ImpressumPage,
+      rooms:RoomsPage,
+      roomplan:RoomplanPage,
+      emergency:EmergencyPage,
+      events:EventsPage,
+      people:PersonsPage
+    });
+
+    let moduleList:{[modulesName:string]:IModule} = {};
+
+    let config = await this.storage.get("config");
+
+    let modules = config.modules;
+    for(let moduleName in modules){
+      let moduleToAdd:IModule = modules[moduleName];
+      moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+
+      moduleList[moduleName] = moduleToAdd;
+    }
+    this.storage.set("modules", moduleList);
+
+    console.log("[MobileUPApp]: Created module objects")
+  }
+
   /**
    * initializes the app and hides splashscreen when it's done
    */
@@ -89,6 +121,7 @@ export class MobileUPApp {
     await this.initPages();
     await this.initConfig();
     await this.initTranslate();
+    await this.buildModules();
 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

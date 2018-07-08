@@ -25,6 +25,7 @@ import { NewsPage } from './../pages/news/news';
 import { EventsPage } from './../pages/events/events';
 import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
+import { ComponentsProvider } from '../providers/components/components';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -79,7 +80,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
-    InAppBrowser
+    InAppBrowser,
+    ComponentsProvider
   ]
 })
 export class AppModule {}

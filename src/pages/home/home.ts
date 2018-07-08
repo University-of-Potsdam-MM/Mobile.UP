@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 import {Storage} from "@ionic/storage";
-
+import {ComponentsProvider} from "../../providers/components/components";
+import {IModule} from "../../library/interfaces";
 /**
  * HomePage
- *
- * TODO: Add gridster or similar here
  */
 @IonicPage()
 @Component({
@@ -15,32 +14,45 @@ import {Storage} from "@ionic/storage";
 })
 export class HomePage {
 
-  drawerOptions:any;
+  objectKey = Object.keys;
+
+  modules:{[moduleName:string]:IModule} = {};
+
+  drawerOptions:any = {
+    handleHeight: 100,
+    thresholdFromBottom: 200,
+    thresholdFromTop: 400,
+    bounceBack: true
+  };
 
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
-      private storage: Storage) {
-
-    this.storage.get("session").then(
-      session => {
-        if(session) {
-          console.log(`[HomePage]: Previous session found. Token: ${session.token}`);
-        } else {
-          console.log("[HomePage]: No previous session found");
-        }
-      }
-    )
-
-    this.drawerOptions = {
-      handleHeight: 100,
-      thresholdFromBottom: 200,
-      thresholdFromTop: 400,
-      bounceBack: true
-    };
+      private storage: Storage,
+      private components: ComponentsProvider) {
   }
 
+  ionViewDidLoad(){
+    this.storage.get("modules").then(
+      modules => {
+        this.modules = modules;
+      }
+    )
+  }
+
+  /**
+   * opens selected page by pushing it on the stack
+   * @param {string} pageTitle
+   */
   openPage(pageTitle:string){
-    this.modules
+    this.components.getComponent(pageTitle).subscribe(
+      component => {
+        console.log(`[HomePage]: Opening \"${pageTitle}\"`);
+        this.navCtrl.push(component);
+      },
+      error => {
+        console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
+      }
+    );
   }
 }
