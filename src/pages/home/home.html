@@ -37,7 +37,6 @@
     <ion-list>
       <ion-item *ngFor="let moduleName of objectKey(modules)"
                 (click)="modules[moduleName].selected = !modules[moduleName].selected">
-
         <ion-icon [name]="modules[moduleName].icon"></ion-icon>
         {{ modules[moduleName].i18nKey | translate }}
         <ion-icon [name]="modules[moduleName].selected ? 'star-outline' : 'star'"></ion-icon>

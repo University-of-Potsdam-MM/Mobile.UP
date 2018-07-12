@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
-import {Storage} from "@ionic/storage";
-import {ComponentsProvider} from "../../providers/components/components";
-import {IModule} from "../../library/interfaces";
+import { Storage } from "@ionic/storage";
+import { ComponentsProvider } from "../../providers/components/components";
+import { IModule } from "../../library/interfaces";
 /**
  * HomePage
  */
@@ -41,18 +41,21 @@ export class HomePage {
   }
 
   /**
-   * opens selected page by pushing it on the stack
+   * opens selected page by pushing it on the stack, but only if editMode is
+   * currently disabled
    * @param {string} pageTitle
    */
   openPage(pageTitle:string){
-    this.components.getComponent(pageTitle).subscribe(
+    if(!this.editMode){
+      this.components.getComponent(pageTitle).subscribe(
       component => {
         console.log(`[HomePage]: Opening \"${pageTitle}\"`);
         this.navCtrl.push(component);
-      },
-      error => {
-        console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
-      }
-    );
+        },
+        error => {
+          console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
+        }
+      );
+    }
   }
 }
