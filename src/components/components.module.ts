@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { NewsArticleComponent } from './news-article/news-article';
 import { ExpandableComponent } from './expandable/expandable';
 import { EventViewComponent } from './event-view/event-view';
+import { ContentDrawerComponent } from './content-drawer/content-drawer';
 
 @NgModule({
 	declarations: [
 		NewsArticleComponent,
 		ExpandableComponent,
-		EventViewComponent
+		EventViewComponent,
+    ContentDrawerComponent
 	],
 	imports: [
 		IonicModule,
@@ -18,7 +20,8 @@ import { EventViewComponent } from './event-view/event-view';
 	exports: [
 		NewsArticleComponent,
 		ExpandableComponent,
-    	EventViewComponent
+    	EventViewComponent,
+    ContentDrawerComponent
 	]
 })
 export class ComponentsModule {}

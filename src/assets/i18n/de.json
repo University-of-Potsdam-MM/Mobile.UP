@@ -3,7 +3,7 @@
     "home":{
       "title": "Startseite"
     },
-    "impress":{
+    "imprint":{
       "title":"Impressum"
     },
     "login":{
@@ -36,7 +36,7 @@
         "street": "Straße:"
       }
     },
-    "persons":{
+    "people":{
       "title":"Personensuche",
       "placeholder": {
         "search": "..."

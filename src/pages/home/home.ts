@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
-import {Storage} from "@ionic/storage";
-
+import { Storage } from "@ionic/storage";
+import { ComponentsProvider } from "../../providers/components/components";
+import { IModule } from "../../library/interfaces";
 /**
  * HomePage
- *
- * TODO: Add gridster or similar here
  */
 @IonicPage()
 @Component({
@@ -15,19 +14,48 @@ import {Storage} from "@ionic/storage";
 })
 export class HomePage {
 
+  objectKey = Object.keys;
+  editMode:boolean = false;
+  modules:{[moduleName:string]:IModule} = {};
+
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
-      private storage: Storage) {
+      private storage: Storage,
+      private components: ComponentsProvider) {
+  }
 
-    this.storage.get("session").then(
-      session => {
-        if(session) {
-          console.log(`[HomePage]: Previous session found. Token: ${session.token}`);
-        } else {
-          console.log("[HomePage]: No previous session found");
-        }
+  ionViewDidLoad(){
+    this.storage.get("modules").then(
+      modules => {
+        this.modules = modules;
       }
     )
+  }
+
+  /**
+   * simlpy toggles the editMode variable
+   */
+  toggleEditMode(){
+    this.editMode = !this.editMode;
+  }
+
+  /**
+   * opens selected page by pushing it on the stack, but only if editMode is
+   * currently disabled
+   * @param {string} pageTitle
+   */
+  openPage(pageTitle:string){
+    if(!this.editMode){
+      this.components.getComponent(pageTitle).subscribe(
+      component => {
+        console.log(`[HomePage]: Opening \"${pageTitle}\"`);
+        this.navCtrl.push(component);
+        },
+        error => {
+          console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
+        }
+      );
+    }
   }
 }
