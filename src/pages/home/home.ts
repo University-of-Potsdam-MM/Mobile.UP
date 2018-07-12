@@ -15,15 +15,8 @@ import {IModule} from "../../library/interfaces";
 export class HomePage {
 
   objectKey = Object.keys;
-
+  editMode:boolean = false;
   modules:{[moduleName:string]:IModule} = {};
-
-  drawerOptions:any = {
-    handleHeight: 100,
-    thresholdFromBottom: 200,
-    thresholdFromTop: 400,
-    bounceBack: true
-  };
 
   constructor(
       public navCtrl: NavController,
@@ -38,6 +31,13 @@ export class HomePage {
         this.modules = modules;
       }
     )
+  }
+
+  /**
+   * simlpy toggles the editMode variable
+   */
+  toggleEditMode(){
+    this.editMode = !this.editMode;
   }
 
   /**
