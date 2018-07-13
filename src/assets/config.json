@@ -40,6 +40,11 @@
       "icon": "nuclear",
       "selected":true
     },
+    "settings": {
+      "componentName": "settings",
+      "icon": "grid",
+      "selected":true
+    },
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",

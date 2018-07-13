@@ -97,7 +97,8 @@ export class MobileUPApp {
       roomplan:RoomplanPage,
       emergency:EmergencyPage,
       events:EventsPage,
-      persons:PersonsPage
+      persons:PersonsPage,
+      settings:SettingsPage
     });
 
     let moduleList:{[modulesName:string]:IModule} = {};
