@@ -80,7 +80,7 @@ export class MobileUPApp {
       // hide in side menu, because they are visible in tab2 / tab3
       // to change which pages are visible in the tabs 2/3:  change tab2Root / tab3Root in tabs.ts
       { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 1, icon: "nuclear" },
-      { title: "page.impress.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
+      { title: "page.imprint.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
     ];
   }
 
@@ -95,7 +95,7 @@ export class MobileUPApp {
       roomplan:RoomplanPage,
       emergency:EmergencyPage,
       events:EventsPage,
-      people:PersonsPage
+      persons:PersonsPage
     });
 
     let moduleList:{[modulesName:string]:IModule} = {};

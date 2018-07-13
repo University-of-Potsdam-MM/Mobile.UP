@@ -33,7 +33,7 @@ export class TabsPage {
 
 
     this.tab3Root = ImpressumPage;
-    this.tab3PageTitle = "page.impress.title"
+    this.tab3PageTitle = "page.imprint.title"
     this.tab3PageIcon = "information-circle";
 
     if (navParams.data.tabComp) { this.tab1Root = navParams.data.tabComp } else { this.tab1Root = HomePage };

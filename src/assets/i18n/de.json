@@ -36,7 +36,7 @@
         "street": "Straße:"
       }
     },
-    "people":{
+    "persons":{
       "title":"Personensuche",
       "placeholder": {
         "search": "..."

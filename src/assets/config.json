@@ -1,7 +1,7 @@
 {
   "modules": {
-    "people": {
-      "componentName": "people",
+    "persons": {
+      "componentName": "persons",
       "icon": "people",
       "selected":false
     },
