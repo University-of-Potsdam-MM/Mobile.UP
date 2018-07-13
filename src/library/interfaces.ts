@@ -301,3 +301,28 @@ export interface IRoomEvent {
   startTime:Date;
   endTime:Date;
 }
+
+/* ~~~ Settings ~~~ */
+export enum ESettingType {
+  boolean,
+  string,
+  number,
+  number_radio,
+  string_radio,
+  checkbox,
+  placeholder
+}
+
+export interface ISetting {
+  key:string;
+  lbl?:string; // identifier of localized resource under page.settings.options.??
+  info?:string; // same as lbl but for help text (shown as subtitle)
+  value:any;
+  options?:Array<ISettingOption>;
+  type:ESettingType;
+}
+
+export interface ISettingOption {
+  key:any;
+  lbl:string;
+}

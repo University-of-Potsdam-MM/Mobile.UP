@@ -25,6 +25,8 @@ import { NewsPage } from './../pages/news/news';
 import { EventsPage } from './../pages/events/events';
 import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
+import { SettingsPage } from "../pages/settings/settings";
+import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -39,6 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
+    SettingsPage,
     PersonsPage,
     NewsPage,
     EventsPage,
@@ -68,6 +71,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
+    SettingsPage,
     PersonsPage,
     NewsPage,
     EventsPage,
@@ -81,7 +85,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
     InAppBrowser,
+    SettingsProvider,
     ComponentsProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

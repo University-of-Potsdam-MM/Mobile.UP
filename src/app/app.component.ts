@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import { Platform, MenuController, Nav } from 'ionic-angular';
 
 import { TabsPage } from './../pages/tabs/tabs';
 
@@ -19,7 +19,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
-import {IConfig, IModule} from "../library/interfaces";
+import { IConfig, IModule } from "../library/interfaces";
+import { SettingsPage } from "../pages/settings/settings";
 import {ComponentsProvider} from "../providers/components/components";
 
 interface IPage {
@@ -74,6 +75,7 @@ export class MobileUPApp {
       { title: "page.events.title", pageName: TabsPage, tabComponent: EventsPage, index: 0, icon: "paper" },
       { title: "page.rooms.title", pageName: TabsPage, tabComponent: RoomsPage, index: 0, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: TabsPage, tabComponent: RoomplanPage, index: 0, icon: "grid" },
+      { title: "page.settings.title", pageName: SettingsPage, tabComponent: SettingsPage, index: 0, icon: "grid" },
       { title: "page.login.title", pageName: LoginPage, index: undefined, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, index: undefined, icon: "log-out" },
 
@@ -95,7 +97,8 @@ export class MobileUPApp {
       roomplan:RoomplanPage,
       emergency:EmergencyPage,
       events:EventsPage,
-      persons:PersonsPage
+      persons:PersonsPage,
+      settings:SettingsPage
     });
 
     let moduleList:{[modulesName:string]:IModule} = {};
