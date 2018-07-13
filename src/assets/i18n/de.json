@@ -3,8 +3,8 @@
     "home":{
       "title": "Startseite"
     },
-    "impress": {
-      "title": "Impressum"
+    "imprint":{
+      "title":"Impressum"
     },
     "login":{
       "title":"Login",
