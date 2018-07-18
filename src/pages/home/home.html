@@ -9,20 +9,29 @@
 
 <ion-content padding>
 
-  <!-- TODO: should be placed in contextMenu-->
-  <button ion-button (click)="toggleEditMode()">
-    Toggle edit mode
-  </button>
+  
 
   <!-- TODO: should be tiles -->
   <!-- tiles -->
-  <ion-list class="row">
+  <ion-list class="row shortcutlist">
     <div *ngFor="let moduleName of objectKey(modules)"
          (click)="openPage(moduleName)">
+        
       <ion-item *ngIf="modules[moduleName].selected">
         <ion-icon [name]="modules[moduleName].icon"></ion-icon>
         {{ modules[moduleName].i18nKey | translate }}
       </ion-item>
+    </div>
+    <div >
+
+        <ion-item class="add-shortcut">
+        <!-- TODO: should be placed in contextMenu - NOPE: should be placed here-->
+      
+        <button ion-button icon-only (click)="toggleEditMode()">
+          <ion-icon name="add"></ion-icon>
+         <!-- Toggle edit mode -->
+        </button>
+        </ion-item>
     </div>
   </ion-list>
 
