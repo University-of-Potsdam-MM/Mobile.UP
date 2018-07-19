@@ -9,46 +9,36 @@
 
 <ion-content padding>
 
-  
-
-  <!-- TODO: should be tiles -->
   <!-- tiles -->
   <ion-list class="row shortcutlist">
+    <!-- list of shortcuts -->
     <div *ngFor="let moduleName of objectKey(modules)"
          (click)="openPage(moduleName)">
-        
+
       <ion-item *ngIf="modules[moduleName].selected">
         <ion-icon [name]="modules[moduleName].icon"></ion-icon>
         {{ modules[moduleName].i18nKey | translate }}
       </ion-item>
     </div>
-    <div >
-
-        <ion-item class="add-shortcut ">
-        <!-- TODO: should be placed in contextMenu - NOPE: should be placed here-->
-      
-        <button ion-button icon-only (click)="toggleEditMode()">
-          <ion-icon name="add"></ion-icon>
-         <!-- Toggle edit mode -->
-        </button>
-        </ion-item>
-    </div>
   </ion-list>
 
-
-  <!-- TODO: could be prettier -->
-  <!-- TODO: maybe substitute with https://github.com/joshuamorony/ionic2-sliding-content-drawer -->
   <!-- menu with all available modules -->
-  <ion-card *ngIf="editMode"
-              scrollY="true"
-              id="drawer"
-              style=" width:100%">
+  <ion-card scrollY="true"
+            id="drawer"
+            style="width:100%">
     <ion-list>
-      <ion-item *ngFor="let moduleName of objectKey(modules)"
-                (click)="modules[moduleName].selected = !modules[moduleName].selected">
-        <ion-icon [name]="modules[moduleName].icon"></ion-icon>
-        {{ modules[moduleName].i18nKey | translate }}
-        <ion-icon [name]="modules[moduleName].selected ? 'star-outline' : 'star'"></ion-icon>
+      <ion-item *ngFor="let moduleName of objectKey(modules)">
+
+        <!-- title with icon -->
+        <span (click)="openPage(moduleName)">
+          <ion-icon [name]="modules[moduleName].icon"></ion-icon>
+          {{ modules[moduleName].i18nKey | translate }}
+        </span>
+
+        <!-- favourite-state icon -->
+        <ion-icon [name]="modules[moduleName].selected ? icon_selected : icon_not_selected"
+                  (click)="toggleSelectedState(moduleName)">
+        </ion-icon>
       </ion-item>
     </ion-list>
   </ion-card>
