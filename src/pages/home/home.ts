@@ -13,9 +13,10 @@ import { IModule } from "../../library/interfaces";
   templateUrl: 'home.html',
 })
 export class HomePage {
+  icon_selected:string = "star";
+  icon_not_selected:string = "star-outline";
 
   objectKey = Object.keys;
-  editMode:boolean = false;
   modules:{[moduleName:string]:IModule} = {};
 
   constructor(
@@ -53,35 +54,36 @@ export class HomePage {
   }
 
   /**
-   * simlpy toggles the editMode variable and saves moduleList to storage if
-   * editMode has been disabled
+   * toggles selected-state of given module and then saves moduleList to storage
+   * @param moduleName
    */
-  toggleEditMode(){
-    this.editMode = !this.editMode;
-    console.log(`[HomePage]: editMode is now ${this.editMode ? 'enabled' : 'disabled'}`);
-    if(this.editMode == false) {
-      // editMode was true
-      this.storage.set("modules", this.modules);
-      console.log("[HomePage]: Saved module list after editing");
-    }
+  toggleSelectedState(moduleName){
+    let currentState = this.modules[moduleName].selected;
+    let newState = !currentState;
+
+    this.modules[moduleName].selected = newState;
+
+    console.log(`[HomePage]: '${moduleName}' is now ${newState ? 'selected': 'not selected'}`);
+
+    this.storage.set("modules", this.modules).then(
+      value => console.log(`[HomePage]: Saved module list after toggling '${moduleName}'`)
+    );
+
   }
 
   /**
-   * opens selected page by pushing it on the stack, but only if editMode is
-   * currently disabled
+   * opens selected page by pushing it on the stack
    * @param {string} pageTitle
    */
   openPage(pageTitle:string){
-    if(!this.editMode){
-      this.components.getComponent(pageTitle).subscribe(
-      component => {
-        console.log(`[HomePage]: Opening \"${pageTitle}\"`);
-        this.navCtrl.push(component);
-        },
-        error => {
-          console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
-        }
-      );
-    }
+    this.components.getComponent(pageTitle).subscribe(
+    component => {
+      console.log(`[HomePage]: Opening \"${pageTitle}\"`);
+      this.navCtrl.push(component);
+      },
+      error => {
+        console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
+      }
+    );
   }
 }
