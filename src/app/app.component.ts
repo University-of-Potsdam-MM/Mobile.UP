@@ -37,6 +37,7 @@ interface IPage {
 export class MobileUPApp {
   @ViewChild(Nav) nav: Nav;
 
+  config:IConfig;
   rootPage: any;
   pagesInMenu: Array<IPage>;
 
@@ -53,12 +54,12 @@ export class MobileUPApp {
   }
 
   private async initConfig() {
-    // TODO: maybe outsource config to a provider, so we don't need to call
-    //       storage every time
+    // TODO: maybe outsource config to a provider, so we don't need to call storage every time
     this.http.get<IConfig>("assets/config.json").subscribe(
       config => {
+        this.config = config;
         this.storage.set("config", config).then(
-          config => console.log("[MobileUPApp]: Config loaded")
+          config => console.log("[MobileUPApp]: Config loaded in storage")
         )
       }
     );
@@ -84,10 +85,9 @@ export class MobileUPApp {
       { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 1, icon: "nuclear" },
       { title: "page.imprint.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
     ];
-  }
 
-  async buildModules(){
-
+    // tells ComponentsProvider which component to use for which page
+    // TODO: should really be united with stuff above
     this.components.setComponents({
       login:LoginPage,
       logout:LogoutPage,
@@ -100,31 +100,41 @@ export class MobileUPApp {
       persons:PersonsPage,
       settings:SettingsPage
     });
+  }
 
-    let moduleList:{[modulesName:string]:IModule} = {};
+  /**
+   * builds list of default_modules that should be displayed on HomePage if
+   * there isn't already one in the storage
+   * @returns {Promise<void>}
+   */
+  async buildDefaultModulesList(){
 
-    let config = await this.storage.get("config");
+    // if there are no default_modules in storage
+    if(!await this.storage.get("default_modules")){
+      console.log("[MobileUPApp]: No default moduleList in storage, creating new one from config");
 
-    let modules = config.modules;
-    for(let moduleName in modules){
-      let moduleToAdd:IModule = modules[moduleName];
-      moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+      let moduleList:{[modulesName:string]:IModule} = {};
+      let modules = this.config.modules;
 
-      moduleList[moduleName] = moduleToAdd;
+      for(let moduleName in modules){
+        let moduleToAdd:IModule = modules[moduleName];
+        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+        moduleList[moduleName] = moduleToAdd;
+      }
+
+      this.storage.set("default_modules", moduleList);
+      console.log("[MobileUPApp]: Created default moduleList from config");
     }
-    this.storage.set("modules", moduleList);
-
-    console.log("[MobileUPApp]: Created module objects")
   }
 
   /**
    * initializes the app and hides splashscreen when it's done
    */
   private async initializeApp() {
-    await this.initPages();
     await this.initConfig();
+    await this.initPages();
     await this.initTranslate();
-    await this.buildModules();
+    await this.buildDefaultModulesList();
 
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

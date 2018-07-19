@@ -26,18 +26,44 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
+    // try to load modules from storage
     this.storage.get("modules").then(
       modules => {
-        this.modules = modules;
+        if(modules){
+          // if there are modules, use those
+          this.modules = modules;
+          console.log("[HomePage]: Using user defined modules");
+        } else {
+          // if not, try to load the default_modules
+          this.storage.get("default_modules").then(
+            default_modules => {
+              if(default_modules) {
+                // use those if possible
+                this.modules = default_modules;
+                console.log("[HomePage]: Using default_modules");
+              } else {
+                // somethings clearly wrong here!
+                console.log("[HomePage]: Neither user defined modules nor default_modules in storage!");
+              }
+          })
+        }
+
       }
     )
   }
 
   /**
-   * simlpy toggles the editMode variable
+   * simlpy toggles the editMode variable and saves moduleList to storage if
+   * editMode has been disabled
    */
   toggleEditMode(){
     this.editMode = !this.editMode;
+    console.log(`[HomePage]: editMode is now ${this.editMode ? 'enabled' : 'disabled'}`);
+    if(this.editMode == false) {
+      // editMode was true
+      this.storage.set("modules", this.modules);
+      console.log("[HomePage]: Saved module list after editing");
+    }
   }
 
   /**
