@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.practice.title" | translate}}</ion-title>
+  </ion-navbar>
+
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.practice.placeholder.search' | translate"
+    (input)="filterItems(query)">
+  </ion-searchbar>
+
+</ion-header>
+
+<ion-content padding>
+  <!-- list of emergencyCalls -->
+  <p *ngIf="waiting_for_response == true" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <p *ngIf="waiting_for_response == false && displayedList.length == 0 && error == null" style="text-align: center">
+    {{ "page.practice.no_results" | translate }}
+  </p>
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+
+  <ion-list>
+    <ion-item text-wrap *ngFor="let ADS of displayedList" (click)="expandADS(ADS)">
+        <!--ion-avatar item-start>
+            <img src="img/my-avatar.png">
+          </ion-avatar-->
+
+      <h2>{{ADS.date | date:'dd.MM.yy'}} - {{ADS.title}}</h2>
+      <p *ngIf="ADS.firm != ''; else unknown_filed" >{{ADS.firm}}</p>
+      <p *ngIf="ADS.field != ''; else unknown_filed" >{{ADS.field}}</p>
+
+      <ion-grid>
+          <ion-row>
+            <ion-col><p *ngIf="ADS.partner != ''; else unknown_filed">{{ "page.practice.item.partner" | translate }}: {{ADS.partner}}</p></ion-col>
+            <ion-col><p *ngIf="ADS.famFriendly != ''; else unknown_filed">{{ "page.practice.item.familyfriendly" | translate }}: {{ADS.famFriendly}}</p></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col><p *ngIf="ADS.language != ''; else unknown_filed">{{ "page.practice.item.language" | translate }}: {{ADS.language}}</p></ion-col>
+            <ion-col><p *ngIf="ADS.foreign != ''; else unknown_filed">{{ "page.practice.item.foreign" | translate }}: {{ADS.foreign}}</p></ion-col>
+          </ion-row>
+        </ion-grid>
+      <expandable [expanded]="ADS.expanded">
+        <p *ngIf="ADS.art != ''; else unknown_filed">{{ADS.art}}</p>
+        {{ "page.practice.item.contact" | translate}}
+        <p *ngIf="ADS.firstname != '' && ADS.lastname != ''; else unknown_filed"><ion-icon name="person"></ion-icon> {{ADS.firstname}} {{ADS.lastname}}</p>
+        <p *ngIf="ADS.plz != ''; else unknown_filed"><ion-icon name="locate"></ion-icon> {{ADS.street}} {{ADS.plz}} {{ADS.location}}</p>
+        <p *ngIf="ADS.mail != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{ADS.mail}}">{{ADS.mail}}</a></p>
+        <p *ngIf="ADS.phone != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{ADS.phone}}">{{ADS.phone}}</a></p>
+        <p *ngIf="ADS.homepage != ''; else unknown_filed"><ion-icon name="link"></ion-icon> <a href="{{ADS.homepage}}">{{ADS.homepage}}</a></p>
+
+        <p *ngIf="ADS.file != ''; else unknown_filed"><ion-icon name="document"></ion-icon> <a href="{{ADS.file}}">{{ADS.file}}</a></p>
+      </expandable>
+    </ion-item>
+  </ion-list>
+</ion-content>

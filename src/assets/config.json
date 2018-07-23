@@ -25,6 +25,11 @@
       "icon": "grid",
       "selected":false
     },
+    "practice": {
+      "componentName": "practice",
+      "icon": "briefcase",
+      "selected":true
+    },
     "login": {
       "componentName": "login",
       "icon": "log-in",
@@ -73,6 +78,7 @@
   "webservices": {
     "endpoint":{
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "practiceSearch": "https://musang.soft.cs.uni-potsdam.de/ads.json",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",

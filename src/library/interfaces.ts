@@ -63,6 +63,31 @@ export interface IPerson {
   expanded?:boolean;
 }
 
+export interface ADS {
+  uid:      number,
+  art:      number,
+  field:    string,
+  title:    string,
+  date:     number,
+  file:     string,
+  foreign:  number,
+  firm:     number,
+  location: string,
+  street:   string,
+  plz:      number,
+  language: string,
+  homepage: string,
+  firstname:string,
+  lastname: string,
+  phone:    string,
+  mail:     string,
+  partner:  number,
+  famFriendly:number,
+  expanded:  boolean
+}
+
+export interface IADSResponse extends Array<ADS>{}
+
 /* ~~~ config ~~~ */
 
 export interface IConfig {
@@ -85,6 +110,7 @@ export interface IWebServices {
 
 export interface IEndpoints {
   personSearch:string;
+  practiceSearch: string;
   news:string;
   roomsSearch:string;
   roomplanSearch:string;

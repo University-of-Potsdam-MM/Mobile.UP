@@ -20,6 +20,7 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
+import { PracticePage } from "../pages/practice/practice";
 import { PersonsPage } from "../pages/persons/persons";
 import { NewsPage } from './../pages/news/news';
 import { EventsPage } from './../pages/events/events';
@@ -42,6 +43,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     SettingsPage,
+    PracticePage,
     PersonsPage,
     NewsPage,
     EventsPage,
@@ -72,6 +74,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     SettingsPage,
+    PracticePage,
     PersonsPage,
     NewsPage,
     EventsPage,
