@@ -1,64 +1,95 @@
 page-home { 
 
-  .shortcutlist {
-      .item-block {
-        padding: 3px;
-        background: #014260;
-        color: #fff;
-        border: none;
-        width: 100px;
-        height: 100px;
-        vertical-align: middle;
-        margin-right:5px;
-        margin-bottom:5px;
+    /*arrange tiles */
+    .shortcutlist {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        border-bottom: 1px solid #dedede;
+        padding-bottom: 5px;
+        
 
-        .item-inner {
-            border:none;
-            padding: 0;
+        #star-outline {
+            display: none;
+
+        }
+
+        #star:nth-child(odd) {
+            background-color:color($colors, primary);
+            color: #fff;
+        }
+
+        #star:nth-child(even) {
+            background-color:color($colors, secondary);
+            color:color($colors, primary);
+        }
+        
+        
+        .item-block {
+        text-align: center;
+        flex:1 1 80px;
+        border:2px solid #fff;
+        height: 80px;
+        width:80px;
+        padding: 0;
+
+            .item-inner {
+                border:none;
+                padding: 0;
+
+                .label {
+                    margin:0;
+                    text-align:center;
+                    white-space: normal;
+                    font-size:.8em;
+
+                    
+                    .icon {
+                        display: block;
+                        margin: 0 auto;
+                        text-align: center;
+                        font-size: 2.4em;
+                        margin-bottom: 5px;
+                    }
+
+                    
+                }
+
+            } 
+         }
+
+
+    }
+
+    /*headings*/
+
+    
+    h2 {
+        font-size: .8em;
+        color: #014260;
+        padding-left: 5px;
+        margin-top: 15px !important;
+        margin-bottom: 2px;
+
+    }
+
+    #drawer {
+
+        margin-left:5px;
+
+        .item-block {
+            padding-left:0;
 
             .label {
-                margin:0;
-                text-align:center;
-                white-space: normal;
-                font-size:.8em;
 
-                
-                .icon {
-                    display: block;
-                    margin: 0 auto;
-                    text-align: center;
-                    font-size: 2.4em;
-                    margin-bottom: 5px;
-                }
-
-                
+                color:color($colors, primary);
             }
 
-        }
-      }
-
-      .add-shortcut {
-        background-color: #d0dae3;
-
-        .item-inner .input-wrapper .label {
-            .item-button {
-                background-color: #d0dae3;
-                box-shadow: unset;
-                width: 100px;
-                height: 100px;
-                text-align: center;
-                margin: 0;
-
-                .icon {
-                    font-size: 50px;
-                    margin:0;
-                    padding:0;
-                    color:#014260;
-                }
+            .icon {
+                color:color($colors, primary)
             }
-
         }
-      }
-  }
+
+    }
 
 }

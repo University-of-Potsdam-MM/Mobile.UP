@@ -9,9 +9,9 @@
 
 <ion-content padding>
 
-  <!-- tiles -->
-  <ion-list class="row shortcutlist">
-    <!-- list of shortcuts -->
+  <!-- tiles --
+  <ion-list class="row shortcutlist"> -->
+    <!-- list of shortcuts 
     <div *ngFor="let moduleName of objectKey(modules)"
          (click)="openPage(moduleName)">
 
@@ -20,9 +20,32 @@
         {{ modules[moduleName].i18nKey | translate }}
       </ion-item>
     </div>
+
+
+
+
+
+
+  </ion-list> -->
+  <!-- test -->
+  <h2><ion-icon name=star></ion-icon>&nbsp;Favoriten</h2>
+  <ion-list class="row shortcutlist">
+    <!-- list of shortcuts -->
+   
+          <ion-item *ngFor="let moduleName of objectKey(modules)"
+          (click)="openPage(moduleName)" [id]="modules[moduleName].selected ? icon_selected : icon_not_selected">
+
+      <div *ngIf="modules[moduleName].selected" >
+        <ion-icon [name]="modules[moduleName].icon"></ion-icon>
+        {{ modules[moduleName].i18nKey | translate }}
+      </div>
+      </ion-item>
   </ion-list>
 
+  <!--test ende-->
+
   <!-- menu with all available modules -->
+  <!--<h2><ion-icon name=menu></ion-icon>&nbsp;Menü</h2> -->
   <ion-card scrollY="true"
             id="drawer"
             style="width:100%">
@@ -36,7 +59,7 @@
         </span>
 
         <!-- favourite-state icon -->
-        <ion-icon [name]="modules[moduleName].selected ? icon_selected : icon_not_selected"
+        <ion-icon item-right [name]="modules[moduleName].selected ? icon_selected : icon_not_selected"
                   (click)="toggleSelectedState(moduleName)">
         </ion-icon>
       </ion-item>
