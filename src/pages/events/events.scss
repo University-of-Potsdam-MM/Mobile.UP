@@ -18,4 +18,9 @@ page-events {
             width: auto!important;
         }
     }
+
+    .event  {
+        border-bottom:1px solid color($colors, primary);
+    
+    }
 }
