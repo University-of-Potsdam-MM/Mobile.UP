@@ -76,6 +76,8 @@ export class PracticePage {
           this.defaultList = [];
           // use inner object only because it's wrapped in another object
           for (let ads of response) {
+            console.log(ads);
+            ads.date = ads.date*1000;
             ads.expanded = false;
             this.defaultList.push(ads);
           }

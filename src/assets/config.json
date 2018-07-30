@@ -78,7 +78,7 @@
   "webservices": {
     "endpoint":{
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
-      "practiceSearch": "https://musang.soft.cs.uni-potsdam.de/ads.json",
+      "practiceSearch": "https://www.uni-potsdam.de/abindiepraxis/download/app_data.json",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
