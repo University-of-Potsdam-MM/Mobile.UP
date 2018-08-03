@@ -89,7 +89,7 @@
     "link": "http://www.uni-potsdam.de/studium/beratung/zsb/",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
-    "opening_hours": "Mo 10:00-12:00, 13:00-15:00; Tu 10:00-12:00, 14:00-17:00; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo 10:00-12:00, 13:00-15:00; Tu 10:00-12:00, 14:00-17:00; Th 10:00-12:00,13:00-15:00; Fr 10:00-12:00; Aug 07: Tu 10:00-12:00; Aug 01-Aug 31: Th 10:00-12:00; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -115,7 +115,7 @@
     "link": "http://www.uni-potsdam.de/studium/beratung/zsb/",
     "mail": "studienberatung@uni-potsdam.de",
     "telephone": "+49 331 977-1715",
-    "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Tu 14:00-17:00; Fr 10:00-12:00; Aug 07: off; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Dienstag",
@@ -159,7 +159,7 @@
     "link": "http://www.uni-potsdam.de/studium/beratung/psychologische-beratung/",
     "mail": "psychologische-beratung@uni-potsdam.de",
     "telephone": "+49 331 977-1830",
-    "opening_hours": "Tu 14:00-17:00 \"Frau Zech, Raum 1.81 (über der Cafeteria), Telefon: -1402\"; Fr 10:00-12:00 \"Frau Klöhn, Raum 0.82, Telefon: -1830\"; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Tu 14:00-17:00 \"Frau Kober, Raum 0.84, Telefon: -1402\"; Fr 10:00-12:00 \"Frau Klöhn, Raum 0.82, Telefon: -1830\"; Aug 07: off; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Dienstag",
@@ -177,7 +177,7 @@
     "link": "http://www.uni-potsdam.de/studium/beratung/studierendensekretariat/",
     "mail": "",
     "telephone": "",
-    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; Th 10:00-12:00; Fr 10:00-12:00; PH off; Dec 19-Jan 01 closed",
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; Th 10:00-12:00; Fr 10:00-12:00; Aug 01-Sep 30: Mo off; Aug 01-Sep 30: Mi off; Aug 01-Sep 30: Th off; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
@@ -221,7 +221,7 @@
     "link": "http://www.uni-potsdam.de/studium/beratung/pruefungsamt/",
     "mail": "pruefungsamt@uni-potsdam.de",
     "telephone": "",
-    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; Th 10:00-12:00; Fr 10:00-12:00; Mar 12-Mar 23 Mo closed; Mar 12-Mar 23 Tu 14:00-17:00; Mar 12-Mar 23 We closed; Mar 12-Mar 23 Th closed; Mar 12-Mar 23 Fr 10:00-12:00; PH off",
+    "opening_hours": "Mo 10:00-12:00; Tu 10:00-12:00,14:00-17:00; Th 10:00-12:00; Fr 10:00-12:00; Aug 07: 10:00-12:00; PH off; Dec 19-Jan 01 closed",
     "times": [
       {
         "day": "Montag",
