@@ -60,13 +60,17 @@
       "moodlewsrestformat": "json"
     },
     "sso": {
-      "ssoURLs": {
-        "plugin": "https://moodle2.uni-potsdam.de/local/mobile/launch.php?service=local_mobile&passport=1002",
+      "ssoUrls": {
+        "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
         "login": "https://moodle2.uni-potsdam.de/login/index.php",
-        "token": "moodlemobile://token=",
-        "idpBase": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
-        "idp": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
-        "attributeRelease": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease"
+        "tokenUrl": "moodlemobile://token=",
+        "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
+        "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
+        "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
+        "pluginUrlParams":{
+          "service":"local_mobile",
+          "passport":"1002"
+        }
       }
     }
   },
