@@ -1,7 +1,11 @@
 /* ~~~ EmergencyPage ~~~ */
 
-import { IAuthorization } from "../providers/login-provider/interfaces";
 import {InAppBrowserObject} from "@ionic-native/in-app-browser";
+import {
+  ILoginConfig_Credentials,
+  ILoginConfig_SSO,
+  ILoginConfig_OIDC
+} from "../providers/login-provider/interfaces";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -67,8 +71,15 @@ export interface IPerson {
 
 export interface IConfig {
   modules:{[moduleName:string]:IModule};
-  authorization:IAuthorization; // comes from login-provider
+  authorization:ILoginConfig;
   webservices:IWebServices
+}
+
+// references interfaces coming from login-provider
+export interface ILoginConfig {
+  credentials?:ILoginConfig_Credentials;
+  sso?:ILoginConfig_SSO;
+  oidc?:ILoginConfig_OIDC;
 }
 
 export interface IModule {

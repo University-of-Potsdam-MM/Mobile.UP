@@ -16,6 +16,7 @@ import {TranslateService} from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import {IConfig} from "../../library/interfaces";
 import { TabsPage } from '../tabs/tabs';
+import {Observable} from "rxjs/Observable";
 
 /**
  * LoginPage
@@ -60,33 +61,55 @@ export class LoginPage {
 
     let method:string = "";
     let source:string = await this.platform.ready();
+    let config:IConfig = await this.storage.get("config");
 
+    // first decide which login method should be executed
     switch(source){
       case "dom": { method = "credentials"; break; }
       case "cordova": { method = "sso"; break; }
       default: { method = "credentials"; break; }
     }
 
-    let config:IConfig = await this.storage.get("config");
+    // prepare Observable for use in switch
+    let session:Observable<ISession> = null;
 
-    this.upLogin.login(
-      this.loginCredentials,
-      config.authorization[method]
-    ).subscribe(
-      (session:ISession) => {
-        console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
-        this.storage.set("session", session);
-        this.endLoading();
-        this.nav.setRoot(TabsPage);
-      },
-      error => {
-        console.log(error);
-        this.endLoading();
-        this.showAlert(error.reason)
+    // execute fitting login method and attach result to created Observable
+    switch(method){
+      case "credentials":{
+        session = this.upLogin.credentialsLogin(
+          this.loginCredentials,
+          config.authorization.credentials
+        );
+        break;
       }
-    );
+      case "sso":{
+        session = this.upLogin.ssoLogin(
+          this.loginCredentials,
+          config.authorization.sso
+        );
+        break;
+      }
+    }
 
-
+    if(session){
+      // now handle the Observable which hopefully contains a session
+      session.subscribe(
+        (session:ISession) => {
+          console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
+          this.storage.set("session", session);
+          this.endLoading();
+          this.nav.setRoot(TabsPage);
+        },
+        error => {
+          console.log(error);
+          this.endLoading();
+          this.showAlert(error.reason)
+        }
+      );
+    } else {
+      this.showAlert(ELoginErrors.UNKNOWN_ERROR);
+      console.log("[LoginPage]: Somehow no session has been passed by login-provider");
+    }
   }
 
   /**
