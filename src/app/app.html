@@ -1,19 +1,23 @@
-<ion-menu [content]="content" persistent="true">
-
+<ion-menu id="sideMenu" class="sideMenu" [content]="content" side="right" type="overlay" persistent="true">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Module</ion-title>
+      <ion-title>{{ "menu.title"  | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <ion-list>
-      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
+      <div *ngFor="let page of pagesInMenu"> 
+        <div *ngIf="page.index != 1 && page.index != 2">
+          <button menuClose ion-item (click)="openPage(page)">
+            <ion-icon [name]="page.icon" [color]="isActive(page)"></ion-icon> {{ page.title  | translate }}
+          </button>
+        </div>
+      </div>
     </ion-list>
   </ion-content>
 
 </ion-menu>
 
-<ion-nav [root]="rootPage" #content swipeBackEnabled="true"></ion-nav>
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

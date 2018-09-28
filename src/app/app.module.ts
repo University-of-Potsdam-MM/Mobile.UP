@@ -1,3 +1,6 @@
+import { TabsPage } from './../pages/tabs/tabs';
+
+import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -19,6 +22,13 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { PersonsPage } from "../pages/persons/persons";
 import { MensaPage } from "../pages/mensa/mensa";
+import { NewsPage } from './../pages/news/news';
+import { EventsPage } from './../pages/events/events';
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
+import { SettingsPage } from "../pages/settings/settings";
+import { SettingsProvider } from '../providers/settings/settings';
+import { ComponentsProvider } from '../providers/components/components';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -33,17 +43,25 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    MensaPage
+    MensaPage,
+    SettingsPage,
+    PersonsPage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage,
+    TabsPage
   ],
   imports: [
     HttpClientModule,
+    ComponentsModule,
     BrowserModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
     })
@@ -57,14 +75,24 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    MensaPage
+    MensaPage,
+    SettingsPage,
+    PersonsPage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage,
+    TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
-    InAppBrowser
+    InAppBrowser,
+    SettingsProvider,
+    ComponentsProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

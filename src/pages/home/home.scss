@@ -1,0 +1,64 @@
+page-home { 
+
+  .shortcutlist {
+      .item-block {
+        padding: 3px;
+        background: #014260;
+        color: #fff;
+        border: none;
+        width: 100px;
+        height: 100px;
+        vertical-align: middle;
+        margin-right:5px;
+        margin-bottom:5px;
+
+        .item-inner {
+            border:none;
+            padding: 0;
+
+            .label {
+                margin:0;
+                text-align:center;
+                white-space: normal;
+                font-size:.8em;
+
+                
+                .icon {
+                    display: block;
+                    margin: 0 auto;
+                    text-align: center;
+                    font-size: 2.4em;
+                    margin-bottom: 5px;
+                }
+
+                
+            }
+
+        }
+      }
+
+      .add-shortcut {
+        background-color: #d0dae3;
+
+        .item-inner .input-wrapper .label {
+            .item-button {
+                background-color: #d0dae3;
+                box-shadow: unset;
+                width: 100px;
+                height: 100px;
+                text-align: center;
+                margin: 0;
+
+                .icon {
+                    font-size: 50px;
+                    margin:0;
+                    padding:0;
+                    color:#014260;
+                }
+            }
+
+        }
+      }
+  }
+
+}
