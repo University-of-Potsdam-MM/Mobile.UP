@@ -25,16 +25,32 @@
     <ion-spinner></ion-spinner>
   </div>
 
+  <div align="center" *ngIf="isLoaded">
+    <ion-col>
+      <button ion-button [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
+      (click)="showBasicCalendar = !showBasicCalendar;">Datum</button>
+      <button ion-button [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
+      <button ion-button [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
+    </ion-col>
+  </div>
+
+  <ion-calendar *ngIf="showBasicCalendar" [(ngModel)]="date"
+  (onChange)="pickDate($event)"
+  [options]="optionsBasic"
+  [type]="type"
+  [format]="'YYYY-MM-DD'">
+  </ion-calendar>
+
   <div *ngIf="isLoaded">
     <ion-list no-lines>
       <div *ngFor="let meal of allMeals; let i = index">
-        <ion-item *ngIf="mealForToday[i]" tappable (click)="expandMeal(i)"> 
+        <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)"> 
           <ion-thumbnail item-end>
             <img *ngIf="mealIsFish[i]" [src]="fishIconSource">
             <img *ngIf="mealIsVegan[i]" [src]="veganIconSource">
             <img *ngIf="mealIsVegetarian[i]" [src]="vegetarianIconSource">
           </ion-thumbnail>
-          <p>{{ meal.title }}</p>
+          <p>{{ meal.title }} {{ meal.type[0] }} </p>
           <h2 text-wrap>{{ meal.description }}</h2>
           <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropdown" item-start></ion-icon>
           <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropright" item-start></ion-icon>
@@ -46,8 +62,10 @@
           <div text-wrap>
             <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
               ({{ allergen.shortName }})
-              <div *ngIf="allergenIsExpanded[i][j]">: {{ allergen.longName.substring(0,30) }}</div>
             </button>
+            <div *ngFor="let allergen of meal.allergens; let j = index">
+              <div *ngIf="allergenIsExpanded[i][j]"><br>({{ allergen.shortName }}): {{ allergen.longName }}</div>
+            </div>
           </div>
         </ion-item>
       </div>

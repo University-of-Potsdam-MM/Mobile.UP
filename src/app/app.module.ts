@@ -27,6 +27,7 @@ import { RoomplanPage } from "../pages/roomplan/roomplan";
 import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
+import { CalendarModule } from "ion2-calendar";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -53,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     ComponentsModule,
     BrowserModule,
+    CalendarModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({

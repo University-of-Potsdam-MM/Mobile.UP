@@ -7,6 +7,7 @@ import {
   IMensaResponse,
   IMeals
 } from "../../library/interfaces";
+import { CalendarComponentOptions } from 'ion2-calendar';
 
 
 @IonicPage()
@@ -15,6 +16,14 @@ import {
   templateUrl: 'mensa.html',
 })
 export class MensaPage {
+
+  // calendar variables
+  showBasicCalendar = false;
+  date: string;
+  type: 'moment';
+  optionsBasic: CalendarComponentOptions = {
+    monthPickerFormat: ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
+  };
 
   currentCampus: string = '';
   currentDate: Date;
@@ -27,6 +36,9 @@ export class MensaPage {
   mealIsVegan: boolean[] = [];
   mealIsVegetarian: boolean[] = [];
   allergenIsExpanded: boolean[][] = [];
+
+  onlyVeganFood = false;
+  onlyVeggieFood = false;
 
   fishIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_fisch_f.png";
   veganIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegan_w.png";
@@ -111,16 +123,19 @@ export class MensaPage {
                 this.mealIsFish[i] = true;
                 this.mealIsVegan[i] = false;
                 this.mealIsVegetarian[i] = false;
+                break;
               }
               case "Vegan": {
                 this.mealIsFish[i] = false;
                 this.mealIsVegan[i] = true;
                 this.mealIsVegetarian[i] = false;
+                break;
               }
               case "Vegetarisch": {
                 this.mealIsFish[i] = false;
                 this.mealIsVegan[i] = false;
                 this.mealIsVegetarian[i] = true;
+                break;
               }
             }
           }
@@ -165,6 +180,50 @@ export class MensaPage {
 
   formatPrices(number:number) {
     return number.toFixed(2) + " €";
+  }
+
+  pickDate($event) {
+    let delay = setTimeout(() => {
+      this.showBasicCalendar = false;
+    }, 100);
+
+    var i;
+    for (i = 0; i < this.allMeals.length; i++) {
+      var mealDate: Date = new Date(this.allMeals[i].date);
+      if ($event.format('ddd MMM DD YYYY') == mealDate.toDateString()) {
+        this.mealForToday[i] = true;
+      } else { this.mealForToday[i] = false; }
+    }
+  }
+
+  veganOnly() {
+    this.onlyVeganFood = !this.onlyVeganFood;
+    this.onlyVeggieFood = false;
+    console.log(this.mealIsVegan);
+    console.log(this.mealIsVegetarian);
+  }
+
+  vegetarianOnly() {
+    this.onlyVeggieFood = !this.onlyVeggieFood;
+    this.onlyVeganFood = this.onlyVeggieFood;
+  }
+
+  checkConditions(i) {
+    if (this.mealForToday[i]) {
+      if (this.onlyVeganFood) {
+        if (this.mealIsVegan[i]) {
+          return true;
+        } else if (this.onlyVeggieFood) {
+          if (this.mealIsVegetarian[i]) {
+            return true;
+          } else { return false; }
+        }
+      } else if (this.onlyVeggieFood) {
+        if (this.mealIsVegetarian[i] || this.mealIsVegan[i]) {
+          return true;
+        } else { return false; }
+      } else { return true; }
+    } else { return false; }
   }
 
 }

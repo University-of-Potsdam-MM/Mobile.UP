@@ -16,6 +16,46 @@ page-mensa {
       }
   }
 
+  .calendarButton {
+    background-color: color($colors, secondary);
+    color: color($colors, primary);
+  }
+
+  .activeCalendarButton {
+      background-color: color($colors, primary);
+      color: color($colors, secondary);
+  }
+
+  .button:hover {
+    color: color($colors, secondary);
+}
+
+  ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
+  ion-calendar-month .primary button.days-btn small {
+      color: color($colors, primary);
+  }
+
+  ion-calendar-month .primary .days .on-selected, ion-calendar-month .primary .endSelection button.days-btn,
+  ion-calendar-month .primary .startSelection button.days-btn {
+      background-color: color($colors, primary);
+      color: color($colors, secondary);
+  }
+
+  ion-calendar-month .primary .startSelection:after,
+  ion-calendar-month .primary .between button.days-btn,
+  ion-calendar-month .primary .endSelection:after  {
+      background-color: color($colors, secondary);
+  }
+
+  ion-calendar-month .primary .days .marked.on-selected p, ion-calendar-month .primary .days .today.on-selected p,
+  ion-calendar-month .primary .endSelection button.days-btn p {
+      color: color($colors, secondary);
+  }
+
+  ion-calendar-month .primary .between button.days-btn p {
+      color: color($colors, primary);
+  }
+
   .mealDescription {
     font-size: 1.5rem!important;
     color: color($colors, primary);
