@@ -64,7 +64,7 @@ export class LoginPage {
     let config:IConfig = await this.storage.get("config");
 
     // first decide which login method should be executed
-    switch(source) {
+    switch(source){
       case "dom": { method = "credentials"; break; }
       case "cordova": { method = "sso"; break; }
       default: { method = "credentials"; break; }

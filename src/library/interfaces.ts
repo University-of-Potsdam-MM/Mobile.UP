@@ -1,7 +1,11 @@
 /* ~~~ EmergencyPage ~~~ */
 
-import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC } from "../providers/login-provider/interfaces";
 import {InAppBrowserObject} from "@ionic-native/in-app-browser";
+import {
+  ILoginConfig_Credentials,
+  ILoginConfig_SSO,
+  ILoginConfig_OIDC
+} from "../providers/login-provider/interfaces";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -92,7 +96,6 @@ export interface ILoginConfig {
   sso?:ILoginConfig_SSO;
   oidc?:ILoginConfig_OIDC;
 }
-
 
 export interface IModule {
   componentName:string;

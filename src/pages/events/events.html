@@ -36,7 +36,7 @@
   <br *ngIf="timespan == 0">
   <br *ngIf="timespan == 0">
   
-  <div *ngFor="let event of eventsList">
+  <div *ngFor="let event of eventsList" class="event">
     <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
   </div>
   <div *ngFor="let event of todaysEventsList; let i = index">
