@@ -6,67 +6,54 @@
     <ion-title>{{ "page.mensa.title" |translate}}</ion-title>
   </ion-navbar>
   <ion-toolbar no-border-top *ngIf="demo != 'Title'">
-      <ion-segment [(ngModel)]="campus" color="primary" (ionChange)="changeCampus($event)">
-        <ion-segment-button value="campus1">
-          {{"page.mensa.campus1" | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="campus2">
-            {{"page.mensa.campus2" | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="campus3">
-            {{"page.mensa.campus3" | translate}}
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-
-
+    <ion-segment [(ngModel)]="currentCampus" color="primary" (ionChange)="changeCampus($event)">
+      <ion-segment-button value="Griebnitzsee">
+        {{"page.mensa.campus1" | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="NeuesPalais">
+          {{"page.mensa.campus2" | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="Golm">
+          {{"page.mensa.campus3" | translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
-
 
 <ion-content padding>
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>
 
-
   <div *ngIf="isLoaded">
-    <ion-list>
-        <ion-item>
-          <ion-thumbnail item-start>
-            <img src="img/thumbnail-totoro.png">
+    <ion-list no-lines>
+      <div *ngFor="let meal of allMeals; let i = index">
+        <ion-item *ngIf="mealForToday[i]" tappable (click)="expandMeal(i)"> 
+          <ion-thumbnail item-end>
+            <img *ngIf="mealIsFish[i]" [src]="fishIconSource">
+            <img *ngIf="mealIsVegan[i]" [src]="veganIconSource">
+            <img *ngIf="mealIsVegetarian[i]" [src]="vegetarianIconSource">
           </ion-thumbnail>
-          <h2>My Neighbor Totoro</h2>
-          <p>Hayao Miyazaki • 1988</p>
+          <p>{{ meal.title }}</p>
+          <h2 text-wrap>{{ meal.description }}</h2>
+          <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropdown" item-start></ion-icon>
+          <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropright" item-start></ion-icon>
         </ion-item>
-        <ion-item>
-            <ion-thumbnail item-start>
-              <img src="img/thumbnail-totoro.png">
-            </ion-thumbnail>
-            <h2>My Neighbor Totoro</h2>
-            <p>Hayao Miyazaki • 1988</p>
-          </ion-item>
-          <ion-item>
-              <ion-thumbnail item-start>
-                <img src="img/thumbnail-totoro.png">
-              </ion-thumbnail>
-              <h2>My Neighbor Totoro</h2>
-              <p>Hayao Miyazaki • 1988</p>
-            </ion-item>
-            <ion-item>
-                <ion-thumbnail item-start>
-                  <img src="img/thumbnail-totoro.png">
-                </ion-thumbnail>
-                <h2>My Neighbor Totoro</h2>
-                <p>Hayao Miyazaki • 1988</p>
-              </ion-item>
-      </ion-list>
-    </div>
+        <ion-item *ngIf="mealIsExpanded[i]">
+          <ion-icon name="" item-start></ion-icon>
+          Studierende: {{ formatPrices(meal.prices.student) }}
+          <br>
+          Gäste: {{ formatPrices(meal.prices.guest) }}
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title>{{ "page.mensa.disclaimer" | translate}}</ion-title>
+    <div align="center" id="footerTitle" text-wrap>{{ "page.mensa.disclaimer" | translate}}</div>
     <tab-bar></tab-bar>
   </ion-toolbar>
 </ion-footer>

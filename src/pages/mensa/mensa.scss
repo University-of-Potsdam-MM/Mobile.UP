@@ -1,3 +1,18 @@
 page-mensa {
+    #footerTitle {
+      color:color($colors, primary); 
+    }
 
+    .item ion-thumbnail {
+      min-width: 3rem;    
+      min-height: 3rem;
+      max-width: 3rem;
+      max-height: 3rem;
+      img {
+        min-width: 3rem;    
+        min-height: 3rem;
+        max-width: 3rem;
+        max-height: 3rem;
+      }
+  }
 }

@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { WebHttpUrlEncodingCodec } from "../../library/util";
 import { Storage } from "@ionic/storage";
-import { ISession } from "../../providers/login-provider/interfaces";
-import { LoginPage } from "../login/login";
 import {
   IConfig,
-  IPerson,
-  IMensaResponse
+  IMensaResponse,
+  IMeals
 } from "../../library/interfaces";
 
 
@@ -19,18 +16,26 @@ import {
 })
 export class MensaPage {
 
-  personsFound:IPerson[] = [];
-  campus:String = '';
-  myDate: Date;
-  public isLoaded = false;
+  currentCampus: string = '';
+  currentDate: Date;
+  isLoaded = false;
+  allMeals: IMeals[] = [];
+  mealForToday: boolean[] = [];
+  mealIsExpanded: boolean[] = [];
+  mealIsFish: boolean[] = [];
+  mealIsVegan: boolean[] = [];
+  mealIsVegetarian: boolean[] = [];
+  fishIconSource:string;
+  veganIconSource:string;
+  vegetarianIconSource:string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
-    private storage: Storage) {
-    this.campus = "campus2";
-    this.myDate = new Date();
+    private storage: Storage) 
+  {
+    this.currentDate = new Date();
     this.isLoaded = false;
   }
 
@@ -38,10 +43,10 @@ export class MensaPage {
     console.log('ionViewDidLoad MensaPage');
   }
 
-  public ngOnInit() {
-    this.changeCampus('Golm');
+  ngOnInit() {
+    this.currentCampus = "Griebnitzsee";
+    this.changeCampus();
   }
-
 
   /**
    * checks whether a session is stored in memory. If not the user is taken to
@@ -49,50 +54,96 @@ export class MensaPage {
    * in this.personsFound so the view can render them
    * @param query
    */
-  public async changeCampus(event: any) {
-    // reset array so new persons are displayed
-    console.log(this.campus);
-    this.personsFound = [];
+  public async changeCampus() {
 
+    var i;
+    this.isLoaded = false;
 
+    this.allMeals = [];
+    for (i = 0; i < this.mealIsExpanded.length; i++) { this.mealIsExpanded[i] = false; }
+    for (i = 0; i < this.mealForToday.length; i++) { this.mealForToday[i] = false; }
+    for (i = 0; i < this.mealIsFish.length; i++) { this.mealIsFish[i] = false; }
+    for (i = 0; i < this.mealIsVegan.length; i++) { this.mealIsVegan[i] = false; }
+    for (i = 0; i < this.mealIsVegetarian.length; i++) { this.mealIsVegetarian[i] = false; }
 
+    let config:IConfig = await this.storage.get("config");
 
-    if(event) {
-      //console.log(`[PersonsPage]: Searching for \"${query}\"`);
+    let headers: HttpHeaders = new HttpHeaders()
+      .append("Authorization", config.webservices.apiToken);
 
-      let session:ISession = await this.storage.get("session");
-      let config:IConfig = await this.storage.get("config");
+    let params: HttpParams = new HttpParams()
+      .append("location", this.currentCampus);
 
-      if(session) {
-        let headers: HttpHeaders = new HttpHeaders()
-          .append("Authorization", config.webservices.apiToken);
+    this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params}).subscribe((res:IMensaResponse) => {
 
-        let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append("location",        "Golm");
+      if (res.meal) {
+        this.allMeals = res.meal;
+        var i;
 
-        this.http.get(
-          config.webservices.endpoint.mensa,
-          {headers:headers, params:params}
-          ).subscribe(
-          (response:IMensaResponse) => {
-            // use inner object only because it's wrapped in another object
-            for(let meal of response.meal) {
-              console.log(meal);
-              //this.personsFound.push(meal);
+        for (i = 0; i < res.iconHashMap.entry.length; i++) {
+          switch(res.iconHashMap.entry[i].key) {
+            case "Fisch": {
+              this.fishIconSource = res.iconHashMap.entry[i].value;
             }
-            this.isLoaded = true;
-          },
-          error => {
-            console.log(error)
+            case "Vegan": {
+              this.veganIconSource = res.iconHashMap.entry[i].value;
+            }
+            case "Vegetarian": {
+              this.vegetarianIconSource = res.iconHashMap.entry[i].value;
+            }
           }
-        );
-      } else {
-        // send user to LoginPage if no session has been found
-        this.navCtrl.push(LoginPage);
+        }
+
+        for (i = 0; i < this.allMeals.length; i++) {
+          var mealDate: Date = new Date(this.allMeals[i].date);
+          if (this.currentDate.toDateString() == mealDate.toDateString()) {
+            this.mealForToday[i] = true;
+          } else { this.mealForToday[i] = false; }
+
+          // check for fish, vegan, vegetarian
+          console.log(this.allMeals[i].type);
+          if (this.allMeals[i].type.length > 0) {
+            switch(this.allMeals[i].type[0]) {
+              case "Fisch": {
+                this.mealIsFish[i] = true;
+                this.mealIsVegan[i] = false;
+                this.mealIsVegetarian[i] = false;
+              }
+              case "Vegan": {
+                this.mealIsFish[i] = false;
+                this.mealIsVegan[i] = true;
+                this.mealIsVegetarian[i] = false;
+              }
+              case "Vegetarisch": {
+                this.mealIsFish[i] = false;
+                this.mealIsVegan[i] = false;
+                this.mealIsVegetarian[i] = true;
+              }
+            }
+          }
+          console.log(this.mealIsFish[i]  + ", " + this.mealIsVegan[i] + ", " + this.mealIsVegetarian[i]);
+        }
       }
+      this.isLoaded = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  expandMeal(i) {
+    var j;
+    if (this.mealIsExpanded[i]) {
+      this.mealIsExpanded[i] = false;
     } else {
-      console.log("[PersonsPage]: Empty query");
+      for (j = 0; j < this.allMeals.length; j++) {
+        this.mealIsExpanded[j] = false;
+      }
+      this.mealIsExpanded[i] = true;
     }
+  }
+
+  formatPrices(number:number) {
+    return number.toFixed(2) + " €";
   }
 
 }
