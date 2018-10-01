@@ -20,14 +20,17 @@ export class MensaPage {
   currentDate: Date;
   isLoaded = false;
   allMeals: IMeals[] = [];
+
   mealForToday: boolean[] = [];
   mealIsExpanded: boolean[] = [];
   mealIsFish: boolean[] = [];
   mealIsVegan: boolean[] = [];
   mealIsVegetarian: boolean[] = [];
-  fishIconSource:string;
-  veganIconSource:string;
-  vegetarianIconSource:string;
+  allergenIsExpanded: boolean[][] = [];
+
+  fishIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_fisch_f.png";
+  veganIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegan_w.png";
+  vegetarianIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegetarisch_v.png";
 
   constructor(
     public navCtrl: NavController,
@@ -80,28 +83,28 @@ export class MensaPage {
         this.allMeals = res.meal;
         var i;
 
-        for (i = 0; i < res.iconHashMap.entry.length; i++) {
-          switch(res.iconHashMap.entry[i].key) {
-            case "Fisch": {
-              this.fishIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegan": {
-              this.veganIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegetarian": {
-              this.vegetarianIconSource = res.iconHashMap.entry[i].value;
-            }
-          }
-        }
+        // for (i = 0; i < res.iconHashMap.entry.length; i++) {
+        //   switch(res.iconHashMap.entry[i].key) {
+        //     case "Fisch": {
+        //       this.fishIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //     case "Vegan": {
+        //       this.veganIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //     case "Vegetarian": {
+        //       this.vegetarianIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //   }
+        // }
 
         for (i = 0; i < this.allMeals.length; i++) {
+          this.allergenIsExpanded[i] = []
           var mealDate: Date = new Date(this.allMeals[i].date);
           if (this.currentDate.toDateString() == mealDate.toDateString()) {
             this.mealForToday[i] = true;
           } else { this.mealForToday[i] = false; }
 
           // check for fish, vegan, vegetarian
-          console.log(this.allMeals[i].type);
           if (this.allMeals[i].type.length > 0) {
             switch(this.allMeals[i].type[0]) {
               case "Fisch": {
@@ -121,7 +124,6 @@ export class MensaPage {
               }
             }
           }
-          console.log(this.mealIsFish[i]  + ", " + this.mealIsVegan[i] + ", " + this.mealIsVegetarian[i]);
         }
       }
       this.isLoaded = true;
@@ -131,14 +133,33 @@ export class MensaPage {
   }
 
   expandMeal(i) {
-    var j;
+    var j,k;
     if (this.mealIsExpanded[i]) {
       this.mealIsExpanded[i] = false;
+      for (k = 0; k < this.allMeals[i].allergens.length; k++) {
+        this.allergenIsExpanded[i][k] = false;
+      }
     } else {
       for (j = 0; j < this.allMeals.length; j++) {
         this.mealIsExpanded[j] = false;
+        for (k = 0; k < this.allMeals[j].allergens.length; k++) {
+          this.allergenIsExpanded[j][k] = false;
+        }
       }
       this.mealIsExpanded[i] = true;
+    }
+  }
+
+  expandAllergen(i,j) {
+    console.log(i,j);
+    var k;
+    if (this.allergenIsExpanded[i][j]) {
+      this.allergenIsExpanded[i][j] = false;
+    } else {
+      for (k = 0; k < this.allMeals[i].allergens.length; k++) {
+        this.allergenIsExpanded[i][k] = false;
+      }
+      this.allergenIsExpanded[i][j] = true;
     }
   }
 

@@ -15,4 +15,9 @@ page-mensa {
         max-height: 3rem;
       }
   }
+
+  .mealDescription {
+    font-size: 1.5rem!important;
+    color: color($colors, primary);
+  }
 }
