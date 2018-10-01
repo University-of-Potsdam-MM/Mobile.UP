@@ -1,5 +1,3 @@
-import { TabsPage } from './../pages/tabs/tabs';
-
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -49,8 +47,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewsPage,
     EventsPage,
     RoomsPage,
-    RoomplanPage,
-    TabsPage
+    RoomplanPage
   ],
   imports: [
     HttpClientModule,
@@ -81,8 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NewsPage,
     EventsPage,
     RoomsPage,
-    RoomplanPage,
-    TabsPage
+    RoomplanPage
   ],
   providers: [
     StatusBar,

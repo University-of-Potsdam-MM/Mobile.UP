@@ -32,14 +32,14 @@
   <ion-list class="row shortcutlist">
     <!-- list of shortcuts -->
    
-          <ion-item *ngFor="let moduleName of objectKey(modules)"
-          (click)="openPage(moduleName)" [id]="modules[moduleName].selected ? icon_selected : icon_not_selected">
+    <ion-item *ngFor="let moduleName of objectKey(modules)"
+    (click)="openPage(moduleName)" [id]="modules[moduleName].selected ? icon_selected : icon_not_selected">
 
       <div *ngIf="modules[moduleName].selected" >
         <ion-icon [name]="modules[moduleName].icon"></ion-icon>
         {{ modules[moduleName].i18nKey | translate }}
       </div>
-      </ion-item>
+    </ion-item>
   </ion-list>
 
   <!--test ende-->
@@ -66,3 +66,7 @@
     </ion-list>
   </ion-card>
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

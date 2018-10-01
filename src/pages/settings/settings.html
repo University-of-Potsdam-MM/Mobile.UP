@@ -11,7 +11,7 @@
 <ion-content padding>
 
   <ion-item-group>
-    <div *ngFor="let setting of settings" style="border-bottom:solid #f4f4f4 2px;!important;" id="test_div">
+    <div *ngFor="let setting of settings" style="border-bottom:solid #f4f4f4 2px!important" id="test_div">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
         <ion-label>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <ion-toggle checked="{{setting.value}}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
@@ -29,3 +29,7 @@
   </ion-item-group>
 
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

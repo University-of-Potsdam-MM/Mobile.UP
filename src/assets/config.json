@@ -27,7 +27,7 @@
     },
     "mensa": {
       "componentName": "mensa",
-      "icon": "grid",
+      "icon": "restaurant",
       "selected":true
     },
     "login": {
@@ -47,7 +47,7 @@
     },
     "settings": {
       "componentName": "settings",
-      "icon": "grid",
+      "icon": "settings",
       "selected":true
     },
     "imprint": {
