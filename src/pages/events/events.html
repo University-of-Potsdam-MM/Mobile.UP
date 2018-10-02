@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.events.title" | translate }}</ion-title>
+  </ion-navbar>
+
+  <ion-segment *ngIf="locationsList && timespan == 0" color="primary">
+    <button padding ion-button small *ngFor="let location of locationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)">
+      {{ locationsList[i] }}
+    </button>
+  </ion-segment>    
+
+</ion-header>
+
+
+<ion-content>
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+  <div *ngIf="(timespan == 1) && !eventsToday">
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            {{ "page.events.noEventsToday" | translate }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <br *ngIf="timespan == 0">
+  <br *ngIf="timespan == 0">
+  <br *ngIf="timespan == 0">
+  
+  <div *ngFor="let event of eventsList" class="event">
+    <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
+  </div>
+  <div *ngFor="let event of todaysEventsList; let i = index">
+    <event-view *ngIf="(timespan == 1)" [event]="event" [seperator]="firstEventTodayForLocation[i]"></event-view>
+  </div>
+  <div *ngFor="let event of nextEventsList; let i = index">
+    <event-view *ngIf="(timespan == 2)" [event]="event" [seperator]="firstEventForLocation[i]"></event-view>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment>
+      <div align="center">
+        <button ion-button small (click)="setTimespan(0)" [color]="isActiveTimespan(0)">{{ "page.events.eventsAll" | translate }}</button>
+        <button ion-button small (click)="setTimespan(1)" [color]="isActiveTimespan(1)">{{ "page.events.eventsToday" | translate }}</button>
+        <button ion-button small (click)="setTimespan(2)" [color]="isActiveTimespan(2)">{{ "page.events.eventsNext" | translate }}</button>
+      </div>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -1,4 +1,61 @@
 {
+  "modules": {
+    "persons": {
+      "componentName": "persons",
+      "icon": "people",
+      "selected":false
+    },
+    "news": {
+      "componentName": "news",
+      "icon": "paper",
+      "selected":false
+    },
+    "events": {
+      "componentName": "events",
+      "icon": "paper",
+      "selected":false
+    },
+    "rooms": {
+      "componentName": "rooms",
+      "icon": "square-outline",
+      "selected":false
+    },
+    "roomplan": {
+      "componentName": "roomplan",
+      "icon": "grid",
+      "selected":false
+    },
+    "practice": {
+      "componentName": "practice",
+      "icon": "briefcase",
+      "selected":false
+    },
+    "login": {
+      "componentName": "login",
+      "icon": "log-in",
+      "selected":true
+    },
+    "logout": {
+      "componentName": "logout",
+      "icon": "log-out",
+      "selected":true
+    },
+    "emergency": {
+      "componentName": "emergency",
+      "icon": "nuclear",
+      "selected":true
+    },
+    "settings": {
+      "componentName": "settings",
+      "icon": "options",
+      "selected":false
+    },
+    "imprint": {
+      "componentName": "imprint",
+      "icon": "information-circle",
+      "selected":true
+    }
+  },
   "authorization": {
     "credentials": {
       "method": "credentials",
@@ -8,19 +65,28 @@
       "moodlewsrestformat": "json"
     },
     "sso": {
-      "ssoURLs": {
-        "plugin": "https://moodle2.uni-potsdam.de/local/mobile/launch.php?service=local_mobile&passport=1002",
+      "ssoUrls": {
+        "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
         "login": "https://moodle2.uni-potsdam.de/login/index.php",
-        "token": "moodlemobile://token=",
-        "idpBase": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
-        "idp": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
-        "attributeRelease": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease"
+        "tokenUrl": "moodlemobile://token=",
+        "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
+        "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
+        "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
+        "pluginUrlParams":{
+          "service":"local_mobile",
+          "passport":"1002"
+        }
       }
     }
   },
   "webservices": {
     "endpoint":{
-      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json"
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
+      "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
+      "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
+      "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
+      "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   }

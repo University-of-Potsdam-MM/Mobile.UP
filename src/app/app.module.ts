@@ -1,3 +1,6 @@
+import { TabsPage } from './../pages/tabs/tabs';
+
+import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -17,8 +20,16 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
-import { PersonsPage } from "../pages/persons/persons";
 import { AthleticsPage } from "../pages/athletics/athletics";
+import { PracticePage } from "../pages/practice/practice";
+import { PersonsPage } from "../pages/persons/persons";
+import { NewsPage } from './../pages/news/news';
+import { EventsPage } from './../pages/events/events';
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
+import { SettingsPage } from "../pages/settings/settings";
+import { SettingsProvider } from '../providers/settings/settings';
+import { ComponentsProvider } from '../providers/components/components';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -33,17 +44,25 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    AthleticsPage
+    AthleticsPage,
+    SettingsPage,
+    PracticePage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage,
+    TabsPage
   ],
   imports: [
     HttpClientModule,
+    ComponentsModule,
     BrowserModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
     })
@@ -57,14 +76,24 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    AthleticsPage
+    AthleticsPage,
+    SettingsPage,
+    PracticePage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage,
+    TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
-    InAppBrowser
+    InAppBrowser,
+    SettingsProvider,
+    ComponentsProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

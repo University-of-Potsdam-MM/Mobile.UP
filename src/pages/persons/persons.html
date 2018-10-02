@@ -1,38 +1,48 @@
-<!--
-  Generated template for the PersonsPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ "personSearch" | translate }}</ion-title>
+    <ion-title>{{ "page.persons.title" | translate }}</ion-title>
   </ion-navbar>
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.persons.placeholder.search' | translate"
+    (ionInput)="search(query)">
+  </ion-searchbar>
 </ion-header>
-
 
 <ion-content padding>
 
-  <!-- Input for search -->
-  <form (ngSubmit)="search(query)">
-    <div>
-      <button ion-button type="submit"></button>
-      <ion-item>
-        <ion-input type="text" [(ngModel)]="query" name="query"></ion-input>
-      </ion-item>
-    </div>
+  <p *ngIf="waiting_for_response == true" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
 
-  </form>
+  <p *ngIf="waiting_for_response == false && personsFound.length == 0 && error == null" style="text-align: center">
+    {{ "page.persons.no_results" | translate }}
+  </p>
 
-  <!-- Display results -->
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+
   <ion-list>
-    <ion-card *ngFor="let person of personsFound">
-      <ion-card-title>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</ion-card-title>
-    </ion-card>
-
+    <ion-item *ngFor="let person of personsFound" (click)="expandPerson(person)">
+      <h2 >{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
+      <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>
+      <expandable [expanded]="person.expanded">
+        <p *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
+        <p *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
+        <p *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
+      </expandable>
+    </ion-item>
   </ion-list>
+
+  <ng-template #unknown_filed>
+  </ng-template>
 
 </ion-content>
