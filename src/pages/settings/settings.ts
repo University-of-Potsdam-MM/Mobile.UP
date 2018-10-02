@@ -88,6 +88,7 @@ export class SettingsPage {
         name: setting.key,
         label: setting.lbl, //TODO localize
         value: setting.value,
+        icon: setting.icon,
         type: type
       })
     } else {
@@ -108,6 +109,7 @@ export class SettingsPage {
           name: setting.key + "." + option.key,
           label: option.lbl, //TODO localize
           value: option.key,
+          icon: setting.icon,
           checked: checked,
           type: type
         })

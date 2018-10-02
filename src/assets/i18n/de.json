@@ -111,7 +111,12 @@
     "settings": {
       "title": "Einstellungen",
       "setting": {
-
+        "campus": {
+          "lbl": "Campus"
+        },
+        "language": {
+          "lbl": "Sprache"
+        }
       }
     },
     "rooms": {

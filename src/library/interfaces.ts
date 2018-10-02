@@ -355,6 +355,7 @@ export interface ISetting {
   lbl?:string; // identifier of localized resource under page.settings.options.??
   info?:string; // same as lbl but for help text (shown as subtitle)
   value:any;
+  icon?:string;
   options?:Array<ISettingOption>;
   type:ESettingType;
 }
