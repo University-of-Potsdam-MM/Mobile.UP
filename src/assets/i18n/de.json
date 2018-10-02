@@ -53,7 +53,11 @@
         "foreign": "Ausland",
         "partner": "Partner",
         "language": "Sprache",
-        "familyfriendly": "Familienfreundlich"
+        "familyfriendly": "Familienfreundlich",
+        "student": "Job für Studierende",
+        "graduate": "Job für Absolventen",
+        "thesis": "Abschlussarbeit",
+        "praktika": "Praktika"
 
       },
       "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"

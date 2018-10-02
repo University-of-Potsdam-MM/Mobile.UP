@@ -49,7 +49,7 @@
           </ion-row>
         </ion-grid>
       <expandable [expanded]="ADS.expanded">
-        <p *ngIf="ADS.file != ''; else unknown_filed"><ion-icon name="document"></ion-icon> <a href="{{ADS.file}}">{{ADS.file}}</a></p>
+        <p *ngIf="ADS.file != ''; else unknown_filed"><ion-icon name="document"></ion-icon> <a href="{{URLEndpoint}}{{ADS.file}}">Stellenausschreibung</a></p>
       </expandable>
     </ion-item>
   </ion-list>

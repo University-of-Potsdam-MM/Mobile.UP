@@ -1,10 +1,9 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {WebHttpUrlEncodingCodec} from "../../library/util";
-import {Storage} from "@ionic/storage";
-import {ISession} from "../../providers/login-provider/interfaces";
-import {LoginPage} from "../login/login";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Storage } from "@ionic/storage";
+import { ISession } from "../../providers/login-provider/interfaces";
+import { LoginPage } from "../login/login";
 import {
   IConfig,
   IADSResponse,
@@ -24,6 +23,7 @@ export class PracticePage {
   displayedList: ADS[] = [];
   waiting_for_response: boolean = false;
   error: HttpErrorResponse;
+  URLEndpoint: String = "https://www.uni-potsdam.de/abindiepraxis/download/";
 
   /**
    * Constructor of EmergencyPage
@@ -36,13 +36,15 @@ export class PracticePage {
     private storage: Storage,
     public navParams: NavParams,
     private chRef: ChangeDetectorRef) {
-    this.loadData();
-    this.initializeList();
   };
-
 
   public initializeList(): void {
     this.displayedList = this.defaultList;
+  }
+
+  async ngOnInit() {
+    this.initializeList();
+    this.loadData();
   }
 
   /**
@@ -63,20 +65,17 @@ export class PracticePage {
       let headers: HttpHeaders = new HttpHeaders()
         .append("Authorization", config.webservices.apiToken);
 
-      /*let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-        .append("username", session.credentials.username)
-        .append("password", session.credentials.password);*/
-
+      //this.URLEndpoint = config.webservices.endpoint.practiceSearch;
       this.http.get(
         config.webservices.endpoint.practiceSearch,
-        //{headers: headers, params: params}
+        {headers: headers}
       ).subscribe(
         (response: IADSResponse) => {
           // reset array so new persons are displayed
           this.defaultList = [];
           // use inner object only because it's wrapped in another object
           for (let ads of response) {
-            console.log(ads);
+            //console.log(ads);
             ads.date = ads.date*1000;
             ads.expanded = false;
             this.defaultList.push(ads);
