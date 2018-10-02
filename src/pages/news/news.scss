@@ -18,4 +18,9 @@ page-news {
             width: auto!important;
         }
     }
+
+    div.news-article  {
+        border-bottom:1px solid color($colors, primary);
+    
+    }
 }
