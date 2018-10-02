@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.practice.title" | translate}}</ion-title>
+  </ion-navbar>
+
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.practice.placeholder.search' | translate"
+    (input)="filterItems(query)">
+  </ion-searchbar>
+
+</ion-header>
+
+<ion-content padding>
+  <!-- list of emergencyCalls -->
+  <p *ngIf="waiting_for_response == true" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <p *ngIf="waiting_for_response == false && displayedList.length == 0 && error == null" style="text-align: center">
+    {{ "page.practice.no_results" | translate }}
+  </p>
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+
+  <ion-list>
+    <ion-item text-wrap detail-push *ngFor="let ADS of displayedList" (click)="expandADS(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
+
+      <h2>{{ADS.date | date:'dd.MM.yy'}} - {{ADS.title}}</h2>
+      <p *ngIf="ADS.field != ''; else unknown_filed" >{{ADS.field}}</p>
+
+      <ion-grid>
+          <ion-row>
+            <ion-col><p [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
+            <ion-col><p *ngIf="ADS.firm != ''; else unknown_filed">{{ADS.firm}}</p></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col *ngIf="ADS.famfriendly != '0'; else unknown_filed"><p>{{ "page.practice.item.familyfriendly" | translate }}</p></ion-col>
+            <ion-col *ngIf="ADS.language != null; else unknown_filed"><p>{{ "page.practice.item.language" | translate }}: {{ADS.language}}</p></ion-col>
+            <ion-col *ngIf="ADS.foreign != '0'; else unknown_filed"><p>{{ "page.practice.item.foreign" | translate }}</p></ion-col>
+          </ion-row>
+        </ion-grid>
+      <expandable [expanded]="ADS.expanded">
+        <p *ngIf="ADS.file != ''; else unknown_filed"><ion-icon name="document"></ion-icon> <a href="{{URLEndpoint}}{{ADS.file}}">Stellenausschreibung</a></p>
+      </expandable>
+    </ion-item>
+  </ion-list>
+</ion-content>

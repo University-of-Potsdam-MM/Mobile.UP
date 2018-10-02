@@ -10,6 +10,7 @@ import { EmergencyPage } from '../pages/emergency/emergency';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { NewsPage } from './../pages/news/news';
+import { PracticePage } from "../pages/practice/practice";
 import { PersonsPage } from "../pages/persons/persons";
 import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
@@ -71,6 +72,7 @@ export class MobileUPApp {
     // if index == 1 or index == 2 the page is hidden in the side menu
     this.pagesInMenu = [
       { title: "page.home.title", pageName: TabsPage, tabComponent: HomePage, index: 0, icon: "home" },
+      { title: "page.practice.title", pageName: TabsPage, tabComponent: PracticePage, index: 0, icon: "briefcase" },
       { title: "page.persons.title", pageName: TabsPage, tabComponent: PersonsPage, index: 0, icon: "people" },
       { title: "page.news.title", pageName: TabsPage, tabComponent: NewsPage, index: 0, icon: "paper" },
       { title: "page.events.title", pageName: TabsPage, tabComponent: EventsPage, index: 0, icon: "paper" },
@@ -97,6 +99,7 @@ export class MobileUPApp {
       roomplan:RoomplanPage,
       emergency:EmergencyPage,
       events:EventsPage,
+      practice:PracticePage,
       persons:PersonsPage,
       settings:SettingsPage
     });
