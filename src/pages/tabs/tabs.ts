@@ -1,8 +1,8 @@
 import { HomePage } from './../home/home';
-import { EmergencyPage } from './../emergency/emergency';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav } from 'ionic-angular';
 import { ImpressumPage } from '../impressum/impressum';
+import { SettingsPage } from '../settings/settings';
 
 @IonicPage()
 @Component({
@@ -27,9 +27,9 @@ export class TabsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private nav: Nav) {
 
-    this.tab2Root = EmergencyPage;
-    this.tab2PageTitle = "page.emergency.title";
-    this.tab2PageIcon = "nuclear";
+    this.tab2Root = SettingsPage;
+    this.tab2PageTitle = "page.settings.title";
+    this.tab2PageIcon = "options";
 
 
     this.tab3Root = ImpressumPage;

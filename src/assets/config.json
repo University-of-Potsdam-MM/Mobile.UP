@@ -47,8 +47,8 @@
     },
     "settings": {
       "componentName": "settings",
-      "icon": "grid",
-      "selected":true
+      "icon": "options",
+      "selected":false
     },
     "imprint": {
       "componentName": "imprint",

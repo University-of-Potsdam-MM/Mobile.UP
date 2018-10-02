@@ -78,13 +78,13 @@ export class MobileUPApp {
       { title: "page.events.title", pageName: TabsPage, tabComponent: EventsPage, index: 0, icon: "paper" },
       { title: "page.rooms.title", pageName: TabsPage, tabComponent: RoomsPage, index: 0, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: TabsPage, tabComponent: RoomplanPage, index: 0, icon: "grid" },
-      { title: "page.settings.title", pageName: SettingsPage, tabComponent: SettingsPage, index: 0, icon: "grid" },
+      { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 1, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, index: undefined, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, index: undefined, icon: "log-out" },
 
       // hide in side menu, because they are visible in tab2 / tab3
       // to change which pages are visible in the tabs 2/3:  change tab2Root / tab3Root in tabs.ts
-      { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 1, icon: "nuclear" },
+      { title: "page.settings.title", pageName: SettingsPage, tabComponent: SettingsPage, index: 0, icon: "options" },
       { title: "page.imprint.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
     ];
 
