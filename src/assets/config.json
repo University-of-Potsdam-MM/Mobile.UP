@@ -50,6 +50,11 @@
       "icon": "options",
       "selected":false
     },
+    "athletics": {
+      "componentName": "athletics",
+      "icon": "ionic",
+      "selected":false
+    },
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
