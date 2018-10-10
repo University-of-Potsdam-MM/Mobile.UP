@@ -15,10 +15,10 @@
       },
       "loginError": {
         "0": "Benutzername und Passwort stimmen nicht überein",
-        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Etwicklerteam",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam",
         "2": "Bitte prüfen Sie Ihre Netzwerverbindung",
-        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Etwicklerteam",
-        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Etwicklerteam"
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam"
       }
     },
     "logout": {
@@ -130,8 +130,16 @@
       "no_house": "Für das gewählte Haus gibt es heute keine Raumplanung.",
       "no_room": "Für den gewählten Raum gibt es heute keine Raumplanung."
     },
-    "openingHours": {
-      "title": "Öffnungszeiten"
+    "openingHours":{
+      "title":"Öffnungszeiten"
+    },
+    "mensa":{
+      "title": "Mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
+      "noMealsHint": "Es wurden keine Speisen gefunden, die Ihren Kriterien entsprechen."
     }
   },
   "button": {

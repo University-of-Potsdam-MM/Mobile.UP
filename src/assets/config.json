@@ -25,6 +25,11 @@
       "icon": "grid",
       "selected":false
     },
+    "mensa": {
+      "componentName": "mensa",
+      "icon": "restaurant",
+      "selected":true
+    },
     "practice": {
       "componentName": "practice",
       "icon": "briefcase",
@@ -47,12 +52,12 @@
     },
     "settings": {
       "componentName": "settings",
-      "icon": "options",
+      "icon": "settings",
       "selected":false
     },
     "athletics": {
       "componentName": "athletics",
-      "icon": "ionic",
+      "icon": "american-football",
       "selected":false
     },
     "imprint": {
@@ -87,6 +92,7 @@
   "webservices": {
     "endpoint":{
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
       "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",

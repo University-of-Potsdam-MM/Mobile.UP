@@ -1,5 +1,3 @@
-import { TabsPage } from './../pages/tabs/tabs';
-
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -23,6 +21,7 @@ import { LogoutPage } from "../pages/logout/logout";
 import { AthleticsPage } from "../pages/athletics/athletics";
 import { PracticePage } from "../pages/practice/practice";
 import { PersonsPage } from "../pages/persons/persons";
+import { MensaPage } from "../pages/mensa/mensa";
 import { NewsPage } from './../pages/news/news';
 import { EventsPage } from './../pages/events/events';
 import { RoomsPage } from "../pages/rooms/rooms";
@@ -30,6 +29,7 @@ import { RoomplanPage } from "../pages/roomplan/roomplan";
 import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
+import { CalendarModule } from "ion2-calendar";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -45,18 +45,19 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmergencyPage,
     PersonsPage,
     AthleticsPage,
+    MensaPage,
     SettingsPage,
     PracticePage,
     NewsPage,
     EventsPage,
     RoomsPage,
-    RoomplanPage,
-    TabsPage
+    RoomplanPage
   ],
   imports: [
     HttpClientModule,
     ComponentsModule,
     BrowserModule,
+    CalendarModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
@@ -77,13 +78,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmergencyPage,
     PersonsPage,
     AthleticsPage,
+    MensaPage,
     SettingsPage,
     PracticePage,
     NewsPage,
     EventsPage,
     RoomsPage,
-    RoomplanPage,
-    TabsPage
+    RoomplanPage
   ],
   providers: [
     StatusBar,

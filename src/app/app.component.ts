@@ -1,7 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, MenuController, Nav } from 'ionic-angular';
-
-import { TabsPage } from './../pages/tabs/tabs';
+import { Platform, Nav } from 'ionic-angular';
 
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
@@ -11,6 +9,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { PersonsPage } from "../pages/persons/persons";
 import { AthleticsPage } from '../pages/athletics/athletics';
+import { MensaPage } from "../pages/mensa/mensa";
 import { NewsPage } from './../pages/news/news';
 import { PracticePage } from "../pages/practice/practice";
 import { RoomsPage } from "../pages/rooms/rooms";
@@ -68,26 +67,19 @@ export class MobileUPApp {
   }
 
   private initPages() {
-    // if page should go into TABS:                             pageName: TabsPage, tabComponent: _actualPageName_, index: 0, icon: "icon-name"
-    // if page should NOT go into TABS (f.e login/logout):      pageName: _actualPageName_, index: undefined, icon: "icon-name"
-    // if index == 1 or index == 2 the page is hidden in the side menu
     this.pagesInMenu = [
-      { title: "page.home.title", pageName: TabsPage, tabComponent: HomePage, index: 0, icon: "home" },
-      { title: "page.practice.title", pageName: TabsPage, tabComponent: PracticePage, index: 0, icon: "briefcase" },
-      { title: "page.persons.title", pageName: TabsPage, tabComponent: PersonsPage, index: 0, icon: "people" },
-      { title: "page.news.title", pageName: TabsPage, tabComponent: NewsPage, index: 0, icon: "paper" },
-      { title: "page.events.title", pageName: TabsPage, tabComponent: EventsPage, index: 0, icon: "paper" },
-      { title: "page.rooms.title", pageName: TabsPage, tabComponent: RoomsPage, index: 0, icon: "square-outline" },
-      { title: "page.roomplan.title", pageName: TabsPage, tabComponent: RoomplanPage, index: 0, icon: "grid" },
-      { title: "page.athletics.title", pageName: TabsPage, tabComponent: AthleticsPage, index: 0, icon: "ionic" },
-      { title: "page.emergency.title", pageName: TabsPage, tabComponent: EmergencyPage, index: 0, icon: "nuclear" },
-      { title: "page.login.title", pageName: LoginPage, index: undefined, icon: "log-in" },
-      { title: "page.logout.title", pageName: LogoutPage, index: undefined, icon: "log-out" },
-
-      // hide in side menu, because they are visible in tab2 / tab3
-      // to change which pages are visible in the tabs 2/3:  change tab2Root / tab3Root in tabs.ts
-      { title: "page.settings.title", pageName: SettingsPage, tabComponent: SettingsPage, index: 1, icon: "options" },
-      { title: "page.imprint.title", pageName: TabsPage, tabComponent: ImpressumPage, index: 2, icon: "information-circle" }
+      { title: "page.home.title", pageName: HomePage, icon: "home" },
+      { title: "page.practice.title", pageName: PracticePage, icon: "briefcase" },
+      { title: "page.persons.title", pageName: PersonsPage, icon: "people" },
+      { title: "page.news.title", pageName: NewsPage, icon: "paper" },
+      { title: "page.events.title", pageName: EventsPage, icon: "calendar" },
+      { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
+      { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
+      { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
+      { title: "page.athletics.title", pageName: AthleticsPage, icon: "american-football" },
+      { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
+      { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
+      { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
     ];
 
     // tells ComponentsProvider which component to use for which page
@@ -99,6 +91,7 @@ export class MobileUPApp {
       imprint:ImpressumPage,
       rooms:RoomsPage,
       roomplan:RoomplanPage,
+      mensa:MensaPage,
       emergency:EmergencyPage,
       events:EventsPage,
       practice:PracticePage,
@@ -146,9 +139,8 @@ export class MobileUPApp {
       this.splashScreen.hide();
     });
 
-    // needed for TabsPage to load correctly
-    this.rootPage = TabsPage;
-    this.nav.setRoot(TabsPage);
+    this.rootPage = HomePage;
+    this.nav.setRoot(HomePage);
   }
 
   /**
@@ -177,20 +169,13 @@ export class MobileUPApp {
    */
   public openPage(page:IPage) {
 
-    let params = {};
-
-    if (page.index != undefined) {
-      params = {
-        tabComp: page.tabComponent,
-        pageTitle: page.title,
-        pageIcon: page.icon
-      };
-    }
-
-    if (this.nav.getActiveChildNavs()[0] && page.index != undefined) {
-      this.nav.setRoot(TabsPage, params);
+    if ((page.pageName == HomePage) && (this.nav.getActive().component != HomePage)) {
+      this.nav.setRoot(page.pageName);
     } else {
-      this.nav.setRoot(page.pageName, params);
+      if (this.nav.getActive().component != page.pageName) {
+        this.nav.popToRoot();
+        this.nav.push(page.pageName);
+      }
     }
 
   }
@@ -205,7 +190,7 @@ export class MobileUPApp {
       return;
     }
 
-    if (this.nav.getActive() && this.nav.getActive().name === page.pageName) {
+    if (this.nav.getActive() && this.nav.getActive().component === page.pageName) {
       return "primary";
     }
     return;

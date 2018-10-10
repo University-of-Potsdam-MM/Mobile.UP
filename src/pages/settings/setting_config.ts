@@ -1,4 +1,4 @@
-import {ESettingType} from "../../library/interfaces";
+import { ESettingType } from "../../library/interfaces";
 
 // See Settings README.md for info on how to create Settings
 

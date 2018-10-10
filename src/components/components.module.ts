@@ -5,13 +5,15 @@ import { NewsArticleComponent } from './news-article/news-article';
 import { ExpandableComponent } from './expandable/expandable';
 import { EventViewComponent } from './event-view/event-view';
 import { ContentDrawerComponent } from './content-drawer/content-drawer';
+import { TabBarComponent } from './tab-bar/tab-bar';
 
 @NgModule({
 	declarations: [
 		NewsArticleComponent,
 		ExpandableComponent,
 		EventViewComponent,
-    ContentDrawerComponent
+    	ContentDrawerComponent,
+    	TabBarComponent
 	],
 	imports: [
 		IonicModule,
@@ -21,7 +23,8 @@ import { ContentDrawerComponent } from './content-drawer/content-drawer';
 		NewsArticleComponent,
 		ExpandableComponent,
     	EventViewComponent,
-    ContentDrawerComponent
+    	ContentDrawerComponent,
+    	TabBarComponent
 	]
 })
 export class ComponentsModule {}
