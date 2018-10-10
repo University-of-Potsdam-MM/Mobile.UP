@@ -55,16 +55,16 @@
       "icon": "settings",
       "selected":false
     },
+    "imprint": {
+      "componentName": "imprint",
+      "icon": "information-circle",
+      "selected":true
+    },
     "athletics": {
       "componentName": "athletics",
       "icon": "american-football",
       "selected":false,
       "url": "https://www.uni-potsdam.de/hochschulsport/"
-    },
-    "imprint": {
-      "componentName": "imprint",
-      "icon": "information-circle",
-      "selected":true
     },
     "unishop": {
       "componentName": "unishop",
@@ -76,6 +76,7 @@
       "componentName": "reflectup",
       "icon": "help",
       "selected": false,
+      "url": "http://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
       "appId": "reflectup"
     },
     "moodle": {
