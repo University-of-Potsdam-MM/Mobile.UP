@@ -188,7 +188,7 @@ export class MobileUPApp {
       return;
     }
 
-    if (this.nav.getActive() && this.nav.getActive().name === page.pageName) {
+    if (this.nav.getActive() && this.nav.getActive().component === page.pageName) {
       return "primary";
     }
     return;

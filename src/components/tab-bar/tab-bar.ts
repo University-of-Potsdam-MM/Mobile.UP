@@ -18,7 +18,7 @@ export class TabBarComponent {
   openPage(pageID) {
     switch(pageID) {
       case 0: {
-        if (this.navCtrl.getActive().name != "HomePage") {
+        if (this.navCtrl.getActive().component != HomePage) {
           this.navCtrl.setRoot(HomePage, {fromSideMenu: true});
         }
         break;
