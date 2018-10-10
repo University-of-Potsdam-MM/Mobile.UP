@@ -106,6 +106,30 @@ export interface IMensaIcon {
   key:string;
   value:string;
 }
+export interface ADS {
+  uid:      number,
+  art:      number,
+  field:    string,
+  title:    string,
+  date:     number,
+  file:     string,
+  foreign:  number,
+  firm:     number,
+  location: string,
+  street:   string,
+  plz:      number,
+  language: string,
+  homepage: string,
+  firstname:string,
+  lastname: string,
+  phone:    string,
+  mail:     string,
+  partner:  number,
+  famFriendly:number,
+  expanded:  boolean
+}
+
+export interface IADSResponse extends Array<ADS>{}
 
 /* ~~~ config ~~~ */
 
@@ -137,6 +161,7 @@ export interface IWebServices {
 export interface IEndpoints {
   personSearch:string;
   mensa:string;
+  practiceSearch: string;
   news:string;
   roomsSearch:string;
   roomplanSearch:string;
@@ -370,6 +395,7 @@ export interface ISetting {
   lbl?:string; // identifier of localized resource under page.settings.options.??
   info?:string; // same as lbl but for help text (shown as subtitle)
   value:any;
+  icon?:string;
   options?:Array<ISettingOption>;
   type:ESettingType;
 }

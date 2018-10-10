@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HomePage } from '../../pages/home/home';
-import { EmergencyPage } from '../../pages/emergency/emergency';
 import { ImpressumPage } from '../../pages/impressum/impressum';
+import { SettingsPage } from '../../pages/settings/settings';
 
-/**
- * Generated class for the TabBarComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'tab-bar',
   templateUrl: 'tab-bar.html'
@@ -30,7 +24,7 @@ export class TabBarComponent {
         break;
       }
       case 1: {
-        this.navCtrl.push(EmergencyPage);
+        this.navCtrl.push(SettingsPage);
         break;
       }
       case 2: {

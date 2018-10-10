@@ -9,6 +9,7 @@ import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { MensaPage } from "../pages/mensa/mensa";
 import { NewsPage } from './../pages/news/news';
+import { PracticePage } from "../pages/practice/practice";
 import { PersonsPage } from "../pages/persons/persons";
 import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
@@ -67,13 +68,14 @@ export class MobileUPApp {
   private initPages() {
     this.pagesInMenu = [
       { title: "page.home.title", pageName: HomePage, icon: "home" },
+      { title: "page.practice.title", pageName: PracticePage, icon: "briefcase" },
       { title: "page.persons.title", pageName: PersonsPage, icon: "people" },
       { title: "page.news.title", pageName: NewsPage, icon: "paper" },
       { title: "page.events.title", pageName: EventsPage, icon: "calendar" },
       { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
       { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
-      { title: "page.settings.title", pageName: SettingsPage, icon: "settings" },
+      { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
     ];
@@ -90,6 +92,7 @@ export class MobileUPApp {
       mensa:MensaPage,
       emergency:EmergencyPage,
       events:EventsPage,
+      practice:PracticePage,
       persons:PersonsPage,
       settings:SettingsPage
     });

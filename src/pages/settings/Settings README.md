@@ -13,11 +13,11 @@ import {SettingsProvider} from "../../providers/settings/settings";
 export class MyPage {
     // inject setting provider in constructor
     constructor( public settingProvider: SettingsProvider) {}
-    
+
     ionViewDidLoad() {
         this.myFunc();
     }
-	
+
     // use settings in async function
     async myFunc(){
         // get setting by defined key
@@ -44,28 +44,31 @@ The following is an example for the `setting_config.ts` file with 6 different se
 import {ESettingType} from "../../library/interfaces";
 
 export const SETTINGS = [
-  {key: "test_ph", value: false, type: ESettingType.placeholder},
-  {key: "test_1", value: "", type: ESettingType.string, options: []},
-  {key: "test_2", value: 0, type: ESettingType.number, options: []},
-  {key: "test_3", value: false, type: ESettingType.boolean, options: []},
-  {key: "test_ph", value: false, type: ESettingType.placeholder},
+  {key: "test_ph", value: false, type: ESettingType.placeholder, icon: "ionic"},
+  {key: "test_1", value: "", type: ESettingType.string, icon: "ionic", options: []},
+  {key: "test_2", value: 0, type: ESettingType.number, icon: "ionic", options: []},
+  {key: "test_3", value: false, type: ESettingType.boolean, icon: "ionic", options: []},
+  {key: "test_ph", value: false, type: ESettingType.placeholder, icon: "ionic",},
   {
     key: "test_4",
     value: "0",
     options: [{key: 0, lbl: "deaktivated"}, {key: 1, lbl: "1"}, {key: 2, lbl: "2"}],
-    type: ESettingType.number_radio
+    type: ESettingType.number_radio,
+    icon: "ionic",
   },
   {
     key: "test_5",
     value: "test 1",
     options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
-    type: ESettingType.string_radio
+    type: ESettingType.string_radio,
+    icon: "ionic",
   },
   {
     key: "test_6",
     value: "test_1",
     options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
-    type: ESettingType.checkbox
+    type: ESettingType.checkbox,
+    icon: "ionic",
   }
 ];
 
@@ -79,12 +82,13 @@ A Setting consists of the following keys
 
 | Name    | Note                                                         |
 | ------- | ------------------------------------------------------------ |
-| key     | Key by wich the setting is identified                        |
+| key     | Key by which the setting is identified                        |
 | value   | value of setting, type depending on setting type             |
 | options | (radio/checkbox only) list of options each with a Key        |
 | lbl     | Both in options and in the main setting, are created automatically from key translation (see Translation) |
 | info    | Info text for setting                                        |
 | type    | Type of Enum Class (see Types)                               |
+| icon    | Ionic icon string (see https://ionicframework.com/docs/ionicons/) |
 
 ### Translation
 
