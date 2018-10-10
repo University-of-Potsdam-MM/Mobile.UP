@@ -185,6 +185,7 @@ export class MensaPage {
     let delay = setTimeout(() => {
       this.showBasicCalendar = false;
     }, 100);
+    console.log(delay);
 
     this.noMealsForDate = true;
 
