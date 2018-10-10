@@ -8,6 +8,7 @@ import {
   IMeals
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
+import { SettingsProvider } from "../../providers/settings/settings";
 
 
 @IonicPage()
@@ -49,6 +50,7 @@ export class MensaPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
+    private settingsProvider: SettingsProvider,
     private storage: Storage) 
   {
     this.currentDate = new Date();
@@ -56,7 +58,12 @@ export class MensaPage {
   }
 
   ngOnInit() {
-    this.currentCampus = "Griebnitzsee";
+    this.initCampus();
+  }
+
+  async initCampus() {
+    this.currentCampus = await this.settingsProvider.getSettingValue("campus");
+    this.currentCampus = this.currentCampus.replace(" ","");
     this.changeCampus();
   }
 
