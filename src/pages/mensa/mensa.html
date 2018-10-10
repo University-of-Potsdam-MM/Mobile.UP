@@ -72,6 +72,14 @@
     </ion-list>
   </div>
 
+  <div *ngIf="isLoaded && noMealsForDate">
+    <ion-card>
+      <ion-card-content class="hint">
+        {{ "page.mensa.noMealsHint" | translate }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>
 
 <ion-footer>

@@ -30,12 +30,13 @@ export class MensaPage {
   isLoaded = false;
   allMeals: IMeals[] = [];
 
-  mealForToday: boolean[] = [];
+  mealForDate: boolean[] = [];
   mealIsExpanded: boolean[] = [];
   mealIsFish: boolean[] = [];
   mealIsVegan: boolean[] = [];
   mealIsVegetarian: boolean[] = [];
   allergenIsExpanded: boolean[][] = [];
+  noMealsForDate: boolean = true;
 
   onlyVeganFood = false;
   onlyVeggieFood = false;
@@ -52,10 +53,6 @@ export class MensaPage {
   {
     this.currentDate = new Date();
     this.isLoaded = false;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MensaPage');
   }
 
   ngOnInit() {
@@ -76,10 +73,11 @@ export class MensaPage {
 
     this.allMeals = [];
     for (i = 0; i < this.mealIsExpanded.length; i++) { this.mealIsExpanded[i] = false; }
-    for (i = 0; i < this.mealForToday.length; i++) { this.mealForToday[i] = false; }
+    for (i = 0; i < this.mealForDate.length; i++) { this.mealForDate[i] = false; }
     for (i = 0; i < this.mealIsFish.length; i++) { this.mealIsFish[i] = false; }
     for (i = 0; i < this.mealIsVegan.length; i++) { this.mealIsVegan[i] = false; }
     for (i = 0; i < this.mealIsVegetarian.length; i++) { this.mealIsVegetarian[i] = false; }
+    this.noMealsForDate = true;
 
     let config:IConfig = await this.storage.get("config");
 
@@ -113,8 +111,9 @@ export class MensaPage {
           this.allergenIsExpanded[i] = []
           var mealDate: Date = new Date(this.allMeals[i].date);
           if (this.currentDate.toDateString() == mealDate.toDateString()) {
-            this.mealForToday[i] = true;
-          } else { this.mealForToday[i] = false; }
+            this.mealForDate[i] = true;
+            this.noMealsForDate = false;
+          } else { this.mealForDate[i] = false; }
 
           // check for fish, vegan, vegetarian
           if (this.allMeals[i].type.length > 0) {
@@ -187,29 +186,46 @@ export class MensaPage {
       this.showBasicCalendar = false;
     }, 100);
 
+    this.noMealsForDate = true;
+
     var i;
     for (i = 0; i < this.allMeals.length; i++) {
       var mealDate: Date = new Date(this.allMeals[i].date);
       if ($event.format('ddd MMM DD YYYY') == mealDate.toDateString()) {
-        this.mealForToday[i] = true;
-      } else { this.mealForToday[i] = false; }
+        this.mealForDate[i] = true;
+        this.noMealsForDate = false;
+      } else { this.mealForDate[i] = false; }
     }
   }
 
   veganOnly() {
     this.onlyVeganFood = !this.onlyVeganFood;
     this.onlyVeggieFood = false;
-    console.log(this.mealIsVegan);
-    console.log(this.mealIsVegetarian);
+    
+    this.noMealsForDate = true;
+    var i;
+    for (i = 0; i < this.allMeals.length; i++) {
+      if (this.checkConditions(i)) {
+        this.noMealsForDate = false;
+      }
+    }
   }
 
   vegetarianOnly() {
     this.onlyVeggieFood = !this.onlyVeggieFood;
     this.onlyVeganFood = this.onlyVeggieFood;
+
+    this.noMealsForDate = true;
+    var i;
+    for (i = 0; i < this.allMeals.length; i++) {
+      if (this.checkConditions(i)) {
+        this.noMealsForDate = false;
+      }
+    }
   }
 
   checkConditions(i) {
-    if (this.mealForToday[i]) {
+    if (this.mealForDate[i]) {
       if (this.onlyVeganFood) {
         if (this.mealIsVegan[i]) {
           return true;
