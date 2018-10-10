@@ -58,12 +58,32 @@
     "athletics": {
       "componentName": "athletics",
       "icon": "american-football",
-      "selected":false
+      "selected":false,
+      "url": "https://www.uni-potsdam.de/hochschulsport/"
     },
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
       "selected":true
+    },
+    "unishop": {
+      "componentName": "unishop",
+      "icon": "pricetags",
+      "selected": false,
+      "url": "https://www.unishop-potsdam.de/de/"
+    },
+    "reflectup": {
+      "componentName": "reflectup",
+      "icon": "help",
+      "selected": false,
+      "appId": "reflectup"
+    },
+    "moodle": {
+      "componentName": "moodle",
+      "icon": "help",
+      "selected": false,
+      "url": "https://moodle2.uni-potsdam.de/",
+      "appId": "moodlemobile"
     }
   },
   "authorization": {
@@ -100,5 +120,11 @@
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  },
+  "appUrls": {
+    "moodleAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
+    "moodleIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+    "reflectAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
+    "reflectIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8"
   }
 }

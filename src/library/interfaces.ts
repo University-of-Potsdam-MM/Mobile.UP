@@ -137,6 +137,14 @@ export interface IConfig {
   modules:{[moduleName:string]:IModule};
   authorization:ILoginConfig;
   webservices:IWebServices;
+  appUrls:IAppUrls;
+}
+
+export interface IAppUrls {
+  moodleAndroid:string;
+  moodleIOS:string;
+  reflectAndroid:string;
+  reflectIOS:string;
 }
 
 // references interfaces coming from login-provider
@@ -151,6 +159,8 @@ export interface IModule {
   i18nKey?:string;
   icon:string;
   selected?:boolean;
+  url?:string;
+  appId?:string;
 }
 
 export interface IWebServices {
@@ -403,4 +413,12 @@ export interface ISetting {
 export interface ISettingOption {
   key:any;
   lbl:string;
+}
+
+export interface IPage {
+  title:string;
+  pageName:any;
+  icon:string;
+  webIntent?:boolean;
+  moduleName?:string;
 }

@@ -8,7 +8,6 @@ import { EmergencyPage } from '../pages/emergency/emergency';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
 import { PersonsPage } from "../pages/persons/persons";
-import { AthleticsPage } from '../pages/athletics/athletics';
 import { MensaPage } from "../pages/mensa/mensa";
 import { NewsPage } from './../pages/news/news';
 import { PracticePage } from "../pages/practice/practice";
@@ -20,17 +19,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
-import { IConfig, IModule } from "../library/interfaces";
+import { IConfig, IModule, IPage } from "../library/interfaces";
 import { SettingsPage } from "../pages/settings/settings";
-import {ComponentsProvider} from "../providers/components/components";
-
-interface IPage {
-  title:string;
-  pageName:any;
-  tabComponent?:any;
-  index?:number;
-  icon:string;
-}
+import { ComponentsProvider } from "../providers/components/components";
+import { SettingsProvider } from '../providers/settings/settings';
+import { WebIntentProvider } from '../providers/web-intent/web-intent';
 
 @Component({
   templateUrl: 'app.html'
@@ -49,9 +42,29 @@ export class MobileUPApp {
     private translate: TranslateService,
     private storage: Storage,
     private http: HttpClient,
+    private settingsProvider: SettingsProvider,
+    private webIntent: WebIntentProvider,
     private components: ComponentsProvider
   ) {
     this.initializeApp();
+  }
+
+    /**
+   * initializes the app and hides splashscreen when it's done
+   */
+  private async initializeApp() {
+    await this.initConfig();
+    await this.initPages();
+    await this.initTranslate();
+    await this.buildDefaultModulesList();
+
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+    });
+
+    this.rootPage = HomePage;
+    this.nav.setRoot(HomePage);
   }
 
   private async initConfig() {
@@ -76,7 +89,10 @@ export class MobileUPApp {
       { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
       { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
-      { title: "page.athletics.title", pageName: AthleticsPage, icon: "american-football" },
+      { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
+      { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
+      { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
+      { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectup"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
@@ -88,6 +104,7 @@ export class MobileUPApp {
       login:LoginPage,
       logout:LogoutPage,
       news:NewsPage,
+      athletics:HomePage,
       imprint:ImpressumPage,
       rooms:RoomsPage,
       roomplan:RoomplanPage,
@@ -98,6 +115,26 @@ export class MobileUPApp {
       persons:PersonsPage,
       settings:SettingsPage
     });
+  }
+
+    /**
+   * initTranslate
+   *
+   * sets up translation
+   */
+  private async initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translate.setDefaultLang('de');
+
+    var userLanguage = await this.settingsProvider.getSettingValue("language");
+
+    if (userLanguage == "Deutsch") {
+      this.translate.use("de");
+    } else if (userLanguage == "Englisch") {
+      // this.translate.use("en");     
+      // dont use englisch until we have translation data
+      this.translate.use("de");
+    }
   }
 
   /**
@@ -126,74 +163,33 @@ export class MobileUPApp {
   }
 
   /**
-   * initializes the app and hides splashscreen when it's done
-   */
-  private async initializeApp() {
-    await this.initConfig();
-    await this.initPages();
-    await this.initTranslate();
-    await this.buildDefaultModulesList();
-
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-
-    this.rootPage = HomePage;
-    this.nav.setRoot(HomePage);
-  }
-
-  /**
-   * initTranslate
-   *
-   * sets up translation
-   */
-  private initTranslate() {
-    // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('de');
-
-    this.storage.get("appLanguage").then((value) => {
-      if (value != null) {
-        this.translate.use(value);
-      } else {
-        this.translate.use("de");
-        this.storage.set("appLanguage","de");
-      }
-    })
-
-  }
-
-  /**
    * opens a page when link is clicked
    * @param page
    */
   public openPage(page:IPage) {
 
-    if ((page.pageName == HomePage) && (this.nav.getActive().component != HomePage)) {
-      this.nav.setRoot(page.pageName);
-    } else {
+    if ((page.pageName != HomePage)) {
+      // pages with an actual dedicated ionic page
       if (this.nav.getActive().component != page.pageName) {
         this.nav.popToRoot();
         this.nav.push(page.pageName);
       }
+    } else if (page.webIntent) {
+      // pages that just link to an url or app
+      this.webIntent.handleWebIntent(page.moduleName);
+    } else if (this.nav.getActive().component != HomePage) {
+      // HomePage
+      this.nav.setRoot(HomePage);
     }
 
   }
 
   isActive(page:IPage) {
-    let childNav = this.nav.getActiveChildNavs()[0];
-
-    if (childNav) {
-      if (childNav.getSelected() && childNav.getSelected().root === page.tabComponent) {
+    if (this.nav.getActive() && this.nav.getActive().component == page.pageName) {
+      if (page.pageName != HomePage) {
         return "primary";
       }
-      return;
-    }
-
-    if (this.nav.getActive() && this.nav.getActive().component === page.pageName) {
-      return "primary";
     }
     return;
   }
-
 }

@@ -18,7 +18,6 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
-import { AthleticsPage } from "../pages/athletics/athletics";
 import { PracticePage } from "../pages/practice/practice";
 import { PersonsPage } from "../pages/persons/persons";
 import { MensaPage } from "../pages/mensa/mensa";
@@ -30,6 +29,7 @@ import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
+import { WebIntentProvider } from '../providers/web-intent/web-intent';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -44,7 +44,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    AthleticsPage,
     MensaPage,
     SettingsPage,
     PracticePage,
@@ -77,7 +76,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
-    AthleticsPage,
     MensaPage,
     SettingsPage,
     PracticePage,
@@ -93,7 +91,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UPLoginProvider,
     InAppBrowser,
     SettingsProvider,
-    ComponentsProvider
+    ComponentsProvider,
+    WebIntentProvider
   ]
 })
 export class AppModule {

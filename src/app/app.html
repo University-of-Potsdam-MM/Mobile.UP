@@ -8,11 +8,9 @@
   <ion-content>
     <ion-list>
       <div *ngFor="let page of pagesInMenu"> 
-        <div *ngIf="page.index != 1 && page.index != 2">
-          <button menuClose ion-item (click)="openPage(page)">
-            <ion-icon [name]="page.icon" [color]="isActive(page)"></ion-icon> {{ page.title  | translate }}
-          </button>
-        </div>
+        <button menuClose ion-item (click)="openPage(page)">
+          <ion-icon [name]="page.icon" [color]="isActive(page)"></ion-icon> {{ page.title  | translate }}
+        </button>
       </div>
     </ion-list>
   </ion-content>
