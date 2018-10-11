@@ -4,6 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
+import { WebIntentProvider } from '../../providers/web-intent/web-intent';
 /**
  * HomePage
  */
@@ -23,6 +24,7 @@ export class HomePage {
       public navCtrl: NavController,
       public translate: TranslateService,
       private storage: Storage,
+      private webIntent: WebIntentProvider,
       private components: ComponentsProvider) {
   }
 
@@ -75,11 +77,12 @@ export class HomePage {
    * opens selected page by pushing it on the stack
    * @param {string} pageTitle
    */
-  openPage(pageTitle:string){
+  openPage(pageTitle:string) {
     this.components.getComponent(pageTitle).subscribe(
     component => {
-      console.log(`[HomePage]: Opening \"${pageTitle}\"`);
-      this.navCtrl.push(component);
+      if (component == "webIntent") {
+        this.webIntent.handleWebIntent(pageTitle);
+      } else { this.navCtrl.push(component); }
       },
       error => {
         console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);

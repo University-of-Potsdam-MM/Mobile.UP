@@ -72,19 +72,19 @@
       "selected": false,
       "url": "https://www.unishop-potsdam.de/de/"
     },
-    "reflectup": {
-      "componentName": "reflectup",
+    "reflectUP": {
+      "componentName": "reflectUP",
       "icon": "help",
       "selected": false,
       "url": "http://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
-      "appId": "reflectup"
+      "appId": "reflectup://"
     },
     "moodle": {
       "componentName": "moodle",
       "icon": "help",
       "selected": false,
       "url": "https://moodle2.uni-potsdam.de/",
-      "appId": "moodlemobile"
+      "appId": "moodlemobile://"
     }
   },
   "authorization": {
@@ -125,7 +125,9 @@
   "appUrls": {
     "moodleAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
     "moodleIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+    "moodleBundle": "com.moodle.moodlemobile",
     "reflectAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
-    "reflectIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8"
+    "reflectIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
+    "reflectBundle": "de.unipotsdam.reflectup"
   }
 }

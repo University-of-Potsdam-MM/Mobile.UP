@@ -143,8 +143,10 @@ export interface IConfig {
 export interface IAppUrls {
   moodleAndroid:string;
   moodleIOS:string;
+  moodleBundle:string;
   reflectAndroid:string;
   reflectIOS:string;
+  reflectBundle:string;
 }
 
 // references interfaces coming from login-provider

@@ -92,7 +92,7 @@ export class MobileUPApp {
       { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
-      { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectup"},
+      { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
@@ -104,7 +104,6 @@ export class MobileUPApp {
       login:LoginPage,
       logout:LogoutPage,
       news:NewsPage,
-      athletics:HomePage,
       imprint:ImpressumPage,
       rooms:RoomsPage,
       roomplan:RoomplanPage,
@@ -113,7 +112,11 @@ export class MobileUPApp {
       events:EventsPage,
       practice:PracticePage,
       persons:PersonsPage,
-      settings:SettingsPage
+      settings:SettingsPage,
+      athletics:"webIntent",
+      unishop:"webIntent",
+      moodle:"webIntent",
+      reflectUP:"webIntent"
     });
   }
 

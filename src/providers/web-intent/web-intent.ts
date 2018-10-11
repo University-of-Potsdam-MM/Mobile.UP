@@ -4,6 +4,7 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser'
 import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from '../../library/interfaces';
 import { Platform } from 'ionic-angular';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 @Injectable()
 export class WebIntentProvider {
@@ -26,7 +27,8 @@ export class WebIntentProvider {
     fullscreen : 'yes',//Windows only
   };
 
-  constructor(private theInAppBrowser: InAppBrowser, public http: HttpClient, private storage: Storage, private platform: Platform) {
+  constructor(private theInAppBrowser: InAppBrowser, public http: HttpClient, private storage: Storage, private platform: Platform,
+    private appAvailability: AppAvailability) {
 
   }
 
@@ -37,8 +39,18 @@ export class WebIntentProvider {
       if (moduleConfig) {
         if (this.platform.is("ios") || this.platform.is("android")) {
           if (moduleConfig.appId) {
-            console.log(moduleConfig.appId);
             // TODO: App öffnen
+            var androidUrl, iosUrl, bundle;
+            if (moduleConfig.appId == "reflectup://") {
+              androidUrl = appUrls.reflectAndroid;
+              iosUrl = appUrls.reflectIOS;
+              bundle = appUrls.reflectBundle;
+            } else {
+              androidUrl = appUrls.moodleAndroid;
+              iosUrl = appUrls.moodleIOS;
+              bundle = appUrls.moodleBundle;
+            }
+            this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
           } else {
             this.openWithInAppBrowser(moduleConfig.url);
           }
@@ -49,18 +61,28 @@ export class WebIntentProvider {
     });
   }
 
-  openWithSystemBrowser(url : string){
-    let target = "_system";
-    this.theInAppBrowser.create(url,target,this.options);
-  }
-
   openWithInAppBrowser(url : string){
       let target = "_blank";
       this.theInAppBrowser.create(url,target,this.options);
   }
-  openWithCordovaBrowser(url : string){
-      let target = "_self";
-      this.theInAppBrowser.create(url,target,this.options);
+
+  launchExternalApp(schemaName:string, packageName:string, androidUrl:string, iosUrl:string) {
+    var app;
+    if (this.platform.is("ios")) {
+      app = schemaName;
+    } else { app = packageName; }
+
+    this.appAvailability.check(app).then(
+      () => { // app installed
+        this.theInAppBrowser.create(schemaName, '_system');
+      },
+      () => { // app not installed
+        if (this.platform.is("ios")) {
+          this.theInAppBrowser.create(iosUrl, '_system');
+        } else { this.theInAppBrowser.create(androidUrl, '_system'); }
+      }
+    );
+
   }
 
 }
