@@ -18,24 +18,21 @@
 // Add UP Font
 // --------------------------------------------------*/
 /* Source Sans Pro Regular */
-@font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular"), url("../assets/fonts/SourceSansPro-Regular.ttf") format("truetype");
-   
-  
-  }
+// @font-face {
+//     font-family: "Source Sans Pro";
+//     font-style: normal;
+//     font-weight: 400;
+//     src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular"), url("../assets/fonts/SourceSansPro-Regular.ttf") format("truetype");
+//   }
   
   /* Source Sans Pro Light */
   
-  @font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 300;
-    src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light"), url("../assets/fonts/SourceSansPro-Light.ttf") format("truetype");
-  
-  }
+  // @font-face {
+  //   font-family: "Source Sans Pro";
+  //   font-style: normal;
+  //   font-weight: 300;
+  //   src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light"), url("../assets/fonts/SourceSansPro-Light.ttf") format("truetype");
+  // }
   
   
   /* Source Sans Pro Italic 
@@ -51,13 +48,12 @@
   
   /* Source Sans Pro Bold */
   
-  @font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Source Sans Pro Bold"), local("Sourc-Sans-Pro-Bold"), url("../assets/fonts/SourceSansPro-Bold.ttf") format("truetype");
-  
-  }
+  // @font-face {
+  //   font-family: "Source Sans Pro";
+  //   font-style: normal;
+  //   font-weight: 700;
+  //   src: local("Source Sans Pro Bold"), local("Sourc-Sans-Pro-Bold"), url("../assets/fonts/SourceSansPro-Bold.ttf") format("truetype");
+  // }
 // Change Background Colors and Box Shadows
 // --------------------------------------------------*/
 
@@ -114,7 +110,7 @@ border: 1px solid #ededed;
 // --------------------------------------------------*/
 .toolbar-title {
 	color:color($colors, primary);
-	font-family: "Source Sans Pro", arial, sans-serif;
+  font-family: "Source Sans Pro", arial, sans-serif;
 }
 
 .content, .item {

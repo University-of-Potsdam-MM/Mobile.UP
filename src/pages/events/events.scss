@@ -1,10 +1,9 @@
 page-events {
     ion-segment {
-        display: block;
+        display: inline-block;
         white-space: nowrap;
         font-size: 0;
         overflow: auto;
-        background-color: #f7f7f7;
 
         &::-webkit-scrollbar {
             width: 0;

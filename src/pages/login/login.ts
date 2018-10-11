@@ -15,8 +15,8 @@ import {
 import {TranslateService} from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import {IConfig} from "../../library/interfaces";
-import { TabsPage } from '../tabs/tabs';
 import {Observable} from "rxjs/Observable";
+import { HomePage } from '../home/home';
 
 /**
  * LoginPage
@@ -98,7 +98,7 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
-          this.nav.setRoot(TabsPage);
+          this.nav.setRoot(HomePage);
         },
         error => {
           console.log(error);
