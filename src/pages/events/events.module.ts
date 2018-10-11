@@ -4,7 +4,6 @@ import { EventsPage } from './events';
 
 @NgModule({
   declarations: [
-    EventsPage,
   ],
   imports: [
     IonicPageModule.forChild(EventsPage),
