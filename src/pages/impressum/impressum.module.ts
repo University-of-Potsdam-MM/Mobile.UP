@@ -4,7 +4,6 @@ import { ImpressumPage } from './impressum';
 
 @NgModule({
   declarations: [
-    ImpressumPage,
   ],
   imports: [
     IonicPageModule.forChild(ImpressumPage),
