@@ -27,7 +27,11 @@ export class WebIntentProvider {
     fullscreen : 'yes',//Windows only
   };
 
-  constructor(private theInAppBrowser: InAppBrowser, public http: HttpClient, private storage: Storage, private platform: Platform,
+  constructor(
+    private theInAppBrowser: InAppBrowser,
+    public http: HttpClient,
+    private storage: Storage,
+    private platform: Platform,
     private appAvailability: AppAvailability) {
 
   }
@@ -39,7 +43,6 @@ export class WebIntentProvider {
       if (moduleConfig) {
         if (this.platform.is("ios") || this.platform.is("android")) {
           if (moduleConfig.appId) {
-            // TODO: App öffnen
             var androidUrl, iosUrl, bundle;
             if (moduleConfig.appId == "reflectup://") {
               androidUrl = appUrls.reflectAndroid;
