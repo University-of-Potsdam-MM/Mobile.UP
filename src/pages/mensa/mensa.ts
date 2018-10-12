@@ -42,9 +42,9 @@ export class MensaPage {
   onlyVeganFood = false;
   onlyVeggieFood = false;
 
-  fishIconSource:string;
-  veganIconSource:string;
-  vegetarianIconSource:string;
+  fishIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_fisch_f.png";
+  veganIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegan_w.png";
+  vegetarianIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegetarisch_v.png";
 
   constructor(
     public navCtrl: NavController,
@@ -100,19 +100,19 @@ export class MensaPage {
         this.allMeals = res.meal;
         var i;
 
-        for (i = 0; i < res.iconHashMap.entry.length; i++) {
-          switch(res.iconHashMap.entry[i].key) {
-            case "Fisch": {
-              this.fishIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegan": {
-              this.veganIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegetarian": {
-              this.vegetarianIconSource = res.iconHashMap.entry[i].value;
-            }
-          }
-        }
+        // for (i = 0; i < res.iconHashMap.entry.length; i++) {
+        //   switch(res.iconHashMap.entry[i].key) {
+        //     case "Fisch": {
+        //       this.fishIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //     case "Vegan": {
+        //       this.veganIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //     case "Vegetarian": {
+        //       this.vegetarianIconSource = res.iconHashMap.entry[i].value;
+        //     }
+        //   }
+        // }
 
         for (i = 0; i < this.allMeals.length; i++) {
           this.allergenIsExpanded[i] = []
