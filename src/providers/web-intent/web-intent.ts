@@ -38,21 +38,14 @@ export class WebIntentProvider {
 
   public handleWebIntent(moduleName:string) {
     this.storage.get("config").then((config:IConfig) => {
-      var appUrls = config.appUrls;
       var moduleConfig:IModule = config.modules[moduleName];
       if (moduleConfig) {
         if (this.platform.is("ios") || this.platform.is("android")) {
           if (moduleConfig.appId) {
             var androidUrl, iosUrl, bundle;
-            if (moduleConfig.appId == "reflectup://") {
-              androidUrl = appUrls.reflectAndroid;
-              iosUrl = appUrls.reflectIOS;
-              bundle = appUrls.reflectBundle;
-            } else {
-              androidUrl = appUrls.moodleAndroid;
-              iosUrl = appUrls.moodleIOS;
-              bundle = appUrls.moodleBundle;
-            }
+            androidUrl = moduleConfig.urlAndroid;
+            iosUrl = moduleConfig.urlIOS;
+            bundle = moduleConfig.bundleName;
             this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
           } else {
             this.openWithInAppBrowser(moduleConfig.url);
@@ -64,7 +57,7 @@ export class WebIntentProvider {
     });
   }
 
-  openWithInAppBrowser(url : string){
+  openWithInAppBrowser(url:string){
       let target = "_blank";
       this.theInAppBrowser.create(url,target,this.options);
   }
