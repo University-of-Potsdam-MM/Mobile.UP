@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { EmergencyPage } from '../pages/emergency/emergency';
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { IonicStorageModule } from "@ionic/storage";
+import { SafariViewController } from '@ionic-native/safari-view-controller';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -97,6 +98,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SettingsProvider,
     Keyboard,
     ComponentsProvider,
+    SafariViewController,
     AppAvailability,
     WebIntentProvider
   ]

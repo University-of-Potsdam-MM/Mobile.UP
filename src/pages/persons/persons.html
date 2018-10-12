@@ -30,7 +30,7 @@
     {{error.error}}<br/>
   </p>
 
-  <ion-list text-wrap>
+  <ion-list text-wrap no-lines>
     <ion-item *ngFor="let person of personsFound" (click)="expandPerson(person)">
       <h2 >{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
       <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>
