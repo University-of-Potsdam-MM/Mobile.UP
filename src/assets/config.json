@@ -35,30 +35,15 @@
       "icon": "briefcase",
       "selected":false
     },
-    "login": {
-      "componentName": "login",
-      "icon": "log-in",
-      "selected":true
-    },
-    "logout": {
-      "componentName": "logout",
-      "icon": "log-out",
-      "selected":true
-    },
     "emergency": {
       "componentName": "emergency",
       "icon": "nuclear",
-      "selected":true
-    },
-    "settings": {
-      "componentName": "settings",
-      "icon": "settings",
       "selected":false
     },
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
-      "selected":true
+      "selected":false
     },
     "athletics": {
       "componentName": "athletics",
@@ -71,6 +56,12 @@
       "icon": "pricetags",
       "selected": false,
       "url": "https://www.unishop-potsdam.de/de/"
+    },
+    "mail": {
+      "componentName": "mail",
+      "icon": "mail",
+      "selected": true,
+      "url": "https://mailup.uni-potsdam.de/"
     },
     "reflectUP": {
       "componentName": "reflectUP",
@@ -91,6 +82,21 @@
       "urlAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
       "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
       "bundleName": "com.moodle.moodlemobile"
+    },
+    "settings": {
+      "componentName": "settings",
+      "icon": "settings",
+      "selected":false
+    },
+    "login": {
+      "componentName": "login",
+      "icon": "log-in",
+      "selected":true
+    },
+    "logout": {
+      "componentName": "logout",
+      "icon": "log-out",
+      "selected":false
     }
   },
   "authorization": {

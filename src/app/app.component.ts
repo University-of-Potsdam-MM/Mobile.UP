@@ -97,6 +97,7 @@ export class MobileUPApp {
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
       { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
+      { title: "page.mail.title", pageName: HomePage, icon: "mail", webIntent: true, moduleName: "mail"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
@@ -119,6 +120,7 @@ export class MobileUPApp {
       settings:SettingsPage,
       athletics:"webIntent",
       unishop:"webIntent",
+      mail:"webIntent",
       moodle:"webIntent",
       reflectUP:"webIntent"
     });
