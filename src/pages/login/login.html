@@ -16,44 +16,48 @@
     <ion-col></ion-col>
   </ion-row>
 
-    <div>
-      <form (ngSubmit)="login()" #registerForm="ngForm">
-        <ion-row>
-          <ion-col>
-            <ion-list inset>
+  <div *ngIf="!alreadyLoggedIn">
+    <form (ngSubmit)="login()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
 
-              <ion-item>
-                <ion-input
-                  type="text"
-                  [placeholder]="'page.login.placeHolder.username' | translate"
-                  name="id"
-                  [(ngModel)]="loginCredentials.username"
-                  required
-                ></ion-input>
-              </ion-item>
+            <ion-item>
+              <ion-input
+                type="text"
+                [placeholder]="'page.login.placeHolder.username' | translate"
+                name="id"
+                [(ngModel)]="loginCredentials.username"
+                required
+              ></ion-input>
+            </ion-item>
 
-              <ion-item>
-                <ion-input
-                  type="password"
-                  [placeholder]="'page.login.placeHolder.password' |translate"
-                  name="password"
-                  [(ngModel)]="loginCredentials.password"
-                  required
-                ></ion-input>
-              </ion-item>
+            <ion-item>
+              <ion-input
+                type="password"
+                [placeholder]="'page.login.placeHolder.password' |translate"
+                name="password"
+                [(ngModel)]="loginCredentials.password"
+                required
+              ></ion-input>
+            </ion-item>
 
-            </ion-list>
-          </ion-col>
-        </ion-row>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <button ion-button class="submit-btn" full type="submit">
-              {{ "button.login" | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button class="submit-btn" full type="submit">
+            {{ "button.login" | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
 
-      </form>
-    </div>
+    </form>
+  </div>
+
+  <div align="center" *ngIf="alreadyLoggedIn" padding>
+    {{ "page.login.alreadyLoggedIn" | translate }}
+  </div>
   </ion-content>

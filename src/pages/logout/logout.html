@@ -17,21 +17,17 @@
     <ion-col></ion-col>
   </ion-row>
 
-  <div align="center">
-    <ion-row>
-      <ion-col>
-        <ion-card>
-          <ion-card-content>
-            {{ "page.logout.affirmativeQuestion" | translate }}
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+  <div align="center" *ngIf="alreadyLoggedIn">
+    {{ "page.logout.affirmativeQuestion" | translate }} <br> <br>
     <button id="logoutButton" ion-button (click)="goHome()">
       {{ "button.cancel" | translate }}
     </button>
     <button id="logoutButton" ion-button (click)="doLogout()">
       {{ "button.yes" | translate }}
     </button>
+  </div>
+
+  <div align="center" *ngIf="!alreadyLoggedIn" padding>
+    {{ "page.login.notLoggedIn" | translate }}
   </div>
 </ion-content>
