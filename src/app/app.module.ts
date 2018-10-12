@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -17,6 +18,19 @@ import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
+import { PracticePage } from "../pages/practice/practice";
+import { PersonsPage } from "../pages/persons/persons";
+import { MensaPage } from "../pages/mensa/mensa";
+import { NewsPage } from './../pages/news/news';
+import { EventsPage } from './../pages/events/events';
+import { RoomsPage } from "../pages/rooms/rooms";
+import { RoomplanPage } from "../pages/roomplan/roomplan";
+import { SettingsPage } from "../pages/settings/settings";
+import { SettingsProvider } from '../providers/settings/settings';
+import { ComponentsProvider } from '../providers/components/components';
+import { CalendarModule } from "ion2-calendar";
+import { WebIntentProvider } from '../providers/web-intent/web-intent';
+import { AppAvailability } from '@ionic-native/app-availability';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -29,17 +43,27 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginPage,
     LogoutPage,
     ImpressumPage,
-    EmergencyPage
+    EmergencyPage,
+    PersonsPage,
+    MensaPage,
+    SettingsPage,
+    PracticePage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage
   ],
   imports: [
     HttpClientModule,
+    ComponentsModule,
     BrowserModule,
+    CalendarModule,
     IonicModule.forRoot(MobileUPApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
     })
@@ -52,13 +76,26 @@ export function HttpLoaderFactory(http: HttpClient) {
     LogoutPage,
     ImpressumPage,
     EmergencyPage,
+    PersonsPage,
+    MensaPage,
+    SettingsPage,
+    PracticePage,
+    NewsPage,
+    EventsPage,
+    RoomsPage,
+    RoomplanPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UPLoginProvider,
-    InAppBrowser
+    InAppBrowser,
+    SettingsProvider,
+    ComponentsProvider,
+    AppAvailability,
+    WebIntentProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

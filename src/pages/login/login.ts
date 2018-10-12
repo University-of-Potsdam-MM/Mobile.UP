@@ -3,11 +3,9 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  NavController, Platform
+  Platform, Nav
 } from 'ionic-angular';
-import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
-import { AuthState } from '../../library/enums';
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,
@@ -16,6 +14,9 @@ import {
 } from "../../providers/login-provider/interfaces";
 import {TranslateService} from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
+import {IConfig} from "../../library/interfaces";
+import {Observable} from "rxjs/Observable";
+import { HomePage } from '../home/home';
 
 /**
  * LoginPage
@@ -39,7 +40,7 @@ export class LoginPage {
   };
 
   constructor(
-      private navCtrl: NavController,
+      private nav: Nav,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
@@ -59,46 +60,56 @@ export class LoginPage {
     this.showLoading();
 
     let method:string = "";
-
     let source:string = await this.platform.ready();
+    let config:IConfig = await this.storage.get("config");
 
+    // first decide which login method should be executed
     switch(source){
       case "dom": { method = "credentials"; break; }
       case "cordova": { method = "sso"; break; }
       default: { method = "credentials"; break; }
     }
 
-    console.log(method)
+    // prepare Observable for use in switch
+    let session:Observable<ISession> = null;
 
-    if (this.platform.is("cordova")) {
-      method = "sso";
-    } else if(this.platform.is("browser")) {
-      method = "credentials";
+    // execute fitting login method and attach result to created Observable
+    switch(method){
+      case "credentials":{
+        session = this.upLogin.credentialsLogin(
+          this.loginCredentials,
+          config.authorization.credentials
+        );
+        break;
+      }
+      case "sso":{
+        session = this.upLogin.ssoLogin(
+          this.loginCredentials,
+          config.authorization.sso
+        );
+        break;
+      }
     }
 
-    this.upLogin.login(
-      this.loginCredentials,
-      {
-        method: method,
-        moodleLoginEndpoint: "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
-        accessToken: "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
-        service: "moodle_mobile_app",
-        moodlewsrestformat: "json"
-      }
-      ).subscribe(
-      (session:ISession) => {
-        this.storage.set("session", session);
-        this.endLoading();
-        this.navCtrl.pop();
-      },
-      error => {
-        console.log(error);
-        this.endLoading();
-        this.showAlert(error.reason)
-      }
-    );
-
-
+    if(session){
+      // now handle the Observable which hopefully contains a session
+      session.subscribe(
+        (session:ISession) => {
+          console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
+          this.storage.set("session", session);
+          this.endLoading();
+          this.nav.setRoot(HomePage);
+        },
+        error => {
+          console.log(error);
+          this.endLoading();
+          this.showAlert(error.reason)
+        }
+      );
+    } else {
+      this.showAlert(ELoginErrors.UNKNOWN_ERROR);
+      console.log("[LoginPage]: Somehow no session has been passed by login-provider");
+    }
   }
 
   /**

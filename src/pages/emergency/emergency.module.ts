@@ -4,7 +4,6 @@ import { EmergencyPage } from './emergency';
 
 @NgModule({
   declarations: [
-    EmergencyPage,
   ],
   imports: [
     IonicPageModule.forChild(EmergencyPage),

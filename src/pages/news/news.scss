@@ -1,0 +1,25 @@
+page-news {
+    ion-segment {
+        display: inline-block;
+        white-space: nowrap;
+        font-size: 0;
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        ion-segment-button.segment-button {
+            display: inline-block!important;
+            min-width: 100px!important;
+            width: auto!important;
+        }
+    }
+
+    div.news-article  {
+        border-bottom:1px solid color($colors, primary);
+    
+    }
+}

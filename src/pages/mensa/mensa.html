@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.mensa.title" |translate}}</ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top *ngIf="demo != 'Title'">
+    <ion-segment [(ngModel)]="currentCampus" color="primary" (ionChange)="changeCampus($event)">
+      <ion-segment-button value="Griebnitzsee">
+        {{"page.mensa.campus1" | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="NeuesPalais">
+          {{"page.mensa.campus2" | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="Golm">
+          {{"page.mensa.campus3" | translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div align="center" *ngIf="isLoaded">
+    <ion-col>
+      <button ion-button [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
+      (click)="showBasicCalendar = !showBasicCalendar;">Datum</button>
+      <button ion-button [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
+      <button ion-button [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
+    </ion-col>
+  </div>
+
+  <ion-calendar *ngIf="showBasicCalendar" [(ngModel)]="date"
+  (onChange)="pickDate($event)"
+  [options]="optionsBasic"
+  [type]="type"
+  [format]="'YYYY-MM-DD'">
+  </ion-calendar>
+
+  <div *ngIf="isLoaded">
+    <ion-list no-lines>
+      <div *ngFor="let meal of allMeals; let i = index">
+        <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)"> 
+          <ion-thumbnail item-end>
+            <img *ngIf="mealIsFish[i]" [src]="fishIconSource">
+            <img *ngIf="mealIsVegan[i]" [src]="veganIconSource">
+            <img *ngIf="mealIsVegetarian[i]" [src]="vegetarianIconSource">
+          </ion-thumbnail>
+          <p>{{ meal.title }} {{ meal.type[0] }} </p>
+          <h2 text-wrap>{{ meal.description }}</h2>
+          <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropdown" item-start></ion-icon>
+          <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropright" item-start></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
+          <ion-icon name="" item-start></ion-icon>
+          Studierende: {{ formatPrices(meal.prices.student) }} <br>
+          Gäste: {{ formatPrices(meal.prices.guest) }} <br> <br>
+          <div text-wrap>
+            <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
+              ({{ allergen.shortName }})
+            </button>
+            <div *ngFor="let allergen of meal.allergens; let j = index">
+              <div *ngIf="allergenIsExpanded[i][j]"><br>({{ allergen.shortName }}): {{ allergen.longName }}</div>
+            </div>
+          </div>
+        </ion-item>
+      </div>
+    </ion-list>
+  </div>
+
+  <div *ngIf="isLoaded && noMealsForDate">
+    <ion-card>
+      <ion-card-content class="hint">
+        {{ "page.mensa.noMealsHint" | translate }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div align="center" id="footerTitle" text-wrap>{{ "page.mensa.disclaimer" | translate}}</div>
+    <tab-bar></tab-bar>
+  </ion-toolbar>
+</ion-footer>

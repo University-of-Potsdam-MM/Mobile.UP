@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ "page.emergency.title" | translate }}</ion-title>
+    <ion-title>{{ "page.emergency.title" | translate}}</ion-title>
   </ion-navbar>
 
   <ion-searchbar
     [(ngModel)]="query"
-    [placeholder]="texts.placeholder.search"
+    [placeholder]="'page.emergency.placeholder.search' | translate"
     (input)="filterItems(query)">
   </ion-searchbar>
 
@@ -17,7 +17,6 @@
 <ion-content>
   <!-- list of emergencyCalls -->
   <ion-list>
-
     <!-- template for emergencyCalls -->
     <ion-card *ngFor="let emergencyCall of displayedList">
 
@@ -27,7 +26,6 @@
       </ion-card-header>
 
       <ion-card-content right>
-
         <div *ngIf="emergencyCall.description">
           {{emergencyCall.description}}
         </div>
@@ -44,17 +42,20 @@
 
         <div *ngIf="emergencyCall.address">
           <p *ngIf="emergencyCall.address.postal">
-            <b>{{texts.item.postal}}</b>
+            <b>{{"page.emergency.item.postal" | translate}}</b>
             {{emergencyCall.address.postal}}
           </p>
           <p *ngIf="emergencyCall.address.street">
-            <b>{{texts.item.street}}</b>
+            <b>{{"page.emergency.item.street" | translate}}</b>
             {{emergencyCall.address.street}}
           </p>
         </div>
       </ion-card-content>
 
     </ion-card>
-
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

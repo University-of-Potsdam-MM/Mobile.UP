@@ -1,16 +1,133 @@
 {
-  "authorization": [
-    {
-      "method": "credentials",
-      "parameters": {
-
-      }
+  "modules": {
+    "persons": {
+      "componentName": "persons",
+      "icon": "people",
+      "selected":false
     },
-    {
-      "method": "sso",
-      "parameters": {
-
+    "news": {
+      "componentName": "news",
+      "icon": "paper",
+      "selected":false
+    },
+    "events": {
+      "componentName": "events",
+      "icon": "paper",
+      "selected":false
+    },
+    "rooms": {
+      "componentName": "rooms",
+      "icon": "square-outline",
+      "selected":false
+    },
+    "roomplan": {
+      "componentName": "roomplan",
+      "icon": "grid",
+      "selected":false
+    },
+    "mensa": {
+      "componentName": "mensa",
+      "icon": "restaurant",
+      "selected":true
+    },
+    "practice": {
+      "componentName": "practice",
+      "icon": "briefcase",
+      "selected":false
+    },
+    "login": {
+      "componentName": "login",
+      "icon": "log-in",
+      "selected":true
+    },
+    "logout": {
+      "componentName": "logout",
+      "icon": "log-out",
+      "selected":true
+    },
+    "emergency": {
+      "componentName": "emergency",
+      "icon": "nuclear",
+      "selected":true
+    },
+    "settings": {
+      "componentName": "settings",
+      "icon": "settings",
+      "selected":false
+    },
+    "imprint": {
+      "componentName": "imprint",
+      "icon": "information-circle",
+      "selected":true
+    },
+    "athletics": {
+      "componentName": "athletics",
+      "icon": "american-football",
+      "selected":false,
+      "url": "https://www.uni-potsdam.de/hochschulsport/"
+    },
+    "unishop": {
+      "componentName": "unishop",
+      "icon": "pricetags",
+      "selected": false,
+      "url": "https://www.unishop-potsdam.de/de/"
+    },
+    "reflectUP": {
+      "componentName": "reflectUP",
+      "icon": "help",
+      "selected": false,
+      "url": "http://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
+      "appId": "reflectup://"
+    },
+    "moodle": {
+      "componentName": "moodle",
+      "icon": "help",
+      "selected": false,
+      "url": "https://moodle2.uni-potsdam.de/",
+      "appId": "moodlemobile://"
+    }
+  },
+  "authorization": {
+    "credentials": {
+      "method": "credentials",
+      "moodleLoginEndpoint": "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
+      "accessToken": "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
+      "service": "moodle_mobile_app",
+      "moodlewsrestformat": "json"
+    },
+    "sso": {
+      "ssoUrls": {
+        "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
+        "login": "https://moodle2.uni-potsdam.de/login/index.php",
+        "tokenUrl": "moodlemobile://token=",
+        "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
+        "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
+        "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
+        "pluginUrlParams":{
+          "service":"local_mobile",
+          "passport":"1002"
+        }
       }
     }
-  ]
+  },
+  "webservices": {
+    "endpoint":{
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
+      "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
+      "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
+      "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
+      "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
+      "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
+    },
+    "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  },
+  "appUrls": {
+    "moodleAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
+    "moodleIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+    "moodleBundle": "com.moodle.moodlemobile",
+    "reflectAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
+    "reflectIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
+    "reflectBundle": "de.unipotsdam.reflectup"
+  }
 }

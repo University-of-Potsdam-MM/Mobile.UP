@@ -1,0 +1,74 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{"page.rooms.title"|translate}}</ion-title>
+  </ion-navbar>
+
+  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty"
+               [(ngModel)]="segment_locations">
+    <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
+                        (ionSelect)="switchLocation('3')">
+      {{ "university.location.gs" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button segment-activated" role="button" tappable="" value="np"
+                        (ionSelect)="switchLocation('1')">
+      {{ "university.location.np" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+    <ion-segment-button class="segment-button" role="button" tappable="" value="go"
+                        (ionSelect)="switchLocation('2')">
+      {{ "university.location.go" | translate }}
+      <div class="button-effect"></div>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content padding>
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item>
+    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()">
+      <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <p *ngIf="error != null" style="text-align: center">
+    {{ "alert.network" | translate }} <br/><br/>
+    {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/>
+  </p>
+  <p *ngIf="no_timeslot" style="text-align: center">
+    {{ "alert.no_info_for_time" | translate }}
+  </p>
+  <p *ngIf=" housesFound.length == 0 && error == null && !no_timeslot" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <ion-list>
+    <ion-card *ngFor="let house of housesFound">
+      <ion-card-header (click)="expand(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
+        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
+      </ion-card-header>
+      <expandable [expanded]="house.expanded">
+        <button ion-item (click)="openRoomPlan(house,room)" *ngFor="let room of house.rooms">
+          {{room.lbl}}
+        </button>
+      </expandable>
+
+    </ion-card>
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

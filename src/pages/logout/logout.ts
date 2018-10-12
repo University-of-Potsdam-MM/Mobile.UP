@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
-import { Location } from '@angular/common';
-import {HomePage} from "../home/home";
+import {IonicPage, Nav} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
+import { HomePage } from '../home/home';
 
 /**
  * LogoutPage
@@ -18,7 +17,7 @@ export class LogoutPage {
 
   constructor(
       private storage: Storage,
-      private navCtrl: NavController) {
+      private nav: Nav) {
   }
 
   /**
@@ -33,6 +32,6 @@ export class LogoutPage {
    * takes the user back to the previous page
    */
   public goHome() {
-    this.navCtrl.setRoot(HomePage);
+    this.nav.setRoot(HomePage);
   }
 }
