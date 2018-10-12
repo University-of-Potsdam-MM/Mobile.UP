@@ -1,5 +1,5 @@
 page-events {
-    ion-segment {
+    ion-segment.headSegment {
         display: inline-block;
         white-space: nowrap;
         font-size: 0;
@@ -17,9 +17,5 @@ page-events {
             width: auto!important;
         }
     }
-
-    .event  {
-        border-bottom:1px solid color($colors, primary);
     
-    }
 }

@@ -12,7 +12,7 @@
     },
     "events": {
       "componentName": "events",
-      "icon": "paper",
+      "icon": "calendar",
       "selected":false
     },
     "rooms": {

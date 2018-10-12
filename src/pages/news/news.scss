@@ -1,5 +1,5 @@
 page-news {
-    ion-segment {
+    ion-segment.headSegment {
         display: inline-block;
         white-space: nowrap;
         font-size: 0;
@@ -18,8 +18,4 @@ page-news {
         }
     }
 
-    div.news-article  {
-        border-bottom:1px solid color($colors, primary);
-    
-    }
 }

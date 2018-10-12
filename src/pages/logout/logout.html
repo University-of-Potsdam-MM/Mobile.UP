@@ -9,25 +9,29 @@
 
 
 <ion-content padding>
-  <div>
   <ion-row class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
-      <img src="http://placehold.it/300x200"/>
+      <img src="../../../assets/imgs/logo/logo_uni_potsdam.svg"/>
     </ion-col>
     <ion-col></ion-col>
   </ion-row>
 
-  <div>
-    <div>
-      {{ "page.logout.affirmativeQuestion" | translate }}
-    </div>
-    <button ion-button block (click)="doLogout()">
-      {{ "button.yes" | translate }}
-    </button>
-    <button ion-button block (click)="goHome()">
+  <div align="center">
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            {{ "page.logout.affirmativeQuestion" | translate }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <button id="logoutButton" ion-button (click)="goHome()">
       {{ "button.cancel" | translate }}
     </button>
-  </div>
+    <button id="logoutButton" ion-button (click)="doLogout()">
+      {{ "button.yes" | translate }}
+    </button>
   </div>
 </ion-content>

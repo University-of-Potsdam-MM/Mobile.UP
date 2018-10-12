@@ -31,6 +31,7 @@ import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Keyboard } from '@ionic-native/keyboard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -58,7 +59,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     BrowserModule,
     CalendarModule,
-    IonicModule.forRoot(MobileUPApp),
+    IonicModule.forRoot(MobileUPApp, {
+      backButtonText: ' ',
+    }),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -92,6 +95,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UPLoginProvider,
     InAppBrowser,
     SettingsProvider,
+    Keyboard,
     ComponentsProvider,
     AppAvailability,
     WebIntentProvider
