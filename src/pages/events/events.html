@@ -8,15 +8,19 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-segment class="headSegment" color="primary">
+    <ion-segment class="headSegment" color="primary" *ngIf="(timespan == 0) || (timespan == 2)">
       <button ion-button small *ngFor="let location of locationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)">
         {{ locationsList[i] }}
       </button>
-    </ion-segment> 
+    </ion-segment>
+    <ion-segment class="headSegment" color="primary" *ngIf="timespan == 1">
+      <button ion-button small *ngFor="let location of todaysLocationsList; let i = index" (click)="setLocation(i)" [color]="isActive(i)">
+        {{ todaysLocationsList[i] }}
+      </button>
+    </ion-segment>
   </ion-toolbar>   
 
 </ion-header>
-
 
 <ion-content>
   <div align="center" *ngIf="!isLoaded" padding>
@@ -38,7 +42,7 @@
     <event-view *ngIf="(timespan == 0) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
   </div>
   <div *ngFor="let event of todaysEventsList; let i = index">
-    <event-view *ngIf="(timespan == 1) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
+    <event-view *ngIf="(timespan == 1) && (event.Place.name == todaysLocationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
   </div>
   <div *ngFor="let event of nextEventsList; let i = index">
     <event-view *ngIf="(timespan == 2) && (event.Place.name == locationsList[eventLocation])" [event]="event" [seperator]="false"></event-view>
