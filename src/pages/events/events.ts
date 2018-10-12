@@ -1,4 +1,3 @@
-import { TranslateService } from '@ngx-translate/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IConfig, INewsApiResponse } from './../../library/interfaces';
 import { Storage } from '@ionic/storage';
@@ -31,7 +30,7 @@ export class EventsPage {
   firstEventTodayForLocation = [];
   firstEventForLocation = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private translate: TranslateService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient) {
   }
 
   async ngOnInit() {
