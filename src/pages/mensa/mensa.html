@@ -5,17 +5,7 @@
     </button>
     <ion-title>{{ "page.mensa.title" |translate}}</ion-title>
   </ion-navbar>
-  <ion-segment [(ngModel)]="currentCampus" color="primary" (ionChange)="changeCampus($event)">
-    <ion-segment-button value="Griebnitzsee">
-      {{"page.mensa.campus1" | translate}}
-    </ion-segment-button>
-    <ion-segment-button value="NeuesPalais">
-        {{"page.mensa.campus2" | translate}}
-    </ion-segment-button>
-    <ion-segment-button value="Golm">
-        {{"page.mensa.campus3" | translate}}
-    </ion-segment-button>
-  </ion-segment>
+  <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
 </ion-header>
 
 <ion-content padding>

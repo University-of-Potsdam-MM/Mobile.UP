@@ -7,24 +7,7 @@
     <ion-title>{{"page.rooms.title"|translate}}</ion-title>
   </ion-navbar>
 
-  <ion-segment style="border-radius: 0 !important;" class="segment segment-ios ng-valid ng-touched ng-dirty"
-               [(ngModel)]="segment_locations">
-    <ion-segment-button class="segment-button" role="button" tappable="" value="gs"
-                        (ionSelect)="switchLocation('3')">
-      {{ "university.location.gs" | translate }}
-      <div class="button-effect"></div>
-    </ion-segment-button>
-    <ion-segment-button class="segment-button segment-activated" role="button" tappable="" value="np"
-                        (ionSelect)="switchLocation('1')">
-      {{ "university.location.np" | translate }}
-      <div class="button-effect"></div>
-    </ion-segment-button>
-    <ion-segment-button class="segment-button" role="button" tappable="" value="go"
-                        (ionSelect)="switchLocation('2')">
-      {{ "university.location.go" | translate }}
-      <div class="button-effect"></div>
-    </ion-segment-button>
-  </ion-segment>
+  <campus-tab (campusChanged)="switchLocation($event)"></campus-tab>
 </ion-header>
 
 <ion-content padding>

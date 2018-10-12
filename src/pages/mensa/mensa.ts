@@ -26,7 +26,6 @@ export class MensaPage {
     monthPickerFormat: ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
   };
 
-  currentCampus: string = '';
   currentDate: Date;
   isLoaded = false;
   allMeals: IMeals[] = [];
@@ -57,23 +56,13 @@ export class MensaPage {
     this.isLoaded = false;
   }
 
-  ngOnInit() {
-    this.initCampus();
-  }
-
-  async initCampus() {
-    this.currentCampus = await this.settingsProvider.getSettingValue("campus");
-    this.currentCampus = this.currentCampus.replace(" ","");
-    this.changeCampus();
-  }
-
   /**
    * checks whether a session is stored in memory. If not the user is taken to
    * the LoginPage. If yes a query is sent to the API and the results are placed
    * in this.personsFound so the view can render them
    * @param query
    */
-  public async changeCampus() {
+  public async changeCampus($event) {
 
     var i;
     this.isLoaded = false;
@@ -92,7 +81,7 @@ export class MensaPage {
       .append("Authorization", config.webservices.apiToken);
 
     let params: HttpParams = new HttpParams()
-      .append("location", this.currentCampus);
+      .append("location", $event);
 
     this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params}).subscribe((res:IMensaResponse) => {
 
