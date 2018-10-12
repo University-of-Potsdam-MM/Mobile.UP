@@ -299,7 +299,8 @@ export class RoomplanPage {
             value => {
               const toast = this.toastCtrl.create({
                 message: value,
-                duration: 5000
+                duration: 3000,
+                position: 'middle',
               });
               toast.present();
             }

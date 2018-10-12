@@ -16,7 +16,7 @@
   </ion-refresher>
 
   <ion-item>
-    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()">
+    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
       <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
       </ion-option>
     </ion-select>

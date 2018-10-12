@@ -8,8 +8,6 @@ import {
   IMeals
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
-import { SettingsProvider } from "../../providers/settings/settings";
-
 
 @IonicPage()
 @Component({
@@ -49,7 +47,6 @@ export class MensaPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
-    private settingsProvider: SettingsProvider,
     private storage: Storage) 
   {
     this.currentDate = new Date();
