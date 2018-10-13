@@ -32,12 +32,12 @@
 
         <div>
           <ion-icon name="call" padding-right></ion-icon>
-          <a>{{emergencyCall.contact.telephone}}</a>
+          <a href="tel: {{emergencyCall.contact.telephone}}">{{emergencyCall.contact.telephone}}</a>
         </div>
 
         <div *ngIf="emergencyCall.contact.mail">
           <ion-icon name="mail" padding-right></ion-icon>
-          <a>{{emergencyCall.contact.mail}}</a>
+          <a href="mailto: {{emergencyCall.contact.mail}}">{{emergencyCall.contact.mail}}</a>
         </div>
 
         <div *ngIf="emergencyCall.address">

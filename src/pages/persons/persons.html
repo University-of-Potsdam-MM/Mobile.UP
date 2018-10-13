@@ -19,18 +19,18 @@
     <ion-spinner></ion-spinner>
   </p>
 
-  <p *ngIf="waiting_for_response == false && personsFound.length == 0 && error == null" style="text-align: center">
+  <p *ngIf="waiting_for_response == false && personsFound.length == 0 && error == null" style="text-align: center" text-wrap>
     {{ "page.persons.no_results" | translate }}
   </p>
 
-  <p *ngIf="error != null" style="text-align: center">
+  <p *ngIf="error != null" style="text-align: center" text-wrap>
     {{ "alert.network" | translate }} <br/><br/>
     {{error.name}}<br/>
     {{error.message}}<br/>
     {{error.error}}<br/>
   </p>
 
-  <ion-list>
+  <ion-list text-wrap no-lines>
     <ion-item *ngFor="let person of personsFound" (click)="expandPerson(person)">
       <h2 >{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
       <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>

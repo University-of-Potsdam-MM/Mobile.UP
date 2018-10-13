@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { AlertController } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
+import { SafariViewController } from '@ionic-native/safari-view-controller';
+import { Platform } from 'ionic-angular/platform/platform';
 
 @Component({
   selector: 'news-article',
@@ -11,7 +11,7 @@ export class NewsArticleComponent {
 
   @Input() public article;
 
-  constructor(private iap: InAppBrowser, private alertCtrl: AlertController, private translate: TranslateService) {
+  constructor(private iap: InAppBrowser, private safari: SafariViewController, private platform: Platform) {
 
     // hides images that could not be loaded (404)
     // maybe show an replacement image in the future?
@@ -26,30 +26,24 @@ export class NewsArticleComponent {
   }
 
   openWebsite(link) {
+    if (this.platform.is("cordova")) {
+      this.safari.isAvailable().then((available:boolean) => {
+        if (available) {
+          this.openWithSafari(link);
+        } else { this.openWithInAppBrowser(link); }
+      });
+    } else { this.openWithInAppBrowser(link); }
+  }
 
-    let alert = this.alertCtrl.create({
-      title: this.translate.instant("alert.title.website"),
-      buttons: [
-        {
-          text: this.translate.instant("button.no"),
-          role: 'disagree',
-          handler: () => {
-            console.log("Dialog dismissed");
-          }
-        },
-        {
-          text: this.translate.instant("button.yes"),
-          role: 'agree',
-          handler: () => {
-            this.iap.create(link);
-          }
-        }
-      ],
-      enableBackdropDismiss: false,
-    });
-    alert.present();
+  openWithInAppBrowser(url:string) {
+    let target = "_blank";
+    this.iap.create(url,target);
+  }
 
-
+  openWithSafari(url:string) {
+    this.safari.show({
+      url: url
+    }).subscribe(result => {console.log(result);}, error => { console.log(error); })
   }
 
 

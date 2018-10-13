@@ -6,6 +6,7 @@ import { ExpandableComponent } from './expandable/expandable';
 import { EventViewComponent } from './event-view/event-view';
 import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { TabBarComponent } from './tab-bar/tab-bar';
+import { CampusTabComponent } from './campus-tab/campus-tab';
 
 @NgModule({
 	declarations: [
@@ -13,7 +14,8 @@ import { TabBarComponent } from './tab-bar/tab-bar';
 		ExpandableComponent,
 		EventViewComponent,
     	ContentDrawerComponent,
-    	TabBarComponent
+    	TabBarComponent,
+    	CampusTabComponent
 	],
 	imports: [
 		IonicModule,
@@ -24,7 +26,8 @@ import { TabBarComponent } from './tab-bar/tab-bar';
 		ExpandableComponent,
     	EventViewComponent,
     	ContentDrawerComponent,
-    	TabBarComponent
+    	TabBarComponent,
+    	CampusTabComponent
 	]
 })
 export class ComponentsModule {}

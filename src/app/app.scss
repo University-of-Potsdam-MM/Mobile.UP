@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -18,21 +17,20 @@
 // Add UP Font
 // --------------------------------------------------*/
 /* Source Sans Pro Regular */
-// @font-face {
-//     font-family: "Source Sans Pro";
-//     font-style: normal;
-//     font-weight: 400;
-//     src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular"), url("../assets/fonts/SourceSansPro-Regular.ttf") format("truetype");
-//   }
+@font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular") format("truetype");
+}
   
-  /* Source Sans Pro Light */
-  
-  // @font-face {
-  //   font-family: "Source Sans Pro";
-  //   font-style: normal;
-  //   font-weight: 300;
-  //   src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light"), url("../assets/fonts/SourceSansPro-Light.ttf") format("truetype");
-  // }
+/* Source Sans Pro Light */
+@font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 300;
+    src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light") format("truetype");
+}
   
   
   /* Source Sans Pro Italic 
@@ -46,23 +44,39 @@
   } */
   
   
-  /* Source Sans Pro Bold */
-  
-  // @font-face {
-  //   font-family: "Source Sans Pro";
-  //   font-style: normal;
-  //   font-weight: 700;
-  //   src: local("Source Sans Pro Bold"), local("Sourc-Sans-Pro-Bold"), url("../assets/fonts/SourceSansPro-Bold.ttf") format("truetype");
-  // }
+/* Source Sans Pro Bold */
+@font-face {
+    font-family: "Source Sans Pro";
+    font-style: normal;
+    font-weight: 700;
+    src: local("Source Sans Pro Bold"), local("Sourc-Sans-Pro-Bold") format("truetype");
+}
+
 // Change Background Colors and Box Shadows
 // --------------------------------------------------*/
-
 
 .toolbar-background {
 	background-color:  color($colors, upgrey);
 	box-shadow: 0 0 0 #000;
 }
 
+ion-footer {
+    background-color:  #ffffff!important;
+    box-shadow: 0 0 0 #000;
+  
+  .toolbar-background {
+    background-color: #ffffff!important;
+  }
+}
+
+ion-header {
+	background-color:  color($colors, upgrey)!important;
+  box-shadow: 0 0 0 #000;
+  
+  .toolbar-background {
+    background-color: color($colors, upgrey)!important;
+  }
+}
 
 /*reset default theme box shadows and border radius */
 
@@ -70,12 +84,10 @@
   -webkit-box-shadow: 0 0 0 0 #fff;
   box-shadow:  0 0 0 0 #fff;
   border-radius:0;
-  text-transform: uppercase;
 }
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
 	background-image:none;
 }
-
 
 .tabbar {
 	background:  color($colors, upgrey);
@@ -88,8 +100,7 @@
 
 .searchbar-input, .searchbar-md .searchbar-input, .searchbar-ios .searchbar-input {
     box-shadow: none;
-
-border: 1px solid #ededed;
+    border: 1px solid #ededed;
 }
 
 
@@ -100,17 +111,17 @@ border: 1px solid #ededed;
 .segment .segment-button:last-of-type,
 .segment .segment-button:last-of-type,
 .badge  {
-
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
 }
+
 // Change Font Colors
 // --------------------------------------------------*/
 .toolbar-title {
 	color:color($colors, primary);
-  font-family: "Source Sans Pro", arial, sans-serif;
+    font-family: "Source Sans Pro", arial, sans-serif;
 }
 
 .content, .item {
@@ -133,12 +144,9 @@ border: 1px solid #ededed;
 // --------------------------------------------------*/
 
 .scroll-content {
-    padding-left:5px;
-    padding-right:5px;
+    padding-top:10px;
 }
 
 ion-app.md [padding] .scroll-content {
-
     padding: 5px;
-
 }

@@ -9,25 +9,25 @@
 
 
 <ion-content padding>
-  <div>
   <ion-row class="logo-row">
     <ion-col></ion-col>
     <ion-col width-67>
-      <img src="http://placehold.it/300x200"/>
+      <img src="../../../assets/imgs/logo/logo_uni_potsdam.svg"/>
     </ion-col>
     <ion-col></ion-col>
   </ion-row>
 
-  <div>
-    <div>
-      {{ "page.logout.affirmativeQuestion" | translate }}
-    </div>
-    <button ion-button block (click)="doLogout()">
-      {{ "button.yes" | translate }}
-    </button>
-    <button ion-button block (click)="goHome()">
+  <div align="center" *ngIf="alreadyLoggedIn">
+    {{ "page.logout.affirmativeQuestion" | translate }} <br> <br>
+    <button id="logoutButton" ion-button (click)="goHome()">
       {{ "button.cancel" | translate }}
     </button>
+    <button id="logoutButton" ion-button (click)="doLogout()">
+      {{ "button.yes" | translate }}
+    </button>
   </div>
+
+  <div align="center" *ngIf="!alreadyLoggedIn" padding>
+    {{ "page.login.notLoggedIn" | translate }}
   </div>
 </ion-content>

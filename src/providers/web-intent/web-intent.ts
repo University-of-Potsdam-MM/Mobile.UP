@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from '../../library/interfaces';
 import { Platform } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
+import { SafariViewController } from '@ionic-native/safari-view-controller';
 
 @Injectable()
 export class WebIntentProvider {
@@ -32,30 +33,28 @@ export class WebIntentProvider {
     public http: HttpClient,
     private storage: Storage,
     private platform: Platform,
-    private appAvailability: AppAvailability) {
+    private appAvailability: AppAvailability,
+    private safari: SafariViewController) {
 
   }
 
   public handleWebIntent(moduleName:string) {
     this.storage.get("config").then((config:IConfig) => {
-      var appUrls = config.appUrls;
       var moduleConfig:IModule = config.modules[moduleName];
       if (moduleConfig) {
         if (this.platform.is("ios") || this.platform.is("android")) {
           if (moduleConfig.appId) {
             var androidUrl, iosUrl, bundle;
-            if (moduleConfig.appId == "reflectup://") {
-              androidUrl = appUrls.reflectAndroid;
-              iosUrl = appUrls.reflectIOS;
-              bundle = appUrls.reflectBundle;
-            } else {
-              androidUrl = appUrls.moodleAndroid;
-              iosUrl = appUrls.moodleIOS;
-              bundle = appUrls.moodleBundle;
-            }
+            androidUrl = moduleConfig.urlAndroid;
+            iosUrl = moduleConfig.urlIOS;
+            bundle = moduleConfig.bundleName;
             this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
           } else {
-            this.openWithInAppBrowser(moduleConfig.url);
+            this.safari.isAvailable().then((available:boolean) => {
+              if (available) {
+                this.openWithSafari(moduleConfig.url);
+              } else { this.openWithInAppBrowser(moduleConfig.url); }
+            });
           }
         } else {
           this.openWithInAppBrowser(moduleConfig.url);
@@ -64,9 +63,15 @@ export class WebIntentProvider {
     });
   }
 
-  openWithInAppBrowser(url : string){
+  openWithInAppBrowser(url:string) {
       let target = "_blank";
       this.theInAppBrowser.create(url,target,this.options);
+  }
+
+  openWithSafari(url:string) {
+    this.safari.show({
+      url: url
+    }).subscribe(result => {console.log(result);}, error => { console.log(error); })
   }
 
   launchExternalApp(schemaName:string, packageName:string, androidUrl:string, iosUrl:string) {

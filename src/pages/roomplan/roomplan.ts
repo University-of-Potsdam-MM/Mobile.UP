@@ -36,7 +36,6 @@ export class RoomplanPage {
   default_room:IRoom;
 
   //bindings
-  segment_locations: string;
   select_day:string;
   refresher: any;
   days: any;
@@ -60,9 +59,6 @@ export class RoomplanPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RoomsPage');
-    this.segment_locations = RoomplanPage.getLocationByNum(this.current_location);
-    this.switchLocation("3"); // TODO load default tab from user settings/history
     this.day_offset = "0";
 
     this.days = [];
@@ -100,7 +96,7 @@ export class RoomplanPage {
    * Changes the day for which to load data
    * Day comes from DOM select element "select_day"
    */
-  changeDay(){
+  changeDay() {
     this.housesFound = [];
     this.houseMap = new Map<string, IHousePlan>();
     this.day_offset = this.select_day;
@@ -124,9 +120,15 @@ export class RoomplanPage {
    * Switch campus location and reload info for new campus
    * @param location - number as string representing campus
    */
-  switchLocation(location) {
+  switchLocation($event) {
     this.houseMap = new Map<string, IHousePlan>();
     this.housesFound = [];
+    var location; 
+    if ($event == "Griebnitzsee") {
+      location = "3";
+    } else if ($event == "NeuesPalais") {
+      location = "1";
+    } else { location = "2"; }
     this.current_location = location;
     this.getRoomInfo()
   }
@@ -297,7 +299,8 @@ export class RoomplanPage {
             value => {
               const toast = this.toastCtrl.create({
                 message: value,
-                duration: 5000
+                duration: 3000,
+                position: 'middle',
               });
               toast.present();
             }

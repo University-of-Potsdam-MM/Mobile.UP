@@ -5,19 +5,7 @@
     </button>
     <ion-title>{{ "page.mensa.title" |translate}}</ion-title>
   </ion-navbar>
-  <ion-toolbar no-border-top *ngIf="demo != 'Title'">
-    <ion-segment [(ngModel)]="currentCampus" color="primary" (ionChange)="changeCampus($event)">
-      <ion-segment-button value="Griebnitzsee">
-        {{"page.mensa.campus1" | translate}}
-      </ion-segment-button>
-      <ion-segment-button value="NeuesPalais">
-          {{"page.mensa.campus2" | translate}}
-      </ion-segment-button>
-      <ion-segment-button value="Golm">
-          {{"page.mensa.campus3" | translate}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
+  <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
 </ion-header>
 
 <ion-content padding>
@@ -27,10 +15,10 @@
 
   <div align="center" *ngIf="isLoaded">
     <ion-col>
-      <button ion-button [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
+      <button ion-button small [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
       (click)="showBasicCalendar = !showBasicCalendar;">Datum</button>
-      <button ion-button [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
-      <button ion-button [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
+      <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
+      <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
     </ion-col>
   </div>
 
@@ -85,6 +73,6 @@
 <ion-footer>
   <ion-toolbar>
     <div align="center" id="footerTitle" text-wrap>{{ "page.mensa.disclaimer" | translate}}</div>
-    <tab-bar></tab-bar>
   </ion-toolbar>
+    <tab-bar></tab-bar>
 </ion-footer>

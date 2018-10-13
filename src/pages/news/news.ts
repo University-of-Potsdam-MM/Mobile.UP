@@ -30,8 +30,18 @@ export class NewsPage {
     this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
+        var tmpArray = [];
         for (var source in response.vars.newsSources) {
-          this.sourcesList.push(response.vars.newsSources[source]);
+          tmpArray.push(response.vars.newsSources[source]);
+        }
+        var i,j;
+        for (i = 0; i < tmpArray.length; i++) {
+          for (j = 0; j < this.newsList.length; j++) {
+            if (this.newsList[j].NewsSource.name == tmpArray[i]) {
+              this.sourcesList.push(tmpArray[i]);
+              break;
+            }
+          }
         }
         this.isLoaded = true;
       }

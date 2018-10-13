@@ -9,22 +9,24 @@
     "login":{
       "title":"Login",
       "loginInProgress": "Login läuft",
+      "alreadyLoggedIn": "Du bist bereits eingeloggt.",
+      "notLoggedIn": "Du bist nicht eingeloggt.",
       "placeHolder": {
-        "username": "Benutzername (ohne @uni-potsdam.de)",
+        "username": "Benutzername (ohne @uni...)",
         "password": "Passwort"
       },
       "loginError": {
         "0": "Benutzername und Passwort stimmen nicht überein",
-        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam",
-        "2": "Bitte prüfen Sie Ihre Netzwerverbindung",
-        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam",
-        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam"
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
       }
     },
     "logout": {
       "title": "Logout",
       "text": "Sie sind dabei sich abzumelden",
-      "affirmativeQuestion": "Sind Sie sicher?"
+      "affirmativeQuestion": "Wirklich ausloggen?"
     },
     "emergency": {
       "title": "Notrufnummern",
@@ -139,14 +141,14 @@
       "campus2": "Neues Palais",
       "campus3": "Golm",
       "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
-      "noMealsHint": "Es wurden keine Speisen gefunden, die Ihren Kriterien entsprechen."
+      "noMealsHint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen."
     },
     "unishop": {
       "title": "UNIshop"
     }
   },
   "button": {
-    "ok": "Ok",
+    "ok": "OK",
     "cancel": "Abbrechen",
     "yes": "Ja",
     "no": "Nein",
@@ -159,8 +161,8 @@
       "error": "Fehler",
       "website": "Website öffnen?"
     },
-    "network": "Ein Netzwerkfehler ist aufgetreten. Ist ihr Gerät mit dem Internet verbunden ?",
-    "no_info_for_time": "Für den diesen Zeitraum sind keine Informationen verfügbar."
+    "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
+    "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar."
   },
   "university": {
     "location": {

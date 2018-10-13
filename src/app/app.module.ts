@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { EmergencyPage } from '../pages/emergency/emergency';
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { IonicStorageModule } from "@ionic/storage";
+import { SafariViewController } from '@ionic-native/safari-view-controller';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -31,6 +32,7 @@ import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { AppAvailability } from '@ionic-native/app-availability';
+import { Keyboard } from '@ionic-native/keyboard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -58,7 +60,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     BrowserModule,
     CalendarModule,
-    IonicModule.forRoot(MobileUPApp),
+    IonicModule.forRoot(MobileUPApp, {
+      backButtonText: ' ',
+    }),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -92,7 +96,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     UPLoginProvider,
     InAppBrowser,
     SettingsProvider,
+    Keyboard,
     ComponentsProvider,
+    SafariViewController,
     AppAvailability,
     WebIntentProvider
   ]

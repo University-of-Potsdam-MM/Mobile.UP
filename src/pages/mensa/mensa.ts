@@ -8,8 +8,6 @@ import {
   IMeals
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
-import { SettingsProvider } from "../../providers/settings/settings";
-
 
 @IonicPage()
 @Component({
@@ -26,7 +24,6 @@ export class MensaPage {
     monthPickerFormat: ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
   };
 
-  currentCampus: string = '';
   currentDate: Date;
   isLoaded = false;
   allMeals: IMeals[] = [];
@@ -50,21 +47,10 @@ export class MensaPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
-    private settingsProvider: SettingsProvider,
     private storage: Storage) 
   {
     this.currentDate = new Date();
     this.isLoaded = false;
-  }
-
-  ngOnInit() {
-    this.initCampus();
-  }
-
-  async initCampus() {
-    this.currentCampus = await this.settingsProvider.getSettingValue("campus");
-    this.currentCampus = this.currentCampus.replace(" ","");
-    this.changeCampus();
   }
 
   /**
@@ -73,7 +59,7 @@ export class MensaPage {
    * in this.personsFound so the view can render them
    * @param query
    */
-  public async changeCampus() {
+  public async changeCampus($event) {
 
     var i;
     this.isLoaded = false;
@@ -92,7 +78,7 @@ export class MensaPage {
       .append("Authorization", config.webservices.apiToken);
 
     let params: HttpParams = new HttpParams()
-      .append("location", this.currentCampus);
+      .append("location", $event);
 
     this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params}).subscribe((res:IMensaResponse) => {
 

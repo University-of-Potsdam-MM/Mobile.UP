@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
-
+import { Keyboard } from '@ionic-native/keyboard';
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
@@ -44,6 +44,7 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
+    private keyboard: Keyboard,
     private components: ComponentsProvider
   ) {
     this.initializeApp();
@@ -59,8 +60,11 @@ export class MobileUPApp {
     await this.buildDefaultModulesList();
 
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      if (this.platform.is("cordova")) {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+        this.keyboard.disableScroll(true);
+      }
     });
 
     this.rootPage = HomePage;
@@ -93,6 +97,7 @@ export class MobileUPApp {
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
       { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
+      { title: "page.mail.title", pageName: HomePage, icon: "mail", webIntent: true, moduleName: "mail"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
@@ -115,6 +120,7 @@ export class MobileUPApp {
       settings:SettingsPage,
       athletics:"webIntent",
       unishop:"webIntent",
+      mail:"webIntent",
       moodle:"webIntent",
       reflectUP:"webIntent"
     });

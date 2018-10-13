@@ -30,7 +30,6 @@ import { RoomplanPage } from "../roomplan/roomplan";
 export class RoomsPage {
 
   //bindings
-  segment_locations: string;
   select_timeslot: string;
   refresher: any;
 
@@ -50,8 +49,6 @@ export class RoomsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RoomsPage');
-
     this.current_timeslot = RoomsPage.getCurrentTimeslot();
 
     this.time_slots = [];
@@ -60,9 +57,6 @@ export class RoomsPage {
       this.time_slots.push(slot)
     }
     this.select_timeslot = this.current_timeslot.start;
-
-    this.segment_locations = RoomplanPage.getLocationByNum(this.current_location);
-    this.switchLocation("3"); // TODO load default tab from user settings/history
   }
 
   /**
@@ -112,8 +106,14 @@ export class RoomsPage {
    * Switch campus location and reload info for new campus
    * @param location - number as string representing campus
    */
-  switchLocation(location){
+  switchLocation($event) {
     this.housesFound = [];
+    var location; 
+    if ($event == "Griebnitzsee") {
+      location = "3";
+    } else if ($event == "NeuesPalais") {
+      location = "1";
+    } else { location = "2"; }
     this.current_location = location;
     this.getRoomInfo()
   }
