@@ -8,8 +8,29 @@
 </ion-header>
 
 
-<ion-content padding>
-Hier kommen die Noten!
+<ion-content>
+  <div align="center" class="hint" padding>
+    {{ "page.grades.hint" | translate }}
+  </div>
+  <div align="center" *ngIf="!studentLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="studentLoaded">
+    <ion-item class="studiengang" no-lines tappable (click)="getGrades()">
+      <div text-wrap>
+        {{ studentDetails.Studiengaenge.abschl }} {{ studentDetails.Studiengaenge.ltxt }}
+      </div>
+      <ion-icon name="arrow-dropright" item-end></ion-icon>
+    </ion-item>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="gradesLoaded" align="center" padding>
+    Objekt wird auf der Konsole ausgegeben... [WIP]
+  </div>
 </ion-content>
 
 <ion-footer>

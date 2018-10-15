@@ -77,9 +77,7 @@ export class MobileUPApp {
     this.http.get<IConfig>("assets/config.json").subscribe(
       config => {
         this.config = config;
-        this.storage.set("config", config).then(
-          config => console.log("[MobileUPApp]: Config loaded in storage")
-        )
+        this.storage.set("config", config);
       }
     );
   }

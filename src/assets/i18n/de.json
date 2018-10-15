@@ -65,7 +65,8 @@
       "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
     },
     "grades": {
-      "title": "Meine Leistungen"
+      "title": "Meine Leistungen",
+      "hint": "Bitte wähle einen Abschluss aus, zu dem die Leistungen angezeigt werden sollen."
     },
     "library": {
       "title": "Bibliothekssuche"
