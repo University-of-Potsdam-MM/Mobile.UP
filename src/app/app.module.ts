@@ -31,6 +31,7 @@ import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { AppAvailability } from '@ionic-native/app-availability';
+import { GradesPage } from '../pages/grades/grades';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -50,6 +51,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PracticePage,
     NewsPage,
     EventsPage,
+    GradesPage,
     RoomsPage,
     RoomplanPage
   ],
@@ -82,6 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PracticePage,
     NewsPage,
     EventsPage,
+    GradesPage,
     RoomsPage,
     RoomplanPage
   ],

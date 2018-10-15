@@ -1,12 +1,17 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{"page.grades.title" | translate }}</ion-title>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.grades.title" | translate }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
 Hier kommen die Noten!
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

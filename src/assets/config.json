@@ -35,6 +35,11 @@
       "icon": "briefcase",
       "selected":false
     },
+    "grades": {
+      "componentName": "grades",
+      "icon": "book",
+      "selected":false
+    },
     "login": {
       "componentName": "login",
       "icon": "log-in",

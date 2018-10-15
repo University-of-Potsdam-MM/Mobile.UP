@@ -1,15 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {Storage} from "@ionic/storage";
-import {ISession} from "../../providers/login-provider/interfaces";
-import {LoginPage} from "../login/login";
-
-/**
- * Generated class for the GradesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Storage } from "@ionic/storage";
+import { ISession } from "../../providers/login-provider/interfaces";
+import { LoginPage } from "../login/login";
 
 @IonicPage()
 @Component({
@@ -36,7 +29,7 @@ export class GradesPage {
   public ionViewDidLoad() {
     this.storage.get("session").then(
       (session:ISession) => {
-        if(session){
+        if(session) {
 
         } else {
           this.goToLogin();

@@ -24,6 +24,7 @@ import { SettingsPage } from "../pages/settings/settings";
 import { ComponentsProvider } from "../providers/components/components";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
+import { GradesPage } from '../pages/grades/grades';
 
 @Component({
   templateUrl: 'app.html'
@@ -89,6 +90,7 @@ export class MobileUPApp {
       { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
       { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
+      { title: "page.grades.title", pageName: GradesPage, icon: "book" },
       { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
@@ -113,6 +115,7 @@ export class MobileUPApp {
       practice:PracticePage,
       persons:PersonsPage,
       settings:SettingsPage,
+      grades:GradesPage,
       athletics:"webIntent",
       unishop:"webIntent",
       moodle:"webIntent",
