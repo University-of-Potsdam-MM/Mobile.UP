@@ -10,8 +10,6 @@ import { SettingsPage } from '../../pages/settings/settings';
 })
 export class TabBarComponent {
 
-  text: string;
-
   constructor(private navCtrl: NavController) {
   }
 

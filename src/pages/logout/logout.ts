@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {IonicPage, Nav} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import { HomePage } from '../home/home';
+import { ISession } from '../../providers/login-provider/interfaces';
 
 /**
  * LogoutPage
@@ -15,9 +16,18 @@ import { HomePage } from '../home/home';
 })
 export class LogoutPage {
 
+  alreadyLoggedIn;
+
   constructor(
       private storage: Storage,
       private nav: Nav) {
+  }
+
+  async ngOnInit() {
+    let session: ISession = await this.storage.get("session");
+    if (session) {
+      this.alreadyLoggedIn = true;
+    } else { this.alreadyLoggedIn = false; }
   }
 
   /**

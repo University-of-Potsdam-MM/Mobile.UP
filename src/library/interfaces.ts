@@ -137,7 +137,6 @@ export interface IConfig {
   modules:{[moduleName:string]:IModule};
   authorization:ILoginConfig;
   webservices:IWebServices;
-  appUrls:IAppUrls;
 }
 
 export interface IAppUrls {
@@ -163,6 +162,9 @@ export interface IModule {
   selected?:boolean;
   url?:string;
   appId?:string;
+  urlAndroid?:string;
+  urlIOS?:string;
+  bundleName?:string;
 }
 
 export interface IWebServices {

@@ -19,16 +19,14 @@ page-mensa {
   .calendarButton {
     background-color: color($colors, secondary);
     color: color($colors, primary);
+    width: 30%;
   }
 
   .activeCalendarButton {
       background-color: color($colors, primary);
       color: color($colors, secondary);
+      width: 30%;
   }
-
-  .button:hover {
-    color: color($colors, secondary);
-}
 
   ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
   ion-calendar-month .primary button.days-btn small {

@@ -32,6 +32,7 @@ import { HomePage } from '../home/home';
 export class LoginPage {
 
   loading: Loading;
+  alreadyLoggedIn: boolean;
 
   // This object will hold the data the user enters in the login form
   loginCredentials:ICredentials = {
@@ -47,6 +48,13 @@ export class LoginPage {
       private storage:     Storage,
       private translate:   TranslateService,
       private platform:    Platform) {
+  }
+
+  async ngOnInit() {
+    let session: ISession = await this.storage.get("session");
+    if (session) {
+      this.alreadyLoggedIn = true;
+    } else { this.alreadyLoggedIn = false; }
   }
 
   /**
