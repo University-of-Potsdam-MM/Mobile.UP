@@ -1,0 +1,24 @@
+<ion-segment *ngIf="isDualDegree[i]" [(ngModel)]="currentProfession" color="primary">
+  <ion-segment-button *ngFor="let profession of achievements; let j = index" value="{{j}}">
+    {{ profession.fieldName }}
+  </ion-segment-button>
+</ion-segment>
+<ion-grid>
+  <ion-row *ngIf="!isDualDegree && (achievements.credits || achievements.module); else noAchievements" class="tableHead" nowrap no-padding>
+    <ion-col col-8>
+      Bezeichnung
+    </ion-col>
+    <ion-col>
+      Note
+    </ion-col>
+    <ion-col>
+      PV
+    </ion-col>
+    <ion-col>
+      LP
+    </ion-col>
+  </ion-row>
+  <ng-template #noAchievements>
+    <p padding class="hint">Keine eingetragenen Leistungen.</p>
+  </ng-template>
+</ion-grid>

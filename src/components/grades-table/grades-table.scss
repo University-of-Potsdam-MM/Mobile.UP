@@ -1,0 +1,12 @@
+grades-table {
+    .tableHead {
+        background-color: #585858;
+        color: color($colors, light);
+        border-radius: 0px;
+    }
+
+    .hint {
+        color: color($colors, primary);
+    }
+    
+}

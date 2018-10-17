@@ -16,10 +16,10 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <div *ngIf="studentLoaded">
-    <ion-item class="studiengang" no-lines tappable (click)="getGrades()">
+  <div *ngIf="studentLoaded && !multipleDegrees">
+    <ion-item class="studiengang" no-lines tappable (click)="showGrades(0)">
       <div text-wrap>
-        {{ studentDetails.Studiengaenge.abschl }} {{ studentDetails.Studiengaenge.ltxt }}
+        {{ studentDetails.AbLtxt }} ({{ studentDetails.Abschl }})
       </div>
       <ion-icon name="arrow-dropright" item-end></ion-icon>
     </ion-item>
@@ -28,8 +28,23 @@
     </div>
   </div>
 
-  <div *ngIf="gradesLoaded" align="center" padding>
-    Objekt wird auf der Konsole ausgegeben... [WIP]
+  <div *ngIf="studentLoaded && multipleDegrees">
+    <ion-item *ngFor="let degree of studentDetails; let i = index" class="studiengang" no-lines tappable (click)="showGrades(i)">
+      <div text-wrap>
+        {{ degree.AbLtxt }} ({{ degree.Abschl }}) 
+      </div>
+      <ion-icon name="arrow-dropright" item-end></ion-icon>
+    </ion-item>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="gradesLoaded" align="center">
+    <grades-table
+    [studentGrades]="studentGrades"
+    [isDualDegree]="isDualDegree"
+    [i]="i"></grades-table>
   </div>
 </ion-content>
 

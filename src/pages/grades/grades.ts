@@ -19,16 +19,19 @@ export class GradesPage {
 
   studentDetails;
   studentGrades;
+  i = 7;
 
   loadingGrades = false;
   gradesLoaded = false;
   studentLoaded = false;
+  multipleDegrees = false;          // f.e. bachelor and master
+  isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
 
   constructor(
       public navCtrl: NavController,
       private http: HttpClient,
       public navParams: NavParams,
-      private storage:  Storage) {
+      private storage: Storage) {
 
   }
 
@@ -50,21 +53,52 @@ export class GradesPage {
     });
   }
 
-  getGrades() {
+  showGrades(i) {
+    this.i = i;
+    this.gradesLoaded = false;
+    this.storage.get("studentGrades["+i+"]").then((studentGrades) => {
+      if (studentGrades) {
+        console.log(studentGrades);
+        this.studentGrades = studentGrades;
+        this.gradesLoaded = true;
+        // this.getGrades(i);
+      } else { this.getGrades(i); }
+    });
+  }
+
+  getGrades(i) {
       this.loadingGrades = true;
+      var headers: HttpHeaders, body;
 
-      let headers:HttpHeaders = new HttpHeaders()
-        .append("Authorization", this.config.webservices.apiToken);
+      if (this.multipleDegrees) {
+        headers = new HttpHeaders()
+          .append("Authorization", this.config.webservices.apiToken);
 
-      let body = {
-        "condition": {
-          "Semester": this.studentDetails.Semester,
-          "MtkNr": this.studentDetails.MtkNr,
-          "StgNr": this.studentDetails.StgNr
-        },
-        "user-auth": {
-          "username": this.credentials.username,
-          "password": this.credentials.password
+        body = {
+          "condition": {
+            "Semester": this.studentDetails[i].Semester,
+            "MtkNr": this.studentDetails[i].MtkNr,
+            "StgNr": this.studentDetails[i].StgNr
+          },
+          "user-auth": {
+            "username": this.credentials.username,
+            "password": this.credentials.password
+          }
+        }
+      } else {
+        headers = new HttpHeaders()
+          .append("Authorization", this.config.webservices.apiToken);
+
+        body = {
+          "condition": {
+            "Semester": this.studentDetails.Semester,
+            "MtkNr": this.studentDetails.MtkNr,
+            "StgNr": this.studentDetails.StgNr
+          },
+          "user-auth": {
+            "username": this.credentials.username,
+            "password": this.credentials.password
+          }
         }
       }
 
@@ -73,6 +107,7 @@ export class GradesPage {
       this.http.post(url, body, {headers:headers}).subscribe((resGrades) => {
         console.log(resGrades);
         this.studentGrades = resGrades;
+        this.storage.set("studentGrades["+i+"]", this.studentGrades);
         this.gradesLoaded = true;
         this.loadingGrades = false;
       }, error => {
@@ -95,8 +130,22 @@ export class GradesPage {
     let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
 
     this.http.post(url, body, {headers:headers}).subscribe((resStudentDetail:IGradeResponse) => {
-      console.log(resStudentDetail);
       this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
+      console.log(this.studentDetails);
+      if (Array.isArray(this.studentDetails)) {
+        this.multipleDegrees = true;
+        var i;
+        for (i = 0; i < this.studentDetails.length; i++) {
+          if (Array.isArray(this.studentDetails[i].Studiengaenge)) {
+            this.isDualDegree[i] = true;
+          }
+        }
+      } else {
+        this.multipleDegrees = false;
+        if (Array.isArray(this.studentDetails.Studiengaenge)) {
+          this.isDualDegree[0] = true;
+        }
+      }
       this.studentLoaded = true;
     }, error => {
       console.log("ERROR while getting student details");
