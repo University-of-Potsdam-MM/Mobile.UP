@@ -58,7 +58,7 @@ export class GradesPage {
     this.gradesLoaded = false;
     this.storage.get("studentGrades["+i+"]").then((studentGrades) => {
       if (studentGrades) {
-        console.log(studentGrades);
+        // console.log(studentGrades);
         this.studentGrades = studentGrades;
         this.gradesLoaded = true;
         // this.getGrades(i);
@@ -105,7 +105,7 @@ export class GradesPage {
       let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
 
       this.http.post(url, body, {headers:headers}).subscribe((resGrades) => {
-        console.log(resGrades);
+        // console.log(resGrades);
         this.studentGrades = resGrades;
         this.storage.set("studentGrades["+i+"]", this.studentGrades);
         this.gradesLoaded = true;
@@ -131,7 +131,7 @@ export class GradesPage {
 
     this.http.post(url, body, {headers:headers}).subscribe((resStudentDetail:IGradeResponse) => {
       this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
-      console.log(this.studentDetails);
+      // console.log(this.studentDetails);
       if (Array.isArray(this.studentDetails)) {
         this.multipleDegrees = true;
         var i;

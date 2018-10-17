@@ -11,18 +11,18 @@ export class GradesTableComponent {
   @Input() i;
 
   currentProfession = "0";
-  achievements;
+  gradeArray = [];
 
   constructor() {
   }
 
   ngOnInit() {
     this.currentProfession = "0";
-    this.achievements = this.studentGrades.academicAchievements.achievement.field;
-  }
-
-  log() {
-    console.log(this.currentProfession);
+    let achievements = this.studentGrades.academicAchievements.achievement.field;
+    if (Array.isArray(achievements)) {
+      this.gradeArray = achievements;
+    } else { this.gradeArray.push(achievements); }
+    console.log(this.gradeArray);
   }
 
 }
