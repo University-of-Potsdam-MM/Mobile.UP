@@ -18,11 +18,28 @@ export class GradesTableComponent {
 
   ngOnInit() {
     this.currentProfession = "0";
-    let achievements = this.studentGrades.academicAchievements.achievement.field;
-    if (Array.isArray(achievements)) {
-      this.gradeArray = achievements;
-    } else { this.gradeArray.push(achievements); }
+    this.gradeArray = this.convertToArray(this.studentGrades.academicAchievements.achievement.field);
     console.log(this.gradeArray);
+  }
+
+  isArray(toCheck) {
+    if (Array.isArray(toCheck)) {
+      return true;
+    } else { return false; }
+  }
+
+  convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
+    if (this.isArray(toConvert)) {
+      return toConvert;
+    } else {
+      var tmp = [];
+      tmp.push(toConvert);
+      return tmp;
+    }
+  }
+
+  unescapeHTML(s:string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
+    return s.replace("&colon;", ":");
   }
 
 }

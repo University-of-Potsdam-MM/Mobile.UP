@@ -1,6 +1,6 @@
 grades-table {
     .tableHead {
-        background-color: #585858;
+        background-color: color($colors, dark);;
         color: color($colors, light);
         border-radius: 0px;
     }
@@ -8,5 +8,88 @@ grades-table {
     .hint {
         color: color($colors, primary);
     }
-    
+
+    .creditPoints {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+        border-radius: 0px;
+    }
+
+    .col.moduleHead:first-child {
+        padding-left: 2%;
+    }
+
+    .col.submoduleHead:first-child {
+        padding-left: 4%;
+    }
+
+    div.moduleGroup {
+        border-bottom: 2px solid color($colors, primary);
+
+        .row {
+            .col {
+                border-bottom: 1px solid gray;
+                background: #f9f9f9;
+            }
+        }
+
+        div.examination {
+            .row:first-child {
+                .col {
+                    border-top: 1px solid gray;
+                }
+            }
+        }
+    }
+
+    div.gradeTable {
+        background: #f2f2f2;
+        font-size: small;
+    }
+
+    .row.moduleGroupHead:first-child,
+    .row.moduleHead:first-child {
+
+        .col:first-child {
+            border-top:none;
+            border-left:none;
+            background: #f2f2f2;
+            border-bottom:none;
+        }
+
+        .col {
+            border-top: 1px solid gray;
+        }
+    }
+
+    .row.submoduleHead:first-child, {
+
+        .col:first-child {
+            border-top:none;
+            border-left:none;
+            background: #f2f2f2;
+            border-bottom:none;
+        }
+    }
+
+    .row.moduleGroupHead:first-child {
+
+        .col:first-child {
+            border-bottom:none;
+        }
+    }
+
+    .col.moduleHead {
+        border-top: 1px solid gray;
+    }
+
+    .col:first-child {
+        border-left: 1px solid gray;
+    }
+
+    .col {
+        border-right: 1px solid gray;
+    }
+
+
 }
