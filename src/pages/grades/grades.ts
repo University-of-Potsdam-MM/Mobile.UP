@@ -61,7 +61,7 @@ export class GradesPage {
         // console.log(studentGrades);
         this.studentGrades = studentGrades;
         this.gradesLoaded = true;
-        // this.getGrades(i);
+        this.getGrades(i);
       } else { this.getGrades(i); }
     });
   }
