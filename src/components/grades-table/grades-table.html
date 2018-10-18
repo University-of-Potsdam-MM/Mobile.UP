@@ -19,16 +19,16 @@
   <ion-grid>
     <ion-row class="tableHead" nowrap no-padding>
       <ion-col col-8>
-        Bezeichnung
+        {{ "page.grades.bezeichnung" | translate }}
       </ion-col>
       <ion-col>
-        Note
+        {{ "page.grades.note" | translate }}
       </ion-col>
       <ion-col>
-        PV
+        {{ "page.grades.pv" | translate }}
       </ion-col>
       <ion-col>
-        LP
+        {{ "page.grades.lp" | translate }}
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -93,7 +93,7 @@
                 <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
               </ion-col>
               <ion-col >
-                Studienleistung
+                {{ "page.grades.studienleistung" | translate }}
               </ion-col>
             </ion-row>
           </div>
@@ -144,7 +144,7 @@
                       <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
                     </ion-col>
                     <ion-col >
-                      Studienleistung
+                      {{ "page.grades.studienleistung" | translate }}
                     </ion-col>
                   </ion-row>
                 </div>
@@ -168,5 +168,5 @@
   </ion-row>
 </ion-grid>
 <ng-template #noAchievements>
-  <p padding class="hint">Keine eingetragenen Leistungen.</p>
+  <p padding class="hint">{{ "page.grades.noGrades" | translate }}</p>
 </ng-template>

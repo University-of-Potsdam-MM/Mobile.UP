@@ -17,7 +17,7 @@
   </div>
 
   <div class="hint" *ngIf="noUserRights" align="center" padding>
-    Diese Funktion wird für Sie nicht unterstützt.
+    {{ "page.grades.notSupported" | translate }}
   </div>
 
   <div *ngIf="studentLoaded && !multipleDegrees">
