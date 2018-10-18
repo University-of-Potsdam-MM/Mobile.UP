@@ -432,6 +432,7 @@ export interface IGradeResponse {
   personalStudyAreas: {
     Abschluss:IGradeDegree;
   }
+  message?:string;
 }
 
 export interface IGradeDegree {

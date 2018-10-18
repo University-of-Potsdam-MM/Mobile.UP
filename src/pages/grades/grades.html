@@ -9,11 +9,15 @@
 
 
 <ion-content>
-  <div align="center" class="hint" padding>
+  <div align="center" class="hint" *ngIf="studentLoaded" padding>
     {{ "page.grades.hint" | translate }}
   </div>
-  <div align="center" *ngIf="!studentLoaded" padding>
+  <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
     <ion-spinner></ion-spinner>
+  </div>
+
+  <div class="hint" *ngIf="noUserRights" align="center" padding>
+    Diese Funktion wird für Sie nicht unterstützt.
   </div>
 
   <div *ngIf="studentLoaded && !multipleDegrees">

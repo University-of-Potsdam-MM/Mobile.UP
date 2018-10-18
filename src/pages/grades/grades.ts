@@ -19,7 +19,8 @@ export class GradesPage {
 
   studentDetails;
   studentGrades;
-  i = 7;
+  i;
+  noUserRights;
 
   loadingGrades = false;
   gradesLoaded = false;
@@ -130,23 +131,29 @@ export class GradesPage {
     let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
 
     this.http.post(url, body, {headers:headers}).subscribe((resStudentDetail:IGradeResponse) => {
-      this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
-      // console.log(this.studentDetails);
-      if (Array.isArray(this.studentDetails)) {
-        this.multipleDegrees = true;
-        var i;
-        for (i = 0; i < this.studentDetails.length; i++) {
-          if (Array.isArray(this.studentDetails[i].Studiengaenge)) {
-            this.isDualDegree[i] = true;
+      console.log(resStudentDetail);
+      if (resStudentDetail.message) {
+        console.log(resStudentDetail.message);
+        this.noUserRights = true;
+      } else {
+        this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
+        // console.log(this.studentDetails);
+        if (Array.isArray(this.studentDetails)) {
+          this.multipleDegrees = true;
+          var i;
+          for (i = 0; i < this.studentDetails.length; i++) {
+            if (Array.isArray(this.studentDetails[i].Studiengaenge)) {
+              this.isDualDegree[i] = true;
+            }
+          }
+        } else {
+          this.multipleDegrees = false;
+          if (Array.isArray(this.studentDetails.Studiengaenge)) {
+            this.isDualDegree[0] = true;
           }
         }
-      } else {
-        this.multipleDegrees = false;
-        if (Array.isArray(this.studentDetails.Studiengaenge)) {
-          this.isDualDegree[0] = true;
-        }
+        this.studentLoaded = true;
       }
-      this.studentLoaded = true;
     }, error => {
       console.log("ERROR while getting student details");
       console.log(error);
