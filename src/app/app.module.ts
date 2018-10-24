@@ -13,6 +13,8 @@ import { EmergencyPage } from '../pages/emergency/emergency';
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { IonicStorageModule } from "@ionic/storage";
 import { SafariViewController } from '@ionic-native/safari-view-controller';
+import { AppAvailability } from '@ionic-native/app-availability';
+import { Keyboard } from '@ionic-native/keyboard';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -31,8 +33,7 @@ import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
-import { AppAvailability } from '@ionic-native/app-availability';
-import { Keyboard } from '@ionic-native/keyboard';
+import { LibraryPage } from '../pages/library/library';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -49,6 +50,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PersonsPage,
     MensaPage,
     SettingsPage,
+    LibraryPage,
     PracticePage,
     NewsPage,
     EventsPage,
@@ -81,6 +83,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
+    LibraryPage,
     MensaPage,
     SettingsPage,
     PracticePage,

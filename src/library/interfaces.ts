@@ -180,6 +180,7 @@ export interface IEndpoints {
   roomsSearch:string;
   roomplanSearch:string;
   events:string;
+  library:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */
