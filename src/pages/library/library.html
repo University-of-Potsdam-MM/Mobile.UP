@@ -23,35 +23,10 @@
       <b>{{ resultIndex() }}</b> von <b>{{ numberOfRecords }}</b> Einträgen
     </ion-item>
     <ion-list>
-      <ion-item *ngFor="let book of convertToArray(bookList); let i = index">
-        <p item-start>{{ i+1 }}</p>
-        <ion-icon item-start [name]="checkMediaType(book.typeOfResource, book.originInfo, book.physicalDescription)"></ion-icon>
-        <span *ngIf="book.titleInfo">
-          <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }}</b>
-          <b *ngIf="convertToArray(book.titleInfo)[0].title">{{ convertToArray(book.titleInfo)[0].title }}</b><br>
-          <p *ngIf="convertToArray(book.titleInfo)[0].subTitle">{{ convertToArray(book.titleInfo)[0].subTitle }}</p>
-        </span>
-        <span *ngIf="book.relatedItem">
-          <p *ngIf="book.titleInfo && convertToArray(book.titleInfo)[0].partNumber">{{ convertToArray(book.titleInfo)[0].partNumber }}</p>
-          <p *ngIf="convertToArray(book.relatedItem)[0].titleInfo">{{ convertToArray(book.relatedItem)[0].titleInfo.title }}</p>
-        </span>
-        <span *ngIf="book.name">
-          <p style="display: inline" class="author" *ngFor="let author of convertToArray(book.name); let j = index; let last = last">
-            <span *ngIf="author.namePart">
-              <span *ngIf="author.$ && author.$.type == 'personal'">
-                <span *ngIf="convertToArray(author.namePart)[0] && convertToArray(author.namePart)[0]._">{{ convertToArray(author.namePart)[0]._ }},</span>
-                <span *ngIf="convertToArray(author.namePart)[0] && !convertToArray(author.namePart)[0]._">{{ convertToArray(author.namePart)[0] }}</span>
-                <span *ngIf="convertToArray(author.namePart)[1] && convertToArray(author.namePart)[1]._">{{ convertToArray(author.namePart)[1]._ }}</span><span *ngIf="!last">;</span>
-              </span>
-            </span>
-          </p>
-        </span>
-        <p *ngIf="book.originInfo">
-          <span *ngIf="book.originInfo.edition">{{ book.originInfo.edition }}, </span>
-          <span *ngIf="book.relatedItem && convertToArray(book.relatedItem)[0].originInfo && convertToArray(book.relatedItem)[0].originInfo.publisher">{{ convertToArray(book.relatedItem)[0].originInfo.publisher }}, </span>
-          <span *ngIf="book.originInfo.dateIssued && book.originInfo.dateIssued._">{{ book.originInfo.dateIssued._ }}</span>
-        </p>
-      </ion-item>
+      <span *ngFor="let book of bookList; let i = index">
+        <book-list-view tappable (click)="bookDetailView(book)"
+        [book]="book" [i]="i+1"></book-list-view>
+      </span>
     </ion-list>
 
     <ion-infinite-scroll *ngIf="!isEnd()" (ionInfinite)="loadMore($event)">
@@ -59,3 +34,7 @@
     </ion-infinite-scroll>
   </div>
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

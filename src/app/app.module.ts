@@ -34,6 +34,7 @@ import { ComponentsProvider } from '../providers/components/components';
 import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
+import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -51,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MensaPage,
     SettingsPage,
     LibraryPage,
+    BookDetailViewPage,
     PracticePage,
     NewsPage,
     EventsPage,
@@ -86,6 +88,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LibraryPage,
     MensaPage,
     SettingsPage,
+    BookDetailViewPage,
     PracticePage,
     NewsPage,
     EventsPage,

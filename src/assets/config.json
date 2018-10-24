@@ -136,7 +136,8 @@
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
-      "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/"
+      "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
+      "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   }

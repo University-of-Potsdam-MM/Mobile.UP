@@ -181,6 +181,7 @@ export interface IEndpoints {
   roomplanSearch:string;
   events:string;
   library:string;
+  libraryDAIA:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */

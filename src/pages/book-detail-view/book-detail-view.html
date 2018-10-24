@@ -1,0 +1,18 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      Detailansicht
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <book-list-view [book]="book" text-wrap (mediaType)="setMediaType($event)"></book-list-view>
+  <ion-segment [(ngModel)]="activeSegment">
+    <ion-segment-button value="location">Standort</ion-segment-button>
+    <ion-segment-button value="details">Details</ion-segment-button>
+  </ion-segment>
+  
+</ion-content>
