@@ -2,4 +2,19 @@ page-book-detail-view {
     .author {
         font-weight: bold;
     }
+
+    .copyright-info {
+        font-size: small;
+        text-align: justify;
+    }
+
+    .department {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+    }
+
+    .itemStatus {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+    }
 }

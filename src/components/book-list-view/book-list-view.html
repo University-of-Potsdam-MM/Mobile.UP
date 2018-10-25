@@ -1,6 +1,9 @@
 <ion-item>
-  <p *ngIf="i" item-start>{{ i }}</p>
-  <ion-icon item-start [name]="checkMediaType(convertToArray(book.typeOfResource)[0], convertToArray(book.originInfo)[0], convertToArray(book.physicalDescription)[0])"></ion-icon>
+  <span item-start *ngIf="i">
+    <p>{{ i }}</p>
+    <ion-icon [name]="checkMediaType(convertToArray(book.typeOfResource)[0], convertToArray(book.originInfo)[0], convertToArray(book.physicalDescription)[0])"></ion-icon>
+  </span>
+  <ion-icon *ngIf="!i" item-start [name]="checkMediaType(convertToArray(book.typeOfResource)[0], convertToArray(book.originInfo)[0], convertToArray(book.physicalDescription)[0])"></ion-icon>
   <span *ngIf="book.titleInfo">
     <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }}</b>
     <b *ngIf="convertToArray(book.titleInfo)[0].title">{{ convertToArray(book.titleInfo)[0].title }}</b><br>

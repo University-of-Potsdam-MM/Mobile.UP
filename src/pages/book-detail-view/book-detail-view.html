@@ -10,9 +10,49 @@
 
 <ion-content>
   <book-list-view [book]="book" text-wrap (mediaType)="setMediaType($event)"></book-list-view>
+  <p *ngIf="mediaType == 'mediatype_o'" class="copyright-info" padding-horizontal>
+    Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.
+    <br><br>
+    Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden. 
+  </p>
+  <p *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') != -1)" class="copyright-info" padding-horizontal>
+    Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.
+  </p>
   <ion-segment [(ngModel)]="activeSegment">
-    <ion-segment-button value="location">Standort</ion-segment-button>
-    <ion-segment-button value="details">Details</ion-segment-button>
+    <ion-segment-button value="location" (click)="showLocation = true; showDetails = false;">Standort</ion-segment-button>
+    <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">Details</ion-segment-button>
   </ion-segment>
-  
+
+  <div *ngIf="showLocation" padding-top>
+    <span *ngFor="let department of bookLocationList">
+      <ion-list no-lines>
+        <ion-item class="department">
+          {{ department.department }}
+          <ion-icon item-end name="information-circle" tappable (click)="openWebsite(department.departmentURL)"></ion-icon>
+        </ion-item>
+        <ion-item *ngIf="department.url; else noUrl" class="itemStatus">
+          <span tappable (click)="openWebsite(department.url)" style="text-decoration: underline">{{ department.item[0] }}</span>
+        </ion-item>
+        <ng-template #noUrl>
+          <ion-item class="itemStatus">
+            <ion-icon style="color: darkred" *ngIf="(department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)" name="ios-remove-circle"></ion-icon>
+            <ion-icon style="color: darkgreen" *ngIf="(department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)" name="ios-contrast"></ion-icon>
+            <ion-icon style="color: darkgreen" *ngIf="!(((department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)) || ((department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
+            {{ department.item[0] }}
+            <span *ngIf="department.label != department.item[0]" style="font-size: small" item-end>{{ department.label }}</span>
+          </ion-item>
+          <ion-item class="itemStatus" *ngIf="department.item[0] == 'Präsenzbestand'">
+            <p style="color: black; font-size: small">Bitte nutzen Sie diesen Bestand nur vor Ort.</p>
+          </ion-item>
+        </ng-template>
+      </ion-list>
+    </span>
+  </div>
+
+  <div *ngIf="showDetails" padding>
+    <div *ngIf="book.abstract">
+      <h3>Abstract</h3>
+      <div style="text-align: justify">{{ book.abstract }}</div>
+    </div>
+  </div>
 </ion-content>
