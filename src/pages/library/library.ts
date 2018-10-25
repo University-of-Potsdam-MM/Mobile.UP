@@ -31,7 +31,7 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    console.log(this.query);
+    // console.log(this.query);
 
     if (this.query.trim() != "") {
 
@@ -78,8 +78,8 @@ export class LibraryPage {
             }
           }
   
-          console.log(this.numberOfRecords);
-          console.log(this.bookList);
+          // console.log(this.numberOfRecords);
+          // console.log(this.bookList);
   
           this.isLoading = false;
           this.isLoaded = true;
@@ -115,8 +115,8 @@ export class LibraryPage {
 
   loadMore(infiniteScroll) {
     this.startRecord = String(Number(this.startRecord) + 10);
-    console.log(this.startRecord);
-    console.log(this.numberOfRecords);
+    // console.log(this.startRecord);
+    // console.log(this.numberOfRecords);
     if (Number(this.startRecord) <= Number(this.numberOfRecords)) {
       this.searchLibrary(false, infiniteScroll);
     } else { infiniteScroll.complete(); }
