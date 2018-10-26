@@ -86,7 +86,7 @@
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
     <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
+    <plugin name="cordova-plugin-safariviewcontroller" spec="1.5.4" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.1" />
-    <plugin name="cordova-plugin-safariviewcontroller" spec="1.5.4" />
 </widget>

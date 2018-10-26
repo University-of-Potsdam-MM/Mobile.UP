@@ -13,6 +13,9 @@ import { EmergencyPage } from '../pages/emergency/emergency';
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { IonicStorageModule } from "@ionic/storage";
 import { SafariViewController } from '@ionic-native/safari-view-controller';
+import { Keyboard } from '@ionic-native/keyboard';
+import { AppAvailability } from '@ionic-native/app-availability';
+import { CalendarModule } from "ion2-calendar";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -29,10 +32,8 @@ import { RoomplanPage } from "../pages/roomplan/roomplan";
 import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
-import { CalendarModule } from "ion2-calendar";
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
-import { AppAvailability } from '@ionic-native/app-availability';
-import { Keyboard } from '@ionic-native/keyboard';
+import { GradesPage } from '../pages/grades/grades';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -52,6 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PracticePage,
     NewsPage,
     EventsPage,
+    GradesPage,
     RoomsPage,
     RoomplanPage
   ],
@@ -86,6 +88,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PracticePage,
     NewsPage,
     EventsPage,
+    GradesPage,
     RoomsPage,
     RoomplanPage
   ],

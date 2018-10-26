@@ -7,6 +7,7 @@ import { EventViewComponent } from './event-view/event-view';
 import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { TabBarComponent } from './tab-bar/tab-bar';
 import { CampusTabComponent } from './campus-tab/campus-tab';
+import { GradesTableComponent } from './grades-table/grades-table';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { CampusTabComponent } from './campus-tab/campus-tab';
 		EventViewComponent,
     	ContentDrawerComponent,
     	TabBarComponent,
-    	CampusTabComponent
+    	CampusTabComponent,
+    	GradesTableComponent
 	],
 	imports: [
 		IonicModule,
@@ -27,7 +29,8 @@ import { CampusTabComponent } from './campus-tab/campus-tab';
     	EventViewComponent,
     	ContentDrawerComponent,
     	TabBarComponent,
-    	CampusTabComponent
+    	CampusTabComponent,
+    	GradesTableComponent
 	]
 })
 export class ComponentsModule {}

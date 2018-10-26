@@ -35,6 +35,11 @@
       "icon": "briefcase",
       "selected":false
     },
+    "grades": {
+      "componentName": "grades",
+      "icon": "book",
+      "selected":false
+    },
     "emergency": {
       "componentName": "emergency",
       "icon": "nuclear",
@@ -130,7 +135,8 @@
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
-      "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
+      "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
+      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   }

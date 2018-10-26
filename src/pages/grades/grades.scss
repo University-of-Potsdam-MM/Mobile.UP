@@ -1,0 +1,12 @@
+page-grades {
+    .hint {
+        color: color($colors, primary);
+    }
+
+    .studiengang {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+        border-radius: 0px;
+    }
+
+}
