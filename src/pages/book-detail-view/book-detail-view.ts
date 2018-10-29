@@ -14,17 +14,28 @@ import { SafariViewController } from '@ionic-native/safari-view-controller';
 })
 export class BookDetailViewPage {
 
-  book;
   activeSegment = "location";
   config:IConfig;
-
-  bookLocationList;
-  mediaType;
   showLocation = true;
   showDetails = false;
+  showShortAbstract = true;
+  showFullTOC = false;
 
+  book;
+  bookLocationList;
+  shortAbstract = false;
   bookDetails = {
-    "url": null
+    "url": null,
+    "keywords": [],
+    "isbn": [],
+    "series": [],
+    "extent": [],
+    "notes": [],
+    "toc": [],
+    "abstract": "",
+    "shortAbstract": null,
+    "mediaType": null,
+    "noDetails": true
   };
 
   constructor(public navCtrl: NavController,
@@ -41,6 +52,7 @@ export class BookDetailViewPage {
   async ngOnInit() {
     this.config = await this.storage.get("config");
     this.updateLocation();
+    this.updateDetails();
   }
 
   convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
@@ -53,6 +65,26 @@ export class BookDetailViewPage {
     }
   }
 
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i] == value) {
+        found = true;
+      }
+    }
+    return found;
+  }
+
+  updateDetails() {
+    this.getKeywords();
+    this.getISBN();
+    this.getSeries();
+    this.getExtent();
+    this.getNotes();
+    this.getAbstractAndTOC();
+  }
+
   updateLocation() {
     let url = this.config.webservices.endpoint.libraryDAIA + this.book.recordInfo.recordIdentifier._ + "&format=json";
     this.http.get(url).subscribe(data => {
@@ -63,7 +95,7 @@ export class BookDetailViewPage {
   }
 
   setLocationData(data) {
-    console.log(data);
+    // console.log(data);
     this.bookLocationList = [];
     if (data) {
       var i, j;
@@ -80,7 +112,7 @@ export class BookDetailViewPage {
         }
       }
     }
-    console.log(this.bookLocationList);
+    // console.log(this.bookLocationList);
   }
 
   getDepartment(item) {
@@ -107,7 +139,6 @@ export class BookDetailViewPage {
   }
 
   getBookUrl(item) {
-
     if (this.book.location) {
       var i; 
       let tmp = this.convertToArray(this.book.location);
@@ -126,7 +157,7 @@ export class BookDetailViewPage {
       }
     }
 
-    if (this.mediaType == "mediatype_o") {
+    if (this.bookDetails.mediaType == "mediatype_o") {
       var url;
       if (item.unavailable && item.unavailable[0].service == "openaccess") {
         url = item.unavailable[0].href;
@@ -221,8 +252,143 @@ export class BookDetailViewPage {
     return [status, statusInfo];
   }
 
+  getKeywords() {
+    if (this.book.subject) {
+      let tmp = this.convertToArray(this.book.subject);
+      var i;
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].topic) {
+          if (!this.isInArray(this.bookDetails.keywords, tmp[i].topic)) {
+            this.bookDetails.keywords.push(tmp[i].topic);
+            this.bookDetails.noDetails = false;
+          }
+        } else if (tmp[i].geographic) {
+          if (!this.isInArray(this.bookDetails.keywords, tmp[i].geographic)) {
+            this.bookDetails.keywords.push(tmp[i].geographic);
+            this.bookDetails.noDetails = false;
+          }
+        } else if (tmp[i].$ && tmp[i].$.displayLabel) {
+          if (!this.isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)) {
+            this.bookDetails.keywords.push(tmp[i].$.displayLabel);
+            this.bookDetails.noDetails = false;
+          }
+        }
+      }
+    }
+  }
+
+  getISBN() {
+    if (this.book.identifier) {
+      let tmp = this.convertToArray(this.book.identifier);
+      var i;
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].$ && tmp[i].$.type == "isbn" && tmp[i]._) {
+          if(!this.isInArray(this.bookDetails.isbn, tmp[i]._)) {
+            this.bookDetails.isbn.push(tmp[i]._);
+            this.bookDetails.noDetails = false;
+          }
+        }
+      }
+    }
+  }
+
+  getSeries() {
+    var i;
+    if (this.book.titleInfo) {
+      let tmp = this.convertToArray(this.book.titleInfo);
+
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].partNumber && !this.isInArray(this.bookDetails.series, tmp[i].partNumber)) {
+          this.bookDetails.series.push(tmp[i].partNumber);
+          this.bookDetails.noDetails = false;
+        }
+      }
+    }
+    if (this.book.relatedItem) {
+      let tmp = this.convertToArray(this.book.relatedItem);
+
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].$ && tmp[i].$.type == "series") {
+          if (tmp[i].titleInfo && tmp[i].titleInfo.title && !this.isInArray(this.bookDetails.series, tmp[i].titleInfo.title)) {
+            this.bookDetails.series.push(tmp[i].titleInfo.title);
+            this.bookDetails.noDetails = false;
+          }
+        }
+      }
+    }
+  }
+
+  getExtent() {
+    var i;
+    if (this.book.physicalDescription) {
+      let tmp = this.convertToArray(this.book.physicalDescription);
+
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].extent && !this.isInArray(this.bookDetails.extent, tmp[i].extent)) {
+          this.bookDetails.extent.push(tmp[i].extent);
+          this.bookDetails.noDetails = false;
+        }
+      }
+    }
+  }
+
+  getNotes() {
+    var i;
+    if (this.book.note) {
+      let tmp = this.convertToArray(this.book.note);
+
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
+          this.bookDetails.notes.push(tmp[i]._);
+          this.bookDetails.noDetails = false;
+        } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
+          this.bookDetails.notes.push(tmp[i]);
+          this.bookDetails.noDetails = false;
+        } 
+      }
+    }
+
+    if (this.book.relatedItem && this.book.relatedItem.note) {
+      let tmp = this.convertToArray(this.book.relatedItem.note);
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
+          this.bookDetails.notes.push(tmp[i]._);
+          this.bookDetails.noDetails = false;
+        } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
+          this.bookDetails.notes.push(tmp[i]);
+          this.bookDetails.noDetails = false;
+        } 
+      }
+    }
+  }
+
+  getAbstractAndTOC() {
+    var i,j;
+    if (this.book.abstract) {
+      let tmp = this.convertToArray(this.book.abstract);
+
+      for (i = 0; i < tmp.length; i++) {
+        if (tmp[i].indexOf("--") >= 0) {
+          let toc = tmp[i].split("--");
+          for (j = 0; j < toc.length; j++) {
+            this.bookDetails.toc.push(toc[j]);
+            this.bookDetails.noDetails = false;
+          }
+        } else {
+          this.bookDetails.abstract += tmp[i];
+          this.bookDetails.noDetails = false;
+        }
+      }
+    }
+
+    if (this.bookDetails.abstract.length > 280) {
+      this.bookDetails.shortAbstract = this.bookDetails.abstract.substring(0,279) + "...";
+      this.shortAbstract = true;
+    }
+  }
+
   setMediaType(mediatype) {
-    this.mediaType = mediatype;
+    this.bookDetails.mediaType = mediatype;
   }
 
   openWithInAppBrowser(url:string) {
