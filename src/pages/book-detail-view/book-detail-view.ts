@@ -371,8 +371,10 @@ export class BookDetailViewPage {
         if (tmp[i].indexOf("--") >= 0) {
           let toc = tmp[i].split("--");
           for (j = 0; j < toc.length; j++) {
-            this.bookDetails.toc.push(toc[j]);
-            this.bookDetails.noDetails = false;
+            if (toc[j] != "") {
+              this.bookDetails.toc.push(toc[j]);
+              this.bookDetails.noDetails = false;
+            }
           }
         } else {
           this.bookDetails.abstract += tmp[i];
