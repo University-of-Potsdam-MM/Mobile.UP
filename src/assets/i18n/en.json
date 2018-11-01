@@ -1,0 +1,189 @@
+{
+  "page":{
+    "home":{
+      "title": "Homepage"
+    },
+    "imprint":{
+      "title":"Imprint"
+    },
+    "login":{
+      "title":"Login",
+      "loginInProgress": "Login is in progress",
+      "alreadyLoggedIn": "You are already logged in.",
+      "notLoggedIn": "You are not logged in.",
+      "placeHolder": {
+        "username": "Username (without @uni...)",
+        "password": "Password"
+      },
+      "loginError": {
+        "0": "Username and Password dont match",
+        "1": "There is a technical difficulty, please contact the development team.",
+        "2": "Please check your network connection.",
+        "3": "An unknown login-method has been used, please contact the development team.",
+        "4": "An unknown error has occured, please contact the development team"
+      }
+    },
+    "logout": {
+      "title": "Logout",
+      "text": "you're about to logout",
+      "affirmativeQuestion": "actually logout?"
+    },
+    "emergency": {
+      "title": "emergency numbers",
+      "placeholder": {
+        "search": "search"
+      },
+      "item": {
+        "postal": "place:",
+        "street": "street:"
+      }
+    },
+    "persons": {
+      "title": "people search",
+      "placeholder": {
+        "search": "..."
+      },
+      "no_results": "No results found for this search"
+    },
+    "practice": {
+      "title": "in practice",
+      "placeholder": {
+        "search": "search"
+      },
+      "item": {
+        "contact": "contact:",
+        "foreign": "foreign",
+        "partner": "partner",
+        "language": "language",
+        "familyfriendly": "family friendly",
+        "student": "student job",
+        "graduate": "graduate job",
+        "thesis": "final thesis",
+        "praktika": "praktika"
+
+      },
+      "no_results": "no results found for this search"
+    },
+    "grades": {
+      "title": "my achievements",
+      "hint": "Please select a degree, to which the achievements are to be displayed.",
+      "notSupported": "This feature is not supported for you.",
+      "bezeichnung": "description",
+      "note": "grade",
+      "pv": "PV",
+      "lp": "LP",
+      "studienleistung": "Study achievements",
+      "noGrades": "No achievements registered."
+    },
+    "library": {
+      "title": "library search"
+    },
+    "events":{
+      "title":"Events",
+      "showEventDetails": "show details",
+      "hideEventDetails": "hide details",
+      "eventsAll": "all",
+      "eventsToday": "today",
+      "eventsNext": "next",
+      "noEventCategory": "No venue available today.",
+      "noEventsToday": "No events pending today.",
+      "adress": "adress",
+      "description": "description"
+    },
+    "moodle": {
+      "title": "Moodle"
+    },
+    "lectures": {
+      "title": "lectures"
+    },
+    "timetable": {
+      "title": "timetable"
+    },
+    "mail": {
+      "title": "mail"
+    },
+    "news": {
+      "title": "news",
+      "articlePublished": "published"
+    },
+    "maps": {
+      "title": "maps"
+    },
+    "tipps": {
+      "title": "tipps & tricks"
+    },
+    "reflectUP": {
+      "title": "Reflect.UP"
+    },
+    "sports": {
+      "title": "sports"
+    },
+    "settings": {
+      "title": "settings",
+      "setting": {
+        "campus": {
+          "lbl": "campus"
+        },
+        "language": {
+          "lbl": "language"
+        }
+      }
+    },
+    "athletics":{
+      "title":"sports"
+    },
+    "rooms": {
+      "title": "available rooms"
+    },
+    "roomplan": {
+      "title": "roomplan",
+      "no_house": "No roomplan available for the house that was chosen.",
+      "no_room": "No roomplan available for the room that was chosen."
+    },
+    "openingHours":{
+      "title":"opening hours"
+    },
+    "mensa":{
+      "title": "mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm",
+      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
+      "noMealsHint": "No meals were found that meet the criteria."
+    },
+    "unishop": {
+      "title": "UNIshop"
+    }
+  },
+  "button": {
+    "ok": "OK",
+    "cancel": "cancel",
+    "yes": "yes",
+    "no": "no",
+    "login": "login",
+    "continue": "continue",
+    "search": "search"
+  },
+  "alert": {
+    "title": {
+      "error": "error",
+      "website": "open website?"
+    },
+    "network": "A network error has occured. Is the device connected to the internet?",
+    "no_info_for_time": "There is no information available for this timespan."
+  },
+  "university": {
+    "location": {
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
+    }
+  },
+  "words": {
+    "clock": "clock",
+    "house": "house"
+  },
+  "menu": {
+    "title": "title"
+  }
+}
