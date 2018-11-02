@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
@@ -45,7 +44,6 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
-    private keyboard: Keyboard,
     private components: ComponentsProvider
   ) {
     this.initializeApp();
@@ -64,7 +62,6 @@ export class MobileUPApp {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.keyboard.disableScroll(true);
       }
     });
 
