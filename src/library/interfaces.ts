@@ -182,6 +182,7 @@ export interface IEndpoints {
   events:string;
   library:string;
   libraryDAIA:string;
+  puls:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */
@@ -427,4 +428,30 @@ export interface IPage {
   icon:string;
   webIntent?:boolean;
   moduleName?:string;
+}
+
+export interface IGradeResponse {
+  personalStudyAreas: {
+    Abschluss:IGradeDegree;
+  }
+  message?:string;
+}
+
+export interface IGradeDegree {
+  AbLtxt: string;
+  Abschl: string;
+  MtkNr: string;
+  Semester: string;
+  StgNr: string;
+  Studiengaenge: any;
+}
+
+export interface IStudieCourse {
+  StgNr: string;
+  abschl: string;
+  dtxt: string;
+  ltxt: string;
+  stg: string;
+  "stg.pversion": string;
+  stgsem: string;
 }

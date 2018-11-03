@@ -11,7 +11,7 @@
 
   <!-- tiles --
   <ion-list class="row shortcutlist"> -->
-    <!-- list of shortcuts 
+    <!-- list of shortcuts
     <div *ngFor="let moduleName of objectKey(modules)"
          (click)="openPage(moduleName)">
 
@@ -31,7 +31,7 @@
   <h2><ion-icon name=star></ion-icon>&nbsp;Favoriten</h2>
   <ion-list class="row shortcutlist">
     <!-- list of shortcuts -->
-   
+
     <ion-item *ngFor="let moduleName of objectKey(modules)"
     (click)="openPage(moduleName)" [id]="modules[moduleName].selected ? icon_selected : icon_not_selected">
 

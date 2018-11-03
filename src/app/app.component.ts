@@ -24,6 +24,7 @@ import { ComponentsProvider } from "../providers/components/components";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
+import { GradesPage } from '../pages/grades/grades';
 
 @Component({
   templateUrl: 'app.html'
@@ -74,9 +75,7 @@ export class MobileUPApp {
     this.http.get<IConfig>("assets/config.json").subscribe(
       config => {
         this.config = config;
-        this.storage.set("config", config).then(
-          config => console.log("[MobileUPApp]: Config loaded in storage")
-        )
+        this.storage.set("config", config);
       }
     );
   }
@@ -92,6 +91,7 @@ export class MobileUPApp {
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
       { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
       { title: "page.library.title", pageName: LibraryPage, icon: "bookmarks" },
+      { title: "page.grades.title", pageName: GradesPage, icon: "book" },
       { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
@@ -118,6 +118,7 @@ export class MobileUPApp {
       practice:PracticePage,
       persons:PersonsPage,
       settings:SettingsPage,
+      grades:GradesPage,
       athletics:"webIntent",
       unishop:"webIntent",
       mail:"webIntent",
@@ -140,7 +141,7 @@ export class MobileUPApp {
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
     } else if (userLanguage == "Englisch") {
-      // this.translate.use("en");     
+      // this.translate.use("en");
       // dont use englisch until we have translation data
       this.translate.use("de");
     }

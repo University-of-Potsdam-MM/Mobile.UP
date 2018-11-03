@@ -7,7 +7,7 @@ import * as Constants from "../../pages/settings/setting_config";
 export class SettingsProvider {
 
   constructor(private storage: Storage) {
-    console.log('Settings Provider initialized');
+    // console.log('Settings Provider initialized');
   }
 
   /**

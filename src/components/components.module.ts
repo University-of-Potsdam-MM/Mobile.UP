@@ -8,6 +8,7 @@ import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { TabBarComponent } from './tab-bar/tab-bar';
 import { CampusTabComponent } from './campus-tab/campus-tab';
 import { BookListViewComponent } from './book-list-view/book-list-view';
+import { GradesTableComponent } from './grades-table/grades-table';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import { BookListViewComponent } from './book-list-view/book-list-view';
     	ContentDrawerComponent,
     	TabBarComponent,
     	CampusTabComponent,
-    	BookListViewComponent
+    	BookListViewComponent,
+    	GradesTableComponent
 	],
 	imports: [
 		IonicModule,
@@ -30,7 +32,8 @@ import { BookListViewComponent } from './book-list-view/book-list-view';
     	ContentDrawerComponent,
     	TabBarComponent,
     	CampusTabComponent,
-    	BookListViewComponent
+    	BookListViewComponent,
+    	GradesTableComponent
 	]
 })
 export class ComponentsModule {}

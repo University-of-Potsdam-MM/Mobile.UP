@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
-import { Storage } from "@ionic/storage";
+import {Storage} from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
@@ -19,6 +19,8 @@ export class HomePage {
 
   objectKey = Object.keys;
   modules:{[moduleName:string]:IModule} = {};
+
+  session:string = "";
 
   constructor(
       public navCtrl: NavController,

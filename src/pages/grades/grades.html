@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.grades.title" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <div align="center" class="hint" *ngIf="studentLoaded" padding>
+    {{ "page.grades.hint" | translate }}
+  </div>
+  <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div class="hint" *ngIf="noUserRights" align="center" padding>
+    {{ "page.grades.notSupported" | translate }}
+  </div>
+
+  <div *ngIf="studentLoaded && !multipleDegrees">
+    <ion-item class="studiengang" no-lines tappable (click)="showGrades(0)">
+      <div text-wrap>
+        {{ studentDetails.AbLtxt }} ({{ studentDetails.Abschl }})
+      </div>
+      <ion-icon name="arrow-dropright" item-end></ion-icon>
+    </ion-item>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="studentLoaded && multipleDegrees">
+    <ion-item *ngFor="let degree of studentDetails; let i = index" class="studiengang" no-lines tappable (click)="showGrades(i)">
+      <div text-wrap>
+        {{ degree.AbLtxt }} ({{ degree.Abschl }}) 
+      </div>
+      <ion-icon name="arrow-dropright" item-end></ion-icon>
+    </ion-item>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="gradesLoaded" align="center">
+    <grades-table
+    [studentGrades]="studentGrades"
+    [isDualDegree]="isDualDegree"
+    [i]="i"></grades-table>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>
