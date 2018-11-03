@@ -141,9 +141,7 @@ export class MobileUPApp {
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
     } else if (userLanguage == "Englisch") {
-      // this.translate.use("en");
-      // dont use englisch until we have translation data
-      this.translate.use("de");
+      this.translate.use("en");
     }
   }
 

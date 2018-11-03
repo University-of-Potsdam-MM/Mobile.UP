@@ -45,8 +45,8 @@
         </ion-item>
         <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
           <ion-icon name="" item-start></ion-icon>
-          Studierende: {{ formatPrices(meal.prices.student) }} <br>
-          Gäste: {{ formatPrices(meal.prices.guest) }} <br> <br>
+          {{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }} <br>
+          {{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }} <br> <br>
           <div text-wrap>
             <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
               ({{ allergen.shortName }})
@@ -63,7 +63,9 @@
   <div *ngIf="isLoaded && noMealsForDate">
     <ion-card>
       <ion-card-content class="hint">
-        {{ "page.mensa.noMealsHint" | translate }}
+        <div align="center">
+          {{ "page.mensa.noMealsHint" | translate }}
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

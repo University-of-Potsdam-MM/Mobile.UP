@@ -180,6 +180,15 @@ export class SettingsPage {
     setting.value = value;
     console.log("Saved setting", setting, value);
     this.storage.set("settings." + setting.key, setting);
+
+    // check if language was changed because it needs to change immediatly
+    if (setting.key == "language") {
+      if (value == "Deutsch") {
+        this.translate.use("de");
+      } else {
+        this.translate.use("en");
+      }
+    }
   }
 
   /**
