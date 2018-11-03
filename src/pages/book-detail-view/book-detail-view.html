@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>
-      Detailansicht
+      {{ "page.library.titleDetail" | translate }}
     </ion-title>
   </ion-navbar>
 
@@ -11,16 +11,16 @@
 <ion-content>
   <book-list-view [book]="book" text-wrap (mediaType)="setMediaType($event)"></book-list-view>
   <p *ngIf="bookDetails.mediaType == 'mediatype_o'" class="copyright-info" padding-horizontal>
-    Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.
+    {{ "page.library.copyright" | translate }}
     <br><br>
-    Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden. 
+    {{ "page.library.electronicUsage" | translate }}
   </p>
   <p *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') != -1)" class="copyright-info" padding-horizontal>
-    Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.
+    {{ "page.library.bookSet" | translate }}
   </p>
   <ion-segment [(ngModel)]="activeSegment">
-    <ion-segment-button value="location" (click)="showLocation = true; showDetails = false;">Standort</ion-segment-button>
-    <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">Details</ion-segment-button>
+    <ion-segment-button value="location" (click)="showLocation = true; showDetails = false;">{{ "page.library.location" | translate }}</ion-segment-button>
+    <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">{{ "page.library.details" | translate }}</ion-segment-button>
   </ion-segment>
 
   <div *ngIf="showLocation" padding-top>
@@ -42,7 +42,7 @@
             <span *ngIf="department.label != department.item[0]" style="font-size: small" item-end>{{ department.label }}</span>
           </ion-item>
           <ion-item class="itemStatus" *ngIf="department.item[0] == 'Präsenzbestand'">
-            <p style="color: black; font-size: small">Bitte nutzen Sie diesen Bestand nur vor Ort.</p>
+            <p style="color: black; font-size: small">{{ "page.library.referenceLib" | translate }}</p>
           </ion-item>
         </ng-template>
       </ion-list>
@@ -56,38 +56,38 @@
       <div *ngIf="shortAbstract && showShortAbstract" style="text-align: justify">{{ bookDetails.shortAbstract }}</div>
       <div *ngIf="shortAbstract" align="right">
         <button ion-button small clear (click)="showShortAbstract = !showShortAbstract">
-          <span *ngIf="showShortAbstract">Mehr anzeigen</span>
-          <span *ngIf="!showShortAbstract">Weniger anzeigen</span>
+          <span *ngIf="showShortAbstract">{{ "button.showMore" | translate }}</span>
+          <span *ngIf="!showShortAbstract">{{ "button.showLess" | translate }}</span>
         </button>
       </div>
     </div>
     <div *ngIf="bookDetails.keywords.length != 0" padding-top>
-      <h3>Schlagwörter</h3>
+      <h3>{{ "page.library.keywords" | translate }}</h3>
       <ul *ngFor="let keyword of bookDetails.keywords">
         <li class="link" tappable (click)="openWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</li> 
       </ul>
     </div>
     <div *ngIf="bookDetails.toc.length != 0" padding-top>
-      <h3>Inhaltsverzeichnis</h3>
+      <h3>{{ "page.library.toc" | translate }}</h3>
       <ul *ngFor="let chapter of bookDetails.toc; let i = index">
         <li *ngIf="!showFullTOC && i < 3">{{ chapter }}</li>
         <li *ngIf="showFullTOC">{{ chapter }}</li>
       </ul>
       <div *ngIf="bookDetails.toc.length > 3" align="right">
         <button ion-button small clear (click)="showFullTOC = !showFullTOC">
-          <span *ngIf="showFullTOC">Weniger anzeigen</span>
-          <span *ngIf="!showFullTOC">Mehr anzeigen</span>
+          <span *ngIf="showFullTOC">{{ "button.showLess" | translate }}</span>
+          <span *ngIf="!showFullTOC">{{ "button.showMore" | translate }}</span>
         </button>
       </div> 
     </div>
     <div *ngIf="bookDetails.notes.length != 0" padding-top>
-      <h3>Anmerkungen</h3>
+      <h3>{{ "page.library.annotations" | translate }}</h3>
       <ul *ngFor="let note of bookDetails.notes">
         <li>{{ note }}</li>
       </ul>
     </div>
     <div *ngIf="bookDetails.series.length != 0" padding-top>
-      <h3>Serie</h3>
+      <h3>{{ "page.library.serie" | translate }}</h3>
       <ul *ngFor="let serie of bookDetails.series">
         <li>{{ serie }}</li>
       </ul>
@@ -99,13 +99,13 @@
       </ul>
     </div>
     <div *ngIf="bookDetails.extent.length != 0" padding-top>
-      <h3>Umfang</h3>
+      <h3>{{ "page.library.extent" | translate }}</h3>
       <ul *ngFor="let extent of bookDetails.extent">
         <li>{{ extent }}</li>
       </ul>
     </div>
     <div *ngIf="bookDetails.noDetails" align="center" padding-top>
-      Keine weiteren Details verfügbar.
+      {{ "page.library.noDetails" | translate }}
     </div>
   </div>
 </ion-content>

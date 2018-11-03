@@ -77,6 +77,20 @@
     },
     "library": {
       "title": "Bibliothekssuche",
+      "titleDetail": "Detailansicht",
+      "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
+      "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
+      "bookSet": "Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.",
+      "location": "Standort",
+      "details": "Details",
+      "referenceLib": "Bitte nutzen Sie diesen Bestand nur vor Ort.",
+      "keywords": "Schlagwörter",
+      "annotations": "Anmerkungen",
+      "serie": "Serie",
+      "extent": "Umfang",
+      "noDetails": "Keine weiteren Details verfügbar.",
+      "allResults": "Liste aller Ergebnisse",
+      "toc": "Inhaltsverzeichnis",
       "placeholder": {
         "search": "Suchbegriff eingeben..."
       }
@@ -167,7 +181,9 @@
     "no": "Nein",
     "login": "Login",
     "continue": "Weiter",
-    "search": "Suchen"
+    "search": "Suchen",
+    "showMore": "Mehr anzeigen",
+    "shoeLess": "Weniger anzeigen"
   },
   "alert": {
     "title": {
@@ -186,7 +202,9 @@
   },
   "words": {
     "clock": "Uhr",
-    "house": "Haus"
+    "house": "Haus",
+    "of": "von",
+    "results": "Einträgen"
   },
   "menu": {
     "title": "Menü"

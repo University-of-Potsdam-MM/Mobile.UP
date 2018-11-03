@@ -19,8 +19,8 @@
 
   <div *ngIf="isLoaded">
     <ion-item padding-left>
-      <p>Liste aller Ausgaben:</p>
-      <b>{{ resultIndex() }}</b> von <b>{{ numberOfRecords }}</b> Einträgen
+      <p>{{ "page.library.allResults" | translate}}:</p>
+      <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}
     </ion-item>
     <ion-list>
       <span *ngFor="let book of bookList; let i = index">

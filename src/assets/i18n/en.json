@@ -77,6 +77,20 @@
     },
     "library": {
       "title": "Library search",
+      "titleDetail": "Detail view",
+      "copyright": "Copies and downloads of certain chapters or sites are only allowed for personal use. No distribution to third parties. No automated downloading.",
+      "electronicUsage": "You have to be in the IP range (LAN, WLAN, VPN) of the University to access this ressource.",
+      "bookSet": "This set contains multiple volumes. Please consider researching these subvolumes.",
+      "location": "Location",
+      "details": "Details",
+      "referenceLib": "This is part of the non-lending collection. Please use it in the library.",
+      "keywords": "Keywords",
+      "annotations": "Annotations",
+      "serie": "Series",
+      "extent": "Extent",
+      "noDetails": "No further details available.",
+      "allResults": "List of all results",
+      "toc": "Table of Contents",
       "placeholder": {
         "search": "Search..."
       }
@@ -167,7 +181,9 @@
     "no": "No",
     "login": "Login",
     "continue": "Continue",
-    "search": "Search"
+    "search": "Search",
+    "showMore": "Show more",
+    "shoeLess": "Show less"
   },
   "alert": {
     "title": {
@@ -186,7 +202,9 @@
   },
   "words": {
     "clock": "Clock",
-    "house": "House"
+    "house": "House",
+    "of": "of",
+    "results": "results"
   },
   "menu": {
     "title": "Menu"
