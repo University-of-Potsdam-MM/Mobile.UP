@@ -180,6 +180,8 @@ export interface IEndpoints {
   roomsSearch:string;
   roomplanSearch:string;
   events:string;
+  library:string;
+  libraryDAIA:string;
   puls:string;
 }
 

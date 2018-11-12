@@ -7,6 +7,7 @@ import { EventViewComponent } from './event-view/event-view';
 import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { TabBarComponent } from './tab-bar/tab-bar';
 import { CampusTabComponent } from './campus-tab/campus-tab';
+import { BookListViewComponent } from './book-list-view/book-list-view';
 import { GradesTableComponent } from './grades-table/grades-table';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { GradesTableComponent } from './grades-table/grades-table';
     	ContentDrawerComponent,
     	TabBarComponent,
     	CampusTabComponent,
+    	BookListViewComponent,
     	GradesTableComponent
 	],
 	imports: [
@@ -30,6 +32,7 @@ import { GradesTableComponent } from './grades-table/grades-table';
     	ContentDrawerComponent,
     	TabBarComponent,
     	CampusTabComponent,
+    	BookListViewComponent,
     	GradesTableComponent
 	]
 })

@@ -4,11 +4,11 @@
       "title": "Homepage"
     },
     "imprint":{
-      "title":"Imprint"
+      "title": "Legal Notice"
     },
     "login":{
       "title":"Login",
-      "loginInProgress": "Login is in progress",
+      "loginInProgress": "Login in progress...",
       "alreadyLoggedIn": "You are already logged in.",
       "notLoggedIn": "You are not logged in.",
       "placeHolder": {
@@ -16,7 +16,7 @@
         "password": "Password"
       },
       "loginError": {
-        "0": "Username and Password dont match",
+        "0": "Username and Password don't match.",
         "1": "There is a technical difficulty, please contact the development team.",
         "2": "Please check your network connection.",
         "3": "An unknown login-method has been used, please contact the development team.",
@@ -25,131 +25,150 @@
     },
     "logout": {
       "title": "Logout",
-      "text": "you're about to logout",
-      "affirmativeQuestion": "actually logout?"
+      "text": "You're about to logout.",
+      "affirmativeQuestion": "Do you really want to logout?"
     },
     "emergency": {
-      "title": "emergency numbers",
+      "title": "Emergency numbers",
       "placeholder": {
-        "search": "search"
+        "search": "Search..."
       },
       "item": {
-        "postal": "place:",
-        "street": "street:"
+        "postal": "Location:",
+        "street": "Street:"
       }
     },
     "persons": {
-      "title": "people search",
+      "title": "People search",
       "placeholder": {
-        "search": "..."
+        "search": "Search..."
       },
-      "no_results": "No results found for this search"
+      "no_results": "No results found for this keyword."
     },
     "practice": {
-      "title": "in practice",
+      "title": "In practice",
       "placeholder": {
-        "search": "search"
+        "search": "Search..."
       },
       "item": {
-        "contact": "contact:",
-        "foreign": "foreign",
-        "partner": "partner",
-        "language": "language",
-        "familyfriendly": "family friendly",
-        "student": "student job",
-        "graduate": "graduate job",
-        "thesis": "final thesis",
-        "praktika": "praktika"
+        "contact": "Contact:",
+        "foreign": "Foreign",
+        "partner": "Partner",
+        "language": "Language",
+        "familyfriendly": "Family friendly",
+        "student": "Student job",
+        "graduate": "Graduate job",
+        "thesis": "Final thesis",
+        "praktika": "Internships"
 
       },
-      "no_results": "no results found for this search"
+      "no_results": "No results found for this keyword."
     },
     "grades": {
-      "title": "my achievements",
+      "title": "My achievements",
       "hint": "Please select a degree, to which the achievements are to be displayed.",
-      "notSupported": "This feature is not supported for you.",
+      "notSupported": "This feature is not supported for your account.",
       "bezeichnung": "description",
-      "note": "grade",
+      "note": "Grade",
       "pv": "PV",
       "lp": "LP",
       "studienleistung": "Study achievements",
       "noGrades": "No achievements registered."
     },
     "library": {
-      "title": "library search"
+      "title": "Library search",
+      "titleDetail": "Detail view",
+      "copyright": "Copies and downloads of certain chapters or sites are only allowed for personal use. No distribution to third parties. No automated downloading.",
+      "electronicUsage": "You have to be in the IP range (LAN, WLAN, VPN) of the University to access this ressource.",
+      "bookSet": "This set contains multiple volumes. Please consider researching these subvolumes.",
+      "location": "Location",
+      "details": "Details",
+      "referenceLib": "This is part of the non-lending collection. Please use it in the library.",
+      "keywords": "Keywords",
+      "annotations": "Annotations",
+      "serie": "Series",
+      "extent": "Extent",
+      "noDetails": "No further details available.",
+      "allResults": "List of all results",
+      "toc": "Table of Contents",
+      "placeholder": {
+        "search": "Search..."
+      }
     },
     "events":{
       "title":"Events",
-      "showEventDetails": "show details",
-      "hideEventDetails": "hide details",
-      "eventsAll": "all",
-      "eventsToday": "today",
-      "eventsNext": "next",
-      "noEventCategory": "No venue available today.",
-      "noEventsToday": "No events pending today.",
-      "adress": "adress",
-      "description": "description"
+      "showEventDetails": "Show details",
+      "hideEventDetails": "Hide details",
+      "eventsAll": "All",
+      "eventsToday": "Today",
+      "eventsNext": "Next",
+      "noEventCategory": "No venues available today.",
+      "noEventsToday": "No pending events today.",
+      "address": "Address",
+      "description": "Description"
     },
     "moodle": {
       "title": "Moodle"
     },
     "lectures": {
-      "title": "lectures"
+      "title": "Lectures"
     },
     "timetable": {
-      "title": "timetable"
+      "title": "Timetable"
     },
     "mail": {
-      "title": "mail"
+      "title": "Mail"
     },
     "news": {
-      "title": "news",
-      "articlePublished": "published"
+      "title": "News",
+      "articlePublished": "Published"
     },
     "maps": {
-      "title": "maps"
+      "title": "Maps"
     },
     "tipps": {
-      "title": "tipps & tricks"
+      "title": "Tips & tricks"
     },
     "reflectUP": {
       "title": "Reflect.UP"
     },
     "sports": {
-      "title": "sports"
+      "title": "College sports"
     },
     "settings": {
-      "title": "settings",
+      "title": "Settings",
       "setting": {
         "campus": {
-          "lbl": "campus"
+          "lbl": "Campus"
         },
         "language": {
-          "lbl": "language"
+          "lbl": "Language"
         }
       }
     },
     "athletics":{
-      "title":"sports"
+      "title":"College sports"
     },
     "rooms": {
-      "title": "available rooms"
+      "title": "Available rooms"
     },
     "roomplan": {
-      "title": "roomplan",
-      "no_house": "No roomplan available for the house that was chosen.",
-      "no_room": "No roomplan available for the room that was chosen."
+      "title": "Roomplan",
+      "no_house": "No roomplan available for the chosen house.",
+      "no_room": "No roomplan available for the chosen room."
     },
     "openingHours":{
-      "title":"opening hours"
+      "title":"Opening hours"
     },
     "mensa":{
-      "title": "mensa",
+      "title": "Mensa",
       "campus1": "Griebnitzsee",
       "campus2": "Neues Palais",
       "campus3": "Golm",
+      "students": "Students",
+      "guests": "Guests",
       "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
-      "noMealsHint": "No meals were found that meet the criteria."
+      "noMealsHint": "No meals were found that match the criteria."
     },
     "unishop": {
       "title": "UNIshop"
@@ -157,17 +176,19 @@
   },
   "button": {
     "ok": "OK",
-    "cancel": "cancel",
-    "yes": "yes",
-    "no": "no",
-    "login": "login",
-    "continue": "continue",
-    "search": "search"
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "login": "Login",
+    "continue": "Continue",
+    "search": "Search",
+    "showMore": "Show more",
+    "shoeLess": "Show less"
   },
   "alert": {
     "title": {
-      "error": "error",
-      "website": "open website?"
+      "error": "Error",
+      "website": "Open website?"
     },
     "network": "A network error has occured. Is the device connected to the internet?",
     "no_info_for_time": "There is no information available for this timespan."
@@ -180,10 +201,12 @@
     }
   },
   "words": {
-    "clock": "clock",
-    "house": "house"
+    "clock": "Clock",
+    "house": "House",
+    "of": "of",
+    "results": "results"
   },
   "menu": {
-    "title": "title"
+    "title": "Menu"
   }
 }

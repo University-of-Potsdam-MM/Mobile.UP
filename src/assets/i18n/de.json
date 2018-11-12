@@ -1,22 +1,22 @@
 {
-  "page":{
-    "home":{
+  "page": {
+    "home": {
       "title": "Startseite"
     },
     "imprint":{
-      "title":"Impressum"
+      "title": "Impressum"
     },
     "login":{
       "title":"Login",
-      "loginInProgress": "Login läuft",
-      "alreadyLoggedIn": "Du bist bereits eingeloggt.",
-      "notLoggedIn": "Du bist nicht eingeloggt.",
+      "loginInProgress": "Login läuft...",
+      "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
+      "notLoggedIn": "Sind sind nicht eingeloggt.",
       "placeHolder": {
         "username": "Benutzername (ohne @uni...)",
         "password": "Passwort"
       },
       "loginError": {
-        "0": "Benutzername und Passwort stimmen nicht überein",
+        "0": "Benutzername und Passwort stimmen nicht überein.",
         "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
         "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
         "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
@@ -25,13 +25,13 @@
     },
     "logout": {
       "title": "Logout",
-      "text": "Sie sind dabei sich abzumelden",
-      "affirmativeQuestion": "Wirklich ausloggen?"
+      "text": "Sie sind dabei sich abzumelden.",
+      "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
     "emergency": {
       "title": "Notrufnummern",
       "placeholder": {
-        "search": "Suche"
+        "search": "Suchbegriff eingeben..."
       },
       "item": {
         "postal": "Ort:",
@@ -41,14 +41,14 @@
     "persons": {
       "title": "Personensuche",
       "placeholder": {
-        "search": "..."
+        "search": "Suchbegriff eingeben..."
       },
-      "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
+      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
     },
     "practice": {
       "title": "Ab in die Praxis",
       "placeholder": {
-        "search": "Suche"
+        "search": "Suchbegriff eingeben..."
       },
       "item": {
         "contact": "Ansprechperson:",
@@ -62,12 +62,12 @@
         "praktika": "Praktika"
 
       },
-      "no_results": "Für diese Suche wurden keine Ergebnisse gefunden"
+      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
     },
     "grades": {
       "title": "Meine Leistungen",
-      "hint": "Bitte wähle einen Abschluss aus, zu dem die Leistungen angezeigt werden sollen.",
-      "notSupported": "Diese Funktion wird für Sie nicht unterstützt.",
+      "hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
+      "notSupported": "Diese Funktion wird für Ihren Account nicht unterstützt.",
       "bezeichnung": "Bezeichnung",
       "note": "Note",
       "pv": "PV",
@@ -76,7 +76,24 @@
       "noGrades": "Keine eingetragenen Leistungen."
     },
     "library": {
-      "title": "Bibliothekssuche"
+      "title": "Bibliothekssuche",
+      "titleDetail": "Detailansicht",
+      "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
+      "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
+      "bookSet": "Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.",
+      "location": "Standort",
+      "details": "Details",
+      "referenceLib": "Bitte nutzen Sie diesen Bestand nur vor Ort.",
+      "keywords": "Schlagwörter",
+      "annotations": "Anmerkungen",
+      "serie": "Serie",
+      "extent": "Umfang",
+      "noDetails": "Keine weiteren Details verfügbar.",
+      "allResults": "Liste aller Ergebnisse",
+      "toc": "Inhaltsverzeichnis",
+      "placeholder": {
+        "search": "Suchbegriff eingeben..."
+      }
     },
     "events":{
       "title":"Events",
@@ -85,9 +102,9 @@
       "eventsAll": "Alle",
       "eventsToday": "Heute",
       "eventsNext": "Nächste",
-      "noEventCategory": "Heute kein Veranstaltungsort verfügbar",
-      "noEventsToday": "Du hast heute keine anstehenden Veranstaltungen.",
-      "adress": "Adresse",
+      "noEventCategory": "Kein Veranstaltungsort verfügbar.",
+      "noEventsToday": "Sie haben heute keine anstehenden Veranstaltungen.",
+      "address": "Adresse",
       "description": "Beschreibung"
     },
     "moodle": {
@@ -148,6 +165,8 @@
       "campus1": "Griebnitzsee",
       "campus2": "Neues Palais",
       "campus3": "Golm",
+      "students": "Studierende",
+      "guests": "Gäste",
       "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
       "noMealsHint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen."
     },
@@ -162,7 +181,9 @@
     "no": "Nein",
     "login": "Login",
     "continue": "Weiter",
-    "search": "Suchen"
+    "search": "Suchen",
+    "showMore": "Mehr anzeigen",
+    "shoeLess": "Weniger anzeigen"
   },
   "alert": {
     "title": {
@@ -181,7 +202,9 @@
   },
   "words": {
     "clock": "Uhr",
-    "house": "Haus"
+    "house": "Haus",
+    "of": "von",
+    "results": "Einträgen"
   },
   "menu": {
     "title": "Menü"

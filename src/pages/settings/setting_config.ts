@@ -8,13 +8,13 @@ export const SETTINGS = [
         value: "Deutsch",
         options: [{key: "Deutsch", lbl: "Deutsch"}, {key: "Englisch", lbl: "Englisch"}],
         type: ESettingType.string_radio,
-        icon: "globe-outline"
+        icon: "ios-globe-outline"
     },
     {
         key: "campus",
         value: "Griebnitzsee",
         options: [{key: "Neues Palais", lbl: "Neues Palais"}, {key: "Griebnitzsee", lbl: "Griebnitzsee"}, {key: "Golm", lbl: "Golm"}],
         type: ESettingType.string_radio,
-        icon: "locate-outline"
+        icon: "ios-locate-outline"
     }
 ];

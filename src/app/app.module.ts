@@ -33,6 +33,8 @@ import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
 import { ComponentsProvider } from '../providers/components/components';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
+import { LibraryPage } from '../pages/library/library';
+import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
 import { GradesPage } from '../pages/grades/grades';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -50,6 +52,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PersonsPage,
     MensaPage,
     SettingsPage,
+    LibraryPage,
+    BookDetailViewPage,
     PracticePage,
     NewsPage,
     EventsPage,
@@ -83,8 +87,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ImpressumPage,
     EmergencyPage,
     PersonsPage,
+    LibraryPage,
     MensaPage,
     SettingsPage,
+    BookDetailViewPage,
     PracticePage,
     NewsPage,
     EventsPage,

@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
@@ -24,6 +23,7 @@ import { SettingsPage } from "../pages/settings/settings";
 import { ComponentsProvider } from "../providers/components/components";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
+import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
 
 @Component({
@@ -45,7 +45,6 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
-    private keyboard: Keyboard,
     private components: ComponentsProvider
   ) {
     this.initializeApp();
@@ -64,7 +63,6 @@ export class MobileUPApp {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.keyboard.disableScroll(true);
       }
     });
 
@@ -92,6 +90,7 @@ export class MobileUPApp {
       { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
       { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
+      { title: "page.library.title", pageName: LibraryPage, icon: "bookmarks" },
       { title: "page.grades.title", pageName: GradesPage, icon: "book" },
       { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
@@ -113,6 +112,7 @@ export class MobileUPApp {
       rooms:RoomsPage,
       roomplan:RoomplanPage,
       mensa:MensaPage,
+      library:LibraryPage,
       emergency:EmergencyPage,
       events:EventsPage,
       practice:PracticePage,
@@ -141,9 +141,7 @@ export class MobileUPApp {
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
     } else if (userLanguage == "Englisch") {
-      // this.translate.use("en");
-      // dont use englisch until we have translation data
-      this.translate.use("de");
+      this.translate.use("en");
     }
   }
 
