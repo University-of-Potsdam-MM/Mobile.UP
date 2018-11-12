@@ -8,7 +8,7 @@
     "news": {
       "componentName": "news",
       "icon": "paper",
-      "selected":false
+      "selected":true
     },
     "events": {
       "componentName": "events",
@@ -33,7 +33,7 @@
     "library": {
       "componentName": "library",
       "icon": "bookmark",
-      "selected":false
+      "selected":true
     },
     "practice": {
       "componentName": "practice",
@@ -43,7 +43,7 @@
     "grades": {
       "componentName": "grades",
       "icon": "book",
-      "selected":false
+      "selected":true
     },
     "emergency": {
       "componentName": "emergency",
@@ -101,7 +101,7 @@
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":true
+      "selected":false
     },
     "logout": {
       "componentName": "logout",
