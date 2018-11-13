@@ -25,6 +25,7 @@ import { ComponentsProvider } from "../providers/components/components";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { GradesPage } from '../pages/grades/grades';
+import { LecturesPage } from '../pages/lectures/lectures';
 
 @Component({
   templateUrl: 'app.html'
@@ -99,6 +100,7 @@ export class MobileUPApp {
       { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
       { title: "page.mail.title", pageName: HomePage, icon: "mail", webIntent: true, moduleName: "mail"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
+      { title: "page.lectures.title", pageName: LecturesPage, icon: "book" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
     ];
@@ -119,6 +121,7 @@ export class MobileUPApp {
       persons:PersonsPage,
       settings:SettingsPage,
       grades:GradesPage,
+      lectures:LecturesPage,
       athletics:"webIntent",
       unishop:"webIntent",
       mail:"webIntent",

@@ -1,0 +1,20 @@
+lecture-list {
+    .rootItem {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+        border-radius: 0px;
+    }
+
+    .subTreeItem {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+        border-radius: 0px;
+        font-weight: bold;
+    }
+
+    .courseItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px; 
+    }
+}
