@@ -9,12 +9,40 @@ lecture-list {
         background-color: color($colors, secondary);
         color: color($colors, primary);
         border-radius: 0px;
-        font-weight: bold;
     }
 
     .courseItem {
         background-color: color($colors, light);
         color: color($colors, primary);
         border-radius: 0px; 
+
+        p {
+            font-size: small;
+            color: color($colors, primary);
+        }
     }
+
+    .courseData {
+        font-size: small;
+        color: color($colors, primary);
+
+        p {
+            font-size: small;
+            color: color($colors, primary);
+        }
+    }
+
+    .courseKeywords {
+        font-weight: bold;
+    }
+
+    .evenEvent {
+        background-color: color($colors, secondary);
+    }
+
+    .eventHeader {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+    }
+
 }

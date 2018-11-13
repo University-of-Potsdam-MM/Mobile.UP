@@ -21,6 +21,9 @@ export class LectureListComponent {
   isExpanded = [];
   isExpandedCourse = [];
 
+  courseData = [];
+  courseGroups = [];
+
   constructor(private http: HttpClient, private storage: Storage) {
   }
 
@@ -90,15 +93,38 @@ export class LectureListComponent {
   }
 
   expandCourse(course) {
-    console.log(course);
 
     if (course.courseId) {
       let courseId = course.courseId;
+
+      let url = this.endpointUrl + "getCourseData";
+
+      let headers = new HttpHeaders()
+        .append("Authorization", this.authToken);
+  
+      this.http.post(url, {"condition":{"courseId":courseId}}, {headers:headers}).subscribe(data => {
+        console.log(data);
+        this.courseData[courseId] = data;
+
+        var i;
+        this.courseGroups[courseId] = [];
+        // check how many different groups exist
+        let tmp = this.convertToArray(this.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
+        for (i = 0; i < tmp.length; i++) {
+          if (!this.isInArray(this.courseGroups[courseId], tmp[i].groupId)) {
+            this.courseGroups[courseId].push(tmp[i].groupId);
+          }
+        }
+      });
       
       if (this.isExpandedCourse[courseId]) {
         this.isExpandedCourse[courseId] = false;
-      } else { this.isExpandedCourse[courseId] = true; }
+      } else { this.isExpandedCourse[courseId] = true; console.log(course); }
     }
+  }
+
+  replaceUnderscore(roomSc:string) {
+    return roomSc.replace(/_/g, ".");
   }
 
   convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
@@ -109,6 +135,17 @@ export class LectureListComponent {
       tmp.push(toConvert);
       return tmp;
     }
+  }
+
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i] == value) {
+        found = true;
+      }
+    }
+    return found;
   }
 
   htmlDecode(input) {
