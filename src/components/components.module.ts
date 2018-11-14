@@ -7,6 +7,7 @@ import { EventViewComponent } from './event-view/event-view';
 import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { TabBarComponent } from './tab-bar/tab-bar';
 import { CampusTabComponent } from './campus-tab/campus-tab';
+import { BookListViewComponent } from './book-list-view/book-list-view';
 import { GradesTableComponent } from './grades-table/grades-table';
 import { LectureListComponent } from './lecture-list/lecture-list';
 
@@ -19,7 +20,8 @@ import { LectureListComponent } from './lecture-list/lecture-list';
     	TabBarComponent,
     	CampusTabComponent,
     	GradesTableComponent,
-    LectureListComponent
+    	LectureListComponent,
+    	BookListViewComponent
 	],
 	imports: [
 		IonicModule,
@@ -33,7 +35,8 @@ import { LectureListComponent } from './lecture-list/lecture-list';
     	TabBarComponent,
     	CampusTabComponent,
     	GradesTableComponent,
-    LectureListComponent
+    	LectureListComponent,
+    	BookListViewComponent
 	]
 })
 export class ComponentsModule {}

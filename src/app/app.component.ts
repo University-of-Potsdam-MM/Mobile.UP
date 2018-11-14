@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
@@ -24,6 +23,7 @@ import { SettingsPage } from "../pages/settings/settings";
 import { ComponentsProvider } from "../providers/components/components";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
+import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { CacheService } from 'ionic-cache';
@@ -47,7 +47,6 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
-    private keyboard: Keyboard,
     private components: ComponentsProvider,
     private cache: CacheService
   ) {
@@ -67,7 +66,6 @@ export class MobileUPApp {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.keyboard.disableScroll(true);
       }
 
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
@@ -92,17 +90,13 @@ export class MobileUPApp {
       { title: "page.home.title", pageName: HomePage, icon: "home" },
       { title: "page.practice.title", pageName: PracticePage, icon: "briefcase" },
       { title: "page.persons.title", pageName: PersonsPage, icon: "people" },
-      { title: "page.news.title", pageName: NewsPage, icon: "paper" },
       { title: "page.events.title", pageName: EventsPage, icon: "calendar" },
       { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
       { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
-      { title: "page.mensa.title", pageName: MensaPage, icon: "restaurant" },
-      { title: "page.grades.title", pageName: GradesPage, icon: "book" },
       { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
       { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
       { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
-      { title: "page.mail.title", pageName: HomePage, icon: "mail", webIntent: true, moduleName: "mail"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
       { title: "page.lectures.title", pageName: LecturesPage, icon: "book" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
@@ -119,6 +113,7 @@ export class MobileUPApp {
       rooms:RoomsPage,
       roomplan:RoomplanPage,
       mensa:MensaPage,
+      library:LibraryPage,
       emergency:EmergencyPage,
       events:EventsPage,
       practice:PracticePage,
@@ -148,9 +143,7 @@ export class MobileUPApp {
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
     } else if (userLanguage == "Englisch") {
-      // this.translate.use("en");
-      // dont use englisch until we have translation data
-      this.translate.use("de");
+      this.translate.use("en");
     }
   }
 

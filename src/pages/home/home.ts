@@ -45,7 +45,7 @@ export class HomePage {
               if(default_modules) {
                 // use those if possible
                 this.modules = default_modules;
-                console.log("[HomePage]: Using default_modules");
+                // console.log("[HomePage]: Using default_modules");
               } else {
                 // somethings clearly wrong here!
                 console.log("[HomePage]: Neither user defined modules nor default_modules in storage!");
