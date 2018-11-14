@@ -93,6 +93,11 @@
       "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
       "bundleName": "com.moodle.moodlemobile"
     },
+    "lectures": {
+      "componentName": "lectures",
+      "icon": "book",
+      "selected": false
+    },
     "settings": {
       "componentName": "settings",
       "icon": "settings",

@@ -111,7 +111,29 @@
       "title": "Moodle"
     },
     "lectures": {
-      "title": "Lectures"
+      "title": "Lectures",
+      "term": "Term",
+      "sws": "Hours per week",
+      "links": "Links",
+      "application": "Application period",
+      "lang": "Language",
+      "department": "Department",
+      "sComment": "Short comment",
+      "comment": "Comment",
+      "literature": "Literature",
+      "certificates": "Certificates",
+      "learnContent": "Learning content",
+      "prereq": "Prerequisites",
+      "audience": "Target group",
+      "group": "Group",
+      "day": "Day",
+      "time": "Time",
+      "freq": "Frequency",
+      "duration": "Duration",
+      "room": "Room",
+      "lecturer": "Lecturer",
+      "noCourses": "No courses available.",
+      "annotation": "Annotation"
     },
     "timetable": {
       "title": "Timetable"

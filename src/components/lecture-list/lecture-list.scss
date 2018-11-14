@@ -1,0 +1,79 @@
+lecture-list {
+
+    .expandedRootItem {
+        background-color: color($colors, primary);
+        color: color($colors, secondary);
+        border-radius: 0px;
+        font-size: small;
+    }
+
+    .rootItem {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+        border-radius: 0px;
+        font-size: small;
+    }
+
+    .expandedItem, .expandedCourse {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+        border-radius: 0px;
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .subTreeItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px;
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .courseItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px; 
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .courseData {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px; 
+        font-size: small;
+        margin-left: 1%;
+
+        p {
+            font-size: small;
+            color: color($colors, primary);
+        }
+    }
+
+    .courseKeywords {
+        font-weight: bold;
+    }
+
+    .event {
+        background-color: color($colors, secondary);
+    }
+
+    .event:last-child {
+        border-bottom: 1px solid gray!important
+    }
+
+    .eventHeader {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+    }
+
+    .noCourses {
+        background-color: color($colors, light);
+        color: black;
+        border-radius: 0px; 
+        margin-left: 1%;
+        font-size: small;
+    }
+
+}

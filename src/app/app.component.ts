@@ -25,6 +25,8 @@ import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
+import { LecturesPage } from '../pages/lectures/lectures';
+import { CacheService } from 'ionic-cache';
 
 @Component({
   templateUrl: 'app.html'
@@ -45,7 +47,8 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
-    private components: ComponentsProvider
+    private components: ComponentsProvider,
+    private cache: CacheService
   ) {
     this.initializeApp();
   }
@@ -64,6 +67,8 @@ export class MobileUPApp {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
       }
+
+      this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
     });
 
     this.rootPage = HomePage;
@@ -93,6 +98,7 @@ export class MobileUPApp {
       { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
       { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
       { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
+      { title: "page.lectures.title", pageName: LecturesPage, icon: "book" },
       { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
       { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
     ];
@@ -114,6 +120,7 @@ export class MobileUPApp {
       persons:PersonsPage,
       settings:SettingsPage,
       grades:GradesPage,
+      lectures:LecturesPage,
       athletics:"webIntent",
       unishop:"webIntent",
       mail:"webIntent",

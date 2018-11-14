@@ -16,6 +16,7 @@ import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { Keyboard } from '@ionic-native/keyboard';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
+import { CacheModule } from "ionic-cache";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -36,6 +37,7 @@ import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
 import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
 import { GradesPage } from '../pages/grades/grades';
+import { LecturesPage } from '../pages/lectures/lectures';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -59,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EventsPage,
     GradesPage,
     RoomsPage,
+    LecturesPage,
     RoomplanPage
   ],
   imports: [
@@ -66,6 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     BrowserModule,
     CalendarModule,
+    CacheModule.forRoot({ keyPrefix: 'myCache-' }),
     IonicModule.forRoot(MobileUPApp, {
       backButtonText: ' ',
     }),
@@ -96,6 +100,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EventsPage,
     GradesPage,
     RoomsPage,
+    LecturesPage,
     RoomplanPage
   ],
   providers: [

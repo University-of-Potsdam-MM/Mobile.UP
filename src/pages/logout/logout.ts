@@ -3,6 +3,7 @@ import {IonicPage, Nav} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import { HomePage } from '../home/home';
 import { ISession } from '../../providers/login-provider/interfaces';
+import { CacheService } from 'ionic-cache';
 
 /**
  * LogoutPage
@@ -20,6 +21,7 @@ export class LogoutPage {
 
   constructor(
       private storage: Storage,
+      private cache: CacheService,
       private nav: Nav) {
   }
 
@@ -37,6 +39,7 @@ export class LogoutPage {
     this.storage.set("session", null);
     var i; // clear saved grades from storage
     for (i = 0; i < 10; i++) { this.storage.remove("studentGrades["+i+"]"); }
+    this.cache.clearAll();
     this.goHome();
   }
 
