@@ -4,38 +4,38 @@ lecture-list {
         background-color: color($colors, primary);
         color: color($colors, secondary);
         border-radius: 0px;
+        font-size: medium;
     }
 
     .rootItem {
         background-color: color($colors, primary);
         color: color($colors, light);
         border-radius: 0px;
+        font-size: medium;
     }
 
     .expandedItem, .expandedCourse {
         background-color: color($colors, secondary);
         color: color($colors, primary);
         border-radius: 0px;
-        margin-left: 0.5%;
+        margin-left: 1%;
+        font-size: medium;
     }
 
     .subTreeItem {
         background-color: color($colors, light);
         color: color($colors, primary);
         border-radius: 0px;
-        margin-left: 0.5%;
+        margin-left: 1%;
+        font-size: medium;
     }
 
     .courseItem {
         background-color: color($colors, light);
         color: color($colors, primary);
         border-radius: 0px; 
-        margin-left: 0.5%;
-
-        p {
-            font-size: small;
-            color: color($colors, primary);
-        }
+        margin-left: 1%;
+        font-size: medium;
     }
 
     .courseData {
@@ -43,7 +43,7 @@ lecture-list {
         color: color($colors, primary);
         border-radius: 0px; 
         font-size: small;
-        margin-left: 0.5%;
+        margin-left: 1%;
 
         p {
             font-size: small;
@@ -55,8 +55,12 @@ lecture-list {
         font-weight: bold;
     }
 
-    .evenEvent {
+    .event {
         background-color: color($colors, secondary);
+    }
+
+    .event:last-child {
+        border-bottom: 1px solid gray!important
     }
 
     .eventHeader {
