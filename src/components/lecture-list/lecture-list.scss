@@ -1,20 +1,36 @@
 lecture-list {
+
+    .expandedRootItem {
+        background-color: color($colors, primary);
+        color: color($colors, secondary);
+        border-radius: 0px;
+    }
+
     .rootItem {
         background-color: color($colors, primary);
         color: color($colors, light);
         border-radius: 0px;
     }
 
-    .subTreeItem {
+    .expandedItem, .expandedCourse {
         background-color: color($colors, secondary);
         color: color($colors, primary);
         border-radius: 0px;
+        margin-left: 0.5%;
+    }
+
+    .subTreeItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px;
+        margin-left: 0.5%;
     }
 
     .courseItem {
         background-color: color($colors, light);
         color: color($colors, primary);
         border-radius: 0px; 
+        margin-left: 0.5%;
 
         p {
             font-size: small;
@@ -23,8 +39,11 @@ lecture-list {
     }
 
     .courseData {
-        font-size: small;
+        background-color: color($colors, light);
         color: color($colors, primary);
+        border-radius: 0px; 
+        font-size: small;
+        margin-left: 0.5%;
 
         p {
             font-size: small;
