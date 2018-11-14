@@ -23,6 +23,7 @@ export class LectureListComponent {
 
   courseData = [];
   courseGroups = [];
+  lecturerList = [];
 
   constructor(private http: HttpClient, private storage: Storage) {
   }
@@ -124,7 +125,36 @@ export class LectureListComponent {
   }
 
   replaceUnderscore(roomSc:string) {
-    return roomSc.replace(/_/g, ".");
+    if (roomSc != undefined) {
+      return roomSc.replace(/_/g, ".");
+    } else { return "" }
+  }
+
+  checkDoubledLecturers(event, lecturer, index) {
+    if (event.eventId && lecturer.lecturerId) {
+      if ((this.lecturerList[event.eventId] != undefined)  && (this.lecturerList[event.eventId].length > 0)) {
+        if (this.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
+          return true;
+        } else {
+          var i;
+          var alreadyIn = false;
+          for (i = 0; i < this.lecturerList.length; i++) {
+            if ((this.lecturerList[i] != undefined) && (this.lecturerList[i][0] == lecturer.lecturerId)) {
+              alreadyIn = true;
+            }
+          }
+
+          if (alreadyIn) { return false; } else {
+            this.lecturerList[event.eventId].push([lecturer.lecturerId][index]);
+            return true;
+          }
+        }
+      } else {
+        this.lecturerList[event.eventId] = [];
+        this.lecturerList[event.eventId].push([lecturer.lecturerId][index]);
+        return true;
+      }
+    }
   }
 
   convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
