@@ -111,7 +111,29 @@
       "title": "Moodle"
     },
     "lectures": {
-      "title": "Vorlesungsverzeichnis"
+      "title": "Vorlesungsverzeichnis",
+      "term": "Semester",
+      "sws": "Semesterwochenstunden",
+      "links": "Links",
+      "application": "Einschreibezeitraum",
+      "lang": "Sprache",
+      "department": "Einrichtung",
+      "sComment": "Kurzkommentar",
+      "comment": "Kommentar",
+      "literature": "Literatur",
+      "certificates": "Leistungsnachweis",
+      "learnContent": "Lerninhalte",
+      "prereq": "Voraussetzungen",
+      "audience": "Zielgruppe",
+      "group": "Gruppe",
+      "day": "Tag",
+      "time": "Zeit",
+      "freq": "Rhythmus",
+      "duration": "Dauer",
+      "room": "Raum",
+      "lecturer": "Lehrperson",
+      "noCourses": "Keine Kurse verfügbar.",
+      "annotation": "Bemerkung"
     },
     "timetable": {
       "title": "Stundenplan"
