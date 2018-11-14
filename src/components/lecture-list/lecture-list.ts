@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { IConfig } from '../../library/interfaces';
+import { CacheService } from 'ionic-cache';
 
 @Component({
   selector: 'lecture-list',
@@ -25,7 +26,7 @@ export class LectureListComponent {
   courseGroups = [];
   lecturerList = [];
 
-  constructor(private http: HttpClient, private storage: Storage) {
+  constructor(private http: HttpClient, private storage: Storage, private cache: CacheService) {
   }
 
   ngOnInit() {
@@ -51,23 +52,25 @@ export class LectureListComponent {
 
     if (!this.headerId) {
       let url = this.endpointUrl + "getLectureScheduleRoot";
+      let request = this.http.post(url, {"condition":{"semester":0}}, {headers:headers});
 
-      this.http.post(url, {"condition":{"semester":0}}, {headers:headers}).subscribe(data => {
+      this.cache.loadFromObservable("getLectureScheduleRoot", request).subscribe(data => {
         console.log(data);
         this.lectureSchedule = data;
-
       });
     } else if (this.hasSubTree) {
       let url = this.endpointUrl + "getLectureScheduleSubTree";
+      let request = this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers});
 
-      this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers}).subscribe(data => {
+      this.cache.loadFromObservable("getLectureScheduleSubTree"+this.headerId, request).subscribe(data => {
         console.log(data);
         this.lectureSchedule = data;
       });
     } else {
       let url = this.endpointUrl + "getLectureScheduleCourses";
+      let request = this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers});
 
-      this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers}).subscribe(data => {
+      this.cache.loadFromObservable("getLectureScheduleCourses"+this.headerId, request).subscribe(data => {
         console.log(data);
         this.lectureSchedule = data;
       });
@@ -103,7 +106,9 @@ export class LectureListComponent {
       let headers = new HttpHeaders()
         .append("Authorization", this.authToken);
   
-      this.http.post(url, {"condition":{"courseId":courseId}}, {headers:headers}).subscribe(data => {
+      let request = this.http.post(url, {"condition":{"courseId":courseId}}, {headers:headers});
+      
+      this.cache.loadFromObservable("getCourseData"+courseId, request).subscribe(data => {
         console.log(data);
         this.courseData[courseId] = data;
 

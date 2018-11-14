@@ -26,6 +26,7 @@ import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
+import { CacheService } from 'ionic-cache';
 
 @Component({
   templateUrl: 'app.html'
@@ -47,7 +48,8 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private keyboard: Keyboard,
-    private components: ComponentsProvider
+    private components: ComponentsProvider,
+    private cache: CacheService
   ) {
     this.initializeApp();
   }
@@ -67,6 +69,8 @@ export class MobileUPApp {
         this.splashScreen.hide();
         this.keyboard.disableScroll(true);
       }
+
+      this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
     });
 
     this.rootPage = HomePage;

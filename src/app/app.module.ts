@@ -16,6 +16,7 @@ import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { Keyboard } from '@ionic-native/keyboard';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
+import { CacheModule } from "ionic-cache";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -64,6 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     BrowserModule,
     CalendarModule,
+    CacheModule.forRoot({ keyPrefix: 'myCache-' }),
     IonicModule.forRoot(MobileUPApp, {
       backButtonText: ' ',
     }),
