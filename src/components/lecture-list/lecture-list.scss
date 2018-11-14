@@ -4,14 +4,14 @@ lecture-list {
         background-color: color($colors, primary);
         color: color($colors, secondary);
         border-radius: 0px;
-        font-size: medium;
+        font-size: small;
     }
 
     .rootItem {
         background-color: color($colors, primary);
         color: color($colors, light);
         border-radius: 0px;
-        font-size: medium;
+        font-size: small;
     }
 
     .expandedItem, .expandedCourse {
@@ -19,7 +19,7 @@ lecture-list {
         color: color($colors, primary);
         border-radius: 0px;
         margin-left: 1%;
-        font-size: medium;
+        font-size: small;
     }
 
     .subTreeItem {
@@ -27,7 +27,7 @@ lecture-list {
         color: color($colors, primary);
         border-radius: 0px;
         margin-left: 1%;
-        font-size: medium;
+        font-size: small;
     }
 
     .courseItem {
@@ -35,7 +35,7 @@ lecture-list {
         color: color($colors, primary);
         border-radius: 0px; 
         margin-left: 1%;
-        font-size: medium;
+        font-size: small;
     }
 
     .courseData {
@@ -66,6 +66,14 @@ lecture-list {
     .eventHeader {
         background-color: color($colors, primary);
         color: color($colors, light);
+    }
+
+    .noCourses {
+        background-color: color($colors, light);
+        color: black;
+        border-radius: 0px; 
+        margin-left: 1%;
+        font-size: small;
     }
 
 }
