@@ -1,4 +1,4 @@
-page-home { 
+page-home {
 
     /*arrange tiles */
     .shortcutlist {
@@ -7,31 +7,24 @@ page-home {
         justify-content: space-around;
         border-bottom: 1px solid #dedede;
         padding-bottom: 5px;
-        
 
         #star-outline {
             display: none;
 
         }
 
-        #star:nth-child(odd) {
-            background-color:color($colors, primary);
-            color: #fff;
-        }
-
-        #star:nth-child(even) {
+        #star {
             background-color:color($colors, secondary);
             color:color($colors, primary);
         }
-        
-        
+
         .item-block {
-        text-align: center;
-        flex:1 1 80px;
-        border:2px solid #fff;
-        height: 80px;
-        width:80px;
-        padding: 0;
+            text-align: center;
+            flex:1 1 80px;
+            border:2px solid #fff;
+            height: 80px;
+            width:80px;
+            padding: 0;
 
             .item-inner {
                 border:none;
@@ -43,7 +36,6 @@ page-home {
                     white-space: normal;
                     font-size:.8em;
 
-                    
                     .icon {
                         display: block;
                         margin: 0 auto;
@@ -51,37 +43,28 @@ page-home {
                         font-size: 2.4em;
                         margin-bottom: 5px;
                     }
-
-                    
                 }
-
-            } 
+            }
          }
-
-
     }
 
     /*headings*/
 
-    
     h2 {
         font-size: .8em;
         color: #014260;
         padding-left: 5px;
         margin-top: 15px !important;
         margin-bottom: 2px;
-
     }
 
     #drawer {
-
         margin-left:5px;
 
         .item-block {
             padding-left:0;
 
             .label {
-
                 color:color($colors, primary);
             }
 
@@ -89,7 +72,5 @@ page-home {
                 color:color($colors, primary)
             }
         }
-
     }
-
 }
