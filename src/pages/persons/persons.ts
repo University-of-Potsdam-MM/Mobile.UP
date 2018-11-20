@@ -41,7 +41,7 @@ export class PersonsPage {
   /**
    * take user to login if there is no session
    */
-  async ionViewDidLoad(){
+  async ionViewCanEnter(){
     this.session = await this.storage.get("session");
     if(!this.session){
       this.navCtrl.push(LoginPage)
