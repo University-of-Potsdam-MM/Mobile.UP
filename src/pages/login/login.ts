@@ -3,7 +3,7 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  Platform, Nav
+  Platform, Nav, NavController
 } from 'ionic-angular';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { UPLoginProvider } from "../../providers/login-provider/login";
@@ -41,7 +41,8 @@ export class LoginPage {
   };
 
   constructor(
-      private nav: Nav,
+      private nav:         Nav,
+      private navCtrl:     NavController,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
@@ -106,7 +107,7 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
-          this.nav.setRoot(HomePage);
+          this.navCtrl.pop();
         },
         error => {
           console.log(error);
