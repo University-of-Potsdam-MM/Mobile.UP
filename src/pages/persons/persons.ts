@@ -39,12 +39,16 @@ export class PersonsPage {
   }
 
   /**
-   * take user to login if there is no session
+   * take user to login if there is no session.
+   * We are using ionViewDidEnter here because it is run every time the view is
+   * entered, other than ionViewDidLoad which will run only once
    */
   async ionViewWillEnter(){
     this.session = await this.storage.get("session");
     if(!this.session){
-      this.navCtrl.push(LoginPage)
+      this.navCtrl.push(LoginPage).then(
+        result => console.log("[PersonsPage]: Pushed LoginPage")
+      );
     }
   }
 
