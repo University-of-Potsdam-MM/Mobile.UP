@@ -159,4 +159,8 @@ export class LoginPage {
     alert.present();
   }
 
+  public abort(){
+    this.navCtrl.setRoot(HomePage,{}, {animate: true, direction: "forward"});
+  }
+
 }
