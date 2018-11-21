@@ -135,6 +135,13 @@
           "passport":"1002"
         }
       }
+    },
+    "oidc": {
+      "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+      "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
+      "contentType": "application/x-www-form-urlencoded",
+      "grantType": "password",
+      "scope": "default"
     }
   },
   "webservices": {
