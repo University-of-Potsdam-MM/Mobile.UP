@@ -5,7 +5,17 @@
       "title": "Startseite"
     },
     "imprint":{
+      "title": "Rechtliches",
+      "listHeader": "Impressum & Rechtliches"
+    },
+    "legalNotice": {
       "title": "Impressum"
+    },
+    "privacyPolicy": {
+      "title": "Datenschutzbedingungen"
+    },
+    "termsOfUse": {
+      "title": "Nutzungsbedingungen"
     },
     "login":{
       "title":"Login",

@@ -137,6 +137,16 @@ export interface IConfig {
   modules:{[moduleName:string]:IModule};
   authorization:ILoginConfig;
   webservices:IWebServices;
+  policies:IPolicies;
+}
+
+export interface IPolicies {
+  impressumTemplateDE: string;
+  impressumTemplateEN: string;
+  tosTemplateDE: string;
+  tosTemplateEN: string;
+  privacyTemplateDE: string;
+  privacyTemplateEN: string;
 }
 
 export interface IAppUrls {

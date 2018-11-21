@@ -5,7 +5,17 @@
       "title": "Homepage"
     },
     "imprint":{
-      "title": "Legal Notice"
+      "title": "Legal Notice",
+      "listHeader": "Legal Notice"
+    },
+    "legalNotice": {
+      "title": "Information"
+    },
+    "privacyPolicy": {
+      "title": "Privacy policy"
+    },
+    "termsOfUse": {
+      "title": "Terms of Use"
     },
     "login":{
       "title":"Login",

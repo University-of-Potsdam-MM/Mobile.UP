@@ -151,5 +151,13 @@
       "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  },
+  "policies": {
+    "impressumTemplateDE": "Impressum: Deutsch",
+    "impressumTemplateEN": "Impressum: Englisch",
+    "tosTemplateDE": "Nutzungsbedingungen: Deutsch",
+    "tosTemplateEN": "Nutzungsbedingungen: Englisch",
+    "privacyTemplateDE": "Datenschutzbedingungen: Deutsch",
+    "privacyTemplateEN": "Datenschutzbedingungen: Englisch"
   }
 }
