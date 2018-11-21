@@ -141,7 +141,7 @@
       "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
       "contentType": "application/x-www-form-urlencoded",
       "grantType": "password",
-      "scope": "default"
+      "scope": "openid"
     }
   },
   "webservices": {
