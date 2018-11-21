@@ -69,6 +69,9 @@ export class LoginPage {
 
     let config:IConfig = await this.storage.get("config");
 
+    // temporarily using a proxy URL because of CORS
+    config.authorization.oidc.tokenUrl = "http://localhost:8100/token";
+
     // prepare Observable for use in switch
     let session:Observable<ISession> = this.upLogin.oidcLogin(
       this.loginCredentials,
