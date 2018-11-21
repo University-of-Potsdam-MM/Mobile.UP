@@ -47,6 +47,6 @@ export class LogoutPage {
    * takes the user back to the previous page
    */
   public goHome() {
-    this.nav.setRoot(HomePage);
+    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 }

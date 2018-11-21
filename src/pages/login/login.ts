@@ -106,7 +106,7 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
-          this.nav.setRoot(HomePage);
+          this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
         },
         error => {
           console.log(error);

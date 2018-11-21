@@ -72,7 +72,7 @@ export class MobileUPApp {
     });
 
     this.rootPage = HomePage;
-    this.nav.setRoot(HomePage);
+    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 
   private async initConfig() {
@@ -189,7 +189,7 @@ export class MobileUPApp {
       this.webIntent.handleWebIntent(page.moduleName);
     } else if (this.nav.getActive().component != HomePage) {
       // HomePage
-      this.nav.setRoot(HomePage);
+      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
     }
 
   }
