@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, Nav} from 'ionic-angular';
+import {IonicPage, Nav, NavController} from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import { HomePage } from '../home/home';
 import { ISession } from '../../providers/login-provider/interfaces';
@@ -22,7 +22,8 @@ export class LogoutPage {
   constructor(
       private storage: Storage,
       private cache: CacheService,
-      private nav: Nav) {
+      private nav: Nav,
+      private navCtrl: NavController) {
   }
 
   async ngOnInit() {
@@ -40,13 +41,6 @@ export class LogoutPage {
     var i; // clear saved grades from storage
     for (i = 0; i < 10; i++) { this.storage.remove("studentGrades["+i+"]"); }
     this.cache.clearAll();
-    this.goHome();
-  }
-
-  /**
-   * takes the user back to the previous page
-   */
-  public goHome() {
-    this.nav.setRoot(HomePage);
+    this.navCtrl.pop();
   }
 }
