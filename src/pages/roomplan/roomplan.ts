@@ -46,6 +46,7 @@ export class RoomplanPage {
   day_offset:string;
   response: any;
   current_location: string;
+  passedLocation:string;
   error: HttpErrorResponse;
 
   constructor(
@@ -56,6 +57,7 @@ export class RoomplanPage {
     public http: HttpClient) {
     this.default_house = navParams.get("house");
     this.default_room = navParams.get("room");
+    this.passedLocation = navParams.get("campus");
   }
 
   ionViewDidLoad() {
@@ -67,7 +69,7 @@ export class RoomplanPage {
       day.setDate(day.getDate() + i);
       this.days.push({"lbl": day, "value": i.toString()})
     }
-    this.select_day = this.day_offset
+    this.select_day = this.day_offset;
   }
 
   /**
