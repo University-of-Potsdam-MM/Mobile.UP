@@ -177,10 +177,10 @@ export class BookDetailViewPage {
       let availableArray = this.convertToArray(item.available);
       var i;
       for (i = 0; i < availableArray.length; i++) {
-        if (availableArray[i].service == "loan") {
+        if (availableArray[i] && availableArray[i].service == "loan") {
           loanAvailable = availableArray[i];
         }
-        if (availableArray[i].service == "presentation") {
+        if (availableArray[i] && availableArray[i].service == "presentation") {
           presentationAvailable = availableArray[i];
         }
       }
@@ -191,10 +191,10 @@ export class BookDetailViewPage {
       let unavailableArray = this.convertToArray(item.available);
       var j;
       for (j = 0; j < unavailableArray.length; j++) {
-        if (unavailableArray[j].service == "loan") {
+        if (unavailableArray[j] && unavailableArray[j].service == "loan") {
           loanUnavailable = unavailableArray[j];
         }
-        if (unavailableArray[j].service == "presentation") {
+        if (unavailableArray[j] && unavailableArray[j].service == "presentation") {
           presentationUnavailable = unavailableArray[j];
         }
       }
@@ -257,17 +257,17 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.subject);
       var i;
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].topic) {
+        if (tmp[i] && tmp[i].topic) {
           if (!this.isInArray(this.bookDetails.keywords, tmp[i].topic)) {
             this.bookDetails.keywords.push(tmp[i].topic);
             this.bookDetails.noDetails = false;
           }
-        } else if (tmp[i].geographic) {
+        } else if (tmp[i] && tmp[i].geographic) {
           if (!this.isInArray(this.bookDetails.keywords, tmp[i].geographic)) {
             this.bookDetails.keywords.push(tmp[i].geographic);
             this.bookDetails.noDetails = false;
           }
-        } else if (tmp[i].$ && tmp[i].$.displayLabel) {
+        } else if (tmp[i] && tmp[i].$ && tmp[i].$.displayLabel) {
           if (!this.isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)) {
             this.bookDetails.keywords.push(tmp[i].$.displayLabel);
             this.bookDetails.noDetails = false;
@@ -282,7 +282,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.identifier);
       var i;
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].$ && tmp[i].$.type == "isbn" && tmp[i]._) {
+        if (tmp[i] && tmp[i].$ && tmp[i].$.type == "isbn" && tmp[i]._) {
           if(!this.isInArray(this.bookDetails.isbn, tmp[i]._)) {
             this.bookDetails.isbn.push(tmp[i]._);
             this.bookDetails.noDetails = false;
@@ -298,7 +298,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.titleInfo);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].partNumber && !this.isInArray(this.bookDetails.series, tmp[i].partNumber)) {
+        if (tmp[i] && tmp[i].partNumber && !this.isInArray(this.bookDetails.series, tmp[i].partNumber)) {
           this.bookDetails.series.push(tmp[i].partNumber);
           this.bookDetails.noDetails = false;
         }
@@ -308,7 +308,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.relatedItem);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].$ && tmp[i].$.type == "series") {
+        if (tmp[i] && tmp[i].$ && tmp[i].$.type == "series") {
           if (tmp[i].titleInfo && tmp[i].titleInfo.title && !this.isInArray(this.bookDetails.series, tmp[i].titleInfo.title)) {
             this.bookDetails.series.push(tmp[i].titleInfo.title);
             this.bookDetails.noDetails = false;
@@ -324,7 +324,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.physicalDescription);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].extent && !this.isInArray(this.bookDetails.extent, tmp[i].extent)) {
+        if (tmp[i] && tmp[i].extent && !this.isInArray(this.bookDetails.extent, tmp[i].extent)) {
           this.bookDetails.extent.push(tmp[i].extent);
           this.bookDetails.noDetails = false;
         }
@@ -338,7 +338,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.note);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
+        if (tmp[i] && tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
@@ -351,7 +351,7 @@ export class BookDetailViewPage {
     if (this.book.relatedItem && this.book.relatedItem.note) {
       let tmp = this.convertToArray(this.book.relatedItem.note);
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
+        if (tmp[i] && tmp[i]._ && !this.isInArray(this.bookDetails.notes, tmp[i]._)) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
@@ -368,7 +368,7 @@ export class BookDetailViewPage {
       let tmp = this.convertToArray(this.book.abstract);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i].indexOf("--") >= 0) {
+        if (tmp[i] && tmp[i].indexOf("--") >= 0) {
           let toc = tmp[i].split("--");
           for (j = 0; j < toc.length; j++) {
             if (toc[j] != "") {
@@ -405,7 +405,7 @@ export class BookDetailViewPage {
   }
 
   openWebsite(url:string) {
-    if (this.platform.is("ios") || this.platform.is("android")) {
+    if (this.platform.is("cordova")) {
       this.safari.isAvailable().then((available:boolean) => {
         if (available) {
           this.openWithSafari(url);

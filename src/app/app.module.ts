@@ -78,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CacheModule.forRoot({ keyPrefix: 'myCache-' }),
     IonicModule.forRoot(MobileUPApp, {
       backButtonText: ' ',
+      mode: 'md'
     }),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({

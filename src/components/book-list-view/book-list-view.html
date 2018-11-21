@@ -4,7 +4,7 @@
     <ion-icon [name]="bookDetails.icon" color="primary"></ion-icon>
   </span>
   <ion-icon *ngIf="!i" item-start color="primary" [name]="bookDetails.icon"></ion-icon>
-  <span>
+  <span *ngIf="convertToArray(book.titleInfo)[0]">
     <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }}</b>
     <b *ngIf="convertToArray(book.titleInfo)[0].title">{{ convertToArray(book.titleInfo)[0].title }}</b><br>
     <p *ngIf="convertToArray(book.titleInfo)[0].subTitle">{{ convertToArray(book.titleInfo)[0].subTitle }}</p>
@@ -33,7 +33,7 @@
   </span>
   <p *ngIf="book.originInfo">
     <span *ngIf="book.originInfo.edition">{{ convertToArray(book.originInfo.edition)[0] }}, </span>
-    <span *ngIf="bookDetails.publisher != ''">{{ bookDetails.publisher }},</span>
+    <span *ngIf="bookDetails && bookDetails.publisher != ''">{{ bookDetails.publisher }},</span>
     <span *ngIf="book.originInfo.dateIssued && convertToArray(book.originInfo.dateIssued)[0]._">{{ convertToArray(book.originInfo.dateIssued)[0]._ }}</span>
   </p>
 </ion-item>
