@@ -8,6 +8,7 @@ import {
   IMeals
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -47,6 +48,7 @@ export class MensaPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
+    private cache: CacheService,
     private storage: Storage) 
   {
     this.currentDate = new Date();
@@ -80,7 +82,8 @@ export class MensaPage {
     let params: HttpParams = new HttpParams()
       .append("location", $event);
 
-    this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params}).subscribe((res:IMensaResponse) => {
+    let request = this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params});
+    this.cache.loadFromObservable("mensaResponse"+$event, request).subscribe((res:IMensaResponse) => {
 
       if (res.meal) {
         this.allMeals = res.meal;

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,7 @@ export class NewsPage {
   sourcesList = [];
   isLoaded = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage, private cache: CacheService) {
   }
 
   async ngOnInit() {
@@ -27,7 +28,8 @@ export class NewsPage {
       .append("Authorization", config.webservices.apiToken);
 
     var url = config.webservices.endpoint.news;
-    this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
+    let request = this.http.get(url, {headers:headers});
+    this.cache.loadFromObservable("newsResponse", request).subscribe((response:INewsApiResponse) => {
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         var tmpArray = [];

@@ -10,6 +10,7 @@ import {
   ADS
 } from "../../library/interfaces";
 import * as jquery from "jquery";
+import { CacheService } from 'ionic-cache';
 
 
 @IonicPage()
@@ -34,6 +35,7 @@ export class PracticePage {
     public navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage,
+    private cache: CacheService,
     public navParams: NavParams,
     private chRef: ChangeDetectorRef) {
   };
@@ -66,10 +68,8 @@ export class PracticePage {
         .append("Authorization", config.webservices.apiToken);
 
       //this.URLEndpoint = config.webservices.endpoint.practiceSearch;
-      this.http.get(
-        config.webservices.endpoint.practiceSearch,
-        {headers: headers}
-      ).subscribe(
+      let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
+      this.cache.loadFromObservable("practiceResponse", request).subscribe(
         (response: IADSResponse) => {
           // reset array so new persons are displayed
           this.defaultList = [];

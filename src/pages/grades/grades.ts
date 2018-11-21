@@ -5,6 +5,7 @@ import { ISession } from "../../providers/login-provider/interfaces";
 import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -31,6 +32,7 @@ export class GradesPage {
   constructor(
       public navCtrl: NavController,
       private http: HttpClient,
+      private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage) {
 
@@ -105,7 +107,8 @@ export class GradesPage {
 
       let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
 
-      this.http.post(url, body, {headers:headers}).subscribe((resGrades) => {
+      let request = this.http.post(url, body, {headers:headers});
+      this.cache.loadFromObservable("getAcademicAchievements", request).subscribe((resGrades) => {
         // console.log(resGrades);
         this.studentGrades = resGrades;
         this.storage.set("studentGrades["+i+"]", this.studentGrades);
@@ -129,8 +132,8 @@ export class GradesPage {
     }
 
     let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
-
-    this.http.post(url, body, {headers:headers}).subscribe((resStudentDetail:IGradeResponse) => {
+    let request = this.http.post(url, body, {headers:headers});
+    this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
       console.log(resStudentDetail);
       if (resStudentDetail.message) {
         console.log(resStudentDetail.message);

@@ -20,6 +20,7 @@ import {
 import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { RoomplanPage } from "../roomplan/roomplan";
+import { CacheService } from 'ionic-cache';
 
 
 @IonicPage()
@@ -45,6 +46,7 @@ export class RoomsPage {
     private storage: Storage,
     public navCtrl: NavController,
     public translate : TranslateService,
+    private cache: CacheService,
     public http: HttpClient) {
   }
 
@@ -176,7 +178,8 @@ export class RoomsPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
-    this.http.get(config.webservices.endpoint.roomsSearch, {headers: headers, params: params}).subscribe(
+    let request = this.http.get(config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
+    this.cache.loadFromObservable("roomInfo"+location+start.toString()+end.toString(), request).subscribe(
       (response: IRoomRequestResponse) => {
         this.housesFound = [];
         this.error = null;

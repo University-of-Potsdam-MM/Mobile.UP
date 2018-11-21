@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SafariViewController } from '@ionic-native/safari-view-controller';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -44,6 +45,7 @@ export class BookDetailViewPage {
     private http: HttpClient,
     private theInAppBrowser: InAppBrowser,
     private platform: Platform,
+    private cache: CacheService,
     private safari: SafariViewController) {
     this.book = this.navParams.data["book"];
     console.log(this.book);
@@ -87,7 +89,8 @@ export class BookDetailViewPage {
 
   updateLocation() {
     let url = this.config.webservices.endpoint.libraryDAIA + this.book.recordInfo.recordIdentifier._ + "&format=json";
-    this.http.get(url).subscribe(data => {
+    let request = this.http.get(url);
+    this.cache.loadFromObservable("bookLocation"+this.book.recordInfo.recordIdentifier._, request).subscribe(data => {
       this.setLocationData(data);
     }, error => {
       console.log(error);

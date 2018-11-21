@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,7 @@ export class EventsPage {
   firstEventTodayForLocation = [];
   firstEventForLocation = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private cache: CacheService) {
   }
 
   async ngOnInit() {
@@ -41,7 +42,8 @@ export class EventsPage {
       .append("Authorization", config.webservices.apiToken);
 
     var url = config.webservices.endpoint.events;
-    this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
+    let request = this.http.get(url, {headers:headers});
+    this.cache.loadFromObservable("eventsList", request).subscribe((response:INewsApiResponse) => {
       if (response.errors.exist == false) {
         this.eventsList = response.vars.events;
         var i;
