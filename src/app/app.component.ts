@@ -163,8 +163,10 @@ export class MobileUPApp {
 
       for(let moduleName in modules){
         let moduleToAdd:IModule = modules[moduleName];
-        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
-        moduleList[moduleName] = moduleToAdd;
+        if (!moduleToAdd.hide){
+          moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+          moduleList[moduleName] = moduleToAdd;
+        }
       }
 
       this.storage.set("default_modules", moduleList);
