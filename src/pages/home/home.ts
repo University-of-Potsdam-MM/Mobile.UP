@@ -39,6 +39,7 @@ export class HomePage {
           // if there are modules, use those
           this.modules = modules;
           this.sortedModules = this.JsonToArray(this.modules);
+          //console.log(this.modules);
           // console.log("[HomePage]: Using user defined modules");
         } else {
           // if not, try to load the default_modules
@@ -47,6 +48,7 @@ export class HomePage {
               if(default_modules) {
                 // use those if possible
                 this.modules = default_modules;
+                this.sortedModules = this.JsonToArray(this.modules);
                 // console.log("[HomePage]: Using default_modules");
               } else {
                 // somethings clearly wrong here!
@@ -54,9 +56,9 @@ export class HomePage {
               }
           })
         }
-
       }
     )
+    console.log(this.sortedModules);
   }
 
   /**
