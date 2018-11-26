@@ -17,6 +17,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
+import { OrderModule } from 'ngx-order-pipe';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -69,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsModule,
     BrowserModule,
     CalendarModule,
+    OrderModule,
     CacheModule.forRoot({ keyPrefix: 'myCache-' }),
     IonicModule.forRoot(MobileUPApp, {
       backButtonText: ' ',

@@ -53,7 +53,8 @@
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "athletics": {
       "componentName": "athletics",
@@ -101,17 +102,20 @@
     "settings": {
       "componentName": "settings",
       "icon": "settings",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "logout": {
       "componentName": "logout",
       "icon": "log-out",
-      "selected":false
+      "selected":false,
+      "hide":true
     }
   },
   "authorization": {
