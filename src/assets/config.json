@@ -159,7 +159,9 @@
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
       "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
       "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:",
-      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/"
+      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
+      "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
+      "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   },
