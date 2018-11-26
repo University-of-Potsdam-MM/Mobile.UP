@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar hideBackButton="true">
         <button ion-button menuToggle right>
             <ion-icon name="menu"></ion-icon>
         </button>
@@ -51,6 +51,11 @@
         <ion-col>
           <button ion-button class="submit-btn" full type="submit">
             {{ "button.login" | translate }}
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button full type="button" (click)="abort()">
+            {{ "button.cancel" | translate }}
           </button>
         </ion-col>
       </ion-row>

@@ -30,11 +30,26 @@ export class PersonsPage {
   personsFound: IPerson[] = [];
   waiting_for_response: boolean = false;
   error: HttpErrorResponse;
+  session:ISession;
 
   constructor(
     private navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage) {
+  }
+
+  /**
+   * take user to login if there is no session.
+   * We are using ionViewDidEnter here because it is run every time the view is
+   * entered, other than ionViewDidLoad which will run only once
+   */
+  async ionViewWillEnter(){
+    this.session = await this.storage.get("session");
+    if(!this.session){
+      this.navCtrl.push(LoginPage).then(
+        result => console.log("[PersonsPage]: Pushed LoginPage")
+      );
+    }
   }
 
   /**
@@ -52,45 +67,39 @@ export class PersonsPage {
 
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
-      let session: ISession = await this.storage.get("session");
       let config: IConfig = await this.storage.get("config");
-      if (session) {
-        let headers: HttpHeaders = new HttpHeaders()
-          .append("Authorization", config.webservices.apiToken);
+      let headers: HttpHeaders = new HttpHeaders()
+        .append("Authorization", config.webservices.apiToken);
 
-        let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append("value", query)
-          .append("username", session.credentials.username)
-          .append("password", session.credentials.password);
+      let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
+        .append("value", query)
+        .append("username", this.session.credentials.username)
+        .append("password", this.session.credentials.password);
 
-        this.http.get(
-          config.webservices.endpoint.personSearch,
-          {headers: headers, params: params}
-        ).subscribe(
-          (response: IPersonSearchResponse) => {
-            // reset array so new persons are displayed
-            this.personsFound = [];
-            // use inner object only because it's wrapped in another object
-            for (let person of response.people) {
-              person.Person.expanded = false;
-              person.Person.Raum = person.Person.Raum.replace(/_/g, " ");
-              this.personsFound.push(person.Person);
-            }
-
-            this.waiting_for_response = false;
-          },
-          error => {
-            // reset array so new persons are displayed
-            this.personsFound = [];
-            this.error = error;
-            console.log(error);
-            this.waiting_for_response = false;
+      this.http.get(
+        config.webservices.endpoint.personSearch,
+        {headers: headers, params: params}
+      ).subscribe(
+        (response: IPersonSearchResponse) => {
+          // reset array so new persons are displayed
+          this.personsFound = [];
+          // use inner object only because it's wrapped in another object
+          for (let person of response.people) {
+            person.Person.expanded = false;
+            person.Person.Raum = person.Person.Raum.replace(/_/g, " ");
+            this.personsFound.push(person.Person);
           }
-        );
-      } else {
-        // send user to LoginPage if no session has been found
-        this.navCtrl.push(LoginPage);
-      }
+
+          this.waiting_for_response = false;
+        },
+        error => {
+          // reset array so new persons are displayed
+          this.personsFound = [];
+          this.error = error;
+          console.log(error);
+          this.waiting_for_response = false;
+        }
+      );
 
     } else {
       console.log("[PersonsPage]: Empty query");
