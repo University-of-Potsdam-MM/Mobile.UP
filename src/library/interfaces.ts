@@ -170,6 +170,7 @@ export interface IModule {
   i18nKey?:string;
   icon:string;
   selected?:boolean;
+  hide?:boolean;
   url?:string;
   appId?:string;
   urlAndroid?:string;
