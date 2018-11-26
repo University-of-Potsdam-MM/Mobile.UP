@@ -23,7 +23,7 @@ import * as jquery from "jquery";
 })
 export class EmergencyPage {
 
-  jsonPath: string = "../../assets/json/pages/emergency";
+  jsonPath: string = "../../assets/json/emergency";
   displayedList: ArrayLike < EmergencyCall > ;
   defaultList: ArrayLike < EmergencyCall > ;
 
