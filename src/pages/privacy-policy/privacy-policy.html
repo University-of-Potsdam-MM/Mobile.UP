@@ -1,0 +1,12 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ "page.privacyPolicy.title" | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="lang == 'de'" [innerHTML]="privacyDE"></div>
+  <div *ngIf="lang == 'en'" [innerHTML]="privacyEN"></div>
+</ion-content>

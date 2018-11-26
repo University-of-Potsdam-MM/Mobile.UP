@@ -88,7 +88,8 @@ export class RoomsPage {
   openRoomPlan(house:IHouse, room:IRoom){
     this.navCtrl.push(RoomplanPage, {
       house: house,
-      room: room
+      room: room,
+      campus: this.current_location
     })
   }
 

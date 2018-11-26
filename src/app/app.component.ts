@@ -72,7 +72,7 @@ export class MobileUPApp {
     });
 
     this.rootPage = HomePage;
-    this.nav.setRoot(HomePage);
+    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 
   private async initConfig() {
@@ -86,25 +86,7 @@ export class MobileUPApp {
   }
 
   private initPages() {
-    this.pagesInMenu = [
-      { title: "page.home.title", pageName: HomePage, icon: "home" },
-      { title: "page.practice.title", pageName: PracticePage, icon: "briefcase" },
-      { title: "page.persons.title", pageName: PersonsPage, icon: "people" },
-      { title: "page.events.title", pageName: EventsPage, icon: "calendar" },
-      { title: "page.rooms.title", pageName: RoomsPage, icon: "square-outline" },
-      { title: "page.roomplan.title", pageName: RoomplanPage, icon: "grid" },
-      { title: "page.athletics.title", pageName: HomePage, icon: "american-football", webIntent: true, moduleName: "athletics"},
-      { title: "page.unishop.title", pageName: HomePage, icon: "pricetags", webIntent: true, moduleName: "unishop"},
-      { title: "page.moodle.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "moodle"},
-      { title: "page.reflectUP.title", pageName: HomePage, icon: "help", webIntent: true, moduleName: "reflectUP"},
-      { title: "page.emergency.title", pageName: EmergencyPage, icon: "nuclear" },
-      { title: "page.lectures.title", pageName: LecturesPage, icon: "book" },
-      { title: "page.login.title", pageName: LoginPage, icon: "log-in" },
-      { title: "page.logout.title", pageName: LogoutPage, icon: "log-out" }
-    ];
-
     // tells ComponentsProvider which component to use for which page
-    // TODO: should really be united with stuff above
     this.components.setComponents({
       login:LoginPage,
       logout:LogoutPage,
@@ -163,8 +145,10 @@ export class MobileUPApp {
 
       for(let moduleName in modules){
         let moduleToAdd:IModule = modules[moduleName];
-        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
-        moduleList[moduleName] = moduleToAdd;
+        if (!moduleToAdd.hide){
+          moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+          moduleList[moduleName] = moduleToAdd;
+        }
       }
 
       this.storage.set("default_modules", moduleList);
@@ -189,7 +173,7 @@ export class MobileUPApp {
       this.webIntent.handleWebIntent(page.moduleName);
     } else if (this.nav.getActive().component != HomePage) {
       // HomePage
-      this.nav.setRoot(HomePage);
+      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
     }
 
   }

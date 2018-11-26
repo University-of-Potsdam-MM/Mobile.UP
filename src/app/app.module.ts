@@ -17,6 +17,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
+import { OrderModule } from 'ngx-order-pipe';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -38,6 +39,9 @@ import { LibraryPage } from '../pages/library/library';
 import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
+import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
+import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
+import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -62,16 +66,21 @@ export function HttpLoaderFactory(http: HttpClient) {
     GradesPage,
     RoomsPage,
     LecturesPage,
-    RoomplanPage
+    RoomplanPage,
+    LegalNoticePage,
+    PrivacyPolicyPage,
+    TermsOfUsePage
   ],
   imports: [
     HttpClientModule,
     ComponentsModule,
     BrowserModule,
     CalendarModule,
+    OrderModule,
     CacheModule.forRoot({ keyPrefix: 'myCache-' }),
     IonicModule.forRoot(MobileUPApp, {
       backButtonText: ' ',
+      mode: 'md'
     }),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
@@ -101,7 +110,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     GradesPage,
     RoomsPage,
     LecturesPage,
-    RoomplanPage
+    RoomplanPage,
+    LegalNoticePage,
+    PrivacyPolicyPage,
+    TermsOfUsePage
   ],
   providers: [
     StatusBar,

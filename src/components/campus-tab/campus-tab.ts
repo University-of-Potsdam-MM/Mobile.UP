@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
@@ -9,6 +9,7 @@ export class CampusTabComponent {
 
   currentCampus;
 
+  @Input() passedLocation;
   @Output() campusChanged = new EventEmitter();
 
   constructor(private settingsProvider: SettingsProvider) {
@@ -19,8 +20,27 @@ export class CampusTabComponent {
   }
 
   async initCampus() {
-    this.currentCampus = await this.settingsProvider.getSettingValue("campus");
-    this.currentCampus = this.currentCampus.replace(" ","");
+    if (this.passedLocation) {
+      switch (this.passedLocation) {
+        case "1": {
+          this.currentCampus = "NeuesPalais";
+          break;
+        }
+        case "2": {
+          this.currentCampus = "Golm";
+          break;
+        }
+        case "3": {
+          this.currentCampus = "Griebnitzsee";
+        }
+        default: {
+          this.currentCampus = "Griebnitzsee";
+        }
+      }
+    } else {
+      this.currentCampus = await this.settingsProvider.getSettingValue("campus");
+      this.currentCampus = this.currentCampus.replace(" ","");
+    }
     this.changeCampus();
   }
 

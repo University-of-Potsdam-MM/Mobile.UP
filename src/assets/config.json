@@ -53,7 +53,8 @@
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "athletics": {
       "componentName": "athletics",
@@ -101,17 +102,20 @@
     "settings": {
       "componentName": "settings",
       "icon": "settings",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "logout": {
       "componentName": "logout",
       "icon": "log-out",
-      "selected":false
+      "selected":false,
+      "hide":true
     }
   },
   "authorization": {
@@ -151,5 +155,13 @@
       "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  },
+  "policies": {
+    "impressumTemplateDE": "Impressum: Deutsch",
+    "impressumTemplateEN": "Impressum: Englisch",
+    "tosTemplateDE": "Nutzungsbedingungen: Deutsch",
+    "tosTemplateEN": "Nutzungsbedingungen: Englisch",
+    "privacyTemplateDE": "Datenschutzbedingungen: Deutsch",
+    "privacyTemplateEN": "Datenschutzbedingungen: Englisch"
   }
 }

@@ -5,7 +5,17 @@
       "title": "Startseite"
     },
     "imprint":{
+      "title": "Rechtliches",
+      "listHeader": "Impressum & Rechtliches"
+    },
+    "legalNotice": {
       "title": "Impressum"
+    },
+    "privacyPolicy": {
+      "title": "Datenschutzbedingungen"
+    },
+    "termsOfUse": {
+      "title": "Nutzungsbedingungen"
     },
     "login":{
       "title":"Login",
@@ -177,8 +187,8 @@
     },
     "roomplan": {
       "title": "Raumplan",
-      "no_house": "Für das gewählte Haus gibt es heute keine Raumplanung.",
-      "no_room": "Für den gewählten Raum gibt es heute keine Raumplanung."
+      "no_house": "Das gewählte Haus ist heute gantägig frei.",
+      "no_room": "Der gewählte Raum ist heute ganztägig frei."
     },
     "openingHours":{
       "title":"Öffnungszeiten"

@@ -6,7 +6,8 @@
     </button>
     <ion-title>{{"page.roomplan.title"|translate}}</ion-title>
   </ion-navbar>
-  <campus-tab (campusChanged)="switchLocation($event)"></campus-tab>
+  <campus-tab *ngIf="passedLocation" (campusChanged)="switchLocation($event)" [passedLocation]="passedLocation"></campus-tab>
+  <campus-tab *ngIf="!passedLocation" (campusChanged)="switchLocation($event)"></campus-tab>
 </ion-header>
 
 

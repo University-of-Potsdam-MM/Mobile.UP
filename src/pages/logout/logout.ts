@@ -41,6 +41,13 @@ export class LogoutPage {
     var i; // clear saved grades from storage
     for (i = 0; i < 10; i++) { this.storage.remove("studentGrades["+i+"]"); }
     this.cache.clearAll();
-    this.navCtrl.pop();
+    this.goHome();
+  }
+
+  /**
+   * takes the user back to the previous page
+   */
+  public goHome() {
+    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 }
