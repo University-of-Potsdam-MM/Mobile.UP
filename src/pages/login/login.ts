@@ -68,37 +68,13 @@ export class LoginPage {
 
     this.showLoading();
 
-    let method:string = "";
-    let source:string = await this.platform.ready();
     let config:IConfig = await this.storage.get("config");
 
-    // first decide which login method should be executed
-    switch(source){
-      case "dom": { method = "credentials"; break; }
-      case "cordova": { method = "sso"; break; }
-      default: { method = "credentials"; break; }
-    }
-
     // prepare Observable for use in switch
-    let session:Observable<ISession> = null;
-
-    // execute fitting login method and attach result to created Observable
-    switch(method){
-      case "credentials":{
-        session = this.upLogin.credentialsLogin(
-          this.loginCredentials,
-          config.authorization.credentials
-        );
-        break;
-      }
-      case "sso":{
-        session = this.upLogin.ssoLogin(
-          this.loginCredentials,
-          config.authorization.sso
-        );
-        break;
-      }
-    }
+    let session:Observable<ISession> = this.upLogin.oidcLogin(
+      this.loginCredentials,
+      config.authorization.oidc
+    );
 
     if(session){
       // now handle the Observable which hopefully contains a session
