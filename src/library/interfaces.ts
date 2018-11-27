@@ -44,7 +44,7 @@ export interface IPersonSearchResponse {
 }
 
 export interface IPerson {
-  id?:string;
+  Id?:string;
   Abteilung?:string;
   Email?:string;
   Fax?:number,

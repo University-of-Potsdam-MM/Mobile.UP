@@ -102,8 +102,9 @@ export class PersonsPage {
 
   expandPerson(person) {
     for (let i = 0; i < this.personsFound.length; i++) {
-      if (this.personsFound[i].id == person.id) {
-        this.personsFound[i].expanded = !this.personsFound[i].expanded;
+      let currentPerson = this.personsFound[i];
+      if (currentPerson.Id == person.Id) {
+        currentPerson.expanded = !currentPerson.expanded;
       }
     }
   }
