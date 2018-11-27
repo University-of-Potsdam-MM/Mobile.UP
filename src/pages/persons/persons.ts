@@ -87,8 +87,6 @@ export class PersonsPage {
           this.waiting_for_response = false;
         },
         error => {
-          // reset array so new persons are displayed
-          this.personsFound = [];
           this.error = error;
           console.log(error);
           this.waiting_for_response = false;

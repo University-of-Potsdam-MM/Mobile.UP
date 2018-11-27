@@ -37,12 +37,6 @@ export interface EmergencyCall {
 
 /* ~~~ PersonsPage ~~~ */
 
-export type PersonSeachResponse = IPerson[]
-
-export interface IPersonSearchResponse {
-  personsList:IPerson[];
-}
-
 export interface IPerson {
   Id?:string;
   Abteilung?:string;
@@ -56,15 +50,16 @@ export interface IPerson {
   Suchbegriffe?:string;
   Telefon?:string;
   Vorname?:string;
-  zweitesTelefon?:string;
-  PCFax?:string;
-  gueltigbis?:string;
+  "zweites Telefon"?:string;
+  "PC-Fax"?:string;
+  "gueltig bis"?:string;
   Titel?:string;
-  Email_Langform?:string;
+  "Langform-Email"?:string;
   expanded?:boolean;
 }
 
-/* ~~~ PersonsPage ~~~ */
+/* ~~~ Mensa ~~~ */
+
 export interface IMensaResponse {
   meal:IMeals[];
   campus:string;
