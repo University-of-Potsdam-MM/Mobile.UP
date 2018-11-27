@@ -1,16 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {WebHttpUrlEncodingCodec} from "../../library/util";
 import {Storage} from "@ionic/storage";
 import {ISession} from "../../providers/login-provider/interfaces";
 import {LoginPage} from "../login/login";
-import {
-  IConfig,
-  IPerson,
-  IPersonSearchResponse
-} from "../../library/interfaces";
-
+import {IConfig, IPerson,} from "../../library/interfaces";
 
 /**
  * PersonsPage
