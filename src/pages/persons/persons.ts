@@ -69,25 +69,19 @@ export class PersonsPage {
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
-        .append("Authorization", config.webservices.apiToken);
-
-      let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-        .append("value", query)
-        .append("username", this.session.credentials.username)
-        .append("password", this.session.credentials.password);
+        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
       this.http.get(
-        config.webservices.endpoint.personSearch,
-        {headers: headers, params: params}
+        config.webservices.endpoint.personSearch + query,
+        {headers: headers}
       ).subscribe(
-        (response: IPersonSearchResponse) => {
-          // reset array so new persons are displayed
-          this.personsFound = [];
-          // use inner object only because it's wrapped in another object
-          for (let person of response.people) {
-            person.Person.expanded = false;
-            person.Person.Raum = person.Person.Raum.replace(/_/g, " ");
-            this.personsFound.push(person.Person);
+        (personsList:IPerson[]) => {
+
+          for (let person of personsList) {
+            let newPerson = person;
+            newPerson.expanded = false;
+            newPerson.Raum = person.Raum.replace(/_/g, " ");
+            this.personsFound.push(newPerson);
           }
 
           this.waiting_for_response = false;
@@ -110,8 +104,6 @@ export class PersonsPage {
     for (let i = 0; i < this.personsFound.length; i++) {
       if (this.personsFound[i].id == person.id) {
         this.personsFound[i].expanded = !this.personsFound[i].expanded;
-      } else {
-        this.personsFound[i].expanded = false;
       }
     }
   }

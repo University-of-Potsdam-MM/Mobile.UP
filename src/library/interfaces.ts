@@ -37,13 +37,10 @@ export interface EmergencyCall {
 
 /* ~~~ PersonsPage ~~~ */
 
-export interface IPersonSearchResponse {
-  timer:Array<string>;
-  people:IPersonWrapper[];
-}
+export type PersonSeachResponse = IPerson[]
 
-export interface IPersonWrapper {
-  Person:IPerson
+export interface IPersonSearchResponse {
+  personsList:IPerson[];
 }
 
 export interface IPerson {
