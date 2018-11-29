@@ -53,25 +53,6 @@ var rhythmMapping:IRhythmMapping = {
   },
 };
 
-// /**
-//  * Converts time given by PULS in the format 'DD.MM.YYYY' 'HH:MM' to ISO 8601
-//  * format for easier usage
-//  * @param date in format 'DD.MM.YYYY'
-//  * @param time in format 'HH:MM'
-//  * @returns iso8601 format of date
-//  */
-// function convertPULStoISO8601(date, time='00:00'):string{
-//   let day = date.substr(0,2);
-//   let month = date.substr(3, 2);
-//   let year = date.substr(6);
-//
-//   let hour = time.substr(0, 2);
-//   let minute = time.substr(3);
-//   let second = '00';
-//
-//   return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
-// }
-
 function pulsToUTC(date, time, second='24'){
   let day = date.substr(0,2);
   let month = date.substr(3, 2);
@@ -113,17 +94,6 @@ function createEventRules(event:IEvent, tzid):IEventRules{
   if(event.startTime === undefined || event.endTime === undefined){
     throw new Error(`[createRule]: Event ${event.eventId}: Missing startTime or endTime`);
   }
-  //
-  // // TODO: Add timezones below?
-  //
-  // // the day and time the first (and all following) event begins
-  // let beginDateTime = convertPULStoISO8601(event.startDate, event.startTime);
-  //
-  // // the day and time the first (and all following) event ends
-  // let endDateTime = convertPULStoISO8601(event.startDate, event.endTime);
-  //
-  // // the date on which the, courseEvent ultimately ends
-  // let endDate = convertPULStoISO8601(event.endDate, '24:00');
 
   return <IEventRules>{
     // create rule for beginning time on each day the event takes place
@@ -203,6 +173,5 @@ export function createEventSource(studentCourses:ICourse[],
       }
     }
   }
-  console.log(eventSource)
   return eventSource;
 }

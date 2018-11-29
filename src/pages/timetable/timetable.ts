@@ -16,8 +16,8 @@ import {
 import {LoginPage} from "../login/login";
 import {createEventSource,} from "./createEvents";
 import {TranslateService} from "@ngx-translate/core";
-import {NgCalendarModule} from "ionic2-calendar";
 import {ConfigProvider} from "../../providers/config/config";
+import {NgCalendarModule} from "ionic2-calendar";
 
 
 function debug(text){
@@ -43,6 +43,7 @@ export class TimetablePage {
       public navCtrl: NavController,
       private http:HttpClient,
       private storage:Storage,
+      private calendar:NgCalendarModule,
       private translate:TranslateService,
       private alertCtrl:AlertController) {
   }
@@ -63,10 +64,8 @@ export class TimetablePage {
           this.getStudentCourses(session).subscribe(
             (response:IPulsAPIResponse_getStudentCourses) => {
               this.eventSource = createEventSource(
-                response.studentCourses.student.actualCourses.course
+               response.studentCourses.student.actualCourses.course
               );
-              // this.calendarOptions.events = events;
-              // this.calendar().fullCalendar(this.calendarOptions);
             }
           );
         }

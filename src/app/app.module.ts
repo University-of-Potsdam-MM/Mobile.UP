@@ -43,13 +43,15 @@ import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
+import {TimetablePage} from "../pages/timetable/timetable";
+import {NgCalendarModule} from "ionic2-calendar";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 export function initConfig(config:ConfigProvider) {
-  return () => config.load();
+  return () => config.load('assets/config.json');
 }
 
 @NgModule({
@@ -74,7 +76,8 @@ export function initConfig(config:ConfigProvider) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    TimetablePage
   ],
   imports: [
     HttpClientModule,
@@ -94,7 +97,8 @@ export function initConfig(config:ConfigProvider) {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    NgCalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -118,7 +122,8 @@ export function initConfig(config:ConfigProvider) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    TimetablePage
   ],
   providers: [
     StatusBar,

@@ -27,6 +27,7 @@ import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { CacheService } from 'ionic-cache';
+import {TimetablePage} from "../pages/timetable/timetable";
 
 @Component({
   templateUrl: 'app.html'
@@ -103,6 +104,7 @@ export class MobileUPApp {
       settings:SettingsPage,
       grades:GradesPage,
       lectures:LecturesPage,
+      timetable:TimetablePage,
       athletics:"webIntent",
       unishop:"webIntent",
       mail:"webIntent",
