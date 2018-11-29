@@ -1,6 +1,6 @@
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import {NgModule, ErrorHandler, APP_INITIALIZER} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MobileUPApp } from './app.component';
 import { UPLoginProvider } from "../providers/login-provider/login";
@@ -42,9 +42,14 @@ import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
+import { ConfigProvider } from '../providers/config/config';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+}
+
+export function initConfig(config:ConfigProvider) {
+  return () => config.load();
 }
 
 @NgModule({
@@ -126,7 +131,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsProvider,
     SafariViewController,
     AppAvailability,
-    WebIntentProvider
+    WebIntentProvider,
+    ConfigProvider,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [ConfigProvider],
+      multi: true
+    }
+
   ]
 })
 export class AppModule {

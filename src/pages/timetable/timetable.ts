@@ -17,6 +17,7 @@ import {LoginPage} from "../login/login";
 import {createEventSource,} from "./createEvents";
 import {TranslateService} from "@ngx-translate/core";
 import {NgCalendarModule} from "ionic2-calendar";
+import {ConfigProvider} from "../../providers/config/config";
 
 
 function debug(text){
@@ -88,11 +89,10 @@ export class TimetablePage {
    * @returns {Observable<IPulsAPIResponse_getStudentCourses>}
    */
   private getStudentCourses(session:ISession):Observable<IPulsAPIResponse_getStudentCourses> {
-    let webservices:IWebServices = <IWebServices>this.config.get("webservices");
 
     let headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': webservices.apiToken
+      'Authorization': ConfigProvider.config.webservices.apiToken
     });
 
     let request:IPulsApiRequest_getStudentCourses = {
@@ -108,7 +108,7 @@ export class TimetablePage {
     };
 
     return this.http.post<IPulsAPIResponse_getStudentCourses>(
-      webservices.endpoint.puls+"getStudentCourses",
+      ConfigProvider.config.webservices.endpoint.puls+"getStudentCourses",
       request,
       {headers: headers}
     );
