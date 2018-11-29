@@ -91,9 +91,13 @@
   <calendar [eventSource]="eventSource"
             [calendarMode]="calendarOptions.calendarMode"
             [currentDate]="calendarOptions.currentDate"
-            (onEventSelected)="openInformation(event)"
-
-            step="120">
+            [startingDayWeek]="calendarOptions.startingDay"
+            [startingDayMonth]="calendarOptions.startingDay"
+            [startHour]="calendarOptions.startHour"
+            [endHour]="calendarOptions.endHour"
+            [step]="calendarOptions.step"
+            [timeInterval]="calendarOptions.timeInterval"
+            (onEventSelected)="openInformation(event)">
   </calendar>
 
 </ion-content>

@@ -35,7 +35,13 @@ export class TimetablePage {
 
   calendarOptions = {
     calendarMode: "week",
-    currentDate: new Date()
+    currentDate: new Date(),
+    locale: "de-DE",
+    startingDay: 1,
+    startHour: "8",
+    endHour: "20",
+    step: "120",
+    timeInterval: "120"
   };
 
 
@@ -79,6 +85,9 @@ export class TimetablePage {
     this.calendarOptions.calendarMode = mode;
   }
 
+  openInformation(eventClicked){
+
+  }
 
   /**
    * Sends request to PULS webservice and retrieves list of courses the student
@@ -111,9 +120,5 @@ export class TimetablePage {
       request,
       {headers: headers}
     );
-  }
-
-  openInformation(eventClicked){
-
   }
 }
