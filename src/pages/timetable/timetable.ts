@@ -39,7 +39,7 @@ export class TimetablePage {
   calendarOptions = {
     calendarMode: "week",
     currentDate: new Date(),
-    locale: "de-DE",
+    locale: "de",
     startingDayWeek: 1,
     startingDayMonth: 1,
     startHour: "8",
@@ -52,17 +52,17 @@ export class TimetablePage {
       formatMonthViewDayHeader: function(date:Date) {
         return 'testMDH';
       },
-      formatMonthViewTitle: function(date:Date) {
-        return 'testMT';
-      },
       formatWeekViewDayHeader: function(date:Date) {
         return 'testWDH';
+      },
+      formatDayViewHourColumn: function(date:Date) {
+        return 'testDH';
       },
       formatWeekViewHourColumn: function(date:Date) {
         return 'testWH';
       },
-      formatDayViewHourColumn: function(date:Date) {
-        return 'testDH';
+      formatMonthViewTitle: function(date:Date) {
+        return 'testMT';
       },
       formatDayViewTitle: function(date:Date) {
         return 'testDT';
