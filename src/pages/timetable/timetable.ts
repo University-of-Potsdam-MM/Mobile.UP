@@ -34,6 +34,7 @@ function debug(text){
 export class TimetablePage {
 
   eventSource:IEventObject[] = [];
+  currentTitle = "";
 
   calendarOptions = {
     calendarMode: "week",
@@ -46,10 +47,8 @@ export class TimetablePage {
     step: "15",
     timeInterval: "120",
     showEventDetail: false,
-    dateFormatter: {
-      formatMonthViewDay: function(date:Date) {
-        return date.getDate().toString();
-      },
+    autoSelect: false,
+    dateFormatter:{
       formatMonthViewDayHeader: function(date:Date) {
         return 'testMDH';
       },
@@ -58,9 +57,6 @@ export class TimetablePage {
       },
       formatWeekViewDayHeader: function(date:Date) {
         return 'testWDH';
-      },
-      formatWeekViewTitle: function(date:Date) {
-        return 'testWT';
       },
       formatWeekViewHourColumn: function(date:Date) {
         return 'testWH';
@@ -74,7 +70,6 @@ export class TimetablePage {
     }
   };
 
-
   constructor(
       public navCtrl: NavController,
       private http:HttpClient,
@@ -87,7 +82,6 @@ export class TimetablePage {
 
   ionViewDidLoad(){
     // TODO: check connections
-
     this.storage.get("session").then(
       (session:ISession) => {
         // check if we have a session
@@ -110,14 +104,22 @@ export class TimetablePage {
     );
   }
 
-  /* ionic2-calendar specific methods */
+  /* ~~~ ionic2-calendar specific methods ~~~ */
 
+  /**
+   * simply changes the calendarMode
+   * @param mode
+   */
   changeCalendarMode(mode){
     this.calendarOptions.calendarMode = mode;
   }
 
-  eventClicked(event:IEventObject){
-    console.log("event")
+  /**
+   * triggered when event is selected in any other view than monthView. Then
+   * a modal with information about the event is shown.
+   * @param event
+   */
+  eventSelected(event:IEventObject){
     if(this.calendarOptions.calendarMode != "month"){
       let eventModal = this.modalCtrl.create(
         EventModal,
@@ -127,15 +129,26 @@ export class TimetablePage {
     }
   }
 
-  timeClicked(time:ITimeSelected) {
-    console.log("time")
-
-    if(this.calendarOptions.calendarMode == "month") {
+  /**
+   * triggred when a time is clicked. Here a modal is shown when a time is
+   * clicked in monthView and there are events at this timeslot.
+   * @param time
+   */
+  timeSelected(time:ITimeSelected) {
+    if(this.calendarOptions.calendarMode == "month" && time.events.length > 0) {
       let eventModal = this.modalCtrl.create(
         EventModal, {events: time.events, date: time.selectedTime}
       );
       eventModal.present();
     }
+  }
+
+  /**
+   * simply changes the current views title when month/week/day is changed
+   * @param title
+   */
+  titleChanged(title){
+    this.currentTitle= title;
   }
 
   /**
@@ -173,6 +186,9 @@ export class TimetablePage {
 }
 
 
+/**
+ * Component for the modal to be shown when an event is selected
+ */
 @Component({
   selector: 'event',
   templateUrl: 'eventModal.html',
@@ -182,7 +198,7 @@ export class EventModal {
   isArray = Array.isArray;
   moment = moment;
 
-  events:IEventObject[] = [];
+  events:IEventObject[] = null;
   date = null;
 
   constructor(private params: NavParams,

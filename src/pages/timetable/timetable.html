@@ -19,6 +19,9 @@
     {{ "page.timetable.day" | translate }}
   </button>
 
+  <!-- TODO: needs styling, too -->
+  <div id="title">{{ currentTitle }}</div>
+
   <calendar [eventSource]="eventSource"
             [calendarMode]="calendarOptions.calendarMode"
             [currentDate]="calendarOptions.currentDate"
@@ -29,8 +32,11 @@
             [step]="calendarOptions.step"
             [timeInterval]="calendarOptions.timeInterval"
             [showEventDetail]="calendarOptions.showEventDetail"
-            (onTimeSelected)="timeClicked($event)"
-            (onEventSelected)="eventClicked($event)">
+            [autoSelect]="calendarOptions.autoSelect"
+            (onTimeSelected)="timeSelected($event)"
+            (onEventSelected)="eventSelected($event)"
+            (onTitleChanged)="titleChanged($event)">
   </calendar>
+            <!--[dateFormatter]="dateFormatter"-->
 
 </ion-content>

@@ -103,7 +103,7 @@ function createEventRules(event:IEvent, tzid):IEventRules{
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.startTime),
       until: pulsToUTC(event.endDate, '24:00'),
-      // tzid: tzid
+      tzid: tzid
     }),
     // create rule for end time on each day the event takes place
     end: new RRule({
@@ -112,7 +112,7 @@ function createEventRules(event:IEvent, tzid):IEventRules{
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.endTime),
       until: pulsToUTC(event.endDate, '24:00'),
-      // tzid: tzid
+      tzid: tzid
     })
   };
 }

@@ -91,11 +91,12 @@
   </ng-template>
 
   <!-- append details about selected events below -->
-  <div *ngFor="let event of events">
-    <ng-template
-      *ngTemplateOutlet="singleEventTemplate; context:{event:event}">
-    </ng-template>
-  </div>
-
+  <ng-container *ngIf="events">
+    <ng-container *ngFor="let event of events">
+      <ng-template
+        *ngTemplateOutlet="singleEventTemplate; context:{event:event}">
+      </ng-template>
+    </ng-container>
+  </ng-container>
 
 </ion-content>

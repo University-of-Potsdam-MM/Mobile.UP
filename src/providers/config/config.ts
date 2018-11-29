@@ -20,7 +20,6 @@ export class ConfigProvider {
     return new Promise<void>((resolve, reject) => {
       this.http.get(uri).toPromise().then(
         (response:IConfig) => {
-          console.log(response)
           ConfigProvider.config = response;
           resolve();
         }
