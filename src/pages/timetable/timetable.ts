@@ -2,7 +2,7 @@ import {Component } from '@angular/core';
 import {
   AlertController,
   IonicPage, ModalController,
-  NavController
+  NavController, NavParams
 } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { IWebServices } from "../../library/interfaces";
@@ -88,7 +88,12 @@ export class TimetablePage {
   }
 
   openInformation(eventClicked){
+    console.log(eventClicked)
+    let eventModal = this.modalCtrl.create(
+      EventModal, { event: eventClicked}
+    );
 
+    eventModal.present();
   }
 
   /**
@@ -123,4 +128,20 @@ export class TimetablePage {
       {headers: headers}
     );
   }
+}
+
+
+@Component({
+  selector: 'event',
+  templateUrl: 'eventModal.html',
+})
+export class EventModal {
+
+  event = null;
+
+  constructor(params: NavParams) {
+    console.log('event', params.get('event'));
+    this.event = params.get('event');
+  }
+
 }

@@ -18,6 +18,7 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
+import { NgCalendarModule } from "ionic2-calendar";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -43,8 +44,7 @@ import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
-import {TimetablePage} from "../pages/timetable/timetable";
-import {NgCalendarModule} from "ionic2-calendar";
+import {EventModal, TimetablePage} from "../pages/timetable/timetable";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -77,7 +77,8 @@ export function initConfig(config:ConfigProvider) {
     LegalNoticePage,
     PrivacyPolicyPage,
     TermsOfUsePage,
-    TimetablePage
+    TimetablePage,
+    EventModal
   ],
   imports: [
     HttpClientModule,
@@ -123,7 +124,8 @@ export function initConfig(config:ConfigProvider) {
     LegalNoticePage,
     PrivacyPolicyPage,
     TermsOfUsePage,
-    TimetablePage
+    TimetablePage,
+    EventModal
   ],
   providers: [
     StatusBar,
