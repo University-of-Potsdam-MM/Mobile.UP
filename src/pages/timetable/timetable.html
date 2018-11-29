@@ -8,6 +8,17 @@
 
 <ion-content padding>
 
+  <!-- TODO: make prettier-->
+  <button ion-button (click)="changeCalendarMode('month')">
+    {{ "page.timetable.month" | translate }}
+  </button>
+  <button ion-button (click)="changeCalendarMode('week')">
+    {{ "page.timetable.week" | translate }}
+  </button>
+  <button ion-button (click)="changeCalendarMode('day')">
+    {{ "page.timetable.day" | translate }}
+  </button>
+
   <!-- template for one single event, will be wrapped in ion-card tag -->
   <ng-template #singleEventTemplate let-event="event">
     <ion-card>
@@ -87,7 +98,6 @@
     </ion-card>
   </ng-template>
 
-
   <calendar [eventSource]="eventSource"
             [calendarMode]="calendarOptions.calendarMode"
             [currentDate]="calendarOptions.currentDate"
@@ -97,6 +107,7 @@
             [endHour]="calendarOptions.endHour"
             [step]="calendarOptions.step"
             [timeInterval]="calendarOptions.timeInterval"
+
             (onEventSelected)="openInformation(event)">
   </calendar>
 

@@ -1,7 +1,7 @@
 import {Component } from '@angular/core';
 import {
   AlertController,
-  IonicPage,
+  IonicPage, ModalController,
   NavController
 } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
@@ -41,7 +41,8 @@ export class TimetablePage {
     startHour: "8",
     endHour: "20",
     step: "30",
-    timeInterval: "120"
+    timeInterval: "120",
+    showEventDetail: false
   };
 
 
@@ -51,7 +52,8 @@ export class TimetablePage {
       private storage:Storage,
       private calendar:NgCalendarModule,
       private translate:TranslateService,
-      private alertCtrl:AlertController) {
+      private alertCtrl:AlertController,
+      private modalCtrl:ModalController) {
   }
 
   ionViewDidLoad(){
