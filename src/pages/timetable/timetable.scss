@@ -1,8 +1,19 @@
 page-timetable {
 
-  .fc-time-grid .fc-slats td {
-    height: 4em; // Change This to your required height
-    border-bottom: 0;
+  // https://github.com/twinssbc/Ionic2-Calendar/issues/54#issuecomment-354191281
+  .weekview-allday-table{
+    display: none;
   }
+  .weekview-normal-event-container{
+    margin-top: 37px;
+  }
+
+  .dayview-allday-table{
+    display: none;
+  }
+  .dayview-normal-event-container{
+    margin-top: 37px;
+  }
+
 
 }

@@ -14,7 +14,7 @@ import {
   IPulsApiRequest_getStudentCourses
 } from "../../library/interfaces_PULS";
 import {LoginPage} from "../login/login";
-import {createEventSource,} from "./createEvents";
+import {createEventSource, IEventObject,} from "./createEvents";
 import {TranslateService} from "@ngx-translate/core";
 import {ConfigProvider} from "../../providers/config/config";
 import {NgCalendarModule} from "ionic2-calendar";
@@ -31,7 +31,7 @@ function debug(text){
 })
 export class TimetablePage {
 
-  eventSource = [];
+  eventSource:IEventObject[] = [];
 
   calendarOptions = {
     calendarMode: "week",
@@ -40,7 +40,7 @@ export class TimetablePage {
     startingDay: 1,
     startHour: "8",
     endHour: "20",
-    step: "120",
+    step: "30",
     timeInterval: "120"
   };
 
