@@ -150,7 +150,7 @@
   },
   "webservices": {
     "endpoint":{
-      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
       "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
       "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
