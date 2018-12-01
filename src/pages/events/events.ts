@@ -61,6 +61,8 @@ export class EventsPage {
         var i;
         this.locationsList = [];
         this.todaysLocationsList = [];
+        this.todaysEventsList = [];
+        this.nextEventsList = [];
         for (var loc in response.vars.places) {
           for (i = 0; i < this.eventsList.length; i++) {
             // check if there are events for location

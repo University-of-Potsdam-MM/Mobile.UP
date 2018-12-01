@@ -72,7 +72,7 @@ export class MensaPage {
     var i;
 
     if (refresher) {
-      this.cache.removeItem("mensaResponse"+this.campus);
+      this.cache.removeItems("mensaResponse*");
     } else {
       this.isLoaded = false;
     }
