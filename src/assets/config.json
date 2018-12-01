@@ -53,7 +53,8 @@
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "athletics": {
       "componentName": "athletics",
@@ -101,17 +102,20 @@
     "settings": {
       "componentName": "settings",
       "icon": "settings",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":false
+      "selected":false,
+      "hide":true
     },
     "logout": {
       "componentName": "logout",
       "icon": "log-out",
-      "selected":false
+      "selected":false,
+      "hide":true
     }
   },
   "authorization": {
@@ -135,11 +139,18 @@
           "passport":"1002"
         }
       }
+    },
+    "oidc": {
+      "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+      "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
+      "contentType": "application/x-www-form-urlencoded",
+      "grantType": "password",
+      "scope": "openid"
     }
   },
   "webservices": {
     "endpoint":{
-      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/1.0/.json",
+      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
       "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
       "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
@@ -148,8 +159,18 @@
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
       "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
       "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:",
-      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/"
+      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
+      "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
+      "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+  },
+  "policies": {
+    "impressumTemplateDE": "Impressum: Deutsch",
+    "impressumTemplateEN": "Impressum: Englisch",
+    "tosTemplateDE": "Nutzungsbedingungen: Deutsch",
+    "tosTemplateEN": "Nutzungsbedingungen: Englisch",
+    "privacyTemplateDE": "Datenschutzbedingungen: Deutsch",
+    "privacyTemplateEN": "Datenschutzbedingungen: Englisch"
   }
 }

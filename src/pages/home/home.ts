@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
-import {Storage} from "@ionic/storage";
+import { Storage } from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
+
 /**
  * HomePage
  */
@@ -17,8 +18,8 @@ export class HomePage {
   icon_selected:string = "star";
   icon_not_selected:string = "star-outline";
 
-  objectKey = Object.keys;
   modules:{[moduleName:string]:IModule} = {};
+  sortedModules = [];
 
   session:string = "";
 
@@ -28,7 +29,7 @@ export class HomePage {
       private storage: Storage,
       private webIntent: WebIntentProvider,
       private components: ComponentsProvider) {
-  }
+    }
 
   ionViewDidLoad(){
     // try to load modules from storage
@@ -37,6 +38,8 @@ export class HomePage {
         if(modules){
           // if there are modules, use those
           this.modules = modules;
+          this.sortedModules = this.JsonToArray(this.modules);
+          //console.log(this.modules);
           // console.log("[HomePage]: Using user defined modules");
         } else {
           // if not, try to load the default_modules
@@ -45,6 +48,7 @@ export class HomePage {
               if(default_modules) {
                 // use those if possible
                 this.modules = default_modules;
+                this.sortedModules = this.JsonToArray(this.modules);
                 // console.log("[HomePage]: Using default_modules");
               } else {
                 // somethings clearly wrong here!
@@ -52,9 +56,28 @@ export class HomePage {
               }
           })
         }
-
       }
     )
+    console.log(this.sortedModules);
+  }
+
+  /**
+   * convertes json object to array
+   * @param modules
+   */
+
+  JsonToArray(modules){
+    var array = [];
+    for (var key in modules){
+      this.translate.get(modules[key].i18nKey).subscribe(
+        value => {
+          modules[key].translation = value;
+          array.push(modules[key]);
+        }
+      );
+    }
+    //this.orderPipe.transform(this.sortedModules, 'translation');
+    return array;
   }
 
   /**

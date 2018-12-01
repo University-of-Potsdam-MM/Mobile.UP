@@ -3,7 +3,7 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  Platform, Nav
+  Platform, Nav, NavController
 } from 'ionic-angular';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { UPLoginProvider } from "../../providers/login-provider/login";
@@ -41,7 +41,8 @@ export class LoginPage {
   };
 
   constructor(
-      private nav: Nav,
+      private nav:         Nav,
+      private navCtrl:     NavController,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
@@ -67,37 +68,13 @@ export class LoginPage {
 
     this.showLoading();
 
-    let method:string = "";
-    let source:string = await this.platform.ready();
     let config:IConfig = await this.storage.get("config");
 
-    // first decide which login method should be executed
-    switch(source){
-      case "dom": { method = "credentials"; break; }
-      case "cordova": { method = "sso"; break; }
-      default: { method = "credentials"; break; }
-    }
-
     // prepare Observable for use in switch
-    let session:Observable<ISession> = null;
-
-    // execute fitting login method and attach result to created Observable
-    switch(method){
-      case "credentials":{
-        session = this.upLogin.credentialsLogin(
-          this.loginCredentials,
-          config.authorization.credentials
-        );
-        break;
-      }
-      case "sso":{
-        session = this.upLogin.ssoLogin(
-          this.loginCredentials,
-          config.authorization.sso
-        );
-        break;
-      }
-    }
+    let session:Observable<ISession> = this.upLogin.oidcLogin(
+      this.loginCredentials,
+      config.authorization.oidc
+    );
 
     if(session){
       // now handle the Observable which hopefully contains a session
@@ -106,7 +83,7 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
-          this.nav.setRoot(HomePage);
+          this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
         },
         error => {
           console.log(error);
@@ -156,6 +133,10 @@ export class LoginPage {
       buttons: [ this.translate.instant("button.continue") ]
     });
     alert.present();
+  }
+
+  public abort(){
+    this.navCtrl.setRoot(HomePage,{}, {animate: true, direction: "forward"});
   }
 
 }

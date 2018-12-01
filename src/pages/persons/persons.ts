@@ -1,16 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {WebHttpUrlEncodingCodec} from "../../library/util";
 import {Storage} from "@ionic/storage";
 import {ISession} from "../../providers/login-provider/interfaces";
 import {LoginPage} from "../login/login";
-import {
-  IConfig,
-  IPerson,
-  IPersonSearchResponse
-} from "../../library/interfaces";
-
+import {IConfig, IPerson,} from "../../library/interfaces";
 
 /**
  * PersonsPage
@@ -30,11 +24,26 @@ export class PersonsPage {
   personsFound: IPerson[] = [];
   waiting_for_response: boolean = false;
   error: HttpErrorResponse;
+  session:ISession;
 
   constructor(
     private navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage) {
+  }
+
+  /**
+   * take user to login if there is no session.
+   * We are using ionViewDidEnter here because it is run every time the view is
+   * entered, other than ionViewDidLoad which will run only once
+   */
+  async ionViewWillEnter(){
+    this.session = await this.storage.get("session");
+    if(!this.session){
+      this.navCtrl.push(LoginPage).then(
+        result => console.log("[PersonsPage]: Pushed LoginPage")
+      );
+    }
   }
 
   /**
@@ -52,45 +61,31 @@ export class PersonsPage {
 
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
-      let session: ISession = await this.storage.get("session");
       let config: IConfig = await this.storage.get("config");
-      if (session) {
-        let headers: HttpHeaders = new HttpHeaders()
-          .append("Authorization", config.webservices.apiToken);
+      let headers: HttpHeaders = new HttpHeaders()
+        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
-        let params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append("value", query)
-          .append("username", session.credentials.username)
-          .append("password", session.credentials.password);
+      this.http.get(
+        config.webservices.endpoint.personSearch + query,
+        {headers: headers}
+      ).subscribe(
+        (personsList:IPerson[]) => {
 
-        this.http.get(
-          config.webservices.endpoint.personSearch,
-          {headers: headers, params: params}
-        ).subscribe(
-          (response: IPersonSearchResponse) => {
-            // reset array so new persons are displayed
-            this.personsFound = [];
-            // use inner object only because it's wrapped in another object
-            for (let person of response.people) {
-              person.Person.expanded = false;
-              person.Person.Raum = person.Person.Raum.replace(/_/g, " ");
-              this.personsFound.push(person.Person);
-            }
-
-            this.waiting_for_response = false;
-          },
-          error => {
-            // reset array so new persons are displayed
-            this.personsFound = [];
-            this.error = error;
-            console.log(error);
-            this.waiting_for_response = false;
+          for (let person of personsList) {
+            let newPerson = person;
+            newPerson.expanded = false;
+            newPerson.Raum = person.Raum.replace(/_/g, " ");
+            this.personsFound.push(newPerson);
           }
-        );
-      } else {
-        // send user to LoginPage if no session has been found
-        this.navCtrl.push(LoginPage);
-      }
+
+          this.waiting_for_response = false;
+        },
+        error => {
+          this.error = error;
+          console.log(error);
+          this.waiting_for_response = false;
+        }
+      );
 
     } else {
       console.log("[PersonsPage]: Empty query");
@@ -99,10 +94,9 @@ export class PersonsPage {
 
   expandPerson(person) {
     for (let i = 0; i < this.personsFound.length; i++) {
-      if (this.personsFound[i].id == person.id) {
-        this.personsFound[i].expanded = !this.personsFound[i].expanded;
-      } else {
-        this.personsFound[i].expanded = false;
+      let currentPerson = this.personsFound[i];
+      if (currentPerson.Id == person.Id) {
+        currentPerson.expanded = !currentPerson.expanded;
       }
     }
   }

@@ -42,7 +42,7 @@ export class WebIntentProvider {
     this.storage.get("config").then((config:IConfig) => {
       var moduleConfig:IModule = config.modules[moduleName];
       if (moduleConfig) {
-        if (this.platform.is("ios") || this.platform.is("android")) {
+        if (this.platform.is("cordova")) {
           if (moduleConfig.appId) {
             var androidUrl, iosUrl, bundle;
             androidUrl = moduleConfig.urlAndroid;

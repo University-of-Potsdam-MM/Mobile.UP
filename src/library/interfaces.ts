@@ -37,17 +37,8 @@ export interface EmergencyCall {
 
 /* ~~~ PersonsPage ~~~ */
 
-export interface IPersonSearchResponse {
-  timer:Array<string>;
-  people:IPersonWrapper[];
-}
-
-export interface IPersonWrapper {
-  Person:IPerson
-}
-
 export interface IPerson {
-  id?:string;
+  Id?:string;
   Abteilung?:string;
   Email?:string;
   Fax?:number,
@@ -59,15 +50,16 @@ export interface IPerson {
   Suchbegriffe?:string;
   Telefon?:string;
   Vorname?:string;
-  zweitesTelefon?:string;
-  PCFax?:string;
-  gueltigbis?:string;
+  "zweites Telefon"?:string;
+  "PC-Fax"?:string;
+  "gueltig bis"?:string;
   Titel?:string;
-  Email_Langform?:string;
+  "Langform-Email"?:string;
   expanded?:boolean;
 }
 
-/* ~~~ PersonsPage ~~~ */
+/* ~~~ Mensa ~~~ */
+
 export interface IMensaResponse {
   meal:IMeals[];
   campus:string;
@@ -137,6 +129,16 @@ export interface IConfig {
   modules:{[moduleName:string]:IModule};
   authorization:ILoginConfig;
   webservices:IWebServices;
+  policies:IPolicies;
+}
+
+export interface IPolicies {
+  impressumTemplateDE: string;
+  impressumTemplateEN: string;
+  tosTemplateDE: string;
+  tosTemplateEN: string;
+  privacyTemplateDE: string;
+  privacyTemplateEN: string;
 }
 
 export interface IAppUrls {
@@ -160,6 +162,7 @@ export interface IModule {
   i18nKey?:string;
   icon:string;
   selected?:boolean;
+  hide?:boolean;
   url?:string;
   appId?:string;
   urlAndroid?:string;

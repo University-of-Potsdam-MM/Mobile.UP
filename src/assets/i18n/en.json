@@ -5,7 +5,17 @@
       "title": "Homepage"
     },
     "imprint":{
-      "title": "Legal Notice"
+      "title": "Legal Notice",
+      "listHeader": "Legal Notice"
+    },
+    "legalNotice": {
+      "title": "Information"
+    },
+    "privacyPolicy": {
+      "title": "Privacy policy"
+    },
+    "termsOfUse": {
+      "title": "Terms of Use"
     },
     "login":{
       "title":"Login",
@@ -177,8 +187,8 @@
     },
     "roomplan": {
       "title": "Roomplan",
-      "no_house": "No roomplan available for the chosen house.",
-      "no_room": "No roomplan available for the chosen room."
+      "no_house": "The chosen house is free all-day.",
+      "no_room": "The chosen room is free all-day."
     },
     "openingHours":{
       "title":"Opening hours"
