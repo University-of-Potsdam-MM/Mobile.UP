@@ -87,13 +87,23 @@ export class BookDetailViewPage {
     this.getAbstractAndTOC();
   }
 
-  updateLocation() {
+  updateLocation(refresher?) {
+    if (refresher) {
+      this.cache.removeItem("bookLocation"+this.book.recordInfo.recordIdentifier._);
+    }
+
     let url = this.config.webservices.endpoint.libraryDAIA + this.book.recordInfo.recordIdentifier._ + "&format=json";
     let request = this.http.get(url);
     this.cache.loadFromObservable("bookLocation"+this.book.recordInfo.recordIdentifier._, request).subscribe(data => {
+      if (refresher) {
+        refresher.complete();
+      }
       this.setLocationData(data);
     }, error => {
       console.log(error);
+      if (refresher) {
+        refresher.complete();
+      }
     });
   }
 

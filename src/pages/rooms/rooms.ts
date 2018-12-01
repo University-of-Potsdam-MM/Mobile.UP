@@ -179,6 +179,10 @@ export class RoomsPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
+    if (this.refresher != null) {
+      this.cache.removeItem("roomInfo"+location+start.toString()+end.toString());
+    }
+
     let request = this.http.get(config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
     this.cache.loadFromObservable("roomInfo"+location+start.toString()+end.toString(), request).subscribe(
       (response: IRoomRequestResponse) => {

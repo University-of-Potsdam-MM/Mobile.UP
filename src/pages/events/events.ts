@@ -34,19 +34,33 @@ export class EventsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private cache: CacheService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadEvents();
+  }
 
+  async loadEvents(refresher?) {
     let config: IConfig = await this.storage.get("config");
 
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
+    if (refresher) {
+      this.cache.removeItem("eventsList");
+    } else {
+      this.isLoaded = false;
+    }
+
     var url = config.webservices.endpoint.events;
     let request = this.http.get(url, {headers:headers});
     this.cache.loadFromObservable("eventsList", request).subscribe((response:INewsApiResponse) => {
+      if (refresher) {
+        refresher.complete();
+      }
       if (response.errors.exist == false) {
         this.eventsList = response.vars.events;
         var i;
+        this.locationsList = [];
+        this.todaysLocationsList = [];
         for (var loc in response.vars.places) {
           for (i = 0; i < this.eventsList.length; i++) {
             // check if there are events for location
@@ -72,8 +86,7 @@ export class EventsPage {
         this.checkNextEvents();
         this.isLoaded = true;
       }
-    })
-
+    });
   }
 
 

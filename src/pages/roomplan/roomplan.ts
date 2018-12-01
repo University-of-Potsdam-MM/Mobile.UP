@@ -230,6 +230,10 @@ export class RoomplanPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
+    if (this.refresher != null) {
+      this.cache.removeItem("roomplanInfo"+location+start.toString()+end.toString());
+    }
+
     let request = this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
     this.cache.loadFromObservable("roomplanInfo"+location+start.toString()+end.toString(), request).subscribe(
       (response: IReservationRequestResponse) => {

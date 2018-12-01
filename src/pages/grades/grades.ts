@@ -18,6 +18,7 @@ export class GradesPage {
   credentials;
   config:IConfig;
 
+  refresher;
   studentDetails;
   studentGrades;
   i;
@@ -59,18 +60,16 @@ export class GradesPage {
   showGrades(i) {
     this.i = i;
     this.gradesLoaded = false;
-    this.storage.get("studentGrades["+i+"]").then((studentGrades) => {
-      if (studentGrades) {
-        // console.log(studentGrades);
-        this.studentGrades = studentGrades;
-        this.gradesLoaded = true;
-        this.getGrades(i);
-      } else { this.getGrades(i); }
-    });
+    this.getGrades();
   }
 
-  getGrades(i) {
-      this.loadingGrades = true;
+  getGrades() {
+      if (this.refresher != null) {
+        this.cache.removeItem("getAcademicAchievements"+this.i);
+      } else {
+        this.loadingGrades = true;
+      }
+
       var headers: HttpHeaders, body;
 
       if (this.multipleDegrees) {
@@ -79,9 +78,9 @@ export class GradesPage {
 
         body = {
           "condition": {
-            "Semester": this.studentDetails[i].Semester,
-            "MtkNr": this.studentDetails[i].MtkNr,
-            "StgNr": this.studentDetails[i].StgNr
+            "Semester": this.studentDetails[this.i].Semester,
+            "MtkNr": this.studentDetails[this.i].MtkNr,
+            "StgNr": this.studentDetails[this.i].StgNr
           },
           "user-auth": {
             "username": this.credentials.username,
@@ -108,16 +107,28 @@ export class GradesPage {
       let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
 
       let request = this.http.post(url, body, {headers:headers});
-      this.cache.loadFromObservable("getAcademicAchievements", request).subscribe((resGrades) => {
+      this.cache.loadFromObservable("getAcademicAchievements"+this.i, request).subscribe((resGrades) => {
         // console.log(resGrades);
         this.studentGrades = resGrades;
-        this.storage.set("studentGrades["+i+"]", this.studentGrades);
         this.gradesLoaded = true;
         this.loadingGrades = false;
       }, error => {
         console.log("ERROR while getting grades");
         console.log(error);
       });
+
+      if (this.refresher != null) {
+        this.refresher.complete();
+      }
+  }
+
+  refreshGrades(refresher) {
+    this.refresher = refresher;
+    if (this.i != undefined) {
+      this.getGrades();
+    } else {
+      this.getStudentDetails();
+    }
   }
 
   getStudentDetails() {
@@ -129,6 +140,12 @@ export class GradesPage {
         "username": this.credentials.username,
         "password": this.credentials.password
       }
+    }
+
+    if (this.refresher != null) {
+      this.cache.removeItem("getPersonalStudyAreas");
+    } else {
+      this.studentLoaded = false;
     }
 
     let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
@@ -161,6 +178,11 @@ export class GradesPage {
       console.log("ERROR while getting student details");
       console.log(error);
     });
+
+    if (this.refresher != null) {
+      this.refresher.complete();
+    }
+
   }
 
 }

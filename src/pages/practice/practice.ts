@@ -54,11 +54,16 @@ export class PracticePage {
    *
    * loads default items from json file
    */
-  public async loadData() {
+  public async loadData(refresher?) {
     // reset array so new persons are displayed
     this.defaultList = [];
 
-    this.waiting_for_response = true;
+    if (refresher) {
+      this.cache.removeItem("practiceResponse");
+    } else {
+      this.waiting_for_response = true;
+    }
+    
     console.log(`[PracticePage]: Quering ADS`);
 
     let session: ISession = await this.storage.get("session");
@@ -71,6 +76,9 @@ export class PracticePage {
       let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
       this.cache.loadFromObservable("practiceResponse", request).subscribe(
         (response: IADSResponse) => {
+          if (refresher) {
+            refresher.complete();
+          }
           // reset array so new persons are displayed
           this.defaultList = [];
           // use inner object only because it's wrapped in another object
@@ -84,6 +92,9 @@ export class PracticePage {
           this.waiting_for_response = false;
         },
         error => {
+          if (refresher) {
+            refresher.complete();
+          }
           // reset array so new persons are displayed
           this.defaultList = [];
           this.error = error;

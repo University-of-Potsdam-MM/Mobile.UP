@@ -20,8 +20,11 @@ export class NewsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage, private cache: CacheService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadNews();
+  }
 
+  async loadNews(refresher?) {
     let config: IConfig = await this.storage.get("config");
 
     let headers: HttpHeaders = new HttpHeaders()
@@ -29,7 +32,19 @@ export class NewsPage {
 
     var url = config.webservices.endpoint.news;
     let request = this.http.get(url, {headers:headers});
+
+    if (refresher) {
+      this.cache.removeItem("newsResponse");
+    } else {
+      this.isLoaded = false;
+    }
+
     this.cache.loadFromObservable("newsResponse", request).subscribe((response:INewsApiResponse) => {
+
+      if (refresher) {
+        refresher.complete();
+      }
+      
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         var tmpArray = [];
@@ -37,6 +52,7 @@ export class NewsPage {
           tmpArray.push(response.vars.newsSources[source]);
         }
         var i,j;
+        this.sourcesList = [];
         for (i = 0; i < tmpArray.length; i++) {
           for (j = 0; j < this.newsList.length; j++) {
             if (this.newsList[j].NewsSource.name == tmpArray[i]) {
@@ -48,8 +64,6 @@ export class NewsPage {
         this.isLoaded = true;
       }
     });
-
-
   }
 
   setNewsSource(i) {

@@ -44,6 +44,8 @@ export class MensaPage {
   veganIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegan_w.png";
   vegetarianIconSource:string = "https://xml.stw-potsdam.de/images/icons/su_vegetarisch_v.png";
 
+  campus;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -61,10 +63,19 @@ export class MensaPage {
    * in this.personsFound so the view can render them
    * @param query
    */
-  public async changeCampus($event) {
+  public async changeCampus(campus) {
+    this.campus = campus;
+    this.loadCampusMenu();
+  }
 
+  async loadCampusMenu(refresher?) {
     var i;
-    this.isLoaded = false;
+
+    if (refresher) {
+      this.cache.removeItem("mensaResponse"+this.campus);
+    } else {
+      this.isLoaded = false;
+    }
 
     this.allMeals = [];
     for (i = 0; i < this.mealIsExpanded.length; i++) { this.mealIsExpanded[i] = false; }
@@ -80,10 +91,14 @@ export class MensaPage {
       .append("Authorization", config.webservices.apiToken);
 
     let params: HttpParams = new HttpParams()
-      .append("location", $event);
+      .append("location", this.campus);
 
     let request = this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params});
-    this.cache.loadFromObservable("mensaResponse"+$event, request).subscribe((res:IMensaResponse) => {
+    this.cache.loadFromObservable("mensaResponse"+this.campus, request).subscribe((res:IMensaResponse) => {
+
+      if (refresher) {
+        refresher.complete();
+      }
 
       if (res.meal) {
         this.allMeals = res.meal;
