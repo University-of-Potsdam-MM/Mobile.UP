@@ -58,7 +58,7 @@ export class HomePage {
         }
       }
     )
-    console.log(this.sortedModules);
+    // console.log(this.sortedModules);
   }
 
   /**

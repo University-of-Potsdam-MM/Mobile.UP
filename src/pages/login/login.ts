@@ -3,7 +3,7 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  Platform, Nav, NavController
+  Nav, NavController
 } from 'ionic-angular';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 import { UPLoginProvider } from "../../providers/login-provider/login";
@@ -47,8 +47,7 @@ export class LoginPage {
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
       private storage:     Storage,
-      private translate:   TranslateService,
-      private platform:    Platform) {
+      private translate:   TranslateService) {
   }
 
   async ngOnInit() {

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ "page.openingHours.title" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <span *ngFor="let item of openingHours; let i = index">
+      <button *ngIf="parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
+          <h2>{{ item.name }}</h2>
+          <p style="color: green">{{ "page.openingHours.open" | translate }}, {{ openUntil(i) }}</p>
+      </button>
+    </span>
+    <span *ngFor="let item of openingHours; let i = index">
+        <button *ngIf="!parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
+            <h2>{{ item.name }}</h2>
+            <p style="color: red">{{ "page.openingHours.closed" | translate }}, {{ closedUntil(i) }}</p>
+        </button>
+      </span>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

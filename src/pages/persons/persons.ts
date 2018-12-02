@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Storage} from "@ionic/storage";
 import {ISession} from "../../providers/login-provider/interfaces";
 import {LoginPage} from "../login/login";

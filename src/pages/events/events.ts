@@ -40,6 +40,7 @@ export class EventsPage {
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
+    console.log(headers);
     var url = config.webservices.endpoint.events;
     this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
       if (response.errors.exist == false) {

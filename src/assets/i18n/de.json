@@ -191,7 +191,12 @@
       "no_room": "Der gewählte Raum ist heute ganztägig frei."
     },
     "openingHours":{
-      "title":"Öffnungszeiten"
+      "title":"Öffnungszeiten",
+      "time": " Uhr",
+      "open": "geöffnet",
+      "opens": "öffnet ",
+      "closed": "geschlossen",
+      "closes": "schließt "
     },
     "mensa":{
       "title": "Mensa",

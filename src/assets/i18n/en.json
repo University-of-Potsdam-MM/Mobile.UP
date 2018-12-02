@@ -191,7 +191,12 @@
       "no_room": "The chosen room is free all-day."
     },
     "openingHours":{
-      "title":"Opening hours"
+      "title":"Opening hours",
+      "time": "",
+      "open": "open",
+      "opens": "opens ",
+      "closed": "closed",
+      "closes": "closes "
     },
     "mensa":{
       "title": "Mensa",

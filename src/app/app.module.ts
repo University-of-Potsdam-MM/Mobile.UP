@@ -42,6 +42,8 @@ import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
+import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
+import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -69,7 +71,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    OpeningHoursPage,
+    DetailedOpeningPage
   ],
   imports: [
     HttpClientModule,
@@ -113,7 +117,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    OpeningHoursPage,
+    DetailedOpeningPage
   ],
   providers: [
     StatusBar,
