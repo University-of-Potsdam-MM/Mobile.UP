@@ -198,7 +198,8 @@
       "closed": "closed",
       "closes": "closes ",
       "planCanChange": "Attention! This plan can change from week to week.",
-      "comment": "Comment"
+      "comment": "Comment",
+      "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
     "mensa":{
       "title": "Mensa",

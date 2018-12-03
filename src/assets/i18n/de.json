@@ -198,7 +198,8 @@
       "closed": "geschlossen",
       "closes": "schließt ",
       "planCanChange": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
-      "comment": "Kommentar"
+      "comment": "Kommentar",
+      "noGuarantee": "Alle Angaben sind ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten auch über kurzfristige Änderungen."
     },
     "mensa":{
       "title": "Mensa",
