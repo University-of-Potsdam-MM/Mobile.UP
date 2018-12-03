@@ -105,18 +105,12 @@ export class MobileUPApp {
         if(session) {
 
           // helper function for determining whether session is still valid
-          let sessionIsValid = (timestampThen, exprirationTime, boundary) => {
+          let sessionIsValid = (timestampThen:Date, expiresIn:number, boundary:number) => {
             // determine date until the token is valid
-            let validUntil = moment(session.timestamp).add(
-              session.oidcTokenObject.expires_in,
-              'seconds'
-            );
-            console.log(session.oidcTokenObject.expires_in);
-            console.log(session.timestamp);
-            console.log(validUntil);
-            console.log(validUntil.diff(moment(), 'seconds'))
+            let validUntilUnixTime = moment(session.timestamp).unix() + expiresIn;
+            let nowUnixTime = moment().unix();
             // check if we are not past this date already with a certain boundary
-            return validUntil.diff(moment(), 'seconds') > boundary;
+            return (validUntilUnixTime - nowUnixTime) > boundary;
           };
 
           if(sessionIsValid(session.timestamp,
@@ -136,18 +130,20 @@ export class MobileUPApp {
                   token:            response.oidcTokenObject.access_token,
                   timestamp:        new Date(),
                   credentials:      session.credentials
-                })
+                });
                 console.log(`[MobileUP]: Refreshed token successfully`);
 
               },
               error => {
-                console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);;
+                console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);
               }
             )
           } else {
             // session no longer valid, so we just remove the session object
             console.log(`[MobileUP]: Session no longer valid, deleting session object`);
-            //this.storage.remove('session');
+            this.storage.remove('session').then(
+              (result) => console.log(`[MobileUP]: Removed invalid session`)
+            );
           }
         }
         // otherwise there is no session, so there is nothing to do
