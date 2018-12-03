@@ -20,7 +20,7 @@ import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
 
 /* Pages */
-import { HomePage } from '../pages/home/home';
+import {HomePage, PopoverComponent} from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
@@ -69,7 +69,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    PopoverComponent
   ],
   imports: [
     HttpClientModule,
@@ -113,7 +114,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    PopoverComponent
   ],
   providers: [
     StatusBar,

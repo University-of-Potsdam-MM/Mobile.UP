@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController, NavParams,
+  PopoverController,
+  ViewController
+} from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
+import {ISession} from "../../providers/login-provider/interfaces";
+
+interface IUserInformation {
+  name:string;
+  surname:string;
+  accountName:string;
+}
 
 /**
  * HomePage
@@ -21,15 +33,14 @@ export class HomePage {
   modules:{[moduleName:string]:IModule} = {};
   sortedModules = [];
 
-  session:string = "";
-
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
       private storage: Storage,
       private webIntent: WebIntentProvider,
-      private components: ComponentsProvider) {
-    }
+      private components: ComponentsProvider,
+      private popoverCtrl: PopoverController) {
+  }
 
   ionViewDidLoad(){
     // try to load modules from storage
@@ -57,8 +68,7 @@ export class HomePage {
           })
         }
       }
-    )
-    console.log(this.sortedModules);
+    );
   }
 
   /**
@@ -113,5 +123,33 @@ export class HomePage {
         console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
       }
     );
+  }
+
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(
+      PopoverComponent,
+      {userInformation:this.userInformation}
+    );
+    popover.present({
+      ev: myEvent
+    });
+  }
+}
+
+@Component({
+  templateUrl: "popover.html",
+  selector: "popover"
+})
+export class PopoverComponent {
+
+  userInformation:IUserInformation = null;
+
+  constructor(public viewCtrl: ViewController,
+              private navParams:NavParams) {
+    this.userInformation = this.navParams.get('userInformation')
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 }
