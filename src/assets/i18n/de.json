@@ -196,7 +196,9 @@
       "open": "geöffnet",
       "opens": "öffnet ",
       "closed": "geschlossen",
-      "closes": "schließt "
+      "closes": "schließt ",
+      "planCanChange": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
+      "comment": "Kommentar"
     },
     "mensa":{
       "title": "Mensa",

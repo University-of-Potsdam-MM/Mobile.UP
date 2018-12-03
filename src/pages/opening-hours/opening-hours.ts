@@ -39,7 +39,6 @@ export class OpeningHoursPage {
     var url = config.webservices.endpoint.openingHours;
     let request = this.http.get(url, {headers:headers});
     this.cache.loadFromObservable("openingHours", request).subscribe((response) => {
-      console.log(response);
       this.openingHours = response;
 
       var i;
@@ -62,8 +61,6 @@ export class OpeningHoursPage {
       } else {
         return this.translate.instant("page.openingHours.closes") + this.weekday(willClose.getDay()) + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
       }
-    } else if (this.parsedOpenings[index].getComment() != null) {
-      return this.parsedOpenings[index].getComment();
     } else {
       return "";
     }
@@ -82,8 +79,10 @@ export class OpeningHoursPage {
       if (this.parsedOpenings[index].getComment() != null) {
         if (this.translate.currentLang == "en" && this.parsedOpenings[index].getComment() == "nach Vereinbarung") {
           return "by appointment only";
-        } else {
+        } else if (this.parsedOpenings[index].getComment() == "nach Vereinbarung") {
           return this.parsedOpenings[index].getComment();
+        } else {
+          return "";
         }
       } else {
         return "";

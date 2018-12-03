@@ -196,7 +196,9 @@
       "open": "open",
       "opens": "opens ",
       "closed": "closed",
-      "closes": "closes "
+      "closes": "closes ",
+      "planCanChange": "Attention! This plan can change from week to week.",
+      "comment": "Comment"
     },
     "mensa":{
       "title": "Mensa",

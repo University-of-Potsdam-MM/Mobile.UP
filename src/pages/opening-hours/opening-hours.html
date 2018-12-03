@@ -10,13 +10,13 @@
     <span *ngFor="let item of openingHours; let i = index">
       <button *ngIf="parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
           <h2>{{ item.name }}</h2>
-          <p style="color: green">{{ "page.openingHours.open" | translate }}, {{ openUntil(i) }}</p>
+          <p style="color: green">{{ "page.openingHours.open" | translate }}<span *ngIf="openUntil(i) != ''">,</span> {{ openUntil(i) }}</p>
       </button>
     </span>
     <span *ngFor="let item of openingHours; let i = index">
         <button *ngIf="!parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
             <h2>{{ item.name }}</h2>
-            <p style="color: red">{{ "page.openingHours.closed" | translate }}, {{ closedUntil(i) }}</p>
+            <p style="color: red">{{ "page.openingHours.closed" | translate }}<span *ngIf="closedUntil(i) != ''">,</span> {{ closedUntil(i) }}</p>
         </button>
       </span>
   </ion-list>

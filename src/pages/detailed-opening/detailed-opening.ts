@@ -11,10 +11,16 @@ export class DetailedOpeningPage {
 
   item;
   parsedOpening;
+  intervals = [];
+  every_week_is_same;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private translate: TranslateService) {
     this.item = this.navParams.data.item;
     this.parsedOpening = this.navParams.data.parsed;
+  }
+
+  ionViewDidLoad() {
+    this.getOpenTimes();
   }
 
   shortenLink(link:string) {
@@ -30,10 +36,8 @@ export class DetailedOpeningPage {
       if (this.isToday(willClose)) {
         return this.translate.instant("page.openingHours.closes") + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
       } else {
-        return this.translate.instant("page.openingHours.closes") + this.weekday(willClose.getDay()) + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
+        return this.translate.instant("page.openingHours.closes") + this.weekday(willClose.getDay()) + " " + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
       }
-    } else if (this.parsedOpening.getComment() != null) {
-      return this.parsedOpening.getComment();
     } else {
       return "";
     }
@@ -46,14 +50,16 @@ export class DetailedOpeningPage {
       if (this.isToday(willChange)) {
         return this.translate.instant("page.openingHours.opens") + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
       } else {
-        return this.translate.instant("page.openingHours.opens") + this.weekday(willChange.getDay()) + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
+        return this.translate.instant("page.openingHours.opens") + this.weekday(willChange.getDay()) + " " + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
       }
     } else {
       if (this.parsedOpening.getComment() != null) {
         if (this.translate.currentLang == "en" && this.parsedOpening.getComment() == "nach Vereinbarung") {
           return "by appointment only";
-        } else {
+        } else if (this.parsedOpening.getComment() == "nach Vereinbarung") {
           return this.parsedOpening.getComment();
+        } else {
+          return "";
         }
       } else {
         return "";
@@ -76,24 +82,37 @@ export class DetailedOpeningPage {
   weekday(i) {
     let weekday = [];
     if (this.translate.currentLang == "de") {
-      weekday[0] = "So. ";
-      weekday[1] = "Mo. ";
-      weekday[2] = "Di. ";
-      weekday[3] = "Mi. ";
-      weekday[4] = "Do. ";
-      weekday[5] = "Fr. ";
-      weekday[6] = "Sa. ";
+      weekday[0] = "So.";
+      weekday[1] = "Mo.";
+      weekday[2] = "Di.";
+      weekday[3] = "Mi.";
+      weekday[4] = "Do.";
+      weekday[5] = "Fr.";
+      weekday[6] = "Sa.";
     } else {
-      weekday[0] = "Su. ";
-      weekday[1] = "Mo. ";
-      weekday[2] = "Tu. ";
-      weekday[3] = "We. ";
-      weekday[4] = "Th. ";
-      weekday[5] = "Fr. ";
-      weekday[6] = "Sa. ";
+      weekday[0] = "Su.";
+      weekday[1] = "Mo.";
+      weekday[2] = "Tu.";
+      weekday[3] = "We.";
+      weekday[4] = "Th.";
+      weekday[5] = "Fr.";
+      weekday[6] = "Sa.";
     }
     return weekday[i];
   }
 
+  getOpenTimes() {
+    var from = new Date();
+    var to = new Date();
+    to.setDate(to.getDate() + 6);
+
+    this.intervals = this.parsedOpening.getOpenIntervals(from, to);
+    
+    this.every_week_is_same = this.parsedOpening.isWeekStable();
+  }
+  
+  parseDate(from:Date, to:Date) {
+    return this.addZero(from.getHours()) + ":" + this.addZero(from.getMinutes()) + this.translate.instant("page.openingHours.time") + " - " + this.addZero(to.getHours()) + ":" + this.addZero(to.getMinutes()) + this.translate.instant("page.openingHours.time")
+  }
 
 }
