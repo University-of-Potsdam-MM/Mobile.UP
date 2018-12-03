@@ -144,7 +144,8 @@
       "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
       "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
       "contentType": "application/x-www-form-urlencoded",
-      "grantType": "password",
+      "grantType_password": "password",
+      "grantType_refresh": "refresh_token",
       "scope": "openid"
     }
   },
@@ -172,5 +173,8 @@
     "tosTemplateEN": "Nutzungsbedingungen: Englisch",
     "privacyTemplateDE": "Datenschutzbedingungen: Deutsch",
     "privacyTemplateEN": "Datenschutzbedingungen: Englisch"
+  },
+  "general":{
+    "tokenRefreshBoundary": 3600
   }
 }

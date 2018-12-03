@@ -27,6 +27,12 @@ import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { CacheService } from 'ionic-cache';
+import {
+  IOIDCRefreshResponseObject,
+  ISession
+} from "../providers/login-provider/interfaces";
+import {UPLoginProvider} from "../providers/login-provider/login";
+import * as moment from 'moment';
 
 @Component({
   templateUrl: 'app.html'
@@ -48,7 +54,8 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private components: ComponentsProvider,
-    private cache: CacheService
+    private cache: CacheService,
+    private loginProvider: UPLoginProvider
   ) {
     this.initializeApp();
   }
@@ -58,6 +65,7 @@ export class MobileUPApp {
    */
   private async initializeApp() {
     await this.initConfig();
+    await this.checkSessionValidity();
     await this.initPages();
     await this.initTranslate();
     await this.buildDefaultModulesList();
@@ -83,6 +91,68 @@ export class MobileUPApp {
         this.storage.set("config", config);
       }
     );
+  }
+
+  /**
+   * checks whether the current session is still valid. In case it is, the
+   * session will be refreshed anyway. Otherwise the currently stored session
+   * object is deleted.
+   */
+  private async checkSessionValidity(){
+    let config:IConfig = await this.storage.get('config');
+    this.storage.get('session').then(
+      (session:ISession) => {
+        if(session) {
+
+          // helper function for determining whether session is still valid
+          let sessionIsValid = (timestampThen, exprirationTime, boundary) => {
+            // determine date until the token is valid
+            let validUntil = moment(session.timestamp).add(
+              session.oidcTokenObject.expires_in,
+              'seconds'
+            );
+            console.log(session.oidcTokenObject.expires_in);
+            console.log(session.timestamp);
+            console.log(validUntil);
+            console.log(validUntil.diff(moment(), 'seconds'))
+            // check if we are not past this date already with a certain boundary
+            return validUntil.diff(moment(), 'seconds') > boundary;
+          };
+
+          if(sessionIsValid(session.timestamp,
+                            session.oidcTokenObject.expires_in,
+                            config.general.tokenRefreshBoundary)){
+            console.log(`[MobileUP]: Session still valid, refreshing`);
+
+            // session still valid, but we will refresh it anyway
+            this.loginProvider.oidcRefreshToken(
+              session.oidcTokenObject.refresh_token,
+              config.authorization.oidc
+            ).subscribe(
+              (response:IOIDCRefreshResponseObject) => {
+                // store new token object
+                this.storage.set('session', <ISession>{
+                  oidcTokenObject:  response.oidcTokenObject,
+                  token:            response.oidcTokenObject.access_token,
+                  timestamp:        new Date(),
+                  credentials:      session.credentials
+                })
+                console.log(`[MobileUP]: Refreshed token successfully`);
+
+              },
+              error => {
+                console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);;
+              }
+            )
+          } else {
+            // session no longer valid, so we just remove the session object
+            console.log(`[MobileUP]: Session no longer valid, deleting session object`);
+            //this.storage.remove('session');
+          }
+        }
+        // otherwise there is no session, so there is nothing to do
+      }
+    )
   }
 
   private initPages() {

@@ -138,6 +138,11 @@ export interface IConfig {
   authorization:ILoginConfig;
   webservices:IWebServices;
   policies:IPolicies;
+  general:IGeneral;
+}
+
+export interface IGeneral {
+  tokenRefreshBoundary: number;
 }
 
 export interface IPolicies {
