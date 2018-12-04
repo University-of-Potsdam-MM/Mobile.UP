@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -16,18 +17,34 @@ export class NewsPage {
   sourcesList = [];
   isLoaded = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage, private cache: CacheService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadNews();
+  }
 
+  async loadNews(refresher?) {
     let config: IConfig = await this.storage.get("config");
 
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
     var url = config.webservices.endpoint.news;
-    this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
+    let request = this.http.get(url, {headers:headers});
+
+    if (refresher) {
+      this.cache.removeItem("newsResponse");
+    } else {
+      this.isLoaded = false;
+    }
+
+    this.cache.loadFromObservable("newsResponse", request).subscribe((response:INewsApiResponse) => {
+
+      if (refresher) {
+        refresher.complete();
+      }
+      
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         var tmpArray = [];
@@ -35,6 +52,7 @@ export class NewsPage {
           tmpArray.push(response.vars.newsSources[source]);
         }
         var i,j;
+        this.sourcesList = [];
         for (i = 0; i < tmpArray.length; i++) {
           for (j = 0; j < this.newsList.length; j++) {
             if (this.newsList[j].NewsSource.name == tmpArray[i]) {
@@ -46,8 +64,6 @@ export class NewsPage {
         this.isLoaded = true;
       }
     });
-
-
   }
 
   setNewsSource(i) {
