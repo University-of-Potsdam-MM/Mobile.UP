@@ -10,6 +10,7 @@ import {
   ADS
 } from "../../library/interfaces";
 import * as jquery from "jquery";
+import { CacheService } from 'ionic-cache';
 
 
 @IonicPage()
@@ -34,6 +35,7 @@ export class PracticePage {
     public navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage,
+    private cache: CacheService,
     public navParams: NavParams,
     private chRef: ChangeDetectorRef) {
   };
@@ -52,11 +54,16 @@ export class PracticePage {
    *
    * loads default items from json file
    */
-  public async loadData() {
+  public async loadData(refresher?) {
     // reset array so new persons are displayed
     this.defaultList = [];
 
-    this.waiting_for_response = true;
+    if (refresher) {
+      this.cache.removeItem("practiceResponse");
+    } else {
+      this.waiting_for_response = true;
+    }
+    
     console.log(`[PracticePage]: Quering ADS`);
 
     let session: ISession = await this.storage.get("session");
@@ -66,11 +73,12 @@ export class PracticePage {
         .append("Authorization", config.webservices.apiToken);
 
       //this.URLEndpoint = config.webservices.endpoint.practiceSearch;
-      this.http.get(
-        config.webservices.endpoint.practiceSearch,
-        {headers: headers}
-      ).subscribe(
+      let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
+      this.cache.loadFromObservable("practiceResponse", request).subscribe(
         (response: IADSResponse) => {
+          if (refresher) {
+            refresher.complete();
+          }
           // reset array so new persons are displayed
           this.defaultList = [];
           // use inner object only because it's wrapped in another object
@@ -84,6 +92,9 @@ export class PracticePage {
           this.waiting_for_response = false;
         },
         error => {
+          if (refresher) {
+            refresher.complete();
+          }
           // reset array so new persons are displayed
           this.defaultList = [];
           this.error = error;

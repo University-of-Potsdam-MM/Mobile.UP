@@ -9,6 +9,10 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="loadCampusMenu($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>

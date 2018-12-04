@@ -9,6 +9,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="updateLocation($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <book-list-view [book]="book" text-wrap (mediaType)="setMediaType($event)"></book-list-view>
   <p *ngIf="bookDetails.mediaType == 'mediatype_o'" class="copyright-info" padding-horizontal>
     {{ "page.library.copyright" | translate }}
