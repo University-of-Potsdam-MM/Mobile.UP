@@ -62,4 +62,12 @@ page-mensa {
   .hint {
       color: color($colors, primary);
   }
+
+  .calendarExpanded {
+    margin-top:10px
+  }
+
+  .calendarCollapsed {
+    margin-top:0px
+  }
 }

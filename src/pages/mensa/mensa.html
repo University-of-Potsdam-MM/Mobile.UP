@@ -34,7 +34,7 @@
   </ion-calendar>
 
   <div *ngIf="isLoaded">
-    <ion-list no-lines>
+    <ion-list no-lines [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
       <div *ngFor="let meal of allMeals; let i = index">
         <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)"> 
           <ion-thumbnail item-end>
