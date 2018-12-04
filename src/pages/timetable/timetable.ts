@@ -34,8 +34,11 @@ function debug(text){
 export class TimetablePage {
 
   eventSource:IEventObject[] = [];
+
+  // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = "";
 
+  // options for ionic2-calendar component
   calendarOptions = {
     calendarMode: "week",
     currentDate: new Date(),
@@ -176,6 +179,8 @@ export class TimetablePage {
         password: session.credentials.password
       }
     };
+
+    // TODO: check for connection first!
 
     return this.http.post<IPulsAPIResponse_getStudentCourses>(
       ConfigProvider.config.webservices.endpoint.puls+"getStudentCourses",
