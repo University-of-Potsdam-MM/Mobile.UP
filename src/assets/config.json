@@ -13,7 +13,8 @@
     "events": {
       "componentName": "events",
       "icon": "calendar",
-      "selected":false
+      "selected":false,
+      "hide": true
     },
     "rooms": {
       "componentName": "rooms",
