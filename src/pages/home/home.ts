@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
@@ -22,6 +22,7 @@ export class HomePage {
   sortedModules = [];
 
   session:string = "";
+  lang: string;
 
   constructor(
       public navCtrl: NavController,
@@ -29,6 +30,9 @@ export class HomePage {
       private storage: Storage,
       private webIntent: WebIntentProvider,
       private components: ComponentsProvider) {
+        translate.onLangChange.subscribe((event: LangChangeEvent) => {
+          this.sortedModules = this.JsonToArray(this.modules);
+        })
     }
 
   ionViewDidLoad(){
