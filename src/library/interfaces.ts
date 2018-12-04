@@ -186,6 +186,8 @@ export interface IEndpoints {
   library:string;
   libraryDAIA:string;
   puls:string;
+  maps:string;
+  openingHours:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */

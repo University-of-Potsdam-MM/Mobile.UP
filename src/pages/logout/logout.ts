@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, Nav, NavController} from 'ionic-angular';
+import {IonicPage, Nav } from 'ionic-angular';
 import {Storage} from "@ionic/storage";
 import { HomePage } from '../home/home';
 import { ISession } from '../../providers/login-provider/interfaces';
@@ -22,8 +22,7 @@ export class LogoutPage {
   constructor(
       private storage: Storage,
       private cache: CacheService,
-      private nav: Nav,
-      private navCtrl: NavController) {
+      private nav: Nav) {
   }
 
   async ngOnInit() {

@@ -1,0 +1,16 @@
+page-opening-hours {
+    #footerTitle {
+        color:color($colors, primary);
+        font-size: smaller;
+
+    }
+
+    .toolbar-background {
+        background-color: color($colors, upgrey)!important;
+    }
+
+    .item h3 {
+        color: black;
+        font-weight: normal;
+    }
+}

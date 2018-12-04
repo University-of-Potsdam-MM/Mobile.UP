@@ -10,6 +10,11 @@
       "icon": "paper",
       "selected":true
     },
+    "openingHours": {
+      "componentName": "openingHours",
+      "icon": "time",
+      "selected":false
+    },
     "events": {
       "componentName": "events",
       "icon": "calendar",

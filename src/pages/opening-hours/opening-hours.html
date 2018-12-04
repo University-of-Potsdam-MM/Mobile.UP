@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ "page.openingHours.title" | translate }}</ion-title>
+  </ion-navbar>
+
+  <ion-toolbar>
+    <ion-searchbar placeholder="{{ 'button.search' | translate }}" (ionInput)="filterItems($event)">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div align="center" *ngIf="!isLoaded"> 
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ion-list>
+    <span *ngFor="let item of openingHours; let i = index">
+      <button *ngIf="parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
+          <h3>{{ item.name }}</h3>
+          <p style="color: green">{{ "page.openingHours.open" | translate }}<span *ngIf="openUntil(i) != ''">,</span> {{ openUntil(i) }}</p>
+          <ion-icon name="warning" *ngIf="item.displayWarning" item-end style="font-size: large"></ion-icon>
+      </button>
+    </span>
+    <span *ngFor="let item of openingHours; let i = index">
+        <button *ngIf="!parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
+            <h3>{{ item.name }}</h3>
+            <p style="color: red">{{ "page.openingHours.closed" | translate }}<span *ngIf="closedUntil(i) != ''">,</span> {{ closedUntil(i) }}</p>
+            <ion-icon name="warning" *ngIf="item.displayWarning" item-end style="font-size: large"></ion-icon>
+        </button>
+      </span>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item align="center" id="footerTitle" text-wrap class="toolbar-background" no-lines>
+      <ion-icon name="warning" item-start></ion-icon>
+      <div align="center" style="font-size: smaller">{{ "page.openingHours.noGuarantee" | translate}}</div>
+    </ion-item>
+  </ion-toolbar>
+  <tab-bar></tab-bar>
+</ion-footer>
