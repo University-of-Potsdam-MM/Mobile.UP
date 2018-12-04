@@ -1,5 +1,6 @@
 // http://ionicframework.com/docs/theming/
 
+
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -44,8 +45,9 @@
   } */
   
   
-/* Source Sans Pro Bold */
-@font-face {
+  /* Source Sans Pro Bold */
+  
+  @font-face {
     font-family: "Source Sans Pro";
     font-style: normal;
     font-weight: 700;
@@ -54,6 +56,7 @@
 
 // Change Background Colors and Box Shadows
 // --------------------------------------------------*/
+
 
 .toolbar-background {
 	background-color:  color($colors, upgrey);
@@ -84,6 +87,7 @@ ion-header {
   -webkit-box-shadow: 0 0 0 0 #fff;
   box-shadow:  0 0 0 0 #fff;
   border-radius:0;
+  text-transform: uppercase;
 }
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
 	background-image:none;
@@ -100,7 +104,8 @@ ion-header {
 
 .searchbar-input, .searchbar-md .searchbar-input, .searchbar-ios .searchbar-input {
     box-shadow: none;
-    border: 1px solid #ededed;
+
+border: 1px solid #ededed;
 }
 
 
@@ -121,7 +126,7 @@ ion-header {
 // --------------------------------------------------*/
 .toolbar-title {
 	color:color($colors, primary);
-    font-family: "Source Sans Pro", arial, sans-serif;
+	font-family: "Source Sans Pro", arial, sans-serif;
 }
 
 .content, .item {
@@ -133,20 +138,40 @@ ion-header {
 	font-weight:bold;
 }
 
+.card-md h3, .card-md h4, .card-md h5, .card-md h6,
+.card-ios h3, .card-ios h4, .card-ios h5, .card-ios h6,
+.card h3, .card h4, .card h5, .card h6 {
+  color:color($colors, primary);
+  font-weight:bold;
+}
+
 // reset rounded corners
 // --------------------------------------------------*/
-.button-md, button {
+.button-md, button, .button-ios, .button {
     border-radius: 0;
   }
 
 
-// adjust global laaout settings
+// adjust global layout settings
 // --------------------------------------------------*/
 
 .scroll-content {
-    padding-top:10px;
+    padding-left:5px;
+    padding-right:5px;
 }
 
 ion-app.md [padding] .scroll-content {
     padding: 5px;
+}
+
+.card, .card-md, .card-ios {
+  margin:5px; 
+}
+
+.card-content-md, .card-content, .card-content-ios {
+  padding:3px 6px;
+}
+
+.card-header, .card-header-ios, .card-header-md {
+  padding:6px;
 }
