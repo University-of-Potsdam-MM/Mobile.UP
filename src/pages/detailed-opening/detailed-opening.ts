@@ -104,7 +104,9 @@ export class DetailedOpeningPage {
   getOpenTimes() {
     var from = new Date();
     var to = new Date();
+    from.setHours(0,0,0,0);
     to.setDate(to.getDate() + 6);
+    to.setHours(23,59,59,999);
 
     this.intervals = this.parsedOpening.getOpenIntervals(from, to);
     

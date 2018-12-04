@@ -17,11 +17,11 @@ export class OpeningHoursPage {
 
   openingHours;
   parsedOpenings = [];
+  allOpeningHours;
 
-  // needed for providing the country code to opening_hours? 
-  // maybe put lat / lon in config and fetch?
-  // https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397
-  nominatim = {"place_id":"148441555","licence":"Data © OpenStreetMap contributors, ODbL 1.0. https:\/\/osm.org\/copyright","osm_type":"way","osm_id":"308913303","lat":"52.40055285","lon":"13.0599716599567","place_rank":"30","category":"amenity","type":"parking","importance":"0","addresstype":"amenity","name":"Busparkplatz","display_name":"Busparkplatz, Bassinplatz, Nördliche Innenstadt, Innenstadt, Potsdam, Brandenburg, 14467, Deutschland","address":{"parking":"Busparkplatz","pedestrian":"Bassinplatz","suburb":"Nördliche Innenstadt","city":"Potsdam","state":"Brandenburg","postcode":"14467","country":"Deutschland","country_code":"de"},"boundingbox":["52.400269","52.4008264","13.0593486","13.060619"]}
+  nominatim;
+  weekday = [];
+  isLoaded;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private translate: TranslateService, private storage: Storage, private cache: CacheService, private http: HttpClient) {
   }
@@ -31,20 +31,29 @@ export class OpeningHoursPage {
   }
 
   async loadOpeningHours() {
+    this.isLoaded = false;
     let config:IConfig = await this.storage.get("config");
 
-    let headers: HttpHeaders = new HttpHeaders()
+    // needed for providing the country code to opening_hours? 
+    // maybe put lat / lon in config and fetch?
+    this.http.get("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397").subscribe(data => {
+      this.nominatim = data;
+
+      let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
-    var url = config.webservices.endpoint.openingHours;
-    let request = this.http.get(url, {headers:headers});
-    this.cache.loadFromObservable("openingHours", request).subscribe((response) => {
-      this.openingHours = response;
+      var url = config.webservices.endpoint.openingHours;
+      let request = this.http.get(url, {headers:headers});
+      this.cache.loadFromObservable("openingHours", request).subscribe((response) => {
+        this.allOpeningHours = response;
+        this.openingHours = response;
 
-      var i;
-      for (i = 0; i < this.openingHours.length; i++) {
-        this.parsedOpenings[i] = new opening(this.openingHours[i].opening_hours, this.nominatim, { 'locale': this.translate.currentLang });
-      }
+        var i;
+        for (i = 0; i < this.openingHours.length; i++) {
+          this.parsedOpenings[i] = new opening(this.openingHours[i].opening_hours, this.nominatim, { 'locale': this.translate.currentLang });
+        }
+        this.isLoaded = true;
+      });
     });
   }
 
@@ -59,7 +68,7 @@ export class OpeningHoursPage {
       if (this.isToday(willClose)) {
         return this.translate.instant("page.openingHours.closes") + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
       } else {
-        return this.translate.instant("page.openingHours.closes") + this.weekday(willClose.getDay()) + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
+        return this.translate.instant("page.openingHours.closes") + this.weekday[willClose.getDay()] + this.addZero(willClose.getHours()) + ":" + this.addZero(willClose.getMinutes()) + this.translate.instant("page.openingHours.time");
       }
     } else {
       return "";
@@ -73,7 +82,7 @@ export class OpeningHoursPage {
       if (this.isToday(willChange)) {
         return this.translate.instant("page.openingHours.opens") + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
       } else {
-        return this.translate.instant("page.openingHours.opens") + this.weekday(willChange.getDay()) + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
+        return this.translate.instant("page.openingHours.opens") + this.weekday[willChange.getDay()] + this.addZero(willChange.getHours()) + ":" + this.addZero(willChange.getMinutes()) + this.translate.instant("page.openingHours.time");
       }
     } else {
       if (this.parsedOpenings[index].getComment() != null) {
@@ -102,26 +111,36 @@ export class OpeningHoursPage {
     return i;
   }
 
-  weekday(i) {
-    let weekday = [];
+  ionViewDidEnter() {
+    this.weekday = [];
     if (this.translate.currentLang == "de") {
-      weekday[0] = "So. ";
-      weekday[1] = "Mo. ";
-      weekday[2] = "Di. ";
-      weekday[3] = "Mi. ";
-      weekday[4] = "Do. ";
-      weekday[5] = "Fr. ";
-      weekday[6] = "Sa. ";
+      this.weekday[0] = "So. ";
+      this.weekday[1] = "Mo. ";
+      this.weekday[2] = "Di. ";
+      this.weekday[3] = "Mi. ";
+      this.weekday[4] = "Do. ";
+      this.weekday[5] = "Fr. ";
+      this.weekday[6] = "Sa. ";
     } else {
-      weekday[0] = "Su. ";
-      weekday[1] = "Mo. ";
-      weekday[2] = "Tu. ";
-      weekday[3] = "We. ";
-      weekday[4] = "Th. ";
-      weekday[5] = "Fr. ";
-      weekday[6] = "Sa. ";
+      this.weekday[0] = "Su. ";
+      this.weekday[1] = "Mo. ";
+      this.weekday[2] = "Tu. ";
+      this.weekday[3] = "We. ";
+      this.weekday[4] = "Th. ";
+      this.weekday[5] = "Fr. ";
+      this.weekday[6] = "Sa. ";
     }
-    return weekday[i];
+  }
+
+  filterItems(event) {
+    let val =  event.target.value;
+    this.openingHours = this.allOpeningHours;
+
+    if (val && val.trim() !== '') {
+      this.openingHours = this.openingHours.filter(function(item) {
+        return item.name.toLowerCase().includes(val.toLowerCase());
+      })
+    }
   }
 
 }
