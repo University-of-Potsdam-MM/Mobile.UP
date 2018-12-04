@@ -16,6 +16,7 @@ page-mensa {
       }
   }
 
+
   .calendarButton {
     background-color: color($colors, secondary);
     color: color($colors, primary);
@@ -24,9 +25,21 @@ page-mensa {
 
   .activeCalendarButton {
       background-color: color($colors, primary);
-      color: color($colors, secondary);
+      color:#fff;
       width: 30%;
+
+     
   }
+
+  ion-calendar {
+      background-color: color($colors, upgrey);
+
+      .title .switch-btn {
+      
+        color: #000;
+     }
+  }
+
 
   ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
   ion-calendar-month .primary button.days-btn small {
@@ -61,5 +74,46 @@ page-mensa {
 
   .hint {
       color: color($colors, primary);
+  }
+
+  .item-block {
+      border-bottom:1px solid color($colors, upgrey) !important; 
+
+      .label {
+          font-size:80%;
+          margin-top:5px;
+          margin-bottom:0;
+      }
+  }
+  .mealDescription {
+    padding-bottom: 15px;
+    }
+
+  .item-block.noborder {
+      border-width:0 !important;
+  }
+
+  .list {
+      margin-top:10px;
+  }
+
+  .mealtitle {
+      font-size:80%;
+      color:#000;
+
+      span {
+          color:#016c69;
+          font-weight:bold;
+      }
+  }
+
+  .mensadisclaimer {
+      min-height:10px;
+      max-width: 300px;
+      margin: 0 auto;
+
+      .toolbar-background {
+          background:#fff !important;
+      }
   }
 }
