@@ -6,7 +6,8 @@
     },
     "imprint":{
       "title": "Rechtliches",
-      "listHeader": "Impressum & Rechtliches"
+      "listHeader": "Impressum & Rechtliches",
+      "sysInfo": "Systeminformationen"
     },
     "legalNotice": {
       "title": "Impressum"

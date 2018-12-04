@@ -6,7 +6,8 @@
     },
     "imprint":{
       "title": "Legal Notice",
-      "listHeader": "Legal Notice"
+      "listHeader": "Legal Notice",
+      "sysInfo": "About"
     },
     "legalNotice": {
       "title": "Information"
