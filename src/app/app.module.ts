@@ -18,6 +18,8 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
+import { Device } from '@ionic-native/device';
+import { AppVersion } from '@ionic-native/app-version';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -132,7 +134,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsProvider,
     SafariViewController,
     AppAvailability,
-    WebIntentProvider
+    WebIntentProvider,
+    AppVersion,
+    Device
   ]
 })
 export class AppModule {
