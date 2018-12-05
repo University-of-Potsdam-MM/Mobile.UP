@@ -62,7 +62,11 @@ export class OpeningHoursPage {
   }
 
   openUntil(index) {
-    let willClose: Date = this.parsedOpenings[index].getNextChange();
+    var from = new Date();
+    var to = new Date();
+    to.setDate(to.getDate() + 6);
+    to.setHours(23,59,59,999);
+    let willClose: Date = this.parsedOpenings[index].getNextChange(from, to);
 
     if (willClose) {
       if (this.isToday(willClose)) {
@@ -76,7 +80,12 @@ export class OpeningHoursPage {
   }
 
   closedUntil(index) {
-    let willChange: Date = this.parsedOpenings[index].getNextChange();
+    var from = new Date();
+    var to = new Date();
+    to.setDate(to.getDate() + 6);
+    to.setHours(23,59,59,999);
+
+    let willChange: Date = this.parsedOpenings[index].getNextChange(from, to);
 
     if (willChange) {
       if (this.isToday(willChange)) {
