@@ -25,4 +25,8 @@ page-news {
           margin:0;
       }
   }
+
+  ion-header ion-toolbar.toolbar .toolbar-background {
+      background-color:color($colors, light) !important;
+  }
 }

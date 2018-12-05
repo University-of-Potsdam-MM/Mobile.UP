@@ -145,6 +145,10 @@ border: 1px solid #ededed;
   font-weight:bold;
 }
 
+.card-content-md, .card-content-ios, .card-content {
+  font-size:1.25rem;
+}
+
 // reset rounded corners
 // --------------------------------------------------*/
 .button-md, button, .button-ios, .button {
