@@ -82,15 +82,14 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
-          console.log(session);
 
+          // temporary setting proxy
           config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo?schema=openid";
 
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
             (userInformation:IOIDCUserInformationResponse) => {
               this.storage.set('userInformation', userInformation);
-              console.log(userInformation);
             },
             error => {
               // user must not know if something goes wrong here, so we don't
