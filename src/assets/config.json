@@ -114,12 +114,14 @@
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":false
+      "selected": false,
+      "hide": true
     },
     "logout": {
       "componentName": "logout",
       "icon": "log-out",
-      "selected":false
+      "selected": false,
+      "hide": true
     }
   },
   "authorization": {
