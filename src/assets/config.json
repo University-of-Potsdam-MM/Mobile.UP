@@ -114,14 +114,14 @@
     "login": {
       "componentName": "login",
       "icon": "log-in",
-      "selected":false,
-      "hide":true
+      "selected": false,
+      "hide": true
     },
     "logout": {
       "componentName": "logout",
       "icon": "log-out",
-      "selected":false,
-      "hide":true
+      "selected": false,
+      "hide": true
     }
   },
   "authorization": {
@@ -148,6 +148,7 @@
     },
     "oidc": {
       "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+      "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
       "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
       "contentType": "application/x-www-form-urlencoded",
       "grantType_password": "password",

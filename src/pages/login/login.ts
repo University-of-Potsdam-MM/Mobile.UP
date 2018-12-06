@@ -9,7 +9,7 @@ import { AlertController } from 'ionic-angular/components/alert/alert-controller
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,
-  ICredentials,
+  ICredentials, IOIDCUserInformationResponse,
   ISession
 } from "../../providers/login-provider/interfaces";
 import {TranslateService} from "@ngx-translate/core";
@@ -82,6 +82,28 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
+
+          // temporary setting proxy
+          config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo?schema=openid";
+
+          // in the meantime get user information and save it to storage
+          this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
+            (userInformation:IOIDCUserInformationResponse) => {
+              this.storage.set('userInformation', userInformation).then(
+                result => {
+                  console.log(
+                    'LoginPage]: Successfully retrieved and stored user information'
+                  )
+                }
+              );
+            },
+            error => {
+              // user must not know if something goes wrong here, so we don't
+              // create an alert
+              console.log(`[LoginPage]: Could not retrieve user information because:\n${JSON.stringify(error)}`);
+            }
+          );
+
           this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
         },
         error => {
