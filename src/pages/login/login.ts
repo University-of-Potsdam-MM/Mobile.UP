@@ -84,6 +84,8 @@ export class LoginPage {
           this.endLoading();
           console.log(session);
 
+          config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo?schema=openid";
+
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
             (userInformation:IOIDCUserInformationResponse) => {
