@@ -9,7 +9,7 @@ import { AlertController } from 'ionic-angular/components/alert/alert-controller
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,
-  ICredentials,
+  ICredentials, IOIDCUserInformationResponse,
   ISession
 } from "../../providers/login-provider/interfaces";
 import {TranslateService} from "@ngx-translate/core";
@@ -82,6 +82,21 @@ export class LoginPage {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
           this.storage.set("session", session);
           this.endLoading();
+          console.log(session);
+
+          // in the meantime get user information and save it to storage
+          this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
+            (userInformation:IOIDCUserInformationResponse) => {
+              this.storage.set('userInformation', userInformation);
+              console.log(userInformation);
+            },
+            error => {
+              // user must not know if something goes wrong here, so we don't
+              // create an alert
+              console.log(`[LoginPage]: Could not retrieve user information because:\n${JSON.stringify(error)}`);
+            }
+          );
+
           this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
         },
         error => {
