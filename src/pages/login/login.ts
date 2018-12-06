@@ -89,7 +89,13 @@ export class LoginPage {
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
             (userInformation:IOIDCUserInformationResponse) => {
-              this.storage.set('userInformation', userInformation);
+              this.storage.set('userInformation', userInformation).then(
+                result => {
+                  console.log(
+                    'LoginPage]: Successfully retrieved and stored user information'
+                  )
+                }
+              );
             },
             error => {
               // user must not know if something goes wrong here, so we don't
