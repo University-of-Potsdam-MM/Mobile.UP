@@ -199,30 +199,30 @@ export class MobileUPApp {
   }
 
   /**
-   * builds list of default_modules that should be displayed on HomePage if
-   * there isn't already one in the storage
+   * builds list of default_modules that should be displayed on HomePage
+   * // if there isn't already one in the storage // disabled
    * @returns {Promise<void>}
    */
-  async buildDefaultModulesList(){
+  async buildDefaultModulesList() {
 
     // if there are no default_modules in storage
-    if(!await this.storage.get("default_modules")){
-      console.log("[MobileUPApp]: No default moduleList in storage, creating new one from config");
+    // if (!await this.storage.get("default_modules")) {
+    // console.log("[MobileUPApp]: No default moduleList in storage, creating new one from config");
 
-      let moduleList:{[modulesName:string]:IModule} = {};
-      let modules = this.config.modules;
+    let moduleList:{[modulesName:string]:IModule} = {};
+    let modules = this.config.modules;
 
-      for(let moduleName in modules){
-        let moduleToAdd:IModule = modules[moduleName];
-        if (!moduleToAdd.hide){
-          moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
-          moduleList[moduleName] = moduleToAdd;
-        }
+    for(let moduleName in modules) {
+      let moduleToAdd:IModule = modules[moduleName];
+      if (!moduleToAdd.hide) {
+        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+        moduleList[moduleName] = moduleToAdd;
       }
-
-      this.storage.set("default_modules", moduleList);
-      console.log("[MobileUPApp]: Created default moduleList from config");
     }
+
+    this.storage.set("default_modules", moduleList);
+    console.log("[MobileUPApp]: Created default moduleList from config");
+    // }
   }
 
   /**
