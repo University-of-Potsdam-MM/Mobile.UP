@@ -51,7 +51,6 @@ export class MobileUPApp {
     await this.initConfig();
     await this.checkSessionValidity();
     await this.initTranslate();
-    await this.buildDefaultModulesList();
 
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
@@ -73,6 +72,7 @@ export class MobileUPApp {
       config => {
         this.config = config;
         this.storage.set("config", config);
+        this.buildDefaultModulesList();
       }
     );
   }

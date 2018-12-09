@@ -55,7 +55,7 @@ export class EmergencyPage {
    * loads default items from json file
    */
   public loadData(): void {
-    this.defaultList = require(this.jsonPath);
+    this.defaultList = require("../../assets/json/emergency");
   }
 
   /**
