@@ -18,6 +18,9 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="loadNews($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>

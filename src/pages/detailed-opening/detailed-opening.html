@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ "page.openingHours.title" | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <h5 padding-left padding-top>{{ item.name }}</h5>
+  <ion-list class="openingDetails">
+    <ion-item>
+      Status
+      <span item-end *ngIf="parsedOpening.getState()" style="color: green">{{ "page.openingHours.open" | translate }}<span *ngIf="openUntil(i) != ''">,</span> {{ openUntil() }}</span>
+      <span item-end *ngIf="!parsedOpening.getState()" style="color: red">{{ "page.openingHours.closed" | translate }}<span *ngIf="closedUntil(i) != ''">,</span> {{ closedUntil() }}</span>
+    </ion-item>
+    <ion-item *ngIf="item.link">Website <a item-end href="{{ item.link }}" target="_blank">{{ shortenLink(item.link) }}</a></ion-item>
+    <ion-item *ngIf="item.mail">Mail <a item-end href ="mailto:{{ item.mail }}">{{ item.mail }}</a></ion-item>
+    <ion-item *ngIf="item.telephone">Tel. <a item-end href ="tel:{{ item.telephone }}">{{ item.telephone }}</a></ion-item>
+    <ion-item *ngIf="parsedOpening.getComment() && parsedOpening.getComment() != 'nach Vereinbarung'">{{ "page.openingHours.comment" | translate }} <span item-end>{{ parsedOpening.getComment() }}</span></ion-item>
+  </ion-list>
+  <h5 *ngIf="intervals.length > 0" padding-left>{{ "page.openingHours.title" | translate }}</h5>
+  <ion-list class="openingDetails" *ngIf="intervals.length > 0">
+    <ion-item *ngFor="let timespot of intervals">
+      <b>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString() }}</b><span item-end>{{ parseDate(timespot[0], timespot[1]) }}</span>
+    </ion-item>
+  </ion-list>
+  <div *ngIf="intervals.length > 0 && !every_week_is_same" padding style="font-size: smaller">
+    <b>{{ "page.openingHours.planCanChange" | translate }}</b>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

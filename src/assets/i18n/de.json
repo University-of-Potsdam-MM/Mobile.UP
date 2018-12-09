@@ -6,7 +6,8 @@
     },
     "imprint":{
       "title": "Rechtliches",
-      "listHeader": "Impressum & Rechtliches"
+      "listHeader": "Impressum & Rechtliches",
+      "sysInfo": "Systeminformationen"
     },
     "legalNotice": {
       "title": "Impressum"
@@ -204,7 +205,15 @@
       "no_room": "Der gewählte Raum ist heute ganztägig frei."
     },
     "openingHours":{
-      "title":"Öffnungszeiten"
+      "title":"Öffnungszeiten",
+      "time": " Uhr",
+      "open": "geöffnet",
+      "opens": "öffnet ",
+      "closed": "geschlossen",
+      "closes": "schließt ",
+      "planCanChange": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
+      "comment": "Kommentar",
+      "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
     },
     "mensa":{
       "title": "Mensa",

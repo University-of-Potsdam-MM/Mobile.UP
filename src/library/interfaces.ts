@@ -37,17 +37,8 @@ export interface EmergencyCall {
 
 /* ~~~ PersonsPage ~~~ */
 
-export interface IPersonSearchResponse {
-  timer:Array<string>;
-  people:IPersonWrapper[];
-}
-
-export interface IPersonWrapper {
-  Person:IPerson
-}
-
 export interface IPerson {
-  id?:string;
+  Id?:string;
   Abteilung?:string;
   Email?:string;
   Fax?:number,
@@ -59,15 +50,16 @@ export interface IPerson {
   Suchbegriffe?:string;
   Telefon?:string;
   Vorname?:string;
-  zweitesTelefon?:string;
-  PCFax?:string;
-  gueltigbis?:string;
+  "zweites Telefon"?:string;
+  "PC-Fax"?:string;
+  "gueltig bis"?:string;
   Titel?:string;
-  Email_Langform?:string;
+  "Langform-Email"?:string;
   expanded?:boolean;
 }
 
-/* ~~~ PersonsPage ~~~ */
+/* ~~~ Mensa ~~~ */
+
 export interface IMensaResponse {
   meal:IMeals[];
   campus:string;
@@ -138,6 +130,11 @@ export interface IConfig {
   authorization:ILoginConfig;
   webservices:IWebServices;
   policies:IPolicies;
+  general:IGeneral;
+}
+
+export interface IGeneral {
+  tokenRefreshBoundary: number;
 }
 
 export interface IPolicies {
@@ -194,6 +191,8 @@ export interface IEndpoints {
   library:string;
   libraryDAIA:string;
   puls:string;
+  maps:string;
+  openingHours:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */

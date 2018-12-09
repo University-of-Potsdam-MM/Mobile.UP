@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
+import { CacheService } from 'ionic-cache';
 
 @IonicPage()
 @Component({
@@ -30,21 +31,38 @@ export class EventsPage {
   firstEventTodayForLocation = [];
   firstEventForLocation = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private cache: CacheService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.loadEvents();
+  }
 
+  async loadEvents(refresher?) {
     let config: IConfig = await this.storage.get("config");
 
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
+    if (refresher) {
+      this.cache.removeItem("eventsList");
+    } else {
+      this.isLoaded = false;
+    }
+
     var url = config.webservices.endpoint.events;
-    this.http.get(url, {headers:headers}).subscribe((response:INewsApiResponse) => {
+    let request = this.http.get(url, {headers:headers});
+    this.cache.loadFromObservable("eventsList", request).subscribe((response:INewsApiResponse) => {
+      if (refresher) {
+        refresher.complete();
+      }
       if (response.errors.exist == false) {
         this.eventsList = response.vars.events;
         var i;
+        this.locationsList = [];
+        this.todaysLocationsList = [];
+        this.todaysEventsList = [];
+        this.nextEventsList = [];
         for (var loc in response.vars.places) {
           for (i = 0; i < this.eventsList.length; i++) {
             // check if there are events for location
@@ -70,8 +88,7 @@ export class EventsPage {
         this.checkNextEvents();
         this.isLoaded = true;
       }
-    })
-
+    });
   }
 
 
