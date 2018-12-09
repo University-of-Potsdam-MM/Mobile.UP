@@ -142,9 +142,11 @@
     },
     "oidc": {
       "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+      "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
       "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
       "contentType": "application/x-www-form-urlencoded",
-      "grantType": "password",
+      "grantType_password": "password",
+      "grantType_refresh": "refresh_token",
       "scope": "openid"
     }
   },

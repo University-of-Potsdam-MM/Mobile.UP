@@ -1,3 +1,20 @@
 <ion-content>
-  test
+
+  <!-- logged in -->
+  <ng-template #loggedInTemplate>
+    Logged in as {{ userInformation.name }}
+
+    <button ion-button="log-out" (click)="toLogout()">Logout</button>
+  </ng-template>
+
+  <!-- not logged in -->
+  <ng-template #notLoggedInTemplate>
+    {{ "notLoggedInText" | translate }}
+
+    <button ion-button="log-in" (click)="toLogin()">Login</button>
+  </ng-template>
+
+  <ng-container *ngIf="userInformation; then loggedInTemplate; else notLoggedInTemplate ">
+  </ng-container>
+
 </ion-content>

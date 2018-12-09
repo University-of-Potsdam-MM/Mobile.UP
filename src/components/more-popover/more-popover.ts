@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {IOIDCUserInformationResponse} from "../../providers/login-provider/interfaces";
-import {NavParams, ViewController} from "ionic-angular";
+import {App, NavController, NavParams, ViewController} from "ionic-angular";
+import {LogoutPage} from "../../pages/logout/logout";
+import {LoginPage} from "../../pages/login/login";
 
 /**
  * Generated class for the MorePopoverComponent component.
@@ -17,13 +19,24 @@ export class MorePopoverComponent {
   userInformation:IOIDCUserInformationResponse = null;
 
   constructor(public viewCtrl: ViewController,
-              private navParams:NavParams) {
-    this.userInformation = this.navParams.get('userInformation')
-    console.log(this.userInformation);
+              private navParams:NavParams,
+              private navCtrl: NavController,
+              private appCtrl: App) {
+    this.userInformation = <IOIDCUserInformationResponse>this.navParams.get('userInformation');
   }
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  toLogout(){
+    this.close();
+    this.appCtrl.getRootNav().push(LogoutPage);
+  }
+
+  toLogin(){
+    this.close();
+    this.appCtrl.getRootNav().push(LoginPage);
   }
 
 }
