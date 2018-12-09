@@ -1,5 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import {
+  Platform,
+  Nav,
+  ViewController,
+  NavParams,
+  PopoverController
+} from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { EventsPage } from './../pages/events/events';
 import { ImpressumPage } from '../pages/impressum/impressum';
@@ -27,6 +33,7 @@ import { LibraryPage } from '../pages/library/library';
 import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { CacheService } from 'ionic-cache';
+import {IOIDCUserInformationResponse} from "../providers/login-provider/interfaces";
 
 @Component({
   templateUrl: 'app.html'
@@ -48,7 +55,8 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private components: ComponentsProvider,
-    private cache: CacheService
+    private cache: CacheService,
+    private popoverCtrl: PopoverController
   ) {
     this.initializeApp();
   }
@@ -156,28 +164,6 @@ export class MobileUPApp {
     }
   }
 
-  /**
-   * opens a page when link is clicked
-   * @param page
-   */
-  public openPage(page:IPage) {
-
-    if ((page.pageName != HomePage)) {
-      // pages with an actual dedicated ionic page
-      if (this.nav.getActive().component != page.pageName) {
-        this.nav.popToRoot();
-        this.nav.push(page.pageName);
-      }
-    } else if (page.webIntent) {
-      // pages that just link to an url or app
-      this.webIntent.handleWebIntent(page.moduleName);
-    } else if (this.nav.getActive().component != HomePage) {
-      // HomePage
-      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
-    }
-
-  }
-
   isActive(page:IPage) {
     if (this.nav.getActive() && this.nav.getActive().component == page.pageName) {
       if (page.pageName != HomePage) {
@@ -186,4 +172,38 @@ export class MobileUPApp {
     }
     return;
   }
+
+  presentPopover(myEvent) {
+    this.storage.get('userInformation').then(
+      (userInformation:IOIDCUserInformationResponse) => {
+        let popover = this.popoverCtrl.create(
+          PopoverComponent,
+          {userInformation:userInformation}
+        );
+        popover.present({
+          ev: myEvent
+        });
+      }
+    )
+  }
 }
+
+@Component({
+  templateUrl: "popover.html",
+  selector: "popover"
+})
+export class PopoverComponent {
+
+  userInformation:IOIDCUserInformationResponse = null;
+
+  constructor(public viewCtrl: ViewController,
+              private navParams:NavParams) {
+    this.userInformation = this.navParams.get('userInformation')
+    console.log(this.userInformation);
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
+  }
+}
+

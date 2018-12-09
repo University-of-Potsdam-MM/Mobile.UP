@@ -124,16 +124,16 @@ export class HomePage {
       }
     );
   }
-
-  presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(
-      PopoverComponent,
-      {userInformation:this.userInformation}
-    );
-    popover.present({
-      ev: myEvent
-    });
-  }
+  //
+  // presentPopover(myEvent) {
+  //   let popover = this.popoverCtrl.create(
+  //     PopoverComponent,
+  //     {userInformation:this.userInformation}
+  //   );
+  //   popover.present({
+  //     ev: myEvent
+  //   });
+  // }
 }
 
 @Component({
