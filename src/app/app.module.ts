@@ -55,6 +55,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: HomePage, name: 'HomePage', segment: 'home' },
     { component: LoginPage, name: 'LoginPage', segment: 'login' },
     { component: LogoutPage, name: 'LogoutPage', segment: 'logout' },
+    { component: EventsPage, name: 'EventsPage', segment: 'events'},
     { component: ImpressumPage, name: 'ImpressumPage', segment: 'imprint' },
     { component: EmergencyPage, name: 'EmergencyPage', segment: 'emergency' },
     { component: PersonsPage, name: 'PersonsPage', segment: 'persons' },
