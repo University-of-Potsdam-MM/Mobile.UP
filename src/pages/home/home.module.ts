@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import {HomePage, PopoverComponent} from './home';
+import {HomePage } from './home';
 
 @NgModule({
   declarations: [
-    PopoverComponent
   ],
   imports: [
     IonicPageModule.forChild(HomePage),

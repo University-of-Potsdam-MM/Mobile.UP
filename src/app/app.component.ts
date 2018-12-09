@@ -243,6 +243,10 @@ export class MobileUPApp {
     return;
   }
 
+  /**
+   * presents popover
+   * @param myEvent
+   */
   presentPopover(myEvent) {
     this.storage.get('userInformation').then(
       (userInformation:IOIDCUserInformationResponse) => {

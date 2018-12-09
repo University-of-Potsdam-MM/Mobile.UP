@@ -3,6 +3,7 @@ import {IOIDCUserInformationResponse} from "../../providers/login-provider/inter
 import {App, NavController, NavParams, ViewController} from "ionic-angular";
 import {LogoutPage} from "../../pages/logout/logout";
 import {LoginPage} from "../../pages/login/login";
+import {SettingsPage} from "../../pages/settings/settings";
 
 /**
  * Generated class for the MorePopoverComponent component.
@@ -37,6 +38,11 @@ export class MorePopoverComponent {
   toLogin(){
     this.close();
     this.appCtrl.getRootNav().push(LoginPage);
+  }
+
+  toSettings(){
+    this.close();
+    this.appCtrl.getRootNav().push(SettingsPage);
   }
 
 }
