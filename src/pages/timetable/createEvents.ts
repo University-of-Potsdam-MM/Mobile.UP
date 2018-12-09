@@ -53,7 +53,7 @@ var rhythmMapping:IRhythmMapping = {
   },
 };
 
-function pulsToUTC(date, time, second='24'){
+function pulsToUTC(date, time, second='00'){
   let day = date.substr(0,2);
   let month = date.substr(3, 2);
   let year = date.substr(6);
