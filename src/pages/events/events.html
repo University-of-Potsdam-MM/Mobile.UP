@@ -23,6 +23,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="loadEvents($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>

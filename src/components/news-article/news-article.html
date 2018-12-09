@@ -2,14 +2,15 @@
   <ion-col>
     <ion-card (click)="openWebsite(article.News.link)">
       <ion-card-header text-wrap>
-        {{ article.News.headline }}
+          <h3>
+        {{ article.News.headline }} </h3>
       </ion-card-header>
       <ion-card-content *ngIf="article.News.text || article.News.description" text-wrap>
         <div *ngIf="(article.NewsSource.name == 'Uni Nachrichten' || article.NewsSource.name == 'Uni Medienmitteilungen' || article.NewsSource.name == 'Zur Quelle' || article.NewsSource.name == 'AstA Protokolle'); else descriptionOnly" [innerHTML]="article.News.text"></div>
         <ng-template #descriptionOnly>
           <div [innerHTML]="article.News.description"></div>
         </ng-template>
-        <div *ngIf="article.News.DateString" align="right">
+        <div *ngIf="article.News.DateString" class="news-date">
           {{ "page.news.articlePublished" | translate }}: {{ article.News.DateString }} 
         </div>
       </ion-card-content>

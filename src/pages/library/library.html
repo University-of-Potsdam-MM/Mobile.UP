@@ -17,7 +17,7 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <div *ngIf="isLoaded">
+  <div *ngIf="isLoaded" class="library-results">
     <ion-item padding-left>
       <p>{{ "page.library.allResults" | translate}}:</p>
       <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}

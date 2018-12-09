@@ -18,6 +18,8 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
+import { Device } from '@ionic-native/device';
+import { AppVersion } from '@ionic-native/app-version';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -42,7 +44,9 @@ import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
-import {MorePopoverComponent} from "../components/more-popover/more-popover";
+import { MorePopoverComponent } from "../components/more-popover/more-popover";
+import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
+import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -70,7 +74,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage
+    TermsOfUsePage,
+    OpeningHoursPage,
+    DetailedOpeningPage
   ],
   imports: [
     HttpClientModule,
@@ -115,6 +121,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LegalNoticePage,
     PrivacyPolicyPage,
     TermsOfUsePage,
+    OpeningHoursPage,
+    DetailedOpeningPage,
     MorePopoverComponent
   ],
   providers: [
@@ -128,7 +136,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComponentsProvider,
     SafariViewController,
     AppAvailability,
-    WebIntentProvider
+    WebIntentProvider,
+    AppVersion,
+    Device
   ]
 })
 export class AppModule {

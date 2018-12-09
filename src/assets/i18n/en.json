@@ -6,7 +6,8 @@
     },
     "imprint":{
       "title": "Legal Notice",
-      "listHeader": "Legal Notice"
+      "listHeader": "Legal Notice",
+      "sysInfo": "About"
     },
     "legalNotice": {
       "title": "Information"
@@ -191,7 +192,15 @@
       "no_room": "The chosen room is free all-day."
     },
     "openingHours":{
-      "title":"Opening hours"
+      "title":"Opening hours",
+      "time": "",
+      "open": "open",
+      "opens": "opens ",
+      "closed": "closed",
+      "closes": "closes ",
+      "planCanChange": "Attention! This plan can change from week to week.",
+      "comment": "Comment",
+      "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
     "mensa":{
       "title": "Mensa",

@@ -9,6 +9,10 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="refreshGrades($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" class="hint" *ngIf="studentLoaded" padding>
     {{ "page.grades.hint" | translate }}
   </div>

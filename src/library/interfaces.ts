@@ -130,6 +130,11 @@ export interface IConfig {
   authorization:ILoginConfig;
   webservices:IWebServices;
   policies:IPolicies;
+  general:IGeneral;
+}
+
+export interface IGeneral {
+  tokenRefreshBoundary: number;
 }
 
 export interface IPolicies {
@@ -186,6 +191,8 @@ export interface IEndpoints {
   library:string;
   libraryDAIA:string;
   puls:string;
+  maps:string;
+  openingHours:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */

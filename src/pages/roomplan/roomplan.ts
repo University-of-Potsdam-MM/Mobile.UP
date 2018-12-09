@@ -22,6 +22,7 @@ import {
 } from "../../library/interfaces";
 import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
+import { CacheService } from 'ionic-cache';
 
 
 @IonicPage()
@@ -54,6 +55,7 @@ export class RoomplanPage {
     public toastCtrl: ToastController,
     public navParams: NavParams,
     public translate: TranslateService,
+    private cache: CacheService,
     public http: HttpClient) {
     this.default_house = navParams.get("house");
     this.default_room = navParams.get("room");
@@ -228,7 +230,12 @@ export class RoomplanPage {
       .append("endTime", end.toISOString())
       .append("campus", location);
 
-    this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params}).subscribe(
+    if (this.refresher != null) {
+      this.cache.removeItem("roomplanInfo"+location+start.toString()+end.toString());
+    }
+
+    let request = this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
+    this.cache.loadFromObservable("roomplanInfo"+location+start.toString()+end.toString(), request).subscribe(
       (response: IReservationRequestResponse) => {
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];

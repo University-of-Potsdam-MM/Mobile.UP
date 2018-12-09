@@ -9,6 +9,10 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="loadCampusMenu($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>
@@ -16,7 +20,7 @@
   <div align="center" *ngIf="isLoaded">
     <ion-col>
       <button ion-button small [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
-      (click)="showBasicCalendar = !showBasicCalendar;">Datum</button>
+      (click)="showBasicCalendar = !showBasicCalendar;" icon-end>Datum  <ion-icon name="arrow-dropdown"></ion-icon></button>
       <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
       <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
     </ion-col>
@@ -30,15 +34,15 @@
   </ion-calendar>
 
   <div *ngIf="isLoaded">
-    <ion-list no-lines>
+    <ion-list no-lines [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
       <div *ngFor="let meal of allMeals; let i = index">
-        <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)"> 
+        <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)" [ngClass]="{'noborder': mealIsExpanded[i]}">
           <ion-thumbnail item-end>
             <img *ngIf="mealIsFish[i]" [src]="fishIconSource">
             <img *ngIf="mealIsVegan[i]" [src]="veganIconSource">
             <img *ngIf="mealIsVegetarian[i]" [src]="vegetarianIconSource">
           </ion-thumbnail>
-          <p>{{ meal.title }} {{ meal.type[0] }} </p>
+          <p class="mealtitle">{{ meal.title }}<span> {{ meal.type[0] }} </span> </p>
           <h2 text-wrap>{{ meal.description }}</h2>
           <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropdown" item-start></ion-icon>
           <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropright" item-start></ion-icon>
@@ -46,13 +50,13 @@
         <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
           <ion-icon name="" item-start></ion-icon>
           {{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }} <br>
-          {{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }} <br> <br>
+          {{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }} <br> 
           <div text-wrap>
             <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
               ({{ allergen.shortName }})
             </button>
             <div *ngFor="let allergen of meal.allergens; let j = index">
-              <div *ngIf="allergenIsExpanded[i][j]"><br>({{ allergen.shortName }}): {{ allergen.longName }}</div>
+              <div *ngIf="allergenIsExpanded[i][j]">({{ allergen.shortName }}): {{ allergen.longName }}</div>
             </div>
           </div>
         </ion-item>
@@ -73,8 +77,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <div align="center" id="footerTitle" text-wrap>{{ "page.mensa.disclaimer" | translate}}</div>
+  <ion-toolbar class="mensadisclaimer">
+    <div align="center" id="footerTitle" text-wrap style="font-size: smaller">{{ "page.mensa.disclaimer" | translate}}</div>
   </ion-toolbar>
     <tab-bar></tab-bar>
 </ion-footer>

@@ -5,12 +5,11 @@ import {
   PopoverController,
   ViewController
 } from 'ionic-angular';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
-import {ISession} from "../../providers/login-provider/interfaces";
 
 /**
  * HomePage
@@ -27,14 +26,20 @@ export class HomePage {
   modules:{[moduleName:string]:IModule} = {};
   sortedModules = [];
 
+  session:string = "";
+  lang: string;
+
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
       private storage: Storage,
       private webIntent: WebIntentProvider,
-      private components: ComponentsProvider,
-      private popoverCtrl: PopoverController) {
-  }
+      private components: ComponentsProvider) {
+
+    translate.onLangChange.subscribe((event: LangChangeEvent) => {
+        this.sortedModules = this.JsonToArray(this.modules);
+      })
+    }
 
   ionViewDidLoad(){
     // try to load modules from storage
