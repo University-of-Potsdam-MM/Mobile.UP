@@ -4,17 +4,23 @@
   <ng-template #loggedInTemplate>
     Logged in as {{ userInformation.name }}
 
-    <button ion-button="log-out" (click)="toLogout()">Logout</button>
+    <button (click)="toLogout()">
+      <ion-icon name="log-out"></ion-icon>
+      {{ "logout" | translate }}
+    </button>
   </ng-template>
 
   <!-- not logged in -->
   <ng-template #notLoggedInTemplate>
     {{ "notLoggedInText" | translate }}
 
-    <button ion-button="log-in" (click)="toLogin()">Login</button>
+    <button (click)="toLogin()">
+      <ion-icon name="log-in"></ion-icon>
+      {{ "login" | translate }}
+    </button>
   </ng-template>
 
-  <ng-container *ngIf="userInformation; then loggedInTemplate; else notLoggedInTemplate ">
+  <ng-container *ngIf="userInformation!=null; then loggedInTemplate; else notLoggedInTemplate ">
   </ng-container>
 
 </ion-content>
