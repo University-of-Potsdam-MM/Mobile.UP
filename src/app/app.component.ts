@@ -34,6 +34,7 @@ import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { CacheService } from 'ionic-cache';
 import {IOIDCUserInformationResponse} from "../providers/login-provider/interfaces";
+import {MorePopoverComponent} from "../components/more-popover/more-popover";
 
 @Component({
   templateUrl: 'app.html'
@@ -177,7 +178,7 @@ export class MobileUPApp {
     this.storage.get('userInformation').then(
       (userInformation:IOIDCUserInformationResponse) => {
         let popover = this.popoverCtrl.create(
-          PopoverComponent,
+          MorePopoverComponent,
           {userInformation:userInformation}
         );
         popover.present({
@@ -185,25 +186,6 @@ export class MobileUPApp {
         });
       }
     )
-  }
-}
-
-@Component({
-  templateUrl: "popover.html",
-  selector: "popover"
-})
-export class PopoverComponent {
-
-  userInformation:IOIDCUserInformationResponse = null;
-
-  constructor(public viewCtrl: ViewController,
-              private navParams:NavParams) {
-    this.userInformation = this.navParams.get('userInformation')
-    console.log(this.userInformation);
-  }
-
-  close() {
-    this.viewCtrl.dismiss();
   }
 }
 

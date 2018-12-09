@@ -20,7 +20,7 @@ import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
 
 /* Pages */
-import {HomePage, PopoverComponent} from '../pages/home/home';
+import { HomePage } from '../pages/home/home';
 import { ImpressumPage } from '../pages/impressum/impressum';
 import { LoginPage } from "../pages/login/login";
 import { LogoutPage } from "../pages/logout/logout";
@@ -42,6 +42,7 @@ import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
+import {MorePopoverComponent} from "../components/more-popover/more-popover";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -69,8 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RoomplanPage,
     LegalNoticePage,
     PrivacyPolicyPage,
-    TermsOfUsePage,
-    PopoverComponent
+    TermsOfUsePage
   ],
   imports: [
     HttpClientModule,
@@ -115,7 +115,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LegalNoticePage,
     PrivacyPolicyPage,
     TermsOfUsePage,
-    PopoverComponent
+    MorePopoverComponent
   ],
   providers: [
     StatusBar,

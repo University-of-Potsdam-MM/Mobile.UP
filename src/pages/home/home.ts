@@ -12,12 +12,6 @@ import { IModule } from "../../library/interfaces";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
 import {ISession} from "../../providers/login-provider/interfaces";
 
-interface IUserInformation {
-  name:string;
-  surname:string;
-  accountName:string;
-}
-
 /**
  * HomePage
  */
@@ -72,10 +66,9 @@ export class HomePage {
   }
 
   /**
-   * convertes json object to array
+   * converts json object to array
    * @param modules
    */
-
   JsonToArray(modules){
     var array = [];
     for (var key in modules){
@@ -123,33 +116,5 @@ export class HomePage {
         console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
       }
     );
-  }
-  //
-  // presentPopover(myEvent) {
-  //   let popover = this.popoverCtrl.create(
-  //     PopoverComponent,
-  //     {userInformation:this.userInformation}
-  //   );
-  //   popover.present({
-  //     ev: myEvent
-  //   });
-  // }
-}
-
-@Component({
-  templateUrl: "popover.html",
-  selector: "popover"
-})
-export class PopoverComponent {
-
-  userInformation:IUserInformation = null;
-
-  constructor(public viewCtrl: ViewController,
-              private navParams:NavParams) {
-    this.userInformation = this.navParams.get('userInformation')
-  }
-
-  close() {
-    this.viewCtrl.dismiss();
   }
 }
