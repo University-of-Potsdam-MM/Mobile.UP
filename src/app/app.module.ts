@@ -35,7 +35,6 @@ import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
 import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
-import { ComponentsProvider } from '../providers/components/components';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
 import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
@@ -156,7 +155,6 @@ export const deepLinkConfig: DeepLinkConfig = {
     InAppBrowser,
     SettingsProvider,
     Keyboard,
-    ComponentsProvider,
     SafariViewController,
     AppAvailability,
     WebIntentProvider,
