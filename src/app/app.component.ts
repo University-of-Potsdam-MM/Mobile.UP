@@ -7,33 +7,18 @@ import {
   PopoverController
 } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-import { EventsPage } from './../pages/events/events';
-import { ImpressumPage } from '../pages/impressum/impressum';
-import { EmergencyPage } from '../pages/emergency/emergency';
-import { LoginPage } from "../pages/login/login";
-import { LogoutPage } from "../pages/logout/logout";
-import { PersonsPage } from "../pages/persons/persons";
-import { MensaPage } from "../pages/mensa/mensa";
-import { NewsPage } from './../pages/news/news';
-import { PracticePage } from "../pages/practice/practice";
-import { RoomsPage } from "../pages/rooms/rooms";
-import { RoomplanPage } from "../pages/roomplan/roomplan";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
-import { IConfig, IModule, IPage } from "../library/interfaces";
-import { SettingsPage } from "../pages/settings/settings";
-import { ComponentsProvider } from "../providers/components/components";
+import { IConfig, IModule } from "../library/interfaces";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
-import { LibraryPage } from '../pages/library/library';
-import { GradesPage } from '../pages/grades/grades';
-import { LecturesPage } from '../pages/lectures/lectures';
+
 import { CacheService } from 'ionic-cache';
-import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
+
 import {
   IOIDCUserInformationResponse,
   IOIDCRefreshResponseObject,
@@ -51,7 +36,6 @@ export class MobileUPApp {
 
   config:IConfig;
   rootPage: any;
-  pagesInMenu: Array<IPage>;
 
   constructor(
     private platform: Platform,
@@ -62,7 +46,6 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
-    private components: ComponentsProvider,
     private cache: CacheService,
     private loginProvider: UPLoginProvider,
     private popoverCtrl: PopoverController
@@ -76,9 +59,7 @@ export class MobileUPApp {
   private async initializeApp() {
     await this.initConfig();
     await this.checkSessionValidity();
-    await this.initPages();
     await this.initTranslate();
-    await this.buildDefaultModulesList();
 
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
@@ -100,6 +81,7 @@ export class MobileUPApp {
       config => {
         this.config = config;
         this.storage.set("config", config);
+        this.buildDefaultModulesList();
       }
     );
   }
@@ -162,34 +144,7 @@ export class MobileUPApp {
     )
   }
 
-  private initPages() {
-    // tells ComponentsProvider which component to use for which page
-    this.components.setComponents({
-      login:LoginPage,
-      logout:LogoutPage,
-      news:NewsPage,
-      openingHours:OpeningHoursPage,
-      imprint:ImpressumPage,
-      rooms:RoomsPage,
-      roomplan:RoomplanPage,
-      mensa:MensaPage,
-      library:LibraryPage,
-      emergency:EmergencyPage,
-      events:EventsPage,
-      practice:PracticePage,
-      persons:PersonsPage,
-      settings:SettingsPage,
-      grades:GradesPage,
-      lectures:LecturesPage,
-      athletics:"webIntent",
-      unishop:"webIntent",
-      mail:"webIntent",
-      moodle:"webIntent",
-      reflectUP:"webIntent"
-    });
-  }
-
-    /**
+  /**
    * initTranslate
    *
    * sets up translation
@@ -234,15 +189,6 @@ export class MobileUPApp {
     // }
   }
 
-  isActive(page:IPage) {
-    if (this.nav.getActive() && this.nav.getActive().component == page.pageName) {
-      if (page.pageName != HomePage) {
-        return "primary";
-      }
-    }
-    return;
-  }
-
   /**
    * presents popover
    * @param myEvent
@@ -260,5 +206,34 @@ export class MobileUPApp {
         });
       }
     )
+  }
+
+  /**
+   * opens a page when link is clicked
+   * @param page
+   */
+  public openPage(page) {
+    console.log('in');
+    var pageName = this.capitalizeFirstLetter(page.componentName)+'Page';
+
+    if (page.url){
+      // pages that just link to an url or app
+      this.webIntent.handleWebIntent(page.componentName);
+    } else if ((pageName != 'HomePage')) {
+      // pages with an actual dedicated ionic page
+      if (this.nav.getActive().component != pageName) {
+        console.log(pageName);
+        this.nav.popToRoot();
+        this.nav.push(pageName);
+      }
+    } else if (this.nav.getActive().component != HomePage) {
+      // HomePage
+      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+    }
+
+  }
+
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }

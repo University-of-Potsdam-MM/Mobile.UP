@@ -7,9 +7,8 @@ import {
 } from 'ionic-angular';
 import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
-import { ComponentsProvider } from "../../providers/components/components";
 import { IModule } from "../../library/interfaces";
-import { WebIntentProvider } from '../../providers/web-intent/web-intent';
+import {MobileUPApp} from '../../app/app.component';
 
 /**
  * HomePage
@@ -33,12 +32,10 @@ export class HomePage {
       public navCtrl: NavController,
       public translate: TranslateService,
       private storage: Storage,
-      private webIntent: WebIntentProvider,
-      private components: ComponentsProvider) {
-
-    translate.onLangChange.subscribe((event: LangChangeEvent) => {
-        this.sortedModules = this.JsonToArray(this.modules);
-      })
+      private app: MobileUPApp) {
+        translate.onLangChange.subscribe((event: LangChangeEvent) => {
+          this.sortedModules = this.JsonToArray(this.modules);
+        })
     }
 
   ionViewDidLoad(){
@@ -111,15 +108,11 @@ export class HomePage {
    * @param {string} pageTitle
    */
   openPage(pageTitle:string) {
-    this.components.getComponent(pageTitle).subscribe(
-    component => {
-      if (component == "webIntent") {
-        this.webIntent.handleWebIntent(pageTitle);
-      } else { this.navCtrl.push(component); }
-      },
-      error => {
-        console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
-      }
-    );
+    if (this.modules[pageTitle]){
+      this.app.openPage(this.modules[pageTitle]);
+    }else{
+      console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
+    }
   }
+
 }

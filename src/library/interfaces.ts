@@ -432,14 +432,6 @@ export interface ISettingOption {
   lbl:string;
 }
 
-export interface IPage {
-  title:string;
-  pageName:any;
-  icon:string;
-  webIntent?:boolean;
-  moduleName?:string;
-}
-
 export interface IGradeResponse {
   personalStudyAreas: {
     Abschluss:IGradeDegree;

@@ -1,7 +1,7 @@
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicModule, IonicErrorHandler, DeepLinkConfig  } from 'ionic-angular';
 import { MobileUPApp } from './app.component';
 import { UPLoginProvider } from "../providers/login-provider/login";
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -35,7 +35,6 @@ import { RoomsPage } from "../pages/rooms/rooms";
 import { RoomplanPage } from "../pages/roomplan/roomplan";
 import { SettingsPage } from "../pages/settings/settings";
 import { SettingsProvider } from '../providers/settings/settings';
-import { ComponentsProvider } from '../providers/components/components';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { LibraryPage } from '../pages/library/library';
 import { BookDetailViewPage } from '../pages/book-detail-view/book-detail-view';
@@ -51,6 +50,28 @@ import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening'
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
+
+export const deepLinkConfig: DeepLinkConfig = {
+  links: [
+    { component: HomePage, name: 'HomePage', segment: 'home' },
+    { component: LoginPage, name: 'LoginPage', segment: 'login' },
+    { component: LogoutPage, name: 'LogoutPage', segment: 'logout' },
+    { component: EventsPage, name: 'EventsPage', segment: 'events'},
+    { component: ImpressumPage, name: 'ImpressumPage', segment: 'imprint' },
+    { component: EmergencyPage, name: 'EmergencyPage', segment: 'emergency' },
+    { component: PersonsPage, name: 'PersonsPage', segment: 'persons' },
+    { component: MensaPage, name: 'MensaPage', segment: 'mensa' },
+    { component: SettingsPage, name: 'SettingsPage', segment: 'settings' },
+    { component: LibraryPage, name: 'LibraryPage', segment: 'library' },
+    { component: PracticePage, name: 'PracticePage', segment: 'practice' },
+    { component: NewsPage, name: 'NewsPage', segment: 'news' },
+    { component: GradesPage, name: 'GradesPage', segment: 'grades' },
+    { component: RoomsPage, name: 'RoomsPage', segment: 'rooms' },
+    { component: LecturesPage, name: 'LecturesPage', segment: 'lectures' },
+    { component: RoomplanPage, name: 'RoomplanPage', segment: 'roomplan' },
+    { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' }
+  ]
+};
 
 @NgModule({
   declarations: [
@@ -85,10 +106,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     CalendarModule,
     OrderModule,
     CacheModule.forRoot({ keyPrefix: 'myCache-' }),
-    IonicModule.forRoot(MobileUPApp, {
-      backButtonText: ' ',
-      mode: 'md'
-    }),
+    IonicModule.forRoot(
+      MobileUPApp,
+      {
+        backButtonText: ' ',
+        mode: 'md'
+      },
+      deepLinkConfig
+    ),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -133,7 +158,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     InAppBrowser,
     SettingsProvider,
     Keyboard,
-    ComponentsProvider,
     SafariViewController,
     AppAvailability,
     WebIntentProvider,
