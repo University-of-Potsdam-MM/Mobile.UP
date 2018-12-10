@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Kursinformation</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!-- template for one single event, will be wrapped in ion-card tag -->
+  <ng-template #singleEventTemplate let-event="event">
+    <ion-card>
+      <!-- title, need to use innerHtml here because title can contain HTML like &colon; -->
+      <ion-card-header style="font-weight:bold" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'"></ion-card-header>
+
+      <ion-card-content>
+
+        <ion-list>
+
+          <!-- lecturer(s)-->
+          <div *ngIf="isArray(event.eventDetails.lecturers.lecturer);
+                      then multipleLecturersTemplate else singleLecturerTemplate"></div>
+
+          <!-- template for event with single lecturer-->
+          <ng-template #singleLecturerTemplate>
+            {{ "page.timetable.lecturer" | translate }}:
+            {{ event.eventDetails.lecturers.lecturer.lecturerTitle }}
+            {{ event.eventDetails.lecturers.lecturer.lecturerLastname }}
+          </ng-template>
+
+          <!-- template for event with multiple lecturers -->
+          <ng-template #multipleLecturersTemplate>
+            <div *ngFor="let lecturer of event.eventDetails.lecturers.lecturer">
+              {{ "page.timetable.lecturer" | translate }}:
+              {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}
+            </div>
+          </ng-template>
+
+
+          <!-- time -->
+          <div>
+            {{ "page.timetable.time" | translate }}:
+            {{ moment(event.startTime).format("LT")}}
+            {{ "page.timetable.oclock" | translate }}
+            -
+            {{ "page.timetable.until" | translate }}
+            {{ moment(event.endTime).format("LT") }}
+            {{ "page.timetable.oclock" | translate }}
+          </div>
+
+          <!-- period -->
+          <div>
+            {{ "page.timetable.period" | translate }}:
+            {{ event.eventDetails.startDate }}
+            -
+            {{ event.eventDetails.endDate }}
+          </div>
+
+          <!-- rhythm -->
+          <div>
+            {{ "page.timetable.rhythm" | translate }}:
+            {{ event.eventDetails.rhythm }}
+          </div>
+
+          <!-- location -->
+          <div>
+            {{ "page.timetable.location" | translate }}:
+            {{ event.eventDetails.location}}
+          </div>
+
+          <!-- building -->
+          <div>
+            {{ "page.timetable.building" | translate }}:
+            {{ event.eventDetails.building }}
+          </div>
+
+          <!-- roomtype and room -->
+          <div>
+            {{ "page.timetable.room" | translate }}:
+            {{ event.eventDetails.roomType }}
+            {{ event.eventDetails.room }}
+          </div>
+        </ion-list>
+
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <!-- append details about selected events below -->
+  <ng-container *ngIf="events">
+    <ng-container *ngFor="let event of events">
+      <ng-template
+        *ngTemplateOutlet="singleEventTemplate; context:{event:event}">
+      </ng-template>
+    </ng-container>
+  </ng-container>
+
+</ion-content>

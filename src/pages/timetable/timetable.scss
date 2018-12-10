@@ -1,0 +1,19 @@
+page-timetable {
+
+  // https://github.com/twinssbc/Ionic2-Calendar/issues/54#issuecomment-354191281
+  .weekview-allday-table{
+    display: none;
+  }
+  .weekview-normal-event-container{
+    margin-top: 37px;
+  }
+
+  .dayview-allday-table{
+    display: none;
+  }
+  .dayview-normal-event-container{
+    margin-top: 37px;
+  }
+
+
+}

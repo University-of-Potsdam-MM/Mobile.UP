@@ -10,14 +10,12 @@ import { HttpClient } from "@angular/common/http";
 import { IConfig, IModule } from "../library/interfaces";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
-
 import { CacheService } from 'ionic-cache';
-
 import {
   IOIDCRefreshResponseObject,
   ISession
 } from "../providers/login-provider/interfaces";
-import {UPLoginProvider} from "../providers/login-provider/login";
+import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
 
 @Component({

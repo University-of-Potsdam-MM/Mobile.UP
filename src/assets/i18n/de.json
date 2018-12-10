@@ -148,7 +148,20 @@
       "annotation": "Bemerkung"
     },
     "timetable": {
-      "title": "Stundenplan"
+      "title": "Stundenplan",
+      "until": "bis",
+      "today": "Heute",
+      "month": "Monat",
+      "week": "Woche",
+      "day": "Tag",
+      "oclock": "Uhr",
+      "time": "Uhrzeit",
+      "period": "Zeitraum",
+      "location": "Ort",
+      "building": "Gebäude",
+      "room": "Raum",
+      "rhythm": "Rhythmus",
+      "lecturer": "Dozent"
     },
     "mail": {
       "title": "Mail"

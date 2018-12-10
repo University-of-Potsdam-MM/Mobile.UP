@@ -111,6 +111,11 @@
       "selected":false,
       "hide":true
     },
+    "timetable":{
+      "componentName": "timetable",
+      "icon": "calendar",
+      "selected": true
+    },
     "login": {
       "componentName": "login",
       "icon": "log-in",

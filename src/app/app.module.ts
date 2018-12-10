@@ -1,6 +1,6 @@
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, APP_INITIALIZER} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, DeepLinkConfig  } from 'ionic-angular';
 import { MobileUPApp } from './app.component';
 import { UPLoginProvider } from "../providers/login-provider/login";
@@ -18,6 +18,7 @@ import { AppAvailability } from '@ionic-native/app-availability';
 import { CalendarModule } from "ion2-calendar";
 import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
+import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
 
@@ -43,11 +44,17 @@ import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
+import { ConfigProvider } from '../providers/config/config';
+import { EventModal, TimetablePage } from "../pages/timetable/timetable";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+}
+
+export function initConfig(config:ConfigProvider) {
+  return () => config.load('assets/config.json');
 }
 
 export const deepLinkConfig: DeepLinkConfig = {
@@ -95,6 +102,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     LegalNoticePage,
     PrivacyPolicyPage,
     TermsOfUsePage,
+    TimetablePage,
+    EventModal,
     OpeningHoursPage,
     DetailedOpeningPage
   ],
@@ -120,7 +129,8 @@ export const deepLinkConfig: DeepLinkConfig = {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    NgCalendarModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -146,7 +156,9 @@ export const deepLinkConfig: DeepLinkConfig = {
     PrivacyPolicyPage,
     TermsOfUsePage,
     OpeningHoursPage,
-    DetailedOpeningPage
+    DetailedOpeningPage,
+    TimetablePage,
+    EventModal
   ],
   providers: [
     StatusBar,
@@ -160,7 +172,15 @@ export const deepLinkConfig: DeepLinkConfig = {
     AppAvailability,
     WebIntentProvider,
     AppVersion,
-    Device
+    Device,
+    ConfigProvider,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [ConfigProvider],
+      multi: true
+    }
+
   ]
 })
 export class AppModule {
