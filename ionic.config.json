@@ -4,11 +4,10 @@
     "cordova": {}
   },
   "type": "ionic-angular",
-  "app_id": "",
-  "proxies":[
+  "proxies": [
     {
-      "proxyUrl":"http://apiup.uni-potsdam.de/",
-      "path":"/apiup"
+      "proxyUrl": "http://apiup.uni-potsdam.de/",
+      "path": "/apiup"
     }
   ]
 }
