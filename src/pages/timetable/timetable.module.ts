@@ -4,8 +4,6 @@ import {EventModal, TimetablePage} from './timetable';
 
 @NgModule({
   declarations: [
-    TimetablePage,
-    EventModal
   ],
   imports: [
     IonicPageModule.forChild(TimetablePage),
