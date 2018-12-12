@@ -53,6 +53,9 @@ export class MobileUPApp {
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
+
+        // set status bar to same color as header
+        this.statusBar.backgroundColorByHexString('#EDEDED');
         this.splashScreen.hide();
       }
 
