@@ -14,7 +14,7 @@
     <!-- list of shortcuts -->
 
     <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'"
-    (click)="openPage(module.componentName)" [id]="module.selected ? icon_selected : icon_not_selected">
+    (click)="openPage($event, module.componentName)" [id]="module.selected ? icon_selected : icon_not_selected">
 
       <div *ngIf="module.selected" >
         <ion-icon [name]="module.icon"></ion-icon>
