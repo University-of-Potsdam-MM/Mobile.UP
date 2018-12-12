@@ -20,6 +20,7 @@ import {ConfigProvider} from "../../providers/config/config";
 import {ITimeSelected} from "ionic2-calendar/calendar";
 import * as moment from 'moment';
 import {TranslateService} from "@ngx-translate/core";
+import {PulsProvider} from "../../providers/puls/puls";
 
 
 function debug(text){
@@ -79,7 +80,8 @@ export class TimetablePage {
       private storage:Storage,
       private alertCtrl:AlertController,
       private translate: TranslateService,
-      private modalCtrl:ModalController) {
+      private modalCtrl:ModalController,
+      private puls:PulsProvider) {
   }
 
   ionViewDidLoad(){
@@ -94,30 +96,11 @@ export class TimetablePage {
           )
         } else {
           // there is a session
-          this.getStudentCourses(session).subscribe(
+          this.puls.getStudentCourses(session).subscribe(
             (response:IPulsAPIResponse_getStudentCourses) => {
-              // PULS simply responds with "no user rights" if credentials are incorrect
-              if(response.message == "no user rights"){
-                // we're having a contradiction here, the password is wrong, but
-                // the token is still valid. We'll log the user out and send the
-                // user to LoginPage
-                let alert = this.alertCtrl.create({
-                  title: this.translate.instant("alert.title.error"),
-                  subTitle: this.translate.instant("alert.token_valid_credentials_invalid"),
-                  buttons: [ this.translate.instant("button.continue") ]
-                });
-                this.storage.set('session', null);
-                this.storage.set('userInformation', null);
-                alert.present();
-                this.navCtrl.push(LoginPage)
-              } else {
-                this.eventSource = createEventSource(
-                 response.studentCourses.student.actualCourses.course
-                );
-              }
-            },
-            error => {
-              console.log(error);
+              this.eventSource = createEventSource(
+                response.studentCourses.student.actualCourses.course
+              );
             }
           );
         }
@@ -170,41 +153,6 @@ export class TimetablePage {
    */
   titleChanged(title){
     this.currentTitle= title;
-  }
-
-  /**
-   * Sends request to PULS webservice and retrieves list of courses the student
-   * is currently (current semester) enrolled in.
-   * @param {IWebServices} webservices
-   * @param {ISession} session
-   * @returns {Observable<IPulsAPIResponse_getStudentCourses>}
-   */
-  private getStudentCourses(session:ISession):Observable<IPulsAPIResponse_getStudentCourses> {
-
-    let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': ConfigProvider.config.webservices.apiToken
-    });
-
-    let request:IPulsApiRequest_getStudentCourses = {
-      condition:{
-        semester: 0,
-        allLectures: 0
-      },
-      // TODO: refactor this someday so credentials are not used
-      'user-auth': {
-        username: session.credentials.username,
-        password: session.credentials.password
-      }
-    };
-
-    // TODO: check for connection first!
-
-    return this.http.post<IPulsAPIResponse_getStudentCourses>(
-      ConfigProvider.config.webservices.endpoint.puls+"getStudentCourses",
-      request,
-      {headers: headers}
-    );
   }
 }
 

@@ -21,6 +21,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
+import { PulsProvider } from '../providers/puls/puls';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -48,7 +49,6 @@ import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
-import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -182,8 +182,7 @@ export const deepLinkConfig: DeepLinkConfig = {
       deps: [ConfigProvider],
       multi: true
     },
-    SessionProvider
-
+    PulsProvider
   ]
 })
 export class AppModule {
