@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
 import { ISession } from "../../providers/login-provider/interfaces";
@@ -11,6 +11,7 @@ import {
 } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
+import { Keyboard } from '@ionic-native/keyboard';
 
 
 @IonicPage()
@@ -35,6 +36,8 @@ export class PracticePage {
     public navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage,
+    private platform: Platform,
+    private keyboard: Keyboard,
     private cache: CacheService,
     public navParams: NavParams,
     private chRef: ChangeDetectorRef) {
@@ -119,6 +122,13 @@ export class PracticePage {
    */
   private contains(x: string, y: string): boolean {
     return x.toLowerCase().includes(y.toLowerCase());
+  }
+
+  // hides keyboard once the user is scrolling
+  onScrollListener() {
+    if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
+      this.keyboard.hide();
+    }
   }
 
   /**

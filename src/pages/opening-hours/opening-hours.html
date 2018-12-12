@@ -10,7 +10,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content (ionScroll)="onScrollListener()">
   <div align="center" *ngIf="!isLoaded" padding> 
     <ion-spinner></ion-spinner>
   </div>

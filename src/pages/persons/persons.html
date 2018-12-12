@@ -13,7 +13,7 @@
   </ion-searchbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding (ionScroll)="onScrollListener()">
 
   <p *ngIf="waiting_for_response == true" style="text-align: center">
     <ion-spinner></ion-spinner>
