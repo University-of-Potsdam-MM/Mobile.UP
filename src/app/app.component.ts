@@ -137,7 +137,7 @@ export class MobileUPApp {
                     this.storage.set('userInformation', userInformation).then(
                       result => {
                         console.log(
-                          '[LoginPage]: Successfully retrieved and stored user information'
+                          '[MobileUP]: Successfully retrieved and stored user information'
                         )
                       }
                     );

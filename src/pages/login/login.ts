@@ -92,7 +92,7 @@ export class LoginPage {
               this.storage.set('userInformation', userInformation).then(
                 result => {
                   console.log(
-                    'LoginPage]: Successfully retrieved and stored user information'
+                    '[LoginPage]: Successfully retrieved and stored user information'
                   )
                 }
               );
