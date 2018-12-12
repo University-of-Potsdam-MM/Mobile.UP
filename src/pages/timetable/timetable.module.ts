@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import {EventModal, TimetablePage} from './timetable';
+// import { EventModal } from './timetable';
+import { TimetablePage} from './timetable';
 
 @NgModule({
   declarations: [
