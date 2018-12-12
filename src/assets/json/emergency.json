@@ -8,7 +8,7 @@
     {
         "name":"Feuerwehr",
         "contact":{
-            "telephone":"112"    
+            "telephone":"112"
         }
     },
     {
@@ -102,7 +102,7 @@
     },
     {
         "name":"Durchgangsarzt Brandenburger Vorstadt",
-        "description":"St. Josefs-Krankenhaus, Dr. Winfried Ryzlewicz",
+        "description":"St. Josefs-Krankenhaus, Dr. Bublitz",
         "address":{
             "street":"Allee nach Sanssouci 7",
             "postal":"14471 Potsdam"
@@ -119,35 +119,24 @@
             "postal":"14467 Potsdam"
         },
         "contact":{
-            "telephone":"+493312415402"
-        }
-    },
-    {
-        "name":"Durchgangsarzt Nördliche Innenstadt",
-        "description":"Dr. Rolf Lahr-Eigen",
-        "address":{
-            "street":"Kurfürstenstraße 19",
-            "postal":"14467 Potsdam"
-        },
-        "contact":{
-            "telephone":"+493312805221"
+            "telephone":"+4933124135407"
         }
     },
     {
         "name":"Durchgangsarzt Babelsberg Nord",
-        "description":"Oberlinklinik, Jörg Homann",
+        "description":"Oberlin Klinik, Jörg Homann",
         "address":{
             "street":"Rudolf-Breitscheid-Str. 24",
             "postal":"14482 Potsdam"
         },
         "contact":{
-            "telephone":"+493317635202",
+            "telephone":"+493317634310",
             "mail":"sojoho@t-online.de"
         }
     },
     {
         "name":"Durchgangsarzt Babelsberg Süd",
-        "description":"Dr. Matthias Schulze",
+        "description":"Dres. Rudtke, Schulze & Unger",
         "contact":{
             "telephone":"+49331621001",
             "mail":"matthias-f-r-schulze@gmx.de"
@@ -159,13 +148,12 @@
     },
     {
         "name":"Durchgangsarzt Babelsberg Süd",
-        "description":"Dr. Bernd Rudtke",
+        "description":"Dr. med. Bernd Schenderlein",
         "contact":{
-            "telephone":"+49331621001",
-            "mail":"b.rudtke@t-online.de"
+            "telephone":"+49331710247"
         },
         "address":{
-            "street":"Großbeerenstr. 187",
+            "street":"Kopernikusstr. 32",
             "postal":"14482 Potsdam"
         }
     },
@@ -224,16 +212,29 @@
     },
     {
         "name":"Sicherheitswesen der UP",
+        "description":"Ulf Lepszy",
         "contact":{
             "telephone":"+493319772383"
         },
         "address":{
-            "street":"Karl-Liebknecht-Str. 24 /25 Haus 8c, Zi. 2.04",
-            "postal":"14476 Potsdam / Golm"
+            "street":"Am Neuen Palais 10, Haus 2, Zi. 1.15",
+            "postal":"14469 Potsdam"
         }
     },
     {
-        "name":"Wache",
+        "name":"Wache Neues Palais",
+        "contact":{
+            "telephone":"+493319771210"
+        }
+    },
+    {
+        "name":"Wache Golm",
+        "contact":{
+            "telephone":"+493319772222"
+        }
+    },
+    {
+        "name":"Wache Griebnitzsee",
         "contact":{
             "telephone":"+493319773231"
         }
