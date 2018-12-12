@@ -46,6 +46,7 @@ import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { MorePopoverComponent } from "../components/more-popover/more-popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
+import {PopoverButtonComponent} from "../components/popover-button/popover-button";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -148,7 +149,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     TermsOfUsePage,
     OpeningHoursPage,
     DetailedOpeningPage,
-    MorePopoverComponent
+    MorePopoverComponent,
+    PopoverButtonComponent
   ],
   providers: [
     StatusBar,

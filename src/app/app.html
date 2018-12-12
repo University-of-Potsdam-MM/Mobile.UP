@@ -1,9 +1,2 @@
-<ion-header>
-  <ion-buttons end>
-    <button>
-      <ion-icon name="more" (click)="presentPopover($event)"></ion-icon>
-    </button>
-  </ion-buttons>
-</ion-header>
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

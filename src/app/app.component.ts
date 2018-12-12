@@ -190,25 +190,6 @@ export class MobileUPApp {
   }
 
   /**
-   * presents popover
-   * @param myEvent
-   */
-  presentPopover(myEvent) {
-    this.storage.get('userInformation').then(
-      (userInformation:IOIDCUserInformationResponse) => {
-        console.log(userInformation)
-        let popover = this.popoverCtrl.create(
-          MorePopoverComponent,
-          {userInformation:userInformation}
-        );
-        popover.present({
-          ev: myEvent
-        });
-      }
-    )
-  }
-
-  /**
    * opens a page when link is clicked
    * @param page
    */
