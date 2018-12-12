@@ -16,7 +16,7 @@
 
   <!-- not logged in -->
   <ng-template #notLoggedInTemplate>
-    {{ "popover.notLoggedInInText" | translate}}
+    {{ "popover.notLoggedInText" | translate}}
 
     <button (click)="toSettings()">
       <ion-icon name="settings"></ion-icon>
@@ -27,7 +27,6 @@
       {{ "button.login" | translate }}
     </button>
   </ng-template>
-
 
   <ng-container *ngIf="userInformation!=null; then loggedInTemplate; else notLoggedInTemplate ">
   </ng-container>

@@ -103,6 +103,7 @@ export class MobileUPApp {
             let validUntilUnixTime = moment(session.timestamp).unix() + expiresIn;
             let nowUnixTime = moment().unix();
             // check if we are not past this date already with a certain boundary
+
             return (validUntilUnixTime - nowUnixTime) > boundary;
           };
 
@@ -118,13 +119,35 @@ export class MobileUPApp {
             ).subscribe(
               (response:IOIDCRefreshResponseObject) => {
                 // store new token object
-                this.storage.set('session', <ISession>{
+                let newSession:ISession = {
                   oidcTokenObject:  response.oidcTokenObject,
                   token:            response.oidcTokenObject.access_token,
                   timestamp:        new Date(),
                   credentials:      session.credentials
-                });
+                };
+                this.storage.set('session', newSession);
                 console.log(`[MobileUP]: Refreshed token successfully`);
+
+                // TODO: remove proxy when CORS issue is resolved
+                config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
+
+                // in the meantime get user information and save it to storage
+                this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
+                  (userInformation:IOIDCUserInformationResponse) => {
+                    this.storage.set('userInformation', userInformation).then(
+                      result => {
+                        console.log(
+                          '[LoginPage]: Successfully retrieved and stored user information'
+                        )
+                      }
+                    );
+                  },
+                  error => {
+                    // user must not know if something goes wrong here, so we don't
+                    // create an alert
+                    console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
+                  }
+                );
 
               },
               error => {

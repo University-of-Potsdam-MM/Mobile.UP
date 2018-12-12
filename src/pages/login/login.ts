@@ -84,7 +84,7 @@ export class LoginPage {
           this.endLoading();
 
           // temporary setting proxy
-          config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo?schema=openid";
+          config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
 
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(

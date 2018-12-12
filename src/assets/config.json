@@ -153,7 +153,10 @@
       "contentType": "application/x-www-form-urlencoded",
       "grantType_password": "password",
       "grantType_refresh": "refresh_token",
-      "scope": "openid"
+      "scope": "openid",
+      "userInfoParams":{
+        "schema":"openid"
+      }
     }
   },
   "webservices": {
