@@ -24,8 +24,8 @@ import * as jquery from "jquery";
 export class EmergencyPage {
 
   jsonPath: string = "../../assets/json/emergency";
-  displayedList: ArrayLike < EmergencyCall > ;
-  defaultList: ArrayLike < EmergencyCall > ;
+  displayedList: Array < EmergencyCall > ;
+  defaultList: Array < EmergencyCall > ;
 
   /**
    * Constructor of EmergencyPage
@@ -91,6 +91,22 @@ export class EmergencyPage {
         }
       );
       this.chRef.detectChanges();
+    }
+  }
+
+  /**
+   * expand
+   *
+   * toggles the expand value of one item to be expanded in the view
+   * @param emergencyCall
+   */
+
+  expand(emergencyCall) {
+    for (let i = 0; i < this.displayedList.length; i++) {
+      let currentCall = this.displayedList[i];
+      if (currentCall.name == emergencyCall.name) {
+        currentCall.expanded = !currentCall.expanded;
+      }
     }
   }
 }
