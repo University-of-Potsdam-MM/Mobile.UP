@@ -82,14 +82,19 @@ export class PracticePage {
           if (refresher) {
             refresher.complete();
           }
+
           // reset array so new persons are displayed
           this.defaultList = [];
           // use inner object only because it's wrapped in another object
+          var uidArray = [];
           for (let ads of response) {
             //console.log(ads);
             ads.date = ads.date*1000;
             ads.expanded = false;
-            this.defaultList.push(ads);
+            if (!this.isInArray(uidArray, ads.uid)) {
+              uidArray.push(ads.uid);
+              this.defaultList.push(ads);
+            } 
           }
           this.initializeList();
           this.waiting_for_response = false;
@@ -109,6 +114,17 @@ export class PracticePage {
       // send user to LoginPage if no session has been found
       this.navCtrl.push(LoginPage);
     }
+  }
+
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i] == value) {
+        found = true;
+      }
+    }
+    return found;
   }
 
   /**

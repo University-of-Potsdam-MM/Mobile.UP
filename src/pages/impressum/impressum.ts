@@ -23,6 +23,7 @@ import { AppVersion } from '@ionic-native/app-version';
 export class ImpressumPage {
 
   config;
+  showSysInfo = false;
 
   deviceInfo = {
     "cordovaVersion": undefined,

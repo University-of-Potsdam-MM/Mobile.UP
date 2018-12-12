@@ -86,7 +86,8 @@ export class HomePage {
    * toggles selected-state of given module and then saves moduleList to storage
    * @param moduleName
    */
-  toggleSelectedState(moduleName){
+  toggleSelectedState(event, moduleName) {
+    event.stopPropagation();
     let currentState = this.modules[moduleName].selected;
     let newState = !currentState;
 
@@ -104,7 +105,8 @@ export class HomePage {
    * opens selected page by pushing it on the stack
    * @param {string} pageTitle
    */
-  openPage(pageTitle:string) {
+  openPage(event, pageTitle:string) {
+    event.stopPropagation();
     if (this.modules[pageTitle]){
       this.app.openPage(this.modules[pageTitle]);
     }else{

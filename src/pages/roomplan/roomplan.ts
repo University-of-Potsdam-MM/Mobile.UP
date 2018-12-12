@@ -146,8 +146,6 @@ export class RoomplanPage {
     for (let i = 0; i < this.housesFound.length; i++) {
       if (this.housesFound[i].lbl == house) {
         this.housesFound[i].expanded = !this.housesFound[i].expanded;
-      } else {
-        this.housesFound[i].expanded = false;
       }
       if(this.housesFound[i].expanded == false){
         this.housesFound[i].rooms.forEach(function (room) {
@@ -168,8 +166,6 @@ export class RoomplanPage {
         for (let h = 0; h < this.housesFound[i].rooms.length; h++) {
           if (this.housesFound[i].rooms[h].lbl == room) {
             this.housesFound[i].rooms[h].expanded = !this.housesFound[i].rooms[h].expanded;
-          } else {
-            this.housesFound[i].rooms[h].expanded = false;
           }
         }
       }
