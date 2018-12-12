@@ -71,6 +71,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: LibraryPage, name: 'LibraryPage', segment: 'library' },
     { component: PracticePage, name: 'PracticePage', segment: 'practice' },
     { component: NewsPage, name: 'NewsPage', segment: 'news' },
+    { component: TimetablePage, name: 'TimetablePage', segment: 'timetable' },
     { component: GradesPage, name: 'GradesPage', segment: 'grades' },
     { component: RoomsPage, name: 'RoomsPage', segment: 'rooms' },
     { component: LecturesPage, name: 'LecturesPage', segment: 'lectures' },
