@@ -22,9 +22,11 @@ import {IConfig, IPerson,} from "../../library/interfaces";
 export class PersonsPage {
 
   personsFound: IPerson[] = [];
-  waiting_for_response: boolean = false;
+  response_received: boolean;
   error: HttpErrorResponse;
   session:ISession;
+  query = "";
+  noResults = false;
 
   constructor(
     private navCtrl: NavController,
@@ -52,24 +54,26 @@ export class PersonsPage {
    * in this.personsFound so the view can render them
    * @param query
    */
-  public async search(query: string) {
+  public async search() {
     // reset array so new persons are displayed
     this.personsFound = [];
+    this.noResults = false;
 
-    if (query) {
-      this.waiting_for_response = true;
+    if (this.query && this.query.trim() != "" && this.query.trim().length > 1) {
+      this.response_received = false;
 
-      console.log(`[PersonsPage]: Searching for \"${query}\"`);
+      console.log(`[PersonsPage]: Searching for \"${this.query}\"`);
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
         .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
       this.http.get(
-        config.webservices.endpoint.personSearch + query,
+        config.webservices.endpoint.personSearch + this.query,
         {headers: headers}
       ).subscribe(
         (personsList:IPerson[]) => {
+          console.log(personsList);
 
           for (let person of personsList) {
             let newPerson = person;
@@ -78,17 +82,23 @@ export class PersonsPage {
             this.personsFound.push(newPerson);
           }
 
-          this.waiting_for_response = false;
+          this.error = null;
+          this.response_received = true;
         },
         error => {
           this.error = error;
           console.log(error);
-          this.waiting_for_response = false;
+          this.response_received = true;
         }
       );
 
+      if (this.personsFound.length > 0) {
+        this.noResults = false;
+      } else { this.noResults = true; }
+
     } else {
       console.log("[PersonsPage]: Empty query");
+      this.response_received = true;
     }
   }
 

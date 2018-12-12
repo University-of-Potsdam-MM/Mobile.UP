@@ -4,7 +4,7 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-searchbar placeholder="{{ 'button.search' | translate }}" (ionInput)="filterItems($event)">
+    <ion-searchbar placeholder="{{ 'button.search' | translate }}" (ionInput)="filterItems($event)" debounce="750">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>

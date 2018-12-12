@@ -9,25 +9,26 @@
   <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'page.persons.placeholder.search' | translate"
-    (ionInput)="search(query)">
+    (ionInput)="search()"
+    debounce="750">
   </ion-searchbar>
 </ion-header>
 
 <ion-content padding>
 
-  <p *ngIf="waiting_for_response == true" style="text-align: center">
+  <p *ngIf="!response_received && query.length > 0" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 
-  <p *ngIf="waiting_for_response == false && personsFound.length == 0 && error == null" style="text-align: center" text-wrap>
+  <p *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)" style="text-align: center" text-wrap>
     {{ "page.persons.no_results" | translate }}
   </p>
 
   <p *ngIf="error != null" style="text-align: center" text-wrap>
     {{ "alert.network" | translate }} <br/><br/>
-    {{error.name}}<br/>
+    <!-- {{error.name}}<br/>
     {{error.message}}<br/>
-    {{error.error}}<br/>
+    {{error.error}}<br/> -->
   </p>
 
   <ion-list text-wrap no-lines>
@@ -36,9 +37,9 @@
         <h2 >{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
         <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>
         <expandable [expanded]="person.expanded">
-          <p *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
-          <p *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
-          <p *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
+          <p class="personContactDetails" *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
+          <p class="personContactDetails" *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
+          <p class="personContactDetails" *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
         </expandable>
       </ion-item>
     </ng-container>

@@ -162,6 +162,7 @@ border: 1px solid #ededed;
 .scroll-content {
     padding-left:5px;
     padding-right:5px;
+    overflow-y:auto !important;
 }
 
 ion-app.md [padding] .scroll-content {
