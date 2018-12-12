@@ -26,7 +26,6 @@ export class PopoverButtonComponent {
   presentPopover(myEvent) {
     this.storage.get('userInformation').then(
       (userInformation:IOIDCUserInformationResponse) => {
-        console.log(userInformation);
         let popover = this.popoverCtrl.create(
           MorePopoverComponent,
           {userInformation:userInformation}
