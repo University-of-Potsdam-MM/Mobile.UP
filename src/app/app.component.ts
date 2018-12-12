@@ -1,11 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  Platform,
-  Nav,
-  ViewController,
-  NavParams,
-  PopoverController
-} from 'ionic-angular';
+import { Platform, Nav } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -26,7 +20,6 @@ import {
 } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
-import { MorePopoverComponent } from "../components/more-popover/more-popover";
 
 @Component({
   templateUrl: 'app.html'
@@ -47,8 +40,7 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private cache: CacheService,
-    private loginProvider: UPLoginProvider,
-    private popoverCtrl: PopoverController
+    private loginProvider: UPLoginProvider
   ) {
     this.initializeApp();
   }
