@@ -9,7 +9,8 @@
   <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'page.emergency.placeholder.search' | translate"
-    (input)="filterItems(query)">
+    (input)="filterItems(query)"
+    debounce="750">
   </ion-searchbar>
 
 </ion-header>
