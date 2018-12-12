@@ -22,7 +22,7 @@
   <h5 *ngIf="intervals.length > 0" padding-left>{{ "page.openingHours.title" | translate }}</h5>
   <ion-list class="openingDetails" *ngIf="intervals.length > 0">
     <ion-item *ngFor="let timespot of intervals">
-      <b>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString() }}</b><span item-end>{{ parseDate(timespot[0], timespot[1]) }}</span>
+      <b>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString(translate.currentLang) }}</b><span item-end>{{ parseDate(timespot[0], timespot[1]) }}</span>
     </ion-item>
   </ion-list>
   <div *ngIf="intervals.length > 0 && !every_week_is_same" padding style="font-size: smaller">
