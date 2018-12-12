@@ -225,7 +225,7 @@ export class MensaPage {
 
   vegetarianOnly() {
     this.onlyVeggieFood = !this.onlyVeggieFood;
-    this.onlyVeganFood = this.onlyVeggieFood;
+    this.onlyVeganFood = false;
 
     this.noMealsForDate = true;
     var i;
