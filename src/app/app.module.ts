@@ -48,6 +48,7 @@ import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
+import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -180,7 +181,8 @@ export const deepLinkConfig: DeepLinkConfig = {
       useFactory: initConfig,
       deps: [ConfigProvider],
       multi: true
-    }
+    },
+    SessionProvider
 
   ]
 })
