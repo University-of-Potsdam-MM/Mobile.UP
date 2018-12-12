@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {IonicPage, NavController } from 'ionic-angular';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Storage} from "@ionic/storage";
 import {ISession} from "../../providers/login-provider/interfaces";
 import {LoginPage} from "../login/login";
 import {IConfig, IPerson,} from "../../library/interfaces";
+import { Platform } from 'ionic-angular/platform/platform';
+import { Keyboard } from '@ionic-native/keyboard';
 
 /**
  * PersonsPage
@@ -31,6 +33,8 @@ export class PersonsPage {
   constructor(
     private navCtrl: NavController,
     private http: HttpClient,
+    private platform: Platform,
+    private keyboard: Keyboard,
     private storage: Storage) {
   }
 
@@ -45,6 +49,13 @@ export class PersonsPage {
       this.navCtrl.push(LoginPage).then(
         result => console.log("[PersonsPage]: Pushed LoginPage")
       );
+    }
+  }
+
+  // hides keyboard once the user is scrolling
+  onScrollListener() {
+    if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
+      this.keyboard.hide();
     }
   }
 

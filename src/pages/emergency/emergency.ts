@@ -5,12 +5,14 @@ import {
 import {
   IonicPage,
   NavController,
-  NavParams
+  NavParams,
+  Platform
 } from 'ionic-angular';
 import {
   EmergencyCall
 } from "../../library/interfaces";
 import * as jquery from "jquery";
+import { Keyboard } from "@ionic-native/keyboard";
 
 /**
  * Class for a page that shows EmergencyCall entries. The list of items can
@@ -35,6 +37,8 @@ export class EmergencyPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private keyboard: Keyboard,
+    private platform: Platform,
     private chRef: ChangeDetectorRef) {
     this.loadData();
     this.initializeList();
@@ -56,6 +60,13 @@ export class EmergencyPage {
    */
   public loadData(): void {
     this.defaultList = require("../../assets/json/emergency");
+  }
+
+  // hides keyboard once the user is scrolling
+  onScrollListener() {
+    if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
+      this.keyboard.hide();
+    }
   }
 
   /**

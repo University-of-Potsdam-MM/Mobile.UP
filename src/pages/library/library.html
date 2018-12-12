@@ -12,7 +12,7 @@
   debounce="750"></ion-searchbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="onScrollListener()">
   <div align="center" *ngIf="isLoading"  padding>
     <ion-spinner></ion-spinner>
   </div>

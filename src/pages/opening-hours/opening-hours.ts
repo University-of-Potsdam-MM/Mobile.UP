@@ -7,6 +7,8 @@ import { IConfig } from '../../library/interfaces';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { DetailedOpeningPage } from '../detailed-opening/detailed-opening';
+import { Platform } from 'ionic-angular/platform/platform';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
 @Component({
@@ -23,7 +25,14 @@ export class OpeningHoursPage {
   weekday = [];
   isLoaded;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private translate: TranslateService, private storage: Storage, private cache: CacheService, private http: HttpClient) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private translate: TranslateService,
+              private storage: Storage,
+              private cache: CacheService,
+              private platform: Platform,
+              private keyboard: Keyboard,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -55,6 +64,13 @@ export class OpeningHoursPage {
         this.isLoaded = true;
       });
     });
+  }
+
+  // hides keyboard once the user is scrolling
+  onScrollListener() {
+    if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
+      this.keyboard.hide();
+    }
   }
 
   itemSelected(item, index) {

@@ -1,4 +1,3 @@
-++++
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle right>
@@ -14,7 +13,7 @@
   </ion-searchbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding (ionScroll)="onScrollListener()">
 
   <p *ngIf="!response_received && query.length > 0" style="text-align: center">
     <ion-spinner></ion-spinner>

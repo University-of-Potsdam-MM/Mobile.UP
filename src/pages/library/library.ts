@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { IConfig } from '../../library/interfaces';
 import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
 @Component({
@@ -23,11 +24,23 @@ export class LibraryPage {
   bookList = [];
   numberOfRecords = "0";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private http: HttpClient) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private storage: Storage,
+              private keyboard: Keyboard,
+              private platform: Platform,
+              private http: HttpClient) {
   }
 
   async ngOnInit() {
     this.config = await this.storage.get("config");
+  }
+
+  // hides keyboard once the user is scrolling
+  onScrollListener() {
+    if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
+      this.keyboard.hide();
+    }
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
