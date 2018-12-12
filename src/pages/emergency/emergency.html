@@ -18,42 +18,39 @@
 <ion-content (ionScroll)="onScrollListener()">
   <!-- list of emergencyCalls -->
   <ion-list>
-    <!-- template for emergencyCalls -->
-    <ion-card *ngFor="let emergencyCall of displayedList">
+    <ion-item-sliding *ngFor="let emergencyCall of displayedList">
+      <!-- template for emergencyCalls -->
+      <ion-item (click)="expand(emergencyCall)">
+        <!--ion-avatar item-start>
+            <ion-icon name="person" padding-right></ion-icon>
+        </ion-avatar-->
+        <h2>{{emergencyCall.name}}</h2>
+        <p text-wrap *ngIf="emergencyCall.description">{{emergencyCall.description}}</p>
 
-      <ion-card-header left color="primary">
-        <ion-icon name="person" padding-right></ion-icon>
-        {{emergencyCall.name}}
-      </ion-card-header>
+        <expandable [expanded]="emergencyCall.expanded">
+            <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.street">{{emergencyCall.address.street}}</p>
+            <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.postal">{{emergencyCall.address.postal}}</p>
+        </expandable>
 
-      <ion-card-content right>
-        <div *ngIf="emergencyCall.description">
-          {{emergencyCall.description}}
-        </div>
+        <button ion-button clear icon-only item-end *ngIf="emergencyCall.address">
+          <ion-icon name="arrow-dropdown" *ngIf="!emergencyCall.expanded"></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="emergencyCall.expanded"></ion-icon>
+        </button>
 
-        <div>
-          <ion-icon name="call" padding-right></ion-icon>
+      </ion-item>
+
+      <ion-item-options side="right">
+        <button ion-button color="primary" *ngIf="emergencyCall.contact.mail">
+            <ion-icon name="mail"></ion-icon>
+            <a href="mailto: {{emergencyCall.contact.mail}}">E-Mail</a>
+          </button>
+        <button ion-button color="secondary">
+          <ion-icon name="call"></ion-icon>
           <a href="tel: {{emergencyCall.contact.telephone}}">{{emergencyCall.contact.telephone}}</a>
-        </div>
+        </button>
+      </ion-item-options>
 
-        <div *ngIf="emergencyCall.contact.mail">
-          <ion-icon name="mail" padding-right></ion-icon>
-          <a href="mailto: {{emergencyCall.contact.mail}}">{{emergencyCall.contact.mail}}</a>
-        </div>
-
-        <div *ngIf="emergencyCall.address">
-          <p *ngIf="emergencyCall.address.postal">
-            <b>{{"page.emergency.item.postal" | translate}}</b>
-            {{emergencyCall.address.postal}}
-          </p>
-          <p *ngIf="emergencyCall.address.street">
-            <b>{{"page.emergency.item.street" | translate}}</b>
-            {{emergencyCall.address.street}}
-          </p>
-        </div>
-      </ion-card-content>
-
-    </ion-card>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>
 

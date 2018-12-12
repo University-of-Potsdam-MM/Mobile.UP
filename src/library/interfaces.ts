@@ -31,7 +31,8 @@ export interface Address {
 export interface EmergencyCall {
     name:       string,
     contact:    Contact,
-    address?:   Address
+    address?:   Address,
+    expanded: boolean
 }
 
 
