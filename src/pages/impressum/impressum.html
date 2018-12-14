@@ -5,13 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="logo-row">
-    <ion-col></ion-col>
-    <ion-col></ion-col>
-    <ion-col width-67>
-      <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
-    </ion-col>
-  </ion-row>
+  <ion-grid>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col width-67>
+        <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-list>
     <ion-item><b>{{ "page.imprint.listHeader" | translate }}</b></ion-item>
     <button ion-item detail-push (click)="openPage('LegalNoticePage')">{{ "page.legalNotice.title" | translate }}</button>

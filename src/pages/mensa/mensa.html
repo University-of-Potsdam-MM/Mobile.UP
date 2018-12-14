@@ -18,12 +18,14 @@
   </div>
 
   <div align="center" *ngIf="isLoaded">
-    <ion-col>
-      <button ion-button small [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
-      (click)="showBasicCalendar = !showBasicCalendar;" icon-end>Datum  <ion-icon name="arrow-dropdown"></ion-icon></button>
-      <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
-      <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
-    </ion-col>
+    <ion-row>
+      <ion-col>
+        <button ion-button small [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
+        (click)="showBasicCalendar = !showBasicCalendar;" icon-end>Datum  <ion-icon name="arrow-dropdown"></ion-icon></button>
+        <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
+        <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
+      </ion-col>
+    </ion-row>
   </div>
 
   <ion-calendar *ngIf="showBasicCalendar" [(ngModel)]="date"
@@ -50,7 +52,7 @@
         <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
           <ion-icon name="" item-start></ion-icon>
           {{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }} <br>
-          {{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }} <br> 
+          {{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }} <br>
           <div text-wrap>
             <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
               ({{ allergen.shortName }})

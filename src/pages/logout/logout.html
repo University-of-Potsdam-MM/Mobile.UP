@@ -7,15 +7,16 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-  <ion-row class="logo-row">
-    <ion-col></ion-col>
-    <ion-col width-67>
-      <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
-    </ion-col>
-    <ion-col></ion-col>
-  </ion-row>
+  <ion-grid>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col width-67>
+        <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div align="center" *ngIf="alreadyLoggedIn">
     {{ "page.logout.affirmativeQuestion" | translate }} <br> <br>

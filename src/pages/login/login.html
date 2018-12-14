@@ -8,34 +8,37 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-row class="logo-row">
-    <ion-col></ion-col>
-    <ion-col width-67>
-      <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
-    </ion-col>
-    <ion-col></ion-col>
-  </ion-row>
+  <ion-grid>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col width-67>
+        <img src="assets/imgs/logo/logo_uni_potsdam.svg"/>
+      </ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div *ngIf="!alreadyLoggedIn">
     <form (ngSubmit)="login()" #registerForm="ngForm">
-      <ion-row>
-        <ion-col>
-          <ion-list inset>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+
+              <ion-item>
+                <ion-input
+                  autocapitalize="none"
+                  type="text"
+                  [placeholder]="'page.login.placeHolder.username' | translate"
+                  name="id"
+                  [(ngModel)]="loginCredentials.username"
+                  required
+                ></ion-input>
+              </ion-item>
 
             <ion-item>
               <ion-input
-                autocapitalize="none"
-                type="text"
-                [placeholder]="'page.login.placeHolder.username' | translate"
-                name="id"
-                [(ngModel)]="loginCredentials.username"
-                required
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input
-                clearOnEdit="false" 
+                clearOnEdit="false"
                 type="password"
                 [placeholder]="'page.login.placeHolder.password' |translate"
                 name="password"
@@ -60,7 +63,7 @@
           </button>
         </ion-col>
       </ion-row>
-
+     </ion-grid>
     </form>
   </div>
 
