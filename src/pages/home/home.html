@@ -7,7 +7,7 @@
 
 <ion-content padding>
 
-  <h2><ion-icon name=star></ion-icon>&nbsp;Favoriten</h2>
+  <h2><ion-icon name=star></ion-icon>{{ "page.home.favorites" | translate }}</h2>
   <ion-list class="row shortcutlist">
     <!-- list of shortcuts -->
 
@@ -16,7 +16,7 @@
 
       <div *ngIf="module.selected" >
         <ion-icon [name]="module.icon"></ion-icon>
-        {{ module.i18nKey | translate }}
+        <div class="hyphen">{{ module.i18nKey | translate }}</div>
       </div>
     </ion-item>
   </ion-list>
