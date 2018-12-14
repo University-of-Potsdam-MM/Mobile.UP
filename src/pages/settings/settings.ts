@@ -26,25 +26,6 @@ export class SettingsPage {
 
     //register settings for loading
     this.settings = Constants.SETTINGS;
-
-    for (let i = 0; i < this.settings.length; i++) {
-      this.translate.get("page.settings.setting." + this.settings[i].key).subscribe(
-        value => {
-          this.settings[i].lbl = value.lbl;
-          this.settings[i].info = value.info;
-          if (value.options != null) {
-            for (let h = 0; h < this.settings[i].options.length; h++) {
-              if (value.options[this.settings[i].options[h].key] == null) {
-                this.settings[i].options[h].lbl = this.settings[i].options[h].key;
-              } else {
-                this.settings[i].options[h].lbl = value.options[this.settings[i].options[h].key];
-              }
-            }
-          }
-        }
-      )
-    }
-
     this.loadInitialSettings();
 
     setTimeout(()=>{ this.settings_initializes = true; }, 500);
@@ -86,7 +67,7 @@ export class SettingsPage {
     if (setting.type == ESettingType.string || setting.type == ESettingType.number) {
       input.push({
         name: setting.key,
-        label: setting.lbl, //TODO localize
+        label: this.translate.instant("page.settings.setting." + setting.key + ".lbl"),
         value: setting.value,
         icon: setting.icon,
         type: type
@@ -105,9 +86,17 @@ export class SettingsPage {
           }
         }
 
+        var optionLbl;
+        this.translate.get("page.settings.setting." + setting.key).subscribe(value => {
+          if (value.options) {
+            if (value.options[option.key] == null) {
+              optionLbl = option.key;
+            } else { optionLbl = value.options[option.key] }
+          } else { optionLbl = option.key }
+        });
         input.push({
           name: setting.key + "." + option.key,
-          label: option.lbl, //TODO localize
+          label: optionLbl,
           value: option.key,
           icon: setting.icon,
           checked: checked,
@@ -116,19 +105,18 @@ export class SettingsPage {
       }
     }
 
-    let text_ok = "Ok";
-    let text_cancel = "Cancel";
+    let text_ok = this.translate.instant("button.ok");
+    let text_cancel = this.translate.instant("button.cancel");
 
-    this.translate.get("button").subscribe(
-      value => {
-        text_ok = value.ok;
-        text_cancel = value.cancel;
+    var infoText = "";
+    this.translate.get("page.settings.setting." + setting.key).subscribe(value => {
+      if (value.info) {
+        infoText = value.info;
       }
-    );
-
+    });
     let alert = this.alertCtrl.create({
-      title: setting.lbl,
-      subTitle: setting.info,
+      title: this.translate.instant("page.settings.setting." + setting.key + ".lbl"),
+      subTitle: infoText,
       inputs: input,
       buttons: [
         {
@@ -149,6 +137,21 @@ export class SettingsPage {
       ]
     });
     alert.present();
+  }
+
+  getValueLabel(setting: ISetting) {
+    if (setting.options) {
+      var optionLbl;
+      this.translate.get("page.settings.setting." + setting.key).subscribe(value => {
+        if (value.options) {
+          if (value.options[setting.value] == null) {
+            optionLbl = setting.value;
+          } else { optionLbl = value.options[setting.value] }
+        } else { optionLbl = setting.value }
+      });
+
+      return optionLbl;
+    } else { return setting.value; }
   }
 
   /**

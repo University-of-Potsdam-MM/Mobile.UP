@@ -430,7 +430,6 @@ export interface ISetting {
 
 export interface ISettingOption {
   key:any;
-  lbl:string;
 }
 
 export interface IGradeResponse {
