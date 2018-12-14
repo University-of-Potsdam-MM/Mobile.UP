@@ -154,12 +154,6 @@ export function createEventSource(studentCourses:ICourse[],
         let begin = eventRules.begin.all();
         let end = eventRules.end.all();
 
-        let addHour = (date, hours) => {
-          var result = new Date(date);
-          result.setDate(result.getHours() + hours);
-          return result;
-        };
-
         // now iterate over all created single dates and combine them into one
         // IEventObject
         for(let i=0; i<begin.length; i++){
