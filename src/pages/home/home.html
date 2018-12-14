@@ -1,7 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ "appName" | translate }}</ion-title>
-    <popover-button></popover-button>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="app.presentPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
