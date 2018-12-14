@@ -87,13 +87,13 @@ export class RoomsPage {
    * @param {IHouse} house - current house
    * @param {IRoom} room - selected room in current house
    */
-  openRoomPlan(house:IHouse, room:IRoom){
-    this.navCtrl.push(RoomplanPage, {
-      house: house,
-      room: room,
-      campus: this.current_location
-    })
-  }
+  // openRoomPlan(house:IHouse, room:IRoom){
+  //   this.navCtrl.push(RoomplanPage, {
+  //     house: house,
+  //     room: room,
+  //     campus: this.current_location
+  //   })
+  // }
 
   /**
    * Called by refresher element to refresh info

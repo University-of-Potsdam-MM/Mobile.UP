@@ -181,12 +181,14 @@
       "title":"College sports"
     },
     "rooms": {
-      "title": "Available rooms"
+      "title": "Available rooms",
+      "time": "Time of day"
     },
     "roomplan": {
       "title": "Roomplan",
       "no_house": "The chosen house is free all-day.",
-      "no_room": "The chosen room is free all-day."
+      "no_room": "The chosen room is free all-day.",
+      "date": "Date"
     },
     "openingHours":{
       "title":"Opening hours",
@@ -240,7 +242,7 @@
     }
   },
   "words": {
-    "clock": "Clock",
+    "clock": "",
     "house": "House",
     "of": "of",
     "results": "results"

@@ -17,6 +17,7 @@
   </ion-refresher>
 
   <ion-item>
+      <ion-label>{{ "page.roomplan.date" | translate }}</ion-label>
     <ion-select [(ngModel)]="select_day" (ionChange)="changeDay()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
       <ion-option *ngFor="let day of days" [value]="day.value">{{day.lbl | date:'dd.MM.yyyy'}}</ion-option>
     </ion-select>
