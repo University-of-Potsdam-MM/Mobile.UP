@@ -16,6 +16,7 @@
   </ion-refresher>
 
   <ion-item>
+    <ion-label>{{ "page.rooms.time" | translate }}</ion-label>
     <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
       <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
       </ion-option>
@@ -41,9 +42,9 @@
         <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
       </ion-card-header>
       <expandable [expanded]="house.expanded">
-        <button ion-item (click)="openRoomPlan(house,room)" *ngFor="let room of house.rooms">
+        <ion-item *ngFor="let room of house.rooms">
           {{room.lbl}}
-        </button>
+        </ion-item>
       </expandable>
 
     </ion-card>
