@@ -20,7 +20,7 @@
       <ion-item detail-push *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
         <ion-icon name="{{setting.icon}}" item-start></ion-icon>
         {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
-        <div item-content>{{setting.value}}</div>
+        <div item-content>{{ getValueLabel(setting) }}</div>
       </ion-item>
     </div>
   </ion-item-group>

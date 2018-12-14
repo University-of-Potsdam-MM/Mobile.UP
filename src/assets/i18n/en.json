@@ -173,7 +173,11 @@
           "lbl": "Campus"
         },
         "language": {
-          "lbl": "Language"
+          "lbl": "Language",
+          "options": {
+            "Deutsch": "German",
+            "Englisch": "English"
+          }
         }
       }
     },

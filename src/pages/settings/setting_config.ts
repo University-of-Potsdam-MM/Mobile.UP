@@ -6,14 +6,14 @@ export const SETTINGS = [
     {
         key: "language",
         value: "Deutsch",
-        options: [{key: "Deutsch", lbl: "Deutsch"}, {key: "Englisch", lbl: "Englisch"}],
+        options: [{key: "Deutsch"}, {key: "Englisch"}],
         type: ESettingType.string_radio,
         icon: "ios-globe-outline"
     },
     {
         key: "campus",
         value: "Griebnitzsee",
-        options: [{key: "Neues Palais", lbl: "Neues Palais"}, {key: "Griebnitzsee", lbl: "Griebnitzsee"}, {key: "Golm", lbl: "Golm"}],
+        options: [{key: "Neues Palais"}, {key: "Griebnitzsee"}, {key: "Golm"}],
         type: ESettingType.string_radio,
         icon: "ios-locate-outline"
     }

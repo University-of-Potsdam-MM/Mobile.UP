@@ -186,7 +186,11 @@
           "lbl": "Campus"
         },
         "language": {
-          "lbl": "Sprache"
+          "lbl": "Sprache",
+          "options": {
+            "Deutsch": "Deutsch",
+            "Englisch": "Englisch"
+          }
         }
       }
     },
