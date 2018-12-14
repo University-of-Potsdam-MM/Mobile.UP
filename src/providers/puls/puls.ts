@@ -58,15 +58,7 @@ export class PulsProvider {
           // we're having a contradiction here, the password is wrong, but
           // the token is still valid. We'll log the user out and send the
           // user to LoginPage
-          let alert = this.alertCtrl.create({
-            title: this.translate.instant("alert.title.error"),
-            subTitle: this.translate.instant("alert.token_valid_credentials_invalid"),
-            buttons: [ this.translate.instant("button.continue") ]
-          });
-          this.storage.set('session', null);
-          this.storage.set('userInformation', null);
-          alert.present();
-          this.app.getRootNav().push(LoginPage)
+          this.handleSpecialCase();
         } else {
           rs.next(response);
         }
@@ -77,6 +69,21 @@ export class PulsProvider {
     );
 
     return rs;
+  }
+
+  /**
+   * handles special case as described in #81
+   */
+  public handleSpecialCase(){
+    this.storage.set('session', null);
+    this.storage.set('userInformation', null);
+    let alert = this.alertCtrl.create({
+      title: this.translate.instant("alert.title.error"),
+      subTitle: this.translate.instant("alert.token_valid_credentials_invalid"),
+      buttons: [ this.translate.instant("button.continue") ]
+    });
+    alert.present();
+    this.app.getRootNav().push(LoginPage)
   }
 
 }
