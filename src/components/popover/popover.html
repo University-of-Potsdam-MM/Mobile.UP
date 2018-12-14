@@ -3,7 +3,7 @@
   <!-- logged in -->
   <ng-template #loggedInTemplate>
     <ion-list>
-      <ion-list-header>{{ "popover.loggedInText" | translate}}: {{ userInformation.name }} ({{userInformation.sub}})</ion-list-header>
+      <ion-item>{{ "popover.loggedInText" | translate}}:<br />{{ userInformation.name }} ({{userInformation.sub}})</ion-item>
       <button ion-item (click)="toSettings()">
         <ion-icon name="settings"></ion-icon>
         {{ "page.settings.title" | translate }}

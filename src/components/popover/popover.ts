@@ -16,8 +16,8 @@ import { SettingsPage } from "../../pages/settings/settings";
  * Components.
  */
 @Component({
-  selector: 'more-popover',
-  templateUrl: 'more-popover.html'
+  selector: 'popover',
+  templateUrl: 'popover.html'
 })
 export class PopoverComponent {
 
