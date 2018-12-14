@@ -2,7 +2,8 @@
   "appName": "Mobile.UP",
   "page":{
     "home":{
-      "title": "Homepage"
+      "title": "Homepage",
+      "favorites": "Favorites"
     },
     "imprint":{
       "title": "Legal Notice",
