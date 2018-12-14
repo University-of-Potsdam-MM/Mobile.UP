@@ -1,15 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle right>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>{{ "page.library.title" | translate}}</ion-title>
   </ion-navbar>
+
   <ion-searchbar
-  [(ngModel)]="query"
-  [placeholder]="'page.library.placeholder.search' | translate"
-  (ionInput)="searchLibrary(true)"
-  debounce="750"></ion-searchbar>
+    [(ngModel)]="query"
+    [placeholder]="'page.library.placeholder.search' | translate"
+    (ionInput)="searchLibrary(true)"
+    debounce="750">
+  </ion-searchbar>
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
