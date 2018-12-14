@@ -22,10 +22,6 @@ export class TabBarComponent {
         break;
       }
       case 1: {
-        this.navCtrl.push(SettingsPage);
-        break;
-      }
-      case 2: {
         this.navCtrl.push(ImpressumPage);
         break;
       }

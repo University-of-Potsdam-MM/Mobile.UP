@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController, NavParams,
+  PopoverController,
+  ViewController
+} from 'ionic-angular';
 import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { IModule } from "../../library/interfaces";
@@ -59,15 +64,13 @@ export class HomePage {
           })
         }
       }
-    )
-    // console.log(this.sortedModules);
+    );
   }
 
   /**
-   * convertes json object to array
+   * converts json object to array
    * @param modules
    */
-
   JsonToArray(modules){
     var array = [];
     for (var key in modules){
