@@ -205,6 +205,7 @@ export class MobileUPApp {
     // }
   }
 
+
   /**
    * opens a page when link is clicked
    * @param page

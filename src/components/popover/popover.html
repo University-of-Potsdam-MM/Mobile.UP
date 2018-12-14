@@ -1,0 +1,36 @@
+<ion-content>
+
+  <!-- logged in -->
+  <ng-template #loggedInTemplate>
+    <ion-list>
+      <ion-item>{{ "popover.loggedInText" | translate}}:<br />{{ userInformation.name }} ({{userInformation.sub}})</ion-item>
+      <button ion-item (click)="toSettings()">
+        <ion-icon name="settings"></ion-icon>
+        {{ "page.settings.title" | translate }}
+      </button>
+      <button ion-item (click)="toLogout()">
+        <ion-icon name="log-out"></ion-icon>
+        {{ "button.logout" | translate }}
+      </button>
+    </ion-list>
+  </ng-template>
+
+  <!-- not logged in -->
+  <ng-template #notLoggedInTemplate>
+    <ion-list>
+      <ion-list-header>{{ "popover.notLoggedInText" | translate}}</ion-list-header>
+      <button ion-item (click)="toSettings()">
+        <ion-icon name="settings"></ion-icon>
+        {{ "page.settings.title" | translate }}
+      </button>
+      <button ion-item (click)="toLogin()">
+        <ion-icon name="log-in"></ion-icon>
+        {{ "button.login" | translate }}
+      </button>
+    </ion-list>
+  </ng-template>
+
+  <ng-container *ngIf="userInformation!=null; then loggedInTemplate; else notLoggedInTemplate ">
+  </ng-container>
+
+</ion-content>
