@@ -44,10 +44,6 @@
       "title": "Emergency numbers",
       "placeholder": {
         "search": "Search..."
-      },
-      "item": {
-        "postal": "Location:",
-        "street": "Street:"
       }
     },
     "persons": {

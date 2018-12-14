@@ -44,10 +44,6 @@
       "title": "Notrufnummern",
       "placeholder": {
         "search": "Suchbegriff eingeben..."
-      },
-      "item": {
-        "postal": "Ort:",
-        "street": "Straße:"
       }
     },
     "persons": {
