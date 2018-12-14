@@ -1,6 +1,6 @@
 import { Directive, HostListener } from '@angular/core';
 import { IOIDCUserInformationResponse } from "../../providers/login-provider/interfaces";
-import { MorePopoverComponent } from "../more-popover/more-popover";
+import { PopoverComponent } from "./popover";
 import { PopoverController } from "ionic-angular";
 import { Storage } from "@ionic/storage";
 
@@ -16,7 +16,7 @@ export class PopoverButton{
     this.storage.get('userInformation').then(
       (userInformation:IOIDCUserInformationResponse) => {
         let popover = this.popoverCtrl.create(
-          MorePopoverComponent,
+          PopoverComponent,
           {userInformation:userInformation}
         );
         popover.present({

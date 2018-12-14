@@ -46,10 +46,10 @@ import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
-import { MorePopoverComponent } from "../components/more-popover/more-popover";
+import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
-import { PopoverButton } from "../components/popover-button/popover-button";
+import { PopoverButton } from "../components/popover/popover-button";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -163,7 +163,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     TimetablePage,
     EventModal,
-    MorePopoverComponent
+    PopoverComponent
   ],
   providers: [
     StatusBar,
