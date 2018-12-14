@@ -125,8 +125,6 @@ export class LoginPage {
       loginCredentials.username = loginCredentials.username.substring(0, foundAt);
     }
 
-    console.log(loginCredentials.username);
-
     return loginCredentials;
   }
 
