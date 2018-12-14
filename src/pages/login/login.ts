@@ -123,6 +123,7 @@ export class LoginPage {
     let foundAt = loginCredentials.username.indexOf("@");
     if (foundAt != -1) {
       loginCredentials.username = loginCredentials.username.substring(0, foundAt);
+      this.loginCredentials.username = loginCredentials.username;
     }
 
     return loginCredentials;
