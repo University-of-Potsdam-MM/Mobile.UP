@@ -37,6 +37,7 @@ export class LogoutPage {
    */
   public doLogout() {
     this.storage.set("session", null);
+    this.storage.set("userInformation", null);
     var i; // clear saved grades from storage
     for (i = 0; i < 10; i++) { this.storage.remove("studentGrades["+i+"]"); }
     this.cache.clearAll();

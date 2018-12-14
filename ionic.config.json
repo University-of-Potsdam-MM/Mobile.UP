@@ -3,5 +3,12 @@
   "integrations": {
     "cordova": {}
   },
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "proxyUrl": "http://apiup.uni-potsdam.de/",
+      "path": "/apiup"
+    }
+  ],
+  "app_id": ""
 }
