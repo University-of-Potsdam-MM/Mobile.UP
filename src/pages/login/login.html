@@ -36,32 +36,33 @@
                 ></ion-input>
               </ion-item>
 
-              <ion-item>
-                <ion-input
-                  type="password"
-                  [placeholder]="'page.login.placeHolder.password' |translate"
-                  name="password"
-                  [(ngModel)]="loginCredentials.password"
-                  required
-                ></ion-input>
-              </ion-item>
+            <ion-item>
+              <ion-input
+                clearOnEdit="false"
+                type="password"
+                [placeholder]="'page.login.placeHolder.password' |translate"
+                name="password"
+                [(ngModel)]="loginCredentials.password"
+                required
+              ></ion-input>
+            </ion-item>
 
-            </ion-list>
-          </ion-col>
-        </ion-row>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <button ion-button class="submit-btn" full type="submit">
-              {{ "button.login" | translate }}
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button full type="button" (click)="abort()">
-              {{ "button.cancel" | translate }}
-            </button>
-          </ion-col>
-        </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button full type="button" (click)="abort()">
+            {{ "button.cancel" | translate }}
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button class="submit-btn" full type="submit">
+            {{ "button.login" | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
      </ion-grid>
     </form>
   </div>

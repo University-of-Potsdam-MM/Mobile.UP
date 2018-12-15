@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HomePage } from '../../pages/home/home';
 import { ImpressumPage } from '../../pages/impressum/impressum';
-import { SettingsPage } from '../../pages/settings/settings';
 
 @Component({
   selector: 'tab-bar',

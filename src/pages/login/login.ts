@@ -71,7 +71,7 @@ export class LoginPage {
 
     // prepare Observable for use in switch
     let session:Observable<ISession> = this.upLogin.oidcLogin(
-      this.loginCredentials,
+      this.autoCorrectUsername(this.loginCredentials),
       config.authorization.oidc
     );
 
@@ -113,6 +113,17 @@ export class LoginPage {
       this.showAlert(ELoginErrors.UNKNOWN_ERROR);
       console.log("[LoginPage]: Somehow no session has been passed by login-provider");
     }
+  }
+
+  autoCorrectUsername(loginCredentials:ICredentials) {
+    // removes everything after (and including) @ in the username
+    let foundAt = loginCredentials.username.indexOf("@");
+    if (foundAt != -1) {
+      loginCredentials.username = loginCredentials.username.substring(0, foundAt);
+      this.loginCredentials.username = loginCredentials.username;
+    }
+
+    return loginCredentials;
   }
 
   /**
