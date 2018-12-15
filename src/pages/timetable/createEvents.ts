@@ -4,6 +4,7 @@ import {
   RRule,
   Weekday
 } from 'rrule'
+import * as moment from 'moment';
 
 export interface IEventRules {
   begin:RRule;
@@ -102,8 +103,7 @@ function createEventRules(event:IEvent, tzid):IEventRules{
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.startTime),
-      until: pulsToUTC(event.endDate, '24:00'),
-      tzid: tzid
+      until: pulsToUTC(event.endDate, '24:00')
     }),
     // create rule for end time on each day the event takes place
     end: new RRule({
@@ -111,8 +111,7 @@ function createEventRules(event:IEvent, tzid):IEventRules{
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.endTime),
-      until: pulsToUTC(event.endDate, '24:00'),
-      tzid: tzid
+      until: pulsToUTC(event.endDate, '24:00')
     })
   };
 }
@@ -158,6 +157,11 @@ export function createEventSource(studentCourses:ICourse[],
         // now iterate over all created single dates and combine them into one
         // IEventObject
         for(let i=0; i<begin.length; i++){
+          if(!moment(begin[i]).isDST()){
+            // compensate daylight saving time
+            begin[i].setHours(begin[i].getHours()+1);
+            end[i].setHours(end[i].getHours()+1);
+          }
           eventSource.push(<IEventObject>{
             id: e.eventId,
             title: c.courseName,
