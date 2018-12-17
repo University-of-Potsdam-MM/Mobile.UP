@@ -26,6 +26,10 @@ export class ConnectionProvider {
     }
   }
 
+  /**
+   * initializes the network event callbacks so network events are registered.
+   * Should be called in app.component.ts
+   */
   public initializeNetworkEvents(): void {
     this.network.onDisconnect().subscribe(() => {
       if (this.connectionState === EConnection.ONLINE) {
