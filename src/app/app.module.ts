@@ -21,6 +21,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
+import { PulsProvider } from '../providers/puls/puls';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -184,8 +185,8 @@ export const deepLinkConfig: DeepLinkConfig = {
       useFactory: initConfig,
       deps: [ConfigProvider],
       multi: true
-    }
-
+    },
+    PulsProvider
   ]
 })
 export class AppModule {
