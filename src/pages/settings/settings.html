@@ -9,6 +9,7 @@
   <ion-item-group>
     <div *ngFor="let setting of settings" style="border-bottom:solid #f4f4f4 2px !important" id="test_div">
       <ion-item *ngIf="getSettingType(setting) == 'boolean'">
+        <ion-icon name="{{setting.icon}}" item-start></ion-icon>
         <ion-label>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <ion-toggle checked="{{setting.value}}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
@@ -17,7 +18,7 @@
         {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
       </ion-item-divider>
 
-      <ion-item detail-push *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
+      <ion-item detail-push text-wrap *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
         <ion-icon name="{{setting.icon}}" item-start></ion-icon>
         {{ "page.settings.setting." + setting.key + ".lbl" | translate }}
         <div item-content>{{ getValueLabel(setting) }}</div>
