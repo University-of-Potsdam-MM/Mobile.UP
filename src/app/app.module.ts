@@ -50,6 +50,7 @@ import { EventModal, TimetablePage } from "../pages/timetable/timetable";
 import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
+import { DetailedPracticePage } from '../pages/detailed-practice/detailed-practice';
 import { PopoverButton } from "../components/popover/popover-button";
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -110,6 +111,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     EventModal,
     OpeningHoursPage,
     DetailedOpeningPage,
+    DetailedPracticePage,
     PopoverButton
   ],
   imports: [
@@ -162,6 +164,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     TermsOfUsePage,
     OpeningHoursPage,
     DetailedOpeningPage,
+    DetailedPracticePage,
     TimetablePage,
     EventModal,
     PopoverComponent

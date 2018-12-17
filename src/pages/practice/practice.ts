@@ -13,6 +13,7 @@ import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SettingsPage } from '../../pages/settings/settings';
+import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 
 
 @IonicPage()
@@ -169,18 +170,11 @@ export class PracticePage {
     }
   }
 
-  expandADS(ADS) {
-    for (let i = 0; i < this.defaultList.length; i++) {
-      if (this.defaultList[i].uid == ADS.uid) {
-        this.defaultList[i].expanded = !this.defaultList[i].expanded;
-      } else {
-        this.defaultList[i].expanded = false;
-      }
-    }
-  }
-
   openSettings(){
     this.navCtrl.push(SettingsPage);
   }
 
+  itemSelected(ads, index) {
+    this.navCtrl.push(DetailedPracticePage, { "ADS": ads, "list": this.displayedList[index] });
+  }
 }

@@ -68,7 +68,11 @@
         "student": "Job für Studierende",
         "graduate": "Job für Absolventen",
         "thesis": "Abschlussarbeit",
-        "praktika": "Praktika"
+        "praktika": "Praktika",
+        "firm": "Firma",
+        "art": "Art",
+        "field": "Studienrichtung",
+        "pubDate": "veröffentlicht am"
 
       },
       "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
@@ -210,12 +214,12 @@
         "studyarea" : {
           "lbl": "Studienrichtung",
           "options": {
-            "a": "Geistes- und Kulturwissenschaften",
-            "b": "Wirtschafts- und Sozialwissenschaften",
-            "c": "Mathematik und Informatik",
-            "d": "Naturwissenschaften",
-            "e": "Rechtswissenschaften",
-            "f": "Bildungs- und Kognitionswissenschaften",
+            "Geistes- und Kulturwissenschaften": "Geistes- und Kulturwissenschaften",
+            "Wirtschafts- und Sozialwissenschaften": "Wirtschafts- und Sozialwissenschaften",
+            "Mathematik und Informatik": "Mathematik und Informatik",
+            "Naturwissenschaften": "Naturwissenschaften",
+            "Rechtswissenschaften": "Rechtswissenschaften",
+            "Bildungs- und Kognitionswissenschaften": "Bildungs- und Kognitionswissenschaften",
             "g": "Sport- und Gesundheitswissenschaften",
             "h": "fächerübergreifend"
           }

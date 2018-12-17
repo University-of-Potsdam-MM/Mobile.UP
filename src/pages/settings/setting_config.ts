@@ -5,6 +5,7 @@ import { ESettingType } from "../../library/interfaces";
 export const SETTINGS = [
     {
         key: "general",
+        value: "",
         type: ESettingType.placeholder
     },
     {
@@ -23,12 +24,18 @@ export const SETTINGS = [
     },
     {
         key: "inpractice",
+        value: "",
         type: ESettingType.placeholder
     },
     {
         key: "practice",
         value: "Jobs für Studierende, Jobs für Absolventen, Abschlussarbeit, Praktika",
-        options: [{key: "Jobs für Studierende"}, {key: "Jobs für Absolventen"}, {key: "Abschlussarbeit"}, {key: "Praktika"}],
+        options: [
+            {key: "Jobs für Studierende"},
+            {key: "Jobs für Absolventen"},
+            {key: "Abschlussarbeit"},
+            {key: "Praktika"}
+        ],
         type: ESettingType.checkbox,
         icon: "ios-filing-outline"
     },
