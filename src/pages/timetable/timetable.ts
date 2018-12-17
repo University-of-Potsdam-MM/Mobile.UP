@@ -21,6 +21,7 @@ import {ITimeSelected} from "ionic2-calendar/calendar";
 import * as moment from 'moment';
 import {TranslateService} from "@ngx-translate/core";
 import {PulsProvider} from "../../providers/puls/puls";
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 
 function debug(text){
@@ -81,11 +82,13 @@ export class TimetablePage {
       private alertCtrl:AlertController,
       private translate: TranslateService,
       private modalCtrl:ModalController,
-      private puls:PulsProvider) {
+      private puls:PulsProvider,
+      private connection: ConnectionProvider) {
   }
 
   ionViewDidLoad(){
-    // TODO: check connections
+    this.connection.checkOnline(true, true);
+
     this.storage.get("session").then(
       (session:ISession) => {
         // check if we have a session

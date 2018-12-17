@@ -12,7 +12,7 @@ export enum EConnection {
 @Injectable()
 export class ConnectionProvider {
 
-  connectionState:EConnection;
+  private connectionState:EConnection;
 
   constructor(private network:    Network,
               private alertCtrl:  AlertController,
