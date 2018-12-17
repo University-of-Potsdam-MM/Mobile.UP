@@ -12,6 +12,7 @@ import {
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
+import { SettingsPage } from '../../pages/settings/settings';
 
 
 @IonicPage()
@@ -177,4 +178,9 @@ export class PracticePage {
       }
     }
   }
+
+  openSettings(){
+    this.navCtrl.push(SettingsPage);
+  }
+
 }
