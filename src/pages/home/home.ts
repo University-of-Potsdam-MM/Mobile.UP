@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import {
   IonicPage,
-  NavController, NavParams,
-  PopoverController,
-  ViewController
+  NavController
 } from 'ionic-angular';
 import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";

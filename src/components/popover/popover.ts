@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IOIDCUserInformationResponse } from "../../providers/login-provider/interfaces";
 import {
   App,
-  NavController,
   NavParams,
   ViewController } from "ionic-angular";
 import { LogoutPage } from "../../pages/logout/logout";
@@ -25,7 +24,6 @@ export class PopoverComponent {
 
   constructor(public viewCtrl: ViewController,
               private navParams:NavParams,
-              private navCtrl: NavController,
               private appCtrl: App) {
     this.userInformation = <IOIDCUserInformationResponse>this.navParams.get('userInformation');
   }
