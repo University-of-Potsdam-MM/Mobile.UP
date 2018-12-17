@@ -9,6 +9,7 @@ import {
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
 import { CacheService } from 'ionic-cache';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -51,10 +52,16 @@ export class MensaPage {
     public navParams: NavParams,
     private http: HttpClient,
     private cache: CacheService,
-    private storage: Storage) 
+    private storage: Storage,
+    private connection: ConnectionProvider)
   {
     this.currentDate = new Date();
     this.isLoaded = false;
+  }
+
+  ionViewDidLoad(){
+    this.connection.checkOnline(true, true);
+
   }
 
   /**

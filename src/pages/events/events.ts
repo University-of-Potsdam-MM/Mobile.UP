@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 import { CacheService } from 'ionic-cache';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -31,10 +32,16 @@ export class EventsPage {
   firstEventTodayForLocation = [];
   firstEventForLocation = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage:Storage, private http: HttpClient, private cache: CacheService) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private storage:Storage,
+              private http: HttpClient,
+              private cache: CacheService,
+              private connection: ConnectionProvider) {
   }
 
   ngOnInit() {
+    this.connection.checkOnline(true, true);
     this.loadEvents();
   }
 

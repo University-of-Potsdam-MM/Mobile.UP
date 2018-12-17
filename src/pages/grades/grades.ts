@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
 import {PulsProvider} from "../../providers/puls/puls";
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -37,7 +38,8 @@ export class GradesPage {
       private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage,
-      private puls:PulsProvider) {
+      private puls:PulsProvider,
+      private connection: ConnectionProvider) {
 
   }
 
@@ -46,6 +48,7 @@ export class GradesPage {
   }
 
   async ionViewDidLoad() {
+    this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
     this.storage.get("session").then(
       (session:ISession) => {

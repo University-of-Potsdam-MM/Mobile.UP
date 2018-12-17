@@ -7,6 +7,7 @@ import {LoginPage} from "../login/login";
 import {IConfig, IPerson,} from "../../library/interfaces";
 import { Platform } from 'ionic-angular/platform/platform';
 import { Keyboard } from '@ionic-native/keyboard';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 /**
  * PersonsPage
@@ -35,7 +36,8 @@ export class PersonsPage {
     private http: HttpClient,
     private platform: Platform,
     private keyboard: Keyboard,
-    private storage: Storage) {
+    private storage: Storage,
+    private connection: ConnectionProvider) {
   }
 
   /**
@@ -44,6 +46,7 @@ export class PersonsPage {
    * entered, other than ionViewDidLoad which will run only once
    */
   async ionViewWillEnter(){
+    this.connection.checkOnline(true, true);
     this.session = await this.storage.get("session");
     if(!this.session){
       this.navCtrl.push(LoginPage).then(
