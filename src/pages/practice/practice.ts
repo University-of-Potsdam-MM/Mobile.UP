@@ -14,6 +14,8 @@ import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { resolve } from 'dns';
 
 
 @IonicPage()
@@ -42,22 +44,55 @@ export class PracticePage {
     private keyboard: Keyboard,
     private cache: CacheService,
     public navParams: NavParams,
+    private settingsProvider: SettingsProvider,
     private chRef: ChangeDetectorRef) {
   };
 
+  /**
+   * @name practiceMapping
+   * @description maps numbers to practices, since practices are provided by number by the API
+   * @param num
+   */
+  private practiceMapping(num){
+    var practice ="";
+    switch (num) {
+      case "1":
+        practice = "Praktika";
+        break;
+      case "2":
+        practice = "Job für Studierende";
+        break;
+      case "3":
+        practice = "Job für Absolventen";
+        break;
+      case "4":
+        practice = "Abschlussarbeit";
+        break;
+    }
+    return practice;
+  }
+
+  /**
+   * @name initializeList
+   */
   public initializeList(): void {
     this.displayedList = this.defaultList;
   }
 
   async ngOnInit() {
     this.initializeList();
-    this.loadData();
+    this.loadData().then(res =>{
+      this.useFilterSettings();
+    });
+
   }
 
+
   /**
-   * loadData
+   * @name loadData
    *
-   * loads default items from json file
+   * @description loads default items from json file
+   * @param refresher
    */
   public async loadData(refresher?) {
     // reset array so new persons are displayed
@@ -69,7 +104,7 @@ export class PracticePage {
       this.waiting_for_response = true;
     }
 
-    console.log(`[PracticePage]: Quering ADS`);
+    //console.log(`[PracticePage]: Quering ADS`);
 
     let session: ISession = await this.storage.get("session");
     let config: IConfig = await this.storage.get("config");
@@ -107,7 +142,7 @@ export class PracticePage {
           // reset array so new persons are displayed
           this.defaultList = [];
           this.error = error;
-          console.log(error);
+          //console.log(error);
           this.waiting_for_response = false;
         }
       );
@@ -128,10 +163,10 @@ export class PracticePage {
     return found;
   }
 
+
   /**
-   * contains
-   *
-   * checks, whether y is a substring of x
+   * @name contains
+   * @description checks, whether y is a substring of x
    *
    * @param x:string String that does or does not contain string y
    * @param y:string String that is or is not contained in string y
@@ -148,32 +183,78 @@ export class PracticePage {
     }
   }
 
+
   /**
-   * filterItems
-   *
-   * when a query is typed into the searchbar this method is called. It
+   * @name useFilterSettings
+   * @description filters displayedList according to the preferences of the user
+   */
+  private async useFilterSettings(){
+    console.log(this.defaultList.length, this.displayedList.length);
+
+    var studyarea = await this.settingsProvider.getSettingValue("studyarea");
+    var practice = await this.settingsProvider.getSettingValue("practice");
+
+    console.log(this.displayedList.length);
+
+    // filter according to practice option
+    this.displayedList = jquery.grep(
+      this.defaultList, (ADS) => {
+        return practice.includes(this.practiceMapping(ADS.art))
+      }
+    )
+      console.log(this.displayedList.length);
+
+    // filter according to studyarea
+    this.displayedList = jquery.grep(
+      this.displayedList, (ADS) => {
+        return studyarea.includes(ADS.field)
+      }
+    )
+    console.log(this.displayedList.length);
+  }
+
+
+  /**
+   * @name filterItems
+   * @description when a query is typed into the searchbar this method is called. It
    * filters the complete list of items with the query and modifies the
    * displayed list accordingly.
    *
-   * @param query:string A query string the items will be filtered with
+   * @param query string A query string the items will be filtered with
    */
-  public filterItems(query: string): void {
+  public async filterItems(query: string) {
     this.initializeList();
-    if (query) {
-      this.displayedList = jquery.grep(
-        this.defaultList,
-        (ADS, index) => {
-          return this.contains(ADS.title, query);
-        }
-      );
+    this.useFilterSettings().then( resolve => {
+      if (query) {
+        this.displayedList = jquery.grep(
+          this.displayedList,
+          (ADS, index) => {
+            return this.contains(ADS.title, query);
+          }
+        );
+    }
+  });
+
+
       this.chRef.detectChanges();
     }
-  }
 
+
+  /**
+   * @name openSettings
+   * @description opens settings page
+   */
   openSettings(){
     this.navCtrl.push(SettingsPage);
   }
 
+
+  /**
+   * @name itemSelected
+   *
+   * @param ads     ads-item to be passed to detail page
+   * @param index   current position of the ads item in the list displayed
+   */
   itemSelected(ads, index) {
     this.navCtrl.push(DetailedPracticePage, { "ADS": ads, "list": this.displayedList[index] });
   }
