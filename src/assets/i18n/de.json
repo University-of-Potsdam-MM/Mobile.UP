@@ -237,7 +237,9 @@
       "uuid": "Benutzer-ID",
       "manufacturer": "Geräte-Hersteller",
       "model": "Geräte-Modell",
-      "version": "Version"
+      "version": "Version",
+      "appVersion": "App-Version",
+      "buildNumber": "Build-Nr."
     }
   },
   "button": {
