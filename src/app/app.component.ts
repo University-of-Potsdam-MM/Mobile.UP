@@ -18,6 +18,7 @@ import {
 } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
+import {ConnectionProvider} from "../providers/connection/connection";
 
 @Component({
   templateUrl: 'app.html'
@@ -38,7 +39,8 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private cache: CacheService,
-    private loginProvider: UPLoginProvider
+    private loginProvider: UPLoginProvider,
+    private connection: ConnectionProvider
   ) {
     this.initializeApp();
   }
@@ -50,6 +52,7 @@ export class MobileUPApp {
     await this.initConfig();
     await this.checkSessionValidity();
     await this.initTranslate();
+    this.connection.initializeNetworkEvents();
 
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {

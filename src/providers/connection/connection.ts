@@ -1,83 +1,75 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network';
 import { Observable } from 'rxjs/Observable';
-import { Platform } from 'ionic-angular';
-import {ReplaySubject} from "rxjs";
+import {AlertController, App, Events } from 'ionic-angular';
+import {TranslateService} from "@ngx-translate/core";
+import {HomePage} from "../../pages/home/home";
 
-/**
- * ConnectionProvider
- *
- * used to check whether a connection to the internet exists before making a
- * http call
- */
+export enum EConnection {
+  OFFLINE, ONLINE
+}
+
 @Injectable()
 export class ConnectionProvider {
 
-  constructor(private network: Network, private platform: Platform) {}
+  connectionState:EConnection;
 
-  /**
-   * checkOnline
-   *
-   * checks whether the device is connected to the internet. Returns Observable
-   * containing either true or false, corresponding to whether an internet
-   * connection is available or not
-   *
-   * @return Observable<boolean>
-   */
-  public checkOnlineAsPromise():Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      if (this.platform.is("cordova")) {
-        switch(this.network.type) {
-          case "unknown": {
-            // there obviously is 'some' network, so I guess it's okay
-            resolve(true);
-            break;
-          };
-          case "none": {
-            // there is no network
-            resolve(false);
-            break;
-          };
-          default: {
-            // there is some defined type of network
-            resolve(true);
-            break;
-          }
-        }
-      } else { resolve(true); }
-    });
+  constructor(private network:    Network,
+              private alertCtrl:  AlertController,
+              private translate:  TranslateService,
+              private eventCtrl:  Events,
+              private app:        App) {
+    if(this.network.type == this.network.Connection.NONE){
+      this.connectionState = EConnection.OFFLINE;
+    } else {
+      this.connectionState = EConnection.ONLINE;
+    }
   }
 
+  public initializeNetworkEvents(): void {
+    this.network.onDisconnect().subscribe(() => {
+      if (this.connectionState === EConnection.ONLINE) {
+        this.eventCtrl.publish('connection:offline');
+      }
+      this.connectionState = EConnection.OFFLINE;
+      console.log(`[ConnectionProvider]: Went ${EConnection[this.connectionState]}`);
+    });
+    this.network.onConnect().subscribe(() => {
+      if (this.connectionState === EConnection.OFFLINE) {
+        this.eventCtrl.publish('connection:online');
+      }
+      this.connectionState = EConnection.ONLINE;
+      console.log(`[ConnectionProvider]: Went ${EConnection[this.connectionState]}`);
+    });
+    console.log("[ConnectionProvider]: Initialized network events")
+  }
+
+
   /**
    * checkOnline
    *
-   * checks whether the device is connected to the internet. Returns Observable
-   * containing either true or false, corresponding to whether an internet
-   * connection is available or not
-   *
+   * returns connection state. Set showAlert and/or sendHome to true to show an alert
+   * about the connection state or/and send the user to HomePage
    * @return Observable<boolean>
    */
-  public checkOnline():Observable<boolean> {
-    return Observable.create(observer => {
-      if (this.platform.is("cordova")) {
-        switch(this.network.type) {
-          case "unknown": {
-            // there obviously is 'some' network, so I guess it's okay
-            observer.next(true);
-            break;
-          };
-          case "none": {
-            // there is no network
-            observer.next(false);
-            break;
-          };
-          default: {
-            // there is some defined type of network
-            observer.next(true);
-            break;
-          }
-        }
-      } else { observer.next(true); }
-    });
+  public checkOnline(showAlert:boolean=false, sendHome:boolean=false):EConnection {
+    if (this.connectionState==EConnection.OFFLINE) {
+      if(showAlert){
+        let alert = this.alertCtrl.create({
+          title: this.translate.instant("alert.title.error"),
+          subTitle: this.translate.instant("alert.network"),
+          buttons: [
+            this.translate.instant("button.continue")
+          ]
+        });
+        alert.present();
+      }
+      if(sendHome){
+        this.app.getRootNav().setRoot(HomePage);
+      }
+    }
+    console.log(`[ConnectionProvider]: App is ${EConnection[this.connectionState]}`)
+
+    return this.connectionState;
   }
 }

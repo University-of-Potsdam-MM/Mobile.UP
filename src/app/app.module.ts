@@ -22,6 +22,8 @@ import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
+import { ConnectionProvider } from '../providers/connection/connection';
+import { Network } from "@ionic-native/network";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -51,7 +53,6 @@ import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { PopoverButton } from "../components/popover/popover-button";
-import { ConnectionProvider } from '../providers/connection/connection';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -188,6 +189,7 @@ export const deepLinkConfig: DeepLinkConfig = {
       multi: true
     },
     PulsProvider,
+    Network,
     ConnectionProvider
   ]
 })
