@@ -51,6 +51,7 @@ import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { PopoverButton } from "../components/popover/popover-button";
+import { ConnectionProvider } from '../providers/connection/connection';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -186,7 +187,8 @@ export const deepLinkConfig: DeepLinkConfig = {
       deps: [ConfigProvider],
       multi: true
     },
-    PulsProvider
+    PulsProvider,
+    ConnectionProvider
   ]
 })
 export class AppModule {
