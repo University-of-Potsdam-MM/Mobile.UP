@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding>
+  {{ "page.appInfo.device" | translate }}
   <ion-list>
     <ion-item>
       {{ "page.appInfo.platform" | translate }}: {{ device.platform }},
@@ -19,8 +20,12 @@
     <ion-item>
       {{ "page.appInfo.model" | translate }}: {{ device.model }}
     </ion-item>
+
+  </ion-list>
+  {{ "page.appInfo.app" | translate }}
+  <ion-list>
     <ion-item>
-      {{ "page.appInfo.appVersion" | translate }}: TODO
+      {{ "page.appInfo.appVersion" | translate }}: {{ appVersionString }}
     </ion-item>
     <ion-item>
       {{ "page.appInfo.buildNumber" | translate }}: TODO

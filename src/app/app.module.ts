@@ -189,7 +189,6 @@ export const deepLinkConfig: DeepLinkConfig = {
       deps: [ConfigProvider],
       multi: true
     },
-    PulsProvider
   ]
 })
 export class AppModule {

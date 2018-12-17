@@ -239,7 +239,9 @@
       "model": "Geräte-Modell",
       "version": "Version",
       "appVersion": "App-Version",
-      "buildNumber": "Build-Nr."
+      "buildNumber": "Build-Nr.",
+      "app": "Applikation",
+      "device": "Gerät"
     }
   },
   "button": {
