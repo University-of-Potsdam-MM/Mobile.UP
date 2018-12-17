@@ -2,7 +2,8 @@
   "appName": "Mobile.UP",
   "page":{
     "home":{
-      "title": "Homepage"
+      "title": "Homepage",
+      "favorites": "Favorites"
     },
     "imprint":{
       "title": "Legal Notice",
@@ -44,10 +45,6 @@
       "title": "Emergency numbers",
       "placeholder": {
         "search": "Search..."
-      },
-      "item": {
-        "postal": "Location:",
-        "street": "Street:"
       }
     },
     "persons": {

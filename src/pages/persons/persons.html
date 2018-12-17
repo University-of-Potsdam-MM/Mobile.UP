@@ -30,18 +30,37 @@
     {{error.error}}<br/> -->
   </p>
 
-  <ion-list text-wrap no-lines>
-    <ng-container *ngFor="let person of personsFound">
+  <ion-list>
+    <ion-item-sliding *ngFor="let person of personsFound">
       <ion-item (click)="expandPerson(person)">
-        <h2 >{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
-        <p *ngIf="person.Abteilung != ''; else unknown_filed" >{{person.Abteilung}}</p>
+        <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
+        <p text-wrap *ngIf="person.Abteilung != ''; else unknown_filed">{{person.Abteilung}}</p>
+
         <expandable [expanded]="person.expanded">
-          <p class="personContactDetails" *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon> <a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
-          <p class="personContactDetails" *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon> <a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
-          <p class="personContactDetails" *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
+            <p text-wrap *ngIf="person.Email != ''; else unknown_filed"><ion-icon name="mail"></ion-icon><a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
+            <p text-wrap *ngIf="person.Telefon != ''; else unknown_filed"><ion-icon name="call"></ion-icon><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
+            <p text-wrap *ngIf="person.Raum != '';"><ion-icon name="home"></ion-icon> {{person.Raum}}</p>
         </expandable>
+
+        <button ion-button clear icon-only item-end *ngIf="person.Raum || person.Telefon">
+          <ion-icon name="arrow-dropdown" *ngIf="!person.expanded"></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="person.expanded"></ion-icon>
+        </button>
+
       </ion-item>
-    </ng-container>
+
+      <ion-item-options side="right">
+        <button ion-button color="primary" *ngIf="person.Email != ''; else unknown_filed">
+            <ion-icon name="mail"></ion-icon>
+            <a href="mailto:{{person.Email}}">E-Mail</a>
+          </button>
+        <button ion-button color="secondary" *ngIf="person.Telefon != ''; else unknown_filed">
+          <ion-icon name="call"></ion-icon>
+          <a href="tel:{{person.Telefon}}">+49 331 977 {{person.Telefon}}</a>
+        </button>
+      </ion-item-options>
+
+    </ion-item-sliding>
   </ion-list>
 
   <ng-template #unknown_filed>

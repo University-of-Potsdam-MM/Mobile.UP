@@ -10,6 +10,8 @@ import { CampusTabComponent } from './campus-tab/campus-tab';
 import { BookListViewComponent } from './book-list-view/book-list-view';
 import { GradesTableComponent } from './grades-table/grades-table';
 import { LectureListComponent } from './lecture-list/lecture-list';
+import { MorePopoverComponent } from './more-popover/more-popover';
+import { PopoverButtonComponent } from './popover-button/popover-button';
 
 @NgModule({
 	declarations: [
@@ -21,7 +23,10 @@ import { LectureListComponent } from './lecture-list/lecture-list';
     	CampusTabComponent,
     	GradesTableComponent,
     	LectureListComponent,
-    	BookListViewComponent
+    	BookListViewComponent,
+    MorePopoverComponent,
+    MorePopoverComponent,
+    PopoverButtonComponent
 	],
 	imports: [
 		IonicModule,
@@ -36,7 +41,10 @@ import { LectureListComponent } from './lecture-list/lecture-list';
     	CampusTabComponent,
     	GradesTableComponent,
     	LectureListComponent,
-    	BookListViewComponent
+    	BookListViewComponent,
+    MorePopoverComponent,
+    MorePopoverComponent,
+    PopoverButtonComponent
 	]
 })
 export class ComponentsModule {}

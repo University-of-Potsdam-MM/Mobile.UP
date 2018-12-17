@@ -28,8 +28,13 @@
         <p text-wrap *ngIf="emergencyCall.description">{{emergencyCall.description}}</p>
 
         <expandable [expanded]="emergencyCall.expanded">
-            <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.street">{{emergencyCall.address.street}}</p>
-            <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.postal">{{emergencyCall.address.postal}}</p>
+
+          <p text-wrap *ngIf="emergencyCall.contact.mail"><ion-icon name="mail"></ion-icon><a href="mailto:{{emergencyCall.contact.mail}}">{{emergencyCall.contact.mail}}</a></p>
+          <p text-wrap *ngIf="emergencyCall.contact.telephone"><ion-icon name="call"></ion-icon><a href="tel:{{emergencyCall.contact.telephone}}">{{emergencyCall.contact.telephone}}</a></p>
+
+
+          <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.street">{{emergencyCall.address.street}}</p>
+          <p text-wrap *ngIf="emergencyCall.address && emergencyCall.address.postal">{{emergencyCall.address.postal}}</p>
         </expandable>
 
         <button ion-button clear icon-only item-end *ngIf="emergencyCall.address">
@@ -42,11 +47,11 @@
       <ion-item-options side="right">
         <button ion-button color="primary" *ngIf="emergencyCall.contact.mail">
             <ion-icon name="mail"></ion-icon>
-            <a href="mailto: {{emergencyCall.contact.mail}}">E-Mail</a>
+            <a href="mailto:{{emergencyCall.contact.mail}}">E-Mail</a>
           </button>
         <button ion-button color="secondary">
           <ion-icon name="call"></ion-icon>
-          <a href="tel: {{emergencyCall.contact.telephone}}">{{emergencyCall.contact.telephone}}</a>
+          <a href="tel:{{emergencyCall.contact.telephone}}">{{emergencyCall.contact.telephone}}</a>
         </button>
       </ion-item-options>
 

@@ -2,7 +2,8 @@
   "appName": "Mobile.UP",
   "page": {
     "home": {
-      "title": "Startseite"
+      "title": "Startseite",
+      "favorites": "Favoriten"
     },
     "imprint":{
       "title": "Rechtliches",
@@ -44,10 +45,6 @@
       "title": "Notrufnummern",
       "placeholder": {
         "search": "Suchbegriff eingeben..."
-      },
-      "item": {
-        "postal": "Ort:",
-        "street": "Straße:"
       }
     },
     "persons": {
@@ -235,6 +232,7 @@
     "yes": "Ja",
     "no": "Nein",
     "login": "Login",
+    "logout": "Logout",
     "continue": "Weiter",
     "search": "Suchen",
     "showMore": "Mehr anzeigen",
@@ -264,5 +262,9 @@
   },
   "menu": {
     "title": "Menü"
+  },
+  "popover":{
+    "loggedInText": "Eingeloggt als",
+    "notLoggedInText": "Nicht eingeloggt"
   }
 }

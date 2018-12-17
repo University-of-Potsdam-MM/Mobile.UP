@@ -12,10 +12,10 @@ import {
   ICredentials, IOIDCUserInformationResponse,
   ISession
 } from "../../providers/login-provider/interfaces";
-import {TranslateService} from "@ngx-translate/core";
+import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
-import {IConfig} from "../../library/interfaces";
-import {Observable} from "rxjs/Observable";
+import { IConfig } from "../../library/interfaces";
+import { Observable } from "rxjs/Observable";
 import { HomePage } from '../home/home';
 
 /**
@@ -83,16 +83,13 @@ export class LoginPage {
           this.storage.set("session", session);
           this.endLoading();
 
-          // temporary setting proxy
-          config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo?schema=openid";
-
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
             (userInformation:IOIDCUserInformationResponse) => {
               this.storage.set('userInformation', userInformation).then(
                 result => {
                   console.log(
-                    'LoginPage]: Successfully retrieved and stored user information'
+                    '[LoginPage]: Successfully retrieved and stored user information'
                   )
                 }
               );

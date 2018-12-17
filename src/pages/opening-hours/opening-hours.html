@@ -3,15 +3,15 @@
     <ion-title>{{ "page.openingHours.title" | translate }}</ion-title>
   </ion-navbar>
 
-  <ion-toolbar>
-    <ion-searchbar placeholder="{{ 'button.search' | translate }}" (ionInput)="filterItems($event)" debounce="750">
-    </ion-searchbar>
-  </ion-toolbar>
+  <ion-searchbar
+    [placeholder]="'button.search' | translate"
+    (ionInput)="filterItems($event)"
+    debounce="750">
+  </ion-searchbar>
 </ion-header>
 
-
 <ion-content (ionScroll)="onScrollListener()">
-  <div align="center" *ngIf="!isLoaded" padding> 
+  <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>
 
