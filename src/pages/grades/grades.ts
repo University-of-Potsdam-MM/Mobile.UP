@@ -6,6 +6,7 @@ import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
+import {PulsProvider} from "../../providers/puls/puls";
 
 @IonicPage()
 @Component({
@@ -35,7 +36,8 @@ export class GradesPage {
       private http: HttpClient,
       private cache: CacheService,
       public navParams: NavParams,
-      private storage: Storage) {
+      private storage: Storage,
+      private puls:PulsProvider) {
 
   }
 
@@ -105,7 +107,6 @@ export class GradesPage {
       }
 
       let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
-
       let request = this.http.post(url, body, {headers:headers});
       this.cache.loadFromObservable("getAcademicAchievements"+this.i, request).subscribe((resGrades) => {
         // console.log(resGrades);
@@ -153,8 +154,10 @@ export class GradesPage {
     this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
       console.log(resStudentDetail);
       if (resStudentDetail.message) {
-        console.log(resStudentDetail.message);
+        // the session is still valid but credentials are rejected, so we're having
+        // case #81 here
         this.noUserRights = true;
+        this.puls.handleSpecialCase();
       } else {
         this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
         // console.log(this.studentDetails);

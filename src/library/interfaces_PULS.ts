@@ -89,6 +89,7 @@ export interface IStudentCourses {
 
 export interface IPulsAPIResponse_getStudentCourses {
   studentCourses: IStudentCourses;
+  message?:string;
 }
 
 export interface IPulsApiRequest_getStudentCourses {

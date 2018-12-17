@@ -1,13 +1,14 @@
 import {Component } from '@angular/core';
 import {
-  // AlertController,
+  AlertController,
   IonicPage, ModalController,
   NavController, NavParams, ViewController
 } from 'ionic-angular';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-// import { IWebServices } from "../../library/interfaces";
 import {Storage} from "@ionic/storage";
-import {ISession} from "../../providers/login-provider/interfaces";
+import {
+  ISession
+} from "../../providers/login-provider/interfaces";
 import {Observable} from "rxjs/Observable";
 import {
   IPulsAPIResponse_getStudentCourses,
@@ -15,11 +16,11 @@ import {
 } from "../../library/interfaces_PULS";
 import {LoginPage} from "../login/login";
 import {createEventSource, IEventObject,} from "./createEvents";
-// import {TranslateService} from "@ngx-translate/core";
 import {ConfigProvider} from "../../providers/config/config";
-// import {NgCalendarModule} from "ionic2-calendar";
 import {ITimeSelected} from "ionic2-calendar/calendar";
 import * as moment from 'moment';
+import {TranslateService} from "@ngx-translate/core";
+import {PulsProvider} from "../../providers/puls/puls";
 
 
 function debug(text){
@@ -77,10 +78,10 @@ export class TimetablePage {
       public navCtrl: NavController,
       private http:HttpClient,
       private storage:Storage,
-      // private calendar:NgCalendarModule,
-      // private translate:TranslateService,
-      // private alertCtrl:AlertController,
-      private modalCtrl:ModalController) {
+      private alertCtrl:AlertController,
+      private translate: TranslateService,
+      private modalCtrl:ModalController,
+      private puls:PulsProvider) {
   }
 
   ionViewDidLoad(){
@@ -95,10 +96,10 @@ export class TimetablePage {
           )
         } else {
           // there is a session
-          this.getStudentCourses(session).subscribe(
+          this.puls.getStudentCourses(session).subscribe(
             (response:IPulsAPIResponse_getStudentCourses) => {
               this.eventSource = createEventSource(
-               response.studentCourses.student.actualCourses.course
+                response.studentCourses.student.actualCourses.course
               );
             }
           );
@@ -152,41 +153,6 @@ export class TimetablePage {
    */
   titleChanged(title){
     this.currentTitle= title;
-  }
-
-  /**
-   * Sends request to PULS webservice and retrieves list of courses the student
-   * is currently (current semester) enrolled in.
-   * @param {IWebServices} webservices
-   * @param {ISession} session
-   * @returns {Observable<IPulsAPIResponse_getStudentCourses>}
-   */
-  private getStudentCourses(session:ISession):Observable<IPulsAPIResponse_getStudentCourses> {
-
-    let headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': ConfigProvider.config.webservices.apiToken
-    });
-
-    let request:IPulsApiRequest_getStudentCourses = {
-      condition:{
-        semester: 0,
-        allLectures: 0
-      },
-      // TODO: refactor this someday so credentials are not used
-      'user-auth': {
-        username: session.credentials.username,
-        password: session.credentials.password
-      }
-    };
-
-    // TODO: check for connection first!
-
-    return this.http.post<IPulsAPIResponse_getStudentCourses>(
-      ConfigProvider.config.webservices.endpoint.puls+"getStudentCourses",
-      request,
-      {headers: headers}
-    );
   }
 }
 
