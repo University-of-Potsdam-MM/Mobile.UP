@@ -191,6 +191,40 @@
             "Deutsch": "Deutsch",
             "Englisch": "Englisch"
           }
+        },
+        "general" : {
+          "lbl": "Allgemein"
+        },
+        "inpractice": {
+          "lbl": "Ab in die Praxis"
+        },
+        "practice" : {
+          "lbl": "Art",
+          "options": {
+            "Jobs für Studierende": "Jobs für Studierende",
+            "Jobs für Absolventen": "Jobs für Absolventen",
+            "Abschlussarbeit": "Abschlussarbeit",
+            "Praktika": "Praktika"
+          }
+        },
+        "studyarea" : {
+          "lbl": "Studienrichtung",
+          "options": {
+            "a": "Geistes- und Kulturwissenschaften",
+            "b": "Wirtschafts- und Sozialwissenschaften",
+            "c": "Mathematik und Informatik",
+            "d": "Naturwissenschaften",
+            "e": "Rechtswissenschaften",
+            "f": "Bildungs- und Kognitionswissenschaften",
+            "g": "Sport- und Gesundheitswissenschaften",
+            "h": "fächerübergreifend"
+          }
+        },
+        "domestic": {
+          "lbl": "Inland"
+        },
+        "foreign": {
+          "lbl": "Ausland"
         }
       }
     },
