@@ -7,6 +7,7 @@ import {
 import { LogoutPage } from "../../pages/logout/logout";
 import { LoginPage } from "../../pages/login/login";
 import { SettingsPage } from "../../pages/settings/settings";
+import {AppInfoPage} from "../../pages/app-info/app-info";
 
 /**
  * Generated class for the MorePopoverComponent component.
@@ -47,4 +48,8 @@ export class PopoverComponent {
     this.appCtrl.getRootNav().push(SettingsPage);
   }
 
+  toAppInfo(){
+    this.close();
+    this.appCtrl.getRootNav().push(AppInfoPage);
+  }
 }

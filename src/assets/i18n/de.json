@@ -230,6 +230,14 @@
     },
     "unishop": {
       "title": "UNIshop"
+    },
+    "appInfo": {
+      "title": "Über diese Applikation",
+      "platform": "Plattform",
+      "uuid": "Benutzer-ID",
+      "manufacturer": "Geräte-Hersteller",
+      "model": "Geräte-Modell",
+      "version": "Version"
     }
   },
   "button": {

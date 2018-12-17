@@ -116,6 +116,12 @@
       "icon": "calendar",
       "selected": true
     },
+    "app-info":{
+      "componentName": "app-info",
+      "icon": "info",
+      "selected": "false",
+      "hide": true
+    },
     "login": {
       "componentName": "login",
       "icon": "log-in",

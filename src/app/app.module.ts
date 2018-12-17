@@ -51,6 +51,7 @@ import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { PopoverButton } from "../components/popover/popover-button";
+import {AppInfoPage} from "../pages/app-info/app-info";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -110,7 +111,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     EventModal,
     OpeningHoursPage,
     DetailedOpeningPage,
-    PopoverButton
+    PopoverButton,
+    AppInfoPage
   ],
   imports: [
     HttpClientModule,
@@ -164,7 +166,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     TimetablePage,
     EventModal,
-    PopoverComponent
+    PopoverComponent,
+    AppInfoPage
   ],
   providers: [
     StatusBar,

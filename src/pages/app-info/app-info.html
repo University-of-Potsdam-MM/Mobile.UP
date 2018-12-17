@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ "page.appInfo.title" | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      {{ "page.appInfo.platform" | translate }}: {{ device.platform }},
+      {{ "page.appInfo.version" | translate }}: {{ device.version }}
+    </ion-item>
+    <ion-item *ngIf="device.uuid">
+      {{ "page.appInfo.uuid" | translate }}: {{ device.uuid }}
+    </ion-item>
+    <ion-item *ngIf="device.manufacturer!='unknown'">
+      {{ "page.appInfo.manufacturer" | translate }}: {{ device.manufacturer }}
+    </ion-item>
+    <ion-item>
+      {{ "page.appInfo.model" | translate }}: {{ device.model }}
+    </ion-item>
+  </ion-list>
+</ion-content>
