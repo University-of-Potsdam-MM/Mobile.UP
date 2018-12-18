@@ -121,9 +121,6 @@ export class MobileUPApp {
                 this.storage.set('session', newSession);
                 console.log(`[MobileUP]: Refreshed token successfully`);
 
-                // TODO: remove proxy when CORS issue is resolved
-                config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
-
                 // in the meantime get user information and save it to storage
                 this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
                   (userInformation:IOIDCUserInformationResponse) => {
