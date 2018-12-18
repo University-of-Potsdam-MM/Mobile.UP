@@ -1,27 +1,27 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {ISession} from "../login-provider/interfaces";
-import {Observable, ReplaySubject} from "rxjs";
+import { ISession } from "../login-provider/interfaces";
+import { Observable, ReplaySubject } from "rxjs";
 import {
   IPulsApiRequest_getStudentCourses,
   IPulsAPIResponse_getStudentCourses
 } from "../../library/interfaces_PULS";
-import {ConfigProvider} from "../config/config";
-import {LoginPage} from "../../pages/login/login";
+import { ConfigProvider } from "../config/config";
+import { LoginPage } from "../../pages/login/login";
 import {
   AlertController,
   App,
 } from "ionic-angular";
-import {TranslateService} from "@ngx-translate/core";
-import {Storage} from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
+import { SessionProvider } from '../session/session';
 
 @Injectable()
 export class PulsProvider {
 
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
-              private storage: Storage,
               private translate: TranslateService,
+              private sessionProvider: SessionProvider,
               private app: App) {
   }
 
@@ -74,9 +74,9 @@ export class PulsProvider {
   /**
    * handles special case as described in #81
    */
-  public handleSpecialCase(){
-    this.storage.set('session', null);
-    this.storage.set('userInformation', null);
+  public handleSpecialCase() {
+    this.sessionProvider.removeSession();
+    this.sessionProvider.removeUserInfo();
     let alert = this.alertCtrl.create({
       title: this.translate.instant("alert.title.error"),
       subTitle: this.translate.instant("alert.token_valid_credentials_invalid"),
