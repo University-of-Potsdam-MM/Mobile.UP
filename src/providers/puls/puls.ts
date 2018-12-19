@@ -54,11 +54,16 @@ export class PulsProvider {
     ).subscribe(
       (response:IPulsAPIResponse_getStudentCourses) => {
         // PULS simply responds with "no user rights" if credentials are incorrect
-        if(response.message == "no user rights"){
+        if(response.message == "no user rights") {
           // we're having a contradiction here, the password is wrong, but
           // the token is still valid. We'll log the user out and send the
           // user to LoginPage
-          this.handleSpecialCase();
+          
+          rs.next(response);
+          // this.handleSpecialCase();
+          // this does not necessarily mean that the password is wrong
+          // the elistest account f.e. just does not support the grades / timetable functions 
+          // should not log out 
         } else {
           rs.next(response);
         }

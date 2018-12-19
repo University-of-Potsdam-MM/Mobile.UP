@@ -5,7 +5,6 @@ import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
-import {PulsProvider} from "../../providers/puls/puls";
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
@@ -37,8 +36,7 @@ export class GradesPage {
       private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage,
-      private sessionProvider: SessionProvider,
-      private puls:PulsProvider) {
+      private sessionProvider: SessionProvider) {
 
   }
 
@@ -157,7 +155,11 @@ export class GradesPage {
         // the session is still valid but credentials are rejected, so we're having
         // case #81 here
         this.noUserRights = true;
-        this.puls.handleSpecialCase();
+
+        // this does not necessarily mean that the password is wrong
+        // the elistest account f.e. just does not support the grades / timetable functions 
+        // should not log out 
+        // this.puls.handleSpecialCase();
       } else {
         this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
         // console.log(this.studentDetails);

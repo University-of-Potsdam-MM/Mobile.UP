@@ -19,6 +19,8 @@ import { SessionProvider } from '../../providers/session/session';
 export class TimetablePage {
 
   eventSource:IEventObject[] = [];
+  noUserRights = false;
+  isLoading = true;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = "";
@@ -70,16 +72,25 @@ export class TimetablePage {
     let session = JSON.parse(await this.sessionProvider.getSession());
 
     if (session) {
+      this.isLoading = true;
       // there is a session
       this.puls.getStudentCourses(session).subscribe(
         (response:IPulsAPIResponse_getStudentCourses) => {
-          this.eventSource = createEventSource(
-            response.studentCourses.student.actualCourses.course
-          );
+          if (response.message && response.message == "no user rights") {
+            this.noUserRights = true;
+            this.isLoading = false;
+          } else {
+            this.noUserRights = false;
+            this.isLoading = false;
+            this.eventSource = createEventSource(
+              response.studentCourses.student.actualCourses.course
+            );
+          }
         }
       );
     } else {
       // in case there is no session send the user to LoginPage
+      this.isLoading = false;
       this.navCtrl.push(LoginPage).then(() => console.log("pushed LoginPage"))
     }
   }
