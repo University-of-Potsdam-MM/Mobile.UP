@@ -14,8 +14,10 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         return await storage.get("session");
-      }, error => {
+      }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        return await this.storage.get("session");
       });
     } else {
       return await this.storage.get("session");
@@ -30,6 +32,12 @@ export class SessionProvider {
         });
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        this.storage.set("session", JSON.stringify(session)).then(() => {
+          console.log("session successfully set");
+        }, error => {
+          console.log("Error setting session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        });
       });
     } else {
       this.storage.set("session", JSON.stringify(session)).then(() => {
@@ -48,6 +56,10 @@ export class SessionProvider {
         });
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        this.storage.remove("session").then(() => console.log("session removed"), error => {
+          console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        });
       });
     } else {
       this.storage.remove("session").then(() => console.log("session removed"), error => {
@@ -60,8 +72,10 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         return await storage.get("userInformation");
-      }, error => {
+      }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        return await this.storage.get("userInformation");
       });
     } else {
       return await this.storage.get("userInformation");
@@ -76,6 +90,10 @@ export class SessionProvider {
         });
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        this.storage.set("userInformation", JSON.stringify(userInfo)).then(() => console.log("user info successfully set"), error => {
+          console.log("Error setting user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        });
       });
     } else {
       this.storage.set("userInformation", JSON.stringify(userInfo)).then(() => console.log("user info successfully set"), error => {
@@ -92,6 +110,10 @@ export class SessionProvider {
         });
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        console.log("Using normal storage...");
+        this.storage.remove("userInformation").then(() => console.log("user info removed"), error => {
+          console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        });
       });
     } else {
       this.storage.remove("userInformation").then(() => console.log("user info removed"), error => {
