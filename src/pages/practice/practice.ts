@@ -195,10 +195,14 @@ export class PracticePage {
 
     var studyarea = await this.settingsProvider.getSettingValue("studyarea");
     var practice = await this.settingsProvider.getSettingValue("practice");
+    var domestic = await this.settingsProvider.getSettingValue("domestic");
+    var foreign = await this.settingsProvider.getSettingValue("foreign");
+    console.log(domestic, foreign);
 
     // console.log("FILTER");
     // console.log(studyarea);
     // console.log(practice);
+    // console.log(this.displayedList);
 
     console.log("DISPLAYED")
     console.log(this.displayedList.length);
@@ -206,7 +210,6 @@ export class PracticePage {
     var tmp = this.displayedList;
     // filter according to practice option
     if (practice.length > 0) {
-      console.log("hey");
       tmp = jquery.grep(
         tmp, (ADS) => {
           return practice.includes(this.practiceMapping(ADS.art))
@@ -219,6 +222,24 @@ export class PracticePage {
       tmp = jquery.grep(
         tmp, (ADS) => {
           return studyarea.includes(ADS.field)
+        }
+      )
+    }
+
+    if (domestic && !foreign) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          if (ADS.foreign == "0") {
+            return true;
+          } else { return false; }
+        }
+      )
+    } else if (foreign && !domestic) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          if (ADS.foreign == "1") {
+            return true;
+          } else { return false; }
         }
       )
     }
