@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { IOIDCUserInformationResponse } from "../../providers/login-provider/interfaces";
 import {
   App,
-  ViewController } from "ionic-angular";
+  ViewController
+} from "ionic-angular";
 import { LogoutPage } from "../../pages/logout/logout";
 import { LoginPage } from "../../pages/login/login";
 import { SettingsPage } from "../../pages/settings/settings";
+import { AppInfoPage } from "../../pages/app-info/app-info";
 import { SessionProvider } from '../../providers/session/session';
 
 @Component({
@@ -52,4 +54,8 @@ export class PopoverComponent {
     this.appCtrl.getRootNav().push(SettingsPage);
   }
 
+  toAppInfo(){
+    this.close();
+    this.appCtrl.getRootNav().push(AppInfoPage);
+  }
 }

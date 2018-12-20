@@ -7,8 +7,7 @@
     },
     "imprint":{
       "title": "Legal Notice",
-      "listHeader": "Legal Notice",
-      "sysInfo": "About"
+      "listHeader": "Legal Notice"
     },
     "legalNotice": {
       "title": "Information"
@@ -265,6 +264,18 @@
     },
     "unishop": {
       "title": "UNIshop"
+    },
+    "appInfo": {
+      "title": "About",
+      "platform": "Platform",
+      "uuid": "User ID",
+      "manufacturer": "Manufacturer",
+      "model": "Model",
+      "version": "Version",
+      "appVersion": "App Version",
+      "buildNumber": "Build number",
+      "app": "Application",
+      "device": "Device"
     }
   },
   "button": {
