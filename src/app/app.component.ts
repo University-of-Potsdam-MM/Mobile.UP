@@ -26,7 +26,7 @@ export class MobileUPApp {
   @ViewChild(Nav) nav: Nav;
 
   config:IConfig;
-  rootPage: any;
+  rootPage: string = 'HomePage';
 
   constructor(
     private platform: Platform,
@@ -63,9 +63,6 @@ export class MobileUPApp {
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
     });
-
-    this.rootPage = HomePage;
-    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 
   private async initConfig() {
