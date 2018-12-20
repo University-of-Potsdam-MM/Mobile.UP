@@ -59,6 +59,7 @@ import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { PopoverButton } from "../components/popover/popover-button";
+import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -88,7 +89,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: RoomsPage, name: 'RoomsPage', segment: 'rooms' },
     { component: LecturesPage, name: 'LecturesPage', segment: 'lectures' },
     { component: RoomplanPage, name: 'RoomplanPage', segment: 'roomplan' },
-    { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' }
+    { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' },
+    { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'}
   ]
 };
 
@@ -119,7 +121,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     EventModal,
     OpeningHoursPage,
     DetailedOpeningPage,
-    PopoverButton
+    PopoverButton,
+    AppInfoPage
   ],
   imports: [
     HttpClientModule,
@@ -173,7 +176,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     TimetablePage,
     EventModal,
-    PopoverComponent
+    PopoverComponent,
+    AppInfoPage
   ],
   providers: [
     StatusBar,
@@ -199,8 +203,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     },
     PulsProvider,
     Network,
-    ConnectionProvider,
-    SessionProvider
+    ConnectionProvider
   ]
 })
 export class AppModule {

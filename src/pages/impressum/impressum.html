@@ -20,22 +20,6 @@
     <button ion-item detail-push (click)="openPage('PrivacyPolicyPage')">{{ "page.privacyPolicy.title" | translate }}</button>
     <button ion-item detail-push (click)="openPage('TermsOfUsePage')">{{ "page.termsOfUse.title" | translate }}</button>
   </ion-list>
-  <ion-list class="sysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
-    <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo">
-      <b>{{ "page.imprint.sysInfo" | translate }}</b>
-      <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropdown"></ion-icon>
-      <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
-    </ion-item>
-    <span *ngIf="showSysInfo">
-      <ion-item *ngIf="deviceInfo.cordovaVersion">Cordova Version: {{ deviceInfo.cordovaVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.appVersion">App Version: {{ deviceInfo.appVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.osPlatform">Platform: {{ deviceInfo.osPlatform }}</ion-item>
-      <ion-item *ngIf="deviceInfo.osVersion">Platform Version: {{ deviceInfo.osVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.uuid">UUID: {{ deviceInfo.uuid }}</ion-item>
-      <ion-item *ngIf="deviceInfo.deviceManufacturer">Device Manufacturer: {{ deviceInfo.deviceManufacturer }}</ion-item>
-      <ion-item *ngIf="deviceInfo.deviceModel">Device Model: {{ deviceInfo.deviceModel }}</ion-item>
-    </span>
-  </ion-list>
 </ion-content>
 
 <ion-footer>
