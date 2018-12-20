@@ -220,8 +220,8 @@
             "Naturwissenschaften": "Naturwissenschaften",
             "Rechtswissenschaften": "Rechtswissenschaften",
             "Bildungs- und Kognitionswissenschaften": "Bildungs- und Kognitionswissenschaften",
-            "g": "Sport- und Gesundheitswissenschaften",
-            "h": "fächerübergreifend"
+            "Sport- und Gesundheitswissenschaften": "Sport- und Gesundheitswissenschaften",
+            "fächerübergreifend": "fächerübergreifend"
           }
         },
         "domestic": {

@@ -141,12 +141,29 @@ export class SettingsPage {
 
   getValueLabel(setting: ISetting) {
     if (setting.options) {
-      var optionLbl;
+      var optionLbl = "";
       this.translate.get("page.settings.setting." + setting.key).subscribe(value => {
         if (value.options) {
-          if (value.options[setting.value] == null) {
-            optionLbl = setting.value;
-          } else { optionLbl = value.options[setting.value] }
+          if (Array.isArray(setting.value)) {
+            var i;
+            for (i = 0; i < setting.value.length; i++) {
+              if (value.options[setting.value[i]] == null) {
+                if (optionLbl != "") {
+                  optionLbl += ", "
+                }
+                optionLbl += String(setting.value);
+              } else {
+                if (optionLbl != "") {
+                  optionLbl += ", "
+                }
+                optionLbl += String(value.options[setting.value[i]])
+              }
+            }
+          } else {
+            if (value.options[setting.value] == null) {
+              optionLbl = setting.value;
+            } else { optionLbl = value.options[setting.value] }
+          }
         } else { optionLbl = setting.value }
       });
 
