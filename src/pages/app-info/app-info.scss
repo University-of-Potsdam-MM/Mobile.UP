@@ -1,3 +1,13 @@
 page-app-info {
+    .sysInfo {
+        font-size: smaller;
 
+        .item {
+            font-size: smaller;
+        }
+
+        .item.sysHeader {
+            font-size: medium;
+        }
+    }
 }

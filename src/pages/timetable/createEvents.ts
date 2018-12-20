@@ -48,6 +48,11 @@ var rhythmMapping:IRhythmMapping = {
     freq: RRule.WEEKLY,
     interval: 1
   },
+  "Einzeltermin":{
+    // can be treated as weekly event that occurs in a single week
+    freq: RRule.WEEKLY,
+    interval: 1
+  },
   "Block":{
     freq: RRule.DAILY,
     interval: 1
@@ -159,8 +164,8 @@ export function createEventSource(studentCourses:ICourse[],
         for(let i=0; i<begin.length; i++){
           if(!moment(begin[i]).isDST()){
             // compensate daylight saving time
-            begin[i].setHours(begin[i].getHours()+1);
-            end[i].setHours(end[i].getHours()+1);
+            begin[i].setHours(begin[i].getHours()-1);
+            end[i].setHours(end[i].getHours()-1);
           }
           eventSource.push(<IEventObject>{
             id: e.eventId,

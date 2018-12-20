@@ -5,30 +5,19 @@
 </ion-header>
 
 <ion-content padding>
-  {{ "page.appInfo.device" | translate }}
-  <ion-list>
-    <ion-item>
-      {{ "page.appInfo.platform" | translate }}: {{ device.platform }},
-      {{ "page.appInfo.version" | translate }}: {{ device.version }}
+  <ion-list class="sysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
+    <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo">
+      <b>{{ "page.appInfo.app" | translate }}</b>
+      <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
     </ion-item>
-    <ion-item *ngIf="device.uuid">
-      {{ "page.appInfo.uuid" | translate }}: {{ device.uuid }}
-    </ion-item>
-    <ion-item *ngIf="device.manufacturer!='unknown'">
-      {{ "page.appInfo.manufacturer" | translate }}: {{ device.manufacturer }}
-    </ion-item>
-    <ion-item>
-      {{ "page.appInfo.model" | translate }}: {{ device.model }}
-    </ion-item>
-
+    <span *ngIf="showSysInfo">
+      <ion-item *ngIf="deviceInfo.cordovaVersion">Cordova Version: {{ deviceInfo.cordovaVersion }}</ion-item>
+      <ion-item *ngIf="deviceInfo.appVersion">{{ "page.appInfo.version" | translate }}: {{ deviceInfo.appVersion }}</ion-item>
+      <ion-item *ngIf="deviceInfo.osPlatform">{{ "page.appInfo.platform" | translate }}: {{ deviceInfo.osPlatform }}</ion-item>
+      <ion-item *ngIf="deviceInfo.osVersion">Platform Version: {{ deviceInfo.osVersion }}</ion-item>
+      <ion-item *ngIf="deviceInfo.uuid">{{ "page.appInfo.uuid" | translate }}: {{ deviceInfo.uuid }}</ion-item>
+      <ion-item *ngIf="deviceInfo.deviceManufacturer">{{ "page.appInfo.manufacturer" | translate }}: {{ deviceInfo.deviceManufacturer }}</ion-item>
+      <ion-item *ngIf="deviceInfo.deviceModel">{{ "page.appInfo.model" | translate }}: {{ deviceInfo.deviceModel }}</ion-item>
+    </span>
   </ion-list>
-  {{ "page.appInfo.app" | translate }}
-  <ion-list>
-    <ion-item>
-      {{ "page.appInfo.appVersion" | translate }}: {{ appVersionString }}
-    </ion-item>
-    <ion-item>
-      {{ "page.appInfo.buildNumber" | translate }}: TODO
-    </ion-item>
-  </ion-list>
-</ion-content>

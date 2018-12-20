@@ -8,34 +8,48 @@
 
 <ion-content padding>
 
-  <!-- TODO: make prettier-->
-  <button ion-button (click)="changeCalendarMode('month')">
-    {{ "page.timetable.month" | translate }}
-  </button>
-  <button ion-button (click)="changeCalendarMode('week')">
-    {{ "page.timetable.week" | translate }}
-  </button>
-  <button ion-button (click)="changeCalendarMode('day')">
-    {{ "page.timetable.day" | translate }}
-  </button>
+  <div align="center" *ngIf="isLoading && !noUserRights" padding>
+    <ion-spinner></ion-spinner>
+  </div>
 
-  <!-- TODO: needs styling, too -->
-  <div id="title">{{ currentTitle }}</div>
+  <div class="hint" *ngIf="noUserRights" align="center" padding>
+    {{ "page.grades.notSupported" | translate }}
+  </div>
 
-  <calendar [eventSource]="eventSource"
-            [calendarMode]="calendarOptions.calendarMode"
-            [currentDate]="calendarOptions.currentDate"
-            [startingDayWeek]="calendarOptions.startingDayWeek"
-            [startingDayMonth]="calendarOptions.startingDayMonth"
-            [startHour]="calendarOptions.startHour"
-            [endHour]="calendarOptions.endHour"
-            [step]="calendarOptions.step"
-            [timeInterval]="calendarOptions.timeInterval"
-            [showEventDetail]="calendarOptions.showEventDetail"
-            [autoSelect]="calendarOptions.autoSelect"
-            (onTimeSelected)="timeSelected($event)"
-            (onEventSelected)="eventSelected($event)"
-            (onTitleChanged)="titleChanged($event)">
-  </calendar>
+  <span *ngIf="!noUserRights && !isLoading">
+    <!-- TODO: make prettier-->
+    <button ion-button (click)="changeCalendarMode('month')">
+        {{ "page.timetable.month" | translate }}
+      </button>
+      <button ion-button (click)="changeCalendarMode('week')">
+        {{ "page.timetable.week" | translate }}
+      </button>
+      <button ion-button (click)="changeCalendarMode('day')">
+        {{ "page.timetable.day" | translate }}
+      </button>
+
+      <!-- TODO: needs styling, too -->
+      <div id="title">{{ currentTitle }}</div>
+
+      <calendar [eventSource]="eventSource"
+                [calendarMode]="calendarOptions.calendarMode"
+                [currentDate]="calendarOptions.currentDate"
+                [startingDayWeek]="calendarOptions.startingDayWeek"
+                [startingDayMonth]="calendarOptions.startingDayMonth"
+                [startHour]="calendarOptions.startHour"
+                [endHour]="calendarOptions.endHour"
+                [step]="calendarOptions.step"
+                [timeInterval]="calendarOptions.timeInterval"
+                [showEventDetail]="calendarOptions.showEventDetail"
+                [autoSelect]="calendarOptions.autoSelect"
+                (onTimeSelected)="timeSelected($event)"
+                (onEventSelected)="eventSelected($event)"
+                (onTitleChanged)="titleChanged($event)">
+      </calendar>
+  </span>
 
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

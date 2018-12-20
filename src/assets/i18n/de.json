@@ -7,8 +7,7 @@
     },
     "imprint":{
       "title": "Rechtliches",
-      "listHeader": "Impressum & Rechtliches",
-      "sysInfo": "Systeminformationen"
+      "listHeader": "Impressum & Rechtliches"
     },
     "legalNotice": {
       "title": "Impressum"
@@ -146,10 +145,11 @@
     },
     "timetable": {
       "title": "Stundenplan",
-      "until": "bis",
+      "until": "",
       "today": "Heute",
       "month": "Monat",
       "week": "Woche",
+      "comment": "Kommentar",
       "day": "Tag",
       "oclock": "Uhr",
       "time": "Uhrzeit",
@@ -232,7 +232,7 @@
       "title": "UNIshop"
     },
     "appInfo": {
-      "title": "Über diese Applikation",
+      "title": "Info",
       "platform": "Plattform",
       "uuid": "Benutzer-ID",
       "manufacturer": "Geräte-Hersteller",

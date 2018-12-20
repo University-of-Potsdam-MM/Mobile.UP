@@ -23,6 +23,7 @@ import {
 import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { CacheService } from 'ionic-cache';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 
 @IonicPage()
@@ -56,13 +57,16 @@ export class RoomplanPage {
     public navParams: NavParams,
     public translate: TranslateService,
     private cache: CacheService,
-    public http: HttpClient) {
+    public http: HttpClient,
+    private connection: ConnectionProvider) {
     this.default_house = navParams.get("house");
     this.default_room = navParams.get("room");
     this.passedLocation = navParams.get("campus");
   }
 
   ionViewDidLoad() {
+    this.connection.checkOnline(true, true);
+
     this.day_offset = "0";
 
     this.days = [];

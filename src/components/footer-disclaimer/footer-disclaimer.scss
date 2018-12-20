@@ -1,0 +1,13 @@
+footer-disclaimer {
+    #footerTitle {
+        color:color($colors, primary);
+
+        div {
+            font-size: 1.2rem;
+        }
+    }
+
+    .toolbar-background {
+        background-color: color($colors, upgrey)!important;
+    }
+}
