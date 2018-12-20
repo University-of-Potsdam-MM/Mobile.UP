@@ -61,7 +61,7 @@
       },
       "item": {
         "contact": "Contact:",
-        "foreign": "Foreign",
+        "foreign": "Abroad",
         "partner": "Partner",
         "language": "Language",
         "familyfriendly": "Family friendly",
@@ -211,7 +211,7 @@
           "lbl": "Domestic"
         },
         "foreign": {
-          "lbl": "Foreign"
+          "lbl": "Abroad"
         }
       }
     },
