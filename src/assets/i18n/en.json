@@ -67,7 +67,11 @@
         "student": "Student job",
         "graduate": "Graduate job",
         "thesis": "Final thesis",
-        "praktika": "Internships"
+        "praktika": "Internships",
+        "firm": "Company",
+        "art": "Type",
+        "field": "Study field",
+        "pubDate": "published on"
 
       },
       "no_results": "No results found for this keyword."
