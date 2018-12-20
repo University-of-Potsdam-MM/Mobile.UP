@@ -160,7 +160,6 @@ export class GradesPage {
         // the session is still valid but credentials are rejected, so we're having
         // case #81 here
         this.noUserRights = true;
-        this.puls.handleSpecialCase();
 
         // this does not necessarily mean that the password is wrong
         // the elistest account f.e. just does not support the grades / timetable functions
