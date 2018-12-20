@@ -22,6 +22,11 @@ import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeDe);
+registerLocaleData(localeEn);
 import { SecureStorage } from '@ionic-native/secure-storage';
 
 /* Pages */

@@ -10,6 +10,7 @@ import { ITimeSelected } from "ionic2-calendar/calendar";
 import * as moment from 'moment';
 import { PulsProvider } from "../../providers/puls/puls";
 import { SessionProvider } from '../../providers/session/session';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -27,48 +28,32 @@ export class TimetablePage {
 
   // options for ionic2-calendar component
   calendarOptions = {
-    calendarMode: "week",
+    calendarMode: "day",
     currentDate: new Date(),
     locale: "de",
     startingDayWeek: 1,
     startingDayMonth: 1,
     startHour: "8",
     endHour: "20",
-    step: "15",
+    step: "40",
     timeInterval: "120",
     showEventDetail: false,
     autoSelect: false,
-    dateFormatter:{
-      formatMonthViewDayHeader: function(date:Date) {
-        return 'testMDH';
-      },
-      formatWeekViewDayHeader: function(date:Date) {
-        return 'testWDH';
-      },
-      formatDayViewHourColumn: function(date:Date) {
-        return 'testDH';
-      },
-      formatWeekViewHourColumn: function(date:Date) {
-        return 'testWH';
-      },
-      formatMonthViewTitle: function(date:Date) {
-        return 'testMT';
-      },
-      formatDayViewTitle: function(date:Date) {
-        return 'testDT';
-      }
-    }
+    dateFormatter: undefined
   };
 
   constructor(
       public navCtrl: NavController,
       private modalCtrl:ModalController,
+      private translate: TranslateService,
       private sessionProvider: SessionProvider,
       private puls:PulsProvider) {
   }
 
   async ionViewDidLoad(){
     // TODO: check connections
+    this.setupCalendarOptions();
+
     let session = JSON.parse(await this.sessionProvider.getSession());
 
     if (session) {
@@ -97,12 +82,55 @@ export class TimetablePage {
 
   /* ~~~ ionic2-calendar specific methods ~~~ */
 
+  setupCalendarOptions() {
+    if (this.translate.currentLang == "de") {
+      this.calendarOptions.locale = "de";
+      let weekString = this.translate.instant("page.timetable.week");
+      this.calendarOptions.dateFormatter = {
+        formatWeekViewDayHeader: function(date:Date) {
+          return moment(date).format("dd. Do");
+        },
+        formatDayViewHourColumn: function(date:Date) {
+          return moment(date).format("HH:mm");
+        },
+        formatWeekViewHourColumn: function(date:Date) {
+          return moment(date).format("HH:mm");
+        },
+        formatWeekViewTitle: function(date:Date) {
+          return moment(date).format("MMMM YYYY") + ", " + weekString + " " + moment(date).format("w");
+      },
+        formatMonthViewTitle: function(date:Date) {
+          return moment(date).format("MMMM YYYY");
+        },
+        formatDayViewTitle: function(date:Date) {
+          return moment(date).format("Do MMMM YYYY");
+        }
+      }
+    } else {
+      this.calendarOptions.locale = "en";
+      this.calendarOptions.dateFormatter = {
+        formatWeekViewDayHeader: function(date:Date) {
+          return moment(date).format("dd. Do");
+        },
+        formatDayViewHourColumn: function(date:Date) {
+          return moment(date).format("hh A");
+        },
+        formatWeekViewHourColumn: function(date:Date) {
+          return moment(date).format("hh A");
+        },
+      }
+    }
+  }
+
   /**
    * simply changes the calendarMode
    * @param mode
    */
-  changeCalendarMode(mode){
+  changeCalendarMode(mode) {
     this.calendarOptions.calendarMode = mode;
+    if (this.translate.currentLang == "de") {
+      this.calendarOptions.locale = "de";
+    } else { this.calendarOptions.locale = "en"; }
   }
 
   /**
@@ -110,8 +138,8 @@ export class TimetablePage {
    * a modal with information about the event is shown.
    * @param event
    */
-  eventSelected(event:IEventObject){
-    if(this.calendarOptions.calendarMode != "month"){
+  eventSelected(event:IEventObject) {
+    if(this.calendarOptions.calendarMode != "month") {
       let eventModal = this.modalCtrl.create(
         EventModal,
         {events: [event], date: event.startTime}
@@ -126,11 +154,15 @@ export class TimetablePage {
    * @param time
    */
   timeSelected(time:ITimeSelected) {
-    if(this.calendarOptions.calendarMode == "month" && time.events.length > 0) {
-      let eventModal = this.modalCtrl.create(
-        EventModal, {events: time.events, date: time.selectedTime}
-      );
-      eventModal.present();
+    // if(this.calendarOptions.calendarMode == "month" && time.events.length > 0) {
+    //   let eventModal = this.modalCtrl.create(
+    //     EventModal, {events: time.events, date: time.selectedTime}
+    //   );
+    //   eventModal.present();
+    // }
+
+    if (this.calendarOptions.calendarMode == "month" && time.events.length > 0) {
+      this.calendarOptions.calendarMode = "day";
     }
   }
 
@@ -140,6 +172,16 @@ export class TimetablePage {
    */
   titleChanged(title){
     this.currentTitle= title;
+  }
+
+  swipePrevious() {
+    var mySwiper = document.querySelector('.swiper-container')['swiper'];
+    mySwiper.slidePrev();
+  }
+
+  swipeNext() {
+    var mySwiper = document.querySelector('.swiper-container')['swiper'];
+    mySwiper.slideNext();
   }
 }
 
