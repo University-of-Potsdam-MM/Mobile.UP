@@ -34,11 +34,6 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-item align="center" id="footerTitle" text-wrap class="toolbar-background" no-lines>
-      <ion-icon name="warning" item-start></ion-icon>
-      <div align="center" style="font-size: smaller">{{ "page.openingHours.noGuarantee" | translate}}</div>
-    </ion-item>
-  </ion-toolbar>
+  <footer-disclaimer iconName="warning" disclaimerReference="page.openingHours.noGuarantee"></footer-disclaimer>
   <tab-bar></tab-bar>
 </ion-footer>
