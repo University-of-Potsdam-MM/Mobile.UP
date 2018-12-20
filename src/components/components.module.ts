@@ -12,6 +12,7 @@ import { GradesTableComponent } from './grades-table/grades-table';
 import { LectureListComponent } from './lecture-list/lecture-list';
 import { PopoverComponent } from './popover/popover';
 import { FooterDisclaimerComponent } from './footer-disclaimer/footer-disclaimer';
+import { HintComponent } from './hint/hint';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,8 @@ import { FooterDisclaimerComponent } from './footer-disclaimer/footer-disclaimer
     	LectureListComponent,
     	BookListViewComponent,
 		PopoverComponent,
-    	FooterDisclaimerComponent
+    	FooterDisclaimerComponent,
+    HintComponent
 	],
 	imports: [
 		IonicModule,
@@ -42,7 +44,8 @@ import { FooterDisclaimerComponent } from './footer-disclaimer/footer-disclaimer
     	LectureListComponent,
     	BookListViewComponent,
     	PopoverComponent,
-    	FooterDisclaimerComponent
+    	FooterDisclaimerComponent,
+    HintComponent
 	]
 })
 export class ComponentsModule {}
