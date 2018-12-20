@@ -45,6 +45,7 @@ export class TimetablePage {
 
   constructor(
       public navCtrl: NavController,
+      private storage:Storage,
       private modalCtrl:ModalController,
       private connection: ConnectionProvider,
       private translate: TranslateService,

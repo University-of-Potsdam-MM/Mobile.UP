@@ -12,6 +12,7 @@ import {
   AlertController,
   App,
 } from "ionic-angular";
+import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { SessionProvider } from '../session/session';
 
@@ -20,6 +21,7 @@ export class PulsProvider {
 
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
+              private storage: Storage,
               private translate: TranslateService,
               private sessionProvider: SessionProvider,
               private app: App) {
@@ -58,12 +60,12 @@ export class PulsProvider {
           // we're having a contradiction here, the password is wrong, but
           // the token is still valid. We'll log the user out and send the
           // user to LoginPage
-          
+
           rs.next(response);
           // this.handleSpecialCase();
           // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions 
-          // should not log out 
+          // the elistest account f.e. just does not support the grades / timetable functions
+          // should not log out
         } else {
           rs.next(response);
         }
