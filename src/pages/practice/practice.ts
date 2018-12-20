@@ -2,7 +2,6 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
-import { ISession } from "../../providers/login-provider/interfaces";
 import { LoginPage } from "../login/login";
 import {
   IConfig,
@@ -15,9 +14,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';
-import { resolve } from 'dns';
 import { ImpressumPage } from '../impressum/impressum';
-
+import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -46,6 +44,7 @@ export class PracticePage {
     private cache: CacheService,
     public navParams: NavParams,
     private settingsProvider: SettingsProvider,
+    private sessionProvider: SessionProvider,
     private chRef: ChangeDetectorRef) {
   };
 
@@ -107,10 +106,10 @@ export class PracticePage {
       this.waiting_for_response = true;
     }
 
-    //console.log(`[PracticePage]: Quering ADS`);
-
-    let session: ISession = await this.storage.get("session");
+    console.log(`[PracticePage]: Quering ADS`);
     let config: IConfig = await this.storage.get("config");
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
     if (session) {
       let headers: HttpHeaders = new HttpHeaders()
         .append("Authorization", config.webservices.apiToken);

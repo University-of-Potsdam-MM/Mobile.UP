@@ -9,6 +9,9 @@ import {
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
 import { CacheService } from 'ionic-cache';
+import { ConnectionProvider } from "../../providers/connection/connection";
+import moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -19,10 +22,12 @@ export class MensaPage {
 
   // calendar variables
   showBasicCalendar = false;
-  date: string;
+  date = moment();
   type: 'moment';
   optionsBasic: CalendarComponentOptions = {
-    monthPickerFormat: ['JAN', 'FEB', 'MÄR', 'APR', 'MAI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEZ']
+    weekdays: this.getWeekdays(),
+    showMonthPicker: false,
+    weekStart: 1
   };
 
   currentDate: Date;
@@ -51,10 +56,17 @@ export class MensaPage {
     public navParams: NavParams,
     private http: HttpClient,
     private cache: CacheService,
-    private storage: Storage) 
+    private connection: ConnectionProvider,
+    private translate: TranslateService,
+    private storage: Storage)
   {
     this.currentDate = new Date();
     this.isLoaded = false;
+  }
+
+  ionViewDidLoad(){
+    this.connection.checkOnline(true, true);
+
   }
 
   /**
@@ -152,6 +164,7 @@ export class MensaPage {
         }
       }
       this.isLoaded = true;
+      this.pickDate(this.date);
     }, error => {
       console.log(error);
     });
@@ -202,8 +215,8 @@ export class MensaPage {
 
     var i;
     for (i = 0; i < this.allMeals.length; i++) {
-      var mealDate: Date = new Date(this.allMeals[i].date);
-      if ($event.format('ddd MMM DD YYYY') == mealDate.toDateString()) {
+      var mealDate = moment(new Date(this.allMeals[i].date));
+      if ($event.format('ddd MMM DD YYYY') == mealDate.format('ddd MMM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
@@ -213,7 +226,7 @@ export class MensaPage {
   veganOnly() {
     this.onlyVeganFood = !this.onlyVeganFood;
     this.onlyVeggieFood = false;
-    
+
     this.noMealsForDate = true;
     var i;
     for (i = 0; i < this.allMeals.length; i++) {
@@ -252,6 +265,12 @@ export class MensaPage {
         } else { return false; }
       } else { return true; }
     } else { return false; }
+  }
+
+  getWeekdays():string[] {
+    if (this.translate.currentLang == 'de') {
+      return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
   }
 
 }

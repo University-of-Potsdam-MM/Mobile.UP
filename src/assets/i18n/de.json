@@ -150,10 +150,11 @@
     },
     "timetable": {
       "title": "Stundenplan",
-      "until": "bis",
+      "until": "",
       "today": "Heute",
       "month": "Monat",
       "week": "Woche",
+      "comment": "Kommentar",
       "day": "Tag",
       "oclock": "Uhr",
       "time": "Uhrzeit",

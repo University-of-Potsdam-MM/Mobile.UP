@@ -5,6 +5,7 @@ import {ESettingType, ISetting, ISettingOption} from "../../library/interfaces";
 import {AlertController} from 'ionic-angular';
 import {TranslateService} from "@ngx-translate/core";
 import * as Constants from './setting_config';
+import moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -215,8 +216,10 @@ export class SettingsPage {
     if (setting.key == "language") {
       if (value == "Deutsch") {
         this.translate.use("de");
+        moment.locale('de');
       } else {
         this.translate.use("en");
+        moment.locale('en');
       }
     }
   }

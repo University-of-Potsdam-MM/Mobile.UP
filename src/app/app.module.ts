@@ -22,6 +22,14 @@ import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
+import { ConnectionProvider } from '../providers/connection/connection';
+import { Network } from "@ionic-native/network";
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeDe);
+registerLocaleData(localeEn);
+import { SecureStorage } from '@ionic-native/secure-storage';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -52,6 +60,7 @@ import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { DetailedPracticePage } from '../pages/detailed-practice/detailed-practice';
 import { PopoverButton } from "../components/popover/popover-button";
+import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -183,13 +192,18 @@ export const deepLinkConfig: DeepLinkConfig = {
     AppVersion,
     Device,
     ConfigProvider,
+    SessionProvider,
+    SecureStorage,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,
       deps: [ConfigProvider],
       multi: true
     },
-    PulsProvider
+    PulsProvider,
+    Network,
+    ConnectionProvider,
+    SessionProvider
   ]
 })
 export class AppModule {

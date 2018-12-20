@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
 import { Keyboard } from '@ionic-native/keyboard';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -29,10 +30,12 @@ export class LibraryPage {
               private storage: Storage,
               private keyboard: Keyboard,
               private platform: Platform,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private connection: ConnectionProvider) {
   }
 
   async ngOnInit() {
+    this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
   }
 
