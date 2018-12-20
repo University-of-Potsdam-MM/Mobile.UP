@@ -253,5 +253,9 @@
   },
   "menu": {
     "title": "Menu"
+  },
+  "popover":{
+    "loggedInText": "Logged in as",
+    "notLoggedInText": "Not logged in"
   }
 }
