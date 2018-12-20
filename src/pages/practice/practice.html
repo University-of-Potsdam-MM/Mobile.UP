@@ -36,7 +36,7 @@
     {{error.error}}<br/>
   </p>
 
-  <ion-list>
+  <ion-list *ngIf="!waiting_for_response">
     <ion-item text-wrap detail-push *ngFor="let ADS of displayedList; let i = index" (click)="itemSelected(ADS, i)" [ngClass]="{'partner': ADS.partner!='0'}">
 
       <h2>{{ADS.date | date:'dd.MM.yy'}} - {{ADS.title}}</h2>

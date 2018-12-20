@@ -16,6 +16,7 @@ import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { resolve } from 'dns';
+import { ImpressumPage } from '../impressum/impressum';
 
 
 @IonicPage()
@@ -60,10 +61,10 @@ export class PracticePage {
         practice = "Praktika";
         break;
       case "2":
-        practice = "Job für Studierende";
+        practice = "Jobs für Studierende";
         break;
       case "3":
-        practice = "Job für Absolventen";
+        practice = "Jobs für Absolventen";
         break;
       case "4":
         practice = "Abschlussarbeit";
@@ -79,12 +80,14 @@ export class PracticePage {
     this.displayedList = this.defaultList;
   }
 
-  async ngOnInit() {
-    this.initializeList();
-    this.loadData().then(res =>{
-      this.useFilterSettings();
-    });
-
+  ionViewWillEnter() {
+    let lastPage = this.navCtrl.last();
+    if (lastPage.component != DetailedPracticePage && lastPage.component != ImpressumPage) {
+      this.initializeList();
+      this.loadData().then(res => {
+        this.useFilterSettings();
+      });
+    }
   }
 
 
@@ -133,7 +136,7 @@ export class PracticePage {
             }
           }
           this.initializeList();
-          this.waiting_for_response = false;
+          // this.waiting_for_response = false;
         },
         error => {
           if (refresher) {
@@ -183,34 +186,49 @@ export class PracticePage {
     }
   }
 
-
   /**
    * @name useFilterSettings
    * @description filters displayedList according to the preferences of the user
    */
-  private async useFilterSettings(){
-    console.log(this.defaultList.length, this.displayedList.length);
+  private async useFilterSettings() {
+    this.waiting_for_response = true;
 
     var studyarea = await this.settingsProvider.getSettingValue("studyarea");
     var practice = await this.settingsProvider.getSettingValue("practice");
 
+    // console.log("FILTER");
+    // console.log(studyarea);
+    // console.log(practice);
+
+    console.log("DISPLAYED")
     console.log(this.displayedList.length);
 
+    var tmp = this.displayedList;
     // filter according to practice option
-    this.displayedList = jquery.grep(
-      this.defaultList, (ADS) => {
-        return practice.includes(this.practiceMapping(ADS.art))
-      }
-    )
-      console.log(this.displayedList.length);
+    if (practice.length > 0) {
+      console.log("hey");
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          return practice.includes(this.practiceMapping(ADS.art))
+        }
+      )
+    }
 
     // filter according to studyarea
-    this.displayedList = jquery.grep(
-      this.displayedList, (ADS) => {
-        return studyarea.includes(ADS.field)
-      }
-    )
+    if (studyarea.length > 0) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          return studyarea.includes(ADS.field)
+        }
+      )
+    }
+
+    this.displayedList = tmp;
+
+    console.log("DISPLAYED NEW")
     console.log(this.displayedList.length);
+
+    this.waiting_for_response = false;
   }
 
 
@@ -224,7 +242,7 @@ export class PracticePage {
    */
   public async filterItems(query: string) {
     this.initializeList();
-    this.useFilterSettings().then( resolve => {
+    this.useFilterSettings().then(resolve => {
       if (query) {
         this.displayedList = jquery.grep(
           this.displayedList,
@@ -232,12 +250,11 @@ export class PracticePage {
             return this.contains(ADS.title, query);
           }
         );
-    }
-  });
+      }
+    });
 
-
-      this.chRef.detectChanges();
-    }
+    this.chRef.detectChanges();
+  }
 
 
   /**
