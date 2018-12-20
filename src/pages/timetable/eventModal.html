@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons left>
+    <ion-buttons left padding-left>
       <button ion-button (click)="closeModal()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="arrow-back" style="font-size: x-large"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Kursinformation</ion-title>
@@ -15,7 +15,7 @@
   <ng-template #singleEventTemplate let-event="event">
     <ion-card>
       <!-- title, need to use innerHtml here because title can contain HTML like &colon; -->
-      <ion-card-header style="font-weight:bold" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'"></ion-card-header>
+      <ion-card-header style="font-weight:bold" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'" text-wrap></ion-card-header>
 
       <ion-card-content>
 
@@ -26,24 +26,24 @@
                       then multipleLecturersTemplate else singleLecturerTemplate"></div>
 
           <!-- template for event with single lecturer-->
-          <ng-template #singleLecturerTemplate>
-            {{ "page.timetable.lecturer" | translate }}:
+          <ng-template #singleLecturerTemplate text-wrap>
+            <b>{{ "page.timetable.lecturer" | translate }}:</b>
             {{ event.eventDetails.lecturers.lecturer.lecturerTitle }}
             {{ event.eventDetails.lecturers.lecturer.lecturerLastname }}
           </ng-template>
 
           <!-- template for event with multiple lecturers -->
-          <ng-template #multipleLecturersTemplate>
-            <div *ngFor="let lecturer of event.eventDetails.lecturers.lecturer">
-              {{ "page.timetable.lecturer" | translate }}:
-              {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}
-            </div>
+          <ng-template #multipleLecturersTemplate text-wrap>
+            <span *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last">
+              <b *ngIf="first">{{ "page.timetable.lecturer" | translate }}:</b>
+              {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}<span *ngIf="!last">, </span>
+            </span>
           </ng-template>
 
 
           <!-- time -->
           <div>
-            {{ "page.timetable.time" | translate }}:
+            <b>{{ "page.timetable.time" | translate }}:</b>
             {{ moment(event.startTime).format("LT")}}
             {{ "page.timetable.oclock" | translate }}
             -
@@ -54,7 +54,7 @@
 
           <!-- period -->
           <div>
-            {{ "page.timetable.period" | translate }}:
+            <b>{{ "page.timetable.period" | translate }}:</b>
             {{ event.eventDetails.startDate }}
             -
             {{ event.eventDetails.endDate }}
@@ -62,27 +62,34 @@
 
           <!-- rhythm -->
           <div>
-            {{ "page.timetable.rhythm" | translate }}:
+            <b>{{ "page.timetable.rhythm" | translate }}:</b>
             {{ event.eventDetails.rhythm }}
           </div>
 
           <!-- location -->
           <div>
-            {{ "page.timetable.location" | translate }}:
+            <b>{{ "page.timetable.location" | translate }}:</b>
             {{ event.eventDetails.location}}
           </div>
 
           <!-- building -->
           <div>
-            {{ "page.timetable.building" | translate }}:
-            {{ event.eventDetails.building }}
+            <b>{{ "page.timetable.building" | translate }}:</b>
+            <span *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building != 'N'">{{ event.eventDetails.building }}</span>
+            <span *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'"> / </span>
           </div>
 
           <!-- roomtype and room -->
           <div>
-            {{ "page.timetable.room" | translate }}:
+            <b>{{ "page.timetable.room" | translate }}:</b>
             {{ event.eventDetails.roomType }}
-            {{ event.eventDetails.room }}
+            <span *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room != 'N.'">{{ event.eventDetails.room }}</span>
+          </div>
+
+          <!-- comment -->
+          <div *ngIf="event.eventDetails.comment">
+            <b>{{ "page.timetable.comment" | translate }}:</b>
+            {{ event.eventDetails.comment }}
           </div>
         </ion-list>
 

@@ -58,12 +58,12 @@ export class PulsProvider {
           // we're having a contradiction here, the password is wrong, but
           // the token is still valid. We'll log the user out and send the
           // user to LoginPage
-          
+
           rs.next(response);
           // this.handleSpecialCase();
           // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions 
-          // should not log out 
+          // the elistest account f.e. just does not support the grades / timetable functions
+          // should not log out
         } else {
           rs.next(response);
         }

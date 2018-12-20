@@ -13,10 +13,52 @@ page-timetable {
   }
   .dayview-normal-event-container{
     margin-top: 37px;
+    margin: 0;
   }
 
   .hint {
     color: color($colors, primary);
   }
 
+  .calendarButton {
+    background-color: color($colors, secondary);
+    color: color($colors, primary);
+    width: 45%;
+  }
+
+  .activeCalendarButton {
+    background-color: color($colors, primary);
+    color: white;
+    width: 45%;
+  }
+
+  #title {
+    margin-top: 1.25rem;;
+  }
+
+  .calendar {
+    hyphens: auto!important;
+
+    .monthview-datetable td.monthview-primary-with-event {
+      background-color: color($colors, primary) !important;
+    }
+
+    .monthview-datetable td.monthview-secondary-with-event {
+      background-color: color($colors, secondary) !important;
+    }
+
+    .monthview-datetable td.monthview-current {
+      background-color: color($colors, light) !important;
+      color: black !important;
+    }
+
+    .calendar-event-inner {
+      background-color: color($colors, primary) !important;
+    }
+
+    .calendar-hour-column {
+      width: 5rem!important;
+    }
+
+  }
 }

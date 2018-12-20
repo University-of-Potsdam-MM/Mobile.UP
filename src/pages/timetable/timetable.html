@@ -27,10 +27,10 @@
       <button ion-button (click)="changeCalendarMode('day')">
         {{ "page.timetable.day" | translate }}
       </button>
-    
+
       <!-- TODO: needs styling, too -->
       <div id="title">{{ currentTitle }}</div>
-    
+
       <calendar [eventSource]="eventSource"
                 [calendarMode]="calendarOptions.calendarMode"
                 [currentDate]="calendarOptions.currentDate"
@@ -49,3 +49,7 @@
   </span>
 
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>
