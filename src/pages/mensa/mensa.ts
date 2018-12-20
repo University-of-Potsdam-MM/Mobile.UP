@@ -9,6 +9,7 @@ import {
 } from "../../library/interfaces";
 import { CalendarComponentOptions } from 'ion2-calendar';
 import { CacheService } from 'ionic-cache';
+import { ConnectionProvider } from "../../providers/connection/connection";
 import moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -55,13 +56,25 @@ export class MensaPage {
     public navParams: NavParams,
     private http: HttpClient,
     private cache: CacheService,
+    private connection: ConnectionProvider,
     private translate: TranslateService,
-    private storage: Storage) 
+    private storage: Storage)
   {
     this.currentDate = new Date();
     this.isLoaded = false;
   }
 
+  ionViewDidLoad(){
+    this.connection.checkOnline(true, true);
+
+  }
+
+  /**
+   * checks whether a session is stored in memory. If not the user is taken to
+   * the LoginPage. If yes a query is sent to the API and the results are placed
+   * in this.personsFound so the view can render them
+   * @param query
+   */
   public async changeCampus(campus) {
     this.campus = campus;
     this.loadCampusMenu();
@@ -213,7 +226,7 @@ export class MensaPage {
   veganOnly() {
     this.onlyVeganFood = !this.onlyVeganFood;
     this.onlyVeggieFood = false;
-    
+
     this.noMealsForDate = true;
     var i;
     for (i = 0; i < this.allMeals.length; i++) {

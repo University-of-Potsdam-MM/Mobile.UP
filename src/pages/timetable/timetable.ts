@@ -8,6 +8,7 @@ import { LoginPage } from "../login/login";
 import { createEventSource, IEventObject } from "./createEvents";
 import { ITimeSelected } from "ionic2-calendar/calendar";
 import * as moment from 'moment';
+import { ConnectionProvider } from "../../providers/connection/connection";
 import { PulsProvider } from "../../providers/puls/puls";
 import { SessionProvider } from '../../providers/session/session';
 import { TranslateService } from '@ngx-translate/core';
@@ -45,13 +46,14 @@ export class TimetablePage {
   constructor(
       public navCtrl: NavController,
       private modalCtrl:ModalController,
+      private connection: ConnectionProvider,
       private translate: TranslateService,
       private sessionProvider: SessionProvider,
       private puls:PulsProvider) {
   }
 
   async ionViewDidLoad(){
-    // TODO: check connections
+    this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
 
     let session = JSON.parse(await this.sessionProvider.getSession());

@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DetailedOpeningPage } from '../detailed-opening/detailed-opening';
 import { Platform } from 'ionic-angular/platform/platform';
 import { Keyboard } from '@ionic-native/keyboard';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -32,10 +33,12 @@ export class OpeningHoursPage {
               private cache: CacheService,
               private platform: Platform,
               private keyboard: Keyboard,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private connection: ConnectionProvider) {
   }
 
   ngOnInit() {
+    this.connection.checkOnline(true, true);
     this.loadOpeningHours();
   }
 

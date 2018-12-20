@@ -5,6 +5,8 @@ import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
+import { PulsProvider } from "../../providers/puls/puls";
+import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
@@ -36,6 +38,8 @@ export class GradesPage {
       private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage,
+      private puls:PulsProvider,
+      private connection: ConnectionProvider,
       private sessionProvider: SessionProvider) {
 
   }
@@ -45,6 +49,7 @@ export class GradesPage {
   }
 
   async ionViewDidLoad() {
+    this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
     let session = JSON.parse(await this.sessionProvider.getSession());
 
@@ -157,8 +162,8 @@ export class GradesPage {
         this.noUserRights = true;
 
         // this does not necessarily mean that the password is wrong
-        // the elistest account f.e. just does not support the grades / timetable functions 
-        // should not log out 
+        // the elistest account f.e. just does not support the grades / timetable functions
+        // should not log out
         // this.puls.handleSpecialCase();
       } else {
         this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
