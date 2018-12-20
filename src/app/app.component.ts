@@ -14,6 +14,7 @@ import { CacheService } from 'ionic-cache';
 import { IOIDCRefreshResponseObject } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
+import {ConnectionProvider} from "../providers/connection/connection";
 import { SessionProvider } from '../providers/session/session';
 
 @Component({
@@ -36,6 +37,7 @@ export class MobileUPApp {
     private webIntent: WebIntentProvider,
     private cache: CacheService,
     private loginProvider: UPLoginProvider,
+    private connection: ConnectionProvider,
     private sessionProvider: SessionProvider
   ) {
     this.initializeApp();
@@ -48,6 +50,7 @@ export class MobileUPApp {
     await this.initConfig();
     await this.checkSessionValidity();
     await this.initTranslate();
+    this.connection.initializeNetworkEvents();
 
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
@@ -92,15 +95,15 @@ export class MobileUPApp {
           let validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
           let nowUnixTime = moment().unix();
           // check if we are not past this date already with a certain boundary
-  
+
           return (validUntilUnixTime - nowUnixTime) > boundary;
         };
-        
+
         if(sessionIsValid(session.timestamp,
                           session.oidcTokenObject.expires_in,
                           config.general.tokenRefreshBoundary)) {
           console.log(`[MobileUP]: Session still valid, refreshing`);
-        
+
           // session still valid, but we will refresh it anyway
           this.loginProvider.oidcRefreshToken(
             session.oidcTokenObject.refresh_token,
@@ -115,10 +118,8 @@ export class MobileUPApp {
                 credentials:      session.credentials
               };
               this.sessionProvider.setSession(newSession);
-  
-              // TODO: remove proxy when CORS issue is resolved
-              config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
-  
+
+
               // in the meantime get user information and save it to storage
               this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
                 (userInformation:any) => {
@@ -130,7 +131,7 @@ export class MobileUPApp {
                   console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
                 }
               );
-  
+
             },
             error => {
               console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);

@@ -6,11 +6,11 @@
 <ion-grid>
   <ion-row *ngIf="gradeArray[currentProfession].credits" class="creditPoints" nowrap no-padding>
     <ion-col text-left col-8>
-      <b>{{ gradeArray[currentProfession].credits.accountCredits.description }}</b>
+      <b>{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description }}</b>
     </ion-col>
     <ion-col text-right>
       <b>
-        {{ gradeArray[currentProfession].credits.accountCredits.actualCreditPoints }}/{{ gradeArray[currentProfession].credits.accountCredits.targetCreditPoints }} 
+        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }} 
       </b>
     </ion-col>
   </ion-row>
@@ -158,11 +158,11 @@
 <ion-grid>
   <ion-row *ngIf="gradeArray[currentProfession].credits" class="creditPoints" nowrap no-padding>
     <ion-col text-left col-8>
-      <b>{{ gradeArray[currentProfession].credits.accountCredits.description }}</b>
+      <b>{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description }}</b>
     </ion-col>
     <ion-col text-right>
       <b>
-        {{ gradeArray[currentProfession].credits.accountCredits.actualCreditPoints }}/{{ gradeArray[currentProfession].credits.accountCredits.targetCreditPoints }} 
+        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }} 
       </b>
     </ion-col>
   </ion-row>

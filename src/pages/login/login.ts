@@ -14,9 +14,10 @@ import {
 } from "../../providers/login-provider/interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
-import { IConfig } from "../../library/interfaces";
 import { Observable } from "rxjs/Observable";
 import { HomePage } from '../home/home';
+import { ConnectionProvider } from "../../providers/connection/connection";
+import { ConfigProvider } from "../../providers/config/config";
 import { SessionProvider } from '../../providers/session/session';
 
 /**
@@ -48,6 +49,7 @@ export class LoginPage {
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
       private storage:     Storage,
+      private connection:  ConnectionProvider,
       private sessionProvider: SessionProvider,
       private translate:   TranslateService) {
   }
@@ -58,10 +60,12 @@ export class LoginPage {
     if (session) {
       this.alreadyLoggedIn = true;
     } else { this.alreadyLoggedIn = false; }
+
+    this.connection.checkOnline(true, true);
   }
 
   /**
-   * login
+   * logins
    *
    * Uses AuthServiceProvider to execute login. If login is successful the user
    * is taken back to the previous page. If not, an alert is shown.
@@ -69,8 +73,7 @@ export class LoginPage {
   public async login () {
 
     this.showLoading();
-
-    let config:IConfig = await this.storage.get("config");
+    let config = ConfigProvider.config;
 
     // prepare Observable for use in switch
     let session:Observable<ISession> = this.upLogin.oidcLogin(

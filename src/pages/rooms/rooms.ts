@@ -21,6 +21,7 @@ import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { RoomplanPage } from "../roomplan/roomplan";
 import { CacheService } from 'ionic-cache';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 
 @IonicPage()
@@ -47,10 +48,12 @@ export class RoomsPage {
     public navCtrl: NavController,
     public translate : TranslateService,
     private cache: CacheService,
-    public http: HttpClient) {
+    public http: HttpClient,
+    private connection: ConnectionProvider) {
   }
 
   ionViewDidLoad() {
+    this.connection.checkOnline(true, true);
     this.current_timeslot = RoomsPage.getCurrentTimeslot();
 
     this.time_slots = [];

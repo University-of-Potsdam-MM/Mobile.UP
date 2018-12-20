@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
+import {ConnectionProvider} from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -17,10 +18,16 @@ export class NewsPage {
   sourcesList = [];
   isLoaded = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HttpClient, private storage: Storage, private cache: CacheService) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private http: HttpClient,
+              private storage: Storage,
+              private cache: CacheService,
+              private connection: ConnectionProvider) {
   }
 
   ngOnInit() {
+    this.connection.checkOnline(true, true);
     this.loadNews();
   }
 
