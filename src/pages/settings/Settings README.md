@@ -1,6 +1,6 @@
 # Settings README
 
-This i a quick guide on how to create and use settings.
+This is a quick guide on how to create and use settings.
 
 ### Read Settings in Page
 
@@ -52,21 +52,21 @@ export const SETTINGS = [
   {
     key: "test_4",
     value: "0",
-    options: [{key: 0, lbl: "deaktivated"}, {key: 1, lbl: "1"}, {key: 2, lbl: "2"}],
+    options: [{key: 0}, {key: 1}, {key: 2}],
     type: ESettingType.number_radio,
     icon: "ionic",
   },
   {
     key: "test_5",
     value: "test 1",
-    options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
+    options: [{key: "test_1"}, {key: "test_2"}, {key: "test_3"}],
     type: ESettingType.string_radio,
     icon: "ionic",
   },
   {
     key: "test_6",
     value: "test_1",
-    options: [{key: "test_1", lbl: "Test 1"}, {key: "test_2", lbl: "Test 2"}, {key: "test_3", lbl: "Test 3"}],
+    options: [{key: "test_1"}, {key: "test_2"}, {key: "test_3"}],
     type: ESettingType.checkbox,
     icon: "ionic",
   }

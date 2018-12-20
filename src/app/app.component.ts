@@ -11,13 +11,10 @@ import { IConfig, IModule } from "../library/interfaces";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { CacheService } from 'ionic-cache';
-import {
-  IOIDCUserInformationResponse,
-  IOIDCRefreshResponseObject,
-  ISession
-} from "../providers/login-provider/interfaces";
+import { IOIDCRefreshResponseObject } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
+import { SessionProvider } from '../providers/session/session';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +23,7 @@ export class MobileUPApp {
   @ViewChild(Nav) nav: Nav;
 
   config:IConfig;
-  rootPage: any;
+  rootPage: string = 'HomePage';
 
   constructor(
     private platform: Platform,
@@ -38,7 +35,8 @@ export class MobileUPApp {
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
     private cache: CacheService,
-    private loginProvider: UPLoginProvider
+    private loginProvider: UPLoginProvider,
+    private sessionProvider: SessionProvider
   ) {
     this.initializeApp();
   }
@@ -63,9 +61,6 @@ export class MobileUPApp {
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
     });
-
-    this.rootPage = HomePage;
-    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 
   private async initConfig() {
@@ -84,80 +79,70 @@ export class MobileUPApp {
    * session will be refreshed anyway. Otherwise the currently stored session
    * object is deleted.
    */
-  private async checkSessionValidity(){
+  private async checkSessionValidity() {
     let config:IConfig = await this.storage.get('config');
-    this.storage.get('session').then(
-      (session:ISession) => {
-        if(session) {
 
-          // helper function for determining whether session is still valid
-          let sessionIsValid = (timestampThen:Date, expiresIn:number, boundary:number) => {
-            // determine date until the token is valid
-            let validUntilUnixTime = moment(session.timestamp).unix() + expiresIn;
-            let nowUnixTime = moment().unix();
-            // check if we are not past this date already with a certain boundary
+    this.platform.ready().then(async () => {
+      let session = JSON.parse(await this.sessionProvider.getSession());
 
-            return (validUntilUnixTime - nowUnixTime) > boundary;
-          };
-
-          if(sessionIsValid(session.timestamp,
-                            session.oidcTokenObject.expires_in,
-                            config.general.tokenRefreshBoundary)){
-            console.log(`[MobileUP]: Session still valid, refreshing`);
-
-            // session still valid, but we will refresh it anyway
-            this.loginProvider.oidcRefreshToken(
-              session.oidcTokenObject.refresh_token,
-              config.authorization.oidc
-            ).subscribe(
-              (response:IOIDCRefreshResponseObject) => {
-                // store new token object
-                let newSession:ISession = {
-                  oidcTokenObject:  response.oidcTokenObject,
-                  token:            response.oidcTokenObject.access_token,
-                  timestamp:        new Date(),
-                  credentials:      session.credentials
-                };
-                this.storage.set('session', newSession);
-                console.log(`[MobileUP]: Refreshed token successfully`);
-
-                // TODO: remove proxy when CORS issue is resolved
-                config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
-
-                // in the meantime get user information and save it to storage
-                this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
-                  (userInformation:IOIDCUserInformationResponse) => {
-                    this.storage.set('userInformation', userInformation).then(
-                      result => {
-                        console.log(
-                          '[MobileUP]: Successfully retrieved and stored user information'
-                        )
-                      }
-                    );
-                  },
-                  error => {
-                    // user must not know if something goes wrong here, so we don't
-                    // create an alert
-                    console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
-                  }
-                );
-
-              },
-              error => {
-                console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);
-              }
-            )
-          } else {
-            // session no longer valid, so we just remove the session object
-            console.log(`[MobileUP]: Session no longer valid, deleting session object`);
-            this.storage.remove('session').then(
-              (result) => console.log(`[MobileUP]: Removed invalid session`)
-            );
-          }
+      if (session) {
+        // helper function for determining whether session is still valid
+        let sessionIsValid = (timestampThen:Date, expiresIn:number, boundary:number) => {
+          // determine date until the token is valid
+          let validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
+          let nowUnixTime = moment().unix();
+          // check if we are not past this date already with a certain boundary
+  
+          return (validUntilUnixTime - nowUnixTime) > boundary;
+        };
+        
+        if(sessionIsValid(session.timestamp,
+                          session.oidcTokenObject.expires_in,
+                          config.general.tokenRefreshBoundary)) {
+          console.log(`[MobileUP]: Session still valid, refreshing`);
+        
+          // session still valid, but we will refresh it anyway
+          this.loginProvider.oidcRefreshToken(
+            session.oidcTokenObject.refresh_token,
+            config.authorization.oidc
+          ).subscribe(
+            (response:IOIDCRefreshResponseObject) => {
+              // store new token object
+              let newSession:any = {
+                oidcTokenObject:  response.oidcTokenObject,
+                token:            response.oidcTokenObject.access_token,
+                timestamp:        new Date(),
+                credentials:      session.credentials
+              };
+              this.sessionProvider.setSession(newSession);
+  
+              // TODO: remove proxy when CORS issue is resolved
+              config.authorization.oidc.userInformationUrl="http://localhost:8100/apiup/oauth2/userinfo";
+  
+              // in the meantime get user information and save it to storage
+              this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
+                (userInformation:any) => {
+                  this.sessionProvider.setUserInfo(userInformation);
+                },
+                error => {
+                  // user must not know if something goes wrong here, so we don't
+                  // create an alert
+                  console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
+                }
+              );
+  
+            },
+            error => {
+              console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);
+            }
+          )
+        } else {
+          // session no longer valid, so we just remove the session object
+          console.log(`[MobileUP]: Session no longer valid, deleting session object`);
+          this.sessionProvider.removeSession();
         }
-        // otherwise there is no session, so there is nothing to do
       }
-    )
+    });
   }
 
   /**
@@ -168,13 +153,16 @@ export class MobileUPApp {
   private async initTranslate() {
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang('de');
+    moment.locale('de');
 
     var userLanguage = await this.settingsProvider.getSettingValue("language");
 
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
+      moment.locale('de');
     } else if (userLanguage == "Englisch") {
       this.translate.use("en");
+      moment.locale('en');
     }
   }
 
@@ -204,6 +192,7 @@ export class MobileUPApp {
     console.log("[MobileUPApp]: Created default moduleList from config");
     // }
   }
+
 
   /**
    * opens a page when link is clicked

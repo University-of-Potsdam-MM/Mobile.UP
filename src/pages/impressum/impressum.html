@@ -23,8 +23,8 @@
   <ion-list class="sysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
     <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo">
       <b>{{ "page.imprint.sysInfo" | translate }}</b>
-      <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropright"></ion-icon>
-      <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
     </ion-item>
     <span *ngIf="showSysInfo">
       <ion-item *ngIf="deviceInfo.cordovaVersion">Cordova Version: {{ deviceInfo.cordovaVersion }}</ion-item>
@@ -37,3 +37,7 @@
     </span>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <tab-bar></tab-bar>
+</ion-footer>

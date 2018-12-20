@@ -186,7 +186,11 @@
           "lbl": "Campus"
         },
         "language": {
-          "lbl": "Sprache"
+          "lbl": "Sprache",
+          "options": {
+            "Deutsch": "Deutsch",
+            "Englisch": "Englisch"
+          }
         }
       }
     },
@@ -194,12 +198,14 @@
       "title":"Hochschulsport"
     },
     "rooms": {
-      "title": "Freie Räume"
+      "title": "Freie Räume",
+      "time": "Uhrzeit"
     },
     "roomplan": {
       "title": "Raumplan",
       "no_house": "Das gewählte Haus ist heute gantägig frei.",
-      "no_room": "Der gewählte Raum ist heute ganztägig frei."
+      "no_room": "Der gewählte Raum ist heute ganztägig frei.",
+      "date": "Datum"
     },
     "openingHours":{
       "title":"Öffnungszeiten",

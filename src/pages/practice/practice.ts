@@ -1,8 +1,7 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
-import { ISession } from "../../providers/login-provider/interfaces";
 import { LoginPage } from "../login/login";
 import {
   IConfig,
@@ -12,7 +11,7 @@ import {
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
-
+import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -40,6 +39,7 @@ export class PracticePage {
     private keyboard: Keyboard,
     private cache: CacheService,
     public navParams: NavParams,
+    private sessionProvider: SessionProvider,
     private chRef: ChangeDetectorRef) {
   };
 
@@ -66,16 +66,15 @@ export class PracticePage {
     } else {
       this.waiting_for_response = true;
     }
-    
-    console.log(`[PracticePage]: Quering ADS`);
 
-    let session: ISession = await this.storage.get("session");
+    console.log(`[PracticePage]: Quering ADS`);
     let config: IConfig = await this.storage.get("config");
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
     if (session) {
       let headers: HttpHeaders = new HttpHeaders()
         .append("Authorization", config.webservices.apiToken);
 
-      //this.URLEndpoint = config.webservices.endpoint.practiceSearch;
       let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
       this.cache.loadFromObservable("practiceResponse", request).subscribe(
         (response: IADSResponse) => {
@@ -94,7 +93,7 @@ export class PracticePage {
             if (!this.isInArray(uidArray, ads.uid)) {
               uidArray.push(ads.uid);
               this.defaultList.push(ads);
-            } 
+            }
           }
           this.initializeList();
           this.waiting_for_response = false;

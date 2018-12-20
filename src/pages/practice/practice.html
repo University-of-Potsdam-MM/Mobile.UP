@@ -19,7 +19,7 @@
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <!-- list of emergencyCalls -->
   <p *ngIf="waiting_for_response == true" style="text-align: center">
     <ion-spinner></ion-spinner>
@@ -49,7 +49,7 @@
           </ion-row>
           <ion-row>
             <ion-col *ngIf="ADS.famfriendly != '0'; else unknown_filed"><p>{{ "page.practice.item.familyfriendly" | translate }}</p></ion-col>
-            <ion-col *ngIf="ADS.language != null; else unknown_filed"><p>{{ "page.practice.item.language" | translate }}: {{ADS.language}}</p></ion-col>
+            <ion-col *ngIf="ADS.language != ''; else unknown_filed"><p>{{ "page.practice.item.language" | translate }}: {{ADS.language}}</p></ion-col>
             <ion-col *ngIf="ADS.foreign != '0'; else unknown_filed"><p>{{ "page.practice.item.foreign" | translate }}</p></ion-col>
           </ion-row>
         </ion-grid>

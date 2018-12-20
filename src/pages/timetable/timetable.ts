@@ -1,31 +1,15 @@
-import {Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
-  AlertController,
   IonicPage, ModalController,
   NavController, NavParams, ViewController
 } from 'ionic-angular';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import {Storage} from "@ionic/storage";
-import {
-  ISession
-} from "../../providers/login-provider/interfaces";
-import {Observable} from "rxjs/Observable";
-import {
-  IPulsAPIResponse_getStudentCourses,
-  IPulsApiRequest_getStudentCourses
-} from "../../library/interfaces_PULS";
-import {LoginPage} from "../login/login";
-import {createEventSource, IEventObject,} from "./createEvents";
-import {ConfigProvider} from "../../providers/config/config";
-import {ITimeSelected} from "ionic2-calendar/calendar";
+import { IPulsAPIResponse_getStudentCourses} from "../../library/interfaces_PULS";
+import { LoginPage } from "../login/login";
+import { createEventSource, IEventObject } from "./createEvents";
+import { ITimeSelected } from "ionic2-calendar/calendar";
 import * as moment from 'moment';
-import {TranslateService} from "@ngx-translate/core";
-import {PulsProvider} from "../../providers/puls/puls";
-
-
-function debug(text){
-  console.log(`[TimetablePage]: ${text}`);
-}
+import { PulsProvider } from "../../providers/puls/puls";
+import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -35,6 +19,8 @@ function debug(text){
 export class TimetablePage {
 
   eventSource:IEventObject[] = [];
+  noUserRights = false;
+  isLoading = true;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = "";
@@ -76,36 +62,38 @@ export class TimetablePage {
 
   constructor(
       public navCtrl: NavController,
-      private http:HttpClient,
       private storage:Storage,
-      private alertCtrl:AlertController,
-      private translate: TranslateService,
       private modalCtrl:ModalController,
+      private sessionProvider: SessionProvider,
       private puls:PulsProvider) {
   }
 
-  ionViewDidLoad(){
+  async ionViewDidLoad(){
     // TODO: check connections
-    this.storage.get("session").then(
-      (session:ISession) => {
-        // check if we have a session
-        if(session === null){
-          // in case there is no session send the user to LoginPage
-          this.navCtrl.push(LoginPage).then(
-            () => debug("pushed LoginPage")
-          )
-        } else {
-          // there is a session
-          this.puls.getStudentCourses(session).subscribe(
-            (response:IPulsAPIResponse_getStudentCourses) => {
-              this.eventSource = createEventSource(
-                response.studentCourses.student.actualCourses.course
-              );
-            }
-          );
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
+    if (session) {
+      this.isLoading = true;
+      // there is a session
+      this.puls.getStudentCourses(session).subscribe(
+        (response:IPulsAPIResponse_getStudentCourses) => {
+          if (response.message && response.message == "no user rights") {
+            this.noUserRights = true;
+            this.isLoading = false;
+          } else {
+            this.noUserRights = false;
+            this.isLoading = false;
+            this.eventSource = createEventSource(
+              response.studentCourses.student.actualCourses.course
+            );
+          }
         }
-      }
-    );
+      );
+    } else {
+      // in case there is no session send the user to LoginPage
+      this.isLoading = false;
+      this.navCtrl.push(LoginPage).then(() => console.log("pushed LoginPage"))
+    }
   }
 
   /* ~~~ ionic2-calendar specific methods ~~~ */

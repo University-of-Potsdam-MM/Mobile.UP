@@ -7,6 +7,7 @@ import {LoginPage} from "../login/login";
 import {IConfig, IPerson,} from "../../library/interfaces";
 import { Platform } from 'ionic-angular/platform/platform';
 import { Keyboard } from '@ionic-native/keyboard';
+import { SessionProvider } from '../../providers/session/session';
 
 /**
  * PersonsPage
@@ -35,6 +36,7 @@ export class PersonsPage {
     private http: HttpClient,
     private platform: Platform,
     private keyboard: Keyboard,
+    private sessionProvider: SessionProvider,
     private storage: Storage) {
   }
 
@@ -43,12 +45,13 @@ export class PersonsPage {
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  async ionViewWillEnter(){
-    this.session = await this.storage.get("session");
-    if(!this.session){
-      this.navCtrl.push(LoginPage).then(
-        result => console.log("[PersonsPage]: Pushed LoginPage")
-      );
+  async ionViewWillEnter() {
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
+    if (session) {
+      this.session = session;
+    } else {
+      this.navCtrl.push(LoginPage).then(result => console.log("[PersonsPage]: Pushed LoginPage"))
     }
   }
 

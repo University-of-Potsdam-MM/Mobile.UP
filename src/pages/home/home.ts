@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import {
   IonicPage,
-  NavController, NavParams,
-  PopoverController,
-  ViewController
+  NavController
 } from 'ionic-angular';
 import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
@@ -24,9 +22,6 @@ export class HomePage {
 
   modules:{[moduleName:string]:IModule} = {};
   sortedModules = [];
-
-  session:string = "";
-  lang: string;
 
   constructor(
       public navCtrl: NavController,

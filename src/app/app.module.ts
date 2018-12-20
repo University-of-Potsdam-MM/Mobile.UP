@@ -22,6 +22,7 @@ import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
 import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
+import { SecureStorage } from '@ionic-native/secure-storage';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -47,10 +48,11 @@ import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
-import { MorePopoverComponent } from "../components/more-popover/more-popover";
+import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
-import {PopoverButtonComponent} from "../components/popover-button/popover-button";
+import { PopoverButton } from "../components/popover/popover-button";
+import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -109,7 +111,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     TimetablePage,
     EventModal,
     OpeningHoursPage,
-    DetailedOpeningPage
+    DetailedOpeningPage,
+    PopoverButton
   ],
   imports: [
     HttpClientModule,
@@ -163,8 +166,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     TimetablePage,
     EventModal,
-    MorePopoverComponent,
-    PopoverButtonComponent
+    PopoverComponent
   ],
   providers: [
     StatusBar,
@@ -180,13 +182,16 @@ export const deepLinkConfig: DeepLinkConfig = {
     AppVersion,
     Device,
     ConfigProvider,
+    SessionProvider,
+    SecureStorage,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,
       deps: [ConfigProvider],
       multi: true
     },
-    PulsProvider
+    PulsProvider,
+    SessionProvider
   ]
 })
 export class AppModule {
