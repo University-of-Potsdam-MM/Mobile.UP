@@ -29,7 +29,7 @@ export const SETTINGS = [
     },
     {
         key: "practice",
-        value: "Jobs für Studierende, Jobs für Absolventen, Abschlussarbeit, Praktika",
+        value: "",
         options: [
             {key: "Jobs für Studierende"},
             {key: "Jobs für Absolventen"},

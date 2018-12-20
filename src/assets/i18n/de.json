@@ -71,7 +71,8 @@
         "firm": "Firma",
         "art": "Art",
         "field": "Studienrichtung",
-        "pubDate": "veröffentlicht am"
+        "pubDate": "veröffentlicht am",
+        "jobPosting": "Stellenausschreibung"
 
       },
       "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."

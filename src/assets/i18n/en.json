@@ -71,7 +71,8 @@
         "firm": "Company",
         "art": "Type",
         "field": "Study field",
-        "pubDate": "published on"
+        "pubDate": "published on",
+        "jobPosting": "Job posting"
 
       },
       "no_results": "No results found for this keyword."
