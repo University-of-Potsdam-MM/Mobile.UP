@@ -16,8 +16,9 @@ import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { Observable } from "rxjs/Observable";
 import { HomePage } from '../home/home';
-import {ConnectionProvider} from "../../providers/connection/connection";
-import {ConfigProvider} from "../../providers/config/config";
+import { ConnectionProvider } from "../../providers/connection/connection";
+import { ConfigProvider } from "../../providers/config/config";
+import { SessionProvider } from '../../providers/session/session';
 
 /**
  * LoginPage
@@ -48,12 +49,14 @@ export class LoginPage {
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
       private storage:     Storage,
-      private translate:   TranslateService,
-      private connection:  ConnectionProvider) {
+      private connection:  ConnectionProvider,
+      private sessionProvider: SessionProvider,
+      private translate:   TranslateService) {
   }
 
   async ngOnInit() {
-    let session: ISession = await this.storage.get("session");
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
     if (session) {
       this.alreadyLoggedIn = true;
     } else { this.alreadyLoggedIn = false; }
@@ -78,24 +81,19 @@ export class LoginPage {
       config.authorization.oidc
     );
 
-    if(session){
+    if(session) {
       // now handle the Observable which hopefully contains a session
       session.subscribe(
-        (session:ISession) => {
+        (session:any) => {
           console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
-          this.storage.set("session", session);
+          this.sessionProvider.setSession(session);
+
           this.endLoading();
 
           // in the meantime get user information and save it to storage
           this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
             (userInformation:IOIDCUserInformationResponse) => {
-              this.storage.set('userInformation', userInformation).then(
-                result => {
-                  console.log(
-                    '[LoginPage]: Successfully retrieved and stored user information'
-                  )
-                }
-              );
+              this.sessionProvider.setUserInfo(userInformation);
             },
             error => {
               // user must not know if something goes wrong here, so we don't

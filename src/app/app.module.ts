@@ -24,6 +24,12 @@ import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
 import { ConnectionProvider } from '../providers/connection/connection';
 import { Network } from "@ionic-native/network";
+import localeDe from '@angular/common/locales/de';
+import localeEn from '@angular/common/locales/en';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeDe);
+registerLocaleData(localeEn);
+import { SecureStorage } from '@ionic-native/secure-storage';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -53,6 +59,7 @@ import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
 import { PopoverButton } from "../components/popover/popover-button";
+import { SessionProvider } from '../providers/session/session';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -182,6 +189,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     AppVersion,
     Device,
     ConfigProvider,
+    SessionProvider,
+    SecureStorage,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,
@@ -190,7 +199,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     },
     PulsProvider,
     Network,
-    ConnectionProvider
+    ConnectionProvider,
+    SessionProvider
   ]
 })
 export class AppModule {

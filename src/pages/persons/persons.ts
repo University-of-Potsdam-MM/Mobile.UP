@@ -7,7 +7,8 @@ import {LoginPage} from "../login/login";
 import {IConfig, IPerson,} from "../../library/interfaces";
 import { Platform } from 'ionic-angular/platform/platform';
 import { Keyboard } from '@ionic-native/keyboard';
-import {ConnectionProvider} from "../../providers/connection/connection";
+import { ConnectionProvider } from "../../providers/connection/connection";
+import { SessionProvider } from '../../providers/session/session';
 
 /**
  * PersonsPage
@@ -36,8 +37,9 @@ export class PersonsPage {
     private http: HttpClient,
     private platform: Platform,
     private keyboard: Keyboard,
-    private storage: Storage,
-    private connection: ConnectionProvider) {
+    private connection: ConnectionProvider,
+    private sessionProvider: SessionProvider,
+    private storage: Storage) {
   }
 
   /**

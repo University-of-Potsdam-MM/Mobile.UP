@@ -145,7 +145,21 @@
       "annotation": "Annotation"
     },
     "timetable": {
-      "title": "Timetable"
+      "title": "Timetable",
+      "until": "",
+      "today": "Today",
+      "month": "Month",
+      "week": "Week",
+      "comment": "Comment",
+      "day": "Day",
+      "oclock": "",
+      "time": "Time",
+      "period": "Duration",
+      "location": "Location",
+      "building": "Building",
+      "room": "Room",
+      "rhythm": "Frequency",
+      "lecturer": "Lecturer"
     },
     "mail": {
       "title": "Mail"
@@ -225,10 +239,11 @@
     "yes": "Yes",
     "no": "No",
     "login": "Login",
+    "logout": "Logout",
     "continue": "Continue",
     "search": "Search",
     "showMore": "Show more",
-    "shoeLess": "Show less"
+    "showLess": "Show less"
   },
   "alert": {
     "title": {
@@ -236,7 +251,8 @@
       "website": "Open website?"
     },
     "network": "A network error has occured. Is the device connected to the internet?",
-    "no_info_for_time": "There is no information available for this timespan."
+    "no_info_for_time": "There is no information available for this timespan.",
+    "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again."
   },
   "university": {
     "location": {
@@ -253,5 +269,9 @@
   },
   "menu": {
     "title": "Menu"
+  },
+  "popover":{
+    "loggedInText": "Logged in as",
+    "notLoggedInText": "Not logged in"
   }
 }
