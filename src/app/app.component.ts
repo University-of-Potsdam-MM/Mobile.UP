@@ -103,7 +103,6 @@ export class MobileUPApp {
                           session.oidcTokenObject.expires_in,
                           config.general.tokenRefreshBoundary)) {
           console.log(`[MobileUP]: Session still valid, refreshing`);
-
           // session still valid, but we will refresh it anyway
           this.loginProvider.oidcRefreshToken(
             session.oidcTokenObject.refresh_token,
@@ -131,7 +130,6 @@ export class MobileUPApp {
                   console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
                 }
               );
-
             },
             error => {
               console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);

@@ -12,7 +12,6 @@ import {
   AlertController,
   App,
 } from "ionic-angular";
-import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { SessionProvider } from '../session/session';
 
@@ -21,7 +20,6 @@ export class PulsProvider {
 
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
-              private storage: Storage,
               private translate: TranslateService,
               private sessionProvider: SessionProvider,
               private app: App) {

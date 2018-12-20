@@ -87,7 +87,10 @@
       "cordova-plugin-safariviewcontroller": {},
       "cordova-plugin-app-version": {},
       "cordova-plugin-ionic-keyboard": {},
+<<<<<<< HEAD
+=======
       "cordova-plugin-network-information": {},
+>>>>>>> master
       "cordova-plugin-secure-storage": {}
     },
     "platforms": [
