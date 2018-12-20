@@ -165,13 +165,16 @@ export class MobileUPApp {
   private async initTranslate() {
     // Set the default language for translation strings, and the current language.
     this.translate.setDefaultLang('de');
+    moment.locale('de');
 
     var userLanguage = await this.settingsProvider.getSettingValue("language");
 
     if (userLanguage == "Deutsch") {
       this.translate.use("de");
+      moment.locale('de');
     } else if (userLanguage == "Englisch") {
       this.translate.use("en");
+      moment.locale('en');
     }
   }
 
