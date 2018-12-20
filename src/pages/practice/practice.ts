@@ -11,6 +11,10 @@ import {
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
+import { SettingsPage } from '../../pages/settings/settings';
+import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
+import { SettingsProvider } from '../../providers/settings/settings';
+import { ImpressumPage } from '../impressum/impressum';
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
@@ -39,23 +43,58 @@ export class PracticePage {
     private keyboard: Keyboard,
     private cache: CacheService,
     public navParams: NavParams,
+    private settingsProvider: SettingsProvider,
     private sessionProvider: SessionProvider,
     private chRef: ChangeDetectorRef) {
   };
 
+  /**
+   * @name practiceMapping
+   * @description maps numbers to practices, since practices are provided by number by the API
+   * @param num
+   */
+  private practiceMapping(num){
+    var practice ="";
+    switch (num) {
+      case "1":
+        practice = "Praktika";
+        break;
+      case "2":
+        practice = "Jobs für Studierende";
+        break;
+      case "3":
+        practice = "Jobs für Absolventen";
+        break;
+      case "4":
+        practice = "Abschlussarbeit";
+        break;
+    }
+    return practice;
+  }
+
+  /**
+   * @name initializeList
+   */
   public initializeList(): void {
     this.displayedList = this.defaultList;
   }
 
-  async ngOnInit() {
-    this.initializeList();
-    this.loadData();
+  ionViewWillEnter() {
+    let lastPage = this.navCtrl.last();
+    if (lastPage.component != DetailedPracticePage && lastPage.component != ImpressumPage) {
+      this.initializeList();
+      this.loadData().then(res => {
+        this.useFilterSettings();
+      });
+    }
   }
 
+
   /**
-   * loadData
+   * @name loadData
    *
-   * loads default items from json file
+   * @description loads default items from json file
+   * @param refresher
    */
   public async loadData(refresher?) {
     // reset array so new persons are displayed
@@ -96,7 +135,7 @@ export class PracticePage {
             }
           }
           this.initializeList();
-          this.waiting_for_response = false;
+          // this.waiting_for_response = false;
         },
         error => {
           if (refresher) {
@@ -105,7 +144,7 @@ export class PracticePage {
           // reset array so new persons are displayed
           this.defaultList = [];
           this.error = error;
-          console.log(error);
+          //console.log(error);
           this.waiting_for_response = false;
         }
       );
@@ -126,10 +165,10 @@ export class PracticePage {
     return found;
   }
 
+
   /**
-   * contains
-   *
-   * checks, whether y is a substring of x
+   * @name contains
+   * @description checks, whether y is a substring of x
    *
    * @param x:string String that does or does not contain string y
    * @param y:string String that is or is not contained in string y
@@ -147,34 +186,113 @@ export class PracticePage {
   }
 
   /**
-   * filterItems
-   *
-   * when a query is typed into the searchbar this method is called. It
+   * @name useFilterSettings
+   * @description filters displayedList according to the preferences of the user
+   */
+  private async useFilterSettings() {
+    this.waiting_for_response = true;
+
+    var studyarea = await this.settingsProvider.getSettingValue("studyarea");
+    var practice = await this.settingsProvider.getSettingValue("practice");
+    var domestic = await this.settingsProvider.getSettingValue("domestic");
+    var foreign = await this.settingsProvider.getSettingValue("foreign");
+    console.log(domestic, foreign);
+
+    // console.log("FILTER");
+    // console.log(studyarea);
+    // console.log(practice);
+    // console.log(this.displayedList);
+
+    console.log("DISPLAYED")
+    console.log(this.displayedList.length);
+
+    var tmp = this.displayedList;
+    // filter according to practice option
+    if (practice.length > 0) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          return practice.includes(this.practiceMapping(ADS.art))
+        }
+      )
+    }
+
+    // filter according to studyarea
+    if (studyarea.length > 0) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          return studyarea.includes(ADS.field)
+        }
+      )
+    }
+
+    if (domestic && !foreign) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          if (ADS.foreign == "0") {
+            return true;
+          } else { return false; }
+        }
+      )
+    } else if (foreign && !domestic) {
+      tmp = jquery.grep(
+        tmp, (ADS) => {
+          if (ADS.foreign == "1") {
+            return true;
+          } else { return false; }
+        }
+      )
+    }
+
+    this.displayedList = tmp;
+
+    console.log("DISPLAYED NEW")
+    console.log(this.displayedList.length);
+
+    this.waiting_for_response = false;
+  }
+
+
+  /**
+   * @name filterItems
+   * @description when a query is typed into the searchbar this method is called. It
    * filters the complete list of items with the query and modifies the
    * displayed list accordingly.
    *
-   * @param query:string A query string the items will be filtered with
+   * @param query string A query string the items will be filtered with
    */
-  public filterItems(query: string): void {
+  public async filterItems(query: string) {
     this.initializeList();
-    if (query) {
-      this.displayedList = jquery.grep(
-        this.defaultList,
-        (ADS, index) => {
-          return this.contains(ADS.title, query);
-        }
-      );
-      this.chRef.detectChanges();
-    }
+    this.useFilterSettings().then(resolve => {
+      if (query) {
+        this.displayedList = jquery.grep(
+          this.displayedList,
+          (ADS, index) => {
+            return this.contains(ADS.title, query);
+          }
+        );
+      }
+    });
+
+    this.chRef.detectChanges();
   }
 
-  expandADS(ADS) {
-    for (let i = 0; i < this.defaultList.length; i++) {
-      if (this.defaultList[i].uid == ADS.uid) {
-        this.defaultList[i].expanded = !this.defaultList[i].expanded;
-      } else {
-        this.defaultList[i].expanded = false;
-      }
-    }
+
+  /**
+   * @name openSettings
+   * @description opens settings page
+   */
+  openSettings(){
+    this.navCtrl.push(SettingsPage);
+  }
+
+
+  /**
+   * @name itemSelected
+   *
+   * @param ads     ads-item to be passed to detail page
+   * @param index   current position of the ads item in the list displayed
+   */
+  itemSelected(ads, index) {
+    this.navCtrl.push(DetailedPracticePage, { "ADS": ads, "list": this.displayedList[index] });
   }
 }

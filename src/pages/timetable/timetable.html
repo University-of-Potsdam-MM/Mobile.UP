@@ -17,34 +17,53 @@
   </div>
 
   <span *ngIf="!noUserRights && !isLoading">
-    <!-- TODO: make prettier-->
-    <button ion-button (click)="changeCalendarMode('month')">
-        {{ "page.timetable.month" | translate }}
-      </button>
-      <button ion-button (click)="changeCalendarMode('week')">
-        {{ "page.timetable.week" | translate }}
-      </button>
-      <button ion-button (click)="changeCalendarMode('day')">
-        {{ "page.timetable.day" | translate }}
-      </button>
-
-      <!-- TODO: needs styling, too -->
-      <div id="title">{{ currentTitle }}</div>
-
-      <calendar [eventSource]="eventSource"
-                [calendarMode]="calendarOptions.calendarMode"
-                [currentDate]="calendarOptions.currentDate"
-                [startingDayWeek]="calendarOptions.startingDayWeek"
-                [startingDayMonth]="calendarOptions.startingDayMonth"
-                [startHour]="calendarOptions.startHour"
-                [endHour]="calendarOptions.endHour"
-                [step]="calendarOptions.step"
-                [timeInterval]="calendarOptions.timeInterval"
-                [showEventDetail]="calendarOptions.showEventDetail"
-                [autoSelect]="calendarOptions.autoSelect"
-                (onTimeSelected)="timeSelected($event)"
-                (onEventSelected)="eventSelected($event)"
-                (onTitleChanged)="titleChanged($event)">
+      <div align="center">
+        <ion-row>
+          <ion-col>
+            <button [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('month')">
+              {{ "page.timetable.month" | translate }}
+            </button>
+          <button [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('week')">
+            {{ "page.timetable.week" | translate }}
+          </button>
+            <button [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('day')">
+              {{ "page.timetable.day" | translate }}
+            </button>
+          </ion-col>
+        </ion-row>
+      </div>
+    
+      <div align="center">
+        <ion-row>
+          <ion-col>
+            <button ion-button clear icon-only (click)="swipePrevious()"><ion-icon name="arrow-dropleft"></ion-icon></button>
+          </ion-col>
+          <ion-col col-8>
+            <h6 id="title">{{ currentTitle }}</h6>
+          </ion-col>
+          <ion-col>
+            <button ion-button clear icon-only (click)="swipeNext()"><ion-icon name="arrow-dropright"></ion-icon></button>
+          </ion-col>
+        </ion-row>
+      </div>
+    
+      <calendar class="calendar" [eventSource]="eventSource"
+        [calendarMode]="calendarOptions.calendarMode"
+        [currentDate]="calendarOptions.currentDate"
+        [locale]="calendarOptions.locale"
+        [startingDayWeek]="calendarOptions.startingDayWeek"
+        [startingDayMonth]="calendarOptions.startingDayMonth"
+        [startHour]="calendarOptions.startHour"
+        [endHour]="calendarOptions.endHour"
+        [step]="calendarOptions.step"
+        [timeInterval]="calendarOptions.timeInterval"
+        [lockSwipeToPrev]="calendarOptions.lockSwipeToPrev"
+        [dateFormatter]="calendarOptions.dateFormatter"
+        [showEventDetail]="calendarOptions.showEventDetail"
+        [autoSelect]="calendarOptions.autoSelect"
+        (onTimeSelected)="timeSelected($event)"
+        (onEventSelected)="eventSelected($event)"
+        (onTitleChanged)="titleChanged($event)">
       </calendar>
   </span>
 

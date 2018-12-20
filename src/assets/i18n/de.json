@@ -67,7 +67,12 @@
         "student": "Job für Studierende",
         "graduate": "Job für Absolventen",
         "thesis": "Abschlussarbeit",
-        "praktika": "Praktika"
+        "praktika": "Praktika",
+        "firm": "Firma",
+        "art": "Art",
+        "field": "Studienrichtung",
+        "pubDate": "veröffentlicht am",
+        "jobPosting": "Stellenausschreibung"
 
       },
       "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
@@ -191,6 +196,40 @@
             "Deutsch": "Deutsch",
             "Englisch": "Englisch"
           }
+        },
+        "general" : {
+          "lbl": "Allgemein"
+        },
+        "inpractice": {
+          "lbl": "Ab in die Praxis"
+        },
+        "practice" : {
+          "lbl": "Art",
+          "options": {
+            "Jobs für Studierende": "Jobs für Studierende",
+            "Jobs für Absolventen": "Jobs für Absolventen",
+            "Abschlussarbeit": "Abschlussarbeit",
+            "Praktika": "Praktika"
+          }
+        },
+        "studyarea" : {
+          "lbl": "Studienrichtung",
+          "options": {
+            "Geistes- und Kulturwissenschaften": "Geistes- und Kulturwissenschaften",
+            "Wirtschafts- und Sozialwissenschaften": "Wirtschafts- und Sozialwissenschaften",
+            "Mathematik und Informatik": "Mathematik und Informatik",
+            "Naturwissenschaften": "Naturwissenschaften",
+            "Rechtswissenschaften": "Rechtswissenschaften",
+            "Bildungs- und Kognitionswissenschaften": "Bildungs- und Kognitionswissenschaften",
+            "Sport- und Gesundheitswissenschaften": "Sport- und Gesundheitswissenschaften",
+            "fächerübergreifend": "fächerübergreifend"
+          }
+        },
+        "domestic": {
+          "lbl": "Inland"
+        },
+        "foreign": {
+          "lbl": "Ausland"
         }
       }
     },

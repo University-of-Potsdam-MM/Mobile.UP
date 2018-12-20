@@ -60,14 +60,19 @@
       },
       "item": {
         "contact": "Contact:",
-        "foreign": "Foreign",
+        "foreign": "Abroad",
         "partner": "Partner",
         "language": "Language",
         "familyfriendly": "Family friendly",
         "student": "Student job",
         "graduate": "Graduate job",
         "thesis": "Final thesis",
-        "praktika": "Internships"
+        "praktika": "Internships",
+        "firm": "Company",
+        "art": "Type",
+        "field": "Study field",
+        "pubDate": "published on",
+        "jobPosting": "Job posting"
 
       },
       "no_results": "No results found for this keyword."
@@ -191,6 +196,40 @@
             "Deutsch": "German",
             "Englisch": "English"
           }
+        },
+        "general" : {
+          "lbl": "General"
+        },
+        "inpractice": {
+          "lbl": "In practice"
+        },
+        "practice" : {
+          "lbl": "Type",
+          "options": {
+            "Jobs für Studierende": "Jobs for students",
+            "Jobs für Absolventen": "Jobs for graduates",
+            "Abschlussarbeit": "Theses",
+            "Praktika": "Internships"
+          }
+        },
+        "studyarea" : {
+          "lbl": "Study field",
+          "options": {
+            "Geistes- und Kulturwissenschaften": "Humanities and cultural studies",
+            "Wirtschafts- und Sozialwissenschaften": "Economic and social sciences",
+            "Mathematik und Informatik": "Mathematics and information science",
+            "Naturwissenschaften": "Natural sciences",
+            "Rechtswissenschaften": "Jurisprudence",
+            "Bildungs- und Kognitionswissenschaften": "Educational and cognitive sciences",
+            "Sport- und Gesundheitswissenschaften": "Sport and health sciences",
+            "fächerübergreifend": "Interdisciplinary"
+          }
+        },
+        "domestic": {
+          "lbl": "Domestic"
+        },
+        "foreign": {
+          "lbl": "Abroad"
         }
       }
     },

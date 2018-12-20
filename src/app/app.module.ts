@@ -58,6 +58,7 @@ import { EventModal, TimetablePage } from "../pages/timetable/timetable";
 import { PopoverComponent } from "../components/popover/popover";
 import { OpeningHoursPage } from '../pages/opening-hours/opening-hours';
 import { DetailedOpeningPage } from '../pages/detailed-opening/detailed-opening';
+import { DetailedPracticePage } from '../pages/detailed-practice/detailed-practice';
 import { PopoverButton } from "../components/popover/popover-button";
 import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
@@ -121,6 +122,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     EventModal,
     OpeningHoursPage,
     DetailedOpeningPage,
+    DetailedPracticePage,
     PopoverButton,
     AppInfoPage
   ],
@@ -174,6 +176,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     TermsOfUsePage,
     OpeningHoursPage,
     DetailedOpeningPage,
+    DetailedPracticePage,
     TimetablePage,
     EventModal,
     PopoverComponent,

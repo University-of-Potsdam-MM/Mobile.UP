@@ -23,13 +23,13 @@ page-timetable {
   .calendarButton {
     background-color: color($colors, secondary);
     color: color($colors, primary);
-    width: 45%;
+    width: 30%;
   }
 
   .activeCalendarButton {
     background-color: color($colors, primary);
     color: white;
-    width: 45%;
+    width: 30%;
   }
 
   #title {
