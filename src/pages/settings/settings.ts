@@ -149,14 +149,24 @@ export class SettingsPage {
             for (i = 0; i < setting.value.length; i++) {
               if (value.options[setting.value[i]] == null) {
                 if (optionLbl != "") {
-                  optionLbl += ", "
+                  let foundComma = optionLbl.indexOf(",");
+                  if (foundComma != -1) {
+                    optionLbl = optionLbl.substring(0, foundComma);
+                  }
+                  optionLbl += ", " + String(setting.value.length-1) + "+";
+                } else {
+                  optionLbl += String(setting.value);
                 }
-                optionLbl += String(setting.value);
               } else {
                 if (optionLbl != "") {
-                  optionLbl += ", "
-                }
-                optionLbl += String(value.options[setting.value[i]])
+                  let foundComma = optionLbl.indexOf(",");
+                  if (foundComma != -1) {
+                    optionLbl = optionLbl.substring(0, foundComma);
+                  }
+                  optionLbl += ", " + String(setting.value.length-1) + "+";
+                } else {
+                  optionLbl += String(value.options[setting.value[i]]);
+                }         
               }
             }
           } else {

@@ -195,7 +195,7 @@
           }
         },
         "studyarea" : {
-          "lbl": "Field of study",
+          "lbl": "Study field",
           "options": {
             "Geistes- und Kulturwissenschaften": "Humanities and cultural studies",
             "Wirtschafts- und Sozialwissenschaften": "Economic and social sciences",
