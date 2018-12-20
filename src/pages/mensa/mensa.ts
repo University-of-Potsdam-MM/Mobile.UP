@@ -62,12 +62,6 @@ export class MensaPage {
     this.isLoaded = false;
   }
 
-  /**
-   * checks whether a session is stored in memory. If not the user is taken to
-   * the LoginPage. If yes a query is sent to the API and the results are placed
-   * in this.personsFound so the view can render them
-   * @param query
-   */
   public async changeCampus(campus) {
     this.campus = campus;
     this.loadCampusMenu();

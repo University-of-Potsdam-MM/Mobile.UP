@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from "@ionic/storage";
-import { ISession } from "../../providers/login-provider/interfaces";
 import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
-import {PulsProvider} from "../../providers/puls/puls";
+import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -37,7 +36,7 @@ export class GradesPage {
       private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage,
-      private puls:PulsProvider) {
+      private sessionProvider: SessionProvider) {
 
   }
 
@@ -47,16 +46,15 @@ export class GradesPage {
 
   async ionViewDidLoad() {
     this.config = await this.storage.get("config");
-    this.storage.get("session").then(
-      (session:ISession) => {
-        if(session) {
-          this.token = session.token;
-          this.credentials = session.credentials;
-          this.getStudentDetails();
-        } else {
-          this.goToLogin();
-        }
-    });
+    let session = JSON.parse(await this.sessionProvider.getSession());
+
+    if (session) {
+      this.token = session.token;
+      this.credentials = session.credentials;
+      this.getStudentDetails();
+    } else {
+      this.goToLogin();
+    }
   }
 
   showGrades(i) {
@@ -157,7 +155,11 @@ export class GradesPage {
         // the session is still valid but credentials are rejected, so we're having
         // case #81 here
         this.noUserRights = true;
-        this.puls.handleSpecialCase();
+
+        // this does not necessarily mean that the password is wrong
+        // the elistest account f.e. just does not support the grades / timetable functions 
+        // should not log out 
+        // this.puls.handleSpecialCase();
       } else {
         this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
         // console.log(this.studentDetails);

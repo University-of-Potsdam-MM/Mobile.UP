@@ -23,9 +23,6 @@ export class HomePage {
   modules:{[moduleName:string]:IModule} = {};
   sortedModules = [];
 
-  session:string = "";
-  lang: string;
-
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
