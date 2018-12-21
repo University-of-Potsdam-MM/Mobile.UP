@@ -42,6 +42,11 @@ git submodule --update
 package install
 
 ##
+## Dokumentation erstellen
+##
+npm run compodoc
+
+##
 ## Applikation im Browser mit Ionic starten
 ##
 ionic serve

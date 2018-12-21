@@ -9,7 +9,8 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
   },
   "dependencies": {
     "@angular/common": "5.0.3",
@@ -70,6 +71,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.7",
     "@ionic/app-scripts": "^3.2.1",
     "@types/node": "^9.6.36",
     "typescript": "2.4.2"
