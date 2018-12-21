@@ -6,14 +6,14 @@
       "favorites": "Favorites"
     },
     "imprint":{
-      "title": "Legal Notice",
-      "listHeader": "Legal Notice"
+      "title": "Legal Aspects",
+      "listHeader": "Overview"
     },
     "legalNotice": {
-      "title": "Information"
+      "title": "Legal Notice"
     },
     "privacyPolicy": {
-      "title": "Privacy policy"
+      "title": "Privacy Policy"
     },
     "termsOfUse": {
       "title": "Terms of Use"
