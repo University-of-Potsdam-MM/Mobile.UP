@@ -4,7 +4,6 @@ import { AppInfoPage } from './app-info';
 
 @NgModule({
   declarations: [
-    AppInfoPage,
   ],
   imports: [
     IonicPageModule.forChild(AppInfoPage),
