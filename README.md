@@ -20,7 +20,7 @@ Features:
 - Bibliothekssuche
 - direkter Link zum Hochschulsport
 
-Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam präsentiert!
+Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam zur Verfügung gestellt!
 
 ## Getting Started
 
@@ -28,10 +28,10 @@ Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam p
 ##
 ## Repo Clonen
 ##
-git clone https://gitup.uni-potsdam.de/elis/mobile-up-ionic.git
+git clone https://github.com/University-of-Potsdam-MM/Mobile.UP.git
 
 ##
-## Submodule installieren
+## Submodule installieren und aktualisieren
 ##
 git subomdule --init
 git submodule --update
@@ -39,7 +39,7 @@ git submodule --update
 ##
 ## Abhängigkeiten mit NPM installieren
 ##
-package install
+npm install
 
 ##
 ## Dokumentation erstellen
@@ -62,7 +62,7 @@ Bisher umgesetzt sind die Module:
 
 ## Weiterführende Informationen
 
-* [Wiki](https://github.com/University-of-Potsdam-MM/UP.App/wiki)
+* [Wiki](https://github.com/University-of-Potsdam-MM/Mobile.UP/wiki)
 
 ## Demo Version
 
