@@ -59,12 +59,6 @@ export class PersonsPage {
    */
   async ionViewWillEnter(){
     this.connection.checkOnline(true, true);
-    this.session = JSON.parse(await this.sessionProvider.getSession());
-    if(!this.session){
-      this.navCtrl.push(LoginPage).then(
-        result => console.log("[PersonsPage]: Pushed LoginPage")
-      );
-    }
   }
 
   // hides keyboard once the user is scrolling
@@ -92,12 +86,11 @@ export class PersonsPage {
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
-        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
+        .append("Authorization", config.webservices.apiToken);
 
-      this.http.get(
-        config.webservices.endpoint.personSearch + this.query,
-        {headers: headers}
-      ).subscribe(
+      var url = config.webservices.endpoint.personSearch + this.query;
+
+      this.http.get(url, {headers: headers}).subscribe(
         (personsList:IPerson[]) => {
           console.log(personsList);
 
