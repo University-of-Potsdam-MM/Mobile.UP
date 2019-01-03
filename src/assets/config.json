@@ -53,7 +53,7 @@
     },
     "emergency": {
       "componentName": "emergency",
-      "icon": "nuclear",
+      "icon": "pulse",
       "selected":false
     },
     "imprint": {
