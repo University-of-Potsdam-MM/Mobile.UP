@@ -2,7 +2,6 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
-import { LoginPage } from "../login/login";
 import {
   IConfig,
   IADSResponse,
@@ -15,7 +14,6 @@ import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { ImpressumPage } from '../impressum/impressum';
-import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
 @Component({
@@ -28,7 +26,6 @@ export class PracticePage {
   displayedList: ADS[] = [];
   waiting_for_response: boolean = false;
   error: HttpErrorResponse;
-  URLEndpoint: String = "https://www.uni-potsdam.de/abindiepraxis/download/";
 
   /**
    * Constructor of EmergencyPage
@@ -44,7 +41,6 @@ export class PracticePage {
     private cache: CacheService,
     public navParams: NavParams,
     private settingsProvider: SettingsProvider,
-    private sessionProvider: SessionProvider,
     private chRef: ChangeDetectorRef) {
   };
 
@@ -108,50 +104,45 @@ export class PracticePage {
 
     console.log(`[PracticePage]: Quering ADS`);
     let config: IConfig = await this.storage.get("config");
-    let session = JSON.parse(await this.sessionProvider.getSession());
 
-    if (session) {
-      let headers: HttpHeaders = new HttpHeaders()
-        .append("Authorization", config.webservices.apiToken);
+    let headers: HttpHeaders = new HttpHeaders()
+      .append("Authorization", config.webservices.apiToken);
 
-      let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
-      this.cache.loadFromObservable("practiceResponse", request).subscribe(
-        (response: IADSResponse) => {
-          if (refresher) {
-            refresher.complete();
-          }
-
-          // reset array so new persons are displayed
-          this.defaultList = [];
-          // use inner object only because it's wrapped in another object
-          var uidArray = [];
-          for (let ads of response) {
-            //console.log(ads);
-            ads.date = ads.date*1000;
-            ads.expanded = false;
-            if (!this.isInArray(uidArray, ads.uid)) {
-              uidArray.push(ads.uid);
-              this.defaultList.push(ads);
-            }
-          }
-          this.initializeList();
-          // this.waiting_for_response = false;
-        },
-        error => {
-          if (refresher) {
-            refresher.complete();
-          }
-          // reset array so new persons are displayed
-          this.defaultList = [];
-          this.error = error;
-          //console.log(error);
-          this.waiting_for_response = false;
+    let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
+    this.cache.loadFromObservable("practiceResponse", request).subscribe(
+      (response: IADSResponse) => {
+        if (refresher) {
+          refresher.complete();
         }
-      );
-    } else {
-      // send user to LoginPage if no session has been found
-      this.navCtrl.push(LoginPage);
-    }
+
+        // reset array so new persons are displayed
+        this.defaultList = [];
+        // use inner object only because it's wrapped in another object
+        var uidArray = [];
+        for (let ads of response) {
+          //console.log(ads);
+          ads.date = ads.date*1000;
+          ads.expanded = false;
+          if (!this.isInArray(uidArray, ads.uid)) {
+            uidArray.push(ads.uid);
+            this.defaultList.push(ads);
+          }
+        }
+        this.initializeList();
+        // this.waiting_for_response = false;
+      },
+      error => {
+        if (refresher) {
+          refresher.complete();
+        }
+        // reset array so new persons are displayed
+        this.defaultList = [];
+        this.error = error;
+        //console.log(error);
+        this.waiting_for_response = false;
+      }
+    );
+
   }
 
   isInArray(array, value) { // checks if value is in array
@@ -196,15 +187,16 @@ export class PracticePage {
     var practice = await this.settingsProvider.getSettingValue("practice");
     var domestic = await this.settingsProvider.getSettingValue("domestic");
     var foreign = await this.settingsProvider.getSettingValue("foreign");
-    console.log(domestic, foreign);
+
+    // console.log(domestic, foreign);
 
     // console.log("FILTER");
     // console.log(studyarea);
     // console.log(practice);
     // console.log(this.displayedList);
 
-    console.log("DISPLAYED")
-    console.log(this.displayedList.length);
+    // console.log("DISPLAYED")
+    // console.log(this.displayedList.length);
 
     var tmp = this.displayedList;
     // filter according to practice option
@@ -245,8 +237,8 @@ export class PracticePage {
 
     this.displayedList = tmp;
 
-    console.log("DISPLAYED NEW")
-    console.log(this.displayedList.length);
+    // console.log("DISPLAYED NEW")
+    // console.log(this.displayedList.length);
 
     this.waiting_for_response = false;
   }
