@@ -12,7 +12,7 @@
         }
     },
     {
-        "name":"Giftnotruf 1",
+        "name":"Giftnotruf (Kinder)",
         "description":"Universitätsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin",
         "contact":{
             "telephone":"+493019240"
@@ -23,7 +23,7 @@
         }
     },
     {
-        "name":"Giftnotruf 2",
+        "name":"Giftnotruf",
         "description":"Universitätsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin",
         "contact":{
             "telephone":"+493045053555"
@@ -35,24 +35,29 @@
     },
     {
         "name":"Strahlenunfall",
-        "description":"Universitätsklinik Steglitz",
+        "description":"Universitätsklinik Steglitz,  Abt. f. Nuklearmedizin",
         "contact":{
             "telephone":"+4903084453992"
-        },
-        "address":{
-            "postal":"Berlin"
         }
     },
     {
         "name":"Rettungsstelle - Klinikum Ernst v. Bergmann",
         "contact":{
             "telephone":"+493312415051"
+        },
+        "address":{
+            "street":"Charlottenstraße 72",
+            "postal":"14467 Potsdam"
         }
     },
     {
         "name":"Rettungsstelle - St. Josefs ",
         "contact":{
             "telephone":"+4933196821100"
+        },
+        "address":{
+            "street":"Allee nach Sanssouci 7",
+            "postal":"14471 Potsdam"
         }
     },
     {
