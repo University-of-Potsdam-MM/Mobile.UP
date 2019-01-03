@@ -1,7 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
@@ -14,7 +16,7 @@ import { CacheService } from 'ionic-cache';
 import { IOIDCRefreshResponseObject } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
-import {ConnectionProvider} from "../providers/connection/connection";
+import { ConnectionProvider } from "../providers/connection/connection";
 import { SessionProvider } from '../providers/session/session';
 
 @Component({
@@ -43,8 +45,9 @@ export class MobileUPApp {
     this.initializeApp();
   }
 
-    /**
-   * initializes the app and hides splashscreen when it's done
+  /**
+   * @name initializeApp
+   * @description initializes the app and hides splashscreen when it's done
    */
   private async initializeApp() {
     await this.initConfig();
@@ -78,7 +81,8 @@ export class MobileUPApp {
   }
 
   /**
-   * checks whether the current session is still valid. In case it is, the
+   * @name checkSessionValidity
+   * @description checks whether the current session is still valid. In case it is, the
    * session will be refreshed anyway. Otherwise the currently stored session
    * object is deleted.
    */
@@ -145,9 +149,8 @@ export class MobileUPApp {
   }
 
   /**
-   * initTranslate
-   *
-   * sets up translation
+   * @name  initTranslate
+   * @description sets up translation
    */
   private async initTranslate() {
     // Set the default language for translation strings, and the current language.
@@ -166,7 +169,8 @@ export class MobileUPApp {
   }
 
   /**
-   * builds list of default_modules that should be displayed on HomePage
+   * @name buildDefaultModulesList
+   * @description builds list of default_modules that should be displayed on HomePage
    * // if there isn't already one in the storage // disabled
    * @returns {Promise<void>}
    */
@@ -194,11 +198,11 @@ export class MobileUPApp {
 
 
   /**
-   * opens a page when link is clicked
+   * @name openPage
+   * @description opens a page when link is clicked
    * @param page
    */
   public openPage(page) {
-    console.log('in');
     var pageName = this.capitalizeFirstLetter(page.componentName)+'Page';
 
     if (page.url){
@@ -218,6 +222,12 @@ export class MobileUPApp {
 
   }
 
+  /**
+   * @name capitalizeFirstLetter
+   * @description capitalizes first letter of a string
+   * @param string
+   * @returns string
+   */
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
