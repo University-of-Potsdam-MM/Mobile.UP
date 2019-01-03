@@ -131,7 +131,7 @@ export class RoomplanPage {
   switchLocation($event) {
     this.houseMap = new Map<string, IHousePlan>();
     this.housesFound = [];
-    var location; 
+    var location;
     if ($event == "Griebnitzsee") {
       location = "3";
     } else if ($event == "NeuesPalais") {
@@ -377,9 +377,9 @@ export class RoomplanPage {
    * @returns {number}
    */
   static compareRooms(a:IRoom, b:IRoom) {
-    if (a.lbl > b.lbl) // inverted normal sort order so rooms starting with letters come first
-      return -1;
     if (a.lbl < b.lbl)
+      return -1;
+    if (a.lbl > b.lbl)
       return 1;
     return 0;
   }
