@@ -42,9 +42,17 @@
           </ion-card-header>
           <ion-card-content *ngIf="person.expanded">
             <expandable [expanded]="person.expanded">
-                <p text-wrap class="personContactDetails" *ngIf="person.Email != ''"><ion-icon name="mail" margin-right></ion-icon><a href="mailto:{{person.Email}}">{{person.Email}}</a></p>
-                <p text-wrap class="personContactDetails" *ngIf="person.Telefon != ''"><ion-icon name="call" margin-right></ion-icon><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></p>
-                <p text-wrap class="personContactDetails" *ngIf="person.Raum != '';"><ion-icon name="home" margin-right></ion-icon> {{person.Raum}}</p>
+              <ion-grid>
+                <ion-row *ngIf="person.Email != ''">
+                  <ion-col col-auto><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
+                </ion-row>
+                <ion-row *ngIf="person.Telefon != ''">
+                  <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
+                </ion-row>
+                <ion-row *ngIf="person.Raum != '';">
+                  <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
+                </ion-row>
+              </ion-grid>
             </expandable>
           </ion-card-content>
         </ion-card>

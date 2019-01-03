@@ -1,18 +1,13 @@
 page-persons {
-    .personContactDetails {
-        margin-top: 8px;
-    }
-
     .item-block {
         border-bottom:1px solid color($colors, upgrey) !important;
-  
+
         .label {
             font-size:80%;
-            margin-top:5px;
-            margin-bottom:0;
+            margin:0px;
         }
     }
-  
+
     .item-block.noborder {
         border-width:0 !important;
     }
@@ -20,5 +15,6 @@ page-persons {
     .card-md, .card, .card-ios, .card-content-md, .card-content-ios, .card-content, .card-header, .card-header-ios, .card-header-md {
         border-width: 0 !important;
         margin: 0 !important;
+        width: 100%;
     }
 }
