@@ -211,7 +211,7 @@ export class MobileUPApp {
     } else if ((pageName != 'HomePage')) {
       // pages with an actual dedicated ionic page
       if (this.nav.getActive().component != pageName) {
-        console.log(pageName);
+        //console.log(pageName);
         this.nav.popToRoot();
         this.nav.push(pageName);
       }
