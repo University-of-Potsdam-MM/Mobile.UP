@@ -30,6 +30,7 @@ import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeDe);
 registerLocaleData(localeEn);
 import { SecureStorage } from '@ionic-native/secure-storage';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -195,6 +196,7 @@ export const deepLinkConfig: DeepLinkConfig = {
     WebIntentProvider,
     AppVersion,
     Device,
+    LaunchNavigator,
     ConfigProvider,
     SessionProvider,
     SecureStorage,

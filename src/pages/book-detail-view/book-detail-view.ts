@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { CacheService } from 'ionic-cache';
+import { WebIntentProvider } from '../../providers/web-intent/web-intent';
 
 @IonicPage()
 @Component({
@@ -46,6 +47,7 @@ export class BookDetailViewPage {
     private theInAppBrowser: InAppBrowser,
     private platform: Platform,
     private cache: CacheService,
+    public webIntent: WebIntentProvider,
     private safari: SafariViewController) {
     this.book = this.navParams.data["book"];
     console.log(this.book);
@@ -57,7 +59,7 @@ export class BookDetailViewPage {
     this.updateDetails();
   }
 
-  convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
+  convertToArray(toConvert) { // convert everything to an array so you can handle it universally
     if (Array.isArray(toConvert)) {
       return toConvert;
     } else {
@@ -153,7 +155,7 @@ export class BookDetailViewPage {
 
   getBookUrl(item) {
     if (this.book.location) {
-      var i; 
+      var i;
       let tmp = this.convertToArray(this.book.location);
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i].url) {
@@ -357,7 +359,7 @@ export class BookDetailViewPage {
         } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
-        } 
+        }
       }
     }
 
@@ -370,7 +372,7 @@ export class BookDetailViewPage {
         } else if (typeof tmp[i] === "string" && !this.isInArray(this.bookDetails.notes, tmp[i])) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
-        } 
+        }
       }
     }
   }
@@ -405,28 +407,4 @@ export class BookDetailViewPage {
   setMediaType(mediatype) {
     this.bookDetails.mediaType = mediatype;
   }
-
-  openWithInAppBrowser(url:string) {
-    let target = "_blank";
-    this.theInAppBrowser.create(url,target);
-  }
-
-  openWithSafari(url:string) {
-    this.safari.show({
-      url: url
-    }).subscribe(result => {console.log(result);}, error => { console.log(error); })
-  }
-
-  openWebsite(url:string) {
-    if (this.platform.is("cordova")) {
-      this.safari.isAvailable().then((available:boolean) => {
-        if (available) {
-          this.openWithSafari(url);
-        } else { this.openWithInAppBrowser(url); }
-      });
-    } else {
-      this.openWithInAppBrowser(url);
-    }
-  } 
-
 }
