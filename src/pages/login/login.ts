@@ -5,7 +5,7 @@ import {
   Loading,
   Nav, NavController
 } from 'ionic-angular';
-import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+import { AlertController } from 'ionic-angular';
 import { UPLoginProvider } from "../../providers/login-provider/login";
 import {
   ELoginErrors,

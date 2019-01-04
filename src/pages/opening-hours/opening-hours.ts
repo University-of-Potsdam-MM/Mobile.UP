@@ -7,7 +7,7 @@ import { IConfig } from '../../library/interfaces';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { DetailedOpeningPage } from '../detailed-opening/detailed-opening';
-import { Platform } from 'ionic-angular/platform/platform';
+import { Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import {ConnectionProvider} from "../../providers/connection/connection";
 
@@ -46,7 +46,7 @@ export class OpeningHoursPage {
     this.isLoaded = false;
     let config:IConfig = await this.storage.get("config");
 
-    // needed for providing the country code to opening_hours? 
+    // needed for providing the country code to opening_hours?
     // maybe put lat / lon in config and fetch?
     this.http.get("https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397").subscribe(data => {
       this.nominatim = data;
