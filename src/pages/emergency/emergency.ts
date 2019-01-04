@@ -13,9 +13,12 @@ import {
 } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { Keyboard } from "@ionic-native/keyboard";
+import { WebIntentProvider } from '../../providers/web-intent/web-intent';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 /**
- * Class for a page that shows EmergencyCall entries. The list of items can
+ * @class EmergencyPage
+ * @classdesc Class for a page that shows EmergencyCall entries. The list of items can
  * be filtered by using a searchbox.
  */
 @IonicPage()
@@ -30,37 +33,47 @@ export class EmergencyPage {
   defaultList: Array < EmergencyCall > ;
 
   /**
-   * Constructor of EmergencyPage
-   * @param navCtrl
-   * @param navParams
+   * @constructor
+   * @description Constructor of EmergencyPage
+   *
+   * @param {NavController} navCtrl
+   * @param {NavParams} navParams
+   * @param {Keyboard} keyboard
+   * @param {ChangeDetectorRef} chRef
+   * @param {Platform} platform
+   * @param {WebIntentProvider} webIntent
+   * @param {LaunchNavigator} launchNavigator
    */
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private keyboard: Keyboard,
+    private chRef: ChangeDetectorRef,
     private platform: Platform,
-    private chRef: ChangeDetectorRef) {
+    private webIntent: WebIntentProvider,
+    private launchNavigator: LaunchNavigator) {
     this.loadData();
     this.initializeList();
   };
 
+
   /**
-   * initializeList
-   *
-   * initializes the list that is to be displayed with default values
+   * @name  initializeList
+   * @description initializes the list that is to be displayed with default values
    */
   public initializeList(): void {
     this.displayedList = this.defaultList;
   }
 
+
   /**
-   * loadData
-   *
-   * loads default items from json file
+   * @name loadData
+   * @description loads default items from json file
    */
   public loadData(): void {
     this.defaultList = require("../../assets/json/emergency");
   }
+
 
   // hides keyboard once the user is scrolling
   onScrollListener() {
@@ -69,27 +82,27 @@ export class EmergencyPage {
     }
   }
 
+
   /**
-   * contains
+   * @name contains
+   * @description checks, whether y is a substring of x
    *
-   * checks, whether y is a substring of x
-   *
-   * @param x:string String that does or does not contain string y
-   * @param y:string String that is or is not contained in string y
-   * @returns boolean Whether string x contains string y
+   * @param {string} x - String that does or does not contain string y
+   * @param {string} y - String that is or is not contained in string y
+   * @returns {Boolean} - Whether string x contains string y
    */
   private contains(x: string, y: string): boolean {
     return x.toLowerCase().includes(y.toLowerCase());
   }
 
+
   /**
-   * filterItems
-   *
-   * when a query is typed into the searchbar this method is called. It
+   * @name filterItems
+   * @description when a query is typed into the searchbar this method is called. It
    * filters the complete list of items with the query and modifies the
    * displayed list accordingly.
    *
-   * @param query:string A query string the items will be filtered with
+   * @param {string} query - a query string the items will be filtered with
    */
   public filterItems(query: string): void {
     this.initializeList();
@@ -105,19 +118,38 @@ export class EmergencyPage {
     }
   }
 
-  /**
-   * expand
-   *
-   * toggles the expand value of one item to be expanded in the view
-   * @param emergencyCall
-   */
 
-  expand(emergencyCall) {
+  /**
+   * @name expand
+   * @description toggles the expand value of one item to be expanded in the view
+   *
+   * @param {EmergencyCall} emergencyCall
+   */
+  expand(emergencyCall: EmergencyCall) {
     for (let i = 0; i < this.displayedList.length; i++) {
       let currentCall = this.displayedList[i];
       if (currentCall.name == emergencyCall.name) {
         currentCall.expanded = !currentCall.expanded;
       }
     }
+  }
+
+  /**
+   * @name callMap
+   * @description opens the map
+   *
+   * @param {EmergencyCall} emergencyCall
+   */
+  callMap(emergencyCall: EmergencyCall) {
+    let location = emergencyCall.address.street + ' ' + emergencyCall.address.postal;
+
+    this.launchNavigator.navigate(location).then(
+      success => console.log('Launched navigator'),
+      error => {
+        console.log('Error launching navigator', error)
+        location = location.replace(/\s/g, '+');
+        this.webIntent.handleWebIntentForWebsite('https://www.google.com/maps/place/'+location);
+      }
+    );
   }
 }

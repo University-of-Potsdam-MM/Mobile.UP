@@ -40,9 +40,11 @@
                 <ion-row *ngIf="emergencyCall.address && (emergencyCall.address.street || emergencyCall.address.postal)">
                   <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col>
                   <ion-col>
-                    <span *ngIf="emergencyCall.address.street">{{emergencyCall.address.street}}</span>
-                    <span *ngIf="emergencyCall.address.postal && emergencyCall.address.street">, </span>
-                    <span *ngIf="emergencyCall.address.postal">{{emergencyCall.address.postal}}</span>
+                    <a (click)="callMap(emergencyCall)">
+                      <span *ngIf="emergencyCall.address.street">{{emergencyCall.address.street}}</span>
+                      <span *ngIf="emergencyCall.address.postal && emergencyCall.address.street">, </span>
+                      <span *ngIf="emergencyCall.address.postal">{{emergencyCall.address.postal}}</span>
+                    </a>
                   </ion-col>
                 </ion-row>
               </ion-grid>
