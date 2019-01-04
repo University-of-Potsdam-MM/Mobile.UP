@@ -15,7 +15,7 @@ import {
   IConfig,
   IPerson
 } from "../../library/interfaces";
-import { Platform } from 'ionic-angular/platform/platform';
+import { Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
@@ -59,6 +59,12 @@ export class PersonsPage {
    */
   async ionViewWillEnter(){
     this.connection.checkOnline(true, true);
+    this.session = JSON.parse(await this.sessionProvider.getSession());
+    if(!this.session){
+      this.navCtrl.push(LoginPage).then(
+        result => console.log("[PersonsPage]: Pushed LoginPage")
+      );
+    }
   }
 
   // hides keyboard once the user is scrolling
@@ -86,13 +92,16 @@ export class PersonsPage {
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
-        .append("Authorization", config.webservices.apiToken);
+        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
       var url = config.webservices.endpoint.personSearch + this.query;
 
-      this.http.get(url, {headers: headers}).subscribe(
+      this.http.get(
+        url,
+        {headers: headers}
+      ).subscribe(
         (personsList:IPerson[]) => {
-          console.log(personsList);
+          //console.log(personsList);
 
           for (let person of personsList) {
             let newPerson = person;
