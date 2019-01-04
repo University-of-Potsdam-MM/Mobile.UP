@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { IConfig } from '../../library/interfaces';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { CacheService } from 'ionic-cache';
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
 
@@ -44,11 +42,8 @@ export class BookDetailViewPage {
     public navParams: NavParams,
     private storage: Storage,
     private http: HttpClient,
-    private theInAppBrowser: InAppBrowser,
-    private platform: Platform,
     private cache: CacheService,
-    public webIntent: WebIntentProvider,
-    private safari: SafariViewController) {
+    public webIntent: WebIntentProvider) {
     this.book = this.navParams.data["book"];
     console.log(this.book);
   }
