@@ -30,44 +30,51 @@
     {{error.error}}<br/> -->
   </p>
 
-  <ion-list no-lines>
-    <ion-item-sliding *ngFor="let person of personsFound">
-      <ion-item (click)="expandPerson(person)">
-        <ion-card>
-          <ion-card-header ion-item class="noborder">
+  <ion-list>
+    <div *ngFor="let person of personsFound">
+      <ion-item-sliding>
+        <ion-item tappable (click)="expandPerson(person)">
+          <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+          </ion-thumbnail>
+          <ion-label>
             <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
             <p text-wrap *ngIf="person.Abteilung != ''">{{person.Abteilung}}</p>
-            <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && !person.expanded" name="arrow-dropdown" item-end></ion-icon>
-            <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && person.expanded" name="arrow-dropup" item-end></ion-icon>
-          </ion-card-header>
-          <ion-card-content *ngIf="person.expanded">
-            <expandable [expanded]="person.expanded">
-              <ion-grid>
-                <ion-row *ngIf="person.Email != ''">
-                  <ion-col col-auto><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
-                </ion-row>
-                <ion-row *ngIf="person.Telefon != ''">
-                  <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
-                </ion-row>
-                <ion-row *ngIf="person.Raum != '';">
-                  <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
-                </ion-row>
-              </ion-grid>
-            </expandable>
-          </ion-card-content>
-        </ion-card>
+          </ion-label>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && !person.expanded" name="arrow-dropdown" item-end></ion-icon>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && person.expanded" name="arrow-dropup" item-end></ion-icon>
+        </ion-item>
+
+        <ion-item-options side="right">
+          <button ion-button color="primary" *ngIf="person.Email != ''">
+              <ion-icon name="mail"></ion-icon>
+              <a href="mailto:{{person.Email}}"><span style="color: white; text-transform: capitalize">Mail</span></a>
+          </button>
+          <button ion-button color="secondary" *ngIf="person.Telefon != ''">
+            <ion-icon name="call"></ion-icon>
+            <a href="tel:{{person.Telefon}}">+49 331 977 {{person.Telefon}}</a>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item *ngIf="person.expanded">
+        <ion-thumbnail item-start>
+        </ion-thumbnail>
+        <ion-label no-margin>
+          <ion-grid>
+            <ion-row *ngIf="person.Email != ''">
+              <ion-col col-auto><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Telefon != ''">
+              <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Raum != '';">
+              <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-label>
       </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="primary" *ngIf="person.Email != ''">
-            <ion-icon name="mail"></ion-icon>
-            <a href="mailto:{{person.Email}}"><span style="color: white; text-transform: capitalize">Mail</span></a>
-        </button>
-        <button ion-button color="secondary" *ngIf="person.Telefon != ''">
-          <ion-icon name="call"></ion-icon>
-          <a href="tel:{{person.Telefon}}">+49 331 977 {{person.Telefon}}</a>
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+    </div>
   </ion-list>
 
 </ion-content>

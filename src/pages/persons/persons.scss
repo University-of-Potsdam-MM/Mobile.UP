@@ -1,20 +1,22 @@
 page-persons {
-    .item-block {
-        border-bottom:1px solid color($colors, upgrey) !important;
-
-        .label {
-            font-size:80%;
-            margin:0px;
+    .item ion-thumbnail {
+        min-width: 3rem;
+        min-height: 3rem;
+        max-width: 3rem;
+        max-height: 3rem;
+        img {
+          min-width: 3rem;
+          min-height: 3rem;
+          max-width: 3rem;
+          max-height: 3rem;
         }
     }
 
-    .item-block.noborder {
-        border-width:0 !important;
+    ion-thumbnail[item-start] {
+        margin: 8px 0px 8px 0 !important;
     }
 
-    .card-md, .card, .card-ios, .card-content-md, .card-content-ios, .card-content, .card-header, .card-header-ios, .card-header-md {
-        border-width: 0 !important;
-        margin: 0 !important;
-        width: 100%;
+    ion-col {
+        font-size: 1.3rem;
     }
 }
