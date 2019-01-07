@@ -2,8 +2,8 @@
 
   <!-- logged in -->
   <ng-template #loggedInTemplate>
-    <ion-list>
-      <ion-list-header>{{ "popover.loggedInText" | translate}}:<br /><span *ngIf="userInformation">{{ userInformation.name }} ({{userInformation.sub}})</span><span *ngIf="!userInformation">{{username}}</span></ion-list-header>
+    <ion-list no-margin>
+      <ion-list-header no-margin>{{ "popover.loggedInText" | translate}}:<br /><span *ngIf="userInformation">{{ userInformation.name }} ({{userInformation.sub}})</span><span *ngIf="!userInformation">{{username}}</span></ion-list-header>
       <button ion-item (click)="toAppInfo()">
         <ion-icon name="information-circle"></ion-icon>
         {{ "page.appInfo.title" | translate }}
@@ -21,8 +21,8 @@
 
   <!-- not logged in -->
   <ng-template #notLoggedInTemplate>
-    <ion-list>
-      <ion-list-header>{{ "popover.notLoggedInText" | translate}}</ion-list-header>
+    <ion-list no-margin>
+      <ion-list-header no-margin>{{ "popover.notLoggedInText" | translate}}</ion-list-header>
       <button ion-item (click)="toAppInfo()">
         <ion-icon name="information-circle"></ion-icon>
         {{ "page.appInfo.title" | translate }}

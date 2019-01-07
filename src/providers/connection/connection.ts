@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network';
-import { Observable } from 'rxjs/Observable';
-import {AlertController, App, Events } from 'ionic-angular';
-import {TranslateService} from "@ngx-translate/core";
-import {HomePage} from "../../pages/home/home";
+import { AlertController, App, Events } from 'ionic-angular';
+import { TranslateService } from "@ngx-translate/core";
+import { HomePage } from "../../pages/home/home";
 
 export enum EConnection {
   OFFLINE, ONLINE
