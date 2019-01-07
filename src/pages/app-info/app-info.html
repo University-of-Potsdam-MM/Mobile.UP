@@ -12,12 +12,30 @@
       <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
     </ion-item>
     <span *ngIf="showSysInfo">
-      <ion-item *ngIf="deviceInfo.cordovaVersion">Cordova Version: {{ deviceInfo.cordovaVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.appVersion">{{ "page.appInfo.version" | translate }}: {{ deviceInfo.appVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.osPlatform">{{ "page.appInfo.platform" | translate }}: {{ deviceInfo.osPlatform }}</ion-item>
-      <ion-item *ngIf="deviceInfo.osVersion">Platform Version: {{ deviceInfo.osVersion }}</ion-item>
-      <ion-item *ngIf="deviceInfo.uuid">{{ "page.appInfo.uuid" | translate }}: {{ deviceInfo.uuid }}</ion-item>
-      <ion-item *ngIf="deviceInfo.deviceManufacturer">{{ "page.appInfo.manufacturer" | translate }}: {{ deviceInfo.deviceManufacturer }}</ion-item>
-      <ion-item *ngIf="deviceInfo.deviceModel">{{ "page.appInfo.model" | translate }}: {{ deviceInfo.deviceModel }}</ion-item>
+      <ion-item *ngIf="deviceInfo.cordovaVersion">
+        <ion-label item-start>Cordova Version:</ion-label>{{ deviceInfo.cordovaVersion }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.appVersion">
+        <ion-label item-start>{{ "page.appInfo.version" | translate }}:</ion-label>{{ deviceInfo.appVersion }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.osPlatform">
+        <ion-label item-start>{{ "page.appInfo.platform" | translate }}:</ion-label>{{ deviceInfo.osPlatform }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.osVersion">
+        <ion-label item-start>Platform Version:</ion-label>{{ deviceInfo.osVersion }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.uuid">
+        <ion-label item-start>{{ "page.appInfo.uuid" | translate }}:</ion-label>{{ deviceInfo.uuid }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.deviceManufacturer">
+        <ion-label item-start>{{ "page.appInfo.manufacturer" | translate }}:</ion-label>{{ deviceInfo.deviceManufacturer }}
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.deviceModel">
+        <ion-label item-start>{{ "page.appInfo.model" | translate }}:</ion-label>{{ deviceInfo.deviceModel }}
+      </ion-item>
     </span>
   </ion-list>
+
+<ion-footer>
+    <tab-bar></tab-bar>
+</ion-footer>
