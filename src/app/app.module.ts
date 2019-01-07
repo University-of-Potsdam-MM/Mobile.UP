@@ -1,6 +1,10 @@
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler, APP_INITIALIZER} from '@angular/core';
+import {
+  NgModule,
+  ErrorHandler,
+  APP_INITIALIZER,
+} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler, DeepLinkConfig  } from 'ionic-angular';
 import { MobileUPApp } from './app.component';
 import { UPLoginProvider } from "../providers/login-provider/login";
@@ -64,6 +68,7 @@ import { PopoverButton } from "../components/popover/popover-button";
 import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
 import { AlertProvider } from '../providers/alert/alert';
+import {MobileUPErrorHandler} from "../library/errorHandler";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -187,7 +192,10 @@ export const deepLinkConfig: DeepLinkConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {
+      provide: ErrorHandler,
+      useClass: MobileUPErrorHandler
+    },
     UPLoginProvider,
     InAppBrowser,
     SettingsProvider,
