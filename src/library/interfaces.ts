@@ -194,6 +194,7 @@ export interface IEndpoints {
   puls:string;
   maps:string;
   openingHours:string;
+  emergencyCalls:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */
