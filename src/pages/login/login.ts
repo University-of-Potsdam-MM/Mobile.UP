@@ -3,7 +3,7 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  Nav, NavController
+  NavController
 } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { UPLoginProvider } from "../../providers/login-provider/login";
@@ -42,7 +42,6 @@ export class LoginPage {
   };
 
   constructor(
-      private nav:         Nav,
       private navCtrl:     NavController,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
@@ -100,7 +99,7 @@ export class LoginPage {
             }
           );
 
-          this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+          this.navCtrl.pop();
         },
         error => {
           console.log(error);
@@ -163,7 +162,7 @@ export class LoginPage {
     alert.present();
   }
 
-  public abort(){
+  public abort() {
     this.navCtrl.setRoot(HomePage,{}, {animate: true, direction: "forward"});
   }
 

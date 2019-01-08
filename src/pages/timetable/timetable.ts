@@ -52,7 +52,7 @@ export class TimetablePage {
       private puls:PulsProvider) {
   }
 
-  async ionViewDidLoad(){
+  async ionViewWillEnter(){
     this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
 
