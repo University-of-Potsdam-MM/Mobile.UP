@@ -4,8 +4,13 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
-import {ConnectionProvider} from "../../providers/connection/connection";
+import { ConnectionProvider } from "../../providers/connection/connection";
 
+
+/**
+ * @class NewsPage
+ * @classdesc Class for a page that shows News entries
+ */
 @IonicPage()
 @Component({
   selector: 'page-news',
@@ -51,7 +56,7 @@ export class NewsPage {
       if (refresher) {
         refresher.complete();
       }
-      
+
       if (response.errors.exist == false) {
         this.newsList = response.vars.news;
         var tmpArray = [];
