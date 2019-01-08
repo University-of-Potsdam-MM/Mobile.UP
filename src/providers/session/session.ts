@@ -30,7 +30,6 @@ export class SessionProvider {
   }
 
   public setSession(session) {
-    this.removeSession();
     if (this.platform.is("cordova")) {
       this.secureStorage.create("secureSession").then((storage:SecureStorageObject) => {
         storage.set("session", JSON.stringify(session)).then(() => console.log("session successfully set"), (error) => {
@@ -101,7 +100,6 @@ export class SessionProvider {
   }
 
   public setUserInfo(userInfo) {
-    this.removeUserInfo();
     if (this.platform.is("cordova")) {
       this.secureStorage.create("secureSession").then((storage:SecureStorageObject) => {
         storage.set("userInformation", JSON.stringify(userInfo)).then(() => console.log("user info successfully set"), error => {
