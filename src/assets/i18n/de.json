@@ -323,5 +323,14 @@
   "popover":{
     "loggedInText": "Eingeloggt als",
     "notLoggedInText": "Nicht eingeloggt"
+  },
+  "hints": {
+    "type": {
+      "hint": "Hinweis",
+      "attention": "Achtung"
+    },
+    "text": {
+      "login-hint": "Bitte verwenden Sie nur ihre Universitätskennung zum Login"
+    }
   }
 }
