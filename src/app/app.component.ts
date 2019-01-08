@@ -88,9 +88,9 @@ export class MobileUPApp {
               this.cache.setOfflineInvalidate(false);
             } else if (savedAppVersion < currentAppVersion) {
               // user has installed a previous 6.x version
-              console.log("clearing user info and session...");
-              this.sessionProvider.removeSession();
-              this.sessionProvider.removeUserInfo(); 
+              //console.log("clearing user info and session...");
+              //this.sessionProvider.removeSession();
+              //this.sessionProvider.removeUserInfo(); 
             }
             this.storage.set("appVersion6", currentAppVersion);
           });
