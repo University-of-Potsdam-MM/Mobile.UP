@@ -16,6 +16,13 @@
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
+  <ion-refresher (ionRefresh)="loadEmergencyCalls($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
   <!-- list of emergencyCalls -->
   <ion-list>
     <div *ngFor="let emergencyCall of displayedList">

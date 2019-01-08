@@ -8,6 +8,9 @@ import {
   NavParams,
   Platform
 } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { CacheService } from 'ionic-cache';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   EmergencyCall
 } from "../../library/interfaces";
@@ -15,6 +18,8 @@ import * as jquery from "jquery";
 import { Keyboard } from "@ionic-native/keyboard";
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { ConnectionProvider } from "../../providers/connection/connection";
+import { IConfig } from '../../library/interfaces';
 
 /**
  * @class EmergencyPage
@@ -31,6 +36,7 @@ export class EmergencyPage {
   jsonPath: string = "../../assets/json/emergency";
   displayedList: Array < EmergencyCall > ;
   defaultList: Array < EmergencyCall > ;
+  isLoaded;
 
   /**
    * @constructor
@@ -41,8 +47,12 @@ export class EmergencyPage {
    * @param {Keyboard} keyboard
    * @param {ChangeDetectorRef} chRef
    * @param {Platform} platform
+   * @param {Storage} storage
+   * @param {CacheService} cache
+   * @param {HttpClient} http
    * @param {WebIntentProvider} webIntent
    * @param {LaunchNavigator} launchNavigator
+   * @param {ConnectionProvider} connection
    */
   constructor(
     public navCtrl: NavController,
@@ -50,11 +60,18 @@ export class EmergencyPage {
     private keyboard: Keyboard,
     private chRef: ChangeDetectorRef,
     private platform: Platform,
+    private storage: Storage,
+    private cache: CacheService,
+    private http: HttpClient,
     private webIntent: WebIntentProvider,
-    private launchNavigator: LaunchNavigator) {
-    this.loadData();
-    this.initializeList();
+    private launchNavigator: LaunchNavigator,
+    private connection: ConnectionProvider) {
   };
+
+  ngOnInit() {
+    this.connection.checkOnline(true, true);
+    this.loadEmergencyCalls();
+  }
 
 
   /**
@@ -67,11 +84,37 @@ export class EmergencyPage {
 
 
   /**
-   * @name loadData
+   * @name loadEmergencyCalls
    * @description loads default items from json file
    */
-  public loadData(): void {
-    this.defaultList = require("../../assets/json/emergency");
+  async loadEmergencyCalls(refresher?) {
+
+    let config:IConfig = await this.storage.get("config");
+
+    let headers: HttpHeaders = new HttpHeaders()
+      .append("Authorization", config.webservices.apiToken);
+
+    var url = config.webservices.endpoint.emergencyCalls;
+    let request = this.http.get(url, {headers:headers});
+
+    if (refresher) {
+      this.cache.removeItem("emergencyCalls");
+    } else {
+      this.isLoaded = false;
+    }
+
+    this.cache.loadFromObservable("emergencyCalls", request).subscribe((response) => {
+
+      if (refresher) {
+        refresher.complete();
+      }
+
+      this.defaultList = response;
+      this.isLoaded = true;
+      this.initializeList();
+    });
+    // on error //this.defaultList = require("../../assets/json/emergency");
+
   }
 
 
@@ -141,13 +184,16 @@ export class EmergencyPage {
    * @param {EmergencyCall} emergencyCall
    */
   callMap(emergencyCall: EmergencyCall) {
-    let location = emergencyCall.address.street + ' ' + emergencyCall.address.postal;
+    let location = emergencyCall.address.street;
+    if (emergencyCall.address.postal){
+      location += ' ' + emergencyCall.address.postal;
+    }
 
     this.launchNavigator.navigate(location).then(
       success => console.log('Launched navigator'),
       error => {
         console.log('Error launching navigator', error)
-        location = location.replace(/\s/g, '+');
+        //location = location.replace(/\s/g, '+');
         this.webIntent.handleWebIntentForWebsite('https://www.google.com/maps/place/'+location);
       }
     );
