@@ -37,20 +37,21 @@
   </p>
 
   <ion-list>
-    <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expand(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
-        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
-      </ion-card-header>
-      <expandable [expanded]="house.expanded">
-        <ion-item *ngFor="let room of house.rooms">
-          {{room.lbl}}
+    <div *ngFor="let house of housesFound">
+      <ion-item (click)="expand(house.lbl)">
+        <ion-label no-margin>
+          <h2 text-wrap><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+        </ion-label>
+        <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
+        <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
+      </ion-item>
+      <div *ngIf="house.expanded">
+        <ion-item margin-left *ngFor="let room of house.rooms">
+            {{room.lbl}}
         </ion-item>
-      </expandable>
-
-    </ion-card>
+      </div>
+    </div>
   </ion-list>
-
-
 </ion-content>
 
 <ion-footer>

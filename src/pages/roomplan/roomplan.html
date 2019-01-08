@@ -35,16 +35,25 @@
   </p>
 
   <ion-list>
-    <ion-card *ngFor="let house of housesFound">
-      <ion-card-header (click)="expandHouse(house.lbl)"><b>{{ "words.house" | translate }} {{house.lbl}}</b>
-        <ion-badge color="primary">{{house.rooms.length}}</ion-badge>
-      </ion-card-header>
-      <expandable [expanded]="house.expanded" *ngFor="let room of house.rooms">
-        <ion-item (click)="expandRoom(house.lbl,room.lbl)">
-          {{room.lbl}}
-          <ion-badge color="secondary">{{room.events.length}}</ion-badge>
-          <expandable [expanded]="room.expanded">
-            <ion-item *ngFor="let event of room.events">
+    <div *ngFor="let house of housesFound">
+      <ion-item (click)="expandHouse(house.lbl)">
+        <ion-label no-margin>
+          <h2><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+        </ion-label>
+        <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
+        <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
+      </ion-item>
+      <div *ngIf="house.expanded">
+        <div *ngFor="let room of house.rooms">
+          <ion-item (click)="expandRoom(house.lbl,room.lbl)">
+            <ion-label no-margin>
+              <h2>{{room.lbl}}<ion-badge color="secondary">{{room.events.length}}</ion-badge></h2>
+            </ion-label>
+            <ion-icon name="arrow-dropdown" *ngIf="!room.expanded" item-end></ion-icon>
+            <ion-icon name="arrow-dropup" *ngIf="room.expanded" item-end></ion-icon>
+          </ion-item>
+          <div *ngIf="room.expanded">
+            <ion-item margin-left *ngFor="let event of room.events">
               <u>
                 <b>
                   {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
@@ -58,10 +67,10 @@
                 <ion-badge color="danger">{{person}}</ion-badge>
               </p>
             </ion-item>
-          </expandable>
-        </ion-item>
-      </expandable>
-    </ion-card>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-list>
 </ion-content>
 
