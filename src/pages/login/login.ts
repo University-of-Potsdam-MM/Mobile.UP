@@ -100,7 +100,7 @@ export class LoginPage {
             }
           );
 
-          this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+          this.navCtrl.pop();
         },
         error => {
           console.log(error);
@@ -163,7 +163,7 @@ export class LoginPage {
     alert.present();
   }
 
-  public abort(){
+  public abort() {
     this.navCtrl.setRoot(HomePage,{}, {animate: true, direction: "forward"});
   }
 

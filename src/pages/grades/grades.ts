@@ -46,7 +46,7 @@ export class GradesPage {
     this.navCtrl.push(LoginPage);
   }
 
-  async ionViewDidLoad() {
+  async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
     let session = JSON.parse(await this.sessionProvider.getSession());
