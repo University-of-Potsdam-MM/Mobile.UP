@@ -11,6 +11,10 @@
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
+  <ion-refresher (ionRefresh)="loadOpeningHours($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner></ion-spinner>
   </div>

@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DetailedOpeningPage } from '../detailed-opening/detailed-opening';
 import { Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
-import {ConnectionProvider} from "../../providers/connection/connection";
+import { ConnectionProvider } from "../../providers/connection/connection";
 
 @IonicPage()
 @Component({
@@ -42,8 +42,8 @@ export class OpeningHoursPage {
     this.loadOpeningHours();
   }
 
-  async loadOpeningHours() {
-    this.isLoaded = false;
+  async loadOpeningHours(refresher?) {
+
     let config:IConfig = await this.storage.get("config");
 
     // needed for providing the country code to opening_hours?
@@ -56,7 +56,18 @@ export class OpeningHoursPage {
 
       var url = config.webservices.endpoint.openingHours;
       let request = this.http.get(url, {headers:headers});
+
+      if (refresher) {
+        this.cache.removeItem("openingHours");
+      } else {
+        this.isLoaded = false;
+      }
+
       this.cache.loadFromObservable("openingHours", request).subscribe((response) => {
+        if (refresher) {
+          refresher.complete();
+        }
+
         this.allOpeningHours = response;
         this.openingHours = response;
 
