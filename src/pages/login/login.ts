@@ -13,7 +13,6 @@ import {
   ISession
 } from "../../providers/login-provider/interfaces";
 import { TranslateService } from "@ngx-translate/core";
-import { Storage } from "@ionic/storage";
 import { Observable } from "rxjs/Observable";
 import { HomePage } from '../home/home';
 import { ConnectionProvider } from "../../providers/connection/connection";
@@ -48,7 +47,6 @@ export class LoginPage {
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
-      private storage:     Storage,
       private connection:  ConnectionProvider,
       private sessionProvider: SessionProvider,
       private translate:   TranslateService) {

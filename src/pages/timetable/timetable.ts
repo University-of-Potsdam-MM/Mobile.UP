@@ -77,8 +77,8 @@ export class TimetablePage {
       );
     } else {
       // in case there is no session send the user to LoginPage
+      this.navCtrl.push(LoginPage).then(() => console.log("pushed LoginPage"));
       this.isLoading = false;
-      this.navCtrl.push(LoginPage).then(() => console.log("pushed LoginPage"))
     }
   }
 
