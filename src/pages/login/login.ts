@@ -3,7 +3,7 @@ import {
   IonicPage,
   LoadingController,
   Loading,
-  Nav, NavController
+  NavController
 } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { UPLoginProvider } from "../../providers/login-provider/login";
@@ -42,7 +42,6 @@ export class LoginPage {
   };
 
   constructor(
-      private nav:         Nav,
       private navCtrl:     NavController,
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
