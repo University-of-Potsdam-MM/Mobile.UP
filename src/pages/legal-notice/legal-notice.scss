@@ -1,3 +1,10 @@
 page-legal-notice {
+    h1, h2, h3, p {
+        hyphens: auto!important;
+    }
 
+    p {
+        text-align: justify;
+        margin: .2em;
+    }
 }
