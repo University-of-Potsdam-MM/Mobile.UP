@@ -72,7 +72,7 @@ export class MobileUPApp {
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.appVersion.getVersionNumber().then(currentAppVersion => {
-          this.storage.get("appVersion6").then(savedAppVersion => {
+          this.storage.get("appVersion").then(savedAppVersion => {
             if (!savedAppVersion || savedAppVersion == null) {
               // user has never opened a 6.x version of the app, since nothing is stored
               // clear the whole storage
@@ -92,7 +92,7 @@ export class MobileUPApp {
               //this.sessionProvider.removeSession();
               //this.sessionProvider.removeUserInfo(); 
             }
-            this.storage.set("appVersion6", currentAppVersion);
+            this.storage.set("appVersion", currentAppVersion);
           });
         });
       }
