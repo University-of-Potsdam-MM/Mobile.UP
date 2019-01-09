@@ -1,24 +1,32 @@
 import {ErrorHandler, Injectable} from "@angular/core";
 import {AlertController} from "ionic-angular";
+import {AlertProvider, IErrorLogging} from "../providers/alert/alert";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {ConfigProvider} from "../providers/config/config";
 
 export interface IErrorObject {
   message?:string;
+  type
   httpStatus?:number;
 }
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {
-  constructor(private alertCtrl: AlertController){
+  constructor(private alertProvider: AlertProvider,
+              private http:HttpClient){}
 
-  }
+
 
   handleError(error:IErrorObject) {
-    console.log("[MobileUPErrorHandler]: Uncaught error!");
-    console.log(error);
-    let alert = this.alertCtrl.create({
-      message: error.message
-    })
+    let errorDescription:IErrorObject;
 
-    alert.present()
+    if(error.httpStatus){
+      errorDescription.
+    }
+
+    console.log(`[MobileUPErrorHandler]: Uncaught error!\n${JSON.stringify(error)}`);
+
+    this.alertProvider.showAlert(errorDescription);
+
   }
 }
