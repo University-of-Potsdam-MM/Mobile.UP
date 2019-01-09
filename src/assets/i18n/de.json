@@ -280,7 +280,10 @@
       "appVersion": "App-Version",
       "buildNumber": "Build-Nr.",
       "app": "Applikation",
-      "device": "Gerät"
+      "device": "Gerät",
+      "contact": "Ansprechpartner",
+      "participate": "Mitmachen",
+      "libraries": "Bibliotheken & Lizenzen"
     }
   },
   "button": {

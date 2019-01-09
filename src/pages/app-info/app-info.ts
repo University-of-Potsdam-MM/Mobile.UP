@@ -16,6 +16,9 @@ import { AppVersion } from "@ionic-native/app-version";
 export class AppInfoPage {
 
   showSysInfo = true;
+  showParticipationInfo = false;
+  showLibraryInfo = false;
+  showContactPerson = false;
 
   deviceInfo = {
     "cordovaVersion": undefined,

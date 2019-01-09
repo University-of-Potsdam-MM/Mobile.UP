@@ -5,8 +5,35 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list class="sysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
-    <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo">
+
+  <ion-list class="showSysInfo">
+
+    <ion-item (click)="showContactPerson = !showContactPerson">
+      <b>{{ "page.appInfo.contact" | translate }}</b>
+      <ion-icon *ngIf="!showContactPerson" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showContactPerson" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showContactPerson">
+      <ion-item>...</ion-item>
+    </span>
+    <ion-item (click)="showParticipationInfo = !showParticipationInfo">
+      <b>{{ "page.appInfo.participate" | translate }}</b>
+      <ion-icon *ngIf="!showParticipationInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showParticipationInfo" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showParticipationInfo">
+      <ion-item>...</ion-item>
+    </span>
+    <ion-item (click)="showLibraryInfo = !showLibraryInfo">
+      <b>{{ "page.appInfo.libraries" | translate }}</b>
+      <ion-icon *ngIf="!showLibraryInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showLibraryInfo" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showLibraryInfo">
+      <ion-item>...</ion-item>
+    </span>
+
+    <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
       <b>{{ "page.appInfo.app" | translate }}</b>
       <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropdown"></ion-icon>
       <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
