@@ -326,5 +326,19 @@
   "popover":{
     "loggedInText": "Logged in as",
     "notLoggedInText": "Not logged in"
+  },
+  "launchNavigator": {
+    "headerText": "Remember your choice?",
+    "bodyText": "Use the same app for navigating next time?",
+    "dialogHeaderText": "Select app for navigation..."
+  },
+  "hints": {
+    "type": {
+      "hint": "Hint",
+      "attention": "Attention"
+    },
+    "text": {
+      "login-hint": "Please use your short email address without @uni-potsdam.de to login."
+    }
   }
 }

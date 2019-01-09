@@ -63,6 +63,7 @@ import { DetailedPracticePage } from '../pages/detailed-practice/detailed-practi
 import { PopoverButton } from "../components/popover/popover-button";
 import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
+import { MapsProvider } from '../providers/maps/maps';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -208,7 +209,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     },
     PulsProvider,
     Network,
-    ConnectionProvider
+    ConnectionProvider,
+    MapsProvider
   ]
 })
 export class AppModule {

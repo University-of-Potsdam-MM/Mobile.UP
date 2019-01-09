@@ -88,7 +88,7 @@ export class PulsProvider {
       buttons: [ this.translate.instant("button.continue") ]
     });
     alert.present();
-    this.app.getRootNav().push(LoginPage)
+    this.app.getRootNavs()[0].push(LoginPage)
   }
 
 }

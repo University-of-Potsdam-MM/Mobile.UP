@@ -19,4 +19,9 @@ page-emergency {
     ion-col {
         font-size: 1.3rem;
     }
+
+    .link {
+        color: color($colors, primary);
+        text-decoration: underline;
+    }
 }

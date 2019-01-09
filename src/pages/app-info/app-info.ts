@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  Platform
-} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { Device } from "@ionic-native/device";
 import { AppVersion } from "@ionic-native/app-version";
+import { MapsProvider } from '../../providers/maps/maps';
 
 @IonicPage()
 @Component({
@@ -15,7 +11,7 @@ import { AppVersion } from "@ionic-native/app-version";
 })
 export class AppInfoPage {
 
-  showSysInfo = true;
+  showSysInfo = false;
   showParticipationInfo = false;
   showLibraryInfo = false;
   showContactPerson = false;
@@ -33,6 +29,7 @@ export class AppInfoPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private device: Device,
+              private mapsProvider: MapsProvider,
               private platform: Platform,
               private appVersion: AppVersion) {
   }
@@ -61,5 +58,9 @@ export class AppInfoPage {
         this.deviceInfo.appVersion += " (" + code + ")";
       });
     });
+  }
+
+  callMap(location:string) {
+    this.mapsProvider.navigateToAdress(location);
   }
 }
