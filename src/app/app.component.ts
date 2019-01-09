@@ -1,7 +1,4 @@
-import {
-  Component,
-  ViewChild
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -18,6 +15,7 @@ import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
 import { ConnectionProvider } from "../providers/connection/connection";
 import { SessionProvider } from '../providers/session/session';
+import { AppVersion } from '@ionic-native/app-version';
 
 @Component({
   templateUrl: 'app.html'
@@ -40,8 +38,10 @@ export class MobileUPApp {
     private cache: CacheService,
     private loginProvider: UPLoginProvider,
     private connection: ConnectionProvider,
+    private appVersion: AppVersion,
     private sessionProvider: SessionProvider
   ) {
+    this.firstAppVersionStart();
     this.initializeApp();
   }
 
@@ -58,7 +58,6 @@ export class MobileUPApp {
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
-
         // set status bar to same color as header
         this.statusBar.backgroundColorByHexString('#EDEDED');
         this.splashScreen.hide();
@@ -66,6 +65,37 @@ export class MobileUPApp {
 
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
+    });
+  }
+
+  firstAppVersionStart() {
+    this.platform.ready().then(() => {
+      if (this.platform.is("cordova")) {
+        this.appVersion.getVersionNumber().then(currentAppVersion => {
+          this.storage.get("appVersion6").then(savedAppVersion => {
+            if (!savedAppVersion || savedAppVersion == null) {
+              // user has never opened a 6.x version of the app, since nothing is stored
+              // clear the whole storage
+              console.log("clearing storage...");
+              this.storage.clear();
+              this.sessionProvider.removeSession();
+              this.sessionProvider.removeUserInfo(); 
+
+              // rebuild necessary storage elements
+              this.initConfig();
+              this.connection.initializeNetworkEvents();
+              this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
+              this.cache.setOfflineInvalidate(false);
+            } else if (savedAppVersion < currentAppVersion) {
+              // user has installed a previous 6.x version
+              //console.log("clearing user info and session...");
+              //this.sessionProvider.removeSession();
+              //this.sessionProvider.removeUserInfo(); 
+            }
+            this.storage.set("appVersion6", currentAppVersion);
+          });
+        });
+      }
     });
   }
 

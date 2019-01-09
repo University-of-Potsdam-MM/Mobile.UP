@@ -13,7 +13,12 @@ export class SessionProvider {
   public async getSession():Promise<any> {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
-        return await storage.get("session");
+        let keys = await storage.keys();
+        if (this.isInArray(keys, "session")) {
+          return await storage.get("session");
+        } else {
+          return await this.storage.get("session");
+        }        
       }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -50,10 +55,17 @@ export class SessionProvider {
 
   public removeSession() {
     if (this.platform.is("cordova")) {
-      this.secureStorage.create("secureSession").then((storage:SecureStorageObject) => {
-        storage.remove("session").then(() => console.log("session removed"), error => {
-          console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        });
+      this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
+        let keys = await storage.keys();
+        if (this.isInArray(keys, "session")) {
+          storage.remove("session").then(() => console.log("session removed"), error => {
+            console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+          });
+        } else {
+          this.storage.remove("session").then(() => console.log("session removed"), error => {
+            console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+          });
+        }  
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -71,7 +83,12 @@ export class SessionProvider {
   public async getUserInfo():Promise<any> {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
-        return await storage.get("userInformation");
+        let keys = await storage.keys();
+        if (this.isInArray(keys, "session")) {
+          return await storage.get("userInformation");
+        } else {
+          return await this.storage.get("userInformation");
+        }   
       }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -104,10 +121,17 @@ export class SessionProvider {
 
   public removeUserInfo() {
     if (this.platform.is("cordova")) {
-      this.secureStorage.create("secureSession").then((storage:SecureStorageObject) => {
-        storage.remove("userInformation").then(() => console.log("user info removed"), error => {
-          console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
-        });
+      this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
+        let keys = await storage.keys();
+        if (this.isInArray(keys, "session")) {
+          storage.remove("userInformation").then(() => console.log("user info removed"), error => {
+            console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+          });
+        } else {
+          this.storage.remove("userInformation").then(() => console.log("user info removed"), error => {
+            console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+          });
+        }  
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -120,6 +144,17 @@ export class SessionProvider {
         console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
       });
     }
+  }
+
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i] == value) {
+        found = true;
+      }
+    }
+    return found;
   }
 
 }
