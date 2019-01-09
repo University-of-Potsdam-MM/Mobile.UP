@@ -10,4 +10,9 @@ page-app-info {
             font-size: medium;
         }
     }
+
+    .link {
+        color: color($colors, primary);
+        text-decoration: underline;
+    }
 }

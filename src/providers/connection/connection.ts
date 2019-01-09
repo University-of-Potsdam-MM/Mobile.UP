@@ -68,7 +68,7 @@ export class ConnectionProvider {
         alert.present();
       }
       if(sendHome){
-        this.app.getRootNav().setRoot(HomePage);
+        this.app.getRootNavs()[0].setRoot(HomePage);
       }
     }
     console.log(`[ConnectionProvider]: App is ${EConnection[this.connectionState]}`)

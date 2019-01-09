@@ -327,13 +327,18 @@
     "loggedInText": "Eingeloggt als",
     "notLoggedInText": "Nicht eingeloggt"
   },
+  "launchNavigator": {
+    "headerText": "Auswahl merken?",
+    "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
+    "dialogHeaderText": "App zur Navigation auswählen..."
+  },
   "hints": {
     "type": {
       "hint": "Hinweis",
       "attention": "Achtung"
     },
     "text": {
-      "login-hint": "Bitte verwenden Sie nur ihre Universitätskennung zum Login"
+      "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de."
     }
   }
 }

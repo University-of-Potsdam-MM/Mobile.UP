@@ -41,21 +41,21 @@ export class PopoverComponent {
 
   toLogout(){
     this.close();
-    this.appCtrl.getRootNav().push(LogoutPage);
+    this.appCtrl.getRootNavs()[0].push(LogoutPage);
   }
 
   toLogin(){
     this.close();
-    this.appCtrl.getRootNav().push(LoginPage);
+    this.appCtrl.getRootNavs()[0].push(LoginPage);
   }
 
   toSettings(){
     this.close();
-    this.appCtrl.getRootNav().push(SettingsPage);
+    this.appCtrl.getRootNavs()[0].push(SettingsPage);
   }
 
   toAppInfo(){
     this.close();
-    this.appCtrl.getRootNav().push(AppInfoPage);
+    this.appCtrl.getRootNavs()[0].push(AppInfoPage);
   }
 }

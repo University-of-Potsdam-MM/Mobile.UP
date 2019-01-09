@@ -67,7 +67,7 @@
             <ion-row *ngIf="emergencyCall.address && (emergencyCall.address.street || emergencyCall.address.postal)">
               <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col>
               <ion-col text-wrap>
-                <a (click)="callMap(emergencyCall)">
+                <a (click)="callMap(emergencyCall)" class="link">
                   <span *ngIf="emergencyCall.address.street">{{emergencyCall.address.street}}</span>
                   <span *ngIf="emergencyCall.address.postal && emergencyCall.address.street">, </span>
                   <span *ngIf="emergencyCall.address.postal">{{emergencyCall.address.postal}}</span>

@@ -16,10 +16,9 @@ import {
 } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { Keyboard } from "@ionic-native/keyboard";
-import { WebIntentProvider } from '../../providers/web-intent/web-intent';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { IConfig } from '../../library/interfaces';
+import { MapsProvider } from "../../providers/maps/maps";
 
 /**
  * @class EmergencyPage
@@ -63,8 +62,7 @@ export class EmergencyPage {
     private storage: Storage,
     private cache: CacheService,
     private http: HttpClient,
-    private webIntent: WebIntentProvider,
-    private launchNavigator: LaunchNavigator,
+    private mapProvider: MapsProvider,
     private connection: ConnectionProvider) {
   };
 
@@ -189,13 +187,6 @@ export class EmergencyPage {
       location += ' ' + emergencyCall.address.postal;
     }
 
-    this.launchNavigator.navigate(location).then(
-      success => console.log('Launched navigator'),
-      error => {
-        console.log('Error launching navigator', error)
-        //location = location.replace(/\s/g, '+');
-        this.webIntent.handleWebIntentForWebsite('https://www.google.com/maps/place/'+location);
-      }
-    );
+    this.mapProvider.navigateToAdress(location);
   }
 }
