@@ -321,7 +321,8 @@
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
-    "token_valid_credentials_invalid": "Ihre Anmeldedaten scheinen sich seit Ihrem letztem Login geändert zu haben. Bitte loggen Sie sich erneut ein."
+    "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar."
+
   },
   "university": {
     "location": {
