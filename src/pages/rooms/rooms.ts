@@ -241,7 +241,7 @@ export class RoomsPage {
         }
 
         this.alertProvider.showAlert({
-          alertTitleI18nKey: "alert.error",
+          alertTitleI18nKey: "alert.title.error",
           messageI18nKey: `alert.httpErrorStatus.${error.status}`
         })
       }
