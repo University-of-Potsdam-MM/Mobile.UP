@@ -15,7 +15,7 @@
 
 </ion-header>
 
-<ion-content padding (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScroll)="onScrollListener()">
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -28,7 +28,7 @@
     {{ "page.practice.no_results" | translate }}
   </p>
 
-  <h2 class="favorite" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "page.home.favorites" | translate }}</h2>
+  <ion-item-divider color="light" class="favorite" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "page.home.favorites" | translate }}</ion-item-divider>
   <ion-list *ngIf="!waiting_for_response">
     <div *ngFor="let ADS of displayedFavorites; let i = index">
       <ion-item-sliding>
@@ -43,7 +43,7 @@
         </ion-item>
 
         <ion-item-options side="right">
-          <button ion-button color="secondary" (click)="removeFavorite(ADS)">
+          <button ion-button color="secondary" class="removeFavButton" (click)="removeFavorite(ADS)">
             <ion-icon name="star-outline"></ion-icon>
             <span style="text-transform: capitalize">{{ "button.remove" | translate }}</span>
           </button>
@@ -52,7 +52,7 @@
     </div>
   </ion-list>
 
-  <h2 class="favorite" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "words.all" | translate }}</h2>
+  <ion-item-divider color="light" class="favorite" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "words.all" | translate }}</ion-item-divider>
   <ion-list *ngIf="!waiting_for_response">
     <div *ngFor="let ADS of displayedList; let i = index">
       <ion-item-sliding #slidingItem>
