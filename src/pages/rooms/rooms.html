@@ -42,6 +42,10 @@
     </ion-list>
   </ng-template>
 
+  <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
   <ng-template #noHousesFoundTemplate>
     <hint hintTextI18nKey="page.rooms.no_rooms_hintText"
           hintTypeI18nKey=""></hint>

@@ -24,6 +24,7 @@ import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { CacheService } from 'ionic-cache';
 import {ConnectionProvider} from "../../providers/connection/connection";
+import {AlertProvider} from "../../providers/alert/alert";
 
 
 @IonicPage()
@@ -50,6 +51,7 @@ export class RoomplanPage {
   current_location: string;
   passedLocation:string;
   error: HttpErrorResponse;
+  requestProcessed:boolean = false;
 
   constructor(
     private storage: Storage,
@@ -58,7 +60,8 @@ export class RoomplanPage {
     public translate: TranslateService,
     private cache: CacheService,
     public http: HttpClient,
-    private connection: ConnectionProvider) {
+    private connection: ConnectionProvider,
+    private alertProvider: AlertProvider) {
     this.default_house = navParams.get("house");
     this.default_room = navParams.get("room");
     this.passedLocation = navParams.get("campus");
@@ -207,7 +210,7 @@ export class RoomplanPage {
    * @returns {Promise<void>}
    */
   async getRoomInfo() {
-
+    this.requestProcessed = false;
     let location = this.current_location;
     let config: IConfig = await this.storage.get("config");
 
@@ -237,121 +240,131 @@ export class RoomplanPage {
     let request = this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
     this.cache.loadFromObservable("roomplanInfo"+location+start.toString()+end.toString(), request).subscribe(
       (response: IReservationRequestResponse) => {
+
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
         this.error = null;
 
-        for (let reservation of response.reservationsResponse.return) {
-          // API often returns basically empty reservations, we want to ignore these
-          if (reservation.veranstaltung != "" && reservation.veranstaltung != null) {
+        if(response.reservationsResponse.return.length == 0 || !response.reservationsResponse.return){
+          // list will remain empty
+        } else {
+          for (let reservation of response.reservationsResponse.return) {
+            // API often returns basically empty reservations, we want to ignore these
+            if (reservation.veranstaltung != "" && reservation.veranstaltung != null) {
 
-            if ((reservation.roomList.room instanceof Array) == false) {
-              reservation.roomList.room = [reservation.roomList.room]
-            }
-
-            let roomList = <Array<string>> reservation.roomList.room;
-            for (let i = 0; i < roomList.length; i++) {
-              let split = roomList[i].split(".");
-              let room: IRoom = {
-                lbl: split.splice(2, 5).join('.'),
-                events: [],
-                expanded: false
-              };
-
-              this.addRoomToHouse(split[1], room);
-
-              let persons:Array<String> = [];
-              let personArray = reservation.personList.person;
-              for(let h = 0; h < personArray.length; h = h + 2){
-                if(personArray[h] == "N.N" ){
-                  persons.push("N.N ")
-                }
-                if(personArray[h] != "" && personArray[h + 1] != ""){
-                  persons.push(personArray[h + 1].trim() + " " + personArray[h].trim())
-                }
+              if ((reservation.roomList.room instanceof Array) == false) {
+                reservation.roomList.room = [reservation.roomList.room]
               }
 
-              persons = persons.filter(this.uniqueFilter);
+              let roomList = <Array<string>> reservation.roomList.room;
+              for (let i = 0; i < roomList.length; i++) {
+                let split = roomList[i].split(".");
+                let room: IRoom = {
+                  lbl: split.splice(2, 5).join('.'),
+                  events: [],
+                  expanded: false
+                };
 
-              let event: IRoomEvent = {
-                lbl: reservation.veranstaltung,
-                startTime: new Date(reservation.startTime),
-                endTime: new Date(reservation.endTime),
-                persons: persons
-              };
+                this.addRoomToHouse(split[1], room);
 
-              this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event)
-            }
-          }
-        }
+                let persons:Array<String> = [];
+                let personArray = reservation.personList.person;
+                for(let h = 0; h < personArray.length; h = h + 2){
+                  if(personArray[h] == "N.N" ){
+                    persons.push("N.N ")
+                  }
+                  if(personArray[h] != "" && personArray[h + 1] != ""){
+                    persons.push(personArray[h + 1].trim() + " " + personArray[h].trim())
+                  }
+                }
 
-        // load defaults if they are passed to the page by other files
-        let default_error = "";
-        if(this.default_house != null){
-          if(this.houseMap.has(this.default_house.lbl)){
-            this.houseMap.get(this.default_house.lbl).expanded = true;
+                persons = persons.filter(this.uniqueFilter);
 
-            if(this.default_room != null){
-              if(this.houseMap.get(this.default_house.lbl).rooms.has(this.default_room.lbl)){
-                this.houseMap.get(this.default_house.lbl).rooms.get(this.default_room.lbl).expanded = true;
-              }else{
-                default_error = "page.roomplan.no_room";
+                let event: IRoomEvent = {
+                  lbl: reservation.veranstaltung,
+                  startTime: new Date(reservation.startTime),
+                  endTime: new Date(reservation.endTime),
+                  persons: persons
+                };
+
+                this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event)
               }
             }
-          }else{
-            default_error = "page.roomplan.no_house";
           }
-        }
 
-        if (default_error != ""){
-          this.translate.get(default_error).subscribe(
-            value => {
-              const toast = this.toastCtrl.create({
-                message: value,
-                duration: 6000,
-                position: 'middle',
-              });
-              toast.present();
+          // load defaults if they are passed to the page by other files
+          let default_error = "";
+          if(this.default_house != null){
+            if(this.houseMap.has(this.default_house.lbl)){
+              this.houseMap.get(this.default_house.lbl).expanded = true;
+
+              if(this.default_room != null){
+                if(this.houseMap.get(this.default_house.lbl).rooms.has(this.default_room.lbl)){
+                  this.houseMap.get(this.default_house.lbl).rooms.get(this.default_room.lbl).expanded = true;
+                }else{
+                  default_error = "page.roomplan.no_room";
+                }
+              }
+            }else{
+              default_error = "page.roomplan.no_house";
             }
-          )
-        }
-
-        //sadly templates cannot parse maps,
-        //therefore we will generate a new data structure based on arrays and parse everything into there
-        let tmpHouseList = Array.from(this.houseMap.values());
-        console.log(tmpHouseList);
-        for (let i = 0; i < tmpHouseList.length; i++) {
-          let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
-
-          tmpRoomArray.sort(RoomplanPage.compareRooms);
-          for(let h = 0; h < tmpRoomArray.length; h++){
-            tmpRoomArray[h].events.sort(RoomplanPage.compareEvents);
           }
 
-          let tmpHouse: IHouse = {
-            lbl: tmpHouseList[i].lbl,
-            rooms: tmpRoomArray,
-            expanded: tmpHouseList[i].expanded
-          };
-          this.housesFound.push(tmpHouse);
-        }
-        this.housesFound.sort(RoomplanPage.compareHouses);
+          if (default_error != ""){
+            this.translate.get(default_error).subscribe(
+              value => {
+                const toast = this.toastCtrl.create({
+                  message: value,
+                  duration: 6000,
+                  position: 'middle',
+                });
+                toast.present();
+              }
+            )
+          }
 
-        //if refresher is running complete it
-        if (this.refresher != null) {
-          this.refresher.complete()
+          //sadly templates cannot parse maps,
+          //therefore we will generate a new data structure based on arrays and parse everything into there
+          let tmpHouseList = Array.from(this.houseMap.values());
+          console.log(tmpHouseList);
+          for (let i = 0; i < tmpHouseList.length; i++) {
+            let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
+
+            tmpRoomArray.sort(RoomplanPage.compareRooms);
+            for(let h = 0; h < tmpRoomArray.length; h++){
+              tmpRoomArray[h].events.sort(RoomplanPage.compareEvents);
+            }
+
+            let tmpHouse: IHouse = {
+              lbl: tmpHouseList[i].lbl,
+              rooms: tmpRoomArray,
+              expanded: tmpHouseList[i].expanded
+            };
+            this.housesFound.push(tmpHouse);
+          }
+          this.housesFound.sort(RoomplanPage.compareHouses);
+
+          //if refresher is running complete it
+          if (this.refresher != null) {
+            this.refresher.complete()
+          }
+          this.requestProcessed = true;
         }
-      }
-      ,
+      },
       (error: HttpErrorResponse) => {
         //if error reset vars and set error variable for display
-        console.log(error);
+        this.requestProcessed = true;
         this.error = error;
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
         if (this.refresher != null) {
           this.refresher.complete()
         }
+
+        this.alertProvider.showAlert({
+          alertTitleI18nKey: "alert.title.error",
+          messageI18nKey: `alert.httpErrorStatus.${error.status}`
+        })
       }
     );
   }

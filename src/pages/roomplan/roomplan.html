@@ -23,55 +23,59 @@
     </ion-select>
   </ion-item>
 
-  <p *ngIf="error != null" style="text-align: center">
-    {{ "alert.network" | translate }} <br/><br/>
-    {{error.name}}<br/>
-    {{error.message}}<br/>
-    {{error.error}}<br/>
-  </p>
+  <ng-template #noRoomsFoundTemplate>
+    <hint hintTextI18nKey="page.roomplan.no_rooms_hintText"
+          hintTypeI18nKey=""></hint>
+  </ng-template>
+
+  <ng-template #roomsFoundTemplate>
+    <ion-list>
+      <div *ngFor="let house of housesFound">
+        <ion-item (click)="expandHouse(house.lbl)">
+          <ion-label no-margin>
+            <h2><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+          </ion-label>
+          <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
+        </ion-item>
+        <div *ngIf="house.expanded">
+          <div *ngFor="let room of house.rooms">
+            <ion-item (click)="expandRoom(house.lbl,room.lbl)">
+              <ion-label no-margin>
+                <h2>{{room.lbl}}<ion-badge color="secondary">{{room.events.length}}</ion-badge></h2>
+              </ion-label>
+              <ion-icon name="arrow-dropdown" *ngIf="!room.expanded" item-end></ion-icon>
+              <ion-icon name="arrow-dropup" *ngIf="room.expanded" item-end></ion-icon>
+            </ion-item>
+            <div *ngIf="room.expanded">
+              <ion-item margin-left *ngFor="let event of room.events">
+                <u>
+                  <b>
+                    {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
+                  </b>
+                </u>
+                <br/>
+
+                <i text-wrap>{{event.lbl}}</i>
+                <br/>
+                <p *ngFor="let person of event.persons">
+                  <ion-badge color="danger">{{person}}</ion-badge>
+                </p>
+              </ion-item>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </ng-template>
 
   <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 
-  <ion-list>
-    <div *ngFor="let house of housesFound">
-      <ion-item (click)="expandHouse(house.lbl)">
-        <ion-label no-margin>
-          <h2><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
-        </ion-label>
-        <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
-        <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
-      </ion-item>
-      <div *ngIf="house.expanded">
-        <div *ngFor="let room of house.rooms">
-          <ion-item (click)="expandRoom(house.lbl,room.lbl)">
-            <ion-label no-margin>
-              <h2>{{room.lbl}}<ion-badge color="secondary">{{room.events.length}}</ion-badge></h2>
-            </ion-label>
-            <ion-icon name="arrow-dropdown" *ngIf="!room.expanded" item-end></ion-icon>
-            <ion-icon name="arrow-dropup" *ngIf="room.expanded" item-end></ion-icon>
-          </ion-item>
-          <div *ngIf="room.expanded">
-            <ion-item margin-left *ngFor="let event of room.events">
-              <u>
-                <b>
-                  {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
-                </b>
-              </u>
-              <br/>
+  <ng-container *ngIf="housesFound.length == 0 && requestProcessed;
+                then noRoomsFoundTemplate; else roomsFoundTemplate"></ng-container>
 
-              <i text-wrap>{{event.lbl}}</i>
-              <br/>
-              <p *ngFor="let person of event.persons">
-                <ion-badge color="danger">{{person}}</ion-badge>
-              </p>
-            </ion-item>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ion-list>
 </ion-content>
 
 <ion-footer>
