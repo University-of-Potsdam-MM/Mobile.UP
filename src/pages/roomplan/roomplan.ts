@@ -24,6 +24,7 @@ import { Storage } from "@ionic/storage";
 import { TranslateService } from "@ngx-translate/core";
 import { CacheService } from 'ionic-cache';
 import {ConnectionProvider} from "../../providers/connection/connection";
+import {AlertProvider} from "../../providers/alert/alert";
 
 
 @IonicPage()
@@ -59,7 +60,8 @@ export class RoomplanPage {
     public translate: TranslateService,
     private cache: CacheService,
     public http: HttpClient,
-    private connection: ConnectionProvider) {
+    private connection: ConnectionProvider,
+    private alertProvider: AlertProvider) {
     this.default_house = navParams.get("house");
     this.default_room = navParams.get("room");
     this.passedLocation = navParams.get("campus");
@@ -358,6 +360,11 @@ export class RoomplanPage {
         if (this.refresher != null) {
           this.refresher.complete()
         }
+
+        this.alertProvider.showAlert({
+          alertTitleI18nKey: "alert.title.error",
+          messageI18nKey: `alert.httpErrorStatus.${error.status}`
+        })
       }
     );
   }
