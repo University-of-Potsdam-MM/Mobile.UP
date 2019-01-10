@@ -180,3 +180,24 @@ ion-app.md [padding] .scroll-content {
 .card-header, .card-header-ios, .card-header-md {
   padding:6px;
 }
+
+// custom icon mask, just use it like a normal ion-icon
+// <ion-icon name="custom-moodle"></ion-icon>
+ion-icon {
+  &[class*="custom-"] {
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    background: currentColor;
+    width: 1em;
+    height: 1em;
+  }
+
+  &[class*="custom-moodle"] {
+    mask-image: url(../assets/icon/moodle.svg);
+  }
+  &[class*="custom-reflect"] {
+    mask-image: url(../assets/icon/reflect.svg);
+  }
+
+}
