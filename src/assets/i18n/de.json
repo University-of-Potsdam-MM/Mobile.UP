@@ -243,7 +243,8 @@
     },
     "rooms": {
       "title": "Freie Räume",
-      "time": "Uhrzeit"
+      "time": "Uhrzeit",
+      "no_rooms_hintText": "Es wurden keine freien Räume gefunden"
     },
     "roomplan": {
       "title": "Raumplan",

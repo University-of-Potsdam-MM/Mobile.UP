@@ -22,6 +22,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { RoomplanPage } from "../roomplan/roomplan";
 import { CacheService } from 'ionic-cache';
 import {ConnectionProvider} from "../../providers/connection/connection";
+import {AlertProvider} from "../../providers/alert/alert";
 
 
 @IonicPage()
@@ -49,7 +50,8 @@ export class RoomsPage {
     public translate : TranslateService,
     private cache: CacheService,
     public http: HttpClient,
-    private connection: ConnectionProvider) {
+    private connection: ConnectionProvider,
+    private alertProvider: AlertProvider) {
   }
 
   ionViewDidLoad() {
@@ -236,6 +238,11 @@ export class RoomsPage {
         if (this.refresher != null) {
           this.refresher.complete()
         }
+
+        this.alertProvider.showAlert({
+          alertTitleI18nKey: "alert.error",
+          messageI18nKey: `alert.httpErrorStatus.${error.status}`
+        })
       }
     );
   }

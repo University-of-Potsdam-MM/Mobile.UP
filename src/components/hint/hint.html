@@ -1,6 +1,6 @@
 <ion-card>
 
-  <ion-card-header>
+  <ion-card-header *ngIf="hintTextI18nKey">
     <ion-icon [name]="hintIcon"></ion-icon> {{ hintTypeI18nKey | translate }}
   </ion-card-header>
 

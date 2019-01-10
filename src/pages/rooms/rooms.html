@@ -36,22 +36,32 @@
     <ion-spinner></ion-spinner>
   </p>
 
-  <ion-list>
-    <div *ngFor="let house of housesFound">
-      <ion-item (click)="expand(house.lbl)">
-        <ion-label no-margin>
-          <h2 text-wrap><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
-        </ion-label>
-        <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
-        <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
-      </ion-item>
-      <div *ngIf="house.expanded">
-        <ion-item margin-left *ngFor="let room of house.rooms">
-            {{room.lbl}}
+  <ng-template #housesFound>
+    <ion-list>
+      <div *ngFor="let house of housesFound">
+        <ion-item (click)="expand(house.lbl)">
+          <ion-label no-margin>
+            <h2 text-wrap><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+          </ion-label>
+          <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
         </ion-item>
+        <div *ngIf="house.expanded">
+          <ion-item margin-left *ngFor="let room of house.rooms">
+              {{room.lbl}}
+          </ion-item>
+        </div>
       </div>
-    </div>
-  </ion-list>
+    </ion-list>
+  </ng-template>
+
+  <ng-template #noHousesFound>
+    <hint hintTextI18nKey="page.rooms.page_no_rooms_hintText"
+          hintTypeI18nKey=""></hint>
+  </ng-template>
+
+  <ng-container *ngIf="housesFound.length>0;
+                then housesFound; else noHousesFound"></ng-container>
 </ion-content>
 
 <ion-footer>
