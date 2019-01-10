@@ -1,4 +1,4 @@
-<ion-list *ngIf="lectureSchedule && lectureSchedule.lectureScheduleRoot" text-wrap no-lines>
+<ion-list *ngIf="lectureSchedule && lectureSchedule.lectureScheduleRoot" text-wrap>
     <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
         <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" tappable (click)="expandChild(childNode)"> 
             {{ htmlDecode(childNode.headerName) }}
@@ -118,23 +118,25 @@
             </ion-grid>
             <span *ngFor="let group of courseGroups[course.courseId]; let i = index">
                 <h5 style="font-weight: bold">{{ "page.lectures.group" | translate }} {{ group }}</h5>
-                <ion-grid>
-                    <ion-row class="eventHeader">
-                        <ion-col col-12 col-sm>{{ "page.lectures.day" | translate }}</ion-col>
-                        <ion-col col-12 col-sm>{{ "page.lectures.time" | translate }}</ion-col>
-                        <ion-col col-12 col-sm>{{ "page.lectures.freq" | translate }}</ion-col>
-                        <ion-col col-12 col-sm>{{ "page.lectures.duration" | translate }}</ion-col>
-                        <ion-col col-12 col-sm>{{ "page.lectures.room" | translate }}</ion-col>
-                        <ion-col col-12 col-sm>{{ "page.lectures.lecturer" | translate }}</ion-col>
-                    </ion-row>
-                    <span *ngFor="let event of convertToArray(convertToArray(this.courseData[course.courseId].courseData.course)[0].events.event); let i = index; let odd = odd">
-                        <ion-row *ngIf="event.groupId == group" class="event">
-                            <ion-col col-12 col-sm><span *ngIf="event.daySC">{{ event.daySC }}</span></ion-col>
-                            <ion-col col-12 col-sm><span *ngIf="event.startTime && event.endTime">{{ event.startTime }} - {{ event.endTime }}</span></ion-col>
-                            <ion-col col-12 col-sm><span *ngIf="event.rhythmSC">{{ event.rhythmSC }}</span></ion-col>
-                            <ion-col col-12 col-sm><span *ngIf="event.startDate && event.endDate">{{ event.startDate }} - {{ event.endDate }}</span></ion-col>
-                            <ion-col col-12 col-sm><span *ngIf="event.roomSc">{{ replaceUnderscore(event.roomSc) }}</span></ion-col>
-                            <ion-col col-12 col-sm>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ "page.lectures.day" | translate }}</th>
+                            <th>{{ "page.lectures.time" | translate }}</th>
+                            <th>{{ "page.lectures.freq" | translate }}</th>
+                            <th>{{ "page.lectures.duration" | translate }}</th>
+                            <th>{{ "page.lectures.room" | translate }}</th>
+                            <th>{{ "page.lectures.lecturer" | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let event of convertToArray(convertToArray(this.courseData[course.courseId].courseData.course)[0].events.event); let i = index; let odd = odd" [ngClass]="event.groupId != group ? 'emptyRow' : ''">
+                            <td *ngIf="event.groupId == group"><span *ngIf="event.daySC">{{ event.daySC }}</span></td>
+                            <td *ngIf="event.groupId == group"><span *ngIf="event.startTime && event.endTime">{{ event.startTime }} - {{ event.endTime }}</span></td>
+                            <td *ngIf="event.groupId == group"><span *ngIf="event.rhythmSC">{{ event.rhythmSC }}</span></td>
+                            <td *ngIf="event.groupId == group"><span *ngIf="event.startDate && event.endDate">{{ event.startDate }} - {{ event.endDate }}</span></td>
+                            <td *ngIf="event.groupId == group"><span *ngIf="event.roomSc">{{ replaceUnderscore(event.roomSc) }}</span></td>
+                            <td *ngIf="event.groupId == group">
                                 <span *ngIf="event.lecturers && event.lecturers.lecturer">
                                     <span *ngFor="let lecturer of convertToArray(event.lecturers.lecturer); let l = index; let first = first">
                                         <span *ngIf="checkDoubledLecturers(event, lecturer, l)">
@@ -142,10 +144,10 @@
                                         </span>
                                     </span>
                                 </span>
-                            </ion-col>
-                        </ion-row>
-                    </span>
-                </ion-grid>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </span>
         </ion-item>
     </div>
