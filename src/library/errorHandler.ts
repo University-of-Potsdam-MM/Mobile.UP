@@ -1,24 +1,9 @@
-import {ErrorHandler, Injectable} from "@angular/core";
-import {
-  AlertProvider,
-  EAlertType,
-  EErrorType,
-  IAlertOptions
-} from "../providers/alert/alert";
-import {
-  ErrorLoggingProvider,
-  IErrorLogging
-} from "../providers/error-logging/error-logging";
-import {Device} from "@ionic-native/device";
-import {Platform} from "ionic-angular";
-import {HttpErrorResponse} from "@angular/common/http";
-
-export interface IErrorObject {
-  stack;
-  message?:string;
-  type;
-  status?:number;
-}
+import { ErrorHandler, Injectable} from "@angular/core";
+import { AlertProvider } from "../providers/alert/alert";
+import { ErrorLoggingProvider } from "../providers/error-logging/error-logging";
+import { Device } from "@ionic-native/device";
+import { Platform } from "ionic-angular";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {
