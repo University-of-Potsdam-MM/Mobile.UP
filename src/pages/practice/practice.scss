@@ -10,6 +10,10 @@ page-practice {
         margin-top: 15px !important;
         margin-bottom: 2px;
     }
+
+    .removeFavButton {
+        color: color($colors, primary)
+    }
 }
 
 .toastPosition {
