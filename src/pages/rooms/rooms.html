@@ -23,20 +23,7 @@
     </ion-select>
   </ion-item>
 
-  <p *ngIf="error != null" style="text-align: center">
-    {{ "alert.network" | translate }} <br/><br/>
-    {{error.name}}<br/>
-    {{error.message}}<br/>
-    {{error.error}}<br/>
-  </p>
-  <p *ngIf="no_timeslot" style="text-align: center">
-    {{ "alert.no_info_for_time" | translate }}
-  </p>
-  <p *ngIf=" housesFound.length == 0 && error == null && !no_timeslot" style="text-align: center">
-    <ion-spinner></ion-spinner>
-  </p>
-
-  <ng-template #housesFound>
+  <ng-template #housesFoundTemplate>
     <ion-list>
       <div *ngFor="let house of housesFound">
         <ion-item (click)="expand(house.lbl)">
@@ -55,13 +42,13 @@
     </ion-list>
   </ng-template>
 
-  <ng-template #noHousesFound>
-    <hint hintTextI18nKey="page.rooms.page_no_rooms_hintText"
+  <ng-template #noHousesFoundTemplate>
+    <hint hintTextI18nKey="page.rooms.no_rooms_hintText"
           hintTypeI18nKey=""></hint>
   </ng-template>
 
-  <ng-container *ngIf="housesFound.length>0;
-                then housesFound; else noHousesFound"></ng-container>
+  <ng-container *ngIf="no_timeslot;
+                then noHousesFoundTemplate; else housesFoundTemplate"></ng-container>
 </ion-content>
 
 <ion-footer>

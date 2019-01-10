@@ -235,6 +235,7 @@ export class RoomsPage {
         console.log(error);
         this.error = error;
         this.housesFound = [];
+        this.no_timeslot = true;
         if (this.refresher != null) {
           this.refresher.complete()
         }
