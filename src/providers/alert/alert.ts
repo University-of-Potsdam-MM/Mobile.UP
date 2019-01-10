@@ -39,7 +39,7 @@ export class AlertProvider {
     let alert = this.alertCtrl.create({
       title: this.translate.instant(alertOptions.alertTitleI18nKey),
       message: this.translate.instant(alertOptions.messageI18nKey),
-      buttons:[ this.translate.instant("button.ok") ]
+      buttons: [ this.translate.instant("button.continue") ]
     });
 
     alert.present();

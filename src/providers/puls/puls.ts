@@ -14,6 +14,7 @@ import {
 } from "ionic-angular";
 import { TranslateService } from "@ngx-translate/core";
 import { SessionProvider } from '../session/session';
+import {AlertProvider} from "../alert/alert";
 
 @Injectable()
 export class PulsProvider {
@@ -22,7 +23,8 @@ export class PulsProvider {
               private alertCtrl: AlertController,
               private translate: TranslateService,
               private sessionProvider: SessionProvider,
-              private app: App) {
+              private app: App,
+              private alertProvider: AlertProvider) {
   }
 
   public getStudentCourses(session:ISession):Observable<IPulsAPIResponse_getStudentCourses> {
@@ -60,10 +62,11 @@ export class PulsProvider {
           // user to LoginPage
 
           rs.next(response);
-          // this.handleSpecialCase();
-          // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions
-          // should not log out
+
+          this.alertProvider.showAlert({
+            alertTitleI18nKey: "alert.title.error",
+            messageI18nKey: "alert.token_valid_credentials_invalid",
+          })
         } else {
           rs.next(response);
         }
@@ -84,8 +87,7 @@ export class PulsProvider {
     this.sessionProvider.removeUserInfo();
     let alert = this.alertCtrl.create({
       title: this.translate.instant("alert.title.error"),
-      subTitle: this.translate.instant("alert.token_valid_credentials_invalid"),
-      buttons: [ this.translate.instant("button.continue") ]
+      subTitle: this.translate.instant("alert.token_valid_credentials_invalid")
     });
     alert.present();
     this.app.getRootNavs()[0].push(LoginPage)
