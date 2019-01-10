@@ -19,4 +19,9 @@ page-persons {
     ion-col {
         font-size: 1.3rem;
     }
+
+    .notUnderlined {
+        text-transform: capitalize;
+        text-decoration: none;
+    }
 }

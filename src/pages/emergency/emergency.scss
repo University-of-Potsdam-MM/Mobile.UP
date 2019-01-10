@@ -24,4 +24,13 @@ page-emergency {
         color: color($colors, primary);
         text-decoration: underline;
     }
+
+    .notUnderlined {
+        text-transform: capitalize;
+        text-decoration: none;
+    }
+
+    .whiteFont {
+        color: white;
+    }
 }
