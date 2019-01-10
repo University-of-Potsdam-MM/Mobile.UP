@@ -7,6 +7,7 @@ import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { IModule } from "../../library/interfaces";
 import {MobileUPApp} from '../../app/app.component';
+import {HttpErrorResponse} from "@angular/common/http";
 
 /**
  * HomePage
@@ -34,6 +35,8 @@ export class HomePage {
     }
 
   ionViewDidLoad(){
+    // throw new HttpErrorResponse({status:402, error:{message:"test"}});
+
     // try to load modules from storage
     this.storage.get("modules").then(
       modules => {
