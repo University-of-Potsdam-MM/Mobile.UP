@@ -195,6 +195,7 @@ export interface IEndpoints {
   maps:string;
   openingHours:string;
   emergencyCalls:string;
+  logging:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */

@@ -64,6 +64,9 @@ import { PopoverButton } from "../components/popover/popover-button";
 import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
 import { MapsProvider } from '../providers/maps/maps';
+import { AlertProvider } from '../providers/alert/alert';
+import {MobileUPErrorHandler} from "../library/errorHandler";
+import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -187,7 +190,10 @@ export const deepLinkConfig: DeepLinkConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {
+      provide: ErrorHandler,
+      useClass: MobileUPErrorHandler
+    },
     UPLoginProvider,
     InAppBrowser,
     SettingsProvider,
@@ -210,7 +216,9 @@ export const deepLinkConfig: DeepLinkConfig = {
     PulsProvider,
     Network,
     ConnectionProvider,
-    MapsProvider
+    MapsProvider,
+    AlertProvider,
+    ErrorLoggingProvider
   ]
 })
 export class AppModule {

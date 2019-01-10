@@ -7,6 +7,7 @@ import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { IModule } from "../../library/interfaces";
 import {MobileUPApp} from '../../app/app.component';
+import {HttpErrorResponse} from "@angular/common/http";
 
 /**
  * HomePage

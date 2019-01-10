@@ -184,7 +184,8 @@
       "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
       "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
       "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",
-      "emergencyCalls": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI"
+      "emergencyCalls": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI",
+      "logging": "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
   },

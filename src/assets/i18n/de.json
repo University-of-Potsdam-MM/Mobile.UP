@@ -306,9 +306,19 @@
   },
   "alert": {
     "title": {
+      "unexpectedError": "Unerwarteter Fehler",
+      "httpError": "HTTP-Fehler",
       "error": "Fehler",
       "website": "Website öffnen?"
     },
+    "httpErrorStatus": {
+      "unknown": "unbekannt",
+      "401": "401",
+      "402": "402",
+      "403": "403",
+      "404": "404"
+    },
+    "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Ihre Anmeldedaten scheinen sich seit Ihrem letztem Login geändert zu haben. Bitte loggen Sie sich erneut ein."
