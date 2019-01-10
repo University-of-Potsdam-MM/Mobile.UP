@@ -1,5 +1,5 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ItemSliding, ToastController } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
 import {
@@ -14,6 +14,7 @@ import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { ImpressumPage } from '../impressum/impressum';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,9 @@ export class PracticePage {
 
   defaultList: ADS[] = [];
   displayedList: ADS[] = [];
-  waiting_for_response: boolean = false;
+  displayedFavorites: ADS[] = [];
+  allFavorites: ADS[] = [];
+  waiting_for_response: boolean = true;
   error: HttpErrorResponse;
 
   /**
@@ -36,7 +39,9 @@ export class PracticePage {
     public navCtrl: NavController,
     private http: HttpClient,
     private storage: Storage,
+    private toastCtrl: ToastController,
     private platform: Platform,
+    private translate: TranslateService,
     private keyboard: Keyboard,
     private cache: CacheService,
     public navParams: NavParams,
@@ -73,6 +78,7 @@ export class PracticePage {
    */
   public initializeList(): void {
     this.displayedList = this.defaultList;
+    this.displayedFavorites = this.allFavorites;
   }
 
   ionViewWillEnter() {
@@ -129,6 +135,7 @@ export class PracticePage {
           }
         }
         this.initializeList();
+        this.checkFavorites();
         // this.waiting_for_response = false;
       },
       error => {
@@ -199,10 +206,17 @@ export class PracticePage {
     // console.log(this.displayedList.length);
 
     var tmp = this.displayedList;
+    var tmpFav = this.displayedFavorites;
     // filter according to practice option
     if (practice.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS) => {
+          return practice.includes(this.practiceMapping(ADS.art))
+        }
+      )
+
+      tmpFav = jquery.grep(
+        tmpFav, (ADS) => {
           return practice.includes(this.practiceMapping(ADS.art))
         }
       )
@@ -212,6 +226,12 @@ export class PracticePage {
     if (studyarea.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS) => {
+          return studyarea.includes(ADS.field)
+        }
+      )
+
+      tmpFav = jquery.grep(
+        tmpFav, (ADS) => {
           return studyarea.includes(ADS.field)
         }
       )
@@ -225,6 +245,14 @@ export class PracticePage {
           } else { return false; }
         }
       )
+
+      tmpFav = jquery.grep(
+        tmpFav, (ADS) => {
+          if (ADS.foreign == "0") {
+            return true;
+          } else { return false; }
+        }
+      )
     } else if (foreign && !domestic) {
       tmp = jquery.grep(
         tmp, (ADS) => {
@@ -233,9 +261,18 @@ export class PracticePage {
           } else { return false; }
         }
       )
+
+      tmpFav = jquery.grep(
+        tmpFav, (ADS) => {
+          if (ADS.foreign == "1") {
+            return true;
+          } else { return false; }
+        }
+      )
     }
 
     this.displayedList = tmp;
+    this.displayedFavorites = tmpFav;
 
     // console.log("DISPLAYED NEW")
     // console.log(this.displayedList.length);
@@ -258,6 +295,13 @@ export class PracticePage {
       if (query) {
         this.displayedList = jquery.grep(
           this.displayedList,
+          (ADS, index) => {
+            return this.contains(ADS.title, query);
+          }
+        );
+
+        this.displayedFavorites = jquery.grep(
+          this.displayedFavorites,
           (ADS, index) => {
             return this.contains(ADS.title, query);
           }
@@ -286,5 +330,84 @@ export class PracticePage {
    */
   itemSelected(ads, index) {
     this.navCtrl.push(DetailedPracticePage, { "ADS": ads, "list": this.displayedList[index] });
+  }
+
+  makeFavorite(ads, slidingItem:ItemSliding) {
+    if (!this.isInArray(this.displayedFavorites, ads)) {
+      this.displayedFavorites.push(ads);
+
+      if (!this.isInArray(this.allFavorites, ads)) {
+        this.allFavorites.push(ads);
+      }
+      this.presentToast(this.translate.instant("page.practice.favAdded"));
+    } else {
+      this.presentToast(this.translate.instant("page.practice.favExists"));
+    }
+
+    this.storage.set("favoriteJobs", this.allFavorites);
+    
+
+    slidingItem.close();
+  }
+
+  removeFavorite(ads) {
+    var i;
+    var tmp: ADS[] = [];
+    for (i = 0; i < this.allFavorites.length; i++) {
+      if (this.allFavorites[i] != ads) {
+        tmp.push(this.allFavorites[i]);
+      }
+    }
+
+    var tmp2: ADS[] = [];
+    for (i = 0; i < this.displayedFavorites.length; i++) {
+      if (this.displayedFavorites[i] != ads) {
+        tmp2.push(this.displayedFavorites[i]);
+      }
+    }
+    this.allFavorites = [];
+    this.allFavorites = tmp;
+    this.displayedFavorites = [];
+    this.displayedFavorites = tmp2;
+    this.presentToast(this.translate.instant("page.practice.favRemoved"));
+    this.storage.set("favoriteJobs", this.allFavorites);
+  }
+
+  async checkFavorites() {
+    var tmp:ADS[] = await this.storage.get("favoriteJobs");
+
+    this.allFavorites = [];
+    this.displayedFavorites = [];
+    if (tmp) {
+      var i, j;
+      for (i = 0; i < tmp.length; i++) {
+        for (j = 0; j < this.defaultList.length; j++) {
+          if (tmp[i].uid == this.defaultList[j].uid) {
+            if (!this.isInArray(this.allFavorites, tmp[i])) {
+              this.allFavorites.push(tmp[i]);
+            }
+            break;
+          } 
+        }
+      }
+
+      if (tmp.length > this.allFavorites.length) {
+        this.presentToast(this.translate.instant("page.practice.favNotAvailable"));
+      }
+    }
+
+    this.displayedFavorites = this.allFavorites;
+    this.storage.set("favoriteJobs", this.allFavorites);
+
+  }
+
+  presentToast(message) {
+    const toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: "top",
+      cssClass: "toastPosition"
+    });
+    toast.present();
   }
 }

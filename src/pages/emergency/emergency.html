@@ -42,12 +42,12 @@
 
         <ion-item-options side="right">
           <button ion-button color="primary" *ngIf="emergencyCall.contact.mail">
-              <ion-icon name="mail"></ion-icon>
-              <a href="mailto:{{emergencyCall.contact.mail}}">Mail</a>
-            </button>
+            <ion-icon name="mail"></ion-icon>
+            <a class="notUnderlined whiteFont" href="mailto:{{emergencyCall.contact.mail}}">Mail</a>
+          </button>
           <button ion-button color="secondary">
             <ion-icon name="call"></ion-icon>
-            <a href="tel:{{emergencyCall.contact.telephone}}">Call</a>
+            <a class="notUnderlined" href="tel:{{emergencyCall.contact.telephone}}">Call</a>
           </button>
         </ion-item-options>
 
