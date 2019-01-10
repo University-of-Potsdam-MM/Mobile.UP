@@ -11,6 +11,10 @@ export interface IErrorLogging {
   jsonObject?:any;
 }
 
+/**
+ * @name ErrorLoggingProvider
+ * @description Can be used to log errors in errorAPI
+ */
 @Injectable()
 export class ErrorLoggingProvider {
 
@@ -23,18 +27,21 @@ export class ErrorLoggingProvider {
    */
   logError(errorObject:IErrorLogging){
     let headers:HttpHeaders = new HttpHeaders()
-      .set("Authorization", "Bearer " + ConfigProvider.config.webservices.apiToken);
+      .set("Authorization", `Bearer ${ConfigProvider.config.webservices.apiToken}`);
 
-    console.log(`logging error`)
-    // do dry run for now
-    // this.http.post(
-    //   ConfigProvider.config.webservices.endpoint.logging,
-    //   errorObject,
-    //   {headers: headers}
-    // ).subscribe(
-    //   response => {
-    //     console.log(response)
-    //   }
-    // )
+    console.log(`[ErrorLoggingProvider]: Logging error`);
+    console.log(errorObject);
+    this.http.post(
+      ConfigProvider.config.webservices.endpoint.logging,
+      errorObject,
+      {headers: headers}
+    ).subscribe(
+      response => {
+        console.log(`[ErrorLoggingProvider]: Logged error: ${JSON.stringify(response)}`)
+      },
+      error => {
+        console.log(`[ErrorLoggingProvider]: Could not log error, because of yet another error: ${error}`)
+      }
+    )
   }
 }

@@ -35,8 +35,6 @@ export class HomePage {
     }
 
   ionViewDidLoad(){
-    // throw new HttpErrorResponse({status:402, error:{message:"test"}});
-
     // try to load modules from storage
     this.storage.get("modules").then(
       modules => {

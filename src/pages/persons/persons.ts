@@ -92,7 +92,7 @@ export class PersonsPage {
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
-        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}bla`);
+        .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
       var url = config.webservices.endpoint.personSearch + this.query;
 
@@ -112,12 +112,12 @@ export class PersonsPage {
 
           this.error = null;
           this.response_received = true;
+        },
+        error => {
+          this.error = error;
+          console.log(error);
+          this.response_received = true;
         }
-        // error => {
-        //   this.error = error;
-        //   console.log(error);
-        //   this.response_received = true;
-        // }
       );
 
       if (this.personsFound.length > 0) {

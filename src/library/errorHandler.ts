@@ -28,35 +28,22 @@ export class MobileUPErrorHandler implements ErrorHandler {
               private device: Device){
   }
 
-  logError(error){
-
-    let uuid = "none";
-    if(this.platform.is("cordova")){
-      uuid = this.device.uuid;
-    }
-    // this.logging.logError({
-    //   url:"some_url",
-    //   column: 0,
-    //   line: 0,
-    //   message: error.message,
-    //   jsonObject: error,
-    //   uuid: uuid
-    // });
-  }
-
   /**
    * @name handleError
    * @description handles uncaught errors
    * @param error
    */
-  handleError(error:IErrorObject) {
+  handleError(error) {
+
+    let uuid = "none";
+    if(this.platform.is("cordova")){
+      uuid = this.device.uuid;
+    }
 
     if(error instanceof HttpErrorResponse){
       console.log(`[MobileUPErrorHandler]: Uncaught HTTP error!`);
-      console.log(error);
 
-
-      let alertTitleI18nKey = `alert.title.error`;
+      let alertTitleI18nKey = `alert.title.httpError`;
       let messageI18nKey = `alert.httpErrorStatus.unknown`;
 
       if(error.status) {
@@ -66,9 +53,31 @@ export class MobileUPErrorHandler implements ErrorHandler {
       this.alertProvider.showAlert({
         alertTitleI18nKey: alertTitleI18nKey,
         messageI18nKey: messageI18nKey
+      });
+
+      this.logging.logError({
+        uuid:uuid,
+        url:error.url,
+        message:`HttpError ${error.status} occured`
+      })
+    } else {
+      console.log(`[MobileUPErrorHandler]: Uncaught error!`);
+
+      this.alertProvider.showAlert({
+        alertTitleI18nKey:"alert.title.unexpectedError",
+        messageI18nKey:"alert.unknown_error"
+      });
+
+      let caller_line = error.stack.split("\n")[1];
+      let index = caller_line.indexOf("at ");
+      let cleanedURL = caller_line.slice(index+2, caller_line.length);
+
+      this.logging.logError({
+        uuid: uuid,
+        message: `Unexpected error: ${error.message? error.message : "no message provided"}`,
+        url: cleanedURL
       })
     }
 
-    this.logError(error);
   }
 }

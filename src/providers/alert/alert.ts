@@ -29,6 +29,11 @@ export class AlertProvider {
               private translate: TranslateService) {
   }
 
+  /**
+   * @name showAlert
+   * @description shows alert as specified by alertOptions parameter
+   * @param alertOptions
+   */
   showAlert(alertOptions:IAlertOptions){
 
     let alert = this.alertCtrl.create({
