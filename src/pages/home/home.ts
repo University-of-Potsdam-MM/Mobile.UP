@@ -6,11 +6,11 @@ import {
 import { TranslateService, LangChangeEvent } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { IModule } from "../../library/interfaces";
-import {MobileUPApp} from '../../app/app.component';
-import {HttpErrorResponse} from "@angular/common/http";
+import { MobileUPApp } from '../../app/app.component';
 
 /**
- * HomePage
+ * @class HomeyPage
+ * @classdesc class for the startscreen of the application
  */
 @IonicPage()
 @Component({
@@ -18,12 +18,21 @@ import {HttpErrorResponse} from "@angular/common/http";
   templateUrl: 'home.html',
 })
 export class HomePage {
+
   icon_selected:string = "star";
   icon_not_selected:string = "star-outline";
 
   modules:{[moduleName:string]:IModule} = {};
   sortedModules = [];
 
+  /**
+   * @constructor
+   * @description Constructor of HomePage
+   * @param {NavController} navCtrl
+   * @param {TranslateService} translate
+   * @param {Storage} storage
+   * @param {MobileUPApp} app
+   */
   constructor(
       public navCtrl: NavController,
       public translate: TranslateService,
@@ -64,8 +73,10 @@ export class HomePage {
   }
 
   /**
-   * converts json object to array
+   * @name JsonToArray
+   * @description converts json object to array
    * @param modules
+   * @returns {Array} array
    */
   JsonToArray(modules){
     var array = [];
@@ -82,7 +93,9 @@ export class HomePage {
   }
 
   /**
-   * toggles selected-state of given module and then saves moduleList to storage
+   * @name toggleSelectedState
+   * @description toggles selected-state of given module and then saves moduleList to storage
+   * @param event
    * @param moduleName
    */
   toggleSelectedState(event, moduleName) {
@@ -97,11 +110,12 @@ export class HomePage {
     this.storage.set("modules", this.modules).then(
       value => console.log(`[HomePage]: Saved module list after toggling '${moduleName}'`)
     );
-
   }
 
   /**
-   * opens selected page by pushing it on the stack
+   * @name openPage
+   * @description opens selected page by pushing it on the stack
+   * @param event
    * @param {string} pageTitle
    */
   openPage(event, pageTitle:string) {

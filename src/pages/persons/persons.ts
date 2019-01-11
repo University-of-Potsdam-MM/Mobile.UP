@@ -21,12 +21,9 @@ import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
 
 /**
- * PersonsPage
- *
- * shows a searchbar and sends a request upon hitting submit. Then shows
- * retrieved data as a list of ion-cards
- *
- * TODO: View is reaaally ugly right nows
+ * @class PersonPage
+ * @classdesc class for a page that shows the entries of the electronic phone book. The list of items can
+ * be filtered by using a searchbox and items contain a slide and click option to get details
  */
 @IonicPage()
 @Component({
@@ -42,6 +39,18 @@ export class PersonsPage {
   query = "";
   noResults = false;
 
+  /**
+   * @constructor
+   * @description Constructor of EmergencyPage
+   *
+   * @param {NavController} navCtrl
+   * @param {HttpClient} http
+   * @param {Platform} platform
+   * @param {Keyboard} keyboard
+   * @param {ConnectionProvider} connection
+   * @param {Storage} storage
+   * @param {sessionProvider} sessionProvider
+   */
   constructor(
     private navCtrl: NavController,
     private http: HttpClient,
@@ -53,7 +62,9 @@ export class PersonsPage {
   }
 
   /**
-   * take user to login if there is no session.
+   * @name ionViewDidEnter
+   * @async
+   * @description take user to login if there is no session.
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
@@ -75,10 +86,11 @@ export class PersonsPage {
   }
 
   /**
-   * checks whether a session is stored in memory. If not the user is taken to
+   * @name search
+   * @async
+   * @description checks whether a session is stored in memory. If not the user is taken to
    * the LoginPage. If yes a query is sent to the API and the results are placed
    * in this.personsFound so the view can render them
-   * @param query
    */
   public async search() {
     // reset array so new persons are displayed
@@ -96,10 +108,7 @@ export class PersonsPage {
 
       var url = config.webservices.endpoint.personSearch + this.query;
 
-      this.http.get(
-        url,
-        {headers: headers}
-      ).subscribe(
+      this.http.get(url,{headers: headers}).subscribe(
         (personsList:IPerson[]) => {
           //console.log(personsList);
 
@@ -130,6 +139,11 @@ export class PersonsPage {
     }
   }
 
+  /**
+   * @name expandPerson
+   * @description toogles person item in list view to show details
+   * @param person
+   */
   expandPerson(person) {
     for (let i = 0; i < this.personsFound.length; i++) {
       let currentPerson = this.personsFound[i];
@@ -138,4 +152,5 @@ export class PersonsPage {
       }
     }
   }
+
 }
