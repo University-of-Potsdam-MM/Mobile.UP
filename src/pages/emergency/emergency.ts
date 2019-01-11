@@ -1,19 +1,9 @@
-import {
-  Component,
-  ChangeDetectorRef
-} from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  Platform
-} from 'ionic-angular';
+import { Component, ChangeDetectorRef } from "@angular/core";
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {
-  EmergencyCall
-} from "../../library/interfaces";
+import { EmergencyCall } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { Keyboard } from "@ionic-native/keyboard";
 import { ConnectionProvider } from "../../providers/connection/connection";
@@ -22,7 +12,7 @@ import { MapsProvider } from "../../providers/maps/maps";
 
 /**
  * @class EmergencyPage
- * @classdesc Class for a page that shows EmergencyCall entries. The list of items can
+ * @classdesc class for a page that shows EmergencyCall entries. The list of items can
  * be filtered by using a searchbox.
  */
 @IonicPage()
@@ -40,7 +30,6 @@ export class EmergencyPage {
   /**
    * @constructor
    * @description Constructor of EmergencyPage
-   *
    * @param {NavController} navCtrl
    * @param {NavParams} navParams
    * @param {Keyboard} keyboard
@@ -71,7 +60,6 @@ export class EmergencyPage {
     this.loadEmergencyCalls();
   }
 
-
   /**
    * @name  initializeList
    * @description initializes the list that is to be displayed with default values
@@ -79,7 +67,6 @@ export class EmergencyPage {
   public initializeList(): void {
     this.displayedList = this.defaultList;
   }
-
 
   /**
    * @name loadEmergencyCalls
@@ -123,11 +110,9 @@ export class EmergencyPage {
     }
   }
 
-
   /**
    * @name contains
    * @description checks, whether y is a substring of x
-   *
    * @param {string} x - String that does or does not contain string y
    * @param {string} y - String that is or is not contained in string y
    * @returns {Boolean} - Whether string x contains string y
@@ -136,13 +121,11 @@ export class EmergencyPage {
     return x.toLowerCase().includes(y.toLowerCase());
   }
 
-
   /**
    * @name filterItems
    * @description when a query is typed into the searchbar this method is called. It
    * filters the complete list of items with the query and modifies the
    * displayed list accordingly.
-   *
    * @param {string} query - a query string the items will be filtered with
    */
   public filterItems(query: string): void {
@@ -159,11 +142,9 @@ export class EmergencyPage {
     }
   }
 
-
   /**
    * @name expand
    * @description toggles the expand value of one item to be expanded in the view
-   *
    * @param {EmergencyCall} emergencyCall
    */
   expand(emergencyCall: EmergencyCall) {
@@ -178,7 +159,6 @@ export class EmergencyPage {
   /**
    * @name callMap
    * @description opens the map
-   *
    * @param {EmergencyCall} emergencyCall
    */
   callMap(emergencyCall: EmergencyCall) {
@@ -189,4 +169,5 @@ export class EmergencyPage {
 
     this.mapProvider.navigateToAdress(location);
   }
+
 }
