@@ -1,7 +1,7 @@
 import { ComponentsModule } from './../components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, APP_INITIALIZER} from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler, DeepLinkConfig  } from 'ionic-angular';
+import { IonicApp, IonicModule, DeepLinkConfig } from 'ionic-angular';
 import { MobileUPApp } from './app.component';
 import { UPLoginProvider } from "../providers/login-provider/login";
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -65,7 +65,7 @@ import { AppInfoPage } from "../pages/app-info/app-info";
 import { SessionProvider } from '../providers/session/session';
 import { MapsProvider } from '../providers/maps/maps';
 import { AlertProvider } from '../providers/alert/alert';
-import {MobileUPErrorHandler} from "../library/errorHandler";
+import { MobileUPErrorHandler } from "../library/errorHandler";
 import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
 
 export function HttpLoaderFactory(http: HttpClient) {
