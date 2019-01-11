@@ -57,7 +57,7 @@
         </ion-item-options>
       </ion-item-sliding>
 
-      <ion-item *ngIf="person.expanded">
+      <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Telefon != '') || (person.Raum != ''))">
         <ion-thumbnail item-start>
         </ion-thumbnail>
         <ion-label no-margin>
@@ -68,7 +68,7 @@
             <ion-row *ngIf="person.Telefon != ''">
               <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
             </ion-row>
-            <ion-row *ngIf="person.Raum != '';">
+            <ion-row *ngIf="person.Raum != ''">
               <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
             </ion-row>
           </ion-grid>
