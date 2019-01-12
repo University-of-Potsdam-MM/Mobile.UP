@@ -1,9 +1,12 @@
 <ion-header>
     <ion-navbar hideBackButton="true">
-        <button ion-button menuToggle right>
-            <ion-icon name="menu"></ion-icon>
-        </button>
         <ion-title>{{"page.login.title"|translate}}</ion-title>
+        <ion-buttons end>
+          <button ion-button (tap)="abort()">
+            <span ion-text color="primary" showWhen="ios">{{ "button.cancel" | translate }}</span>
+            <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+          </button>
+      </ion-buttons>
     </ion-navbar>
 </ion-header>
 
@@ -53,13 +56,13 @@
 
       <ion-row>
         <ion-col>
-          <button ion-button full type="button" (click)="abort()">
-            {{ "button.cancel" | translate }}
+          <button ion-button class="submit-btn" full type="submit">
+            {{ "button.login" | translate }}
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button class="submit-btn" full type="submit">
-            {{ "button.login" | translate }}
+          <button ion-button full type="button" (click)="abort()">
+            {{ "button.cancel" | translate }}
           </button>
         </ion-col>
       </ion-row>
@@ -72,4 +75,4 @@
   <div align="center" *ngIf="alreadyLoggedIn" padding>
     {{ "page.login.alreadyLoggedIn" | translate }}
   </div>
-  </ion-content>
+</ion-content>
