@@ -311,7 +311,8 @@
       "unexpectedError": "Unerwarteter Fehler",
       "httpError": "HTTP-Fehler",
       "error": "Fehler",
-      "website": "Website öffnen?"
+      "website": "Website öffnen?",
+      "redirect": "Weiterleitung"
     },
     "httpErrorStatus": {
       "unknown": "Unbekannter HTTP-Status",
@@ -324,7 +325,8 @@
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
-    "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar."
+    "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
+    "redirect": "Auf externe Webseite oder App weiterleiten?"
 
   },
   "university": {

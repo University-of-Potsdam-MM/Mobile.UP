@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from '../../library/interfaces';
-import { Platform } from 'ionic-angular';
+import { Platform, AlertController } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { SafariViewController } from '@ionic-native/safari-view-controller';
+import { TranslateService } from "@ngx-translate/core";
 
 /**
  * @class WebIntentProvider
@@ -41,6 +42,8 @@ export class WebIntentProvider {
    * @param {Platform} platform
    * @param {AppAvailability} appAvailability
    * @param {SafariViewController} safari
+   * @param {AlertController} alertCtrl
+   * @param {TranslateService} translate
    */
   constructor(
     private theInAppBrowser: InAppBrowser,
@@ -48,9 +51,10 @@ export class WebIntentProvider {
     private storage: Storage,
     private platform: Platform,
     private appAvailability: AppAvailability,
-    private safari: SafariViewController) {
+    private safari: SafariViewController,
+    private alertCtrl: AlertController,
+    private translate: TranslateService) {
   }
-
 
   /**
    * @name handleWebIntentForModule
@@ -60,28 +64,47 @@ export class WebIntentProvider {
   public handleWebIntentForModule(moduleName:string) {
     this.storage.get("config").then((config:IConfig) => {
       var moduleConfig:IModule = config.modules[moduleName];
-      if (moduleConfig) {
-        if (this.platform.is("cordova")) {
-          if (moduleConfig.appId) {
-            var androidUrl, iosUrl, bundle;
-            androidUrl = moduleConfig.urlAndroid;
-            iosUrl = moduleConfig.urlIOS;
-            bundle = moduleConfig.bundleName;
-            this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
-          } else {
-            this.safari.isAvailable().then((available:boolean) => {
-              if (available) {
-                this.openWithSafari(moduleConfig.url);
-              } else { this.openWithInAppBrowser(moduleConfig.url); }
-            });
+
+      // ask for permission to open Module externaly
+      let alert = this.alertCtrl.create({
+        title: this.translate.instant("alert.title.redirect"),
+        message: this.translate.instant("alert.redirect"),
+        buttons: [
+          {
+            text: this.translate.instant("button.continue"),
+            handler: () => {
+              if (moduleConfig) {
+                if (this.platform.is("cordova")) {
+                  if (moduleConfig.appId) {
+                    var androidUrl, iosUrl, bundle;
+                    androidUrl = moduleConfig.urlAndroid;
+                    iosUrl = moduleConfig.urlIOS;
+                    bundle = moduleConfig.bundleName;
+                    this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
+                  } else {
+                    this.safari.isAvailable().then((available:boolean) => {
+                      if (available) {
+                        this.openWithSafari(moduleConfig.url);
+                      } else { this.openWithInAppBrowser(moduleConfig.url); }
+                    });
+                  }
+                } else {
+                  this.openWithInAppBrowser(moduleConfig.url);
+                }
+              }
+            }
+          },
+          {
+            text: this.translate.instant("button.cancel"),
+            role: 'cancel',
+            handler: () => {
+            }
           }
-        } else {
-          this.openWithInAppBrowser(moduleConfig.url);
-        }
-      }
+        ]
+      });
+      alert.present();
     });
   }
-
 
   /**
    * @name openWebsite
@@ -101,7 +124,6 @@ export class WebIntentProvider {
     }
   }
 
-
   /**
    * @name openWithInAppBrowser
    * @description opens a url with the InAppBrowser
@@ -111,7 +133,6 @@ export class WebIntentProvider {
       let target = "_blank";
       this.theInAppBrowser.create(url,target,this.options);
   }
-
 
   /**
    * @name openWithSafari
