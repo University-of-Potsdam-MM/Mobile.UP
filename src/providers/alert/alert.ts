@@ -39,6 +39,12 @@ export interface IAlertOptions {
 @Injectable()
 export class AlertProvider {
 
+  /**
+   * @constructor
+   * @param {HttpClient} http
+   * @param {AlertController} alertCtrl
+   * @param {TranslateService} translate
+   */
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
               private translate: TranslateService) {
