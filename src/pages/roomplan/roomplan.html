@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
@@ -33,7 +32,14 @@
       <div *ngFor="let house of housesFound">
         <ion-item (click)="expandHouse(house.lbl)">
           <ion-label no-margin>
-            <h2><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+            <h2>
+              <b>{{ "words.house" | translate }} {{house.lbl}}</b>
+              <ion-badge color="primary">
+                  {{house.rooms.length}}
+                  <span *ngIf="house.rooms.length == 1">{{ "words.booking" | translate }}</span>
+                  <span *ngIf="house.rooms.length > 1">{{ "words.bookings" | translate }}</span>
+                </ion-badge>
+            </h2>
           </ion-label>
           <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
           <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
@@ -74,7 +80,8 @@
   </p>
 
   <ng-container *ngIf="housesFound.length == 0 && requestProcessed;
-                then noRoomsFoundTemplate; else roomsFoundTemplate"></ng-container>
+                then noRoomsFoundTemplate; else roomsFoundTemplate">
+  </ng-container>
 
 </ion-content>
 

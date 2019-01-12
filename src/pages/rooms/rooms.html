@@ -28,7 +28,14 @@
       <div *ngFor="let house of housesFound">
         <ion-item (click)="expand(house.lbl)">
           <ion-label no-margin>
-            <h2 text-wrap><b>{{ "words.house" | translate }} {{house.lbl}}</b><ion-badge color="primary">{{house.rooms.length}}</ion-badge></h2>
+            <h2 text-wrap>
+              <b>{{ "words.house" | translate }} {{house.lbl}}</b>
+              <ion-badge color="primary">
+                {{house.rooms.length}}
+                <span *ngIf="house.rooms.length == 1">{{ "words.room" | translate }}</span>
+                <span *ngIf="house.rooms.length > 1">{{ "words.rooms" | translate }}</span>
+              </ion-badge>
+            </h2>
           </ion-label>
           <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
           <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>

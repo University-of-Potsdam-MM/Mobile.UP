@@ -337,6 +337,10 @@
   "words": {
     "clock": "Uhr",
     "house": "Haus",
+    "room": "Raum",
+    "rooms": "Räume",
+    "booking": "Belegung",
+    "bookings": "Belegungen",
     "of": "von",
     "results": "Einträgen",
     "all": "Alle"

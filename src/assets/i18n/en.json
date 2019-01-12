@@ -243,13 +243,15 @@
     },
     "rooms": {
       "title": "Available rooms",
-      "time": "Time of day"
+      "time": "Time of day",
+      "no_rooms_hintText": "No free rooms found."
     },
     "roomplan": {
       "title": "Roomplan",
       "no_house": "The chosen house is free all-day.",
       "no_room": "The chosen room is free all-day.",
-      "date": "Date"
+      "date": "Date",
+      "no_rooms_hintText": "No free rooms found."
     },
     "openingHours":{
       "title":"Opening hours",
@@ -323,6 +325,10 @@
   "words": {
     "clock": "",
     "house": "House",
+    "room": "room",
+    "rooms": "rooms",
+    "booking": "booking",
+    "bookings": "bookings",
     "of": "of",
     "results": "results",
     "all": "All"
