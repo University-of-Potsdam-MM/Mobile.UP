@@ -1,3 +1,13 @@
 hint {
+    ion-card {
+        border: 2px solid color($colors, upgrey);
+    }
 
+    ion-card-header {
+        background-color: color($colors, secondary);
+    }
+
+    ion-card-content {
+        margin: 1rem;
+    }
 }

@@ -24,7 +24,7 @@
     font-weight: 400;
     src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular") format("truetype");
 }
-  
+
 /* Source Sans Pro Light */
 @font-face {
     font-family: "Source Sans Pro";
@@ -32,21 +32,21 @@
     font-weight: 300;
     src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light") format("truetype");
 }
-  
-  
-  /* Source Sans Pro Italic 
-  
+
+
+  /* Source Sans Pro Italic
+
   @font-face {
     font-family: "Source Sans Pro";
     font-style: normal;
     font-weight: 400;
     src:local("Source Sans Pro Italic"), local("Source-Sans-Pro-Italic"), url("../assets/fonts/SourceSansPro-Italic.ttf") format("truetype");
-  
+
   } */
-  
-  
+
+
   /* Source Sans Pro Bold */
-  
+
   @font-face {
     font-family: "Source Sans Pro";
     font-style: normal;
@@ -66,7 +66,7 @@
 ion-footer {
     background-color:  #ffffff!important;
     box-shadow: 0 0 0 #000;
-  
+
   .toolbar-background {
     background-color: color($colors, upgrey)!important;
   }
@@ -75,7 +75,7 @@ ion-footer {
 ion-header {
 	background-color:  color($colors, upgrey)!important;
   box-shadow: 0 0 0 #000;
-  
+
   .toolbar-background {
     background-color: color($colors, upgrey)!important;
   }
@@ -98,14 +98,12 @@ ion-header {
 }
 
 .card-md, .card, .card-ios {
-    box-shadow: none;
-    -webkit-box-shadow:none;
+
 }
 
 .searchbar-input, .searchbar-md .searchbar-input, .searchbar-ios .searchbar-input {
     box-shadow: none;
-
-border: 1px solid #ededed;
+    border: 1px solid #ededed;
 }
 
 
@@ -167,10 +165,6 @@ border: 1px solid #ededed;
 
 ion-app.md [padding] .scroll-content {
     padding: 5px;
-}
-
-.card, .card-md, .card-ios {
-  margin:5px; 
 }
 
 .card-content-md, .card-content, .card-content-ios {
