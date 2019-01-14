@@ -41,21 +41,19 @@ export class MobileUPApp {
     private appVersion: AppVersion,
     private sessionProvider: SessionProvider
   ) {
-    this.firstAppVersionStart();
-    this.initializeApp();
+    this.appStart();
   }
 
   /**
    * @name initializeApp
    * @description initializes the app and hides splashscreen when it's done
    */
-  private async initializeApp() {
-    await this.initConfig();
-    await this.checkSessionValidity();
-    await this.initTranslate();
-    this.connection.initializeNetworkEvents();
+  private initializeApp() {
+    this.platform.ready().then(async () => {
+      await this.initConfig();
+      await this.initTranslate();
+      this.connection.initializeNetworkEvents();
 
-    this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.statusBar.styleDefault();
         // set status bar to same color as header
@@ -68,44 +66,38 @@ export class MobileUPApp {
     });
   }
 
-  firstAppVersionStart() {
+  appStart() {
     this.platform.ready().then(() => {
       if (this.platform.is("cordova")) {
         this.appVersion.getVersionNumber().then(currentAppVersion => {
-          this.storage.get("appVersion").then(savedAppVersion => {
+          this.storage.get("appVersion").then(async (savedAppVersion) => {
             if (!savedAppVersion || savedAppVersion == null) {
               // user has never opened a 6.x version of the app, since nothing is stored
               // clear the whole storage
               console.log("clearing storage...");
-              this.storage.clear();
-              this.sessionProvider.removeSession();
-              this.sessionProvider.removeUserInfo(); 
-
-              // rebuild necessary storage elements
-              this.initConfig();
-              this.connection.initializeNetworkEvents();
-              this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
-              this.cache.setOfflineInvalidate(false);
+              await this.storage.clear();
+              await this.sessionProvider.removeSession();
+              await this.sessionProvider.removeUserInfo(); 
             } else if (savedAppVersion < currentAppVersion) {
               // user has installed a previous 6.x version
-              //console.log("clearing user info and session...");
-              //this.sessionProvider.removeSession();
-              //this.sessionProvider.removeUserInfo(); 
+              // do nothing 
             }
             this.storage.set("appVersion", currentAppVersion);
+            this.initializeApp();
           });
         });
       }
     });
   }
 
-  private async initConfig() {
+  private initConfig() {
     // TODO: maybe outsource config to a provider, so we don't need to call storage every time
     this.http.get<IConfig>("assets/config.json").subscribe(
       config => {
         this.config = config;
         this.storage.set("config", config);
         this.buildDefaultModulesList();
+        this.checkSessionValidity();
       }
     );
   }
@@ -116,9 +108,7 @@ export class MobileUPApp {
    * session will be refreshed anyway. Otherwise the currently stored session
    * object is deleted.
    */
-  private async checkSessionValidity() {
-    let config:IConfig = await this.storage.get('config');
-
+  private checkSessionValidity() {
     this.platform.ready().then(async () => {
       let session = JSON.parse(await this.sessionProvider.getSession());
 
@@ -135,12 +125,12 @@ export class MobileUPApp {
 
         if(sessionIsValid(session.timestamp,
                           session.oidcTokenObject.expires_in,
-                          config.general.tokenRefreshBoundary)) {
+                          this.config.general.tokenRefreshBoundary)) {
           console.log(`[MobileUP]: Session still valid, refreshing`);
           // session still valid, but we will refresh it anyway
           this.loginProvider.oidcRefreshToken(
             session.oidcTokenObject.refresh_token,
-            config.authorization.oidc
+            this.config.authorization.oidc
           ).subscribe(
             (response:IOIDCRefreshResponseObject) => {
               // store new token object
@@ -154,7 +144,7 @@ export class MobileUPApp {
 
 
               // in the meantime get user information and save it to storage
-              this.loginProvider.oidcGetUSerInformation(newSession, config.authorization.oidc).subscribe(
+              this.loginProvider.oidcGetUSerInformation(newSession, this.config.authorization.oidc).subscribe(
                 (userInformation:any) => {
                   this.sessionProvider.setUserInfo(userInformation);
                 },
@@ -204,12 +194,7 @@ export class MobileUPApp {
    * // if there isn't already one in the storage // disabled
    * @returns {Promise<void>}
    */
-  async buildDefaultModulesList() {
-
-    // if there are no default_modules in storage
-    // if (!await this.storage.get("default_modules")) {
-    // console.log("[MobileUPApp]: No default moduleList in storage, creating new one from config");
-
+  buildDefaultModulesList() {
     let moduleList:{[modulesName:string]:IModule} = {};
     let modules = this.config.modules;
 
@@ -223,7 +208,6 @@ export class MobileUPApp {
 
     this.storage.set("default_modules", moduleList);
     console.log("[MobileUPApp]: Created default moduleList from config");
-    // }
   }
 
 

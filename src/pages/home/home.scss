@@ -77,4 +77,11 @@ page-home {
     .hyphen {
         hyphens: auto!important;
     }
+
+    .card-md, .card, .card-ios {
+        box-shadow: none;
+        -webkit-box-shadow:none;
+    
+    }
+    
 }

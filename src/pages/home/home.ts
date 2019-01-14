@@ -43,11 +43,11 @@ export class HomePage {
         })
     }
 
-  ionViewDidLoad(){
+  ngOnInit() {
     // try to load modules from storage
     this.storage.get("modules").then(
       modules => {
-        if(modules){
+        if (modules) {
           // if there are modules, use those
           this.modules = modules;
           this.sortedModules = this.JsonToArray(this.modules);
@@ -57,7 +57,7 @@ export class HomePage {
           // if not, try to load the default_modules
           this.storage.get("default_modules").then(
             default_modules => {
-              if(default_modules) {
+              if (default_modules) {
                 // use those if possible
                 this.modules = default_modules;
                 this.sortedModules = this.JsonToArray(this.modules);
@@ -65,8 +65,9 @@ export class HomePage {
               } else {
                 // somethings clearly wrong here!
                 console.log("[HomePage]: Neither user defined modules nor default_modules in storage!");
+                this.navCtrl.setRoot(HomePage);
               }
-          })
+          });
         }
       }
     );
@@ -78,7 +79,7 @@ export class HomePage {
    * @param modules
    * @returns {Array} array
    */
-  JsonToArray(modules){
+  JsonToArray(modules) {
     var array = [];
     for (var key in modules){
       this.translate.get(modules[key].i18nKey).subscribe(
@@ -120,9 +121,9 @@ export class HomePage {
    */
   openPage(event, pageTitle:string) {
     event.stopPropagation();
-    if (this.modules[pageTitle]){
+    if (this.modules[pageTitle]) {
       this.app.openPage(this.modules[pageTitle]);
-    }else{
+    } else {
       console.log(`[HomePage]: Failed to push page, \"${pageTitle}\" does not exist`);
     }
   }
