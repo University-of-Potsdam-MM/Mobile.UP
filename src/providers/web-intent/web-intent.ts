@@ -71,6 +71,12 @@ export class WebIntentProvider {
         message: this.translate.instant("alert.redirect"),
         buttons: [
           {
+            text: this.translate.instant("button.cancel"),
+            role: 'cancel',
+            handler: () => {
+            }
+          },
+          {
             text: this.translate.instant("button.continue"),
             handler: () => {
               if (moduleConfig) {
@@ -92,12 +98,6 @@ export class WebIntentProvider {
                   this.openWithInAppBrowser(moduleConfig.url);
                 }
               }
-            }
-          },
-          {
-            text: this.translate.instant("button.cancel"),
-            role: 'cancel',
-            handler: () => {
             }
           }
         ]
