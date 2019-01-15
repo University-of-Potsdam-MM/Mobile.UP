@@ -86,7 +86,7 @@ export class MobileUPApp {
             this.initializeApp();
           });
         });
-      }
+      } else { this.initializeApp(); }
     });
   }
 
