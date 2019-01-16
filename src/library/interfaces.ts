@@ -127,6 +127,7 @@ export interface IADSResponse extends Array<ADS>{}
 /* ~~~ config ~~~ */
 
 export interface IConfig {
+  appVersion:string;
   modules:{[moduleName:string]:IModule};
   authorization:ILoginConfig;
   webservices:IWebServices;

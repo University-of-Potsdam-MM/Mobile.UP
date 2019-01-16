@@ -20,7 +20,6 @@ import { CacheModule } from "ionic-cache";
 import { OrderModule } from 'ngx-order-pipe';
 import { NgCalendarModule } from "ionic2-calendar";
 import { Device } from '@ionic-native/device';
-import { AppVersion } from '@ionic-native/app-version';
 import { PulsProvider } from '../providers/puls/puls';
 import { ConnectionProvider } from '../providers/connection/connection';
 import { Network } from "@ionic-native/network";
@@ -201,7 +200,6 @@ export const deepLinkConfig: DeepLinkConfig = {
     SafariViewController,
     AppAvailability,
     WebIntentProvider,
-    AppVersion,
     Device,
     LaunchNavigator,
     ConfigProvider,
