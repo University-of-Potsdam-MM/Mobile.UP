@@ -84,8 +84,6 @@
     },
     "grades": {
       "title": "Meine Leistungen",
-      "hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
-      "notSupported": "Diese Funktion wird für Ihren Account nicht unterstützt.",
       "bezeichnung": "Bezeichnung",
       "note": "Note",
       "pv": "PV",
@@ -365,7 +363,9 @@
     },
     "text": {
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
-      "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen."
+      "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
+      "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
+      "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt."
     }
   }
 }

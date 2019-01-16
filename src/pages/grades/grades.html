@@ -13,15 +13,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" class="hint" *ngIf="studentLoaded" padding>
-    {{ "page.grades.hint" | translate }}
+  <div *ngIf="studentLoaded">
+      <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-selectDegree-hint"></hint>
   </div>
+
   <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
     <ion-spinner></ion-spinner>
   </div>
 
-  <div class="hint" *ngIf="noUserRights" align="center" padding>
-    {{ "page.grades.notSupported" | translate }}
+  <div *ngIf="noUserRights">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></hint>
   </div>
 
   <div *ngIf="studentLoaded && !multipleDegrees">
@@ -38,7 +39,7 @@
   <div *ngIf="studentLoaded && multipleDegrees">
     <ion-item *ngFor="let degree of studentDetails; let i = index" class="studiengang" no-lines tappable (click)="showGrades(i)">
       <div text-wrap>
-        {{ degree.AbLtxt }} ({{ degree.Abschl }}) 
+        {{ degree.AbLtxt }} ({{ degree.Abschl }})
       </div>
     </ion-item>
     <div align="center" *ngIf="loadingGrades" padding>

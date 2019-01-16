@@ -84,8 +84,6 @@
     },
     "grades": {
       "title": "My achievements",
-      "hint": "Please select a degree, to which the achievements are to be displayed.",
-      "notSupported": "This feature is not supported for your account.",
       "bezeichnung": "description",
       "note": "Grade",
       "pv": "PV",
@@ -356,7 +354,9 @@
     },
     "text": {
       "login-hint": "Please use your short email address without @uni-potsdam.de to login.",
-      "mensa-nomeals-hint": "No meals were found that match the criteria."
+      "mensa-nomeals-hint": "No meals were found that match the criteria.",
+      "grades-selectDegree-hint": "Please select a degree, to which the achievements are to be displayed.",
+      "grades-notSupported-hint": "This feature is not supported for your account."
     }
   }
 }
