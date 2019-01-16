@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { Device } from "@ionic-native/device";
-import { AppVersion } from "@ionic-native/app-version";
 import { MapsProvider } from '../../providers/maps/maps';
+import { IConfig } from '../../library/interfaces';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -29,9 +30,9 @@ export class AppInfoPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private device: Device,
+              private storage: Storage,
               private mapsProvider: MapsProvider,
-              private platform: Platform,
-              private appVersion: AppVersion) {
+              private platform: Platform) {
   }
 
   ngOnInit() {
@@ -51,13 +52,9 @@ export class AppInfoPage {
       "deviceModel": this.device.model
     }
 
-    this.appVersion.getVersionNumber().then(number => {
-      this.deviceInfo.appVersion = number;
-
-      this.appVersion.getVersionCode().then(code => {
-        this.deviceInfo.appVersion += " (" + code + ")";
-      });
-    });
+    this.storage.get("config").then((config:IConfig) => {
+      this.deviceInfo.appVersion = config.appVersion;
+    })
   }
 
   callMap(location:string) {

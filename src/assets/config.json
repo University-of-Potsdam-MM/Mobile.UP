@@ -1,4 +1,5 @@
 {
+  "appVersion": "6.0.3",
   "modules": {
     "persons": {
       "componentName": "persons",

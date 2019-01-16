@@ -15,7 +15,6 @@ import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
 import { ConnectionProvider } from "../providers/connection/connection";
 import { SessionProvider } from '../providers/session/session';
-import { AppVersion } from '@ionic-native/app-version';
 
 @Component({
   templateUrl: 'app.html'
@@ -38,7 +37,6 @@ export class MobileUPApp {
     private cache: CacheService,
     private loginProvider: UPLoginProvider,
     private connection: ConnectionProvider,
-    private appVersion: AppVersion,
     private sessionProvider: SessionProvider
   ) {
     this.appStart();
@@ -75,7 +73,8 @@ export class MobileUPApp {
   appStart() {
     this.platform.ready().then(() => {
       if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
-        this.appVersion.getVersionNumber().then(currentAppVersion => {
+        this.http.get<IConfig>("assets/config.json").subscribe((config:IConfig) => {
+          let currentAppVersion = config.appVersion;
           this.storage.get("appVersion").then(async (savedAppVersion) => {
             if (!savedAppVersion || savedAppVersion == null) {
               // user has never opened a 6.x version of the app, since nothing is stored
