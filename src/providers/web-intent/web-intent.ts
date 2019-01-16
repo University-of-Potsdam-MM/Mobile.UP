@@ -88,11 +88,7 @@ export class WebIntentProvider {
                     bundle = moduleConfig.bundleName;
                     this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
                   } else {
-                    this.safari.isAvailable().then((available:boolean) => {
-                      if (available) {
-                        this.openWithSafari(moduleConfig.url);
-                      } else { this.openWithInAppBrowser(moduleConfig.url); }
-                    });
+                    this.handleWebIntentForWebsite(moduleConfig.url);
                   }
                 } else {
                   this.openWithInAppBrowser(moduleConfig.url);

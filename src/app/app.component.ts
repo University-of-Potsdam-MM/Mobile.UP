@@ -48,27 +48,33 @@ export class MobileUPApp {
    * @name initializeApp
    * @description initializes the app and hides splashscreen when it's done
    */
-  private initializeApp() {
+  public initializeApp() {
     this.platform.ready().then(async () => {
       await this.initConfig();
       await this.initTranslate();
       this.connection.initializeNetworkEvents();
 
       if (this.platform.is("cordova")) {
-        this.statusBar.styleDefault();
-        // set status bar to same color as header
-        this.statusBar.backgroundColorByHexString('#EDEDED');
+        if (this.platform.is("ios") || this.platform.is("android")) {
+          this.statusBar.styleDefault();
+          // set status bar to same color as header
+          this.statusBar.backgroundColorByHexString('#EDEDED');
+        }
+
         this.splashScreen.hide();
       }
 
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
+
+      // makes sure homepage is set once init is finished
+      this.nav.setRoot(HomePage);
     });
   }
 
   appStart() {
     this.platform.ready().then(() => {
-      if (this.platform.is("cordova")) {
+      if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
         this.appVersion.getVersionNumber().then(currentAppVersion => {
           this.storage.get("appVersion").then(async (savedAppVersion) => {
             if (!savedAppVersion || savedAppVersion == null) {
