@@ -271,8 +271,7 @@
       "campus3": "Golm",
       "students": "Studierende",
       "guests": "Gäste",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
-      "noMealsHint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen."
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
     },
     "unishop": {
       "title": "UNIshop"
@@ -365,7 +364,8 @@
       "attention": "Achtung"
     },
     "text": {
-      "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de."
+      "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
+      "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen."
     }
   }
 }
