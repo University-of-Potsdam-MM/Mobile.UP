@@ -271,8 +271,7 @@
       "campus3": "Golm",
       "students": "Students",
       "guests": "Guests",
-      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
-      "noMealsHint": "No meals were found that match the criteria."
+      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam."
     },
     "unishop": {
       "title": "UNIshop"
@@ -356,7 +355,8 @@
       "attention": "Attention"
     },
     "text": {
-      "login-hint": "Please use your short email address without @uni-potsdam.de to login."
+      "login-hint": "Please use your short email address without @uni-potsdam.de to login.",
+      "mensa-nomeals-hint": "No meals were found that match the criteria."
     }
   }
 }
