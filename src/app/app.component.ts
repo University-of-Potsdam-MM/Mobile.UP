@@ -72,26 +72,28 @@ export class MobileUPApp {
 
   appStart() {
     this.platform.ready().then(() => {
-      if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
-        this.http.get<IConfig>("assets/config.json").subscribe((config:IConfig) => {
-          let currentAppVersion = config.appVersion;
-          this.storage.get("appVersion").then(async (savedAppVersion) => {
-            if (!savedAppVersion || savedAppVersion == null) {
-              // user has never opened a 6.x version of the app, since nothing is stored
-              // clear the whole storage
-              console.log("clearing storage...");
-              await this.storage.clear();
-              await this.sessionProvider.removeSession();
-              await this.sessionProvider.removeUserInfo(); 
-            } else if (savedAppVersion < currentAppVersion) {
-              // user has installed a previous 6.x version
-              // do nothing 
-            }
+      this.http.get<IConfig>("assets/config.json").subscribe((config:IConfig) => {
+        let currentAppVersion = config.appVersion;
+        this.storage.get("appVersion").then(async (savedAppVersion) => {
+          if (!savedAppVersion || savedAppVersion == null) {
+            // user has never opened a 6.x version of the app, since nothing is stored
+            // clear the whole storage
+            console.log("clearing storage...");
+            await this.sessionProvider.removeSession();
+            await this.sessionProvider.removeUserInfo(); 
+            await this.storage.clear().then(done => {
+              this.storage.set("appVersion", currentAppVersion);
+              this.initializeApp();
+            }, error => {
+              console.log("Error while clearing storage!");
+              console.log(error);
+            });
+          } else {
             this.storage.set("appVersion", currentAppVersion);
             this.initializeApp();
-          });
+          }
         });
-      } else { this.initializeApp(); }
+      });
     });
   }
 
