@@ -85,9 +85,7 @@ export class MensaPage {
 
     if (refresher) {
       this.cache.removeItems("mensaResponse*");
-    } else {
-      this.isLoaded = false;
-    }
+    } else { this.isLoaded = false; }
 
     this.allMeals = [];
     for (i = 0; i < this.mealIsExpanded.length; i++) { this.mealIsExpanded[i] = false; }
@@ -108,80 +106,126 @@ export class MensaPage {
     let request = this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params});
     this.cache.loadFromObservable("mensaResponse"+this.campus, request).subscribe((res:IMensaResponse) => {
 
-      if (refresher) {
-        refresher.complete();
-      }
-
       if (res.meal) {
         this.allMeals = res.meal;
-        var i;
+      }
 
-        for (i = 0; i < res.iconHashMap.entry.length; i++) {
-          switch(res.iconHashMap.entry[i].key) {
-            case "Fisch": {
-              this.fishIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegan": {
-              this.veganIconSource = res.iconHashMap.entry[i].value;
-            }
-            case "Vegetarian": {
-              this.vegetarianIconSource = res.iconHashMap.entry[i].value;
-            }
+      for (i = 0; i < res.iconHashMap.entry.length; i++) {
+        switch(res.iconHashMap.entry[i].key) {
+          case "Fisch": {
+            this.fishIconSource = res.iconHashMap.entry[i].value;
+            break;
           }
-        }
-
-        for (i = 0; i < this.allMeals.length; i++) {
-          this.allergenIsExpanded[i] = []
-          var mealDate: Date = new Date(this.allMeals[i].date);
-          if (this.currentDate.toDateString() == mealDate.toDateString()) {
-            this.mealForDate[i] = true;
-            this.noMealsForDate = false;
-          } else { this.mealForDate[i] = false; }
-
-          // check for fish, vegan, vegetarian
-          if (this.allMeals[i].type.length > 0) {
-            switch(this.allMeals[i].type[0]) {
-              case "Fisch": {
-                this.mealIsFish[i] = true;
-                this.mealIsVegan[i] = false;
-                this.mealIsVegetarian[i] = false;
-                break;
-              }
-              case "Vegan": {
-                this.mealIsFish[i] = false;
-                this.mealIsVegan[i] = true;
-                this.mealIsVegetarian[i] = false;
-                break;
-              }
-              case "Vegetarisch": {
-                this.mealIsFish[i] = false;
-                this.mealIsVegan[i] = false;
-                this.mealIsVegetarian[i] = true;
-                break;
-              }
-            }
+          case "Vegan": {
+            this.veganIconSource = res.iconHashMap.entry[i].value;
+            break;
+          }
+          case "Vegetarisch": {
+            this.vegetarianIconSource = res.iconHashMap.entry[i].value;
+            break;
           }
         }
       }
-      this.isLoaded = true;
-      this.pickDate(this.date);
+
+      if (this.campus == "Griebnitzsee") {
+        let ulfParam = "UlfsCafe"
+        let params: HttpParams = new HttpParams()
+          .append("location", ulfParam);
+
+        let request = this.http.get(config.webservices.endpoint.mensa, {headers:headers, params:params});
+
+        this.cache.loadFromObservable("mensaResponse" + ulfParam, request).subscribe((resUlf:IMensaResponse) => {
+          if (resUlf.meal) {
+            for (i = 0; i < resUlf.meal.length; i++) {
+              if (!resUlf.meal[i].type) {
+                resUlf.meal[i].type = ["Ulf's Café"];
+              } else if (resUlf.meal[i].title) {
+                resUlf.meal[i].title += " (Ulf's Café)";
+              } else { resUlf.meal[i].title = "Ulf's Café"; }
+
+              this.allMeals.push(resUlf.meal[i]);
+            }
+          }
+
+          this.classifyMeals();
+
+          if (refresher) {
+            refresher.complete();
+          }
+        });
+      } else {
+        this.classifyMeals();
+
+        if (refresher) {
+          refresher.complete();
+        }
+      }
+
     }, error => {
       console.log(error);
     });
+  }
+
+  classifyMeals() {
+    var i;
+
+    for (i = 0; i < this.allMeals.length; i++) {
+      this.allergenIsExpanded[i] = [];
+      var mealDate: Date;
+      if (this.allMeals[i].date) {
+        mealDate = new Date(this.allMeals[i].date);
+      } else { mealDate = new Date(); }
+
+      if (this.currentDate.toDateString() == mealDate.toDateString()) {
+        this.mealForDate[i] = true;
+        this.noMealsForDate = false;
+      } else { this.mealForDate[i] = false; }
+
+      // check for fish, vegan, vegetarian
+      if (this.allMeals[i].type && this.allMeals[i].type.length > 0) {
+        switch(this.allMeals[i].type[0]) {
+          case "Fisch": {
+            this.mealIsFish[i] = true;
+            this.mealIsVegan[i] = false;
+            this.mealIsVegetarian[i] = false;
+            break;
+          }
+          case "Vegan": {
+            this.mealIsFish[i] = false;
+            this.mealIsVegan[i] = true;
+            this.mealIsVegetarian[i] = false;
+            break;
+          }
+          case "Vegetarisch": {
+            this.mealIsFish[i] = false;
+            this.mealIsVegan[i] = false;
+            this.mealIsVegetarian[i] = true;
+            break;
+          }
+        }
+      }
+    }
+    
+    this.isLoaded = true;
+    this.pickDate(this.date);
   }
 
   expandMeal(i) {
     var j,k;
     if (this.mealIsExpanded[i]) {
       this.mealIsExpanded[i] = false;
-      for (k = 0; k < this.allMeals[i].allergens.length; k++) {
-        this.allergenIsExpanded[i][k] = false;
+      if (this.allMeals[i].allergens) {
+        for (k = 0; k < this.allMeals[i].allergens.length; k++) {
+          this.allergenIsExpanded[i][k] = false;
+        }
       }
     } else {
       for (j = 0; j < this.allMeals.length; j++) {
         this.mealIsExpanded[j] = false;
-        for (k = 0; k < this.allMeals[j].allergens.length; k++) {
-          this.allergenIsExpanded[j][k] = false;
+        if (this.allMeals[j].allergens) {
+          for (k = 0; k < this.allMeals[j].allergens.length; k++) {
+            this.allergenIsExpanded[j][k] = false;
+          }
         }
       }
       this.mealIsExpanded[i] = true;
@@ -194,10 +238,12 @@ export class MensaPage {
     if (this.allergenIsExpanded[i][j]) {
       this.allergenIsExpanded[i][j] = false;
     } else {
-      for (k = 0; k < this.allMeals[i].allergens.length; k++) {
-        this.allergenIsExpanded[i][k] = false;
+      if (this.allMeals[i].allergens) {
+        for (k = 0; k < this.allMeals[i].allergens.length; k++) {
+          this.allergenIsExpanded[i][k] = false;
+        }
+        this.allergenIsExpanded[i][j] = true;
       }
-      this.allergenIsExpanded[i][j] = true;
     }
   }
 
@@ -215,7 +261,11 @@ export class MensaPage {
 
     var i;
     for (i = 0; i < this.allMeals.length; i++) {
-      var mealDate = moment(new Date(this.allMeals[i].date));
+      var mealDate;
+      if (this.allMeals[i].date) {
+        mealDate = moment(new Date(this.allMeals[i].date));
+      } else { mealDate = moment(); }
+
       if ($event.format('ddd MMM DD YYYY') == mealDate.format('ddd MMM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;

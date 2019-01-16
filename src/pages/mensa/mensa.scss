@@ -115,4 +115,10 @@ page-mensa {
   .calendarCollapsed {
     margin-top:0px
   }
+
+  .card-md, .card, .card-ios {
+    box-shadow: none;
+    -webkit-box-shadow:none;
+  }
+
 }
