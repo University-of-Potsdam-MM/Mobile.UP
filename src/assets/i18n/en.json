@@ -257,7 +257,6 @@
       "opens": "opens ",
       "closed": "closed",
       "closes": "closes ",
-      "planCanChange": "Attention! This plan can change from week to week.",
       "comment": "Comment",
       "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
@@ -356,7 +355,8 @@
       "mensa-nomeals-hint": "No meals were found that match the criteria.",
       "grades-selectDegree-hint": "Please select a degree, to which the achievements are to be displayed.",
       "grades-notSupported-hint": "This feature is not supported for your account.",
-      "grades-noGrades-hint": "No achievements registered."
+      "grades-noGrades-hint": "No achievements registered.",
+      "openings-planCanChange-hint": "Attention! This plan can change from week to week."
     }
   }
 }

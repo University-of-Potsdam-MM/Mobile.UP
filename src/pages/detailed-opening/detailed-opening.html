@@ -25,8 +25,8 @@
       <b>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString(translate.currentLang) }}</b><span item-end>{{ parseDate(timespot[0], timespot[1]) }}</span>
     </ion-item>
   </ion-list>
-  <div *ngIf="intervals.length > 0 && !every_week_is_same" padding style="font-size: smaller">
-    <b>{{ "page.openingHours.planCanChange" | translate }}</b>
+  <div *ngIf="intervals.length > 0 && !every_week_is_same">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.openings-planCanChange-hint"></hint>
   </div>
 </ion-content>
 
