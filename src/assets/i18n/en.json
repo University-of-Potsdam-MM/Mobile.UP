@@ -309,6 +309,14 @@
       "website": "Open website?",
       "redirect": "Redirect"
     },
+    "httpErrorStatus": {
+      "unknown": "Unknown HTTP status",
+      "0": "A network error occured. Are you connected with the internet?",
+      "400": "Error 400: Bad Request",
+      "401": "Error 401: Access denied.",
+      "403": "Error 403: Access forbidden.",
+      "404": "Error 404: Resource not found"
+    },
     "unknown_error": "An unknown error occured. Please contact the development team.",
     "network": "A network error occured. Is the device connected to the internet?",
     "no_info_for_time": "There is no information available for this timespan.",
