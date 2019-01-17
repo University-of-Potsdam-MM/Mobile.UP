@@ -88,8 +88,7 @@
       "note": "Grade",
       "pv": "PV",
       "lp": "LP",
-      "studienleistung": "Study achievements",
-      "noGrades": "No achievements registered."
+      "studienleistung": "Study achievements"
     },
     "library": {
       "title": "Library search",
@@ -356,7 +355,8 @@
       "login-hint": "Please use your short email address without @uni-potsdam.de to login.",
       "mensa-nomeals-hint": "No meals were found that match the criteria.",
       "grades-selectDegree-hint": "Please select a degree, to which the achievements are to be displayed.",
-      "grades-notSupported-hint": "This feature is not supported for your account."
+      "grades-notSupported-hint": "This feature is not supported for your account.",
+      "grades-noGrades-hint": "No achievements registered."
     }
   }
 }

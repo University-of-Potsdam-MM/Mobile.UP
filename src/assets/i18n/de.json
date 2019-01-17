@@ -88,8 +88,7 @@
       "note": "Note",
       "pv": "PV",
       "lp": "LP",
-      "studienleistung": "Studienleistung",
-      "noGrades": "Keine eingetragenen Leistungen."
+      "studienleistung": "Studienleistung"
     },
     "library": {
       "title": "Bibliothekssuche",
@@ -365,7 +364,8 @@
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
       "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
-      "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt."
+      "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
+      "grades-noGrades-hint": "Keine Leistungen eingetragen."
     }
   }
 }

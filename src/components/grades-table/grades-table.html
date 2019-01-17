@@ -10,7 +10,7 @@
     </ion-col>
     <ion-col text-right>
       <b>
-        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }} 
+        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }}
       </b>
     </ion-col>
   </ion-row>
@@ -162,11 +162,11 @@
     </ion-col>
     <ion-col text-right>
       <b>
-        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }} 
+        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }}
       </b>
     </ion-col>
   </ion-row>
 </ion-grid>
 <ng-template #noAchievements>
-  <p padding class="hint">{{ "page.grades.noGrades" | translate }}</p>
+  <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-noGrades-hint"></hint>
 </ng-template>
