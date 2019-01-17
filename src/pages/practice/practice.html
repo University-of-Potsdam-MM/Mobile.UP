@@ -24,9 +24,9 @@
     <ion-spinner></ion-spinner>
   </p>
 
-  <p *ngIf="!waiting_for_response && displayedList.length == 0 && error == null" style="text-align: center">
-    {{ "page.practice.no_results" | translate }}
-  </p>
+  <div *ngIf="!waiting_for_response && displayedList.length == 0 && error == null">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+  </div>
 
   <ion-item-divider color="light" class="favorite" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "page.home.favorites" | translate }}</ion-item-divider>
   <ion-list *ngIf="!waiting_for_response">
