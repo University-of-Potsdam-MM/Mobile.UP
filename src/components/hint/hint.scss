@@ -7,7 +7,15 @@ hint {
         background-color: color($colors, secondary);
     }
 
+    .card-header {
+        padding: 3px;
+    }
+
     ion-card-content {
-        margin: 1rem;
+        padding: 0;
+    }
+
+    hint ion-card-content {
+        margin: .2rem;
     }
 }

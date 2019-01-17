@@ -19,7 +19,7 @@ export class HintComponent implements  OnInit {
   hintTextI18nKey: string;
 
   @Input()
-  hintIcon:string = "information-circle";
+  hintIcon:string = "warning";
 
   constructor() {}
 
