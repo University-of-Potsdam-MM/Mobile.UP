@@ -27,6 +27,9 @@
         [book]="book" [i]="i+1"></book-list-view>
       </span>
     </ion-list>
+    <div *ngIf="!booklist">
+      <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+    </div>
 
     <ion-infinite-scroll *ngIf="!isEnd()" (ionInfinite)="loadMore($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
