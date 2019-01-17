@@ -19,9 +19,9 @@
     <ion-spinner></ion-spinner>
   </p>
 
-  <p *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)" style="text-align: center" text-wrap>
-    {{ "page.persons.no_results" | translate }}
-  </p>
+  <div *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+  </div>
 
   <p *ngIf="error != null" style="text-align: center" text-wrap>
     {{ "alert.network" | translate }} <br/><br/>

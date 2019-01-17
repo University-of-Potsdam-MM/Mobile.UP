@@ -50,8 +50,7 @@
       "title": "Personensuche",
       "placeholder": {
         "search": "Suchbegriff eingeben..."
-      },
-      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
+      }
     },
     "practice": {
       "title": "Ab in die Praxis",
@@ -365,7 +364,8 @@
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
       "grades-noGrades-hint": "Keine Leistungen eingetragen.",
-      "openings-planCanChange-hint": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern."
+      "openings-planCanChange-hint": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
+      "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
     }
   }
 }

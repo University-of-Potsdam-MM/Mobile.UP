@@ -50,8 +50,7 @@
       "title": "People search",
       "placeholder": {
         "search": "Search..."
-      },
-      "no_results": "No results found for this keyword."
+      }
     },
     "practice": {
       "title": "Starting your career!",
@@ -364,7 +363,8 @@
       "grades-selectDegree-hint": "Please select a degree, to which the achievements are to be displayed.",
       "grades-notSupported-hint": "This feature is not supported for your account.",
       "grades-noGrades-hint": "No achievements registered.",
-      "openings-planCanChange-hint": "Attention! This plan can change from week to week."
+      "openings-planCanChange-hint": "Attention! This plan can change from week to week.",
+      "noResults-hint": "No results found for this keyword."
     }
   }
 }
