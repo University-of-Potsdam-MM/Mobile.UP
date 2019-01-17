@@ -16,6 +16,7 @@
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
+
   <ion-refresher (ionRefresh)="loadEmergencyCalls($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -25,7 +26,13 @@
   </div>
   <!-- list of emergencyCalls -->
   <ion-list>
+
+    <div *ngIf="isLoaded && displayedList.length == 0">
+      <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+    </div>
+
     <div *ngFor="let emergencyCall of displayedList">
+
       <ion-item-sliding>
         <!-- template for emergencyCalls -->
         <ion-item tappable (click)="expand(emergencyCall)">
@@ -50,7 +57,6 @@
             <a class="notUnderlined" href="tel:{{emergencyCall.contact.telephone}}">Call</a>
           </button>
         </ion-item-options>
-
       </ion-item-sliding>
 
       <ion-item *ngIf="emergencyCall.expanded">
@@ -77,6 +83,7 @@
           </ion-grid>
         </ion-label>
       </ion-item>
+
     </div>
   </ion-list>
 </ion-content>

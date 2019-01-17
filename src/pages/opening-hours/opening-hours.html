@@ -20,6 +20,11 @@
   </div>
 
   <ion-list>
+
+    <div *ngIf="isLoaded && openingHours.length == 0">
+      <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+    </div>
+
     <span *ngFor="let item of openingHours; let i = index">
       <button *ngIf="parsedOpenings[i].getState()" ion-item (click)="itemSelected(item, i)">
           <h3>{{ item.name }}</h3>
