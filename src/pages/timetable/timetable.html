@@ -12,8 +12,8 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <div class="hint" *ngIf="noUserRights" align="center" padding>
-    {{ "page.grades.notSupported" | translate }}
+  <div *ngIf="noUserRights">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></hint>
   </div>
 
   <span *ngIf="!noUserRights && !isLoading">
@@ -32,7 +32,7 @@
           </ion-col>
         </ion-row>
       </div>
-    
+
       <div align="center">
         <ion-row>
           <ion-col>
@@ -46,7 +46,7 @@
           </ion-col>
         </ion-row>
       </div>
-    
+
       <calendar class="calendar" [eventSource]="eventSource"
         [calendarMode]="calendarOptions.calendarMode"
         [currentDate]="calendarOptions.currentDate"

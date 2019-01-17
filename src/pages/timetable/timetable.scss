@@ -4,6 +4,7 @@ page-timetable {
   .weekview-allday-table{
     display: none;
   }
+
   .weekview-normal-event-container{
     margin-top: 37px;
   }
@@ -11,13 +12,10 @@ page-timetable {
   .dayview-allday-table{
     display: none;
   }
+
   .dayview-normal-event-container{
     margin-top: 37px;
     margin: 0;
-  }
-
-  .hint {
-    color: color($colors, primary);
   }
 
   .calendarButton {
