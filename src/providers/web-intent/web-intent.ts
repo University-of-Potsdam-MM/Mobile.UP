@@ -7,6 +7,8 @@ import { Platform, AlertController } from 'ionic-angular';
 import { AppAvailability } from '@ionic-native/app-availability';
 import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { TranslateService } from "@ngx-translate/core";
+import { SessionProvider } from '../session/session';
+import { ISession } from '../login-provider/interfaces';
 
 /**
  * @class WebIntentProvider
@@ -16,23 +18,25 @@ import { TranslateService } from "@ngx-translate/core";
 export class WebIntentProvider {
 
   options : InAppBrowserOptions = {
-    location : 'yes',//Or 'no'
+    location : 'no',//Or 'no'
     hidden : 'no', //Or  'yes'
     clearcache : 'yes',
     clearsessioncache : 'yes',
-    zoom : 'yes',//Android only ,shows browser zoom controls
-    hardwareback : 'yes',
-    mediaPlaybackRequiresUserAction : 'no',
+    zoom : 'no',//Android only ,shows browser zoom controls
+    hardwareback : 'no',
+    usewkwebview: 'yes',
+    hidenavigationbuttons: 'yes',
+    mediaPlaybackRequiresUserAction : 'yes',
     shouldPauseOnSuspend : 'no', //Android only
-    closebuttoncaption : 'Close', //iOS only
+    closebuttoncaption : 'Fertig', //iOS only
     disallowoverscroll : 'no', //iOS only
-    toolbar : 'yes', //iOS only
-    enableViewportScale : 'no', //iOS only
+    toolbar : 'yes', //iOS only,
+    toolbarposition: 'bottom',
+    enableViewportScale : 'yes', //iOS only
     allowInlineMediaPlayback : 'no',//iOS only
-    presentationstyle : 'pagesheet',//iOS only
-    fullscreen : 'yes',//Windows only
   };
 
+  config: IConfig;
 
   /**
    * @constructor
@@ -51,9 +55,18 @@ export class WebIntentProvider {
     private storage: Storage,
     private platform: Platform,
     private appAvailability: AppAvailability,
+    private sessionProvider: SessionProvider,
     private safari: SafariViewController,
     private alertCtrl: AlertController,
     private translate: TranslateService) {
+  }
+
+  async ngOnInit() {
+    if (this.translate.currentLang == "en") {
+      this.options.closebuttoncaption = "Close";
+    }
+
+    this.config = await this.storage.get("config");
   }
 
   /**
@@ -107,8 +120,9 @@ export class WebIntentProvider {
    * @description opens a url depending on the platform
    * @param {string} url
    */
-  public handleWebIntentForWebsite(url: string){
-    if (this.platform.is("cordova")) {
+  public async handleWebIntentForWebsite(url: string) {
+    this.config = await this.storage.get("config");
+    if (this.platform.is("cordova") && url != this.config.modules.mail.url) {
       this.safari.isAvailable().then((available:boolean) => {
         if (available) {
           this.openWithSafari(url);
@@ -125,9 +139,44 @@ export class WebIntentProvider {
    * @description opens a url with the InAppBrowser
    * @param {string} url
    */
-  openWithInAppBrowser(url: string) {
+  async openWithInAppBrowser(url: string) {
+    this.config = await this.storage.get("config");
+    if (url != this.config.modules.mail.url) {
       let target = "_blank";
       this.theInAppBrowser.create(url,target,this.options);
+    } else { this.mailLogin(url); }
+  }
+
+  /**
+   * @name mailLogin
+   * @description opens mail in browser and injects credentials
+   */
+  async mailLogin(url: string) {
+    let session:ISession = JSON.parse(await this.sessionProvider.getSession());
+    let browser = this.theInAppBrowser.create(url, "_blank", this.options);
+    
+    if (session && session.credentials && session.credentials.username && session.credentials.password) {
+      console.log("[Mail] trying to login...")
+
+      let enterCredentials = 
+        `$("input.uname").val(\'${session.credentials.username}\');
+        $("input.pewe").val(\'${session.credentials.password}\');
+        $("button.loginbutton").click();`;
+
+      browser.on("loadstop").subscribe((event) => {
+        console.log(event.url);
+        browser.executeScript({ code: enterCredentials }).then(() => {
+          console.log("successfully entered login data...");
+          browser.on("loadstop").subscribe((event) => {
+            console.log(event.url);
+          });
+        }, error => {
+          console.log("ERROR injecting login data...");
+          console.log(error);
+        });
+      });
+
+    } 
   }
 
   /**
