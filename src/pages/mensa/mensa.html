@@ -8,7 +8,7 @@
   <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding (swipe)="swipeCampus($event)">
   <ion-refresher (ionRefresh)="loadCampusMenu($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

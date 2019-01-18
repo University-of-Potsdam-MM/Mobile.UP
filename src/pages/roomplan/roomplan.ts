@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import {
   IonicPage,
   NavParams,
-  ToastController
+  ToastController,
+  Events
 } from 'ionic-angular';
 import {
   HttpClient,
@@ -60,6 +61,7 @@ export class RoomplanPage {
     public translate: TranslateService,
     private cache: CacheService,
     public http: HttpClient,
+    private swipeEvent: Events,
     private connection: ConnectionProvider,
     private alertProvider: AlertProvider) {
     this.default_house = navParams.get("house");
@@ -86,19 +88,19 @@ export class RoomplanPage {
    * @param num - Campus number (1-3)
    * @returns {string} - campus short string (gs,np,go), defaults to gs
    */
-  static getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
+  getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
     switch (num) {
       case "1": {
-        return "np"
+        return "NeuesPalais"
       }
       case "2": {
-        return "go"
+        return "Golm"
       }
       case "3": {
-        return "gs"
+        return "Griebnitzsee"
       }
       default: {
-        return "gs"
+        return "Griebnitzsee"
       }
     }
   }
@@ -326,7 +328,6 @@ export class RoomplanPage {
           //sadly templates cannot parse maps,
           //therefore we will generate a new data structure based on arrays and parse everything into there
           let tmpHouseList = Array.from(this.houseMap.values());
-          console.log(tmpHouseList);
           for (let i = 0; i < tmpHouseList.length; i++) {
             let tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
 
@@ -420,5 +421,17 @@ export class RoomplanPage {
    */
   uniqueFilter(value, index, self) {
     return self.indexOf(value) === index;
+  }
+
+  swipeCampus(event) {
+    if (Math.abs(event.deltaY) < 50) {
+      if (event.deltaX > 0) {
+        // user swiped from left to right
+        this.swipeEvent.publish('campus-swipe-to-right', this.getLocationByNum(this.current_location));
+      } else if (event.deltaX < 0) {
+        // user swiped from right to left
+        this.swipeEvent.publish('campus-swipe-to-left', this.getLocationByNum(this.current_location));
+      }
+    }
   }
 }

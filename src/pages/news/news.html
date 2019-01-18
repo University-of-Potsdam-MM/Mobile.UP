@@ -7,17 +7,15 @@
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-navbar>
 
-  <ion-toolbar *ngIf="sourcesList">
-    <ion-segment class="headSegment" color="primary">
-      <button  ion-button small *ngFor="let source of sourcesList; let i = index" (click)="setNewsSource(i)" [color]="isActive(i)">
-        {{ sourcesList[i] }}
-      </button>
-    </ion-segment>
-  </ion-toolbar>
+  <ion-segment *ngIf="sourcesList" [(ngModel)]="newsSource" class="headSegment" color="primary">
+    <ion-segment-button small *ngFor="let source of sourcesList; let i = index" (click)="setNewsSource(i)" [value]="i">
+      {{ sourcesList[i] }}
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 
-<ion-content>
+<ion-content padding-top (swipe)="swipeNewsSource($event)">
   <ion-refresher (ionRefresh)="loadNews($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

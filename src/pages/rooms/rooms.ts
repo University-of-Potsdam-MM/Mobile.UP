@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import {
   IonicPage,
-  NavController
+  NavController,
+  Events
 } from 'ionic-angular';
 import {
   HttpClient,
@@ -48,6 +49,7 @@ export class RoomsPage {
     private storage: Storage,
     public navCtrl: NavController,
     public translate : TranslateService,
+    private swipeEvent: Events,
     private cache: CacheService,
     public http: HttpClient,
     private connection: ConnectionProvider,
@@ -246,5 +248,39 @@ export class RoomsPage {
         })
       }
     );
+  }
+
+  swipeCampus(event) {
+    if (Math.abs(event.deltaY) < 50) {
+      if (event.deltaX > 0) {
+        // user swiped from left to right
+        this.swipeEvent.publish('campus-swipe-to-right', this.getLocationByNum(this.current_location));
+      } else if (event.deltaX < 0) {
+        // user swiped from right to left
+        this.swipeEvent.publish('campus-swipe-to-left', this.getLocationByNum(this.current_location));
+      }
+    }
+  }
+
+    /**
+   * Convert campus number to short string (for localization)
+   * @param num - Campus number (1-3)
+   * @returns {string} - campus short string (gs,np,go), defaults to gs
+   */
+  getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
+    switch (num) {
+      case "1": {
+        return "NeuesPalais"
+      }
+      case "2": {
+        return "Golm"
+      }
+      case "3": {
+        return "Griebnitzsee"
+      }
+      default: {
+        return "Griebnitzsee"
+      }
+    }
   }
 }

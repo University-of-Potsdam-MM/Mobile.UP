@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
 import {
@@ -30,7 +30,7 @@ export class MensaPage {
     weekStart: 1
   };
 
-  currentDate: Date;
+  currentDate = moment();
   isLoaded = false;
   allMeals: IMeals[] = [];
 
@@ -56,13 +56,13 @@ export class MensaPage {
     private cache: CacheService,
     private connection: ConnectionProvider,
     private translate: TranslateService,
+    private swipeEvent: Events,
     private storage: Storage)
   {
-    this.currentDate = new Date();
     this.isLoaded = false;
   }
 
-  ionViewDidLoad(){
+  ionViewDidLoad() {
     this.connection.checkOnline(true, true);
   }
 
@@ -155,12 +155,12 @@ export class MensaPage {
 
     for (i = 0; i < this.allMeals.length; i++) {
       this.allergenIsExpanded[i] = [];
-      var mealDate: Date;
+      var mealDate;
       if (this.allMeals[i].date) {
-        mealDate = new Date(this.allMeals[i].date);
-      } else { mealDate = new Date(); }
+        mealDate = moment(this.allMeals[i].date);
+      } else { mealDate = moment(); }
 
-      if (this.currentDate.toDateString() == mealDate.toDateString()) {
+      if (this.currentDate.format('dd MM DD YYYY') == mealDate.format('dd MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
@@ -247,10 +247,10 @@ export class MensaPage {
     for (i = 0; i < this.allMeals.length; i++) {
       var mealDate;
       if (this.allMeals[i].date) {
-        mealDate = moment(new Date(this.allMeals[i].date));
+        mealDate = moment(this.allMeals[i].date);
       } else { mealDate = moment(); }
 
-      if ($event.format('ddd MMM DD YYYY') == mealDate.format('ddd MMM DD YYYY')) {
+      if ($event.format('dd MM DD YYYY') == mealDate.format('dd MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
@@ -305,6 +305,18 @@ export class MensaPage {
     if (this.translate.currentLang == 'de') {
       return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
+  }
+
+  swipeCampus(event) {
+    if (Math.abs(event.deltaY) < 50) {
+      if (event.deltaX > 0) {
+        // user swiped from left to right
+        this.swipeEvent.publish('campus-swipe-to-right', this.campus);
+      } else if (event.deltaX < 0) {
+        // user swiped from right to left
+        this.swipeEvent.publish('campus-swipe-to-left', this.campus);
+      }
+    }
   }
 
 }

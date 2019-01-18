@@ -64,9 +64,6 @@ export class MobileUPApp {
 
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
-
-      // makes sure homepage is set once init is finished
-      this.nav.setRoot(HomePage);
     });
   }
 
