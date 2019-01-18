@@ -66,6 +66,7 @@ export class HomePage {
                 // somethings clearly wrong here!
                 console.log("[HomePage]: Neither user defined modules nor default_modules in storage!");
                 this.app.initializeApp();
+                this.navCtrl.setRoot(HomePage);
               }
           });
         }

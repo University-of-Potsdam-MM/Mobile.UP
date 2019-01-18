@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { SettingsProvider } from '../../providers/settings/settings';
+import { Events } from 'ionic-angular';
 
 @Component({
   selector: 'campus-tab',
@@ -12,7 +13,26 @@ export class CampusTabComponent {
   @Input() passedLocation;
   @Output() campusChanged = new EventEmitter();
 
-  constructor(private settingsProvider: SettingsProvider) {
+  constructor(private settingsProvider: SettingsProvider, private swipeEvent: Events) {
+    this.swipeEvent.subscribe('campus-swipe-to-right', (currentCampus) => {
+      if (currentCampus == "NeuesPalais") {
+        this.currentCampus = "Griebnitzsee";
+        this.changeCampus();
+      } else if (currentCampus == "Golm") {
+        this.currentCampus = "NeuesPalais";
+        this.changeCampus();
+      }
+    });
+
+    this.swipeEvent.subscribe('campus-swipe-to-left', (currentCampus) => {
+      if (currentCampus == "NeuesPalais") {
+        this.currentCampus = "Golm";
+        this.changeCampus();
+      } else if (currentCampus == "Griebnitzsee") {
+        this.currentCampus = "NeuesPalais";
+        this.changeCampus();
+      }
+    });
   }
 
   ngOnInit() {

@@ -10,7 +10,7 @@
   <campus-tab (campusChanged)="switchLocation($event)"></campus-tab>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding (swipe)="swipeCampus($event)">
   <ion-refresher (ionRefresh)="refreshRoom($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
