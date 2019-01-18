@@ -45,9 +45,7 @@ export class MensaPage {
   onlyVeganFood = false;
   onlyVeggieFood = false;
 
-  fishIconSource:string;
-  veganIconSource:string;
-  vegetarianIconSource:string;
+  iconMapping = [];
 
   campus;
 
@@ -66,7 +64,6 @@ export class MensaPage {
 
   ionViewDidLoad(){
     this.connection.checkOnline(true, true);
-
   }
 
   /**
@@ -110,21 +107,8 @@ export class MensaPage {
         this.allMeals = res.meal;
       }
 
-      for (i = 0; i < res.iconHashMap.entry.length; i++) {
-        switch(res.iconHashMap.entry[i].key) {
-          case "Fisch": {
-            this.fishIconSource = res.iconHashMap.entry[i].value;
-            break;
-          }
-          case "Vegan": {
-            this.veganIconSource = res.iconHashMap.entry[i].value;
-            break;
-          }
-          case "Vegetarisch": {
-            this.vegetarianIconSource = res.iconHashMap.entry[i].value;
-            break;
-          }
-        }
+      if (res.iconHashMap && res.iconHashMap.entry) {
+        this.iconMapping = res.iconHashMap.entry;
       }
 
       if (this.campus == "Griebnitzsee") {

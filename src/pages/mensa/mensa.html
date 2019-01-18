@@ -39,12 +39,29 @@
     <ion-list no-lines [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
       <div *ngFor="let meal of allMeals; let i = index">
         <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)" [ngClass]="{'noborder': mealIsExpanded[i]}">
-          <ion-thumbnail item-start>
-            <img *ngIf="mealIsFish[i]" [src]="fishIconSource">
-            <img *ngIf="mealIsVegan[i]" [src]="veganIconSource">
-            <img *ngIf="mealIsVegetarian[i]" [src]="vegetarianIconSource">
+          <ion-thumbnail item-start *ngIf="meal.type && meal.type.length == 1">
+            <span *ngFor="let type of meal.type">
+              <span *ngFor="let icon of iconMapping">
+                <img *ngIf="type == icon.key" [src]="icon.value">
+              </span>
+            </span>
           </ion-thumbnail>
-          <p class="mealtitle" *ngIf="meal.title">{{ meal.title }}<span *ngIf="meal.type"> {{ meal.type[0] }} </span> </p>
+          <ion-thumbnail item-start *ngIf="meal.type && meal.type.length > 1">
+            <ion-slides autoplay="1500" loop="true" [id]="i">
+              <span *ngFor="let type of meal.type">
+                <span *ngFor="let icon of iconMapping">
+                  <ion-slide *ngIf="type == icon.key">
+                    <img [src]="icon.value">
+                  </ion-slide>
+                </span>
+              </span>
+            </ion-slides>
+          </ion-thumbnail>
+          <p class="mealtitle" *ngIf="meal.title">{{ meal.title }}
+            <span *ngIf="meal.type">
+              <span *ngFor="let type of meal.type; let last = last">{{ type }}<span *ngIf="!last">, </span></span>
+            </span>
+          </p>
           <h2 text-wrap *ngIf="meal.description">{{ meal.description }}</h2>
           <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropup" item-end></ion-icon>
           <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropdown" item-end></ion-icon>
