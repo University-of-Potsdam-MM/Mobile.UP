@@ -47,9 +47,19 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    // console.log(this.query);
+    //console.log(this.query);
 
-    if (this.query.trim() != "") {
+    let query = encodeURI(this.query.trim())
+    .replace(/\+/g, "")
+    .replace(/\,/g, "")
+    .replace(/\//g, "")
+    .replace(/\:/g, "")
+    .replace(/\@/g, "")
+    .replace(/\=/g, "")
+    .replace(/\$/g, "")
+    .replace(/\&/g, "");
+
+    if (query.trim() != "") {
 
       if (resetList) {
         this.bookList = [];
@@ -66,7 +76,7 @@ export class LibraryPage {
   
       let params = new HttpParams()
         .append("operation", "searchRetrieve")
-        .append("query", this.query.trim())
+        .append("query", query.trim())
         .append("startRecord", this.startRecord)
         .append("maximumRecords", this.maximumRecords)
         .append("recordSchema", "mods");
@@ -107,7 +117,7 @@ export class LibraryPage {
         this.isLoaded = true;
         if (infiniteScroll) { infiniteScroll.complete(); }
       });
-    }
+    } else { this.isLoaded = true; }
   }
 
   parseXMLtoJSON(data) {

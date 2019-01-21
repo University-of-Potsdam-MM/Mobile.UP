@@ -18,7 +18,9 @@ export class GradesTableComponent {
 
   ngOnInit() {
     this.currentProfession = "0";
-    this.gradeArray = this.convertToArray(this.studentGrades.academicAchievements.achievement.field);
+    if (this.studentGrades.academicAchievements && this.studentGrades.academicAchievements.achievement && this.studentGrades.academicAchievements.achievement.field) {
+      this.gradeArray = this.convertToArray(this.studentGrades.academicAchievements.achievement.field);
+    }
     console.log(this.gradeArray);
   }
 
@@ -39,7 +41,7 @@ export class GradesTableComponent {
   }
 
   unescapeHTML(s:string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
-    return s.replace("&colon;", ":");
+    return s.replace(/&colon;/g, ":");
   }
 
 }

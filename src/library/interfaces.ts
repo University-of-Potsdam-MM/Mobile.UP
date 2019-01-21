@@ -186,6 +186,7 @@ export interface IEndpoints {
   personSearch:string;
   mensa:string;
   practiceSearch: string;
+  practiceJobPostings: string;
   news:string;
   roomsSearch:string;
   roomplanSearch:string;

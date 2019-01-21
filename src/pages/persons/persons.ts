@@ -38,6 +38,7 @@ export class PersonsPage {
   session:ISession;
   query = "";
   noResults = false;
+  triedRefreshingSession = false;
 
   /**
    * @constructor
@@ -68,12 +69,12 @@ export class PersonsPage {
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  async ionViewWillEnter(){
+  async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
     this.session = JSON.parse(await this.sessionProvider.getSession());
-    if(!this.session){
+    if (!this.session) {
       this.navCtrl.push(LoginPage).then(
-        result => console.log("[PersonsPage]: Pushed LoginPage")
+        () => console.log("[PersonsPage]: Pushed LoginPage")
       );
     }
   }
@@ -97,16 +98,27 @@ export class PersonsPage {
     this.personsFound = [];
     this.noResults = false;
 
-    if (this.query && this.query.trim() != "" && this.query.trim().length > 1) {
+    let query = encodeURI(this.query.trim())
+      .replace(/\+/g, "")
+      .replace(/\,/g, "")
+      .replace(/\//g, "")
+      .replace(/\:/g, "")
+      .replace(/\@/g, "")
+      .replace(/\=/g, "")
+      .replace(/\$/g, "")
+      .replace(/\&/g, "");
+
+    if (query && query.trim() != "" && query.trim().length > 1) {
+      
       this.response_received = false;
 
-      console.log(`[PersonsPage]: Searching for \"${this.query}\"`);
+      console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
       let config: IConfig = await this.storage.get("config");
       let headers: HttpHeaders = new HttpHeaders()
         .append("Authorization", `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
-      var url = config.webservices.endpoint.personSearch + this.query;
+      var url = config.webservices.endpoint.personSearch + query;
 
       this.http.get(url,{headers: headers}).subscribe(
         (personsList:IPerson[]) => {
@@ -121,11 +133,31 @@ export class PersonsPage {
 
           this.error = null;
           this.response_received = true;
+          this.triedRefreshingSession = false;
         },
-        error => {
-          this.error = error;
-          console.log(error);
-          this.response_received = true;
+        async error => {
+          if (!this.triedRefreshingSession) {
+            if (error.status == 401) {
+              this.connection.checkOnline(true, true);
+              this.session = JSON.parse(await this.sessionProvider.getSession());
+              if (!this.session) {
+                this.navCtrl.push(LoginPage).then(
+                  () => console.log("[PersonsPage]: Pushed LoginPage")
+                );
+              } else {
+                this.triedRefreshingSession = true;
+                this.search();
+              }
+            } else {
+              this.error = error;
+              console.log(error);
+              this.response_received = true;
+            }
+          } else {
+            this.error = error;
+            console.log(error);
+            this.response_received = true;
+          }
         }
       );
 
@@ -136,6 +168,7 @@ export class PersonsPage {
     } else {
       console.log("[PersonsPage]: Empty query");
       this.response_received = true;
+      this.noResults = true;
     }
   }
 

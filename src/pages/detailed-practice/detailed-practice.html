@@ -41,7 +41,7 @@
       <p *ngIf="ADS.foreign == '0'">{{ "button.no" | translate }}</p>
     </ion-item>
     <ion-item *ngIf="ADS.file != ''">
-      <h2><ion-icon name="document"></ion-icon> <a href="{{URLEndpoint}}{{ADS.file}}">{{ "page.practice.item.jobPosting" | translate }}</a></h2>
+      <h2><ion-icon name="document"></ion-icon> <a (click)="openPdfLink(ADS.file)">{{ "page.practice.item.jobPosting" | translate }}</a></h2>
     </ion-item>
   </ion-list>
 
