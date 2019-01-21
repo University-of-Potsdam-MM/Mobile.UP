@@ -110,7 +110,7 @@ export class GradesPage {
         if (resGrades) {
           this.studentGrades = resGrades;
           this.gradesLoaded = true;
-        }
+        } else { this.studentGrades = undefined; }
 
         this.loadingGrades = false;
       }, error => {
