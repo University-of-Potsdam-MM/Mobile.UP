@@ -176,6 +176,7 @@
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
       "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
       "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
+      "practiceJobPostings": "https://www.uni-potsdam.de/abindiepraxis/download/",
       "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
       "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
