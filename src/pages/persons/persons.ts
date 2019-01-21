@@ -98,7 +98,7 @@ export class PersonsPage {
     this.personsFound = [];
     this.noResults = false;
 
-    let query = encodeURI(this.query)
+    let query = encodeURI(this.query.trim())
       .replace(/\+/g, "")
       .replace(/\,/g, "")
       .replace(/\//g, "")
