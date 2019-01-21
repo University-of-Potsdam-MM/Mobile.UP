@@ -98,7 +98,15 @@ export class PersonsPage {
     this.personsFound = [];
     this.noResults = false;
 
-    let query = escape(this.query).replace(/\+/g, "");
+    let query = encodeURI(this.query)
+      .replace(/\+/g, "")
+      .replace(/\,/g, "")
+      .replace(/\//g, "")
+      .replace(/\:/g, "")
+      .replace(/\@/g, "")
+      .replace(/\=/g, "")
+      .replace(/\$/g, "")
+      .replace(/\&/g, "");
 
     if (query && query.trim() != "" && query.trim().length > 1) {
       
