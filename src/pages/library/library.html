@@ -21,13 +21,13 @@
       <p>{{ "page.library.allResults" | translate}}:</p>
       <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}
     </ion-item>
-    <ion-list>
+    <ion-list *ngIf="bookList && bookList.length > 0">
       <span *ngFor="let book of bookList; let i = index">
         <book-list-view tappable (click)="bookDetailView(book)"
         [book]="book" [i]="i+1"></book-list-view>
       </span>
     </ion-list>
-    <div *ngIf="!booklist">
+    <div *ngIf="!booklist || bookList.length == 0">
       <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
     </div>
 
