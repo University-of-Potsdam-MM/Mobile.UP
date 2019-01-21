@@ -99,7 +99,9 @@ export class LoginPage {
             }
           );
 
-          this.navCtrl.pop();
+          setTimeout(() => {
+            this.navCtrl.pop();
+          }, 1000);
         },
         error => {
           console.log(error);

@@ -67,18 +67,17 @@ export class GradesPage {
   }
 
   getGrades() {
+    if (this.config && this.credentials && this.credentials.username && this.credentials.password) {
       if (this.refresher != null) {
         this.cache.removeItem("getAcademicAchievements"+this.i);
-      } else {
-        this.loadingGrades = true;
-      }
+      } else { this.loadingGrades = true; }
 
-      var headers: HttpHeaders, body;
+      var body;
+
+      let headers = new HttpHeaders()
+        .append("Authorization", this.config.webservices.apiToken);
 
       if (this.multipleDegrees) {
-        headers = new HttpHeaders()
-          .append("Authorization", this.config.webservices.apiToken);
-
         body = {
           "condition": {
             "Semester": this.studentDetails[this.i].Semester,
@@ -91,9 +90,6 @@ export class GradesPage {
           }
         }
       } else {
-        headers = new HttpHeaders()
-          .append("Authorization", this.config.webservices.apiToken);
-
         body = {
           "condition": {
             "Semester": this.studentDetails.Semester,
@@ -111,8 +107,11 @@ export class GradesPage {
       let request = this.http.post(url, body, {headers:headers});
       this.cache.loadFromObservable("getAcademicAchievements"+this.i, request).subscribe((resGrades) => {
         // console.log(resGrades);
-        this.studentGrades = resGrades;
-        this.gradesLoaded = true;
+        if (resGrades) {
+          this.studentGrades = resGrades;
+          this.gradesLoaded = true;
+        }
+
         this.loadingGrades = false;
       }, error => {
         console.log("ERROR while getting grades");
@@ -122,6 +121,7 @@ export class GradesPage {
       if (this.refresher != null) {
         this.refresher.complete();
       }
+    }
   }
 
   refreshGrades(refresher) {
@@ -134,63 +134,64 @@ export class GradesPage {
   }
 
   getStudentDetails() {
-    let headers:HttpHeaders = new HttpHeaders()
-      .append("Authorization", this.config.webservices.apiToken);
+    if (this.config && this.credentials && this.credentials.username && this.credentials.password) {
+      let headers:HttpHeaders = new HttpHeaders()
+        .append("Authorization", this.config.webservices.apiToken);
 
-    let body = {
-      "user-auth": {
-        "username": this.credentials.username,
-        "password": this.credentials.password
+      let body = {
+        "user-auth": {
+          "username": this.credentials.username,
+          "password": this.credentials.password
+        }
       }
-    }
 
-    if (this.refresher != null) {
-      this.cache.removeItem("getPersonalStudyAreas");
-    } else {
-      this.studentLoaded = false;
-    }
+      if (this.refresher != null) {
+        this.cache.removeItem("getPersonalStudyAreas");
+      } else { this.studentLoaded = false; }
 
-    let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
-    let request = this.http.post(url, body, {headers:headers});
-    this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
-      console.log(resStudentDetail);
-      if (resStudentDetail.message) {
-        // the session is still valid but credentials are rejected, so we're having
-        // case #81 here
-        this.noUserRights = true;
+      let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
+      let request = this.http.post(url, body, {headers:headers});
+      this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
+        console.log(resStudentDetail);
+        if (resStudentDetail && resStudentDetail.message) {
+          // the session is still valid but credentials are rejected, so we're having
+          // case #81 here
+          this.noUserRights = true;
 
-        // this does not necessarily mean that the password is wrong
-        // the elistest account f.e. just does not support the grades / timetable functions
-        // should not log out
-        // this.puls.handleSpecialCase();
-      } else {
-        this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
-        // console.log(this.studentDetails);
-        if (Array.isArray(this.studentDetails)) {
-          this.multipleDegrees = true;
-          var i;
-          for (i = 0; i < this.studentDetails.length; i++) {
-            if (Array.isArray(this.studentDetails[i].Studiengaenge)) {
-              this.isDualDegree[i] = true;
+          // this does not necessarily mean that the password is wrong
+          // the elistest account f.e. just does not support the grades / timetable functions
+          // should not log out
+          // this.puls.handleSpecialCase();
+        } else if (resStudentDetail) {
+          if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
+            this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
+            // console.log(this.studentDetails);
+            if (Array.isArray(this.studentDetails)) {
+              this.multipleDegrees = true;
+              var i;
+              for (i = 0; i < this.studentDetails.length; i++) {
+                if (this.studentDetails[i].Studiengaenge && Array.isArray(this.studentDetails[i].Studiengaenge)) {
+                  this.isDualDegree[i] = true;
+                } else { this.isDualDegree[i] = false; }
+              }
+            } else {
+              this.multipleDegrees = false;
+              if (this.studentDetails.Studiengaenge && Array.isArray(this.studentDetails.Studiengaenge)) {
+                this.isDualDegree[0] = true;
+              }
             }
-          }
-        } else {
-          this.multipleDegrees = false;
-          if (Array.isArray(this.studentDetails.Studiengaenge)) {
-            this.isDualDegree[0] = true;
+            this.studentLoaded = true;
           }
         }
-        this.studentLoaded = true;
+      }, error => {
+        console.log("ERROR while getting student details");
+        console.log(error);
+      });
+
+      if (this.refresher != null) {
+        this.refresher.complete();
       }
-    }, error => {
-      console.log("ERROR while getting student details");
-      console.log(error);
-    });
-
-    if (this.refresher != null) {
-      this.refresher.complete();
     }
-
   }
 
 }

@@ -25,9 +25,9 @@
     <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></hint>
   </div>
 
-  <div *ngIf="studentLoaded && !multipleDegrees">
+  <div *ngIf="studentLoaded && !multipleDegrees && studentDetails">
     <ion-item class="studiengang" no-lines tappable (click)="showGrades(0)">
-      <div text-wrap>
+      <div text-wrap *ngIf="studentDetails.AbLtxt && studentDetails.Abschl">
         {{ studentDetails.AbLtxt }} ({{ studentDetails.Abschl }})
       </div>
     </ion-item>
@@ -36,9 +36,9 @@
     </div>
   </div>
 
-  <div *ngIf="studentLoaded && multipleDegrees">
+  <div *ngIf="studentLoaded && multipleDegrees && studentDetails">
     <ion-item *ngFor="let degree of studentDetails; let i = index" class="studiengang" no-lines tappable (click)="showGrades(i)">
-      <div text-wrap>
+      <div text-wrap *ngIf="degree.AbLtxt && degree.Abschl">
         {{ degree.AbLtxt }} ({{ degree.Abschl }})
       </div>
     </ion-item>
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <div *ngIf="gradesLoaded" align="center">
+  <div *ngIf="gradesLoaded && studentGrades" align="center">
     <grades-table
     [studentGrades]="studentGrades"
     [isDualDegree]="isDualDegree"
