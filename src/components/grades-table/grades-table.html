@@ -1,6 +1,6 @@
 <ion-segment *ngIf="isDualDegree[i]" [(ngModel)]="currentProfession" color="primary">
   <ion-segment-button *ngFor="let profession of gradeArray; let j = index" value="{{j}}">
-    {{ profession.fieldName }}
+    <span *ngIf="profession.fieldName">{{ profession.fieldName }}</span>
   </ion-segment-button>
 </ion-segment>
 <ion-grid *ngIf="gradeArray && gradeArray[currentProfession]">
