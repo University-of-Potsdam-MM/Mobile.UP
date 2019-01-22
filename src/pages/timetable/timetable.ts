@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {
   IonicPage, ModalController,
-  NavController, NavParams, ViewController
+  NavController, NavParams, ViewController, Platform
 } from 'ionic-angular';
 import { IPulsAPIResponse_getStudentCourses} from "../../library/interfaces_PULS";
 import { LoginPage } from "../login/login";
@@ -23,6 +23,8 @@ export class TimetablePage {
   eventSource:IEventObject[] = [];
   noUserRights = false;
   isLoading = true;
+
+  showWeekCalendar = false;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = "";
@@ -47,12 +49,18 @@ export class TimetablePage {
       public navCtrl: NavController,
       private modalCtrl:ModalController,
       private translate: TranslateService,
+      private platform: Platform,
       private sessionProvider: SessionProvider,
       private connection: ConnectionProvider,
       private puls:PulsProvider) {
   }
 
-  async ionViewWillEnter(){
+  async ionViewWillEnter() {
+
+    if (this.platform.is("tablet") || this.platform.is("core")) {
+      this.showWeekCalendar = true;
+    }
+
     this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
 

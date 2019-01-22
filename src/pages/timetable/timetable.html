@@ -23,7 +23,7 @@
             <button [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('month')">
               {{ "page.timetable.month" | translate }}
             </button>
-          <button [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('week')">
+          <button *ngIf="showWeekCalendar" [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('week')">
             {{ "page.timetable.week" | translate }}
           </button>
             <button [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'" ion-button small (click)="changeCalendarMode('day')">
