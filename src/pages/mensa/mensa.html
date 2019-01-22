@@ -21,9 +21,9 @@
     <ion-row>
       <ion-col>
         <button ion-button small [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
-        (click)="showBasicCalendar = !showBasicCalendar;" icon-end>Datum  <ion-icon name="arrow-dropdown"></ion-icon></button>
-        <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">Vegan</button>
-        <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">Vegetarisch</button>
+        (click)="showBasicCalendar = !showBasicCalendar;" icon-end>{{ "page.mensa.date" | translate }}  <ion-icon name="arrow-dropdown"></ion-icon></button>
+        <button ion-button small [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">{{ "page.mensa.vegan" | translate }}</button>
+        <button ion-button small [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">{{ "page.mensa.vegetarian" | translate }}</button>
       </ion-col>
     </ion-row>
   </div>
