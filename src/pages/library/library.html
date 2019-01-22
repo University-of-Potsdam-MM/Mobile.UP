@@ -27,7 +27,7 @@
         [book]="book" [i]="i+1"></book-list-view>
       </span>
     </ion-list>
-    <div *ngIf="!booklist || bookList.length == 0">
+    <div *ngIf="!bookList || bookList.length == 0">
       <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
     </div>
 
