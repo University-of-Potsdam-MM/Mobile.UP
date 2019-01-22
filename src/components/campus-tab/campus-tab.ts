@@ -17,20 +17,16 @@ export class CampusTabComponent {
     this.swipeEvent.subscribe('campus-swipe-to-right', (currentCampus) => {
       if (currentCampus == "NeuesPalais") {
         this.currentCampus = "Griebnitzsee";
-        this.changeCampus();
       } else if (currentCampus == "Golm") {
         this.currentCampus = "NeuesPalais";
-        this.changeCampus();
       }
     });
 
     this.swipeEvent.subscribe('campus-swipe-to-left', (currentCampus) => {
       if (currentCampus == "NeuesPalais") {
         this.currentCampus = "Golm";
-        this.changeCampus();
       } else if (currentCampus == "Griebnitzsee") {
         this.currentCampus = "NeuesPalais";
-        this.changeCampus();
       }
     });
   }

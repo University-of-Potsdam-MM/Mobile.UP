@@ -40,7 +40,7 @@ export class MensaPage {
   mealIsVegan: boolean[] = [];
   mealIsVegetarian: boolean[] = [];
   allergenIsExpanded: boolean[][] = [];
-  noMealsForDate: boolean = true;
+  noMealsForDate: boolean;
 
   onlyVeganFood = false;
   onlyVeggieFood = false;
@@ -127,7 +127,9 @@ export class MensaPage {
                 resUlf.meal[i].title += " (Ulf's Café)";
               } else { resUlf.meal[i].title = "Ulf's Café"; }
 
-              this.allMeals.push(resUlf.meal[i]);
+              if (!this.isInArray(this.allMeals, resUlf.meal[i])) {
+                this.allMeals.push(resUlf.meal[i]);
+              }
             }
           }
 
@@ -160,7 +162,7 @@ export class MensaPage {
         mealDate = moment(this.allMeals[i].date);
       } else { mealDate = moment(); }
 
-      if (this.currentDate.format('dd MM DD YYYY') == mealDate.format('dd MM DD YYYY')) {
+      if (this.currentDate.format('MM DD YYYY') == mealDate.format('MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
@@ -217,7 +219,6 @@ export class MensaPage {
   }
 
   expandAllergen(i,j) {
-    console.log(i,j);
     var k;
     if (this.allergenIsExpanded[i][j]) {
       this.allergenIsExpanded[i][j] = false;
@@ -236,10 +237,9 @@ export class MensaPage {
   }
 
   pickDate($event) {
-    let delay = setTimeout(() => {
+    setTimeout(() => {
       this.showBasicCalendar = false;
     }, 100);
-    console.log(delay);
 
     this.noMealsForDate = true;
 
@@ -250,7 +250,7 @@ export class MensaPage {
         mealDate = moment(this.allMeals[i].date);
       } else { mealDate = moment(); }
 
-      if ($event.format('dd MM DD YYYY') == mealDate.format('dd MM DD YYYY')) {
+      if ($event.format('MM DD YYYY') == mealDate.format('MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
@@ -317,6 +317,17 @@ export class MensaPage {
         this.swipeEvent.publish('campus-swipe-to-left', this.campus);
       }
     }
+  }
+
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i] == value) {
+        found = true;
+      }
+    }
+    return found;
   }
 
 }
