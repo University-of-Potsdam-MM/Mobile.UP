@@ -165,6 +165,10 @@ export class WebIntentProvider {
 
       browser.on("loadstop").subscribe((event) => {
         console.log(event.url);
+
+        let cssCode = "#pronto-login__not-supported-browser { display:none!important }";
+        browser.insertCSS({ code: cssCode });
+        
         browser.executeScript({ code: enterCredentials }).then(() => {
           console.log("successfully entered login data...");
           browser.on("loadstop").subscribe((event) => {
