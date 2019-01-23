@@ -2,11 +2,7 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ItemSliding, ToastController } from 'ionic-angular';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
-import {
-  IConfig,
-  IADSResponse,
-  ADS
-} from "../../library/interfaces";
+import { IConfig, IADSResponse, ADS } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -24,11 +20,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class PracticePage {
 
   defaultList: ADS[] = [];
+  filteredList: ADS[] = [];
   displayedList: ADS[] = [];
   displayedFavorites: ADS[] = [];
   allFavorites: ADS[] = [];
   waiting_for_response: boolean = true;
   error: HttpErrorResponse;
+  itemsShown = 0;
 
   /**
    * Constructor of EmergencyPage
@@ -54,7 +52,7 @@ export class PracticePage {
    * @description maps numbers to practices, since practices are provided by number by the API
    * @param num
    */
-  private practiceMapping(num){
+  private practiceMapping(num) {
     var practice ="";
     switch (num) {
       case "1":
@@ -77,7 +75,7 @@ export class PracticePage {
    * @name initializeList
    */
   public initializeList(): void {
-    this.displayedList = this.defaultList;
+    this.filteredList = this.defaultList;
     this.displayedFavorites = this.allFavorites;
   }
 
@@ -90,7 +88,6 @@ export class PracticePage {
       });
     }
   }
-
 
   /**
    * @name loadData
@@ -205,7 +202,7 @@ export class PracticePage {
     // console.log("DISPLAYED")
     // console.log(this.displayedList.length);
 
-    var tmp = this.displayedList;
+    var tmp = this.filteredList;
     var tmpFav = this.displayedFavorites;
     // filter according to practice option
     if (practice.length > 0) {
@@ -271,8 +268,18 @@ export class PracticePage {
       )
     }
 
-    this.displayedList = tmp;
+    this.filteredList = tmp;
     this.displayedFavorites = tmpFav;
+
+    var i;
+    this.displayedList = [];
+    this.itemsShown = 0;
+    for (i = 0; i < 10; i++) {
+      if (this.filteredList[i]) {
+        this.displayedList.push(this.filteredList[i]);
+        this.itemsShown++;
+      }
+    }
 
     // console.log("DISPLAYED NEW")
     // console.log(this.displayedList.length);
@@ -293,12 +300,22 @@ export class PracticePage {
     this.initializeList();
     this.useFilterSettings().then(resolve => {
       if (query) {
-        this.displayedList = jquery.grep(
-          this.displayedList,
+        this.filteredList = jquery.grep(
+          this.filteredList,
           (ADS, index) => {
             return this.contains(ADS.title, query);
           }
         );
+
+        var i;
+        this.displayedList = [];
+        this.itemsShown = 0;
+        for (i = 0; i < 10; i++) {
+          if (this.filteredList[i]) {
+            this.displayedList.push(this.filteredList[i]);
+            this.itemsShown++;
+          }
+        }
 
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
@@ -328,8 +345,8 @@ export class PracticePage {
    * @param ads     ads-item to be passed to detail page
    * @param index   current position of the ads item in the list displayed
    */
-  itemSelected(ads, index) {
-    this.navCtrl.push(DetailedPracticePage, { "ADS": ads, "list": this.displayedList[index] });
+  itemSelected(ads) {
+    this.navCtrl.push(DetailedPracticePage, { "ADS": ads });
   }
 
   makeFavorite(ads, slidingItem:ItemSliding) {
@@ -409,5 +426,22 @@ export class PracticePage {
       cssClass: "toastPosition"
     });
     toast.present();
+  }
+
+  doInfinite(infiniteScroll) {
+
+    setTimeout(() => {
+      var i,j;
+      j = 0;
+      for (i = this.itemsShown; i < (this.itemsShown+10); i++) {
+        if (this.filteredList[i]) {
+          this.displayedList.push(this.filteredList[i])
+          j++;
+        }
+      }
+      this.itemsShown += j;
+      infiniteScroll.complete();
+    }, 500);
+
   }
 }
