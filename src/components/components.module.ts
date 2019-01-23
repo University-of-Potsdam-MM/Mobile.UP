@@ -13,6 +13,7 @@ import { LectureListComponent } from './lecture-list/lecture-list';
 import { PopoverComponent } from './popover/popover';
 import { FooterDisclaimerComponent } from './footer-disclaimer/footer-disclaimer';
 import { HintComponent } from './hint/hint';
+import { MensaMealComponent } from './mensa-meal/mensa-meal';
 
 @NgModule({
 	declarations: [
@@ -27,7 +28,8 @@ import { HintComponent } from './hint/hint';
     	BookListViewComponent,
 		PopoverComponent,
     	FooterDisclaimerComponent,
-    HintComponent
+    	HintComponent,
+    	MensaMealComponent
 	],
 	imports: [
 		IonicModule,
@@ -45,7 +47,8 @@ import { HintComponent } from './hint/hint';
     	BookListViewComponent,
     	PopoverComponent,
     	FooterDisclaimerComponent,
-    HintComponent
+    	HintComponent,
+    	MensaMealComponent
 	]
 })
 export class ComponentsModule {}
