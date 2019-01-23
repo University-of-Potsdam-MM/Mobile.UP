@@ -11,6 +11,11 @@ page-practice {
         margin-bottom: 2px;
     }
 
+    .favList {
+        margin: 0px!important;
+        padding: 0px!important;
+    }
+
     .removeFavButton {
         color: color($colors, primary)
     }

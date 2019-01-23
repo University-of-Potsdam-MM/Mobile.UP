@@ -12,12 +12,10 @@ import { IConfig } from '../../library/interfaces';
 export class DetailedPracticePage {
 
   ADS;
-  displayedList;
   URLEndpoint;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private webIntent: WebIntentProvider, private storage: Storage) {
     this.ADS = this.navParams.data.ADS;
-    this.displayedList = this.navParams.data.list;
   }
 
   async ionViewDidLoad() {
