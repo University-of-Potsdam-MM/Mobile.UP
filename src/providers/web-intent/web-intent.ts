@@ -163,17 +163,9 @@ export class WebIntentProvider {
         $("input.pewe").val(\'${session.credentials.password}\');
         $("button.loginbutton").click();`;
 
-      browser.on("loadstop").subscribe((event) => {
-        console.log(event.url);
-
-        let cssCode = "#pronto-login__not-supported-browser { display:none!important }";
-        browser.insertCSS({ code: cssCode });
-        
+      browser.on("loadstop").subscribe((event) => {        
         browser.executeScript({ code: enterCredentials }).then(() => {
           console.log("successfully entered login data...");
-          browser.on("loadstop").subscribe((event) => {
-            console.log(event.url);
-          });
         }, error => {
           console.log("ERROR injecting login data...");
           console.log(error);
