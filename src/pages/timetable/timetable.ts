@@ -12,6 +12,7 @@ import { ConnectionProvider } from "../../providers/connection/connection";
 import { PulsProvider } from "../../providers/puls/puls";
 import { SessionProvider } from '../../providers/session/session';
 import { TranslateService } from '@ngx-translate/core';
+import {format} from "util";
 
 @IonicPage()
 @Component({
@@ -19,6 +20,18 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'timetable.html',
 })
 export class TimetablePage {
+
+  decimalToHex(d, padding) {
+    let hex = Number(d).toString(16);
+    padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
+
+    while (hex.length < padding) {
+      hex = "0" + hex;
+    }
+
+    return hex;
+  }
+
 
   eventSource:IEventObject[] = [];
   noUserRights = false;
@@ -193,6 +206,7 @@ export class TimetablePage {
     var mySwiper = document.querySelector('.swiper-container')['swiper'];
     mySwiper.slideNext();
   }
+
 }
 
 
