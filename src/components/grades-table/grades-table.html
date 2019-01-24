@@ -3,18 +3,25 @@
     <span *ngIf="profession.fieldName">{{ profession.fieldName }}</span>
   </ion-segment-button>
 </ion-segment>
-<ion-grid *ngIf="gradeArray && gradeArray[currentProfession]">
-  <ion-row *ngIf="gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits" class="creditPoints" nowrap no-padding>
+
+<ion-grid *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
+  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints" nowrap no-padding>
     <ion-col text-left col-8>
-      <b *ngIf="convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description">
-        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description }}
+      <b *ngIf="ac.description">
+        {{ ac.description }}
       </b>
     </ion-col>
     <ion-col text-right>
-      <b *ngIf="convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints && convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints">
-        {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }}
+      <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
+        {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
       </b>
     </ion-col>
+  </ion-row>
+  <ion-row *ngIf="gradeArray[currentProfession].hint && !studentDetails.hint">
+    <ion-col>{{ gradeArray[currentProfession].hint }}</ion-col>
+  </ion-row>
+  <ion-row *ngIf="studentDetails.hint">
+    <ion-col>{{ studentDetails.hint }}</ion-col>
   </ion-row>
 </ion-grid>
 <div *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].module; else noAchievements" class="gradeTable">
@@ -40,12 +47,15 @@
         <ion-col text-left col-8>
           <b *ngIf="moduleGroup.examDesc">{{ moduleGroup.examDesc }}</b>
         </ion-col>
-        <ion-col ></ion-col>
-        <ion-col >
+        <ion-col>
+          <b *ngIf="moduleGroup.grade && moduleGroup.grade != 'unbenotet'">{{ moduleGroup.grade }}</b>
+          <b *ngIf="moduleGroup.grade && moduleGroup.grade == 'unbenotet'">-</b>
+        </ion-col>
+        <ion-col>
           <b *ngIf="moduleGroup.examStatus">{{ moduleGroup.examStatus }}</b>
         </ion-col>
-        <ion-col >
-          <b *ngIf="moduleGroup.actualCreditPoints">{{ moduleGroup.actualCreditPoints }}</b><b *ngIf="moduleGroup.targetCreditPoints">/{{ moduleGroup.targetCreditPoints }}</b>
+        <ion-col>
+          <b *ngIf="moduleGroup.actualCreditPoints && moduleGroup.examNumber != 4000">{{ moduleGroup.actualCreditPoints }}</b><b *ngIf="moduleGroup.targetCreditPoints && moduleGroup.examNumber != 4000">/{{ moduleGroup.targetCreditPoints }}</b>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -57,21 +67,24 @@
               <b *ngIf="module.examDesc">{{ module.examDesc }}</b>
             </ion-col>
             <ion-col class="moduleHead">
-              <b *ngIf="module.grade">{{ module.grade }}</b>
+              <b *ngIf="module.grade && module.grade != 'unbenotet'">{{ module.grade }}</b>
+              <b *ngIf="module.grade && module.grade == 'unbenotet'">-</b>
             </ion-col>
             <ion-col class="moduleHead">
               <b *ngIf="module.examStatus">{{ module.examStatus }}</b>
             </ion-col>
             <ion-col class="moduleHead">
-              <b *ngIf="module.actualCreditPoints">{{ module.actualCreditPoints }}</b><b *ngIf="module.targetCreditPoints">/{{ module.targetCreditPoints }}</b>
+              <b *ngIf="module.actualCreditPoints && module.examNumber != 4000">{{ module.actualCreditPoints }}</b><b *ngIf="module.targetCreditPoints && moduleGroup.examNumber != 4000">/{{ module.targetCreditPoints }}</b>
             </ion-col>
           </ion-row>
           <div class="examination" *ngIf="module.examination">
             <div *ngIf="module.examination.graded">
               <ion-row *ngFor="let studyPerformance of convertToArray(module.examination.graded)">
-                <ion-col col-8 text-left >
-                  <div *ngIf="studyPerformance.desc">{{ studyPerformance.desc}} <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i></div>
-                  <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
+                <ion-col col-8 text-left>
+                  <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}</span>
+                  <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && studyPerformance.additionT">{{ studyPerformance.additionT}}</span>
+                  <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && !studyPerformance.additionT && studyPerformance.desc">{{ studyPerformance.desc}}</span>
+                  <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i>
                 </ion-col>
                 <ion-col>
                   <div *ngIf="studyPerformance.grade && studyPerformance.grade == 'unbenotet'">-</div>
@@ -83,19 +96,19 @@
                   <b *ngIf="studyPerformance.status && studyPerformance.status == 'AN'" style="color: orange">{{ studyPerformance.status }}</b>
                 </ion-col>
                 <ion-col>
-                  <div *ngIf="studyPerformance.creditPoints">
-                    {{ studyPerformance.creditPoints }}
-                  </div>
+                  <div *ngIf="studyPerformance.creditPoints">{{ studyPerformance.creditPoints }}</div>
                 </ion-col>
               </ion-row>
             </div>
             <div *ngIf="module.examination.nonGraded">
               <ion-row *ngFor="let studyPerformance of convertToArray(module.examination.nonGraded)">
                 <ion-col col-8 text-left >
-                  <div *ngIf="studyPerformance.desc">{{ studyPerformance.desc}} <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i></div>
-                  <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
+                  <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}</span>
+                  <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && studyPerformance.additionT">{{ studyPerformance.additionT}}</span>
+                  <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && !studyPerformance.additionT && studyPerformance.desc">{{ studyPerformance.desc}}</span>
+                  <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i>
                 </ion-col>
-                <ion-col >
+                <ion-col>
                   {{ "page.grades.studienleistung" | translate }}
                 </ion-col>
               </ion-row>
@@ -108,21 +121,24 @@
                   <b *ngIf="submodule.examDesc">{{ submodule.examDesc }}</b>
                 </ion-col>
                 <ion-col class="submoduleHead">
-                  <b *ngIf="submodule.grade">{{ submodule.grade }}</b>
+                  <b *ngIf="submodule.grade && submodule.grade != 'unbenotet'">{{ submodule.grade }}</b>
+                  <b *ngIf="submodule.grade && submodule.grade == 'unbenotet'">-</b>
                 </ion-col>
                 <ion-col class="submoduleHead">
                   <b *ngIf="submodule.examStatus">{{ submodule.examStatus }}</b>
                 </ion-col>
                 <ion-col class="submoduleHead">
-                  <b *ngIf="submodule.actualCreditPoints">{{ submodule.actualCreditPoints }}</b><b *ngIf="submodule.targetCreditPoints">/{{ submodule.targetCreditPoints }}</b>
+                  <b *ngIf="submodule.actualCreditPoints && submodule.examNumber != 4000">{{ submodule.actualCreditPoints }}</b><b *ngIf="submodule.targetCreditPoints && moduleGroup.examNumber != 4000">/{{ submodule.targetCreditPoints }}</b>
                 </ion-col>
               </ion-row>
               <div class="examination" *ngIf="submodule.examination">
                 <div *ngIf="submodule.examination.graded">
                   <ion-row *ngFor="let studyPerformance of convertToArray(submodule.examination.graded)">
                     <ion-col col-8 text-left >
-                      <div *ngIf="studyPerformance.desc">{{ studyPerformance.desc}} <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i></div>
-                      <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
+                      <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}</span>
+                      <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && studyPerformance.additionT">{{ studyPerformance.additionT}}</span>
+                      <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && !studyPerformance.additionT && studyPerformance.desc">{{ studyPerformance.desc}}</span>
+                      <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i>
                     </ion-col>
                     <ion-col>
                       <div *ngIf="studyPerformance.grade && studyPerformance.grade == 'unbenotet'">-</div>
@@ -134,17 +150,17 @@
                       <b *ngIf="studyPerformance.status && studyPerformance.status == 'AN'" style="color: orange">{{ studyPerformance.status }}</b>
                     </ion-col>
                     <ion-col>
-                      <div *ngIf="studyPerformance.creditPoints">
-                        {{ studyPerformance.creditPoints }}
-                      </div>
+                      <div *ngIf="studyPerformance.creditPoints">{{ studyPerformance.creditPoints }}</div>
                     </ion-col>
                   </ion-row>
                 </div>
                 <div *ngIf="submodule.examination.nonGraded">
                   <ion-row *ngFor="let studyPerformance of convertToArray(submodule.examination.nonGraded)">
                     <ion-col col-8 text-left >
-                      <div *ngIf="studyPerformance.desc">{{ studyPerformance.desc}} <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i></div>
-                      <div *ngIf="!studyPerformance.desc && studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType}}: {{ unescapeHTML(studyPerformance.courseName)}}</div>
+                        <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">{{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}</span>
+                        <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && studyPerformance.additionT">{{ studyPerformance.additionT}}</span>
+                        <span *ngIf="!(studyPerformance.courseType && studyPerformance.courseName) && !studyPerformance.additionT && studyPerformance.desc">{{ studyPerformance.desc}}</span>
+                        <i *ngIf="studyPerformance.additionA">{{ studyPerformance.additionA }}</i>
                     </ion-col>
                     <ion-col>
                       {{ "page.grades.studienleistung" | translate }}
@@ -159,20 +175,23 @@
     </span>
   </div>
 </div>
-<ion-grid *ngIf="gradeArray && gradeArray[currentProfession]">
-    <ion-row *ngIf="gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits" class="creditPoints" nowrap no-padding>
-      <ion-col text-left col-8>
-        <b *ngIf="convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description">
-          {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].description }}
-        </b>
-      </ion-col>
-      <ion-col text-right>
-        <b *ngIf="convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints && convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints">
-          {{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].actualCreditPoints }}/{{ convertToArray(gradeArray[currentProfession].credits.accountCredits)[0].targetCreditPoints }}
-        </b>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-grid *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
+  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints" nowrap no-padding>
+    <ion-col text-left col-8>
+      <b *ngIf="ac.description">
+        {{ ac.description }}
+      </b>
+    </ion-col>
+    <ion-col text-right>
+      <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
+        {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
+      </b>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="gradeArray[currentProfession].hint">
+    <ion-col>{{ gradeArray[currentProfession].hint }}</ion-col>
+  </ion-row>
+</ion-grid>
 <ng-template #noAchievements>
   <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-noGrades-hint"></hint>
 </ng-template>

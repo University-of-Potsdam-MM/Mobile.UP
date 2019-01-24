@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 export class GradesTableComponent {
 
   @Input() studentGrades;
+  @Input() studentDetails;
   @Input() isDualDegree;
   @Input() i;
 
