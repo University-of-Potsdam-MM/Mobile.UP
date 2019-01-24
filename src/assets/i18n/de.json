@@ -293,6 +293,7 @@
   },
   "button": {
     "ok": "OK",
+    "toHome": "Zum Startbilschirm",
     "cancel": "Abbrechen",
     "yes": "Ja",
     "no": "Nein",
