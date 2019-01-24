@@ -1,28 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AlertController } from "ionic-angular";
+import {Alert, AlertController, NavController} from "ionic-angular";
 import { TranslateService } from "@ngx-translate/core";
-
-/**
- * @type {EErrorType}
- */
-export enum EErrorType {
-  HTTP, OTHER
-}
-
-/**
- * @type {EErrorReason}
- */
-export enum EErrorReason {
-  AUTHENTICATION, NETWORK
-}
-
-/**
- * @type {EAlertType}
- */
-export enum EAlertType {
-  ERROR
-}
+import {HomePage} from "../../pages/home/home";
 
 /**
  * @type {IAlertOptions}
@@ -39,6 +19,8 @@ export interface IAlertOptions {
 @Injectable()
 export class AlertProvider {
 
+  currentAlert:Alert = null;
+
   /**
    * @constructor
    * @param {HttpClient} http
@@ -47,7 +29,8 @@ export class AlertProvider {
    */
   constructor(public http: HttpClient,
               private alertCtrl: AlertController,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private navCtrl: NavController) {
   }
 
   /**
@@ -56,14 +39,26 @@ export class AlertProvider {
    * @param {IAlertOptions} alertOptions
    */
   showAlert(alertOptions:IAlertOptions){
+    // only show new alert if no other alert is currently open
+    if(!this.currentAlert){
 
-    let alert = this.alertCtrl.create({
-      title: this.translate.instant(alertOptions.alertTitleI18nKey),
-      message: this.translate.instant(alertOptions.messageI18nKey),
-      buttons: [ this.translate.instant("button.continue") ]
-    });
+      this.currentAlert = this.alertCtrl.create({
+        title: this.translate.instant(alertOptions.alertTitleI18nKey),
+        message: this.translate.instant(alertOptions.messageI18nKey),
+        buttons: [
+          {
+            text: this.translate.instant("button.toHome"),
+           // handler: () => { this.navCtrl.push(HomePage) }
+          },
+          {
+            text: this.translate.instant("button.toHome")
+          }
+        ]
+      });
 
-    alert.present();
+      this.currentAlert.onDidDismiss(()=>this.currentAlert=null);
+      this.currentAlert.present();
+    }
   }
 
 }
