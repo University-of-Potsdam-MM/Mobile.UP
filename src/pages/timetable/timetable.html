@@ -61,14 +61,19 @@
 
       <!-- custom template for event in weekview -->
       <ng-template #templateWeekViewEvent let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'">
+        <div
+          class="calendar-event-inner"
+          [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'"
+        >
           {{displayEvent.event.title}}
         </div>
       </ng-template>
 
       <!-- custom template for event in dayview -->
       <ng-template #templateDayViewEvent let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'">
+        <div class="calendar-event-inner"
+             [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'"
+        >
           {{displayEvent.event.title}}
         </div>
       </ng-template>
