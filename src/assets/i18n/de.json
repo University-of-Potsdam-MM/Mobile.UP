@@ -293,6 +293,7 @@
   },
   "button": {
     "ok": "OK",
+    "toHome": "Zum Startbilschirm",
     "cancel": "Abbrechen",
     "yes": "Ja",
     "no": "Nein",
@@ -320,7 +321,6 @@
       "403": "Fehler 403: Zugriff verboten",
       "404": "Fehler 404: Ressource nicht gefunden"
     },
-    "toHome": "Zum Startbilschirm",
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
