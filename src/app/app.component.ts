@@ -20,6 +20,7 @@ import { LogoutPage } from "../pages/logout/logout";
 import { LoginPage } from "../pages/login/login";
 import { SettingsPage } from "../pages/settings/settings";
 import { AppInfoPage } from "../pages/app-info/app-info";
+import { ImpressumPage } from '../pages/impressum/impressum';
 
 @Component({
   templateUrl: 'app.html'
@@ -293,6 +294,11 @@ export class MobileUPApp {
   toAppInfo(){
     this.close();
     this.appCtrl.getRootNavs()[0].push(AppInfoPage);
+  }
+
+  toImprint() {
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(ImpressumPage);
   }
 
   /**

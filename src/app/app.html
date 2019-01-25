@@ -1,7 +1,7 @@
 <ion-menu [content]="content" [persistent]="true" side="right" type="overlay" (ionOpen)="menuOpened()">
     <ion-header>
         <ion-toolbar>
-            <ion-title>Menu</ion-title>
+            <ion-title>{{ "menu.title" | translate }}</ion-title>
         </ion-toolbar>
     </ion-header>
     <ion-content class="card-background-page">
@@ -23,11 +23,11 @@
                 {{ "page.settings.title" | translate }}
             </button>
             <button ion-item (click)="toAppInfo()">
-                <ion-icon name="help" padding-right></ion-icon>
+                <ion-icon name="information-circle" padding-right></ion-icon>
                 {{ "page.appInfo.title" | translate }}
             </button>
             <button ion-item (click)="toImprint()">
-                <i class="fa fa-balance-scale" aria-hidden="true" padding-right></i>
+                <ion-icon name="list-box" class="fa fa-balance-scale" aria-hidden="true" padding-right></ion-icon>
                 {{ "page.imprint.title" | translate }}
             </button>
             <ng-container *ngIf="loggedIn; then loggedInTemplate; else notLoggedInTemplate "></ng-container>
