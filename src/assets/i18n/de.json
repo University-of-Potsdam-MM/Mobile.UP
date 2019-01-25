@@ -354,7 +354,8 @@
   },
   "popover":{
     "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt"
+    "notLoggedInText": "Nicht eingeloggt",
+    "general": "Allgemein"
   },
   "launchNavigator": {
     "headerText": "Auswahl merken?",

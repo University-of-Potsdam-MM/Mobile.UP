@@ -1,9 +1,9 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ "page.practice.title" | translate}}</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
-    </ion-buttons>
   </ion-navbar>
 
   <ion-searchbar
@@ -12,7 +12,6 @@
     (input)="filterItems(query)"
     debounce="750">
   </ion-searchbar>
-
 </ion-header>
 
 <ion-content no-padding (ionScroll)="onScrollListener()">

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import { Platform, App, Nav, MenuController } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -10,11 +10,16 @@ import { IConfig, IModule } from "../library/interfaces";
 import { SettingsProvider } from '../providers/settings/settings';
 import { WebIntentProvider } from '../providers/web-intent/web-intent';
 import { CacheService } from 'ionic-cache';
-import { IOIDCRefreshResponseObject } from "../providers/login-provider/interfaces";
+import { IOIDCRefreshResponseObject, IOIDCUserInformationResponse } from "../providers/login-provider/interfaces";
 import { UPLoginProvider } from "../providers/login-provider/login";
 import * as moment from 'moment';
 import { ConnectionProvider } from "../providers/connection/connection";
 import { SessionProvider } from '../providers/session/session';
+
+import { LogoutPage } from "../pages/logout/logout";
+import { LoginPage } from "../pages/login/login";
+import { SettingsPage } from "../pages/settings/settings";
+import { AppInfoPage } from "../pages/app-info/app-info";
 
 @Component({
   templateUrl: 'app.html'
@@ -24,8 +29,13 @@ export class MobileUPApp {
 
   config:IConfig;
   rootPage: string = 'HomePage';
+  userInformation:IOIDCUserInformationResponse = null;
+  loggedIn = false;
+  username;
 
   constructor(
+    public menuCtrl: MenuController,
+    private appCtrl: App,
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
@@ -40,6 +50,7 @@ export class MobileUPApp {
     private sessionProvider: SessionProvider
   ) {
     this.appStart();
+
   }
 
   /**
@@ -77,7 +88,7 @@ export class MobileUPApp {
             // clear the whole storage
             console.log("clearing storage...");
             await this.sessionProvider.removeSession();
-            await this.sessionProvider.removeUserInfo(); 
+            await this.sessionProvider.removeUserInfo();
             await this.storage.clear().then(done => {
               this.storage.set("appVersion", currentAppVersion);
               this.initializeApp();
@@ -238,6 +249,50 @@ export class MobileUPApp {
       this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
     }
 
+  }
+
+
+  menuOpened(){
+    this.updateLoginStatus();
+  }
+
+  async updateLoginStatus() {
+    let session = JSON.parse(await this.sessionProvider.getSession());
+    if (session) {
+      this.loggedIn = true;
+      this.username = session.credentials.username;
+    } else { this.loggedIn = false; }
+
+    this.userInformation = JSON.parse(await this.sessionProvider.getUserInfo());
+  }
+
+  close() {
+    this.menuCtrl.close();
+  }
+
+  toHome(){
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(HomePage);
+  }
+
+  toLogout(){
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(LogoutPage);
+  }
+
+  toLogin(){
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(LoginPage);
+  }
+
+  toSettings(){
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(SettingsPage);
+  }
+
+  toAppInfo(){
+    this.close();
+    this.appCtrl.getRootNavs()[0].push(AppInfoPage);
   }
 
   /**
