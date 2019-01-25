@@ -1,7 +1,7 @@
 import { INewsApiResponse, IConfig } from './../../library/interfaces';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Segment } from 'ionic-angular';
+import { Component, Injector, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
 import { ConnectionProvider } from "../../providers/connection/connection";
@@ -17,16 +17,22 @@ import { ConnectionProvider } from "../../providers/connection/connection";
   templateUrl: 'news.html',
 })
 export class NewsPage {
-  @ViewChild(Segment) segment: Segment;
+  @ViewChild(Slides) slides: Slides;
 
-  newsSource:number;
-  newsList;
-  sourcesList = [];
-  isLoaded = false;
+
+  public newsSource:number;
+  public newsList;
+  public sourcesList = [];
+  public isLoaded = false;
+  public showLeftButton: boolean;
+  public showRightButton: boolean;
+  public selectedCategory;
+  public categories = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private http: HttpClient,
+              public injector: Injector,
               private storage: Storage,
               private cache: CacheService,
               private connection: ConnectionProvider) {
@@ -74,75 +80,68 @@ export class NewsPage {
             }
           }
         }
+        this.categories = this.sourcesList;
         this.setNewsSource(0);
         this.isLoaded = true;
+
+        // Select it by defaut
+        this.selectedCategory = 0;
+
+        // Check which arrows should be shown
+        this.showLeftButton = false;
+        this.showRightButton = this.categories.length > 3;
       }
     });
   }
 
-  setNewsSource(i) {
+
+  // Method executed when the slides are changed
+  public slideChanged(): void {
+    let currentIndex = this.slides.getActiveIndex();
+    this.showLeftButton = currentIndex !== 0;
+    this.showRightButton = currentIndex !== Math.ceil(this.slides.length() / 3);
+  }
+
+
+  // Method that shows the next slide
+  public slideNext(): void {
+    this.slides.slideNext();
+  }
+
+
+  // Method that shows the previous slide
+  public slidePrev(): void {
+    this.slides.slidePrev();
+  }
+
+
+  public setNewsSource(i: number): void {
     this.newsSource = i;
+    this.selectedCategory = i;
   }
 
-  scrollSegmentBar(direction) {
-    var selectedValue = this.segment.value;
-
-    // I don't like working with underscore objects,
-    // but this seems *slightly* nicer than working with native elements at this point, 
-    // and it seems to be the easiest way to find the selected index
-    var selectedIndex = this.segment._buttons.toArray().findIndex(function(button) { 
-      return button.value === selectedValue; 
-    });
-
-    let maxIndex = this.sourcesList.length - 1;
-    if (direction == "left") {
-      if (selectedIndex > 1) {
-        selectedIndex = selectedIndex - 2;
-      }
-    } else {
-      if (selectedIndex < maxIndex-1) {
-        selectedIndex = selectedIndex + 2;
-      }
-    }
-            
-    // Of course, now I need to work with the native element...
-    var nativeSegment = <Element>this.segment.getNativeElement();
-    
-    // I pass in false to keep my page from scrolling vertically. YMMV
-    nativeSegment.children[selectedIndex].scrollIntoView(false);
-  }
-
-  isActive(i) {
-    if (this.newsSource == i) {
-      return "primary"
-    } else {
-      return "secondary"
-    }
-  }
 
   swipeNewsSource(event) {
     if (Math.abs(event.deltaY) < 50) {
       let maxIndex = this.sourcesList.length - 1;
       let currentIndex = this.newsSource;
       var newIndex;
+      console.log(event);
       if (event.deltaX > 0) {
         // user swiped from left to right
         if (currentIndex > 0) {
           newIndex = currentIndex-1;
           this.setNewsSource(newIndex);
-          this.scrollSegmentBar("left");
+          this.slides.slidePrev();
         }
       } else if (event.deltaX < 0) {
         // user swiped from right to left
         if (currentIndex < maxIndex) {
           newIndex = currentIndex+1;
           this.setNewsSource(newIndex);
-          this.scrollSegmentBar("right");
+          this.slides.slideNext();
         }
       }
     }
   }
-
-
-
 }

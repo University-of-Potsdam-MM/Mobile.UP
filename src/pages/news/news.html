@@ -7,11 +7,23 @@
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-navbar>
 
-  <ion-segment *ngIf="sourcesList" [(ngModel)]="newsSource" class="headSegment" color="primary">
-    <ion-segment-button small *ngFor="let source of sourcesList; let i = index" (click)="setNewsSource(i)" [value]="i">
-      {{ sourcesList[i] }}
-    </ion-segment-button>
-  </ion-segment>
+  <ion-toolbar *ngIf="sourcesList">
+    <ion-row class="filters">
+        <ion-col class="col-with-arrow" (click)="slidePrev()" no-padding col-1>
+            <ion-icon *ngIf="showLeftButton" name="arrow-back"></ion-icon>
+        </ion-col>
+        <ion-col no-padding col-10>
+            <ion-slides (ionSlideDidChange)="slideChanged()" slidesPerView="3">
+                <ion-slide (click)="setNewsSource(i)" *ngFor="let category of categories; let i = index">
+                    <p [class.selected]="selectedCategory === i">{{ category }}</p>
+                </ion-slide>
+            </ion-slides>
+        </ion-col>
+        <ion-col class="col-with-arrow" (click)="slideNext()" no-padding col-1>
+            <ion-icon *ngIf="showRightButton" name="arrow-forward"></ion-icon>
+        </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-header>
 
 
