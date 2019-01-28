@@ -194,26 +194,6 @@ export class TimetablePage {
     mySwiper.slideNext();
   }
 
-
-  /**
-   * @name decimalToHex
-   * @description converts decimal number to hex string. Used in template
-   * @param d {number} decimal number
-   * @param padding {number} padding that should be applied
-   * @returns {string} hex representation of d
-   */
-  decimalToHex(d, padding) {
-    let hex = Number(d).toString(16);
-    padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
-
-    while (hex.length < padding) {
-      hex = "0" + hex;
-    }
-
-    return hex;
-  }
-
-
 }
 
 

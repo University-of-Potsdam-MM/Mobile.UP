@@ -51,8 +51,8 @@
       <ng-template #templateMonthViewEvent let-view="view" let-row="row" let-col="col" let->
         <ng-container *ngFor="let event of view.dates[row*7+col].events">
           <div style="float: left">
-            <div [style]="'background-color: #'+decimalToHex(event.courseDetails.courseId, 6) +' !important'"
-                 class="calendar-event-inner">
+            <div [style]="'background-color: '+event.color"
+                 ngClass="calendar-event-inner">
               <!-- vertical blocks here symbolising courses-->
             </div>
           </div>
@@ -62,8 +62,8 @@
       <!-- custom template for event in weekview -->
       <ng-template #templateWeekViewEvent let-displayEvent="displayEvent">
         <div
-          class="calendar-event-inner"
-          [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'"
+          ngClass="calendar-event-inner"
+          [style]="'background-color: '+displayEvent.color"
         >
           {{displayEvent.event.title}}
         </div>
@@ -71,8 +71,8 @@
 
       <!-- custom template for event in dayview -->
       <ng-template #templateDayViewEvent let-displayEvent="displayEvent">
-        <div class="calendar-event-inner"
-             [style]="'background-color: #'+decimalToHex(displayEvent.event.courseDetails.courseId, 6)+' !important'"
+        <div ngClass="calendar-event-inner"
+             [style]="'background-color: '+displayEvent.color"
         >
           {{displayEvent.event.title}}
         </div>
