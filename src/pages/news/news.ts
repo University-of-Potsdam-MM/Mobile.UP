@@ -20,13 +20,13 @@ export class NewsPage {
   @ViewChild(Slides) slides: Slides;
 
 
-  public newsSource:number;
+  public newsSource:number = 0;
   public newsList;
   public sourcesList = [];
   public isLoaded = false;
   public showLeftButton: boolean;
   public showRightButton: boolean;
-  public selectedCategory;
+  public selectedCategory = 0;
   public categories = [];
 
   constructor(public navCtrl: NavController,
@@ -81,15 +81,13 @@ export class NewsPage {
           }
         }
         this.categories = this.sourcesList;
-        this.setNewsSource(0);
         this.isLoaded = true;
 
-        // Select it by defaut
-        this.selectedCategory = 0;
-
-        // Check which arrows should be shown
-        this.showLeftButton = false;
-        this.showRightButton = this.categories.length > 3;
+        this.slides.update();
+        this.slideChanged();
+        if (this.selectedCategory == 0) {
+          this.showLeftButton = false;
+        }
       }
     });
   }
@@ -97,9 +95,8 @@ export class NewsPage {
 
   // Method executed when the slides are changed
   public slideChanged(): void {
-    let currentIndex = this.slides.getActiveIndex();
-    this.showLeftButton = currentIndex !== 0;
-    this.showRightButton = currentIndex !== Math.ceil(this.slides.length() / 3);
+    this.showLeftButton = !this.slides.isBeginning();
+    this.showRightButton = !this.slides.isEnd();
   }
 
 
