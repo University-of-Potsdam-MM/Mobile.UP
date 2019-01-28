@@ -80,7 +80,7 @@ export class WebIntentProvider {
 
       if (moduleConfig) {
         // in app context therefore display three buttons
-        if (this.platform.is("cordova")) {
+        if (this.platform.is("cordova") && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
 
           // ask for permission to open Module externaly
           let alert = this.alertCtrl.create({
