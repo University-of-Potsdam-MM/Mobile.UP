@@ -257,14 +257,22 @@ export class MobileUPApp {
     this.updateLoginStatus();
   }
 
-  async updateLoginStatus() {
-    let session = JSON.parse(await this.sessionProvider.getSession());
-    if (session) {
-      this.loggedIn = true;
-      this.username = session.credentials.username;
-    } else { this.loggedIn = false; }
+  updateLoginStatus() {
+    this.sessionProvider.getSession().then(session => {
+      if (session) {
+        let sessionParsed = JSON.parse(session);
+        if (sessionParsed) {
+          this.loggedIn = true;
+          this.username = sessionParsed.credentials.username;
+        } else { this.loggedIn = false; this.username = undefined; }
+      }
+    });
 
-    this.userInformation = JSON.parse(await this.sessionProvider.getUserInfo());
+    this.sessionProvider.getUserInfo().then(userInf => {
+      if (userInf) {
+        this.userInformation = JSON.parse(userInf);
+      } else { this.userInformation = undefined; }
+    });
   }
 
   close() {

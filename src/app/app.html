@@ -8,8 +8,8 @@
 
         <ion-card>
             <img src="../assets/imgs/menu-background.png"/>
-            <div class="card-title"><span *ngIf="userInformation">{{ userInformation.name }}</span><span *ngIf="!userInformation">{{username}}</span></div>
-            <div class="card-subtitle"><span *ngIf="userInformation">{{ userInformation.sub }}</span></div>
+            <div class="card-title"><span *ngIf="loggedIn && userInformation">{{ userInformation.name }}</span><span *ngIf="loggedIn && !userInformation && username">{{username}}</span></div>
+            <div class="card-subtitle"><span *ngIf="loggedIn && userInformation">{{ userInformation.sub }}</span></div>
         </ion-card>
 
         <ion-item-group>
@@ -35,7 +35,7 @@
 
         <!-- logged in -->
         <ng-template #loggedInTemplate>
-            <ion-item-divider color="light">{{ "popover.loggedInText" | translate}}: {{userInformation.sub}}</ion-item-divider>
+            <ion-item-divider color="light" *ngIf="username">{{ "popover.loggedInText" | translate}}: {{ username }}</ion-item-divider>
             <button ion-item (click)="toLogout()">
                 <i class="fa fa-sign-out" aria-hidden="true" padding-right></i>
                 {{ "button.logout" | translate }}
