@@ -78,40 +78,63 @@ export class WebIntentProvider {
     this.storage.get("config").then((config:IConfig) => {
       var moduleConfig:IModule = config.modules[moduleName];
 
-      // ask for permission to open Module externaly
-      let alert = this.alertCtrl.create({
-        title: this.translate.instant("alert.title.redirect"),
-        message: this.translate.instant("alert.redirect"),
-        buttons: [
-          {
-            text: this.translate.instant("button.cancel"),
-            role: 'cancel',
-            handler: () => {
-            }
-          },
-          {
-            text: this.translate.instant("button.continue"),
-            handler: () => {
-              if (moduleConfig) {
-                if (this.platform.is("cordova")) {
+      if (moduleConfig) {
+        // in app context therefore display three buttons
+        if (this.platform.is("cordova") && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
+
+          // ask for permission to open Module externaly
+          let alert = this.alertCtrl.create({
+            title: this.translate.instant("alert.title.redirect"),
+            message: this.translate.instant("alert.redirect-website-app"),
+            buttons: [
+              {
+                text: this.translate.instant("button.app"),
+                handler: () => {
                   if (moduleConfig.appId) {
                     var androidUrl, iosUrl, bundle;
                     androidUrl = moduleConfig.urlAndroid;
                     iosUrl = moduleConfig.urlIOS;
                     bundle = moduleConfig.bundleName;
                     this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
-                  } else {
-                    this.handleWebIntentForWebsite(moduleConfig.url);
                   }
-                } else {
-                  this.openWithInAppBrowser(moduleConfig.url);
+                }
+              },
+              {
+                text: this.translate.instant("button.webpage"),
+                handler: () => {
+                  this.handleWebIntentForWebsite(moduleConfig.url);
+                }
+              },
+              {
+                text: this.translate.instant("button.cancel"),
+                role: 'cancel',
+                handler: () => {}
+              }
+            ]
+          });
+          alert.present();
+        } else {
+          // ask for permission to open Module externaly
+          let alert = this.alertCtrl.create({
+            title: this.translate.instant("alert.title.redirect"),
+            message: this.translate.instant("alert.redirect-website"),
+            buttons: [
+              {
+                text: this.translate.instant("button.cancel"),
+                role: 'cancel',
+                handler: () => {}
+              },
+              {
+                text: this.translate.instant("button.ok"),
+                handler: () => {
+                  this.handleWebIntentForWebsite(moduleConfig.url);
                 }
               }
-            }
-          }
-        ]
-      });
-      alert.present();
+            ]
+          });
+          alert.present();
+        }
+      }
     });
   }
 
@@ -154,16 +177,16 @@ export class WebIntentProvider {
   async mailLogin(url: string) {
     let session:ISession = JSON.parse(await this.sessionProvider.getSession());
     let browser = this.theInAppBrowser.create(url, "_blank", this.options);
-    
+
     if (session && session.credentials && session.credentials.username && session.credentials.password) {
       console.log("[Mail] trying to login...")
 
-      let enterCredentials = 
+      let enterCredentials =
         `$("input.uname").val(\'${session.credentials.username}\');
         $("input.pewe").val(\'${session.credentials.password}\');
         $("button.loginbutton").click();`;
 
-      browser.on("loadstop").subscribe((event) => {        
+      browser.on("loadstop").subscribe((event) => {
         browser.executeScript({ code: enterCredentials }).then(() => {
           console.log("successfully entered login data...");
         }, error => {
@@ -172,7 +195,7 @@ export class WebIntentProvider {
         });
       });
 
-    } 
+    }
   }
 
   /**

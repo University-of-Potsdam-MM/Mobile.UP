@@ -1,9 +1,10 @@
 <ion-header>
-
   <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ "page.openingHours.title" | translate }}</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content padding>
@@ -29,7 +30,3 @@
     <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.openings-planCanChange-hint"></hint>
   </div>
 </ion-content>
-
-<ion-footer>
-  <tab-bar></tab-bar>
-</ion-footer>

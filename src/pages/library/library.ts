@@ -54,6 +54,7 @@ export class LibraryPage {
     .replace(/\,/g, "")
     .replace(/\//g, "")
     .replace(/\:/g, "")
+    .replace(/\;/g, "")
     .replace(/\@/g, "")
     .replace(/\=/g, "")
     .replace(/\$/g, "")

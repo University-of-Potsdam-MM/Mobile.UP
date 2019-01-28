@@ -1,17 +1,8 @@
 import { Component } from '@angular/core';
-import {
-  IonicPage,
-  LoadingController,
-  Loading,
-  NavController
-} from 'ionic-angular';
+import { IonicPage, LoadingController, Loading, NavController, Events } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { UPLoginProvider } from "../../providers/login-provider/login";
-import {
-  ELoginErrors,
-  ICredentials, IOIDCUserInformationResponse,
-  ISession
-} from "../../providers/login-provider/interfaces";
+import { ELoginErrors, ICredentials, IOIDCUserInformationResponse, ISession } from "../../providers/login-provider/interfaces";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs/Observable";
 import { HomePage } from '../home/home';
@@ -46,6 +37,7 @@ export class LoginPage {
       private loadingCtrl: LoadingController,
       private alertCtrl:   AlertController,
       private upLogin:     UPLoginProvider,
+      private events:      Events,
       private connection:  ConnectionProvider,
       private sessionProvider: SessionProvider,
       private translate:   TranslateService) {
@@ -100,6 +92,7 @@ export class LoginPage {
           );
 
           setTimeout(() => {
+            this.events.publish("userLogin");
             this.navCtrl.pop();
           }, 1000);
         },

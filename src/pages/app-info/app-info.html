@@ -1,5 +1,8 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button menuToggle right>
+        <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ "page.appInfo.title" | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -25,7 +28,7 @@
 
           Haus 4 | 1.17<br>
           <br>
-          Telefon: <a href="tel:+49-331-977-3023">+49-331-977-3023</a> 
+          Telefon: <a href="tel:+49-331-977-3023">+49-331-977-3023</a>
       </ion-item>
     </span>
     <ion-item (click)="showParticipationInfo = !showParticipationInfo">
@@ -38,7 +41,7 @@
           Es gibt die Möglichkeit als studentische Mitarbeiter innerhalb von Lehrprojekten, Aufträgen oder Anstellung an der App-Entwicklung im Rahmen des eLiS-Projekts mitzuwirken.<br>
           Die App ist als Open Source Projekt veröffentlicht.
           <br><br>
-          Wenn Sie sich für eine Mitarbeit an der App interessieren, können Sie gern das Entwicklerteam unter <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a> kontaktieren oder sich über <a href="https://github.com/University-of-Potsdam-MM/Mobile.UP">GitHub</a> beteiligen.          
+          Wenn Sie sich für eine Mitarbeit an der App interessieren, können Sie gern das Entwicklerteam unter <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a> kontaktieren oder sich über <a href="https://github.com/University-of-Potsdam-MM/Mobile.UP">GitHub</a> beteiligen.
       </ion-item>
     </span>
     <ion-item (click)="showLibraryInfo = !showLibraryInfo">
@@ -140,7 +143,3 @@
     </span>
   </ion-list>
 </ion-content>
-
-<ion-footer>
-    <tab-bar></tab-bar>
-</ion-footer>

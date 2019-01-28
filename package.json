@@ -12,6 +12,9 @@
     "ionic:serve": "ionic-app-scripts serve",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
   },
+  "config": {
+    "ionic_copy": "./scripts/copy-custom-libs.js"
+  },
   "dependencies": {
     "@angular/common": "5.0.3",
     "@angular/compiler": "5.0.3",
@@ -55,6 +58,7 @@
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-whitelist": "^1.3.3",
     "country-language": "^0.1.7",
+    "font-awesome": "^4.7.0",
     "i18next-client": "^1.11.5",
     "intl": "^1.2.5",
     "ion2-calendar": "^2.2.0",

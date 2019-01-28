@@ -303,7 +303,9 @@
     "remove": "Entfernen",
     "search": "Suchen",
     "showMore": "Mehr anzeigen",
-    "showLess": "Weniger anzeigen"
+    "showLess": "Weniger anzeigen",
+    "app": "App",
+    "webpage": "Webseite"
   },
   "alert": {
     "title": {
@@ -325,7 +327,8 @@
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
-    "redirect": "Auf externe Webseite oder App weiterleiten?"
+    "redirect-website": "Auf externe Webseite weiterleiten?",
+    "redirect-website-app": "Auf externe Webseite oder App weiterleiten?"
   },
   "university": {
     "location": {
@@ -350,7 +353,8 @@
   },
   "popover":{
     "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt"
+    "notLoggedInText": "Nicht eingeloggt",
+    "general": "Allgemein"
   },
   "launchNavigator": {
     "headerText": "Auswahl merken?",
