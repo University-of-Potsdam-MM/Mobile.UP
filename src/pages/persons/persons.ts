@@ -103,6 +103,7 @@ export class PersonsPage {
       .replace(/\,/g, "")
       .replace(/\//g, "")
       .replace(/\:/g, "")
+      .replace(/\;/g, "")
       .replace(/\@/g, "")
       .replace(/\=/g, "")
       .replace(/\$/g, "")
