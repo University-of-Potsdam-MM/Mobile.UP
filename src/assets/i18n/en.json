@@ -180,6 +180,10 @@
     "tipps": {
       "title": "Tips & tricks"
     },
+    "transport": {
+      "title": "Journeys",
+      "disclaimer": "All data is used with the kind support of the VBB."
+    },
     "reflectUP": {
       "title": "Reflect.UP"
     },

@@ -192,6 +192,14 @@ ion-icon {
     mask-image: url(../assets/icon/reflect.svg);
   }
 
+  &[class*="custom-bus"] {
+    mask-image: url(../assets/icon/bus.svg);
+  }
+
+  &[class*="custom-bahn"] {
+    mask-image: url(../assets/icon/s-bahn.svg);
+  }
+
 }
 
 

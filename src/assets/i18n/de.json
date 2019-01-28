@@ -180,6 +180,10 @@
     "tipps": {
       "title": "Tipps & Tricks"
     },
+    "transport": {
+      "title": "Nahverkehr",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt."
+    },
     "reflectUP": {
       "title": "Reflect.UP"
     },

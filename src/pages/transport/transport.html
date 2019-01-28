@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.transport.title" | translate}}</ion-title>
+  </ion-navbar>
+  <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
+</ion-header>
+
+
+<ion-content no-padding (swipe)="swipeCampus($event)">
+  <ion-refresher (ionRefresh)="loadCampusMenu($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div align="center" *ngIf="isLoaded">
+
+    <ion-list *ngFor="let dep of departures">
+      <ion-item>
+          <ion-avatar item-start>
+
+              <ion-icon *ngIf="dep" name="custom-bus" style="zoom:2.0;"></ion-icon>
+          </ion-avatar>
+          <h2 *ngIf="dep.name">{{ dep.name }}</h2>
+          <p *ngIf="dep.direction">{{ dep.direction }}</p>
+          <ion-note item-end *ngIf="dep.time">{{ dep.time }}</ion-note>
+        </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <footer-disclaimer disclaimerReference="page.transport.disclaimer"></footer-disclaimer>
+  </ion-toolbar>
+</ion-footer>

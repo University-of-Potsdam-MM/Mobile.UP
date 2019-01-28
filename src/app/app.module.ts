@@ -52,6 +52,7 @@ import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
+import { TransportPage } from '../pages/transport/transport';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
@@ -95,7 +96,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: LecturesPage, name: 'LecturesPage', segment: 'lectures' },
     { component: RoomplanPage, name: 'RoomplanPage', segment: 'roomplan' },
     { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' },
-    { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'}
+    { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'},
+    { component: TransportPage, name: 'TransportPage', segment: 'transport'}
   ]
 };
 
@@ -128,7 +130,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     DetailedPracticePage,
     PopoverButton,
-    AppInfoPage
+    AppInfoPage,
+    TransportPage
   ],
   imports: [
     HttpClientModule,
@@ -184,7 +187,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     TimetablePage,
     EventModal,
     PopoverComponent,
-    AppInfoPage
+    AppInfoPage,
+    TransportPage
   ],
   providers: [
     StatusBar,

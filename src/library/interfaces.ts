@@ -6,6 +6,8 @@ import {
   ILoginConfig_SSO,
   ILoginConfig_OIDC
 } from "../providers/login-provider/interfaces";
+import { IPulsApiRequest_getStudentCourses_condition } from "./interfaces_PULS";
+import { NumberSymbol } from "@angular/common";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -198,6 +200,7 @@ export interface IEndpoints {
   openingHours:string;
   emergencyCalls:string;
   logging:string;
+  transport:string;
 }
 
 /* ~~~ NewsPage and EventsPage ~~~ */
@@ -460,4 +463,44 @@ export interface IStudieCourse {
   stg: string;
   "stg.pversion": string;
   stgsem: string;
+}
+
+export interface IDeparture {
+  JourneyDetailRef:IJourneyDetailRef;
+  Product: IProduct;
+  name:string;
+  type:string;
+  stop:string;
+  stopid:string;
+  stopExtId:string;
+  prognosisType:string;
+  time:string;
+  date:string;
+  rtTime:string;
+  rtDate:string;
+  direction:string;
+  trainNumber:string;
+  trainCategory:string;
+}
+
+export interface IJourneyDetailRef {
+  ref:string;
+}
+
+export interface IProduct {
+  name:string;
+  num:string;
+  line:string;
+  catOut:string;
+  catIn:string;
+  catCode:string;
+  catOutS:string;
+  catOutL:string;
+  operatorCode:string;
+  operator:string;
+  admin:string;
+}
+
+export interface IJourneyResponse {
+  Departure: IDeparture;
 }
