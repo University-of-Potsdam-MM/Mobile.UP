@@ -16,7 +16,7 @@ export class TabBarComponent {
     switch(pageID) {
       case 0: {
         if (this.navCtrl.getActive().component != HomePage) {
-          this.navCtrl.setRoot(HomePage, { fromSideMenu: true }, { animate: true, animation: "md-transition" });
+          this.navCtrl.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
         }
         break;
       }

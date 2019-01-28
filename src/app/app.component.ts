@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, App, Nav, MenuController } from 'ionic-angular';
+import { Platform, App, Nav, MenuController, Events } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -45,6 +45,7 @@ export class MobileUPApp {
     private http: HttpClient,
     private settingsProvider: SettingsProvider,
     private webIntent: WebIntentProvider,
+    private events: Events,
     private cache: CacheService,
     private loginProvider: UPLoginProvider,
     private connection: ConnectionProvider,
@@ -52,6 +53,9 @@ export class MobileUPApp {
   ) {
     this.appStart();
 
+    this.events.subscribe("userLogin", () => {
+      this.updateLoginStatus();
+    });
   }
 
   /**
@@ -74,6 +78,7 @@ export class MobileUPApp {
         this.splashScreen.hide();
       }
 
+      this.updateLoginStatus();
       this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
       this.cache.setOfflineInvalidate(false);
     });
@@ -252,26 +257,29 @@ export class MobileUPApp {
 
   }
 
-
-  menuOpened(){
+  menuOpened() {
     this.updateLoginStatus();
   }
 
   updateLoginStatus() {
+    this.loggedIn = false;
+    this.userInformation = undefined;
+    this.username = undefined;
+
     this.sessionProvider.getSession().then(session => {
       if (session) {
         let sessionParsed = JSON.parse(session);
         if (sessionParsed) {
           this.loggedIn = true;
           this.username = sessionParsed.credentials.username;
-        } else { this.loggedIn = false; this.username = undefined; }
+        }
       }
     });
 
     this.sessionProvider.getUserInfo().then(userInf => {
       if (userInf) {
         this.userInformation = JSON.parse(userInf);
-      } else { this.userInformation = undefined; }
+      }
     });
   }
 
@@ -281,7 +289,7 @@ export class MobileUPApp {
 
   toHome(){
     this.close();
-    this.appCtrl.getRootNavs()[0].push(HomePage);
+    this.appCtrl.getRootNavs()[0].setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
   }
 
   toLogout(){
