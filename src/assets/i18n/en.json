@@ -151,6 +151,7 @@
     },
     "timetable": {
       "title": "Timetable",
+      "courseInformation": "Course information",
       "until": "",
       "today": "Today",
       "month": "Month",
@@ -292,6 +293,7 @@
   },
   "button": {
     "ok": "OK",
+    "toHome": "Go Home",
     "cancel": "Cancel",
     "yes": "Yes",
     "no": "No",
