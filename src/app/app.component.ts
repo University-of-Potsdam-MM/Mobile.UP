@@ -289,7 +289,7 @@ export class MobileUPApp {
 
   toHome(){
     this.close();
-    this.appCtrl.getRootNavs()[0].setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+    this.appCtrl.getRootNavs()[0].setRoot(HomePage);
   }
 
   toLogout(){
