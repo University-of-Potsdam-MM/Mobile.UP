@@ -70,6 +70,33 @@ export class WebIntentProvider {
   }
 
   /**
+   * @name permissionPromptWebsite
+   * @description asks for permission for a website to be opened externaly
+   * @param {IModule} moduleConfig - mmoduleConfig
+   */
+  private permissionPromptWebsite(moduleConfig:IModule){
+    // ask for permission to open Module externaly
+    let alert = this.alertCtrl.create({
+      title: this.translate.instant("alert.title.redirect"),
+      message: this.translate.instant("alert.redirect-website"),
+      buttons: [
+        {
+          text: this.translate.instant("button.cancel"),
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: this.translate.instant("button.ok"),
+          handler: () => {
+            this.handleWebIntentForWebsite(moduleConfig.url);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  /**
    * @name handleWebIntentForModule
    * @description handles the webIntent for a page component and opens a webpage or the installed app
    * @param {string} moduleName - moduleName which is to be opened
@@ -82,57 +109,41 @@ export class WebIntentProvider {
         // in app context therefore display three buttons
         if (this.platform.is("cordova") && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
 
-          // ask for permission to open Module externaly
-          let alert = this.alertCtrl.create({
-            title: this.translate.instant("alert.title.redirect"),
-            message: this.translate.instant("alert.redirect-website-app"),
-            buttons: [
-              {
-                text: this.translate.instant("button.app"),
-                handler: () => {
-                  if (moduleConfig.appId) {
-                    var androidUrl, iosUrl, bundle;
-                    androidUrl = moduleConfig.urlAndroid;
-                    iosUrl = moduleConfig.urlIOS;
-                    bundle = moduleConfig.bundleName;
-                    this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
+          if (moduleConfig.appId) {
+            // ask for permission to open Module externaly with three options
+            let alert = this.alertCtrl.create({
+              title: this.translate.instant("alert.title.redirect"),
+              message: this.translate.instant("alert.redirect-website-app"),
+              buttons: [
+                {
+                  text: this.translate.instant("button.app"),
+                  handler: () => {
+                      var androidUrl, iosUrl, bundle;
+                      androidUrl = moduleConfig.urlAndroid;
+                      iosUrl = moduleConfig.urlIOS;
+                      bundle = moduleConfig.bundleName;
+                      this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
                   }
+                },
+                {
+                  text: this.translate.instant("button.webpage"),
+                  handler: () => {
+                    this.handleWebIntentForWebsite(moduleConfig.url);
+                  }
+                },
+                {
+                  text: this.translate.instant("button.cancel"),
+                  role: 'cancel',
+                  handler: () => {}
                 }
-              },
-              {
-                text: this.translate.instant("button.webpage"),
-                handler: () => {
-                  this.handleWebIntentForWebsite(moduleConfig.url);
-                }
-              },
-              {
-                text: this.translate.instant("button.cancel"),
-                role: 'cancel',
-                handler: () => {}
-              }
-            ]
-          });
-          alert.present();
+              ]
+            });
+            alert.present();
+          }else{
+            this.permissionPromptWebsite(moduleConfig);
+          }
         } else {
-          // ask for permission to open Module externaly
-          let alert = this.alertCtrl.create({
-            title: this.translate.instant("alert.title.redirect"),
-            message: this.translate.instant("alert.redirect-website"),
-            buttons: [
-              {
-                text: this.translate.instant("button.cancel"),
-                role: 'cancel',
-                handler: () => {}
-              },
-              {
-                text: this.translate.instant("button.ok"),
-                handler: () => {
-                  this.handleWebIntentForWebsite(moduleConfig.url);
-                }
-              }
-            ]
-          });
-          alert.present();
+          this.permissionPromptWebsite(moduleConfig);
         }
       }
     });
