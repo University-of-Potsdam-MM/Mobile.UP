@@ -182,7 +182,8 @@
     },
     "transport": {
       "title": "Nahverkehr",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt."
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "journeys": "Farten ab "
     },
     "reflectUP": {
       "title": "Reflect.UP"

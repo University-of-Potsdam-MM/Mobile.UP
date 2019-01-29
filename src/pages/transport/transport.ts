@@ -16,12 +16,13 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TransportPage {
 
-  currentDate = moment();
+  currentDate;
   isLoaded = false;
   hardRefresh = false;
   campus;
   campusid;
   departures;
+  maxJourneys = 10;
 
   constructor(
     public navCtrl: NavController,
@@ -43,11 +44,10 @@ export class TransportPage {
     this.loadCampusMenu();
   }
 
-  async loadCampusMenu(refresher?) {
-    var i;
+  async loadCampusMenu(refresher?, infiniteScroll?) {
+    this.currentDate = moment();
 
     if (refresher) {
-      this.cache.removeItems("transportResponse*");
       this.hardRefresh = true;
     } else {
       this.isLoaded = false;
@@ -58,8 +58,6 @@ export class TransportPage {
     let headers: HttpHeaders = new HttpHeaders()
       .append("Authorization", config.webservices.apiToken);
 
-
-
     if(this.campus=="Griebnitzsee"){
       this.campusid  = '900230003';
     } else if (this.campus=="Golm"){
@@ -69,13 +67,12 @@ export class TransportPage {
     }
 
     let params: HttpParams = new HttpParams()
+      .append("maxJourneys", this.maxJourneys.toString())
       .append("format", "json")
       .append("time", this.currentDate.format('HH:mm:ss'))
       .append("id", this.campusid);
 
-
-    let request = this.http.get(config.webservices.endpoint.transport, {headers:headers, params:params});
-    this.cache.loadFromObservable("transportResponse"+this.campus, request).subscribe((res:IJourneyResponse) => {
+    this.http.get(config.webservices.endpoint.transport, {headers:headers, params:params}).subscribe((res:IJourneyResponse) => {
 
       if (res) {
         console.log(res);
@@ -88,10 +85,18 @@ export class TransportPage {
       }
       this.hardRefresh = false;
       this.isLoaded = true;
+      if (infiniteScroll) { infiniteScroll.complete(); }
 
     }, error => {
+      if (infiniteScroll) { infiniteScroll.complete(); }
       console.log(error);
     });
+  }
+
+
+  doInfinite(infiniteScroll) {
+    this.maxJourneys+= 10;
+    this.loadCampusMenu(false, infiniteScroll);
   }
 
 

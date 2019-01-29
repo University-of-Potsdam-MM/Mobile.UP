@@ -182,7 +182,8 @@
     },
     "transport": {
       "title": "Journeys",
-      "disclaimer": "All data is used with the kind support of the VBB."
+      "disclaimer": "All data is used with the kind support of the VBB.",
+      "journeys": "Departures from "
     },
     "reflectUP": {
       "title": "Reflect.UP"

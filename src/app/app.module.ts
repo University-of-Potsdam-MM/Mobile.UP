@@ -68,6 +68,8 @@ import { AlertProvider } from '../providers/alert/alert';
 import { MobileUPErrorHandler } from "../library/errorHandler";
 import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
 
+import { MomentPipe } from '../pipes/moment/moment';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
@@ -131,7 +133,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedPracticePage,
     PopoverButton,
     AppInfoPage,
-    TransportPage
+    TransportPage,
+    MomentPipe
   ],
   imports: [
     HttpClientModule,
