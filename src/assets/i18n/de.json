@@ -183,7 +183,9 @@
     "transport": {
       "title": "Nahverkehr",
       "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
-      "journeys": "Farten ab "
+      "journeys": "Fahrten ab",
+      "track": "Gleis",
+      "cancelled": "Fällt aus"
     },
     "reflectUP": {
       "title": "Reflect.UP"

@@ -23,6 +23,8 @@ export class TransportPage {
   isEnd = false;
   maxJourneys = 15;
 
+  error = null;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -66,6 +68,8 @@ export class TransportPage {
       this.campusid = '900230133';
     }
 
+    this.error = null;
+
     let params: HttpParams = new HttpParams()
       .append("maxJourneys", this.maxJourneys.toString())
       .append("format", "json")
@@ -78,13 +82,11 @@ export class TransportPage {
         this.departures = res.Departure;
       } else if (res && res.Departure && infiniteScroll) {
         var i;
-        console.log(this.departures.length);
         for (i = 0; i < res.Departure.length; i++) {
           if (!this.isInArray(this.departures, res.Departure[i])) {
             this.departures.push(res.Departure[i]);
           }
         }
-        console.log(this.departures.length);
       }
 
       if (this.maxJourneys > this.departures.length) {
@@ -94,12 +96,14 @@ export class TransportPage {
       if (refresher) {
         refresher.complete();
       }
+
       this.hardRefresh = false;
       this.isLoaded = true;
       if (infiniteScroll) { infiniteScroll.complete(); }
     }, error => {
       if (infiniteScroll) { infiniteScroll.complete(); }
       console.log(error);
+      this.error = error;
     });
   }
 

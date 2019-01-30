@@ -23,23 +23,22 @@
   </p>
 
   <div align="center" *ngIf="isLoaded && departures[0]">
-    <ion-card>
-      <ion-card-content>
-        {{ "page.transport.journeys" | translate}} {{departures[0].stop}}
-      </ion-card-content>
-    </ion-card>
+    <ion-item-divider>
+      {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
+    </ion-item-divider>
 
     <ion-list *ngFor="let dep of departures">
       <ion-item>
-          <ion-avatar item-start>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'RB'" name="custom-bahn" style="zoom:2.0;"></ion-icon>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'S'" name="custom-sbahn" style="zoom:2.0;"></ion-icon>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'Bus'" name="custom-bus" style="zoom:2.0;"></ion-icon>
-          </ion-avatar>
-          <h2 *ngIf="dep.name">{{ dep.name }}</h2>
-          <p *ngIf="dep.direction">{{ dep.direction }}</p>
-          <ion-badge item-end>{{ dep.time | moment:'HH:mm' }}</ion-badge>
-        </ion-item>
+        <ion-avatar item-start>
+          <ion-icon *ngIf="dep.Product.catOut.trim() == 'RB'" name="custom-bahn" style="zoom:2.0;"></ion-icon>
+          <ion-icon *ngIf="dep.Product.catOut.trim() == 'S'" name="custom-sbahn" style="zoom:2.0;"></ion-icon>
+          <ion-icon *ngIf="dep.Product.catOut.trim() == 'Bus'" name="custom-bus" style="zoom:2.0;"></ion-icon>
+        </ion-avatar>
+        <h2 *ngIf="dep.name">{{ dep.name }}</h2>
+        <p *ngIf="dep.direction">{{ dep.direction }}<span *ngIf="dep.track && !dep.rtTrack">, {{ "page.transport.track" | translate}}: {{ dep.track }}</span><span *ngIf="dep.track && dep.rtTrack">, {{ "page.transport.track" | translate}}: {{ dep.rtTrack }}</span></p>
+        <ion-badge *ngIf="!dep.cancelled" style="font-weight: 300;" item-end>{{ dep.time | moment:'HH:mm' }}</ion-badge>
+        <ion-badge *ngIf="dep.cancelled" item-end class="cancelled">{{ "page.transport.cancelled" | translate}}</ion-badge>
+      </ion-item>
     </ion-list>
 
     <ion-infinite-scroll *ngIf="!isEnd" (ionInfinite)="doInfinite($event)">
