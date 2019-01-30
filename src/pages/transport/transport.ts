@@ -1,5 +1,5 @@
-import { Component, Host } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, InfiniteScroll, Platform } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
 import { IConfig, IJourneyResponse } from "../../library/interfaces";
