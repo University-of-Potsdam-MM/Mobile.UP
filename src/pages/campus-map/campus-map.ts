@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the CampusMapPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {ICampus, IConfig} from "../../library/interfaces";
+import {ConfigProvider} from "../../providers/config/config";
+import * as leaflet from 'leaflet';
+import {IMapsResponse, IMapsResponseObject} from "../../library/IGeoJson";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 @IonicPage()
 @Component({
@@ -17,16 +15,16 @@ export class CampusMapComponent implements AfterViewInit{
 
   query:string;
 
-  config:IAppConfig = ConfigProvider.config;
+  config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
   selectedCampus:ICampus;
   categories:string[] = [];
-  layers:{[name:string]:GeoJSON} = {};
+  layers:{[name:string]:leaflet.GeoJSON} = {};
 
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
 
-  constructor(private wsProvider: WebServiceProvider) {
+  constructor(private settings:SettingsProvider) {
   }
 
   /**
@@ -54,16 +52,14 @@ export class CampusMapComponent implements AfterViewInit{
    * @description Retrieves map data from server
    */
   loadGeoJson(){
-    // this.wsProvider.getMapData().subscribe(
-    //   (response:IMapsResponse) => {
-    //     this.geoJSON = response;
-    //   },
-    //   error => {
-    //     console.log(error)
-    //   }
-    // )
-    // TODO: uncomment code above when cors issue is resolved
-    this.geoJSON = GeoResponse.response;
+    this.wsProvider.getMapData().subscribe(
+      (response:IMapsResponse) => {
+        this.geoJSON = response;
+      },
+      error => {
+        console.log(error)
+      }
+    )
   }
 
   /**
@@ -96,7 +92,8 @@ export class CampusMapComponent implements AfterViewInit{
   getDefaultCampus():ICampus{
     return this.config.campusmap.campi.filter(
       (campus:ICampus) => {
-        return campus.id == this.config.general.location.campus
+        this.settings.getSettingValue("campus");
+        // return campus.id == this.config.general.location.campus
       }
     )[0]
   }

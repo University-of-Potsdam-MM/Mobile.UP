@@ -69,6 +69,7 @@ import { MobileUPErrorHandler } from "../library/errorHandler";
 import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
 
 import { MomentPipe } from '../pipes/moment/moment';
+import { WebServiceProvider } from '../providers/web-service/web-service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -223,7 +224,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     ConnectionProvider,
     MapsProvider,
     AlertProvider,
-    ErrorLoggingProvider
+    ErrorLoggingProvider,
+    WebServiceProvider
   ]
 })
 export class AppModule {

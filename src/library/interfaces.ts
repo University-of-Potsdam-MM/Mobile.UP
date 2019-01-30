@@ -133,6 +133,7 @@ export interface IConfig {
   webservices:IWebServices;
   policies:IPolicies;
   general:IGeneral;
+  campusmap:ICampusMapConfig;
 }
 
 export interface IGeneral {
@@ -501,4 +502,25 @@ export interface IProduct {
 
 export interface IJourneyResponse {
   Departure: IDeparture[];
+}
+
+/* ~~~ CampusMap ~~~ */
+
+export interface ICoordinates {
+  latitude:number;
+  longitude:number;
+}
+
+export type ILatLongBounds = [number, number][]
+
+export interface ICampus {
+  id:number;
+  name:string;
+  pretty_name:string;
+  coordinates:ICoordinates;
+  lat_long_bounds:ILatLongBounds;
+}
+
+export interface ICampusMapConfig {
+  campi: ICampus[];
 }

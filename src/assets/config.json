@@ -4,69 +4,69 @@
     "persons": {
       "componentName": "persons",
       "icon": "people",
-      "selected":false
+      "selected": false
     },
     "news": {
       "componentName": "news",
       "icon": "paper",
-      "selected":false
+      "selected": false
     },
     "openingHours": {
       "componentName": "openingHours",
       "icon": "time",
-      "selected":false
+      "selected": false
     },
     "events": {
       "componentName": "events",
       "icon": "calendar",
-      "selected":false,
+      "selected": false,
       "hide": true
     },
     "rooms": {
       "componentName": "rooms",
       "icon": "square-outline",
-      "selected":false
+      "selected": false
     },
     "roomplan": {
       "componentName": "roomplan",
       "icon": "grid",
-      "selected":false
+      "selected": false
     },
     "mensa": {
       "componentName": "mensa",
       "icon": "restaurant",
-      "selected":true
+      "selected": true
     },
     "library": {
       "componentName": "library",
       "icon": "bookmark",
-      "selected":false
+      "selected": false
     },
     "practice": {
       "componentName": "practice",
       "icon": "briefcase",
-      "selected":false
+      "selected": false
     },
     "grades": {
       "componentName": "grades",
       "icon": "book",
-      "selected":false
+      "selected": false
     },
     "emergency": {
       "componentName": "emergency",
       "icon": "pulse",
-      "selected":false
+      "selected": false
     },
     "imprint": {
       "componentName": "imprint",
       "icon": "information-circle",
-      "selected":false,
-      "hide":true
+      "selected": false,
+      "hide": true
     },
     "athletics": {
       "componentName": "athletics",
       "icon": "american-football",
-      "selected":false,
+      "selected": false,
       "url": "https://www.uni-potsdam.de/hochschulsport/"
     },
     "unishop": {
@@ -109,15 +109,15 @@
     "settings": {
       "componentName": "settings",
       "icon": "settings",
-      "selected":false,
-      "hide":true
+      "selected": false,
+      "hide": true
     },
-    "timetable":{
+    "timetable": {
       "componentName": "timetable",
       "icon": "calendar",
       "selected": true
     },
-    "app-info":{
+    "app-info": {
       "componentName": "app-info",
       "icon": "info",
       "selected": "false",
@@ -143,19 +143,94 @@
     "campusmap": {
       "componentName": "campusmap",
       "icon": "map",
-      "selected": false,
+      "selected": false
+    },
+    "authorization": {
+      "credentials": {
+        "method": "credentials",
+        "moodleLoginEndpoint": "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
+        "accessToken": "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
+        "service": "moodle_mobile_app",
+        "moodlewsrestformat": "json"
+      },
+      "sso": {
+        "ssoUrls": {
+          "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
+          "login": "https://moodle2.uni-potsdam.de/login/index.php",
+          "tokenUrl": "moodlemobile://token=",
+          "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
+          "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
+          "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
+          "pluginUrlParams": {
+            "service": "local_mobile",
+            "passport": "1002"
+          }
+        }
+      },
+      "oidc": {
+        "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+        "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
+        "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
+        "contentType": "application/x-www-form-urlencoded",
+        "grantType_password": "password",
+        "grantType_refresh": "refresh_token",
+        "scope": "openid",
+        "userInfoParams": {
+          "schema": "openid"
+        }
+      }
+    },
+    "webservices": {
+      "endpoint": {
+        "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
+        "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
+        "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
+        "practiceJobPostings": "https://www.uni-potsdam.de/abindiepraxis/download/",
+        "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
+        "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
+        "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
+        "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
+        "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
+        "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:",
+        "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
+        "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
+        "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",
+        "emergencyCalls": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI",
+        "logging": "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log",
+        "transport": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
+      },
+      "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
+    },
+    "policies": {
+      "impressumTemplateDE": "<h2>Herausgeber<\/h2>\r\n<p>Universit&auml;t Potsdam<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<\/p>\r\n<p>Telefon: <a href=\"tel:0331 977-0\">0331 977-0<\/a><br \/>Fax: 0331 97 21 63<br \/>E-Mail:&nbsp;<a href=\"mailto:buero.praesident@uni-potsdam.de\">buero.praesident@uni-potsdam.de<\/a><\/p>\r\n<h2>Rechtsform und gesetzliche Vertretung<\/h2>\r\n<p>Die Universit&auml;t Potsdam ist eine K&ouml;rperschaft des &Ouml;ffentlichen Rechts. Sie wird gesetzlich vertreten durch Prof. Oliver G&uuml;nther, Ph.D., Pr&auml;sident der Universit&auml;t Potsdam, Am Neuen Palais 10, 14469 Potsdam.<\/p>\r\n<h2>Zust&auml;ndige Aufsichtsbeh&ouml;rde<\/h2>\r\n<p>Ministerium f&uuml;r Wissenschaft, Forschung und Kultur des Landes Brandenburg&nbsp;<br \/>Dortustr. 36&nbsp;<br \/>14467 Potsdam<\/p>\r\n<p>Telefon: <a href=\"tel:0331 866 49 99\">0331 866 49 99<\/a><br \/>E-Mail:&nbsp;<a href=\"mailto:presse@mwfk.brandenburg.de\">presse@mwfk.brandenburg.de<\/a><\/p>\r\n<h2>Umsatzsteueridentifikationsnummer<\/h2>\r\n<p>DE138408327<\/p>\r\n<h2>Inhaltliche Verantwortlichkeit i. S. v. &sect; 5 TMG und &sect; 55 Abs. 2 RStV<\/h2>\r\n<p>Der App Store Account der Universit&auml;t Potsdam und der Dienst Mobile.UP werden von Frau Prof. Dr. Ulrike Lucke betreut:<br \/><br \/>Prof. Dr. Ulrike Lucke<br \/>Institut f&uuml;r Informatik &amp; Computational Science<br \/>August-Bebel-Stra&szlig;e 89<br \/>14482 Potsdam<br \/><br \/>Telefon: <a href=\"tel:0331 977-3023\">0331 977-3023<\/a><br \/>Fax: 0331 977-3042<br \/><br \/>E-Mail:&nbsp;<a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><\/p>\r\n<p>Teile dieser Arbeit wurden aus Mitteln des Bundesministeriums f&uuml;r Bildung und Forschung unter dem F&ouml;rderkennzeichen 01PL11037 gef&ouml;rdert.<\/p>\r\n<h2>Haftungsausschluss<\/h2>\r\n<p>F&uuml;r die Punkte Haftung, Urheberrecht und Datenschutz gilt die <a href=\"https:\/\/www.uni-potsdam.de\/fileadmin01\/projects\/zim\/files\/1998benutzerordnung_zeik.pdf\">Nutzungsordnung des ZIM<\/a>. Die Haftung erfolgt ausschlie&szlig;lich f&uuml;r die Erstinstallation und weiteren Updates aus dem App Store oder anderen offiziellen Quellen. Applikationen Dritter k&ouml;nnen an einigen Stellen in Mobile.UP verlinkt werden. Diese werden jedoch separat installiert und beinhalten eigene Nutzungsrichtlinien. F&uuml;r die Inhalte solcher Apps zeichnet sich die Universit&auml;t Potsdam nicht verantwortlich.<br \/><br \/>Bei dem Abruf von Daten zu Stundenpl&auml;nen und Noten&uuml;bersichten wird der mobile Zugriff auf die Sudierendendatenverwaltung PULS der Universit&auml;t Potsdam verwendet. Dazu notwendig ist der personenbezogene Login der Universit&auml;t Potsdam. Damit werden Leistungsdaten des Studierenden &uuml;bertragen. Der Zugriff ist technisch abgesichert und die Daten werden nicht zwischengespeichert. Die Verwendung dieses Dienstes erfolgt durch den Nutzer freiwillig.<br \/><br \/>Die Fahrplandaten werden mit freundlicher Genehmigung des VBB angeboten. S&auml;mtliche Ergebnisdaten sind ohne Gew&auml;hr.<\/p>\r\n<h3>Haftung f&uuml;r Inhalte<\/h3>\r\n<p>Die Inhalte unserer App wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t&nbsp;der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen. Als Diensteanbieter sind wir gem&auml;&szlig; &sect; 7 Abs.1 TMG f&uuml;r eigene Inhalte nach den allgemeinen Gesetzen verantwortlich. Nach &sect;&sect; 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, &uuml;bermittelte oder gespeicherte fremde Informationen zu &uuml;berwachen oder nach Umst&auml;nden zu forschen, die auf eine rechtswidrige T&auml;tigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unber&uuml;hrt. Eine diesbez&uuml;gliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung m&ouml;glich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.<\/p>\r\n<h3>Haftung f&uuml;r Links<\/h3>\r\n<p>Unser Angebot enth&auml;lt Links zu externen Diensten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb k&ouml;nnen wir f&uuml;r diese fremden Inhalte auch keine Gew&auml;hr &uuml;bernehmen. F&uuml;r die Inhalte der verlinkten Angebote ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Die verlinkten Angebote wurden zum Zeitpunkt der Verlinkung auf m&ouml;gliche Rechtsverst&ouml;&szlig;e &uuml;berpr&uuml;ft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Inhalte ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.<\/p>",
+      "impressumTemplateEN": "<h2>Publisher<\/h2>\r\n<p>University of Potsdam<br \/>Am Neuen Palais 10<br \/>D-14469 Potsdam <\/p>\r\n<p>Tel.: <a href=\"tel:+49331 977-0\">+49331 977-0<\/a><br \/>Fax: +49 331 97 21 63 <br \/>Email: <a href=\"mailto:buero.praesident@uni-potsdam.de\">buero.praesident@uni-potsdam.de<\/a><\/p>\r\n<h2>Legal structure and representation<\/h2>\r\n<p>The University of Potsdam is a corporation under public law. It is legally represented by Prof. Oliver G&uuml;nther, Ph.D., president of the University of Potsdam, Am Neuen Palais 10, D-14469 Potsdam. <\/p>\r\n<h2>Responsible regulatory authority<\/h2>\r\n<p>Ministry of Science, Research, and Culture for the State of Brandenburg<br \/>Dortustrasse 36 <br \/>D-14467 Potsdam<\/p>\r\n<p>Tel.: <a href=\"tel:+49 331 866 49 99\">+49 331 866 49 99<\/a><br \/>Email: <a href=\"mailto:presse@mwfk.brandenburg.de\">presse@mwfk.brandenburg.de<\/a><\/p>\r\n<h2>VAT identification number<\/h2>\r\n<p>DE138408327 <\/p>\r\n<h2>Responsibility for the contents in terms of Section 5 of the German Telemedia Act (TMG) and Section 55, Paragraph 2 of the Interstate Broadcasting Agreement (RStV)<\/h2>\r\n<p>The App Store Account of the University of Potsdam and the service Mobile.UP are supervised by Prof. Dr. Ulrike Lucke:<br \/><br \/>Prof. Dr. Ulrike Lucke<br \/>Institut f&uuml;r Informatik &amp; Computational Science<br \/>August-Bebel-Stra&szlig;e 89<br \/>14482 Potsdam<br \/><br \/>Telefon: <a href=\"tel:+49331 977-3023\">+49331 977-3023<\/a><br \/>Fax: 0331 977-3042<br \/><br \/>E-Mail: <a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><\/p>\r\n<p>Parts of this work were funded by the Federal Ministry of Education and Research (Grant 01PL11037).<\/p>\r\n<h2>Disclaimer<\/h2>\r\n<p>Liability, copyright and data protection are regulated by the <a href=\"https:\/\/www.uni-potsdam.de\/fileadmin01\/projects\/zim\/files\/1998benutzerordnung_zeik.pdf\">terms of use of the ZIM</a>. The liability sets in exclusively for the first installation and further updates from the App Store or other official sources. Third-party applications may be linked in Mobile.UP. These are installed separately and contain their own user guidelines. The University of Potsdam is not responsible for the content of such apps.<\/p>\r\n<p>When retrieving data concerning timetables and grade overviews, mobile access to the student data management site PULS of the University of Potsdam is used. This requires the personal login. This way data about a student&rsquo;s performance is transferred. Access is technically secure and the data is cached for just one day. Using this service is decided voluntarily. Information regarding the departure board is provided by the VBB and should be consumed without any guarantee.<\/p>\r\n<h3>Liability for Content<\/h3>\r\n<p>The contents of our website have been prepared with the greatest care. However, we cannot assume any liability for the correctness, completeness or topicality of the contents. As a service provider, we are responsible for our own content on these pages in accordance with Section 7, Paragraph 1 of the German Telemedia Act (TMG). According to Sections 8 through 10 of the TMG, however, as service providers we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. Obligations to remove or block the use of information in accordance with general laws remain unaffected by this. However, liability in this respect is only possible from the point in time that knowledge was gained of a specific violation of the law. We will remove such contents immediately upon becoming aware of any such violations of the law.<\/p>\r\n<h3>Liability for Links<\/h3>\r\n<p>Our website contains links to external, third-party websites, the contents of which we have no influence upon.&nbsp; We therefore cannot assume any liability for these external contents. The respective provider or operator of the website is always responsible for the contents of the linked sites. The linked websites were checked for possible legal infringements at the time the link was set. Illegal contents were not identified at that time. Ongoing monitoring of the contents of the linked pages, however, is unreasonable without specific evidence of a legal violation. If we become aware of any such violations, we will remove such links immediately.<\/p>\r\n<h3>Copyright<\/h3>\r\n<p>The contents and works created by the website operators on these pages are subject to German copyright law. Duplication, editing, distribution or any sort of use beyond the limits of copyright law requires the written consent of the respective author or creator. Downloads and copies of this website are solely permitted for private, non-commercial use. Insofar as the contents on this website were not created by the operator, the copyrights of third parties are respected. The contents of third parties are expressly marked as such. Should you nevertheless become aware of a copyright infringement, please notify us pursuant to this. We will remove such contents immediately upon being made aware of any such infringement.",
+      "tosTemplateDE": "Nutzungsbedingungen: Deutsch",
+      "tosTemplateEN": "Nutzungsbedingungen: Englisch",
+      "privacyTemplateDE": "<h2>Informationen zum Datenschutz<\/h2><h2>Verantwortlicher f&uuml;r die Datenverarbeitung:<\/h2>Universit&auml;t Potsdam<br \/>vertreten durch den Pr&auml;sidenten, Herrn Prof. Oliver G&uuml;nther, Ph.D.<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-0\">+49 331 977-0<\/a><br \/>Telefax: +49 331-97 21 63<br \/><a href=\"www.uni-potsdam.de\">www.uni-potsdam.de<\/a><br \/><h2>Datenschutzbeauftragter:<\/h2>Dr. Marek Kneis<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-124409\">+49 331 977-124409<\/a><br \/>Telefax: +49 331 977- 701821<br \/>E-Mail: <a href=\"mailto:datenschutz@uni-potsdam.de\">datenschutz@uni-potsdam.de<\/a><br \/><h2>Zweck der Datenverarbeitung:<\/h2>Ihre Daten werden verarbeitet, um Ihnen den Dienst Mobile.UP im Rahmen der Smartphone-App zur Verf&uuml;gung stellen zu k&ouml;nnen.<br \/>Diese Smartphone-App erm&ouml;glicht die Nutzung zentraler IT-Dienste der Hochschule. Die innerhalb der App angebotenen Features werden den Nutzenden mithilfe von Web-Services in der App angezeigt. S&auml;mtliche Daten&uuml;bertragungen sind SSL (OpenSSL\/1.0.1q) verschl&uuml;sselt. Der Zugriff auf nicht-&ouml;ffentlich-zug&auml;ngliche Informationen (pers&ouml;nlicher Stundenplan, die pers&ouml;nliche Leistungs&uuml;bersicht, E-Mail.UP, Moodle.UP, Personensuche, Reflect.UP) erfolgt nach vorherige Authentifizierung mittels Benutzername und Passwort durch den Nutzenden. Infolge der Authentifizierung werden E-Mail-Adresse, Benutzername, Vorname, Nachname und Access-Token des Nutzenden abgerufen und f&uuml;r die Dauer des Logins zusammen mit dem Passwort verschl&uuml;sselt auf dem lokalen Ger&auml;t gespeichert. Dies erm&ouml;glicht den komfortablen Zugriff auf die nicht-&ouml;ffentlichen-zug&auml;nglichen Dienste. Dem Nutzenden steht es offen seine App zu personalisieren, indem er die Nutzung von weiteren pers&ouml;nlichen Informationen (aktuell seine Studieng&auml;nge) erm&ouml;glicht.<br \/>Im Rahmen der Nutzung der Applikation werden abgerufene Informationen durch den Nutzenden f&uuml;r einen Tag auf dem Ger&auml;t zwischengespeichert und nach Ablauf der Frist automatisch gel&ouml;scht. Mit der Deinstallation der Applikation werden alle gespeicherten Daten auf dem Endger&auml;t gel&ouml;scht.<br \/>Zur Verbesserung des Dienstes werden Fehler-Berichte in anonymisierter Form &uuml;bertragen und zur Auswertung gespeichert. Hierf&uuml;r wird eine UUID generiert, welche keine R&uuml;ckschl&uuml;sse auf die Identit&auml;t einer Person erm&ouml;glicht.<br \/><h2>Rechtsgrundlage der Datenverarbeitung<\/h2>Rechtsgrundlage f&uuml;r die Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. e DSGVO i.V.m. &sect; 14 Abs. 9 BbgHG. <br \/><h2>Dauer der Datenspeicherung<\/h2>Die auf dem Ger&auml;t gespeicherten personenbezogenen Daten sind an die G&uuml;ltigkeit des zentralen Universit&auml;ts-Accounts gekoppelt und verlieren durch dessen L&ouml;schung ihre G&uuml;ltigkeit.<br \/><h2>&Uuml;bermittlung der Daten an Dritte<\/h2>Eine &Uuml;bermittlung Ihrer Daten an Dritte findet nicht statt.<br \/><h2>Ihre Rechte:<\/h2>Sie haben das Recht, von uns Auskunft &uuml;ber die Verarbeitung Sie betreffender, personenbezogener Daten zu verlangen. Dieses Auskunftsrecht umfasst neben einer Kopie der personenbezogenen Daten auch die Zwecke der Datenverarbeitung, Datenempf&auml;nger sowie die Speicherdauer.<br \/>Sollten unrichtige personenbezogene Daten verarbeitet werden, k&ouml;nnen Sie von uns die Berichtigung dieser Daten verlangen. Liegen die gesetzlichen Voraussetzungen aus Art. 17 bzw. 18 DSGVO vor, steht Ihnen zudem grunds&auml;tzlich das Recht auf L&ouml;schung personenbezogener Daten oder auf eine Einschr&auml;nkung der Verarbeitung zu. Bitte beachten Sie, dass eine eingeschr&auml;nkte Verarbeitung der Daten unter Umst&auml;nden nicht m&ouml;glich ist. Sie haben das Recht, Ihre personenbezogenen Daten in einem strukturierten, g&auml;ngigen und maschinenlesebaren Format zu erhalten oder die &Uuml;bermittlung an einen anderen Verantwortlichen zu verlangen (Art. 20 DSGVO). <br \/>Des Weiteren k&ouml;nnen Sie unter den Voraussetzungen von Art. 21 DSGVO der Verarbeitung widersprechen.<br \/>Wir m&ouml;chten Sie darum bitten, sich zur Aus&uuml;bung Ihrer oben genannten Rechte auf Widerspruch, Berichtigung, L&ouml;schung, Daten&uuml;bertragbarkeit oder Einschr&auml;nkung der Verarbeitung zu wenden an:<br \/><a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><br \/>Auskunft k&ouml;nnen Sie abweichend davon beim Dezernat f&uuml;r Personal- und Rechtsangelegenheiten beantragen. Das Formular f&uuml;r Auskunftsbegehren&nbsp;&nbsp;k&ouml;nnen Sie &uuml;ber die Webseite des Datenschutzbeauftragten (<a href=\"https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html\">https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html<\/a>) abrufen.<br \/>Falls Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten nicht rechtm&auml;&szlig;ig erfolgt, haben Sie das Recht, bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde f&uuml;r den Datenschutz eine Beschwerde einzureichen.",
+      "privacyTemplateEN": "<h2>Informationen zum Datenschutz<\/h2><h2>Verantwortlicher f&uuml;r die Datenverarbeitung:<\/h2>Universit&auml;t Potsdam<br \/>vertreten durch den Pr&auml;sidenten, Herrn Prof. Oliver G&uuml;nther, Ph.D.<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-0\">+49 331 977-0<\/a><br \/>Telefax: +49 331-97 21 63<br \/><a href=\"www.uni-potsdam.de\">www.uni-potsdam.de<\/a><br \/><h2>Datenschutzbeauftragter:<\/h2>Dr. Marek Kneis<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-124409\">+49 331 977-124409<\/a><br \/>Telefax: +49 331 977- 701821<br \/>E-Mail: <a href=\"mailto:datenschutz@uni-potsdam.de\">datenschutz@uni-potsdam.de<\/a><br \/><h2>Zweck der Datenverarbeitung:<\/h2>Ihre Daten werden verarbeitet, um Ihnen den Dienst Mobile.UP im Rahmen der Smartphone-App zur Verf&uuml;gung stellen zu k&ouml;nnen.<br \/>Diese Smartphone-App erm&ouml;glicht die Nutzung zentraler IT-Dienste der Hochschule. Die innerhalb der App angebotenen Features werden den Nutzenden mithilfe von Web-Services in der App angezeigt. S&auml;mtliche Daten&uuml;bertragungen sind SSL (OpenSSL\/1.0.1q) verschl&uuml;sselt. Der Zugriff auf nicht-&ouml;ffentlich-zug&auml;ngliche Informationen (pers&ouml;nlicher Stundenplan, die pers&ouml;nliche Leistungs&uuml;bersicht, E-Mail.UP, Moodle.UP, Personensuche, Reflect.UP) erfolgt nach vorherige Authentifizierung mittels Benutzername und Passwort durch den Nutzenden. Infolge der Authentifizierung werden E-Mail-Adresse, Benutzername, Vorname, Nachname und Access-Token des Nutzenden abgerufen und f&uuml;r die Dauer des Logins zusammen mit dem Passwort verschl&uuml;sselt auf dem lokalen Ger&auml;t gespeichert. Dies erm&ouml;glicht den komfortablen Zugriff auf die nicht-&ouml;ffentlichen-zug&auml;nglichen Dienste. Dem Nutzenden steht es offen seine App zu personalisieren, indem er die Nutzung von weiteren pers&ouml;nlichen Informationen (aktuell seine Studieng&auml;nge) erm&ouml;glicht.<br \/>Im Rahmen der Nutzung der Applikation werden abgerufene Informationen durch den Nutzenden f&uuml;r einen Tag auf dem Ger&auml;t zwischengespeichert und nach Ablauf der Frist automatisch gel&ouml;scht. Mit der Deinstallation der Applikation werden alle gespeicherten Daten auf dem Endger&auml;t gel&ouml;scht.<br \/>Zur Verbesserung des Dienstes werden Fehler-Berichte in anonymisierter Form &uuml;bertragen und zur Auswertung gespeichert. Hierf&uuml;r wird eine UUID generiert, welche keine R&uuml;ckschl&uuml;sse auf die Identit&auml;t einer Person erm&ouml;glicht.<br \/><h2>Rechtsgrundlage der Datenverarbeitung<\/h2>Rechtsgrundlage f&uuml;r die Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. e DSGVO i.V.m. &sect; 14 Abs. 9 BbgHG. <br \/><h2>Dauer der Datenspeicherung<\/h2>Die auf dem Ger&auml;t gespeicherten personenbezogenen Daten sind an die G&uuml;ltigkeit des zentralen Universit&auml;ts-Accounts gekoppelt und verlieren durch dessen L&ouml;schung ihre G&uuml;ltigkeit.<br \/><h2>&Uuml;bermittlung der Daten an Dritte<\/h2>Eine &Uuml;bermittlung Ihrer Daten an Dritte findet nicht statt.<br \/><h2>Ihre Rechte:<\/h2>Sie haben das Recht, von uns Auskunft &uuml;ber die Verarbeitung Sie betreffender, personenbezogener Daten zu verlangen. Dieses Auskunftsrecht umfasst neben einer Kopie der personenbezogenen Daten auch die Zwecke der Datenverarbeitung, Datenempf&auml;nger sowie die Speicherdauer.<br \/>Sollten unrichtige personenbezogene Daten verarbeitet werden, k&ouml;nnen Sie von uns die Berichtigung dieser Daten verlangen. Liegen die gesetzlichen Voraussetzungen aus Art. 17 bzw. 18 DSGVO vor, steht Ihnen zudem grunds&auml;tzlich das Recht auf L&ouml;schung personenbezogener Daten oder auf eine Einschr&auml;nkung der Verarbeitung zu. Bitte beachten Sie, dass eine eingeschr&auml;nkte Verarbeitung der Daten unter Umst&auml;nden nicht m&ouml;glich ist. Sie haben das Recht, Ihre personenbezogenen Daten in einem strukturierten, g&auml;ngigen und maschinenlesebaren Format zu erhalten oder die &Uuml;bermittlung an einen anderen Verantwortlichen zu verlangen (Art. 20 DSGVO). <br \/>Des Weiteren k&ouml;nnen Sie unter den Voraussetzungen von Art. 21 DSGVO der Verarbeitung widersprechen.<br \/>Wir m&ouml;chten Sie darum bitten, sich zur Aus&uuml;bung Ihrer oben genannten Rechte auf Widerspruch, Berichtigung, L&ouml;schung, Daten&uuml;bertragbarkeit oder Einschr&auml;nkung der Verarbeitung zu wenden an:<br \/><a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><br \/>Auskunft k&ouml;nnen Sie abweichend davon beim Dezernat f&uuml;r Personal- und Rechtsangelegenheiten beantragen. Das Formular f&uuml;r Auskunftsbegehren&nbsp;&nbsp;k&ouml;nnen Sie &uuml;ber die Webseite des Datenschutzbeauftragten (<a href=\"https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html\">https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html<\/a>) abrufen.<br \/>Falls Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten nicht rechtm&auml;&szlig;ig erfolgt, haben Sie das Recht, bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde f&uuml;r den Datenschutz eine Beschwerde einzureichen."
+    },
+    "general": {
+      "tokenRefreshBoundary": 3600
+    },
+    "campusmap": {
       "campi": [
         {
           "id": 1,
-          "name": "neuespalais" ,
+          "name": "neuespalais",
           "pretty_name": "Neues Palais",
           "coordinates": {
             "latitude": 52.40105,
             "longitude": 13.01207
           },
           "lat_long_bounds": [
-            [52.4038, 13.0078],
-            [52.39706, 13.01884]
+            [
+              52.4038,
+              13.0078
+            ],
+            [
+              52.39706,
+              13.01884
+            ]
           ]
         },
         {
@@ -167,8 +242,14 @@
             "longitude": 12.96941
           },
           "lat_long_bounds": [
-            [52.413, 12.9721],
-            [52.4057, 12.9802]
+            [
+              52.413,
+              12.9721
+            ],
+            [
+              52.4057,
+              12.9802
+            ]
           ]
         },
         {
@@ -180,78 +261,17 @@
             "longitude": 13.1288
           },
           "lat_long_bounds": [
-            [52.3945, 13.1258],
-            [52.3912, 13.1338]
+            [
+              52.3945,
+              13.1258
+            ],
+            [
+              52.3912,
+              13.1338
+            ]
           ]
         }
       ]
     }
-  },
-  "authorization": {
-    "credentials": {
-      "method": "credentials",
-      "moodleLoginEndpoint": "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
-      "accessToken": "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
-      "service": "moodle_mobile_app",
-      "moodlewsrestformat": "json"
-    },
-    "sso": {
-      "ssoUrls": {
-        "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
-        "login": "https://moodle2.uni-potsdam.de/login/index.php",
-        "tokenUrl": "moodlemobile://token=",
-        "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
-        "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
-        "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
-        "pluginUrlParams":{
-          "service":"local_mobile",
-          "passport":"1002"
-        }
-      }
-    },
-    "oidc": {
-      "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
-      "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
-      "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
-      "contentType": "application/x-www-form-urlencoded",
-      "grantType_password": "password",
-      "grantType_refresh": "refresh_token",
-      "scope": "openid",
-      "userInfoParams":{
-        "schema":"openid"
-      }
-    }
-  },
-  "webservices": {
-    "endpoint":{
-      "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
-      "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
-      "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",
-      "practiceJobPostings": "https://www.uni-potsdam.de/abindiepraxis/download/",
-      "news": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/",
-      "roomsSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
-      "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
-      "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
-      "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
-      "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:",
-      "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
-      "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
-      "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",
-      "emergencyCalls": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI",
-      "logging": "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log",
-      "transport": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
-    },
-    "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"
-  },
-  "policies": {
-    "impressumTemplateDE": "<h2>Herausgeber<\/h2>\r\n<p>Universit&auml;t Potsdam<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<\/p>\r\n<p>Telefon: <a href=\"tel:0331 977-0\">0331 977-0<\/a><br \/>Fax: 0331 97 21 63<br \/>E-Mail:&nbsp;<a href=\"mailto:buero.praesident@uni-potsdam.de\">buero.praesident@uni-potsdam.de<\/a><\/p>\r\n<h2>Rechtsform und gesetzliche Vertretung<\/h2>\r\n<p>Die Universit&auml;t Potsdam ist eine K&ouml;rperschaft des &Ouml;ffentlichen Rechts. Sie wird gesetzlich vertreten durch Prof. Oliver G&uuml;nther, Ph.D., Pr&auml;sident der Universit&auml;t Potsdam, Am Neuen Palais 10, 14469 Potsdam.<\/p>\r\n<h2>Zust&auml;ndige Aufsichtsbeh&ouml;rde<\/h2>\r\n<p>Ministerium f&uuml;r Wissenschaft, Forschung und Kultur des Landes Brandenburg&nbsp;<br \/>Dortustr. 36&nbsp;<br \/>14467 Potsdam<\/p>\r\n<p>Telefon: <a href=\"tel:0331 866 49 99\">0331 866 49 99<\/a><br \/>E-Mail:&nbsp;<a href=\"mailto:presse@mwfk.brandenburg.de\">presse@mwfk.brandenburg.de<\/a><\/p>\r\n<h2>Umsatzsteueridentifikationsnummer<\/h2>\r\n<p>DE138408327<\/p>\r\n<h2>Inhaltliche Verantwortlichkeit i. S. v. &sect; 5 TMG und &sect; 55 Abs. 2 RStV<\/h2>\r\n<p>Der App Store Account der Universit&auml;t Potsdam und der Dienst Mobile.UP werden von Frau Prof. Dr. Ulrike Lucke betreut:<br \/><br \/>Prof. Dr. Ulrike Lucke<br \/>Institut f&uuml;r Informatik &amp; Computational Science<br \/>August-Bebel-Stra&szlig;e 89<br \/>14482 Potsdam<br \/><br \/>Telefon: <a href=\"tel:0331 977-3023\">0331 977-3023<\/a><br \/>Fax: 0331 977-3042<br \/><br \/>E-Mail:&nbsp;<a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><\/p>\r\n<p>Teile dieser Arbeit wurden aus Mitteln des Bundesministeriums f&uuml;r Bildung und Forschung unter dem F&ouml;rderkennzeichen 01PL11037 gef&ouml;rdert.<\/p>\r\n<h2>Haftungsausschluss<\/h2>\r\n<p>F&uuml;r die Punkte Haftung, Urheberrecht und Datenschutz gilt die <a href=\"https:\/\/www.uni-potsdam.de\/fileadmin01\/projects\/zim\/files\/1998benutzerordnung_zeik.pdf\">Nutzungsordnung des ZIM<\/a>. Die Haftung erfolgt ausschlie&szlig;lich f&uuml;r die Erstinstallation und weiteren Updates aus dem App Store oder anderen offiziellen Quellen. Applikationen Dritter k&ouml;nnen an einigen Stellen in Mobile.UP verlinkt werden. Diese werden jedoch separat installiert und beinhalten eigene Nutzungsrichtlinien. F&uuml;r die Inhalte solcher Apps zeichnet sich die Universit&auml;t Potsdam nicht verantwortlich.<br \/><br \/>Bei dem Abruf von Daten zu Stundenpl&auml;nen und Noten&uuml;bersichten wird der mobile Zugriff auf die Sudierendendatenverwaltung PULS der Universit&auml;t Potsdam verwendet. Dazu notwendig ist der personenbezogene Login der Universit&auml;t Potsdam. Damit werden Leistungsdaten des Studierenden &uuml;bertragen. Der Zugriff ist technisch abgesichert und die Daten werden nicht zwischengespeichert. Die Verwendung dieses Dienstes erfolgt durch den Nutzer freiwillig.<br \/><br \/>Die Fahrplandaten werden mit freundlicher Genehmigung des VBB angeboten. S&auml;mtliche Ergebnisdaten sind ohne Gew&auml;hr.<\/p>\r\n<h3>Haftung f&uuml;r Inhalte<\/h3>\r\n<p>Die Inhalte unserer App wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t&nbsp;der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen. Als Diensteanbieter sind wir gem&auml;&szlig; &sect; 7 Abs.1 TMG f&uuml;r eigene Inhalte nach den allgemeinen Gesetzen verantwortlich. Nach &sect;&sect; 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, &uuml;bermittelte oder gespeicherte fremde Informationen zu &uuml;berwachen oder nach Umst&auml;nden zu forschen, die auf eine rechtswidrige T&auml;tigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unber&uuml;hrt. Eine diesbez&uuml;gliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung m&ouml;glich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.<\/p>\r\n<h3>Haftung f&uuml;r Links<\/h3>\r\n<p>Unser Angebot enth&auml;lt Links zu externen Diensten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb k&ouml;nnen wir f&uuml;r diese fremden Inhalte auch keine Gew&auml;hr &uuml;bernehmen. F&uuml;r die Inhalte der verlinkten Angebote ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Die verlinkten Angebote wurden zum Zeitpunkt der Verlinkung auf m&ouml;gliche Rechtsverst&ouml;&szlig;e &uuml;berpr&uuml;ft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Inhalte ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.<\/p>",
-    "impressumTemplateEN": "<h2>Publisher<\/h2>\r\n<p>University of Potsdam<br \/>Am Neuen Palais 10<br \/>D-14469 Potsdam <\/p>\r\n<p>Tel.: <a href=\"tel:+49331 977-0\">+49331 977-0<\/a><br \/>Fax: +49 331 97 21 63 <br \/>Email: <a href=\"mailto:buero.praesident@uni-potsdam.de\">buero.praesident@uni-potsdam.de<\/a><\/p>\r\n<h2>Legal structure and representation<\/h2>\r\n<p>The University of Potsdam is a corporation under public law. It is legally represented by Prof. Oliver G&uuml;nther, Ph.D., president of the University of Potsdam, Am Neuen Palais 10, D-14469 Potsdam. <\/p>\r\n<h2>Responsible regulatory authority<\/h2>\r\n<p>Ministry of Science, Research, and Culture for the State of Brandenburg<br \/>Dortustrasse 36 <br \/>D-14467 Potsdam<\/p>\r\n<p>Tel.: <a href=\"tel:+49 331 866 49 99\">+49 331 866 49 99<\/a><br \/>Email: <a href=\"mailto:presse@mwfk.brandenburg.de\">presse@mwfk.brandenburg.de<\/a><\/p>\r\n<h2>VAT identification number<\/h2>\r\n<p>DE138408327 <\/p>\r\n<h2>Responsibility for the contents in terms of Section 5 of the German Telemedia Act (TMG) and Section 55, Paragraph 2 of the Interstate Broadcasting Agreement (RStV)<\/h2>\r\n<p>The App Store Account of the University of Potsdam and the service Mobile.UP are supervised by Prof. Dr. Ulrike Lucke:<br \/><br \/>Prof. Dr. Ulrike Lucke<br \/>Institut f&uuml;r Informatik &amp; Computational Science<br \/>August-Bebel-Stra&szlig;e 89<br \/>14482 Potsdam<br \/><br \/>Telefon: <a href=\"tel:+49331 977-3023\">+49331 977-3023<\/a><br \/>Fax: 0331 977-3042<br \/><br \/>E-Mail: <a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><\/p>\r\n<p>Parts of this work were funded by the Federal Ministry of Education and Research (Grant 01PL11037).<\/p>\r\n<h2>Disclaimer<\/h2>\r\n<p>Liability, copyright and data protection are regulated by the <a href=\"https:\/\/www.uni-potsdam.de\/fileadmin01\/projects\/zim\/files\/1998benutzerordnung_zeik.pdf\">terms of use of the ZIM</a>. The liability sets in exclusively for the first installation and further updates from the App Store or other official sources. Third-party applications may be linked in Mobile.UP. These are installed separately and contain their own user guidelines. The University of Potsdam is not responsible for the content of such apps.<\/p>\r\n<p>When retrieving data concerning timetables and grade overviews, mobile access to the student data management site PULS of the University of Potsdam is used. This requires the personal login. This way data about a student&rsquo;s performance is transferred. Access is technically secure and the data is cached for just one day. Using this service is decided voluntarily. Information regarding the departure board is provided by the VBB and should be consumed without any guarantee.<\/p>\r\n<h3>Liability for Content<\/h3>\r\n<p>The contents of our website have been prepared with the greatest care. However, we cannot assume any liability for the correctness, completeness or topicality of the contents. As a service provider, we are responsible for our own content on these pages in accordance with Section 7, Paragraph 1 of the German Telemedia Act (TMG). According to Sections 8 through 10 of the TMG, however, as service providers we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. Obligations to remove or block the use of information in accordance with general laws remain unaffected by this. However, liability in this respect is only possible from the point in time that knowledge was gained of a specific violation of the law. We will remove such contents immediately upon becoming aware of any such violations of the law.<\/p>\r\n<h3>Liability for Links<\/h3>\r\n<p>Our website contains links to external, third-party websites, the contents of which we have no influence upon.&nbsp; We therefore cannot assume any liability for these external contents. The respective provider or operator of the website is always responsible for the contents of the linked sites. The linked websites were checked for possible legal infringements at the time the link was set. Illegal contents were not identified at that time. Ongoing monitoring of the contents of the linked pages, however, is unreasonable without specific evidence of a legal violation. If we become aware of any such violations, we will remove such links immediately.<\/p>\r\n<h3>Copyright<\/h3>\r\n<p>The contents and works created by the website operators on these pages are subject to German copyright law. Duplication, editing, distribution or any sort of use beyond the limits of copyright law requires the written consent of the respective author or creator. Downloads and copies of this website are solely permitted for private, non-commercial use. Insofar as the contents on this website were not created by the operator, the copyrights of third parties are respected. The contents of third parties are expressly marked as such. Should you nevertheless become aware of a copyright infringement, please notify us pursuant to this. We will remove such contents immediately upon being made aware of any such infringement.",
-    "tosTemplateDE": "Nutzungsbedingungen: Deutsch",
-    "tosTemplateEN": "Nutzungsbedingungen: Englisch",
-    "privacyTemplateDE": "<h2>Informationen zum Datenschutz<\/h2><h2>Verantwortlicher f&uuml;r die Datenverarbeitung:<\/h2>Universit&auml;t Potsdam<br \/>vertreten durch den Pr&auml;sidenten, Herrn Prof. Oliver G&uuml;nther, Ph.D.<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-0\">+49 331 977-0<\/a><br \/>Telefax: +49 331-97 21 63<br \/><a href=\"www.uni-potsdam.de\">www.uni-potsdam.de<\/a><br \/><h2>Datenschutzbeauftragter:<\/h2>Dr. Marek Kneis<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-124409\">+49 331 977-124409<\/a><br \/>Telefax: +49 331 977- 701821<br \/>E-Mail: <a href=\"mailto:datenschutz@uni-potsdam.de\">datenschutz@uni-potsdam.de<\/a><br \/><h2>Zweck der Datenverarbeitung:<\/h2>Ihre Daten werden verarbeitet, um Ihnen den Dienst Mobile.UP im Rahmen der Smartphone-App zur Verf&uuml;gung stellen zu k&ouml;nnen.<br \/>Diese Smartphone-App erm&ouml;glicht die Nutzung zentraler IT-Dienste der Hochschule. Die innerhalb der App angebotenen Features werden den Nutzenden mithilfe von Web-Services in der App angezeigt. S&auml;mtliche Daten&uuml;bertragungen sind SSL (OpenSSL\/1.0.1q) verschl&uuml;sselt. Der Zugriff auf nicht-&ouml;ffentlich-zug&auml;ngliche Informationen (pers&ouml;nlicher Stundenplan, die pers&ouml;nliche Leistungs&uuml;bersicht, E-Mail.UP, Moodle.UP, Personensuche, Reflect.UP) erfolgt nach vorherige Authentifizierung mittels Benutzername und Passwort durch den Nutzenden. Infolge der Authentifizierung werden E-Mail-Adresse, Benutzername, Vorname, Nachname und Access-Token des Nutzenden abgerufen und f&uuml;r die Dauer des Logins zusammen mit dem Passwort verschl&uuml;sselt auf dem lokalen Ger&auml;t gespeichert. Dies erm&ouml;glicht den komfortablen Zugriff auf die nicht-&ouml;ffentlichen-zug&auml;nglichen Dienste. Dem Nutzenden steht es offen seine App zu personalisieren, indem er die Nutzung von weiteren pers&ouml;nlichen Informationen (aktuell seine Studieng&auml;nge) erm&ouml;glicht.<br \/>Im Rahmen der Nutzung der Applikation werden abgerufene Informationen durch den Nutzenden f&uuml;r einen Tag auf dem Ger&auml;t zwischengespeichert und nach Ablauf der Frist automatisch gel&ouml;scht. Mit der Deinstallation der Applikation werden alle gespeicherten Daten auf dem Endger&auml;t gel&ouml;scht.<br \/>Zur Verbesserung des Dienstes werden Fehler-Berichte in anonymisierter Form &uuml;bertragen und zur Auswertung gespeichert. Hierf&uuml;r wird eine UUID generiert, welche keine R&uuml;ckschl&uuml;sse auf die Identit&auml;t einer Person erm&ouml;glicht.<br \/><h2>Rechtsgrundlage der Datenverarbeitung<\/h2>Rechtsgrundlage f&uuml;r die Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. e DSGVO i.V.m. &sect; 14 Abs. 9 BbgHG. <br \/><h2>Dauer der Datenspeicherung<\/h2>Die auf dem Ger&auml;t gespeicherten personenbezogenen Daten sind an die G&uuml;ltigkeit des zentralen Universit&auml;ts-Accounts gekoppelt und verlieren durch dessen L&ouml;schung ihre G&uuml;ltigkeit.<br \/><h2>&Uuml;bermittlung der Daten an Dritte<\/h2>Eine &Uuml;bermittlung Ihrer Daten an Dritte findet nicht statt.<br \/><h2>Ihre Rechte:<\/h2>Sie haben das Recht, von uns Auskunft &uuml;ber die Verarbeitung Sie betreffender, personenbezogener Daten zu verlangen. Dieses Auskunftsrecht umfasst neben einer Kopie der personenbezogenen Daten auch die Zwecke der Datenverarbeitung, Datenempf&auml;nger sowie die Speicherdauer.<br \/>Sollten unrichtige personenbezogene Daten verarbeitet werden, k&ouml;nnen Sie von uns die Berichtigung dieser Daten verlangen. Liegen die gesetzlichen Voraussetzungen aus Art. 17 bzw. 18 DSGVO vor, steht Ihnen zudem grunds&auml;tzlich das Recht auf L&ouml;schung personenbezogener Daten oder auf eine Einschr&auml;nkung der Verarbeitung zu. Bitte beachten Sie, dass eine eingeschr&auml;nkte Verarbeitung der Daten unter Umst&auml;nden nicht m&ouml;glich ist. Sie haben das Recht, Ihre personenbezogenen Daten in einem strukturierten, g&auml;ngigen und maschinenlesebaren Format zu erhalten oder die &Uuml;bermittlung an einen anderen Verantwortlichen zu verlangen (Art. 20 DSGVO). <br \/>Des Weiteren k&ouml;nnen Sie unter den Voraussetzungen von Art. 21 DSGVO der Verarbeitung widersprechen.<br \/>Wir m&ouml;chten Sie darum bitten, sich zur Aus&uuml;bung Ihrer oben genannten Rechte auf Widerspruch, Berichtigung, L&ouml;schung, Daten&uuml;bertragbarkeit oder Einschr&auml;nkung der Verarbeitung zu wenden an:<br \/><a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><br \/>Auskunft k&ouml;nnen Sie abweichend davon beim Dezernat f&uuml;r Personal- und Rechtsangelegenheiten beantragen. Das Formular f&uuml;r Auskunftsbegehren&nbsp;&nbsp;k&ouml;nnen Sie &uuml;ber die Webseite des Datenschutzbeauftragten (<a href=\"https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html\">https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html<\/a>) abrufen.<br \/>Falls Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten nicht rechtm&auml;&szlig;ig erfolgt, haben Sie das Recht, bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde f&uuml;r den Datenschutz eine Beschwerde einzureichen.",
-    "privacyTemplateEN": "<h2>Informationen zum Datenschutz<\/h2><h2>Verantwortlicher f&uuml;r die Datenverarbeitung:<\/h2>Universit&auml;t Potsdam<br \/>vertreten durch den Pr&auml;sidenten, Herrn Prof. Oliver G&uuml;nther, Ph.D.<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-0\">+49 331 977-0<\/a><br \/>Telefax: +49 331-97 21 63<br \/><a href=\"www.uni-potsdam.de\">www.uni-potsdam.de<\/a><br \/><h2>Datenschutzbeauftragter:<\/h2>Dr. Marek Kneis<br \/>Am Neuen Palais 10<br \/>14469 Potsdam<br \/>Telefon: <a href=\"tel:+49 331 977-124409\">+49 331 977-124409<\/a><br \/>Telefax: +49 331 977- 701821<br \/>E-Mail: <a href=\"mailto:datenschutz@uni-potsdam.de\">datenschutz@uni-potsdam.de<\/a><br \/><h2>Zweck der Datenverarbeitung:<\/h2>Ihre Daten werden verarbeitet, um Ihnen den Dienst Mobile.UP im Rahmen der Smartphone-App zur Verf&uuml;gung stellen zu k&ouml;nnen.<br \/>Diese Smartphone-App erm&ouml;glicht die Nutzung zentraler IT-Dienste der Hochschule. Die innerhalb der App angebotenen Features werden den Nutzenden mithilfe von Web-Services in der App angezeigt. S&auml;mtliche Daten&uuml;bertragungen sind SSL (OpenSSL\/1.0.1q) verschl&uuml;sselt. Der Zugriff auf nicht-&ouml;ffentlich-zug&auml;ngliche Informationen (pers&ouml;nlicher Stundenplan, die pers&ouml;nliche Leistungs&uuml;bersicht, E-Mail.UP, Moodle.UP, Personensuche, Reflect.UP) erfolgt nach vorherige Authentifizierung mittels Benutzername und Passwort durch den Nutzenden. Infolge der Authentifizierung werden E-Mail-Adresse, Benutzername, Vorname, Nachname und Access-Token des Nutzenden abgerufen und f&uuml;r die Dauer des Logins zusammen mit dem Passwort verschl&uuml;sselt auf dem lokalen Ger&auml;t gespeichert. Dies erm&ouml;glicht den komfortablen Zugriff auf die nicht-&ouml;ffentlichen-zug&auml;nglichen Dienste. Dem Nutzenden steht es offen seine App zu personalisieren, indem er die Nutzung von weiteren pers&ouml;nlichen Informationen (aktuell seine Studieng&auml;nge) erm&ouml;glicht.<br \/>Im Rahmen der Nutzung der Applikation werden abgerufene Informationen durch den Nutzenden f&uuml;r einen Tag auf dem Ger&auml;t zwischengespeichert und nach Ablauf der Frist automatisch gel&ouml;scht. Mit der Deinstallation der Applikation werden alle gespeicherten Daten auf dem Endger&auml;t gel&ouml;scht.<br \/>Zur Verbesserung des Dienstes werden Fehler-Berichte in anonymisierter Form &uuml;bertragen und zur Auswertung gespeichert. Hierf&uuml;r wird eine UUID generiert, welche keine R&uuml;ckschl&uuml;sse auf die Identit&auml;t einer Person erm&ouml;glicht.<br \/><h2>Rechtsgrundlage der Datenverarbeitung<\/h2>Rechtsgrundlage f&uuml;r die Datenverarbeitung ist Art. 6 Abs. 1 S. 1 lit. e DSGVO i.V.m. &sect; 14 Abs. 9 BbgHG. <br \/><h2>Dauer der Datenspeicherung<\/h2>Die auf dem Ger&auml;t gespeicherten personenbezogenen Daten sind an die G&uuml;ltigkeit des zentralen Universit&auml;ts-Accounts gekoppelt und verlieren durch dessen L&ouml;schung ihre G&uuml;ltigkeit.<br \/><h2>&Uuml;bermittlung der Daten an Dritte<\/h2>Eine &Uuml;bermittlung Ihrer Daten an Dritte findet nicht statt.<br \/><h2>Ihre Rechte:<\/h2>Sie haben das Recht, von uns Auskunft &uuml;ber die Verarbeitung Sie betreffender, personenbezogener Daten zu verlangen. Dieses Auskunftsrecht umfasst neben einer Kopie der personenbezogenen Daten auch die Zwecke der Datenverarbeitung, Datenempf&auml;nger sowie die Speicherdauer.<br \/>Sollten unrichtige personenbezogene Daten verarbeitet werden, k&ouml;nnen Sie von uns die Berichtigung dieser Daten verlangen. Liegen die gesetzlichen Voraussetzungen aus Art. 17 bzw. 18 DSGVO vor, steht Ihnen zudem grunds&auml;tzlich das Recht auf L&ouml;schung personenbezogener Daten oder auf eine Einschr&auml;nkung der Verarbeitung zu. Bitte beachten Sie, dass eine eingeschr&auml;nkte Verarbeitung der Daten unter Umst&auml;nden nicht m&ouml;glich ist. Sie haben das Recht, Ihre personenbezogenen Daten in einem strukturierten, g&auml;ngigen und maschinenlesebaren Format zu erhalten oder die &Uuml;bermittlung an einen anderen Verantwortlichen zu verlangen (Art. 20 DSGVO). <br \/>Des Weiteren k&ouml;nnen Sie unter den Voraussetzungen von Art. 21 DSGVO der Verarbeitung widersprechen.<br \/>Wir m&ouml;chten Sie darum bitten, sich zur Aus&uuml;bung Ihrer oben genannten Rechte auf Widerspruch, Berichtigung, L&ouml;schung, Daten&uuml;bertragbarkeit oder Einschr&auml;nkung der Verarbeitung zu wenden an:<br \/><a href=\"mailto:mobileup-service@uni-potsdam.de\">mobileup-service@uni-potsdam.de<\/a><br \/>Auskunft k&ouml;nnen Sie abweichend davon beim Dezernat f&uuml;r Personal- und Rechtsangelegenheiten beantragen. Das Formular f&uuml;r Auskunftsbegehren&nbsp;&nbsp;k&ouml;nnen Sie &uuml;ber die Webseite des Datenschutzbeauftragten (<a href=\"https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html\">https:\/\/www.uni-potsdam.de\/verwaltung\/dezernat3\/datenschutz.html<\/a>) abrufen.<br \/>Falls Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten nicht rechtm&auml;&szlig;ig erfolgt, haben Sie das Recht, bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde f&uuml;r den Datenschutz eine Beschwerde einzureichen."
-  },
-  "general":{
-    "tokenRefreshBoundary": 3600
   }
 }
