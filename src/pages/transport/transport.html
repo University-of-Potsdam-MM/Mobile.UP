@@ -35,9 +35,9 @@
     <ion-list *ngFor="let dep of departures">
       <ion-item>
           <ion-avatar item-start>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'RB'" name="train" style="zoom:2.0;"></ion-icon>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'S'" name="train" style="zoom:2.0;"></ion-icon>
-            <ion-icon *ngIf="dep.Product.catOut.trim() == 'Bus'" name="bus" style="zoom:2.0;"></ion-icon>
+            <ion-icon *ngIf="dep.Product.catOut.trim() == 'RB'" name="custom-bahn" style="zoom:2.0;"></ion-icon>
+            <ion-icon *ngIf="dep.Product.catOut.trim() == 'S'" name="custom-sbahn" style="zoom:2.0;"></ion-icon>
+            <ion-icon *ngIf="dep.Product.catOut.trim() == 'Bus'" name="custom-bus" style="zoom:2.0;"></ion-icon>
           </ion-avatar>
           <h2 *ngIf="dep.name">{{ dep.name }}</h2>
           <p *ngIf="dep.direction">{{ dep.direction }}</p>
