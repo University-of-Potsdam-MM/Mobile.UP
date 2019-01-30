@@ -7,6 +7,7 @@ import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
 import { Keyboard } from '@ionic-native/keyboard';
 import {ConnectionProvider} from "../../providers/connection/connection";
+import { WebHttpUrlEncodingCodec } from '../../library/util';
 
 @IonicPage()
 @Component({
@@ -47,44 +48,35 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    //console.log(this.query);
+    console.log(this.query);
 
-    let query = encodeURI(this.query.trim())
-    .replace(/\+/g, "")
-    .replace(/\,/g, "")
-    .replace(/\//g, "")
-    .replace(/\:/g, "")
-    .replace(/\;/g, "")
-    .replace(/\@/g, "")
-    .replace(/\=/g, "")
-    .replace(/\$/g, "")
-    .replace(/\&/g, "");
+    let query = this.query.trim();
 
     if (query.trim() != "") {
 
       if (resetList) {
         this.bookList = [];
-        this.startRecord = "1"; 
+        this.startRecord = "1";
         this.numberOfRecords = "0";
         this.isLoading = true;
         this.isLoaded = false;
       }
-  
+
       let url = this.config.webservices.endpoint.library;
-  
+
       let headers = new HttpHeaders()
         .append("Authorization", this.config.webservices.apiToken);
-  
-      let params = new HttpParams()
+
+      let params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
         .append("operation", "searchRetrieve")
         .append("query", query.trim())
         .append("startRecord", this.startRecord)
         .append("maximumRecords", this.maximumRecords)
         .append("recordSchema", "mods");
-  
+
       this.http.get(url, {headers:headers, params:params, responseType: "text"}).subscribe(res => {
         this.parseXMLtoJSON(res).then(data => {
-  
+
           var tmp, tmpList;
           if (data["zs:searchRetrieveResponse"]) {
             tmp = data["zs:searchRetrieveResponse"];
@@ -97,17 +89,17 @@ export class LibraryPage {
           if (tmp["zs:numberOfRecords"]) {
             this.numberOfRecords = tmp["zs:numberOfRecords"];
           }
-  
+
           var i;
           if (Array.isArray(tmpList)) {
             for (i = 0; i < tmpList.length; i++) {
               this.bookList.push(tmpList[i]["zs:recordData"]["mods"]);
             }
           }
-  
+
           // console.log(this.numberOfRecords);
           // console.log(this.bookList);
-  
+
           this.isLoading = false;
           this.isLoaded = true;
           if (infiniteScroll) { infiniteScroll.complete(); }
