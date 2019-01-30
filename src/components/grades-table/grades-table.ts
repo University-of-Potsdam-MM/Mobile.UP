@@ -22,7 +22,6 @@ export class GradesTableComponent {
     if (this.studentGrades.academicAchievements && this.studentGrades.academicAchievements.achievement && this.studentGrades.academicAchievements.achievement.field) {
       this.gradeArray = this.convertToArray(this.studentGrades.academicAchievements.achievement.field);
     }
-    console.log(this.gradeArray);
   }
 
   isArray(toCheck) {
@@ -31,7 +30,7 @@ export class GradesTableComponent {
     } else { return false; }
   }
 
-  convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
+  convertToArray(toConvert) { // convert everything to an array so you can handle it universally
     if (this.isArray(toConvert)) {
       return toConvert;
     } else {
