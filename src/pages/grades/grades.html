@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div *ngIf="gradesLoaded && studentGrades" align="center">
+  <div class="gradesTable" *ngIf="gradesLoaded && studentGrades" align="center">
     <grades-table
     [studentGrades]="studentGrades"
     [studentDetails]="studentDetails"
