@@ -274,7 +274,7 @@ export class PracticePage {
     var i;
     this.displayedList = [];
     this.itemsShown = 0;
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 15; i++) {
       if (this.filteredList[i]) {
         this.displayedList.push(this.filteredList[i]);
         this.itemsShown++;
@@ -310,7 +310,7 @@ export class PracticePage {
         var i;
         this.displayedList = [];
         this.itemsShown = 0;
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 15; i++) {
           if (this.filteredList[i]) {
             this.displayedList.push(this.filteredList[i]);
             this.itemsShown++;
@@ -362,7 +362,7 @@ export class PracticePage {
     }
 
     this.storage.set("favoriteJobs", this.allFavorites);
-    
+
 
     slidingItem.close();
   }
@@ -404,7 +404,7 @@ export class PracticePage {
               this.allFavorites.push(tmp[i]);
             }
             break;
-          } 
+          }
         }
       }
 

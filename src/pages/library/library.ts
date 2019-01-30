@@ -19,7 +19,7 @@ export class LibraryPage {
   query = "";
   config:IConfig;
   startRecord = "1"; // hochsetzen beim nachladen von ergebnissen
-  maximumRecords = "10"; // wie viele geladen werden
+  maximumRecords = "15"; // wie viele geladen werden
 
   isLoading = false;
   isLoaded = false;
@@ -124,16 +124,16 @@ export class LibraryPage {
   }
 
   resultIndex() {
-    if (Number(this.numberOfRecords) < (Number(this.startRecord) + 9)) {
+    if (Number(this.numberOfRecords) < (Number(this.startRecord) + 14)) {
       return this.numberOfRecords;
     } else {
-      let s = "1 - " + (Number(this.startRecord) + 9)
+      let s = "1 - " + (Number(this.startRecord) + 14)
       return s;
     }
   }
 
   loadMore(infiniteScroll) {
-    this.startRecord = String(Number(this.startRecord) + 10);
+    this.startRecord = String(Number(this.startRecord) + 15);
     // console.log(this.startRecord);
     // console.log(this.numberOfRecords);
     if (Number(this.startRecord) <= Number(this.numberOfRecords)) {

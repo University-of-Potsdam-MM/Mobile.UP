@@ -52,6 +52,7 @@ import { GradesPage } from '../pages/grades/grades';
 import { LecturesPage } from '../pages/lectures/lectures';
 import { LegalNoticePage } from '../pages/legal-notice/legal-notice';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
+import { TransportPage } from '../pages/transport/transport';
 import { TermsOfUsePage } from '../pages/terms-of-use/terms-of-use';
 import { ConfigProvider } from '../providers/config/config';
 import { EventModal, TimetablePage } from "../pages/timetable/timetable";
@@ -66,6 +67,8 @@ import { MapsProvider } from '../providers/maps/maps';
 import { AlertProvider } from '../providers/alert/alert';
 import { MobileUPErrorHandler } from "../library/errorHandler";
 import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
+
+import { MomentPipe } from '../pipes/moment/moment';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -95,7 +98,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: LecturesPage, name: 'LecturesPage', segment: 'lectures' },
     { component: RoomplanPage, name: 'RoomplanPage', segment: 'roomplan' },
     { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' },
-    { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'}
+    { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'},
+    { component: TransportPage, name: 'TransportPage', segment: 'transport'}
   ]
 };
 
@@ -128,7 +132,9 @@ export const deepLinkConfig: DeepLinkConfig = {
     DetailedOpeningPage,
     DetailedPracticePage,
     PopoverButton,
-    AppInfoPage
+    AppInfoPage,
+    TransportPage,
+    MomentPipe
   ],
   imports: [
     HttpClientModule,
@@ -184,7 +190,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     TimetablePage,
     EventModal,
     PopoverComponent,
-    AppInfoPage
+    AppInfoPage,
+    TransportPage
   ],
   providers: [
     StatusBar,

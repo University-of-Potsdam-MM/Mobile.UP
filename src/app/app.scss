@@ -177,19 +177,36 @@ ion-app.md [padding] .scroll-content {
 // <ion-icon name="custom-moodle"></ion-icon>
 ion-icon {
   &[class*="custom-"] {
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
     mask-size: contain;
     mask-position: 50% 50%;
     mask-repeat: no-repeat;
-    background: currentColor;
     width: 1em;
     height: 1em;
   }
 
   &[class*="custom-moodle"] {
+    background: currentColor;
     mask-image: url(../assets/icon/moodle.svg);
   }
+
   &[class*="custom-reflect"] {
+    background: currentColor;
     mask-image: url(../assets/icon/reflect.svg);
+  }
+
+  &[class*="custom-bus"] {
+    background-image: url(../assets/icon/bus.svg);
+  }
+
+  &[class*="custom-sbahn"] {
+    background-image: url(../assets/icon/s-bahn.svg);
+  }
+
+  &[class*="custom-bahn"] {
+    background-image: url(../assets/icon/bahn.svg);
   }
 
 }
