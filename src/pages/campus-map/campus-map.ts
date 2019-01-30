@@ -45,6 +45,7 @@ export class CampusMapPage implements AfterViewInit{
    */
   selectCategory(c){
     for(let category of c){
+      // TODO
       // this.layers[category].getElement().style.display = "none"
     }
   }
@@ -95,6 +96,7 @@ export class CampusMapPage implements AfterViewInit{
     return this.config.campusmap.campi.filter(
       (campus:ICampus) => {
         this.settings.getSettingValue("campus");
+        // TODO
         // return campus.id == this.config.general.location.campus
       }
     )[0]

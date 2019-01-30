@@ -101,7 +101,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     { component: RoomplanPage, name: 'RoomplanPage', segment: 'roomplan' },
     { component: OpeningHoursPage, name: 'OpeningHoursPage', segment: 'opening-hours' },
     { component: AppInfoPage, name: 'AppInfoPage', segment: 'about'},
-    { component: TransportPage, name: 'TransportPage', segment: 'transport'}
+    { component: TransportPage, name: 'TransportPage', segment: 'transport'},
+    { component: CampusMapPage, name: 'CampusMapPage', segment: 'campusmap'}
   ]
 };
 
