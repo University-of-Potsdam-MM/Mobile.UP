@@ -139,6 +139,52 @@
       "componentName": "transport",
       "icon": "train",
       "selected": false
+    },
+    "campusmap": {
+      "componentName": "campusmap",
+      "icon": "map",
+      "selected": false,
+      "campi": [
+        {
+          "id": 1,
+          "name": "neuespalais" ,
+          "pretty_name": "Neues Palais",
+          "coordinates": {
+            "latitude": 52.40105,
+            "longitude": 13.01207
+          },
+          "lat_long_bounds": [
+            [52.4038, 13.0078],
+            [52.39706, 13.01884]
+          ]
+        },
+        {
+          "id": 2,
+          "name": "golm",
+          "pretty_name": "Golm",
+          "coordinates": {
+            "latitude": 52.41527,
+            "longitude": 12.96941
+          },
+          "lat_long_bounds": [
+            [52.413, 12.9721],
+            [52.4057, 12.9802]
+          ]
+        },
+        {
+          "id": 3,
+          "name": "griebnitzsee",
+          "pretty_name": "Griebnitzsee",
+          "coordinates": {
+            "latitude": 52.39281,
+            "longitude": 13.1288
+          },
+          "lat_long_bounds": [
+            [52.3945, 13.1258],
+            [52.3912, 13.1338]
+          ]
+        }
+      ]
     }
   },
   "authorization": {
