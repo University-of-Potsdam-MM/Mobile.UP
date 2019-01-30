@@ -18,7 +18,7 @@ export class LibraryPage {
   query = "";
   config:IConfig;
   startRecord = "1"; // hochsetzen beim nachladen von ergebnissen
-  maximumRecords = "10"; // wie viele geladen werden
+  maximumRecords = "15"; // wie viele geladen werden
 
   isLoading = false;
   isLoaded = false;
@@ -64,27 +64,27 @@ export class LibraryPage {
 
       if (resetList) {
         this.bookList = [];
-        this.startRecord = "1"; 
+        this.startRecord = "1";
         this.numberOfRecords = "0";
         this.isLoading = true;
         this.isLoaded = false;
       }
-  
+
       let url = this.config.webservices.endpoint.library;
-  
+
       let headers = new HttpHeaders()
         .append("Authorization", this.config.webservices.apiToken);
-  
+
       let params = new HttpParams()
         .append("operation", "searchRetrieve")
         .append("query", query.trim())
         .append("startRecord", this.startRecord)
         .append("maximumRecords", this.maximumRecords)
         .append("recordSchema", "mods");
-  
+
       this.http.get(url, {headers:headers, params:params, responseType: "text"}).subscribe(res => {
         this.parseXMLtoJSON(res).then(data => {
-  
+
           var tmp, tmpList;
           if (data["zs:searchRetrieveResponse"]) {
             tmp = data["zs:searchRetrieveResponse"];
@@ -97,17 +97,17 @@ export class LibraryPage {
           if (tmp["zs:numberOfRecords"]) {
             this.numberOfRecords = tmp["zs:numberOfRecords"];
           }
-  
+
           var i;
           if (Array.isArray(tmpList)) {
             for (i = 0; i < tmpList.length; i++) {
               this.bookList.push(tmpList[i]["zs:recordData"]["mods"]);
             }
           }
-  
+
           // console.log(this.numberOfRecords);
           // console.log(this.bookList);
-  
+
           this.isLoading = false;
           this.isLoaded = true;
           if (infiniteScroll) { infiniteScroll.complete(); }
@@ -132,16 +132,16 @@ export class LibraryPage {
   }
 
   resultIndex() {
-    if (Number(this.numberOfRecords) < (Number(this.startRecord) + 9)) {
+    if (Number(this.numberOfRecords) < (Number(this.startRecord) + 14)) {
       return this.numberOfRecords;
     } else {
-      let s = "1 - " + (Number(this.startRecord) + 9)
+      let s = "1 - " + (Number(this.startRecord) + 14)
       return s;
     }
   }
 
   loadMore(infiniteScroll) {
-    this.startRecord = String(Number(this.startRecord) + 10);
+    this.startRecord = String(Number(this.startRecord) + 15);
     // console.log(this.startRecord);
     // console.log(this.numberOfRecords);
     if (Number(this.startRecord) <= Number(this.numberOfRecords)) {

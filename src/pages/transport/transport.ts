@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { Component, Host } from '@angular/core';
+import { IonicPage, NavController, NavParams, Events, InfiniteScroll, Platform } from 'ionic-angular';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Storage } from "@ionic/storage";
 import { IConfig, IJourneyResponse } from "../../library/interfaces";
-import { CacheService } from 'ionic-cache';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import moment from 'moment';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @IonicPage()
@@ -21,16 +19,15 @@ export class TransportPage {
   hardRefresh = false;
   campus;
   campusid;
-  departures;
-  maxJourneys = 10;
+  departures = [];
+  isEnd = false;
+  maxJourneys = 15;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: HttpClient,
-    private cache: CacheService,
     private connection: ConnectionProvider,
-    private translate: TranslateService,
     private swipeEvent: Events,
     private storage: Storage){
   }
@@ -46,12 +43,15 @@ export class TransportPage {
 
   async loadCampusMenu(refresher?, infiniteScroll?) {
     this.currentDate = moment();
+    this.isEnd = false;
 
     if (refresher) {
       this.hardRefresh = true;
-    } else {
+    } else if (!infiniteScroll) {
       this.isLoaded = false;
     }
+
+    if (!infiniteScroll) { this.maxJourneys = 15; }
 
     let config:IConfig = await this.storage.get("config");
 
@@ -74,11 +74,22 @@ export class TransportPage {
 
     this.http.get(config.webservices.endpoint.transport, {headers:headers, params:params}).subscribe((res:IJourneyResponse) => {
 
-      if (res) {
-        console.log(res);
+      if (res && res.Departure && !infiniteScroll) {
         this.departures = res.Departure;
+      } else if (res && res.Departure && infiniteScroll) {
+        var i;
+        console.log(this.departures.length);
+        for (i = 0; i < res.Departure.length; i++) {
+          if (!this.isInArray(this.departures, res.Departure[i])) {
+            this.departures.push(res.Departure[i]);
+          }
+        }
+        console.log(this.departures.length);
       }
 
+      if (this.maxJourneys > this.departures.length) {
+        this.isEnd = true;
+      }
 
       if (refresher) {
         refresher.complete();
@@ -86,7 +97,6 @@ export class TransportPage {
       this.hardRefresh = false;
       this.isLoaded = true;
       if (infiniteScroll) { infiniteScroll.complete(); }
-
     }, error => {
       if (infiniteScroll) { infiniteScroll.complete(); }
       console.log(error);
@@ -110,6 +120,17 @@ export class TransportPage {
         this.swipeEvent.publish('campus-swipe-to-left', this.campus);
       }
     }
+  }
+
+  isInArray(array, value) { // checks if value is in array
+    var i;
+    var found = false;
+    for (i = 0; i < array.length; i++) {
+      if (array[i].JourneyDetailRef.ref == value.JourneyDetailRef.ref) {
+        found = true;
+      }
+    }
+    return found;
   }
 
 }

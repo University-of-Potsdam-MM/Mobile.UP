@@ -6,8 +6,6 @@ import {
   ILoginConfig_SSO,
   ILoginConfig_OIDC
 } from "../providers/login-provider/interfaces";
-import { IPulsApiRequest_getStudentCourses_condition } from "./interfaces_PULS";
-import { NumberSymbol } from "@angular/common";
 
 /**
  * Interface for a contact with telephone number and email address
@@ -502,5 +500,5 @@ export interface IProduct {
 }
 
 export interface IJourneyResponse {
-  Departure: IDeparture;
+  Departure: IDeparture[];
 }

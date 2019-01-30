@@ -20,9 +20,6 @@
 
   <p *ngIf="error != null" style="text-align: center" text-wrap>
     {{ "alert.network" | translate }} <br/><br/>
-    <!-- {{error.name}}<br/>
-    {{error.message}}<br/>
-    {{error.error}}<br/> -->
   </p>
 
   <div align="center" *ngIf="isLoaded && departures[0]">
@@ -42,9 +39,12 @@
           <h2 *ngIf="dep.name">{{ dep.name }}</h2>
           <p *ngIf="dep.direction">{{ dep.direction }}</p>
           <ion-badge item-end>{{ dep.time | moment:'HH:mm' }}</ion-badge>
-
         </ion-item>
     </ion-list>
+
+    <ion-infinite-scroll *ngIf="!isEnd" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 </ion-content>
 
