@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import {ICampus, IConfig} from "../../library/interfaces";
 import {ConfigProvider} from "../../providers/config/config";
 import * as leaflet from 'leaflet';
 import {IMapsResponse, IMapsResponseObject} from "../../library/IGeoJson";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {WebServiceProvider} from "../../providers/web-service/web-service";
 
 @IonicPage()
 @Component({
@@ -24,7 +25,8 @@ export class CampusMapComponent implements AfterViewInit{
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
 
-  constructor(private settings:SettingsProvider) {
+  constructor(private settings:SettingsProvider,
+              private wsProvider: WebServiceProvider) {
   }
 
   /**
