@@ -140,8 +140,8 @@
       "icon": "train",
       "selected": false
     },
-    "campusmap": {
-      "componentName": "campusmap",
+    "campusMap": {
+      "componentName": "campusMap",
       "icon": "map",
       "selected": false
     }

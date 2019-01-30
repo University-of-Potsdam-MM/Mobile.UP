@@ -121,6 +121,7 @@ export class HomePage {
    * @param {string} pageTitle
    */
   openPage(event, pageTitle:string) {
+    console.log(this.modules, pageTitle);
     event.stopPropagation();
     if (this.modules[pageTitle]) {
       this.app.openPage(this.modules[pageTitle]);
