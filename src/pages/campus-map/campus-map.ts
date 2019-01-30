@@ -12,7 +12,7 @@ import {WebServiceProvider} from "../../providers/web-service/web-service";
   selector: 'page-campus-map',
   templateUrl: 'campus-map.html',
 })
-export class CampusMapComponent implements AfterViewInit{
+export class CampusMapPage implements AfterViewInit{
 
   query:string;
 
