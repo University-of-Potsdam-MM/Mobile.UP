@@ -68,8 +68,8 @@ export class OpeningHoursPage {
           refresher.complete();
         }
 
-        this.allOpeningHours = response;
-        this.openingHours = response;
+        this.allOpeningHours = this.sortOpenings(response);
+        this.openingHours = this.allOpeningHours;
 
         var i;
         for (i = 0; i < this.openingHours.length; i++) {
@@ -77,6 +77,29 @@ export class OpeningHoursPage {
         }
         this.isLoaded = true;
       });
+    });
+  }
+
+  sortOpenings(openArray):any[] {
+    return openArray.sort((a, b) => {
+      var from = new Date();
+      var to = new Date();
+      to.setDate(to.getDate() + 6);
+      to.setHours(23,59,59,999);
+      let parsedA = new opening(a.opening_hours, this.nominatim, { 'locale': this.translate.currentLang });
+      let parsedB = new opening(b.opening_hours, this.nominatim, { 'locale': this.translate.currentLang });
+      let changeA = parsedA.getNextChange(from, to);
+      let changeB = parsedB.getNextChange(from, to);
+      if (changeA == undefined) {
+        // sort B before A, because state of A doesnt change in the next 6 days
+        return 1;
+      } else if (changeB == undefined) {
+        // sort A before B, because state of B doesnt change in the next 6 days
+        return -1;
+      } else {
+        // sort depending on whether state of A or B changes first
+        return changeA - changeB;
+      }
     });
   }
 
@@ -179,6 +202,11 @@ export class OpeningHoursPage {
       this.openingHours = this.openingHours.filter(function(item) {
         return item.name.toLowerCase().includes(val.toLowerCase());
       })
+    }
+
+    var i;
+    for (i = 0; i < this.openingHours.length; i++) {
+      this.parsedOpenings[i] = new opening(this.openingHours[i].opening_hours, this.nominatim, { 'locale': this.translate.currentLang });
     }
   }
 

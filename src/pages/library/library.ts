@@ -7,6 +7,7 @@ import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
 import { Keyboard } from '@ionic-native/keyboard';
 import {ConnectionProvider} from "../../providers/connection/connection";
+import { WebHttpUrlEncodingCodec } from '../../library/util';
 
 @IonicPage()
 @Component({
@@ -47,18 +48,9 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    //console.log(this.query);
+    console.log(this.query);
 
-    let query = encodeURI(this.query.trim())
-    .replace(/\+/g, "")
-    .replace(/\,/g, "")
-    .replace(/\//g, "")
-    .replace(/\:/g, "")
-    .replace(/\;/g, "")
-    .replace(/\@/g, "")
-    .replace(/\=/g, "")
-    .replace(/\$/g, "")
-    .replace(/\&/g, "");
+    let query = this.query.trim();
 
     if (query.trim() != "") {
 
@@ -75,7 +67,7 @@ export class LibraryPage {
       let headers = new HttpHeaders()
         .append("Authorization", this.config.webservices.apiToken);
 
-      let params = new HttpParams()
+      let params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
         .append("operation", "searchRetrieve")
         .append("query", query.trim())
         .append("startRecord", this.startRecord)

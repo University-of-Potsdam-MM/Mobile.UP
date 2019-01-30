@@ -239,3 +239,21 @@ ion-icon {
   }
 
 }
+
+// placeholder image
+// --------------------------------------------------*/
+
+.placeholder-img {
+  padding:0 !important;
+  margin-bottom:10px;
+
+  em {
+    position: absolute;
+    display: block;
+    background: black;
+    color: white;
+    bottom: 0;
+    padding: 1px;
+    font-size: .8em;
+  }
+}
