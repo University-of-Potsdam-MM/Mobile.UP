@@ -193,6 +193,7 @@ export class TimetablePage {
     var mySwiper = document.querySelector('.swiper-container')['swiper'];
     mySwiper.slideNext();
   }
+
 }
 
 

@@ -48,6 +48,38 @@
         </ion-row>
       </div>
 
+      <!-- custom template for event in monthview -->
+      <ng-template #templateMonthViewEvent let-view="view" let-row="row" let-col="col" let->
+        <ng-container *ngFor="let event of view.dates[row*7+col].events">
+          <div style="float: left">
+            <div [style]="'background-color: '+event.color"
+                 ngClass="calendar-event-inner">
+              <!-- vertical blocks here symbolising courses-->
+            </div>
+          </div>
+        </ng-container>
+      </ng-template>
+
+      <!-- custom template for event in weekview -->
+      <ng-template #templateWeekViewEvent let-displayEvent="displayEvent">
+        <div
+          ngClass="calendar-event-inner"
+          [style]="'background-color: '+displayEvent.color"
+        >
+          {{displayEvent.event.title}}
+        </div>
+      </ng-template>
+
+      <!-- custom template for event in dayview -->
+      <ng-template #templateDayViewEvent let-displayEvent="displayEvent">
+        <div ngClass="calendar-event-inner"
+             [style]="'background-color: '+displayEvent.color"
+        >
+          {{displayEvent.event.title}}
+        </div>
+      </ng-template>
+
+
       <calendar class="calendar" [eventSource]="eventSource"
         [calendarMode]="calendarOptions.calendarMode"
         [currentDate]="calendarOptions.currentDate"
@@ -64,7 +96,11 @@
         [autoSelect]="calendarOptions.autoSelect"
         (onTimeSelected)="timeSelected($event)"
         (onEventSelected)="eventSelected($event)"
-        (onTitleChanged)="titleChanged($event)">
+        (onTitleChanged)="titleChanged($event)"
+        [dayviewNormalEventTemplate]="templateDayViewEvent"
+        [monthviewDisplayEventTemplate]="templateMonthViewEvent"
+        [weekviewNormalEventTemplate]="templateWeekViewEvent"
+      >
       </calendar>
   </span>
 
