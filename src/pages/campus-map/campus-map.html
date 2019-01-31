@@ -1,41 +1,28 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>{{ "page.campusmap.title" | translate }}</ion-title>
+    <ion-title>{{ "page.campusMap.title" | translate }}</ion-title>
   </ion-navbar>
-
+  <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.campusMap.placeholder.search' | translate"
+    (ionInput)="search(query)"
+    debounce="750">
+  </ion-searchbar>
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-searchbar
-    [(ngModel)]="query"
-    [placeholder]="'page.campusmap.placeholder.search'"
-    (ionInput)="search(query)"
-    debounce="750">
-  </ion-searchbar>
-
   <ion-list>
 
     <ion-item>
-      <ion-label>{{ "page.campusmap.chose_campus" }}</ion-label>
-      <ion-select multiple="false"
-                  (ionChange)="selectCampus($event)">
-        <ion-option *ngFor="let campus of config.campusmap.campi"
-                    [value]="campus">
-          {{ campus.pretty_name }}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>{{ "page.campusmap.select_categories" }}</ion-label>
+      <ion-label>{{ "page.campusMap.select_categories" | translate }}</ion-label>
       <ion-select multiple="true"
                   (ionChange)="selectCategory($event)">
         <ion-option *ngFor="let category of categories"
                     [value]="category">
-          {{ "page.campusmap.category."+category }}
+          {{ "page.campusMap.category."+category  | translate  }}
         </ion-option>
       </ion-select>
     </ion-item>
