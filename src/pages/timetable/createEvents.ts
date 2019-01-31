@@ -93,7 +93,7 @@ function courseIdToHexColor(d) {
     hex = "0" + hex;
   }
 
-  return `#${hex};
+  return `#${hex}`;
 }
 
 
