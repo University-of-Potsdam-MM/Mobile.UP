@@ -74,7 +74,7 @@ export class WebIntentProvider {
    * @description asks for permission for a website to be opened externaly
    * @param {IModule} moduleConfig - mmoduleConfig
    */
-  private permissionPromptWebsite(moduleConfig:IModule){
+  private permissionPromptWebsite(url:string){
     // ask for permission to open Module externaly
     let alert = this.alertCtrl.create({
       title: this.translate.instant("alert.title.redirect"),
@@ -88,7 +88,7 @@ export class WebIntentProvider {
         {
           text: this.translate.instant("button.ok"),
           handler: () => {
-            this.handleWebIntentForWebsite(moduleConfig.url);
+            this.handleWebIntentForWebsite(url);
           }
         }
       ]
@@ -139,11 +139,11 @@ export class WebIntentProvider {
               ]
             });
             alert.present();
-          }else{
-            this.permissionPromptWebsite(moduleConfig);
+          } else {
+            this.permissionPromptWebsite(moduleConfig.url);
           }
         } else {
-          this.permissionPromptWebsite(moduleConfig);
+          this.permissionPromptWebsite(moduleConfig.url);
         }
       }
     });
