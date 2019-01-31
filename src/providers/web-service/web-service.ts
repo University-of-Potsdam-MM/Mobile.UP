@@ -1,6 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {IMapsResponse} from "../../library/IGeoJson";
 import {IConfig} from "../../library/interfaces";
 import {ConfigProvider} from "../config/config";
 
