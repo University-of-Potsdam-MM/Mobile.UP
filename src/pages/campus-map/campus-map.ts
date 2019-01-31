@@ -162,11 +162,13 @@ export class CampusMapPage {
       // add features from each category to corresponding layer
       for(let feature of obj.geo.features){
         // TODO:
-        //  - include information about feature?
         //  - maybe make this prettier or even include link to OpeningHoursPage
         //  with correct segment?
 
-        let popupTemplate = feature.properties.Name;
+        let props = feature.properties;
+
+        let popupTemplate = `<h1>${props.Name}</h1><div>${props.description?props.description:""}</div>`;
+
         this.layerGroups[title].addLayer(
           leaflet.geoJSON(feature).bindPopup(
             popupTemplate
