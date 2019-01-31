@@ -220,6 +220,16 @@ ion-icon {
     margin: 0px;
     width: 100%;
     border-radius:0;
+
+    img {
+      margin: auto;
+      width: 50%;
+    }
+
+    .loggedIn {
+      opacity: 0.05 !important;
+    }
+
   }
 
   .card-title {
@@ -228,15 +238,15 @@ ion-icon {
     font-size: 2.0em;
     width: 100%;
     font-weight: bold;
-    color: #fff;
+    color: #000;
   }
 
   .card-subtitle {
-    font-size: 1.0em;
+    font-size: 1.2em;
     position: absolute;
-    top: 52%;
+    top: 65%;
     width: 100%;
-    color: #fff;
+    color: #000;
   }
 
 }
