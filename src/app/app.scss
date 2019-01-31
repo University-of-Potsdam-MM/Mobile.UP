@@ -158,13 +158,11 @@ ion-header {
 // --------------------------------------------------*/
 
 .scroll-content {
-    padding-left:5px;
-    padding-right:5px;
     overflow-y:auto !important;
 }
 
 ion-app.md [padding] .scroll-content {
-    padding: 5px;
+    padding: 0px;
 }
 
 .card-content-md, .card-content, .card-content-ios {
@@ -179,19 +177,94 @@ ion-app.md [padding] .scroll-content {
 // <ion-icon name="custom-moodle"></ion-icon>
 ion-icon {
   &[class*="custom-"] {
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
     mask-size: contain;
     mask-position: 50% 50%;
     mask-repeat: no-repeat;
-    background: currentColor;
     width: 1em;
     height: 1em;
   }
 
   &[class*="custom-moodle"] {
+    background: currentColor;
     mask-image: url(../assets/icon/moodle.svg);
   }
+
   &[class*="custom-reflect"] {
+    background: currentColor;
     mask-image: url(../assets/icon/reflect.svg);
   }
 
+  &[class*="custom-bus"] {
+    background-image: url(../assets/icon/bus.svg);
+  }
+
+  &[class*="custom-sbahn"] {
+    background-image: url(../assets/icon/s-bahn.svg);
+  }
+
+  &[class*="custom-bahn"] {
+    background-image: url(../assets/icon/bahn.svg);
+  }
+
+}
+
+
+.card-background-page {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+    margin: 0px;
+    width: 100%;
+    border-radius:0;
+
+    img {
+      margin: auto;
+      width: 50%;
+    }
+
+    .loggedIn {
+      opacity: 0.05 !important;
+    }
+
+  }
+
+  .card-title {
+    position: absolute;
+    top: 36%;
+    font-size: 2.0em;
+    width: 100%;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .card-subtitle {
+    font-size: 1.2em;
+    position: absolute;
+    top: 65%;
+    width: 100%;
+    color: #000;
+  }
+
+}
+
+// placeholder image
+// --------------------------------------------------*/
+
+.placeholder-img {
+  padding:0 !important;
+  margin-bottom:10px;
+
+  em {
+    position: absolute;
+    display: block;
+    background: black;
+    color: white;
+    bottom: 0;
+    padding: 1px;
+    font-size: .8em;
+  }
 }

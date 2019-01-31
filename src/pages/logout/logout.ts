@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {IonicPage, Nav } from 'ionic-angular';
-import {Storage} from "@ionic/storage";
+import { IonicPage, Nav, Events } from 'ionic-angular';
+import { Storage } from "@ionic/storage";
 import { HomePage } from '../home/home';
 import { CacheService } from 'ionic-cache';
 import { SessionProvider } from '../../providers/session/session';
@@ -22,6 +22,7 @@ export class LogoutPage {
   constructor(
       private storage: Storage,
       private cache: CacheService,
+      private events: Events,
       private sessionProvider: SessionProvider,
       private nav: Nav) {
   }
@@ -50,6 +51,9 @@ export class LogoutPage {
    * takes the user back to the previous page
    */
   public goHome() {
-    this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+    setTimeout(() => {
+      this.events.publish("userLogin");
+      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
+    }, 1000);
   }
 }

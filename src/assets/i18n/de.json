@@ -122,7 +122,7 @@
       "description": "Beschreibung"
     },
     "moodle": {
-      "title": "Moodle"
+      "title": "Moodle.UP"
     },
     "lectures": {
       "title": "Vorlesungsverzeichnis",
@@ -168,7 +168,7 @@
       "lecturer": "Dozent"
     },
     "mail": {
-      "title": "Mail"
+      "title": "Mail.UP"
     },
     "news": {
       "title": "Neuigkeiten",
@@ -179,6 +179,13 @@
     },
     "tipps": {
       "title": "Tipps & Tricks"
+    },
+    "transport": {
+      "title": "Nahverkehr",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "journeys": "Fahrten ab",
+      "track": "Gleis",
+      "cancelled": "Fällt aus"
     },
     "reflectUP": {
       "title": "Reflect.UP"
@@ -293,7 +300,7 @@
   },
   "button": {
     "ok": "OK",
-    "toHome": "Zum Startbilschirm",
+    "toHome": "Zur Startseite",
     "cancel": "Abbrechen",
     "yes": "Ja",
     "no": "Nein",
@@ -303,7 +310,9 @@
     "remove": "Entfernen",
     "search": "Suchen",
     "showMore": "Mehr anzeigen",
-    "showLess": "Weniger anzeigen"
+    "showLess": "Weniger anzeigen",
+    "app": "App",
+    "webpage": "Webseite"
   },
   "alert": {
     "title": {
@@ -325,8 +334,8 @@
     "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
-    "redirect": "Auf externe Webseite oder App weiterleiten?"
-
+    "redirect-website": "Auf externe Webseite weiterleiten?",
+    "redirect-website-app": "Auf externe Webseite oder App weiterleiten?"
   },
   "university": {
     "location": {
@@ -351,7 +360,8 @@
   },
   "popover":{
     "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt"
+    "notLoggedInText": "Nicht eingeloggt",
+    "general": "Allgemein"
   },
   "launchNavigator": {
     "headerText": "Auswahl merken?",

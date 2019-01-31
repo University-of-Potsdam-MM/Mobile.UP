@@ -1,11 +1,9 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ "appName" | translate }}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only popoverButton>
-        <ion-icon name="more"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -45,7 +43,3 @@
     </ion-list>
   </ion-card>
 </ion-content>
-
-<ion-footer>
-  <tab-bar></tab-bar>
-</ion-footer>

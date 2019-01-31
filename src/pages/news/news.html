@@ -1,5 +1,4 @@
 <ion-header>
-
   <ion-navbar>
     <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
@@ -7,11 +6,23 @@
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-navbar>
 
-  <ion-segment *ngIf="sourcesList" [(ngModel)]="newsSource" class="headSegment" color="primary">
-    <ion-segment-button small *ngFor="let source of sourcesList; let i = index" (click)="setNewsSource(i)" [value]="i">
-      {{ sourcesList[i] }}
-    </ion-segment-button>
-  </ion-segment>
+  <ion-toolbar *ngIf="sourcesList">
+    <ion-row class="filters">
+        <ion-col class="col-with-arrow" no-padding col-1>
+          <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="arrow-back"></ion-icon>
+        </ion-col>
+        <ion-col no-padding col-10>
+          <ion-slides (ionSlideDidChange)="slideChanged()" slidesPerView="auto">
+            <ion-slide (click)="setNewsSource(i)" *ngFor="let category of categories; let i = index">
+              <p [class.selected]="selectedCategory === i">{{ category }}</p>
+            </ion-slide>
+          </ion-slides>
+        </ion-col>
+        <ion-col class="col-with-arrow" no-padding col-1>
+          <ion-icon *ngIf="showRightButton" (click)="slideNext()" name="arrow-forward"></ion-icon>
+        </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-header>
 
 
@@ -28,7 +39,3 @@
   </div>
 
 </ion-content>
-
-<ion-footer>
-  <tab-bar></tab-bar>
-</ion-footer>

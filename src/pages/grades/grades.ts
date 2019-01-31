@@ -61,9 +61,13 @@ export class GradesPage {
   }
 
   showGrades(i) {
-    this.i = i;
-    this.gradesLoaded = false;
-    this.getGrades();
+    if (this.i == i) {
+      this.gradesLoaded = !this.gradesLoaded;
+    } else {
+      this.i = i;
+      this.gradesLoaded = false;
+      this.getGrades();
+    }
   }
 
   getGrades() {
@@ -106,7 +110,6 @@ export class GradesPage {
       let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
       let request = this.http.post(url, body, {headers:headers});
       this.cache.loadFromObservable("getAcademicAchievements"+this.i, request).subscribe((resGrades) => {
-        // console.log(resGrades);
         if (resGrades) {
           this.studentGrades = resGrades;
           this.gradesLoaded = true;
@@ -152,7 +155,6 @@ export class GradesPage {
       let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
       let request = this.http.post(url, body, {headers:headers});
       this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
-        console.log(resStudentDetail);
         if (resStudentDetail && resStudentDetail.message) {
           // the session is still valid but credentials are rejected, so we're having
           // case #81 here
@@ -165,7 +167,6 @@ export class GradesPage {
         } else if (resStudentDetail) {
           if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
             this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
-            // console.log(this.studentDetails);
             if (Array.isArray(this.studentDetails)) {
               this.multipleDegrees = true;
               var i;

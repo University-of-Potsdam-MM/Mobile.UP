@@ -63,7 +63,7 @@ export class PersonsPage {
   }
 
   /**
-   * @name ionViewDidEnter
+   * @name ionViewWillEnter
    * @async
    * @description take user to login if there is no session.
    * We are using ionViewDidEnter here because it is run every time the view is
@@ -103,13 +103,14 @@ export class PersonsPage {
       .replace(/\,/g, "")
       .replace(/\//g, "")
       .replace(/\:/g, "")
+      .replace(/\;/g, "")
       .replace(/\@/g, "")
       .replace(/\=/g, "")
       .replace(/\$/g, "")
       .replace(/\&/g, "");
 
     if (query && query.trim() != "" && query.trim().length > 1) {
-      
+
       this.response_received = false;
 
       console.log(`[PersonsPage]: Searching for \"${query}\"`);

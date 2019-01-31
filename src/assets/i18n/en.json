@@ -122,7 +122,7 @@
       "description": "Description"
     },
     "moodle": {
-      "title": "Moodle"
+      "title": "Moodle.UP"
     },
     "lectures": {
       "title": "Lectures",
@@ -151,6 +151,7 @@
     },
     "timetable": {
       "title": "Timetable",
+      "courseInformation": "Course information",
       "until": "",
       "today": "Today",
       "month": "Month",
@@ -167,7 +168,7 @@
       "lecturer": "Lecturer"
     },
     "mail": {
-      "title": "Mail"
+      "title": "Mail.UP"
     },
     "news": {
       "title": "News",
@@ -178,6 +179,13 @@
     },
     "tipps": {
       "title": "Tips & tricks"
+    },
+    "transport": {
+      "title": "Journeys",
+      "disclaimer": "All data is used with the kind support of the VBB.",
+      "journeys": "Departures from",
+      "track": "Track",
+      "cancelled": "Cancelled"
     },
     "reflectUP": {
       "title": "Reflect.UP"
@@ -292,6 +300,7 @@
   },
   "button": {
     "ok": "OK",
+    "toHome": "Go Home",
     "cancel": "Cancel",
     "yes": "Yes",
     "no": "No",
@@ -301,7 +310,9 @@
     "remove": "Remove",
     "search": "Search",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "app": "App",
+    "webpage": "Website"
   },
   "alert": {
     "title": {
@@ -323,7 +334,8 @@
     "network": "A network error occured. Is the device connected to the internet?",
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
-    "redirect": "Redirect to external website or app?"
+    "redirect-website": "Redirect to external website?",
+    "redirect-website-app": "Redirect to external website or app?"
   },
   "university": {
     "location": {
@@ -348,7 +360,8 @@
   },
   "popover":{
     "loggedInText": "Logged in as",
-    "notLoggedInText": "Not logged in"
+    "notLoggedInText": "Not logged in",
+    "general": "General"
   },
   "launchNavigator": {
     "headerText": "Remember your choice?",

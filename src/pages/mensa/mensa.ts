@@ -73,9 +73,6 @@ export class MensaPage {
   }
 
   /**
-   * checks whether a session is stored in memory. If not the user is taken to
-   * the LoginPage. If yes a query is sent to the API and the results are placed
-   * in this.personsFound so the view can render them
    * @param query
    */
   public async changeCampus(campus) {
@@ -97,7 +94,7 @@ export class MensaPage {
     for (i = 0; i < this.mealForDate.length; i++) { this.mealForDate[i] = false; }
     for (i = 0; i < this.mealIsVegan.length; i++) { this.mealIsVegan[i] = false; }
     for (i = 0; i < this.mealIsVegetarian.length; i++) { this.mealIsVegetarian[i] = false; }
-    
+
     for (i = 0; i < this.ulfMealIsExpanded.length; i++) { this.ulfMealIsExpanded[i] = false; }
     for (i = 0; i < this.ulfMealForDate.length; i++) { this.ulfMealForDate[i] = false; }
     for (i = 0; i < this.ulfMealIsVegan.length; i++) { this.ulfMealIsVegan[i] = false; }
@@ -196,12 +193,12 @@ export class MensaPage {
         if (this.ulfMeals[i].date) {
           mealDate = moment(this.ulfMeals[i].date);
         } else { mealDate = moment(); }
-  
+
         if (this.currentDate.format('MM DD YYYY') == mealDate.format('MM DD YYYY')) {
           this.ulfMealForDate[i] = true;
           this.noUlfMealsForDate = false;
         } else { this.ulfMealForDate[i] = false; }
-  
+
         // check for vegan, vegetarian
         if (this.ulfMeals[i].type && this.ulfMeals[i].type.length > 0) {
           switch(this.ulfMeals[i].type[0]) {
@@ -219,7 +216,7 @@ export class MensaPage {
         }
       }
     }
-    
+
     this.hardRefresh = false;
     this.isLoaded = true;
     this.pickDate(this.date);
@@ -250,7 +247,7 @@ export class MensaPage {
         if (this.ulfMeals[i].date) {
           mealDate = moment(this.ulfMeals[i].date);
         } else { mealDate = moment(); }
-  
+
         if ($event.format('MM DD YYYY') == mealDate.format('MM DD YYYY')) {
           this.ulfMealForDate[i] = true;
           this.noUlfMealsForDate = false;
