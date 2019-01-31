@@ -1,12 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { ICampus, IConfig } from "../../library/interfaces";
+import { ICampus, IConfig, IMapsResponse, IMapsResponseObject } from "../../library/interfaces";
 import { ConfigProvider } from "../../providers/config/config";
 import * as leaflet from 'leaflet';
-import { IMapsResponse, IMapsResponseObject } from "../../library/IGeoJson";
 import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
+
 
 @IonicPage()
 @Component({
@@ -15,7 +15,7 @@ import { WebServiceProvider } from "../../providers/web-service/web-service";
 })
 export class CampusMapPage {
 
-  query:string;
+  private query:string;
 
   config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
@@ -25,7 +25,7 @@ export class CampusMapPage {
   campus;
 
   @ViewChild('map') mapContainer: ElementRef;
-  map: any;
+  map: L.Map;
 
   constructor(
     private settings:SettingsProvider,
@@ -165,8 +165,29 @@ export class CampusMapPage {
    * @param {string} queryString
    */
   search(queryString){
-    console.log(queryString)
+    console.log(queryString);
+    console.log(this.layers);
+    this.query = queryString;
+
+    //clear map from displayed layers
+    var map = this.map;
+
+    for(var layer in this.layers){
+      map.removeLayer(this.layers[layer]);
+    }
+
+    this.geoJSON.forEach(
+      (obj:IMapsResponseObject) => {
+        var that = this;
+        leaflet.geoJSON(obj.geo, {filter: function(feature){
+          if (feature.properties.Name && feature.properties.Name.toString().indexOf(that.query) !== -1) {
+            return true
+          }
+        }}).addTo(this.map);
+      }
+    );
   }
+
 
   /**
    * @name selectCategory
@@ -179,15 +200,4 @@ export class CampusMapPage {
       // this.layers[category].getElement().style.display = "none"
     }
   }
-
-
-
-
-
-
-
-
-
-
-
 }

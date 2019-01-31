@@ -6,6 +6,7 @@ import {
   ILoginConfig_SSO,
   ILoginConfig_OIDC
 } from "../providers/login-provider/interfaces";
+import * as geojson from 'geojson';
 
 /**
  * Interface for a contact with telephone number and email address
@@ -524,3 +525,11 @@ export interface ICampus {
 export interface ICampusMapConfig {
   campi: ICampus[];
 }
+
+export interface IMapsResponseObject {
+  campus: string;
+  category: string;
+  geo: geojson.FeatureCollection;
+}
+
+export type IMapsResponse = IMapsResponseObject[];
