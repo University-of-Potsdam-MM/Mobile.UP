@@ -18,7 +18,6 @@ export interface IEventObject {
   title:string;
   courseDetails:ICourse;
   eventDetails:IEvent;
-  color:string;
 }
 
 export type IEventSource = IEventObject[];
@@ -79,23 +78,6 @@ function pulsToUTC(date, time, second='00'){
     )
   );
 }
-
-/**
- * @name courseIdToHexColor
- * @description converts course id to hex string
- * @param d {number} decimal number
- * @returns {string} 3 byte hex color string
- */
-function courseIdToHexColor(d) {
-  let padding = 6;
-  let hex = Number(d).toString(16);
-  while (hex.length < padding) {
-    hex = "0" + hex;
-  }
-
-  return `#${hex}`;
-}
-
 
 /**
  * Creates event rrules for the given event and returns IEventRules object
@@ -165,8 +147,6 @@ export function createEventSource(studentCourses:ICourse[],
       events.push(c.events.event);
     }
 
-    let courseColor = courseIdToHexColor(c.courseId);
-    console.log(courseColor)
     // iterate events of this course because there can be more than one
     for(let e of events){
       try{
@@ -193,8 +173,7 @@ export function createEventSource(studentCourses:ICourse[],
             startTime: begin[i],
             endTime: end[i],
             courseDetails: c,
-            eventDetails: e,
-            color: courseColor
+            eventDetails: e
           })
         }
       } catch(error) {
