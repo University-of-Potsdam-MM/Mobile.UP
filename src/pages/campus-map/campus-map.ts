@@ -66,7 +66,6 @@ export class CampusMapPage {
     // fit bounds to show selected campus
     this.moveToCampus(this.selectedCampus);
 
-    // set up scheduled geoJson retrieval
     this.wsProvider.getMapData().subscribe(
       (response:IMapsResponse) => {
         this.geoJSON = response;
