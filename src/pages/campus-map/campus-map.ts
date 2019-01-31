@@ -6,6 +6,7 @@ import * as leaflet from 'leaflet';
 import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
+import {TranslateService} from "@ngx-translate/core";
 
 
 @IonicPage()
@@ -20,8 +21,7 @@ export class CampusMapPage {
   config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
   selectedCampus:ICampus;
-  categories:string[] = [];
-  layers:{[name:string]:leaflet.GeoJSON} = {};
+  layerGroups:{[name:string]:leaflet.LayerGroup} = {};
   campus;
 
   @ViewChild('map') mapContainer: ElementRef;
@@ -30,7 +30,8 @@ export class CampusMapPage {
   constructor(
     private settings:SettingsProvider,
     private connection: ConnectionProvider,
-    private wsProvider: WebServiceProvider) {
+    private wsProvider: WebServiceProvider,
+    private translate: TranslateService) {
   }
 
   /**
@@ -69,7 +70,7 @@ export class CampusMapPage {
     this.wsProvider.getMapData().subscribe(
       (response:IMapsResponse) => {
         this.geoJSON = response;
-        this.addFeatures()
+        this.addFeaturesToLayerGroups(this.geoJSON);
       },
       error => {
         console.log(error)
@@ -136,25 +137,46 @@ export class CampusMapPage {
 
 
   /**
-   * @name addFeatures
-   * @description collects categories from geoJson and returns array of unique
-   * categories
+   * @name addFeaturesToLayerGroups
+   * @description adds features of geoJSON to layerGroups and adds those layerGroups
+   * to the maps object
    */
-  addFeatures(){
-    console.log(this.geoJSON);
-    this.geoJSON.forEach(
-      (obj:IMapsResponseObject) => {
-        // Create new layer for each new category
-        if(this.categories.indexOf(obj.category) == -1){
-          this.categories.push(obj.category);
-          this.layers[obj.category] = leaflet.geoJSON().addTo(this.map)
-        }
-        // add features from each category to corresponding layer
-        for(let feature of obj.geo.features){
-          this.layers[obj.category].addData(<any>feature)
-        }
+  addFeaturesToLayerGroups(geoJSON){
+    // just used to remember which categories we've seen already
+    let categories:string[] = [];
+
+    for(let obj of geoJSON){
+      // create correct title string beforehand so we don't have to do it twice
+      let title = this.translate.instant(
+        "page.campusMap.category."+obj.category
+      );
+
+      // check if we already have this category in layerGroups
+      if(categories.indexOf(obj.category) == -1){
+        // Create new layer for each unique category
+        this.layerGroups[title] = leaflet.layerGroup();
+        // just push category name so we know we already got that one
+        categories.push(obj.category);
       }
-    );
+
+      // add features from each category to corresponding layer
+      for(let feature of obj.geo.features){
+        // TODO:
+        //  - include information about feature?
+        //  - maybe make this prettier or even include link to OpeningHoursPage
+        //  with correct segment?
+
+        let popupTemplate = feature.properties.Name;
+        this.layerGroups[title].addLayer(
+          leaflet.geoJSON(feature).bindPopup(
+            popupTemplate
+          )
+        );
+      }
+    }
+
+    // now add layerGroups to the map so the user can use them
+    leaflet.control.layers({}, this.layerGroups).addTo(this.map);
   }
 
 
@@ -165,38 +187,24 @@ export class CampusMapPage {
    */
   search(queryString){
     console.log(queryString);
-    console.log(this.layers);
     this.query = queryString;
 
-    //clear map from displayed layers
-    var map = this.map;
-
-    for(var layer in this.layers){
-      map.removeLayer(this.layers[layer]);
-    }
-
-    this.geoJSON.forEach(
-      (obj:IMapsResponseObject) => {
-        var that = this;
-        leaflet.geoJSON(obj.geo, {filter: function(feature){
-          if (feature.properties.Name && feature.properties.Name.toString().indexOf(that.query) !== -1) {
-            return true
-          }
-        }}).addTo(this.map);
-      }
-    );
-  }
-
-
-  /**
-   * @name selectCategory
-   * @description selects categories to be shown
-   * @param c
-   */
-  selectCategory(c){
-    for(let category of c){
-      // TODO
-      // this.layers[category].getElement().style.display = "none"
-    }
+    // //clear map from displayed layers
+    // var map = this.map;
+    //
+    // for(var layer in this.layers){
+    //   map.removeLayer(this.layers[layer]);
+    // }
+    //
+    // this.geoJSON.forEach(
+    //   (obj:IMapsResponseObject) => {
+    //     var that = this;
+    //     leaflet.geoJSON(obj.geo, {filter: function(feature){
+    //       if (feature.properties.Name && feature.properties.Name.toString().indexOf(that.query) !== -1) {
+    //         return true
+    //       }
+    //     }}).addTo(this.map);
+    //   }
+    // );
   }
 }

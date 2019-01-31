@@ -14,21 +14,6 @@
 
 <ion-content padding>
 
-  <ion-list>
-
-    <ion-item>
-      <ion-label>{{ "page.campusMap.select_categories" | translate }}</ion-label>
-      <ion-select multiple="true"
-                  (ionChange)="selectCategory($event)">
-        <ion-option *ngFor="let category of categories"
-                    [value]="category">
-          {{ "page.campusMap.category."+category  | translate  }}
-        </ion-option>
-      </ion-select>
-    </ion-item>
-
-  </ion-list>
-
   <div id="map" style="width:100%; height:100%;"></div>
 
 </ion-content>
