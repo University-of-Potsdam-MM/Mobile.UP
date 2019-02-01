@@ -19,16 +19,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <p *ngIf="waiting_for_response" style="text-align: center">
+  <p *ngIf="!isLoaded" style="text-align: center" padding>
     <ion-spinner></ion-spinner>
   </p>
 
-  <div *ngIf="!waiting_for_response && displayedList.length == 0 && error == null">
+  <div *ngIf="isLoaded && displayedList.length == 0 && error == null">
     <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
   </div>
 
-  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "page.home.favorites" | translate }}</ion-item-divider>
-  <ion-list class="favList" *ngIf="!waiting_for_response">
+  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && isLoaded">{{ "page.home.favorites" | translate }}</ion-item-divider>
+  <ion-list class="favList" *ngIf="isLoaded">
     <div *ngFor="let ADS of displayedFavorites; let i = index">
       <ion-item-sliding>
         <ion-item text-wrap detail-push (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
@@ -51,8 +51,8 @@
     </div>
   </ion-list>
 
-  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && !waiting_for_response">{{ "words.all" | translate }}</ion-item-divider>
-  <ion-list *ngIf="!waiting_for_response">
+  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && isLoaded">{{ "words.all" | translate }}</ion-item-divider>
+  <ion-list *ngIf="isLoaded">
     <div *ngFor="let ADS of displayedList; let i = index">
       <ion-item-sliding #slidingItem>
         <ion-item text-wrap detail-push (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">

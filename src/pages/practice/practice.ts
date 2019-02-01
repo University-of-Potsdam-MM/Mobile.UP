@@ -24,14 +24,15 @@ export class PracticePage {
   displayedList: ADS[] = [];
   displayedFavorites: ADS[] = [];
   allFavorites: ADS[] = [];
-  waiting_for_response: boolean = true;
+  isLoaded;
   error: HttpErrorResponse;
   itemsShown = 0;
 
   /**
    * Constructor of EmergencyPage
-   * @param navCtrl
-   * @param navParams
+   * @param {NavController} navCtrl
+   * @param {HttpClient} http
+   * @param {Storage} storage
    */
   constructor(
     public navCtrl: NavController,
@@ -83,35 +84,31 @@ export class PracticePage {
     let lastPage = this.navCtrl.last();
     if (lastPage.component != DetailedPracticePage && lastPage.component != ImpressumPage) {
       this.initializeList();
-      this.loadData().then(res => {
-        this.useFilterSettings();
-      });
+      this.loadData();
     }
   }
 
   /**
    * @name loadData
-   *
+   * @async
    * @description loads default items from json file
    * @param refresher
    */
   public async loadData(refresher?) {
-    // reset array so new persons are displayed
-    this.defaultList = [];
+
+    let config: IConfig = await this.storage.get("config");
+
+    let headers: HttpHeaders = new HttpHeaders()
+    .append("Authorization", config.webservices.apiToken);
+
+    let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
 
     if (refresher) {
       this.cache.removeItem("practiceResponse");
     } else {
-      this.waiting_for_response = true;
+      this.isLoaded = false;
     }
 
-    console.log(`[PracticePage]: Quering ADS`);
-    let config: IConfig = await this.storage.get("config");
-
-    let headers: HttpHeaders = new HttpHeaders()
-      .append("Authorization", config.webservices.apiToken);
-
-    let request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers})
     this.cache.loadFromObservable("practiceResponse", request).subscribe(
       (response: IADSResponse) => {
         if (refresher) {
@@ -132,8 +129,9 @@ export class PracticePage {
           }
         }
         this.initializeList();
+        this.useFilterSettings();
         this.checkFavorites();
-        // this.waiting_for_response = false;
+        this.isLoaded = true;
       },
       error => {
         if (refresher) {
@@ -143,13 +141,21 @@ export class PracticePage {
         this.defaultList = [];
         this.error = error;
         //console.log(error);
-        this.waiting_for_response = false;
+        this.isLoaded = true;
       }
     );
 
   }
 
-  isInArray(array, value) { // checks if value is in array
+  /**
+   * @name isInArray
+   * @description checks if value is in array
+   * @param {Array} array
+   * @param {any} value
+   * @returns {boolean} whether value in array
+   */
+
+  isInArray(array, value): boolean {
     var i;
     var found = false;
     for (i = 0; i < array.length; i++) {
@@ -160,20 +166,22 @@ export class PracticePage {
     return found;
   }
 
-
   /**
    * @name contains
    * @description checks, whether y is a substring of x
    *
-   * @param x:string String that does or does not contain string y
-   * @param y:string String that is or is not contained in string y
-   * @returns boolean Whether string x contains string y
+   * @param {string} x string that does or does not contain string y
+   * @param {string} y string that is or is not contained in string y
+   * @returns {boolean} whether string x contains string y
    */
   private contains(x: string, y: string): boolean {
     return x.toLowerCase().includes(y.toLowerCase());
   }
 
-  // hides keyboard once the user is scrolling
+  /**
+   * @name onScrollListener
+   * @description hides keyboard once the user is scrolling
+   */
   onScrollListener() {
     if (this.platform.is("cordova") && (this.platform.is("ios") || this.platform.is("android"))) {
       this.keyboard.hide();
@@ -182,10 +190,10 @@ export class PracticePage {
 
   /**
    * @name useFilterSettings
+   * @async
    * @description filters displayedList according to the preferences of the user
    */
   private async useFilterSettings() {
-    this.waiting_for_response = true;
 
     var studyarea = await this.settingsProvider.getSettingValue("studyarea");
     var practice = await this.settingsProvider.getSettingValue("practice");
@@ -283,10 +291,7 @@ export class PracticePage {
 
     // console.log("DISPLAYED NEW")
     // console.log(this.displayedList.length);
-
-    this.waiting_for_response = false;
   }
-
 
   /**
    * @name filterItems
@@ -297,13 +302,14 @@ export class PracticePage {
    * @param query string A query string the items will be filtered with
    */
   public async filterItems(query: string) {
+    this.isLoaded = false;
     this.initializeList();
     this.useFilterSettings().then(resolve => {
       if (query) {
         this.filteredList = jquery.grep(
           this.filteredList,
           (ADS, index) => {
-            return this.contains(ADS.title, query);
+            return this.contains(ADS.title, query)|| this.contains(ADS.firm, query);
           }
         );
 
@@ -320,15 +326,14 @@ export class PracticePage {
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
           (ADS, index) => {
-            return this.contains(ADS.title, query);
+            return this.contains(ADS.title, query) || this.contains(ADS.firm, query);
           }
         );
       }
     });
-
+    this.isLoaded = true;
     this.chRef.detectChanges();
   }
-
 
   /**
    * @name openSettings
@@ -338,18 +343,21 @@ export class PracticePage {
     this.navCtrl.push(SettingsPage);
   }
 
-
   /**
    * @name itemSelected
-   *
-   * @param ads     ads-item to be passed to detail page
-   * @param index   current position of the ads item in the list displayed
+   * @param {ADS} ads     ads-item to be passed to detail page
    */
-  itemSelected(ads) {
+  itemSelected(ads: ADS) {
     this.navCtrl.push(DetailedPracticePage, { "ADS": ads });
   }
 
-  makeFavorite(ads, slidingItem:ItemSliding) {
+  /**
+   * @name makeFavorite
+   * @description set favorite and save to storage
+   * @param {ADS} ads
+   * @param {ItemSliding} slidingItem
+   */
+  makeFavorite(ads: ADS, slidingItem:ItemSliding) {
     if (!this.isInArray(this.displayedFavorites, ads)) {
       this.displayedFavorites.push(ads);
 
@@ -363,11 +371,15 @@ export class PracticePage {
 
     this.storage.set("favoriteJobs", this.allFavorites);
 
-
     slidingItem.close();
   }
 
-  removeFavorite(ads) {
+  /**
+   * @name removeFavorite
+   * @description removes favorites
+   * @param {ADS} ads
+   */
+  removeFavorite(ads:ADS) {
     var i;
     var tmp: ADS[] = [];
     for (i = 0; i < this.allFavorites.length; i++) {
@@ -390,6 +402,11 @@ export class PracticePage {
     this.storage.set("favoriteJobs", this.allFavorites);
   }
 
+  /**
+   * @name checkFavorites
+   * @async
+   * @description checks if favorites are still valid
+   */
   async checkFavorites() {
     var tmp:ADS[] = await this.storage.get("favoriteJobs");
 
@@ -418,6 +435,10 @@ export class PracticePage {
 
   }
 
+  /**
+   * @name presentToast
+   * @param message
+   */
   presentToast(message) {
     const toast = this.toastCtrl.create({
       message: message,
@@ -428,6 +449,11 @@ export class PracticePage {
     toast.present();
   }
 
+  /**
+   * @name doInfinite
+   * @description handle infinite scrolling
+   * @param infiniteScroll
+   */
   doInfinite(infiniteScroll) {
 
     setTimeout(() => {
