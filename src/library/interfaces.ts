@@ -108,7 +108,7 @@ export interface ADS {
   date:     number,
   file:     string,
   foreign:  string,
-  firm:     number,
+  firm:     string,
   location: string,
   street:   string,
   plz:      number,
