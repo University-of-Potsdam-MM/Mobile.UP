@@ -22,7 +22,6 @@ export class CampusMapPage {
   geoJSON:IMapsResponseObject[];
   selectedCampus:ICampus;
   layerGroups:{[name:string]:leaflet.LayerGroup} = {};
-  campus;
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
@@ -41,31 +40,30 @@ export class CampusMapPage {
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  async ionViewWillEnter() {
+  ionViewWillEnter() {
     this.connection.checkOnline(true, true);
+
     // initialize map
-    this.loadMap();
-  }
+    this.map = this.initializeLeafletMap();
 
-
-  public async changeCampus(campus) {
-
-    this.campus = campus;
-    console.log(this.campus)
-    this.loadCampusMap();
+    // load geoJson data
+    this.loadMapData();
   }
 
   /**
-   * @async
-   * @description load campus map
+   * @name changeCampus
+   * @description changes the current campus by name
+   * @param campus
    */
-  async loadCampusMap() {
+  changeCampus(campus:string) {
+    this.selectCampus(this.getSelectedCampusObject(campus));
+  }
 
-    // select default campus first as specified in config in config
-    this.selectCampus(this.getDefaultCampus());
-
-    // fit bounds to show selected campus
-    this.moveToCampus(this.selectedCampus);
+  /**
+   * @name loadMapData
+   * @description loads campus map data
+   */
+  loadMapData() {
 
     this.wsProvider.getMapData().subscribe(
       (response:IMapsResponse) => {
@@ -76,40 +74,36 @@ export class CampusMapPage {
         console.log(error)
       }
     )
-
   }
-
 
   /**
    * @name loadMap
    * @description loads map and initializes it
    */
-  loadMap(){
+  initializeLeafletMap(){
     // create map object
-    this.map = leaflet.map("map");
+    let map = leaflet.map("map");
     leaflet.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
         maxZoom: 18
-      }).addTo(this.map);
+      }).addTo(map);
+    return map;
   }
 
-
   /**
-   * @name getDefaultCampus
-   * @description Returns the default campus object based on the information
-   * provided in config.general.location
-   * @return {ICampus} default campus object
+   * @name getSelectedCampusObject
+   * @description returns the correct campus object by name
+   * @param campusName
    */
-  getDefaultCampus():ICampus{
+  getSelectedCampusObject(campusName:string){
     return this.config.campusmap.campi.filter(
       (campus:ICampus) => {
         // special logic to map NeuesPalais == Neues Palais and so on
-        return this.campus == campus.pretty_name.replace(/\s+/g, '');
+        return campusName == campus.pretty_name.replace(/\s+/g, '');
       }
     )[0]
   }
-
 
   /**
    * @name selectCampus
@@ -123,7 +117,6 @@ export class CampusMapPage {
     }
   }
 
-
   /**
    * @name moveToCampus
    * @description fits map to given campus
@@ -134,7 +127,6 @@ export class CampusMapPage {
       campus.lat_long_bounds
     );
   }
-
 
   /**
    * @name addFeaturesToLayerGroups
