@@ -16,7 +16,7 @@
 
   <!-- template for one single event, will be wrapped in ion-card tag -->
   <ng-template #singleEventTemplate let-event="event">
-    <ion-card>
+    <ion-card style="box-shadow: none; -webkit-box-shadow:none;">
       <!-- title, need to use innerHtml here because title can contain HTML like &colon; -->
       <ion-card-header style="font-weight:bold" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'" text-wrap></ion-card-header>
 
