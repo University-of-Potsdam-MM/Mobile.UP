@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ "page.campusMap.title" | translate }}</ion-title>
+  </ion-navbar>
+  <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.campusMap.placeholder.search' | translate"
+    (ionInput)="search(query)"
+    debounce="750">
+  </ion-searchbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <div id="map" style="width:100%; height:100%;"></div>
+
+</ion-content>

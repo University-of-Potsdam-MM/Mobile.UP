@@ -296,6 +296,20 @@
       "contact": "Ansprechpartner",
       "participate": "Mitmachen",
       "libraries": "Bibliotheken & Lizenzen"
+    },
+    "campusMap": {
+      "title": "Lageplan",
+      "placeholder.search": "Suche",
+      "select_categories": "Kategorien zum Anzeigen wählen",
+      "category": {
+        "associateinstitutes": "An-Insitute",
+        "institutes": "Institute",
+        "canteens": "Mensas",
+        "parking": "Parkplätze",
+        "student": "Studentisches",
+        "terminals": "Service-Stationen",
+        "sport": "Sport"
+      }
     }
   },
   "button": {
