@@ -129,9 +129,10 @@ export class PracticePage {
           }
         }
         this.initializeList();
-        this.useFilterSettings();
+        this.useFilterSettings().then((res) => {
+          this.isLoaded = true;
+        });
         this.checkFavorites();
-        this.isLoaded = true;
       },
       error => {
         if (refresher) {
@@ -432,7 +433,6 @@ export class PracticePage {
 
     this.displayedFavorites = this.allFavorites;
     this.storage.set("favoriteJobs", this.allFavorites);
-
   }
 
   /**
