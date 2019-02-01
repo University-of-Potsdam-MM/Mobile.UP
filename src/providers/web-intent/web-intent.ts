@@ -158,35 +158,16 @@ export class WebIntentProvider {
 
     this.config = await this.storage.get("config");
 
-    // ask for permission to open Module externaly
-    let alert = this.alertCtrl.create({
-      title: this.translate.instant("alert.title.redirect"),
-      message: this.translate.instant("alert.redirect-website"),
-      buttons: [
-        {
-          text: this.translate.instant("button.cancel"),
-          role: 'cancel',
-          handler: () => {}
-        },
-        {
-          text: this.translate.instant("button.ok"),
-          handler: () => {
-            // exception for mail
-            if (this.platform.is("cordova") && url != this.config.modules.mail.url) {
-              this.safari.isAvailable().then((available:boolean) => {
-                if (available) {
-                  this.openWithSafari(url);
-                } else {
-                  this.openWithInAppBrowser(url); }
-              });
-            } else {
-              this.openWithInAppBrowser(url);
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
+    if (this.platform.is("cordova") && url != this.config.modules.mail.url) {
+      this.safari.isAvailable().then((available:boolean) => {
+        if (available) {
+          this.openWithSafari(url);
+        } else {
+          this.openWithInAppBrowser(url); }
+      });
+    } else {
+      this.openWithInAppBrowser(url);
+    }
   }
 
   /**

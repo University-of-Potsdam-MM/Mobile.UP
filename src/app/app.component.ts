@@ -242,7 +242,7 @@ export class MobileUPApp {
 
     if (page.url){
       // pages that just link to an url or app
-      this.webIntent.permissionPromptWebsite(page.componentName);
+      this.webIntent.handleWebIntentForModule(page.componentName);
     } else if ((pageName != 'HomePage')) {
       // pages with an actual dedicated ionic page
       if (this.nav.getActive().component != pageName) {
