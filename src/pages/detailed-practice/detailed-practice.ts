@@ -24,7 +24,7 @@ export class DetailedPracticePage {
   }
 
   openPdfLink(fileLink: string) {
-    this.webIntent.handleWebIntentForWebsite(this.URLEndpoint + fileLink);
+    this.webIntent.permissionPromptWebsite(this.URLEndpoint + fileLink);
   }
 
 }

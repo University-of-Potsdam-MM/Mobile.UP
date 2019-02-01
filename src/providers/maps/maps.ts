@@ -51,7 +51,7 @@ export class MapsProvider {
       console.log("Launched navigator");
     }, error => {
       console.log("Error launching navigator: ", error);
-      this.webIntent.handleWebIntentForWebsite('https://maps.google.com/?q='+location);
+      this.webIntent.permissionPromptWebsite('https://maps.google.com/?q='+location);
     });
   }
 
@@ -60,7 +60,7 @@ export class MapsProvider {
       console.log("Launched navigator");
     }, error => {
       console.log("Error launching navigator: ", error);
-      this.webIntent.handleWebIntentForWebsite('https://maps.google.com/?q='+String(latLong[0])+","+String(latLong[1]));
+      this.webIntent.permissionPromptWebsite('https://maps.google.com/?q='+String(latLong[0])+","+String(latLong[1]));
     });
   }
 

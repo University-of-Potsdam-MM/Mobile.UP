@@ -33,10 +33,10 @@
       <ion-list no-lines>
         <ion-item class="department">
           {{ department.department }}
-          <ion-icon item-end name="information-circle" tappable (click)="webIntent.handleWebIntentForWebsite(department.departmentURL)"></ion-icon>
+          <ion-icon item-end name="information-circle" tappable (click)="webIntent.permissionPromptWebsite(department.departmentURL)"></ion-icon>
         </ion-item>
         <ion-item *ngIf="department.url; else noUrl" class="itemStatus">
-          <span tappable (click)="webIntent.handleWebIntentForWebsite(department.url)" style="text-decoration: underline">{{ department.item[0] }}</span>
+          <span tappable (click)="webIntent.permissionPromptWebsite(department.url)" style="text-decoration: underline">{{ department.item[0] }}</span>
         </ion-item>
         <ng-template #noUrl>
           <ion-item class="itemStatus">
@@ -69,7 +69,7 @@
     <div *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" padding-top>
       <h3>{{ "page.library.keywords" | translate }}</h3>
       <ul class="list" *ngFor="let keyword of bookDetails.keywords">
-        <li class="link item" tappable (click)="webIntent.handleWebIntentForWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</li>
+        <li class="link item" tappable (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</li>
       </ul>
     </div>
     <div *ngIf="bookDetails.toc && bookDetails.toc.length != 0" padding-top>
