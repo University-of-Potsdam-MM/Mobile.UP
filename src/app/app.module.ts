@@ -70,7 +70,7 @@ import { ErrorLoggingProvider } from '../providers/error-logging/error-logging';
 
 import { MomentPipe } from '../pipes/moment/moment';
 import { WebServiceProvider } from '../providers/web-service/web-service';
-import {CampusMapPage} from "../pages/campus-map/campus-map";
+import { CampusMapPage } from "../pages/campus-map/campus-map";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n/", ".json");

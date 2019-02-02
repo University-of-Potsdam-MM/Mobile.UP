@@ -4,7 +4,6 @@ import { TransportPage } from './transport';
 
 @NgModule({
   declarations: [
-    TransportPage,
   ],
   imports: [
     IonicPageModule.forChild(TransportPage),

@@ -4,7 +4,6 @@ import { CampusMapPage } from './campus-map';
 
 @NgModule({
   declarations: [
-    CampusMapPage,
   ],
   imports: [
     IonicPageModule.forChild(CampusMapPage),
