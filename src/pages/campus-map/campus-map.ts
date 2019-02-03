@@ -48,6 +48,13 @@ export class CampusMapPage {
 
     // load geoJson data
     this.loadMapData();
+
+    // after map is initialized use default campus
+    this.settings.getSettingValue("campus").then(
+      (campus:string) => {
+        this.changeCampus(campus)
+      }
+    )
   }
 
   /**
