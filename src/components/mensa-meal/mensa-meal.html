@@ -1,0 +1,43 @@
+<div *ngFor="let meal of meals; let i = index">
+  <ion-item *ngIf="checkConditions(i)" tappable (click)="expandMeal(i)" [ngClass]="{'noborder': mealIsExpanded[i]}">
+    <ion-thumbnail item-start *ngIf="meal.type && meal.type.length == 1">
+      <span *ngFor="let type of meal.type">
+        <span *ngFor="let icon of iconMapping">
+          <img *ngIf="type == icon.key" [src]="icon.value">
+        </span>
+      </span>
+    </ion-thumbnail>
+    <ion-thumbnail item-start *ngIf="meal.type && meal.type.length > 1">
+      <ion-slides autoplay="1500" loop="true" [id]="i">
+        <span *ngFor="let type of meal.type">
+          <span *ngFor="let icon of iconMapping">
+            <ion-slide *ngIf="type == icon.key">
+              <img [src]="icon.value">
+            </ion-slide>
+          </span>
+        </span>
+      </ion-slides>
+    </ion-thumbnail>
+    <p class="mealtitle" *ngIf="meal.title">{{ meal.title }}
+      <span *ngIf="meal.type">
+        <span *ngFor="let type of meal.type; let last = last">{{ type }}<span *ngIf="!last">, </span></span>
+      </span>
+    </p>
+    <h2 text-wrap *ngIf="meal.description">{{ meal.description }}</h2>
+    <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropup" item-end></ion-icon>
+    <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropdown" item-end></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
+    <ion-thumbnail *ngIf="meal.type" name="" item-start></ion-thumbnail>
+    <span *ngIf="meal.prices.student">{{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }}</span> <br *ngIf="meal.prices.student">
+    <span *ngIf="meal.prices.guest">{{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }}</span> <br *ngIf="meal.prices.guest">
+    <div text-wrap *ngIf="meal.allergens">
+      <button *ngFor="let allergen of meal.allergens; let j = index" ion-button small outline (click)="expandAllergen(i,j)">
+        <span *ngIf="allergen.shortName">({{ allergen.shortName }})</span>
+      </button>
+      <div *ngFor="let allergen of meal.allergens; let j = index">
+        <div *ngIf="allergenIsExpanded[i][j] && allergen.shortName && allergen.longName">({{ allergen.shortName }}): {{ allergen.longName }}</div>
+      </div>
+    </div>
+  </ion-item>
+</div>

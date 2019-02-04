@@ -1,0 +1,69 @@
+page-mensa {
+    #footerTitle {
+      color:color($colors, primary);
+    }
+
+    .calendarButton {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+        width: 30%;
+    }
+
+    .activeCalendarButton {
+        background-color: color($colors, primary);
+        color:#fff;
+        width: 30%;
+    }
+
+    ion-calendar {
+        background-color: color($colors, upgrey);
+        .title .switch-btn {
+            color: #000;
+        }
+    }
+
+
+    ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
+    ion-calendar-month .primary button.days-btn small {
+        color: color($colors, primary);
+    }
+
+    ion-calendar-month .primary .days .on-selected, ion-calendar-month .primary .endSelection button.days-btn,
+    ion-calendar-month .primary .startSelection button.days-btn {
+        background-color: color($colors, primary);
+        color: color($colors, secondary);
+    }
+
+    ion-calendar-month .primary .startSelection:after,
+    ion-calendar-month .primary .between button.days-btn,
+    ion-calendar-month .primary .endSelection:after  {
+        background-color: color($colors, secondary);
+    }
+
+    ion-calendar-month .primary .days .marked.on-selected p, ion-calendar-month .primary .days .today.on-selected p,
+    ion-calendar-month .primary .endSelection button.days-btn p {
+        color: color($colors, secondary);
+    }
+
+    ion-calendar-month .primary .between button.days-btn p {
+        color: color($colors, primary);
+    }
+
+    .list {
+      margin-top:10px;
+    }
+
+    .calendarExpanded {
+        margin-top:10px
+    }
+
+    .calendarCollapsed {
+        margin-top:0px
+    }
+
+    .card-md, .card, .card-ios {
+        box-shadow: none;
+        -webkit-box-shadow:none;
+    }
+
+}

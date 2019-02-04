@@ -1,0 +1,174 @@
+lecture-list {
+
+    .expandedRootItem {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+        border-radius: 0px;
+        font-size: small;
+    }
+
+    .rootItem {
+        background-color: color($colors, light);
+        color: black;
+        border-radius: 0px;
+        font-size: small;
+    }
+
+    .expandedItem, .expandedCourse {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+        border-radius: 0px;
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .subTreeItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px;
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .courseItem {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px; 
+        margin-left: 1%;
+        font-size: small;
+    }
+
+    .courseData {
+        background-color: color($colors, light);
+        color: color($colors, primary);
+        border-radius: 0px; 
+        font-size: small;
+        margin-left: 1%;
+
+        p {
+            font-size: small;
+            color: color($colors, primary);
+        }
+    }
+
+    .courseKeywords {
+        font-weight: bold;
+    }
+
+    .event {
+        background-color: color($colors, secondary);
+    }
+
+    .event:last-child {
+        border-bottom: 1px solid gray!important
+    }
+
+    .eventHeader {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+    }
+
+    .noCourses {
+        background-color: color($colors, light);
+        color: black;
+        border-radius: 0px; 
+        margin-left: 1%;
+        font-size: small;
+    }
+
+
+    	/* 
+	Generic Styling, for Desktops/Laptops 
+	*/
+	table { 
+		width: 100%; 
+		border-collapse: collapse; 
+	}
+	/* Zebra striping */
+	tr:nth-of-type(odd) { 
+		background: #eee; 
+	}
+	th { 
+		background: color($colors, primary); 
+		color: white; 
+		font-weight: bold; 
+	}
+	td, th { 
+		padding: 6px; 
+		border: 1px solid #ccc; 
+		text-align: left; 
+    }
+
+
+	/*
+	Max width before this PARTICULAR table gets nasty
+	This query will take effect for any screen smaller than 760px
+	and also iPads specifically.
+	*/
+	@media
+	only screen and (max-width: 760px),
+	(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+		/* Force table to not be like tables anymore */
+		table, thead, tbody, th, td, tr {
+			display: block;
+		}
+
+		/* Hide table headers (but not display: none;, for accessibility) */
+		thead tr {
+			position: absolute;
+			top: -9999px;
+            left: -9999px;
+		}
+
+        tr { border: 1px solid #ccc; }
+        tr.emptyRow { border: 0px solid #ccc; }
+
+		td {
+			/* Behave  like a "row" */
+			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+		}
+
+		td:before {
+			/* Now like a table header */
+			position: relative;
+			/* Top/left values mimic padding */
+			top: 0px;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+
+		/*
+		Label the data
+		*/
+        td:nth-of-type(1):before { content: "Tag:"; }
+		td:nth-of-type(2):before { content: "Zeit:"; }
+		td:nth-of-type(3):before { content: "Rhythmus:"; }
+		td:nth-of-type(4):before { content: "Dauer:"; }
+		td:nth-of-type(5):before { content: "Raum:"; }
+		td:nth-of-type(6):before { content: "Lehrperson:"; }
+	}
+
+	/* Smartphones (portrait and landscape) ----------- */
+	@media only screen
+	and (min-device-width : 320px)
+	and (max-device-width : 480px) {
+		body {
+			padding: 0;
+			margin: 0;
+            width: 320px;
+        }
+	}
+
+	/* iPads (portrait and landscape) ----------- */
+	@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+		body {
+			width: 495px;
+		}
+	}
+
+}

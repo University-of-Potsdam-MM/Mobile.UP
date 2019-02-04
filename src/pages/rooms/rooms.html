@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{"page.rooms.title"|translate}}</ion-title>
+  </ion-navbar>
+
+  <campus-tab (campusChanged)="switchLocation($event)"></campus-tab>
+</ion-header>
+
+<ion-content padding (swipe)="swipeCampus($event)">
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item>
+    <ion-label>{{ "page.rooms.time" | translate }}</ion-label>
+    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+      <ion-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ng-template #housesFoundTemplate>
+    <ion-list>
+      <div *ngFor="let house of housesFound">
+        <ion-item (click)="expand(house.lbl)">
+          <ion-label no-margin>
+            <h2 text-wrap>
+              <b>{{ "words.house" | translate }} {{house.lbl}}</b>
+              <ion-badge color="primary">
+                {{house.rooms.length}}
+                <span *ngIf="house.rooms.length == 1">{{ "words.room" | translate }}</span>
+                <span *ngIf="house.rooms.length > 1">{{ "words.rooms" | translate }}</span>
+              </ion-badge>
+            </h2>
+          </ion-label>
+          <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" item-end></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="house.expanded" item-end></ion-icon>
+        </ion-item>
+        <div *ngIf="house.expanded">
+          <ion-item margin-left *ngFor="let room of house.rooms">
+              {{room.lbl}}
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </ng-template>
+
+  <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <ng-template #noHousesFoundTemplate>
+    <hint hintTextI18nKey="page.rooms.no_rooms_hintText"
+          hintTypeI18nKey=""></hint>
+  </ng-template>
+
+  <ng-container *ngIf="no_timeslot;
+                then noHousesFoundTemplate; else housesFoundTemplate"></ng-container>
+</ion-content>

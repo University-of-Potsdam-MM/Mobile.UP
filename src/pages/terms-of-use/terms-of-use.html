@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.termsOfUse.title" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="lang == 'de'" [innerHTML]="termsDE" padding></div>
+  <div *ngIf="lang == 'en'" [innerHTML]="termsEN" padding></div>
+</ion-content>

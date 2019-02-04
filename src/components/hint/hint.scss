@@ -1,0 +1,21 @@
+hint {
+    ion-card {
+        border: 2px solid color($colors, upgrey);
+    }
+
+    ion-card-header {
+        background-color: color($colors, secondary);
+    }
+
+    .card-content-md {
+        padding: 6px !important;
+    }
+
+    .card-header {
+        padding: 3px;
+    }
+
+    hint ion-card-content {
+        margin: .2rem;
+    }
+}

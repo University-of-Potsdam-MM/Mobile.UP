@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left padding-left>
+      <button ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back" style="font-size: x-large"></ion-icon>
+      </button>
+    </ion-buttons>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{"page.timetable.courseInformation" | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!-- template for one single event, will be wrapped in ion-card tag -->
+  <ng-template #singleEventTemplate let-event="event">
+    <ion-card style="box-shadow: none; -webkit-box-shadow:none;">
+      <!-- title, need to use innerHtml here because title can contain HTML like &colon; -->
+      <ion-card-header style="font-weight:bold" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'" text-wrap></ion-card-header>
+
+      <ion-card-content>
+
+        <ion-list>
+          <!-- lecturer(s)-->
+          <ng-container *ngIf="isArray(event.eventDetails.lecturers.lecturer);
+                      then multipleLecturersTemplate else singleLecturerTemplate"></ng-container>
+
+          <!-- template for event with single lecturer-->
+          <ng-template #singleLecturerTemplate text-wrap>
+            <ion-item>
+              <ion-label item-start>
+                {{ "page.timetable.lecturer" | translate }}:
+              </ion-label>
+              <div item-content>
+                {{ event.eventDetails.lecturers.lecturer.lecturerTitle }}
+                {{ event.eventDetails.lecturers.lecturer.lecturerLastname }}
+              </div>
+            </ion-item>
+          </ng-template>
+
+          <!-- template for event with multiple lecturers -->
+          <ng-template #multipleLecturersTemplate text-wrap>
+            <ion-item>
+              <ion-label item-start>
+                {{ "page.timetable.lecturer" | translate }}:
+              </ion-label>
+              <div item-content>
+                <ng-container *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last">
+                  {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}
+                  <span *ngIf="!last">, </span>
+                </ng-container>
+              </div>
+            </ion-item>
+          </ng-template>
+
+          <!-- time -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.time" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ moment(event.startTime).format("LT")}}
+              {{ "page.timetable.oclock" | translate }}
+              -
+              {{ "page.timetable.until" | translate }}
+              {{ moment(event.endTime).format("LT") }}
+              {{ "page.timetable.oclock" | translate }}
+            </div>
+          </ion-item>
+
+          <!-- period -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.period" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ event.eventDetails.startDate }}
+              -
+              {{ event.eventDetails.endDate }}
+            </div>
+          </ion-item>
+
+          <!-- rhythm -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.rhythm" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ event.eventDetails.rhythm }}
+            </div>
+          </ion-item>
+
+          <!-- location -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.location" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ event.eventDetails.location}}
+            </div>
+          </ion-item>
+
+          <!-- building -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.building" | translate }}:
+            </ion-label>
+            <span item-content *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building != 'N'">{{ event.eventDetails.building }}</span>
+            <span item-content *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'"> / </span>
+          </ion-item>
+
+          <!-- roomtype and room -->
+          <ion-item>
+            <ion-label item-start>
+              {{ "page.timetable.room" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ event.eventDetails.roomType }}
+              <span *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room != 'N.'">{{ event.eventDetails.room }}</span>
+            </div>
+          </ion-item>
+
+          <!-- comment -->
+          <ion-item *ngIf="event.eventDetails.comment">
+            <ion-label item-start>
+              {{ "page.timetable.comment" | translate }}:
+            </ion-label>
+            <div item-content>
+              {{ event.eventDetails.comment }}
+            </div>
+          </ion-item>
+        </ion-list>
+
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <!-- append details about selected events below -->
+  <ng-container *ngIf="events">
+    <ng-container *ngFor="let event of events">
+      <ng-template
+        *ngTemplateOutlet="singleEventTemplate; context:{event:event}">
+      </ng-template>
+    </ng-container>
+  </ng-container>
+
+</ion-content>

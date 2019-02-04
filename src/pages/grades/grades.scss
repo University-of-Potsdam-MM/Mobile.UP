@@ -1,0 +1,19 @@
+page-grades {
+
+    .studiengang {
+        background-color: color($colors, primary);
+        color: color($colors, light);
+        border-radius: 0px;
+    }
+
+    ion-list {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .gradesTable {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+}

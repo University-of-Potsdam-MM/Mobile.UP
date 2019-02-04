@@ -1,152 +1,106 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget
-    id="de.floriangoessler.upapp"
-    android-packageName="de.floriangoessler.upapp"
-    version="5.1.1"
-    android-versionCode="51100"
-    ios-CFBundleVersion="201824041208"
-    ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam"
-    xmlns="http://www.w3.org/ns/widgets"
-    xmlns:gap="http://phonegap.com/ns/1.0">
-
+<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60100" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201901312100" version="6.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
-    <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS-Team</author>
-
-    <!-- Platforms -->
-    <plugin name="cordova-custom-config" spec="^2.0.3" />
-    <engine name="android" spec="~5.2.2" />
-    <platform name="android">
-        <preference name="android-minSdkVersion" value="14" />
-        <preference name="android-manifest/@android:installLocation" value="auto" />
-    </platform>
-    <engine name="ios" spec="~4.3.0" />
-    <platform name="ios">
-    </platform>
-
-    <!-- Fullscreen and status bar -->
-    <plugin name="cordova-plugin-statusbar" spec="^2.2.2" />
-    <preference name="DisallowOverscroll" value="true" />
-    <platform name="ios">
-        <preference name="Fullscreen" value="true" />
-        <preference name="StatusBarStyle" value="blackopaque" />
-    </platform>
-    <platform name="android">
-        <preference name="Fullscreen" value="false" />
-        <preference name="StatusBarBackgroundColor" value="#012333" />
-    </platform>
-
-    <!-- App icons -->
-    <platform name="android">
-        <icon density="ldpi" src="res/icon/android/icon-36-ldpi.png" />
-        <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
-        <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
-        <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
-    </platform>
-    <platform name="ios">
-        <!-- iOS 8.0+ -->
-        <!-- iPhone 6 Plus  -->
-        <icon height="180" width="180" src="res/icon/ios/icon-60@3x.png" />
-        <!-- iOS 7.0+ -->
-        <!-- iPhone / iPod Touch  -->
-        <icon height="60"  width="60"  src="res/icon/ios/icon-60.png" />
-        <icon height="120" width="120" src="res/icon/ios/icon-60@2x.png" />
-        <!-- iPad -->
-        <icon height="76"  width="76"  src="res/icon/ios/icon-76.png" />
-        <icon height="152" width="152" src="res/icon/ios/icon-76@2x.png" />
-        <!-- iOS 6.1 -->
-        <!-- Spotlight Icon -->
-        <icon height="40"  width="40"  src="res/icon/ios/icon-40.png" />
-        <icon height="80"  width="80"  src="res/icon/ios/icon-40@2x.png" />
-        <!-- iPhone / iPod Touch -->
-        <icon height="57"  width="57"  src="res/icon/ios/icon-57.png" />
-        <icon height="114" width="114" src="res/icon/ios/icon-57@2x.png" />
-        <!-- iPad -->
-        <icon height="72"  width="72"  src="res/icon/ios/icon-72.png" />
-        <icon height="144" width="144" src="res/icon/ios/icon-72@2x.png" />
-        <!-- iPhone Spotlight and Settings Icon -->
-        <icon height="29"  width="29"  src="res/icon/ios/icon-29.png" />
-        <icon height="58"  width="58"  src="res/icon/ios/icon-29@2x.png" />
-        <!-- iPad Spotlight and Settings Icon -->
-        <icon height="50"  width="50"  src="res/icon/ios/icon-50.png" />
-        <icon height="100" width="100" src="res/icon/ios/icon-50@2x.png" />
-    </platform>
-
-    <!-- Splash screens -->
-    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
+    <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="ScrollEnabled" value="false" />
+    <preference name="android-minSdkVersion" value="19" />
+    <preference name="BackupWebStorage" value="none" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="FadeSplashScreenDuration" value="300" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="ShowSplashScreenSpinner" value="false"/>
-    <preference name="FadeSplashScreen" value="true"/>
-    <preference name="FadeSplashScreenDuration" value="500"/>
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="KeyboardResize" value="false" />
     <platform name="android">
-        <splash density="port-ldpi"  src="res/screen/android/screen-ldpi-portrait.png" />
-        <splash density="port-mdpi"  src="res/screen/android/screen-mdpi-portrait.png" />
-        <splash density="port-hdpi"  src="res/screen/android/screen-hdpi-portrait.png" />
-        <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
-        <splash density="land-ldpi"  src="res/screen/android/screen-ldpi-landscape.png" />
-        <splash density="land-mdpi"  src="res/screen/android/screen-mdpi-landscape.png" />
-        <splash density="land-hdpi"  src="res/screen/android/screen-hdpi-landscape.png" />
-        <splash density="land-xhdpi" src="res/screen/android/screen-xhdpi-landscape.png" />
+        <allow-intent href="market:*" />
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+        <splash density="land-ldpi" src="resources/android/splash/drawable-land-ldpi-screen.png" />
+        <splash density="land-mdpi" src="resources/android/splash/drawable-land-mdpi-screen.png" />
+        <splash density="land-hdpi" src="resources/android/splash/drawable-land-hdpi-screen.png" />
+        <splash density="land-xhdpi" src="resources/android/splash/drawable-land-xhdpi-screen.png" />
+        <splash density="land-xxhdpi" src="resources/android/splash/drawable-land-xxhdpi-screen.png" />
+        <splash density="land-xxxhdpi" src="resources/android/splash/drawable-land-xxxhdpi-screen.png" />
+        <splash density="port-ldpi" src="resources/android/splash/drawable-port-ldpi-screen.png" />
+        <splash density="port-mdpi" src="resources/android/splash/drawable-port-mdpi-screen.png" />
+        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.png" />
+        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
+        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
+        <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        <splash width="320"  height="480"  src="res/screen/ios/screen-iphone-portrait.png" />
-        <splash width="640"  height="960"  src="res/screen/ios/screen-iphone-portrait-2x.png" />
-        <splash width="640"  height="1136" src="res/screen/ios/screen-iphone-portrait-568h-2x.png" />
-        <splash width="750"  height="1334" src="res/screen/ios/screen-iphone-portrait-750.png" />
-        <splash width="1242" height="2208" src="res/screen/ios/screen-iphone-portrait-1242.png" />
-        <splash width="2208" height="1242" src="res/screen/ios/screen-iphone-landscape-2208.png" />
-        <splash width="768"  height="1024" src="res/screen/ios/screen-ipad-portrait.png" />
-        <splash width="1024" height="768"  src="res/screen/ios/screen-ipad-landscape.png" />
-        <splash width="1536" height="2048" src="res/screen/ios/screen-ipad-portrait-2x.png" />
-        <splash width="2048" height="1536" src="res/screen/ios/screen-ipad-landscape-2x.png" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <icon height="57" src="resources/ios/icon/icon.png" width="57" />
+        <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
+        <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
+        <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
+        <icon height="120" src="resources/ios/icon/icon-40@3x.png" width="120" />
+        <icon height="50" src="resources/ios/icon/icon-50.png" width="50" />
+        <icon height="100" src="resources/ios/icon/icon-50@2x.png" width="100" />
+        <icon height="60" src="resources/ios/icon/icon-60.png" width="60" />
+        <icon height="120" src="resources/ios/icon/icon-60@2x.png" width="120" />
+        <icon height="180" src="resources/ios/icon/icon-60@3x.png" width="180" />
+        <icon height="72" src="resources/ios/icon/icon-72.png" width="72" />
+        <icon height="144" src="resources/ios/icon/icon-72@2x.png" width="144" />
+        <icon height="76" src="resources/ios/icon/icon-76.png" width="76" />
+        <icon height="152" src="resources/ios/icon/icon-76@2x.png" width="152" />
+        <icon height="167" src="resources/ios/icon/icon-83.5@2x.png" width="167" />
+        <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
+        <icon height="58" src="resources/ios/icon/icon-small@2x.png" width="58" />
+        <icon height="87" src="resources/ios/icon/icon-small@3x.png" width="87" />
+        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
+        <splash height="1136" src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" />
+        <splash height="1334" src="resources/ios/splash/Default-667h.png" width="750" />
+        <splash height="2208" src="resources/ios/splash/Default-736h.png" width="1242" />
+        <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208" />
+        <splash height="1536" src="resources/ios/splash/Default-Landscape@2x~ipad.png" width="2048" />
+        <splash height="2048" src="resources/ios/splash/Default-Landscape@~ipadpro.png" width="2732" />
+        <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
+        <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />
+        <splash height="2732" src="resources/ios/splash/Default-Portrait@~ipadpro.png" width="2048" />
+        <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
+        <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
+        <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
+        <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
+        <preference name="KeychainAccessibility" value="WhenUnlocked" />
     </platform>
-
-    <!-- File download (Moodle) -->
-    <plugin name="cordova-plugin-file" spec="^4.2.0" />
-    <plugin name="cordova-plugin-file-transfer" spec="^1.5.1" />
-    <platform name="android">
-        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
-    </platform>
-
-    <!-- Whitelist -->
-    <plugin name="cordova-plugin-whitelist" spec="^1.2.2" />
     <access origin="*" />
-
-    <!-- for iOS -->
-    <feature name="Launcher">
-        <param name="ios-package" value="Launcher" />
-    </feature>
-    <!-- for Android -->
-    <feature name="Launcher">
-        <param name="android-package" value="com.hutchind.cordova.plugins.launcher.Launcher" />
-    </feature>
-
-    <!-- Start page and access whitelist -->
     <content src="index.html" />
-
-    <!-- Remaining plugins -->
-    <plugin name="cordova-plugin-inappbrowser" spec="^1.7.0" />
-    <plugin name="cordova-plugin-dialogs" spec="^1.3.2" />
-    <plugin name="cordova-plugin-calendar" spec="^4.5.5" />
-    <plugin name="cordova-plugin-device" spec="^1.1.5" />
+    <allow-navigation href="http://10.0.0.13:8100" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-device" spec="^1.1.7" />
+    <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
+    <plugin name="cordova-plugin-appavailability" spec="^0.4.2" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <plugin name="cordova-plugin-safariviewcontroller" spec="^1.5.4" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
-    <plugin name="cordova-plugin-network-information" spec="^1.3.2" />
-    <plugin name="com.borismus.webintent" spec="https://github.com/InQBarna/WebIntent.git" />
-    <plugin name="cordova-plugin-x-toast" spec="^2.5.2" />
-    <plugin name="cordova-plugin-console" spec="^1.0.6" />
-    <plugin name="cordova-plugin-app-launcher" spec="https://github.com/mmey3k/cordova-plugin-app-launcher.git" />
-    <plugin name="cordova-plugin-queries-schemes" spec="^0.1.1" />
-    <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
-
-    <!-- Hooks -->
-    <hook type="after_clean" src="scripts/removePluginsAndPlatforms.js" />
-    <hook type="before_build" src="scripts/checkForBuildConfig.js" />
-    <hook type="before_compile" src="scripts/optimizeJavascript.js" />
-    <platform name="ios">
-        <hook type="after_prepare" src="scripts/addPlistEntries.js" />
-    </platform>
-
-    <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-        <string>Positionsbestimmung für eigenen Standort auf Lageplan</string>
-    </edit-config>
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-secure-storage" spec="^3.0.0" />
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.2">
+        <variable name="OKHTTP_VERSION" value="3.+" />
+        <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
+    </plugin>
+    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^3.0.0">
+        <variable name="ANDROID_SUPPORT_ANNOTATIONS_VERSION" value="27.+" />
+    </plugin>
+    <engine name="android" spec="7.1.4" />
+    <engine name="ios" spec="4.5.5" />
+    <engine name="browser" spec="5.0.4" />
 </widget>

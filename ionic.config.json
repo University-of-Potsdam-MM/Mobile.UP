@@ -1,0 +1,7 @@
+{
+  "name": "Mobile.UP",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

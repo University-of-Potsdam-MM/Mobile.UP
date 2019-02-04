@@ -1,1 +1,0 @@
-sudo mv /tmp/opening.json /var/www/html/mobileup/www/js/json/

@@ -1,0 +1,247 @@
+﻿[
+    {
+        "name":"Polizei",
+        "contact":{
+            "telephone":"110"
+        }
+    },
+    {
+        "name":"Feuerwehr",
+        "contact":{
+            "telephone":"112"
+        }
+    },
+    {
+        "name":"Giftnotruf (Kinder)",
+        "description":"Universitätsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin",
+        "contact":{
+            "telephone":"+493019240"
+        },
+        "address":{
+            "street":"Augustenburger Platz 1",
+            "postal:":"13353 Berlin-Wedding"
+        }
+    },
+    {
+        "name":"Giftnotruf",
+        "description":"Universitätsklinikum R. Virchow, Abt. Innere Medizin mit Schwerpunkt Nephrologie und Intensivmedizin",
+        "contact":{
+            "telephone":"+493045053555"
+        },
+        "address":{
+            "street":"Augustenburger Platz 1",
+            "postal":"13353 Berlin-Wedding"
+        }
+    },
+    {
+        "name":"Strahlenunfall",
+        "description":"Universitätsklinik Steglitz,  Abt. f. Nuklearmedizin",
+        "contact":{
+            "telephone":"+4903084453992"
+        }
+    },
+    {
+        "name":"Rettungsstelle - Klinikum Ernst v. Bergmann",
+        "contact":{
+            "telephone":"+493312415051"
+        },
+        "address":{
+            "street":"Charlottenstraße 72",
+            "postal":"14467 Potsdam"
+        }
+    },
+    {
+        "name":"Rettungsstelle - St. Josefs ",
+        "contact":{
+            "telephone":"+4933196821100"
+        },
+        "address":{
+            "street":"Allee nach Sanssouci 7",
+            "postal":"14471 Potsdam"
+        }
+    },
+    {
+        "name":"Betriebsarzt",
+        "description":"Frau Dr. Schmalenbach",
+        "contact":{
+            "telephone":"+493317488632"
+        },
+        "address":{
+            "street":"Großbeerenstr. 185",
+            "postal":"14482 Potsdam- Babelsberg"
+        }
+    },
+    {
+        "name":"Arzt Potsdam",
+        "description":"Frau Dr. med. Berit Böttcher, Praxis Dr.med. Berit Böttcher Facharzt für Innere Medizin",
+        "contact":{
+            "telephone":"+493315507080"
+        },
+        "address":{
+            "street":"Reiherbergstr. 31",
+            "postal":"14476 Potsdam"
+        }
+    },
+    {
+        "name":"Arzt Potsdam-Eiche",
+        "description":"Allgemeinarztpraxis, Kang-Hyeb Lee, Facharzt für Allgemeinmedizin",
+        "address":{
+            "street":"Kaiser-Friedrich-Str. 102 a",
+            "postal":"14469 Potsdam / OT Eiche"
+        },
+        "contact":{
+            "telephone":"+493316011767"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Brandenburger Vorstadt",
+        "description":"Ärztehaus Potsdam-West, Dr. Andreas Dannenberger",
+        "address":{
+            "street":"Geschwister-Scholl-Str. 83",
+            "postal":"14471 Potsdam"
+        },
+        "contact":{
+            "telephone":"+49331967100",
+            "mail":"dr.dannenberger@telemed.de"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Brandenburger Vorstadt",
+        "description":"St. Josefs-Krankenhaus, Dr. Bublitz",
+        "address":{
+            "street":"Allee nach Sanssouci 7",
+            "postal":"14471 Potsdam"
+        },
+        "contact":{
+            "telephone":"+4933196821104"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Nördliche Innenstadt",
+        "description":"Klinikum Ernst von Bergmann, Dr. Rudolf Schulz",
+        "address":{
+            "street":"Charlottenstraße 72",
+            "postal":"14467 Potsdam"
+        },
+        "contact":{
+            "telephone":"+4933124135407"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Babelsberg Nord",
+        "description":"Oberlin Klinik, Jörg Homann",
+        "address":{
+            "street":"Rudolf-Breitscheid-Str. 24",
+            "postal":"14482 Potsdam"
+        },
+        "contact":{
+            "telephone":"+493317634310",
+            "mail":"sojoho@t-online.de"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Babelsberg Süd",
+        "description":"Dres. Rudtke, Schulze & Unger",
+        "contact":{
+            "telephone":"+49331621001",
+            "mail":"matthias-f-r-schulze@gmx.de"
+        },
+        "address":{
+            "street":"Großbeerenstr. 187",
+            "postal":"14482 Potsdam"
+        }
+    },
+    {
+        "name":"Durchgangsarzt Babelsberg Süd",
+        "description":"Dr. med. Bernd Schenderlein",
+        "contact":{
+            "telephone":"+49331710247"
+        },
+        "address":{
+            "street":"Kopernikusstr. 32",
+            "postal":"14482 Potsdam"
+        }
+    },
+    {
+        "name":"Telefonseelsorge",
+        "description":"kostenfreie Telefonnummer",
+        "contact":{
+            "telephone":"08001110111"
+        }
+    },
+    {
+        "name":"Psychologische Beratung Uni Potsdam",
+        "description":"Dipl. Psych.  Birgit Klöhn",
+        "contact":{
+            "telephone":"+493319771830"
+        },
+        "address":{
+            "street":"Am Neuen Palais 10",
+            "postal":"14469 Potsdam, Haus 08, Raum 0.82"
+        }
+    },
+    {
+        "name":"Technische Leitzentrale Uni Potsdam",
+        "contact":{
+            "telephone":"+493319772010"
+        },
+        "description":"Störungsannahme 24h-Dienst"
+    },
+    {
+        "name":"Betriebsstörungen (Technik)",
+        "contact":{
+            "telephone":"+493319772798"
+        },
+        "description":"Herr Paul"
+    },
+    {
+        "name":"Betriebsstörungen (Wasser)",
+        "contact":{
+            "telephone":"+493319772790"
+        },
+        "description":"Frau Lange"
+    },
+    {
+        "name":"Betriebsstörungen (Elektro)",
+        "contact":{
+            "telephone":"+493319772332"
+        },
+        "description":"Herr Dankworth"
+    },
+    {
+        "name":"Betriebsstörungen (außerhalb der Dienstzeiten)",
+        "description":"Leitzentrale UP",
+        "contact":{
+            "telephone":"+493319772010"
+        }
+    },
+    {
+        "name":"Sicherheitswesen der UP",
+        "description":"Ulf Lepszy",
+        "contact":{
+            "telephone":"+493319772383"
+        },
+        "address":{
+            "street":"Am Neuen Palais 10, Haus 2, Zi. 1.15",
+            "postal":"14469 Potsdam"
+        }
+    },
+    {
+        "name":"Wache Neues Palais",
+        "contact":{
+            "telephone":"+493319771210"
+        }
+    },
+    {
+        "name":"Wache Golm",
+        "contact":{
+            "telephone":"+493319772222"
+        }
+    },
+    {
+        "name":"Wache Griebnitzsee",
+        "contact":{
+            "telephone":"+493319773231"
+        }
+    }
+]

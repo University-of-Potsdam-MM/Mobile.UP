@@ -1,0 +1,11 @@
+<ion-segment [(ngModel)]="currentCampus" color="primary" (ionChange)="changeCampus()">
+  <ion-segment-button value="Griebnitzsee">
+    {{"page.mensa.campus1" | translate}}
+  </ion-segment-button>
+  <ion-segment-button value="NeuesPalais">
+      {{"page.mensa.campus2" | translate}}
+  </ion-segment-button>
+  <ion-segment-button value="Golm">
+      {{"page.mensa.campus3" | translate}}
+  </ion-segment-button>
+</ion-segment>

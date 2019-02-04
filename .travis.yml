@@ -1,0 +1,17 @@
+language: node_js
+branches:
+    only:
+        - master
+node_js:
+    - '9'
+cache:
+    directories:
+        - node_modules
+install:
+    - npm install
+script:
+    - npm run compodoc
+    - bash ./deploy.sh
+env:
+    global:
+        - GH_REF: github.com/University-of-Potsdam-MM/Mobile.UP.git

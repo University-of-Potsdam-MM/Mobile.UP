@@ -1,0 +1,4 @@
+<ion-item align="center" id="footerTitle" text-wrap class="toolbar-background" no-lines>
+  <ion-icon *ngIf="iconName" [name]="iconName" item-start></ion-icon>
+  <div *ngIf="disclaimerReference" align="center">{{ disclaimerReference | translate }}</div>
+</ion-item>

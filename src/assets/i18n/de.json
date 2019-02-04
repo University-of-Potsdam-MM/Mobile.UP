@@ -1,0 +1,400 @@
+{
+  "appName": "Mobile.UP",
+  "page": {
+    "home": {
+      "title": "Startseite",
+      "favorites": "Favoriten"
+    },
+    "imprint":{
+      "title": "Rechtliches",
+      "listHeader": "Impressum & Rechtliches"
+    },
+    "legalNotice": {
+      "title": "Impressum"
+    },
+    "privacyPolicy": {
+      "title": "Datenschutzbedingungen"
+    },
+    "termsOfUse": {
+      "title": "Nutzungsbedingungen"
+    },
+    "login":{
+      "title":"Login",
+      "loginInProgress": "Login läuft...",
+      "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
+      "notLoggedIn": "Sind sind nicht eingeloggt.",
+      "placeHolder": {
+        "username": "Benutzername (ohne @uni...)",
+        "password": "Passwort"
+      },
+      "loginError": {
+        "0": "Benutzername und Passwort stimmen nicht überein.",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
+      }
+    },
+    "logout": {
+      "title": "Logout",
+      "text": "Sie sind dabei sich abzumelden.",
+      "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
+    },
+    "emergency": {
+      "title": "Notrufnummern",
+      "placeholder": {
+        "search": "Suchbegriff eingeben..."
+      }
+    },
+    "persons": {
+      "title": "Personensuche",
+      "placeholder": {
+        "search": "Suchbegriff eingeben..."
+      }
+    },
+    "practice": {
+      "title": "Ab in die Praxis",
+      "favAdded": "Zu Favoriten hinzugefügt!",
+      "favExists": "Bereits favorisiert!",
+      "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
+      "favRemoved": "Von Favoriten entfernt!",
+      "fav": "Favorit",
+      "placeholder": {
+        "search": "Suchbegriff eingeben..."
+      },
+      "item": {
+        "contact": "Ansprechperson:",
+        "foreign": "Ausland",
+        "partner": "Partner",
+        "language": "Sprache",
+        "familyfriendly": "Familienfreundlich",
+        "student": "Job für Studierende",
+        "graduate": "Job für Absolventen",
+        "thesis": "Abschlussarbeit",
+        "praktika": "Praktika",
+        "firm": "Firma",
+        "art": "Art",
+        "field": "Studienrichtung",
+        "pubDate": "veröffentlicht am",
+        "jobPosting": "Stellenausschreibung"
+
+      },
+      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
+    },
+    "grades": {
+      "title": "Meine Leistungen",
+      "bezeichnung": "Bezeichnung",
+      "note": "Note",
+      "pv": "PV",
+      "lp": "LP",
+      "studienleistung": "Studienleistung"
+    },
+    "library": {
+      "title": "Bibliothekssuche",
+      "titleDetail": "Detailansicht",
+      "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
+      "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
+      "bookSet": "Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.",
+      "location": "Standort",
+      "details": "Details",
+      "referenceLib": "Bitte nutzen Sie diesen Bestand nur vor Ort.",
+      "keywords": "Schlagwörter",
+      "annotations": "Anmerkungen",
+      "serie": "Serie",
+      "extent": "Umfang",
+      "noDetails": "Keine weiteren Details verfügbar.",
+      "allResults": "Liste aller Ergebnisse",
+      "toc": "Inhaltsverzeichnis",
+      "placeholder": {
+        "search": "Suchbegriff eingeben..."
+      }
+    },
+    "events":{
+      "title":"Events",
+      "showEventDetails": "Details anzeigen",
+      "hideEventDetails": "Details ausblenden",
+      "eventsAll": "Alle",
+      "eventsToday": "Heute",
+      "eventsNext": "Nächste",
+      "noEventCategory": "Kein Veranstaltungsort verfügbar.",
+      "noEventsToday": "Sie haben heute keine anstehenden Veranstaltungen.",
+      "address": "Adresse",
+      "description": "Beschreibung"
+    },
+    "moodle": {
+      "title": "Moodle.UP"
+    },
+    "lectures": {
+      "title": "Vorlesungsverzeichnis",
+      "term": "Semester",
+      "sws": "Semesterwochenstunden",
+      "links": "Links",
+      "application": "Einschreibezeitraum",
+      "lang": "Sprache",
+      "department": "Einrichtung",
+      "sComment": "Kurzkommentar",
+      "comment": "Kommentar",
+      "literature": "Literatur",
+      "certificates": "Leistungsnachweis",
+      "learnContent": "Lerninhalte",
+      "prereq": "Voraussetzungen",
+      "audience": "Zielgruppe",
+      "group": "Gruppe",
+      "day": "Tag",
+      "time": "Zeit",
+      "freq": "Rhythmus",
+      "duration": "Dauer",
+      "room": "Raum",
+      "lecturer": "Lehrperson",
+      "noCourses": "Keine Kurse verfügbar.",
+      "annotation": "Bemerkung"
+    },
+    "timetable": {
+      "title": "Stundenplan",
+      "courseInformation": "Kursinformation",
+      "until": "",
+      "today": "Heute",
+      "month": "Monat",
+      "week": "Woche",
+      "comment": "Kommentar",
+      "day": "Tag",
+      "oclock": "Uhr",
+      "time": "Uhrzeit",
+      "period": "Zeitraum",
+      "location": "Ort",
+      "building": "Gebäude",
+      "room": "Raum",
+      "rhythm": "Rhythmus",
+      "lecturer": "Dozent"
+    },
+    "mail": {
+      "title": "Mail.UP"
+    },
+    "news": {
+      "title": "Neuigkeiten",
+      "articlePublished": "Veröffentlicht"
+    },
+    "maps": {
+      "title": "Lagepläne"
+    },
+    "tipps": {
+      "title": "Tipps & Tricks"
+    },
+    "transport": {
+      "title": "Nahverkehr",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "journeys": "Fahrten ab",
+      "track": "Gleis",
+      "cancelled": "Fällt aus"
+    },
+    "reflectUP": {
+      "title": "Reflect.UP"
+    },
+    "sports": {
+      "title": "Hochschulsport"
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "setting": {
+        "campus": {
+          "lbl": "Campus"
+        },
+        "language": {
+          "lbl": "Sprache",
+          "options": {
+            "Deutsch": "Deutsch",
+            "Englisch": "Englisch"
+          }
+        },
+        "general" : {
+          "lbl": "Allgemein"
+        },
+        "inpractice": {
+          "lbl": "Ab in die Praxis"
+        },
+        "practice" : {
+          "lbl": "Art",
+          "options": {
+            "Jobs für Studierende": "Jobs für Studierende",
+            "Jobs für Absolventen": "Jobs für Absolventen",
+            "Abschlussarbeit": "Abschlussarbeit",
+            "Praktika": "Praktika"
+          }
+        },
+        "studyarea" : {
+          "lbl": "Studienrichtung",
+          "options": {
+            "Geistes- und Kulturwissenschaften": "Geistes- und Kulturwissenschaften",
+            "Wirtschafts- und Sozialwissenschaften": "Wirtschafts- und Sozialwissenschaften",
+            "Mathematik und Informatik": "Mathematik und Informatik",
+            "Naturwissenschaften": "Naturwissenschaften",
+            "Rechtswissenschaften": "Rechtswissenschaften",
+            "Bildungs- und Kognitionswissenschaften": "Bildungs- und Kognitionswissenschaften",
+            "Sport- und Gesundheitswissenschaften": "Sport- und Gesundheitswissenschaften",
+            "fächerübergreifend": "fächerübergreifend"
+          }
+        },
+        "domestic": {
+          "lbl": "Inland"
+        },
+        "foreign": {
+          "lbl": "Ausland"
+        }
+      }
+    },
+    "athletics":{
+      "title":"Hochschulsport"
+    },
+    "rooms": {
+      "title": "Freie Räume",
+      "time": "Uhrzeit",
+      "no_rooms_hintText": "Es wurden keine freien Räume gefunden"
+    },
+    "roomplan": {
+      "title": "Raumplan",
+      "no_house": "Das gewählte Haus ist heute gantägig frei.",
+      "no_room": "Der gewählte Raum ist heute ganztägig frei.",
+      "date": "Datum",
+      "no_rooms_hintText": "Es wurden keine freien Räume gefunden"
+    },
+    "openingHours":{
+      "title":"Öffnungszeiten",
+      "time": " Uhr",
+      "open": "geöffnet",
+      "opens": "öffnet ",
+      "closed": "geschlossen",
+      "closes": "schließt ",
+      "comment": "Kommentar",
+      "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
+    },
+    "mensa":{
+      "title": "Mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm",
+      "students": "Studierende",
+      "date": "Datum",
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarisch",
+      "guests": "Gäste",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
+    },
+    "unishop": {
+      "title": "UNIshop"
+    },
+    "appInfo": {
+      "title": "Info",
+      "platform": "Plattform",
+      "uuid": "Benutzer-ID",
+      "manufacturer": "Geräte-Hersteller",
+      "model": "Geräte-Modell",
+      "version": "Version",
+      "appVersion": "App-Version",
+      "buildNumber": "Build-Nr.",
+      "app": "Applikation",
+      "device": "Gerät",
+      "contact": "Ansprechpartner",
+      "participate": "Mitmachen",
+      "libraries": "Bibliotheken & Lizenzen"
+    },
+    "campusMap": {
+      "title": "Lageplan",
+      "placeholder.search": "Suche",
+      "select_categories": "Kategorien zum Anzeigen wählen",
+      "category": {
+        "associateinstitutes": "An-Institute",
+        "institutes": "Institute",
+        "canteens": "Mensas",
+        "parking": "Parkplätze",
+        "student": "Studentisches",
+        "terminals": "Service-Stationen",
+        "sport": "Sport"
+      }
+    }
+  },
+  "button": {
+    "ok": "OK",
+    "toHome": "Zur Startseite",
+    "cancel": "Abbrechen",
+    "yes": "Ja",
+    "no": "Nein",
+    "login": "Login",
+    "logout": "Logout",
+    "continue": "Weiter",
+    "remove": "Entfernen",
+    "search": "Suchen",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
+    "app": "App",
+    "webpage": "Webseite"
+  },
+  "alert": {
+    "title": {
+      "unexpectedError": "Unerwarteter Fehler",
+      "httpError": "HTTP-Fehler",
+      "error": "Fehler",
+      "website": "Website öffnen?",
+      "redirect": "Weiterleitung"
+    },
+    "httpErrorStatus": {
+      "unknown": "Unbekannter HTTP-Status",
+      "0": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
+      "400": "Fehler 400: Anfrage fehlerhaft",
+      "401": "Fehler 401: Zugang verweigert",
+      "403": "Fehler 403: Zugriff verboten",
+      "404": "Fehler 404: Ressource nicht gefunden"
+    },
+    "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
+    "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
+    "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
+    "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
+    "redirect-website": "Auf externe Webseite weiterleiten?",
+    "redirect-website-app": "Auf externe Webseite oder App weiterleiten?"
+  },
+  "university": {
+    "location": {
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
+    }
+  },
+  "words": {
+    "clock": "Uhr",
+    "house": "Haus",
+    "room": "Raum",
+    "rooms": "Räume",
+    "booking": "Belegung",
+    "bookings": "Belegungen",
+    "of": "von",
+    "results": "Einträgen",
+    "all": "Alle"
+  },
+  "menu": {
+    "title": "Menü"
+  },
+  "popover":{
+    "loggedInText": "Eingeloggt als",
+    "notLoggedInText": "Nicht eingeloggt",
+    "general": "Allgemein"
+  },
+  "launchNavigator": {
+    "headerText": "Auswahl merken?",
+    "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
+    "dialogHeaderText": "App zur Navigation auswählen..."
+  },
+  "hints": {
+    "type": {
+      "hint": "Hinweis",
+      "attention": "Achtung"
+    },
+    "text": {
+      "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
+      "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
+      "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
+      "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
+      "grades-noGrades-hint": "Keine Leistungen eingetragen.",
+      "openings-planCanChange-hint": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
+      "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
+    }
+  }
+}

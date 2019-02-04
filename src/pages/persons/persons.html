@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.persons.title" | translate }}</ion-title>
+  </ion-navbar>
+  <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.persons.placeholder.search' | translate"
+    (ionInput)="search()"
+    debounce="750">
+  </ion-searchbar>
+</ion-header>
+
+<ion-content padding (ionScroll)="onScrollListener()">
+
+  <p *ngIf="!response_received && query.length > 0" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <div *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)">
+    <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></hint>
+  </div>
+
+  <p *ngIf="error != null" style="text-align: center" text-wrap>
+    {{ "alert.network" | translate }} <br/><br/>
+    <!-- {{error.name}}<br/>
+    {{error.message}}<br/>
+    {{error.error}}<br/> -->
+  </p>
+
+  <ion-list>
+    <div *ngFor="let person of personsFound">
+      <ion-item-sliding>
+        <ion-item tappable (click)="expandPerson(person)">
+          <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
+            <p text-wrap *ngIf="person.Abteilung != ''">{{person.Abteilung}}</p>
+          </ion-label>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && !person.expanded" name="arrow-dropdown" item-end></ion-icon>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && person.expanded" name="arrow-dropup" item-end></ion-icon>
+        </ion-item>
+
+        <ion-item-options side="right">
+          <button ion-button color="primary" *ngIf="person.Email != ''">
+              <ion-icon name="mail"></ion-icon>
+              <a href="mailto:{{person.Email}}"><span style="color: white; text-transform: capitalize">Mail</span></a>
+          </button>
+          <button ion-button color="secondary" *ngIf="person.Telefon != ''">
+            <ion-icon name="call"></ion-icon>
+            <a class="notUnderlined" href="tel:{{person.Telefon}}">Call</a>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Telefon != '') || (person.Raum != ''))">
+        <ion-thumbnail item-start>
+        </ion-thumbnail>
+        <ion-label no-margin>
+          <ion-grid>
+            <ion-row *ngIf="person.Email != ''">
+              <ion-col col-auto><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Telefon != ''">
+              <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Raum != ''">
+              <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-list>
+
+</ion-content>

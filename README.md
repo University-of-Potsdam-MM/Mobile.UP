@@ -1,32 +1,63 @@
-Mobile.UP
-======
+# Mobile.UP
 
-Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.floriangoessler.upapp).
-Verfügbar für [iOS](https://itunes.apple.com/de/app/mobile.up/id541440873?mt=8)
+Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.floriangoessler.upapp) und [iOS](https://itunes.apple.com/de/app/mobile.up/id541440873?mt=8).
 
 Die ganze Uni in deiner Hand: Finde dich auf dem Campus zurecht, habe immer den aktuellsten Speiseplan der Mensen dabei, hole dir Infos aus dem Vorlesungsverzeichnis, schau in deinen Stundenplan, checke deine Leistungen und vieles mehr!
-Features:
 
+Features:
 - aktueller Mensaplan
 - deinen Stundenplan direkt aktuell aus PULS
 - deine bisherigen Leistungen direkt aus PULS
 - das gesamte Vorlesungsverzeichnis 
 - aktuelle News von AStA, Uni und Co.
-- aktuelle Veranstaltungen von Nil, Waschhaus und Co.
-- durchsuchbare Öffnungszeiten für Büros, Sekretariate, Bibliotheken, Mensa und mehr
-- durchsuchbare Karten der Campusse
-- Zugriff auf Moodle2 ohne erneuten Login
-- freie Räume auf den Campussen
+- durchsuchbare Öffnungszeiten für Büros, Sekretariate, Bibliotheken, Mensas und mehr
+- durchsuchbare Lagepläne der Campusse
+- Raumpläne und freie Räume auf den Campussen
 - Bus und Bahn von, zu und zwischen den Campussen
-- Notrufnummern direkt zur Hand
-- Bibliothekssuche
 - direkter Link zum Hochschulsport
+- Notrufnummern direkt zur Hand
+- Bibliothekssuche und Personensuche
+- Verlinkung von Mail.UP, Moodle.UP, Reflect.UP und dem UNIshop
+- aktuelle Stellenangebote
 
 Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam präsentiert!
 
+## Getting Started
+
+Zum entwickeln wird Node.js benötigt: 
+
+```sh
+##
+## Repo Clonen
+##
+git clone https://github.com/University-of-Potsdam-MM/Mobile.UP.git
+
+##
+## Submodule installieren und aktualisieren
+##
+git submodule update --init --recursive
+
+##
+## Abhängigkeiten mit NPM installieren
+##
+npm install
+
+##
+## Dokumentation erstellen
+##
+npm run compodoc
+
+##
+## Applikation im Browser mit Ionic starten
+##
+ionic serve
+```
+
+Sollte `ionic serve` einen Fehler ausgeben kann es daran liegen das ionic nicht installiert ist. Ihr könnt es z.B. mit `npm install -g cordova ionic` installieren.
+
 ## Weiterführende Informationen
 
-* [Wiki](https://github.com/University-of-Potsdam-MM/UP.App/wiki)
+* [Wiki](https://github.com/University-of-Potsdam-MM/Mobile.UP/wiki)
 
 ## Demo Version
 
@@ -35,6 +66,7 @@ Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam p
 ## Kontakt
 
 Bei Interesse kontaktieren Sie mobileup-service@uni-potsdam.de
+
 
 ## CodeClimate
 

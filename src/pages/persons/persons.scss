@@ -1,0 +1,27 @@
+page-persons {
+    .item ion-thumbnail {
+        min-width: 3rem;
+        min-height: 3rem;
+        max-width: 3rem;
+        max-height: 3rem;
+        img {
+          min-width: 3rem;
+          min-height: 3rem;
+          max-width: 3rem;
+          max-height: 3rem;
+        }
+    }
+
+    ion-thumbnail[item-start] {
+        margin: 8px 0px 8px 0 !important;
+    }
+
+    ion-col {
+        font-size: 1.3rem;
+    }
+
+    .notUnderlined {
+        text-transform: capitalize;
+        text-decoration: none;
+    }
+}

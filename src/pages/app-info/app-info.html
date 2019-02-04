@@ -1,0 +1,145 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle right>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ "page.appInfo.title" | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list class="showSysInfo">
+
+    <ion-item (click)="showContactPerson = !showContactPerson">
+      <b>{{ "page.appInfo.contact" | translate }}</b>
+      <ion-icon *ngIf="!showContactPerson" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showContactPerson" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showContactPerson">
+      <ion-item text-wrap>
+          <b>Ulrike Lucke</b><br>
+          Universität Potsdam<br>
+          <div class="link" (click)="callMap('Haus 4 Institut für Informatik, August-Bebel-Str. 89, 14482 Potsdam')">
+            Institut für Informatik<br>
+            August-Bebel-Str. 89<br>
+            14482 Potsdam<br>
+          </div>
+
+          Haus 4 | 1.17<br>
+          <br>
+          Telefon: <a href="tel:+49-331-977-3023">+49-331-977-3023</a>
+      </ion-item>
+    </span>
+    <ion-item (click)="showParticipationInfo = !showParticipationInfo">
+      <b>{{ "page.appInfo.participate" | translate }}</b>
+      <ion-icon *ngIf="!showParticipationInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showParticipationInfo" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showParticipationInfo">
+      <ion-item text-wrap>
+          Es gibt die Möglichkeit als studentische Mitarbeiter innerhalb von Lehrprojekten, Aufträgen oder Anstellung an der App-Entwicklung im Rahmen des eLiS-Projekts mitzuwirken.<br>
+          Die App ist als Open Source Projekt veröffentlicht.
+          <br><br>
+          Wenn Sie sich für eine Mitarbeit an der App interessieren, können Sie gern das Entwicklerteam unter <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a> kontaktieren oder sich über <a href="https://github.com/University-of-Potsdam-MM/Mobile.UP">GitHub</a> beteiligen.
+      </ion-item>
+    </span>
+    <ion-item (click)="showLibraryInfo = !showLibraryInfo">
+      <b>{{ "page.appInfo.libraries" | translate }}</b>
+      <ion-icon *ngIf="!showLibraryInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showLibraryInfo" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showLibraryInfo">
+      <ion-item text-wrap>
+        "@angular/common": "5.0.3"<br>
+        "@angular/compiler": "5.0.3"<br>
+        "@angular/compiler-cli": "^5.0.3"<br>
+        "@angular/core": "5.0.3"<br>
+        "@angular/forms": "5.0.3"<br>
+        "@angular/http": "5.0.3"<br>
+        "@angular/platform-browser": "5.0.3"<br>
+        "@angular/platform-browser-dynamic": "5.0.3"<br>
+        "@ionic-native/app-availability": "^4.18.0"<br>
+        "@ionic-native/app-version": "^4.18.0"<br>
+        "@ionic-native/core": "4.11.0"<br>
+        "@ionic-native/device": "^4.18.0"<br>
+        "@ionic-native/in-app-browser": "^4.18.0"<br>
+        "@ionic-native/keyboard": "^4.18.0"<br>
+        "@ionic-native/launch-navigator": "^4.18.0"<br>
+        "@ionic-native/network": "^4.18.0"<br>
+        "@ionic-native/safari-view-controller": "^4.18.0"<br>
+        "@ionic-native/secure-storage": "^4.18.0"<br>
+        "@ionic-native/splash-screen": "^4.1.0"<br>
+        "@ionic-native/status-bar": "4.4.0"<br>
+        "@ionic/storage": "^2.2.0"<br>
+        "@ngx-translate/core": "^9.1.1"<br>
+        "@ngx-translate/http-loader": "^2.0.1"<br>
+        "@types/jquery": "^3.3.28"<br>
+        "cordova-android": "7.1.4"<br>
+        "cordova-browser": "5.0.4"<br>
+        "cordova-ios": "4.5.5"<br>
+        "cordova-plugin-actionsheet": "^2.3.3"<br>
+        "cordova-plugin-app-version": "^0.1.9"<br>
+        "cordova-plugin-appavailability": "^0.4.2"<br>
+        "cordova-plugin-device": "^1.1.7"<br>
+        "cordova-plugin-dialogs": "^2.0.1"<br>
+        "cordova-plugin-inappbrowser": "^1.7.2"<br>
+        "cordova-plugin-ionic-keyboard": "^2.1.3"<br>
+        "cordova-plugin-ionic-webview": "^1.2.1"<br>
+        "cordova-plugin-network-information": "^2.0.1"<br>
+        "cordova-plugin-safariviewcontroller": "^1.5.4"<br>
+        "cordova-plugin-secure-storage": "^3.0.0"<br>
+        "cordova-plugin-splashscreen": "^4.1.0"<br>
+        "cordova-plugin-statusbar": "^2.4.2"<br>
+        "cordova-plugin-whitelist": "^1.3.3"<br>
+        "country-language": "^0.1.7"<br>
+        "i18next-client": "^1.11.5"<br>
+        "intl": "^1.2.5"<br>
+        "ion2-calendar": "^2.2.0"<br>
+        "ionic-angular": "^3.9.2"<br>
+        "ionic-cache": "^3.1.3"<br>
+        "ionic2-calendar": "^0.4.6"<br>
+        "ionicons": "3.0.0"<br>
+        "jquery": "^3.3.1"<br>
+        "luxon": "^1.8.3"<br>
+        "moment": "^2.23.0"<br>
+        "ngx-moment": "^3.3.0"<br>
+        "ngx-order-pipe": "^1.2.1"<br>
+        "opening_hours": "^3.5.0"<br>
+        "rrule": "^2.5.6"<br>
+        "rxjs": "5.5.11"<br>
+        "sw-toolbox": "3.6.0"<br>
+        "zone.js": "0.8.26"
+      </ion-item>
+    </span>
+
+    <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
+      <b>{{ "page.appInfo.app" | translate }}</b>
+      <ion-icon *ngIf="!showSysInfo" item-end name="arrow-dropdown"></ion-icon>
+      <ion-icon *ngIf="showSysInfo" item-end name="arrow-dropup"></ion-icon>
+    </ion-item>
+    <span *ngIf="showSysInfo">
+      <ion-item *ngIf="deviceInfo.cordovaVersion">
+        <ion-label item-start>Cordova Version:</ion-label><div item-content>{{ deviceInfo.cordovaVersion }}</div>
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.appVersion">
+        <ion-label item-start>{{ "page.appInfo.version" | translate }}:</ion-label><div item-content>{{ deviceInfo.appVersion }}</div>
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.osPlatform">
+        <ion-label item-start>{{ "page.appInfo.platform" | translate }}:</ion-label><div item-content>{{ deviceInfo.osPlatform }}</div>
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.osVersion">
+        <ion-label item-start>Platform Version:</ion-label><div item-content>{{ deviceInfo.osVersion }}</div>
+      </ion-item>
+      <!-- <ion-item *ngIf="deviceInfo.uuid">
+        <ion-label item-start>{{ "page.appInfo.uuid" | translate }}:</ion-label><div item-content>{{ deviceInfo.uuid }}</div>
+      </ion-item> -->
+      <ion-item *ngIf="deviceInfo.deviceManufacturer">
+        <ion-label item-start>{{ "page.appInfo.manufacturer" | translate }}:</ion-label><div item-content>{{ deviceInfo.deviceManufacturer }}</div>
+      </ion-item>
+      <ion-item *ngIf="deviceInfo.deviceModel">
+        <ion-label item-start>{{ "page.appInfo.model" | translate }}:</ion-label><div item-content>{{ deviceInfo.deviceModel }}</div>
+      </ion-item>
+    </span>
+  </ion-list>
+</ion-content>
