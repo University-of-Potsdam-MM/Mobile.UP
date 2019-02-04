@@ -48,6 +48,13 @@ export class CampusMapPage {
 
     // load geoJson data
     this.loadMapData();
+
+    // after map is initialized use default campus
+    this.settings.getSettingValue("campus").then(
+      (campus:string) => {
+        this.changeCampus(campus)
+      }
+    )
   }
 
   /**
@@ -82,7 +89,7 @@ export class CampusMapPage {
    */
   initializeLeafletMap(){
     // create map object
-    let map = leaflet.map("map");
+    let map = leaflet.map("map").fitWorld();
     leaflet.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
@@ -169,7 +176,12 @@ export class CampusMapPage {
       }
     }
 
-    // now add layerGroups to the map so the user can use them
+    // select all layers by default
+    for(let layerName in this.layerGroups) {
+      this.layerGroups[layerName].addTo(this.map);
+    }
+
+    // now add layerGroups to the map so the user can select/deselect them
     leaflet.control.layers({}, this.layerGroups).addTo(this.map);
   }
 
