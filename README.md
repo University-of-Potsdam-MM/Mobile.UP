@@ -8,7 +8,7 @@ Features:
 - aktueller Mensaplan
 - deinen Stundenplan direkt aktuell aus PULS
 - deine bisherigen Leistungen direkt aus PULS
-- das gesamte Vorlesungsverzeichnis 
+- das gesamte Vorlesungsverzeichnis
 - aktuelle News von AStA, Uni und Co.
 - durchsuchbare Öffnungszeiten für Büros, Sekretariate, Bibliotheken, Mensas und mehr
 - durchsuchbare Lagepläne der Campusse
@@ -24,7 +24,7 @@ Mobile.UP wird dir mit freundlicher Unterstützung deines AStA der Uni Potsdam p
 
 ## Getting Started
 
-Zum entwickeln wird Node.js benötigt: 
+Zum entwickeln wird Node.js benötigt:
 
 ```sh
 ##
@@ -62,6 +62,10 @@ Sollte `ionic serve` einen Fehler ausgeben kann es daran liegen das ionic nicht 
 ## Demo Version
 
 * [Mobile.UP](https://mobileup.uni-potsdam.de/)
+
+## Dokumentation
+
+* [GitHub-Pages](https://university-of-potsdam-mm.github.io/Mobile.UP/)
 
 ## Kontakt
 
