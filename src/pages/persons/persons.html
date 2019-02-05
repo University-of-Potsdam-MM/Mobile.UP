@@ -54,6 +54,9 @@
             <ion-icon name="call"></ion-icon>
             <a class="notUnderlined" href="tel:{{person.Telefon}}">Call</a>
           </button>
+          <button ion-button color="secondary" *ngIf="cordova" (click)="exportContact(person)">
+            <ion-icon name="person-add"></ion-icon>
+        </button>
         </ion-item-options>
       </ion-item-sliding>
 

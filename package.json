@@ -31,6 +31,7 @@
     "@angular/platform-browser-dynamic": "5.0.3",
     "@ionic-native/app-availability": "^4.18.0",
     "@ionic-native/app-version": "^4.18.0",
+    "@ionic-native/contacts": "^5.0.0",
     "@ionic-native/core": "4.11.0",
     "@ionic-native/device": "^4.18.0",
     "@ionic-native/in-app-browser": "^4.19.0",
@@ -52,6 +53,7 @@
     "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-appavailability": "^0.4.2",
+    "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-dialogs": "^2.0.1",
     "cordova-plugin-inappbrowser": "^3.0.0",
@@ -111,7 +113,8 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      }
+      },
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android",

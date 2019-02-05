@@ -19,6 +19,7 @@ import { Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
 
 /**
  * @class PersonPage
@@ -39,6 +40,7 @@ export class PersonsPage {
   query = "";
   noResults = false;
   triedRefreshingSession = false;
+  cordova = false;
 
   /**
    * @constructor
@@ -51,6 +53,7 @@ export class PersonsPage {
    * @param {ConnectionProvider} connection
    * @param {Storage} storage
    * @param {sessionProvider} sessionProvider
+   * @param {Contacts} contacts
    */
   constructor(
     private navCtrl: NavController,
@@ -59,7 +62,11 @@ export class PersonsPage {
     private keyboard: Keyboard,
     private connection: ConnectionProvider,
     private storage: Storage,
-    private sessionProvider: SessionProvider) {
+    private sessionProvider: SessionProvider,
+    private contacts: Contacts) {
+      if (this.platform.is("cordova")) {
+        this.cordova = true
+      }
   }
 
   /**
@@ -184,6 +191,27 @@ export class PersonsPage {
       if (currentPerson.Id == person.Id) {
         currentPerson.expanded = !currentPerson.expanded;
       }
+    }
+  }
+
+  /**
+   * @name exportContact
+   * @description exports a contact to the local phone book
+   * @param {IPerson} person
+   */
+  exportContact(person: IPerson) {
+    if (this.platform.is("cordova")) {
+      let contact: Contact = this.contacts.create();
+
+      contact.name = new ContactName(null, person.Nachname, person.Vorname);
+
+      if (person.Telefon) { contact.phoneNumbers = [new ContactField('work', person.Telefon)]; }
+      if (person.Email)   { contact.emails = [new ContactField('work', person.Email)]; }
+
+      contact.save().then(
+        () => console.log('Contact saved!', contact),
+        (error: any) => console.error('Error saving contact.', error)
+      );
     }
   }
 
