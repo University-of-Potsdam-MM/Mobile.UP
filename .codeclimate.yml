@@ -1,6 +1,6 @@
 languages:
    JavaScript: true
-#engines:
+engines:
 #  csslint:
 #    enabled: true
 #  eslint:
