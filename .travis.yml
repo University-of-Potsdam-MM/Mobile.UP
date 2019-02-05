@@ -10,7 +10,7 @@ cache:
 install:
     - npm install
 script:
-    - npm run compodoc
+    - npm run doc
     - bash ./deploy.sh
 env:
     global:

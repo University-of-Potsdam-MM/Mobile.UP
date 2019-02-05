@@ -14,7 +14,8 @@
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s",
+    "doc": "npx compodoc -p tsconfig.json -n 'Mobile.UP'"
   },
   "config": {
     "ionic_copy": "./scripts/copy-custom-libs.js"
