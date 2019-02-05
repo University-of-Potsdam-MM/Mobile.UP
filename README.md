@@ -74,7 +74,7 @@ Bei Interesse kontaktieren Sie mobileup-service@uni-potsdam.de
 
 ## CodeClimate
 
-<a href="https://codeclimate.com/github/University-of-Potsdam-MM/UP.App"><img src="https://codeclimate.com/github/University-of-Potsdam-MM/UP.App/badges/gpa.svg" /></a>
+<a href="https://codeclimate.com/github/University-of-Potsdam-MM/Mobile.UP"><img src="https://codeclimate.com/github/University-of-Potsdam-MM/Mobile.UP/badges/gpa.svg" /></a>
 
 ## Support from [BrowserStack](https://www.browserstack.com/)
 
