@@ -31,6 +31,7 @@
     "@angular/platform-browser-dynamic": "5.0.3",
     "@ionic-native/app-availability": "^4.18.0",
     "@ionic-native/app-version": "^4.18.0",
+    "@ionic-native/call-number": "^5.0.0",
     "@ionic-native/contacts": "^5.0.0",
     "@ionic-native/core": "4.11.0",
     "@ionic-native/device": "^4.18.0",
@@ -47,6 +48,7 @@
     "@ngx-translate/http-loader": "^2.0.1",
     "@types/jquery": "^3.3.28",
     "@types/leaflet": "^1.4.0",
+    "call-number": "^1.0.1",
     "cordova-android": "7.1.4",
     "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.5",
@@ -114,7 +116,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-contacts": {}
+      "cordova-plugin-contacts": {},
+      "mx.ferreyra.callnumber": {}
     },
     "platforms": [
       "android",

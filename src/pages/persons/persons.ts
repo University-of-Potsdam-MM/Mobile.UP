@@ -20,6 +20,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 /**
  * @class PersonPage
@@ -54,6 +55,7 @@ export class PersonsPage {
    * @param {Storage} storage
    * @param {sessionProvider} sessionProvider
    * @param {Contacts} contacts
+   * @param {CallNumber} callNumber
    */
   constructor(
     private navCtrl: NavController,
@@ -63,7 +65,8 @@ export class PersonsPage {
     private connection: ConnectionProvider,
     private storage: Storage,
     private sessionProvider: SessionProvider,
-    private contacts: Contacts) {
+    private contacts: Contacts,
+    private callNumber: CallNumber) {
       if (this.platform.is("cordova")) {
         this.cordova = true
       }
@@ -215,4 +218,15 @@ export class PersonsPage {
     }
   }
 
+  /**
+   * @name callContact
+   * @description using native call for calling numbers
+   * @param {string} number
+   * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
+   */
+  callContact(number: string) {
+    this.callNumber.callNumber(number, true)
+      .then(() => console.log('Dialer Launched!'))
+      .catch(() => console.log('Error launching dialer'));
+  }
 }

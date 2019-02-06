@@ -107,4 +107,5 @@
     <engine name="ios" spec="4.5.5" />
     <engine name="browser" spec="5.0.4" />
     <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
+    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
 </widget>

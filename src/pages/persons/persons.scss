@@ -20,8 +20,17 @@ page-persons {
         font-size: 1.3rem;
     }
 
+    .link {
+        color: color($colors, primary);
+        text-decoration: underline;
+    }
+
     .notUnderlined {
         text-transform: capitalize;
         text-decoration: none;
+    }
+
+    .whiteFont {
+        color: white;
     }
 }
