@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { IConfig } from '../../library/interfaces';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 import { CacheService } from 'ionic-cache';
 import { WebIntentProvider } from '../../providers/web-intent/web-intent';
+import { WebHttpUrlEncodingCodec } from '../../library/util';
 
 @IonicPage()
 @Component({
@@ -38,14 +39,26 @@ export class BookDetailViewPage {
     "noDetails": true
   };
 
-  constructor(public navCtrl: NavController,
+  /**
+   * @constructor
+   * @param navCtrl
+   * @param navParams
+   * @param storage
+   * @param http
+   * @param cache
+   * @param webIntent
+   */
+
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
     private http: HttpClient,
     private cache: CacheService,
     public webIntent: WebIntentProvider) {
+
     this.book = this.navParams.data["book"];
-    console.log(this.book);
+    //console.log(this.book);
   }
 
   async ngOnInit() {
@@ -54,6 +67,10 @@ export class BookDetailViewPage {
     this.updateDetails();
   }
 
+  /**
+   * TODO: extract to utils
+   * @param toConvert
+   */
   convertToArray(toConvert) { // convert everything to an array so you can handle it universally
     if (Array.isArray(toConvert)) {
       return toConvert;
@@ -64,6 +81,12 @@ export class BookDetailViewPage {
     }
   }
 
+  /**
+   * TODO: extract to utils
+   * @name isInArray
+   * @param array
+   * @param value
+   */
   isInArray(array, value) { // checks if value is in array
     var i;
     var found = false;
@@ -75,7 +98,11 @@ export class BookDetailViewPage {
     return found;
   }
 
-  updateDetails() {
+  /**
+   * @name updateDetails
+   * @description updates the details of the requested book
+   */
+  updateDetails(): void {
     this.getKeywords();
     this.getISBN();
     this.getSeries();
@@ -84,13 +111,25 @@ export class BookDetailViewPage {
     this.getAbstractAndTOC();
   }
 
-  updateLocation(refresher?) {
+  /**
+   * @name updateLocation
+   * @param refresher
+   */
+  updateLocation(refresher?): void {
     if (refresher) {
       this.cache.removeItem("bookLocation"+this.book.recordInfo.recordIdentifier._);
     }
 
-    let url = this.config.webservices.endpoint.libraryDAIA + this.book.recordInfo.recordIdentifier._ + "&format=json";
-    let request = this.http.get(url);
+    let url = this.config.webservices.endpoint.libraryDAIA;
+
+    let headers = new HttpHeaders()
+        .append("Authorization", this.config.webservices.apiToken);
+
+    let params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
+      .append("id", 'ppn:'+this.book.recordInfo.recordIdentifier._)
+      .append("format", "json");
+
+    let request = this.http.get(url, {headers:headers, params:params});
     this.cache.loadFromObservable("bookLocation"+this.book.recordInfo.recordIdentifier._, request).subscribe(data => {
       if (refresher) {
         refresher.complete();
@@ -104,6 +143,10 @@ export class BookDetailViewPage {
     });
   }
 
+  /**
+   * @name setLocationData
+   * @param data
+   */
   setLocationData(data) {
     // console.log(data);
     this.bookLocationList = [];
@@ -125,6 +168,10 @@ export class BookDetailViewPage {
     // console.log(this.bookLocationList);
   }
 
+  /**
+   * @name getDepartment
+   * @param item
+   */
   getDepartment(item) {
     var department = "";
     if (item.department && item.department.content) {
@@ -136,19 +183,31 @@ export class BookDetailViewPage {
     return department;
   }
 
+  /**
+   * @name getDepartmentURL
+   * @param item
+   */
   getDepartmentURL(item) {
     if (item.department && item.department.id) {
       return item.department.id;
     } else { return ""; }
   }
 
+  /**
+   * @name getLabel
+   * @param item
+   */
   getLabel(item) {
     if (item.label) {
       return item.label
     } else { return ""; }
   }
 
-  getBookUrl(item) {
+  /**
+   * @name getBookUrl
+   * @param item
+   */
+  getBookUrl(item):void {
     if (this.book.location) {
       var i;
       let tmp = this.convertToArray(this.book.location);
@@ -178,6 +237,10 @@ export class BookDetailViewPage {
     return this.bookDetails.url;
   }
 
+  /**
+   * @name getItem
+   * @param item
+   */
   getItem(item) {
     var status = "", statusInfo = "";
 
@@ -262,7 +325,10 @@ export class BookDetailViewPage {
     return [status, statusInfo];
   }
 
-  getKeywords() {
+  /**
+   * @name getKeywords
+   */
+  getKeywords():void {
     if (this.book.subject) {
       let tmp = this.convertToArray(this.book.subject);
       var i;
@@ -287,7 +353,10 @@ export class BookDetailViewPage {
     }
   }
 
-  getISBN() {
+  /**
+   * @name getISBN
+   */
+  getISBN():void {
     if (this.book.identifier) {
       let tmp = this.convertToArray(this.book.identifier);
       var i;
@@ -302,7 +371,10 @@ export class BookDetailViewPage {
     }
   }
 
-  getSeries() {
+  /**
+   * @name getSeries
+   */
+  getSeries():void {
     var i;
     if (this.book.titleInfo) {
       let tmp = this.convertToArray(this.book.titleInfo);
@@ -328,7 +400,10 @@ export class BookDetailViewPage {
     }
   }
 
-  getExtent() {
+  /**
+   * @name getExtent
+   */
+  getExtent():void {
     var i;
     if (this.book.physicalDescription) {
       let tmp = this.convertToArray(this.book.physicalDescription);
@@ -342,7 +417,10 @@ export class BookDetailViewPage {
     }
   }
 
-  getNotes() {
+  /**
+   * @name getNotes
+   */
+  getNotes():void {
     var i;
     if (this.book.note) {
       let tmp = this.convertToArray(this.book.note);
@@ -372,7 +450,10 @@ export class BookDetailViewPage {
     }
   }
 
-  getAbstractAndTOC() {
+  /**
+   * @name getAbstractAndTOC
+   */
+  getAbstractAndTOC():void {
     var i,j;
     if (this.book.abstract) {
       let tmp = this.convertToArray(this.book.abstract);
@@ -399,7 +480,11 @@ export class BookDetailViewPage {
     }
   }
 
-  setMediaType(mediatype) {
+  /**
+   * @name setMediaType
+   * @param mediatype
+   */
+  setMediaType(mediatype):void {
     this.bookDetails.mediaType = mediatype;
   }
 }
