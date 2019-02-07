@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { IConfig } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
+import { utils } from '../../library/util';
 
 @Component({
   selector: 'lecture-list',
@@ -105,9 +106,9 @@ export class LectureListComponent {
 
       let headers = new HttpHeaders()
         .append("Authorization", this.authToken);
-  
+
       let request = this.http.post(url, {"condition":{"courseId":courseId}}, {headers:headers});
-      
+
       this.cache.loadFromObservable("getCourseData"+courseId, request).subscribe(data => {
         console.log(data);
         this.courseData[courseId] = data;
@@ -115,14 +116,14 @@ export class LectureListComponent {
         var i;
         this.courseGroups[courseId] = [];
         // check how many different groups exist
-        let tmp = this.convertToArray(this.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
+        let tmp = utils.convertToArray(utils.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
         for (i = 0; i < tmp.length; i++) {
-          if (!this.isInArray(this.courseGroups[courseId], tmp[i].groupId)) {
+          if (!utils.isInArray(this.courseGroups[courseId], tmp[i].groupId)) {
             this.courseGroups[courseId].push(tmp[i].groupId);
           }
         }
       });
-      
+
       if (this.isExpandedCourse[courseId]) {
         this.isExpandedCourse[courseId] = false;
       } else { this.isExpandedCourse[courseId] = true; console.log(course); }
@@ -138,7 +139,7 @@ export class LectureListComponent {
   checkDoubledLecturers(event, lecturer, index) {
     if (event.eventId && lecturer.lecturerId) {
       if ((this.lecturerList[event.eventId] != undefined)  && (this.lecturerList[event.eventId].length > 0)) {
-        if (this.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
+        if (utils.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
           return true;
         } else {
           var i;
@@ -160,27 +161,6 @@ export class LectureListComponent {
         return true;
       }
     }
-  }
-
-  convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
-    if (Array.isArray(toConvert)) {
-      return toConvert;
-    } else {
-      var tmp = [];
-      tmp.push(toConvert);
-      return tmp;
-    }
-  }
-
-  isInArray(array, value) { // checks if value is in array
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
-        found = true;
-      }
-    }
-    return found;
   }
 
   htmlDecode(input) {

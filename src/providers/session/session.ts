@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular';
+import { utils } from '../../library/util';
 
 @Injectable()
 export class SessionProvider {
@@ -14,11 +15,11 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         let keys = await storage.keys();
-        if (this.isInArray(keys, "session")) {
+        if (utils.isInArray(keys, "session")) {
           return await storage.get("session");
         } else {
           return await this.storage.get("session");
-        }        
+        }
       }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -57,7 +58,7 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         let keys = await storage.keys();
-        if (this.isInArray(keys, "session")) {
+        if (utils.isInArray(keys, "session")) {
           storage.remove("session").then(() => console.log("session removed"), error => {
             console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
           });
@@ -65,7 +66,7 @@ export class SessionProvider {
           this.storage.remove("session").then(() => console.log("session removed"), error => {
             console.log("Error removing session: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
           });
-        }  
+        }
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -84,11 +85,11 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       return this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         let keys = await storage.keys();
-        if (this.isInArray(keys, "session")) {
+        if (utils.isInArray(keys, "session")) {
           return await storage.get("userInformation");
         } else {
           return await this.storage.get("userInformation");
-        }   
+        }
       }, async error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -123,7 +124,7 @@ export class SessionProvider {
     if (this.platform.is("cordova")) {
       this.secureStorage.create("secureSession").then(async (storage:SecureStorageObject) => {
         let keys = await storage.keys();
-        if (this.isInArray(keys, "session")) {
+        if (utils.isInArray(keys, "session")) {
           storage.remove("userInformation").then(() => console.log("user info removed"), error => {
             console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
           });
@@ -131,7 +132,7 @@ export class SessionProvider {
           this.storage.remove("userInformation").then(() => console.log("user info removed"), error => {
             console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
           });
-        }  
+        }
       }, error => {
         console.log("Error accessing secure storage: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
         console.log("Using normal storage...");
@@ -144,17 +145,6 @@ export class SessionProvider {
         console.log("Error removing user info: " + JSON.stringify(error, Object.getOwnPropertyNames(error)));
       });
     }
-  }
-
-  isInArray(array, value) { // checks if value is in array
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
-        found = true;
-      }
-    }
-    return found;
   }
 
 }
