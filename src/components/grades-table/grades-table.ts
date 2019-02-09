@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { utils } from '../../library/util';
 
 @Component({
   selector: 'grades-table',
@@ -20,7 +21,7 @@ export class GradesTableComponent {
   ngOnInit() {
     this.currentProfession = "0";
     if (this.studentGrades.academicAchievements && this.studentGrades.academicAchievements.achievement && this.studentGrades.academicAchievements.achievement.field) {
-      this.gradeArray = this.convertToArray(this.studentGrades.academicAchievements.achievement.field);
+      this.gradeArray = utils.convertToArray(this.studentGrades.academicAchievements.achievement.field);
     }
   }
 
@@ -30,14 +31,13 @@ export class GradesTableComponent {
     } else { return false; }
   }
 
-  convertToArray(toConvert) { // convert everything to an array so you can handle it universally
-    if (this.isArray(toConvert)) {
-      return toConvert;
-    } else {
-      var tmp = [];
-      tmp.push(toConvert);
-      return tmp;
-    }
+  /**
+   * has to be declared for html pages to use the imported function
+   * couldn't find a better solution
+   * @param array 
+   */
+  convertToArray(array) {
+    return utils.convertToArray(array)
   }
 
   unescapeHTML(s:string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
