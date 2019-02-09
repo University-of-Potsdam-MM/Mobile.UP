@@ -48,12 +48,20 @@
         <ion-item-options side="right">
           <button ion-button color="primary" *ngIf="person.Email != ''">
               <ion-icon name="mail"></ion-icon>
-              <a href="mailto:{{person.Email}}"><span style="color: white; text-transform: capitalize">Mail</span></a>
+              <a class="notUnderlined whiteFont" href="mailto:{{person.Email}}">Mail</a>
           </button>
-          <button ion-button color="secondary" *ngIf="person.Telefon != ''">
-            <ion-icon name="call"></ion-icon>
+          <button ion-button color="secondary" *ngIf="cordova && person.Telefon != ''" (click)="callContact(person.Telefon)">
+            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
+            <a class="notUnderlined">Call</a>
+          </button>
+          <button ion-button color="secondary" *ngIf="!cordova && person.Telefon != ''">
+            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
             <a class="notUnderlined" href="tel:{{person.Telefon}}">Call</a>
           </button>
+          <button ion-button color="secondary" *ngIf="cordova" (click)="exportContact(person)">
+            <ion-icon name="person-add"></ion-icon>
+            <a class="notUnderlined">Add</a>
+        </button>
         </ion-item-options>
       </ion-item-sliding>
 
@@ -66,7 +74,11 @@
               <ion-col col-auto><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
             </ion-row>
             <ion-row *ngIf="person.Telefon != ''">
-              <ion-col col-auto><ion-icon name="call" margin-right></ion-icon></ion-col><ion-col><a href="tel:{{person.Telefon}}">0331 977 {{person.Telefon}}</a></ion-col>
+              <ion-col col-auto><ion-icon name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
+              <ion-col>
+                  <a href="tel:{{person.Telefon}}" *ngIf="!cordova">0331 977 {{person.Telefon}}</a>
+                  <a (click)="callContact(person.Telefon)" *ngIf="cordova" style="text-decoration: underline">0331 977 {{person.Telefon}}</a>
+              </ion-col>
             </ion-row>
             <ion-row *ngIf="person.Raum != ''">
               <ion-col col-auto><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
