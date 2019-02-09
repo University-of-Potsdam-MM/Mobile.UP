@@ -8,7 +8,6 @@ import { AppAvailability } from '@ionic-native/app-availability/ngx';
 import { SafariViewController } from '@ionic-native/safari-view-controller/ngx';
 import { TranslateService } from "@ngx-translate/core";
 import { SessionProvider } from '../session/session';
-import { ISession } from '../login-provider/interfaces';
 
 /**
  * @class WebIntentProvider
