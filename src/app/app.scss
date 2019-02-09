@@ -87,7 +87,7 @@ ion-header {
   -webkit-box-shadow: 0 0 0 0 #fff;
   box-shadow:  0 0 0 0 #fff;
   border-radius:0;
-  text-transform: uppercase;
+  // text-transform: uppercase;
 }
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
 	background-image:none;
@@ -95,10 +95,6 @@ ion-header {
 
 .tabbar {
 	background:  color($colors, upgrey);
-}
-
-.card-md, .card, .card-ios {
-
 }
 
 .searchbar-input, .searchbar-md .searchbar-input, .searchbar-ios .searchbar-input {

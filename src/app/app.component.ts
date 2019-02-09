@@ -95,7 +95,7 @@ export class MobileUPApp {
             console.log("clearing storage...");
             await this.sessionProvider.removeSession();
             await this.sessionProvider.removeUserInfo();
-            await this.storage.clear().then(done => {
+            await this.storage.remove('config').then(() => {
               this.storage.set("appVersion", currentAppVersion);
               this.initializeApp();
             }, error => {

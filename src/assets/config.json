@@ -144,11 +144,6 @@
       "componentName": "campusMap",
       "icon": "map",
       "selected": false
-    },
-    "feedback": {
-      "componentName": "feedback",
-      "icon": "chatbubbles",
-      "selected": false
     }
   },
   "authorization": {

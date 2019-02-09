@@ -75,7 +75,7 @@
     </ion-list>
   </ng-template>
 
-  <p *ngIf=" housesFound.length == 0 && error == null" style="text-align: center">
+  <p *ngIf=" housesFound.length == 0 && error == null && !requestProcessed" style="text-align: center">
     <ion-spinner></ion-spinner>
   </p>
 
