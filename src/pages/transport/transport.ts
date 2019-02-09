@@ -7,7 +7,6 @@ import { ConnectionProvider } from "../../providers/connection/connection";
 import moment from 'moment';
 import { utils } from '../../library/util';
 
-
 @IonicPage()
 @Component({
   selector: 'page-transport',

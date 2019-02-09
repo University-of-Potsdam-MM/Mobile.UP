@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Network } from '@ionic-native/network';
+import { Network } from '@ionic-native/network/ngx';
 import { AlertController, App, Events } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 import { HomePage } from "../../pages/home/home";

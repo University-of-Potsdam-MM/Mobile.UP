@@ -8,7 +8,7 @@ import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { DetailedOpeningPage } from '../detailed-opening/detailed-opening';
 import { Platform } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ConnectionProvider } from "../../providers/connection/connection";
 
 @IonicPage()

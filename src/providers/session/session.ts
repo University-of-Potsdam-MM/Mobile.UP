@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage';
+import { SecureStorage, SecureStorageObject } from '@ionic-native/secure-storage/ngx';
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular';
 import { utils } from '../../library/util';
