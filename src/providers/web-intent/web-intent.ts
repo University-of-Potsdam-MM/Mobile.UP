@@ -188,7 +188,14 @@ export class WebIntentProvider {
    * @description opens mail in browser and injects credentials
    */
   async mailLogin(url: string) {
-    let session:ISession = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    var session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        session = JSON.parse(tmp);
+      } else { session = tmp; }
+    }
+    
     let browser = this.theInAppBrowser.create(url, "_blank", this.options);
 
     if (session && session.credentials && session.credentials.username && session.credentials.password) {

@@ -81,7 +81,14 @@ export class PersonsPage {
    */
   async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
-    this.session = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    this.session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        this.session = JSON.parse(tmp);
+      } else { this.session = tmp; }
+    }
+
     if (!this.session) {
       this.navCtrl.push(LoginPage).then(
         () => console.log("[PersonsPage]: Pushed LoginPage")
@@ -150,7 +157,13 @@ export class PersonsPage {
           if (!this.triedRefreshingSession) {
             if (error.status == 401) {
               this.connection.checkOnline(true, true);
-              this.session = JSON.parse(await this.sessionProvider.getSession());
+              let tmp = await this.sessionProvider.getSession();
+              this.session = undefined;
+              if (tmp) {
+                if (typeof tmp !== 'object') {
+                  this.session = JSON.parse(tmp);
+                } else { this.session = tmp; }
+              }
               if (!this.session) {
                 this.navCtrl.push(LoginPage).then(
                   () => console.log("[PersonsPage]: Pushed LoginPage")

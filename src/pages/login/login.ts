@@ -44,7 +44,13 @@ export class LoginPage {
   }
 
   async ngOnInit() {
-    let session = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    var session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        session = JSON.parse(tmp);
+      } else { session = tmp; }
+    }
 
     if (session) {
       this.alreadyLoggedIn = true;

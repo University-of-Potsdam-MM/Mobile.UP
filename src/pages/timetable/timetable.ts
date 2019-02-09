@@ -70,7 +70,13 @@ export class TimetablePage {
     this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
 
-    let session = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    var session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        session = JSON.parse(tmp);
+      } else { session = tmp; }
+    }
 
     if (session) {
       this.isLoading = true;

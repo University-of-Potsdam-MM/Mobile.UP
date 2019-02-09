@@ -26,13 +26,26 @@ export class PopoverComponent {
   }
 
   async ionViewWillLoad() {
-    let session = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    var session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        session = JSON.parse(tmp);
+      } else { session = tmp; }
+    }
+
     if (session) {
       this.loggedIn = true;
       this.username = session.credentials.username;
     } else { this.loggedIn = false; }
 
-    this.userInformation = JSON.parse(await this.sessionProvider.getUserInfo());
+    tmp = await this.sessionProvider.getUserInfo();
+    this.userInformation = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        this.userInformation = JSON.parse(tmp);
+      } else { this.userInformation = tmp; }
+    }
   }
 
   close() {

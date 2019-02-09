@@ -49,7 +49,13 @@ export class GradesPage {
   async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
-    let session = JSON.parse(await this.sessionProvider.getSession());
+    let tmp = await this.sessionProvider.getSession();
+    var session = undefined;
+    if (tmp) {
+      if (typeof tmp !== 'object') {
+        session = JSON.parse(tmp);
+      } else { session = tmp; }
+    }
 
     if (session) {
       this.token = session.token;

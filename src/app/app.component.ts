@@ -131,7 +131,13 @@ export class MobileUPApp {
    */
   private checkSessionValidity() {
     this.platform.ready().then(async () => {
-      let session = JSON.parse(await this.sessionProvider.getSession());
+      let tmp = await this.sessionProvider.getSession();
+      var session = undefined;
+      if (tmp) {
+        if (typeof tmp !== 'object') {
+          session = JSON.parse(tmp);
+        } else { session = tmp; }
+      }
 
       if (session) {
         // helper function for determining whether session is still valid
@@ -268,7 +274,11 @@ export class MobileUPApp {
 
     this.sessionProvider.getSession().then(session => {
       if (session) {
-        let sessionParsed = JSON.parse(session);
+        var sessionParsed = undefined;
+        if (typeof session !== 'object') {
+          sessionParsed = JSON.parse(session);
+        } else { sessionParsed = session; }
+        
         if (sessionParsed) {
           this.loggedIn = true;
           this.username = sessionParsed.credentials.username;
@@ -278,7 +288,10 @@ export class MobileUPApp {
 
     this.sessionProvider.getUserInfo().then(userInf => {
       if (userInf) {
-        this.userInformation = JSON.parse(userInf);
+        this.userInformation = undefined;
+        if (typeof userInf !== 'object') {
+          this.userInformation = JSON.parse(userInf);
+        } else { this.userInformation = userInf; }
       }
     });
   }
