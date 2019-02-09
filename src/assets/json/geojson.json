@@ -878,7 +878,7 @@
 				"Name" : "Hasso-Plattner Institut",
 				"icon" : null,
 				"visibility" : -1,
-				"description" : "Hauptgebäude",
+				"description" : "Hauptgebäude\n- Digital Engineering Fakultät",
 				"tessellate" : -1,
 				"drawOrder" : null,
 				"end" : null,
@@ -965,6 +965,42 @@
 			"geometry" : {
 				"type" : "Polygon",
 				"coordinates" : [ [ [ 13.123764395713806, 52.391896900882486, 0.0 ], [ 13.12378853559494, 52.3917381273706, 0.0 ], [ 13.124405443668365, 52.391769227381815, 0.0 ], [ 13.124365210533142, 52.391936184962226, 0.0 ], [ 13.123764395713806, 52.391896900882486, 0.0 ] ] ]
+			}
+		},{
+			"properties" : {
+				"extrude" : -1,
+				"timestamp" : null,
+				"Name" : "HPI-Campus II",
+				"icon" : null,
+				"visibility" : -1,
+				"description" : "HPI Haus F",
+				"tessellate" : -1,
+				"drawOrder" : null,
+				"end" : null,
+				"altitudeMode" : null,
+				"begin" : null
+			},
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Polygon",
+				"coordinates" : [ [ [ 13.12376707792282,
+            52.39186089044534
+          ],
+          [
+            13.124319612979889,
+            52.39189526404508
+          ],
+          [
+            13.124333024024963,
+            52.39179214316555
+          ],
+          [
+            13.123780488967896,
+            52.3917544958003
+          ],
+          [
+            13.12376171350479,
+            52.391854343089975 ] ] ]
 			}
 		} ],
 		"type" : "FeatureCollection"
@@ -1073,7 +1109,7 @@
 	        "Name": "Haus 3",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Sonderpädagogik\n- Studentenwohnheim",
+	        "description": "- Lehrbildung mit dem Schwerpunkt Inklusionspädagogik\n- Studentenwohnheim",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1191,7 +1227,7 @@
 	        "Name": "Haus 5",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Audiovisuelles Zentrum (AVZ)\n- Hörsaal \n- Seminarräume",
+	        "description": "- Audiovisuelles Zentrum (AVZ)\n- Hörsaal \n- Seminarräume \n- ZIM - Zentrum für Informationstechnologie und Medienmanagment",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1250,7 +1286,7 @@
 	        "Name": "Haus 6",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Department für Lehrerbildung / Musik\n- Kunst",
+	        "description": "- Department für Lehrerbildung / Musik\n- Fachbereich Grundschulpädagogik und Kunst",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1293,7 +1329,7 @@
 	        "Name": "Haus 8",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+	        "description": "- Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam\n- ZIM - Zentrum für Informationstechnologie und Medienmanagement)",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1377,7 +1413,7 @@
 	        "Name": "Haus 9",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)\n- Computerpool (Arbeitslehre/Technik)\n- Grundschulpädagogik\n- Geografie",
+	        "description": "- Institut für Mathematik",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1419,7 +1455,7 @@
 	        "Name": "Haus 10",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Fuhrpark\n- Versuchsräume (Arbeitslehre/Technik)\n- Vorlesungsräume",
+	        "description": "- Exchange, Project and Innovation-Center - EPI-Center\n- Hochschulgebäudemanagement (HGP) Bereich Universität Potsdam - Fuhrpark",
 	        "tessellate": -1,
 	        "drawOrder": "null",
 	        "end": "null",
@@ -1698,7 +1734,7 @@
 	        "Name": "Haus 14",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Lesecafé (14a)\n- Dekanat der Humanwissenschaftlichen Fakultät\n- Department Erziehungswissenschaft\n- Department Linguistik\n- Department Psychologie\n- Sprachenzentrum",
+	        "description": "- Lesecafé (14a)\n- Dekanat der Humanwissenschaftlichen Fakultät\n- Department Erziehungswissenschaft\n- Department Linguistik\n- Department Psychologie\n- Zentrum für Sprachen und Schlüsselkompetenzen (Zessko)\n- Druckerei / Kopierservice (ZIM)\n- Poststelle",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1835,7 +1871,7 @@
 	        "Name": "Haus 20",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Institut für Biochemie",
+	        "description": "- Institut für Biochemie/Biologie",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -1981,7 +2017,7 @@
 	        "Name": "Haus 24",
 	        "icon": null,
 	        "visibility": -1,
-	        "description": "- Profilbereich Bildungswissenschaften\n- Institute: Erd- und Umweltwissenschaften, Geografie, Geoinformatik, Wirtschafts- und Sozialgeografie, Geografie und Naturrisikenforschung\n- Allgemeine Grundschulpädagogik und -didaktik\n- Arbeitsbereich Management, Professional Services & Sportökonomie",
+	        "description": "- Zentrum für Sprachen und Schlüsselkompetenzen (Zessko)\n- Department Linguistik/Allgemeine Sprachwissenschaft\n- Department Psychologie\n- Institut für Umweltwissenschaften und Geographie",
 	        "tessellate": -1,
 	        "drawOrder": null,
 	        "end": null,
@@ -2518,7 +2554,7 @@
 	        "Name": "Haus 29",
 	        "icon": "null",
 	        "visibility": -1,
-	        "description": "- Exzellenzbereich Kognitionswissenschaften\n- Institut für Biochemie und Biologie\n- Institut für Chemie\n- Institut für Erd- und Umweltwissenschaften\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- UP TRANSFER GmbH",
+	        "description": "- Strukturbereich Kognitionswissenschaften\n- Institut für Biochemie und Biologie\n- Institut für Chemie\n- Institut für Erd- und Umweltwissenschaften\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- UP TRANSFER GmbH",
 	        "tessellate": -1,
 	        "drawOrder": "null",
 	        "end": "null",
@@ -2769,7 +2805,7 @@
 				"Name" : "Haus 7",
 				"icon" : null,
 				"visibility" : -1,
-				"description" : "- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Potsdam Centrum für Politik und Management (PCPM)\n- Kommunalwissenschaftliches Institut (KWI)\n- Mathematisch - und Naturwissenschaftliche Fakultät",
+				"description" : "- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Institut für Informatik und Computational Science\n- Joint Lab\n -Wireless and Embedded System Design\n- Kommunalwissenschaftliches Institut\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Universitätsgesellschaft Potsdam e.V.\n- UP Transfer GmbH",
 				"tessellate" : -1,
 				"drawOrder" : null,
 				"end" : null,
@@ -2807,7 +2843,7 @@
 				"Name" : "Haus 4",
 				"icon" : null,
 				"visibility" : -1,
-				"description" : "Institut für Informatik",
+				"description" : "Institut für Informatik und Computational Science",
 				"tessellate" : -1,
 				"drawOrder" : null,
 				"end" : null,
@@ -2864,7 +2900,7 @@
         "Name": "Haus 1",
         "icon": null,
         "visibility": -1,
-        "description": "- Eltern-Kind-Raum (Eingang von außen neben dem Universitätsarchiv)\n- Hörsäle, Seminarräume\n- Juristische Fakultät\n- Mensa\n- MenschenRechtsZentrum\n- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- Zentrale Enrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+        "description": "- Eltern-Kind-Raum (Eingang von außen neben dem Universitätsarchiv)\n- Hörsäle, Seminarräume\n- Juristische Fakultät\n- Mensa\n- MenschenRechtsZentrum\n- Wirtschafts- und Sozialwissenschaftliche Fakultät\n- ZIM - Zentrum für Informationstechnologie und Medienmanagement",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -3033,7 +3069,7 @@
         "Name": "Haus 6",
         "icon": null,
         "visibility": -1,
-        "description": "- Hörsaalgebäude\n- Studienbüro der Juristischen Fakultät\n- Zentrum für Sprachen und Schlüsselkompetenzen\n- AVZ-Multimedialabor",
+        "description": "- Hörsaalgebäude\n- Studienbüro der Juristischen Fakultät\n- Zentrum für Sprachen und Schlüsselkompetenzen\n- AVZ-Multimedialabor\n- ZIM - Zentrum für Informationstechnologie und Medienmanagement",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -3215,7 +3251,7 @@
         "Name": "Haus 2",
         "icon": null,
         "visibility": -1,
-        "description": "- AG eLearning\n- Poststelle (Z/AVZ)\n- Jüdische Studien\n- Studiumplus\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)\n- Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)",
+        "description": "- AG eLearning\n- Poststelle (Z/AVZ)\n- Jüdische Studien\n- Studiumplus\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -3348,7 +3384,7 @@
         "Name": "Haus 6",
         "icon": null,
         "visibility": -1,
-        "description": "- Koordinationsbüro für Chancengleichheit\n- Personalräte\n- Studierendenvertretung - AStA\n- UP Transfer - Zentraler universitärer Partner für Wissens- und Technologietransfer\n- Zentrale Abteilung/Audiovisuelles Zentrum (Z/AVZ)",
+        "description": "- Koordinationsbüro für Chancengleichheit\n- Personalräte\n- Studierendenvertretung - AStA\n - Zentrum für Qualitätsentwicklung in Lehre und Studium (ZfQ)\n- Netzwerk Studienqualität Brandenburg (sqb)\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -3415,7 +3451,7 @@
         "Name": "Haus 8",
         "icon": null,
         "visibility": -1,
-        "description": "- Auditorium Maximum \"Audimax\"\n- Büro der französischen Botschaft für die akademischen Beziehungen\n- Cafeteria\n- Dezernat 2 (Studentische Angelegenheiten - Zentrale Studienberatung, - Studierendensekretariate, Prüfungsamt, Akademisches Auslandsamt)\n- Dezernat 2 (Chipkarten-Service)\n- Institut für Mathematik\n- Welcome Center Potsdam\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+        "description": "- Auditorium Maximum \"Audimax\"\n- Büro der französischen Botschaft für die akademischen Beziehungen\n- Cafeteria\n- Dezernat 1 (Planung, Statistik, Forschungsangelegenheiten, Organisation)\n- Dezernat 2 (Studentische Angelegenheiten - Zentrale Studienberatung, - Studierendensekretariate, Prüfungsamt, Akademisches Auslandsamt)\n- Dezernat 2 (Chipkarten-Service)\n- Institut für Mathematik\n- Welcome Center Potsdam\n- ZIM - Zentrum für Informationstechnologie und Medienmanagememt",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -3523,7 +3559,7 @@
         "Name": "Haus 9",
         "icon": null,
         "visibility": -1,
-        "description": "- Career-Service\n- Eltern-Kind-Raum (Raum 1.01)\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzlerin\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- Zentrale Einrichtung für Informationsverarbeitung und Kommunikation (ZEIK)",
+        "description": "- Career-Service\n- Eltern-Kind-Raum (Raum 1.01)\n- Geschäftsstelle des Senats\n- Hörsäle, Seminarräume\n- Kanzler/in\n- Potsdam Transfer – Zentrale wissenschaftliche Einrichtung für Gründung, Innovation, Wissens- und Technologietransfer\n- Präsident\n- Präsidialamt\n- Präsidium\n- Referat für Presse- und Öffentlichkeitsarbeit\n- UniShop\n- ZIM - Zentrum für Informationstechnologie und Medienmanagement",
         "tessellate": -1,
         "drawOrder": null,
         "end": null,
@@ -4808,8 +4844,66 @@
 	          ]
 	        ]
 	      }
+	    },  {
+	      "properties": {
+	        "extrude": -1,
+	        "timestamp": null,
+	        "Name": "Parkplatz",
+	        "icon": null,
+	        "visibility": -1,
+	        "description": null,
+	        "tessellate": -1,
+	        "drawOrder": null,
+	        "end": null,
+	        "altitudeMode": null,
+	        "begin": null
+	      },
+	      "type": "Feature",
+	      "geometry": {
+	        "type": "Polygon",
+	        "coordinates": [
+	          [
+	            [
+	              12.966074645519257,
+            52.41182253337093
+          ],
+          [
+            12.966302633285522,
+            52.411768542093014
+          ],
+          [
+            12.966171205043793,
+            52.41155584853699
+          ],
+          [
+            12.966106832027435,
+            52.411570573508506
+          ],
+          [
+            12.966055870056152,
+            52.41149858471204
+          ],
+          [
+            12.966125607490538,
+            52.41147895138351
+          ],
+          [
+            12.966045141220091,
+            52.411357878997805
+          ],
+          [
+            12.965817153453827,
+            52.411410234664835
+          ],
+          [
+            12.966069281101227,
+            52.41181598897712
+	            ]
+	          ]
+	        ]
+	      }
 	    },
-	    {
+ {
 	      "properties": {
 	        "extrude": -1,
 	        "timestamp": null,
@@ -5647,6 +5741,100 @@
 				"coordinates" : [ [ [ 12.973228096961975, 52.408031530627504, 0.0 ], [ 12.973179817199707, 52.40787772389755, 0.0 ], [ 12.973743081092834, 52.407822091544006, 0.0 ], [ 12.973784655332565, 52.40797344410634, 0.0 ], [ 12.973228096961975, 52.408031530627504, 0.0 ] ] ]
 			}
 		}, {
+			"properties" : {
+				"extrude" : -1,
+				"timestamp" : null,
+				"Name" : "Haus 16",
+				"icon" : null,
+				"visibility" : -1,
+				"description" : "Studentenwohnheim am Mühlenteich",
+				"tessellate" : -1,
+				"drawOrder" : null,
+				"end" : null,
+				"altitudeMode" : null,
+				"begin" : null
+			},
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Polygon",
+				"coordinates" : [ [ [ 12.96648234128952,
+            52.41152967079767
+          ],
+          [
+            12.966710329055786,
+            52.41163110945099
+          ],
+          [
+            12.966817617416382,
+            52.41153785134288
+          ],
+          [
+            12.967037558555603,
+            52.411482223605546
+          ],
+          [
+            12.967203855514526,
+            52.41146586249296
+          ],
+          [
+            12.967437207698822,
+            52.41147404305
+          ],
+          [
+            12.967592775821686,
+            52.41154112356054
+          ],
+          [
+            12.967756390571594,
+            52.411400417981994
+          ],
+          [
+            12.967614233493805,
+            52.41133824560665
+          ],
+          [
+            12.967710793018341,
+            52.4112515313578
+          ],
+          [
+            12.967488169670105,
+            52.41115336407789
+          ],
+          [
+            12.967367470264435,
+            52.411249895238285
+          ],
+          [
+            12.96738088130951,
+            52.411284253735886
+          ],
+          [
+            12.966769337654114,
+            52.41134969841921
+          ],
+          [
+            12.966763973236084,
+            52.41132679279109
+          ],
+          [
+            12.966594994068146,
+            52.411249895238285
+          ],
+          [
+            12.966439425945282,
+            52.411377512380234
+          ],
+          [
+            12.966581583023071,
+            52.41144459303756
+          ],
+          [
+            12.966490387916565,
+            52.4115231263604 ] ] ]
+			}
+		},
+
+{
 			"properties" : {
 				"extrude" : -1,
 				"timestamp" : null,

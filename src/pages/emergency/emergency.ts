@@ -9,6 +9,8 @@ import { Keyboard } from "@ionic-native/keyboard";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { IConfig } from '../../library/interfaces';
 import { MapsProvider } from "../../providers/maps/maps";
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 /**
  * @class EmergencyPage
@@ -26,6 +28,7 @@ export class EmergencyPage {
   displayedList: Array < EmergencyCall > ;
   defaultList: Array < EmergencyCall > ;
   isLoaded;
+  cordova = false;
 
   /**
    * @constructor
@@ -41,6 +44,8 @@ export class EmergencyPage {
    * @param {WebIntentProvider} webIntent
    * @param {LaunchNavigator} launchNavigator
    * @param {ConnectionProvider} connection
+   * @param {Contacts} contacts
+   * @param {CallNumber} callNumber
    */
   constructor(
     public navCtrl: NavController,
@@ -52,7 +57,12 @@ export class EmergencyPage {
     private cache: CacheService,
     private http: HttpClient,
     private mapProvider: MapsProvider,
-    private connection: ConnectionProvider) {
+    private connection: ConnectionProvider,
+    private contacts: Contacts,
+    private callNumber: CallNumber) {
+      if (this.platform.is("cordova")) {
+        this.cordova = true
+      }
   };
 
   ngOnInit() {
@@ -168,6 +178,40 @@ export class EmergencyPage {
     }
 
     this.mapProvider.navigateToAdress(location);
+  }
+
+
+    /**
+   * @name exportContact
+   * @description exports a contact to the local phone book
+   * @param {EmergencyCall} emergencyCall
+   */
+  exportContact(emergencyCall: EmergencyCall) {
+    if (this.platform.is("cordova")) {
+      let contact: Contact = this.contacts.create();
+
+      contact.name = new ContactName(null, emergencyCall.name);
+
+      if (emergencyCall.contact.telephone) { contact.phoneNumbers = [new ContactField('work', emergencyCall.contact.telephone)]; }
+      if (emergencyCall.contact.mail)   { contact.emails = [new ContactField('work', emergencyCall.contact.mail)]; }
+
+      contact.save().then(
+        () => console.log('Contact saved!', contact),
+        (error: any) => console.error('Error saving contact.', error)
+      );
+    }
+  }
+
+  /**
+   * @name callContact
+   * @description using native call for calling numbers
+   * @param {string} number
+   * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
+   */
+  callContact(number: string) {
+    this.callNumber.callNumber(number, true)
+      .then(() => console.log('Dialer Launched!'))
+      .catch(() => console.log('Error launching dialer'));
   }
 
 }

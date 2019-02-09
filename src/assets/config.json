@@ -144,6 +144,11 @@
       "componentName": "campusMap",
       "icon": "map",
       "selected": false
+    },
+    "feedback": {
+      "componentName": "feedback",
+      "icon": "chatbubbles",
+      "selected": false
     }
   },
   "authorization": {
@@ -192,7 +197,7 @@
       "roomplanSearch": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
       "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
-      "libraryDAIA": "https://daia.gbv.de/isil/DE-517?id=ppn:",
+      "libraryDAIA": "https://apiup.uni-potsdam.de/endpoints/daiaAPI/isil/DE-517",
       "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
       "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
       "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",
