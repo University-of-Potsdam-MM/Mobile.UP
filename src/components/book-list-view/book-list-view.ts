@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { utils } from '../../library/util';
 
 @Component({
   selector: 'book-list-view',
@@ -19,34 +20,13 @@ export class BookListViewComponent {
   }
 
   ngOnInit() {
-    this.checkMediaType(this.convertToArray(this.book.typeOfResource)[0], this.convertToArray(this.book.originInfo)[0], this.convertToArray(this.book.physicalDescription)[0]);
+    this.checkMediaType(utils.convertToArray(this.book.typeOfResource)[0], utils.convertToArray(this.book.originInfo)[0], utils.convertToArray(this.book.physicalDescription)[0]);
     this.getPublisher();
-  }
-
-  convertToArray(toConvert) { // convert everything to an array so you can handle it universally 
-    if (Array.isArray(toConvert)) {
-      return toConvert;
-    } else {
-      var tmp = [];
-      tmp.push(toConvert);
-      return tmp;
-    }
-  }
-
-  isInArray(array, value) { // checks if value is in array
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
-        found = true;
-      }
-    }
-    return found;
   }
 
   getPublisher() {
     if (this.book.relatedItem) {
-      let tmp = this.convertToArray(this.book.relatedItem);
+      let tmp = utils.convertToArray(this.book.relatedItem);
       var i;
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i].originInfo && tmp[i].originInfo.publisher) {
@@ -62,8 +42,8 @@ export class BookListViewComponent {
   checkMediaType(typeOfResource, originInfo, physicalDescription) {
     var isRemote = false;
     if (physicalDescription) {
-      var i; 
-      var physicalDescriptionArr = this.convertToArray(physicalDescription.form);
+      var i;
+      var physicalDescriptionArr = utils.convertToArray(physicalDescription.form);
       for (i = 0; i < physicalDescriptionArr.length; i++) {
         if (physicalDescriptionArr[i]._ == "remote") {
           isRemote = true;

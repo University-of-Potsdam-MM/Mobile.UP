@@ -11,6 +11,7 @@ import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { ImpressumPage } from '../impressum/impressum';
 import { TranslateService } from '@ngx-translate/core';
+import { utils } from '../../library/util';
 
 @IonicPage()
 @Component({
@@ -123,7 +124,7 @@ export class PracticePage {
           //console.log(ads);
           ads.date = ads.date*1000;
           ads.expanded = false;
-          if (!this.isInArray(uidArray, ads.uid)) {
+          if (!utils.isInArray(uidArray, ads.uid)) {
             uidArray.push(ads.uid);
             this.defaultList.push(ads);
           }
@@ -146,25 +147,6 @@ export class PracticePage {
       }
     );
 
-  }
-
-  /**
-   * @name isInArray
-   * @description checks if value is in array
-   * @param {Array} array
-   * @param {any} value
-   * @returns {boolean} whether value in array
-   */
-
-  isInArray(array, value): boolean {
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
-        found = true;
-      }
-    }
-    return found;
   }
 
   /**
@@ -359,10 +341,10 @@ export class PracticePage {
    * @param {ItemSliding} slidingItem
    */
   makeFavorite(ads: ADS, slidingItem:ItemSliding) {
-    if (!this.isInArray(this.displayedFavorites, ads)) {
+    if (!utils.isInArray(this.displayedFavorites, ads)) {
       this.displayedFavorites.push(ads);
 
-      if (!this.isInArray(this.allFavorites, ads)) {
+      if (!utils.isInArray(this.allFavorites, ads)) {
         this.allFavorites.push(ads);
       }
       this.presentToast(this.translate.instant("page.practice.favAdded"));
@@ -418,7 +400,7 @@ export class PracticePage {
       for (i = 0; i < tmp.length; i++) {
         for (j = 0; j < this.defaultList.length; j++) {
           if (tmp[i].uid == this.defaultList[j].uid) {
-            if (!this.isInArray(this.allFavorites, tmp[i])) {
+            if (!utils.isInArray(this.allFavorites, tmp[i])) {
               this.allFavorites.push(tmp[i]);
             }
             break;

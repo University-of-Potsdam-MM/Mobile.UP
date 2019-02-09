@@ -355,15 +355,4 @@ export class MensaPage {
     }
   }
 
-  isInArray(array, value) { // checks if value is in array
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
-        found = true;
-      }
-    }
-    return found;
-  }
-
 }

@@ -5,6 +5,7 @@ import { Storage } from "@ionic/storage";
 import { IConfig, IJourneyResponse } from "../../library/interfaces";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import moment from 'moment';
+import { utils } from '../../library/util';
 
 
 @IonicPage()
@@ -83,7 +84,7 @@ export class TransportPage {
       } else if (res && res.Departure && infiniteScroll) {
         var i;
         for (i = 0; i < res.Departure.length; i++) {
-          if (!this.isInArray(this.departures, res.Departure[i])) {
+          if (!utils.isInArray(this.departures, res.Departure[i])) {
             this.departures.push(res.Departure[i]);
           }
         }
@@ -124,17 +125,6 @@ export class TransportPage {
         this.swipeEvent.publish('campus-swipe-to-left', this.campus);
       }
     }
-  }
-
-  isInArray(array, value) { // checks if value is in array
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i].JourneyDetailRef.ref == value.JourneyDetailRef.ref) {
-        found = true;
-      }
-    }
-    return found;
   }
 
 }
