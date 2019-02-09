@@ -3,7 +3,7 @@
     <p class="number">{{ i }}</p>
     <!-- <ion-icon [name]="bookDetails.icon" color="primary"></ion-icon> -->
   </span>
-  <ion-icon *ngIf="!i" item-start color="primary" [name]="bookDetails.icon" padding-right></ion-icon>
+  <ion-icon *ngIf="!i" item-start color="primary" [name]="bookDetails.icon"></ion-icon>
   <span *ngIf="convertToArray(book.titleInfo)[0]">
     <ion-icon *ngIf="i" [name]="bookDetails.icon" color="primary"></ion-icon>
     <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }}</b>

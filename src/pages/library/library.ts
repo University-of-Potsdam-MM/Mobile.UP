@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
-import { Keyboard } from '@ionic-native/keyboard';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebHttpUrlEncodingCodec } from '../../library/util';
 

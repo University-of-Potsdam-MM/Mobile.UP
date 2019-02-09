@@ -1,6 +1,6 @@
 /* ~~~ EmergencyPage ~~~ */
 
-import { InAppBrowserObject } from "@ionic-native/in-app-browser";
+import { InAppBrowserObject } from "@ionic-native/in-app-browser/ngx";
 import {
   ILoginConfig_Credentials,
   ILoginConfig_SSO,

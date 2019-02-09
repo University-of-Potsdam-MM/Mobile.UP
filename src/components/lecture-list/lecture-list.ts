@@ -168,4 +168,13 @@ export class LectureListComponent {
     return doc.documentElement.textContent;
   }
 
+  /**
+   * has to be declared for html pages to use the imported function
+   * couldn't find a better solution
+   * @param array 
+   */
+  convertToArray(array) {
+    return utils.convertToArray(array)
+  }
+
 }

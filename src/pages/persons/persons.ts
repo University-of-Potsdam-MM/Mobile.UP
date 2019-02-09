@@ -16,7 +16,7 @@ import {
   IPerson
 } from "../../library/interfaces";
 import { Platform } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
