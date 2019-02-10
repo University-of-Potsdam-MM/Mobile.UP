@@ -1,13 +1,9 @@
 languages:
    JavaScript: true
 engines:
-  tslint:
+  duplication:
     enabled: true
-    config: tslint-codeclimate.json
-  fixme:
-    enabled: true
-  stylelint:
-      enabled: true
+plugins:
   csslint:
     enabled: true
     checks:
@@ -15,9 +11,19 @@ engines:
         enabled: false
       universal-selector:
         enabled: false
-  duplication:
+  fixme:
     enabled: true
-
+    config:
+      strings:
+      - FIXME
+      - TODO
+  scss-lint:
+    enabled: true
+  stylelint:
+      enabled: true
+  tslint:
+    enabled: true
+    config: tslint-codeclimate.json
 checks:
   argument-count:
     enabled: true
