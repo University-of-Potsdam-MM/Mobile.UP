@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Storage } from "@ionic/storage";
+import { Storage } from '@ionic/storage';
 import { LoginPage } from "../login/login";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig, IGradeResponse } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
-import { ConnectionProvider } from "../../providers/connection/connection";
+import { ConnectionProvider } from '../../providers/connection/connection';
 import { SessionProvider } from '../../providers/session/session';
 
 @IonicPage()
@@ -17,7 +17,7 @@ export class GradesPage {
 
   token;
   credentials;
-  config:IConfig;
+  config: IConfig;
 
   refresher;
   studentDetails;
@@ -42,15 +42,23 @@ export class GradesPage {
 
   }
 
-  goToLogin() {
+  /**
+   * @name goToLogin
+   */
+  goToLogin(): void {
     this.navCtrl.push(LoginPage);
   }
 
+  /**
+   * @async
+   * @name ionViewWillEnter
+   */
   async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
     this.config = await this.storage.get("config");
+
     let tmp = await this.sessionProvider.getSession();
-    var session = undefined;
+    let session = undefined;
     if (tmp) {
       if (typeof tmp !== 'object') {
         session = JSON.parse(tmp);
@@ -66,8 +74,12 @@ export class GradesPage {
     }
   }
 
-  showGrades(i) {
-    if (this.i == i) {
+  /**
+   * @name showGrades
+   * @param i
+   */
+  showGrades(i): void {
+    if (this.i === i) {
       this.gradesLoaded = !this.gradesLoaded;
     } else {
       this.i = i;
@@ -76,46 +88,49 @@ export class GradesPage {
     }
   }
 
-  getGrades() {
+  /**
+   * @name getGrades
+   */
+  getGrades(): void {
     if (this.config && this.credentials && this.credentials.username && this.credentials.password) {
       if (this.refresher != null) {
-        this.cache.removeItem("getAcademicAchievements"+this.i);
+        this.cache.removeItem('getAcademicAchievements'+this.i);
       } else { this.loadingGrades = true; }
 
       var body;
 
       let headers = new HttpHeaders()
-        .append("Authorization", this.config.webservices.apiToken);
+        .append('Authorization', this.config.webservices.apiToken);
 
       if (this.multipleDegrees) {
         body = {
-          "condition": {
-            "Semester": this.studentDetails[this.i].Semester,
-            "MtkNr": this.studentDetails[this.i].MtkNr,
-            "StgNr": this.studentDetails[this.i].StgNr
+          'condition': {
+            'Semester': this.studentDetails[this.i].Semester,
+            'MtkNr': this.studentDetails[this.i].MtkNr,
+            'StgNr': this.studentDetails[this.i].StgNr
           },
-          "user-auth": {
-            "username": this.credentials.username,
-            "password": this.credentials.password
+          'user-auth': {
+            'username': this.credentials.username,
+            'password': this.credentials.password
           }
         }
       } else {
         body = {
-          "condition": {
-            "Semester": this.studentDetails.Semester,
-            "MtkNr": this.studentDetails.MtkNr,
-            "StgNr": this.studentDetails.StgNr
+          'condition': {
+            'Semester': this.studentDetails.Semester,
+            'MtkNr': this.studentDetails.MtkNr,
+            'StgNr': this.studentDetails.StgNr
           },
-          "user-auth": {
-            "username": this.credentials.username,
-            "password": this.credentials.password
+          'user-auth': {
+            'username': this.credentials.username,
+            'password': this.credentials.password
           }
         }
       }
 
-      let url = this.config.webservices.endpoint.puls + "getAcademicAchievements";
-      let request = this.http.post(url, body, {headers:headers});
-      this.cache.loadFromObservable("getAcademicAchievements"+this.i, request).subscribe((resGrades) => {
+      let url = this.config.webservices.endpoint.puls + 'getAcademicAchievements';
+      let request = this.http.post(url, body, {headers: headers});
+      this.cache.loadFromObservable('getAcademicAchievements'+this.i, request).subscribe((resGrades) => {
         if (resGrades) {
           this.studentGrades = resGrades;
           this.gradesLoaded = true;
@@ -123,7 +138,7 @@ export class GradesPage {
 
         this.loadingGrades = false;
       }, error => {
-        console.log("ERROR while getting grades");
+        console.log('ERROR while getting grades');
         console.log(error);
       });
 
@@ -133,7 +148,11 @@ export class GradesPage {
     }
   }
 
-  refreshGrades(refresher) {
+  /**
+   * @name refreshGrades
+   * @param refresher
+   */
+  refreshGrades(refresher): void {
     this.refresher = refresher;
     if (this.i != undefined) {
       this.getGrades();
@@ -142,15 +161,18 @@ export class GradesPage {
     }
   }
 
-  getStudentDetails() {
+  /**
+   * @name getStudentDetails
+   */
+  getStudentDetails(): void {
     if (this.config && this.credentials && this.credentials.username && this.credentials.password) {
       let headers:HttpHeaders = new HttpHeaders()
-        .append("Authorization", this.config.webservices.apiToken);
+        .append('Authorization', this.config.webservices.apiToken);
 
       let body = {
-        "user-auth": {
-          "username": this.credentials.username,
-          "password": this.credentials.password
+        'user-auth': {
+          'username': this.credentials.username,
+          'password': this.credentials.password
         }
       }
 
@@ -158,9 +180,9 @@ export class GradesPage {
         this.cache.removeItem("getPersonalStudyAreas");
       } else { this.studentLoaded = false; }
 
-      let url = this.config.webservices.endpoint.puls + "getPersonalStudyAreas";
-      let request = this.http.post(url, body, {headers:headers});
-      this.cache.loadFromObservable("getPersonalStudyAreas", request).subscribe((resStudentDetail:IGradeResponse) => {
+      let url = this.config.webservices.endpoint.puls + 'getPersonalStudyAreas';
+      let request = this.http.post(url, body, {headers: headers});
+      this.cache.loadFromObservable('getPersonalStudyAreas', request).subscribe((resStudentDetail:IGradeResponse) => {
         if (resStudentDetail && resStudentDetail.message) {
           // the session is still valid but credentials are rejected, so we're having
           // case #81 here
@@ -190,8 +212,8 @@ export class GradesPage {
             this.studentLoaded = true;
           }
         }
-      }, error => {
-        console.log("ERROR while getting student details");
+      }, (error) => {
+        console.log('ERROR while getting student details');
         console.log(error);
       });
 

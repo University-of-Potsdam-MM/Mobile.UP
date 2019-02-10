@@ -11,9 +11,9 @@ import { utils } from '../../library/util';
 })
 export class LectureListComponent {
 
-  @Input() headerIdInput:string;
+  @Input() headerIdInput: string;
   @Input() hasSubTreeInput;
-  headerId:string;
+  headerId: string;
   hasSubTree;
 
   authToken;
@@ -27,18 +27,23 @@ export class LectureListComponent {
   courseGroups = [];
   lecturerList = [];
 
-  constructor(private http: HttpClient, private storage: Storage, private cache: CacheService) {
+  constructor(private http: HttpClient,
+              private storage: Storage,
+              private cache: CacheService) {
   }
 
   ngOnInit() {
-    this.storage.get("config").then((config:IConfig) => {
+    this.storage.get('config').then((config:IConfig) => {
       this.authToken = config.webservices.apiToken;
       this.endpointUrl = config.webservices.endpoint.puls;
       this.getLectureData();
     });
   }
 
-  getLectureData() {
+  /**
+   * @name getLectureData
+   */
+  getLectureData(): void {
 
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
@@ -49,38 +54,41 @@ export class LectureListComponent {
     }
 
     let headers = new HttpHeaders()
-      .append("Authorization", this.authToken);
+      .append('Authorization', this.authToken);
 
     if (!this.headerId) {
-      let url = this.endpointUrl + "getLectureScheduleRoot";
-      let request = this.http.post(url, {"condition":{"semester":0}}, {headers:headers});
+      let url = this.endpointUrl + 'getLectureScheduleRoot';
+      let request = this.http.post(url, {condition:{semester:0}}, {headers:headers});
 
-      this.cache.loadFromObservable("getLectureScheduleRoot", request).subscribe(data => {
-        console.log(data);
+      this.cache.loadFromObservable('getLectureScheduleRoot', request).subscribe( (data) => {
+        //console.log(data);
         this.lectureSchedule = data;
       });
     } else if (this.hasSubTree) {
-      let url = this.endpointUrl + "getLectureScheduleSubTree";
-      let request = this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers});
+      let url = this.endpointUrl + 'getLectureScheduleSubTree';
+      let request = this.http.post(url, {condition:{headerId:this.headerId}}, {headers:headers});
 
       this.cache.loadFromObservable("getLectureScheduleSubTree"+this.headerId, request).subscribe(data => {
-        console.log(data);
+        //console.log(data);
         this.lectureSchedule = data;
       });
     } else {
-      let url = this.endpointUrl + "getLectureScheduleCourses";
-      let request = this.http.post(url, {"condition":{"headerId":this.headerId}}, {headers:headers});
+      let url = this.endpointUrl + 'getLectureScheduleCourses';
+      let request = this.http.post(url, {condition:{headerId:this.headerId}}, {headers:headers});
 
-      this.cache.loadFromObservable("getLectureScheduleCourses"+this.headerId, request).subscribe(data => {
-        console.log(data);
+      this.cache.loadFromObservable('getLectureScheduleCourses'+this.headerId, request).subscribe(data => {
+        //console.log(data);
         this.lectureSchedule = data;
       });
     }
   }
 
-  expandChild(childNode) {
-
-    console.log(childNode);
+  /**
+   * @name expandChild
+   * @param childNode
+   */
+  expandChild(childNode): void {
+    //console.log(childNode);
 
     if (childNode.subNodes) {
       if (Number(childNode.subNodes.count) > 0) {
@@ -102,19 +110,20 @@ export class LectureListComponent {
     if (course.courseId) {
       let courseId = course.courseId;
 
-      let url = this.endpointUrl + "getCourseData";
+      let url = this.endpointUrl + 'getCourseData';
 
       let headers = new HttpHeaders()
-        .append("Authorization", this.authToken);
+        .append('Authorization', this.authToken);
 
-      let request = this.http.post(url, {"condition":{"courseId":courseId}}, {headers:headers});
+      let request = this.http.post(url, {condition:{courseId:courseId}}, {headers:headers});
 
-      this.cache.loadFromObservable("getCourseData"+courseId, request).subscribe(data => {
-        console.log(data);
+      this.cache.loadFromObservable('getCourseData'+courseId, request).subscribe(data => {
+        //console.log(data);
         this.courseData[courseId] = data;
 
-        var i;
+        let i;
         this.courseGroups[courseId] = [];
+
         // check how many different groups exist
         let tmp = utils.convertToArray(utils.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
         for (i = 0; i < tmp.length; i++) {
@@ -126,26 +135,35 @@ export class LectureListComponent {
 
       if (this.isExpandedCourse[courseId]) {
         this.isExpandedCourse[courseId] = false;
-      } else { this.isExpandedCourse[courseId] = true; console.log(course); }
+      } else {
+        this.isExpandedCourse[courseId] = true;
+        //console.log(course);
+      }
     }
   }
 
+  /**
+   * @name replaceUnderscore
+   * @param {string} roomSc
+   */
   replaceUnderscore(roomSc:string) {
-    if (roomSc != undefined) {
-      return roomSc.replace(/_/g, ".");
-    } else { return "" }
+    if (roomSc !== undefined) {
+      return roomSc.replace(/_/g, '.');
+    } else {
+      return ''
+    }
   }
 
   checkDoubledLecturers(event, lecturer, index) {
     if (event.eventId && lecturer.lecturerId) {
-      if ((this.lecturerList[event.eventId] != undefined)  && (this.lecturerList[event.eventId].length > 0)) {
+      if ((this.lecturerList[event.eventId] !== undefined)  && (this.lecturerList[event.eventId].length > 0)) {
         if (utils.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
           return true;
         } else {
-          var i;
-          var alreadyIn = false;
+          let i;
+          let alreadyIn = false;
           for (i = 0; i < this.lecturerList.length; i++) {
-            if ((this.lecturerList[i] != undefined) && (this.lecturerList[i][0] == lecturer.lecturerId)) {
+            if ((this.lecturerList[i] !== undefined) && (this.lecturerList[i][0] === lecturer.lecturerId)) {
               alreadyIn = true;
             }
           }
@@ -163,18 +181,22 @@ export class LectureListComponent {
     }
   }
 
+  /**
+   * @name htmlDecode
+   * @param input
+   */
   htmlDecode(input) {
-    var doc = new DOMParser().parseFromString(input, "text/html");
+    let doc = new DOMParser().parseFromString(input, 'text/html');
     return doc.documentElement.textContent;
   }
 
   /**
    * has to be declared for html pages to use the imported function
    * couldn't find a better solution
-   * @param array 
+   * @param array
    */
   convertToArray(array) {
-    return utils.convertToArray(array)
+    return utils.convertToArray(array);
   }
 
 }
