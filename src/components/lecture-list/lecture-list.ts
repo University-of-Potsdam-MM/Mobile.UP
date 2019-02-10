@@ -1,9 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
-import { IConfig } from '../../library/interfaces';
+import {
+  IPulsAPIResponse_getLectureScheduleRoot,
+  IPulsAPIResponse_getLectureScheduleSubTree,
+  IPulsAPIResponse_getLectureScheduleCourses,
+  IPulsAPIResponse_getCourseData
+} from "../../library/interfaces_PULS";
 import { CacheService } from 'ionic-cache';
 import { utils } from '../../library/util';
+import { ConnectionProvider } from '../../providers/connection/connection';
+import { PulsProvider } from '../../providers/puls/puls';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'lecture-list',
@@ -27,59 +33,39 @@ export class LectureListComponent {
   courseGroups = [];
   lecturerList = [];
 
-  constructor(private http: HttpClient,
-              private storage: Storage,
-              private cache: CacheService) {
+  constructor(private cache: CacheService,
+              private connection: ConnectionProvider,
+              private puls:PulsProvider) {
   }
 
-  ngOnInit() {
-    this.storage.get('config').then((config:IConfig) => {
-      this.authToken = config.webservices.apiToken;
-      this.endpointUrl = config.webservices.endpoint.puls;
-      this.getLectureData();
-    });
-  }
-
-  /**
-   * @name getLectureData
-   */
-  getLectureData(): void {
+  async ngOnInit() {
+    this.connection.checkOnline(true, true);
 
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
     }
-
     if (this.hasSubTreeInput) {
       this.hasSubTree = true;
     }
 
-    let headers = new HttpHeaders()
-      .append('Authorization', this.authToken);
-
     if (!this.headerId) {
-      let url = this.endpointUrl + 'getLectureScheduleRoot';
-      let request = this.http.post(url, {condition:{semester:0}}, {headers:headers});
-
-      this.cache.loadFromObservable('getLectureScheduleRoot', request).subscribe( (data) => {
-        //console.log(data);
-        this.lectureSchedule = data;
-      });
+      this.cache.loadFromObservable('getLectureScheduleRoot', of(this.puls.getLectureScheduleRoot().subscribe(
+        (response:IPulsAPIResponse_getLectureScheduleRoot) => {
+          this.lectureSchedule = response;
+        }
+      )));
     } else if (this.hasSubTree) {
-      let url = this.endpointUrl + 'getLectureScheduleSubTree';
-      let request = this.http.post(url, {condition:{headerId:this.headerId}}, {headers:headers});
-
-      this.cache.loadFromObservable("getLectureScheduleSubTree"+this.headerId, request).subscribe(data => {
-        //console.log(data);
-        this.lectureSchedule = data;
-      });
+      this.cache.loadFromObservable('getLectureScheduleSubTree'+this.headerId, of(this.puls.getLectureScheduleSubTree(this.headerId).subscribe(
+        (response:IPulsAPIResponse_getLectureScheduleSubTree) => {
+          this.lectureSchedule = response;
+        }
+      )));
     } else {
-      let url = this.endpointUrl + 'getLectureScheduleCourses';
-      let request = this.http.post(url, {condition:{headerId:this.headerId}}, {headers:headers});
-
-      this.cache.loadFromObservable('getLectureScheduleCourses'+this.headerId, request).subscribe(data => {
-        //console.log(data);
-        this.lectureSchedule = data;
-      });
+      this.cache.loadFromObservable('getLectureScheduleCourses'+this.headerId, of(this.puls.getLectureScheduleCourses(this.headerId).subscribe(
+        (response:IPulsAPIResponse_getLectureScheduleCourses) => {
+          this.lectureSchedule = response;
+        }
+      )));
     }
   }
 
@@ -105,33 +91,30 @@ export class LectureListComponent {
     }
   }
 
-  expandCourse(course) {
+  /**
+   * @name expandCourse
+   * @param course
+   */
+  expandCourse(course): void {
 
     if (course.courseId) {
       let courseId = course.courseId;
 
-      let url = this.endpointUrl + 'getCourseData';
+      this.cache.loadFromObservable('getCourseData'+courseId, of(this.puls.getCourseData(courseId).subscribe(
+        (response:IPulsAPIResponse_getCourseData) => {
+          this.courseData[courseId] = response;
 
-      let headers = new HttpHeaders()
-        .append('Authorization', this.authToken);
-
-      let request = this.http.post(url, {condition:{courseId:courseId}}, {headers:headers});
-
-      this.cache.loadFromObservable('getCourseData'+courseId, request).subscribe(data => {
-        //console.log(data);
-        this.courseData[courseId] = data;
-
-        let i;
-        this.courseGroups[courseId] = [];
-
-        // check how many different groups exist
-        let tmp = utils.convertToArray(utils.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
-        for (i = 0; i < tmp.length; i++) {
-          if (!utils.isInArray(this.courseGroups[courseId], tmp[i].groupId)) {
-            this.courseGroups[courseId].push(tmp[i].groupId);
+          let i;
+          this.courseGroups[courseId] = [];
+          // check how many different groups exist
+          let tmp = utils.convertToArray(utils.convertToArray(this.courseData[courseId].courseData.course)[0].events.event);
+          for (i = 0; i < tmp.length; i++) {
+            if (!utils.isInArray(this.courseGroups[courseId], tmp[i].groupId)) {
+              this.courseGroups[courseId].push(tmp[i].groupId);
+            }
           }
         }
-      });
+      )));
 
       if (this.isExpandedCourse[courseId]) {
         this.isExpandedCourse[courseId] = false;
@@ -154,6 +137,13 @@ export class LectureListComponent {
     }
   }
 
+  /**
+   * TODO: can be removed when bug in api is fixed
+   * @name checkDoubledLecturers
+   * @param event
+   * @param lecturer
+   * @param index
+   */
   checkDoubledLecturers(event, lecturer, index) {
     if (event.eventId && lecturer.lecturerId) {
       if ((this.lecturerList[event.eventId] !== undefined)  && (this.lecturerList[event.eventId].length > 0)) {

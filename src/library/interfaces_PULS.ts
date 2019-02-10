@@ -101,3 +101,47 @@ export interface IPulsApiRequest_getStudentCourses_condition {
   semester:number;
   allLectures:number;
 }
+
+export interface IPulsAPIResponse_getLectureScheduleRoot {
+}
+
+export interface IPulsApiRequest_getLectureScheduleRoot {
+  condition: IPulsApiRequest_getLectureScheduleRoot_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleRoot_condition {
+  semester: number;
+}
+
+export interface IPulsAPIResponse_getLectureScheduleSubTree {
+}
+
+export interface IPulsApiRequest_getLectureScheduleSubTree {
+  condition: IPulsApiRequest_getLectureScheduleSubTree_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleSubTree_condition {
+  headerId: number;
+}
+
+export interface IPulsApiRequest_getLectureScheduleCourses {
+  condition: IPulsApiRequest_getLectureScheduleCourses_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleCourses_condition {
+  headerId: number;
+}
+
+export interface IPulsAPIResponse_getLectureScheduleCourses {
+}
+
+export interface IPulsApiRequest_getCourseData {
+  condition: IPulsApiRequest_getCourseData_condition;
+}
+
+export interface IPulsApiRequest_getCourseData_condition {
+  courseId: number;
+}
+
+export interface IPulsAPIResponse_getCourseData {
+}
