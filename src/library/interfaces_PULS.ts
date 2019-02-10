@@ -145,3 +145,23 @@ export interface IPulsApiRequest_getCourseData_condition {
 
 export interface IPulsAPIResponse_getCourseData {
 }
+
+export interface IPulsApiRequest_getPersonalStudyAreas {
+  'user-auth':ICredentials
+}
+
+export interface IPulsAPIResponse_getPersonalStudyAreas {
+  personalStudyAreas: {
+    Abschluss:IGradeDegree;
+  }
+  message?:string;
+}
+
+export interface IGradeDegree {
+  AbLtxt: string;
+  Abschl: string;
+  MtkNr: string;
+  Semester: string;
+  StgNr: string;
+  Studiengaenge: any;
+}
