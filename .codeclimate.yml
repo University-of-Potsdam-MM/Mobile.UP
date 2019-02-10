@@ -47,7 +47,7 @@ checks:
 #ratings:
 #   paths:
 #   - "www/**"
-exclude_paths:
+exclude_patterns:
 - "node_modules/*"
 - "scripts/*"
 - "www/*"
