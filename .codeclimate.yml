@@ -1,8 +1,5 @@
 languages:
    JavaScript: true
-engines:
-  duplication:
-    enabled: true
 plugins:
   csslint:
     enabled: true
@@ -11,6 +8,8 @@ plugins:
         enabled: false
       universal-selector:
         enabled: false
+  duplication:
+    enabled: true
   fixme:
     enabled: true
     config:
