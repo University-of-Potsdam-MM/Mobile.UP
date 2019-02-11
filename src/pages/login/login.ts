@@ -8,6 +8,7 @@ import { HomePage } from '../home/home';
 import { ConnectionProvider } from '../../providers/connection/connection';
 import { ConfigProvider } from '../../providers/config/config';
 import { SessionProvider } from '../../providers/session/session';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 /**
  * LoginPage
@@ -24,6 +25,7 @@ export class LoginPage {
 
   loading: Loading;
   alreadyLoggedIn: boolean;
+  loginForm: FormGroup;
 
   // This object will hold the data the user enters in the login form
   loginCredentials: ICredentials = {
@@ -33,14 +35,15 @@ export class LoginPage {
 
   /**
    * @constructor
-   * @param navCtrl
-   * @param loadingCtrl
-   * @param alertCtrl
-   * @param upLogin
-   * @param events
-   * @param connection
-   * @param sessionProvider
-   * @param translate
+   * @param {NavController} navCtrl
+   * @param {LoadingController} loadingCtrl
+   * @param {AlertController} alertCtrl
+   * @param {UPLoginProvider} upLogin
+   * @param {Events} events
+   * @param {ConnectionProvider} connection
+   * @param {SessionProvider} sessionProvider
+   * @param {TranslateService} translate
+   * @param {FormBuilder} formBuilder
    */
   constructor(
       private navCtrl: NavController,
@@ -50,7 +53,12 @@ export class LoginPage {
       private events: Events,
       private connection: ConnectionProvider,
       private sessionProvider: SessionProvider,
-      private translate: TranslateService) {
+      private translate: TranslateService,
+      private formBuilder: FormBuilder) {
+        this.loginForm = this.formBuilder.group({
+          username: ['', Validators.required],
+          password: ['', Validators.required]
+        });
   }
 
   /**
@@ -81,50 +89,56 @@ export class LoginPage {
    */
   public async login() {
 
-    this.showLoading();
-    let config = ConfigProvider.config;
+    if(this.loginForm.valid){
 
-    // prepare Observable for use in switch
-    let session:Observable<ISession> = this.upLogin.oidcLogin(
-      this.autoCorrectUsername(this.loginCredentials),
-      config.authorization.oidc
-    );
+      this.loginCredentials.username = this.loginForm.controls['username'].value;
+      this.loginCredentials.password = this.loginForm.controls['password'].value
 
-    if(session) {
-      // now handle the Observable which hopefully contains a session
-      session.subscribe(
-        (session: any) => {
-          console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
-          this.sessionProvider.setSession(session);
+      this.showLoading();
+      let config = ConfigProvider.config;
 
-          this.endLoading();
-
-          // in the meantime get user information and save it to storage
-          this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
-            (userInformation: IOIDCUserInformationResponse) => {
-              this.sessionProvider.setUserInfo(userInformation);
-            },
-            (error) => {
-              // user must not know if something goes wrong here, so we don't
-              // create an alert
-              console.log(`[LoginPage]: Could not retrieve user information because:\n${JSON.stringify(error)}`);
-            }
-          );
-
-          setTimeout(() => {
-            this.events.publish('userLogin');
-            this.navCtrl.pop();
-          }, 1000);
-        },
-        error => {
-          console.log(error);
-          this.endLoading();
-          this.showAlert(error.reason);
-        }
+      // prepare Observable for use in switch
+      let session:Observable<ISession> = this.upLogin.oidcLogin(
+        this.autoCorrectUsername(this.loginCredentials),
+        config.authorization.oidc
       );
-    } else {
-      this.showAlert(ELoginErrors.UNKNOWN_ERROR);
-      console.log('[LoginPage]: Somehow no session has been passed by login-provider');
+
+      if(session) {
+        // now handle the Observable which hopefully contains a session
+        session.subscribe(
+          (session: any) => {
+            console.log(`[LoginPage]: Login successfully executed. Token: ${session.token}`);
+            this.sessionProvider.setSession(session);
+
+            this.endLoading();
+
+            // in the meantime get user information and save it to storage
+            this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
+              (userInformation: IOIDCUserInformationResponse) => {
+                this.sessionProvider.setUserInfo(userInformation);
+              },
+              (error) => {
+                // user must not know if something goes wrong here, so we don't
+                // create an alert
+                console.log(`[LoginPage]: Could not retrieve user information because:\n${JSON.stringify(error)}`);
+              }
+            );
+
+            setTimeout(() => {
+              this.events.publish('userLogin');
+              this.navCtrl.pop();
+            }, 1000);
+          },
+          error => {
+            console.log(error);
+            this.endLoading();
+            this.showAlert(error.reason);
+          }
+        );
+      } else {
+        this.showAlert(ELoginErrors.UNKNOWN_ERROR);
+        console.log('[LoginPage]: Somehow no session has been passed by login-provider');
+      }
     }
   }
 

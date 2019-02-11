@@ -22,7 +22,7 @@
   </ion-grid>
 
   <div *ngIf="!alreadyLoggedIn">
-    <form (ngSubmit)="login()" #registerForm="ngForm">
+    <form (ngSubmit)="login()" #registerForm="ngForm" [formGroup]="loginForm">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -34,7 +34,7 @@
                   type="text"
                   [placeholder]="'page.login.placeHolder.username' | translate"
                   name="id"
-                  [(ngModel)]="loginCredentials.username"
+                  [formControl]="loginForm.controls['username']"
                   required
                 ></ion-input>
               </ion-item>
@@ -45,7 +45,7 @@
                 type="password"
                 [placeholder]="'page.login.placeHolder.password' |translate"
                 name="password"
-                [(ngModel)]="loginCredentials.password"
+                [formControl]="loginForm.controls['password']"
                 required
               ></ion-input>
             </ion-item>
@@ -61,7 +61,7 @@
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button class="submit-btn" full type="submit">
+          <button ion-button class="submit-btn" full [disabled]="!loginForm.valid" type="submit">
             {{ "button.login" | translate }}
           </button>
         </ion-col>
