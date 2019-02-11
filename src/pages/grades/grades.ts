@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { IPulsAPIResponse_getPersonalStudyAreas} from '../../library/interfaces_PULS';
+import { IPulsAPIResponse_getPersonalStudyAreas,
+         IPulsAPIResponse_getAcademicAchievements
+        } from '../../library/interfaces_PULS';
 import { Storage } from '@ionic/storage';
 import { LoginPage } from "../login/login";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IConfig } from '../../library/interfaces';
 import { CacheService } from 'ionic-cache';
 import { ConnectionProvider } from '../../providers/connection/connection';
@@ -37,7 +38,6 @@ export class GradesPage {
 
   constructor(
       public navCtrl: NavController,
-      private http: HttpClient,
       private cache: CacheService,
       public navParams: NavParams,
       private storage: Storage,
@@ -95,45 +95,24 @@ export class GradesPage {
    * @name getGrades
    */
   getGrades(): void {
-    if (this.config && this.credentials && this.credentials.username && this.credentials.password) {
-      if (this.refresher != null) {
-        this.cache.removeItem('getAcademicAchievements'+this.i);
-      } else { this.loadingGrades = true; }
+    if (this.refresher != null) {
+      this.cache.removeItem('getAcademicAchievements'+this.i);
+    } else { this.loadingGrades = true; }
 
-      var body;
+    let semester, mtknr, stgnr;
 
-      let headers = new HttpHeaders()
-        .append('Authorization', this.config.webservices.apiToken);
+    if (this.multipleDegrees) {
+      semester = this.studentDetails[this.i].Semester;
+      mtknr = this.studentDetails[this.i].MtkNr;
+      stgnr = this.studentDetails[this.i].StgNr;
+    } else {
+      semester = this.studentDetails.Semester;
+      mtknr = this.studentDetails.MtkNr;
+      stgnr = this.studentDetails.StgNr;
+    }
 
-      if (this.multipleDegrees) {
-        body = {
-          'condition': {
-            'Semester': this.studentDetails[this.i].Semester,
-            'MtkNr': this.studentDetails[this.i].MtkNr,
-            'StgNr': this.studentDetails[this.i].StgNr
-          },
-          'user-auth': {
-            'username': this.credentials.username,
-            'password': this.credentials.password
-          }
-        }
-      } else {
-        body = {
-          'condition': {
-            'Semester': this.studentDetails.Semester,
-            'MtkNr': this.studentDetails.MtkNr,
-            'StgNr': this.studentDetails.StgNr
-          },
-          'user-auth': {
-            'username': this.credentials.username,
-            'password': this.credentials.password
-          }
-        }
-      }
-
-      let url = this.config.webservices.endpoint.puls + 'getAcademicAchievements';
-      let request = this.http.post(url, body, {headers: headers});
-      this.cache.loadFromObservable('getAcademicAchievements'+this.i, request).subscribe((resGrades) => {
+    this.cache.loadFromObservable('getAcademicAchievements'+this.i, of(this.puls.getAcademicAchievements(this.session, semester, mtknr, stgnr).subscribe(
+      (resGrades:IPulsAPIResponse_getAcademicAchievements) => {
         if (resGrades) {
           this.studentGrades = resGrades;
           this.gradesLoaded = true;
@@ -143,11 +122,10 @@ export class GradesPage {
       }, error => {
         console.log('ERROR while getting grades');
         console.log(error);
-      });
+      })));
 
-      if (this.refresher != null) {
-        this.refresher.complete();
-      }
+    if (this.refresher != null) {
+      this.refresher.complete();
     }
   }
 

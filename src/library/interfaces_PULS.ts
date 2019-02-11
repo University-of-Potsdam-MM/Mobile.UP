@@ -165,3 +165,18 @@ export interface IGradeDegree {
   StgNr: string;
   Studiengaenge: any;
 }
+
+
+export interface IPulsApiRequest_getAcademicAchievements {
+  condition: IPulsApiRequest_getAcademicAchievements_condition;
+  'user-auth':ICredentials
+}
+
+export interface IPulsApiRequest_getAcademicAchievements_condition {
+  Semester: string;
+  MtkNr: string;
+  StgNr: string;
+}
+
+export interface IPulsAPIResponse_getAcademicAchievements {
+}

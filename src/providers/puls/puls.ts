@@ -14,7 +14,9 @@ import {
   IPulsApiRequest_getCourseData,
   IPulsAPIResponse_getCourseData,
   IPulsApiRequest_getPersonalStudyAreas,
-  IPulsAPIResponse_getPersonalStudyAreas
+  IPulsAPIResponse_getPersonalStudyAreas,
+  IPulsApiRequest_getAcademicAchievements,
+  IPulsAPIResponse_getAcademicAchievements
 } from "../../library/interfaces_PULS";
 import { ConfigProvider } from "../config/config";
 import { LoginPage } from "../../pages/login/login";
@@ -67,6 +69,7 @@ export class PulsProvider {
 
   /**
    * @name getLectureScheduleSubTree
+   * @param headerId
    */
   public getLectureScheduleSubTree(headerId):Observable<IPulsAPIResponse_getLectureScheduleSubTree> {
 
@@ -85,6 +88,7 @@ export class PulsProvider {
 
   /**
    * @name getLectureScheduleCourses
+   * @param headerId
    */
   public getLectureScheduleCourses(headerId):Observable<IPulsAPIResponse_getLectureScheduleCourses> {
 
@@ -103,6 +107,7 @@ export class PulsProvider {
 
   /**
    * @name getCourseData
+   * @param courseId
    */
   public getCourseData(courseId):Observable<IPulsAPIResponse_getCourseData> {
 
@@ -168,12 +173,43 @@ export class PulsProvider {
     return rs;
   }
 
+  /**
+   * @name getAcademicAchievements
+   * @param {ISession} session
+   * @param semester
+   * @param mtknr
+   * @param stgnr
+   */
+  public getAcademicAchievements(session: ISession, semester, mtknr, stgnr):Observable<IPulsAPIResponse_getAcademicAchievements> {
+
+    let request:IPulsApiRequest_getAcademicAchievements = {
+      condition:{
+        Semester: semester,
+        MtkNr: mtknr,
+        StgNr: stgnr
+      },
+      'user-auth': {
+        username: session.credentials.username,
+        password: session.credentials.password
+      }
+    };
+
+    let rs = new ReplaySubject<IPulsAPIResponse_getAcademicAchievements>();
+
+    this.http.post<IPulsAPIResponse_getAcademicAchievements>(
+      ConfigProvider.config.webservices.endpoint.puls+'getAcademicAchievements', request, {headers: this.headers}).subscribe(
+      (response:IPulsAPIResponse_getAcademicAchievements) => {
+        rs.next(response);
+      }
+    );
+    return rs;
+  }
 
   /**
    * @name getStudentCourses
    * @param {ISession} session
    */
-  public getStudentCourses(session:ISession):Observable<IPulsAPIResponse_getStudentCourses> {
+  public getStudentCourses(session: ISession):Observable<IPulsAPIResponse_getStudentCourses> {
 
     let request:IPulsApiRequest_getStudentCourses = {
       condition:{
