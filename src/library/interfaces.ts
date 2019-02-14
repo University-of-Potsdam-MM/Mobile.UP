@@ -439,22 +439,6 @@ export interface ISettingOption {
   key:any;
 }
 
-export interface IGradeResponse {
-  personalStudyAreas: {
-    Abschluss:IGradeDegree;
-  }
-  message?:string;
-}
-
-export interface IGradeDegree {
-  AbLtxt: string;
-  Abschl: string;
-  MtkNr: string;
-  Semester: string;
-  StgNr: string;
-  Studiengaenge: any;
-}
-
 export interface IStudieCourse {
   StgNr: string;
   abschl: string;

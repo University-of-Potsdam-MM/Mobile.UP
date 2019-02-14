@@ -101,3 +101,82 @@ export interface IPulsApiRequest_getStudentCourses_condition {
   semester:number;
   allLectures:number;
 }
+
+export interface IPulsAPIResponse_getLectureScheduleRoot {
+}
+
+export interface IPulsApiRequest_getLectureScheduleRoot {
+  condition: IPulsApiRequest_getLectureScheduleRoot_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleRoot_condition {
+  semester: number;
+}
+
+export interface IPulsAPIResponse_getLectureScheduleSubTree {
+}
+
+export interface IPulsApiRequest_getLectureScheduleSubTree {
+  condition: IPulsApiRequest_getLectureScheduleSubTree_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleSubTree_condition {
+  headerId: number;
+}
+
+export interface IPulsApiRequest_getLectureScheduleCourses {
+  condition: IPulsApiRequest_getLectureScheduleCourses_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleCourses_condition {
+  headerId: number;
+}
+
+export interface IPulsAPIResponse_getLectureScheduleCourses {
+}
+
+export interface IPulsApiRequest_getCourseData {
+  condition: IPulsApiRequest_getCourseData_condition;
+}
+
+export interface IPulsApiRequest_getCourseData_condition {
+  courseId: number;
+}
+
+export interface IPulsAPIResponse_getCourseData {
+}
+
+export interface IPulsApiRequest_getPersonalStudyAreas {
+  'user-auth':ICredentials
+}
+
+export interface IPulsAPIResponse_getPersonalStudyAreas {
+  personalStudyAreas: {
+    Abschluss:IGradeDegree;
+  }
+  message?:string;
+}
+
+export interface IGradeDegree {
+  AbLtxt: string;
+  Abschl: string;
+  MtkNr: string;
+  Semester: string;
+  StgNr: string;
+  Studiengaenge: any;
+}
+
+
+export interface IPulsApiRequest_getAcademicAchievements {
+  condition: IPulsApiRequest_getAcademicAchievements_condition;
+  'user-auth':ICredentials
+}
+
+export interface IPulsApiRequest_getAcademicAchievements_condition {
+  Semester: string;
+  MtkNr: string;
+  StgNr: string;
+}
+
+export interface IPulsAPIResponse_getAcademicAchievements {
+}
