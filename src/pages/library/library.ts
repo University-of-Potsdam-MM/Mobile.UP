@@ -7,7 +7,7 @@ import * as xml2js from 'xml2js';
 import { BookDetailViewPage } from '../book-detail-view/book-detail-view';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ConnectionProvider } from "../../providers/connection/connection";
-import { WebHttpUrlEncodingCodec } from '../../library/util';
+import { WebHttpUrlEncodingCodec, utils } from '../../library/util';
 
 @IonicPage()
 @Component({
@@ -48,7 +48,7 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    //console.log(this.query);
+    console.log(this.query);
 
     let query = this.query.trim();
 
@@ -77,7 +77,7 @@ export class LibraryPage {
       this.http.get(url, {headers:headers, params:params, responseType: "text"}).subscribe(res => {
         this.parseXMLtoJSON(res).then(data => {
 
-          var tmp, tmpList;
+          let tmp, tmpList, i;
           if (data["zs:searchRetrieveResponse"]) {
             tmp = data["zs:searchRetrieveResponse"];
           }
@@ -89,8 +89,9 @@ export class LibraryPage {
           if (tmp["zs:numberOfRecords"]) {
             this.numberOfRecords = tmp["zs:numberOfRecords"];
           }
-
-          var i;
+          if (this.numberOfRecords == '1'){
+            tmpList = utils.convertToArray(tmpList);
+          }
           if (Array.isArray(tmpList)) {
             for (i = 0; i < tmpList.length; i++) {
               this.bookList.push(tmpList[i]["zs:recordData"]["mods"]);
