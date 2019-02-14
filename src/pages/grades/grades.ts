@@ -28,6 +28,7 @@ export class GradesPage {
   studentDetails;
   studentGrades;
   i;
+  noUserRights;
 
   loadingGrades = false;
   gradesLoaded = false;
@@ -173,6 +174,8 @@ export class GradesPage {
               }
             }
             this.studentLoaded = true;
+          } else if (resStudentDetail.message) {
+            this.noUserRights = true;
           }
         }
       }, (error) => {
