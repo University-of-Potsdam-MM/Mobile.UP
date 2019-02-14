@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="studentLoaded">
+  <div *ngIf="studentLoaded && !noUserRights">
     <hint hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-selectDegree-hint"></hint>
   </div>
 
