@@ -66,7 +66,7 @@ export class BookDetailViewPage {
     this.updateLocation();
     this.updateDetails();
   }
-  
+
   /**
    * @name updateDetails
    * @description updates the details of the requested book
@@ -117,7 +117,7 @@ export class BookDetailViewPage {
    * @param data
    */
   setLocationData(data) {
-    // console.log(data);
+    //console.log(data);
     this.bookLocationList = [];
     if (data) {
       var i, j;
@@ -142,12 +142,12 @@ export class BookDetailViewPage {
    * @param item
    */
   getDepartment(item) {
-    var department = "";
+    let department = '';
     if (item.department && item.department.content) {
       department = item.department.content;
     }
     if (item.storage) {
-      department = department + ", " + item.storage.content;
+      department = department + ', ' + item.storage.content;
     }
     return department;
   }
@@ -211,78 +211,74 @@ export class BookDetailViewPage {
    * @param item
    */
   getItem(item) {
-    var status = "", statusInfo = "";
+    //console.log(item);
+    let status = "", statusInfo = "";
 
     // check for available / unavailable items and process loan and presentation
+    let loanAvailable, presentationAvailable;
     if (item.available) {
-      var loanAvailable, presentationAvailable;
       let availableArray = utils.convertToArray(item.available);
-      var i;
-      for (i = 0; i < availableArray.length; i++) {
-        if (availableArray[i] && availableArray[i].service == "loan") {
-          loanAvailable = availableArray[i];
-        }
-        if (availableArray[i] && availableArray[i].service == "presentation") {
-          presentationAvailable = availableArray[i];
-        }
-      }
+      loanAvailable = availableArray.find(x => x.service == 'loan');
+      presentationAvailable = availableArray.find(x => x.service == 'presentation');
     }
+    //console.log(loanAvailable, presentationAvailable);
 
+    let loanUnavailable, presentationUnavailable;
     if (item.unavailable) {
-      var loanUnavailable, presentationUnavailable;
-      let unavailableArray = utils.convertToArray(item.available);
-      var j;
-      for (j = 0; j < unavailableArray.length; j++) {
-        if (unavailableArray[j] && unavailableArray[j].service == "loan") {
-          loanUnavailable = unavailableArray[j];
-        }
-        if (unavailableArray[j] && unavailableArray[j].service == "presentation") {
-          presentationUnavailable = unavailableArray[j];
-        }
-      }
+      let unavailableArray = utils.convertToArray(item.unavailable);
+      loanUnavailable = unavailableArray.find(x => x.service == 'loan');
+      presentationUnavailable = unavailableArray.find(x => x.service == 'presentation');
     }
+    //console.log(loanUnavailable, presentationUnavailable);
 
     if (loanAvailable) {
-      status = "ausleihbar";
+      status = 'ausleihbar';
 
-      if (presentationAvailable && presentationAvailable.href) {
-        statusInfo = presentationAvailable.href;
+      if (presentationAvailable){
+        // tag available with service="loan" and href=""?
+        if (presentationAvailable.limitation){
+          statusInfo = presentationAvailable.limitation[0].content;
+        }
+        if (loanAvailable.href == '') {
+          statusInfo = statusInfo + 'Bitte bestellen';
+        }
       }
 
-      if (loanAvailable.href == "") {
-        statusInfo = statusInfo + "Bitte bestellen";
-      }
     } else {
+      // check for loan in unavailable items
+      // indicates LBS and Online-Resources
       if (loanUnavailable && loanUnavailable.href) {
-        if (loanUnavailable.href.indexOf("loan/RES") != -1) {
-          status = "ausleihbar";
-        } else { status = "nicht ausleihbar"; }
+        if (loanUnavailable.href.indexOf('loan/RES') != -1) {
+          status = 'ausleihbar';
+        } else { status = 'nicht ausleihbar'; }
       } else {
+
+        // if there is no url then it will be a presentation
         if (this.getBookUrl(item) == null) {
-          if (item.label && item.label.indexOf("bestellt") != -1) {
+          if (item.label && item.label.indexOf('bestellt') != -1) {
             status = item.label;
-            statusInfo = "";
+            statusInfo = '';
           } else {
-            status = "Präsenzbestand";
-            if (presentationAvailable && presentationAvailable.href) {
-              statusInfo = presentationAvailable.href;
+            status = 'Präsenzbestand';
+            if (presentationAvailable.limitation){
+              statusInfo = presentationAvailable.limitation[0].content;
             }
           }
         } else {
-          status = "Online-Ressource im Browser öffnen";
+          status = 'Online-Ressource im Browser öffnen';
         }
       }
 
       if (presentationUnavailable) {
         if (loanUnavailable && loanUnavailable.href) {
-          if (loanUnavailable.href.indexOf("loan/RES") != -1) {
-            status = "ausgeliehen";
-            if(!loanUnavailable.expected || loanUnavailable.expected == "unknown") {
-              statusInfo = statusInfo + "ausgeliehen, Vormerken möglich";
+          if (loanUnavailable.href.indexOf('loan/RES') != -1) {
+            status = 'ausgeliehen';
+            if(!loanUnavailable.expected || loanUnavailable.expected == 'unknown') {
+              statusInfo = statusInfo + 'ausgeliehen, Vormerken möglich';
             } else {
-              statusInfo = statusInfo + "ausgeliehen bis ";
-              statusInfo = statusInfo + moment(loanUnavailable.expected, "YYYY-MM-DD").format("DD.MM.YYYY");
-              statusInfo = statusInfo + ", Vormerken möglich";
+              statusInfo = statusInfo + 'ausgeliehen bis ';
+              statusInfo = statusInfo + moment(loanUnavailable.expected, 'YYYY-MM-DD').format('DD.MM.YYYY');
+              statusInfo = statusInfo + ', vormerken möglich';
             }
           }
         } else {

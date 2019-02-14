@@ -48,7 +48,7 @@ export class LibraryPage {
   }
 
   searchLibrary(resetList:boolean, infiniteScroll?) {
-    console.log(this.query);
+    //console.log(this.query);
 
     let query = this.query.trim();
 
@@ -148,6 +148,7 @@ export class LibraryPage {
   }
 
   bookDetailView(book) {
+    //console.log(book);
     this.navCtrl.push(BookDetailViewPage, { book: book });
   }
 

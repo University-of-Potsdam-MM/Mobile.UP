@@ -39,15 +39,12 @@
           <span tappable (click)="webIntent.permissionPromptWebsite(department.url)" style="text-decoration: underline">{{ department.item[0] }}</span>
         </ion-item>
         <ng-template #noUrl>
-          <ion-item class="itemStatus">
+          <ion-item class="itemStatus" text-wrap>
             <ion-icon style="color: darkred" *ngIf="department.item[0] && (department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)" name="ios-remove-circle"></ion-icon>
             <ion-icon style="color: darkgreen" *ngIf="department.item[0] && department.department && (department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)" name="ios-contrast"></ion-icon>
             <ion-icon style="color: darkgreen" *ngIf="!(department.item[0] && ((department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)) || department.item[0] && department.department && ((department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
-            {{ department.item[0] }}
+            {{ department.item[0] }} <span *ngIf="department.item[1]" style="color: black; font-size: small">({{ department.item[1] }})</span>
             <span *ngIf="department.label && department.item[0] && department.label != department.item[0]" style="font-size: small" item-end>{{ department.label }}</span>
-          </ion-item>
-          <ion-item class="itemStatus" *ngIf="department.item[0] && department.item[0] == 'Präsenzbestand'">
-            <p style="color: black; font-size: small">{{ "page.library.referenceLib" | translate }}</p>
           </ion-item>
         </ng-template>
       </ion-list>
