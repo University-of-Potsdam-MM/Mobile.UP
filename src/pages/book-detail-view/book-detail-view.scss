@@ -13,6 +13,11 @@ page-book-detail-view {
         color: color($colors, light);
     }
 
+    .itemStatus {
+        background-color: color($colors, secondary);
+        color: color($colors, primary);
+    }
+
     .link {
         text-decoration: underline;
     }
@@ -20,4 +25,5 @@ page-book-detail-view {
     h3 {
         color: color($colors, primary);
     }
+
 }

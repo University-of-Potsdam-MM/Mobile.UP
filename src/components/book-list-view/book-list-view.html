@@ -1,11 +1,10 @@
 <ion-item>
-  <span item-start *ngIf="i">
-    <p class="number">{{ i }}</p>
-    <!-- <ion-icon [name]="bookDetails.icon" color="primary"></ion-icon> -->
+  <span item-start *ngIf="i" padding-right>
+    <p class="number" text-center>{{ i }}</p>
+    <ion-icon [name]="bookDetails.icon" color="primary"></ion-icon>
   </span>
   <ion-icon *ngIf="!i" item-start color="primary" [name]="bookDetails.icon"></ion-icon>
   <span *ngIf="convertToArray(book.titleInfo)[0]" text-wrap>
-    <ion-icon *ngIf="i" [name]="bookDetails.icon" color="primary"></ion-icon>
     <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }} </b>
     <b *ngIf="convertToArray(book.titleInfo)[0].title">{{ convertToArray(book.titleInfo)[0].title }} </b><br>
     <p *ngIf="convertToArray(book.titleInfo)[0].subTitle">{{ convertToArray(book.titleInfo)[0].subTitle }}</p>
