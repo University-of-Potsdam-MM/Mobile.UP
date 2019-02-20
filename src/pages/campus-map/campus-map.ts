@@ -1,12 +1,18 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { ICampus, IConfig, IMapsResponse, IMapsResponseObject } from "../../library/interfaces";
+import {
+  ICampus,
+  IConfig,
+  IMapsResponse,
+  IMapsResponseObject
+} from "../../library/interfaces";
 import { ConfigProvider } from "../../providers/config/config";
 import * as leaflet from 'leaflet';
 import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
 import {TranslateService} from "@ngx-translate/core";
+import {Geolocation} from "@ionic-native/geolocation/ngx";
 
 
 @IonicPage()
@@ -25,12 +31,15 @@ export class CampusMapPage {
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
+  positionCircle;
 
   constructor(
     private settings:SettingsProvider,
     private connection: ConnectionProvider,
     private wsProvider: WebServiceProvider,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private location: Geolocation
+    ) {
   }
 
   /**
@@ -58,6 +67,49 @@ export class CampusMapPage {
   }
 
   /**
+   * @name setPosition
+   * @desc adds a leaflet circle to the map at the given position with a radius
+   * fitting the positions accuracy
+   * @param position
+   */
+  setPosition(position:Position){
+    // remove existing circle, if there is one
+    if(this.positionCircle){
+      this.map.removeLayer(this.positionCircle);
+    }
+    this.positionCircle = leaflet.circle(
+      [position.coords.latitude, position.coords.longitude],
+      {
+        color: 'blue',
+        fillColor: '#0000ff',
+        fillOpacity: 0.5,
+        radius: position.coords.accuracy ? position.coords.accuracy : 10
+      }
+    );
+    this.positionCircle.addTo(this.map);
+  }
+
+  /**
+   * @name  enableGeolocation
+   * @desc enabled retrieval of location and starts function that adds a circle
+   * to the map
+   */
+  enableGeolocation(){
+    this.location.watchPosition().subscribe(
+      (position:Position) => {
+        if(!position){
+          console.log("[CampusMap]: Error getting location")
+        } else {
+          this.setPosition(position)
+        }
+      },
+      error=> {
+        console.log("[CampusMap]: Error:", error)
+      }
+    )
+  }
+
+  /**
    * @name changeCampus
    * @description changes the current campus by name
    * @param campus
@@ -78,7 +130,7 @@ export class CampusMapPage {
         this.addFeaturesToLayerGroups(this.geoJSON);
       },
       error => {
-        console.log(error)
+        console.log("[CampusMap]: Error getting map data:", error)
       }
     )
   }
@@ -95,6 +147,7 @@ export class CampusMapPage {
         attribution: 'www.uni-potsdam.de',
         maxZoom: 18
       }).addTo(map);
+
     return map;
   }
 
@@ -184,7 +237,6 @@ export class CampusMapPage {
     // now add layerGroups to the map so the user can select/deselect them
     leaflet.control.layers({}, this.layerGroups).addTo(this.map);
   }
-
 
   /**
    * @name search

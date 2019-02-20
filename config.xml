@@ -115,4 +115,5 @@
     <engine name="android" spec="7.1.4" />
     <engine name="ios" spec="^5.0.0" />
     <engine name="browser" spec="6.0.0" />
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
 </widget>

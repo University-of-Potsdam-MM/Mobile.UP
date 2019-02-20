@@ -32,6 +32,7 @@ import { SecureStorage } from '@ionic-native/secure-storage/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { Contacts } from '@ionic-native/contacts';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import {Geolocation } from "@ionic-native/geolocation/ngx";
 
 /* Pages */
 import { HomePage } from '../pages/home/home';
@@ -235,7 +236,8 @@ export const deepLinkConfig: DeepLinkConfig = {
     ErrorLoggingProvider,
     WebServiceProvider,
     Contacts,
-    CallNumber
+    CallNumber,
+    Geolocation
   ]
 })
 export class AppModule {
