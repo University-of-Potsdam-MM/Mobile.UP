@@ -1,13 +1,21 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { ICampus, IConfig, IMapsResponse, IMapsResponseObject } from "../../library/interfaces";
+import {
+  ICampus,
+  IConfig,
+  IMapsResponse,
+  IMapsResponseObject
+} from "../../library/interfaces";
 import { ConfigProvider } from "../../providers/config/config";
-import * as leaflet from 'leaflet';
 import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
 import {TranslateService} from "@ngx-translate/core";
+import {Geolocation} from "@ionic-native/geolocation/ngx";
 
+import * as L from 'leaflet';
+import 'leaflet-easybutton';
+import 'leaflet-rotatedmarker';
 
 @IonicPage()
 @Component({
@@ -21,16 +29,25 @@ export class CampusMapPage {
   config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
   selectedCampus:ICampus;
-  layerGroups:{[name:string]:leaflet.LayerGroup} = {};
+  layerGroups:{[name:string]:L.LayerGroup} = {};
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
+
+  positionCircle:L.Circle;
+  positionMarker:L.Marker;
+  latestHeading:number;
+
+  geoLocationWatch;
+  geoLocationEnabled:boolean = false;
 
   constructor(
     private settings:SettingsProvider,
     private connection: ConnectionProvider,
     private wsProvider: WebServiceProvider,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private location: Geolocation
+    ) {
   }
 
   /**
@@ -46,6 +63,8 @@ export class CampusMapPage {
     // initialize map
     this.map = this.initializeLeafletMap();
 
+    this.addGeoLocationButton();
+
     // load geoJson data
     this.loadMapData();
 
@@ -54,7 +73,119 @@ export class CampusMapPage {
       (campus:string) => {
         this.changeCampus(campus)
       }
+    );
+
+  }
+
+  /**
+   * @name addGeoLocationButton
+   * @desc adds geolocation button to this.map
+   */
+  addGeoLocationButton(){
+    let toggleGeolocationButton = L.easyButton({
+      states: [{
+        stateName: 'geolocation-disabled',
+        icon: 'fa-crosshairs fa-2x',
+        title: this.translate.instant("page.campusMap.enable_geolocation"),
+        onClick: (control) => {
+          this.enableGeolocation();
+          control.state('geolocation-enabled');
+        }
+      }, {
+        stateName: 'geolocation-enabled',
+        icon: 'fa-stop-circle fa-2x',
+        title: this.translate.instant("page.campusMap.disable_geolocation"),
+        onClick: (control) => {
+          this.disableGeolocation();
+          control.state('geolocation-disabled');
+        },
+      }]
+    });
+    toggleGeolocationButton.addTo(this.map);
+  }
+
+  /**
+   * @name setPosition
+   * @desc adds a leaflet circle to the map at the given position with a radius
+   * fitting the positions accuracy. Also adds a marker if we know where the device
+   * is heading.
+   * @param position {Position}
+   */
+  setPosition(position:Position){
+    // remove existing circle, if there is one
+    if(this.positionCircle){
+      this.map.removeLayer(this.positionCircle);
+    }
+    if(this.positionMarker){
+      this.map.removeLayer(this.positionMarker);
+    }
+
+    // if we are currently heading somewhere, use this value, otherwise use
+    // the last recent direction
+    if(position.coords.heading || this.latestHeading){
+      // save current value
+      this.latestHeading = position.coords.heading;
+
+      // TODO: don't create this icon again and again
+      let icon = L.icon({
+        iconUrl: '../assets/icon/navigate.svg',
+        iconSize: [42, 42],
+        iconAnchor: [21, 21]
+      });
+
+      this.positionMarker = L.marker(
+      [position.coords.latitude, position.coords.longitude],
+      {
+        rotationAngle: position.coords.heading || this.latestHeading,
+        icon: icon
+      });
+      this.positionMarker.addTo(this.map);
+    }
+
+    this.positionCircle = L.circle(
+      [position.coords.latitude, position.coords.longitude],
+      {
+        color: 'blue',
+        fillColor: '#0000ff',
+        fillOpacity: 0.5,
+        radius: position.coords.accuracy ? position.coords.accuracy : 10
+      }
+    );
+    this.positionCircle.addTo(this.map);
+  }
+
+  /**
+   * @name  enableGeolocation
+   * @desc enabled retrieval of location and starts function that adds a circle
+   * to the map
+   */
+  enableGeolocation(){
+    this.geoLocationEnabled = true;
+    this.geoLocationWatch = this.location.watchPosition().subscribe(
+      (position:Position) => {
+        if(!position){
+          console.log("[CampusMap]: Error getting location")
+        } else {
+          this.setPosition(position)
+        }
+      },
+      error=> {
+        console.log("[CampusMap]: Error:", error)
+      }
     )
+  }
+
+  /**
+   * @name disableGeolocation
+   * @desc disables geolocation by unsubscribing from watch and deleting current
+   * positionCircle
+   */
+  disableGeolocation(){
+    this.geoLocationEnabled = false;
+    if(this.positionCircle){
+      this.map.removeLayer(this.positionCircle);
+    }
+    this.geoLocationWatch.unsubscribe();
   }
 
   /**
@@ -71,14 +202,13 @@ export class CampusMapPage {
    * @description loads campus map data
    */
   loadMapData() {
-
     this.wsProvider.getMapData().subscribe(
       (response:IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON);
       },
       error => {
-        console.log(error)
+        console.log("[CampusMap]: Error getting map data:", error)
       }
     )
   }
@@ -89,12 +219,13 @@ export class CampusMapPage {
    */
   initializeLeafletMap(){
     // create map object
-    let map = leaflet.map("map").fitWorld();
-    leaflet.tileLayer(
+    let map = L.map("map").fitWorld();
+    L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
         maxZoom: 18
       }).addTo(map);
+
     return map;
   }
 
@@ -153,7 +284,7 @@ export class CampusMapPage {
       // check if we already have this category in layerGroups
       if(categories.indexOf(obj.category) == -1){
         // Create new layer for each unique category
-        this.layerGroups[title] = leaflet.layerGroup();
+        this.layerGroups[title] = L.layerGroup();
         // just push category name so we know we already got that one
         categories.push(obj.category);
       }
@@ -169,7 +300,7 @@ export class CampusMapPage {
         let popupTemplate = `<h1>${props.Name}</h1><div>${props.description?props.description:""}</div>`;
 
         this.layerGroups[title].addLayer(
-          leaflet.geoJSON(feature).bindPopup(
+          L.geoJSON(feature).bindPopup(
             popupTemplate
           )
         );
@@ -182,35 +313,6 @@ export class CampusMapPage {
     }
 
     // now add layerGroups to the map so the user can select/deselect them
-    leaflet.control.layers({}, this.layerGroups).addTo(this.map);
-  }
-
-
-  /**
-   * @name search
-   * @description triggers a search over the stored geoJson data
-   * @param {string} queryString
-   */
-  search(queryString){
-    console.log(queryString);
-    this.query = queryString;
-
-    // //clear map from displayed layers
-    // var map = this.map;
-    //
-    // for(var layer in this.layers){
-    //   map.removeLayer(this.layers[layer]);
-    // }
-    //
-    // this.geoJSON.forEach(
-    //   (obj:IMapsResponseObject) => {
-    //     var that = this;
-    //     leaflet.geoJSON(obj.geo, {filter: function(feature){
-    //       if (feature.properties.Name && feature.properties.Name.toString().indexOf(that.query) !== -1) {
-    //         return true
-    //       }
-    //     }}).addTo(this.map);
-    //   }
-    // );
+    L.control.layers({}, this.layerGroups).addTo(this.map);
   }
 }

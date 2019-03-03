@@ -6,14 +6,7 @@
     <ion-title>{{ "page.campusMap.title" | translate }}</ion-title>
   </ion-navbar>
   <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
-  <ion-searchbar
-    [(ngModel)]="query"
-    [placeholder]="'page.campusMap.placeholder.search' | translate"
-    (ionInput)="search(query)"
-    debounce="750">
-  </ion-searchbar>
 </ion-header>
-
 
 <ion-content padding>
 

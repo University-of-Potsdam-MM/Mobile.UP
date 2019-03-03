@@ -300,6 +300,8 @@
       "title": "Lageplan",
       "placeholder.search": "Suche",
       "select_categories": "Kategorien zum Anzeigen wählen",
+      "enable_geolocation": "Standort anzeigen",
+      "disable_geolocation": "Standort nicht mehr anzeigen",
       "category": {
         "associateinstitutes": "An-Institute",
         "institutes": "Institute",
