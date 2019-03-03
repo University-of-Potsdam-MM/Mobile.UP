@@ -77,16 +77,28 @@ export class CampusMapPage {
    * @desc adds geolocation button to this.map
    */
   addGeoLocationButton(){
-    L.easyButton(
-      'fa-locate',
-      () => {
-        if(this.geoLocationEnabled){
-          this.disableGeolocation();
-        } else {
+
+
+    let toggleGeolocationButton = L.easyButton({
+      states: [{
+        stateName: 'geolocation-disabled',
+        icon: 'fa-crosshairs fa-2x',
+        title: this.translate.instant("page.campusmap.enable_geolocation"),
+        onClick: (control) => {
           this.enableGeolocation();
+          control.state('geolocation-enabled');
         }
-      }
-    ).addTo(this.map)
+      }, {
+        stateName: 'geolocation-enabled',
+        icon: 'fa-stop-circle fa-2x',
+        title: this.translate.instant("page.campusmap.disable_geolocation"),
+        onClick: (control) => {
+          this.disableGeolocation();
+          control.state('geolocation-disabled');
+        },
+      }]
+    });
+    toggleGeolocationButton.addTo(this.map);
   }
 
   /**
