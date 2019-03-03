@@ -7,13 +7,14 @@ import {
   IMapsResponseObject
 } from "../../library/interfaces";
 import { ConfigProvider } from "../../providers/config/config";
-import * as leaflet from 'leaflet';
 import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
 import {TranslateService} from "@ngx-translate/core";
 import {Geolocation} from "@ionic-native/geolocation/ngx";
 
+import * as L from 'leaflet';
+import 'leaflet-easybutton';
 
 @IonicPage()
 @Component({
@@ -27,11 +28,13 @@ export class CampusMapPage {
   config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
   selectedCampus:ICampus;
-  layerGroups:{[name:string]:leaflet.LayerGroup} = {};
+  layerGroups:{[name:string]:L.LayerGroup} = {};
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
   positionCircle;
+  geoLocationWatch;
+  geoLocationEnabled:boolean = false;
 
   constructor(
     private settings:SettingsProvider,
@@ -55,6 +58,8 @@ export class CampusMapPage {
     // initialize map
     this.map = this.initializeLeafletMap();
 
+    this.addGeoLocationButton();
+
     // load geoJson data
     this.loadMapData();
 
@@ -63,7 +68,25 @@ export class CampusMapPage {
       (campus:string) => {
         this.changeCampus(campus)
       }
-    )
+    );
+
+  }
+
+  /**
+   * @name addGeoLocationButton
+   * @desc adds geolocation button to this.map
+   */
+  addGeoLocationButton(){
+    L.easyButton(
+      'fa-locate',
+      () => {
+        if(this.geoLocationEnabled){
+          this.disableGeolocation();
+        } else {
+          this.enableGeolocation();
+        }
+      }
+    ).addTo(this.map)
   }
 
   /**
@@ -77,7 +100,11 @@ export class CampusMapPage {
     if(this.positionCircle){
       this.map.removeLayer(this.positionCircle);
     }
-    this.positionCircle = leaflet.circle(
+
+    // TODO: would be nice to use 'navigate' ionicon instead and point it to the
+    // correct direction
+
+    this.positionCircle = L.circle(
       [position.coords.latitude, position.coords.longitude],
       {
         color: 'blue',
@@ -95,7 +122,8 @@ export class CampusMapPage {
    * to the map
    */
   enableGeolocation(){
-    this.location.watchPosition().subscribe(
+    this.geoLocationEnabled = true;
+    this.geoLocationWatch = this.location.watchPosition().subscribe(
       (position:Position) => {
         if(!position){
           console.log("[CampusMap]: Error getting location")
@@ -107,6 +135,19 @@ export class CampusMapPage {
         console.log("[CampusMap]: Error:", error)
       }
     )
+  }
+
+  /**
+   * @name disableGeolocation
+   * @desc disables geolocation by unsubscribing from watch and deleting current
+   * positionCircle
+   */
+  disableGeolocation(){
+    this.geoLocationEnabled = false;
+    if(this.positionCircle){
+      this.map.removeLayer(this.positionCircle);
+    }
+    this.geoLocationWatch.unsubscribe();
   }
 
   /**
@@ -141,8 +182,8 @@ export class CampusMapPage {
    */
   initializeLeafletMap(){
     // create map object
-    let map = leaflet.map("map").fitWorld();
-    leaflet.tileLayer(
+    let map = L.map("map").fitWorld();
+    L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
         maxZoom: 18
@@ -206,7 +247,7 @@ export class CampusMapPage {
       // check if we already have this category in layerGroups
       if(categories.indexOf(obj.category) == -1){
         // Create new layer for each unique category
-        this.layerGroups[title] = leaflet.layerGroup();
+        this.layerGroups[title] = L.layerGroup();
         // just push category name so we know we already got that one
         categories.push(obj.category);
       }
@@ -222,7 +263,7 @@ export class CampusMapPage {
         let popupTemplate = `<h1>${props.Name}</h1><div>${props.description?props.description:""}</div>`;
 
         this.layerGroups[title].addLayer(
-          leaflet.geoJSON(feature).bindPopup(
+          L.geoJSON(feature).bindPopup(
             popupTemplate
           )
         );
@@ -235,34 +276,6 @@ export class CampusMapPage {
     }
 
     // now add layerGroups to the map so the user can select/deselect them
-    leaflet.control.layers({}, this.layerGroups).addTo(this.map);
-  }
-
-  /**
-   * @name search
-   * @description triggers a search over the stored geoJson data
-   * @param {string} queryString
-   */
-  search(queryString){
-    console.log(queryString);
-    this.query = queryString;
-
-    // //clear map from displayed layers
-    // var map = this.map;
-    //
-    // for(var layer in this.layers){
-    //   map.removeLayer(this.layers[layer]);
-    // }
-    //
-    // this.geoJSON.forEach(
-    //   (obj:IMapsResponseObject) => {
-    //     var that = this;
-    //     leaflet.geoJSON(obj.geo, {filter: function(feature){
-    //       if (feature.properties.Name && feature.properties.Name.toString().indexOf(that.query) !== -1) {
-    //         return true
-    //       }
-    //     }}).addTo(this.map);
-    //   }
-    // );
+    L.control.layers({}, this.layerGroups).addTo(this.map);
   }
 }

@@ -1,22 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button (click)="enableGeolocation()" right>
-      <ion-icon name="locate"></ion-icon>
-    </button>
     <button ion-button menuToggle right>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{ "page.campusMap.title" | translate }}</ion-title>
   </ion-navbar>
   <campus-tab (campusChanged)="changeCampus($event)"></campus-tab>
-  <ion-searchbar
-    [(ngModel)]="query"
-    [placeholder]="'page.campusMap.placeholder.search' | translate"
-    (ionInput)="search(query)"
-    debounce="750">
-  </ion-searchbar>
 </ion-header>
-
 
 <ion-content padding>
 
