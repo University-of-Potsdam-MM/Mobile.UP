@@ -86,7 +86,7 @@ export class CampusMapPage {
       states: [{
         stateName: 'geolocation-disabled',
         icon: 'fa-crosshairs fa-2x',
-        title: this.translate.instant("page.campusmap.enable_geolocation"),
+        title: this.translate.instant("page.campusMap.enable_geolocation"),
         onClick: (control) => {
           this.enableGeolocation();
           control.state('geolocation-enabled');
@@ -94,7 +94,7 @@ export class CampusMapPage {
       }, {
         stateName: 'geolocation-enabled',
         icon: 'fa-stop-circle fa-2x',
-        title: this.translate.instant("page.campusmap.disable_geolocation"),
+        title: this.translate.instant("page.campusMap.disable_geolocation"),
         onClick: (control) => {
           this.disableGeolocation();
           control.state('geolocation-disabled');
