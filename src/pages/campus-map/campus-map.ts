@@ -15,6 +15,7 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
 
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
+import 'leaflet-rotatedmarker';
 
 @IonicPage()
 @Component({
@@ -32,7 +33,11 @@ export class CampusMapPage {
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
-  positionCircle;
+
+  positionCircle:L.Circle;
+  positionMarker:L.Marker;
+  latestHeading:number;
+
   geoLocationWatch;
   geoLocationEnabled:boolean = false;
 
@@ -77,8 +82,6 @@ export class CampusMapPage {
    * @desc adds geolocation button to this.map
    */
   addGeoLocationButton(){
-
-
     let toggleGeolocationButton = L.easyButton({
       states: [{
         stateName: 'geolocation-disabled',
@@ -104,17 +107,40 @@ export class CampusMapPage {
   /**
    * @name setPosition
    * @desc adds a leaflet circle to the map at the given position with a radius
-   * fitting the positions accuracy
-   * @param position
+   * fitting the positions accuracy. Also adds a marker if we know where the device
+   * is heading.
+   * @param position {Position}
    */
   setPosition(position:Position){
     // remove existing circle, if there is one
     if(this.positionCircle){
       this.map.removeLayer(this.positionCircle);
     }
+    if(this.positionMarker){
+      this.map.removeLayer(this.positionMarker);
+    }
 
-    // TODO: would be nice to use 'navigate' ionicon instead and point it to the
-    // correct direction
+    // if we are currently heading somewhere, use this value, otherwise use
+    // the last recent direction
+    if(position.coords.heading || this.latestHeading){
+      // save current value
+      this.latestHeading = position.coords.heading;
+
+      // TODO: don't create this icon again and again
+      let icon = L.icon({
+        iconUrl: '../assets/icon/navigate.svg',
+        iconSize: [42, 42],
+        iconAnchor: [21, 21]
+      });
+
+      this.positionMarker = L.marker(
+      [position.coords.latitude, position.coords.longitude],
+      {
+        rotationAngle: position.coords.heading || this.latestHeading,
+        icon: icon
+      });
+      this.positionMarker.addTo(this.map);
+    }
 
     this.positionCircle = L.circle(
       [position.coords.latitude, position.coords.longitude],
@@ -176,7 +202,6 @@ export class CampusMapPage {
    * @description loads campus map data
    */
   loadMapData() {
-
     this.wsProvider.getMapData().subscribe(
       (response:IMapsResponse) => {
         this.geoJSON = response;
