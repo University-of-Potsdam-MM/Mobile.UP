@@ -25,7 +25,7 @@
     "@angular-devkit/schematics": "^7.3.1",
     "@angular/common": "^7.2.4",
     "@angular/compiler": "^7.2.4",
-    "@angular/compiler-cli": "^7.2.4",
+    "@angular/compiler-cli": "^7.2.7",
     "@angular/core": "^7.2.4",
     "@angular/forms": "^7.2.4",
     "@angular/http": "^7.2.4",
@@ -99,7 +99,7 @@
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "^1.1.8",
+    "@compodoc/compodoc": "^1.1.9",
     "@ionic/app-scripts": "3.2.2",
     "@types/node": "^10.12.24",
     "typescript": "^3.2.4"
