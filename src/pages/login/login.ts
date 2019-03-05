@@ -113,7 +113,7 @@ export class LoginPage {
             this.endLoading();
 
             // in the meantime get user information and save it to storage
-            this.upLogin.oidcGetUSerInformation(session, config.authorization.oidc).subscribe(
+            this.upLogin.oidcGetUserInformation(session, config.authorization.oidc).subscribe(
               (userInformation: IOIDCUserInformationResponse) => {
                 this.sessionProvider.setUserInfo(userInformation);
               },

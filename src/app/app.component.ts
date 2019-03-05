@@ -171,7 +171,7 @@ export class MobileUPApp {
 
 
               // in the meantime get user information and save it to storage
-              this.loginProvider.oidcGetUSerInformation(newSession, this.config.authorization.oidc).subscribe(
+              this.loginProvider.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(
                 (userInformation:any) => {
                   this.sessionProvider.setUserInfo(userInformation);
                 },
