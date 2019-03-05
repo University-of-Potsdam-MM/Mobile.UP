@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, App, Nav, MenuController, Events } from 'ionic-angular';
 import { HomePage } from '../pages/home/home';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import { HttpClient } from "@angular/common/http";
@@ -278,7 +278,7 @@ export class MobileUPApp {
         if (typeof session !== 'object') {
           sessionParsed = JSON.parse(session);
         } else { sessionParsed = session; }
-        
+
         if (sessionParsed) {
           this.loggedIn = true;
           this.username = sessionParsed.credentials.username;

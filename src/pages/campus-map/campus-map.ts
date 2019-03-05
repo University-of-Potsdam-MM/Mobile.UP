@@ -11,7 +11,7 @@ import { SettingsProvider } from "../../providers/settings/settings";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { WebServiceProvider } from "../../providers/web-service/web-service";
 import {TranslateService} from "@ngx-translate/core";
-import {Geolocation} from "@ionic-native/geolocation/ngx";
+import {Geolocation} from "@ionic-native/geolocation";
 
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
@@ -182,11 +182,16 @@ export class CampusMapPage {
    * @desc disables geolocation by unsubscribing from watch and deleting current
    * positionCircle
    */
-  disableGeolocation(){
+  disableGeolocation() {
     this.geoLocationEnabled = false;
-    if(this.positionCircle){
+    if (this.positionCircle) {
       this.map.removeLayer(this.positionCircle);
     }
+
+    if (this.positionMarker) {
+      this.map.removeLayer(this.positionMarker);
+    }
+
     this.geoLocationWatch.unsubscribe();
   }
 

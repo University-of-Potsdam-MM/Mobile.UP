@@ -5,7 +5,7 @@ import { Storage } from "@ionic/storage";
 import { IConfig, IADSResponse, ADS } from "../../library/interfaces";
 import * as jquery from "jquery";
 import { CacheService } from 'ionic-cache';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Keyboard } from '@ionic-native/keyboard';
 import { SettingsPage } from '../../pages/settings/settings';
 import { DetailedPracticePage } from '../detailed-practice/detailed-practice';
 import { SettingsProvider } from '../../providers/settings/settings';

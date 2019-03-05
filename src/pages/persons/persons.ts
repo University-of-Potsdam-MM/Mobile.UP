@@ -16,11 +16,11 @@ import {
   IPerson
 } from "../../library/interfaces";
 import { Platform } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { Keyboard } from '@ionic-native/keyboard';
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { SessionProvider } from '../../providers/session/session';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * @class PersonPage

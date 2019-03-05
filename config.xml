@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60101" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201903051330" version="6.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60101" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201903052300" version="6.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
     <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
@@ -112,8 +112,9 @@
     </edit-config>
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
-    <engine name="android" spec="7.1.4" />
-    <engine name="browser" spec="6.0.0" />
     <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
-    <engine name="ios" spec="~5.0.0" />
+    <plugin name="call-number" spec="1.0.1" />
+    <engine name="android" spec="7.1.4" />
+    <engine name="ios" spec="5.0.0" />
+    <engine name="browser" spec="6.0.0" />
 </widget>

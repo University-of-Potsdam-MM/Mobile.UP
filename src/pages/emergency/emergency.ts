@@ -5,12 +5,12 @@ import { CacheService } from 'ionic-cache';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EmergencyCall } from "../../library/interfaces";
 import * as jquery from "jquery";
-import { Keyboard } from "@ionic-native/keyboard/ngx";
+import { Keyboard } from "@ionic-native/keyboard";
 import { ConnectionProvider } from "../../providers/connection/connection";
 import { IConfig } from '../../library/interfaces';
 import { MapsProvider } from "../../providers/maps/maps";
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallNumber } from '@ionic-native/call-number';
 
 /**
  * @class EmergencyPage

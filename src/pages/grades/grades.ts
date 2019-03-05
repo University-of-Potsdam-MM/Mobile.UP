@@ -10,8 +10,7 @@ import { CacheService } from 'ionic-cache';
 import { ConnectionProvider } from '../../providers/connection/connection';
 import { SessionProvider } from '../../providers/session/session';
 import { PulsProvider } from '../../providers/puls/puls';
-import { of } from 'rxjs';
-
+import { of } from 'rxjs/observable/of';
 
 @IonicPage()
 @Component({

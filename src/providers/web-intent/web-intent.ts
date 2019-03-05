@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from '../../library/interfaces';
 import { Platform, AlertController } from 'ionic-angular';
-import { AppAvailability } from '@ionic-native/app-availability/ngx';
-import { SafariViewController } from '@ionic-native/safari-view-controller/ngx';
+import { AppAvailability } from '@ionic-native/app-availability';
+import { SafariViewController } from '@ionic-native/safari-view-controller';
 import { TranslateService } from "@ngx-translate/core";
 import { SessionProvider } from '../session/session';
 
@@ -194,7 +194,7 @@ export class WebIntentProvider {
         session = JSON.parse(tmp);
       } else { session = tmp; }
     }
-    
+
     let browser = this.theInAppBrowser.create(url, "_blank", this.options);
 
     if (session && session.credentials && session.credentials.username && session.credentials.password) {

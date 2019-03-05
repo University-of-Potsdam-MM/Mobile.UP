@@ -9,7 +9,7 @@ import { CacheService } from 'ionic-cache';
 import { utils } from '../../library/util';
 import { ConnectionProvider } from '../../providers/connection/connection';
 import { PulsProvider } from '../../providers/puls/puls';
-import { of } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'lecture-list',

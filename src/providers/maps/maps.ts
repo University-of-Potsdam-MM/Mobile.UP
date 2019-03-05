@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LaunchNavigator, LaunchNavigatorOptions, AppSelectionOptions, PromptsOptions, RememberChoiceOptions } from '@ionic-native/launch-navigator/ngx';
+import { LaunchNavigator, LaunchNavigatorOptions, AppSelectionOptions, PromptsOptions, RememberChoiceOptions } from '@ionic-native/launch-navigator';
 import { TranslateService } from '@ngx-translate/core';
 import { WebIntentProvider } from '../web-intent/web-intent';
 

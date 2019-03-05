@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable} from "@angular/core";
 import { AlertProvider } from "../providers/alert/alert";
 import { ErrorLoggingProvider } from "../providers/error-logging/error-logging";
-import { Device } from "@ionic-native/device/ngx";
+import { Device } from "@ionic-native/device";
 import { Platform } from "ionic-angular";
 import { HttpErrorResponse } from "@angular/common/http";
 

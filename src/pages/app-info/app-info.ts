@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-import { Device } from "@ionic-native/device/ngx";
+import { Device } from "@ionic-native/device";
 import { MapsProvider } from '../../providers/maps/maps';
 import { IConfig } from '../../library/interfaces';
 import { Storage } from '@ionic/storage';
