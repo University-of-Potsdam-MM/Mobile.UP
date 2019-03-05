@@ -295,6 +295,22 @@
       "contact": "Contact",
       "participate": "Participate",
       "libraries": "Libraries & Licences"
+    },
+    "campusMap": {
+      "title": "Site map",
+      "placeholder.search": "Search...",
+      "select_categories": "Choose displayed categories",
+      "enable_geolocation": "Show current location",
+      "disable_geolocation": "Hide current location",
+      "category": {
+        "associateinstitutes": "Related institutes",
+        "institutes": "Institutes",
+        "canteens": "Canteens",
+        "parking": "Parking spaces",
+        "student": "Student dorms",
+        "terminals": "Service terminals",
+        "sport": "Sports"
+      }
     }
   },
   "button": {

@@ -24,7 +24,7 @@ import 'leaflet-rotatedmarker';
 })
 export class CampusMapPage {
 
-  private query:string;
+  // private query:string;
 
   config:IConfig = ConfigProvider.config;
   geoJSON:IMapsResponseObject[];
@@ -61,7 +61,7 @@ export class CampusMapPage {
     this.connection.checkOnline(true, true);
 
     // initialize map
-    this.map = this.initializeLeafletMap();
+    if (!this.map) { this.map = this.initializeLeafletMap(); }
 
     this.addGeoLocationButton();
 
@@ -122,9 +122,11 @@ export class CampusMapPage {
 
     // if we are currently heading somewhere, use this value, otherwise use
     // the last recent direction
-    if(position.coords.heading || this.latestHeading){
+    if ((position && position.coords && position.coords.heading) || this.latestHeading) {
       // save current value
-      this.latestHeading = position.coords.heading;
+      if (position && position.coords && position.coords.heading) {
+        this.latestHeading = position.coords.heading;
+      }
 
       // TODO: don't create this icon again and again
       let icon = L.icon({
@@ -136,7 +138,7 @@ export class CampusMapPage {
       this.positionMarker = L.marker(
       [position.coords.latitude, position.coords.longitude],
       {
-        rotationAngle: position.coords.heading || this.latestHeading,
+        rotationAngle: this.latestHeading,
         icon: icon
       });
       this.positionMarker.addTo(this.map);
@@ -217,7 +219,7 @@ export class CampusMapPage {
    * @name loadMap
    * @description loads map and initializes it
    */
-  initializeLeafletMap(){
+  initializeLeafletMap() {
     // create map object
     let map = L.map("map").fitWorld();
     L.tileLayer(
