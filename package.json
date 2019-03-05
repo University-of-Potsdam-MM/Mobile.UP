@@ -1,6 +1,6 @@
 {
   "name": "Mobile.UP",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/University-of-Potsdam-MM/Mobile.UP.git"
@@ -53,17 +53,18 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@types/jquery": "^3.3.28",
     "@types/leaflet": "^1.4.1",
+    "@types/leaflet-rotatedmarker": "^0.2.1",
     "call-number": "1.0.1",
     "cordova-android": "7.1.4",
     "cordova-browser": "^6.0.0",
-    "cordova-ios": "^5.0.0",
+    "cordova-ios": "5.0.0",
     "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-appavailability": "^0.4.2",
-    "cordova-plugin-contacts": "3.0.1",
+    "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-dialogs": "^2.0.1",
-    "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-geolocation": "^4.0.1",
     "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^3.1.2",
@@ -88,6 +89,7 @@
     "leaflet-rotatedmarker": "^0.2.0",
     "luxon": "^1.11.1",
     "moment": "^2.24.0",
+    "mx.ferreyra.callnumber": "0.0.2",
     "ngx-moment": "^3.3.0",
     "ngx-order-pipe": "^2.0.2",
     "opening_hours": "^3.5.0",
@@ -95,7 +97,7 @@
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
     "sw-toolbox": "3.6.0",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.2",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.4",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
@@ -127,7 +129,8 @@
       },
       "cordova-plugin-contacts": {},
       "mx.ferreyra.callnumber": {},
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "call-number": {}
     },
     "platforms": [
       "android",
