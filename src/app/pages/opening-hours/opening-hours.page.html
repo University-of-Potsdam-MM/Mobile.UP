@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.opening-hours.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+    [placeholder]="'button.search' | translate"
+    (ionChange)="filterItems($event)"
+    debounce="500">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content (ionScroll)="onScrollListener()">
+  <ion-refresher (ionRefresh)="loadOpeningHours($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="isLoaded && openingHours.length == 0">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+  </div>
+
+  <ion-list>
+    <span *ngFor="let item of openingHours; let i = index">
+      <ion-item detail *ngIf="item.state; else closedLocation" (click)="itemSelected(item, i)">
+        <ion-label>
+          <h3>{{ item.name }}</h3>
+          <p style="color: green">{{ "page.opening-hours.open" | translate }}, {{ openUntil(i) }}</p>
+        </ion-label>
+        <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+      </ion-item>
+      <ng-template #closedLocation>
+        <ion-item detail (click)="itemSelected(item, i)">
+          <ion-label>
+            <h3>{{ item.name }}</h3>
+            <p style="color: red">{{ "page.opening-hours.closed" | translate }}, {{ closedUntil(i) }}</p>
+          </ion-label>
+          <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+        </ion-item>
+      </ng-template>
+    </span>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <app-footer-disclaimer iconName="warning" disclaimerReference="page.opening-hours.noGuarantee"></app-footer-disclaimer>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.campus-map.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="map" style="width:100%; height:100%;"></div>
+</ion-content>

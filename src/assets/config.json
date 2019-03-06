@@ -1,8 +1,8 @@
 {
-  "appVersion": "6.1.1",
+  "appVersion": "6.0.5",
   "modules": {
-    "persons": {
-      "componentName": "persons",
+    "person-search": {
+      "componentName": "person-search",
       "icon": "people",
       "selected": false
     },
@@ -11,8 +11,8 @@
       "icon": "paper",
       "selected": false
     },
-    "openingHours": {
-      "componentName": "openingHours",
+    "opening-hours": {
+      "componentName": "opening-hours",
       "icon": "time",
       "selected": false
     },
@@ -22,8 +22,8 @@
       "selected": false,
       "hide": true
     },
-    "rooms": {
-      "componentName": "rooms",
+    "free-rooms": {
+      "componentName": "free-rooms",
       "icon": "square-outline",
       "selected": false
     },
@@ -37,8 +37,8 @@
       "icon": "restaurant",
       "selected": true
     },
-    "library": {
-      "componentName": "library",
+    "library-search": {
+      "componentName": "library-search",
       "icon": "bookmark",
       "selected": false
     },
@@ -57,8 +57,8 @@
       "icon": "pulse",
       "selected": false
     },
-    "imprint": {
-      "componentName": "imprint",
+    "impressum": {
+      "componentName": "impressum",
       "icon": "information-circle",
       "selected": false,
       "hide": true
@@ -83,7 +83,7 @@
     },
     "reflectUP": {
       "componentName": "reflectUP",
-      "icon": "custom-reflect",
+      "customIcon": "./assets/icon/reflect.svg",
       "selected": false,
       "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
       "appId": "reflectup://",
@@ -93,7 +93,7 @@
     },
     "moodle": {
       "componentName": "moodle",
-      "icon": "custom-moodle",
+      "customIcon": "./assets/icon/moodle.svg",
       "selected": false,
       "url": "https://moodle2.uni-potsdam.de/",
       "appId": "moodlemobile://",
@@ -103,7 +103,7 @@
     },
     "lectures": {
       "componentName": "lectures",
-      "icon": "book",
+      "icon": "bookmarks",
       "selected": false
     },
     "settings": {
@@ -140,8 +140,8 @@
       "icon": "train",
       "selected": false
     },
-    "campusMap": {
-      "componentName": "campusMap",
+    "campus-map": {
+      "componentName": "campus-map",
       "icon": "map",
       "selected": false
     }

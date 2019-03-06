@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.free-rooms.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding (swipe)="swipeCampus($event)">
+  <ion-refresher (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item>
+    <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
+    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+      <ion-select-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ng-template #housesFoundTemplate>
+    <ion-list>
+      <div *ngFor="let house of housesFound">
+        <ion-item (click)="expand(house.lbl)">
+          <ion-label no-margin text-wrap>
+            <h2>
+              <b>{{ "words.house" | translate }} {{house.lbl}}</b>
+              <ion-badge color="primary">
+                {{house.rooms.length}}
+                <span *ngIf="house.rooms.length == 1">{{ "words.room" | translate }}</span>
+                <span *ngIf="house.rooms.length > 1">{{ "words.rooms" | translate }}</span>
+              </ion-badge>
+            </h2>
+          </ion-label>
+          <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" slot="end"></ion-icon>
+          <ion-icon name="arrow-dropup" *ngIf="house.expanded" slot="end"></ion-icon>
+        </ion-item>
+        <div *ngIf="house.expanded">
+          <ion-item margin-left *ngFor="let room of house.rooms">
+            <ion-label>
+              {{room.lbl}}
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </ng-template>
+
+  <p *ngIf="housesFound.length == 0 && !no_timeslot" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <ng-template #noHousesFoundTemplate>
+    <app-hint-box hintTextI18nKey="page.free-rooms.no_rooms_hintText"
+          hintTypeI18nKey=""></app-hint-box>
+  </ng-template>
+
+  <ng-container *ngIf="no_timeslot;
+                then noHousesFoundTemplate; else housesFoundTemplate"></ng-container>
+</ion-content>

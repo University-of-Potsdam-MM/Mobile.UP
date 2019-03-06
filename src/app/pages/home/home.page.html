@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      {{ "appName" | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <h2><ion-icon name=star></ion-icon>{{ "page.home.favorites" | translate }}</h2>
+  <ion-list *ngIf="sortedModules.length > 0" class="row shortcutlist" lines="none">
+    <!-- list of shortcuts -->
+
+    <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'"
+    (click)="openPage(module)" [id]="module.selected ? icon_selected : icon_not_selected">
+      <ion-icon color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
+      <ion-icon color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
+      <ion-label *ngIf="module.selected" position="stacked">
+        <div class="hyphen">{{ module.i18nKey | translate }}</div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- menu with all available modules -->
+  <ion-card *ngIf="sortedModules.length > 0" scrollY="true" id="drawer" style="width:100%">
+    <ion-list lines="none">
+      <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openPage(module)">
+
+        <ion-icon *ngIf="module.icon" slot="start" [name]="module.icon"></ion-icon>
+        <ion-icon *ngIf="module.customIcon" slot="start" [src]="module.customIcon"></ion-icon>
+        <!-- title with icon -->
+        <ion-label>
+          {{ module.i18nKey | translate }}
+        </ion-label>
+        <!-- favourite-state icon -->
+        <ion-icon slot="end" [name]="module.selected ? icon_selected : icon_not_selected"
+        (click)="toggleSelectedState($event, module.componentName)">
+        </ion-icon>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.impressum.title" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col  class="placeholder-img">
+       <img src="assets/imgs/testbild.png"/>
+       <em>Foto: Carla Frize</em>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        <b>{{ "page.impressum.listHeader" | translate }}</b>
+      </ion-label>
+    </ion-item>
+    <ion-item detail (click)="openPage('page.legalNotice.title')">
+      <ion-label>
+        {{ "page.legalNotice.title" | translate }}
+      </ion-label>
+    </ion-item>
+    <ion-item detail (click)="openPage('page.privacyPolicy.title')">
+      <ion-label>
+        {{ "page.privacyPolicy.title" | translate }}
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item detail (click)="openPage('page.termsOfUse.title')">
+      <ion-label>
+        {{ "page.termsOfUse.title" | translate }}
+      </ion-label>
+    </ion-item> -->
+  </ion-list>
+</ion-content>

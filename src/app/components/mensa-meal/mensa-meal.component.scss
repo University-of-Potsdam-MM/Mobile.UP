@@ -1,0 +1,41 @@
+ion-item ion-thumbnail {
+    min-width: 2.2rem;
+    min-height: 2.2rem;
+    max-width: 2.2rem;
+    max-height: 2.2rem;
+    img {
+      min-width: 2.2rem;
+      min-height: 2.2rem;
+      max-width: 2.2rem;
+      max-height: 2.2rem;
+    }
+}
+
+.mealDescription {
+    color: var(--ion-color-primary);
+    padding-bottom: 5px;
+}
+
+ion-item {
+    border-bottom:1px solid var(--ion-color-medium) !important;
+
+    ion-label {
+        font-size:80%;
+        margin-top:5px;
+        margin-bottom:0;
+    }
+}
+
+ion-item.noborder {
+    border-width:0 !important;
+}
+
+.mealtitle {
+    font-size:80%;
+    color:#000;
+
+    span {
+        color:#016c69;
+        font-weight:bold;
+    }
+}

@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.person-search.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'page.person-search.placeholder.search' | translate"
+    (ionChange)="search()"
+    debounce="750">
+  </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding (ionScroll)="onScrollListener()">
+
+  <p *ngIf="!response_received && query.length > 0" style="text-align: center">
+    <ion-spinner></ion-spinner>
+  </p>
+
+  <div *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+  </div>
+
+  <p *ngIf="error != null" style="text-align: center" text-wrap>
+    {{ "alert.network" | translate }} <br/><br/>
+  </p>
+
+  <ion-list>
+    <div *ngFor="let person of personsFound">
+      <ion-item-sliding>
+        <ion-item tappable (click)="expandPerson(person)">
+          <ion-icon slot="start" name="person"></ion-icon>
+          <ion-label text-wrap>
+            <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
+            <p *ngIf="person.Abteilung != ''">{{person.Abteilung}}</p>
+          </ion-label>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && !person.expanded" name="arrow-dropdown" slot="end"></ion-icon>
+          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email) && person.expanded" name="arrow-dropup" slot="end"></ion-icon>
+        </ion-item>
+
+        <ion-item-options slot="end">
+          <ion-item-option color="primary" *ngIf="person.Email != ''">
+              <ion-icon name="mail" style="color: white" ></ion-icon>
+              <a class="notUnderlined whiteFont" href="mailto:{{person.Email}}">Mail</a>
+          </ion-item-option>
+          <ion-item-option color="secondary" *ngIf="cordova && person.Telefon != ''" (click)="callContact(person.Telefon)">
+            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
+            <a class="notUnderlined">Call</a>
+          </ion-item-option>
+          <ion-item-option color="secondary" *ngIf="!cordova && person.Telefon != ''">
+            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
+            <a class="notUnderlined" href="tel:{{person.Telefon}}">Call</a>
+          </ion-item-option>
+          <ion-item-option color="secondary" *ngIf="cordova" (click)="exportContact(person)">
+            <ion-icon name="person-add"></ion-icon>
+            <a class="notUnderlined">Add</a>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Telefon != '') || (person.Raum != ''))">
+        <ion-icon slot="start"></ion-icon>
+        <ion-label no-margin text-wrap>
+          <ion-grid>
+            <ion-row *ngIf="person.Email != ''">
+              <ion-col size="auto"><ion-icon name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Telefon != ''">
+              <ion-col size="auto"><ion-icon name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
+              <ion-col>
+                  <a href="tel:{{person.Telefon}}" *ngIf="!cordova">{{person.Telefon}}</a>
+                  <a (click)="callContact(person.Telefon)" *ngIf="cordova" style="text-decoration: underline">{{person.Telefon}}</a>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="person.Raum != ''">
+              <ion-col size="auto"><ion-icon name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-label>
+      </ion-item>
+    </div>
+  </ion-list>
+
+</ion-content>

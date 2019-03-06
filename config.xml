@@ -1,8 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60101" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201903060930" version="6.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60200" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201901312100" version="6.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
     <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
+    <content src="index.html" />
+    <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -13,14 +15,10 @@
     <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value="300" />
-    <preference name="ShowSplashScreenSpinner" value="false" />
-    <preference name="AutoHideSplashScreen" value="false" />
     <preference name="SplashScreenDelay" value="3000" />
-    <preference name="KeyboardResize" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -77,7 +75,6 @@
         <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
-        <preference name="KeychainAccessibility" value="WhenUnlocked" />
     </platform>
     <platform name="browser">
         <preference name="SplashScreen" value="assets/imgs/logo/logo_uni_potsdam.svg" />
@@ -86,36 +83,30 @@
         <preference name="SplashScreenBackgroundColor" value="#FFF" />
         <preference name="ShowSplashScreen" value="true" />
     </platform>
-    <access origin="*" />
-    <content src="index.html" />
-    <allow-navigation href="http://10.0.0.13:8100" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-device" spec="^1.1.7" />
-    <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />
-    <plugin name="cordova-plugin-appavailability" spec="^0.4.2" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <plugin name="cordova-plugin-safariviewcontroller" spec="^1.5.4" />
-    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-plugin-secure-storage" spec="^3.0.0" />
+    <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
+    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^3.0.0">
+    <plugin name="cordova-plugin-appavailability" spec="0.4.2" />
+    <plugin name="cordova-plugin-safariviewcontroller" spec="1.5.4" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^3.1.2">
         <variable name="ANDROID_SUPPORT_ANNOTATIONS_VERSION" value="27.+" />
     </plugin>
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
+    <plugin name="cordova-plugin-network-information" spec="2.0.1" />
+    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
     <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
         <string>need contacts to save people to the contacts list</string>
     </edit-config>
-    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
-    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
-    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
-    <plugin name="call-number" spec="1.0.1" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="~5.0.4">
         <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyBJTt7cQeRL_GeCV_RfXMguf1Gua_vkW3Y" />
         <variable name="OKHTTP_VERSION" value="3.+" />
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
     </plugin>
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
     <engine name="ios" spec="5.0.0" />
-    <engine name="browser" spec="6.0.0" />
     <engine name="android" spec="7.1.4" />
+    <engine name="browser" spec="6.0.0" />
 </widget>

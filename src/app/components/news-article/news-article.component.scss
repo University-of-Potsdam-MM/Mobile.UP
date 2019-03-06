@@ -1,0 +1,28 @@
+.news-date {
+    font-size: 0.8em;
+    color: #756b6b;
+}
+
+ion-row {
+    border-bottom:1px solid #ededed;
+}
+
+ion-card {
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+    
+    h3 {
+        font-size: 0.9rem;
+        color: var(--ion-color-primary);
+    }
+}
+
+ion-card-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+ion-card-content {
+    font-size: 0.8rem;
+}

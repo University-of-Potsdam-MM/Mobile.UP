@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.app-info.title" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list class="showSysInfo">
+  
+      <ion-item (click)="showContactPerson = !showContactPerson">
+        <ion-label>
+          <b>{{ "page.app-info.contact" | translate }}</b>
+        </ion-label>
+        <ion-icon *ngIf="!showContactPerson" slot="end" name="arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="showContactPerson" slot="end" name="arrow-dropup"></ion-icon>
+      </ion-item>
+      <span *ngIf="showContactPerson">
+        <ion-item>
+          <ion-label text-wrap>
+            <b>Ulrike Lucke</b><br>
+            Universität Potsdam<br>
+            <div class="link" (click)="callMap('Haus 4 Institut für Informatik, August-Bebel-Str. 89, 14482 Potsdam')">
+              Institut für Informatik<br>
+              August-Bebel-Str. 89<br>
+              14482 Potsdam<br>
+            </div>
+  
+            Haus 4 | 1.17<br>
+            <br>
+            Telefon: <a href="tel:+49-331-977-3023">+49-331-977-3023</a>
+          </ion-label>
+        </ion-item>
+      </span>
+      <ion-item (click)="showParticipationInfo = !showParticipationInfo">
+        <ion-label>
+          <b>{{ "page.app-info.participate" | translate }}</b>
+        </ion-label>
+        <ion-icon *ngIf="!showParticipationInfo" slot="end" name="arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="showParticipationInfo" slot="end" name="arrow-dropup"></ion-icon>
+      </ion-item>
+      <span *ngIf="showParticipationInfo">
+        <ion-item>
+          <ion-label text-wrap>
+              Es gibt die Möglichkeit als studentische Mitarbeiter innerhalb von Lehrprojekten, Aufträgen oder Anstellung an der App-Entwicklung im Rahmen des eLiS-Projekts mitzuwirken.
+              Die App ist als Open Source Projekt veröffentlicht. <br>
+              <br>
+              Wenn Sie sich für eine Mitarbeit an der App interessieren, können Sie gern das Entwicklerteam unter <a href="mailto:mobileup-service@uni-potsdam.de">mobileup-service@uni-potsdam.de</a> kontaktieren oder sich über <a href="https://github.com/University-of-Potsdam-MM/Mobile.UP">GitHub</a> beteiligen.
+          </ion-label>
+        </ion-item>
+      </span>
+      <ion-item (click)="showLibraryInfo = !showLibraryInfo">
+        <ion-label>
+          <b>{{ "page.app-info.libraries" | translate }}</b>
+        </ion-label>
+        <ion-icon *ngIf="!showLibraryInfo" slot="end" name="arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="showLibraryInfo" slot="end" name="arrow-dropup"></ion-icon>
+      </ion-item>
+      <span *ngIf="showLibraryInfo">
+        <ion-item>
+          <ion-label text-wrap>
+            "@angular/common": "5.0.3"<br>
+            -TODO-
+          </ion-label>
+        </ion-item>
+      </span>
+  
+      <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
+        <ion-label>
+          <b>{{ "page.app-info.app" | translate }}</b>
+        </ion-label>
+        <ion-icon *ngIf="!showSysInfo" slot="end" name="arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="showSysInfo" slot="end" name="arrow-dropup"></ion-icon>
+      </ion-item>
+      <span *ngIf="showSysInfo">
+        <ion-item *ngIf="deviceInfo.cordovaVersion">
+          <ion-label><h2>Cordova Version</h2><p>{{ deviceInfo.cordovaVersion }}</p></ion-label>
+        </ion-item>
+        <ion-item *ngIf="deviceInfo.appVersion">
+          <ion-label><h2>{{ "page.app-info.version" | translate }}</h2><p>{{ deviceInfo.appVersion }}</p></ion-label>
+        </ion-item>
+        <ion-item *ngIf="deviceInfo.osPlatform">
+          <ion-label><h2>{{ "page.app-info.platform" | translate }}</h2><p>{{ deviceInfo.osPlatform }}</p></ion-label>
+        </ion-item>
+        <ion-item *ngIf="deviceInfo.osVersion">
+          <ion-label><h2>Platform Version</h2><p>{{ deviceInfo.osVersion }}</p></ion-label>
+        </ion-item>
+        <!-- <ion-item *ngIf="deviceInfo.uuid">
+          <ion-label>{{ "page.app-info.uuid" | translate }}:</ion-label><div item-content>{{ deviceInfo.uuid }}</div>
+        </ion-item> -->
+        <ion-item *ngIf="deviceInfo.deviceManufacturer">
+          <ion-label><h2>{{ "page.app-info.manufacturer" | translate }}</h2><p>{{ deviceInfo.deviceManufacturer }}</p></ion-label>
+        </ion-item>
+        <ion-item *ngIf="deviceInfo.deviceModel">
+          <ion-label><h2>{{ "page.app-info.model" | translate }}</h2><p>{{ deviceInfo.deviceModel }}</p></ion-label>
+        </ion-item>
+      </span>
+    </ion-list>
+  </ion-content>

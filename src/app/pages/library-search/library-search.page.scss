@@ -1,0 +1,29 @@
+.author {
+    font-weight: bold;
+}
+
+.library-results .item-block {
+    padding-left: 6px;
+}
+
+.copyright-info {
+    font-size: small;
+}
+
+.department {
+    background-color: var(--ion-color-primary);
+    color: var(--ion-color-light);
+}
+
+.itemStatus {
+    background-color: var(--ion-color-secondary);
+    color: var(--ion-color-primary);
+}
+
+.link {
+    text-decoration: underline;
+}
+
+h3 {
+    color: var(--ion-color-primary);
+}

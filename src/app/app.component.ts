@@ -1,126 +1,94 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, App, Nav, MenuController, Events } from 'ionic-angular';
-import { HomePage } from '../pages/home/home';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { TranslateService } from "@ngx-translate/core";
-import { Storage } from "@ionic/storage";
-import { HttpClient } from "@angular/common/http";
-import { IConfig, IModule } from "../library/interfaces";
-import { SettingsProvider } from '../providers/settings/settings';
-import { WebIntentProvider } from '../providers/web-intent/web-intent';
-import { CacheService } from 'ionic-cache';
-import { IOIDCRefreshResponseObject, IOIDCUserInformationResponse } from "../providers/login-provider/interfaces";
-import { UPLoginProvider } from "../providers/login-provider/login";
+import { Component } from '@angular/core';
+import { Platform, Events, MenuController, NavController, AlertController } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { IConfig } from './lib/interfaces';
+import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
-import { ConnectionProvider } from "../providers/connection/connection";
-import { SessionProvider } from '../providers/session/session';
-
-import { LogoutPage } from "../pages/logout/logout";
-import { LoginPage } from "../pages/login/login";
-import { SettingsPage } from "../pages/settings/settings";
-import { AppInfoPage } from "../pages/app-info/app-info";
-import { ImpressumPage } from '../pages/impressum/impressum';
+import { TranslateService } from '@ngx-translate/core';
+import { CacheService } from 'ionic-cache';
+import { ConnectionService } from './services/connection/connection.service';
+import { UserSessionService } from './services/user-session/user-session.service';
+import { SettingsService } from './services/settings/settings.service';
+import { ConfigService } from './services/config/config.service';
+import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
+import { UPLoginProvider } from './services/login-provider/login';
 
 @Component({
-  templateUrl: 'app.html'
+  selector: 'app-root',
+  templateUrl: 'app.component.html'
 })
-export class MobileUPApp {
-  @ViewChild(Nav) nav: Nav;
+export class AppComponent {
 
-  config:IConfig;
-  rootPage: string = 'HomePage';
-  userInformation:IOIDCUserInformationResponse = null;
+  userInformation: IOIDCUserInformationResponse = null;
   loggedIn = false;
   username;
 
   constructor(
-    public menuCtrl: MenuController,
-    private appCtrl: App,
     private platform: Platform,
-    private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private translate: TranslateService,
-    private storage: Storage,
-    private http: HttpClient,
-    private settingsProvider: SettingsProvider,
-    private webIntent: WebIntentProvider,
-    private events: Events,
+    private statusBar: StatusBar,
+    private menuCtrl: MenuController,
     private cache: CacheService,
-    private loginProvider: UPLoginProvider,
-    private connection: ConnectionProvider,
-    private sessionProvider: SessionProvider
+    private navCtrl: NavController,
+    private alertCtrl: AlertController,
+    private userSession: UserSessionService,
+    private setting: SettingsService,
+    private connection: ConnectionService,
+    private events: Events,
+    private login: UPLoginProvider,
+    private storage: Storage
   ) {
-    this.appStart();
-
-    this.events.subscribe("userLogin", () => {
-      this.updateLoginStatus();
-    });
+    this.initializeApp();
   }
 
-  /**
-   * @name initializeApp
-   * @description initializes the app and hides splashscreen when it's done
-   */
-  public initializeApp() {
-    this.platform.ready().then(async () => {
-      await this.initConfig();
-      await this.initTranslate();
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.prepareStorageOnAppUpdate();
+      this.initTranslate();
       this.connection.initializeNetworkEvents();
+      this.updateLoginStatus();
+      this.cache.setDefaultTTL(60 * 60 * 2);
+      this.cache.setOfflineInvalidate(false);
 
-      if (this.platform.is("cordova")) {
-        if (this.platform.is("ios") || this.platform.is("android")) {
+      this.events.subscribe('userLogin', () => {
+        this.updateLoginStatus();
+      });
+
+      if (this.platform.is('cordova')) {
+        if (this.platform.is('ios') || this.platform.is('android')) {
           this.statusBar.styleDefault();
-          // set status bar to same color as header
-          this.statusBar.backgroundColorByHexString('#EDEDED');
         }
 
         this.splashScreen.hide();
       }
-
-      this.updateLoginStatus();
-      this.cache.setDefaultTTL(60 * 60 * 2); // default cache TTL for 2 hours
-      this.cache.setOfflineInvalidate(false);
     });
   }
 
-  appStart() {
-    this.platform.ready().then(() => {
-      this.http.get<IConfig>("assets/config.json").subscribe((config:IConfig) => {
-        let currentAppVersion = config.appVersion;
-        this.storage.get("appVersion").then(async (savedAppVersion) => {
-          if (!savedAppVersion || savedAppVersion == null) {
-            // user has never opened a 6.x version of the app, since nothing is stored
-            // clear the whole storage
-            console.log("clearing storage...");
-            await this.sessionProvider.removeSession();
-            await this.sessionProvider.removeUserInfo();
-            await this.storage.remove('config').then(() => {
-              this.storage.set("appVersion", currentAppVersion);
-              this.initializeApp();
-            }, error => {
-              console.log("Error while clearing storage!");
-              console.log(error);
-            });
-          } else {
-            this.storage.set("appVersion", currentAppVersion);
-            this.initializeApp();
-          }
-        });
+  /**
+   * @name prepareStorageOnAppUpdate
+   * @description clears the storage if user has a old version of the app
+   */
+  async prepareStorageOnAppUpdate() {
+    const config = ConfigService.config;
+    const savedVersion = await this.storage.get('appVersion');
+
+    if (!savedVersion) {
+      // user has never opened a 6.x version of the app, since nothing is stored
+      // clear the whole storage
+      this.storage.remove('config').then(() => {
+        console.log('[Mobile.UP]: cleared storage');
+        this.storage.set('appVersion', config.appVersion);
+        this.checkSessionValidity(config);
+      }, error => {
+        console.log('[ERROR]: clearing storage failed');
+        console.log(error);
       });
-    });
-  }
-
-  private initConfig() {
-    // TODO: maybe outsource config to a provider, so we don't need to call storage every time
-    this.http.get<IConfig>("assets/config.json").subscribe(
-      config => {
-        this.config = config;
-        this.storage.set("config", config);
-        this.buildDefaultModulesList();
-        this.checkSessionValidity();
-      }
-    );
+    } else {
+      this.storage.set('appVersion', config.appVersion);
+      this.checkSessionValidity(config);
+    }
   }
 
   /**
@@ -129,214 +97,131 @@ export class MobileUPApp {
    * session will be refreshed anyway. Otherwise the currently stored session
    * object is deleted.
    */
-  private checkSessionValidity() {
-    this.platform.ready().then(async () => {
-      let tmp = await this.sessionProvider.getSession();
-      var session = undefined;
-      if (tmp) {
-        if (typeof tmp !== 'object') {
-          session = JSON.parse(tmp);
-        } else { session = tmp; }
+  async checkSessionValidity(config: IConfig) {
+    const session: ISession = await this.userSession.getSession();
+
+    if (session) {
+      // helper function for determining whether session is still valid
+      const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
+        // determine date until the token is valid
+        const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
+        const nowUnixTime = moment().unix();
+        // check if we are not past this date already with a certain boundary
+
+        return (validUntilUnixTime - nowUnixTime) > boundary;
+      };
+
+      if (sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, config.general.tokenRefreshBoundary)) {
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, config.authorization.oidc)
+          .subscribe((response: IOIDCRefreshResponseObject) => {
+            const newSession = {
+              oidcTokenObject:  response.oidcTokenObject,
+              token:            response.oidcTokenObject.access_token,
+              timestamp:        new Date(),
+              credentials:      session.credentials
+            };
+
+            this.userSession.setSession(newSession);
+
+            this.login.oidcGetUserInformation(newSession, config.authorization.oidc).subscribe(userInformation => {
+              this.userSession.setUserInfo(userInformation);
+            }, error => {
+              console.log(error);
+            });
+          }, error => {
+            console.log('[Mobile.UP]: error refreshing token');
+            console.log(error);
+          });
+      } else {
+        // session no longer valid
+        this.userSession.removeSession();
+        this.userSession.removeUserInfo();
       }
-
-      if (session) {
-        // helper function for determining whether session is still valid
-        let sessionIsValid = (timestampThen:Date, expiresIn:number, boundary:number) => {
-          // determine date until the token is valid
-          let validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
-          let nowUnixTime = moment().unix();
-          // check if we are not past this date already with a certain boundary
-
-          return (validUntilUnixTime - nowUnixTime) > boundary;
-        };
-
-        if(sessionIsValid(session.timestamp,
-                          session.oidcTokenObject.expires_in,
-                          this.config.general.tokenRefreshBoundary)) {
-          console.log(`[MobileUP]: Session still valid, refreshing`);
-          // session still valid, but we will refresh it anyway
-          this.loginProvider.oidcRefreshToken(
-            session.oidcTokenObject.refresh_token,
-            this.config.authorization.oidc
-          ).subscribe(
-            (response:IOIDCRefreshResponseObject) => {
-              // store new token object
-              let newSession:any = {
-                oidcTokenObject:  response.oidcTokenObject,
-                token:            response.oidcTokenObject.access_token,
-                timestamp:        new Date(),
-                credentials:      session.credentials
-              };
-              this.sessionProvider.setSession(newSession);
-
-
-              // in the meantime get user information and save it to storage
-              this.loginProvider.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(
-                (userInformation:any) => {
-                  this.sessionProvider.setUserInfo(userInformation);
-                },
-                error => {
-                  // user must not know if something goes wrong here, so we don't
-                  // create an alert
-                  console.log(`[MobileUP]: Could not retrieve user information because: ${JSON.stringify(error)}`);
-                }
-              );
-            },
-            error => {
-              console.log(`[MobileUP]: Error when refreshing token: ${JSON.stringify(error)}`);
-            }
-          )
-        } else {
-          // session no longer valid, so we just remove the session object
-          console.log(`[MobileUP]: Session no longer valid, deleting session object`);
-          this.sessionProvider.removeSession();
-        }
-      }
-    });
+    }
   }
 
   /**
    * @name  initTranslate
    * @description sets up translation
    */
-  private async initTranslate() {
-    // Set the default language for translation strings, and the current language.
+  async initTranslate() {
     this.translate.setDefaultLang('de');
-    moment.locale('de');
+    const lang = await this.setting.getSettingValue('language');
 
-    var userLanguage = await this.settingsProvider.getSettingValue("language");
-
-    if (userLanguage == "Deutsch") {
-      this.translate.use("de");
+    if (lang === 'Deutsch') {
+      this.translate.use('de');
       moment.locale('de');
-    } else if (userLanguage == "Englisch") {
-      this.translate.use("en");
+    } else {
+      this.translate.use('en');
       moment.locale('en');
     }
   }
 
-  /**
-   * @name buildDefaultModulesList
-   * @description builds list of default_modules that should be displayed on HomePage
-   * // if there isn't already one in the storage // disabled
-   * @returns {Promise<void>}
-   */
-  buildDefaultModulesList() {
-    let moduleList:{[modulesName:string]:IModule} = {};
-    let modules = this.config.modules;
-
-    for(let moduleName in modules) {
-      let moduleToAdd:IModule = modules[moduleName];
-      if (!moduleToAdd.hide) {
-        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
-        moduleList[moduleName] = moduleToAdd;
-      }
-    }
-
-    this.storage.set("default_modules", moduleList);
-    console.log("[MobileUPApp]: Created default moduleList from config");
-  }
-
-
-  /**
-   * @name openPage
-   * @description opens a page when link is clicked
-   * @param page
-   */
-  public openPage(page) {
-    var pageName = this.capitalizeFirstLetter(page.componentName)+'Page';
-
-    if (page.url){
-      // pages that just link to an url or app
-      this.webIntent.handleWebIntentForModule(page.componentName);
-    } else if ((pageName != 'HomePage')) {
-      // pages with an actual dedicated ionic page
-      if (this.nav.getActive().component != pageName) {
-        //console.log(pageName);
-        this.nav.popToRoot();
-        this.nav.push(pageName);
-      }
-    } else if (this.nav.getActive().component != HomePage) {
-      // HomePage
-      this.nav.setRoot(HomePage, {}, { animate: true, animation: "md-transition" });
-    }
-
-  }
-
-  menuOpened() {
-    this.updateLoginStatus();
-  }
-
-  updateLoginStatus() {
+  async updateLoginStatus() {
     this.loggedIn = false;
     this.userInformation = undefined;
     this.username = undefined;
 
-    this.sessionProvider.getSession().then(session => {
-      if (session) {
-        var sessionParsed = undefined;
-        if (typeof session !== 'object') {
-          sessionParsed = JSON.parse(session);
-        } else { sessionParsed = session; }
+    const session: ISession = await this.userSession.getSession();
 
-        if (sessionParsed) {
-          this.loggedIn = true;
-          this.username = sessionParsed.credentials.username;
-        }
-      }
-    });
+    if (session) {
+      this.loggedIn = true;
+      this.username = session.credentials.username;
+    }
 
-    this.sessionProvider.getUserInfo().then(userInf => {
-      if (userInf) {
-        this.userInformation = undefined;
-        if (typeof userInf !== 'object') {
-          this.userInformation = JSON.parse(userInf);
-        } else { this.userInformation = userInf; }
-      }
-    });
+    this.userInformation = await this.userSession.getUserInfo();
   }
 
   close() {
     this.menuCtrl.close();
   }
-
-  toHome(){
+  toHome() {
     this.close();
-    this.appCtrl.getRootNavs()[0].setRoot(HomePage);
+    this.navCtrl.navigateRoot('/home');
   }
 
-  toLogout(){
+  async doLogout() {
     this.close();
-    this.appCtrl.getRootNavs()[0].push(LogoutPage);
+    const alert = await this.alertCtrl.create({
+      message: this.translate.instant('page.logout.affirmativeQuestion'),
+      buttons: [
+        {
+          text: this.translate.instant('button.cancel'),
+        },
+        {
+          text: this.translate.instant('button.ok'),
+          handler: () => {
+            this.userSession.removeSession();
+            this.userSession.removeUserInfo();
+            for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+            this.cache.clearAll();
+            this.updateLoginStatus();
+            this.navCtrl.navigateRoot('/home');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
-  toLogin(){
+  toLogin() {
     this.close();
-    this.appCtrl.getRootNavs()[0].push(LoginPage);
+    this.navCtrl.navigateForward('/login');
   }
 
-  toSettings(){
+  toSettings() {
     this.close();
-    this.appCtrl.getRootNavs()[0].push(SettingsPage);
+    this.navCtrl.navigateForward('/settings');
   }
 
-  toAppInfo(){
+  toAppInfo() {
     this.close();
-    this.appCtrl.getRootNavs()[0].push(AppInfoPage);
+    this.navCtrl.navigateForward('/app-info');
   }
 
   toImprint() {
     this.close();
-    this.appCtrl.getRootNavs()[0].push(ImpressumPage);
+    this.navCtrl.navigateForward('/impressum');
   }
 
-  /**
-   * @name capitalizeFirstLetter
-   * @description capitalizes first letter of a string
-   * @param string
-   * @returns string
-   */
-  capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 }

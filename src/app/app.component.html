@@ -1,0 +1,69 @@
+<ion-app>
+  <ion-menu contentId='content' side='end' swipeGesture='false' type='overlay' (ionWillOpen)="updateLoginStatus()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ "menu.title" | translate }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="card-background-page">
+
+        <ion-card>
+            <img [class.loggedIn]="loggedIn" [class.loggedOut]="!loggedIn" src="assets/imgs/logo/logo_uni_potsdam.svg"/>
+            <div class="card-title"><span *ngIf="loggedIn && userInformation">{{ userInformation.name }}</span><span *ngIf="loggedIn && !userInformation && username">{{username}}</span></div>
+            <div class="card-subtitle"><span *ngIf="loggedIn && userInformation">{{ userInformation.sub }}</span></div>
+        </ion-card>
+
+        <ion-item-group>
+          <ion-item-divider color="light"><ion-label>{{ "popover.general" | translate}}</ion-label></ion-item-divider>
+          <ion-item (click)="toHome()">
+              <ion-icon color="primary" name="home" slot="start"></ion-icon>
+              <ion-label>
+                {{ "page.home.title" | translate }}
+              </ion-label>
+          </ion-item>
+          <ion-item (click)="toSettings()">
+              <ion-icon color="primary" name="options" slot="start"></ion-icon>
+              <ion-label>
+                {{ "page.settings.title" | translate }}
+              </ion-label>
+          </ion-item>
+          <ion-item (click)="toAppInfo()">
+              <ion-icon color="primary" name="information-circle" slot="start"></ion-icon>
+              <ion-label>
+                {{ "page.app-info.title" | translate }}
+              </ion-label>
+          </ion-item>
+          <ion-item lines="none" (click)="toImprint()">
+              <ion-icon color="primary" name="list-box" aria-hidden="true" slot="start"></ion-icon>
+              <ion-label>
+                {{ "page.impressum.title" | translate }}
+              </ion-label>
+          </ion-item>
+          <ng-container *ngIf="loggedIn; then loggedInTemplate; else notLoggedInTemplate "></ng-container>
+        </ion-item-group>
+
+        <!-- logged in -->
+        <ng-template #loggedInTemplate>
+          <ion-item-divider color="light" *ngIf="username"><ion-label>{{ "popover.loggedInText" | translate}}: {{ username }}</ion-label></ion-item-divider>
+          <ion-item (click)="doLogout()">
+              <ion-icon color="primary" name="log-out" slot="start"></ion-icon>
+              <ion-label>
+                {{ "button.logout" | translate }}
+              </ion-label>
+          </ion-item>
+        </ng-template>
+
+        <!-- not logged in -->
+        <ng-template #notLoggedInTemplate>
+          <ion-item-divider color="light"><ion-label>{{ "popover.notLoggedInText" | translate}}</ion-label></ion-item-divider>
+          <ion-item (click)="toLogin()">
+              <ion-icon color="primary" name="log-in" slot="start"></ion-icon>
+              <ion-label>
+                {{ "button.login" | translate }}
+              </ion-label>
+          </ion-item>
+        </ng-template>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="content" main></ion-router-outlet>
+</ion-app>

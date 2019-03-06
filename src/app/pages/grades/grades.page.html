@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.grades.title" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="refreshGrades($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="studentLoaded">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-selectDegree-hint"></app-hint-box>
+  </div>
+
+  <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="noUserRights">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></app-hint-box>
+  </div>
+
+  <div *ngIf="studentLoaded && !multipleDegrees && studentDetails">
+    <ion-list>
+      <ion-item color="primary" class="studiengang" lines="none" tappable (click)="showGrades(0)">
+        <ion-label text-wrap>
+          <div *ngIf="studentDetails.Studiengaenge && studentDetails.Studiengaenge.dtxt && studentDetails.Abschl">
+            {{ studentDetails.Abschl }} ({{ studentDetails.Studiengaenge.dtxt }})
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="studentLoaded && multipleDegrees && studentDetails">
+    <ion-list>
+      <ion-item color="primary" *ngFor="let degree of studentDetails; let i = index" class="studiengang" lines="none" tappable (click)="showGrades(i)">
+        <ion-label text-wrap>
+          <div *ngIf="degree.Studiengaenge && degree.Studiengaenge.dtxt && degree.Abschl">
+            {{ degree.Abschl }} ({{ degree.Studiengaenge.dtxt }})
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <div align="center" *ngIf="loadingGrades" padding>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <div class="gradesTable" *ngIf="gradesLoaded && studentGrades" align="center">
+    <app-grades-table
+    [studentGrades]="studentGrades"
+    [studentDetails]="studentDetails"
+    [isDualDegree]="isDualDegree"
+    [i]="i"></app-grades-table>
+  </div>
+</ion-content>

@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.mensa.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding (swipe)="swipeCampus($event)">
+  <ion-refresher (ionRefresh)="loadCampusMenu($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div align="center" *ngIf="isLoaded">
+    <ion-row>
+      <ion-col>
+        <ion-button ion-button size="small" [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
+        (click)="showBasicCalendar = !showBasicCalendar;">{{ "page.mensa.date" | translate }}  <ion-icon slot="end" name="arrow-dropdown"></ion-icon></ion-button>
+        <ion-button size="small" [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">{{ "page.mensa.vegan" | translate }}</ion-button>
+        <ion-button size="small" [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">{{ "page.mensa.vegetarian" | translate }}</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-calendar *ngIf="showBasicCalendar" [(ngModel)]="date"
+  (change)="pickDate($event)"
+  [options]="optionsBasic"
+  [type]="type"
+  [format]="'YYYY-MM-DD'">
+  </ion-calendar>
+
+  <div *ngIf="isLoaded">
+    <ion-list lines="none" [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
+      <app-mensa-meal *ngIf="!noMealsForDate"
+      [meals]="allMeals"
+      [mealForDate]="mealForDate"
+      [mealIsVegan]="mealIsVegan"
+      [mealIsVegetarian]="mealIsVegetarian"
+      [mealIsExpanded]="mealIsExpanded"
+      [allergenIsExpanded]="allergenIsExpanded"
+      [iconMapping]="iconMapping"
+      [onlyVeganFood]="onlyVeganFood"
+      [onlyVeggieFood]="onlyVeggieFood"></app-mensa-meal>
+
+      <ion-item-divider *ngIf="ulfMeals && !noUlfMealsForDate" color="light">
+        <ion-label>
+          Ulf's Café
+        </ion-label>
+      </ion-item-divider>
+
+      <app-mensa-meal *ngIf="ulfMeals && !noUlfMealsForDate"
+      [meals]="ulfMeals"
+      [mealForDate]="ulfMealForDate"
+      [mealIsVegan]="ulfMealIsVegan"
+      [mealIsVegetarian]="ulfMealIsVegetarian"
+      [mealIsExpanded]="ulfMealIsExpanded"
+      [allergenIsExpanded]="ulfAllergenIsExpanded"
+      [iconMapping]="ulfIconMapping"
+      [onlyVeganFood]="onlyVeganFood"
+      [onlyVeggieFood]="onlyVeggieFood"></app-mensa-meal>
+    </ion-list>
+  </div>
+
+  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.mensa-nomeals-hint"></app-hint-box>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <app-footer-disclaimer disclaimerReference="page.mensa.disclaimer"></app-footer-disclaimer>
+  </ion-toolbar>
+</ion-footer>

@@ -5,7 +5,7 @@
       "title": "Startseite",
       "favorites": "Favoriten"
     },
-    "imprint":{
+    "impressum":{
       "title": "Rechtliches",
       "listHeader": "Impressum & Rechtliches"
     },
@@ -46,7 +46,7 @@
         "search": "Suchbegriff eingeben..."
       }
     },
-    "persons": {
+    "person-search": {
       "title": "Personensuche",
       "placeholder": {
         "search": "Suchbegriff eingeben..."
@@ -89,7 +89,7 @@
       "lp": "LP",
       "studienleistung": "Studienleistung"
     },
-    "library": {
+    "library-search": {
       "title": "Bibliothekssuche",
       "titleDetail": "Detailansicht",
       "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
@@ -173,9 +173,6 @@
       "title": "Neuigkeiten",
       "articlePublished": "Veröffentlicht"
     },
-    "maps": {
-      "title": "Lagepläne"
-    },
     "tipps": {
       "title": "Tipps & Tricks"
     },
@@ -244,7 +241,7 @@
     "athletics":{
       "title":"Hochschulsport"
     },
-    "rooms": {
+    "free-rooms": {
       "title": "Freie Räume",
       "time": "Uhrzeit",
       "no_rooms_hintText": "Es wurden keine freien Räume gefunden."
@@ -256,7 +253,7 @@
       "date": "Datum",
       "no_rooms_hintText": "Für heute ist kein Raumplan vorhanden."
     },
-    "openingHours":{
+    "opening-hours":{
       "title":"Öffnungszeiten",
       "time": " Uhr",
       "open": "geöffnet",
@@ -281,7 +278,7 @@
     "unishop": {
       "title": "UNIshop"
     },
-    "appInfo": {
+    "app-info": {
       "title": "Info",
       "platform": "Plattform",
       "uuid": "Benutzer-ID",
@@ -296,7 +293,7 @@
       "participate": "Mitmachen",
       "libraries": "Bibliotheken & Lizenzen"
     },
-    "campusMap": {
+    "campus-map": {
       "title": "Lageplan",
       "placeholder.search": "Suche",
       "select_categories": "Kategorien zum Anzeigen wählen",

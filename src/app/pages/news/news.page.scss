@@ -1,0 +1,44 @@
+.filters {
+
+    ion-col {
+        text-align: center;
+        font-size: 0.9rem;
+        line-height: 1.6rem;
+
+        &.col-with-arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6rem;
+    }
+
+    .selected {
+        border-bottom: 2px solid var(--ion-color-primary);
+
+        color: var(--ion-color-primary);
+    }
+}
+
+ion-slide {
+    width: auto !important;
+    min-width: 100px!important;
+    padding: 10px;
+}
+
+ion-col {
+  padding:0;
+
+  ion-card {
+      margin:0;
+  }
+}
+
+ion-header ion-toolbar.toolbar .toolbar-background {
+  --background: var(--ion-color-medium) !important;
+}
