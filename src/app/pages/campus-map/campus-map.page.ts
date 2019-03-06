@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as leaflet from 'leaflet';
+import * as L from 'leaflet';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
@@ -75,7 +75,7 @@ export class CampusMapPage implements OnInit {
    * @desc adds geolocation button to this.map
    */
   addGeoLocationButton() {
-    const toggleGeolocationButton = leaflet.easyButton({
+    const toggleGeolocationButton = L.easyButton({
       states: [{
         stateName: 'geolocation-disabled',
         icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="locate"></ion-icon>',
@@ -122,13 +122,13 @@ export class CampusMapPage implements OnInit {
       }
 
       // TODO: don't create this icon again and again
-      const icon = leaflet.icon({
+      const icon = L.icon({
         iconUrl: '../assets/icon/navigate.svg',
         iconSize: [42, 42],
         iconAnchor: [21, 21]
       });
 
-      this.positionMarker = leaflet.marker(
+      this.positionMarker = L.marker(
       [position.coords.latitude, position.coords.longitude],
       {
         rotationAngle: this.latestHeading,
@@ -137,7 +137,7 @@ export class CampusMapPage implements OnInit {
       this.positionMarker.addTo(this.map);
     }
 
-    this.positionCircle = leaflet.circle(
+    this.positionCircle = L.circle(
       [position.coords.latitude, position.coords.longitude],
       {
         color: 'blue',
@@ -222,8 +222,8 @@ export class CampusMapPage implements OnInit {
    */
   initializeLeafletMap() {
     // create map object
-    const map = leaflet.map('map').fitWorld();
-    leaflet.tileLayer(
+    const map = L.map('map').fitWorld();
+    L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
         maxZoom: 18
@@ -286,7 +286,7 @@ export class CampusMapPage implements OnInit {
       // check if we already have this category in layerGroups
       if (categories.indexOf(obj.category) === -1) {
         // Create new layer for each unique category
-        this.layerGroups[title] = leaflet.layerGroup();
+        this.layerGroups[title] = L.layerGroup();
         // just push category name so we know we already got that one
         categories.push(obj.category);
       }
@@ -302,7 +302,7 @@ export class CampusMapPage implements OnInit {
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
         this.layerGroups[title].addLayer(
-          leaflet.geoJSON(feature).bindPopup(
+          L.geoJSON(feature).bindPopup(
             popupTemplate
           )
         );
@@ -317,7 +317,7 @@ export class CampusMapPage implements OnInit {
     }
 
     // now add layerGroups to the map so the user can select/deselect them
-    leaflet.control.layers({}, this.layerGroups).addTo(this.map);
+    L.control.layers({}, this.layerGroups).addTo(this.map);
   }
 
 }
