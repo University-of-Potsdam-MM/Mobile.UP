@@ -10,7 +10,7 @@ export class NewsArticleComponent {
 
   @Input() public article;
 
-  constructor(private webIntent: WebIntentService) {
+  constructor(public webIntent: WebIntentService) {
     // hides images that could not be loaded (404)
     // maybe show an replacement image in the future?
     const list = document.getElementsByTagName('img');

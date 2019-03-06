@@ -5,7 +5,7 @@
     <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <app-campus-tab (campusChanged)="switchLocation($event)" [passedLocation]="passedLocation"></app-campus-tab>
+    <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
 
@@ -61,7 +61,7 @@
                       </b>
                     </u>
                     <br/>
-    
+
                     <i>{{event.lbl}}</i>
                     <br/>
                     <p *ngFor="let person of event.persons">

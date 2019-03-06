@@ -27,6 +27,7 @@ export class PracticePage {
   isLoaded;
   error: HttpErrorResponse;
   itemsShown = 0;
+  query;
 
   constructor(
     private storage: Storage,
