@@ -92,7 +92,7 @@
     "rrule": "^2.5.6",
     "rxjs": "^5.5.12",
     "sw-toolbox": "3.6.0",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.4",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "~5.0.4",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
@@ -115,6 +115,7 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-secure-storage": {},
       "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSyBJTt7cQeRL_GeCV_RfXMguf1Gua_vkW3Y",
         "OKHTTP_VERSION": "3.+",
         "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
       },
@@ -128,9 +129,9 @@
       "call-number": {}
     },
     "platforms": [
-      "android",
       "ios",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }
