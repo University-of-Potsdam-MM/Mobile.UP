@@ -76,8 +76,8 @@
             <ion-row *ngIf="person.Telefon != ''">
               <ion-col col-auto><ion-icon name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
               <ion-col>
-                  <a href="tel:{{person.Telefon}}" *ngIf="!cordova">0331 977 {{person.Telefon}}</a>
-                  <a (click)="callContact(person.Telefon)" *ngIf="cordova" style="text-decoration: underline">0331 977 {{person.Telefon}}</a>
+                <a href="tel:{{person.Telefon}}" *ngIf="!cordova">{{person.Telefon}}</a>
+                <a (click)="callContact(person.Telefon)" *ngIf="cordova" style="text-decoration: underline">{{person.Telefon}}</a>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="person.Raum != ''">
