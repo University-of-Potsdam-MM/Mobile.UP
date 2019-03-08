@@ -312,6 +312,8 @@
   },
   "button": {
     "ok": "OK",
+    "call": "Anruf",
+    "add": "Export",
     "toHome": "Zur Startseite",
     "cancel": "Abbrechen",
     "yes": "Ja",

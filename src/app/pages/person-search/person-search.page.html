@@ -42,21 +42,17 @@
         </ion-item>
 
         <ion-item-options slot="end">
-          <ion-item-option color="primary" *ngIf="person.Email != ''">
-              <ion-icon name="mail" style="color: white" ></ion-icon>
-              <a class="notUnderlined whiteFont" href="mailto:{{person.Email}}">Mail</a>
-          </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="cordova && person.Telefon != ''" (click)="callContact(person.Telefon)">
+          <ion-item-option (click)="callContact(person.Telefon)" color="secondary" *ngIf="person.Telefon != ''">
             <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
-            <a class="notUnderlined">Call</a>
+            <a class="notUnderlined">{{ "button.call" | translate }} </a>
           </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="!cordova && person.Telefon != ''">
-            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
-            <a class="notUnderlined" href="tel:{{person.Telefon}}">Call</a>
+          <ion-item-option (click)="openMail(person.Email)" color="primary" *ngIf="person.Email != ''">
+              <ion-icon name="mail" style="color: white"></ion-icon>
+              <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="cordova" (click)="exportContact(person)">
+          <ion-item-option (click)="exportContact(person)" color="secondary" *ngIf="cordova">
             <ion-icon name="person-add"></ion-icon>
-            <a class="notUnderlined">Add</a>
+            <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
@@ -71,8 +67,7 @@
             <ion-row *ngIf="person.Telefon != ''">
               <ion-col size="auto"><ion-icon name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
               <ion-col>
-                  <a href="tel:{{person.Telefon}}" *ngIf="!cordova">{{person.Telefon}}</a>
-                  <a (click)="callContact(person.Telefon)" *ngIf="cordova" style="text-decoration: underline">{{person.Telefon}}</a>
+                  <a (click)="callContact(person.Telefon)" style="text-decoration: underline">{{person.Telefon}}</a>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="person.Raum != ''">

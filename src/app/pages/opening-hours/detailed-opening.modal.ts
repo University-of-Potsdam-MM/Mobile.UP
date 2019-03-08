@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
   selector: 'detailed-opening-modal-page',
@@ -15,7 +17,9 @@ export class DetailedOpeningModalPage implements OnInit {
 
   constructor(
       private modalCtrl: ModalController,
-      private translate: TranslateService
+      private translate: TranslateService,
+      private webIntent: WebIntentService,
+      private callNumber: CallNumber
     ) {
   }
 
@@ -26,6 +30,22 @@ export class DetailedOpeningModalPage implements OnInit {
 
   closeModal() {
     this.modalCtrl.dismiss();
+  }
+
+  openURL(url) {
+    this.webIntent.permissionPromptWebsite(url);
+  }
+
+  /**
+   * @name callContact
+   * @description using native call for calling numbers
+   * @param {string} number
+   * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
+   */
+  callContact(number: string) {
+    this.callNumber.callNumber(number, true)
+      .then(() => console.log('Dialer Launched!'))
+      .catch(() => console.log('Error launching dialer'));
   }
 
   shortenLink(link: string) {

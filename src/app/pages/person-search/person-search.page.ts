@@ -88,7 +88,7 @@ export class PersonSearchPage {
    * the LoginPage. If yes a query is sent to the API and the results are placed
    * in this.personsFound so the view can render them
    */
-  public search() {
+  public async search() {
     // reset array so new persons are displayed
     this.personsFound = [];
     this.noResults = false;
@@ -110,6 +110,7 @@ export class PersonSearchPage {
 
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
+      this.session = await this.sessionProvider.getSession();
       const config: IConfig = ConfigService.config;
       const headers: HttpHeaders = new HttpHeaders()
         .append('Authorization', `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
@@ -202,6 +203,10 @@ export class PersonSearchPage {
     }
   }
 
+  openMail(mail) {
+    window.location.href = 'mailto:' + mail;
+  }
+
   /**
    * @name callContact
    * @description using native call for calling numbers
@@ -209,9 +214,13 @@ export class PersonSearchPage {
    * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
    */
   callContact(number: string) {
-    this.callNumber.callNumber(number, true)
+    if (this.platform.is('cordova')) {
+      this.callNumber.callNumber(number, true)
       .then(() => console.log('Dialer Launched!'))
       .catch(() => console.log('Error launching dialer'));
+    } else {
+      window.location.href = 'tel:' + number;
+    }
   }
 
 }

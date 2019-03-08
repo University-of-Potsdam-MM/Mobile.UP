@@ -179,6 +179,10 @@ export class EmergencyPage implements OnInit {
     }
   }
 
+  openMail(mail) {
+    window.location.href = 'mailto:' + mail;
+  }
+
   /**
    * @name callContact
    * @description using native call for calling numbers
@@ -186,9 +190,13 @@ export class EmergencyPage implements OnInit {
    * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
    */
   callContact(number: string) {
-    this.callNumber.callNumber(number, true)
+    if (this.platform.is('cordova')) {
+      this.callNumber.callNumber(number, true)
       .then(() => console.log('Dialer Launched!'))
       .catch(() => console.log('Error launching dialer'));
+    } else {
+      window.location.href = 'tel:' + number;
+    }
   }
 
 }

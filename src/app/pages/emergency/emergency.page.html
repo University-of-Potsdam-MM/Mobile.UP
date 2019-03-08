@@ -43,21 +43,17 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="primary" *ngIf="emergencyCall.contact.mail">
-            <ion-icon color="secondary" name="mail"></ion-icon>
-            <a class="notUnderlined whiteFont" href="mailto:{{emergencyCall.contact.mail}}">Mail</a>
-          </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="cordova && emergencyCall.contact.telephone" (click)="callContact(emergencyCall.contact.telephone)">
+          <ion-item-option (click)="callContact(emergencyCall.contact.telephone)" color="secondary" *ngIf="emergencyCall.contact.telephone">
             <ion-icon name="call"></ion-icon>
-            <a class="notUnderlined">Call</a>
+            <a class="notUnderlined">{{ "button.call" | translate }}</a>
           </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="!cordova && emergencyCall.contact.telephone">
-            <ion-icon name="call"></ion-icon>
-            <a class="notUnderlined" href="tel:{{emergencyCall.contact.telephone}}">Call</a>
+          <ion-item-option (click)="openMail(emergencyCall.contact.mail)"color="primary" *ngIf="emergencyCall.contact.mail">
+            <ion-icon name="mail" style="color: white"></ion-icon>
+            <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
-          <ion-item-option color="secondary" *ngIf="cordova" (click)="exportContact(emergencyCall)">
+          <ion-item-option (click)="exportContact(emergencyCall)" color="secondary" *ngIf="cordova">
             <ion-icon name="person-add"></ion-icon>
-            <a class="notUnderlined">Add</a>
+            <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
@@ -79,8 +75,7 @@
                 <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
               </ion-col>
               <ion-col>
-                <a href="tel:{{emergencyCall.contact.telephone}}" *ngIf="!cordova">{{emergencyCall.contact.telephone}}</a>
-                <a (click)="callContact(emergencyCall.contact.telephone)" *ngIf="cordova" style="text-decoration: underline">{{emergencyCall.contact.telephone}}</a>
+                <a (click)="callContact(emergencyCall.contact.telephone)" style="text-decoration: underline">{{emergencyCall.contact.telephone}}</a>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="emergencyCall.address && (emergencyCall.address.street || emergencyCall.address.postal)">
