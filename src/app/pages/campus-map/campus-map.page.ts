@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as L from 'leaflet';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import 'leaflet-search';
 
 @Component({
   selector: 'app-campus-map',
@@ -277,6 +278,8 @@ export class CampusMapPage implements OnInit {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
+    const searchables = L.layerGroup();
+
     for (const obj of geoJSON) {
       // create correct title string beforehand so we don't have to do it twice
       const title = this.translate.instant(
@@ -299,13 +302,17 @@ export class CampusMapPage implements OnInit {
 
         const props = feature.properties;
 
+        props['searchProperty'] = `${props.Name}, ${props.description ? props.description : ''}`;
+
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
+        const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
+
         this.layerGroups[title].addLayer(
-          L.geoJSON(feature).bindPopup(
-            popupTemplate
-          )
+          geoJson
         );
+
+        searchables.addLayer(geoJson);
       }
     }
 
@@ -318,6 +325,11 @@ export class CampusMapPage implements OnInit {
 
     // now add layerGroups to the map so the user can select/deselect them
     L.control.layers({}, this.layerGroups).addTo(this.map);
+
+    this.map.addControl( new L.Control['Search']({
+      layer: searchables,
+      propertyName: 'searchProperty'
+    }) );
   }
 
 }
