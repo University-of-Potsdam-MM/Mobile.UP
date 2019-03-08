@@ -98,14 +98,14 @@
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
-    <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
-        <string>need contacts to save people to the contacts list</string>
-    </edit-config>
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="~5.0.4">
         <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyBJTt7cQeRL_GeCV_RfXMguf1Gua_vkW3Y" />
         <variable name="OKHTTP_VERSION" value="3.+" />
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
     </plugin>
+    <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
+        <string>Contact access is required to save people to the contacts list</string>
+    </edit-config>
     <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
     <engine name="ios" spec="5.0.0" />
     <engine name="android" spec="7.1.4" />
