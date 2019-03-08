@@ -43,7 +43,7 @@ export class BookDetailModalPage implements OnInit {
       private modalCtrl: ModalController,
       private cache: CacheService,
       private http: HttpClient,
-      private webIntent: WebIntentService // is used in the HTML
+      public webIntent: WebIntentService // is used in the HTML
     ) {
   }
 

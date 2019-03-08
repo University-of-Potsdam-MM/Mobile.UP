@@ -251,7 +251,7 @@
       "no_house": "The chosen house is free all-day.",
       "no_room": "The chosen room is free all-day.",
       "date": "Date",
-      "no_rooms_hintText": "No roomplan found for today."
+      "no_rooms_hintText": "No roomplan found for this day."
     },
     "opening-hours":{
       "title":"Opening hours",

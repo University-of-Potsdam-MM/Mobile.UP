@@ -57,6 +57,7 @@ export class WebIntentService implements OnInit {
   async permissionPromptWebsite(url: string) {
     // ask for permission to open Module externaly
     const alert = await this.alertCtrl.create({
+      header: this.translate.instant('alert.title.redirect'),
       message: this.translate.instant('alert.redirect-website'),
       buttons: [
         {
@@ -90,6 +91,7 @@ export class WebIntentService implements OnInit {
         if (moduleConfig.appId) {
           // ask for permission to open Module externaly with three options
           const alert = await this.alertCtrl.create({
+            header: this.translate.instant('alert.title.redirect'),
             message: this.translate.instant('alert.redirect-website-app'),
             buttons: [
               {
@@ -129,7 +131,7 @@ export class WebIntentService implements OnInit {
    * @description opens a url depending on the platform
    * @param {string} url
    */
-  public handleWebIntentForWebsite(url: string) {
+  private handleWebIntentForWebsite(url: string) {
     if (this.platform.is('cordova') && url !== ConfigService.config.modules.mail.url) {
       this.safari.isAvailable().then((available: boolean) => {
         if (available) {
@@ -147,7 +149,7 @@ export class WebIntentService implements OnInit {
    * @description opens a url with the InAppBrowser
    * @param {string} url
    */
-  openWithInAppBrowser(url: string) {
+  private openWithInAppBrowser(url: string) {
     if (url === ConfigService.config.modules.mail.url && this.platform.is('cordova')) {
       this.mailLogin(url);
     } else {
@@ -160,7 +162,7 @@ export class WebIntentService implements OnInit {
    * @name mailLogin
    * @description opens mail in browser and injects credentials
    */
-  async mailLogin(url: string) {
+  private async mailLogin(url: string) {
     const session: ISession = await this.userSession.getSession();
     const browser = this.inAppBrowser.create(url, '_blank', this.options);
 
@@ -189,7 +191,7 @@ export class WebIntentService implements OnInit {
    * @description opens a url with safari
    * @param {string} url
    */
-  openWithSafari(url: string) {
+  private openWithSafari(url: string) {
     this.safari.show({
       url: url
     }).subscribe(result => {console.log(result); }, error => { console.log(error); });
@@ -203,7 +205,7 @@ export class WebIntentService implements OnInit {
    * @param {string} androidUrl
    * @param {string} iosUrl
    */
-  launchExternalApp(schemaName: string, packageName: string, androidUrl: string, iosUrl: string) {
+  private launchExternalApp(schemaName: string, packageName: string, androidUrl: string, iosUrl: string) {
     let app;
     if (this.platform.is('ios')) {
       app = schemaName;

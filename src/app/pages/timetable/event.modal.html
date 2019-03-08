@@ -15,7 +15,7 @@
                 <!-- lecturer(s)-->
                 <ng-container *ngIf="isArray(event.eventDetails.lecturers.lecturer);
                             then multipleLecturersTemplate else singleLecturerTemplate"></ng-container>
-        
+
                 <!-- template for event with single lecturer-->
                 <ng-template #singleLecturerTemplate>
                     <ion-item>
@@ -30,7 +30,7 @@
                         </ion-label>
                     </ion-item>
                 </ng-template>
-        
+
                 <!-- template for event with multiple lecturers -->
                 <ng-template #multipleLecturersTemplate>
                     <ion-item>
@@ -38,22 +38,22 @@
                             <h2>
                                 {{ "page.timetable.lecturer" | translate }}
                             </h2>
-                            <ng-container *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last">
-                                <p>
+                            <p>
+                                <ng-container *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last">
                                     {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}<span *ngIf="!last">, </span>
-                                </p>
-                            </ng-container>
+                                </ng-container>
+                            </p>
                         </ion-label>
                     </ion-item>
                 </ng-template>
-        
+
                 <!-- time -->
                 <ion-item>
                     <ion-label text-wrap>
                         <h2>
                             {{ "page.timetable.time" | translate }}
                         </h2>
-                        
+
                         <p>
                             {{ moment(event.startTime).format("LT")}}
                             {{ "page.timetable.oclock" | translate }}
@@ -64,14 +64,14 @@
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- period -->
                 <ion-item>
                     <ion-label text-wrap>
                         <h2>
                             {{ "page.timetable.period" | translate }}
                         </h2>
-                        
+
                         <p>
                             {{ event.eventDetails.startDate }}
                             -
@@ -79,7 +79,7 @@
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- rhythm -->
                 <ion-item>
                     <ion-label text-wrap>
@@ -91,7 +91,7 @@
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- location -->
                 <ion-item>
                     <ion-label text-wrap>
@@ -104,7 +104,7 @@
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- building -->
                 <ion-item>
                     <ion-label text-wrap>
@@ -117,11 +117,11 @@
                         </p>
 
                         <p *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'">
-                            / 
+                            /
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- roomtype and room -->
                 <ion-item>
                     <ion-label text-wrap>
@@ -135,14 +135,14 @@
                         </p>
                     </ion-label>
                 </ion-item>
-        
+
                 <!-- comment -->
                 <ion-item *ngIf="event.eventDetails.comment">
                     <ion-label text-wrap>
                         <h2>
                             {{ "page.timetable.comment" | translate }}
                         </h2>
-                        
+
                         <p>
                             {{ event.eventDetails.comment }}
                         </p>
@@ -150,7 +150,7 @@
                 </ion-item>
             </ion-list>
     </ng-template>
-    
+
     <!-- append details about selected events below -->
     <ng-container *ngIf="events">
         <ng-container *ngFor="let event of events">

@@ -183,6 +183,7 @@ export class AppComponent {
   async doLogout() {
     this.close();
     const alert = await this.alertCtrl.create({
+      header: this.translate.instant('page.logout.title'),
       message: this.translate.instant('page.logout.affirmativeQuestion'),
       buttons: [
         {
