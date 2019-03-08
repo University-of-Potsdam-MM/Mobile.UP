@@ -208,8 +208,6 @@ export class PersonSearchPage {
           let foundMail = false;
           if (person.Telefon && response[i].phoneNumbers.length > 0) {
             for (let j = 0; j < response[i].phoneNumbers.length; j++) {
-              console.log(response[i].phoneNumbers[j].value);
-              console.log(person.Telefon);
               if (response[i].phoneNumbers[j].value === person.Telefon) {
                 foundTel = true;
               }
@@ -218,8 +216,6 @@ export class PersonSearchPage {
 
           if (person.Email && response[i].emails.length > 0) {
             for (let j = 0; j < response[i].emails.length; j++) {
-              console.log(response[i].emails[j].value);
-              console.log(person.Email);
               if (response[i].emails[j].value === person.Email) {
                 foundMail = true;
               }

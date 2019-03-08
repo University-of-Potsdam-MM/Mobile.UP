@@ -180,17 +180,57 @@ export class EmergencyPage implements OnInit {
       if (emergencyCall.contact.telephone) { contact.phoneNumbers = [new ContactField('work', emergencyCall.contact.telephone)]; }
       if (emergencyCall.contact.mail)   { contact.emails = [new ContactField('work', emergencyCall.contact.mail)]; }
 
-      contact.save().then(
-        () => {
-          console.log('Contact saved!', contact);
-          this.presentToast(this.translate.instant('alert.contact-export-success'));
-        },
-        (error: any) => {
-          console.error('Error saving contact.', error);
-          this.presentToast(this.translate.instant('alert.contact-export-fail'));
+      const exportName = emergencyCall.name;
+      this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
+        console.log(response);
+        let contactFound = false;
+        for (let i = 0; i < response.length; i++) {
+          let foundTel = false;
+          let foundMail = false;
+          if (emergencyCall.contact.telephone && response[i].phoneNumbers.length > 0) {
+            for (let j = 0; j < response[i].phoneNumbers.length; j++) {
+              if (response[i].phoneNumbers[j].value === emergencyCall.contact.telephone) {
+                foundTel = true;
+              }
+            }
+          } else if (!emergencyCall.contact.telephone) { foundTel = true; }
+
+          if (emergencyCall.contact.mail && response[i].emails.length > 0) {
+            for (let j = 0; j < response[i].emails.length; j++) {
+              if (response[i].emails[j].value === emergencyCall.contact.mail) {
+                foundMail = true;
+              }
+            }
+          } else if (!emergencyCall.contact.mail) { foundMail = true; }
+
+          if (foundTel && foundMail) {
+            contactFound = true;
+            break;
+          }
         }
-      );
+
+        if (!contactFound) {
+          this.saveContact(contact);
+        } else { this.presentToast(this.translate.instant('alert.contact-exists')); }
+      }, error => {
+        console.log('[Error]: While finding contacts...');
+        console.log(error);
+        this.saveContact(contact);
+      });
     }
+  }
+
+  saveContact(contact: Contact) {
+    contact.save().then(
+      () => {
+        console.log('Contact saved!', contact);
+        this.presentToast(this.translate.instant('alert.contact-export-success'));
+      },
+      (error: any) => {
+        console.error('Error saving contact.', error);
+        this.presentToast(this.translate.instant('alert.contact-export-fail'));
+      }
+    );
   }
 
   /**
