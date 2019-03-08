@@ -198,18 +198,26 @@ export class PersonSearchPage {
 
       if (person.Telefon) { contact.phoneNumbers = [new ContactField('work', person.Telefon)]; }
       if (person.Email)   { contact.emails = [new ContactField('work', person.Email)]; }
+      if (person.Raum) {
+        contact.addresses = [new ContactField()];
+        contact.addresses[0].type = 'work';
+        contact.addresses[0].streetAddress = person.Raum;
+      }
 
       const exportName = person.Vorname + ' ' + person.Nachname;
       this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
         console.log(response);
         let contactFound = false;
+        let contactID;
         for (let i = 0; i < response.length; i++) {
           let foundTel = false;
           let foundMail = false;
+          let foundRoom = false;
           if (person.Telefon && response[i].phoneNumbers.length > 0) {
             for (let j = 0; j < response[i].phoneNumbers.length; j++) {
               if (response[i].phoneNumbers[j].value === person.Telefon) {
                 foundTel = true;
+                break;
               }
             }
           } else if (!person.Telefon) { foundTel = true; }
@@ -218,17 +226,30 @@ export class PersonSearchPage {
             for (let j = 0; j < response[i].emails.length; j++) {
               if (response[i].emails[j].value === person.Email) {
                 foundMail = true;
+                break;
               }
             }
           } else if (!person.Email) { foundMail = true; }
 
-          if (foundTel && foundMail) {
+          if (person.Raum && response[i].addresses.length > 0) {
+            for (let j = 0; j < response[i].addresses.length; j++) {
+              if (response[i].addresses[j].streetAddress === person.Raum) {
+                foundRoom = true;
+                break;
+              }
+            }
+          } else if (!person.Raum) { foundRoom = true; }
+
+          if (foundTel && foundMail && foundRoom) {
             contactFound = true;
             break;
+          } else if (foundTel || foundMail || foundRoom) {
+            contactID = response[i].id;
           }
         }
 
         if (!contactFound) {
+          if (contactID) { contact.id = contactID; }
           this.saveContact(contact);
         } else { this.presentToast(this.translate.instant('alert.contact-exists')); }
       }, error => {

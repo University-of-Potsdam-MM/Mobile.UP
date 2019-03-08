@@ -179,18 +179,27 @@ export class EmergencyPage implements OnInit {
 
       if (emergencyCall.contact.telephone) { contact.phoneNumbers = [new ContactField('work', emergencyCall.contact.telephone)]; }
       if (emergencyCall.contact.mail)   { contact.emails = [new ContactField('work', emergencyCall.contact.mail)]; }
+      if (emergencyCall.address && emergencyCall.address.street) {
+        contact.addresses = [new ContactField()];
+        contact.addresses[0].type = 'work';
+        if (emergencyCall.address.postal) { contact.addresses[0].postalCode = emergencyCall.address.postal; }
+        contact.addresses[0].streetAddress =  emergencyCall.address.street;
+      }
 
       const exportName = emergencyCall.name;
       this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
         console.log(response);
         let contactFound = false;
+        let contactID;
         for (let i = 0; i < response.length; i++) {
           let foundTel = false;
           let foundMail = false;
+          let foundRoom = false;
           if (emergencyCall.contact.telephone && response[i].phoneNumbers.length > 0) {
             for (let j = 0; j < response[i].phoneNumbers.length; j++) {
               if (response[i].phoneNumbers[j].value === emergencyCall.contact.telephone) {
                 foundTel = true;
+                break;
               }
             }
           } else if (!emergencyCall.contact.telephone) { foundTel = true; }
@@ -199,17 +208,30 @@ export class EmergencyPage implements OnInit {
             for (let j = 0; j < response[i].emails.length; j++) {
               if (response[i].emails[j].value === emergencyCall.contact.mail) {
                 foundMail = true;
+                break;
               }
             }
           } else if (!emergencyCall.contact.mail) { foundMail = true; }
 
-          if (foundTel && foundMail) {
+          if (emergencyCall.address.street && response[i].addresses.length > 0) {
+            for (let j = 0; j < response[i].addresses.length; j++) {
+              if (response[i].addresses[j].streetAddress === emergencyCall.address.street) {
+                foundRoom = true;
+                break;
+              }
+            }
+          } else if (!emergencyCall.address.street) { foundRoom = true; }
+
+          if (foundTel && foundMail && foundRoom) {
             contactFound = true;
             break;
+          } else if (foundTel || foundMail || foundRoom) {
+            contactID = response[i].id;
           }
         }
 
         if (!contactFound) {
+          if (contactID) { contact.id = contactID; }
           this.saveContact(contact);
         } else { this.presentToast(this.translate.instant('alert.contact-exists')); }
       }, error => {
