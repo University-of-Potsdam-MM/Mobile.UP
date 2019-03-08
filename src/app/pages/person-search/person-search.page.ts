@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController, NavController } from '@ionic/angular';
+import { Platform, ModalController, NavController, ToastController } from '@ionic/angular';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { LoginPage } from '../login/login.page';
-import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
+import { Contacts, Contact, ContactField, ContactName, IContactFindOptions } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { IPerson, IConfig } from 'src/app/lib/interfaces';
 import { ISession } from 'src/app/services/login-provider/interfaces';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-person-search',
@@ -37,7 +38,9 @@ export class PersonSearchPage {
     private navCtrl: NavController,
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
-    private callNumber: CallNumber
+    private callNumber: CallNumber,
+    private toastCtrl: ToastController,
+    private translate: TranslateService
   ) {
     if (this.platform.is('cordova')) {
       this.cordova = true;
@@ -196,11 +199,75 @@ export class PersonSearchPage {
       if (person.Telefon) { contact.phoneNumbers = [new ContactField('work', person.Telefon)]; }
       if (person.Email)   { contact.emails = [new ContactField('work', person.Email)]; }
 
-      contact.save().then(
-        () => console.log('Contact saved!', contact),
-        (error: any) => console.error('Error saving contact.', error)
-      );
+      const exportName = person.Vorname + ' ' + person.Nachname;
+      this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
+        console.log(response);
+        let contactFound = false;
+        for (let i = 0; i < response.length; i++) {
+          let foundTel = false;
+          let foundMail = false;
+          if (person.Telefon && response[i].phoneNumbers.length > 0) {
+            for (let j = 0; j < response[i].phoneNumbers.length; j++) {
+              console.log(response[i].phoneNumbers[j].value);
+              console.log(person.Telefon);
+              if (response[i].phoneNumbers[j].value === person.Telefon) {
+                foundTel = true;
+              }
+            }
+          } else if (!person.Telefon) { foundTel = true; }
+
+          if (person.Email && response[i].emails.length > 0) {
+            for (let j = 0; j < response[i].emails.length; j++) {
+              console.log(response[i].emails[j].value);
+              console.log(person.Email);
+              if (response[i].emails[j].value === person.Email) {
+                foundMail = true;
+              }
+            }
+          } else if (!person.Email) { foundMail = true; }
+
+          if (foundTel && foundMail) {
+            contactFound = true;
+            break;
+          }
+        }
+
+        if (!contactFound) {
+          this.saveContact(contact);
+        } else { this.presentToast(this.translate.instant('alert.contact-exists')); }
+      }, error => {
+        console.log('[Error]: While finding contacts...');
+        console.log(error);
+        this.saveContact(contact);
+      });
     }
+  }
+
+  saveContact(contact: Contact) {
+    contact.save().then(
+      () => {
+        console.log('Contact saved!', contact);
+        this.presentToast(this.translate.instant('alert.contact-export-success'));
+      },
+      (error: any) => {
+        console.error('Error saving contact.', error);
+        this.presentToast(this.translate.instant('alert.contact-export-fail'));
+      }
+    );
+  }
+
+  /**
+   * @name presentToast
+   * @param message
+   */
+  async presentToast(message) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+      cssClass: 'toastPosition'
+    });
+    toast.present();
   }
 
   openMail(mail) {
