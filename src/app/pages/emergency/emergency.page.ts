@@ -39,6 +39,11 @@ export class EmergencyPage implements OnInit {
 
   ngOnInit() {
     this.connection.checkOnline(true, true);
+
+    if (this.platform.is('cordova')) {
+      this.cordova = true;
+    }
+
     this.loadEmergencyCalls();
   }
 
