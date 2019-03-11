@@ -8,6 +8,7 @@ import { SafariViewController } from '@ionic-native/safari-view-controller/ngx';
 import { UserSessionService } from '../user-session/user-session.service';
 import { ConfigService } from '../config/config.service';
 import { ISession } from '../login-provider/interfaces';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +34,15 @@ export class WebIntentService implements OnInit {
     allowInlineMediaPlayback : 'no',
   };
 
+  session: ISession;
+
   constructor(
     private inAppBrowser: InAppBrowser,
     private translate: TranslateService,
     private platform: Platform,
     private alertCtrl: AlertController,
     private userSession: UserSessionService,
+    private settingsProvider: SettingsService,
     private appAvailability: AppAvailability,
     private safari: SafariViewController
     ) { }
@@ -131,17 +135,24 @@ export class WebIntentService implements OnInit {
    * @description opens a url depending on the platform
    * @param {string} url
    */
-  private handleWebIntentForWebsite(url: string) {
-    if (this.platform.is('cordova') && url !== ConfigService.config.modules.mail.url) {
+  private async handleWebIntentForWebsite(url: string) {
+    const mailAutoLogin = await this.settingsProvider.getSettingValue('autologin');
+    this.session = await this.userSession.getSession();
+
+    if (this.platform.is('cordova')
+      && mailAutoLogin
+      && url === ConfigService.config.modules.mail.url
+      && this.session && this.session.credentials
+      && this.session.credentials.username
+      && this.session.credentials.password) {
+        this.openWithInAppBrowser(url, true);
+    } else if (this.platform.is('cordova')) {
       this.safari.isAvailable().then((available: boolean) => {
         if (available) {
           this.openWithSafari(url);
-        } else {
-          this.openWithInAppBrowser(url); }
+        } else { this.openWithInAppBrowser(url, false); }
       });
-    } else {
-      this.openWithInAppBrowser(url);
-    }
+    } else { this.openWithInAppBrowser(url, false); }
   }
 
   /**
@@ -149,8 +160,8 @@ export class WebIntentService implements OnInit {
    * @description opens a url with the InAppBrowser
    * @param {string} url
    */
-  private openWithInAppBrowser(url: string) {
-    if (url === ConfigService.config.modules.mail.url && this.platform.is('cordova')) {
+  private openWithInAppBrowser(url: string, mailLogin: boolean) {
+    if (mailLogin && this.platform.is('cordova')) {
       this.mailLogin(url);
     } else {
       const target = '_blank';
@@ -162,17 +173,15 @@ export class WebIntentService implements OnInit {
    * @name mailLogin
    * @description opens mail in browser and injects credentials
    */
-  private async mailLogin(url: string) {
-    const session: ISession = await this.userSession.getSession();
+  private mailLogin(url: string) {
     const browser = this.inAppBrowser.create(url, '_blank', this.options);
 
-    if (session && session.credentials && session.credentials.username && session.credentials.password) {
+    if (this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password) {
       console.log('[Mail] trying to login...');
-
       const enterCredentials =
-        `$('input.uname').val(\'${session.credentials.username}\');
-        $('input.pewe').val(\'${session.credentials.password}\');
-        $('button.loginbutton').click();`;
+      `$('input.uname').val(\'${this.session.credentials.username}\');
+      $('input.pewe').val(\'${this.session.credentials.password}\');
+      $('button.loginbutton').click();`;
 
       browser.on('loadstop').subscribe(() => {
         browser.executeScript({ code: enterCredentials }).then(() => {
@@ -182,7 +191,6 @@ export class WebIntentService implements OnInit {
           console.log(error);
         });
       });
-
     }
   }
 

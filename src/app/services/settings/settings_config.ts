@@ -68,5 +68,17 @@ export const SETTINGS = [
         type: ESettingType.boolean,
         icon: 'airplane',
         options: []
+    },
+    {
+        key: 'mail',
+        value: '',
+        type: ESettingType.placeholder
+    },
+    {
+        key: 'autologin',
+        value: true,
+        type: ESettingType.boolean,
+        icon: 'log-in',
+        options: []
     }
 ];

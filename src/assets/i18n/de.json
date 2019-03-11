@@ -202,8 +202,14 @@
             "Englisch": "Englisch"
           }
         },
-        "general" : {
+        "general": {
           "lbl": "Allgemein"
+        },
+        "mail": {
+          "lbl": "Mail"
+        },
+        "autologin": {
+          "lbl": "Automatischer Login"
         },
         "inpractice": {
           "lbl": "Ab in die Praxis"

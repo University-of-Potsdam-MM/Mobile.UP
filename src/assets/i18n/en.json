@@ -205,6 +205,12 @@
         "general" : {
           "lbl": "General"
         },
+        "mail": {
+          "lbl": "Mail"
+        },
+        "autologin": {
+          "lbl": "Automatic login"
+        },
         "inpractice": {
           "lbl": "In practice"
         },
