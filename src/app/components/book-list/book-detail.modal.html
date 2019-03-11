@@ -33,7 +33,7 @@
         <span *ngFor="let department of bookLocationList">
         <ion-list>
             <ion-item lines="none" class="department" color="primary">
-                <ion-label>
+                <ion-label text-wrap>
                     {{ department.department }}
                 </ion-label>
                 <ion-icon slot="end" style="color: white" name="information-circle" (click)="webIntent.permissionPromptWebsite(department.departmentURL)"></ion-icon>
@@ -62,63 +62,77 @@
         </div>
     </div>
 
-    <div *ngIf="showDetails" padding>
-        <div *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0">
-        <h3>Abstract</h3>
-        <div *ngIf="!shortAbstract || !showShortAbstract">{{ bookDetails.abstract }}</div>
-        <div *ngIf="shortAbstract && showShortAbstract">{{ bookDetails.shortAbstract }}</div>
-        <div *ngIf="shortAbstract" align="right">
-            <ion-button size="small" fill="clear" (click)="showShortAbstract = !showShortAbstract">
-                <span *ngIf="showShortAbstract">{{ "button.showMore" | translate }}</span>
-                <span *ngIf="!showShortAbstract">{{ "button.showLess" | translate }}</span>
-            </ion-button>
-        </div>
-        </div>
-        <div *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" padding-top>
-        <h3>{{ "page.library-search.keywords" | translate }}</h3>
-        <ul class="list" *ngFor="let keyword of bookDetails.keywords">
-            <li class="link item" (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</li>
-        </ul>
-        </div>
-        <div *ngIf="bookDetails.toc && bookDetails.toc.length != 0" padding-top>
-        <h3>{{ "page.library-search.toc" | translate }}</h3>
-        <ul class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
-            <li class="item" *ngIf="!showFullTOC && i < 3">{{ chapter }}</li>
-            <li class="item" *ngIf="showFullTOC">{{ chapter }}</li>
-        </ul>
-        <div *ngIf="bookDetails.toc.length > 3" align="right">
-            <ion-button size="small" fill="clear" (click)="showFullTOC = !showFullTOC">
-            <span *ngIf="showFullTOC">{{ "button.showLess" | translate }}</span>
-            <span *ngIf="!showFullTOC">{{ "button.showMore" | translate }}</span>
-            </ion-button>
-        </div>
-        </div>
-        <div *ngIf="bookDetails.notes && bookDetails.notes.length != 0" padding-top>
-        <h3>{{ "page.library-search.annotations" | translate }}</h3>
-        <ul class="list" *ngFor="let note of bookDetails.notes">
-            <li class="item">{{ note }}</li>
-        </ul>
-        </div>
-        <div *ngIf="bookDetails.series && bookDetails.series.length != 0" padding-top>
-        <h3>{{ "page.library-search.serie" | translate }}</h3>
-        <ul class="list" *ngFor="let serie of bookDetails.series">
-            <li class="item">{{ serie }}</li>
-        </ul>
-        </div>
-        <div *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0" padding-top>
-        <h3>ISBN</h3>
-        <ul class="list" *ngFor="let isbn of bookDetails.isbn">
-            <li class="item">{{ isbn }}</li>
-        </ul>
-        </div>
-        <div *ngIf="bookDetails.extent && bookDetails.extent.length != 0" padding-top>
-        <h3>{{ "page.library-search.extent" | translate }}</h3>
-        <ul class="list" *ngFor="let extent of bookDetails.extent">
-            <li class="item">{{ extent }}</li>
-        </ul>
-        </div>
+    <ion-list *ngIf="showDetails" lines="none">
+        <ion-item *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0">
+            <ion-label text-wrap>
+                <h2>Abstract</h2>
+                <p *ngIf="!shortAbstract || !showShortAbstract">{{ bookDetails.abstract }}</p>
+                <p *ngIf="shortAbstract && showShortAbstract">{{ bookDetails.shortAbstract }}</p>
+                <p *ngIf="shortAbstract" align="right">
+                    <ion-button size="small" fill="clear" (click)="showShortAbstract = !showShortAbstract">
+                        <span *ngIf="showShortAbstract">{{ "button.showMore" | translate }}</span>
+                        <span *ngIf="!showShortAbstract">{{ "button.showLess" | translate }}</span>
+                    </ion-button>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>{{ "page.library-search.keywords" | translate }}</h2>
+                <p class="list" *ngFor="let keyword of bookDetails.keywords">
+                    <span class="link item" (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.toc && bookDetails.toc.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>{{ "page.library-search.toc" | translate }}</h2>
+                <p class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
+                    <span class="item" *ngIf="!showFullTOC && i < 3">{{ chapter }}</span>
+                    <span class="item" *ngIf="showFullTOC">{{ chapter }}</span>
+                </p>
+                <p *ngIf="bookDetails.toc.length > 3" align="right">
+                    <ion-button size="small" fill="clear" (click)="showFullTOC = !showFullTOC">
+                        <span *ngIf="showFullTOC">{{ "button.showLess" | translate }}</span>
+                        <span *ngIf="!showFullTOC">{{ "button.showMore" | translate }}</span>
+                    </ion-button>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.notes && bookDetails.notes.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>{{ "page.library-search.annotations" | translate }}</h2>
+                <p class="list" *ngFor="let note of bookDetails.notes">
+                    <span class="item">{{ note }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.series && bookDetails.series.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>{{ "page.library-search.serie" | translate }}</h2>
+                <p class="list" *ngFor="let serie of bookDetails.series">
+                    <span class="item">{{ serie }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>ISBN</h2>
+                <p class="list" *ngFor="let isbn of bookDetails.isbn">
+                    <span class="item">{{ isbn }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="bookDetails.extent && bookDetails.extent.length != 0" padding-top>
+            <ion-label text-wrap>
+                <h2>{{ "page.library-search.extent" | translate }}</h2>
+                <p class="list" *ngFor="let extent of bookDetails.extent">
+                    <span class="item">{{ extent }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
         <div *ngIf="bookDetails.noDetails" align="center" padding-top>
-        {{ "page.library-search.noDetails" | translate }}
+            <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-search.noDetails"></app-hint-box>
         </div>
-    </div>
-    </ion-content>
+    </ion-list>
+</ion-content>
