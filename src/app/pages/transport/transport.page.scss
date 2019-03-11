@@ -6,3 +6,8 @@ ion-list {
     background: #B33A3A;
     font-weight: 300;
 }
+
+ion-item, ion-icon {
+    margin-inline-end: 5px;
+    --padding-start: 5px;
+}

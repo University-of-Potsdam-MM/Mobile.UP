@@ -1,5 +1,10 @@
 ion-icon {
     color: var(--ion-color-primary);
+    margin-inline-end: 5px;
+}
+
+ion-item {
+    --padding-start: 5px;
 }
 
 ion-col {
