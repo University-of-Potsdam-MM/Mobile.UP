@@ -386,7 +386,8 @@
       "favAdded": "Zu Favoriten hinzugefügt!",
       "favExists": "Bereits favorisiert!",
       "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
-      "favRemoved": "Von Favoriten entfernt!"
+      "favRemoved": "Von Favoriten entfernt!",
+      "noFavorites": "Keine Favoriten gefunden."
     }
   },
   "placeholder": {
