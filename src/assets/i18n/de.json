@@ -2,8 +2,7 @@
   "appName": "Mobile.UP",
   "page": {
     "home": {
-      "title": "Startseite",
-      "favorites": "Favoriten"
+      "title": "Startseite"
     },
     "impressum":{
       "title": "Rechtliches",
@@ -23,10 +22,6 @@
       "loginInProgress": "Login läuft...",
       "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
       "notLoggedIn": "Sind sind nicht eingeloggt.",
-      "placeHolder": {
-        "username": "Benutzername (ohne @uni...)",
-        "password": "Passwort"
-      },
       "loginError": {
         "0": "Benutzername und Passwort stimmen nicht überein.",
         "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
@@ -41,27 +36,13 @@
       "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
     "emergency": {
-      "title": "Notrufnummern",
-      "placeholder": {
-        "search": "Suchbegriff eingeben..."
-      }
+      "title": "Notrufnummern"
     },
     "person-search": {
-      "title": "Personensuche",
-      "placeholder": {
-        "search": "Suchbegriff eingeben..."
-      }
+      "title": "Personensuche"
     },
     "practice": {
       "title": "Ab in die Praxis",
-      "favAdded": "Zu Favoriten hinzugefügt!",
-      "favExists": "Bereits favorisiert!",
-      "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
-      "favRemoved": "Von Favoriten entfernt!",
-      "fav": "Favorit",
-      "placeholder": {
-        "search": "Suchbegriff eingeben..."
-      },
       "item": {
         "contact": "Ansprechperson:",
         "foreign": "Ausland",
@@ -103,10 +84,7 @@
       "extent": "Umfang",
       "noDetails": "Keine weiteren Details verfügbar.",
       "allResults": "Liste aller Ergebnisse",
-      "toc": "Inhaltsverzeichnis",
-      "placeholder": {
-        "search": "Suchbegriff eingeben..."
-      }
+      "toc": "Inhaltsverzeichnis"
     },
     "events":{
       "title":"Events",
@@ -301,7 +279,6 @@
     },
     "campus-map": {
       "title": "Lageplan",
-      "placeholder.search": "Suche",
       "select_categories": "Kategorien zum Anzeigen wählen",
       "enable_geolocation": "Standort anzeigen",
       "disable_geolocation": "Standort nicht mehr anzeigen",
@@ -328,7 +305,9 @@
     "logout": "Logout",
     "continue": "Weiter",
     "remove": "Entfernen",
-    "search": "Suchen",
+    "search": "Suche",
+    "fav": "Favorit",
+    "favorites": "Favoriten",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
     "app": "App",
@@ -403,7 +382,18 @@
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
       "grades-noGrades-hint": "Keine Leistungen eingetragen.",
       "openings-planCanChange-hint": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
-      "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
+      "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden.",
+      "favAdded": "Zu Favoriten hinzugefügt!",
+      "favExists": "Bereits favorisiert!",
+      "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
+      "favRemoved": "Von Favoriten entfernt!",
+      "noFavorites": "Keine Favoriten gefunden.",
+      "noInformation": "Informationen konnten nicht abgerufen werden."
     }
+  },
+  "placeholder": {
+    "search": "Suchbegriff eingeben...",
+    "username": "Benutzername (ohne @uni...)",
+    "password": "Passwort"
   }
 }

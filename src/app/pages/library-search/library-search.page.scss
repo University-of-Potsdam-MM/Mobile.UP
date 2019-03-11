@@ -2,10 +2,6 @@
     font-weight: bold;
 }
 
-.library-results .item-block {
-    padding-left: 6px;
-}
-
 .copyright-info {
     font-size: small;
 }
@@ -26,4 +22,13 @@
 
 h3 {
     color: var(--ion-color-primary);
+}
+
+.removeFavButton {
+    color: var(--ion-color-primary);
+}
+
+.notUnderlined {
+    text-transform: capitalize;
+    text-decoration: none;
 }

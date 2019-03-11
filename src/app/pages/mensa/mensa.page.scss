@@ -5,13 +5,11 @@
 .calendarButton {
     --background: var(--ion-color-secondary);
     color: var(--ion-color-primary);
-    width: 30%;
 }
 
 .activeCalendarButton {
     --background: var(--ion-color-primary);
     color:#fff;
-    width: 30%;
 }
 
 ion-calendar {
@@ -58,9 +56,4 @@ ion-calendar-month .primary .between button.days-btn p {
 
 .calendarCollapsed {
     margin-top:0px
-}
-
-.card-md, .card, .card-ios {
-    box-shadow: none;
-    -webkit-box-shadow:none;
 }

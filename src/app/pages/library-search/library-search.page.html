@@ -5,8 +5,16 @@
     <ion-title>{{ "page.library-search.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
+    <ion-segment [value]="activeSegment">
+      <ion-segment-button value="search" (click)="activeSegment = 'search'">
+        <ion-label>{{ "button.search" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="favorites" (click)="activeSegment = 'favorites'">
+        <ion-label>{{ "button.favorites" | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
     <ion-searchbar
-    [placeholder]="'page.library-search.placeholder.search' | translate"
+    [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLibrary(true, $event)"
     debounce="750">
     </ion-searchbar>
@@ -14,11 +22,11 @@
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
-  <div align="center" *ngIf="isLoading" padding>
+  <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" padding>
     <ion-spinner></ion-spinner>
   </div>
 
-  <div *ngIf="isLoaded" class="library-results">
+  <div *ngIf="isLoaded && activeSegment === 'search'">
     <ion-item padding-left>
       <ion-label>
         <p>{{ "page.library-search.allResults" | translate}}:</p>
@@ -27,8 +35,16 @@
     </ion-item>
     <ion-list *ngIf="bookList && bookList.length > 0">
       <span *ngFor="let book of bookList; let i = index">
-        <app-book-list tappable (click)="bookDetailView(book)"
-        [book]="book" [i]="i+1"></app-book-list>
+        <ion-item-sliding #slidingItem>
+            <app-book-list (click)="bookDetailView(book)"
+            [book]="book" [i]="i+1"></app-book-list>
+            <ion-item-options>
+              <ion-item-option (click)="makeFavorite(book, slidingItem)">
+                  <!-- <ion-icon name="star"></ion-icon> -->
+                  <span class="notUnderlined">{{ "button.fav" | translate }}</span>
+              </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
       </span>
     </ion-list>
     <div *ngIf="!bookList || bookList.length == 0">
@@ -38,5 +54,25 @@
     <ion-infinite-scroll *ngIf="!isEnd()" (ionInfinite)="loadMore($event)">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
+  </div>
+
+  <div *ngIf="activeSegment === 'favorites'">
+    <ion-list *ngIf="displayedFavorites && displayedFavorites.length > 0">
+      <span *ngFor="let book of displayedFavorites; let i = index">
+        <ion-item-sliding>
+            <app-book-list (click)="bookDetailView(book)"
+            [book]="book" [i]="i+1"></app-book-list>
+            <ion-item-options>
+              <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(book)">
+                  <!-- <ion-icon name="star-outline"></ion-icon> -->
+                  <span class="notUnderlined">{{ "button.remove" | translate }}</span>
+              </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+      </span>
+    </ion-list>
+    <div *ngIf="displayedFavorites.length == 0">
+      <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noFavorites"></app-hint-box>
+    </div>
   </div>
 </ion-content>

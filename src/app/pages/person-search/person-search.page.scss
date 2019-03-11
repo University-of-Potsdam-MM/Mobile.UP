@@ -1,22 +1,15 @@
-ion-item ion-thumbnail {
-    min-width: 3rem;
-    min-height: 3rem;
-    max-width: 3rem;
-    max-height: 3rem;
-    img {
-      min-width: 3rem;
-      min-height: 3rem;
-      max-width: 3rem;
-      max-height: 3rem;
-    }
+ion-item, ion-icon {
+    margin-inline-end: 10px;
+    --padding-start: 5px;
 }
 
-ion-thumbnail[item-start] {
-    margin: 8px 0px 8px 0 !important;
+ion-item {
+    -webkit-margin-end: 0px;
+    border-bottom:1px solid var(--ion-color-medium) !important;
 }
 
 ion-col {
-    font-size: 1.3rem;
+    font-size: 0.9rem;
 }
 
 .link {
@@ -37,6 +30,6 @@ ion-icon {
     color: var(--ion-color-primary);
 }
 
-ion-col {
-    font-size: 0.95rem!important;
+ion-item.noborder {
+    border-width:0 !important;
 }

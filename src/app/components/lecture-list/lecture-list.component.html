@@ -1,6 +1,6 @@
 <ion-list *ngIf="lectureSchedule && lectureSchedule.lectureScheduleRoot">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
-      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" tappable (click)="expandChild(childNode)"> 
+      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" (click)="expandChild(childNode)">
           <ion-label text-wrap>
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
@@ -14,7 +14,7 @@
 </ion-list>
 <div *ngIf="lectureSchedule && lectureSchedule.lectureScheduleSubTree">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode); let last = last" [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'">
-      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" tappable (click)="expandChild(childNode)">
+      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" (click)="expandChild(childNode)">
           <ion-label text-wrap>
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
@@ -28,10 +28,10 @@
 </div>
 <div *ngIf="lectureSchedule && lectureSchedule.lectureScheduleCourses && lectureSchedule.lectureScheduleCourses.currentNode.courses.course">
   <div *ngFor="let course of convertToArray(lectureSchedule.lectureScheduleCourses.currentNode.courses.course); let last = last" [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'">
-      <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" tappable (click)="expandCourse(course)">
+      <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" (click)="expandCourse(course)">
           <ion-label text-wrap>
             {{ course.courseType }}: {{ htmlDecode(course.courseName) }}
-          </ion-label> 
+          </ion-label>
           <ion-button fill="clear" slot="end">
               <ion-icon *ngIf="course.courseId && !isExpandedCourse[course.courseId]" name="ios-arrow-forward"></ion-icon>
               <ion-icon *ngIf="course.courseId && isExpandedCourse[course.courseId]" name="ios-arrow-down"></ion-icon>
@@ -39,7 +39,7 @@
       </ion-item>
       <ion-item class="courseData" *ngIf="course.courseId && isExpandedCourse[course.courseId] && courseData[course.courseId]">
           <ion-grid class="courseData">
-              <ion-row *ngIf="course.semester"> 
+              <ion-row *ngIf="course.semester">
                   <ion-col size="12" class="courseKeywords">{{ "page.lectures.term" | translate }}:</ion-col>
                   <ion-col size="12">{{ course.semester }}</ion-col>
               </ion-row>

@@ -2,19 +2,6 @@
     background-color: lightsteelblue;
 }
 
-h2.favorite {
-    font-size: 1em;
-    color: #014260;
-    padding-left: 10px;
-    margin-top: 15px !important;
-    margin-bottom: 2px;
-}
-
-.favList {
-    margin: 0px!important;
-    padding: 0px!important;
-}
-
 .removeFavButton {
     color: var(--ion-color-primary);
 }
@@ -26,4 +13,12 @@ ion-item .h2 {
 .notUnderlined {
     text-transform: capitalize;
     text-decoration: none;
+}
+
+p {
+    font-size: small;
+}
+
+ion-label {
+    margin-bottom: 0px;
 }

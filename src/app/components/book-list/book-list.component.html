@@ -1,5 +1,5 @@
 <ion-item>
-  <span slot="start" *ngIf="i" no-padding>
+  <span class="bookIndex" slot="start" *ngIf="i" no-padding>
     <p class="number">{{ i }}</p>
     <ion-icon *ngIf="i" [name]="bookDetails.icon" color="primary"></ion-icon>
   </span>
@@ -37,6 +37,5 @@
       <span *ngIf="bookDetails && bookDetails.publisher != ''">{{ bookDetails.publisher }}, </span>
       <span *ngIf="book.originInfo.dateIssued && convertToArray(book.originInfo.dateIssued)[0]._">{{ convertToArray(book.originInfo.dateIssued)[0]._ }}</span>
     </p>
-  </ion-label> 
+  </ion-label>
 </ion-item>
-  

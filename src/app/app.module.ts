@@ -64,7 +64,8 @@ export class IonicGestureConfig extends HammerGestureConfig {
     IonicModule.forRoot({
       backButtonIcon: 'ios-arrow-back',
       backButtonText: '',
-      mode: 'md'
+      mode: 'md',
+      rippleEffect: false
     }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,

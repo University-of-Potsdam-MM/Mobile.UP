@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
@@ -28,6 +28,7 @@ export class PracticePage {
   error: HttpErrorResponse;
   itemsShown = 0;
   query;
+  activeSegment = 'search';
 
   constructor(
     private storage: Storage,
@@ -342,9 +343,9 @@ export class PracticePage {
       if (!utils.isInArray(this.allFavorites, ads)) {
         this.allFavorites.push(ads);
       }
-      this.presentToast(this.translate.instant('page.practice.favAdded'));
+      this.presentToast(this.translate.instant('hints.text.favAdded'));
     } else {
-      this.presentToast(this.translate.instant('page.practice.favExists'));
+      this.presentToast(this.translate.instant('hints.text.favExists'));
     }
 
     this.storage.set('favoriteJobs', this.allFavorites);
@@ -376,7 +377,7 @@ export class PracticePage {
     this.allFavorites = tmp;
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
-    this.presentToast(this.translate.instant('page.practice.favRemoved'));
+    this.presentToast(this.translate.instant('hints.text.favRemoved'));
     this.storage.set('favoriteJobs', this.allFavorites);
   }
 
@@ -404,7 +405,7 @@ export class PracticePage {
       }
 
       if (tmp.length > this.allFavorites.length) {
-        this.presentToast(this.translate.instant('page.practice.favNotAvailable'));
+        this.presentToast(this.translate.instant('hints.text.favNotAvailable'));
       }
     }
 
