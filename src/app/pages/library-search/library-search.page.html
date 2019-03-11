@@ -36,7 +36,7 @@
     <ion-list *ngIf="bookList && bookList.length > 0">
       <span *ngFor="let book of bookList; let i = index">
         <ion-item-sliding #slidingItem>
-            <app-book-list tappable (click)="bookDetailView(book)"
+            <app-book-list (click)="bookDetailView(book)"
             [book]="book" [i]="i+1"></app-book-list>
             <ion-item-options>
               <ion-item-option (click)="makeFavorite(book, slidingItem)">
@@ -60,7 +60,7 @@
     <ion-list *ngIf="displayedFavorites && displayedFavorites.length > 0">
       <span *ngFor="let book of displayedFavorites; let i = index">
         <ion-item-sliding>
-            <app-book-list tappable (click)="bookDetailView(book)"
+            <app-book-list (click)="bookDetailView(book)"
             [book]="book" [i]="i+1"></app-book-list>
             <ion-item-options>
               <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(book)">

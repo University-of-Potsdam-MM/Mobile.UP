@@ -3,6 +3,11 @@ ion-item, ion-icon {
     --padding-start: 5px;
 }
 
+ion-item {
+    -webkit-margin-end: 0px;
+    border-bottom:1px solid var(--ion-color-medium) !important;
+}
+
 ion-col {
     font-size: 0.9rem;
 }
@@ -23,4 +28,8 @@ ion-col {
 
 ion-icon {
     color: var(--ion-color-primary);
+}
+
+ion-item.noborder {
+    border-width:0 !important;
 }

@@ -5,6 +5,7 @@ ion-icon {
 
 ion-item {
     --padding-start: 5px;
+    border-bottom:1px solid var(--ion-color-medium) !important;
 }
 
 ion-col {
@@ -23,4 +24,8 @@ ion-col {
 
 .whiteFont {
     color: white;
+}
+
+ion-item.noborder {
+    border-width:0 !important;
 }

@@ -37,8 +37,7 @@
 
 /*reset default theme box shadows and border radius */
 ion-button {
-  -webkit-box-shadow: 0 0 0 0 #fff;
-  box-shadow:  0 0 0 0 #fff;
+  --box-shadow: none;
   border-radius: 0;
   text-transform: uppercase;
 }
@@ -59,6 +58,14 @@ ion-app.md [padding] .scroll-content {
 
 ion-menu-button {
   color: black;
+}
+
+ion-segment-button {
+  --padding-end: 0;
+  --padding-start: 0;
+  --margin-end: 0;
+  --margin-start: 0;
+  font-size: small;
 }
 
 ion-back-button {

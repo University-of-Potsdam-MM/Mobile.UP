@@ -28,10 +28,10 @@
     <app-hint-box hintTypeI18nKey="hints.type.attention" hintTextI18nKey="alert.network"></app-hint-box>
   </div>
 
-  <ion-list>
-    <div *ngFor="let person of personsFound">
+  <ion-list lines="none">
+    <span *ngFor="let person of personsFound">
       <ion-item-sliding>
-        <ion-item tappable (click)="expandPerson(person)">
+        <ion-item (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
           <ion-icon slot="start" name="person"></ion-icon>
           <ion-label text-wrap>
             <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
@@ -76,7 +76,7 @@
           </ion-grid>
         </ion-label>
       </ion-item>
-    </div>
+    </span>
   </ion-list>
 
 </ion-content>

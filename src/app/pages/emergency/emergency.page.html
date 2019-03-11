@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScroll)="onScrollListener()">
 
   <ion-refresher (ionRefresh)="loadEmergencyCalls($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -27,14 +27,13 @@
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
   </div>
   <!-- list of emergencyCalls -->
-  <ion-list>
-    <div *ngFor="let emergencyCall of displayedList">
-
+  <ion-list lines="none">
+    <span *ngFor="let emergencyCall of displayedList">
       <ion-item-sliding>
         <!-- template for emergencyCalls -->
-        <ion-item tappable (click)="expand(emergencyCall)">
+        <ion-item (click)="expand(emergencyCall)" [ngClass]="{'noborder': emergencyCall.expanded}">
           <ion-icon name="person" slot="start"></ion-icon>
-          <ion-label no-margin text-wrap>
+          <ion-label text-wrap>
             <h2>{{emergencyCall.name}}</h2>
             <p *ngIf="emergencyCall.description">{{emergencyCall.description}}</p>
           </ion-label>
@@ -47,7 +46,7 @@
             <!-- <ion-icon name="call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }}</a>
           </ion-item-option>
-          <ion-item-option (click)="openMail(emergencyCall.contact.mail)"color="primary" *ngIf="emergencyCall.contact.mail">
+          <ion-item-option (click)="openMail(emergencyCall.contact.mail)" color="primary" *ngIf="emergencyCall.contact.mail">
             <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
             <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
@@ -59,8 +58,8 @@
       </ion-item-sliding>
 
       <ion-item *ngIf="emergencyCall.expanded">
-        <ion-icon name="" slot="start"></ion-icon>
-        <ion-label no-margin>
+        <ion-icon slot="start"></ion-icon>
+        <ion-label no-margin text-wrap>
           <ion-grid>
             <ion-row *ngIf="emergencyCall.contact.mail">
               <ion-col size="auto">
@@ -94,6 +93,6 @@
         </ion-label>
       </ion-item>
 
-    </div>
+    </span>
   </ion-list>
 </ion-content>
