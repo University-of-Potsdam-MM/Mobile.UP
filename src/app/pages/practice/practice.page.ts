@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
@@ -28,6 +28,7 @@ export class PracticePage {
   error: HttpErrorResponse;
   itemsShown = 0;
   query;
+  activeSegment = 'search';
 
   constructor(
     private storage: Storage,

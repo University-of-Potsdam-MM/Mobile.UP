@@ -5,6 +5,14 @@
     <ion-title>{{ "page.practice.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
+    <ion-segment [value]="activeSegment">
+      <ion-segment-button value="search" (click)="activeSegment = 'search'">
+        <ion-label>{{ "button.search" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="favorites" (click)="activeSegment = 'favorites'">
+        <ion-label>{{ "button.favorites" | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
     <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
@@ -19,7 +27,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <p *ngIf="!isLoaded" style="text-align: center" padding>
+  <p *ngIf="!isLoaded && activeSegment === 'search'" style="text-align: center" padding>
     <ion-spinner></ion-spinner>
   </p>
 
@@ -27,67 +35,63 @@
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
   </div>
 
-  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && isLoaded">
-    <ion-label>
-      {{ "button.favorites" | translate }}
-    </ion-label>
-  </ion-item-divider>
-  <ion-list class="favList" *ngIf="isLoaded">
-    <div *ngFor="let ADS of displayedFavorites; let i = index">
-      <ion-item-sliding>
-        <ion-item detail (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
-          <ion-label text-wrap>
-            <h2>{{ADS.date | date:'dd.MM.yy'}} - {{ADS.title}}</h2>
-            <ion-grid>
-              <ion-row>
-                <ion-col><p [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
-                <ion-col *ngIf="ADS.firm != ''; else unknown_filed"><p>{{ADS.firm}}</p></ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
+  <div *ngIf="isLoaded && activeSegment === 'favorites'">
+    <ion-list class="favList">
+      <div *ngFor="let ADS of displayedFavorites; let i = index">
+        <ion-item-sliding>
+          <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
+            <ion-label>
+              <h3 text-wrap>{{ADS.title}}</h3>
+              <ion-grid>
+                <ion-row>
+                  <ion-col><p [ngSwitch]="ADS.art" style="color: gray"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
+                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+          </ion-item>
 
-        <ion-item-options slot="end">
-          <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(ADS)">
-            <!-- <ion-icon name="star-outline"></ion-icon> -->
-            <span class="notUnderlined">{{ "button.remove" | translate }}</span>
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </div>
-  </ion-list>
+          <ion-item-options slot="end">
+            <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(ADS)">
+              <!-- <ion-icon name="star-outline"></ion-icon> -->
+              <span class="notUnderlined">{{ "button.remove" | translate }}</span>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
+  </div>
 
-  <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && isLoaded">
-    <ion-label>
-      {{ "words.all" | translate }}
-    </ion-label>
-  </ion-item-divider>
-  <ion-list *ngIf="isLoaded">
-    <div *ngFor="let ADS of displayedList; let i = index">
-      <ion-item-sliding #slidingItem>
-        <ion-item detail (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
-          <ion-label text-wrap>
-            <h2>{{ADS.date | date:'dd.MM.yy'}} - {{ADS.title}}</h2>
-            <ion-grid>
-              <ion-row>
-                <ion-col><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
-                <ion-col *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-label>
-        </ion-item>
+  <div *ngIf="isLoaded && activeSegment === 'search'">
+    <ion-list>
+      <div *ngFor="let ADS of displayedList; let i = index">
+        <ion-item-sliding #slidingItem>
+          <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
+            <ion-label>
+              <h3 text-wrap>{{ADS.title}}</h3>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="6"><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
+                  <ion-col size="6" *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+          </ion-item>
 
-        <ion-item-options slot="end">
-          <ion-item-option color="primary" (click)="makeFavorite(ADS, slidingItem)">
-            <!-- <ion-icon name="star"></ion-icon> -->
-            <span class="notUnderlined">{{ "button.fav" | translate }}</span>
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </div>
-  </ion-list>
+          <ion-item-options slot="end">
+            <ion-item-option color="primary" (click)="makeFavorite(ADS, slidingItem)">
+              <!-- <ion-icon name="star"></ion-icon> -->
+              <span class="notUnderlined">{{ "button.fav" | translate }}</span>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>

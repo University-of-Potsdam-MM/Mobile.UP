@@ -20,7 +20,7 @@
         <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
       </ion-item-divider>
 
-      <ion-item lines="none" *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
+      <ion-item detail lines="none" *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
         <ion-icon name="{{setting.icon}}" slot="start"></ion-icon>
         <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <div slot="end" text-wrap>{{ getValueLabel(setting) }}</div>
