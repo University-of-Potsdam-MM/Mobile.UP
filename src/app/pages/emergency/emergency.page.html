@@ -44,15 +44,15 @@
 
         <ion-item-options side="end">
           <ion-item-option (click)="callContact(emergencyCall.contact.telephone)" color="secondary" *ngIf="emergencyCall.contact.telephone">
-            <ion-icon name="call"></ion-icon>
+            <!-- <ion-icon name="call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }}</a>
           </ion-item-option>
           <ion-item-option (click)="openMail(emergencyCall.contact.mail)"color="primary" *ngIf="emergencyCall.contact.mail">
-            <ion-icon name="mail" style="color: white"></ion-icon>
+            <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
             <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
           <ion-item-option (click)="exportContact(emergencyCall)" color="secondary" *ngIf="cordova">
-            <ion-icon name="person-add"></ion-icon>
+            <!-- <ion-icon name="person-add"></ion-icon> -->
             <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
         </ion-item-options>

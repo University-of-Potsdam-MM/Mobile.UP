@@ -43,15 +43,15 @@
 
         <ion-item-options slot="end">
           <ion-item-option (click)="callContact(person.Telefon)" color="secondary" *ngIf="person.Telefon != ''">
-            <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon>
+            <!-- <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }} </a>
           </ion-item-option>
           <ion-item-option (click)="openMail(person.Email)" color="primary" *ngIf="person.Email != ''">
-              <ion-icon name="mail" style="color: white"></ion-icon>
+              <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
               <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
           <ion-item-option (click)="exportContact(person)" color="secondary" *ngIf="cordova">
-            <ion-icon name="person-add"></ion-icon>
+            <!-- <ion-icon name="person-add"></ion-icon> -->
             <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
         </ion-item-options>
