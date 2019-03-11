@@ -26,7 +26,7 @@
         <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">{{ "page.library-search.details" | translate }}</ion-segment-button>
     </ion-segment>
 
-    <div *ngIf="showLocation" padding-top>
+    <div *ngIf="showLocation" >
         <div align="center" *ngIf="!isLoaded">
             <ion-spinner></ion-spinner>
         </div>
@@ -76,7 +76,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" >
             <ion-label text-wrap>
                 <h2>{{ "page.library-search.keywords" | translate }}</h2>
                 <p class="list" *ngFor="let keyword of bookDetails.keywords">
@@ -84,7 +84,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.toc && bookDetails.toc.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.toc && bookDetails.toc.length != 0" >
             <ion-label text-wrap>
                 <h2>{{ "page.library-search.toc" | translate }}</h2>
                 <p class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
@@ -99,7 +99,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.notes && bookDetails.notes.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.notes && bookDetails.notes.length != 0" >
             <ion-label text-wrap>
                 <h2>{{ "page.library-search.annotations" | translate }}</h2>
                 <p class="list" *ngFor="let note of bookDetails.notes">
@@ -107,7 +107,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.series && bookDetails.series.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.series && bookDetails.series.length != 0" >
             <ion-label text-wrap>
                 <h2>{{ "page.library-search.serie" | translate }}</h2>
                 <p class="list" *ngFor="let serie of bookDetails.series">
@@ -115,7 +115,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0" >
             <ion-label text-wrap>
                 <h2>ISBN</h2>
                 <p class="list" *ngFor="let isbn of bookDetails.isbn">
@@ -123,7 +123,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <ion-item *ngIf="bookDetails.extent && bookDetails.extent.length != 0" padding-top>
+        <ion-item *ngIf="bookDetails.extent && bookDetails.extent.length != 0" >
             <ion-label text-wrap>
                 <h2>{{ "page.library-search.extent" | translate }}</h2>
                 <p class="list" *ngFor="let extent of bookDetails.extent">
@@ -131,7 +131,7 @@
                 </p>
             </ion-label>
         </ion-item>
-        <div *ngIf="bookDetails.noDetails" align="center" padding-top>
+        <div *ngIf="bookDetails.noDetails" align="center" >
             <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-search.noDetails"></app-hint-box>
         </div>
     </ion-list>
