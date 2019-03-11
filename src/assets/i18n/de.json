@@ -387,7 +387,8 @@
       "favExists": "Bereits favorisiert!",
       "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
       "favRemoved": "Von Favoriten entfernt!",
-      "noFavorites": "Keine Favoriten gefunden."
+      "noFavorites": "Keine Favoriten gefunden.",
+      "noInformation": "Informationen konnten nicht abgerufen werden."
     }
   },
   "placeholder": {

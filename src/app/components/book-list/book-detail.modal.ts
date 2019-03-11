@@ -21,9 +21,10 @@ export class BookDetailModalPage implements OnInit {
   showDetails = false;
   showShortAbstract = true;
   showFullTOC = false;
+  isLoaded = false;
 
   @Input() book;
-  bookLocationList;
+  bookLocationList = [];
   shortAbstract = false;
   bookDetails = {
     'url': null,
@@ -77,7 +78,7 @@ export class BookDetailModalPage implements OnInit {
   updateLocation(refresher?): void {
     if (refresher) {
       this.cache.removeItem('bookLocation' + this.book.recordInfo.recordIdentifier._);
-    }
+    } else { this.isLoaded = false; }
 
     const url = this.config.webservices.endpoint.libraryDAIA;
 
@@ -94,8 +95,10 @@ export class BookDetailModalPage implements OnInit {
         refresher.target.complete();
       }
       this.setLocationData(data);
+      this.isLoaded = true;
     }, error => {
       console.log(error);
+      this.isLoaded = true;
       if (refresher) {
         refresher.target.complete();
       }

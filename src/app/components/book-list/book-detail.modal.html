@@ -11,7 +11,7 @@
     <ion-refresher (ionRefresh)="updateLocation($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    
+
     <app-book-list [book]="book" (mediaType)="setMediaType($event)"></app-book-list>
     <p *ngIf="bookDetails.mediaType == 'mediatype_o'" class="copyright-info" padding-horizontal>
         {{ "page.library-search.copyright" | translate }}
@@ -25,8 +25,11 @@
         <ion-segment-button value="location" (click)="showLocation = true; showDetails = false;">{{ "page.library-search.location" | translate }}</ion-segment-button>
         <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">{{ "page.library-search.details" | translate }}</ion-segment-button>
     </ion-segment>
-    
+
     <div *ngIf="showLocation" padding-top>
+        <div align="center" *ngIf="!isLoaded">
+            <ion-spinner></ion-spinner>
+        </div>
         <span *ngFor="let department of bookLocationList">
         <ion-list>
             <ion-item lines="none" class="department" color="primary">
@@ -54,8 +57,11 @@
             </ng-template>
         </ion-list>
         </span>
+        <div *ngIf="isLoaded && bookLocationList.length === 0">
+            <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
+        </div>
     </div>
-    
+
     <div *ngIf="showDetails" padding>
         <div *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0">
         <h3>Abstract</h3>
