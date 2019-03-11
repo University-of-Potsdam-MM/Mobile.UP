@@ -34,7 +34,7 @@ export class SettingsService {
         return +setting.value;
       }
       case ESettingType.boolean: {
-        return setting.value === '1';
+        return setting.value;
       }
       case ESettingType.string: {
         return setting.value;

@@ -63,7 +63,7 @@ export class SettingsPage implements OnInit {
         return +setting.value;
       }
       case ESettingType.boolean: {
-        return setting.value === '1';
+        return setting.value;
       }
       case ESettingType.string: {
         return setting.value;
@@ -260,6 +260,7 @@ export class SettingsPage implements OnInit {
    * @param setting {ISetting} - setting to be switched
    */
   changeBoolSetting(setting: ISetting) {
+    console.log(setting);
     this.setSetting(setting, !setting.value);
   }
 

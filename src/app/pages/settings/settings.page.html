@@ -12,17 +12,17 @@
     <div *ngFor="let setting of settings" style="border-bottom:solid #f4f4f4 2px !important" id="test_div">
       <ion-item lines="none" *ngIf="getSettingType(setting) == 'boolean'">
         <ion-icon name="{{setting.icon}}" slot="start"></ion-icon>
-        <ion-label slot="start">{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
+        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <ion-toggle slot="end" checked="{{setting.value}}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
       </ion-item>
 
       <ion-item-divider color="light" *ngIf="getSettingType(setting) == 'placeholder'">
-        <ion-label>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
+        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
       </ion-item-divider>
 
       <ion-item lines="none" *ngIf="getSettingType(setting) != 'boolean' && getSettingType(setting) != 'placeholder'" (click)="openPrompt(setting)">
         <ion-icon name="{{setting.icon}}" slot="start"></ion-icon>
-        <div slot="start" text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</div>
+        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
         <div slot="end" text-wrap>{{ getValueLabel(setting) }}</div>
       </ion-item>
     </div>
