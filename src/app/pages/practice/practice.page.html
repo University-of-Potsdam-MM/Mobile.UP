@@ -7,7 +7,7 @@
   <ion-toolbar>
     <ion-searchbar
     [(ngModel)]="query"
-    [placeholder]="'page.practice.placeholder.search' | translate"
+    [placeholder]="'placeholder.search' | translate"
     (ionChange)="filterItems(query)"
     debounce="750">
     </ion-searchbar>
@@ -29,7 +29,7 @@
 
   <ion-item-divider color="light" class="favoriteDivider" *ngIf="displayedFavorites.length > 0 && isLoaded">
     <ion-label>
-      {{ "page.home.favorites" | translate }}
+      {{ "button.favorites" | translate }}
     </ion-label>
   </ion-item-divider>
   <ion-list class="favList" *ngIf="isLoaded">
@@ -80,7 +80,7 @@
         <ion-item-options slot="end">
           <ion-item-option color="primary" (click)="makeFavorite(ADS, slidingItem)">
             <ion-icon name="star"></ion-icon>
-            <span class="notUnderlined">{{ "page.practice.fav" | translate }}</span>
+            <span class="notUnderlined">{{ "button.fav" | translate }}</span>
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
