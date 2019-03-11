@@ -9,7 +9,7 @@
 <ion-content>
 
     <ion-list class="showSysInfo">
-  
+
       <ion-item (click)="showContactPerson = !showContactPerson">
         <ion-label>
           <b>{{ "page.app-info.contact" | translate }}</b>
@@ -27,7 +27,7 @@
               August-Bebel-Str. 89<br>
               14482 Potsdam<br>
             </div>
-  
+
             Haus 4 | 1.17<br>
             <br>
             Telefon: <a href="tel:+49-331-977-3023">+49-331-977-3023</a>
@@ -51,22 +51,6 @@
           </ion-label>
         </ion-item>
       </span>
-      <ion-item (click)="showLibraryInfo = !showLibraryInfo">
-        <ion-label>
-          <b>{{ "page.app-info.libraries" | translate }}</b>
-        </ion-label>
-        <ion-icon *ngIf="!showLibraryInfo" slot="end" name="arrow-dropdown"></ion-icon>
-        <ion-icon *ngIf="showLibraryInfo" slot="end" name="arrow-dropup"></ion-icon>
-      </ion-item>
-      <span *ngIf="showLibraryInfo">
-        <ion-item>
-          <ion-label text-wrap>
-            "@angular/common": "5.0.3"<br>
-            -TODO-
-          </ion-label>
-        </ion-item>
-      </span>
-  
       <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
         <ion-label>
           <b>{{ "page.app-info.app" | translate }}</b>
@@ -95,6 +79,91 @@
         </ion-item>
         <ion-item *ngIf="deviceInfo.deviceModel">
           <ion-label><h2>{{ "page.app-info.model" | translate }}</h2><p>{{ deviceInfo.deviceModel }}</p></ion-label>
+        </ion-item>
+      </span>
+      <ion-item (click)="showLibraryInfo = !showLibraryInfo">
+        <ion-label>
+          <b>{{ "page.app-info.libraries" | translate }}</b>
+        </ion-label>
+        <ion-icon *ngIf="!showLibraryInfo" slot="end" name="arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="showLibraryInfo" slot="end" name="arrow-dropup"></ion-icon>
+      </ion-item>
+      <span *ngIf="showLibraryInfo">
+        <ion-item>
+          <ion-label text-wrap style="font-size: small;">
+            "@angular/common": "^7.2.8"<br>
+            "@angular/core": "^7.2.8"<br>
+            "@angular/forms": "^7.2.8"<br>
+            "@angular/http": "^7.2.8"<br>
+            "@angular/platform-browser": "^7.2.8"<br>
+            "@angular/platform-browser-dynamic": "^7.2.8"<br>
+            "@angular/router": "^7.2.8"<br>
+            "@ionic-native/app-availability": "^5.2.0"<br>
+            "@ionic-native/call-number": "^5.2.0"<br>
+            "@ionic-native/contacts": "^5.2.0"<br>
+            "@ionic-native/core": "^5.2.0"<br>
+            "@ionic-native/device": "^5.2.0"<br>
+            "@ionic-native/geolocation": "^5.2.0"<br>
+            "@ionic-native/in-app-browser": "^5.2.0"<br>
+            "@ionic-native/keyboard": "^5.2.0"<br>
+            "@ionic-native/launch-navigator": "^5.2.0"<br>
+            "@ionic-native/network": "^5.2.0"<br>
+            "@ionic-native/safari-view-controller": "^5.2.0"<br>
+            "@ionic-native/splash-screen": "^5.2.0"<br>
+            "@ionic-native/status-bar": "^5.2.0"<br>
+            "@ionic/angular": "^4.1.1"<br>
+            "@ionic/core": "^4.1.1"<br>
+            "@ionic/storage": "^2.2.0"<br>
+            "@ngx-translate/core": "^11.0.1"<br>
+            "@ngx-translate/http-loader": "^4.0.0"<br>
+            "@types/leaflet": "^1.4.3"<br>
+            "@types/leaflet-rotatedmarker": "^0.2.1"<br>
+            "call-number": "1.0.1"<br>
+            "cordova-android": "7.1.4"<br>
+            "cordova-browser": "6.0.0"<br>
+            "cordova-ios": "5.0.0"<br>
+            "cordova-plugin-actionsheet": "^2.3.3"<br>
+            "cordova-plugin-appavailability": "^0.4.2"<br>
+            "cordova-plugin-contacts": "^3.0.1"<br>
+            "cordova-plugin-device": "^2.0.2"<br>
+            "cordova-plugin-dialogs": "^2.0.1"<br>
+            "cordova-plugin-geolocation": "^4.0.1"<br>
+            "cordova-plugin-inappbrowser": "^3.0.0"<br>
+            "cordova-plugin-ionic-keyboard": "^2.1.3"<br>
+            "cordova-plugin-ionic-webview": "^3.1.2"<br>
+            "cordova-plugin-network-information": "^2.0.1"<br>
+            "cordova-plugin-safariviewcontroller": "^1.5.4"<br>
+            "cordova-plugin-splashscreen": "^5.0.2"<br>
+            "cordova-plugin-statusbar": "^2.4.2"<br>
+            "cordova-plugin-whitelist": "^1.3.3"<br>
+            "core-js": "^2.6.5"<br>
+            "country-language": "^0.1.7"<br>
+            "font-awesome": "^4.7.0"<br>
+            "geojson": "^0.5.0"<br>
+            "hammerjs": "^2.0.8"<br>
+            "i18next-client": "^1.11.4"<br>
+            "ion2-calendar": "^3.0.0-rc.0"<br>
+            "ionic-cache": "^3.1.3"<br>
+            "ionic2-calendar": "^0.5.2"<br>
+            "jquery": "^3.3.1"<br>
+            "leaflet": "^1.4.0"<br>
+            "leaflet-easybutton": "^2.4.0"<br>
+            "leaflet-rotatedmarker": "^0.2.0"<br>
+            "luxon": "^1.11.4"<br>
+            "moment": "^2.24.0"<br>
+            "mx.ferreyra.callnumber": "0.0.2"<br>
+            "ngx-order-pipe": "^2.0.2"<br>
+            "node-sass": "^4.11.0"<br>
+            "opening_hours": "^3.5.0"<br>
+            "rrule": "^2.6.0"<br>
+            "rxjs": "^6.4.0"<br>
+            "rxjs-compat": "^6.4.0"<br>
+            "stream": "0.0.2"<br>
+            "sw-toolbox": "^3.6.0"<br>
+            "timers": "^0.1.1"<br>
+            "xml2js": "^0.4.19"<br>
+            "zone.js": "~0.8.29"
+          </ion-label>
         </ion-item>
       </span>
     </ion-list>
