@@ -35,6 +35,7 @@ export class LibrarySearchPage implements OnInit {
   allFavorites = [];
   numberOfRecords = '0';
   updatedFavorites = 0;
+  modalOpen = false;
 
   constructor(
     private connection: ConnectionService,
@@ -216,6 +217,7 @@ export class LibrarySearchPage implements OnInit {
       componentProps: { book: book, isFavorite: isFavorite }
     });
     modal.present();
+    this.modalOpen = true;
     const result = await modal.onWillDismiss();
     if (isFavorite !== result.data.isFavoriteNew) {
       if (result.data.isFavoriteNew) {
@@ -224,6 +226,7 @@ export class LibrarySearchPage implements OnInit {
         this.removeFavorite(book, true);
       }
     }
+    this.modalOpen = false;
   }
 
   /**

@@ -31,7 +31,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content (ionScroll)="onScrollListener()">
+<ion-content (ionScroll)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-refresher *ngIf="activeSegment === 'favorites'" (ionRefresh)="checkFavorites($event)">
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

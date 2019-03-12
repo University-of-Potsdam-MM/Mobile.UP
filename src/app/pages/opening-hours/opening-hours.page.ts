@@ -23,6 +23,7 @@ export class OpeningHoursPage implements OnInit {
   nominatim;
   weekday = [];
   isLoaded;
+  modalOpen = false;
 
   constructor(
     private connection: ConnectionService,
@@ -119,7 +120,10 @@ export class OpeningHoursPage implements OnInit {
       component: DetailedOpeningModalPage,
       componentProps: { item: item }
     });
-    return await modal.present();
+    modal.present();
+    this.modalOpen = true;
+    await modal.onDidDismiss();
+    this.modalOpen = false;
   }
 
   openUntil(index) {

@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScroll)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
 
   <p *ngIf="!response_received && query.length > 0" style="text-align: center">
     <ion-spinner></ion-spinner>

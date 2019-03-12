@@ -32,7 +32,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScroll)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

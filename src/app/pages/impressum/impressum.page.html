@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-grid>
     <ion-row>
       <ion-col  class="placeholder-img">

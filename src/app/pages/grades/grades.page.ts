@@ -31,6 +31,7 @@ export class GradesPage {
   multipleDegrees = false;          // f.e. bachelor and master
   isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
   session;
+  modalOpen = false;
 
   constructor(
     private puls: PulsService,
@@ -62,8 +63,10 @@ export class GradesPage {
       backdropDismiss: false,
       component: LoginPage,
     });
+    this.modalOpen = true;
     modal.present();
     modal.onWillDismiss().then(response => {
+      this.modalOpen = false;
       if (response.data.success) {
         this.ionViewWillEnter();
       } else {

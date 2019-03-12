@@ -31,6 +31,7 @@ export class PracticePage {
   isLoadedFavorites = false;
   query;
   activeSegment = 'search';
+  modalOpen = false;
 
   constructor(
     private storage: Storage,
@@ -333,6 +334,7 @@ export class PracticePage {
       componentProps: { ADS: ads, isFavorite: isFavorite }
     });
     modal.present();
+    this.modalOpen = true;
     const result = await modal.onWillDismiss();
     if (isFavorite !== result.data.isFavoriteNew) {
       if (result.data.isFavoriteNew) {
@@ -341,6 +343,7 @@ export class PracticePage {
         this.removeFavorite(ads, true);
       }
     }
+    this.modalOpen = false;
   }
 
   /**

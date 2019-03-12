@@ -49,14 +49,14 @@
             </ion-item>
             <ng-template #noUrl>
                 <ion-item style="--padding-start: 5px;" lines="none" color="secondary" class="itemStatus">
-                    <ion-icon slot="start" style="color: darkred" *ngIf="department.item[0] && (department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)" name="ios-remove-circle"></ion-icon>
-                    <ion-icon slot="start" style="color: darkgreen" *ngIf="department.item[0] && department.department && (department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)" name="ios-contrast"></ion-icon>
-                    <ion-icon slot="start" style="color: darkgreen" *ngIf="!(department.item[0] && ((department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)) || department.item[0] && department.department && ((department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
+                    <ion-icon slot="start" style="color: darkred; -webkit-margin-end: 10px;" *ngIf="department.item[0] && (department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)" name="ios-remove-circle"></ion-icon>
+                    <ion-icon slot="start" style="color: darkgreen; -webkit-margin-end: 10px;" *ngIf="department.item[0] && department.department && (department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)" name="ios-contrast"></ion-icon>
+                    <ion-icon slot="start" style="color: darkgreen; -webkit-margin-end: 10px;" *ngIf="!(department.item[0] && ((department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)) || department.item[0] && department.department && ((department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
                     <ion-label text-wrap style="color: var(--ion-color-primary);">
                         {{ department.item[0] }}
-                        <span *ngIf="department.label && department.item[0] && department.label != department.item[0]" style="font-size: small" slot="end">{{ department.label }}</span>
-                        <span *ngIf="department.item[1]" style="color: black; font-size: small"><br>({{ department.item[1] }})</span>
+                        <span *ngIf="department.item[1]" style="color: black; font-size: small"><br>{{ department.item[1] }}</span>
                     </ion-label>
+                    <ion-note *ngIf="department.label && department.item[0] && department.label != department.item[0]" style="font-size: small" slot="end">{{ department.label }}</ion-note>
                 </ion-item>
             </ng-template>
         </ion-list>
@@ -139,4 +139,5 @@
             <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-search.noDetails"></app-hint-box>
         </div>
     </ion-list>
+    <br>
 </ion-content>
