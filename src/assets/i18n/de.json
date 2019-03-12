@@ -320,7 +320,8 @@
       "error": "Fehler",
       "website": "Website öffnen?",
       "redirect": "Weiterleitung",
-      "clearAll": "Alles entfernen?"
+      "clearAll": "Alles entfernen?",
+      "exportCalendar": "Kalender exportieren?"
     },
     "httpErrorStatus": {
       "unknown": "Unbekannter HTTP-Status",
@@ -339,7 +340,8 @@
     "contact-export-success": "Kontakt gespeichert!",
     "contact-export-fail": "Fehler beim Speichern des Kontaktes.",
     "contact-exists": "Kontakt existiert bereits.",
-    "deleteAllFavs": "Möchten Sie wirklich alle Ihre Favoriten entfernen?"
+    "deleteAllFavs": "Möchten Sie wirklich alle Ihre Favoriten entfernen?",
+    "exportCalendar": "Möchten Sie alle zukünftigen Veranstaltungen in Ihrem Kalender speichern?"
   },
   "university": {
     "location": {
@@ -396,6 +398,7 @@
   "placeholder": {
     "search": "Suchbegriff eingeben...",
     "username": "Benutzername (ohne @uni...)",
-    "password": "Passwort"
+    "password": "Passwort",
+    "calendarName": "Mobile.UP: Studium"
   }
 }

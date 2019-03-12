@@ -19,15 +19,15 @@
   </div>
 
   <div align="center" *ngIf="isLoaded">
-    <ion-row>
-      <ion-col>
+    <ion-row nowrap justify-content-center>
+      <ion-col size="auto">
         <ion-button size="small" expand="full" [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
         (click)="showBasicCalendar = !showBasicCalendar;">{{ "page.mensa.date" | translate }}  <ion-icon slot="end" name="arrow-dropdown"></ion-icon></ion-button>
       </ion-col>
-      <ion-col>
+      <ion-col size="auto">
         <ion-button size="small" expand="full" [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">{{ "page.mensa.vegan" | translate }}</ion-button>
       </ion-col>
-      <ion-col>
+      <ion-col size="auto">
         <ion-button size="small" expand="full" [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">{{ "page.mensa.vegetarian" | translate }}</ion-button>
       </ion-col>
     </ion-row>

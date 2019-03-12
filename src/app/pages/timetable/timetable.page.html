@@ -1,6 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-chip *ngIf="isMobile" slot="end" outline="true" (click)="exportPrompt()">
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Export</ion-label>
+    </ion-chip>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.timetable.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -17,35 +21,41 @@
   </div>
 
   <span *ngIf="!noUserRights && !isLoading">
-      <div align="center">
-        <ion-row>
-          <ion-col>
-            <ion-button [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('month')">
+      <ion-grid>
+        <ion-row nowrap justify-content-center align-items-center>
+          <ion-col size="auto">
+            <ion-button expand="full" [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('month')">
               {{ "page.timetable.month" | translate }}
             </ion-button>
-            <ion-button [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('week')">
+          </ion-col>
+          <ion-col size="auto">
+            <ion-button expand="full" [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('week')">
               {{ "page.timetable.week" | translate }}
             </ion-button>
-            <ion-button [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('day')">
+          </ion-col>
+          <ion-col size="auto">
+            <ion-button expand="full" [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('day')">
               {{ "page.timetable.day" | translate }}
             </ion-button>
           </ion-col>
         </ion-row>
-      </div>
+      </ion-grid>
 
-      <div align="center">
-        <ion-row>
-          <ion-col size="2">
-            <ion-button fill="clear" (click)="swipePrevious()"><ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon></ion-button>
-          </ion-col>
-          <ion-col size="8">
-            <h6 id="title">{{ currentTitle }}</h6>
-          </ion-col>
-          <ion-col size="2">
-            <ion-button fill="clear" (click)="swipeNext()"><ion-icon slot="icon-only" name="arrow-dropright"></ion-icon></ion-button>
-          </ion-col>
-        </ion-row>
-      </div>
+      <ion-grid>
+        <div align="center">
+          <ion-row nowrap>
+            <ion-col size="2">
+              <ion-button fill="clear" (click)="swipePrevious()"><ion-icon slot="icon-only" name="arrow-dropleft"></ion-icon></ion-button>
+            </ion-col>
+            <ion-col size="8">
+              <h6 id="title">{{ currentTitle }}</h6>
+            </ion-col>
+            <ion-col size="2">
+              <ion-button fill="clear" (click)="swipeNext()"><ion-icon slot="icon-only" name="arrow-dropright"></ion-icon></ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
 
       <!-- custom template for event in weekview -->
       <ng-template #templateWeekViewEvent let-displayEvent="displayEvent">

@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "^7.2.8",
     "@angular/router": "^7.2.8",
     "@ionic-native/app-availability": "^5.2.0",
+    "@ionic-native/calendar": "^5.2.0",
     "@ionic-native/call-number": "^5.2.0",
     "@ionic-native/contacts": "^5.2.0",
     "@ionic-native/core": "^5.2.0",
@@ -51,6 +52,7 @@
     "cordova-ios": "5.0.0",
     "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-appavailability": "^0.4.2",
+    "cordova-plugin-calendar": "^5.1.4",
     "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-dialogs": "^2.0.1",
@@ -143,7 +145,10 @@
         "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
       },
       "call-number": {},
-      "cordova-plugin-geolocation": {}
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-calendar": {
+        "CALENDAR_USAGE_DESCRIPTION": "This app uses your calendar to export your timetable"
+      }
     },
     "platforms": [
       "ios",

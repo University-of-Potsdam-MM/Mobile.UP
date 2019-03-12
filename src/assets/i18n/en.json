@@ -320,7 +320,8 @@
       "error": "Error",
       "website": "Open website?",
       "redirect": "Redirect",
-      "clearAll": "Clear all?"
+      "clearAll": "Clear all?",
+      "exportCalendar": "Export calendar?"
     },
     "httpErrorStatus": {
       "unknown": "Unknown HTTP status",
@@ -339,7 +340,8 @@
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",
-    "deleteAllFavs": "Do you really want to remove all of your favorites?"
+    "deleteAllFavs": "Do you really want to remove all of your favorites?",
+    "exportCalendar": "Do you want to save all future events to your calendar?"
   },
   "university": {
     "location": {
@@ -396,6 +398,7 @@
   "placeholder": {
     "search": "Search...",
     "username": "Username (without @uni...)",
-    "password": "Password"
+    "password": "Password",
+    "calendarName": "Mobile.UP: Studies"
   }
 }
