@@ -375,7 +375,8 @@ export class LibrarySearchPage implements OnInit {
             .append('recordSchema', 'mods');
 
           const request = this.http.get(url, {headers: headers, params: params, responseType: 'text'});
-          this.cache.loadFromObservable('libraryFavoriteResource' + query, request).subscribe(res => {
+          const ttl = 60 * 60 * 24 * 7; // TTL in seconds for one week
+          this.cache.loadFromObservable('libraryFavoriteResource' + query, request, 'libraryFavoriteResource', ttl).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {
               let tmpRes, tmpList, numberOfRecords;
               if (data['zs:searchRetrieveResponse']) {
@@ -418,7 +419,7 @@ export class LibrarySearchPage implements OnInit {
                       }
                     }
                   }
-                }
+                } else { this.allFavorites.push(tmp[i]); }
               }
 
               this.updatedFavorites++;
@@ -436,6 +437,7 @@ export class LibrarySearchPage implements OnInit {
             this.updateComplete(tmp.length, refresher);
           });
         } else {
+          this.allFavorites.push(tmp[i]);
           this.updatedFavorites++;
           this.updateComplete(tmp.length, refresher);
           console.log('[Library]: No identifier or title found.');
@@ -457,12 +459,8 @@ export class LibrarySearchPage implements OnInit {
       if (fav1 && fav1.titleInfo) {
         const titleInfo = utils.convertToArray(fav1.titleInfo)[0];
 
-        if (titleInfo.nonSort) {
-          wholeTitle = titleInfo.nonSort;
-        }
-
         if (titleInfo.title) {
-          wholeTitle = wholeTitle + ' ' + titleInfo.title;
+          wholeTitle = titleInfo.title;
         }
 
         if (titleInfo.subTitle) {
@@ -473,12 +471,8 @@ export class LibrarySearchPage implements OnInit {
       if (fav2 && fav2.titleInfo) {
         const titleInfo = utils.convertToArray(fav2.titleInfo)[0];
 
-        if (titleInfo.nonSort) {
-          wholeTitle2 = titleInfo.nonSort;
-        }
-
         if (titleInfo.title) {
-          wholeTitle2 = wholeTitle2 + ' ' + titleInfo.title;
+          wholeTitle2 = titleInfo.title;
         }
 
         if (titleInfo.subTitle) {
