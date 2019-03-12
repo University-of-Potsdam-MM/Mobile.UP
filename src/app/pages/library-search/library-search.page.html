@@ -10,7 +10,10 @@
         <ion-label>{{ "button.search" | translate }}</ion-label>
       </ion-segment-button>
       <ion-segment-button value="favorites" (click)="activeSegment = 'favorites'">
-        <ion-label>{{ "button.favorites" | translate }}</ion-label>
+        <ion-label>
+            {{ "button.favorites" | translate }}
+            <ion-badge *ngIf="isLoadedFavorites && allFavorites.length > 0" slot="end" mode="ios">{{ allFavorites.length }}</ion-badge>
+        </ion-label>
       </ion-segment-button>
     </ion-segment>
     <ion-searchbar
@@ -22,7 +25,14 @@
 </ion-header>
 
 <ion-content (ionScroll)="onScrollListener()">
+  <ion-refresher *ngIf="activeSegment === 'favorites'" (ionRefresh)="checkFavorites($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" padding>
+    <ion-spinner></ion-spinner>
+  </div>
+  <div align="center" *ngIf="!isLoadedFavorites && activeSegment === 'favorites'" padding>
     <ion-spinner></ion-spinner>
   </div>
 
@@ -56,7 +66,7 @@
     </ion-infinite-scroll>
   </div>
 
-  <div *ngIf="activeSegment === 'favorites'">
+  <div *ngIf="isLoadedFavorites && activeSegment === 'favorites'">
     <ion-list *ngIf="displayedFavorites && displayedFavorites.length > 0">
       <span *ngFor="let book of displayedFavorites; let i = index">
         <ion-item-sliding>

@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { CacheService } from 'ionic-cache';
 
 @Component({
   selector: 'app-library-search',
@@ -28,10 +29,12 @@ export class LibrarySearchPage implements OnInit {
   activeSegment = 'search';
 
   isLoaded = false;
+  isLoadedFavorites = false;
   bookList = [];
   displayedFavorites = [];
   allFavorites = [];
   numberOfRecords = '0';
+  updatedFavorites = 0;
 
   constructor(
     private connection: ConnectionService,
@@ -41,7 +44,8 @@ export class LibrarySearchPage implements OnInit {
     private modalCtrl: ModalController,
     private translate: TranslateService,
     private alert: AlertService,
-    private storage: Storage
+    private storage: Storage,
+    private cache: CacheService
   ) { }
 
   ngOnInit() {
@@ -100,14 +104,13 @@ export class LibrarySearchPage implements OnInit {
               tmpList = tmp['zs:records']['zs:record'];
             }
 
-            if (this.numberOfRecords === '1') {
-              tmpList = utils.convertToArray(tmpList);
-            }
-
             if (tmp['zs:numberOfRecords']) {
               this.numberOfRecords = tmp['zs:numberOfRecords'];
             }
 
+            if (this.numberOfRecords === '1') {
+              tmpList = utils.convertToArray(tmpList);
+            }
 
             if (Array.isArray(tmpList)) {
               for (i = 0; i < tmpList.length; i++) {
@@ -118,6 +121,10 @@ export class LibrarySearchPage implements OnInit {
             // console.log(this.numberOfRecords);
             // console.log(this.bookList);
 
+            this.isLoaded = true;
+            if (infiniteScroll) { infiniteScroll.target.complete(); }
+          }, error => {
+            console.log(error);
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           });
@@ -226,15 +233,12 @@ export class LibrarySearchPage implements OnInit {
    */
   makeFavorite(book, slidingItem: IonItemSliding, disableHints?: boolean) {
     if (!utils.isInArray(this.displayedFavorites, book)) {
-      // reverse, so that newest favs are on top
-      this.displayedFavorites = this.displayedFavorites.reverse();
       this.displayedFavorites.push(book);
-      this.displayedFavorites = this.displayedFavorites.reverse();
+      this.displayedFavorites = this.sortFavorites(this.displayedFavorites);
 
       if (!utils.isInArray(this.allFavorites, book)) {
-        this.allFavorites = this.allFavorites.reverse();
         this.allFavorites.push(book);
-        this.allFavorites = this.allFavorites.reverse();
+        this.allFavorites = this.sortFavorites(this.allFavorites);
       }
 
       if (!disableHints) {
@@ -262,26 +266,43 @@ export class LibrarySearchPage implements OnInit {
     let i;
     const tmp = [];
     for (i = 0; i < this.allFavorites.length; i++) {
-      if (this.allFavorites[i] !== ads) {
+      if (JSON.stringify(this.allFavorites[i]) !== JSON.stringify(ads)) {
         tmp.push(this.allFavorites[i]);
       }
     }
 
     const tmp2 = [];
     for (i = 0; i < this.displayedFavorites.length; i++) {
-      if (this.displayedFavorites[i] !== ads) {
+      if (JSON.stringify(this.displayedFavorites[i]) !== JSON.stringify(ads)) {
         tmp2.push(this.displayedFavorites[i]);
       }
     }
 
     this.allFavorites = [];
-    this.allFavorites = tmp;
+    this.allFavorites = this.sortFavorites(tmp);
     this.displayedFavorites = [];
-    this.displayedFavorites = tmp2;
+    this.displayedFavorites = this.sortFavorites(tmp2);
     if (!disableHints) {
       this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
     }
     this.storage.set('favoriteBooks', this.allFavorites);
+  }
+
+  updateComplete(tmpLength, refresher) {
+    if (tmpLength === this.updatedFavorites) {
+      console.log('[Library]: Updated favorites.');
+      this.allFavorites = this.sortFavorites(this.allFavorites);
+      this.displayedFavorites = this.sortFavorites(this.allFavorites);
+      this.isLoadedFavorites = true;
+      this.storage.set('favoriteBooks', this.allFavorites);
+      if (tmpLength > this.allFavorites.length) {
+        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+      }
+    }
+
+    if (refresher) {
+      refresher.target.complete();
+    }
   }
 
   /**
@@ -289,12 +310,186 @@ export class LibrarySearchPage implements OnInit {
    * @async
    * @description TODO: checks if favorites are still valid
    */
-  async checkFavorites() {
+  async checkFavorites(refresher?) {
     const tmp = await this.storage.get('favoriteBooks');
-    if (tmp) {
-      this.displayedFavorites = tmp;
-      this.allFavorites = tmp;
+    this.displayedFavorites = [];
+    this.allFavorites = [];
+    this.isLoadedFavorites = false;
+    this.updatedFavorites = 0;
+
+    if (refresher) {
+      this.cache.removeItems('libraryFavoriteResource*');
     }
+
+    if (tmp && tmp.length > 0) {
+      for (let i = 0; i < tmp.length; i++) {
+        // console.log(utils.convertToArray(tmp[i].identifier));
+        const ident = utils.convertToArray(tmp[i].identifier);
+        let query = '';
+
+        for (let p = 0; p < ident.length; p++) {
+          if (ident[p]._) {
+            query = ident[p]._;
+            break;
+          }
+        }
+
+        if (query === '') {
+          if (tmp[i] && tmp[i].titleInfo) {
+            let wholeTitle = '';
+            const titleInfo = utils.convertToArray(tmp[i].titleInfo)[0];
+
+            if (titleInfo.nonSort) {
+              wholeTitle = titleInfo.nonSort;
+            }
+
+            if (titleInfo.title) {
+              wholeTitle = wholeTitle + ' ' + titleInfo.title;
+            }
+
+            if (titleInfo.subTitle) {
+              wholeTitle = wholeTitle + ' ' + titleInfo.subTitle;
+            }
+
+            query = wholeTitle.trim();
+          }
+        } else {
+          query = query.split('(')[0].trim();
+        }
+
+        if (query.trim() !== '') {
+          const url = this.config.webservices.endpoint.library;
+
+          const headers = new HttpHeaders()
+            .append('Authorization', this.config.webservices.apiToken);
+
+          const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
+            .append('operation', 'searchRetrieve')
+            .append('query', query.trim())
+            .append('startRecord', '1')
+            .append('maximumRecords', '5')
+            .append('recordSchema', 'mods');
+
+          const request = this.http.get(url, {headers: headers, params: params, responseType: 'text'});
+          this.cache.loadFromObservable('libraryFavoriteResource' + query, request).subscribe(res => {
+            this.parseXMLtoJSON(res).then(data => {
+              let tmpRes, tmpList, numberOfRecords;
+              if (data['zs:searchRetrieveResponse']) {
+                tmpRes = data['zs:searchRetrieveResponse'];
+              }
+
+              if (tmpRes['zs:records']) {
+                tmpList = tmpRes['zs:records']['zs:record'];
+              }
+
+              if (tmpRes['zs:numberOfRecords']) {
+                numberOfRecords = tmpRes['zs:numberOfRecords'];
+              }
+
+              tmpList = utils.convertToArray(tmpList);
+              if (numberOfRecords === '1') {
+                for (let j = 0; j < tmpList.length; j++) {
+                  this.allFavorites.push(tmpList[j]['zs:recordData']['mods']);
+                  break;
+                }
+              } else {
+                if (tmp[i] && tmp[i].identifier) {
+                  // console.log('checking identifier');
+                  for (let j = 0; j < tmpList.length; j++ ) {
+                    if (tmpList[j] && tmpList[j]['zs:recordData']['mods'].identifier) {
+                      if (JSON.stringify(tmp[i].identifier) === JSON.stringify(tmpList[j]['zs:recordData']['mods'].identifier)) {
+                        this.allFavorites.push(tmpList[j]['zs:recordData']['mods']);
+                        break;
+                      }
+                    }
+                  }
+                } else if (tmp[i] && tmp[i].titleInfo) {
+                  // console.log('checking titleinfo');
+                  for (let n = 0; n < tmpList.length; n++) {
+                    if (tmpList[n] && tmpList[n]['zs:recordData']['mods'].titleInfo) {
+                      if (JSON.stringify(utils.convertToArray(tmp[i].titleInfo)[0]) ===
+                      JSON.stringify(utils.convertToArray(tmpList[n]['zs:recordData']['mods'].titleInfo)[0])) {
+                        this.allFavorites.push(tmpList[n]['zs:recordData']['mods']);
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+
+              this.updatedFavorites++;
+              this.updateComplete(tmp.length, refresher);
+            }, error => {
+              this.allFavorites.push(tmp[i]);
+              this.updatedFavorites++;
+              console.log(error);
+              this.updateComplete(tmp.length, refresher);
+            });
+          }, error => {
+            this.allFavorites.push(tmp[i]);
+            this.updatedFavorites++;
+            console.log(error);
+            this.updateComplete(tmp.length, refresher);
+          });
+        } else {
+          this.updatedFavorites++;
+          this.updateComplete(tmp.length, refresher);
+          console.log('[Library]: No identifier or title found.');
+        }
+      }
+    } else {
+      this.isLoadedFavorites = true;
+      if (refresher) {
+        refresher.target.complete();
+      }
+    }
+  }
+
+  sortFavorites(favoritesArray) {
+    favoritesArray = utils.convertToArray(favoritesArray);
+    return favoritesArray.sort((fav1, fav2) => {
+      let wholeTitle = '';
+      let wholeTitle2 = '';
+      if (fav1 && fav1.titleInfo) {
+        const titleInfo = utils.convertToArray(fav1.titleInfo)[0];
+
+        if (titleInfo.nonSort) {
+          wholeTitle = titleInfo.nonSort;
+        }
+
+        if (titleInfo.title) {
+          wholeTitle = wholeTitle + ' ' + titleInfo.title;
+        }
+
+        if (titleInfo.subTitle) {
+          wholeTitle = wholeTitle + ' ' + titleInfo.subTitle;
+        }
+      }
+
+      if (fav2 && fav2.titleInfo) {
+        const titleInfo = utils.convertToArray(fav2.titleInfo)[0];
+
+        if (titleInfo.nonSort) {
+          wholeTitle2 = titleInfo.nonSort;
+        }
+
+        if (titleInfo.title) {
+          wholeTitle2 = wholeTitle2 + ' ' + titleInfo.title;
+        }
+
+        if (titleInfo.subTitle) {
+          wholeTitle2 = wholeTitle2 + ' ' + titleInfo.subTitle;
+        }
+      }
+
+      if (wholeTitle < wholeTitle2) {
+        return -1;
+      } else if (wholeTitle > wholeTitle2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
 }

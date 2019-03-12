@@ -10,7 +10,10 @@
         <ion-label>{{ "button.search" | translate }}</ion-label>
       </ion-segment-button>
       <ion-segment-button value="favorites" (click)="activeSegment = 'favorites'">
-        <ion-label>{{ "button.favorites" | translate }}</ion-label>
+        <ion-label>
+          {{ "button.favorites" | translate }}
+          <ion-badge *ngIf="isLoadedFavorites && allFavorites.length > 0" slot="end" mode="ios">{{ allFavorites.length }}</ion-badge>
+        </ion-label>
       </ion-segment-button>
     </ion-segment>
     <ion-searchbar

@@ -28,6 +28,7 @@ export class PracticePage {
   isLoaded;
   error: HttpErrorResponse;
   itemsShown = 0;
+  isLoadedFavorites = false;
   query;
   activeSegment = 'search';
 
@@ -428,6 +429,7 @@ export class PracticePage {
       }
     }
 
+    this.isLoadedFavorites = true;
     this.displayedFavorites = this.allFavorites;
     this.storage.set('favoriteJobs', this.allFavorites);
   }
