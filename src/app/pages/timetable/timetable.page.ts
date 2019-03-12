@@ -11,6 +11,8 @@ import { UserSessionService } from 'src/app/services/user-session/user-session.s
 import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import * as dLoop from 'delayed-loop';
 
 @Component({
   selector: 'app-timetable',
@@ -30,6 +32,8 @@ export class TimetablePage {
 
   isMobile;
   modalOpen = false;
+  exportFinished = true;
+  exportedEvents = 0;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
@@ -50,7 +54,6 @@ export class TimetablePage {
     dateFormatter: undefined
   };
 
-
   constructor(
     private platform: Platform,
     private connection: ConnectionService,
@@ -61,7 +64,8 @@ export class TimetablePage {
     private navCtrl: NavController,
     private sanitizer: DomSanitizer,
     private alertCtrl: AlertController,
-    private calendar: Calendar
+    private calendar: Calendar,
+    private alert: AlertService
   ) { }
 
   async ionViewWillEnter() {
@@ -273,8 +277,43 @@ export class TimetablePage {
         },
         {
           text: this.translate.instant('button.yes'),
-          handler: () => {
-            this.exportCalendar();
+          handler: async () => {
+            const existingCalendars = await this.calendar.listCalendars();
+            let found = false;
+            if (Array.isArray(existingCalendars)) {
+              for (let i = 0; i < existingCalendars.length; i++) {
+                if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
+                  found = true;
+                  break;
+                }
+              }
+            }
+            if (found) {
+              const alert2 = await this.alertCtrl.create({
+                header: this.translate.instant('hints.type.hint'),
+                message: this.translate.instant('alert.calendar-exists'),
+                buttons: [
+                  {
+                    text: this.translate.instant('button.keep'),
+                    handler: () => {
+                      this.exportCalendar();
+                    }
+                  },
+                  {
+                    text: this.translate.instant('button.delete'),
+                    handler: () => {
+                      this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
+                        this.exportCalendar();
+                      }, error => {
+                        this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+                        console.log(error);
+                      });
+                    }
+                  }
+                ]
+              });
+              alert2.present();
+            } else { this.exportCalendar(); }
           }
         }
       ]
@@ -285,56 +324,72 @@ export class TimetablePage {
   exportCalendar() {
     const calendarName = this.translate.instant('placeholder.calendarName');
     this.calendar.createCalendar(calendarName).then(() => {
-      for (let j = 0; j < this.eventSource.length; j++) {
-        if (this.eventSource[j].title && this.eventSource[j].startTime && this.eventSource[j].endTime) {
-          const title = this.eventSource[j].title;
-          const startDate = this.eventSource[j].startTime;
-          const endDate = this.eventSource[j].endTime;
+      this.exportFinished = false;
+      this.exportedEvents = 0;
+
+      const loop = dLoop(this.eventSource, (itm: IEventObject, idx, fin) => {
+        if (itm.title && itm.startTime && itm.endTime) {
+          const title = itm.title;
+          const startDate = itm.startTime;
+          const endDate = itm.endTime;
 
           let eventLocation = '';
-          if (this.eventSource[j].eventDetails && this.eventSource[j].eventDetails.location) {
-            eventLocation = eventLocation + this.eventSource[j].eventDetails.location;
-          }
-
-          if (this.eventSource[j].eventDetails && this.eventSource[j].eventDetails.building) {
-            if (eventLocation !== '') {
-              eventLocation = eventLocation + ': ';
+          if (itm.eventDetails) {
+            if (itm.eventDetails.location) {
+              eventLocation += itm.eventDetails.location;
             }
 
-            eventLocation = eventLocation + this.eventSource[j].eventDetails.building;
+            if (itm.eventDetails.building) {
+              if (eventLocation !== '') {
+                eventLocation += ': ';
+              }
 
-            if (this.eventSource[j].eventDetails.room) {
-              eventLocation = eventLocation + '.' + this.eventSource[j].eventDetails.room;
+              eventLocation += itm.eventDetails.building;
+
+              if (itm.eventDetails.room) {
+                eventLocation += '.' + itm.eventDetails.room;
+              }
             }
           }
 
           let notes = '';
-          if (this.eventSource[j].courseDetails && this.eventSource[j].courseDetails.courseType) {
-            notes = notes + this.eventSource[j].courseDetails.courseType;
+          if (itm.courseDetails && itm.courseDetails.courseType) {
+            notes += itm.courseDetails.courseType;
           }
 
           const calOptions = {
-              // calendarId: null,
-              calendarName: calendarName,
-              // firstReminderMinutes: 60,
-              // recurrence: null,
-              // recurrenceEndDate: null,
-              // recurrenceInterval: 1,
-              // secondReminderMinutes: null,
-              // url: null
+            // calendarId: null,
+            calendarName: calendarName,
+            // firstReminderMinutes: 60,
+            // recurrence: null,
+            // recurrenceEndDate: null,
+            // recurrenceInterval: 1,
+            // secondReminderMinutes: null,
+            // url: null
           };
 
           this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
             console.log('[Timetable]: Successfully exported event');
+            this.exportedEvents++;
+            fin();
           }, error => {
             console.log('[Timetable]: Error creating event');
             console.log(error);
+            this.exportedEvents++;
+            this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
+            fin();
           });
         }
-      }
+      });
+
+      loop.then(() => {
+        this.exportFinished = true;
+        this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+      });
     }, error => {
       console.log('[Timetable]: Error creating calendar');
       console.log(error);
+      this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
     });
   }
 
