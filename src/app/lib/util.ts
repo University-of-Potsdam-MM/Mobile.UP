@@ -1,4 +1,4 @@
-import { HttpParameterCodec } from "@angular/common/http";
+import { HttpParameterCodec } from '@angular/common/http';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -24,10 +24,9 @@ export module utils {
    * @returns {boolean} whether value in array
    */
   export function isInArray(array, value): boolean {
-    var i;
-    var found = false;
-    for (i = 0; i < array.length; i++) {
-      if (array[i] == value) {
+    let found = false;
+    for (let i = 0; i < array.length; i++) {
+      if (JSON.stringify(array[i]) === JSON.stringify(value)) {
         found = true;
       }
     }
@@ -38,8 +37,10 @@ export module utils {
     if (Array.isArray(toConvert)) {
       return toConvert;
     } else {
-      var tmp = [];
-      tmp.push(toConvert);
+      const tmp = [];
+      if (toConvert) {
+        tmp.push(toConvert);
+      }
       return tmp;
     }
   }

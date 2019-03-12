@@ -129,18 +129,22 @@ export class BookDetailModalPage implements OnInit {
   setLocationData(data) {
     // console.log(data);
     this.bookLocationList = [];
-    if (data) {
+    if (data && data.document) {
       let i, j;
+      data.document = utils.convertToArray(data.document);
       for (i = 0; i < data.document.length; i++) {
-        for (j = 0; j < data.document[i].item.length; j ++) {
-          const locationModel = {
-            department:     this.getDepartment(data.document[i].item[j]),
-            departmentURL:  this.getDepartmentURL(data.document[i].item[j]),
-            label:          this.getLabel(data.document[i].item[j]),
-            item:           this.getItem(data.document[i].item[j]),
-            url:            this.getBookUrl(data.document[i].item[j])
-          };
-          this.bookLocationList.push(locationModel);
+        if (data.document[i].item) {
+          data.document[i].item = utils.convertToArray(data.document[i].item);
+          for (j = 0; j < data.document[i].item.length; j ++) {
+            const locationModel = {
+              department:     this.getDepartment(data.document[i].item[j]),
+              departmentURL:  this.getDepartmentURL(data.document[i].item[j]),
+              label:          this.getLabel(data.document[i].item[j]),
+              item:           this.getItem(data.document[i].item[j]),
+              url:            this.getBookUrl(data.document[i].item[j])
+            };
+            this.bookLocationList.push(locationModel);
+          }
         }
       }
     }
@@ -333,9 +337,14 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.identifier);
       let i;
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].$ && tmp[i].$.type === 'isbn' && tmp[i]._) {
+        if (tmp[i] && tmp[i]._) {
           if (!utils.isInArray(this.bookDetails.isbn, tmp[i]._)) {
-            this.bookDetails.isbn.push(tmp[i]._);
+            let identString;
+            if (tmp[i].$ && tmp[i].$.type) {
+              identString = tmp[i]._ + ' [' + tmp[i].$.type + ']';
+            } else { identString = tmp[i]._; }
+
+            this.bookDetails.isbn.push(identString);
             this.bookDetails.noDetails = false;
           }
         }

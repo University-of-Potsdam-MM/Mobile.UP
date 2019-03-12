@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content (ionScroll)="onScrollListener()">
+<ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-refresher (ionRefresh)="loadOpeningHours($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

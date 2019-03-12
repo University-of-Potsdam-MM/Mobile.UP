@@ -28,6 +28,7 @@ export class PersonSearchPage {
   noResults = false;
   triedRefreshingSession = false;
   cordova = false;
+  modalOpen = false;
 
   constructor(
     private platform: Platform,
@@ -70,7 +71,9 @@ export class PersonSearchPage {
       component: LoginPage,
     });
     modal.present();
+    this.modalOpen = true;
     modal.onWillDismiss().then(response => {
+      this.modalOpen = false;
       if (response.data.success) {
         this.ionViewWillEnter();
       } else {

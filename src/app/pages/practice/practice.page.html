@@ -10,19 +10,29 @@
         <ion-label>{{ "button.search" | translate }}</ion-label>
       </ion-segment-button>
       <ion-segment-button value="favorites" (click)="activeSegment = 'favorites'">
-        <ion-label>{{ "button.favorites" | translate }}</ion-label>
+        <ion-label>
+          {{ "button.favorites" | translate }}
+          <ion-badge *ngIf="isLoadedFavorites && allFavorites.length > 0" slot="end" mode="ios">{{ allFavorites.length }}</ion-badge>
+        </ion-label>
       </ion-segment-button>
     </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar>
     <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="filterItems(query)"
     debounce="750">
     </ion-searchbar>
+    <ion-button *ngIf="activeSegment === 'favorites'"
+    fill="clear" slot="end" (click)="clearAllFavorites()"
+    [disabled]="allFavorites.length === 0">
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-refresher (ionRefresh)="loadData($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

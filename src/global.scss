@@ -133,6 +133,10 @@ ion-card {
   -webkit-box-shadow:none!important;
 }
 
+ion-content.modalOpened {
+  --overflow: hidden;
+}
+
 .calendar {
   hyphens: auto!important;
 

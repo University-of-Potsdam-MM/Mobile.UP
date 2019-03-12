@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
-import { Platform, NavController, IonItemSliding, ModalController } from '@ionic/angular';
+import { Platform, NavController, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,8 +28,10 @@ export class PracticePage {
   isLoaded;
   error: HttpErrorResponse;
   itemsShown = 0;
+  isLoadedFavorites = false;
   query;
   activeSegment = 'search';
+  modalOpen = false;
 
   constructor(
     private storage: Storage,
@@ -42,7 +44,8 @@ export class PracticePage {
     private navCtrl: NavController,
     private chRef: ChangeDetectorRef,
     private alert: AlertService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) { }
 
   ionViewWillEnter() {
@@ -331,6 +334,7 @@ export class PracticePage {
       componentProps: { ADS: ads, isFavorite: isFavorite }
     });
     modal.present();
+    this.modalOpen = true;
     const result = await modal.onWillDismiss();
     if (isFavorite !== result.data.isFavoriteNew) {
       if (result.data.isFavoriteNew) {
@@ -339,6 +343,7 @@ export class PracticePage {
         this.removeFavorite(ads, true);
       }
     }
+    this.modalOpen = false;
   }
 
   /**
@@ -428,6 +433,7 @@ export class PracticePage {
       }
     }
 
+    this.isLoadedFavorites = true;
     this.displayedFavorites = this.allFavorites;
     this.storage.set('favoriteJobs', this.allFavorites);
   }
@@ -451,6 +457,27 @@ export class PracticePage {
       this.itemsShown += j;
       infiniteScroll.target.complete();
     }, 500);
+  }
+
+  async clearAllFavorites() {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('alert.title.clearAll'),
+      message: this.translate.instant('alert.deleteAllFavs'),
+      buttons: [
+        {
+          text: this.translate.instant('button.no'),
+        },
+        {
+          text: this.translate.instant('button.yes'),
+          handler: () => {
+            this.displayedFavorites = [];
+            this.allFavorites = [];
+            this.storage.set('favoriteJobs', this.allFavorites);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

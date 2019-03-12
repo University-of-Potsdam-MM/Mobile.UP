@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding>
+<ion-content no-padding [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
 
   <div align="center" *ngIf="isLoading && !noUserRights" padding>
     <ion-spinner></ion-spinner>

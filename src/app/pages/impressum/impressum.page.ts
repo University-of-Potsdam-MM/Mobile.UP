@@ -13,6 +13,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 export class ImpressumPage implements OnInit {
 
   config: IConfig;
+  modalOpen = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -51,7 +52,10 @@ export class ImpressumPage implements OnInit {
       component: ImpressumModalPage,
       componentProps: { header: this.translate.instant(pageHeader), text: pageText }
     });
-    return await modal.present();
+    modal.present();
+    this.modalOpen = true;
+    await modal.onDidDismiss();
+    this.modalOpen = false;
   }
 
 }

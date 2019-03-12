@@ -28,6 +28,7 @@ export class TimetablePage {
   isLoading = true;
 
   isMobile = true;
+  modalOpen = false;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
@@ -101,7 +102,9 @@ export class TimetablePage {
       component: LoginPage,
     });
     modal.present();
+    this.modalOpen = true;
     modal.onWillDismiss().then(response => {
+      this.modalOpen = false;
       if (response.data.success) {
         this.ionViewWillEnter();
       } else {
@@ -179,6 +182,9 @@ export class TimetablePage {
         componentProps: { events: [event], date: event.startTime }
       });
       eventModal.present();
+      this.modalOpen = true;
+      await eventModal.onDidDismiss();
+      this.modalOpen = false;
     }
   }
 
