@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, ModalController, IonItemSliding } from '@ionic/angular';
+import { Platform, ModalController, IonItemSliding, AlertController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
@@ -45,7 +45,8 @@ export class LibrarySearchPage implements OnInit {
     private translate: TranslateService,
     private alert: AlertService,
     private storage: Storage,
-    private cache: CacheService
+    private cache: CacheService,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -490,6 +491,27 @@ export class LibrarySearchPage implements OnInit {
         return 0;
       }
     });
+  }
+
+  async clearAllFavorites() {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('alert.title.clearAll'),
+      message: this.translate.instant('alert.deleteAllFavs'),
+      buttons: [
+        {
+          text: this.translate.instant('button.no'),
+        },
+        {
+          text: this.translate.instant('button.yes'),
+          handler: () => {
+            this.displayedFavorites = [];
+            this.allFavorites = [];
+            this.storage.set('favoriteBooks', this.allFavorites);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

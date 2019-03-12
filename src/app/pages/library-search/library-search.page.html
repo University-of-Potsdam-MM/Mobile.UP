@@ -16,11 +16,18 @@
         </ion-label>
       </ion-segment-button>
     </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar>
     <ion-searchbar
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLibrary(true, $event)"
     debounce="750">
     </ion-searchbar>
+    <ion-button *ngIf="activeSegment === 'favorites'"
+    fill="clear" slot="end" (click)="clearAllFavorites()"
+    [disabled]="allFavorites.length === 0">
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 

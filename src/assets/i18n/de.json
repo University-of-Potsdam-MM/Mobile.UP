@@ -319,7 +319,8 @@
       "httpError": "HTTP-Fehler",
       "error": "Fehler",
       "website": "Website öffnen?",
-      "redirect": "Weiterleitung"
+      "redirect": "Weiterleitung",
+      "clearAll": "Alles entfernen?"
     },
     "httpErrorStatus": {
       "unknown": "Unbekannter HTTP-Status",
@@ -337,7 +338,8 @@
     "redirect-website-app": "Auf externe Webseite oder App weiterleiten?",
     "contact-export-success": "Kontakt gespeichert!",
     "contact-export-fail": "Fehler beim Speichern des Kontaktes.",
-    "contact-exists": "Kontakt existiert bereits."
+    "contact-exists": "Kontakt existiert bereits.",
+    "deleteAllFavs": "Möchten Sie wirklich alle Ihre Favoriten entfernen?"
   },
   "university": {
     "location": {
