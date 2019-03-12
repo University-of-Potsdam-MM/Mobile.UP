@@ -283,7 +283,7 @@ export class PracticePage {
       if (query) {
         this.filteredList = jquery.grep(
           this.filteredList,
-          (ADS1, index) => {
+          (ADS1) => {
             return this.contains(ADS1.title, query) || this.contains(ADS1.firm, query);
           }
         );
@@ -300,7 +300,7 @@ export class PracticePage {
 
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
-          (ADS2, index) => {
+          (ADS2) => {
             return this.contains(ADS2.title, query) || this.contains(ADS2.firm, query);
           }
         );
@@ -323,11 +323,21 @@ export class PracticePage {
    * @param {ADS} ads     ads-item to be passed to detail page
    */
   async itemSelected(ads: ADS) {
+    const isFavorite = utils.isInArray(this.allFavorites, ads);
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: DetailedPracticeModalPage,
-      componentProps: { ADS: ads }
+      componentProps: { ADS: ads, isFavorite: isFavorite }
     });
-    return await modal.present();
+    modal.present();
+    const result = await modal.onWillDismiss();
+    if (isFavorite !== result.data.isFavoriteNew) {
+      if (result.data.isFavoriteNew) {
+        this.makeFavorite(ads, undefined, true);
+      } else {
+        this.removeFavorite(ads, true);
+      }
+    }
   }
 
   /**
@@ -336,21 +346,27 @@ export class PracticePage {
    * @param {ADS} ads
    * @param {ItemSliding} slidingItem
    */
-  makeFavorite(ads: ADS, slidingItem: IonItemSliding) {
+  makeFavorite(ads: ADS, slidingItem: IonItemSliding, disableHints?: boolean) {
     if (!utils.isInArray(this.displayedFavorites, ads)) {
       this.displayedFavorites.push(ads);
 
       if (!utils.isInArray(this.allFavorites, ads)) {
         this.allFavorites.push(ads);
       }
-      this.presentToast(this.translate.instant('hints.text.favAdded'));
+      if (!disableHints) {
+        this.presentToast(this.translate.instant('hints.text.favAdded'));
+      }
     } else {
-      this.presentToast(this.translate.instant('hints.text.favExists'));
+      if (!disableHints) {
+        this.presentToast(this.translate.instant('hints.text.favExists'));
+      }
     }
 
     this.storage.set('favoriteJobs', this.allFavorites);
 
-    slidingItem.close();
+    if (slidingItem) {
+      slidingItem.close();
+    }
   }
 
   /**
@@ -358,7 +374,7 @@ export class PracticePage {
    * @description removes favorites
    * @param {ADS} ads
    */
-  removeFavorite(ads: ADS) {
+  removeFavorite(ads: ADS, disableHints?: boolean) {
     let i;
     const tmp: ADS[] = [];
     for (i = 0; i < this.allFavorites.length; i++) {
@@ -377,7 +393,9 @@ export class PracticePage {
     this.allFavorites = tmp;
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
-    this.presentToast(this.translate.instant('hints.text.favRemoved'));
+    if (!disableHints) {
+      this.presentToast(this.translate.instant('hints.text.favRemoved'));
+    }
     this.storage.set('favoriteJobs', this.allFavorites);
   }
 

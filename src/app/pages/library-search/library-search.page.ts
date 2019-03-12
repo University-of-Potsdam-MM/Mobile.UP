@@ -200,12 +200,21 @@ export class LibrarySearchPage implements OnInit {
   }
 
   async bookDetailView(book) {
+    const isFavorite = utils.isInArray(this.allFavorites, book);
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: BookDetailModalPage,
-      componentProps: { book: book }
+      componentProps: { book: book, isFavorite: isFavorite }
     });
     modal.present();
+    const result = await modal.onWillDismiss();
+    if (isFavorite !== result.data.isFavoriteNew) {
+      if (result.data.isFavoriteNew) {
+        this.makeFavorite(book, undefined, true);
+      } else {
+        this.removeFavorite(book, true);
+      }
+    }
   }
 
   /**
@@ -228,7 +237,7 @@ export class LibrarySearchPage implements OnInit {
    * @param {ADS} ads
    * @param {ItemSliding} slidingItem
    */
-  makeFavorite(book, slidingItem: IonItemSliding) {
+  makeFavorite(book, slidingItem: IonItemSliding, disableHints?: boolean) {
     if (!utils.isInArray(this.displayedFavorites, book)) {
       // reverse, so that newest favs are on top
       this.displayedFavorites = this.displayedFavorites.reverse();
@@ -240,14 +249,21 @@ export class LibrarySearchPage implements OnInit {
         this.allFavorites.push(book);
         this.allFavorites = this.allFavorites.reverse();
       }
-      this.presentToast(this.translate.instant('hints.text.favAdded'));
+
+      if (!disableHints) {
+        this.presentToast(this.translate.instant('hints.text.favAdded'));
+      }
     } else {
-      this.presentToast(this.translate.instant('hints.text.favExists'));
+      if (!disableHints) {
+        this.presentToast(this.translate.instant('hints.text.favExists'));
+      }
     }
 
     this.storage.set('favoriteBooks', this.allFavorites);
 
-    slidingItem.close();
+    if (slidingItem) {
+      slidingItem.close();
+    }
   }
 
   /**
@@ -255,7 +271,7 @@ export class LibrarySearchPage implements OnInit {
    * @description removes favorites
    * @param {ADS} ads
    */
-  removeFavorite(ads) {
+  removeFavorite(ads, disableHints?: boolean) {
     let i;
     const tmp = [];
     for (i = 0; i < this.allFavorites.length; i++) {
@@ -275,7 +291,9 @@ export class LibrarySearchPage implements OnInit {
     this.allFavorites = tmp;
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
-    this.presentToast(this.translate.instant('hints.text.favRemoved'));
+    if (!disableHints) {
+      this.presentToast(this.translate.instant('hints.text.favRemoved'));
+    }
     this.storage.set('favoriteBooks', this.allFavorites);
   }
 
