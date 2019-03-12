@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, ModalController, ToastController, IonItemSliding } from '@ionic/angular';
+import { Platform, ModalController, IonItemSliding } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
@@ -12,6 +12,7 @@ import { utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'app-library-search',
@@ -39,7 +40,7 @@ export class LibrarySearchPage implements OnInit {
     private http: HttpClient,
     private modalCtrl: ModalController,
     private translate: TranslateService,
-    private toastCtrl: ToastController,
+    private alert: AlertService,
     private storage: Storage
   ) { }
 
@@ -218,20 +219,6 @@ export class LibrarySearchPage implements OnInit {
   }
 
   /**
-   * @name presentToast
-   * @param message
-   */
-  async presentToast(message) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      cssClass: 'toastPosition'
-    });
-    toast.present();
-  }
-
-  /**
    * @name makeFavorite
    * @description set favorite and save to storage
    * @param {ADS} ads
@@ -251,11 +238,11 @@ export class LibrarySearchPage implements OnInit {
       }
 
       if (!disableHints) {
-        this.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
       }
     } else {
       if (!disableHints) {
-        this.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
       }
     }
 
@@ -292,7 +279,7 @@ export class LibrarySearchPage implements OnInit {
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
     if (!disableHints) {
-      this.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
     }
     this.storage.set('favoriteBooks', this.allFavorites);
   }

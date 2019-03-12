@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import * as moment from 'moment';
@@ -8,6 +8,7 @@ import { WebIntentService } from 'src/app/services/web-intent/web-intent.service
 import { IConfig } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec, utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'book-modal-page',
@@ -47,7 +48,7 @@ export class BookDetailModalPage implements OnInit {
       private cache: CacheService,
       private http: HttpClient,
       private translate: TranslateService,
-      private toastCtrl: ToastController,
+      private alert: AlertService,
       public webIntent: WebIntentService // is used in the HTML
     ) {
   }
@@ -68,24 +69,10 @@ export class BookDetailModalPage implements OnInit {
     this.isFavorite = !this.isFavorite;
 
     if (!this.isFavorite) {
-      this.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
     } else {
-      this.presentToast(this.translate.instant('hints.text.favAdded'));
+      this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
     }
-  }
-
-  /**
-   * @name presentToast
-   * @param message
-   */
-  async presentToast(message) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      cssClass: 'toastPosition'
-    });
-    toast.present();
   }
 
   /**

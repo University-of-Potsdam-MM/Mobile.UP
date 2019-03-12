@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
-import { Platform, NavController, IonItemSliding, ToastController, ModalController } from '@ionic/angular';
+import { Platform, NavController, IonItemSliding, ModalController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { ADS, IConfig, IADSResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { utils } from 'src/app/lib/util';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'app-practice',
@@ -40,7 +41,7 @@ export class PracticePage {
     private translate: TranslateService,
     private navCtrl: NavController,
     private chRef: ChangeDetectorRef,
-    private toastCtrl: ToastController,
+    private alert: AlertService,
     private modalCtrl: ModalController
   ) { }
 
@@ -354,11 +355,11 @@ export class PracticePage {
         this.allFavorites.push(ads);
       }
       if (!disableHints) {
-        this.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
       }
     } else {
       if (!disableHints) {
-        this.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
       }
     }
 
@@ -394,7 +395,7 @@ export class PracticePage {
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
     if (!disableHints) {
-      this.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
     }
     this.storage.set('favoriteJobs', this.allFavorites);
   }
@@ -423,26 +424,12 @@ export class PracticePage {
       }
 
       if (tmp.length > this.allFavorites.length) {
-        this.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
       }
     }
 
     this.displayedFavorites = this.allFavorites;
     this.storage.set('favoriteJobs', this.allFavorites);
-  }
-
-  /**
-   * @name presentToast
-   * @param message
-   */
-  async presentToast(message) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      cssClass: 'toastPosition'
-    });
-    toast.present();
   }
 
   /**

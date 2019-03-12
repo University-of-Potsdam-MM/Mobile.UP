@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
@@ -26,7 +26,8 @@ export class AlertService {
   constructor(
     private alertCtrl: AlertController,
     private translate: TranslateService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastCtrl: ToastController
     ) { }
 
   /**
@@ -58,7 +59,21 @@ export class AlertService {
           ]
         });
 
-        this.currentAlert.present();
-      }
+      this.currentAlert.present();
     }
+  }
+
+  /**
+   * @name presentToast
+   * @param message
+   */
+  async presentToast(message) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+      cssClass: 'toastPosition'
+    });
+    toast.present();
+  }
 }
