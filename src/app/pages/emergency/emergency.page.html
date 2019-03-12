@@ -13,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScroll)="onScrollListener()">
+<ion-content no-padding (ionScrollStart)="onScrollListener()">
 
   <ion-refresher (ionRefresh)="loadEmergencyCalls($event)">
     <ion-refresher-content></ion-refresher-content>
