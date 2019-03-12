@@ -65,6 +65,7 @@ export class PersonSearchPage {
 
   async goToLogin() {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: LoginPage,
     });
     modal.present();

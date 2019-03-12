@@ -201,6 +201,7 @@ export class LibrarySearchPage implements OnInit {
 
   async bookDetailView(book) {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: BookDetailModalPage,
       componentProps: { book: book }
     });

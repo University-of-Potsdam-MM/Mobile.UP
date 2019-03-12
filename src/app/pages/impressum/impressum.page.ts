@@ -47,6 +47,7 @@ export class ImpressumPage implements OnInit {
     }
 
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: ImpressumModalPage,
       componentProps: { header: this.translate.instant(pageHeader), text: pageText }
     });

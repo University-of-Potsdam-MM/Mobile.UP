@@ -115,6 +115,7 @@ export class OpeningHoursPage implements OnInit {
 
   async itemSelected(item) {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: DetailedOpeningModalPage,
       componentProps: { item: item }
     });

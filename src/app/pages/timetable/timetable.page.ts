@@ -97,6 +97,7 @@ export class TimetablePage {
 
   async goToLogin() {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: LoginPage,
     });
     modal.present();
@@ -173,6 +174,7 @@ export class TimetablePage {
   async eventSelected(event: IEventObject) {
     if (this.calendarOptions.calendarMode !== 'month') {
       const eventModal = await this.modalCtrl.create({
+        backdropDismiss: false,
         component: EventModalPage,
         componentProps: { events: [event], date: event.startTime }
       });
