@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
-import { ToastController, Events } from '@ionic/angular';
+import { Events } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -20,7 +20,7 @@ export class RoomplanPage implements OnInit {
     private connection: ConnectionService,
     private http: HttpClient,
     private cache: CacheService,
-    private toastCtrl: ToastController,
+    private alert: AlertService,
     private translate: TranslateService,
     private alertProvider: AlertService,
     private swipeEvent: Events
@@ -336,7 +336,7 @@ export class RoomplanPage implements OnInit {
           }
 
           if (default_error !== '') {
-            this.presentToast(default_error);
+            this.alert.presentToast(default_error);
           }
 
           // sadly templates cannot parse maps,
@@ -380,19 +380,6 @@ export class RoomplanPage implements OnInit {
           alertTitleI18nKey: 'alert.title.error',
           messageI18nKey: `alert.httpErrorStatus.${error.status}`
         });
-      }
-    );
-  }
-
-  presentToast(default_error) {
-    this.translate.get(default_error).subscribe(
-      async (value) => {
-        const toast = await this.toastCtrl.create({
-          message: value,
-          duration: 6000,
-          position: 'middle',
-        });
-        toast.present();
       }
     );
   }

@@ -7,6 +7,8 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { IConfig } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec, utils } from 'src/app/lib/util';
+import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'book-modal-page',
@@ -24,6 +26,7 @@ export class BookDetailModalPage implements OnInit {
   isLoaded = false;
 
   @Input() book;
+  @Input() isFavorite;
   bookLocationList = [];
   shortAbstract = false;
   bookDetails = {
@@ -44,18 +47,32 @@ export class BookDetailModalPage implements OnInit {
       private modalCtrl: ModalController,
       private cache: CacheService,
       private http: HttpClient,
+      private translate: TranslateService,
+      private alert: AlertService,
       public webIntent: WebIntentService // is used in the HTML
     ) {
-  }
-
-  closeModal() {
-    this.modalCtrl.dismiss();
   }
 
   ngOnInit() {
     this.config = ConfigService.config;
     this.updateLocation();
     this.updateDetails();
+  }
+
+  closeModal() {
+    this.modalCtrl.dismiss({
+      'isFavoriteNew': this.isFavorite
+    });
+  }
+
+  favorite() {
+    this.isFavorite = !this.isFavorite;
+
+    if (!this.isFavorite) {
+      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+    } else {
+      this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+    }
   }
 
   /**

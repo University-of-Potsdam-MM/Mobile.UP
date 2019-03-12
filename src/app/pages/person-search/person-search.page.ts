@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController, NavController, ToastController } from '@ionic/angular';
+import { Platform, ModalController, NavController } from '@ionic/angular';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { LoginPage } from '../login/login.page';
-import { Contacts, Contact, ContactField, ContactName, IContactFindOptions } from '@ionic-native/contacts/ngx';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { IPerson, IConfig } from 'src/app/lib/interfaces';
 import { ISession } from 'src/app/services/login-provider/interfaces';
@@ -11,6 +11,7 @@ import { ConnectionService } from 'src/app/services/connection/connection.servic
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'app-person-search',
@@ -39,7 +40,7 @@ export class PersonSearchPage {
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
-    private toastCtrl: ToastController,
+    private alert: AlertService,
     private translate: TranslateService
   ) {
     if (this.platform.is('cordova')) {
@@ -65,6 +66,7 @@ export class PersonSearchPage {
 
   async goToLogin() {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: LoginPage,
     });
     modal.present();
@@ -251,7 +253,7 @@ export class PersonSearchPage {
         if (!contactFound) {
           if (contactID) { contact.id = contactID; }
           this.saveContact(contact);
-        } else { this.presentToast(this.translate.instant('alert.contact-exists')); }
+        } else { this.alert.presentToast(this.translate.instant('alert.contact-exists')); }
       }, error => {
         console.log('[Error]: While finding contacts...');
         console.log(error);
@@ -264,27 +266,13 @@ export class PersonSearchPage {
     contact.save().then(
       () => {
         console.log('Contact saved!', contact);
-        this.presentToast(this.translate.instant('alert.contact-export-success'));
+        this.alert.presentToast(this.translate.instant('alert.contact-export-success'));
       },
       (error: any) => {
         console.error('Error saving contact.', error);
-        this.presentToast(this.translate.instant('alert.contact-export-fail'));
+        this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
       }
     );
-  }
-
-  /**
-   * @name presentToast
-   * @param message
-   */
-  async presentToast(message) {
-    const toast = await this.toastCtrl.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      cssClass: 'toastPosition'
-    });
-    toast.present();
   }
 
   openMail(mail) {

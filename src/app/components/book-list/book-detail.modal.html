@@ -4,6 +4,10 @@
             <ion-icon style="color: black; font-size: x-large;" name="ios-arrow-back"></ion-icon>
         </ion-button>
         <ion-title>{{ "page.library-search.titleDetail" | translate }}</ion-title>
+        <ion-button slot="end" (click)="favorite()" fill="clear">
+            <ion-icon *ngIf="isFavorite" style="font-size: x-large;" name="star"></ion-icon>
+            <ion-icon *ngIf="!isFavorite" style="font-size: x-large;" name="star-outline"></ion-icon>
+        </ion-button>
     </ion-toolbar>
 </ion-header>
 

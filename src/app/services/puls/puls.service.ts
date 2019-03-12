@@ -263,6 +263,7 @@ export class PulsService {
     });
     alert.present();
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: LoginPage,
     });
     modal.present();

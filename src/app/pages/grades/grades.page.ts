@@ -59,6 +59,7 @@ export class GradesPage {
 
   async goToLogin() {
     const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
       component: LoginPage,
     });
     modal.present();
