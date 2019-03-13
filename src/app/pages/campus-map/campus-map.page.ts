@@ -22,6 +22,7 @@ export class CampusMapPage implements OnInit {
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
   layerGroups: {[name: string]: L.LayerGroup} = {};
+  searchableLayers: L.LayerGroup = L.layerGroup();
 
   @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
@@ -59,9 +60,8 @@ export class CampusMapPage implements OnInit {
     if (!this.map) { this.map = this.initializeLeafletMap(); }
 
     this.addGeoLocationButton();
-
-    // load geoJson data
     this.loadMapData();
+    this.addLeafletSearch();
 
     // after map is initialized use default campus
     this.settings.getSettingValue('campus').then(
@@ -69,6 +69,29 @@ export class CampusMapPage implements OnInit {
         this.changeCampus(campus);
       }
     );
+  }
+
+  /**
+   * @name addLeafletSearch
+   * @desc Adds the leaflet search control to the map. Will only work if
+   * this.searchableLayers is already populated with geoJSON objects.
+   */
+  addLeafletSearch() {
+    this.map.addControl(new L.Control['Search']({
+      layer: this.searchableLayers,
+      propertyName: 'searchProperty',
+      collapsed: false,
+      textErr: this.translate.instant('page.campus-map.no_results'),
+      textCancel: this.translate.instant('page.campus-map.cancel'),
+      textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
+      initial: false,
+      minLength: 3,
+      autoType: false // guess that would just annoy most users,
+      // buildTip: function(text: string, val) {
+      //   console.log(text, val);
+      //   return '<a href="#">'+text+'<em style="background:'+text+'; width:14px;height:14px;float:right"></em></a>';
+      // }
+    }));
   }
 
   /**
@@ -202,11 +225,8 @@ export class CampusMapPage implements OnInit {
    * @name loadMapData
    * @description loads campus map data
    */
-  async loadMapData() {
-
-    const mapData = await this.wsProvider.getMapData();
-
-    mapData.subscribe(
+  loadMapData() {
+    this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON);
@@ -278,8 +298,6 @@ export class CampusMapPage implements OnInit {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
-    const searchables = L.layerGroup();
-
     for (const obj of geoJSON) {
       // create correct title string beforehand so we don't have to do it twice
       const title = this.translate.instant(
@@ -302,7 +320,8 @@ export class CampusMapPage implements OnInit {
 
         const props = feature.properties;
 
-        props['searchProperty'] = `${props.Name}, ${props.description ? props.description : ''}`;
+        // create new property that can easily be searched by leaflet-search
+        props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''}`;
 
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
@@ -312,7 +331,8 @@ export class CampusMapPage implements OnInit {
           geoJson
         );
 
-        searchables.addLayer(geoJson);
+        // also add geoJSON to list of searchable layers
+        this.searchableLayers.addLayer(geoJson);
       }
     }
 
@@ -325,11 +345,6 @@ export class CampusMapPage implements OnInit {
 
     // now add layerGroups to the map so the user can select/deselect them
     L.control.layers({}, this.layerGroups).addTo(this.map);
-
-    this.map.addControl( new L.Control['Search']({
-      layer: searchables,
-      propertyName: 'searchProperty'
-    }) );
   }
 
 }

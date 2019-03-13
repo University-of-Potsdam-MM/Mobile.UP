@@ -295,7 +295,9 @@
     },
     "campus-map": {
       "title": "Lageplan",
-      "placeholder.search": "Suche",
+      "placeholder_search": "Suche",
+      "cancel": "Suche abbrechen",
+      "no_results": "Keine Ergebnisse gefunden",
       "select_categories": "Kategorien zum Anzeigen wählen",
       "enable_geolocation": "Standort anzeigen",
       "disable_geolocation": "Standort nicht mehr anzeigen",
