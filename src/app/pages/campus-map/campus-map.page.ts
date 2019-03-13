@@ -224,7 +224,6 @@ export class CampusMapPage implements OnInit {
   loadMapData() {
     this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
-        console.log(response)
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON);
       },
@@ -314,6 +313,7 @@ export class CampusMapPage implements OnInit {
         // TODO:
         //  - maybe make this prettier or even include link to OpeningHoursPage
         //  with correct segment?
+        //
 
         const props = feature.properties;
 
@@ -323,8 +323,10 @@ export class CampusMapPage implements OnInit {
         }
 
         // create new property that can easily be searched by leaflet-search
-        props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''}`;
+        props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
 
+        // See this for using angular component in popups
+        // https://github.com/Asymmetrik/ngx-leaflet/issues/178
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
         const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
