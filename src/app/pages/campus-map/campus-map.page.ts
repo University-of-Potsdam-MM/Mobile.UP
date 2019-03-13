@@ -86,11 +86,7 @@ export class CampusMapPage implements OnInit {
       textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
       initial: false,
       minLength: 3,
-      autoType: false // guess that would just annoy most users,
-      // buildTip: function(text: string, val) {
-      //   console.log(text, val);
-      //   return '<a href="#">'+text+'<em style="background:'+text+'; width:14px;height:14px;float:right"></em></a>';
-      // }
+      autoType: false // guess that would just annoy most users
     }));
   }
 
@@ -228,6 +224,7 @@ export class CampusMapPage implements OnInit {
   loadMapData() {
     this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
+        console.log(response)
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON);
       },
@@ -319,6 +316,11 @@ export class CampusMapPage implements OnInit {
         //  with correct segment?
 
         const props = feature.properties;
+
+        if (props['description']) {
+          // replace corrupted newline with correct <br> tag
+          props.description = props.description.replace(/(\r\n|\n|\r)/gm, '<br/>');
+        }
 
         // create new property that can easily be searched by leaflet-search
         props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''}`;
