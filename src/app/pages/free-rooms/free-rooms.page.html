@@ -36,8 +36,7 @@
               </ion-badge>
             </h2>
           </ion-label>
-          <ion-icon name="arrow-dropdown" *ngIf="!house.expanded" slot="end"></ion-icon>
-          <ion-icon name="arrow-dropup" *ngIf="house.expanded" slot="end"></ion-icon>
+          <ion-icon [name]="!house.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
         </ion-item>
         <div *ngIf="house.expanded">
           <ion-item margin-left *ngFor="let room of house.rooms">

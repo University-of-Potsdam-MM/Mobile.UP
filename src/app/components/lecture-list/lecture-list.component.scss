@@ -1,48 +1,47 @@
 .expandedRootItem {
-    background: var(--ion-color-secondary);
+    --background: var(--ion-color-secondary);
     color: var(--ion-color-primary);
     border-radius: 0px;
-    font-size: small;
+    font-size: 0.75rem;
 }
 
 .rootItem {
-    background: var(--ion-color-light);
     color: black;
     border-radius: 0px;
-    font-size: small;
+    font-size: 0.75rem;
 }
 
 .expandedItem, .expandedCourse {
-    background: var(--ion-color-secondary);
+    --background: var(--ion-color-secondary);
     color: var(--ion-color-primary);
     border-radius: 0px;
-    margin-left: 1%;
-    font-size: small;
+    margin-left: 0.5%;
+    font-size: 0.75rem;
 }
 
 .subTreeItem {
-    background: var(--ion-color-light);
+    --background: var(--ion-color-light);
     border-radius: 0px;
-    margin-left: 1%;
-    font-size: small;
+    margin-left: 0.5%;
+    font-size: 0.75rem;
 }
 
 .courseItem {
-    background: var(--ion-color-light);
-    border-radius: 0px; 
-    margin-left: 1%;
-    font-size: small;
+    --background: var(--ion-color-light);
+    border-radius: 0px;
+    margin-left: 0.5%;
+    font-size: 0.75rem;
 }
 
 .courseData {
-    border-radius: 0px; 
-    font-size: small;
-    margin-left: 1%;
+    border-radius: 0px;
+    font-size: 0.75rem;
+    margin-left: 0.5%;
     padding: 0;
     margin-right: 0;
 
     p {
-        font-size: small;
+        font-size: 0.75rem;
         color: var(--ion-color-primary);
     }
 }
@@ -51,49 +50,36 @@
     font-weight: bold;
 }
 
-.event {
-    background: var(--ion-color-secondary);
-}
-
-.event:last-child {
-    border-bottom: 1px solid gray!important
-}
-
-.eventHeader {
-    background: var(--ion-color-primary);
-    color: var(--ion-color-light);
-}
-
 .noCourses {
-    background: var(--ion-color-light);
+    --background: var(--ion-color-light);
     color: black;
-    border-radius: 0px; 
-    margin-left: 1%;
-    font-size: small;
+    border-radius: 0px;
+    margin-left: 0.5%;
+    font-size: 0.75rem;
 }
 
-/* 
-Generic Styling, for Desktops/Laptops 
+/*
+Generic Styling, for Desktops/Laptops
 */
-table { 
-    width: 100%; 
-    border-collapse: collapse; 
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 /* Zebra striping */
-tr:nth-of-type(odd) { 
-    background: #eee; 
+tr:nth-of-type(odd) {
+    background: #eee;
 }
-th { 
-    background: var(--ion-color-primary); 
-    color: white; 
-    font-weight: bold; 
-    font-size: small;
+th {
+    background: var(--ion-color-primary);
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
 }
-td, th { 
-    padding: 6px; 
-    border: 1px solid #ccc; 
-    text-align: left; 
+td, th {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
 }
 
 /*
@@ -107,7 +93,7 @@ only screen and (max-width: 760px),
 
     /* Force table to not be like tables anymore */
     table, thead, tbody, th, td, tr {
-        font-size: small;
+        font-size: 0.75rem;
         display: block;
     }
 
