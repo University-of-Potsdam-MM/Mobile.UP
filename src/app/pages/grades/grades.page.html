@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher (ionRefresh)="refreshGrades($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshGrades($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
   <div *ngIf="studentLoaded">
@@ -16,7 +16,7 @@
   </div>
 
   <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div *ngIf="noUserRights">
@@ -34,7 +34,7 @@
       </ion-item>
     </ion-list>
     <div align="center" *ngIf="loadingGrades" padding>
-      <ion-spinner></ion-spinner>
+      <ion-spinner name="dots"></ion-spinner>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
       </ion-item>
     </ion-list>
     <div align="center" *ngIf="loadingGrades" padding>
-      <ion-spinner></ion-spinner>
+      <ion-spinner name="dots"></ion-spinner>
     </div>
   </div>
 

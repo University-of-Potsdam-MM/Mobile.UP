@@ -14,12 +14,12 @@
 </ion-header>
 
 <ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher (ionRefresh)="loadOpeningHours($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadOpeningHours($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
   <div align="center" *ngIf="!isLoaded" padding>
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div *ngIf="isLoaded && openingHours.length == 0">

@@ -17,7 +17,7 @@
 <ion-content no-padding (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
 
   <p *ngIf="!response_received && query.length > 0" style="text-align: center">
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </p>
 
   <div *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)">

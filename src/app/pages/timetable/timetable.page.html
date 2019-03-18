@@ -13,7 +13,7 @@
 <ion-content no-padding [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
 
   <div align="center" *ngIf="isLoading && !noUserRights" padding>
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div *ngIf="noUserRights">

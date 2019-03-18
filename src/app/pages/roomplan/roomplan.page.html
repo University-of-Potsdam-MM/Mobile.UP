@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content no-padding (swipe)="swipeCampus($event)">
-  <ion-refresher (ionRefresh)="refreshRoom($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshRoom($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
   <ion-item>
@@ -75,7 +75,7 @@
   </ng-template>
 
   <p *ngIf=" housesFound.length == 0 && error == null && !requestProcessed" style="text-align: center">
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </p>
 
   <ng-container *ngIf="housesFound.length == 0 && requestProcessed;

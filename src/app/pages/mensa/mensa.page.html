@@ -10,12 +10,12 @@
 </ion-header>
 
 <ion-content no-padding (swipe)="swipeCampus($event)">
-  <ion-refresher (ionRefresh)="loadCampusMenu($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadCampusMenu($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
   <div align="center" *ngIf="!isLoaded" padding>
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div align="center" *ngIf="isLoaded">
