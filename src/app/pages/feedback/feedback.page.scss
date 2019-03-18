@@ -2,6 +2,11 @@ ionic3-star-rating {
     text-align: center;
 }
 
+ion-item-divider {
+	--padding-start: 10px;
+	--padding-end: 5px;
+}
+
 // Custom radio buttons
 form {
 	&#smileys {
@@ -12,13 +17,12 @@ form {
 			border: none;
 			cursor: pointer;
 			transition: border .2s ease;
-			filter: grayscale(100%);
+			filter: brightness(0%);
 			margin: 0 5px;
 			transition: all .2s ease;
 
 			&:hover, &:checked {
-                filter:	grayscale(0);
-                background-color: red;
+                filter:	brightness(100%);
 			}
 
 			&:focus {

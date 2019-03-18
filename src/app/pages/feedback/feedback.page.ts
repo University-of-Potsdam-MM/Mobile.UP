@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IFeedback } from 'src/app/lib/interfaces';
@@ -15,8 +15,8 @@ import { UserSessionService } from 'src/app/services/user-session/user-session.s
 })
 export class FeedbackPage implements OnInit {
 
-  private form : FormGroup;
-  loggedIn: boolean = false;
+  private form: FormGroup;
+  loggedIn = false;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
   session;
@@ -25,7 +25,6 @@ export class FeedbackPage implements OnInit {
    * @constructor
    * @param {HttpClient} http
    * @param {NavController} navCtrl
-   * @param {NavParams} navParams
    * @param {ConnectionProvider} connection
    * @param {SessionProvider} sessionProvider
    * @param {DeviceService} DeviceService
@@ -34,13 +33,12 @@ export class FeedbackPage implements OnInit {
   constructor(
     public http: HttpClient,
     public navCtrl: NavController,
-    public navParams: NavParams,
     private connection: ConnectionService,
     private sessionProvider: UserSessionService,
     private deviceService: DeviceService,
     private formBuilder: FormBuilder) {
       this.form = this.formBuilder.group({
-        rating: ['', Validators.required], //, Validators.required
+        rating: ['', Validators.required], // , Validators.required
         description: [''],
         recommend: ['', Validators.required],
         anonymous: ['true', Validators.required],
@@ -54,8 +52,8 @@ export class FeedbackPage implements OnInit {
    */
   async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
-    let tmp = await this.sessionProvider.getSession();
-    var session = undefined;
+    const tmp = await this.sessionProvider.getSession();
+    let session;
     if (tmp) {
       if (typeof tmp !== 'object') {
         session = JSON.parse(tmp);
@@ -64,7 +62,7 @@ export class FeedbackPage implements OnInit {
 
     if (session) {
       this.session = session;
-      this.loggedIn=true;
+      this.loggedIn = true;
     }
   }
 
@@ -77,8 +75,8 @@ export class FeedbackPage implements OnInit {
    * @name submitForm
    * @description submitForm
    */
-  async submitForm(){
-    if (this.deviceInfo){
+  async submitForm() {
+    if (this.deviceInfo) {
       this.feedback = {
         cordovaVersion: this.deviceInfo.cordovaVersion,
         appVersion: this.deviceInfo.appVersion,
@@ -94,10 +92,10 @@ export class FeedbackPage implements OnInit {
     this.feedback['description'] = this.form.value.description;
     this.feedback['recommend'] = this.form.value.recommend;
 
-    if(this.loggedIn && this.form.value.anonymous) {
+    if (this.loggedIn && this.form.value.anonymous) {
       this.feedback['uid'] = this.session.credentials.username;
     }
-    //console.log(feedback);
+    // console.log(feedback);
   }
 
   /**
@@ -105,12 +103,12 @@ export class FeedbackPage implements OnInit {
    */
   postFeedback() {
 
-    let headers: HttpHeaders = new HttpHeaders({
+    const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': ConfigService.config.webservices.apiToken
     });
 
-    let request:IFeedback = this.feedback;
+    const request: IFeedback = this.feedback;
 
     this.http.post<IFeedback>(
       ConfigService.config.webservices.endpoint.feedback,
@@ -118,7 +116,7 @@ export class FeedbackPage implements OnInit {
       {headers: headers}
     ).subscribe(
       (response) => {
-        //TODO: Show Toast
+        // TODO: Show Toast
         console.log(response);
       },
       (error) => {

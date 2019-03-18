@@ -296,7 +296,7 @@
       "title": "Feedback",
       "rating": "What do you think of Mobile.UP?",
       "feedback": "What would you like to share with us?",
-      "thoughts": "Your opinion...",
+      "thoughts": "Your opinion... (optional)",
       "recommendation": "How likely would you recommend Mobile.UP to your friends and colleagues?",
       "anonymous": "Submit anonymously"
     }

@@ -6,35 +6,35 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <form [formGroup]="form" (ngSubmit)="submitForm()" id="smileys">
-      <ion-item-divider color="upgrey">
+      <ion-item-divider color="light">
         <ion-label text-wrap>
           {{ "page.feedback.rating" | translate}}
         </ion-label>
       </ion-item-divider>
       <ion-list>
         <ion-grid>
-          <ion-row>
-            <ion-col center><input type="radio" name="rating" value="-2" class="angry" formControlName="rating"></ion-col>
+          <ion-row nowrap>
+            <ion-col><input type="radio" name="rating" value="-2" class="angry" formControlName="rating"></ion-col>
             <ion-col><input type="radio" name="rating" value="-1" class="frown" formControlName="rating"></ion-col>
-            <ion-col><input type="radio" name="rating" value="0" class="meh"  formControlName="rating" checked="checked"></ion-col>
+            <ion-col><input type="radio" name="rating" value="0" class="meh"  formControlName="rating" checked></ion-col>
             <ion-col><input type="radio" name="rating" value="1" class="smile" formControlName="rating"></ion-col>
             <ion-col><input type="radio" name="rating" value="2" class="heart" formControlName="rating"></ion-col>
           </ion-row>
         </ion-grid>
       </ion-list>
 
-      <ion-item-divider color="upgrey">
+      <ion-item-divider color="light">
         <ion-label text-wrap>
           {{ "page.feedback.feedback" | translate}}
         </ion-label>
       </ion-item-divider>
       <ion-item>
-        <ion-textarea formControlName="description" rows="6" cols="20" [placeholder]="'page.feedback.thoughts' | translate"></ion-textarea>
+        <ion-textarea formControlName="description" rows="6" cols="20" [placeholder]="'page.feedback.thoughts' | translate" style="font-size: 0.9rem;"></ion-textarea>
       </ion-item>
 
-      <ion-item-divider color="upgrey">
+      <ion-item-divider color="light">
         <ion-label text-wrap>
           {{ "page.feedback.recommendation" | translate}}
         </ion-label>
@@ -42,27 +42,18 @@
 
     <ion-item>
       <ion-range min="0" max="10" step="1" pin="true" snaps="true" formControlName="recommend">
-        <ion-label range-left class="small-text">1</ion-label>
-        <ion-label range-right>10</ion-label>
+        <ion-label slot="start">1</ion-label>
+        <ion-label slot="end">10</ion-label>
       </ion-range>
     </ion-item>
 
     <ion-item *ngIf="loggedIn">
-      <ion-label>{{ "page.feedback.anonymous" | translate}}</ion-label>
+      <ion-label style="font-size: 0.9rem;">{{ "page.feedback.anonymous" | translate}}</ion-label>
       <ion-toggle checked="false" formControlName="anonymous"></ion-toggle>
     </ion-item>
 
     <div text-center>
-      <button ion-button type="submit" [disabled]="!form.valid">{{ "button.submit" | translate}}</button>
+      <ion-button type="submit" [disabled]="!form.valid">{{ "button.submit" | translate}}</ion-button>
     </div>
   </form>
 </ion-content>
-
-<style>
-    ion-list + ion-list {
-      margin-top: 0;
-    }
-    .small-text {
-      font-size: 10px;
-    }
-  </style>

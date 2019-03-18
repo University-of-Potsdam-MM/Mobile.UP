@@ -27,6 +27,11 @@
       "icon": "square-outline",
       "selected": false
     },
+    "feedback": {
+      "componentName": "feedback",
+      "icon": "send",
+      "selected": "false"
+    },
     "roomplan": {
       "componentName": "roomplan",
       "icon": "grid",
