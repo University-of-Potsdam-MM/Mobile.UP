@@ -24,8 +24,7 @@
       </p>
       <h2 *ngIf="meal.description">{{ meal.description }}</h2>
     </ion-label>
-    <ion-icon *ngIf="mealIsExpanded[i]" name="arrow-dropup" slot="end"></ion-icon>
-    <ion-icon *ngIf="!mealIsExpanded[i]" name="arrow-dropdown" slot="end"></ion-icon>
+    <ion-icon [name]="mealIsExpanded[i] ? 'arrow-dropdown' : 'arrow-dropright'" slot="end"></ion-icon>
   </ion-item>
   <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
     <ion-thumbnail *ngIf="meal.type" name="" slot="start"></ion-thumbnail>

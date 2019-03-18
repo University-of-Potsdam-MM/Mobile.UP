@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IEventObject, createEventSource } from './createEvents';
-import { Platform, ModalController, NavController } from '@ionic/angular';
+import { Platform, ModalController, NavController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { LoginPage } from '../login/login.page';
@@ -10,6 +10,9 @@ import { ConnectionService } from 'src/app/services/connection/connection.servic
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
+import { Calendar } from '@ionic-native/calendar/ngx';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import * as dLoop from 'delayed-loop';
 
 @Component({
   selector: 'app-timetable',
@@ -27,8 +30,10 @@ export class TimetablePage {
   noUserRights = false;
   isLoading = true;
 
-  isMobile = true;
+  isMobile;
   modalOpen = false;
+  exportFinished = true;
+  exportedEvents = 0;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
@@ -49,7 +54,6 @@ export class TimetablePage {
     dateFormatter: undefined
   };
 
-
   constructor(
     private platform: Platform,
     private connection: ConnectionService,
@@ -58,14 +62,19 @@ export class TimetablePage {
     private puls: PulsService,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private alertCtrl: AlertController,
+    private calendar: Calendar,
+    private alert: AlertService
   ) { }
 
   async ionViewWillEnter() {
 
-    // if (this.platform.is('tablet') || this.platform.is('desktop')) {
-    //   this.isMobile = false;
-    // }
+    if (this.platform.is('tablet') || this.platform.is('desktop')) {
+      this.isMobile = false;
+    } else if (this.platform.is('android') || this.platform.is('ios')) {
+      this.isMobile = true;
+    }
 
     this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
@@ -256,6 +265,151 @@ export class TimetablePage {
     } else {
       return `#${hex}`;
     }
+  }
+
+  async exportPrompt() {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('alert.title.exportCalendar'),
+      message: this.translate.instant('alert.exportCalendar'),
+      buttons: [
+        {
+          text: this.translate.instant('button.no'),
+        },
+        {
+          text: this.translate.instant('button.yes'),
+          handler: async () => {
+            const existingCalendars = await this.calendar.listCalendars();
+            let found = false;
+            if (Array.isArray(existingCalendars)) {
+              for (let i = 0; i < existingCalendars.length; i++) {
+                if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
+                  found = true;
+                  break;
+                }
+              }
+            }
+            if (found) {
+              const alert2 = await this.alertCtrl.create({
+                header: this.translate.instant('hints.type.hint'),
+                message: this.translate.instant('alert.calendar-exists'),
+                buttons: [
+                  {
+                    text: this.translate.instant('button.keep'),
+                    handler: () => {
+                      this.exportCalendar();
+                    }
+                  },
+                  {
+                    text: this.translate.instant('button.delete'),
+                    handler: () => {
+                      this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
+                        console.log('[Timetable]: Deleted calendar.');
+                        this.exportCalendar();
+                      }, error => {
+                        this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+                        console.log(error);
+                      });
+                    }
+                  }
+                ]
+              });
+              alert2.present();
+            } else { this.exportCalendar(); }
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  exportCalendar() {
+    const createCalendarOpts = this.calendar.getCreateCalendarOptions();
+    createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
+    createCalendarOpts.calendarColor = '#ff9900';
+    this.calendar.createCalendar(createCalendarOpts).then(async () => {
+
+      let calID;
+      const existingCalendars = await this.calendar.listCalendars();
+      if (Array.isArray(existingCalendars)) {
+        for (let i = 0; i < existingCalendars.length; i++) {
+          if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
+            calID = existingCalendars[i].id;
+            break;
+          }
+        }
+      }
+
+      this.exportFinished = false;
+      this.exportedEvents = 0;
+
+      if (Array.isArray(this.eventSource) && this.eventSource.length > 0) {
+        const loop = dLoop(this.eventSource, (itm: IEventObject, idx, fin) => {
+          if (itm.title && itm.startTime && itm.endTime) {
+            const title = itm.title;
+            const startDate = itm.startTime;
+            const endDate = itm.endTime;
+
+            let eventLocation = '';
+            if (itm.eventDetails) {
+              if (itm.eventDetails.location) {
+                eventLocation += itm.eventDetails.location;
+              }
+
+              if (itm.eventDetails.building && itm.eventDetails.building !== 'N') {
+                if (eventLocation !== '') {
+                  eventLocation += ': ';
+                }
+
+                eventLocation += itm.eventDetails.building;
+
+                if (itm.eventDetails.room && itm.eventDetails.room !== 'N.') {
+                  eventLocation += '.' + itm.eventDetails.room;
+                }
+              }
+            }
+
+            let notes = '';
+            if (itm.courseDetails && itm.courseDetails.courseType) {
+              notes += itm.courseDetails.courseType;
+            }
+
+            const calOptions = {
+              calendarId: calID,
+              calendarName: createCalendarOpts.calendarName,
+              firstReminderMinutes: null,
+              // recurrence: null,
+              // recurrenceEndDate: null,
+              // recurrenceInterval: 1,
+              // secondReminderMinutes: null,
+              // url: null
+            };
+
+            this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
+              console.log('[Timetable]: Successfully exported event');
+              this.exportedEvents++;
+              fin();
+            }, error => {
+              console.log('[Timetable]: Error creating event');
+              console.log(error);
+              this.exportedEvents++;
+              this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
+              fin();
+            });
+          }
+        });
+
+        loop.then(() => {
+          this.exportFinished = true;
+          this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+        });
+      } else {
+        this.exportFinished = true;
+      }
+    }, error => {
+      console.log('[Timetable]: Error creating calendar');
+      console.log(error);
+      this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+    });
   }
 
 }

@@ -5,14 +5,13 @@
         </ion-button>
         <ion-title>{{ "page.practice.title" | translate }}</ion-title>
         <ion-button slot="end" (click)="favorite()" fill="clear">
-            <ion-icon *ngIf="isFavorite" style="font-size: x-large;" name="star"></ion-icon>
-            <ion-icon *ngIf="!isFavorite" style="font-size: x-large;" name="star-outline"></ion-icon>
+            <ion-icon style="font-size: x-large;" [name]="isFavorite ? 'star' : 'star-outline'"></ion-icon>
         </ion-button>
     </ion-toolbar>
 </ion-header>
 
 <ion-content no-padding>
-    <h5 padding-start text-wrap>{{ ADS.title }}</h5>
+    <h5 padding-horizontal text-wrap>{{ ADS.title }}</h5>
     <ion-list>
         <ion-item *ngIf="ADS.firm != ''">
             <ion-label text-wrap>

@@ -311,7 +311,9 @@
     "showMore": "Show more",
     "showLess": "Show less",
     "app": "App",
-    "webpage": "Website"
+    "webpage": "Website",
+    "keep": "Keep",
+    "delete": "Delete"
   },
   "alert": {
     "title": {
@@ -320,7 +322,8 @@
       "error": "Error",
       "website": "Open website?",
       "redirect": "Redirect",
-      "clearAll": "Clear all?"
+      "clearAll": "Clear all?",
+      "exportCalendar": "Export calendar?"
     },
     "httpErrorStatus": {
       "unknown": "Unknown HTTP status",
@@ -339,7 +342,12 @@
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",
-    "deleteAllFavs": "Do you really want to remove all of your favorites?"
+    "deleteAllFavs": "Do you really want to remove all of your favorites?",
+    "exportCalendar": "Do you want to save all events to your calendar?",
+    "calendar-export-success": "Calendar saved!",
+    "calendar-export-fail": "Failed to save calendar.",
+    "calendar-event-fail": "Failed to create event.",
+    "calendar-exists": "It seems like you already exported the calendar. Do you want to keep or delete existing events?"
   },
   "university": {
     "location": {
@@ -396,6 +404,7 @@
   "placeholder": {
     "search": "Search...",
     "username": "Username (without @uni...)",
-    "password": "Password"
+    "password": "Password",
+    "calendarName": "Mobile.UP: Studies"
   }
 }
