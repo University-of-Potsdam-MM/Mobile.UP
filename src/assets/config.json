@@ -197,7 +197,8 @@
       "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
       "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",
       "emergencyCalls": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI",
-      "logging": "https://apiup.uni-potsdam.de/endpoints/errorAPI/rest/log",
+      "logging": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/2.0/log",
+      "feedback": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/2.0/feedback",
       "transport": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf"

@@ -291,6 +291,14 @@
         "terminals": "Service-Stationen",
         "sport": "Sport"
       }
+    },
+    "feedback": {
+      "title": "Feedback",
+      "rating": "Was hälst du von Mobile.UP?",
+      "feedback": "Was willst du mit uns teilen?",
+      "thoughts": "Deine Meinung...",
+      "recommendation": "Wie wahrscheinlich würdest du Mobile.UP deinen Freunden oder Kollegen empfehlen?",
+      "anonymous": "Anonym übermitteln"
     }
   },
   "button": {
@@ -311,7 +319,8 @@
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
     "app": "App",
-    "webpage": "Webseite"
+    "webpage": "Webseite",
+    "submit": "Abschicken"
   },
   "alert": {
     "title": {

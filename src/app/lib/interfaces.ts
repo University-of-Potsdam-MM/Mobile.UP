@@ -2,6 +2,7 @@
 
 import { InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
 import * as geojson from 'geojson';
+import { IDeviceInfo } from '../services/device/device.service';
 import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC } from '../services/login-provider/interfaces';
 
 /**
@@ -197,6 +198,7 @@ export interface IEndpoints {
   openingHours: string;
   emergencyCalls: string;
   logging: string;
+  feedback: string;
   transport: string;
 }
 
@@ -514,3 +516,10 @@ export interface IMapsResponseObject {
 }
 
 export type IMapsResponse = IMapsResponseObject[];
+
+export interface IFeedback extends IDeviceInfo {
+  rating?:string;
+  description?:string;
+  recommend?:string;
+  uid?:string;
+}

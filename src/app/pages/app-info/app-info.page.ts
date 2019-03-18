@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
-import { Device } from '@ionic-native/device/ngx';
 import { NavigatorService } from 'src/app/services/navigator/navigator.service';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.service';
 
 @Component({
   selector: 'app-app-info',
@@ -16,40 +14,15 @@ export class AppInfoPage implements OnInit {
   showLibraryInfo = false;
   showContactPerson = false;
 
-  deviceInfo = {
-    'cordovaVersion': undefined,
-    'appVersion': undefined,
-    'osPlatform': undefined,
-    'osVersion': undefined,
-    'uuid': undefined,
-    'deviceManufacturer': undefined,
-    'deviceModel': undefined
-  };
+  deviceInfo: IDeviceInfo;
 
   constructor(
-    private device: Device,
     private mapsProvider: NavigatorService,
-    private platform: Platform
+    private deviceService: DeviceService
   ) { }
 
   ngOnInit() {
-    if (this.platform.is('cordova')) {
-      this.getDeviceInfo();
-    }
-  }
-
-  getDeviceInfo() {
-    this.deviceInfo = {
-      'cordovaVersion': this.device.cordova,
-      'appVersion': undefined,
-      'osPlatform': this.device.platform,
-      'osVersion': this.device.version,
-      'uuid': this.device.uuid,
-      'deviceManufacturer': this.device.manufacturer,
-      'deviceModel': this.device.model
-    };
-
-    this.deviceInfo.appVersion = ConfigService.config.appVersion;
+    this.deviceInfo = this.deviceService.getDeviceInfo();
   }
 
   callMap(location: string) {
