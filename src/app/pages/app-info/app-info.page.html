@@ -14,8 +14,7 @@
         <ion-label>
           <b>{{ "page.app-info.contact" | translate }}</b>
         </ion-label>
-        <ion-icon *ngIf="!showContactPerson" slot="end" name="arrow-dropdown"></ion-icon>
-        <ion-icon *ngIf="showContactPerson" slot="end" name="arrow-dropup"></ion-icon>
+        <ion-icon slot="end" [name]="!showContactPerson ? 'arrow-dropright' : 'arrow-dropdown'"></ion-icon>
       </ion-item>
       <span *ngIf="showContactPerson">
         <ion-item>
@@ -38,8 +37,7 @@
         <ion-label>
           <b>{{ "page.app-info.participate" | translate }}</b>
         </ion-label>
-        <ion-icon *ngIf="!showParticipationInfo" slot="end" name="arrow-dropdown"></ion-icon>
-        <ion-icon *ngIf="showParticipationInfo" slot="end" name="arrow-dropup"></ion-icon>
+        <ion-icon slot="end" [name]="!showParticipationInfo ? 'arrow-dropright' : 'arrow-dropdown'"></ion-icon>
       </ion-item>
       <span *ngIf="showParticipationInfo">
         <ion-item>
@@ -55,8 +53,7 @@
         <ion-label>
           <b>{{ "page.app-info.app" | translate }}</b>
         </ion-label>
-        <ion-icon *ngIf="!showSysInfo" slot="end" name="arrow-dropdown"></ion-icon>
-        <ion-icon *ngIf="showSysInfo" slot="end" name="arrow-dropup"></ion-icon>
+        <ion-icon slot="end" [name]="!showSysInfo ? 'arrow-dropright' : 'arrow-dropdown'"></ion-icon>
       </ion-item>
       <span *ngIf="showSysInfo">
         <ion-item *ngIf="deviceInfo.cordovaVersion">
@@ -85,8 +82,7 @@
         <ion-label>
           <b>{{ "page.app-info.libraries" | translate }}</b>
         </ion-label>
-        <ion-icon *ngIf="!showLibraryInfo" slot="end" name="arrow-dropdown"></ion-icon>
-        <ion-icon *ngIf="showLibraryInfo" slot="end" name="arrow-dropup"></ion-icon>
+        <ion-icon slot="end" [name]="!showLibraryInfo ? 'arrow-dropright' : 'arrow-dropdown'"></ion-icon>
       </ion-item>
       <span *ngIf="showLibraryInfo">
         <ion-item>

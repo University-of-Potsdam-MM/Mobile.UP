@@ -5,15 +5,14 @@
         </ion-button>
         <ion-title>{{ "page.library-search.titleDetail" | translate }}</ion-title>
         <ion-button slot="end" (click)="favorite()" fill="clear">
-            <ion-icon *ngIf="isFavorite" style="font-size: x-large;" name="star"></ion-icon>
-            <ion-icon *ngIf="!isFavorite" style="font-size: x-large;" name="star-outline"></ion-icon>
+            <ion-icon style="font-size: x-large;" [name]="isFavorite ? 'star' : 'star-outline'"></ion-icon>
         </ion-button>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-refresher (ionRefresh)="updateLocation($event)">
-        <ion-refresher-content></ion-refresher-content>
+    <ion-refresher slot="fixed" (ionRefresh)="updateLocation($event)">
+        <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
     </ion-refresher>
 
     <app-book-list [book]="book" (mediaType)="setMediaType($event)"></app-book-list>
@@ -32,7 +31,7 @@
 
     <div *ngIf="showLocation" >
         <div align="center" *ngIf="!isLoaded" padding>
-            <ion-spinner></ion-spinner>
+            <ion-spinner name="dots"></ion-spinner>
         </div>
         <span *ngFor="let department of bookLocationList">
         <ion-list>

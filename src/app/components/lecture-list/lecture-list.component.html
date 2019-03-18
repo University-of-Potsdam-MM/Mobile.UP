@@ -4,10 +4,7 @@
           <ion-label text-wrap>
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
-          <ion-button size="small" fill="clear" slot="end">
-            <ion-icon *ngIf="childNode.headerId && !isExpanded[childNode.headerId]" name="ios-arrow-forward"></ion-icon>
-            <ion-icon *ngIf="childNode.headerId && isExpanded[childNode.headerId]" name="ios-arrow-down"></ion-icon>
-          </ion-button>
+          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
       </ion-item>
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
@@ -18,10 +15,7 @@
           <ion-label text-wrap>
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
-          <ion-button fill="clear" slot="end">
-              <ion-icon *ngIf="childNode.headerId && !isExpanded[childNode.headerId]" name="ios-arrow-forward"></ion-icon>
-              <ion-icon *ngIf="childNode.headerId && isExpanded[childNode.headerId]" name="ios-arrow-down"></ion-icon>
-          </ion-button>
+          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
       </ion-item>
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
@@ -32,10 +26,7 @@
           <ion-label text-wrap>
             {{ course.courseType }}: {{ htmlDecode(course.courseName) }}
           </ion-label>
-          <ion-button fill="clear" slot="end">
-              <ion-icon *ngIf="course.courseId && !isExpandedCourse[course.courseId]" name="ios-arrow-forward"></ion-icon>
-              <ion-icon *ngIf="course.courseId && isExpandedCourse[course.courseId]" name="ios-arrow-down"></ion-icon>
-          </ion-button>
+          <ion-icon *ngIf="course.courseId" [name]="!isExpandedCourse[course.courseId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
       </ion-item>
       <ion-item class="courseData" *ngIf="course.courseId && isExpandedCourse[course.courseId] && courseData[course.courseId]">
           <ion-grid class="courseData">

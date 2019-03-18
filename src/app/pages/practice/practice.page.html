@@ -33,12 +33,12 @@
 </ion-header>
 
 <ion-content no-padding (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher (ionRefresh)="loadData($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadData($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
   <p *ngIf="!isLoaded && activeSegment === 'search'" style="text-align: center" padding>
-    <ion-spinner></ion-spinner>
+    <ion-spinner name="dots"></ion-spinner>
   </p>
 
   <div *ngIf="isLoaded && displayedList.length == 0 && error == null">

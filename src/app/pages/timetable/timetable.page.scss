@@ -1,16 +1,9 @@
 .calendarButton {
   --background: var(--ion-color-secondary);
   color: var(--ion-color-primary);
-  width: 30%;
 }
 
 .activeCalendarButton {
   --background: var(--ion-color-primary);
   color: white;
-  width: 30%;
-}
-
-.eventTitle {
-  position: relative;
-  top: 10%;
 }
