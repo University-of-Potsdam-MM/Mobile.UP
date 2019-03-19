@@ -18,9 +18,13 @@
           <ion-icon slot="start" style="color: darkgreen; -webkit-margin-end: 10px;" *ngIf="!(item[0] && ((item[0].indexOf('ausgeliehen') != -1) || (item[0].indexOf('nicht') != -1) || (item[0].indexOf('bestellt') != -1)) || item[0] && departmentName && ((item[0].indexOf('Präsenzbestand') != -1) || (departmentName.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
           <ion-label text-wrap style="color: var(--ion-color-primary);">
               {{ item[0] }}
-              <span *ngIf="item[1]" style="color: black; font-size: small"><br>{{ item[1] }}</span>
           </ion-label>
           <ion-note *ngIf="label && item[0] && label != item[0]" style="font-size: small; padding-inline-start: 5px; margin-inline-start: 0px;" slot="end">{{ label }}</ion-note>
+      </ion-item>
+      <ion-item style="--padding-start: 5px;" lines="none" color="secondary" class="itemStatus">
+          <ion-label text-wrap style="margin-top: 0">
+            <span *ngIf="item[1]" style="color: black; font-size: small">{{ item[1] }}</span>
+          </ion-label>
       </ion-item>
   </ng-template>
 </ion-list>
