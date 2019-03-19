@@ -3,12 +3,12 @@ import { ModalController } from '@ionic/angular';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import * as moment from 'moment';
-import { ConfigService } from 'src/app/services/config/config.service';
-import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
-import { IConfig } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec, utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { AlertService } from '../../services/alert/alert.service';
+import { IConfig } from '../../lib/interfaces';
+import { WebIntentService } from '../../services/web-intent/web-intent.service';
+import { ConfigService } from '../../services/config/config.service';
+import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
 
 @Component({
   selector: 'book-modal-page',
