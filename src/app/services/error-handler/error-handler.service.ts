@@ -26,7 +26,7 @@ export class ErrorHandlerService {
   logError(errorObject: IErrorLogging) {
     const config = ConfigService.config;
     const headers: HttpHeaders = new HttpHeaders()
-      .set('Authorization', `Bearer ${config.webservices.apiToken}`);
+      .set('Authorization', config.webservices.apiToken);
 
     console.log(`[ErrorService]: Logging error`);
     console.log(errorObject);

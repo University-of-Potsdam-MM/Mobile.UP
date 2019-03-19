@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Device } from '@ionic-native/device/ngx';
-import { IConfig } from 'src/app/lib/interfaces';
 import { Storage } from '@ionic/storage';
 
 /**
@@ -49,10 +48,10 @@ export class DeviceService {
         uuid: this.device.uuid,
         deviceManufacturer: this.device.manufacturer,
         deviceModel: this.device.model
-      }
+      };
 
-      this.storage.get('config').then((config:IConfig) => {
-        this.deviceInfo.appVersion = config.appVersion;
+      this.storage.get('appVersion').then(version => {
+        this.deviceInfo.appVersion = version;
       });
       return this.deviceInfo;
     } else { return null; }

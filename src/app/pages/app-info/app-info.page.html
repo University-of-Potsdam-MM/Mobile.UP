@@ -49,13 +49,13 @@
           </ion-label>
         </ion-item>
       </span>
-      <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel">
+      <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo && (deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel)">
         <ion-label>
           <b>{{ "page.app-info.app" | translate }}</b>
         </ion-label>
         <ion-icon slot="end" [name]="!showSysInfo ? 'arrow-dropright' : 'arrow-dropdown'"></ion-icon>
       </ion-item>
-      <span *ngIf="showSysInfo">
+      <span *ngIf="showSysInfo && deviceInfo">
         <ion-item *ngIf="deviceInfo.cordovaVersion">
           <ion-label><h2>Cordova Version</h2><p>{{ deviceInfo.cordovaVersion }}</p></ion-label>
         </ion-item>

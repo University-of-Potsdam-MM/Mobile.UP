@@ -518,8 +518,8 @@ export interface IMapsResponseObject {
 export type IMapsResponse = IMapsResponseObject[];
 
 export interface IFeedback extends IDeviceInfo {
-  rating?:string;
-  description?:string;
-  recommend?:string;
-  uid?:string;
+  rating?: string;
+  description?: string;
+  recommend?: string;
+  uid?: string;
 }

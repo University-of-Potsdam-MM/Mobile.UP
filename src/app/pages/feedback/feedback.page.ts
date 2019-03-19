@@ -7,6 +7,8 @@ import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.servi
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feedback',
@@ -36,7 +38,10 @@ export class FeedbackPage implements OnInit {
     private connection: ConnectionService,
     private sessionProvider: UserSessionService,
     private deviceService: DeviceService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private alert: AlertService,
+    private translate: TranslateService
+  ) {
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
@@ -52,13 +57,7 @@ export class FeedbackPage implements OnInit {
    */
   async ionViewWillEnter() {
     this.connection.checkOnline(true, true);
-    const tmp = await this.sessionProvider.getSession();
-    let session;
-    if (tmp) {
-      if (typeof tmp !== 'object') {
-        session = JSON.parse(tmp);
-      } else { session = tmp; }
-    }
+    const session = await this.sessionProvider.getSession();
 
     if (session) {
       this.session = session;
@@ -88,18 +87,19 @@ export class FeedbackPage implements OnInit {
       };
     }
 
-    this.feedback['rating'] = this.form.value.rating;
-    this.feedback['description'] = this.form.value.description;
-    this.feedback['recommend'] = this.form.value.recommend;
+    this.feedback.rating = this.form.value.rating;
+    this.feedback.description = this.form.value.description;
+    this.feedback.recommend = this.form.value.recommend;
 
     if (this.loggedIn && this.form.value.anonymous) {
-      this.feedback['uid'] = this.session.credentials.username;
+      this.feedback.uid = this.session.credentials.username;
     }
-    // console.log(feedback);
+
+    this.postFeedback();
   }
 
   /**
-   * @name
+   * @name postFeedback
    */
   postFeedback() {
 
@@ -116,11 +116,12 @@ export class FeedbackPage implements OnInit {
       {headers: headers}
     ).subscribe(
       (response) => {
-        // TODO: Show Toast
         console.log(response);
+        this.alert.presentToast(this.translate.instant('alert.feedback-sent'));
       },
       (error) => {
         console.log(error);
+        this.alert.presentToast(this.translate.instant('alert.feedback-fail'));
       }
     );
   }
