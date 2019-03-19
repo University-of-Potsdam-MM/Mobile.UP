@@ -46,20 +46,14 @@ export class BookLocationComponent implements OnInit {
     const epn = this.getEPN();
     if (epn && this.label && this.label !== 'bestellt' && this.departmentName.trim() !== 'Handapparat') {
       const config: IConfig = ConfigService.config;
+      const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()}).append('epn', epn);
 
-      const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-        .append('epn', epn);
-
-      this.http.get(config.webservices.endpoint.libraryLKZ, {params: params, responseType: 'text'}).subscribe(data => {
-        const tmp = data.split('<body>')[1];
-        if (tmp && !this.contains(tmp, 'Nichts da!') && !this.contains(tmp, 'Parameterfehler')) {
-          const re = /\n/gi;
-          const lkz = tmp.split('</body>')[0].replace(re, '');
-          if (lkz && lkz !== 'best') {
-            let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);
-            url += '&search_context2=' + lkz + '&language=' + this.translate.currentLang + '&project_id=1';
-            this.roomURL = url;
-          }
+      this.http.get(config.webservices.endpoint.libraryLKZ, {params: params}).subscribe(data => {
+        const lkz = data["msg"];
+        if (lkz && lkz !== 'best') {
+          let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);
+          url += '&search_context2=' + lkz + '&language=' + this.translate.currentLang + '&project_id=1';
+          this.roomURL = url;
         }
 
         this.isLoaded = true;
@@ -73,7 +67,6 @@ export class BookLocationComponent implements OnInit {
 
   getEPN() {
     let epn = this.department.id.split('epn:')[1];
-    if (epn) { epn = epn.substr(0, epn.length - 1); }
     return epn;
   }
 
