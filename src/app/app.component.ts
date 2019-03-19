@@ -77,7 +77,7 @@ export class AppComponent {
     if (!savedVersion) {
       // user has never opened a 6.x version of the app, since nothing is stored
       // clear the whole storage
-      this.storage.remove('config').then(() => {
+      this.storage.clear().then(() => {
         console.log('[Mobile.UP]: cleared storage');
         this.storage.set('appVersion', config.appVersion);
         this.checkSessionValidity(config);

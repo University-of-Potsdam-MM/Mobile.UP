@@ -291,6 +291,14 @@
         "terminals": "Service terminals",
         "sport": "Sports"
       }
+    },
+    "feedback": {
+      "title": "Feedback",
+      "rating": "What do you think of Mobile.UP?",
+      "feedback": "What would you like to share with us?",
+      "thoughts": "Your opinion... (optional)",
+      "recommendation": "How likely would you recommend Mobile.UP to your friends and colleagues?",
+      "anonymous": "Submit anonymously"
     }
   },
   "button": {
@@ -312,6 +320,7 @@
     "showLess": "Show less",
     "app": "App",
     "webpage": "Website",
+    "submit": "Submit",
     "keep": "Keep",
     "delete": "Delete"
   },
@@ -347,7 +356,9 @@
     "calendar-export-success": "Calendar saved!",
     "calendar-export-fail": "Failed to save calendar.",
     "calendar-event-fail": "Failed to create event.",
-    "calendar-exists": "It seems like you already exported the calendar. Do you want to keep or delete existing events?"
+    "calendar-exists": "It seems like you already exported the calendar. Do you want to keep or delete existing events?",
+    "feedback-sent": "Your feedback was sent.",
+    "feedback-fail": "Failed to send your feedback."
   },
   "university": {
     "location": {

@@ -23,6 +23,8 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule' },
   { path: 'timetable', loadChildren: './pages/timetable/timetable.module#TimetablePageModule' },
   { path: 'transport', loadChildren: './pages/transport/transport.module#TransportPageModule' },
+  { path: 'feedback', loadChildren: './pages/feedback/feedback.module#FeedbackPageModule' },
+
 ];
 
 @NgModule({
