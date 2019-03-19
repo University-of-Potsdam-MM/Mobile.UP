@@ -29,38 +29,20 @@
         <ion-segment-button value="details" (click)="showDetails = true; showLocation = false;">{{ "page.library-search.details" | translate }}</ion-segment-button>
     </ion-segment>
 
-    <div *ngIf="showLocation" >
+    <div *ngIf="showLocation">
         <div align="center" *ngIf="!isLoaded" padding>
             <ion-spinner name="dots"></ion-spinner>
         </div>
-        <span *ngFor="let department of bookLocationList">
-        <ion-list>
-            <ion-item style="--padding-start: 5px;" lines="none" class="department" color="primary">
-                <ion-label text-wrap>
-                    {{ department.department }}
-                </ion-label>
-                <ion-icon slot="end" style="color: white; -webkit-margin-start: 0;" name="information-circle" (click)="webIntent.permissionPromptWebsite(department.departmentURL)"></ion-icon>
-            </ion-item>
-            <ion-item style="--padding-start: 5px;" lines="none" *ngIf="department.url; else noUrl" color="secondary" class="itemStatus">
-                <ion-label text-wrap>
-                    <span (click)="webIntent.permissionPromptWebsite(department.url)" style="text-decoration: underline; color: var(--ion-color-primary)">{{ department.item[0] }}</span>
-                </ion-label>
-            </ion-item>
-            <ng-template #noUrl>
-                <ion-item style="--padding-start: 5px;" lines="none" color="secondary" class="itemStatus">
-                    <ion-icon slot="start" style="color: darkred; -webkit-margin-end: 10px;" *ngIf="department.item[0] && (department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)" name="ios-remove-circle"></ion-icon>
-                    <ion-icon slot="start" style="color: darkgreen; -webkit-margin-end: 10px;" *ngIf="department.item[0] && department.department && (department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)" name="ios-contrast"></ion-icon>
-                    <ion-icon slot="start" style="color: darkgreen; -webkit-margin-end: 10px;" *ngIf="!(department.item[0] && ((department.item[0].indexOf('ausgeliehen') != -1) || (department.item[0].indexOf('nicht') != -1) || (department.item[0].indexOf('bestellt') != -1)) || department.item[0] && department.department && ((department.item[0].indexOf('Präsenzbestand') != -1) || (department.department.indexOf('Handapparat') != -1)))" name="ios-checkmark-circle"></ion-icon>
-                    <ion-label text-wrap style="color: var(--ion-color-primary);">
-                        {{ department.item[0] }}
-                        <span *ngIf="department.item[1]" style="color: black; font-size: small"><br>{{ department.item[1] }}</span>
-                    </ion-label>
-                    <ion-note *ngIf="department.label && department.item[0] && department.label != department.item[0]" style="font-size: small" slot="end">{{ department.label }}</ion-note>
-                </ion-item>
-            </ng-template>
-        </ion-list>
+        <span *ngIf="isLoaded && locationData && locationData.document">
+            <span *ngFor="let document of locationData.document">
+                <span *ngIf="document.item">
+                    <span *ngFor="let department of document.item">
+                        <app-book-location [department]="department" [bookLocation]="book.location" [mediaType]="bookDetails.mediaType"></app-book-location>
+                    </span>
+                </span>
+            </span>
         </span>
-        <div *ngIf="isLoaded && bookLocationList.length === 0">
+        <div *ngIf="isLoaded && !locationData">
             <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
         </div>
     </div>
