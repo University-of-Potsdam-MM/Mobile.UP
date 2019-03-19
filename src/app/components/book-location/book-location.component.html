@@ -20,7 +20,7 @@
               {{ item[0] }}
               <span *ngIf="item[1]" style="color: black; font-size: small"><br>{{ item[1] }}</span>
           </ion-label>
-          <ion-note *ngIf="label && item[0] && label != item[0]" style="font-size: small" slot="end">{{ label }}</ion-note>
+          <ion-note *ngIf="label && item[0] && label != item[0]" style="font-size: small; padding-inline-start: 5px; margin-inline-start: 0px;" slot="end">{{ label }}</ion-note>
       </ion-item>
   </ng-template>
 </ion-list>
