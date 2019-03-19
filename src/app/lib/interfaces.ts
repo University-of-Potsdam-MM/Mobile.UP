@@ -193,6 +193,7 @@ export interface IEndpoints {
   events: string;
   library: string;
   libraryDAIA: string;
+  libraryLKZ: string;
   puls: string;
   maps: string;
   openingHours: string;

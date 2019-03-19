@@ -198,6 +198,7 @@
       "events": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/",
       "library": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",
       "libraryDAIA": "https://apiup.uni-potsdam.de/endpoints/daiaAPI/isil/DE-517",
+      "libraryLKZ": "https://lhpot.gbv.de/php/lbsstat/epn2lkz.php",
       "puls": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/",
       "maps": "https://apiup.uni-potsdam.de/endpoints/mapsAPI",
       "openingHours": "https://apiup.uni-potsdam.de/endpoints/openingHoursAPI",

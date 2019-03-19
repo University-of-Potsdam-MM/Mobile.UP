@@ -1,7 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
-import { utils } from '../../lib/util';
+import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
+import { ConfigService } from '../../services/config/config.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { IConfig } from '../../lib/interfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-book-location',
@@ -19,17 +23,69 @@ export class BookLocationComponent implements OnInit {
   label;
   item;
   url;
+  roomURL;
+  isLoaded = false;
 
   constructor(
+    private http: HttpClient,
+    private translate: TranslateService,
     public webIntent: WebIntentService // is used in the HTML
   ) { }
 
   ngOnInit() {
+    this.isLoaded = false;
     this.departmentName = this.getDepartment(this.department);
     this.departmentURL = this.getDepartmentURL(this.department);
     this.label = this.getLabel(this.department);
-    this.item = this. getItem(this.department);
+    this.item = this.getItem(this.department);
     this.url = this.getBookUrl(this.department);
+    this.getRoomInfo();
+  }
+
+  getRoomInfo() {
+    const epn = this.getEPN();
+    if (epn && this.label && this.label !== 'bestellt') {
+      const config: IConfig = ConfigService.config;
+
+      const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
+        .append('epn', epn);
+
+      this.http.get(config.webservices.endpoint.libraryLKZ, {params: params, responseType: 'text'}).subscribe(data => {
+        const tmp = data.split('<body>')[1];
+        if (tmp && !this.contains(tmp, 'Nichts da!') && !this.contains(tmp, 'Parameterfehler')) {
+          const re = /\n/gi;
+          const lkz = tmp.split('</body>')[0].replace(re, '');
+          if (lkz && lkz !== 'best') {
+            let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);
+            url += '&search_context2=' + lkz + '&language=' + this.translate.currentLang + '&project_id=1';
+            this.roomURL = url;
+          }
+        }
+
+        this.isLoaded = true;
+      }, error => {
+        console.log('[Library]: Could not get LKZ');
+        console.log(error);
+        this.isLoaded = true;
+      });
+    } else { this.isLoaded = true; }
+  }
+
+  getEPN() {
+    let epn = this.department.id.split('epn:')[1];
+    if (epn) { epn = epn.substr(0, epn.length - 1); }
+    return epn;
+  }
+
+  /**
+   * @name contains
+   * @description checks, whether y is a substring of x
+   * @param {string} x - String that does or does not contain string y
+   * @param {string} y - String that is or is not contained in string y
+   * @returns {Boolean} - Whether string x contains string y
+   */
+  private contains(x: string, y: string): boolean {
+    return x.toLowerCase().includes(y.toLowerCase());
   }
 
   /**
