@@ -30,7 +30,7 @@
     "feedback": {
       "componentName": "feedback",
       "icon": "send",
-      "selected": "false"
+      "selected": false
     },
     "roomplan": {
       "componentName": "roomplan",

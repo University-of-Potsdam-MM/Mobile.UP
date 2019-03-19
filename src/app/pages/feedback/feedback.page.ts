@@ -46,7 +46,7 @@ export class FeedbackPage implements OnInit {
         rating: ['', Validators.required], // , Validators.required
         description: [''],
         recommend: ['', Validators.required],
-        anonymous: ['true', Validators.required],
+        anonymous: [false, Validators.required],
       });
 
   }
@@ -75,6 +75,7 @@ export class FeedbackPage implements OnInit {
    * @description submitForm
    */
   async submitForm() {
+    this.feedback = {};
     if (this.deviceInfo) {
       this.feedback = {
         cordovaVersion: this.deviceInfo.cordovaVersion,
@@ -91,7 +92,7 @@ export class FeedbackPage implements OnInit {
     this.feedback.description = this.form.value.description;
     this.feedback.recommend = this.form.value.recommend;
 
-    if (this.loggedIn && this.form.value.anonymous) {
+    if (this.loggedIn && !this.form.value.anonymous) {
       this.feedback.uid = this.session.credentials.username;
     }
 
