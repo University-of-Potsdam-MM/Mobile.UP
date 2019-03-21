@@ -5,11 +5,12 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {Geolocation, PositionError} from '@ionic-native/geolocation/ngx';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-campus-map',
@@ -132,7 +133,7 @@ export class CampusMapPage implements OnInit {
 
   /**
    * @name addGeoLocationButton
-   * @desc adds geolocation button to this.map
+   * @desc adds geolocation button to map
    */
   addGeoLocationButton() {
     const toggleGeolocationButton = L.easyButton({
@@ -141,8 +142,16 @@ export class CampusMapPage implements OnInit {
         icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="locate"></ion-icon>',
         title: this.translate.instant('page.campus-map.enable_geolocation'),
         onClick: (control) => {
-          this.enableGeolocation();
-          control.state('geolocation-enabled');
+          this.enableGeolocation().subscribe(
+            success => {
+              this.geoLocationEnabled = true;
+              control.state('geolocation-enabled');
+            },
+            error => {
+              this.geoLocationEnabled = false;
+              control.state('geolocation-disabled');
+            }
+          );
         }
       }, {
         stateName: 'geolocation-enabled',
@@ -212,22 +221,27 @@ export class CampusMapPage implements OnInit {
   /**
    * @name  enableGeolocation
    * @desc enabled retrieval of location and starts function that adds a circle
-   * to the map
+   * to the map. Returns an observable that constantly returns success when the
+   * current position could be fetched and error when there was an error.
    */
   enableGeolocation() {
-    this.geoLocationEnabled = true;
-    this.geoLocationWatch = this.location.watchPosition().subscribe(
-      (position: Position) => {
-        if (!position) {
-          console.log('[CampusMap]: Error getting location');
-        } else {
-          this.setPosition(position);
+    return new Observable( observer => {
+      this.geoLocationWatch = this.location.watchPosition().subscribe(
+        (positionResponse: Position & PositionError) => {
+          if (!positionResponse.code) {
+            this.setPosition(positionResponse);
+            observer.next();
+          } else {
+            console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
+            observer.error();
+          }
+        },
+        error => {
+          console.log('[CampusMap]: Error:', error);
+          observer.error();
         }
-      },
-      error => {
-        console.log('[CampusMap]: Error:', error);
-      }
-    );
+      );
+    });
   }
 
   /**
@@ -306,7 +320,7 @@ export class CampusMapPage implements OnInit {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
-    let overlays = {};
+    const overlays = {};
 
     for (const obj of geoJSON) {
       // create correct title string beforehand so we don't have to do it twice
