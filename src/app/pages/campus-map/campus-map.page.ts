@@ -17,6 +17,8 @@ import 'leaflet-rotatedmarker';
 })
 export class CampusMapPage implements OnInit {
 
+  /** ngx-leaflet inputs */
+
   options = {
     layers: [
       L.tileLayer(
@@ -29,20 +31,17 @@ export class CampusMapPage implements OnInit {
 
   layers = [];
 
-  layersControl = {
-    overlays: {
+  layersControl = {overlays: {}};
 
-    }
-  };
-
+  // default fitBounds is none
   fitBounds = null;
+
+  /** regular attributes */
 
   config: IConfig;
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
-  layerGroups: {[name: string]: L.LayerGroup} = {};
 
-  @ViewChild('map') mapContainer: ElementRef;
   map: L.Map;
 
   positionCircle: L.Circle;
@@ -65,26 +64,33 @@ export class CampusMapPage implements OnInit {
   }
 
   /**
-   * @name ionViewWillEnter
-   * @async
-   * @description take user to login if there is no session.
-   * We are using ionViewDidEnter here because it is run every time the view is
-   * entered, other than ionViewDidLoad which will run only once
+   * @name onMapReady
+   * @desc triggered when map is usable. Used for adding elements to the map
+   * @param map
    */
-  ionViewWillEnter() {
-    this.connection.checkOnline(true, true);
+  onMapReady(map) {
+    this.map = map;
+    this.addGeoLocationButton();
 
-    // this.addGeoLocationButton();
-    //
-    // // load geoJson data
+    // load geoJson data
     this.loadMapData();
 
-    // after map is initialized use default campus
+    // use default campus
     this.settings.getSettingValue('campus').then(
       (campus: string) => {
         this.changeCampus(campus);
       }
     );
+  }
+
+  /**
+   * @name ionViewWillEnter
+   * @desc take user to login if there is no session.
+   * We are using ionViewDidEnter here because it is run every time the view is
+   * entered, other than ionViewDidLoad which will run only once
+   */
+  ionViewWillEnter() {
+    this.connection.checkOnline(true, true);
   }
 
   /**

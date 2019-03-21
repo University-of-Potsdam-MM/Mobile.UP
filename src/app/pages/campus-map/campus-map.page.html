@@ -15,6 +15,7 @@
        [leafletOptions]="options"
        [leafletLayers]="layers"
        [leafletFitBounds]="fitBounds"
-       [leafletLayersControl]="layersControl">
+       [leafletLayersControl]="layersControl"
+       (leafletMapReady)="onMapReady($event)">
   </div>
 </ion-content>
