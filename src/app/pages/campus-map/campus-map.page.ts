@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
+import {IConfig, IMapsResponseObject, ICampus, IMapsResponse, ILatLongBounds} from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
@@ -20,6 +20,10 @@ export class CampusMapPage implements OnInit {
 
   /** ngx-leaflet inputs */
 
+  /**
+   * @name options
+   * @desc contains options for the leaflet map
+   */
   options = {
     layers: [
       L.tileLayer(
@@ -30,12 +34,23 @@ export class CampusMapPage implements OnInit {
     zoom: 5
   };
 
-  layers = [];
+  /**
+   * @name layers
+   * @name contains the layers that are visible in the map
+   */
+  layers: L.Layer[] = [];
 
-  layersControl = {overlays: {}};
+  /**
+   * @name layersControl
+   * @desc contains the layergroups that are to be displayed on the map
+   */
+  layersControl: {overlays: {[name: string]: L.LayerGroup}} = {overlays: {}};
 
-  // default fitBounds is none
-  fitBounds = null;
+  /**
+   * @name fitBounds
+   * @desc the bounds that are to be shown in the map
+   */
+  fitBounds: ILatLongBounds = null;
 
   /** regular attributes */
 
@@ -43,8 +58,6 @@ export class CampusMapPage implements OnInit {
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
   searchableLayers: L.LayerGroup = L.layerGroup();
-
-
   map: L.Map;
 
   positionCircle: L.Circle;
@@ -73,12 +86,11 @@ export class CampusMapPage implements OnInit {
    */
   onMapReady(map) {
     this.map = map;
+
     this.addGeoLocationButton();
 
-    // load geoJson data
     this.loadMapData();
 
-    // add search field
     this.addLeafletSearch();
 
     // use default campus
@@ -250,7 +262,6 @@ export class CampusMapPage implements OnInit {
    * @description loads campus map data
    */
   loadMapData() {
-
     this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
@@ -295,6 +306,8 @@ export class CampusMapPage implements OnInit {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
+    let overlays = {};
+
     for (const obj of geoJSON) {
       // create correct title string beforehand so we don't have to do it twice
       const title = this.translate.instant(
@@ -304,7 +317,7 @@ export class CampusMapPage implements OnInit {
       // check if we already have this category in layerGroups
       if (categories.indexOf(obj.category) === -1) {
         // Create new layer for each unique category
-        this.layersControl.overlays[title] = L.layerGroup();
+        overlays[title] = L.layerGroup();
         // just push category name so we know we already got that one
         categories.push(obj.category);
       }
@@ -331,7 +344,7 @@ export class CampusMapPage implements OnInit {
 
         const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
 
-        this.layersControl.overlays[title].addLayer(geoJson);
+        overlays[title].addLayer(geoJson);
 
         // also add geoJSON to list of searchable layers
         this.searchableLayers.addLayer(geoJson);
@@ -340,13 +353,13 @@ export class CampusMapPage implements OnInit {
 
     // now add all created layers to the map by default
     // TODO: maybe pre-define defaults in config?
-    // if(layerName in this.config.campusmap.defaultlayers) { ... }
-    for (const layerName in this.layersControl.overlays) {
+    for (const layerName in overlays) {
       if (this.layersControl[layerName]) {
-        this.layers.push(this.layersControl.overlays[layerName]);
+        this.options.layers.push(overlays[layerName]);
       }
     }
 
+    // add layers to the control, too
+    this.layersControl.overlays = overlays;
   }
-
 }
