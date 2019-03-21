@@ -142,16 +142,15 @@ export class CampusMapPage implements OnInit {
         icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="locate"></ion-icon>',
         title: this.translate.instant('page.campus-map.enable_geolocation'),
         onClick: (control) => {
-          this.enableGeolocation().subscribe(
-            success => {
-              this.geoLocationEnabled = true;
-              control.state('geolocation-enabled');
-            },
-            error => {
-              this.geoLocationEnabled = false;
-              control.state('geolocation-disabled');
-            }
-          );
+          const enableCallback = () => {
+            this.geoLocationEnabled = true;
+            control.state('geolocation-enabled');
+          };
+          const disableCallback = () => {
+            this.geoLocationEnabled = false;
+            control.state('geolocation-disabled');
+          };
+          this.enableGeolocation(enableCallback, disableCallback);
         }
       }, {
         stateName: 'geolocation-enabled',
@@ -224,24 +223,22 @@ export class CampusMapPage implements OnInit {
    * to the map. Returns an observable that constantly returns success when the
    * current position could be fetched and error when there was an error.
    */
-  enableGeolocation() {
-    return new Observable( observer => {
-      this.geoLocationWatch = this.location.watchPosition().subscribe(
-        (positionResponse: Position & PositionError) => {
-          if (!positionResponse.code) {
-            this.setPosition(positionResponse);
-            observer.next();
-          } else {
-            console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
-            observer.error();
-          }
-        },
-        error => {
-          console.log('[CampusMap]: Error:', error);
-          observer.error();
+  enableGeolocation(enableCallback, disableCallback) {
+    this.geoLocationWatch = this.location.watchPosition().subscribe(
+      (positionResponse: Position & PositionError) => {
+        if (!positionResponse.code) {
+          this.setPosition(positionResponse);
+          enableCallback();
+        } else {
+          console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
+          disableCallback();
         }
-      );
-    });
+      },
+      error => {
+        console.log('[CampusMap]: Error:', error);
+        disableCallback();
+      }
+    );
   }
 
   /**
