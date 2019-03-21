@@ -1,0 +1,13 @@
+app-campus-map {
+  .search-exp {
+    ul {
+      display: none;
+    }
+  }
+
+  li .search-tip {
+    &:hover {
+      color: yellow;
+    }
+  }
+}

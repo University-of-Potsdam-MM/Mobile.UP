@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
@@ -9,6 +9,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
+import 'leaflet-search';
 
 @Component({
   selector: 'app-campus-map',
@@ -41,6 +42,8 @@ export class CampusMapPage implements OnInit {
   config: IConfig;
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
+  searchableLayers: L.LayerGroup = L.layerGroup();
+
 
   map: L.Map;
 
@@ -75,6 +78,9 @@ export class CampusMapPage implements OnInit {
     // load geoJson data
     this.loadMapData();
 
+    // add search field
+    this.addLeafletSearch();
+
     // use default campus
     this.settings.getSettingValue('campus').then(
       (campus: string) => {
@@ -91,6 +97,25 @@ export class CampusMapPage implements OnInit {
    */
   ionViewWillEnter() {
     this.connection.checkOnline(true, true);
+  }
+
+  /**
+   * @name addLeafletSearch
+   * @desc Adds the leaflet search control to the map. Will only work if
+   * this.searchableLayers is already populated with geoJSON objects.
+   */
+  addLeafletSearch() {
+    this.map.addControl(new L.Control['Search']({
+      layer: this.searchableLayers,
+      propertyName: 'searchProperty',
+      collapsed: false,
+      textErr: this.translate.instant('page.campus-map.no_results'),
+      textCancel: this.translate.instant('page.campus-map.cancel'),
+      textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
+      initial: false,
+      minLength: 3,
+      autoType: false // guess that would just annoy most users
+    }));
   }
 
   /**
@@ -292,9 +317,24 @@ export class CampusMapPage implements OnInit {
 
         const props = feature.properties;
 
+        if (props['description']) {
+          // replace corrupted newline with correct <br> tag
+          props.description = props.description.replace(/(\r\n|\n|\r)/gm, '<br/>');
+        }
+
+        // create new property that can easily be searched by leaflet-search
+        props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
+
+        // See this for using angular component in popups
+        // https://github.com/Asymmetrik/ngx-leaflet/issues/178
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
-        this.layersControl.overlays[title].addLayer(L.geoJSON(feature).bindPopup(popupTemplate));
+        const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
+
+        this.layersControl.overlays[title].addLayer(geoJson);
+
+        // also add geoJSON to list of searchable layers
+        this.searchableLayers.addLayer(geoJson);
       }
     }
 
@@ -302,7 +342,9 @@ export class CampusMapPage implements OnInit {
     // TODO: maybe pre-define defaults in config?
     // if(layerName in this.config.campusmap.defaultlayers) { ... }
     for (const layerName in this.layersControl.overlays) {
-      this.layers.push(this.layersControl.overlays[layerName]);
+      if (this.layersControl[layerName]) {
+        this.layers.push(this.layersControl.overlays[layerName]);
+      }
     }
 
   }
