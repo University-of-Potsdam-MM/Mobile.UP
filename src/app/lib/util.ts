@@ -45,4 +45,15 @@ export module utils {
     }
   }
 
+  /**
+   * @name contains
+   * @description checks, whether y is a substring of x
+   * @param {string} x - String that does or does not contain string y
+   * @param {string} y - String that is or is not contained in string y
+   * @returns {Boolean} - Whether string x contains string y
+   */
+  export function contains(x: string, y: string): boolean {
+    return x.toLowerCase().includes(y.toLowerCase());
+  }
+
 }

@@ -78,7 +78,7 @@ th {
 }
 td, th {
     padding: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #ededed;
     text-align: left;
 }
 
@@ -104,13 +104,13 @@ only screen and (max-width: 760px),
         left: -9999px;
     }
 
-    tr { border: 1px solid #ccc; }
-    tr.emptyRow { border: 0px solid #ccc; }
+    tr { border: 1px solid #ededed; }
+    tr.emptyRow { border: 0px solid #ededed; }
 
     td {
         /* Behave  like a "row" */
         border: none;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #ededed;
         position: relative;
     }
 

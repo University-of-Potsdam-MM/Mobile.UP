@@ -14,6 +14,7 @@ import { MensaMealComponent } from './mensa-meal/mensa-meal.component';
 import { NewsArticleComponent } from './news-article/news-article.component';
 import { EventViewComponent } from './event-view/event-view.component';
 import { FormsModule } from '@angular/forms';
+import { BookLocationComponent } from './book-location/book-location.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FormsModule } from '@angular/forms';
     LectureListComponent,
     MensaMealComponent,
     NewsArticleComponent,
-    EventViewComponent
+    EventViewComponent,
+    BookLocationComponent
   ],
   imports: [
     IonicModule,
@@ -48,7 +50,8 @@ import { FormsModule } from '@angular/forms';
     LectureListComponent,
     MensaMealComponent,
     NewsArticleComponent,
-    EventViewComponent
+    EventViewComponent,
+    BookLocationComponent
   ]
 })
 export class ComponentsModule { }

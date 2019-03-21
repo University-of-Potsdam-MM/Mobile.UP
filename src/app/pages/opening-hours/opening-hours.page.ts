@@ -9,6 +9,7 @@ import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { IConfig } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { utils } from 'src/app/lib/util';
 
 @Component({
   selector: 'app-opening-hours',
@@ -167,10 +168,10 @@ export class OpeningHoursPage implements OnInit {
     } else {
       const comment = this.openingHours[index].parsedOpening.getComment();
       if (comment != null) {
-        if (this.translate.currentLang === 'en' && comment === 'nach Vereinbarung') {
+        if (this.translate.currentLang === 'en' && utils.contains(comment, 'nach Vereinbarung')) {
           return 'by appointment only';
-        } else if (comment === 'nach Vereinbarung') {
-          return comment;
+        } else if (utils.contains(comment, 'nach Vereinbarung')) {
+          return 'nach Vereinbarung';
         } else {
           return '';
         }

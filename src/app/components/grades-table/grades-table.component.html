@@ -108,12 +108,12 @@
 
           <!-- recursively open template if there are submodules -->
           <ng-template *ngIf="moduleGroup.module" [ngTemplateOutlet]="gradeTable" [ngTemplateOutletContext]="{ gradeArray: moduleGroup.module }"></ng-template>
-          
+
         </div>
       </div>
 </ng-template>
 
-<ion-grid *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
+<ion-grid padding-bottom *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
   <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints" nowrap no-padding>
     <ion-col text-left size="8">
       <b *ngIf="ac.description">
@@ -130,6 +130,7 @@
     <ion-col>{{ gradeArray[currentProfession].hint }}</ion-col>
   </ion-row>
 </ion-grid>
+<br>
 <ng-template #noAchievements>
   <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-noGrades-hint"></app-hint-box>
 </ng-template>

@@ -6,7 +6,7 @@
   <ion-icon *ngIf="!i" slot="start" color="primary" [name]="bookDetails.icon"></ion-icon>
   <ion-label [ngClass]="!i ? 'breakLine' : ''">
     <span *ngIf="convertToArray(book.titleInfo)[0]">
-      <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }}</b>
+      <b *ngIf="convertToArray(book.titleInfo)[0].nonSort">{{ convertToArray(book.titleInfo)[0].nonSort }} </b>
       <b *ngIf="convertToArray(book.titleInfo)[0].title">{{ convertToArray(book.titleInfo)[0].title }}</b><br>
       <p *ngIf="convertToArray(book.titleInfo)[0].subTitle">{{ convertToArray(book.titleInfo)[0].subTitle }}</p>
     </span>

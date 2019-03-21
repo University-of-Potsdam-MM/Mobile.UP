@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { utils } from 'src/app/lib/util';
+import { utils } from '../../lib/util';
 
 @Component({
   selector: 'app-book-list',

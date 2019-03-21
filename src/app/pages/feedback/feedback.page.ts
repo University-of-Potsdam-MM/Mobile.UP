@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class FeedbackPage implements OnInit {
 
-  private form: FormGroup;
+  form: FormGroup;
   loggedIn = false;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
