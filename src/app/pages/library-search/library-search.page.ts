@@ -156,23 +156,11 @@ export class LibrarySearchPage implements OnInit {
               wholeTitle = wholeTitle + ' ' + titleInfo.nonSort;
             }
 
-            return this.contains(wholeTitle, query);
+            return utils.contains(wholeTitle, query);
           } else { return false; }
         }
       );
     }
-  }
-
-  /**
-   * @name contains
-   * @description checks, whether y is a substring of x
-   *
-   * @param {string} x string that does or does not contain string y
-   * @param {string} y string that is or is not contained in string y
-   * @returns {boolean} whether string x contains string y
-   */
-  private contains(x: string, y: string): boolean {
-    return x.toLowerCase().includes(y.toLowerCase());
   }
 
   parseXMLtoJSON(data) {

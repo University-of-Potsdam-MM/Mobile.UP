@@ -146,18 +146,6 @@ export class PracticePage {
   }
 
   /**
-   * @name contains
-   * @description checks, whether y is a substring of x
-   *
-   * @param {string} x string that does or does not contain string y
-   * @param {string} y string that is or is not contained in string y
-   * @returns {boolean} whether string x contains string y
-   */
-  private contains(x: string, y: string): boolean {
-    return x.toLowerCase().includes(y.toLowerCase());
-  }
-
-  /**
    * @name onScrollListener
    * @description hides keyboard once the user is scrolling
    */
@@ -288,7 +276,7 @@ export class PracticePage {
         this.filteredList = jquery.grep(
           this.filteredList,
           (ADS1) => {
-            return this.contains(ADS1.title, query) || this.contains(ADS1.firm, query);
+            return utils.contains(ADS1.title, query) || utils.contains(ADS1.firm, query);
           }
         );
 
@@ -305,7 +293,7 @@ export class PracticePage {
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
           (ADS2) => {
-            return this.contains(ADS2.title, query) || this.contains(ADS2.firm, query);
+            return utils.contains(ADS2.title, query) || utils.contains(ADS2.firm, query);
           }
         );
       }

@@ -49,7 +49,7 @@ export class BookLocationComponent implements OnInit {
       const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()}).append('epn', epn);
 
       this.http.get(config.webservices.endpoint.libraryLKZ, {params: params}).subscribe(data => {
-        const lkz = data["msg"];
+        const lkz = data['msg'];
         if (lkz && lkz !== 'best') {
           let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);
           url += '&search_context2=' + lkz + '&language=' + this.translate.currentLang + '&project_id=1';
@@ -66,19 +66,8 @@ export class BookLocationComponent implements OnInit {
   }
 
   getEPN() {
-    let epn = this.department.id.split('epn:')[1];
+    const epn = this.department.id.split('epn:')[1];
     return epn;
-  }
-
-  /**
-   * @name contains
-   * @description checks, whether y is a substring of x
-   * @param {string} x - String that does or does not contain string y
-   * @param {string} y - String that is or is not contained in string y
-   * @returns {Boolean} - Whether string x contains string y
-   */
-  private contains(x: string, y: string): boolean {
-    return x.toLowerCase().includes(y.toLowerCase());
   }
 
   /**

@@ -12,6 +12,7 @@ import { NavigatorService } from 'src/app/services/navigator/navigator.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { utils } from 'src/app/lib/util';
 
 @Component({
   selector: 'app-emergency',
@@ -102,17 +103,6 @@ export class EmergencyPage implements OnInit {
   }
 
   /**
-   * @name contains
-   * @description checks, whether y is a substring of x
-   * @param {string} x - String that does or does not contain string y
-   * @param {string} y - String that is or is not contained in string y
-   * @returns {Boolean} - Whether string x contains string y
-   */
-  private contains(x: string, y: string): boolean {
-    return x.toLowerCase().includes(y.toLowerCase());
-  }
-
-  /**
    * @name filterItems
    * @description when a query is typed into the searchbar this method is called. It
    * filters the complete list of items with the query and modifies the
@@ -127,7 +117,7 @@ export class EmergencyPage implements OnInit {
       this.displayedList = jquery.grep(
         this.defaultList,
         (emergencyCall, index) => {
-          return this.contains(emergencyCall.name, query);
+          return utils.contains(emergencyCall.name, query);
         }
       );
       this.chRef.detectChanges();

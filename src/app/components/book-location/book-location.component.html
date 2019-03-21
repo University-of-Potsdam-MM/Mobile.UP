@@ -21,9 +21,9 @@
           </ion-label>
           <ion-note *ngIf="label && item[0] && label != item[0]" style="font-size: small; padding-inline-start: 5px; margin-inline-start: 0px;" slot="end">{{ label }}</ion-note>
       </ion-item>
-      <ion-item style="--padding-start: 5px;" lines="none" color="secondary" class="itemStatus">
+      <ion-item *ngIf="item[1]" style="--padding-start: 5px;" lines="none" color="secondary" class="itemStatus">
           <ion-label text-wrap style="margin-top: 0">
-            <span *ngIf="item[1]" style="color: black; font-size: small">{{ item[1] }}</span>
+            <span style="color: black; font-size: small">{{ item[1] }}</span>
           </ion-label>
       </ion-item>
   </ng-template>

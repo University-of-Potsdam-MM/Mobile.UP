@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { utils } from 'src/app/lib/util';
 
 @Component({
   selector: 'detailed-opening-modal-page',
@@ -93,9 +94,11 @@ export class DetailedOpeningModalPage implements OnInit {
       }
     } else {
       if (this.comment != null) {
-        if (this.translate.currentLang === 'en' && this.comment === 'nach Vereinbarung') {
+        if (this.translate.currentLang === 'en' && utils.contains(this.comment, 'nach Vereinbarung')) {
+          this.comment = 'nach Vereinbarung';
           return 'by appointment only';
-        } else if (this.comment === 'nach Vereinbarung') {
+        } else if (utils.contains(this.comment, 'nach Vereinbarung')) {
+          this.comment = 'nach Vereinbarung';
           return this.comment;
         } else {
           return '';
