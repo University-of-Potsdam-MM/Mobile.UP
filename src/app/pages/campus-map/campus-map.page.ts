@@ -10,7 +10,6 @@ import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-campus-map',
