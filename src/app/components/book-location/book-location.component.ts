@@ -44,7 +44,9 @@ export class BookLocationComponent implements OnInit {
 
   getRoomInfo() {
     const epn = this.getEPN();
-    if (epn && this.label && this.label !== 'bestellt' && this.departmentName.trim() !== 'Handapparat') {
+    if (epn && this.label && this.label !== 'bestellt'
+    && this.departmentName.trim() !== 'Handapparat'
+    && this.departmentName.trim() !== 'Universität Potsdam, Universitätsbibliothek') {
       const config: IConfig = ConfigService.config;
       const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()}).append('epn', epn);
 
