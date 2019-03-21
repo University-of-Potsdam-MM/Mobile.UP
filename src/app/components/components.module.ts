@@ -15,6 +15,7 @@ import { NewsArticleComponent } from './news-article/news-article.component';
 import { EventViewComponent } from './event-view/event-view.component';
 import { FormsModule } from '@angular/forms';
 import { BookLocationComponent } from './book-location/book-location.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { BookLocationComponent } from './book-location/book-location.component';
     IonicModule,
     CommonModule,
     FormsModule,
+    LeafletModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

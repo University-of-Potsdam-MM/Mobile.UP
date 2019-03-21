@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import * as L from 'leaflet';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-campus-map',
@@ -16,6 +16,26 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   styleUrls: ['./campus-map.page.scss'],
 })
 export class CampusMapPage implements OnInit {
+
+  options = {
+    layers: [
+      L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 18, attribution: 'www.uni-potsdam.de'}
+      )
+    ],
+    zoom: 5
+  };
+
+  layers = [];
+
+  layersControl = {
+    overlays: {
+
+    }
+  };
+
+  fitBounds = null;
 
   config: IConfig;
   geoJSON: IMapsResponseObject[];
@@ -54,12 +74,9 @@ export class CampusMapPage implements OnInit {
   ionViewWillEnter() {
     this.connection.checkOnline(true, true);
 
-    // initialize map
-    if (!this.map) { this.map = this.initializeLeafletMap(); }
-
-    this.addGeoLocationButton();
-
-    // load geoJson data
+    // this.addGeoLocationButton();
+    //
+    // // load geoJson data
     this.loadMapData();
 
     // after map is initialized use default campus
@@ -201,11 +218,9 @@ export class CampusMapPage implements OnInit {
    * @name loadMapData
    * @description loads campus map data
    */
-  async loadMapData() {
+  loadMapData() {
 
-    const mapData = await this.wsProvider.getMapData();
-
-    mapData.subscribe(
+    this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON);
@@ -214,21 +229,6 @@ export class CampusMapPage implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  /**
-   * @name loadMap
-   * @description loads map and initializes it
-   */
-  initializeLeafletMap() {
-    // create map object
-    const map = L.map('map').fitWorld();
-    L.tileLayer(
-      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'www.uni-potsdam.de',
-        maxZoom: 18
-      }).addTo(map);
-    return map;
   }
 
   /**
@@ -247,31 +247,18 @@ export class CampusMapPage implements OnInit {
 
   /**
    * @name selectCampus
-   * @description selects the given campus
+   * @description selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
     this.selectedCampus = campus;
-    if (this.map) {
-      this.moveToCampus(this.selectedCampus);
-    }
-  }
-
-  /**
-   * @name moveToCampus
-   * @description fits map to given campus
-   * @param {ICampus} campus
-   */
-  moveToCampus(campus: ICampus) {
-    this.map.fitBounds(
-      campus.lat_long_bounds
-    );
+    this.fitBounds = this.selectedCampus.lat_long_bounds;
   }
 
   /**
    * @name addFeaturesToLayerGroups
-   * @description adds features of geoJSON to layerGroups and adds those layerGroups
-   * to the maps object
+   * @description adds features of geoJSON to layerControl and adds those layerGroups
+   * to the map by default
    */
   addFeaturesToLayerGroups(geoJSON) {
     // just used to remember which categories we've seen already
@@ -286,7 +273,7 @@ export class CampusMapPage implements OnInit {
       // check if we already have this category in layerGroups
       if (categories.indexOf(obj.category) === -1) {
         // Create new layer for each unique category
-        this.layerGroups[title] = L.layerGroup();
+        this.layersControl.overlays[title] = L.layerGroup();
         // just push category name so we know we already got that one
         categories.push(obj.category);
       }
@@ -301,23 +288,17 @@ export class CampusMapPage implements OnInit {
 
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
-        this.layerGroups[title].addLayer(
-          L.geoJSON(feature).bindPopup(
-            popupTemplate
-          )
-        );
+        this.layersControl.overlays[title].addLayer(L.geoJSON(feature).bindPopup(popupTemplate));
       }
     }
 
-    // select all layers by default
-    for (const layerName in this.layerGroups) {
-      if (layerName) {
-        this.layerGroups[layerName].addTo(this.map);
-      }
+    // now add all created layers to the map by default
+    // TODO: maybe pre-define defaults in config?
+    // if(layerName in this.config.campusmap.defaultlayers) { ... }
+    for (const layerName in this.layersControl.overlays) {
+      this.layers.push(this.layersControl.overlays[layerName]);
     }
 
-    // now add layerGroups to the map so the user can select/deselect them
-    L.control.layers({}, this.layerGroups).addTo(this.map);
   }
 
 }

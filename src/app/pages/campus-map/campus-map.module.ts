@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     ComponentsModule,
+    LeafletModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
