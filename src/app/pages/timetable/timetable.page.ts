@@ -373,16 +373,10 @@ export class TimetablePage {
               notes += itm.courseDetails.courseType;
             }
 
-            const calOptions = {
-              calendarId: calID,
-              calendarName: createCalendarOpts.calendarName,
-              firstReminderMinutes: null,
-              // recurrence: null,
-              // recurrenceEndDate: null,
-              // recurrenceInterval: 1,
-              // secondReminderMinutes: null,
-              // url: null
-            };
+            const calOptions = this.calendar.getCalendarOptions();
+            calOptions.calendarId = calID;
+            calOptions.calendarName = createCalendarOpts.calendarName;
+            calOptions.firstReminderMinutes = null;
 
             this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
               console.log('[Timetable]: Successfully exported event');
