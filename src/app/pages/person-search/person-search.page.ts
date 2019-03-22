@@ -273,7 +273,11 @@ export class PersonSearchPage {
       },
       (error: any) => {
         console.error('Error saving contact.', error);
-        this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+        if (error.code && (error.code === 20 || error.code === '20')) {
+          this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+        } else {
+          this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+        }
       }
     );
   }

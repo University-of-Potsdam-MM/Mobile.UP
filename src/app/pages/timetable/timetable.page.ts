@@ -323,85 +323,97 @@ export class TimetablePage {
   }
 
   exportCalendar() {
-    const createCalendarOpts = this.calendar.getCreateCalendarOptions();
-    createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
-    createCalendarOpts.calendarColor = '#ff9900';
-    this.calendar.createCalendar(createCalendarOpts).then(async () => {
+    this.calendar.hasReadWritePermission().then(result => {
+      if (result) {
+        console.log('[Timetable]: Calendar access given.');
+        const createCalendarOpts = this.calendar.getCreateCalendarOptions();
+        createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
+        createCalendarOpts.calendarColor = '#ff9900';
+        this.calendar.createCalendar(createCalendarOpts).then(async () => {
 
-      let calID;
-      const existingCalendars = await this.calendar.listCalendars();
-      if (Array.isArray(existingCalendars)) {
-        for (let i = 0; i < existingCalendars.length; i++) {
-          if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
-            calID = existingCalendars[i].id;
-            break;
+          let calID;
+          const existingCalendars = await this.calendar.listCalendars();
+          if (Array.isArray(existingCalendars)) {
+            for (let i = 0; i < existingCalendars.length; i++) {
+              if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
+                calID = existingCalendars[i].id;
+                break;
+              }
+            }
           }
-        }
-      }
 
-      this.exportFinished = false;
-      this.exportedEvents = 0;
+          this.exportFinished = false;
+          this.exportedEvents = 0;
 
-      if (Array.isArray(this.eventSource) && this.eventSource.length > 0) {
-        const loop = dLoop(this.eventSource, (itm: IEventObject, idx, fin) => {
-          if (itm.title && itm.startTime && itm.endTime) {
-            const title = itm.title;
-            const startDate = itm.startTime;
-            const endDate = itm.endTime;
+          if (Array.isArray(this.eventSource) && this.eventSource.length > 0) {
+            const loop = dLoop(this.eventSource, (itm: IEventObject, idx, fin) => {
+              if (itm.title && itm.startTime && itm.endTime) {
+                const title = itm.title;
+                const startDate = itm.startTime;
+                const endDate = itm.endTime;
 
-            let eventLocation = '';
-            if (itm.eventDetails) {
-              if (itm.eventDetails.location) {
-                eventLocation += itm.eventDetails.location;
-              }
+                let eventLocation = '';
+                if (itm.eventDetails) {
+                  if (itm.eventDetails.location) {
+                    eventLocation += itm.eventDetails.location;
+                  }
 
-              if (itm.eventDetails.building && itm.eventDetails.building !== 'N') {
-                if (eventLocation !== '') {
-                  eventLocation += ': ';
+                  if (itm.eventDetails.building && itm.eventDetails.building !== 'N') {
+                    if (eventLocation !== '') {
+                      eventLocation += ': ';
+                    }
+
+                    eventLocation += itm.eventDetails.building;
+
+                    if (itm.eventDetails.room && itm.eventDetails.room !== 'N.') {
+                      eventLocation += '.' + itm.eventDetails.room;
+                    }
+                  }
                 }
 
-                eventLocation += itm.eventDetails.building;
-
-                if (itm.eventDetails.room && itm.eventDetails.room !== 'N.') {
-                  eventLocation += '.' + itm.eventDetails.room;
+                let notes = '';
+                if (itm.courseDetails && itm.courseDetails.courseType) {
+                  notes += itm.courseDetails.courseType;
                 }
+
+                const calOptions = this.calendar.getCalendarOptions();
+                calOptions.calendarId = calID;
+                calOptions.calendarName = createCalendarOpts.calendarName;
+                calOptions.firstReminderMinutes = null;
+
+                this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
+                  console.log('[Timetable]: Successfully exported event');
+                  this.exportedEvents++;
+                  fin();
+                }, error => {
+                  console.log('[Timetable]: Error creating event');
+                  console.log(error);
+                  this.exportedEvents++;
+                  this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
+                  fin();
+                });
               }
-            }
-
-            let notes = '';
-            if (itm.courseDetails && itm.courseDetails.courseType) {
-              notes += itm.courseDetails.courseType;
-            }
-
-            const calOptions = this.calendar.getCalendarOptions();
-            calOptions.calendarId = calID;
-            calOptions.calendarName = createCalendarOpts.calendarName;
-            calOptions.firstReminderMinutes = null;
-
-            this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
-              console.log('[Timetable]: Successfully exported event');
-              this.exportedEvents++;
-              fin();
-            }, error => {
-              console.log('[Timetable]: Error creating event');
-              console.log(error);
-              this.exportedEvents++;
-              this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
-              fin();
             });
-          }
-        });
 
-        loop.then(() => {
-          this.exportFinished = true;
-          this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+            loop.then(() => {
+              this.exportFinished = true;
+              this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+            });
+          } else {
+            this.exportFinished = true;
+          }
+        }, error => {
+          console.log('[Timetable]: Error creating calendar');
+          console.log(error);
+          this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
         });
       } else {
-        this.exportFinished = true;
+        console.log('[Timetable]: Calendar access DENIED.');
+        this.alert.presentToast(this.translate.instant('alert.permission-denied'));
       }
     }, error => {
-      console.log('[Timetable]: Error creating calendar');
       console.log(error);
+      console.log('[Timetable]: Can not check for calendar permissions.');
       this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
     });
   }
