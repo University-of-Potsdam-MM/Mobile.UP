@@ -32,6 +32,7 @@ registerLocaleData(localeEn);
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campus-map-feature-modal.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -57,7 +58,8 @@ export class IonicGestureConfig extends HammerGestureConfig {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CampusMapFeatureModalComponent
   ],
   entryComponents: [],
   imports: [

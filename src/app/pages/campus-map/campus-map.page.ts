@@ -10,6 +10,8 @@ import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
+import {ModalController} from '@ionic/angular';
+import {CampusMapFeatureModalComponent} from '../../campus-map-feature-modal/campus-map-feature-modal.component';
 
 @Component({
   selector: 'app-campus-map',
@@ -72,7 +74,8 @@ export class CampusMapPage implements OnInit {
     private connection: ConnectionService,
     private wsProvider: MapsService,
     private translate: TranslateService,
-    private location: Geolocation
+    private location: Geolocation,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -353,6 +356,13 @@ export class CampusMapPage implements OnInit {
         const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
 
         const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
+
+        this.modalCtrl.create({component: CampusMapFeatureModalComponent}).then(
+          modal => {
+            geoJson.on('click', () => { modal.present(); });
+          }
+        )
+
 
         overlays[title].addLayer(geoJson);
 
