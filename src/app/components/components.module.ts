@@ -16,6 +16,7 @@ import { EventViewComponent } from './event-view/event-view.component';
 import { FormsModule } from '@angular/forms';
 import { BookLocationComponent } from './book-location/book-location.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {CampusMapFeatureModalComponent} from './campus-map-feature-modal/campus-map-feature-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MensaMealComponent,
     NewsArticleComponent,
     EventViewComponent,
-    BookLocationComponent
+    BookLocationComponent,
+    CampusMapFeatureModalComponent
   ],
   imports: [
     IonicModule,
@@ -53,7 +55,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MensaMealComponent,
     NewsArticleComponent,
     EventViewComponent,
-    BookLocationComponent
-  ]
+    BookLocationComponent,
+    CampusMapFeatureModalComponent
+  ],
+  entryComponents: [CampusMapFeatureModalComponent]
 })
 export class ComponentsModule { }

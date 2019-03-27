@@ -11,7 +11,7 @@ import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
 import {ModalController} from '@ionic/angular';
-import {CampusMapFeatureModalComponent} from '../../campus-map-feature-modal/campus-map-feature-modal.component';
+import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 
 @Component({
   selector: 'app-campus-map',
@@ -315,7 +315,7 @@ export class CampusMapPage implements OnInit {
    * @description adds features of geoJSON to layerControl and adds those layerGroups
    * to the map by default
    */
-  addFeaturesToLayerGroups(geoJSON) {
+  async addFeaturesToLayerGroups(geoJSON: IMapsResponse) {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
@@ -337,32 +337,23 @@ export class CampusMapPage implements OnInit {
 
       // add features from each category to corresponding layer
       for (const feature of obj.geo.features) {
-        // TODO:
-        //  - maybe make this prettier or even include link to OpeningHoursPage
-        //  with correct segment?
-
         const props = feature.properties;
-
-        if (props['description']) {
-          // replace corrupted newline with correct <br> tag
-          props.description = props.description.replace(/(\r\n|\n|\r)/gm, '<br/>');
-        }
 
         // create new property that can easily be searched by leaflet-search
         props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
 
-        // See this for using angular component in popups
-        // https://github.com/Asymmetrik/ngx-leaflet/issues/178
-        const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
+        const geoJson = L.geoJSON(feature);
 
-        const geoJson = L.geoJSON(feature).bindPopup(popupTemplate);
-
-        this.modalCtrl.create({component: CampusMapFeatureModalComponent}).then(
-          modal => {
+        this.modalCtrl.create({
+          component: CampusMapFeatureModalComponent,
+          componentProps: {feature: feature},
+          cssClass: 'campus-map-modal',
+          showBackdrop: true
+        }).then(
+          (modal: HTMLIonModalElement) => {
             geoJson.on('click', () => { modal.present(); });
           }
-        )
-
+        );
 
         overlays[title].addLayer(geoJson);
 

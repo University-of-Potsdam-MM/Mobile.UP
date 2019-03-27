@@ -33,6 +33,8 @@ const routes: Routes = [
     }),
     RouterModule.forChild(routes)
   ],
-  declarations: [CampusMapPage]
+  declarations: [
+    CampusMapPage
+  ]
 })
 export class CampusMapPageModule {}
