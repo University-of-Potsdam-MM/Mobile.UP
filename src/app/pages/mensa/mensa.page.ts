@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,16 +6,15 @@ import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
 import { IMeals, IConfig, IMensaResponse } from 'src/app/lib/interfaces';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { ActivatedRoute } from '@angular/router';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-mensa',
   templateUrl: './mensa.page.html',
   styleUrls: ['./mensa.page.scss'],
 })
-export class MensaPage implements OnInit {
+export class MensaPage extends AbstractPage {
 
   // calendar variables
   showBasicCalendar = false;
@@ -56,21 +55,14 @@ export class MensaPage implements OnInit {
   noMealsForDate;
   noUlfMealsForDate;
   campus;
-  hideSideMenu;
 
   constructor(
-    private connection: ConnectionService,
     private translate: TranslateService,
     private cache: CacheService,
     private http: HttpClient,
-    private swipeEvent: Events,
-    private activatedRoute: ActivatedRoute
-  ) { }
-
-  ngOnInit() {
-    this.connection.checkOnline(true, true);
-    const opt = this.activatedRoute.snapshot.paramMap.get('options');
-    if (opt === 'hidemenu') { this.hideSideMenu = true; }
+    private swipeEvent: Events
+  ) {
+    super();
   }
 
   /**

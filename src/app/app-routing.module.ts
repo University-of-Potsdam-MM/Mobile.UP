@@ -14,7 +14,6 @@ const routes: Routes = [
   { path: 'library-search', loadChildren: './pages/library-search/library-search.module#LibrarySearchPageModule' },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'mensa', loadChildren: './pages/mensa/mensa.module#MensaPageModule' },
-  { path: 'mensa/:options', loadChildren: './pages/mensa/mensa.module#MensaPageModule' },
   { path: 'news', loadChildren: './pages/news/news.module#NewsPageModule' },
   { path: 'opening-hours', loadChildren: './pages/opening-hours/opening-hours.module#OpeningHoursPageModule' },
   { path: 'person-search', loadChildren: './pages/person-search/person-search.module#PersonSearchPageModule' },
