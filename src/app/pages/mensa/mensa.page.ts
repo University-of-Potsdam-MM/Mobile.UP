@@ -62,7 +62,7 @@ export class MensaPage extends AbstractPage {
     private http: HttpClient,
     private swipeEvent: Events
   ) {
-    super();
+    super({ requireNetwork: true });
   }
 
   /**
