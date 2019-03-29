@@ -98,7 +98,7 @@ export class AppComponent {
    * object is deleted.
    */
   async checkSessionValidity(config: IConfig) {
-    const session: ISession = await this.userSession.getSession();
+    let session: ISession = await this.userSession.getSession();
 
     if (session) {
       // helper function for determining whether session is still valid
@@ -107,7 +107,6 @@ export class AppComponent {
         const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
         const nowUnixTime = moment().unix();
         // check if we are not past this date already with a certain boundary
-
         return (validUntilUnixTime - nowUnixTime) > boundary;
       };
 
@@ -128,14 +127,39 @@ export class AppComponent {
             }, error => {
               console.log(error);
             });
-          }, error => {
-            console.log('[Mobile.UP]: error refreshing token');
-            console.log(error);
+          }, response => {
+            console.log('[Mobile.UP]: Error refreshing token');
+            console.log(response);
+
+            if (response.error === 'invalid_grant' || response.description === 'Provided Authorization Grant is invalid') {
+              this.connection.checkOnline(true, true);
+              // refresh token expired; f.e. if user logs into a second device
+              if (session.credentials && session.credentials.password && session.credentials.username) {
+                console.log('[Mobile.UP]: Re-authenticating...');
+                this.login.oidcLogin(session.credentials, config.authorization.oidc).subscribe(sessionRes => {
+                  console.log(`[Mobile.UP]: Re-authenticating successful`);
+                  this.userSession.setSession(sessionRes);
+                  session = sessionRes;
+
+                  this.login.oidcGetUserInformation(sessionRes, config.authorization.oidc).subscribe(userInformation => {
+                    this.userSession.setUserInfo(userInformation);
+                  }, error => {
+                    console.log(error);
+                  });
+                }, error => {
+                  console.log(error);
+                  console.log(`[Mobile.UP]: Error: Re-authenticating not possible`);
+                });
+              }
+            }
           });
       } else {
         // session no longer valid
         this.userSession.removeSession();
         this.userSession.removeUserInfo();
+        setTimeout(() => {
+          this.events.publish('userLogin');
+        }, 1000);
       }
     }
   }

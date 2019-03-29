@@ -12,6 +12,7 @@ import { UserSessionService } from 'src/app/services/user-session/user-session.s
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { UPLoginProvider } from 'src/app/services/login-provider/login';
 
 @Component({
   selector: 'app-person-search',
@@ -42,6 +43,7 @@ export class PersonSearchPage {
     private contacts: Contacts,
     private callNumber: CallNumber,
     private alert: AlertService,
+    private login: UPLoginProvider,
     private translate: TranslateService
   ) {
     if (this.platform.is('cordova')) {
@@ -118,7 +120,7 @@ export class PersonSearchPage {
 
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
-      this.session = await this.sessionProvider.getSession();
+      if (!this.session) { this.session = await this.sessionProvider.getSession(); }
       const config: IConfig = ConfigService.config;
       const headers: HttpHeaders = new HttpHeaders()
         .append('Authorization', `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
@@ -140,26 +142,32 @@ export class PersonSearchPage {
           this.response_received = true;
           this.triedRefreshingSession = false;
         },
-        async error => {
+        async response => {
           if (!this.triedRefreshingSession) {
-            if (error.status === 401) {
+            if (response.status === 401) {
               this.connection.checkOnline(true, true);
-              this.session = await this.sessionProvider.getSession();
-
-              if (!this.session) {
-                this.goToLogin();
-              } else {
-                this.triedRefreshingSession = true;
-                this.search();
+              // refresh token expired; f.e. if user logs into a second device
+              if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
+                console.log('[PersonSearch]: Re-authenticating...');
+                this.login.oidcLogin(this.session.credentials, config.authorization.oidc).subscribe(sessionRes => {
+                  console.log(`[PersonSearch]: Re-authenticating successful`);
+                  this.sessionProvider.setSession(sessionRes);
+                  this.session = sessionRes;
+                  this.triedRefreshingSession = true;
+                  this.search();
+                }, error => {
+                  console.log(error);
+                  console.log(`[PersonSearch]: Error: Re-authenticating not possible`);
+                });
               }
             } else {
-              this.error = error;
-              console.log(error);
+              this.error = response;
+              console.log(response);
               this.response_received = true;
             }
           } else {
-            this.error = error;
-            console.log(error);
+            this.error = response;
+            console.log(response);
             this.response_received = true;
           }
         }
@@ -273,7 +281,11 @@ export class PersonSearchPage {
       },
       (error: any) => {
         console.error('Error saving contact.', error);
-        this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+        if (error.code && (error.code === 20 || error.code === '20')) {
+          this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+        } else {
+          this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+        }
       }
     );
   }

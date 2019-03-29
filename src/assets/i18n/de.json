@@ -361,7 +361,8 @@
     "calendar-event-fail": "Fehler beim Erstellen des Events.",
     "calendar-exists": "Es scheint, als hätten Sie den Kalender bereits exportiert. Sollen existierende Veranstaltungen beibehalten oder gelöscht werden?",
     "feedback-sent": "Dein Feedback wurde übermittelt.",
-    "feedback-fail": "Fehler beim Senden des Feedbacks."
+    "feedback-fail": "Fehler beim Senden des Feedbacks.",
+    "permission-denied": "Berechtigung verweigert."
   },
   "university": {
     "location": {
