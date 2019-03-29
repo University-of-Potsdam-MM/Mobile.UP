@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {IConfig, IMapsResponseObject, ICampus, IMapsResponse, ILatLongBounds } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
@@ -12,6 +12,7 @@ import 'leaflet-rotatedmarker';
 import 'leaflet-search';
 import {ModalController} from '@ionic/angular';
 import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-campus-map',
@@ -68,6 +69,8 @@ export class CampusMapPage implements OnInit {
 
   geoLocationWatch;
   geoLocationEnabled = false;
+
+  @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
 
   constructor(
     private settings: SettingsService,
@@ -337,13 +340,24 @@ export class CampusMapPage implements OnInit {
 
       // add features from each category to corresponding layer
       for (const feature of obj.geo.features) {
-        const props = feature.properties;
+gs        const props = feature.properties;
+
         // create new property that can easily be searched by leaflet-search
         props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
+        props['campus'] = obj.campus;
+        props['category'] = obj.category;
 
         const geoJson = L.geoJSON(feature);
 
         geoJson.on('click', async () => {
+
+          // TODO: change campus if clicked feature is on other campus
+          // if (feature.properties.campus !== this.selectedCampus.name) {
+          //   this.campusTab.changeCampus(
+          //     {detail: {value: feature.properties.campus}},
+          //     false
+          //   );
+          // }
 
           const modal = await this.modalCtrl.create({
             // backdropDismiss: false,
