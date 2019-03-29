@@ -4,17 +4,17 @@ import { CacheService } from 'ionic-cache';
 import { RoomplanPage } from '../roomplan/roomplan.page';
 import { Events } from '@ionic/angular';
 import { IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom } from 'src/app/lib/interfaces';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-free-rooms',
   templateUrl: './free-rooms.page.html',
   styleUrls: ['./free-rooms.page.scss'],
 })
-export class FreeRoomsPage implements OnInit {
+export class FreeRoomsPage extends AbstractPage implements OnInit {
 
   // bindings
   select_timeslot: string;
@@ -29,15 +29,15 @@ export class FreeRoomsPage implements OnInit {
   no_timeslot = false;
 
   constructor(
-    private connection: ConnectionService,
     private cache: CacheService,
     private http: HttpClient,
     private alertProvider: AlertService,
     private swipeEvent: Events
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
     this.current_timeslot = this.getCurrentTimeslot();
 
     this.time_slots = [];

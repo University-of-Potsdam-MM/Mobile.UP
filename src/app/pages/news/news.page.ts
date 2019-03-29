@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IonSlides } from '@ionic/angular';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { IConfig, INewsApiResponse } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.page.html',
   styleUrls: ['./news.page.scss'],
 })
-export class NewsPage implements OnInit {
+export class NewsPage extends AbstractPage implements OnInit {
   @ViewChild(IonSlides) slides: IonSlides;
 
   public newsSource = 0;
@@ -28,13 +28,13 @@ export class NewsPage implements OnInit {
   };
 
   constructor(
-    private connection: ConnectionService,
     private cache: CacheService,
     private http: HttpClient
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
     this.loadNews();
   }
 

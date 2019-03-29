@@ -6,17 +6,17 @@ import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { IConfig } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { utils } from 'src/app/lib/util';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-opening-hours',
   templateUrl: './opening-hours.page.html',
   styleUrls: ['./opening-hours.page.scss'],
 })
-export class OpeningHoursPage implements OnInit {
+export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   openingHours;
   allOpeningHours;
@@ -27,17 +27,17 @@ export class OpeningHoursPage implements OnInit {
   modalOpen = false;
 
   constructor(
-    private connection: ConnectionService,
     private http: HttpClient,
     private cache: CacheService,
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,
     private modalCtrl: ModalController
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
     this.loadOpeningHours();
   }
 

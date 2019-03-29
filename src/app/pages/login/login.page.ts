@@ -5,16 +5,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ICredentials, ISession, IOIDCUserInformationResponse, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage extends AbstractPage implements OnInit {
 
   loading;
   alreadyLoggedIn: boolean;
@@ -31,13 +31,13 @@ export class LoginPage implements OnInit {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
-    private connection: ConnectionService,
     private upLogin: UPLoginProvider,
     private navCtrl: NavController,
     private events: Events,
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder
   ) {
+    super({ requireNetwork: true });
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -45,7 +45,6 @@ export class LoginPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.connection.checkOnline(true, true);
     const session = await this.userSession.getSession();
 
     if (session) {

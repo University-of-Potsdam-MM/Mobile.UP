@@ -4,13 +4,14 @@ import { ImpressumModalPage } from './impressum.modal';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-impressum',
   templateUrl: './impressum.page.html',
   styleUrls: ['./impressum.page.scss'],
 })
-export class ImpressumPage implements OnInit {
+export class ImpressumPage extends AbstractPage implements OnInit {
 
   config: IConfig;
   modalOpen = false;
@@ -18,7 +19,9 @@ export class ImpressumPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private translate: TranslateService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.config = ConfigService.config;

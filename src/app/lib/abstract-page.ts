@@ -24,11 +24,10 @@ export abstract class AbstractPage  {
 
     protected session: ISession;
     protected sessionObservable: ReplaySubject<ISession>;
-    protected connection: ConnectionService;
     protected sessionProvider: UserSessionService;
+    protected connection: ConnectionService;
     protected activatedRoute: ActivatedRoute;
     protected menu: MenuController;
-    //   protected app: App;
 
     protected constructor(
         pageOptions?: IPageOptions
@@ -38,9 +37,8 @@ export abstract class AbstractPage  {
         this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
         this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
         this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
-        // this.app = injector.get<App>(App as Type<App>);
 
-        this.processOptions(pageOptions);
+        if (pageOptions) { this.processOptions(pageOptions); }
         this.setMenuStatus();
     }
 
@@ -67,10 +65,9 @@ export abstract class AbstractPage  {
      * if there is none;
      */
     requireNetwork() {
-        // console.log('[AbstractPage]: Requires network');
-
+        console.log('[AbstractPage]: Network required.');
         // I think we have to re-evalue this; how do we handle cached content?
-        // this.connection.checkOnline(true, true);
+        this.connection.checkOnline(true, true);
     }
 
     /**

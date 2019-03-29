@@ -4,7 +4,6 @@ import { Platform, ModalController, IonItemSliding, AlertController } from '@ion
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
@@ -14,13 +13,14 @@ import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CacheService } from 'ionic-cache';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-library-search',
   templateUrl: './library-search.page.html',
   styleUrls: ['./library-search.page.scss'],
 })
-export class LibrarySearchPage implements OnInit {
+export class LibrarySearchPage extends AbstractPage implements OnInit {
 
   query;
   config: IConfig;
@@ -38,7 +38,6 @@ export class LibrarySearchPage implements OnInit {
   modalOpen = false;
 
   constructor(
-    private connection: ConnectionService,
     private platform: Platform,
     private keyboard: Keyboard,
     private http: HttpClient,
@@ -48,10 +47,11 @@ export class LibrarySearchPage implements OnInit {
     private storage: Storage,
     private cache: CacheService,
     private alertCtrl: AlertController
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
     this.config = ConfigService.config;
     this.checkFavorites();
   }
