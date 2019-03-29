@@ -338,22 +338,21 @@ export class CampusMapPage implements OnInit {
       // add features from each category to corresponding layer
       for (const feature of obj.geo.features) {
         const props = feature.properties;
-
         // create new property that can easily be searched by leaflet-search
         props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
 
         const geoJson = L.geoJSON(feature);
 
-        this.modalCtrl.create({
-          component: CampusMapFeatureModalComponent,
-          componentProps: {feature: feature},
-          cssClass: 'campus-map-modal',
-          showBackdrop: true
-        }).then(
-          (modal: HTMLIonModalElement) => {
-            geoJson.on('click', () => { modal.present(); });
-          }
-        );
+        geoJson.on('click', async () => {
+          const modal = await this.modalCtrl.create({
+            // backdropDismiss: false,
+            component: CampusMapFeatureModalComponent,
+            componentProps: { feature: feature },
+            cssClass: 'campus-map-modal',
+            showBackdrop: true
+          });
+          modal.present();
+        });
 
         overlays[title].addLayer(geoJson);
 
