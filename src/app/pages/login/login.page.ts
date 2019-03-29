@@ -156,7 +156,6 @@ export class LoginPage implements OnInit {
    * @param errorCode
    */
   async showAlert(errorCode: ELoginErrors) {
-
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('alert.title.error'),
       message: this.translate.instant(`page.login.loginError.${errorCode}`),
