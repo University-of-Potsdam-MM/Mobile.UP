@@ -8,6 +8,7 @@ import { Events } from '@ionic/angular';
 import { IMeals, IConfig, IMensaResponse } from 'src/app/lib/interfaces';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mensa',
@@ -54,19 +55,22 @@ export class MensaPage implements OnInit {
   hardRefresh = false;
   noMealsForDate;
   noUlfMealsForDate;
-
   campus;
+  hideSideMenu;
 
   constructor(
     private connection: ConnectionService,
     private translate: TranslateService,
     private cache: CacheService,
     private http: HttpClient,
-    private swipeEvent: Events
+    private swipeEvent: Events,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.connection.checkOnline(true, true);
+    const opt = this.activatedRoute.snapshot.paramMap.get('options');
+    if (opt === 'hidemenu') { this.hideSideMenu = true; }
   }
 
   /**
