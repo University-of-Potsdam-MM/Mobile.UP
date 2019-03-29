@@ -344,6 +344,7 @@ export class CampusMapPage implements OnInit {
         const geoJson = L.geoJSON(feature);
 
         geoJson.on('click', async () => {
+
           const modal = await this.modalCtrl.create({
             // backdropDismiss: false,
             component: CampusMapFeatureModalComponent,

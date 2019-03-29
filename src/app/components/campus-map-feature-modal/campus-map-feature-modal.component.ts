@@ -12,25 +12,24 @@ export class CampusMapFeatureModalComponent implements OnInit {
   @Input() feature: Feature;
 
   title: string;
-  descriptionItems: string[];
+  descriptionItems: string[] = [];
 
   constructor(private modalCtrl: ModalController) {
   }
 
+  /**
+   * initializes the modals description by splitting the description at newline
+   * characters
+   */
   ngOnInit() {
-    // if (props['description']) {
-    //   // replace corrupted newline with correct <br> tag
-    //   props.description = props.description.replace(/(\r\n|\n|\r)/gm, '<br/>');
-    // }
-
     if (this.feature.properties.description) {
-      this.descriptionItems = this.feature.properties.description.split('-');
-      console.log(this.feature.properties.description);
-    } else {
-      this.descriptionItems = [];
+      this.descriptionItems = this.feature.properties.description.split('\n');
     }
   }
 
+  /**
+   * closes this modal
+   */
   closeModal() {
     this.modalCtrl.dismiss();
   }
