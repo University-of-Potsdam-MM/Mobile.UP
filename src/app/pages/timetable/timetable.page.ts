@@ -6,20 +6,20 @@ import * as moment from 'moment';
 import { LoginPage } from '../login/login.page';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EventModalPage } from './event.modal';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import * as dLoop from 'delayed-loop';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-timetable',
   templateUrl: './timetable.page.html',
   styleUrls: ['./timetable.page.scss'],
 })
-export class TimetablePage {
+export class TimetablePage extends AbstractPage {
 
   // tslint:disable-next-line: max-line-length
   hexValues = ['#FFCC80', '#9FA8DA', '#A5D6A7', '#B0BEC5', '#ef9a9a', '#90CAF9', '#81D4FA', '#80DEEA', '#80CBC4', '#C5E1A5', '#B39DDB', '#E6EE9C', '#FFE082', '#FFAB91', '#BCAAA4', '#EEEEEE', '#F48FB1', '#CE93D8', '#FFF59D'];
@@ -56,8 +56,7 @@ export class TimetablePage {
 
   constructor(
     private platform: Platform,
-    private connection: ConnectionService,
-    private sessionProvider: UserSessionService,
+    public sessionProvider: UserSessionService,
     private translate: TranslateService,
     private puls: PulsService,
     private modalCtrl: ModalController,
@@ -66,7 +65,9 @@ export class TimetablePage {
     private alertCtrl: AlertController,
     private calendar: Calendar,
     private alert: AlertService
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   async ionViewWillEnter() {
 
@@ -76,7 +77,6 @@ export class TimetablePage {
       this.isMobile = true;
     }
 
-    this.connection.checkOnline(true, true);
     this.setupCalendarOptions();
 
     const session = await this.sessionProvider.getSession();

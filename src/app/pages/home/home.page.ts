@@ -5,13 +5,14 @@ import { Storage } from '@ionic/storage';
 import { IModule } from 'src/app/lib/interfaces';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage extends AbstractPage implements OnInit {
   icon_selected = 'star';
   icon_not_selected = 'star-outline';
 
@@ -23,7 +24,9 @@ export class HomePage implements OnInit {
     private translate: TranslateService,
     private webIntent: WebIntentService,
     private storage: Storage,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.storage.get('modules').then(modules => {

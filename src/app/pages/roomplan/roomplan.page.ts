@@ -2,29 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import { Events } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { IHouse, IRoom, IHousePlan, IRoomEvent, IConfig, IRoomApiRequest, IReservationRequestResponse } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-roomplan',
   templateUrl: './roomplan.page.html',
   styleUrls: ['./roomplan.page.scss'],
 })
-export class RoomplanPage implements OnInit {
+export class RoomplanPage extends AbstractPage implements OnInit {
 
   constructor(
-    private connection: ConnectionService,
     private http: HttpClient,
     private cache: CacheService,
     private alert: AlertService,
-    private translate: TranslateService,
     private alertProvider: AlertService,
     private swipeEvent: Events
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   // params
   default_house: IHouse;
@@ -93,8 +92,6 @@ export class RoomplanPage implements OnInit {
   }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
-
     this.day_offset = '0';
 
     this.days = [];

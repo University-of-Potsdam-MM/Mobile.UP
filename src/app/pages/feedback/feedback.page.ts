@@ -4,18 +4,18 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IFeedback } from 'src/app/lib/interfaces';
 import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.page.html',
   styleUrls: ['./feedback.page.scss'],
 })
-export class FeedbackPage implements OnInit {
+export class FeedbackPage extends AbstractPage implements OnInit {
 
   form: FormGroup;
   loggedIn = false;
@@ -35,13 +35,13 @@ export class FeedbackPage implements OnInit {
   constructor(
     public http: HttpClient,
     public navCtrl: NavController,
-    private connection: ConnectionService,
-    private sessionProvider: UserSessionService,
+    public sessionProvider: UserSessionService,
     private deviceService: DeviceService,
     private formBuilder: FormBuilder,
     private alert: AlertService,
     private translate: TranslateService
   ) {
+      super({ requireNetwork: true });
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
@@ -56,7 +56,6 @@ export class FeedbackPage implements OnInit {
    * @name ionViewWillEnter
    */
   async ionViewWillEnter() {
-    this.connection.checkOnline(true, true);
     const session = await this.sessionProvider.getSession();
 
     if (session) {

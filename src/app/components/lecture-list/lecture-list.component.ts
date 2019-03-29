@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CacheService } from 'ionic-cache';
 import { PulsService } from 'src/app/services/puls/puls.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
@@ -31,14 +30,11 @@ export class LectureListComponent implements OnInit {
   lecturerList = [];
 
   constructor(
-    private connection: ConnectionService,
     private cache: CacheService,
     private puls: PulsService
   ) { }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
-
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
     }

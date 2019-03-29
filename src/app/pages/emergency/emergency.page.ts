@@ -7,19 +7,19 @@ import * as jquery from 'jquery';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { EmergencyCall, IConfig } from 'src/app/lib/interfaces';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { NavigatorService } from 'src/app/services/navigator/navigator.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-emergency',
   templateUrl: './emergency.page.html',
   styleUrls: ['./emergency.page.scss'],
 })
-export class EmergencyPage implements OnInit {
+export class EmergencyPage  extends AbstractPage implements OnInit {
 
   jsonPath = '../../assets/json/emergency';
   displayedList: Array<EmergencyCall>;
@@ -28,7 +28,6 @@ export class EmergencyPage implements OnInit {
   cordova = false;
 
   constructor(
-    private connection: ConnectionService,
     private http: HttpClient,
     private cache: CacheService,
     private platform: Platform,
@@ -40,11 +39,11 @@ export class EmergencyPage implements OnInit {
     private callNumber: CallNumber,
     private alert: AlertService,
     private translate: TranslateService
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
-    this.connection.checkOnline(true, true);
-
     if (this.platform.is('cordova')) {
       this.cordova = true;
     }

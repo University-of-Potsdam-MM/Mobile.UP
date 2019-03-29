@@ -12,13 +12,14 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { utils } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-practice',
   templateUrl: './practice.page.html',
   styleUrls: ['./practice.page.scss'],
 })
-export class PracticePage {
+export class PracticePage extends AbstractPage {
 
   defaultList: ADS[] = [];
   filteredList: ADS[] = [];
@@ -46,7 +47,9 @@ export class PracticePage {
     private alert: AlertService,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController
-  ) { }
+  ) {
+    super();
+  }
 
   ionViewWillEnter() {
     this.initializeList();

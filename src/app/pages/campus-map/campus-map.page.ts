@@ -3,19 +3,19 @@ import * as L from 'leaflet';
 import { TranslateService } from '@ngx-translate/core';
 import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-campus-map',
   templateUrl: './campus-map.page.html',
   styleUrls: ['./campus-map.page.scss'],
 })
-export class CampusMapPage implements OnInit {
+export class CampusMapPage extends AbstractPage implements OnInit {
 
   config: IConfig;
   geoJSON: IMapsResponseObject[];
@@ -34,11 +34,12 @@ export class CampusMapPage implements OnInit {
 
   constructor(
     private settings: SettingsService,
-    private connection: ConnectionService,
     private wsProvider: MapsService,
     private translate: TranslateService,
     private location: Geolocation
-  ) { }
+  ) {
+    super({ requireNetwork: true });
+  }
 
   ngOnInit() {
     this.config = ConfigService.config;
@@ -52,13 +53,10 @@ export class CampusMapPage implements OnInit {
    * entered, other than ionViewDidLoad which will run only once
    */
   ionViewWillEnter() {
-    this.connection.checkOnline(true, true);
-
     // initialize map
     if (!this.map) { this.map = this.initializeLeafletMap(); }
 
     this.addGeoLocationButton();
-
     // load geoJson data
     this.loadMapData();
 

@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Events } from '@ionic/angular';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { IConfig, IJourneyResponse } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-transport',
   templateUrl: './transport.page.html',
   styleUrls: ['./transport.page.scss'],
 })
-export class TransportPage implements OnInit {
+export class TransportPage extends AbstractPage {
 
   currentDate;
   isLoaded = false;
@@ -25,13 +25,10 @@ export class TransportPage implements OnInit {
   error = null;
 
   constructor(
-    private connection: ConnectionService,
     private http: HttpClient,
     private swipeEvent: Events
-  ) { }
-
-  ngOnInit() {
-    this.connection.checkOnline(true, true);
+  ) {
+    super({ requireNetwork: true });
   }
 
   changeCampus(campus) {

@@ -5,17 +5,17 @@ import { LoginPage } from '../login/login.page';
 import { of } from 'rxjs';
 import { IConfig } from 'src/app/lib/interfaces';
 import { PulsService } from 'src/app/services/puls/puls.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-grades',
   templateUrl: './grades.page.html',
   styleUrls: ['./grades.page.scss'],
 })
-export class GradesPage {
+export class GradesPage extends AbstractPage {
 
   config: IConfig;
 
@@ -38,16 +38,16 @@ export class GradesPage {
     private cache: CacheService,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    private connection: ConnectionService,
-    private sessionProvider: UserSessionService
-  ) { }
+    public sessionProvider: UserSessionService
+  ) {
+    super({ requireNetwork: true });
+  }
 
   /**
    * @async
    * @name ionViewWillEnter
    */
   async ionViewWillEnter() {
-    this.connection.checkOnline(true, true);
     this.config = ConfigService.config;
     this.session = await this.sessionProvider.getSession();
 

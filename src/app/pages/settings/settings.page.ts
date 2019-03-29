@@ -5,13 +5,14 @@ import * as Constants from '../../services/settings/settings_config';
 import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ISetting, ESettingType, ISettingOption } from 'src/app/lib/interfaces';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage extends AbstractPage implements OnInit {
 
   settings: Array<ISetting> = [];
   settings_initializes = false;
@@ -21,7 +22,9 @@ export class SettingsPage implements OnInit {
     private storage: Storage,
     private alertCtrl: AlertController,
     private translate: TranslateService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.settings = Constants.SETTINGS;

@@ -7,19 +7,19 @@ import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/cont
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { IPerson, IConfig } from 'src/app/lib/interfaces';
 import { ISession } from 'src/app/services/login-provider/interfaces';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
   selector: 'app-person-search',
   templateUrl: './person-search.page.html',
   styleUrls: ['./person-search.page.scss'],
 })
-export class PersonSearchPage {
+export class PersonSearchPage extends AbstractPage {
 
   personsFound: IPerson[] = [];
   response_received: boolean;
@@ -33,8 +33,7 @@ export class PersonSearchPage {
 
   constructor(
     private platform: Platform,
-    private connection: ConnectionService,
-    private sessionProvider: UserSessionService,
+    public sessionProvider: UserSessionService,
     private keyboard: Keyboard,
     private http: HttpClient,
     private modalCtrl: ModalController,
@@ -46,6 +45,7 @@ export class PersonSearchPage {
     private login: UPLoginProvider,
     private translate: TranslateService
   ) {
+    super({ requireNetwork: true });
     if (this.platform.is('cordova')) {
       this.cordova = true;
     }
@@ -59,7 +59,6 @@ export class PersonSearchPage {
    * entered, other than ionViewDidLoad which will run only once
    */
   async ionViewWillEnter() {
-    this.connection.checkOnline(true, true);
     this.session = await this.sessionProvider.getSession();
 
     if (!this.session) {
@@ -145,7 +144,6 @@ export class PersonSearchPage {
         async response => {
           if (!this.triedRefreshingSession) {
             if (response.status === 401) {
-              this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
                 console.log('[PersonSearch]: Re-authenticating...');
