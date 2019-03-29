@@ -278,6 +278,11 @@
       "libraries": "Bibliotheken & Lizenzen"
     },
     "campus-map": {
+      "campus": {
+        "neuespalais": "Neues Palais",
+        "golm": "Golm",
+        "griebnitzsee": "Griebnitzsee"
+      },
       "title": "Lageplan",
       "placeholder_search": "Suche",
       "cancel": "Suche abbrechen",

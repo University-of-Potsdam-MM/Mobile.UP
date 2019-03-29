@@ -132,7 +132,19 @@ export class CampusMapPage implements OnInit {
       textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
       initial: false,
       minLength: 3,
-      autoType: false // guess that would just annoy most users
+      autoType: false, // guess that would just annoy most users,
+      buildTip: (text, val) => {
+        const tip = L.DomUtil.create('li', '');
+        const properties = val.layer.feature.properties;
+        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus})</div>`;
+        if (properties.description) {
+          content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+        }
+        tip.innerHTML = content;
+        L.DomUtil.addClass(tip, 'search-tip');
+        tip._text = content;
+        return tip;
+      }
     }));
   }
 
@@ -340,12 +352,12 @@ export class CampusMapPage implements OnInit {
 
       // add features from each category to corresponding layer
       for (const feature of obj.geo.features) {
-gs        const props = feature.properties;
+        const props = feature.properties;
 
         // create new property that can easily be searched by leaflet-search
-        props['searchProperty'] = `${props.Name}: <br/> ${props.description ? props.description : ''}`;
-        props['campus'] = obj.campus;
+        props['campus'] = this.translate.instant(`page.campus-map.campus.${obj.campus}`);
         props['category'] = obj.category;
+        props['searchProperty'] = `${props.Name} (${props.campus})`;
 
         const geoJson = L.geoJSON(feature);
 
