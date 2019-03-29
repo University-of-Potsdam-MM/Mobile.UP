@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {IConfig, IMapsResponseObject, ICampus, IMapsResponse, ILatLongBounds} from 'src/app/lib/interfaces';
+import {IConfig, IMapsResponseObject, ICampus, IMapsResponse, ILatLongBounds } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
