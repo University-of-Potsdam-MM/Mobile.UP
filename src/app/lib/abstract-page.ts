@@ -24,7 +24,7 @@ export interface IPageOptions {
  */
 export abstract class AbstractPage  {
 
-    protected session: ISession;
+    session: ISession;
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
     protected activatedRoute: ActivatedRoute;

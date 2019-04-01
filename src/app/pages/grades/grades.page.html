@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
+<ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="refreshGrades($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
