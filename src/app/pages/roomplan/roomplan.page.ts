@@ -4,7 +4,6 @@ import { CacheService } from 'ionic-cache';
 import { Events } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { IHouse, IRoom, IHousePlan, IRoomEvent, IConfig, IRoomApiRequest, IReservationRequestResponse } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
@@ -234,10 +233,9 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   getRoomInfo() {
     this.requestProcessed = false;
     const location = this.current_location;
-    const config: IConfig = ConfigService.config;
 
     const roomRequest: IRoomApiRequest = {
-      authToken: config.authorization.credentials.accessToken,
+      authToken: this.config.authorization.credentials.accessToken,
     };
 
     const headers: HttpHeaders = new HttpHeaders().append('Authorization', roomRequest.authToken);
@@ -259,7 +257,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
       this.cache.removeItem('roomplanInfo' + location + start.toString() + end.toString());
     }
 
-    const request = this.http.get(config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
+    const request = this.http.get(this.config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
     this.cache.loadFromObservable('roomplanInfo' + location + start.toString() + end.toString(), request).subscribe(
       (response: IReservationRequestResponse) => {
 

@@ -4,8 +4,6 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IFeedback } from 'src/app/lib/interfaces';
 import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.service';
-import { ConfigService } from 'src/app/services/config/config.service';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -18,30 +16,26 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 export class FeedbackPage extends AbstractPage implements OnInit {
 
   form: FormGroup;
-  loggedIn = false;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
-  session;
 
   /**
    * @constructor
    * @param {HttpClient} http
    * @param {NavController} navCtrl
    * @param {ConnectionProvider} connection
-   * @param {SessionProvider} sessionProvider
    * @param {DeviceService} DeviceService
    * @param {FormBuilder} formBuilder
    */
   constructor(
     public http: HttpClient,
     public navCtrl: NavController,
-    public sessionProvider: UserSessionService,
     private deviceService: DeviceService,
     private formBuilder: FormBuilder,
     private alert: AlertService,
     private translate: TranslateService
   ) {
-      super({ requireNetwork: true });
+      super({ requireNetwork: true, optionalSession: true });
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
@@ -49,19 +43,6 @@ export class FeedbackPage extends AbstractPage implements OnInit {
         anonymous: [false, Validators.required],
       });
 
-  }
-
-  /**
-   * @async
-   * @name ionViewWillEnter
-   */
-  async ionViewWillEnter() {
-    const session = await this.sessionProvider.getSession();
-
-    if (session) {
-      this.session = session;
-      this.loggedIn = true;
-    }
   }
 
   ngOnInit() {
@@ -91,7 +72,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     this.feedback.description = this.form.value.description;
     this.feedback.recommend = this.form.value.recommend;
 
-    if (this.loggedIn && !this.form.value.anonymous) {
+    if (this.session && !this.form.value.anonymous) {
       this.feedback.uid = this.session.credentials.username;
     }
 
@@ -105,13 +86,13 @@ export class FeedbackPage extends AbstractPage implements OnInit {
 
     const headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': ConfigService.config.webservices.apiToken
+      'Authorization': this.config.webservices.apiToken
     });
 
     const request: IFeedback = this.feedback;
 
     this.http.post<IFeedback>(
-      ConfigService.config.webservices.endpoint.feedback,
+      this.config.webservices.endpoint.feedback,
       request,
       {headers: headers}
     ).subscribe(

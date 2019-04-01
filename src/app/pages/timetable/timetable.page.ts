@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { IEventObject, createEventSource } from './createEvents';
-import { Platform, ModalController, NavController, AlertController } from '@ionic/angular';
+import { Platform, ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
-import { LoginPage } from '../login/login.page';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EventModalPage } from './event.modal';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
@@ -31,9 +29,9 @@ export class TimetablePage extends AbstractPage {
   isLoading = true;
 
   isMobile;
-  modalOpen = false;
   exportFinished = true;
   exportedEvents = 0;
+  modalOpen;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
@@ -56,35 +54,26 @@ export class TimetablePage extends AbstractPage {
 
   constructor(
     private platform: Platform,
-    public sessionProvider: UserSessionService,
     private translate: TranslateService,
     private puls: PulsService,
-    private modalCtrl: ModalController,
-    private navCtrl: NavController,
     private sanitizer: DomSanitizer,
     private alertCtrl: AlertController,
     private calendar: Calendar,
+    private modalCtrl: ModalController,
     private alert: AlertService
   ) {
-    super({ requireNetwork: true });
+    super({ requireNetwork: true, requireSession: true });
   }
 
   async ionViewWillEnter() {
 
-    if (this.platform.is('tablet') || this.platform.is('desktop')) {
-      this.isMobile = false;
-    } else if (this.platform.is('android') || this.platform.is('ios')) {
-      this.isMobile = true;
-    }
-
+    if (this.platform.is('android') || this.platform.is('ios')) { this.isMobile = true; }
     this.setupCalendarOptions();
 
-    const session = await this.sessionProvider.getSession();
-
-    if (session) {
+    if (this.session) {
       this.isLoading = true;
       // there is a session
-      this.puls.getStudentCourses(session).subscribe(
+      this.puls.getStudentCourses(this.session).subscribe(
         (response: IPulsAPIResponse_getStudentCourses) => {
           if (response.message && response.message === 'no user rights') {
             this.noUserRights = true;
@@ -95,31 +84,15 @@ export class TimetablePage extends AbstractPage {
             this.eventSource = createEventSource(
               response.studentCourses.student.actualCourses.course
             );
+            console.log(this.eventSource);
           }
         }
       );
     } else {
-      // in case there is no session send the user to LoginPage
-      this.goToLogin();
-      this.isLoading = false;
-    }
-  }
-
-  async goToLogin() {
-    const modal = await this.modalCtrl.create({
-      backdropDismiss: false,
-      component: LoginPage,
-    });
-    modal.present();
-    this.modalOpen = true;
-    modal.onWillDismiss().then(response => {
-      this.modalOpen = false;
-      if (response.data.success) {
+      setTimeout(() => {
         this.ionViewWillEnter();
-      } else {
-        this.navCtrl.navigateRoot('/home');
-      }
-    });
+      }, 500);
+    }
   }
 
   /* ~~~ ionic2-calendar specific methods ~~~ */

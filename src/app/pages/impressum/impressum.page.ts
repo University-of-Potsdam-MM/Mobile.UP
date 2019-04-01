@@ -1,30 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component } from '@angular/core';
 import { ImpressumModalPage } from './impressum.modal';
 import { TranslateService } from '@ngx-translate/core';
-import { IConfig } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-impressum',
   templateUrl: './impressum.page.html',
   styleUrls: ['./impressum.page.scss'],
 })
-export class ImpressumPage extends AbstractPage implements OnInit {
+export class ImpressumPage extends AbstractPage {
 
-  config: IConfig;
-  modalOpen = false;
+  modalOpen;
 
   constructor(
-    private modalCtrl: ModalController,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalCtrl: ModalController
   ) {
     super();
-  }
-
-  ngOnInit() {
-    this.config = ConfigService.config;
   }
 
   async openPage(pageHeader: string) {

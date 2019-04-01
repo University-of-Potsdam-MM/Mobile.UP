@@ -2,14 +2,13 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { CacheService } from 'ionic-cache';
-import { Platform, NavController, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
+import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { DetailedPracticeModalPage } from './detailed-practice.modal';
-import { ADS, IConfig, IADSResponse } from 'src/app/lib/interfaces';
+import { ADS, IADSResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { utils } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -32,7 +31,7 @@ export class PracticePage extends AbstractPage {
   isLoadedFavorites = false;
   query;
   activeSegment = 'search';
-  modalOpen = false;
+  modalOpen;
 
   constructor(
     private storage: Storage,
@@ -42,11 +41,10 @@ export class PracticePage extends AbstractPage {
     private http: HttpClient,
     private keyboard: Keyboard,
     private translate: TranslateService,
-    private navCtrl: NavController,
     private chRef: ChangeDetectorRef,
     private alert: AlertService,
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController
   ) {
     super();
   }
@@ -95,13 +93,10 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   public loadData(refresher?) {
-
-    const config: IConfig = ConfigService.config;
-
     const headers: HttpHeaders = new HttpHeaders()
-    .append('Authorization', config.webservices.apiToken);
+    .append('Authorization', this.config.webservices.apiToken);
 
-    const request = this.http.get(config.webservices.endpoint.practiceSearch, {headers: headers});
+    const request = this.http.get(this.config.webservices.endpoint.practiceSearch, {headers: headers});
 
     if (refresher) {
       this.cache.removeItem('practiceResponse');

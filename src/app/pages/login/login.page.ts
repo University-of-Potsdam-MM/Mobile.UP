@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController, Events, LoadingController, ModalController, NavController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { AlertController, Events, LoadingController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ICredentials, ISession, IOIDCUserInformationResponse, ELoginErrors } from 'src/app/services/login-provider/interfaces';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -14,10 +12,9 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage extends AbstractPage implements OnInit {
+export class LoginPage extends AbstractPage {
 
   loading;
-  alreadyLoggedIn: boolean;
   loginForm: FormGroup;
 
   // This object will hold the data the user enters in the login form
@@ -27,12 +24,10 @@ export class LoginPage extends AbstractPage implements OnInit {
   };
 
   constructor(
-    private userSession: UserSessionService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
     private upLogin: UPLoginProvider,
-    private navCtrl: NavController,
     private events: Events,
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder
@@ -42,14 +37,6 @@ export class LoginPage extends AbstractPage implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-  }
-
-  async ngOnInit() {
-    const session = await this.userSession.getSession();
-
-    if (session) {
-      this.alreadyLoggedIn = true;
-    } else { this.alreadyLoggedIn = false; }
   }
 
   /**
@@ -66,12 +53,11 @@ export class LoginPage extends AbstractPage implements OnInit {
       this.loginCredentials.password = this.loginForm.controls['password'].value;
 
       this.showLoading();
-      const config = ConfigService.config;
 
       // prepare Observable for use in switch
       const session: Observable<ISession> = this.upLogin.oidcLogin(
         this.autoCorrectUsername(this.loginCredentials),
-        config.authorization.oidc
+        this.config.authorization.oidc
       );
 
       if (session) {
@@ -79,14 +65,14 @@ export class LoginPage extends AbstractPage implements OnInit {
         session.subscribe(
           (sessionRes: any) => {
             console.log(`[LoginPage]: Login successfully executed. Token: ${sessionRes.token}`);
-            this.userSession.setSession(sessionRes);
+            this.sessionProvider.setSession(sessionRes);
 
             this.endLoading();
 
             // in the meantime get user information and save it to storage
-            this.upLogin.oidcGetUserInformation(sessionRes, config.authorization.oidc).subscribe(
+            this.upLogin.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(
               (userInformation: IOIDCUserInformationResponse) => {
-                this.userSession.setUserInfo(userInformation);
+                this.sessionProvider.setUserInfo(userInformation);
               }, error => {
                 // user must not know if something goes wrong here, so we don't
                 // create an alert
@@ -97,7 +83,6 @@ export class LoginPage extends AbstractPage implements OnInit {
             setTimeout(() => {
               this.events.publish('userLogin');
               this.modalCtrl.dismiss({ 'success': true }).then(() => {}, () => {
-                console.log('[LoginPage]: no overlay, using navCtrl');
                 this.navCtrl.navigateRoot('/home');
               });
             }, 1000);

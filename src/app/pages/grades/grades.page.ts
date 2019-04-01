@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
 import { CacheService } from 'ionic-cache';
-import { LoginPage } from '../login/login.page';
 import { of } from 'rxjs';
 import { IConfig } from 'src/app/lib/interfaces';
 import { PulsService } from 'src/app/services/puls/puls.service';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
@@ -30,50 +26,28 @@ export class GradesPage extends AbstractPage {
   studentLoaded = false;
   multipleDegrees = false;          // f.e. bachelor and master
   isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
-  session;
-  modalOpen = false;
 
   constructor(
     private puls: PulsService,
-    private cache: CacheService,
-    private navCtrl: NavController,
-    private modalCtrl: ModalController,
-    public sessionProvider: UserSessionService
+    private cache: CacheService
   ) {
-    super({ requireNetwork: true });
+    super({ requireNetwork: true, requireSession: true });
   }
 
   /**
    * @async
    * @name ionViewWillEnter
    */
-  async ionViewWillEnter() {
-    this.config = ConfigService.config;
-    this.session = await this.sessionProvider.getSession();
-
+  ionViewWillEnter() {
     if (this.session) {
       this.getStudentDetails();
     } else {
-      this.goToLogin();
+      setTimeout(() => {
+        this.ionViewWillEnter();
+      }, 500);
     }
   }
 
-  async goToLogin() {
-    const modal = await this.modalCtrl.create({
-      backdropDismiss: false,
-      component: LoginPage,
-    });
-    this.modalOpen = true;
-    modal.present();
-    modal.onWillDismiss().then(response => {
-      this.modalOpen = false;
-      if (response.data.success) {
-        this.ionViewWillEnter();
-      } else {
-        this.navCtrl.navigateRoot('/home');
-      }
-    });
-  }
 
   /**
    * @name showGrades
@@ -124,7 +98,7 @@ export class GradesPage extends AbstractPage {
       })));
 
     if (this.refresher != null) {
-      this.refresher.complete();
+      this.refresher.target.complete();
     }
   }
 
@@ -182,7 +156,7 @@ export class GradesPage extends AbstractPage {
       })));
 
     if (this.refresher != null) {
-      this.refresher.complete();
+      this.refresher.target.complete();
     }
   }
 
