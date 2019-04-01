@@ -1,6 +1,7 @@
 import { Frequency, RRule, Weekday } from 'rrule';
 import * as moment from 'moment';
 import { ICourse, IEvent } from 'src/app/lib/interfaces_PULS';
+import { utils } from 'src/app/lib/util';
 
 export interface IEventRules {
   begin: RRule;
@@ -98,7 +99,7 @@ function createEventRules(event: IEvent, tzid): IEventRules {
     throw new Error(`[createRule]: Event ${event.eventId}: Missing startTime or endTime`);
   }
 
-  return <IEventRules>{
+  return <IEventRules> {
     // create rule for beginning time on each day the event takes place
     begin: new RRule({
       freq: rhythmMapping[event.rhythm].freq,
@@ -130,19 +131,13 @@ function createEventRules(event: IEvent, tzid): IEventRules {
  */
 export function createEventSource(studentCourses: ICourse[],
                                   tzid: string= 'Europe/Berlin'): IEventSource {
-
   // the eventSource we will be returning, actually the main result of this function
   const eventSource: IEventSource = new Array<IEventObject>();
 
   for (const c of studentCourses) {
     // this step is necessary because c.events.event can be a single object
     // or an array of objects
-    let events = [];
-    if (Array.isArray(c.events.event)) {
-      events = c.events.event;
-    } else {
-      events.push(c.events.event);
-    }
+    const events = utils.convertToArray(c.events.event);
 
     // iterate events of this course because there can be more than one
     for (const e of events) {
@@ -161,9 +156,16 @@ export function createEventSource(studentCourses: ICourse[],
         for (let i = 0; i < begin.length; i++) {
           if (!moment(begin[i]).isDST()) {
             // compensate daylight saving time
+            // 2 hours are added by the calendar
             begin[i].setHours(begin[i].getHours() - 1);
             end[i].setHours(end[i].getHours() - 1);
+          } else {
+            // for some reason the calendar plugin adds + 2 hours to our begin/end times
+            // we have to regulate that
+            begin[i].setHours(begin[i].getHours() - 2);
+            end[i].setHours(end[i].getHours() - 2);
           }
+
           eventSource.push(<IEventObject>{
             id: e.eventId,
             title: c.courseName,
