@@ -9,10 +9,13 @@ import {Geolocation, PositionError} from '@ionic-native/geolocation/ngx';
 import {ModalController} from '@ionic/angular';
 import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import {CacheService} from 'ionic-cache';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
+import {of} from 'rxjs';
+import {IPulsAPIResponse_getLectureScheduleRoot} from '../../lib/interfaces_PULS';
 
 @Component({
   selector: 'app-campus-map',
@@ -27,7 +30,8 @@ export class CampusMapPage implements OnInit {
     private wsProvider: MapsService,
     private translate: TranslateService,
     private location: Geolocation,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private cache: CacheService
   ) { }
 
   config: IConfig;
@@ -256,17 +260,19 @@ export class CampusMapPage implements OnInit {
 
   /**
    * @name loadMapData
-   * @description loads campus map data
+   * @description loads campus map data from cache
    */
   loadMapData(map) {
-    this.wsProvider.getMapData().subscribe(
-      (response: IMapsResponse) => {
-        this.geoJSON = response;
-        this.addFeaturesToLayerGroups(this.geoJSON, map);
-      },
-      error => {
-        console.log(error);
-      }
+    this.cache.loadFromObservable(
+    'getMapData', of(this.wsProvider.getMapData().subscribe(
+        (response: IMapsResponse) => {
+          this.geoJSON = response;
+          this.addFeaturesToLayerGroups(this.geoJSON, map);
+        },
+        error => {
+          console.log(error);
+        }
+      ))
     );
   }
 
@@ -299,7 +305,7 @@ export class CampusMapPage implements OnInit {
    * @description adds features of geoJSON to layerControl and adds those layerGroups
    * to the map by default
    */
-  async addFeaturesToLayerGroups(geoJSON: IMapsResponse, map: L.Map) {
+  addFeaturesToLayerGroups(geoJSON: IMapsResponse, map: L.Map) {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
