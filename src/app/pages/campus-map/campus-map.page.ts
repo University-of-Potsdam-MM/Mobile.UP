@@ -15,7 +15,6 @@ import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
 import {of} from 'rxjs';
-import {IPulsAPIResponse_getLectureScheduleRoot} from '../../lib/interfaces_PULS';
 
 @Component({
   selector: 'app-campus-map',
