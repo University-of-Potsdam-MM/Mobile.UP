@@ -1,18 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {IConfig, IMapsResponseObject, ICampus, IMapsResponse, ILatLongBounds } from 'src/app/lib/interfaces';
+import {IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
 import { ConfigService } from 'src/app/services/config/config.service';
 import {Geolocation, PositionError} from '@ionic-native/geolocation/ngx';
+import {ModalController} from '@ionic/angular';
+import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import {ModalController} from '@ionic/angular';
-import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-campus-map',
