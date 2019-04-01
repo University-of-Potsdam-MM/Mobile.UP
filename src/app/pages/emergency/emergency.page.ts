@@ -6,9 +6,8 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import * as jquery from 'jquery';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
-import { EmergencyCall, IConfig } from 'src/app/lib/interfaces';
+import { EmergencyCall } from 'src/app/lib/interfaces';
 import { NavigatorService } from 'src/app/services/navigator/navigator.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
@@ -65,12 +64,10 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
    */
   loadEmergencyCalls(refresher?) {
 
-    const config: IConfig = ConfigService.config;
-
     const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', config.webservices.apiToken);
+      .append('Authorization', this.config.webservices.apiToken);
 
-    const url = config.webservices.endpoint.emergencyCalls;
+    const url = this.config.webservices.endpoint.emergencyCalls;
     const request = this.http.get(url, {headers: headers});
 
     if (refresher) {

@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IonSlides } from '@ionic/angular';
-import { IConfig, INewsApiResponse } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -39,12 +38,10 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    const config: IConfig = ConfigService.config;
-
     const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', config.webservices.apiToken);
+      .append('Authorization', this.config.webservices.apiToken);
 
-    const url = config.webservices.endpoint.news;
+    const url = this.config.webservices.endpoint.news;
     const request = this.http.get(url, {headers: headers});
 
     if (refresher) {

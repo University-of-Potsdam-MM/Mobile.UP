@@ -5,8 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
-import { IMeals, IConfig, IMensaResponse } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -95,15 +94,13 @@ export class MensaPage extends AbstractPage {
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
-    const config: IConfig = ConfigService.config;
-
     const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', config.webservices.apiToken);
+      .append('Authorization', this.config.webservices.apiToken);
 
     const params: HttpParams = new HttpParams()
       .append('location', this.campus);
 
-    const request = this.http.get(config.webservices.endpoint.mensa, {headers: headers, params: params});
+    const request = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: params});
     this.cache.loadFromObservable('mensaResponse' + this.campus, request).subscribe((res: IMensaResponse) => {
 
       if (res.meal) {
@@ -119,7 +116,7 @@ export class MensaPage extends AbstractPage {
         const paramsUlf: HttpParams = new HttpParams()
           .append('location', ulfParam);
 
-        const requestUlf = this.http.get(config.webservices.endpoint.mensa, {headers: headers, params: paramsUlf});
+        const requestUlf = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: paramsUlf});
 
         this.cache.loadFromObservable('mensaResponse' + ulfParam, requestUlf).subscribe((resUlf: IMensaResponse) => {
           if (resUlf.meal) {

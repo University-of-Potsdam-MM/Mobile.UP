@@ -47,7 +47,7 @@
       </ion-range>
     </ion-item>
 
-    <ion-item *ngIf="loggedIn">
+    <ion-item *ngIf="session">
       <ion-label style="font-size: 0.9rem;">{{ "page.feedback.anonymous" | translate}}</ion-label>
       <ion-toggle checked="false" formControlName="anonymous"></ion-toggle>
     </ion-item>

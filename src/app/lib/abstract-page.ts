@@ -1,15 +1,17 @@
 import { ISession } from '../services/login-provider/interfaces';
-import { ReplaySubject } from 'rxjs';
 import { ConnectionService } from '../services/connection/connection.service';
 import { UserSessionService } from '../services/user-session/user-session.service';
 import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
 import { ActivatedRoute } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { MenuController, NavController } from '@ionic/angular';
+import { IConfig } from './interfaces';
+import { ConfigService } from '../services/config/config.service';
 
 export interface IPageOptions {
     requireSession?: boolean;
     requireNetwork?: boolean;
+    optionalSession?: boolean;
 }
 
 /**
@@ -23,11 +25,12 @@ export interface IPageOptions {
 export abstract class AbstractPage  {
 
     protected session: ISession;
-    protected sessionObservable: ReplaySubject<ISession>;
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
     protected activatedRoute: ActivatedRoute;
     protected menu: MenuController;
+    protected navCtrl: NavController;
+    protected config: IConfig;
 
     protected constructor(
         pageOptions?: IPageOptions
@@ -37,6 +40,8 @@ export abstract class AbstractPage  {
         this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
         this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
         this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
+        this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
+        this.config = ConfigService.config;
 
         if (pageOptions) { this.processOptions(pageOptions); }
         this.setMenuStatus();
@@ -45,6 +50,7 @@ export abstract class AbstractPage  {
     private processOptions(pageOptions: IPageOptions) {
         if (pageOptions.requireSession) { this.requireSession(); }
         if (pageOptions.requireNetwork) { this.requireNetwork(); }
+        if (pageOptions.optionalSession) { this.requireSession(true); }
     }
 
     private setMenuStatus() {
@@ -74,31 +80,10 @@ export abstract class AbstractPage  {
      * @name requireSession
      * @desc tests for existing session and sends user to LoginPage in case none is found
      */
-    requireSession() {
-        // console.log('[AbstractPage]: Requires session');
+    async requireSession(optional?) {
+        console.log('[AbstractPage]: Requires session');
 
-        // TODO: not working yet. SessionProvider is setting the session too slowly.
-        // so this function will always find that there is no session, even though
-        // some milliseconds later there would be one.
-
-        // this.sessionObservable = new ReplaySubject<ISession>();
-        //
-        // this.sessionProvider.getSession().then(
-        //   (sessionObj:ISession) => {
-        //     if (sessionObj) {
-        //       if (typeof sessionObj !== 'object') {
-        //         this.session = JSON.parse(sessionObj);
-        //       } else {
-        //         this.session = sessionObj;
-        //       }
-        //       this.sessionObservable.next(this.session);
-        //     } else {
-        //       this.sessionObservable.error("no session");
-        //
-        //       console.log("Pushing LoginPage");
-        //       this.app.getActiveNavs()[0].push(LoginPage);
-        //     }
-        //   }
-        // );
+        this.session = await this.sessionProvider.getSession();
+        if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }
     }
 }

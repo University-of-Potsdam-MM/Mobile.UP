@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, ModalController, IonItemSliding, AlertController } from '@ionic/angular';
+import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { utils } from 'src/app/lib/util';
@@ -35,24 +34,23 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   allFavorites = [];
   numberOfRecords = '0';
   updatedFavorites = 0;
-  modalOpen = false;
+  modalOpen;
 
   constructor(
     private platform: Platform,
     private keyboard: Keyboard,
     private http: HttpClient,
-    private modalCtrl: ModalController,
     private translate: TranslateService,
     private alert: AlertService,
     private storage: Storage,
     private cache: CacheService,
+    private modalCtrl: ModalController,
     private alertCtrl: AlertController
   ) {
     super({ requireNetwork: true });
   }
 
   ngOnInit() {
-    this.config = ConfigService.config;
     this.checkFavorites();
   }
 

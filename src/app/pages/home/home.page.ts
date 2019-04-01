@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import { IModule } from 'src/app/lib/interfaces';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -20,7 +18,6 @@ export class HomePage extends AbstractPage implements OnInit {
   sortedModules = [];
 
   constructor(
-    private navCtrl: NavController,
     private translate: TranslateService,
     private webIntent: WebIntentService,
     private storage: Storage,
@@ -109,9 +106,8 @@ export class HomePage extends AbstractPage implements OnInit {
    * @description builds list of default_modules that should be displayed on HomePage
    */
   buildDefaultModulesList() {
-    const config = ConfigService.config;
     const moduleList: {[modulesName: string]: IModule} = {};
-    const modules = config.modules;
+    const modules = this.config.modules;
 
     for (const moduleName in modules) {
       if (modules.hasOwnProperty(moduleName)) {

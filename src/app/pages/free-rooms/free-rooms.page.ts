@@ -5,7 +5,6 @@ import { RoomplanPage } from '../roomplan/roomplan.page';
 import { Events } from '@ionic/angular';
 import { IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom } from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
@@ -146,10 +145,9 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
     this.no_timeslot = false;
     const location = this.current_location;
-    const config = ConfigService.config;
 
     const roomRequest: IRoomApiRequest = {
-      authToken: config.authorization.credentials.accessToken,
+      authToken: this.config.authorization.credentials.accessToken,
     };
 
     const headers: HttpHeaders = new HttpHeaders()
@@ -170,7 +168,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
       this.cache.removeItem('roomInfo' + location + start.toString() + end.toString());
     }
 
-    const request = this.http.get(config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
+    const request = this.http.get(this.config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
     this.cache.loadFromObservable('roomInfo' + location + start.toString() + end.toString(), request).subscribe(
       (response: IRoomRequestResponse) => {
         this.housesFound = [];

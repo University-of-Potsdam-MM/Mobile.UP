@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import * as L from 'leaflet';
 import { TranslateService } from '@ngx-translate/core';
-import { IConfig, IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
+import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
-import { ConfigService } from 'src/app/services/config/config.service';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -15,9 +14,8 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
   templateUrl: './campus-map.page.html',
   styleUrls: ['./campus-map.page.scss'],
 })
-export class CampusMapPage extends AbstractPage implements OnInit {
+export class CampusMapPage extends AbstractPage {
 
-  config: IConfig;
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
   layerGroups: {[name: string]: L.LayerGroup} = {};
@@ -39,10 +37,6 @@ export class CampusMapPage extends AbstractPage implements OnInit {
     private location: Geolocation
   ) {
     super({ requireNetwork: true });
-  }
-
-  ngOnInit() {
-    this.config = ConfigService.config;
   }
 
   /**

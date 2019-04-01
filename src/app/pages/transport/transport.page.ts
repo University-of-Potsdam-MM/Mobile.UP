@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Events } from '@ionic/angular';
-import { IConfig, IJourneyResponse } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { IJourneyResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -48,10 +47,8 @@ export class TransportPage extends AbstractPage {
 
     if (!infiniteScroll) { this.maxJourneys = 15; }
 
-    const config: IConfig = ConfigService.config;
-
     const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', config.webservices.apiToken);
+      .append('Authorization', this.config.webservices.apiToken);
 
     if (this.campus === 'Griebnitzsee') {
       this.campusid  = '900230003';
@@ -69,7 +66,7 @@ export class TransportPage extends AbstractPage {
       .append('time', this.currentDate.format('HH:mm:ss'))
       .append('id', this.campusid);
 
-    this.http.get(config.webservices.endpoint.transport, {headers: headers, params: params}).subscribe((res: IJourneyResponse) => {
+    this.http.get(this.config.webservices.endpoint.transport, {headers: headers, params: params}).subscribe((res: IJourneyResponse) => {
 
       if (res && res.Departure && !infiniteScroll) {
         this.departures = res.Departure;

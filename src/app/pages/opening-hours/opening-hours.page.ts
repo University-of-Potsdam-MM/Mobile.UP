@@ -7,7 +7,6 @@ import { Platform, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { IConfig } from 'src/app/lib/interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
@@ -24,7 +23,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   nominatim;
   weekday = [];
   isLoaded;
-  modalOpen = false;
+  modalOpen;
 
   constructor(
     private http: HttpClient,
@@ -42,18 +41,15 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
-
-    const config: IConfig = ConfigService.config;
-
     // needed for providing the country code to opening_hours?
     // maybe put lat / lon in config and fetch?
     this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397').subscribe(data => {
       this.nominatim = data;
 
       const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', config.webservices.apiToken);
+      .append('Authorization', this.config.webservices.apiToken);
 
-      const url = config.webservices.endpoint.openingHours;
+      const url = this.config.webservices.endpoint.openingHours;
       const request = this.http.get(url, {headers: headers});
 
       if (refresher) {

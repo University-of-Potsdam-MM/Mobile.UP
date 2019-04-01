@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController, NavController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { LoginPage } from '../login/login.page';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
-import { IPerson, IConfig } from 'src/app/lib/interfaces';
-import { ISession } from 'src/app/services/login-provider/interfaces';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { IPerson } from 'src/app/lib/interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
@@ -24,20 +20,15 @@ export class PersonSearchPage extends AbstractPage {
   personsFound: IPerson[] = [];
   response_received: boolean;
   error: HttpErrorResponse;
-  session: ISession;
   query = '';
   noResults = false;
   triedRefreshingSession = false;
   cordova = false;
-  modalOpen = false;
 
   constructor(
     private platform: Platform,
-    public sessionProvider: UserSessionService,
     private keyboard: Keyboard,
     private http: HttpClient,
-    private modalCtrl: ModalController,
-    private navCtrl: NavController,
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
@@ -45,42 +36,10 @@ export class PersonSearchPage extends AbstractPage {
     private login: UPLoginProvider,
     private translate: TranslateService
   ) {
-    super({ requireNetwork: true });
+    super({ requireNetwork: true, requireSession: true });
     if (this.platform.is('cordova')) {
       this.cordova = true;
     }
-  }
-
-  /**
-   * @name ionViewWillEnter
-   * @async
-   * @description take user to login if there is no session.
-   * We are using ionViewDidEnter here because it is run every time the view is
-   * entered, other than ionViewDidLoad which will run only once
-   */
-  async ionViewWillEnter() {
-    this.session = await this.sessionProvider.getSession();
-
-    if (!this.session) {
-      this.goToLogin();
-    }
-  }
-
-  async goToLogin() {
-    const modal = await this.modalCtrl.create({
-      backdropDismiss: false,
-      component: LoginPage,
-    });
-    modal.present();
-    this.modalOpen = true;
-    modal.onWillDismiss().then(response => {
-      this.modalOpen = false;
-      if (response.data.success) {
-        this.ionViewWillEnter();
-      } else {
-        this.navCtrl.navigateRoot('/home');
-      }
-    });
   }
 
   // hides keyboard once the user is scrolling
@@ -120,11 +79,10 @@ export class PersonSearchPage extends AbstractPage {
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
       if (!this.session) { this.session = await this.sessionProvider.getSession(); }
-      const config: IConfig = ConfigService.config;
       const headers: HttpHeaders = new HttpHeaders()
         .append('Authorization', `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
-      const url = config.webservices.endpoint.personSearch + query;
+      const url = this.config.webservices.endpoint.personSearch + query;
 
       this.http.get(url, {headers: headers}).subscribe(
         (personsList: IPerson[]) => {
@@ -147,7 +105,7 @@ export class PersonSearchPage extends AbstractPage {
               // refresh token expired; f.e. if user logs into a second device
               if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
                 console.log('[PersonSearch]: Re-authenticating...');
-                this.login.oidcLogin(this.session.credentials, config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
                   console.log(`[PersonSearch]: Re-authenticating successful`);
                   this.sessionProvider.setSession(sessionRes);
                   this.session = sessionRes;
