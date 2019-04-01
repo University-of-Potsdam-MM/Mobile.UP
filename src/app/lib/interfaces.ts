@@ -491,18 +491,13 @@ export interface IJourneyResponse {
 
 /* ~~~ CampusMap ~~~ */
 
-export interface ICoordinates {
-  latitude: number;
-  longitude: number;
-}
-
 export type ILatLongBounds = [number, number][];
 
 export interface ICampus {
   id: number;
   name: string;
   pretty_name: string;
-  coordinates: ICoordinates;
+  coordinates: [number, number];
   lat_long_bounds: ILatLongBounds;
 }
 

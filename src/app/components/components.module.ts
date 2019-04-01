@@ -15,6 +15,8 @@ import { NewsArticleComponent } from './news-article/news-article.component';
 import { EventViewComponent } from './event-view/event-view.component';
 import { FormsModule } from '@angular/forms';
 import { BookLocationComponent } from './book-location/book-location.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {CampusMapFeatureModalComponent} from './campus-map-feature-modal/campus-map-feature-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,12 +29,14 @@ import { BookLocationComponent } from './book-location/book-location.component';
     MensaMealComponent,
     NewsArticleComponent,
     EventViewComponent,
-    BookLocationComponent
+    BookLocationComponent,
+    CampusMapFeatureModalComponent
   ],
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    LeafletModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -51,7 +55,9 @@ import { BookLocationComponent } from './book-location/book-location.component';
     MensaMealComponent,
     NewsArticleComponent,
     EventViewComponent,
-    BookLocationComponent
-  ]
+    BookLocationComponent,
+    CampusMapFeatureModalComponent
+  ],
+  entryComponents: [CampusMapFeatureModalComponent]
 })
 export class ComponentsModule { }

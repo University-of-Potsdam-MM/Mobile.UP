@@ -226,10 +226,7 @@
         "id": 1,
         "name": "neuespalais",
         "pretty_name": "Neues Palais",
-        "coordinates": {
-          "latitude": 52.40105,
-          "longitude": 13.01207
-        },
+        "coordinates": [52.40105, 13.01207],
         "lat_long_bounds": [
           [
             52.4038,
@@ -245,10 +242,7 @@
         "id": 2,
         "name": "golm",
         "pretty_name": "Golm",
-        "coordinates": {
-          "latitude": 52.41527,
-          "longitude": 12.96941
-        },
+        "coordinates": [52.41527, 12.96941],
         "lat_long_bounds": [
           [
             52.413,
@@ -264,10 +258,7 @@
         "id": 3,
         "name": "griebnitzsee",
         "pretty_name": "Griebnitzsee",
-        "coordinates": {
-          "latitude": 52.39281,
-          "longitude": 13.1288
-        },
+        "coordinates": [52.39281, 13.1288],
         "lat_long_bounds": [
           [
             52.3945,

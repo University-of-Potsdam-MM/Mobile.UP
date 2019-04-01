@@ -278,10 +278,21 @@
       "libraries": "Bibliotheken & Lizenzen"
     },
     "campus-map": {
+      "campus": {
+        "neuespalais": "Neues Palais",
+        "golm": "Golm",
+        "griebnitzsee": "Griebnitzsee"
+      },
       "title": "Lageplan",
+      "placeholder_search": "Suche",
+      "cancel": "Suche abbrechen",
+      "no_results": "Keine Ergebnisse gefunden",
       "select_categories": "Kategorien zum Anzeigen wählen",
       "enable_geolocation": "Standort anzeigen",
       "disable_geolocation": "Standort nicht mehr anzeigen",
+      "here_is_multiple": "Hier befinden sich",
+      "here_is_single": "Hier befindet sich",
+      "no_description": "Keine Beschreibung vorhanden",
       "category": {
         "associateinstitutes": "An-Institute",
         "institutes": "Institute",

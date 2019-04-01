@@ -79,6 +79,7 @@
     "leaflet": "^1.4.0",
     "leaflet-easybutton": "^2.4.0",
     "leaflet-rotatedmarker": "^0.2.0",
+    "leaflet-search": "^2.9.8",
     "luxon": "^1.11.4",
     "moment": "^2.24.0",
     "mx.ferreyra.callnumber": "0.0.2",

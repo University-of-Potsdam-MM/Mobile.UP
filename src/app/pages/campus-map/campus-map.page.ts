@@ -1,12 +1,18 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import * as L from 'leaflet';
+import {Component, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
+import {Geolocation, PositionError} from '@ionic-native/geolocation/ngx';
+import {ModalController} from '@ionic/angular';
+import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import {CacheService} from 'ionic-cache';
+import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import 'leaflet-search';
+import {of} from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -18,9 +24,7 @@ export class CampusMapPage extends AbstractPage {
 
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
-  layerGroups: {[name: string]: L.LayerGroup} = {};
-
-  @ViewChild('map') mapContainer: ElementRef;
+  searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
 
   positionCircle: L.Circle;
@@ -29,20 +33,37 @@ export class CampusMapPage extends AbstractPage {
 
   geoLocationWatch;
   geoLocationEnabled = false;
+  @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
 
   constructor(
     private settings: SettingsService,
     private wsProvider: MapsService,
     private translate: TranslateService,
-    private location: Geolocation
+    private location: Geolocation,
+    private modalCtrl: ModalController,
+    private cache: CacheService
   ) {
-    super({ requireNetwork: true });
+    super({requireNetwork: true});
+  }
+
+  /**
+   * @name loadMap
+   * @description loads map and initializes it
+   */
+  initializeLeafletMap() {
+    // create map object
+    const map = L.map('map').fitWorld();
+    L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'www.uni-potsdam.de',
+        maxZoom: 18
+      }).addTo(map);
+    return map;
   }
 
   /**
    * @name ionViewWillEnter
-   * @async
-   * @description take user to login if there is no session.
+   * @desc take user to login if there is no session.
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
@@ -50,9 +71,9 @@ export class CampusMapPage extends AbstractPage {
     // initialize map
     if (!this.map) { this.map = this.initializeLeafletMap(); }
 
-    this.addGeoLocationButton();
-    // load geoJson data
-    this.loadMapData();
+    this.loadMapData(this.map);
+    this.addLeafletSearch(this.map);
+    this.addGeoLocationButton(this.map);
 
     // after map is initialized use default campus
     this.settings.getSettingValue('campus').then(
@@ -63,18 +84,56 @@ export class CampusMapPage extends AbstractPage {
   }
 
   /**
-   * @name addGeoLocationButton
-   * @desc adds geolocation button to this.map
+   * @name addLeafletSearch
+   * @desc Adds the leaflet search control to the map. Will only work if
+   * this.searchableLayers is already populated with geoJSON objects.
    */
-  addGeoLocationButton() {
+  addLeafletSearch(map) {
+    map.addControl(new L.Control['Search']({
+      layer: this.searchableLayers,
+      propertyName: 'searchProperty',
+      collapsed: false,
+      textErr: this.translate.instant('page.campus-map.no_results'),
+      textCancel: this.translate.instant('page.campus-map.cancel'),
+      textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
+      initial: false,
+      minLength: 3,
+      autoType: false, // guess that would just annoy most users,
+      buildTip: (text, val) => {
+        const tip = L.DomUtil.create('li', '');
+        const properties = val.layer.feature.properties;
+        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus})</div>`;
+        if (properties.description) {
+          content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+        }
+        tip.innerHTML = content;
+        L.DomUtil.addClass(tip, 'search-tip');
+        tip['_text'] = content;
+        return tip;
+      }
+    }));
+  }
+
+  /**
+   * @name addGeoLocationButton
+   * @desc adds geolocation button to map
+   */
+  addGeoLocationButton(map) {
     const toggleGeolocationButton = L.easyButton({
       states: [{
         stateName: 'geolocation-disabled',
         icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="locate"></ion-icon>',
         title: this.translate.instant('page.campus-map.enable_geolocation'),
         onClick: (control) => {
-          this.enableGeolocation();
-          control.state('geolocation-enabled');
+          const enableCallback = () => {
+            this.geoLocationEnabled = true;
+            control.state('geolocation-enabled');
+          };
+          const disableCallback = () => {
+            this.geoLocationEnabled = false;
+            control.state('geolocation-disabled');
+          };
+          this.enableGeolocation(enableCallback, disableCallback);
         }
       }, {
         stateName: 'geolocation-enabled',
@@ -86,7 +145,7 @@ export class CampusMapPage extends AbstractPage {
         },
       }]
     });
-    toggleGeolocationButton.addTo(this.map);
+    toggleGeolocationButton.addTo(map);
   }
 
   /**
@@ -144,20 +203,23 @@ export class CampusMapPage extends AbstractPage {
   /**
    * @name  enableGeolocation
    * @desc enabled retrieval of location and starts function that adds a circle
-   * to the map
+   * to the map. Returns an observable that constantly returns success when the
+   * current position could be fetched and error when there was an error.
    */
-  enableGeolocation() {
-    this.geoLocationEnabled = true;
+  enableGeolocation(enableCallback, disableCallback) {
     this.geoLocationWatch = this.location.watchPosition().subscribe(
-      (position: Position) => {
-        if (!position) {
-          console.log('[CampusMap]: Error getting location');
+      (positionResponse: Position & PositionError) => {
+        if (!positionResponse.code) {
+          this.setPosition(positionResponse);
+          enableCallback();
         } else {
-          this.setPosition(position);
+          console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
+          disableCallback();
         }
       },
       error => {
         console.log('[CampusMap]: Error:', error);
+        disableCallback();
       }
     );
   }
@@ -191,36 +253,20 @@ export class CampusMapPage extends AbstractPage {
 
   /**
    * @name loadMapData
-   * @description loads campus map data
+   * @description loads campus map data from cache
    */
-  async loadMapData() {
-
-    const mapData = await this.wsProvider.getMapData();
-
-    mapData.subscribe(
-      (response: IMapsResponse) => {
-        this.geoJSON = response;
-        this.addFeaturesToLayerGroups(this.geoJSON);
-      },
-      error => {
-        console.log(error);
-      }
+  loadMapData(map) {
+    this.cache.loadFromObservable(
+    'getMapData', of(this.wsProvider.getMapData().subscribe(
+        (response: IMapsResponse) => {
+          this.geoJSON = response;
+          this.addFeaturesToLayerGroups(this.geoJSON, map);
+        },
+        error => {
+          console.log(error);
+        }
+      ))
     );
-  }
-
-  /**
-   * @name loadMap
-   * @description loads map and initializes it
-   */
-  initializeLeafletMap() {
-    // create map object
-    const map = L.map('map').fitWorld();
-    L.tileLayer(
-      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'www.uni-potsdam.de',
-        maxZoom: 18
-      }).addTo(map);
-    return map;
   }
 
   /**
@@ -239,7 +285,7 @@ export class CampusMapPage extends AbstractPage {
 
   /**
    * @name selectCampus
-   * @description selects the given campus
+   * @description selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
@@ -262,54 +308,73 @@ export class CampusMapPage extends AbstractPage {
 
   /**
    * @name addFeaturesToLayerGroups
-   * @description adds features of geoJSON to layerGroups and adds those layerGroups
-   * to the maps object
+   * @description adds features of geoJSON to layerControl and adds those layerGroups
+   * to the map by default
    */
-  addFeaturesToLayerGroups(geoJSON) {
+  addFeaturesToLayerGroups(geoJSON: IMapsResponse, map: L.Map) {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
+    // this object will be populated next and then added to the map
+    const overlays: {[name: string]: L.LayerGroup} = {};
+
     for (const obj of geoJSON) {
-      // create correct title string beforehand so we don't have to do it twice
-      const title = this.translate.instant(
+      // create correct category string
+      const category = this.translate.instant(
         'page.campus-map.category.' + obj.category
       );
 
-      // check if we already have this category in layerGroups
+      // check if we already have this category in our overlays
       if (categories.indexOf(obj.category) === -1) {
-        // Create new layer for each unique category
-        this.layerGroups[title] = L.layerGroup();
-        // just push category name so we know we already got that one
+        // Create new LayerGroup for each unique category
+        overlays[category] = L.layerGroup();
+        // Push category name so we know we already got that one
         categories.push(obj.category);
       }
 
       // add features from each category to corresponding layer
       for (const feature of obj.geo.features) {
-        // TODO:
-        //  - maybe make this prettier or even include link to OpeningHoursPage
-        //  with correct segment?
-
         const props = feature.properties;
 
-        const popupTemplate = `<h1>${props.Name}</h1><div>${props.description ? props.description : ''}</div>`;
+        // create new property that can easily be searched by leaflet-search
+        props['campus'] = this.translate.instant(`page.campus-map.campus.${obj.campus}`);
+        props['category'] = category;
+        props['searchProperty'] = `${props.Name} (${props.campus})`;
 
-        this.layerGroups[title].addLayer(
-          L.geoJSON(feature).bindPopup(
-            popupTemplate
-          )
-        );
+        const geoJson = L.geoJSON(feature);
+
+        // add click listener that will open a Modal displaying some information
+        geoJson.on('click', async () => {
+
+          // TODO: change campus if clicked feature is on other campus
+
+          const modal = await this.modalCtrl.create({
+            // backdropDismiss: false,
+            component: CampusMapFeatureModalComponent,
+            componentProps: { feature: feature },
+            cssClass: 'campus-map-modal',
+            showBackdrop: true
+          });
+          modal.present();
+        });
+
+        // add this feature to the corresponding overlay catgory
+        overlays[category].addLayer(geoJson);
+
+        // also add geoJSON to list of searchable layers
+        this.searchableLayers.addLayer(geoJson);
       }
     }
 
-    // select all layers by default
-    for (const layerName in this.layerGroups) {
-      if (layerName) {
-        this.layerGroups[layerName].addTo(this.map);
+    // now add all created layers to the map by default
+    // TODO: maybe pre-define defaults in config?
+    for (const layerName in overlays) {
+      if (overlays[layerName]) {
+        overlays[layerName].addTo(this.map);
       }
     }
 
-    // now add layerGroups to the map so the user can select/deselect them
-    L.control.layers({}, this.layerGroups).addTo(this.map);
+    // add control with overlays to map
+    L.control.layers({}, overlays).addTo(map);
   }
-
 }
