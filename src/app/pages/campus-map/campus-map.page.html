@@ -10,12 +10,5 @@
 </ion-header>
 
 <ion-content>
-  <div style="height: 100%; width: 100%"
-       leaflet
-       [leafletOptions]="options"
-       [leafletLayers]="layers"
-       [leafletFitBounds]="fitBounds"
-       [leafletLayersControl]="layersControl"
-       (leafletMapReady)="onMapReady($event)">
-  </div>
+  <div id="map" style="height: 100%; width: 100%;"></div>
 </ion-content>

@@ -21,41 +21,14 @@ import {CampusTabComponent} from '../../components/campus-tab/campus-tab.compone
 })
 export class CampusMapPage implements OnInit {
 
-  /** ngx-leaflet inputs */
-
-  /**
-   * @name options
-   * @desc contains options for the leaflet map
-   */
-  options = {
-    layers: [
-      L.tileLayer(
-      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      { maxZoom: 18, attribution: 'www.uni-potsdam.de'}
-      )
-    ],
-    zoom: 5
-  };
-
-  /**
-   * @name layers
-   * @name contains the layers that are visible in the map
-   */
-  layers: L.Layer[] = [];
-
-  /**
-   * @name layersControl
-   * @desc contains the layergroups that are to be displayed on the map
-   */
-  layersControl: {overlays: {[name: string]: L.LayerGroup}} = {overlays: {}};
-
-  /**
-   * @name fitBounds
-   * @desc the bounds that are to be shown in the map
-   */
-  fitBounds: ILatLongBounds = null;
-
-  /** regular attributes */
+  constructor(
+    private settings: SettingsService,
+    private connection: ConnectionService,
+    private wsProvider: MapsService,
+    private translate: TranslateService,
+    private location: Geolocation,
+    private modalCtrl: ModalController
+  ) { }
 
   config: IConfig;
   geoJSON: IMapsResponseObject[];
@@ -72,32 +45,28 @@ export class CampusMapPage implements OnInit {
 
   @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
 
-  constructor(
-    private settings: SettingsService,
-    private connection: ConnectionService,
-    private wsProvider: MapsService,
-    private translate: TranslateService,
-    private location: Geolocation,
-    private modalCtrl: ModalController
-  ) { }
+  /**
+   * @name loadMap
+   * @description loads map and initializes it
+   */
+  initializeLeafletMap() {
+    // create map object
+    const map = L.map('map').fitWorld();
+    L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'www.uni-potsdam.de',
+        maxZoom: 18
+      }).addTo(map);
+    return map;
+  }
 
   ngOnInit() {
     this.config = ConfigService.config;
-  }
+    this.map = this.initializeLeafletMap();
 
-  /**
-   * @name onMapReady
-   * @desc triggered when map is usable. Used for adding elements to the map
-   * @param map
-   */
-  onMapReady(map) {
-    this.map = map;
-
-    this.addGeoLocationButton();
-
-    this.loadMapData();
-
-    this.addLeafletSearch();
+    this.loadMapData(this.map);
+    this.addLeafletSearch(this.map);
+    this.addGeoLocationButton(this.map);
 
     // use default campus
     this.settings.getSettingValue('campus').then(
@@ -122,8 +91,8 @@ export class CampusMapPage implements OnInit {
    * @desc Adds the leaflet search control to the map. Will only work if
    * this.searchableLayers is already populated with geoJSON objects.
    */
-  addLeafletSearch() {
-    this.map.addControl(new L.Control['Search']({
+  addLeafletSearch(map) {
+    map.addControl(new L.Control['Search']({
       layer: this.searchableLayers,
       propertyName: 'searchProperty',
       collapsed: false,
@@ -142,7 +111,7 @@ export class CampusMapPage implements OnInit {
         }
         tip.innerHTML = content;
         L.DomUtil.addClass(tip, 'search-tip');
-        tip._text = content;
+        tip['_text'] = content;
         return tip;
       }
     }));
@@ -152,7 +121,7 @@ export class CampusMapPage implements OnInit {
    * @name addGeoLocationButton
    * @desc adds geolocation button to map
    */
-  addGeoLocationButton() {
+  addGeoLocationButton(map) {
     const toggleGeolocationButton = L.easyButton({
       states: [{
         stateName: 'geolocation-disabled',
@@ -179,7 +148,7 @@ export class CampusMapPage implements OnInit {
         },
       }]
     });
-    toggleGeolocationButton.addTo(this.map);
+    toggleGeolocationButton.addTo(map);
   }
 
   /**
@@ -289,11 +258,11 @@ export class CampusMapPage implements OnInit {
    * @name loadMapData
    * @description loads campus map data
    */
-  loadMapData() {
+  loadMapData(map) {
     this.wsProvider.getMapData().subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
-        this.addFeaturesToLayerGroups(this.geoJSON);
+        this.addFeaturesToLayerGroups(this.geoJSON, map);
       },
       error => {
         console.log(error);
@@ -322,7 +291,7 @@ export class CampusMapPage implements OnInit {
    */
   selectCampus(campus: ICampus) {
     this.selectedCampus = campus;
-    this.fitBounds = this.selectedCampus.lat_long_bounds;
+    this.map.fitBounds(this.selectedCampus.lat_long_bounds);
   }
 
   /**
@@ -330,23 +299,24 @@ export class CampusMapPage implements OnInit {
    * @description adds features of geoJSON to layerControl and adds those layerGroups
    * to the map by default
    */
-  async addFeaturesToLayerGroups(geoJSON: IMapsResponse) {
+  async addFeaturesToLayerGroups(geoJSON: IMapsResponse, map: L.Map) {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
-    const overlays = {};
+    // this object will be populated next and then added to the map
+    const overlays: {[name: string]: L.LayerGroup} = {};
 
     for (const obj of geoJSON) {
-      // create correct title string beforehand so we don't have to do it twice
-      const title = this.translate.instant(
+      // create correct category string
+      const category = this.translate.instant(
         'page.campus-map.category.' + obj.category
       );
 
-      // check if we already have this category in layerGroups
+      // check if we already have this category in our overlays
       if (categories.indexOf(obj.category) === -1) {
-        // Create new layer for each unique category
-        overlays[title] = L.layerGroup();
-        // just push category name so we know we already got that one
+        // Create new LayerGroup for each unique category
+        overlays[category] = L.layerGroup();
+        // Push category name so we know we already got that one
         categories.push(obj.category);
       }
 
@@ -356,20 +326,15 @@ export class CampusMapPage implements OnInit {
 
         // create new property that can easily be searched by leaflet-search
         props['campus'] = this.translate.instant(`page.campus-map.campus.${obj.campus}`);
-        props['category'] = obj.category;
+        props['category'] = category;
         props['searchProperty'] = `${props.Name} (${props.campus})`;
 
         const geoJson = L.geoJSON(feature);
 
+        // add click listener that will open a Modal displaying some information
         geoJson.on('click', async () => {
 
           // TODO: change campus if clicked feature is on other campus
-          // if (feature.properties.campus !== this.selectedCampus.name) {
-          //   this.campusTab.changeCampus(
-          //     {detail: {value: feature.properties.campus}},
-          //     false
-          //   );
-          // }
 
           const modal = await this.modalCtrl.create({
             // backdropDismiss: false,
@@ -381,7 +346,8 @@ export class CampusMapPage implements OnInit {
           modal.present();
         });
 
-        overlays[title].addLayer(geoJson);
+        // add this feature to the corresponding overlay catgory
+        overlays[category].addLayer(geoJson);
 
         // also add geoJSON to list of searchable layers
         this.searchableLayers.addLayer(geoJson);
@@ -391,12 +357,12 @@ export class CampusMapPage implements OnInit {
     // now add all created layers to the map by default
     // TODO: maybe pre-define defaults in config?
     for (const layerName in overlays) {
-      if (this.layersControl[layerName]) {
-        this.options.layers.push(overlays[layerName]);
+      if (overlays[layerName]) {
+        overlays[layerName].addTo(this.map);
       }
     }
 
-    // add layers to the control, too
-    this.layersControl.overlays = overlays;
+    // add control with overlays to map
+    L.control.layers({}, overlays).addTo(map);
   }
 }
