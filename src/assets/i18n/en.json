@@ -278,6 +278,17 @@
       "libraries": "Libraries & Licences"
     },
     "campus-map": {
+      "campus": {
+        "neuespalais": "Neues Palais",
+        "golm": "Golm",
+        "griebnitzsee": "Griebnitzsee"
+      },
+      "placeholder_search": "Seerch",
+      "cancel": "Cancel search",
+      "no_results": "No results found",
+      "here_is_multiple": "Here are",
+      "here_is_single": "Here is",
+      "no_description": "No description available",
       "title": "Site map",
       "select_categories": "Choose displayed categories",
       "enable_geolocation": "Show current location",
