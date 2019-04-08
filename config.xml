@@ -107,6 +107,9 @@
     <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
         <string>Contact access is required to save people to the contacts list</string>
     </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
+        <string>This app requires access to your location for navigation purposes</string>
+    </edit-config>
     <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
     <plugin name="cordova-plugin-calendar" spec="^5.1.4">
         <variable name="CALENDAR_USAGE_DESCRIPTION" value="This app uses your calendar to export your timetable" />
