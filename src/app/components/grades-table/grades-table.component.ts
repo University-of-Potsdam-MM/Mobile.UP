@@ -10,6 +10,8 @@ export class GradesTableComponent implements OnInit {
 
   currentProfession = '0';
   gradeArray = [];
+  thesis;
+  graduation;
 
   @Input() studentGrades;
   @Input() studentDetails;
@@ -23,6 +25,8 @@ export class GradesTableComponent implements OnInit {
     if (this.studentGrades.academicAchievements
       && this.studentGrades.academicAchievements.achievement
       && this.studentGrades.academicAchievements.achievement.field) {
+      this.thesis = this.studentGrades.academicAchievements.thesis;
+      this.graduation = this.studentGrades.academicAchievements.graduation;
       this.gradeArray = utils.convertToArray(this.studentGrades.academicAchievements.achievement.field);
     }
   }

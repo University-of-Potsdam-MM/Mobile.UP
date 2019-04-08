@@ -68,7 +68,9 @@
       "note": "Grade",
       "pv": "PV",
       "lp": "LP",
-      "studienleistung": "Study achievements"
+      "studienleistung": "Study achievements",
+      "examiner": "Examiner",
+      "study": "Study"
     },
     "library-search": {
       "title": "Library search",
