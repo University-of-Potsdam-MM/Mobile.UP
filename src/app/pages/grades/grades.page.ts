@@ -19,7 +19,7 @@ export class GradesPage extends AbstractPage {
   studentDetails;
   studentGrades;
   i;
-  noUserRights;
+  noUserRights = false;
 
   loadingGrades = false;
   gradesLoaded = false;
@@ -146,7 +146,7 @@ export class GradesPage extends AbstractPage {
               }
             }
             this.studentLoaded = true;
-          } else if (resStudentDetail.message) {
+          } else if (resStudentDetail.message && resStudentDetail.message === 'no user rights') {
             this.noUserRights = true;
           }
         }
