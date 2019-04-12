@@ -188,7 +188,7 @@ export class AppComponent {
 
     const session: ISession = await this.userSession.getSession();
 
-    if (session) {
+    if (session && session.credentials && session.credentials.username) {
       this.loggedIn = true;
       this.username = session.credentials.username;
     }
