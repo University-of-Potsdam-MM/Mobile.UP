@@ -106,7 +106,7 @@ export class CampusMapPage extends AbstractPage {
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
         const properties = val.layer.feature.properties;
-        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus})</div>`;
+        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
         if (properties.description) {
           content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
         }
