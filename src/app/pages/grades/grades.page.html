@@ -48,7 +48,7 @@
       <ion-item color="primary" *ngFor="let degree of studentDetails; let i = index" class="studiengang" lines="none" (click)="showGrades(i)">
         <ion-label text-wrap>
           <div *ngIf="!isDualDegree[i]">
-            <div *ngIf="degree.Studiengaenge && degree.Studiengaenge.dtxt && degree.abschl">
+            <div *ngIf="degree.Studiengaenge && degree.Studiengaenge.dtxt && degree.Abschl">
               {{ degree.Abschl }} ({{ degree.Studiengaenge.dtxt }})
             </div>
           </div>
