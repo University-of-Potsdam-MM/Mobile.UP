@@ -25,24 +25,39 @@ export class HomePage extends AbstractPage implements OnInit {
     super();
   }
 
-  ngOnInit() {
-    this.storage.get('modules').then(modules => {
-      if (modules) {
-        this.modules = modules;
-        this.sortedModules = this.jsonToArray(this.modules);
-      } else {
-        this.storage.get('default_modules').then(default_modules => {
-          if (default_modules) {
-            this.modules = default_modules;
-            this.sortedModules = this.jsonToArray(this.modules);
-          } else {
-            // something clearly went wrong here
-            console.log('[HomePage]: Neither user defined modules nor default_modules in storage!');
-            this.buildDefaultModulesList();
+  async ngOnInit() {
+    const userModules = await this.storage.get('moduleList');
+    const configModules = this.buildDefaultModulesList();
+
+    if (!userModules) {
+      // user hasnˋt set any unique favorites
+      this.modules = configModules;
+      this.sortedModules = this.jsonToArray(configModules);
+    } else {
+      // user has set custom favorites
+      // check if pages still exist and if new pages are in config
+      const moduleList: {[modulesName: string]: IModule} = {};
+      for (const moduleName in configModules) {
+        let found = false;
+        for (const userModuleName in userModules) {
+          if (moduleName === userModuleName) {
+            found = true;
+            // this preserves favorites that the user eventually modified
+            moduleList[userModuleName] = userModules[userModuleName];
+            break;
           }
-        });
+        }
+
+        if (!found) {
+          // the module is either new or has been renamed
+          // add it from config
+          moduleList[moduleName] = configModules[moduleName];
+        }
       }
-    });
+
+      this.modules = moduleList;
+      this.sortedModules = this.jsonToArray(moduleList);
+    }
   }
 
   /**
@@ -74,15 +89,13 @@ export class HomePage extends AbstractPage implements OnInit {
    * @param moduleName
    */
   toggleSelectedState(event, moduleName) {
+    // use this to only trigger fav button and not open module page
     event.stopPropagation();
-    const currentState = this.modules[moduleName].selected;
-    const newState = !currentState;
 
-    this.modules[moduleName].selected = newState;
+    this.modules[moduleName].selected = !this.modules[moduleName].selected;
+    console.log(`[HomePage]: '${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
 
-    console.log(`[HomePage]: '${moduleName}' is now ${newState ? 'selected' : 'not selected'}`);
-
-    this.storage.set('modules', this.modules).then(
+    this.storage.set('moduleList', this.modules).then(
       () => console.log(`[HomePage]: Saved module list after toggling '${moduleName}'`)
     );
   }
@@ -105,7 +118,7 @@ export class HomePage extends AbstractPage implements OnInit {
    * @name buildDefaultModulesList
    * @description builds list of default_modules that should be displayed on HomePage
    */
-  buildDefaultModulesList() {
+  buildDefaultModulesList(): {[modulesName: string]: IModule} {
     const moduleList: {[modulesName: string]: IModule} = {};
     const modules = this.config.modules;
 
@@ -119,10 +132,7 @@ export class HomePage extends AbstractPage implements OnInit {
       }
     }
 
-    this.modules = moduleList;
-    this.sortedModules = this.jsonToArray(this.modules);
-
-    this.storage.set('default_modules', moduleList);
     console.log('[Mobile.UP]: created default moduleList from config');
+    return moduleList;
   }
 }

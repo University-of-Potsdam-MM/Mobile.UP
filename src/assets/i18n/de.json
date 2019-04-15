@@ -307,8 +307,8 @@
     },
     "feedback": {
       "title": "Feedback",
-      "rating": "Was hälst du von Mobile.UP?",
-      "feedback": "Was willst du mit uns teilen?",
+      "rating": "Was hältst du von Mobile.UP?",
+      "feedback": "Was willst du uns mitteilen?",
       "thoughts": "Deine Meinung... (optional)",
       "recommendation": "Wie wahrscheinlich würdest du Mobile.UP deinen Freunden oder Kollegen empfehlen?",
       "anonymous": "Anonym übermitteln"

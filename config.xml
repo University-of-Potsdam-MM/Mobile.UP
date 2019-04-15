@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60201" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201904080900" version="6.2.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60202" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201904110900" version="6.2.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
     <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
@@ -106,6 +106,9 @@
     </plugin>
     <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
         <string>Contact access is required to save people to the contacts list</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationAlwaysUsageDescription">
+        <string>This app requires access to your location for navigation purposes</string>
     </edit-config>
     <plugin name="cordova-plugin-geolocation" spec="4.0.1" />
     <plugin name="cordova-plugin-calendar" spec="^5.1.4">
