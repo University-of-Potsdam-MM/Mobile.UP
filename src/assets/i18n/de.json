@@ -68,7 +68,9 @@
       "note": "Note",
       "pv": "PV",
       "lp": "LP",
-      "studienleistung": "Studienleistung"
+      "studienleistung": "Studienleistung",
+      "examiner": "Prüfer",
+      "study": "Studium"
     },
     "library-search": {
       "title": "Bibliothekssuche",
