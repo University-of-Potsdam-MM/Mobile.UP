@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform, Events, MenuController, NavController, AlertController } from '@ionic/angular';
+import {Component, QueryList, ViewChildren} from '@angular/core';
+import {Platform, Events, MenuController, NavController, AlertController, IonRouterOutlet} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -13,6 +13,7 @@ import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
 import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
 import { UPLoginProvider } from './services/login-provider/login';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +21,15 @@ import { UPLoginProvider } from './services/login-provider/login';
 })
 export class AppComponent {
 
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
+
   userInformation: IOIDCUserInformationResponse = null;
   loggedIn = false;
   username;
 
   constructor(
     private platform: Platform,
+    private router: Router,
     private splashScreen: SplashScreen,
     private translate: TranslateService,
     private statusBar: StatusBar,
@@ -57,6 +61,9 @@ export class AppComponent {
       });
 
       if (this.platform.is('cordova')) {
+
+        this.listenToBackButton();
+
         if (this.platform.is('ios') || this.platform.is('android')) {
           this.statusBar.styleDefault();
         }
@@ -179,6 +186,24 @@ export class AppComponent {
       this.translate.use('en');
       moment.locale('en');
     }
+  }
+
+  /**
+   * listens to backbutton and closes application if backbutton is pressed on
+   * home screen
+   */
+  listenToBackButton() {
+    // workaround for #694
+    // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
+    this.platform.backButton.subscribe(async() => {
+      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        if (this.router.url === '/home') {
+          navigator['app'].exitApp();
+        } else {
+          window.history.back();
+        }
+      });
+    });
   }
 
   async updateLoginStatus() {
