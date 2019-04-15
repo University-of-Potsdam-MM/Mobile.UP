@@ -28,7 +28,15 @@ export class CampusTabComponent implements OnInit {
    * @param campus
    */
   @Input() set selectedCampus(campus: ICampus) {
-    this.selectCampus(campus);
+    this.selectCampus(campus, );
+  }
+
+  /**
+   * this input can be used to set the selected campus from outside
+   * @param campus
+   */
+  @Input() set selectedCampusNoEmit(campus: ICampus) {
+    this.selectCampus(campus, true);
   }
 
   /**
@@ -50,9 +58,12 @@ export class CampusTabComponent implements OnInit {
    * selects the specified campus directly and then emits the campusChanged event
    * @param campus
    */
-  selectCampus(campus: ICampus) {
+  selectCampus(campus: ICampus, dontEmit = false) {
     this._selectedCampus = campus;
-    this.campusChanged.emit(this._selectedCampus);
+
+    if (!dontEmit) {
+      this.campusChanged.emit(this._selectedCampus);
+    }
   }
 
   /**
