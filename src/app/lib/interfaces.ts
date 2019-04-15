@@ -495,7 +495,9 @@ export type ILatLongBounds = [number, number][];
 
 export interface ICampus {
   name: string;
+  location_id: string;
   pretty_name: string;
+  canteen_name: string;
   shortcode: string;
   coordinates: [number, number];
   lat_long_bounds: ILatLongBounds;

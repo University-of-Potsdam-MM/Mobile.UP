@@ -223,7 +223,9 @@
   "campus": [
     {
       "name": "neuespalais",
+      "location_id": "1",
       "pretty_name": "Neues Palais",
+      "canteen_name": "NeuesPalais",
       "shortcode": "np",
       "coordinates": [52.40105, 13.01207],
       "lat_long_bounds": [
@@ -239,7 +241,9 @@
     },
     {
       "name": "golm",
+      "location_id": "2",
       "pretty_name": "Golm",
+      "canteen_name": "Golm",
       "shortcode": "go",
       "coordinates": [52.41527, 12.96941],
       "lat_long_bounds": [
@@ -255,7 +259,9 @@
     },
     {
       "name": "griebnitzsee",
+      "location_id": "3",
       "pretty_name": "Griebnitzsee",
+      "canteen_name": "Griebnitzsee",
       "shortcode": "gs",
       "coordinates": [52.39281, 13.1288],
       "lat_long_bounds": [

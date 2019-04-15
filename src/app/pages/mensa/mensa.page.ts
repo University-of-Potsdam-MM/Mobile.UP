@@ -68,7 +68,7 @@ export class MensaPage extends AbstractPage {
    * @param query
    */
   changeCampus(campus: ICampus) {
-    this.campus = campus.pretty_name;
+    this.campus = campus.canteen_name;
     this.loadCampusMenu();
   }
 
