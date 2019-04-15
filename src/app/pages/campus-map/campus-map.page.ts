@@ -12,8 +12,9 @@ import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {ConfigService} from '../../services/config/config.service';
 
 @Component({
   selector: 'app-campus-map',
@@ -22,10 +23,13 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 })
 export class CampusMapPage extends AbstractPage {
 
+  campusList: ICampus[] = ConfigService.config.campus;
+  currentCampus: ICampus;
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
+  mapReady: Observable<void>;
 
   positionCircle: L.Circle;
   positionMarker: L.Marker;
@@ -69,18 +73,18 @@ export class CampusMapPage extends AbstractPage {
    */
   ionViewWillEnter() {
     // initialize map
-    if (!this.map) { this.map = this.initializeLeafletMap(); }
+    if (!this.map) {
+      this.map = this.initializeLeafletMap();
+
+      // if the currentCampus has been set already, move there
+      if (this.currentCampus) {
+        this.moveToCampus(this.currentCampus);
+      }
+    }
 
     this.loadMapData(this.map);
     this.addLeafletSearch(this.map);
     this.addGeoLocationButton(this.map);
-
-    // after map is initialized use default campus
-    this.settings.getSettingValue('campus').then(
-      (campus: string) => {
-        this.changeCampus(campus);
-      }
-    );
   }
 
   /**
@@ -102,7 +106,7 @@ export class CampusMapPage extends AbstractPage {
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
         const properties = val.layer.feature.properties;
-        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus})</div>`;
+        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
         if (properties.description) {
           content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
         }
@@ -243,15 +247,6 @@ export class CampusMapPage extends AbstractPage {
   }
 
   /**
-   * @name changeCampus
-   * @description changes the current campus by name
-   * @param campus
-   */
-  changeCampus(campus: string) {
-    this.selectCampus(this.getSelectedCampusObject(campus));
-  }
-
-  /**
    * @name loadMapData
    * @description loads campus map data from cache
    */
@@ -270,28 +265,14 @@ export class CampusMapPage extends AbstractPage {
   }
 
   /**
-   * @name getSelectedCampusObject
-   * @description returns the correct campus object by name
-   * @param campusName
-   */
-  getSelectedCampusObject(campusName: string) {
-    return this.config.campusmap.campi.filter(
-      (campus: ICampus) => {
-        // special logic to map NeuesPalais == Neues Palais and so on
-        return campusName === campus.pretty_name.replace(/\s+/g, '');
-      }
-    )[0];
-  }
-
-  /**
    * @name selectCampus
    * @description selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
-    this.selectedCampus = campus;
+    this.currentCampus = campus;
     if (this.map) {
-      this.moveToCampus(this.selectedCampus);
+      this.moveToCampus(campus);
     }
   }
 
@@ -315,6 +296,10 @@ export class CampusMapPage extends AbstractPage {
     // just used to remember which categories we've seen already
     const categories: string[] = [];
 
+    // create a mapping of campusName to ICampus object
+    const campusMapping = {};
+    for (const c of this.campusList) { campusMapping[c.name] = c; }
+
     // this object will be populated next and then added to the map
     const overlays: {[name: string]: L.LayerGroup} = {};
 
@@ -337,7 +322,7 @@ export class CampusMapPage extends AbstractPage {
         const props = feature.properties;
 
         // create new property that can easily be searched by leaflet-search
-        props['campus'] = this.translate.instant(`page.campus-map.campus.${obj.campus}`);
+        props['campus'] = campusMapping[obj.campus];
         props['category'] = category;
         props['searchProperty'] = `${props.Name} (${props.campus})`;
 
@@ -345,8 +330,9 @@ export class CampusMapPage extends AbstractPage {
 
         // add click listener that will open a Modal displaying some information
         geoJson.on('click', async () => {
-
-          // TODO: change campus if clicked feature is on other campus
+          if (props.campus !== this.currentCampus) {
+            this.selectedCampus = props.campus;
+          }
 
           const modal = await this.modalCtrl.create({
             // backdropDismiss: false,

@@ -220,56 +220,60 @@
   "general": {
     "tokenRefreshBoundary": 3600
   },
-  "campusmap": {
-    "campi": [
-      {
-        "id": 1,
-        "name": "neuespalais",
-        "pretty_name": "Neues Palais",
-        "coordinates": [52.40105, 13.01207],
-        "lat_long_bounds": [
-          [
-            52.4038,
-            13.0078
-          ],
-          [
-            52.39706,
-            13.01884
-          ]
+  "campus": [
+    {
+      "name": "neuespalais",
+      "location_id": "1",
+      "pretty_name": "Neues Palais",
+      "canteen_name": "NeuesPalais",
+      "shortcode": "np",
+      "coordinates": [52.40105, 13.01207],
+      "lat_long_bounds": [
+        [
+          52.4038,
+          13.0078
+        ],
+        [
+          52.39706,
+          13.01884
         ]
-      },
-      {
-        "id": 2,
-        "name": "golm",
-        "pretty_name": "Golm",
-        "coordinates": [52.41527, 12.96941],
-        "lat_long_bounds": [
-          [
-            52.413,
-            12.9721
-          ],
-          [
-            52.4057,
-            12.9802
-          ]
+      ]
+    },
+    {
+      "name": "golm",
+      "location_id": "2",
+      "pretty_name": "Golm",
+      "canteen_name": "Golm",
+      "shortcode": "go",
+      "coordinates": [52.41527, 12.96941],
+      "lat_long_bounds": [
+        [
+          52.413,
+          12.9721
+        ],
+        [
+          52.4057,
+          12.9802
         ]
-      },
-      {
-        "id": 3,
-        "name": "griebnitzsee",
-        "pretty_name": "Griebnitzsee",
-        "coordinates": [52.39281, 13.1288],
-        "lat_long_bounds": [
-          [
-            52.3945,
-            13.1258
-          ],
-          [
-            52.3912,
-            13.1338
-          ]
+      ]
+    },
+    {
+      "name": "griebnitzsee",
+      "location_id": "3",
+      "pretty_name": "Griebnitzsee",
+      "canteen_name": "Griebnitzsee",
+      "shortcode": "gs",
+      "coordinates": [52.39281, 13.1288],
+      "lat_long_bounds": [
+        [
+          52.3945,
+          13.1258
+        ],
+        [
+          52.3912,
+          13.1338
         ]
-      }
-    ]
-  }
+      ]
+    }
+  ]
 }

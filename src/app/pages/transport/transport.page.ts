@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Events } from '@ionic/angular';
-import { IJourneyResponse } from 'src/app/lib/interfaces';
+import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -30,8 +30,8 @@ export class TransportPage extends AbstractPage {
     super({ requireNetwork: true });
   }
 
-  changeCampus(campus) {
-    this.campus = campus;
+  changeCampus(campus: ICampus) {
+    this.campus = campus.name;
     this.loadCampusMenu();
   }
 

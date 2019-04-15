@@ -132,7 +132,7 @@ export interface IConfig {
   webservices: IWebServices;
   policies: IPolicies;
   general: IGeneral;
-  campusmap: ICampusMapConfig;
+  campus: ICampus[];
 }
 
 export interface IGeneral {
@@ -494,15 +494,13 @@ export interface IJourneyResponse {
 export type ILatLongBounds = [number, number][];
 
 export interface ICampus {
-  id: number;
   name: string;
+  location_id: string;
   pretty_name: string;
+  canteen_name: string;
+  shortcode: string;
   coordinates: [number, number];
   lat_long_bounds: ILatLongBounds;
-}
-
-export interface ICampusMapConfig {
-  campi: ICampus[];
 }
 
 export interface IMapsResponseObject {

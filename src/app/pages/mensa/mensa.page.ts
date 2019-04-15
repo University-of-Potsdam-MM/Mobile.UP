@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
-import { IMeals, IMensaResponse } from 'src/app/lib/interfaces';
+import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
 @Component({
@@ -67,8 +67,8 @@ export class MensaPage extends AbstractPage {
   /**
    * @param query
    */
-  changeCampus(campus) {
-    this.campus = campus;
+  changeCampus(campus: ICampus) {
+    this.campus = campus.canteen_name;
     this.loadCampusMenu();
   }
 

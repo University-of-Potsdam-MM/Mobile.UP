@@ -3,7 +3,7 @@ import { HttpErrorResponse, HttpHeaders, HttpParams, HttpClient } from '@angular
 import { CacheService } from 'ionic-cache';
 import { RoomplanPage } from '../roomplan/roomplan.page';
 import { Events } from '@ionic/angular';
-import { IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom } from 'src/app/lib/interfaces';
+import {IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -95,15 +95,9 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    * Switch campus location and reload info for new campus
    * @param location - number as string representing campus
    */
-  switchLocation($event) {
+  switchLocation(campus: ICampus) {
     this.housesFound = [];
-    let location;
-    if ($event === 'Griebnitzsee') {
-      location = '3';
-    } else if ($event === 'NeuesPalais') {
-      location = '1';
-    } else { location = '2'; }
-    this.current_location = location;
+    this.current_location = campus.location_id;
     this.getRoomInfo();
   }
 

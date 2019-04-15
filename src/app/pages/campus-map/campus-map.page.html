@@ -5,7 +5,8 @@
     <ion-title>{{ "page.campus-map.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+    <app-campus-tab (campusChanged)="selectCampus($event)"
+                    [selectedCampusNoEmit]="selectedCampus"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
 
