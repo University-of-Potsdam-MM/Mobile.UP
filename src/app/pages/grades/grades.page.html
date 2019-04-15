@@ -27,8 +27,13 @@
     <ion-list>
       <ion-item color="primary" class="studiengang" lines="none" (click)="showGrades(0)">
         <ion-label text-wrap>
-          <div *ngIf="studentDetails.Studiengaenge && studentDetails.Studiengaenge.dtxt && studentDetails.Abschl">
-            {{ studentDetails.Abschl }} ({{ studentDetails.Studiengaenge.dtxt }})
+          <div *ngIf="!isDualDegree[0]">
+            <div *ngIf="studentDetails.Studiengaenge && studentDetails.Studiengaenge.dtxt && studentDetails.Abschl">
+              {{ studentDetails.Abschl }} ({{ studentDetails.Studiengaenge.dtxt }})
+            </div>
+          </div>
+          <div *ngIf="isDualDegree[0] && studentDetails.AbLtxt">
+            {{ studentDetails.AbLtxt }}
           </div>
         </ion-label>
       </ion-item>
@@ -42,8 +47,13 @@
     <ion-list>
       <ion-item color="primary" *ngFor="let degree of studentDetails; let i = index" class="studiengang" lines="none" (click)="showGrades(i)">
         <ion-label text-wrap>
-          <div *ngIf="degree.Studiengaenge && degree.Studiengaenge.dtxt && degree.Abschl">
-            {{ degree.Abschl }} ({{ degree.Studiengaenge.dtxt }})
+          <div *ngIf="!isDualDegree[i]">
+            <div *ngIf="degree.Studiengaenge && degree.Studiengaenge.dtxt && degree.Abschl">
+              {{ degree.Abschl }} ({{ degree.Studiengaenge.dtxt }})
+            </div>
+          </div>
+          <div *ngIf="isDualDegree[i] && degree.AbLtxt">
+            {{ degree.AbLtxt }}
           </div>
         </ion-label>
       </ion-item>

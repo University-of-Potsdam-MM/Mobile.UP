@@ -1,5 +1,5 @@
 {
-  "appVersion": "6.2.1",
+  "appVersion": "6.2.2",
   "modules": {
     "person-search": {
       "componentName": "person-search",
