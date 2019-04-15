@@ -32,7 +32,7 @@
               {{ studentDetails.Abschl }} ({{ studentDetails.Studiengaenge.dtxt }})
             </div>
           </div>
-          <div *ngIf="isDualDegree[0]">
+          <div *ngIf="isDualDegree[0] && studentDetails.AbLtxt">
             {{ studentDetails.AbLtxt }}
           </div>
         </ion-label>
@@ -52,10 +52,9 @@
               {{ degree.Abschl }} ({{ degree.Studiengaenge.dtxt }})
             </div>
           </div>
-          <div *ngIf="isDualDegree[i]">
+          <div *ngIf="isDualDegree[i] && degree.AbLtxt">
             {{ degree.AbLtxt }}
           </div>
-
         </ion-label>
       </ion-item>
     </ion-list>
