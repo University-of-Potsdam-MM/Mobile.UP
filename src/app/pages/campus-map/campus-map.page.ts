@@ -275,7 +275,7 @@ export class CampusMapPage extends AbstractPage {
    * @param campusName
    */
   getSelectedCampusObject(campusName: string) {
-    return this.config.campusmap.campi.filter(
+    return this.config.campus.filter(
       (campus: ICampus) => {
         // special logic to map NeuesPalais == Neues Palais and so on
         return campusName === campus.pretty_name.replace(/\s+/g, '');

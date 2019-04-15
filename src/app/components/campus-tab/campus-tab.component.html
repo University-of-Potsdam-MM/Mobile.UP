@@ -1,11 +1,8 @@
-<ion-segment color="primary" (ionChange)="changeCampus($event)" [(ngModel)]="currentCampus">
-  <ion-segment-button value="Griebnitzsee">
-    {{"page.mensa.campus1" | translate}}
-  </ion-segment-button>
-  <ion-segment-button value="NeuesPalais">
-    {{"page.mensa.campus2" | translate}}
-  </ion-segment-button>
-  <ion-segment-button value="Golm">
-    {{"page.mensa.campus3" | translate}}
-  </ion-segment-button>
+<ion-segment color="primary">
+  <ng-container *ngFor="let campus of campusList">
+    <ion-segment-button (click)="selectCampus(campus)"
+                        [checked]="campus == _selectedCampus">
+      {{ campus.pretty_name }}
+    </ion-segment-button>
+  </ng-container>
 </ion-segment>
