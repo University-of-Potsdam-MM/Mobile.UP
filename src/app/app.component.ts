@@ -62,9 +62,12 @@ export class AppComponent {
 
       if (this.platform.is('cordova')) {
 
-        this.listenToBackButton();
+        if (this.platform.is('android')) {
+          this.listenToBackButton();
+          this.statusBar.backgroundColorByHexString('#014260');
+        }
 
-        if (this.platform.is('ios') || this.platform.is('android')) {
+        if (this.platform.is('ios')) {
           this.statusBar.styleDefault();
         }
 
