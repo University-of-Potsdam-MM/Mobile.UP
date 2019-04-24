@@ -1,0 +1,103 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { utils } from 'src/app/lib/util';
+import { CacheService } from 'ionic-cache';
+import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
+import { of } from 'rxjs';
+import { PulsService } from 'src/app/services/puls/puls.service';
+
+@Component({
+  selector: 'app-course-data',
+  templateUrl: './course-data.component.html',
+  styleUrls: ['./course-data.component.scss']
+})
+export class CourseDataComponent implements OnInit {
+
+  @Input() course;
+  courseData;
+  courseGroups = [];
+  lecturerList = [];
+
+  constructor(
+    private cache: CacheService,
+    private puls: PulsService
+  ) { }
+
+  ngOnInit() {
+    console.log(this.course);
+    this.getCourseData(this.course.courseId);
+  }
+
+  getCourseData(courseId) {
+    this.cache.loadFromObservable('getCourseData' + courseId, of(this.puls.getCourseData(courseId).subscribe(
+      (response: IPulsAPIResponse_getCourseData) => {
+        this.courseData = response;
+
+        let i;
+        this.courseGroups = [];
+        // check how many different groups exist
+        const tmp = utils.convertToArray(utils.convertToArray(this.courseData.courseData.course)[0].events.event);
+        for (i = 0; i < tmp.length; i++) {
+          if (!utils.isInArray(this.courseGroups, tmp[i].groupId)) {
+            this.courseGroups.push(tmp[i].groupId);
+          }
+        }
+      }
+    )));
+  }
+
+  /**
+   * has to be declared for html pages to use the imported function
+   * couldn't find a better solution
+   * @param array
+   */
+  convertToArray(array) {
+    return utils.convertToArray(array);
+  }
+
+  /**
+   * TODO: can be removed when bug in api is fixed
+   * @name checkDoubledLecturers
+   * @param event
+   * @param lecturer
+   * @param index
+   */
+  checkDoubledLecturers(event, lecturer, index) {
+    if (event.eventId && lecturer.lecturerId) {
+      if ((this.lecturerList[event.eventId] !== undefined)  && (this.lecturerList[event.eventId].length > 0)) {
+        if (utils.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
+          return true;
+        } else {
+          let i;
+          let alreadyIn = false;
+          for (i = 0; i < this.lecturerList.length; i++) {
+            if ((this.lecturerList[i] !== undefined) && (this.lecturerList[i][0] === lecturer.lecturerId)) {
+              alreadyIn = true;
+            }
+          }
+
+          if (alreadyIn) { return false; } else {
+            this.lecturerList[event.eventId].push([lecturer.lecturerId][index]);
+            return true;
+          }
+        }
+      } else {
+        this.lecturerList[event.eventId] = [];
+        this.lecturerList[event.eventId].push([lecturer.lecturerId][index]);
+        return true;
+      }
+    }
+  }
+
+   /**
+   * @name replaceUnderscore
+   * @param {string} roomSc
+   */
+  replaceUnderscore(roomSc: string) {
+    if (roomSc !== undefined) {
+      return roomSc.replace(/_/g, '.');
+    } else {
+      return '';
+    }
+  }
+
+}

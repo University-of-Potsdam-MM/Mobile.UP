@@ -4,8 +4,38 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+    [placeholder]="'placeholder.search' | translate"
+    (ionChange)="searchLecture($event)"
+    debounce="750">
+    </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding>
-  <app-lecture-list></app-lecture-list>
+<ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'" no-padding>
+  <app-lecture-list *ngIf="searchResults.length === 0 && query.length === 0"></app-lecture-list>
+  <div align="center" *ngIf="!isLoaded || isSearching" padding>
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <div *ngIf="!isSearching && searchResults.length > 0">
+    <ion-item color="light">
+      <ion-label>
+        Filter
+      </ion-label>
+      <ion-select (ionChange)="selectFilter($event)" multiple="true" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel' | translate }}">
+        <ion-select-option value="header" selected>Verzeichnisse</ion-select-option>
+        <ion-select-option value="courses" selected>Kurse</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let result of searchResults; let i = index" (click)="openItem(i)">
+        <ion-label>
+          {{ result }}
+        </ion-label>
+        <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end">K</ion-badge>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
