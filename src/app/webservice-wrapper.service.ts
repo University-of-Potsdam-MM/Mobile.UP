@@ -12,11 +12,6 @@ export interface IWebservice {
   processError?: (error: any) => any;
 }
 
-export interface ITimeSlot {
-  start: number;
-  end: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -67,23 +62,23 @@ export class WebserviceWrapperService {
       }
     },
     roomsFree: {
-      buildCall: (timeSlot: ITimeSlot, location: string) => {
+      buildCall: (params) => {
         return this.http.get(
           this.config.webservices.endpoint.roomsSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(timeSlot, location)
+            params: this.createRoomParams(params.timeSlot, params.location)
           }
         );
       }
     },
     roomsBooked: {
-      buildCall: (timeSlot: {start: number, end: number}, location: string) => {
+      buildCall: (params) => {
         return this.http.get(
           this.config.webservices.endpoint.roomplanSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(timeSlot, location)
+            params: this.createRoomParams(params.timeSlot, params.location)
           }
         );
       }
@@ -94,6 +89,11 @@ export class WebserviceWrapperService {
               private cache: CacheService,
               private session: UserSessionService) {  }
 
+  /**
+   *
+   * @param timeSlot
+   * @param location
+   */
   private createRoomParams(timeSlot: {start: number, end: number}, location) {
     const start = new Date();
     const end = new Date();
@@ -107,7 +107,11 @@ export class WebserviceWrapperService {
     };
   }
 
-  private prepareWebservice(name: string) {
+  /**
+   *
+   * @param name
+   */
+  private prepareWebserviceDefinition(name: string) {
     const ws = this.webservices[name];
     for (const k in this.defaults) {
       if (!ws.hasOwnProperty(k)) {
@@ -118,13 +122,16 @@ export class WebserviceWrapperService {
   }
 
   /**
-   *
+   * executes the specified call
+   * @param webserviceName {string} The name of the service to be called
+   * @param params {any} Additional params that will be given to the call building function
+   * @param cache {boolean} Defines whether the call should be cached, default is true
    */
   public call(webserviceName: string,
               params = {},
-              cache = false) {
+              cache = true) {
 
-    const ws = this.prepareWebservice(webserviceName);
+    const ws = this.prepareWebserviceDefinition(webserviceName);
 
     const observable = new Observable(
       observer => {
