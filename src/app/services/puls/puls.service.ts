@@ -153,35 +153,37 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getPersonalStudyAreas>();
 
+    const httpRequest = this.http.post<IPulsAPIResponse_getPersonalStudyAreas>(
+      ConfigService.config.webservices.endpoint.puls + 'getPersonalStudyAreas', request, {headers: this.headers});
+
     // TODO: check for connection first!
-    this.http.post<IPulsAPIResponse_getPersonalStudyAreas>(
-      ConfigService.config.webservices.endpoint.puls + 'getPersonalStudyAreas', request, {headers: this.headers}).subscribe(
-      (response: IPulsAPIResponse_getPersonalStudyAreas) => {
-        // PULS simply responds with "no user rights" if credentials are incorrect
-        if (response.message === 'no user rights') {
+    this.cache.loadFromObservable('getPersonalStudyAreas', httpRequest).subscribe((response: IPulsAPIResponse_getPersonalStudyAreas) => {
+      // PULS simply responds with "no user rights" if credentials are incorrect
+      if (response.message === 'no user rights') {
 
-          // we're having a contradiction here, the password is wrong, but
-          // the token is still valid  so we're having
-          // case #81 here. We'll log the user out and send the
-          // user to LoginPage
+        // we're having a contradiction here, the password is wrong, but
+        // the token is still valid  so we're having
+        // case #81 here. We'll log the user out and send the
+        // user to LoginPage
 
-          // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions
-          // should not log out
-          // this.puls.handleSpecialCase();
+        // this does not necessarily mean that the password is wrong
+        // the elistest account f.e. just does not support the grades / timetable functions
+        // should not log out
+        // this.puls.handleSpecialCase();
 
-          rs.next(response);
+        rs.next(response);
 
-          this.alertService.showAlert({
-            alertTitleI18nKey: 'alert.title.error',
-            messageI18nKey: 'alert.token_valid_credentials_invalid',
-          });
-        } else {
-          rs.next(response);
-        }
-      },
-      error => {}
-    );
+        this.alertService.showAlert({
+          alertTitleI18nKey: 'alert.title.error',
+          messageI18nKey: 'alert.token_valid_credentials_invalid',
+        });
+      } else {
+        rs.next(response);
+      }
+    }, error => {
+      console.log(error);
+    });
+
     return rs;
   }
 
@@ -208,12 +210,14 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getAcademicAchievements>();
 
-    this.http.post<IPulsAPIResponse_getAcademicAchievements>(
-      ConfigService.config.webservices.endpoint.puls + 'getAcademicAchievements', request, {headers: this.headers}).subscribe(
-      (response: IPulsAPIResponse_getAcademicAchievements) => {
-        rs.next(response);
-      }
-    );
+    const httpRequest = this.http.post<IPulsAPIResponse_getAcademicAchievements>(
+      ConfigService.config.webservices.endpoint.puls + 'getAcademicAchievements', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getAcademicAchievements' + stgnr, httpRequest).subscribe(
+    (response: IPulsAPIResponse_getAcademicAchievements) => {
+      rs.next(response);
+    });
+
     return rs;
   }
 

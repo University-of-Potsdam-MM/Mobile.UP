@@ -3,7 +3,6 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CacheService } from 'ionic-cache';
 import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
-import { of } from 'rxjs';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
 import { ModalController, Platform } from '@ionic/angular';
@@ -47,8 +46,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       this.cache.removeItem('lectureScheduleAll');
     } else { this.isLoaded = false; }
 
-    this.cache.loadFromObservable('lectureScheduleAll', of(this.puls.getLectureScheduleAll().subscribe(
-      (response: IPulsAPIResponse_getLectureScheduleAll) => {
+    this.puls.getLectureScheduleAll().subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       if (refresher) {
         refresher.target.complete();
       }
@@ -58,7 +56,9 @@ export class LecturesPage extends AbstractPage implements OnInit {
       this.flattenedLectures = this.flattenJSON(response, '', {});
 
       this.isLoaded = true;
-    })));
+    }, error => {
+      console.log(error);
+    });
   }
 
   flattenJSON(cur, prop, result) {

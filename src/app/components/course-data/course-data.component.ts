@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { utils } from 'src/app/lib/util';
-import { CacheService } from 'ionic-cache';
 import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
-import { of } from 'rxjs';
 import { PulsService } from 'src/app/services/puls/puls.service';
 
 @Component({
@@ -18,7 +16,6 @@ export class CourseDataComponent implements OnInit {
   lecturerList = [];
 
   constructor(
-    private cache: CacheService,
     private puls: PulsService
   ) { }
 
@@ -28,21 +25,19 @@ export class CourseDataComponent implements OnInit {
   }
 
   getCourseData(courseId) {
-    this.cache.loadFromObservable('getCourseData' + courseId, of(this.puls.getCourseData(courseId).subscribe(
-      (response: IPulsAPIResponse_getCourseData) => {
-        this.courseData = response;
+    this.puls.getCourseData(courseId).subscribe((response: IPulsAPIResponse_getCourseData) => {
+      this.courseData = response;
 
-        let i;
-        this.courseGroups = [];
-        // check how many different groups exist
-        const tmp = utils.convertToArray(utils.convertToArray(this.courseData.courseData.course)[0].events.event);
-        for (i = 0; i < tmp.length; i++) {
-          if (!utils.isInArray(this.courseGroups, tmp[i].groupId)) {
-            this.courseGroups.push(tmp[i].groupId);
-          }
+      let i;
+      this.courseGroups = [];
+      // check how many different groups exist
+      const tmp = utils.convertToArray(utils.convertToArray(this.courseData.courseData.course)[0].events.event);
+      for (i = 0; i < tmp.length; i++) {
+        if (!utils.isInArray(this.courseGroups, tmp[i].groupId)) {
+          this.courseGroups.push(tmp[i].groupId);
         }
       }
-    )));
+    });
   }
 
   /**

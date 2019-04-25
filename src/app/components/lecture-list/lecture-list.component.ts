@@ -1,11 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CacheService } from 'ionic-cache';
 import { PulsService } from 'src/app/services/puls/puls.service';
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
   IPulsAPIResponse_getLectureScheduleCourses } from 'src/app/lib/interfaces_PULS';
-import { of } from 'rxjs';
 import { utils } from 'src/app/lib/util';
 
 @Component({
@@ -25,7 +23,6 @@ export class LectureListComponent implements OnInit {
   isExpandedCourse = [];
 
   constructor(
-    private cache: CacheService,
     private puls: PulsService
   ) { }
 
@@ -38,26 +35,17 @@ export class LectureListComponent implements OnInit {
     }
 
     if (!this.headerId) {
-      this.cache.loadFromObservable(
-        'getLectureScheduleRoot', of(this.puls.getLectureScheduleRoot().subscribe(
-        (response: IPulsAPIResponse_getLectureScheduleRoot) => {
-          this.lectureSchedule = response;
-        }
-      )));
+      this.puls.getLectureScheduleRoot().subscribe((response: IPulsAPIResponse_getLectureScheduleRoot) => {
+        this.lectureSchedule = response;
+      });
     } else if (this.hasSubTree) {
-      this.cache.loadFromObservable(
-        'getLectureScheduleSubTree' + this.headerId, of(this.puls.getLectureScheduleSubTree(this.headerId).subscribe(
-        (response: IPulsAPIResponse_getLectureScheduleSubTree) => {
-          this.lectureSchedule = response;
-        }
-      )));
+      this.puls.getLectureScheduleSubTree(this.headerId).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
+        this.lectureSchedule = response;
+      });
     } else {
-      this.cache.loadFromObservable(
-        'getLectureScheduleCourses' + this.headerId, of(this.puls.getLectureScheduleCourses(this.headerId).subscribe(
-        (response: IPulsAPIResponse_getLectureScheduleCourses) => {
-          this.lectureSchedule = response;
-        }
-      )));
+      this.puls.getLectureScheduleCourses(this.headerId).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
+        this.lectureSchedule = response;
+      });
     }
   }
 

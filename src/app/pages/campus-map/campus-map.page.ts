@@ -1,20 +1,18 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
-import { SettingsService } from 'src/app/services/settings/settings.service';
 import { MapsService } from 'src/app/services/maps/maps.service';
-import {Geolocation, PositionError} from '@ionic-native/geolocation/ngx';
-import {ModalController} from '@ionic/angular';
-import {CampusMapFeatureModalComponent} from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
-import {CacheService} from 'ionic-cache';
+import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
+import { ModalController } from '@ionic/angular';
+import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import {Observable, of} from 'rxjs';
+import { Observable } from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {ConfigService} from '../../services/config/config.service';
+import { ConfigService } from '../../services/config/config.service';
 
 @Component({
   selector: 'app-campus-map',
@@ -40,12 +38,10 @@ export class CampusMapPage extends AbstractPage {
   @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
 
   constructor(
-    private settings: SettingsService,
     private wsProvider: MapsService,
     private translate: TranslateService,
     private location: Geolocation,
-    private modalCtrl: ModalController,
-    private cache: CacheService
+    private modalCtrl: ModalController
   ) {
     super({requireNetwork: true});
   }
@@ -251,17 +247,12 @@ export class CampusMapPage extends AbstractPage {
    * @description loads campus map data from cache
    */
   loadMapData(map) {
-    this.cache.loadFromObservable(
-    'getMapData', of(this.wsProvider.getMapData().subscribe(
-        (response: IMapsResponse) => {
-          this.geoJSON = response;
-          this.addFeaturesToLayerGroups(this.geoJSON, map);
-        },
-        error => {
-          console.log(error);
-        }
-      ))
-    );
+    this.wsProvider.getMapData().subscribe((response: IMapsResponse) => {
+      this.geoJSON = response;
+      this.addFeaturesToLayerGroups(this.geoJSON, map);
+    }, error => {
+      console.log(error);
+    });
   }
 
   /**
