@@ -15,6 +15,7 @@ import {
 } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../webservice-wrapper.service';
 
 @Component({
   selector: 'app-roomplan',
@@ -28,7 +29,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     private cache: CacheService,
     private alert: AlertService,
     private alertProvider: AlertService,
-    private swipeEvent: Events
+    private swipeEvent: Events,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -47,7 +49,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   housesFound: Array<IHouse> = [];
   day_offset: string;
   response: any;
-  current_location: string;
+  current_location: ICampus;
   error: HttpErrorResponse;
   requestProcessed = false;
 
@@ -164,7 +166,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   switchLocation(campus: ICampus) {
     this.houseMap = new Map<string, IHousePlan>();
     this.housesFound = [];
-    this.current_location = campus.location_id;
+    this.current_location = campus;
     this.getRoomInfo();
   }
 
@@ -235,13 +237,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
    */
   getRoomInfo() {
     this.requestProcessed = false;
-    const location = this.current_location;
-
-    const roomRequest: IRoomApiRequest = {
-      authToken: this.config.authorization.credentials.accessToken,
-    };
-
-    const headers: HttpHeaders = new HttpHeaders().append('Authorization', roomRequest.authToken);
 
     const start = new Date();
     const end = new Date();
@@ -250,18 +245,13 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     start.setDate(start.getDate() + +this.day_offset); // unary plus for string->num conversion
     end.setDate(end.getDate() + +this.day_offset);
 
-    const params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('format', 'json')
-      .append('startTime', start.toISOString())
-      .append('endTime', end.toISOString())
-      .append('campus', location);
-
-    if (this.refresher != null) {
-      this.cache.removeItem('roomplanInfo' + location + start.toString() + end.toString());
-    }
-
-    const request = this.http.get(this.config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
-    this.cache.loadFromObservable('roomplanInfo' + location + start.toString() + end.toString(), request).subscribe(
+    this.ws.call(
+      'roomsBooked',
+      {
+        campus: this.current_location,
+        timeSlot: {start: start, end: end}
+      }
+    ).subscribe(
       (response: IReservationRequestResponse) => {
 
         this.houseMap = new Map<string, IHousePlan>();

@@ -144,11 +144,16 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
     this.no_timeslot = false;
 
+    const start = new Date();
+    const end = new Date();
+    start.setHours(this.current_timeslot.start);
+    end.setHours(this.current_timeslot.end);
+
     this.ws.call(
       'roomsFree',
       {
         campus: this.current_location,
-        timeSlot: this.current_timeslot
+        timeSlot: {start: start, end: end}
       }
     ).subscribe(
       (response: IRoomRequestResponse) => {

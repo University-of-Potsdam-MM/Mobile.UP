@@ -132,15 +132,11 @@ export class WebserviceWrapperService {
    * @param timeSlot {start: number, end:number} timeSlot to be queried
    * @param campus {ICampus} campus to be queried
    */
-  private createRoomParams(timeSlot: {start: number, end: number}, campus: ICampus) {
-    const start = new Date();
-    const end = new Date();
-    start.setHours(timeSlot.start);
-    end.setHours(timeSlot.end);
+  private createRoomParams(timeSlot: {start: Date, end: Date}, campus: ICampus) {
     return {
       format: 'json',
-      startTime: start.toISOString(),
-      endTime: end.toISOString(),
+      startTime: timeSlot.start.toISOString(),
+      endTime: timeSlot.end.toISOString(),
       campus: campus.location_id
     };
   }
