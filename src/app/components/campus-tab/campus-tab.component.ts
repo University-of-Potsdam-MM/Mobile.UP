@@ -81,7 +81,7 @@ export class CampusTabComponent implements OnInit {
    * selects the next campus if there is a next campus, otherwise does nothing
    */
   selectNextCampus() {
-    this.selectCampusByIndex(this.campusList.indexOf(this.selectedCampus) + 1);
+    this.selectCampusByIndex(this.campusList.indexOf(this._selectedCampus) + 1);
   }
 
   /**
@@ -89,7 +89,7 @@ export class CampusTabComponent implements OnInit {
    * nothing
    */
   selectPreviousCampus() {
-    this.selectCampusByIndex(this.campusList.indexOf(this.selectedCampus) - 1);
+    this.selectCampusByIndex(this.campusList.indexOf(this._selectedCampus) - 1);
   }
 
   /**
