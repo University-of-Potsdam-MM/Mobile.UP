@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import { RoomplanPage } from '../roomplan/roomplan.page';
@@ -7,6 +7,7 @@ import {IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom, ICampus} from 'src
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-free-rooms',
@@ -26,6 +27,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   current_location: string;
   error: HttpErrorResponse;
   no_timeslot = false;
+
+  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
     private cache: CacheService,
@@ -226,32 +229,10 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     if (Math.abs(event.deltaY) < 50) {
       if (event.deltaX > 0) {
         // user swiped from left to right
-        this.swipeEvent.publish('campus-swipe-to-right', this.getLocationByNum(this.current_location));
+        this.campusTabComponent.selectPreviousCampus();
       } else if (event.deltaX < 0) {
         // user swiped from right to left
-        this.swipeEvent.publish('campus-swipe-to-left', this.getLocationByNum(this.current_location));
-      }
-    }
-  }
-
-    /**
-   * Convert campus number to short string (for localization)
-   * @param num - Campus number (1-3)
-   * @returns {string} - campus short string (gs,np,go), defaults to gs
-   */
-  getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
-    switch (num) {
-      case '1': {
-        return 'NeuesPalais';
-      }
-      case '2': {
-        return 'Golm';
-      }
-      case '3': {
-        return 'Griebnitzsee';
-      }
-      default: {
-        return 'Griebnitzsee';
+        this.campusTabComponent.selectNextCampus();
       }
     }
   }
