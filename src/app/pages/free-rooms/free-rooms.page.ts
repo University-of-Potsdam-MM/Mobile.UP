@@ -8,6 +8,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import {WebserviceWrapperService} from '../../webservice-wrapper.service';
 
 @Component({
   selector: 'app-free-rooms',
@@ -24,7 +25,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   housesFound: IHouse[] = [];
   time_slots: any;
   current_timeslot: any;
-  current_location: string;
+  current_location: ICampus;
   error: HttpErrorResponse;
   no_timeslot = false;
 
@@ -34,7 +35,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     private cache: CacheService,
     private http: HttpClient,
     private alertProvider: AlertService,
-    private swipeEvent: Events
+    private swipeEvent: Events,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -100,7 +102,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    */
   switchLocation(campus: ICampus) {
     this.housesFound = [];
-    this.current_location = campus.location_id;
+    this.current_location = campus;
     this.getRoomInfo();
   }
 
@@ -141,32 +143,14 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     }
 
     this.no_timeslot = false;
-    const location = this.current_location;
 
-    const roomRequest: IRoomApiRequest = {
-      authToken: this.config.authorization.credentials.accessToken,
-    };
-
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', roomRequest.authToken);
-
-    const start = new Date();
-    const end = new Date();
-    start.setHours(this.current_timeslot.start);
-    end.setHours(this.current_timeslot.end);
-
-    const params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('format', 'json')
-      .append('startTime', start.toISOString())
-      .append('endTime', end.toISOString())
-      .append('campus', location);
-
-    if (this.refresher != null) {
-      this.cache.removeItem('roomInfo' + location + start.toString() + end.toString());
-    }
-
-    const request = this.http.get(this.config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
-    this.cache.loadFromObservable('roomInfo' + location + start.toString() + end.toString(), request).subscribe(
+    this.ws.call(
+      'roomsFree',
+      {
+        campus: this.current_location,
+        timeSlot: this.current_timeslot
+      }
+    ).subscribe(
       (response: IRoomRequestResponse) => {
         this.housesFound = [];
         this.error = null;
