@@ -130,7 +130,7 @@ export class WebserviceWrapperService {
   /**
    * creates the httpParams for a request to the rooms api
    * @param timeSlot {start: number, end:number} timeSlot to be queried
-   * @param location {number} Location to be queried
+   * @param campus {ICampus} campus to be queried
    */
   private createRoomParams(timeSlot: {start: number, end: number}, campus: ICampus) {
     const start = new Date();
