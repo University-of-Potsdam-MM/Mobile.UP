@@ -1,15 +1,38 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {IConfig} from './lib/interfaces';
+import {ICampus, IConfig} from './lib/interfaces';
 import {ConfigService} from './services/config/config.service';
 import {UserSessionService} from './services/user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
 
+/**
+ * Defines a webservice in a more or less standardized way
+ */
 export interface IWebservice {
-  buildCall: (...args: any[]) => Observable<any>;
-  processResponse?: (response: any) => any;
-  processError?: (error: any) => any;
+  /**
+   * function that will be called to build the http request. The result must
+   * be an Observable
+   * @param args
+   */
+  buildRequest: (...args: any[]) => Observable<any>;
+  /**
+   * function that will be used as callback function for the http requests response
+   * callback.
+   * By default this function will just return the http requests response.
+   * This function can be defined to preprocess the response and return something
+   * that the corresponding page can use directly
+   * @param response
+   */
+  responseCallback?: (response: any) => any;
+  /**
+   * function that will be used as callback function for the http requests error
+   * callback.
+   * By default this function will just log the error and return an empty array
+   * because that is something that can easily be checked.
+   * @param error
+   */
+  errorCallback?: (error: any) => any;
 }
 
 @Injectable({
@@ -19,29 +42,44 @@ export class WebserviceWrapperService {
 
   private config: IConfig = ConfigService.config;
 
+  /**
+   * oftenly used header, can be used in buildRequest functions
+   */
   private apiTokenHeader = {Authorization: this.config.webservices.apiToken};
 
+  /**
+   * default values for webservice definitions. Will be assigned in {@link getDefinition}
+   * if not set
+   */
   private defaults = {
-    processResponse: (response: any) => {
+    // by default the response will be passed on
+    responseCallback: (response: any) => {
       return response;
     },
-    processError: (error, wsName) => {
+    // by default in case of an error an empty array will be returned and a
+    // message is logged
+    errorCallback: (error, wsName) => {
       console.log(`[Webservice]: Error when calling ${wsName}: ${error}`);
       return [];
     }
   };
 
+  /**
+   * Definition of the webservices that can be used in this application.
+   */
   private webservices: {[wsName: string]: IWebservice} = {
     maps: {
-      buildCall: () => {
+      buildRequest: () => {
         return this.http.get(
           this.config.webservices.endpoint.maps,
-          {headers: this.apiTokenHeader}
+          {
+            headers: this.apiTokenHeader
+          }
         );
       }
     },
     mensa: {
-      buildCall: (location: string) => {
+      buildRequest: (location: string) => {
         return this.http.get(
           this.config.webservices.endpoint.mensa,
           {
@@ -52,7 +90,7 @@ export class WebserviceWrapperService {
       }
     },
     persons: {
-      buildCall: (query: string) => {
+      buildRequest: (query: string) => {
         return this.http.get(
           this.config.webservices.endpoint.personSearch + query,
           {
@@ -62,23 +100,23 @@ export class WebserviceWrapperService {
       }
     },
     roomsFree: {
-      buildCall: (params) => {
+      buildRequest: (params) => {
         return this.http.get(
           this.config.webservices.endpoint.roomsSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(params.timeSlot, params.location)
+            params: this.createRoomParams(params.timeSlot, params.campus)
           }
         );
       }
     },
     roomsBooked: {
-      buildCall: (params) => {
+      buildRequest: (params) => {
         return this.http.get(
           this.config.webservices.endpoint.roomplanSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(params.timeSlot, params.location)
+            params: this.createRoomParams(params.timeSlot, params.campus)
           }
         );
       }
@@ -90,11 +128,11 @@ export class WebserviceWrapperService {
               private session: UserSessionService) {  }
 
   /**
-   *
-   * @param timeSlot
-   * @param location
+   * creates the httpParams for a request to the rooms api
+   * @param timeSlot {start: number, end:number} timeSlot to be queried
+   * @param location {number} Location to be queried
    */
-  private createRoomParams(timeSlot: {start: number, end: number}, location) {
+  private createRoomParams(timeSlot: {start: number, end: number}, campus: ICampus) {
     const start = new Date();
     const end = new Date();
     start.setHours(timeSlot.start);
@@ -103,15 +141,16 @@ export class WebserviceWrapperService {
       format: 'json',
       startTime: start.toISOString(),
       endTime: end.toISOString(),
-      campus: location
+      campus: campus.location_id
     };
   }
 
   /**
-   *
-   * @param name
+   * returns a webservice definition and sets default values for a webservice
+   * definitions attributes that are undefined
+   * @param name {string} Name of the webservice to be returned
    */
-  private prepareWebserviceDefinition(name: string) {
+  private getDefinition(name: string) {
     const ws = this.webservices[name];
     for (const k in this.defaults) {
       if (!ws.hasOwnProperty(k)) {
@@ -131,29 +170,38 @@ export class WebserviceWrapperService {
               params = {},
               cache = true) {
 
-    const ws = this.prepareWebserviceDefinition(webserviceName);
+    // first prepare the webservice definition by adding default values if possible
+    const ws = this.getDefinition(webserviceName);
 
-    const observable = new Observable(
+    // create the request by calling the defined buildRequest function
+    const request = ws.buildRequest(params);
+
+    // now create a wrapping Observable around the request and attach the defined
+    // callbacks to it
+    const wrapperObservable = new Observable(
       observer => {
-        ws.buildCall(params).subscribe(
+        request.subscribe(
           response => {
-            observer.next(ws.processResponse(response));
+            observer.next(ws.responseCallback(response));
             observer.complete();
           },
           error => {
-            observer.error(ws.processError(error));
+            observer.error(ws.errorCallback(error));
           }
         );
       }
     );
 
     if (cache) {
+      // if desired we're caching the response. The name of the request plus the used
+      // parameters in base64 will be used as key
       return this.cache.loadFromObservable(
         webserviceName + ':' + btoa(JSON.stringify(params)),
-        observable
+        wrapperObservable
       );
     }
 
-    return observable;
+    // if caching was not desired we just return the observable itself
+    return wrapperObservable;
   }
 }
