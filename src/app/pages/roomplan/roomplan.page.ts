@@ -15,7 +15,7 @@ import {
 } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../webservice-wrapper.service';
+import {IRoomsRequestParams, WebserviceWrapperService} from '../../webservice-wrapper.service';
 
 @Component({
   selector: 'app-roomplan',
@@ -247,7 +247,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
 
     this.ws.call(
       'roomsBooked',
-      {
+      <IRoomsRequestParams>{
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }

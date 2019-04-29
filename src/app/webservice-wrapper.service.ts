@@ -35,6 +35,29 @@ export interface IWebservice {
   errorCallback?: (error: any) => any;
 }
 
+export interface ITimeSlot {
+  start: Date;
+  end: Date;
+}
+
+export interface IRoomsRequestParams {
+  campus: ICampus;
+  timeSlot: ITimeSlot;
+}
+
+/**
+ * creates the httpParams for a request to the rooms api
+ * @param params {IRoomsRequestParams} Params to build the request with
+ */
+function createRoomParams(params: IRoomsRequestParams) {
+  return {
+    format: 'json',
+    startTime: params.timeSlot.start.toISOString(),
+    endTime: params.timeSlot.end.toISOString(),
+    campus: params.campus.location_id
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -100,23 +123,23 @@ export class WebserviceWrapperService {
       }
     },
     roomsFree: {
-      buildRequest: (params) => {
+      buildRequest: (params: IRoomsRequestParams) => {
         return this.http.get(
           this.config.webservices.endpoint.roomsSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(params.timeSlot, params.campus)
+            params: createRoomParams(params)
           }
         );
       }
     },
     roomsBooked: {
-      buildRequest: (params) => {
+      buildRequest: (params: IRoomsRequestParams) => {
         return this.http.get(
           this.config.webservices.endpoint.roomplanSearch,
           {
             headers: this.apiTokenHeader,
-            params: this.createRoomParams(params.timeSlot, params.campus)
+            params: createRoomParams(params)
           }
         );
       }
@@ -127,19 +150,6 @@ export class WebserviceWrapperService {
               private cache: CacheService,
               private session: UserSessionService) {  }
 
-  /**
-   * creates the httpParams for a request to the rooms api
-   * @param timeSlot {start: number, end:number} timeSlot to be queried
-   * @param campus {ICampus} campus to be queried
-   */
-  private createRoomParams(timeSlot: {start: Date, end: Date}, campus: ICampus) {
-    return {
-      format: 'json',
-      startTime: timeSlot.start.toISOString(),
-      endTime: timeSlot.end.toISOString(),
-      campus: campus.location_id
-    };
-  }
 
   /**
    * returns a webservice definition and sets default values for a webservice

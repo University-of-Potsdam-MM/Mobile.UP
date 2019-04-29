@@ -8,7 +8,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
-import {WebserviceWrapperService} from '../../webservice-wrapper.service';
+import {IRoomsRequestParams, WebserviceWrapperService} from '../../webservice-wrapper.service';
 
 @Component({
   selector: 'app-free-rooms',
@@ -151,7 +151,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
     this.ws.call(
       'roomsFree',
-      {
+      <IRoomsRequestParams>{
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }
