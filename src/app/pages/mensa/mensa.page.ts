@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { Events } from '@ionic/angular';
 import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-mensa',
@@ -55,11 +56,12 @@ export class MensaPage extends AbstractPage {
   noUlfMealsForDate;
   campus;
 
+  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+
   constructor(
     private translate: TranslateService,
     private cache: CacheService,
-    private http: HttpClient,
-    private swipeEvent: Events
+    private http: HttpClient
   ) {
     super({ requireNetwork: true });
   }
@@ -337,10 +339,10 @@ export class MensaPage extends AbstractPage {
     if (Math.abs(event.deltaY) < 50) {
       if (event.deltaX > 0) {
         // user swiped from left to right
-        this.swipeEvent.publish('campus-swipe-to-right', this.campus);
+        this.campusTabComponent.selectPreviousCampus();
       } else if (event.deltaX < 0) {
         // user swiped from right to left
-        this.swipeEvent.publish('campus-swipe-to-left', this.campus);
+        this.campusTabComponent.selectNextCampus();
       }
     }
   }

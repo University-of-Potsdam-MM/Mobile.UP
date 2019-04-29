@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
-import { Events } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import {
   IHouse,
@@ -17,6 +16,7 @@ import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-roomplan',
@@ -30,7 +30,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     private cache: CacheService,
     private alert: AlertService,
     private alertProvider: AlertService,
-    private swipeEvent: Events,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
@@ -53,6 +52,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   current_location: ICampus;
   error: HttpErrorResponse;
   requestProcessed = false;
+
+  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   /**
    * Comparator for event sorting
@@ -112,28 +113,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
       this.days.push({'lbl': day, 'value': i.toString()});
     }
     this.select_day = this.day_offset;
-  }
-
-  /**
-   * Convert campus number to short string (for localization)
-   * @param num - Campus number (1-3)
-   * @returns {string} - campus short string (gs,np,go), defaults to gs
-   */
-  getLocationByNum(num) { // one could use numbers everywhere, but this is better for readability
-    switch (num) {
-      case '1': {
-        return 'NeuesPalais';
-      }
-      case '2': {
-        return 'Golm';
-      }
-      case '3': {
-        return 'Griebnitzsee';
-      }
-      default: {
-        return 'Griebnitzsee';
-      }
-    }
   }
 
   /**
@@ -389,10 +368,10 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     if (Math.abs(event.deltaY) < 50) {
       if (event.deltaX > 0) {
         // user swiped from left to right
-        this.swipeEvent.publish('campus-swipe-to-right', this.getLocationByNum(this.current_location));
+        this.campusTabComponent.selectPreviousCampus();
       } else if (event.deltaX < 0) {
         // user swiped from right to left
-        this.swipeEvent.publish('campus-swipe-to-left', this.getLocationByNum(this.current_location));
+        this.campusTabComponent.selectNextCampus();
       }
     }
   }

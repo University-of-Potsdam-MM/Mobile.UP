@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import { RoomplanPage } from '../roomplan/roomplan.page';
-import { Events } from '@ionic/angular';
 import {IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
@@ -36,7 +35,6 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     private cache: CacheService,
     private http: HttpClient,
     private alertProvider: AlertService,
-    private swipeEvent: Events,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
