@@ -51,6 +51,10 @@ export class WebserviceWrapperService {
 
   /**
    * Definition of the webservices that can be used in this application.
+   *
+   * TODO: I guess it would be better to write a class for each definition which
+   * is implementing the IWebservice interface. That way we could have typing for
+   * those functions. Can't think of an elegant way to do this, though.
    */
   private webservices: {[wsName: string]: IWebservice} = {
     maps: {
