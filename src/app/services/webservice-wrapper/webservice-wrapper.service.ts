@@ -1,11 +1,12 @@
 import {Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {IConfig} from '../../lib/interfaces';
 import {ConfigService} from '../config/config.service';
 import {UserSessionService} from '../user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
-import {IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
+import {ILibraryRequestParams, IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
+import {WebHttpUrlEncodingCodec} from '../login-provider/lib';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -106,6 +107,24 @@ export class WebserviceWrapperService {
           {
             headers: this.apiTokenHeader,
             params: createRoomParams(params)
+          }
+        );
+      }
+    },
+    library: {
+      buildRequest: (requestParams: ILibraryRequestParams) => {
+        return this.http.get(
+          this.config.webservices.endpoint.library,
+          {
+            headers: this.apiTokenHeader,
+            params: {
+              operation: 'searchRetrieve',
+              query: requestParams.query.trim(),
+              startRecord: requestParams.startRecord,
+              maximumRecords: requestParams.maximumRecords,
+              recordSchema: 'mods'
+            },
+            responseType: 'text'
           }
         );
       }

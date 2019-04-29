@@ -45,3 +45,9 @@ export interface IRoomsRequestParams {
   campus: ICampus;
   timeSlot: ITimeSlot;
 }
+
+export interface ILibraryRequestParams {
+  query: string;
+  startRecord: string;
+  maximumRecords: string;
+}

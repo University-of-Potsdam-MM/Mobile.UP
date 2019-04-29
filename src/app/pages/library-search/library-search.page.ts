@@ -13,6 +13,8 @@ import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CacheService } from 'ionic-cache';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import {ILibraryRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-library-search',
@@ -45,7 +47,8 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     private storage: Storage,
     private cache: CacheService,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -80,19 +83,14 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
           this.isLoaded = false;
         }
 
-        const url = this.config.webservices.endpoint.library;
-
-        const headers = new HttpHeaders()
-          .append('Authorization', this.config.webservices.apiToken);
-
-        const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append('operation', 'searchRetrieve')
-          .append('query', query.trim())
-          .append('startRecord', this.startRecord)
-          .append('maximumRecords', this.maximumRecords)
-          .append('recordSchema', 'mods');
-
-        this.http.get(url, {headers: headers, params: params, responseType: 'text'}).subscribe(res => {
+        this.ws.call(
+          'library',
+          <ILibraryRequestParams>{
+            query: this.query,
+            startRecord: this.startRecord,
+            maximumRecords: this.maximumRecords
+          }
+        ).subscribe(res => {
           this.parseXMLtoJSON(res).then(data => {
 
             let tmp, tmpList, i;
