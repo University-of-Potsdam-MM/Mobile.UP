@@ -5,7 +5,13 @@ import {ConfigService} from '../config/config.service';
 import {UserSessionService} from '../user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
-import {ILibraryRequestParams, IPersonsRequestParams, IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
+import {
+  ICachingOptions,
+  ILibraryRequestParams,
+  IPersonsRequestParams,
+  IRoomsRequestParams,
+  IWebservice
+} from './webservice-definition-interfaces';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -174,7 +180,8 @@ export class WebserviceWrapperService {
    */
   public call(webserviceName: string,
               params = {},
-              cache = true) {
+              cache = true,
+              cachingOptions: ICachingOptions = {}) {
 
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
@@ -200,10 +207,12 @@ export class WebserviceWrapperService {
 
     if (cache) {
       // if desired we're caching the response. The name of the request plus the used
-      // parameters in base64 will be used as key
+      // parameters in base64 will be used as key if no key is specified.
       return this.cache.loadFromObservable(
-        webserviceName + ':' + btoa(JSON.stringify(params)),
-        wrapperObservable
+        cachingOptions.key || webserviceName + ':' + btoa(JSON.stringify(params)),
+        wrapperObservable,
+        cachingOptions.groupKey || null,
+        cachingOptions.ttl || null
       );
     }
 

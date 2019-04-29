@@ -31,6 +31,12 @@ export interface IWebservice {
   errorCallback?: (error: any) => any;
 }
 
+export interface ICachingOptions {
+  ttl?: number;
+  key?: string;
+  groupKey?: string;
+}
+
 /**
  * Defines a timeslot for use in web service calls
  */
