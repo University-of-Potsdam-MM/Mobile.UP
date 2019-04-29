@@ -15,7 +15,7 @@ import {
 } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {IRoomsRequestParams, WebserviceWrapperService} from '../../webservice-wrapper.service';
+import {IRoomsRequestParams, WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-roomplan',

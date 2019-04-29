@@ -8,7 +8,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
-import {IRoomsRequestParams, WebserviceWrapperService} from '../../webservice-wrapper.service';
+import {IRoomsRequestParams, WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-free-rooms',
@@ -98,7 +98,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
   /**
    * Switch campus location and reload info for new campus
-   * @param location - number as string representing campus
+   * @param campus {ICampus} the current campus
    */
   switchLocation(campus: ICampus) {
     this.housesFound = [];

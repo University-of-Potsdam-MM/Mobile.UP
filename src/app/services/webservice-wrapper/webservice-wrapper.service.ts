@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ICampus, IConfig} from './lib/interfaces';
-import {ConfigService} from './services/config/config.service';
-import {UserSessionService} from './services/user-session/user-session.service';
+import {ICampus, IConfig} from '../../lib/interfaces';
+import {ConfigService} from '../config/config.service';
+import {UserSessionService} from '../user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
 

@@ -32,6 +32,7 @@ registerLocaleData(localeEn);
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import {WebserviceWrapperService} from './services/webservice-wrapper/webservice-wrapper.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -99,6 +100,7 @@ export class IonicGestureConfig extends HammerGestureConfig {
     UPLoginProvider,
     ConfigService,
     Calendar,
+    WebserviceWrapperService,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,
