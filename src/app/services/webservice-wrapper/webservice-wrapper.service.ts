@@ -1,12 +1,11 @@
 import {Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {IConfig} from '../../lib/interfaces';
 import {ConfigService} from '../config/config.service';
 import {UserSessionService} from '../user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
 import {ILibraryRequestParams, IPersonsRequestParams, IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
-import {WebHttpUrlEncodingCodec} from '../login-provider/lib';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -21,6 +20,27 @@ function createRoomParams(params: IRoomsRequestParams) {
   };
 }
 
+/**
+ * Service for bundling all http calls in one place.
+ *
+ * In {@link webservices} a webservice request can be defined. A definition consists
+ * of three functions: 'buildRequest', 'responseCallback', 'errorCallback'.
+ *
+ * - buildRequest: This function *must* be defined as it is the function that actually
+ *   builds the request. The parameters this function uses must be passed to the
+ *   {@link call} function when it is called.
+ *
+ * - responseCallback: This function can optionally be defined to preprocess the
+ *   webservices response before being returned to where the function was called.
+ *   By default (see {@link defaults}) a function that just passes on the response
+ *   is called, so in other words nothing will be done.
+ *
+ * - errorCallback: This function can optionally be defined to handle an error
+ *   individually.
+ *   By default (see {@link defaults}) the error is simply logged to console and
+ *   an empty array is returned. In case other behaviour is desired you can define
+ *   this function as you like it.
+ */
 @Injectable({
   providedIn: 'root'
 })
