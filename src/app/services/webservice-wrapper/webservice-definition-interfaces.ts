@@ -1,5 +1,6 @@
 import {ICampus} from '../../lib/interfaces';
 import {Observable} from 'rxjs';
+import {ISession} from '../login-provider/interfaces';
 
 /**
  * Defines a webservice in a more or less standardized way
@@ -56,4 +57,12 @@ export interface ILibraryRequestParams {
   query: string;
   startRecord: string;
   maximumRecords: string;
+}
+
+/**
+ * Parameters for querying the persons API
+ */
+export interface IPersonsRequestParams {
+  query: string;
+  session: ISession;
 }

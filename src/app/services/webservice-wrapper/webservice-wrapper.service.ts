@@ -5,7 +5,7 @@ import {ConfigService} from '../config/config.service';
 import {UserSessionService} from '../user-session/user-session.service';
 import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
-import {ILibraryRequestParams, IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
+import {ILibraryRequestParams, IPersonsRequestParams, IRoomsRequestParams, IWebservice} from './webservice-definition-interfaces';
 import {WebHttpUrlEncodingCodec} from '../login-provider/lib';
 
 /**
@@ -80,11 +80,13 @@ export class WebserviceWrapperService {
       }
     },
     persons: {
-      buildRequest: (query: string) => {
+      buildRequest: (params: IPersonsRequestParams) => {
         return this.http.get(
-          this.config.webservices.endpoint.personSearch + query,
+          this.config.webservices.endpoint.personSearch + '/' + params.query,
           {
-            headers: this.apiTokenHeader
+            headers: {
+              Authorization: `${params.session.oidcTokenObject.token_type} ${params.session.oidcTokenObject.access_token}`
+            }
           }
         );
       }
