@@ -114,7 +114,7 @@ export class WebserviceWrapperService {
             headers: this.apiTokenHeader,
             params: {
               operation: 'searchRetrieve',
-              query: requestParams.query.trim(),
+              query: requestParams.query,
               startRecord: requestParams.startRecord,
               maximumRecords: requestParams.maximumRecords,
               recordSchema: 'mods'

@@ -86,7 +86,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         this.ws.call(
           'library',
           <ILibraryRequestParams>{
-            query: this.query,
+            query: this.query.trim(),
             startRecord: this.startRecord,
             maximumRecords: this.maximumRecords
           }
