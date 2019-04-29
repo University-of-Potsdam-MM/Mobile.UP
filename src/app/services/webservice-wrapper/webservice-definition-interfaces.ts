@@ -39,13 +39,19 @@ export interface ITimeSlot {
 }
 
 /**
- * Parameters needed to create a request to the rooms API
+ * Parameters needed to create a request to the rooms API. With queryType you can
+ * specify which endpoint should be queried. 'free' will query rooms4time, 'booked'
+ * will query roomsReservations
  */
 export interface IRoomsRequestParams {
   campus: ICampus;
   timeSlot: ITimeSlot;
+  queryType: 'free' | 'booked';
 }
 
+/**
+ * Parameters for querying the library API
+ */
 export interface ILibraryRequestParams {
   query: string;
   startRecord: string;

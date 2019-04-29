@@ -8,7 +8,8 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
-import {IRoomsRequestParams, WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-free-rooms',
@@ -150,8 +151,9 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     end.setHours(this.current_timeslot.end);
 
     this.ws.call(
-      'roomsFree',
+      'rooms',
       <IRoomsRequestParams>{
+        queryType: 'free',
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }

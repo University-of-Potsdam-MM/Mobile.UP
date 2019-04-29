@@ -89,21 +89,14 @@ export class WebserviceWrapperService {
         );
       }
     },
-    roomsFree: {
+    rooms: {
       buildRequest: (params: IRoomsRequestParams) => {
+        const url = {
+          free: this.config.webservices.endpoint.roomsSearch,
+          booked: this.config.webservices.endpoint.roomplanSearch
+        };
         return this.http.get(
-          this.config.webservices.endpoint.roomsSearch,
-          {
-            headers: this.apiTokenHeader,
-            params: createRoomParams(params)
-          }
-        );
-      }
-    },
-    roomsBooked: {
-      buildRequest: (params: IRoomsRequestParams) => {
-        return this.http.get(
-          this.config.webservices.endpoint.roomplanSearch,
+          url[params.queryType],
           {
             headers: this.apiTokenHeader,
             params: createRoomParams(params)

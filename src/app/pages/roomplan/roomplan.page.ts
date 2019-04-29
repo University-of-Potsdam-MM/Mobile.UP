@@ -15,7 +15,8 @@ import {
 } from 'src/app/lib/interfaces';
 import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {IRoomsRequestParams, WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-roomplan',
@@ -246,8 +247,9 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     end.setDate(end.getDate() + +this.day_offset);
 
     this.ws.call(
-      'roomsBooked',
+      'rooms',
       <IRoomsRequestParams>{
+        queryType: 'booked',
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }
