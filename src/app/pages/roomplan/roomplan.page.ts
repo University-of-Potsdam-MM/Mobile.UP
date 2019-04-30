@@ -371,17 +371,4 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   uniqueFilter(value, index, self) {
     return self.indexOf(value) === index;
   }
-
-  swipeCampus(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        this.campusTabComponent.selectPreviousCampus();
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        this.campusTabComponent.selectNextCampus();
-      }
-    }
-  }
-
 }
