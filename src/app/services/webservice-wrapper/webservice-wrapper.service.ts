@@ -9,7 +9,7 @@ import {
   ICachingOptions,
   ILibraryRequestParams,
   IPersonsRequestParams,
-  IRoomsRequestParams,
+  IRoomsRequestParams, ITransportRequestParams,
   IWebservice
 } from './webservice-definition-interfaces';
 
@@ -163,6 +163,22 @@ export class WebserviceWrapperService {
         return this.http.get(
           this.config.webservices.endpoint.openingHours,
           { headers: this.apiTokenHeader }
+        );
+      }
+    },
+    transport: {
+      buildRequest: (params: ITransportRequestParams) => {
+        return this.http.get(
+          this.config.webservices.endpoint.transport,
+          {
+            headers: this.apiTokenHeader,
+            params: {
+              maxJourneys: params.maxJourneys,
+              format: 'json',
+              time: params.time,
+              id: params.campus.transport_station_id
+            }
+          }
         );
       }
     }

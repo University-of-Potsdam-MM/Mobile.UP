@@ -72,3 +72,9 @@ export interface IPersonsRequestParams {
   query: string;
   session: ISession;
 }
+
+export interface ITransportRequestParams {
+  time: string;
+  maxJourneys: string;
+  campus: ICampus;
+}

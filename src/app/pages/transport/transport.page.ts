@@ -5,6 +5,8 @@ import { Events } from '@ionic/angular';
 import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import {ITransportRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-transport',
@@ -16,7 +18,7 @@ export class TransportPage extends AbstractPage {
   currentDate;
   isLoaded = false;
   hardRefresh = false;
-  campus;
+  campus: ICampus;
   campusid;
   departures = [];
   isEnd = false;
@@ -27,13 +29,13 @@ export class TransportPage extends AbstractPage {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
 
   changeCampus(campus: ICampus) {
-    this.campus = campus.name;
+    this.campus = campus;
     this.loadCampusMenu();
   }
 
@@ -49,26 +51,16 @@ export class TransportPage extends AbstractPage {
 
     if (!infiniteScroll) { this.maxJourneys = 15; }
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    if (this.campus === 'Griebnitzsee') {
-      this.campusid  = '900230003';
-    } else if (this.campus === 'Golm') {
-      this.campusid = '900220365';
-    } else {
-      this.campusid = '900230133';
-    }
-
     this.error = null;
 
-    const params: HttpParams = new HttpParams()
-      .append('maxJourneys', this.maxJourneys.toString())
-      .append('format', 'json')
-      .append('time', this.currentDate.format('HH:mm:ss'))
-      .append('id', this.campusid);
-
-    this.http.get(this.config.webservices.endpoint.transport, {headers: headers, params: params}).subscribe((res: IJourneyResponse) => {
+    this.ws.call(
+      'transport',
+      <ITransportRequestParams>{
+        time: this.currentDate.format('HH:mm:ss'),
+        campus: this.campus,
+        maxJourneys: this.maxJourneys.toString()
+      }
+    ).subscribe((res: IJourneyResponse) => {
 
       if (res && res.Departure && !infiniteScroll) {
         this.departures = res.Departure;

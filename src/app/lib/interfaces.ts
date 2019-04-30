@@ -499,6 +499,7 @@ export interface ICampus {
   pretty_name: string;
   canteen_name: string;
   shortcode: string;
+  transport_station_id: string;
   coordinates: [number, number];
   lat_long_bounds: ILatLongBounds;
 }

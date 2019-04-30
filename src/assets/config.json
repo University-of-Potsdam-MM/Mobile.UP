@@ -227,6 +227,7 @@
       "pretty_name": "Neues Palais",
       "canteen_name": "NeuesPalais",
       "shortcode": "np",
+      "transport_station_id": "900230133",
       "coordinates": [52.40105, 13.01207],
       "lat_long_bounds": [
         [
@@ -245,6 +246,7 @@
       "pretty_name": "Golm",
       "canteen_name": "Golm",
       "shortcode": "go",
+      "transport_station_id": "900220365",
       "coordinates": [52.41527, 12.96941],
       "lat_long_bounds": [
         [
@@ -263,6 +265,7 @@
       "pretty_name": "Griebnitzsee",
       "canteen_name": "Griebnitzsee",
       "shortcode": "gs",
+      "transport_station_id": "900230003",
       "coordinates": [52.39281, 13.1288],
       "lat_long_bounds": [
         [
