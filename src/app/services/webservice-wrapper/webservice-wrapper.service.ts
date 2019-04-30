@@ -149,6 +149,14 @@ export class WebserviceWrapperService {
           }
         );
       }
+    },
+    emergency: {
+      buildRequest: () => {
+        return this.http.get(
+          this.config.webservices.endpoint.emergencyCalls,
+          {headers: this.apiTokenHeader}
+        );
+      }
     }
   };
 

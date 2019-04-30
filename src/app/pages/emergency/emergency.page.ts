@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-emergency',
@@ -37,7 +38,8 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     private contacts: Contacts,
     private callNumber: CallNumber,
     private alert: AlertService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -64,19 +66,11 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
    */
   loadEmergencyCalls(refresher?) {
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    const url = this.config.webservices.endpoint.emergencyCalls;
-    const request = this.http.get(url, {headers: headers});
-
-    if (refresher) {
-      this.cache.removeItem('emergencyCalls');
-    } else {
+    if (!refresher) {
       this.isLoaded = false;
     }
-
-    this.cache.loadFromObservable('emergencyCalls', request).subscribe((response) => {
+  
+    this.ws.call('emergency').subscribe((response) => {
 
       if (refresher) {
         refresher.target.complete();
