@@ -91,6 +91,22 @@ export class CampusTabComponent implements OnInit {
   }
 
   /**
+   * handles swipe event that was registered on a page
+   * @param event
+   */
+  public handleSwipeEvent(event) {
+    if (Math.abs(event.deltaY) < 50) {
+      if (event.deltaX > 0) {
+        // user swiped from left to right
+        this.selectPreviousCampus();
+      } else if (event.deltaX < 0) {
+        // user swiped from right to left
+        this.selectNextCampus();
+      }
+    }
+  }
+
+  /**
    * initializes this component
    */
   ngOnInit() {
@@ -107,4 +123,5 @@ export class CampusTabComponent implements OnInit {
       this.campusList.find(c =>  c.pretty_name === defaultCampusName)
     );
   }
+
 }
