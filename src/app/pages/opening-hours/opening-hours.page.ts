@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ionic-cache';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
-import { IConfig } from 'src/app/lib/interfaces';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
@@ -28,7 +27,6 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private cache: CacheService,
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,

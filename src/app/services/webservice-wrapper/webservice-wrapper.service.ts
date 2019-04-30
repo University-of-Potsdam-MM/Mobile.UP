@@ -226,7 +226,7 @@ export class WebserviceWrapperService {
       // if desired we're caching the response. The name of the request plus the used
       // parameters in base64 will be used as key if no key is specified.
       return this.cache.loadFromObservable(
-        cachingOptions.key || webserviceName + ':' + btoa(JSON.stringify(params)),
+        cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
         wrapperObservable,
         cachingOptions.groupKey || null,
         cachingOptions.ttl || null
