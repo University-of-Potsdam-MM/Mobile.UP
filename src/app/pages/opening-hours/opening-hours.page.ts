@@ -9,6 +9,7 @@ import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { IConfig } from 'src/app/lib/interfaces';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-opening-hours',
@@ -31,7 +32,8 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -46,19 +48,11 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397').subscribe(data => {
       this.nominatim = data;
 
-      const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-      const url = this.config.webservices.endpoint.openingHours;
-      const request = this.http.get(url, {headers: headers});
-
-      if (refresher) {
-        this.cache.removeItem('openingHours');
-      } else {
+      if (!refresher) {
         this.isLoaded = false;
       }
 
-      this.cache.loadFromObservable('openingHours', request).subscribe((response) => {
+      this.ws.call('openingHours').subscribe((response) => {
         this.allOpeningHours = response;
 
         const from = new Date();

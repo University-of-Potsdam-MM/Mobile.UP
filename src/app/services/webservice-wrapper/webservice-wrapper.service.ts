@@ -157,12 +157,21 @@ export class WebserviceWrapperService {
           {headers: this.apiTokenHeader}
         );
       }
+    },
+    openingHours: {
+      buildRequest: () => {
+        return this.http.get(
+          this.config.webservices.endpoint.openingHours,
+          { headers: this.apiTokenHeader }
+        );
+      }
     }
+
   };
 
   constructor(private http: HttpClient,
               private cache: CacheService,
-              private session: UserSessionService) {  }
+              private session: UserSessionService) {}
 
 
   /**
