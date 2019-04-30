@@ -8,6 +8,8 @@ import { Events } from '@ionic/angular';
 import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import {IMensaRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-mensa',
@@ -54,14 +56,15 @@ export class MensaPage extends AbstractPage {
   hardRefresh = false;
   noMealsForDate;
   noUlfMealsForDate;
-  campus;
+  campus: ICampus;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
     private translate: TranslateService,
     private cache: CacheService,
-    private http: HttpClient
+    private http: HttpClient,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -70,7 +73,7 @@ export class MensaPage extends AbstractPage {
    * @param query
    */
   changeCampus(campus: ICampus) {
-    this.campus = campus.canteen_name;
+    this.campus = campus;
     this.loadCampusMenu();
   }
 
@@ -96,14 +99,12 @@ export class MensaPage extends AbstractPage {
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    const params: HttpParams = new HttpParams()
-      .append('location', this.campus);
-
-    const request = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: params});
-    this.cache.loadFromObservable('mensaResponse' + this.campus, request).subscribe((res: IMensaResponse) => {
+    this.ws.call(
+      'mensa',
+      <IMensaRequestParams>{
+        campus_canteen_name: this.campus.canteen_name
+      }
+    ).subscribe((res: IMensaResponse) => {
 
       if (res.meal) {
         this.allMeals = res.meal;
@@ -113,14 +114,14 @@ export class MensaPage extends AbstractPage {
         this.iconMapping = res.iconHashMap.entry;
       }
 
-      if (this.campus === 'Griebnitzsee') {
+      if (this.campus.canteen_name === 'Griebnitzsee') {
         const ulfParam = 'UlfsCafe';
-        const paramsUlf: HttpParams = new HttpParams()
-          .append('location', ulfParam);
-
-        const requestUlf = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: paramsUlf});
-
-        this.cache.loadFromObservable('mensaResponse' + ulfParam, requestUlf).subscribe((resUlf: IMensaResponse) => {
+        this.ws.call(
+          'mensa',
+          <IMensaRequestParams>{
+            campus_canteen_name: ulfParam
+          }
+        ).subscribe((resUlf: IMensaResponse) => {
           if (resUlf.meal) {
             this.ulfMeals = resUlf.meal;
           }

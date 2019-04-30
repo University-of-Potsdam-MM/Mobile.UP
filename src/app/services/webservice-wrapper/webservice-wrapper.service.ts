@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
 import {
   ICachingOptions,
-  ILibraryRequestParams,
+  ILibraryRequestParams, IMensaRequestParams,
   IPersonsRequestParams,
   IRoomsRequestParams, ITransportRequestParams,
   IWebservice
@@ -95,12 +95,12 @@ export class WebserviceWrapperService {
       }
     },
     mensa: {
-      buildRequest: (location: string) => {
+      buildRequest: (params: IMensaRequestParams) => {
         return this.http.get(
           this.config.webservices.endpoint.mensa,
           {
             headers: this.apiTokenHeader,
-            params: {location: location}
+            params: {location: params.campus_canteen_name}
           }
         );
       }

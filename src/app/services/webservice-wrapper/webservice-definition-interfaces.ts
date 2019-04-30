@@ -78,3 +78,7 @@ export interface ITransportRequestParams {
   maxJourneys: string;
   campus: ICampus;
 }
+
+export interface IMensaRequestParams {
+  campus_canteen_name: string;
+}
