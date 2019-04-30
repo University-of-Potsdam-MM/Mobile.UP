@@ -97,23 +97,8 @@ export class TransportPage extends AbstractPage {
     });
   }
 
-
   doInfinite(infiniteScroll) {
     this.maxJourneys += 10;
     this.loadCampusMenu(false, infiniteScroll);
   }
-
-
-  swipeCampus(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        this.campusTabComponent.selectPreviousCampus();
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        this.campusTabComponent.selectNextCampus();
-      }
-    }
-  }
-
 }

@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import { Events } from '@ionic/angular';
 import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
@@ -335,17 +334,4 @@ export class MensaPage extends AbstractPage {
       return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
   }
-
-  swipeCampus(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        this.campusTabComponent.selectPreviousCampus();
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        this.campusTabComponent.selectNextCampus();
-      }
-    }
-  }
-
 }
