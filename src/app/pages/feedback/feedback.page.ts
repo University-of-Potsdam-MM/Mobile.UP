@@ -7,6 +7,7 @@ import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.servi
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-feedback',
@@ -28,12 +29,12 @@ export class FeedbackPage extends AbstractPage implements OnInit {
    * @param {FormBuilder} formBuilder
    */
   constructor(
-    public http: HttpClient,
     public navCtrl: NavController,
     private deviceService: DeviceService,
     private formBuilder: FormBuilder,
     private alert: AlertService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private ws: WebserviceWrapperService
   ) {
       super({ requireNetwork: true, optionalSession: true });
       this.form = this.formBuilder.group({
@@ -42,7 +43,6 @@ export class FeedbackPage extends AbstractPage implements OnInit {
         recommend: ['', Validators.required],
         anonymous: [false, Validators.required],
       });
-
   }
 
   ngOnInit() {
@@ -83,18 +83,9 @@ export class FeedbackPage extends AbstractPage implements OnInit {
    * @name postFeedback
    */
   postFeedback() {
-
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': this.config.webservices.apiToken
-    });
-
-    const request: IFeedback = this.feedback;
-
-    this.http.post<IFeedback>(
-      this.config.webservices.endpoint.feedback.url,
-      request,
-      {headers: headers}
+    this.ws.call(
+      'feedback',
+      this.feedback
     ).subscribe(
       (response) => {
         console.log(response);

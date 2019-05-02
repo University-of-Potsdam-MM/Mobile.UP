@@ -8,6 +8,7 @@ import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
 import { ConfigService } from '../../services/config/config.service';
 import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'book-modal-page',
@@ -47,7 +48,8 @@ export class BookDetailModalPage implements OnInit {
       private http: HttpClient,
       private translate: TranslateService,
       private alert: AlertService,
-      public webIntent: WebIntentService // is used in the HTML
+      public webIntent: WebIntentService, // is used in the HTML
+      private ws: WebserviceWrapperService
     ) {
   }
 
@@ -91,21 +93,16 @@ export class BookDetailModalPage implements OnInit {
    * @param refresher
    */
   updateLocation(refresher?): void {
-    if (refresher) {
-      this.cache.removeItem('bookLocation' + this.book.recordInfo.recordIdentifier._);
-    } else { this.isLoaded = false; }
+    if (!refresher) {
+      this.isLoaded = false;
+    }
 
-    const url = this.config.webservices.endpoint.libraryDAIA.url;
-
-    const headers = new HttpHeaders()
-        .append('Authorization', this.config.webservices.apiToken);
-
-    const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('id', 'ppn:' + this.book.recordInfo.recordIdentifier._)
-      .append('format', 'json');
-
-    const request = this.http.get(url, {headers: headers, params: params});
-    this.cache.loadFromObservable('bookLocation' + this.book.recordInfo.recordIdentifier._, request).subscribe(data => {
+    this.ws.call(
+      'libraryDAIA',
+      {
+        id: 'ppn:' + this.book.recordInfo.recordIdentifier._
+      }
+    ).subscribe(data => {
       if (refresher) {
         refresher.target.complete();
       }

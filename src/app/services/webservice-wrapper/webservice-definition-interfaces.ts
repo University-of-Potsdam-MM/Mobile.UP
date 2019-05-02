@@ -8,10 +8,10 @@ import {ISession} from '../login-provider/interfaces';
 export interface IWebservice {
   /**
    * function that will be called to build the http request. The result must
-   * be an Observable
+   * be an Observable.
    * @param args
    */
-  buildRequest: (...args: any[]) => Observable<any>;
+  buildRequest: (params: any, url: string) => Observable<any>;
   /**
    * function that will be used as callback function for the http requests response
    * callback.

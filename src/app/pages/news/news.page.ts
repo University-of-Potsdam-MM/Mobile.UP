@@ -4,6 +4,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IonSlides } from '@ionic/angular';
 import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-news',
@@ -27,8 +28,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   };
 
   constructor(
-    private cache: CacheService,
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -38,19 +38,11 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    const url = this.config.webservices.endpoint.news.url;
-    const request = this.http.get(url, {headers: headers});
-
-    if (refresher) {
-      this.cache.removeItem('newsResponse');
-    } else {
+    if (!refresher) {
       this.isLoaded = false;
     }
 
-    this.cache.loadFromObservable('newsResponse', request).subscribe((response: INewsApiResponse) => {
+    this.ws.call('news').subscribe((response: INewsApiResponse) => {
 
       if (refresher) {
         refresher.target.complete();

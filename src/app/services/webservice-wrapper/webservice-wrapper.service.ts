@@ -156,6 +156,20 @@ export class WebserviceWrapperService {
         );
       }
     },
+    libraryDAIA: {
+      buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          {
+            headers: this.apiTokenHeader,
+            params: {
+              id: params.id,
+              format: 'json'
+            }
+          }
+        );
+      }
+    },
     emergencyCalls: {
       buildRequest: (params, url) => {
         return this.http.get(
@@ -193,6 +207,39 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {headers: this.apiTokenHeader}
+        );
+      }
+    },
+    news: {
+      buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          {headers: this.apiTokenHeader}
+        );
+      }
+    },
+    logging: {
+      buildRequest: (errorObject, url) => {
+        return this.http.get(
+          url,
+          {
+            headers: this.apiTokenHeader,
+            params: errorObject
+          }
+        );
+      }
+    },
+    feedback: {
+      buildRequest: (request, url) => {
+        return this.http.post(
+          url,
+          request,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: this.apiTokenHeader.Authorization
+            }
+          }
         );
       }
     }
