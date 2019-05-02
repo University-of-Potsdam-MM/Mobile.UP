@@ -141,7 +141,7 @@ export class WebserviceWrapperService {
     library: {
       buildRequest: (requestParams: ILibraryRequestParams, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.library.url,
+          url,
           {
             headers: this.apiTokenHeader,
             params: {
