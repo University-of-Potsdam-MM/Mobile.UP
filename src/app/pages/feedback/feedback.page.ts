@@ -92,7 +92,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     const request: IFeedback = this.feedback;
 
     this.http.post<IFeedback>(
-      this.config.webservices.endpoint.feedback,
+      this.config.webservices.endpoint.feedback.url,
       request,
       {headers: headers}
     ).subscribe(

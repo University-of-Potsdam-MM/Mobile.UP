@@ -345,30 +345,12 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }
 
         if (query.trim() !== '') {
-          const url = this.config.webservices.endpoint.library;
-
-          const headers = new HttpHeaders()
-            .append('Authorization', this.config.webservices.apiToken);
-
-          const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-            .append('operation', 'searchRetrieve')
-            .append('query', query.trim())
-            .append('startRecord', '1')
-            .append('maximumRecords', '5')
-            .append('recordSchema', 'mods');
-          const ttl = 60 * 60 * 24 * 7; // TTL in seconds for one week
-
           this.ws.call(
             'library',
             <ILibraryRequestParams>{
               query: query,
               startRecord: '1',
               maximumRecords: '5'
-            },
-            true,
-            {
-              ttl: ttl,
-              groupKey: 'libraryFavouriteResource'
             }
           ).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {

@@ -178,8 +178,14 @@ export interface IModule {
 }
 
 export interface IWebServices {
-  endpoint: IEndpoints;
+  endpoint: {[name: string]: IEndpoint};
   apiToken: string;
+  defaultCachingTTL: number;
+}
+
+export interface IEndpoint {
+  url: string;
+  cachingTTL: number;
 }
 
 export interface IEndpoints {

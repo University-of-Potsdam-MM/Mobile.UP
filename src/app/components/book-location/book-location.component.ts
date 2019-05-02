@@ -50,7 +50,7 @@ export class BookLocationComponent implements OnInit {
       const config: IConfig = ConfigService.config;
       const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()}).append('epn', epn);
 
-      this.http.get(config.webservices.endpoint.libraryLKZ, {params: params}).subscribe(data => {
+      this.http.get(config.webservices.endpoint.libraryLKZ.url, {params: params}).subscribe(data => {
         const lkz = data['msg'];
         if (lkz && lkz !== 'no results' && lkz !== 'parameter incorrect') {
           let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);

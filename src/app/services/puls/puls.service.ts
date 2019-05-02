@@ -58,7 +58,7 @@ export class PulsService {
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleRoot>();
 
     this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
-      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleRoot', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleRoot.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         rs.next(response);
       }
@@ -78,7 +78,7 @@ export class PulsService {
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleSubTree>();
 
     this.http.post<IPulsAPIResponse_getLectureScheduleSubTree>(
-      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleSubTree', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleSubTree.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         rs.next(response);
       }
@@ -97,7 +97,7 @@ export class PulsService {
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleCourses>();
 
     this.http.post<IPulsAPIResponse_getLectureScheduleCourses>(
-      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleCourses', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleCourses.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getLectureScheduleCourses) => {
         rs.next(response);
       }
@@ -116,7 +116,7 @@ export class PulsService {
     const rs = new ReplaySubject<IPulsAPIResponse_getCourseData>();
 
     this.http.post<IPulsAPIResponse_getCourseData>(
-      ConfigService.config.webservices.endpoint.puls + 'getCourseData', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetCourseData.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getCourseData) => {
         rs.next(response);
       }
@@ -143,7 +143,7 @@ export class PulsService {
 
     // TODO: check for connection first!
     this.http.post<IPulsAPIResponse_getPersonalStudyAreas>(
-      ConfigService.config.webservices.endpoint.puls + 'getPersonalStudyAreas', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetPersonalStudyAreas.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getPersonalStudyAreas) => {
         // PULS simply responds with "no user rights" if credentials are incorrect
         if (response.message === 'no user rights') {
@@ -197,7 +197,7 @@ export class PulsService {
     const rs = new ReplaySubject<IPulsAPIResponse_getAcademicAchievements>();
 
     this.http.post<IPulsAPIResponse_getAcademicAchievements>(
-      ConfigService.config.webservices.endpoint.puls + 'getAcademicAchievements', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetAcademicAchievements.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getAcademicAchievements) => {
         rs.next(response);
       }
@@ -227,7 +227,7 @@ export class PulsService {
 
     // TODO: check for connection first!
     this.http.post<IPulsAPIResponse_getStudentCourses>(
-      ConfigService.config.webservices.endpoint.puls + 'getStudentCourses', request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.pulsGetStudentCourses.url, request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getStudentCourses) => {
         // PULS simply responds with "no user rights" if credentials are incorrect
         if (response.message === 'no user rights') {

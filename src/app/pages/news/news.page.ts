@@ -41,7 +41,7 @@ export class NewsPage extends AbstractPage implements OnInit {
     const headers: HttpHeaders = new HttpHeaders()
       .append('Authorization', this.config.webservices.apiToken);
 
-    const url = this.config.webservices.endpoint.news;
+    const url = this.config.webservices.endpoint.news.url;
     const request = this.http.get(url, {headers: headers});
 
     if (refresher) {

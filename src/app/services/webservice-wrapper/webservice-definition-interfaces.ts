@@ -32,6 +32,7 @@ export interface IWebservice {
 }
 
 export interface ICachingOptions {
+  cache: boolean;
   ttl?: number;
   key?: string;
   groupKey?: string;

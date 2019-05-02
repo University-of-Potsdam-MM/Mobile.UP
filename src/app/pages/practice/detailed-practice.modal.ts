@@ -26,7 +26,7 @@ export class DetailedPracticeModalPage implements OnInit {
 
   ngOnInit() {
     const config: IConfig = ConfigService.config;
-    this.URLEndpoint = config.webservices.endpoint.practiceJobPostings;
+    this.URLEndpoint = config.webservices.endpoint.practiceJobPostings.url;
   }
 
   closeModal() {

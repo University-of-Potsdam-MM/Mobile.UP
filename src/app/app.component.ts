@@ -27,6 +27,9 @@ export class AppComponent {
   loggedIn = false;
   username;
 
+  config: IConfig = ConfigService.config;
+
+
   constructor(
     private platform: Platform,
     private router: Router,
@@ -53,7 +56,7 @@ export class AppComponent {
       this.initTranslate();
       this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(60 * 60 * 2);
+      this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
 
       this.events.subscribe('userLogin', () => {
@@ -81,7 +84,6 @@ export class AppComponent {
    * @description clears the storage if user has a old version of the app
    */
   async prepareStorageOnAppUpdate() {
-    const config = ConfigService.config;
     const savedVersion = await this.storage.get('appVersion');
 
     if (!savedVersion) {
@@ -89,15 +91,15 @@ export class AppComponent {
       // clear the whole storage
       this.storage.clear().then(() => {
         console.log('[Mobile.UP]: cleared storage');
-        this.storage.set('appVersion', config.appVersion);
-        this.checkSessionValidity(config);
+        this.storage.set('appVersion', this.config.appVersion);
+        this.checkSessionValidity(this.config);
       }, error => {
         console.log('[ERROR]: clearing storage failed');
         console.log(error);
       });
     } else {
-      this.storage.set('appVersion', config.appVersion);
-      this.checkSessionValidity(config);
+      this.storage.set('appVersion', this.config.appVersion);
+      this.checkSessionValidity(this.config);
     }
   }
 

@@ -31,7 +31,7 @@ export class ErrorHandlerService {
     console.log(`[ErrorService]: Logging error`);
     console.log(errorObject);
     this.http.post(
-      config.webservices.endpoint.logging,
+      config.webservices.endpoint.logging.url,
       errorObject,
       {headers: headers}
     ).subscribe(response => {

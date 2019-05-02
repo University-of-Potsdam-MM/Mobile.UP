@@ -87,7 +87,7 @@ export class WebserviceWrapperService {
     maps: {
       buildRequest: () => {
         return this.http.get(
-          this.config.webservices.endpoint.maps,
+          this.config.webservices.endpoint.maps.url,
           {
             headers: this.apiTokenHeader
           }
@@ -97,7 +97,7 @@ export class WebserviceWrapperService {
     mensa: {
       buildRequest: (params: IMensaRequestParams) => {
         return this.http.get(
-          this.config.webservices.endpoint.mensa,
+          this.config.webservices.endpoint.mensa.url,
           {
             headers: this.apiTokenHeader,
             params: {location: params.campus_canteen_name}
@@ -108,7 +108,7 @@ export class WebserviceWrapperService {
     persons: {
       buildRequest: (params: IPersonsRequestParams) => {
         return this.http.get(
-          this.config.webservices.endpoint.personSearch + '/' + params.query,
+          this.config.webservices.endpoint.personSearch.url + '/' + params.query,
           {
             headers: {
               Authorization: `${params.session.oidcTokenObject.token_type} ${params.session.oidcTokenObject.access_token}`
@@ -120,8 +120,8 @@ export class WebserviceWrapperService {
     rooms: {
       buildRequest: (params: IRoomsRequestParams) => {
         const url = {
-          free: this.config.webservices.endpoint.roomsSearch,
-          booked: this.config.webservices.endpoint.roomplanSearch
+          free: this.config.webservices.endpoint.roomsSearch.url,
+          booked: this.config.webservices.endpoint.roomplanSearch.url
         };
         return this.http.get(
           url[params.queryType],
@@ -135,7 +135,7 @@ export class WebserviceWrapperService {
     library: {
       buildRequest: (requestParams: ILibraryRequestParams) => {
         return this.http.get(
-          this.config.webservices.endpoint.library,
+          this.config.webservices.endpoint.library.url,
           {
             headers: this.apiTokenHeader,
             params: {
@@ -153,7 +153,7 @@ export class WebserviceWrapperService {
     emergency: {
       buildRequest: () => {
         return this.http.get(
-          this.config.webservices.endpoint.emergencyCalls,
+          this.config.webservices.endpoint.emergencyCalls.url,
           {headers: this.apiTokenHeader}
         );
       }
@@ -161,7 +161,7 @@ export class WebserviceWrapperService {
     openingHours: {
       buildRequest: () => {
         return this.http.get(
-          this.config.webservices.endpoint.openingHours,
+          this.config.webservices.endpoint.openingHours.url,
           { headers: this.apiTokenHeader }
         );
       }
@@ -169,7 +169,7 @@ export class WebserviceWrapperService {
     transport: {
       buildRequest: (params: ITransportRequestParams) => {
         return this.http.get(
-          this.config.webservices.endpoint.transport,
+          this.config.webservices.endpoint.transport.url,
           {
             headers: this.apiTokenHeader,
             params: {
@@ -209,12 +209,11 @@ export class WebserviceWrapperService {
    * executes the specified call
    * @param webserviceName {string} The name of the service to be called
    * @param params {any} Additional params that will be given to the call building function
-   * @param cache {boolean} Defines whether the call should be cached, default is true
+   * @param cachingOptions {ICachingOptions} Defines whether the call should be cached, default is true
    */
   public call(webserviceName: string,
               params = {},
-              cache = true,
-              cachingOptions: ICachingOptions = {}) {
+              cachingOptions: ICachingOptions = {cache: true}) {
 
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
@@ -238,14 +237,17 @@ export class WebserviceWrapperService {
       }
     );
 
-    if (cache) {
-      // if desired we're caching the response. The name of the request plus the used
-      // parameters in base64 will be used as key if no key is specified.
+    if (cachingOptions.cache) {
+      // if desired we're caching the response. By default it is desired.
+      // If options are given in cachingOptions these options will be used, otherwise:
+      // - key = name of the webservice plus base64 encoding of the used parameters
+      // - groupKey = name of the webservice plus "Group"
+      // - ttl = ttl in config or default ttl
       return this.cache.loadFromObservable(
         cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
         wrapperObservable,
         cachingOptions.groupKey || webserviceName + 'Group',
-        cachingOptions.ttl || null
+        cachingOptions.ttl || this.config.webservices.endpoint[webserviceName].cachingTTL || null
       );
     }
 

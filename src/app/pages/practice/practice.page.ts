@@ -96,7 +96,7 @@ export class PracticePage extends AbstractPage {
     const headers: HttpHeaders = new HttpHeaders()
     .append('Authorization', this.config.webservices.apiToken);
 
-    const request = this.http.get(this.config.webservices.endpoint.practiceSearch, {headers: headers});
+    const request = this.http.get(this.config.webservices.endpoint.practiceSearch.url, {headers: headers});
 
     if (refresher) {
       this.cache.removeItem('practiceResponse');
