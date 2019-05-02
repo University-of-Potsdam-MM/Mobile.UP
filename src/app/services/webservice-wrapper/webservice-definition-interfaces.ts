@@ -54,7 +54,6 @@ export interface ITimeSlot {
 export interface IRoomsRequestParams {
   campus: ICampus;
   timeSlot: ITimeSlot;
-  queryType: 'free' | 'booked';
 }
 
 /**

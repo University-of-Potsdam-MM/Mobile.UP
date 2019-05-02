@@ -226,9 +226,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     end.setDate(end.getDate() + +this.day_offset);
 
     this.ws.call(
-      'rooms',
+      'roomPlanSearch',
       <IRoomsRequestParams>{
-        queryType: 'booked',
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }

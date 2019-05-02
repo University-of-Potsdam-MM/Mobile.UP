@@ -206,7 +206,7 @@
       "roomsSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time"
       },
-      "roomplanSearch": {
+      "roomPlanSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations"
       },
       "events": {

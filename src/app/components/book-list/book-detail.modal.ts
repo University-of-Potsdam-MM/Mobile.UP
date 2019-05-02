@@ -95,7 +95,7 @@ export class BookDetailModalPage implements OnInit {
       this.cache.removeItem('bookLocation' + this.book.recordInfo.recordIdentifier._);
     } else { this.isLoaded = false; }
 
-    const url = this.config.webservices.endpoint.libraryDAIA;
+    const url = this.config.webservices.endpoint.libraryDAIA.url;
 
     const headers = new HttpHeaders()
         .append('Authorization', this.config.webservices.apiToken);

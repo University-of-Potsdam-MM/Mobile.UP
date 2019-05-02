@@ -84,7 +84,7 @@ export class PersonSearchPage extends AbstractPage {
       if (!this.session) { this.session = await this.sessionProvider.getSession(); }
 
       this.ws.call(
-        'persons',
+        'personSearch',
         <IPersonsRequestParams>{
           query: query,
           session: this.session

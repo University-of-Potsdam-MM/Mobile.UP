@@ -82,7 +82,7 @@ export class WebserviceWrapperService {
    * is implementing the IWebservice interface. That way we could have typing for
    * those functions. Can't think of an elegant way to do this, though.
    */
-  private webservices: {[wsName: string]: IWebservice} = {
+  public webservices: {[wsName: string]: IWebservice} = {
     maps: {
       buildRequest: (params, url) => {
         return this.http.get(

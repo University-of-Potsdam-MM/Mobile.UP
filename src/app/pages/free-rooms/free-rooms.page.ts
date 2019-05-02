@@ -149,9 +149,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     end.setHours(this.current_timeslot.end);
 
     this.ws.call(
-      'rooms',
+      'roomsSearch',
       <IRoomsRequestParams>{
-        queryType: 'free',
         campus: this.current_location,
         timeSlot: {start: start, end: end}
       }
