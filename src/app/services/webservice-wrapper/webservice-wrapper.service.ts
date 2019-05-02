@@ -85,9 +85,9 @@ export class WebserviceWrapperService {
    */
   private webservices: {[wsName: string]: IWebservice} = {
     maps: {
-      buildRequest: () => {
+      buildRequest: (params, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.maps.url,
+          url,
           {
             headers: this.apiTokenHeader
           }
@@ -95,9 +95,9 @@ export class WebserviceWrapperService {
       }
     },
     mensa: {
-      buildRequest: (params: IMensaRequestParams) => {
+      buildRequest: (params: IMensaRequestParams, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.mensa.url,
+          url,
           {
             headers: this.apiTokenHeader,
             params: {location: params.campus_canteen_name}
@@ -105,10 +105,10 @@ export class WebserviceWrapperService {
         );
       }
     },
-    persons: {
-      buildRequest: (params: IPersonsRequestParams) => {
+    personSearch: {
+      buildRequest: (params: IPersonsRequestParams, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.personSearch.url + '/' + params.query,
+          url + '/' + params.query,
           {
             headers: {
               Authorization: `${params.session.oidcTokenObject.token_type} ${params.session.oidcTokenObject.access_token}`
@@ -117,14 +117,21 @@ export class WebserviceWrapperService {
         );
       }
     },
-    rooms: {
-      buildRequest: (params: IRoomsRequestParams) => {
-        const url = {
-          free: this.config.webservices.endpoint.roomsSearch.url,
-          booked: this.config.webservices.endpoint.roomplanSearch.url
-        };
+    roomsSearch: {
+      buildRequest: (params: IRoomsRequestParams, url) => {
         return this.http.get(
-          url[params.queryType],
+          url,
+          {
+            headers: this.apiTokenHeader,
+            params: createRoomParams(params)
+          }
+        );
+      }
+    },
+    roomPlanSearch: {
+      buildRequest: (params: IRoomsRequestParams, url) => {
+        return this.http.get(
+          url,
           {
             headers: this.apiTokenHeader,
             params: createRoomParams(params)
@@ -133,7 +140,7 @@ export class WebserviceWrapperService {
       }
     },
     library: {
-      buildRequest: (requestParams: ILibraryRequestParams) => {
+      buildRequest: (requestParams: ILibraryRequestParams, url) => {
         return this.http.get(
           this.config.webservices.endpoint.library.url,
           {
@@ -150,26 +157,26 @@ export class WebserviceWrapperService {
         );
       }
     },
-    emergency: {
-      buildRequest: () => {
+    emergencyCalls: {
+      buildRequest: (params, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.emergencyCalls.url,
+          url,
           {headers: this.apiTokenHeader}
         );
       }
     },
     openingHours: {
-      buildRequest: () => {
+      buildRequest: (params, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.openingHours.url,
+          url,
           { headers: this.apiTokenHeader }
         );
       }
     },
     transport: {
-      buildRequest: (params: ITransportRequestParams) => {
+      buildRequest: (params: ITransportRequestParams, url) => {
         return this.http.get(
-          this.config.webservices.endpoint.transport.url,
+          url,
           {
             headers: this.apiTokenHeader,
             params: {
@@ -192,10 +199,14 @@ export class WebserviceWrapperService {
 
   /**
    * returns a webservice definition and sets default values for a webservice
-   * definitions attributes that are undefined
+   * definitions attributes that are undefined. If the webservice is not known,
+   * an error will the thrown.
    * @param name {string} Name of the webservice to be returned
    */
   private getDefinition(name: string) {
+    if (!this.webservices.hasOwnProperty(name)) {
+      throw new Error(`[WebserviceWrapper]: No webservice named ${name} defined`);
+    }
     const ws = this.webservices[name];
     for (const k in this.defaults) {
       if (!ws.hasOwnProperty(k)) {
@@ -219,7 +230,10 @@ export class WebserviceWrapperService {
     const ws = this.getDefinition(webserviceName);
 
     // create the request by calling the defined buildRequest function
-    const request = ws.buildRequest(params);
+    const request = ws.buildRequest(
+      params,
+      this.config.webservices.endpoint[webserviceName].url
+    );
 
     // now create a wrapping Observable around the request and attach the defined
     // callbacks to it
