@@ -68,11 +68,10 @@ export class WebserviceWrapperService {
     responseCallback: (response: any) => {
       return response;
     },
-    // by default in case of an error an empty array will be returned and a
-    // message is logged
+    // by default in case of an error the error will be passed on
     errorCallback: (error, wsName) => {
-      console.log(`[Webservice]: Error when calling ${wsName}: ${error}`);
-      return [];
+      console.log(`[WebserviceWrapper]: Error when calling ${wsName}: ${error}`);
+      return error;
     }
   };
 
@@ -254,8 +253,9 @@ export class WebserviceWrapperService {
     if (cachingOptions.cache) {
       // if desired we're caching the response. By default it is desired.
       // If options are given in cachingOptions these options will be used, otherwise:
-      // - key = name of the webservice plus base64 encoding of the used parameters
-      // - groupKey = name of the webservice plus "Group"
+      // - key = name of the webservice plus base64 encoding of the used parameters. This way
+      //         identical requests can be cached easily
+      // - groupKey = name of the webservice plus "Group", e.g. 'library' -> 'libraryGroup'
       // - ttl = ttl in config or default ttl
       return this.cache.loadFromObservable(
         cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
