@@ -244,7 +244,7 @@ export class WebserviceWrapperService {
       return this.cache.loadFromObservable(
         cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
         wrapperObservable,
-        cachingOptions.groupKey || null,
+        cachingOptions.groupKey || webserviceName + 'Group',
         cachingOptions.ttl || null
       );
     }
