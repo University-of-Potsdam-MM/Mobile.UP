@@ -12,6 +12,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { utils } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-practice',
@@ -44,7 +45,8 @@ export class PracticePage extends AbstractPage {
     private chRef: ChangeDetectorRef,
     private alert: AlertService,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ws: WebserviceWrapperService
   ) {
     super();
   }
@@ -93,18 +95,11 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   public loadData(refresher?) {
-    const headers: HttpHeaders = new HttpHeaders()
-    .append('Authorization', this.config.webservices.apiToken);
-
-    const request = this.http.get(this.config.webservices.endpoint.practiceSearch.url, {headers: headers});
-
-    if (refresher) {
-      this.cache.removeItem('practiceResponse');
-    } else {
+    if (!refresher) {
       this.isLoaded = false;
     }
 
-    this.cache.loadFromObservable('practiceResponse', request).subscribe(
+    this.ws.call('practiceSearch').subscribe(
       (response: IADSResponse) => {
         if (refresher) {
           refresher.target.complete();

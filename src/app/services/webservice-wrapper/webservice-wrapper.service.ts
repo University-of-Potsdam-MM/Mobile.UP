@@ -187,6 +187,14 @@ export class WebserviceWrapperService {
           }
         );
       }
+    },
+    practiceSearch: {
+      buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          {headers: this.apiTokenHeader}
+        );
+      }
     }
 
   };
