@@ -170,6 +170,14 @@ export class WebserviceWrapperService {
         );
       }
     },
+    libraryLKZ: {
+      buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          { params: {epn: params.epn}}
+        );
+      }
+    },
     emergencyCalls: {
       buildRequest: (params, url) => {
         return this.http.get(
