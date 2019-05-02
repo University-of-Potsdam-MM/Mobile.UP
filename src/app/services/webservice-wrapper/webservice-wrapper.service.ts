@@ -70,7 +70,7 @@ export class WebserviceWrapperService {
     },
     // by default in case of an error the error will be passed on
     errorCallback: (error, wsName) => {
-      console.log(`[WebserviceWrapper]: Error when calling ${wsName}: ${error}`);
+      console.log(`[WebserviceWrapper]: Error when calling '${wsName}': ${error}`);
       return error;
     }
   };
@@ -260,7 +260,7 @@ export class WebserviceWrapperService {
       return this.cache.loadFromObservable(
         cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
         wrapperObservable,
-        cachingOptions.groupKey || webserviceName + 'Group',
+        cachingOptions.groupKey || webserviceName + this.config.webservices.cacheGroupKeySuffix,
         cachingOptions.ttl || this.config.webservices.endpoint[webserviceName].cachingTTL || null
       );
     }
