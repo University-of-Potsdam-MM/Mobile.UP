@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Events } from '@ionic/angular';
 import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-transport',
@@ -23,9 +24,10 @@ export class TransportPage extends AbstractPage {
 
   error = null;
 
+  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+
   constructor(
-    private http: HttpClient,
-    private swipeEvent: Events
+    private http: HttpClient
   ) {
     super({ requireNetwork: true });
   }
@@ -103,23 +105,8 @@ export class TransportPage extends AbstractPage {
     });
   }
 
-
   doInfinite(infiniteScroll) {
     this.maxJourneys += 10;
     this.loadCampusMenu(false, infiniteScroll);
   }
-
-
-  swipeCampus(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        this.swipeEvent.publish('campus-swipe-to-right', this.campus);
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        this.swipeEvent.publish('campus-swipe-to-left', this.campus);
-      }
-    }
-  }
-
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Events } from '@ionic/angular';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ICampus } from '../../lib/interfaces';
 import { ConfigService } from '../../services/config/config.service';
@@ -50,8 +49,7 @@ export class CampusTabComponent implements OnInit {
   _selectedCampus: ICampus;
 
   constructor(
-    private settings: SettingsService,
-    private swipeEvent: Events
+    private settings: SettingsService
   ) {  }
 
   /**
@@ -81,7 +79,7 @@ export class CampusTabComponent implements OnInit {
    * selects the next campus if there is a next campus, otherwise does nothing
    */
   selectNextCampus() {
-    this.selectCampusByIndex(this.campusList.indexOf(this.selectedCampus) + 1);
+    this.selectCampusByIndex(this.campusList.indexOf(this._selectedCampus) + 1);
   }
 
   /**
@@ -89,28 +87,30 @@ export class CampusTabComponent implements OnInit {
    * nothing
    */
   selectPreviousCampus() {
-    this.selectCampusByIndex(this.campusList.indexOf(this.selectedCampus) - 1);
+    this.selectCampusByIndex(this.campusList.indexOf(this._selectedCampus) - 1);
+  }
+
+  /**
+   * handles swipe event that was registered on a page
+   * @param event
+   */
+  public handleSwipeEvent(event) {
+    if (Math.abs(event.deltaY) < 50) {
+      if (event.deltaX > 0) {
+        // user swiped from left to right
+        this.selectPreviousCampus();
+      } else if (event.deltaX < 0) {
+        // user swiped from right to left
+        this.selectNextCampus();
+      }
+    }
   }
 
   /**
    * initializes this component
    */
   ngOnInit() {
-    this.initSwipeEvents();
     this.initCampusTab();
-  }
-
-  /**
-   * initializes the swipe events for this component
-   */
-  initSwipeEvents() {
-    this.swipeEvent.subscribe('campus-swipe-to-right',
-      () => { this.selectNextCampus(); }
-    );
-
-    this.swipeEvent.subscribe('campus-swipe-to-left',
-      () => { this.selectPreviousCampus(); }
-    );
   }
 
   /**
@@ -123,4 +123,5 @@ export class CampusTabComponent implements OnInit {
       this.campusList.find(c =>  c.pretty_name === defaultCampusName)
     );
   }
+
 }
