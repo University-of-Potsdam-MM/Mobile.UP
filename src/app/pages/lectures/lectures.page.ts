@@ -42,8 +42,10 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   refreshLectureTree(refresher) {
-    this.isLoaded = false;
     refresher.target.complete();
+    this.query = '';
+    this.searchLecture();
+    this.isLoaded = false;
     this.cache.clearGroup('lectureScheduleGroup').finally(() => {
       this.loadLectureTree();
     });
@@ -94,19 +96,17 @@ export class LecturesPage extends AbstractPage implements OnInit {
     return result;
   }
 
-  searchLecture(event) {
-    if (this.isLoaded) {
-      this.query = event.detail.value.trim();
-      this.searchResults = [];
-      this.resultKeys = [];
+  searchLecture(event?) {
+    if (event) { this.query = event.detail.value.trim(); }
+    this.searchResults = [];
+    this.resultKeys = [];
 
-      if (this.query && this.query.length > 2) {
-        this.isSearching = true;
-        if (this.valueArray.length === 1) {
-          this.searchResults = this.getValues(this.valueArray[0]);
-        } else { this.searchResults = this.getValues(); }
-        this.isSearching = false;
-      }
+    if (this.query && this.query.length > 2) {
+      this.isSearching = true;
+      if (this.valueArray.length === 1) {
+        this.searchResults = this.getValues(this.valueArray[0]);
+      } else { this.searchResults = this.getValues(); }
+      this.isSearching = false;
     }
   }
 
