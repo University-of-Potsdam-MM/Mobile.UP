@@ -26,11 +26,11 @@
   <div *ngIf="!isSearching && searchResults.length > 0">
     <ion-item color="light">
       <ion-label>
-        Filter
+        {{ "page.lectures.filter" | translate }}
       </ion-label>
       <ion-select (ionChange)="selectFilter($event)" multiple="true" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel' | translate }}">
-        <ion-select-option value="header" selected>Verzeichnisse</ion-select-option>
-        <ion-select-option value="courses" selected>Kurse</ion-select-option>
+        <ion-select-option value="header" selected>{{ "page.lectures.directories" | translate }}</ion-select-option>
+        <ion-select-option value="courses" selected>{{ "page.lectures.courses" | translate }}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-list>
@@ -38,7 +38,7 @@
         <ion-label text-wrap>
           {{ unescapeHTML(result) }}
         </ion-label>
-        <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end">K</ion-badge>
+        <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end">{{ "page.lectures.courseBadge" | translate }}</ion-badge>
       </ion-item>
     </ion-list>
   </div>
