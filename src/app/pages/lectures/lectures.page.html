@@ -31,8 +31,8 @@
     </ion-item>
     <ion-list>
       <ion-item *ngFor="let result of searchResults; let i = index" (click)="openItem(i)">
-        <ion-label>
-          {{ result }}
+        <ion-label text-wrap>
+          {{ unescapeHTML(result) }}
         </ion-label>
         <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end">K</ion-badge>
       </ion-item>

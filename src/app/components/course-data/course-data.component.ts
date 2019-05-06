@@ -20,7 +20,6 @@ export class CourseDataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.course);
     this.getCourseData(this.course.courseId);
   }
 

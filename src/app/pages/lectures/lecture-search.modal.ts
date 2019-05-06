@@ -10,8 +10,11 @@ export class LectureSearchModalPage implements OnInit {
     @Input() item;
     @Input() isCourse;
     @Input() name;
+    @Input() itemTree;
     hasSubTree;
     headerId;
+
+    showItemTreePath = false;
 
     constructor(
         private modalCtrl: ModalController
@@ -30,5 +33,9 @@ export class LectureSearchModalPage implements OnInit {
 
     closeModal() {
         this.modalCtrl.dismiss();
+    }
+
+    unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
+        return s.replace(/&colon;/g, ':');
     }
 }

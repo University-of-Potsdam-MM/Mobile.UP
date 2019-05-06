@@ -152,6 +152,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     const pathKeys = utils.convertToArray(ref.split('.'));
 
     let toOpen = this.allLectures;
+    const itemTree = [];
     for (let i = 0; i < pathKeys.length - 1; i++) {
       // getting course or directory
       if (i > (pathKeys.length - 3)) {
@@ -162,12 +163,27 @@ export class LecturesPage extends AbstractPage implements OnInit {
       } else {
         toOpen = toOpen[pathKeys[i]];
       }
+
+      if (!Array.isArray(toOpen)) {
+        let treeItemName;
+        if (toOpen.courseName) {
+          treeItemName = toOpen.courseName;
+        } else if (toOpen.headerName) {
+          treeItemName = toOpen.headerName;
+        } else if (toOpen.childNode && toOpen.childNode.headerName) {
+          treeItemName = toOpen.childNode.headerName;
+        }
+
+        if (treeItemName && treeItemName !==  'Vorlesungsverzeichnis' && !utils.isInArray(itemTree, treeItemName)) {
+          itemTree.push(this.unescapeHTML(treeItemName));
+        }
+      }
     }
 
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: LectureSearchModalPage,
-      componentProps: { item: toOpen, isCourse: isCourse, name: name }
+      componentProps: { item: toOpen, isCourse: isCourse, name: name, itemTree: itemTree }
     });
     modal.present();
     this.modalOpen = true;
@@ -198,4 +214,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     }
   }
 
+  unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
+    return s.replace(/&colon;/g, ':');
+  }
 }
