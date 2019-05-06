@@ -307,7 +307,7 @@ export class WebserviceWrapperService {
             observer.complete();
           },
           error => {
-            observer.error(ws.errorCallback(error));
+            observer.error(ws.errorCallback(error, webserviceName));
           }
         );
       }

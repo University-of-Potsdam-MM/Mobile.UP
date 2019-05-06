@@ -28,7 +28,7 @@ export interface IWebservice {
    * because that is something that can easily be checked.
    * @param error
    */
-  errorCallback?: (error: any) => any;
+  errorCallback?: (error: any, name: string) => any;
 }
 
 export interface ICachingOptions {
