@@ -41,16 +41,18 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.loadLectureTree();
   }
 
-  loadLectureTree(refresher?) {
-    if (refresher) {
-      this.cache.removeItem('lectureScheduleAll');
-    } else { this.isLoaded = false; }
+  refreshLectureTree(refresher) {
+    this.isLoaded = false;
+    refresher.target.complete();
+    this.cache.clearGroup('lectureScheduleGroup').finally(() => {
+      this.loadLectureTree();
+    });
+  }
+
+  loadLectureTree() {
+    this.isLoaded = false;
 
     this.puls.getLectureScheduleAll().subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
-      if (refresher) {
-        refresher.target.complete();
-      }
-
       this.allLectures = response;
       this.lectures = this.allLectures;
       this.flattenedLectures = this.flattenJSON(response, '', {});

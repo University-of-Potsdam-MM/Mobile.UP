@@ -64,7 +64,7 @@ export class PulsService {
     const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
       ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleRoot', request, {headers: this.headers});
 
-    this.cache.loadFromObservable('getLectureScheduleRoot', httpRequest).subscribe(
+    this.cache.loadFromObservable('getLectureScheduleRoot', httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         rs.next(response);
       }
@@ -86,7 +86,7 @@ export class PulsService {
     const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleSubTree>(
       ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleSubTree', request, {headers: this.headers});
 
-    this.cache.loadFromObservable('getLectureScheduleSubTree' + headerId, httpRequest).subscribe(
+    this.cache.loadFromObservable('getLectureScheduleSubTree' + headerId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         rs.next(response);
       }
@@ -107,7 +107,7 @@ export class PulsService {
     const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleCourses>(
       ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleCourses', request, {headers: this.headers});
 
-    this.cache.loadFromObservable('getLectureScheduleCourses' + headerId, httpRequest).subscribe(
+    this.cache.loadFromObservable('getLectureScheduleCourses' + headerId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleCourses) => {
         rs.next(response);
       }
@@ -128,7 +128,7 @@ export class PulsService {
     const httpRequest = this.http.post<IPulsAPIResponse_getCourseData>(
       ConfigService.config.webservices.endpoint.puls + 'getCourseData', request, {headers: this.headers});
 
-    this.cache.loadFromObservable('getCourseData' + courseId, httpRequest).subscribe(
+    this.cache.loadFromObservable('getCourseData' + courseId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getCourseData) => {
         rs.next(response);
       }
@@ -288,7 +288,8 @@ export class PulsService {
       {headers: headers}
     );
 
-    this.cache.loadFromObservable('getLectureScheduleAll', httpRequest).subscribe(
+    const ttl = 604800; // 1 week in seconds
+    this.cache.loadFromObservable('getLectureScheduleAll', httpRequest, 'lectureScheduleGroup', ttl).subscribe(
       (response: IPulsAPIResponse_getLectureScheduleAll) => {
         // PULS simply responds with "no user rights" if credentials are incorrect (?)
         if (response.message === 'no user rights') {

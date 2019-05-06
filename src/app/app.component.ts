@@ -53,7 +53,7 @@ export class AppComponent {
       this.initTranslate();
       this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(60 * 60 * 2);
+      this.cache.setDefaultTTL(60 * 60 * 24); // 24 hour caching
       this.cache.setOfflineInvalidate(false);
 
       this.events.subscribe('userLogin', () => {
