@@ -5,7 +5,10 @@
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar
+    <div align="center" *ngIf="!isLoaded || isSearching">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
+    <ion-searchbar *ngIf="!(!isLoaded || isSearching)"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLecture($event)"
     debounce="750">
@@ -15,9 +18,6 @@
 
 <ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'" no-padding>
   <app-lecture-list *ngIf="searchResults.length === 0 && query.length === 0"></app-lecture-list>
-  <div align="center" *ngIf="!isLoaded || isSearching" padding>
-    <ion-spinner name="dots"></ion-spinner>
-  </div>
 
   <div *ngIf="!isSearching && searchResults.length > 0">
     <ion-item color="light">
