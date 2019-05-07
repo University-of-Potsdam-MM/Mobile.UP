@@ -44,8 +44,7 @@ function createRoomParams(params: IRoomsRequestParams) {
  * - errorCallback: This function can optionally be defined to handle an error
  *   individually.
  *   By default (see {@link defaults}) the error is simply logged to console and
- *   an empty array is returned. In case other behaviour is desired you can define
- *   this function as you like it.
+ *   passed on.
  */
 @Injectable({
   providedIn: 'root'
