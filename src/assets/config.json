@@ -223,7 +223,7 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/lkzAPI/epn2lkz.php"
       },
       "pulsGetLectureScheduleRoot": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/pulsGetLectureScheduleRoot"
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot"
       },
       "pulsGetLectureScheduleSubTree": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleSubTree"

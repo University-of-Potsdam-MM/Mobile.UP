@@ -12,6 +12,9 @@ import {
   IRoomsRequestParams, ITransportRequestParams,
   IWebservice
 } from './webservice-definition-interfaces';
+import {IPulsAPIResponse_getLectureScheduleRoot, IPulsAPIResponse_getPersonalStudyAreas} from '../../lib/interfaces_PULS';
+import {ISession} from '../login-provider/interfaces';
+import {AlertService} from '../alert/alert.service';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -57,6 +60,11 @@ export class WebserviceWrapperService {
    * oftenly used header, can be used in buildRequest functions
    */
   private apiTokenHeader = {Authorization: this.config.webservices.apiToken};
+
+  private pulsHeaders = {
+    'Content-Type': 'application/json',
+    'Authorization': this.config.webservices.apiToken
+  };
 
   /**
    * default values for webservice definitions. Will be assigned in {@link getDefinition}
@@ -249,12 +257,95 @@ export class WebserviceWrapperService {
           }
         );
       }
-    }
+    },
+    pulsGetLectureScheduleRoot: {
+      buildRequest: (params, url) => {
+        return this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
+          url,
+          {condition: {semester: 0}},
+          {headers: this.pulsHeaders}
+        );
+      }
+    },
+    pulsGetLectureScheduleSubTree: {
+      buildRequest: (headerId, url) => {
+        return this.http.post(
+          url,
+          {condition: {headerId: headerId}},
+          {headers: this.pulsHeaders}
+        );
+      }
+    },
+    pulsGetLectureScheduleCourses: {
+      buildRequest: (headerId, url) => {
+        return this.http.post(
+          url,
+          {condition: {headerId: headerId}},
+          {headers: this.pulsHeaders}
+        );
+      }
+    },
+    pulsGetCourseData: {
+      buildRequest: (courseId, url) => {
+        return this.http.post(
+          url,
+          {condition: {courseId: courseId}},
+          {headers: this.pulsHeaders}
+        );
+      }
+    },
+    pulsGetPersonalStudyAreas: {
+      buildRequest: (session: ISession, url) => {
+        return this.http.post(
+          url,
+        {'user-auth': {
+            username: session.credentials.username,
+            password: session.credentials.password
+          }},
+          {headers: this.pulsHeaders}
+        );
+      },
+      responseCallback: (response: IPulsAPIResponse_getPersonalStudyAreas) => {
+        // PULS simply responds with "no user rights" if credentials are incorrect
+        if (response.message === 'no user rights') {
+
+          // we're having a contradiction here, the password is wrong, but
+          // the token is still valid  so we're having
+          // case #81 here. We'll log the user out and send the
+          // user to LoginPage
+
+          // this does not necessarily mean that the password is wrong
+          // the elistest account f.e. just does not support the grades / timetable functions
+          // should not log out
+          // this.puls.handleSpecialCase();
+
+          this.alertService.showAlert({
+            alertTitleI18nKey: 'alert.title.error',
+            messageI18nKey: 'alert.token_valid_credentials_invalid',
+          });
+          return response;
+        } else {
+          return response;
+        }
+      }
+    },
+    pulsGetAcademicAchievements: {
+      buildRequest: (params, url) => {
+
+      }
+    },
+    pulsGetStudentCourses: {
+      buildRequest: (params, url) => {
+
+      }
+    },
+
 
   };
 
   constructor(private http: HttpClient,
               private cache: CacheService,
+              private alertService: AlertService,
               private session: UserSessionService) {}
 
 
