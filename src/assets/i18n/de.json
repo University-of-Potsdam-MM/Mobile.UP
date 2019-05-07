@@ -130,7 +130,8 @@
       "filter": "Filter",
       "directories": "Verzeichnisse",
       "courses": "Kurse",
-      "courseBadge": "K"
+      "courseBadge": "Kurs",
+      "preparingSearch": "Suche wird vorbereitet"
     },
     "timetable": {
       "title": "Stundenplan",

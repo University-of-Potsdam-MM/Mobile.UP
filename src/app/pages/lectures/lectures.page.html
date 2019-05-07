@@ -5,9 +5,12 @@
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <div align="center" *ngIf="!isLoaded || isSearching">
-      <ion-spinner name="dots"></ion-spinner>
-    </div>
+    <ion-item align="center" *ngIf="!isLoaded || isSearching" lines="none" class="searchPrepareItem">
+      <ion-label>
+        {{ "page.lectures.preparingSearch" | translate }}
+      </ion-label>
+      <ion-spinner name="dots" slot="end"></ion-spinner>
+    </ion-item>
     <ion-searchbar *ngIf="!(!isLoaded || isSearching)"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLecture($event)"

@@ -130,7 +130,8 @@
       "filter": "Filter",
       "directories": "Directories",
       "courses": "Courses",
-      "courseBadge": "C"
+      "courseBadge": "Course",
+      "preparingSearch": "Preparing search"
     },
     "timetable": {
       "title": "Timetable",
