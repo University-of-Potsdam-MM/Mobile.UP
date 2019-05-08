@@ -12,8 +12,7 @@ import {
   IRoomsRequestParams, ITransportRequestParams,
   IWebservice
 } from './webservice-definition-interfaces';
-import {IPulsAPIResponse_getLectureScheduleRoot, IPulsAPIResponse_getPersonalStudyAreas} from '../../lib/interfaces_PULS';
-import {ISession} from '../login-provider/interfaces';
+import {IPulsAPIResponse_getLectureScheduleRoot} from '../../lib/interfaces_PULS';
 import {AlertService} from '../alert/alert.service';
 
 /**
