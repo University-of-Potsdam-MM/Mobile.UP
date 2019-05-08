@@ -36,21 +36,21 @@ export class LectureListComponent implements OnInit {
 
     if (!this.headerId) {
       this.ws.call(
-        'getLectureScheduleRoot'
+        'pulsGetLectureScheduleRoot'
       ).subscribe(
         (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
       });
     } else if (this.hasSubTree) {
       this.ws.call(
-        'getLectureScheduleSubTree',
+        'pulsGetLectureScheduleSubTree',
         {headerId: this.headerId}
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
       });
     } else {
       this.ws.call(
-        'getLectureScheduleCourses',
+        'pulsGetLectureScheduleCourses',
         {headerId: this.headerId}
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;

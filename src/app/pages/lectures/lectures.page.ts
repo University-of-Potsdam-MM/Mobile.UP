@@ -55,7 +55,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.isLoaded = false;
 
     this.ws.call(
-      'getLectureScheduleAll'
+      'pulsGetLectureScheduleAll'
     ).subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       this.allLectures = response;
       this.lectures = this.allLectures;

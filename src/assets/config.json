@@ -244,6 +244,9 @@
       "pulsGetStudentCourses": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getStudentCourses"
       },
+      "pulsGetAcademicAchievements": {
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getAcademicAchievements"
+      },
       "maps": {
         "url": "https://apiup.uni-potsdam.de/endpoints/mapsAPI"
       },

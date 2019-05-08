@@ -423,6 +423,14 @@ export class WebserviceWrapperService {
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
 
+    if (!this.config.webservices.endpoint.hasOwnProperty(webserviceName)) {
+      throw new Error(`[WebserviceWrapper]: No endpoint defined for '${webserviceName}'`);
+    }
+
+    if (!this.config.webservices.endpoint[webserviceName].hasOwnProperty('url')) {
+      throw new Error(`[WebserviceWrapper]: No url defined for endpoint '${webserviceName}'`);
+    }
+
     // create the request by calling the defined buildRequest function
     const request = ws.buildRequest(
       params,
