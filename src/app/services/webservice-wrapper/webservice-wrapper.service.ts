@@ -52,12 +52,11 @@ function createRoomParams(params: IRoomsRequestParams) {
  *
  * Usage example:
  *
- * this.webserviceWrapper.call('maps').subscribe( ... )
- *
- * or
- *
- * this.webserviceWrapper.call('mensa', {campus_canteen_name: 'NeuesPalais'}).subscribe( ... )
- *
+ * @example
+ * // without parameters
+ * this.webserviceWrapper.call('maps').subscribe()
+ * // with parameters
+ * this.webserviceWrapper.call('mensa', {campus_canteen_name: 'NeuesPalais'}).subscribe()
  */
 @Injectable({
   providedIn: 'root'
