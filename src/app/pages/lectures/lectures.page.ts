@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CacheService } from 'ionic-cache';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
 import { ModalController, Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-lectures',
@@ -17,7 +17,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   constructor(
     private cache: CacheService,
-    private puls: PulsService,
+    private ws: WebserviceWrapperService,
     private modalCtrl: ModalController,
     private platform: Platform,
     private keyboard: Keyboard
@@ -54,7 +54,9 @@ export class LecturesPage extends AbstractPage implements OnInit {
   loadLectureTree() {
     this.isLoaded = false;
 
-    this.puls.getLectureScheduleAll().subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
+    this.ws.call(
+      'getLectureScheduleAll'
+    ).subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       this.allLectures = response;
       this.lectures = this.allLectures;
       this.flattenedLectures = this.flattenJSON(response, '', {});

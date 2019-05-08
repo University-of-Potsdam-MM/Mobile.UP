@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CacheService } from 'ionic-cache';
 import { IConfig } from 'src/app/lib/interfaces';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-grades',
@@ -27,7 +27,7 @@ export class GradesPage extends AbstractPage {
   isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
 
   constructor(
-    private puls: PulsService,
+    private ws: WebserviceWrapperService,
     private cache: CacheService
   ) {
     super({ requireNetwork: true, requireSession: true });
@@ -82,7 +82,10 @@ export class GradesPage extends AbstractPage {
       this.cache.removeItem('getAcademicAchievements' + stgnr);
     } else { this.loadingGrades = true; }
 
-    this.puls.getAcademicAchievements(this.session, semester, mtknr, stgnr).subscribe(
+    this.ws.call(
+      'getAcademicAchievements',
+      {session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr}
+    ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
         this.studentGrades = resGrades;
@@ -128,7 +131,10 @@ export class GradesPage extends AbstractPage {
       console.log(this.session);
     }
 
-    this.puls.getPersonalStudyAreas(this.session).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
+    this.ws.call(
+      'getPersonalStudyAreas',
+      {session: this.session}
+    ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
           this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
