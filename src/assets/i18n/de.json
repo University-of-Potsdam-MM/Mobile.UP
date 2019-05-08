@@ -126,7 +126,12 @@
       "room": "Raum",
       "lecturer": "Lehrperson",
       "noCourses": "Keine Kurse verfügbar.",
-      "annotation": "Bemerkung"
+      "annotation": "Bemerkung",
+      "filter": "Filter",
+      "directories": "Verzeichnisse",
+      "courses": "Kurse",
+      "courseBadge": "Kurs",
+      "preparingSearch": "Suche wird vorbereitet"
     },
     "timetable": {
       "title": "Stundenplan",
