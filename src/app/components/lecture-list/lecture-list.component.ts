@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
   IPulsAPIResponse_getLectureScheduleCourses } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-lecture-list',
@@ -23,7 +23,7 @@ export class LectureListComponent implements OnInit {
   isExpandedCourse = [];
 
   constructor(
-    private puls: PulsService
+    private ws: WebserviceWrapperService
   ) { }
 
   ngOnInit() {
@@ -35,15 +35,24 @@ export class LectureListComponent implements OnInit {
     }
 
     if (!this.headerId) {
-      this.puls.getLectureScheduleRoot().subscribe((response: IPulsAPIResponse_getLectureScheduleRoot) => {
+      this.ws.call(
+        'getLectureScheduleRoot'
+      ).subscribe(
+        (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
       });
     } else if (this.hasSubTree) {
-      this.puls.getLectureScheduleSubTree(this.headerId).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
+      this.ws.call(
+        'getLectureScheduleSubTree',
+        {headerId: this.headerId}
+      ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
       });
     } else {
-      this.puls.getLectureScheduleCourses(this.headerId).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
+      this.ws.call(
+        'getLectureScheduleCourses',
+        {headerId: this.headerId}
+      ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;
       });
     }
