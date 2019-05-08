@@ -82,23 +82,6 @@ export class WebserviceWrapperService {
     }
   };
 
-  pulsResponseCallback(response) {
-    // PULS simply responds with "no user rights" if credentials are incorrect
-    if (response.message === 'no user rights') {
-      // we're having a contradiction here, the password is wrong, but
-      // the token is still valid. We'll log the user out and send the
-      // user to LoginPage
-      this.alertService.showAlert({
-        alertTitleI18nKey: 'alert.title.error',
-        messageI18nKey: 'alert.token_valid_credentials_invalid',
-      });
-
-      return response;
-    } else {
-      return response;
-    }
-  }
-
   /**
    * Definition of the webservices that can be used in this application.
    *
@@ -390,6 +373,23 @@ export class WebserviceWrapperService {
               private alertService: AlertService,
               private session: UserSessionService) {}
 
+
+  pulsResponseCallback(response) {
+    // PULS simply responds with "no user rights" if credentials are incorrect
+    if (response.message === 'no user rights') {
+      // we're having a contradiction here, the password is wrong, but
+      // the token is still valid. We'll log the user out and send the
+      // user to LoginPage
+      this.alertService.showAlert({
+        alertTitleI18nKey: 'alert.title.error',
+        messageI18nKey: 'alert.token_valid_credentials_invalid',
+      });
+
+      return response;
+    } else {
+      return response;
+    }
+  }
 
   /**
    * returns a webservice definition and sets default values for a webservice
