@@ -14,6 +14,8 @@ import {
 } from './webservice-definition-interfaces';
 import {IPulsAPIResponse_getLectureScheduleRoot} from '../../lib/interfaces_PULS';
 import {AlertService} from '../alert/alert.service';
+import {utils} from '../../lib/util';
+import isEmptyObject = utils.isEmptyObject;
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -460,7 +462,7 @@ export class WebserviceWrapperService {
       // - groupKey = name of the webservice plus "Group", e.g. 'library' -> 'libraryGroup'
       // - ttl = ttl in config or default ttl
       return this.cache.loadFromObservable(
-        cachingOptions.key || webserviceName + (cachingOptions ? ':' + btoa(JSON.stringify(params)) : ''),
+        cachingOptions.key || webserviceName + (isEmptyObject(params) ? '' : (':' + btoa(JSON.stringify(params)))),
         wrapperObservable,
         cachingOptions.groupKey || webserviceName + this.config.webservices.cacheGroupKeySuffix,
         cachingOptions.ttl || this.config.webservices.endpoint[webserviceName].cachingTTL || null
