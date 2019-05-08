@@ -1,19 +1,26 @@
 {
   "appVersion": "6.2.2",
   "modules": {
-    "person-search": {
-      "componentName": "person-search",
-      "icon": "people",
+    "app-info": {
+      "componentName": "app-info",
+      "icon": "info",
+      "selected": "false",
+      "hide": true
+    },
+    "athletics": {
+      "componentName": "athletics",
+      "icon": "american-football",
+      "selected": false,
+      "url": "https://www.uni-potsdam.de/hochschulsport/"
+    },
+    "campus-map": {
+      "componentName": "campus-map",
+      "icon": "map",
       "selected": false
     },
-    "news": {
-      "componentName": "news",
-      "icon": "paper",
-      "selected": false
-    },
-    "opening-hours": {
-      "componentName": "opening-hours",
-      "icon": "time",
+    "emergency": {
+      "componentName": "emergency",
+      "icon": "pulse",
       "selected": false
     },
     "events": {
@@ -22,25 +29,31 @@
       "selected": false,
       "hide": true
     },
-    "free-rooms": {
-      "componentName": "free-rooms",
-      "icon": "square-outline",
-      "selected": false
-    },
     "feedback": {
       "componentName": "feedback",
       "icon": "send",
       "selected": false
     },
-    "roomplan": {
-      "componentName": "roomplan",
-      "icon": "grid",
+    "free-rooms": {
+      "componentName": "free-rooms",
+      "icon": "square-outline",
       "selected": false
     },
-    "mensa": {
-      "componentName": "mensa",
-      "icon": "restaurant",
-      "selected": true
+    "grades": {
+      "componentName": "grades",
+      "icon": "book",
+      "selected": false
+    },
+    "impressum": {
+      "componentName": "impressum",
+      "icon": "information-circle",
+      "selected": false,
+      "hide": true
+    },
+    "lectures": {
+      "componentName": "lectures",
+      "icon": "bookmarks",
+      "selected": false
     },
     "library-account": {
       "componentName": "library-account",
@@ -51,87 +64,6 @@
       "componentName": "library-search",
       "icon": "bookmark",
       "selected": false
-    },
-    "practice": {
-      "componentName": "practice",
-      "icon": "briefcase",
-      "selected": false
-    },
-    "grades": {
-      "componentName": "grades",
-      "icon": "book",
-      "selected": false
-    },
-    "emergency": {
-      "componentName": "emergency",
-      "icon": "pulse",
-      "selected": false
-    },
-    "impressum": {
-      "componentName": "impressum",
-      "icon": "information-circle",
-      "selected": false,
-      "hide": true
-    },
-    "athletics": {
-      "componentName": "athletics",
-      "icon": "american-football",
-      "selected": false,
-      "url": "https://www.uni-potsdam.de/hochschulsport/"
-    },
-    "unishop": {
-      "componentName": "unishop",
-      "icon": "pricetags",
-      "selected": false,
-      "url": "https://www.unishop-potsdam.de/de/"
-    },
-    "mail": {
-      "componentName": "mail",
-      "icon": "mail",
-      "selected": true,
-      "url": "https://mailup.uni-potsdam.de/"
-    },
-    "reflectUP": {
-      "componentName": "reflectUP",
-      "customIcon": "./assets/icon/reflect.svg",
-      "selected": false,
-      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
-      "appId": "reflectup://",
-      "urlAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
-      "urlIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
-      "bundleName": "de.unipotsdam.reflectup"
-    },
-    "moodle": {
-      "componentName": "moodle",
-      "customIcon": "./assets/icon/moodle.svg",
-      "selected": false,
-      "url": "https://moodle2.uni-potsdam.de/",
-      "appId": "moodlemobile://",
-      "urlAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
-      "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
-      "bundleName": "com.moodle.moodlemobile"
-    },
-    "lectures": {
-      "componentName": "lectures",
-      "icon": "bookmarks",
-      "selected": false
-    },
-    "settings": {
-      "componentName": "settings",
-      "icon": "settings",
-      "selected": false,
-      "hide": true
-    },
-    "timetable": {
-      "componentName": "timetable",
-      "icon": "calendar",
-      "selected": true
-    },
-    "app-info": {
-      "componentName": "app-info",
-      "icon": "info",
-      "selected": "false",
-      "hide": true
     },
     "login": {
       "componentName": "login",
@@ -145,15 +77,83 @@
       "selected": false,
       "hide": true
     },
+    "mail": {
+      "componentName": "mail",
+      "icon": "mail",
+      "selected": true,
+      "url": "https://mailup.uni-potsdam.de/"
+    },
+    "mensa": {
+      "componentName": "mensa",
+      "icon": "restaurant",
+      "selected": true
+    },
+    "moodle": {
+      "componentName": "moodle",
+      "customIcon": "./assets/icon/moodle.svg",
+      "selected": false,
+      "url": "https://moodle2.uni-potsdam.de/",
+      "appId": "moodlemobile://",
+      "urlAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
+      "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+      "bundleName": "com.moodle.moodlemobile"
+    },
+    "news": {
+      "componentName": "news",
+      "icon": "paper",
+      "selected": false
+    },
+    "opening-hours": {
+      "componentName": "opening-hours",
+      "icon": "time",
+      "selected": false
+    },
+    "person-search": {
+      "componentName": "person-search",
+      "icon": "people",
+      "selected": false
+    },
+    "practice": {
+      "componentName": "practice",
+      "icon": "briefcase",
+      "selected": false
+    },
+    "reflectUP": {
+      "componentName": "reflectUP",
+      "customIcon": "./assets/icon/reflect.svg",
+      "selected": false,
+      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
+      "appId": "reflectup://",
+      "urlAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
+      "urlIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
+      "bundleName": "de.unipotsdam.reflectup"
+    },
+    "roomplan": {
+      "componentName": "roomplan",
+      "icon": "grid",
+      "selected": false
+    },
+    "settings": {
+      "componentName": "settings",
+      "icon": "settings",
+      "selected": false,
+      "hide": true
+    },
+    "timetable": {
+      "componentName": "timetable",
+      "icon": "calendar",
+      "selected": true
+    },
     "transport": {
       "componentName": "transport",
       "icon": "train",
       "selected": false
     },
-    "campus-map": {
-      "componentName": "campus-map",
-      "icon": "map",
-      "selected": false
+    "unishop": {
+      "componentName": "unishop",
+      "icon": "pricetags",
+      "selected": false,
+      "url": "https://www.unishop-potsdam.de/de/"
     }
   },
   "authorization": {

@@ -1,92 +1,52 @@
 {
   "appName": "Mobile.UP",
   "page": {
-    "home": {
-      "title": "Startseite"
+    "app-info": {
+      "title": "Info",
+      "platform": "Plattform",
+      "uuid": "Benutzer-ID",
+      "manufacturer": "Geräte-Hersteller",
+      "model": "Geräte-Modell",
+      "version": "Version",
+      "appVersion": "App-Version",
+      "buildNumber": "Build-Nr.",
+      "app": "Applikation",
+      "device": "Gerät",
+      "contact": "Ansprechpartner",
+      "participate": "Mitmachen",
+      "libraries": "Bibliotheken & Lizenzen"
     },
-    "impressum":{
-      "title": "Rechtliches",
-      "listHeader": "Impressum & Rechtliches"
+    "athletics":{
+      "title":"Hochschulsport"
     },
-    "legalNotice": {
-      "title": "Impressum"
-    },
-    "privacyPolicy": {
-      "title": "Datenschutzbedingungen"
-    },
-    "termsOfUse": {
-      "title": "Nutzungsbedingungen"
-    },
-    "login":{
-      "title":"Login",
-      "loginInProgress": "Login läuft...",
-      "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
-      "notLoggedIn": "Sind sind nicht eingeloggt.",
-      "loginError": {
-        "0": "Benutzername und Passwort stimmen nicht überein.",
-        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
-        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
-        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
-        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
+    "campus-map": {
+      "campus": {
+        "neuespalais": "Neues Palais",
+        "golm": "Golm",
+        "griebnitzsee": "Griebnitzsee"
+      },
+      "title": "Lageplan",
+      "placeholder_search": "Suche",
+      "cancel": "Suche abbrechen",
+      "no_results": "Keine Ergebnisse gefunden",
+      "select_categories": "Kategorien zum Anzeigen wählen",
+      "enable_geolocation": "Standort anzeigen",
+      "disable_geolocation": "Standort nicht mehr anzeigen",
+      "here_is_multiple": "Hier befinden sich",
+      "here_is_single": "Hier befindet sich",
+      "no_description": "Keine Beschreibung vorhanden",
+      "category": {
+        "associateinstitutes": "An-Institute",
+        "institutes": "Institute",
+        "canteens": "Mensas",
+        "parking": "Parkplätze",
+        "student": "Studentisches",
+        "terminals": "Service-Stationen",
+        "sport": "Sport"
       }
-    },
-    "logout": {
-      "title": "Logout",
-      "text": "Sie sind dabei sich abzumelden.",
-      "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
     "emergency": {
       "title": "Notrufnummern"
-    },
-    "person-search": {
-      "title": "Personensuche"
-    },
-    "practice": {
-      "title": "Ab in die Praxis",
-      "item": {
-        "contact": "Ansprechperson:",
-        "foreign": "Ausland",
-        "partner": "Partner",
-        "language": "Sprache",
-        "familyfriendly": "Familienfreundlich",
-        "student": "Job für Studierende",
-        "graduate": "Job für Absolventen",
-        "thesis": "Abschlussarbeit",
-        "praktika": "Praktika",
-        "firm": "Firma",
-        "art": "Art",
-        "field": "Studienrichtung",
-        "pubDate": "veröffentlicht am",
-        "jobPosting": "Stellenausschreibung"
-
-      },
-      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
-    },
-    "grades": {
-      "title": "Meine Leistungen",
-      "bezeichnung": "Bezeichnung",
-      "note": "Note",
-      "pv": "PV",
-      "lp": "LP",
-      "studienleistung": "Studienleistung",
-      "examiner": "Prüfer",
-      "study": "Studium"
-    },
-    "library-search": {
-      "title": "Bibliothekssuche",
-      "titleDetail": "Detailansicht",
-      "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
-      "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
-      "bookSet": "Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.",
-      "location": "Standort",
-      "details": "Details",
-      "keywords": "Schlagwörter",
-      "annotations": "Anmerkungen",
-      "serie": "Serie",
-      "extent": "Umfang",
-      "noDetails": "Keine weiteren Details verfügbar.",
-      "allResults": "Liste aller Ergebnisse",
-      "toc": "Inhaltsverzeichnis"
     },
     "events":{
       "title":"Events",
@@ -100,8 +60,35 @@
       "address": "Adresse",
       "description": "Beschreibung"
     },
-    "moodle": {
-      "title": "Moodle.UP"
+    "feedback": {
+      "title": "Feedback",
+      "rating": "Was hältst du von Mobile.UP?",
+      "feedback": "Was willst du uns mitteilen?",
+      "thoughts": "Deine Meinung... (optional)",
+      "recommendation": "Wie wahrscheinlich würdest du Mobile.UP deinen Freunden oder Kollegen empfehlen?",
+      "anonymous": "Anonym übermitteln"
+    },
+    "free-rooms": {
+      "title": "Freie Räume",
+      "time": "Uhrzeit",
+      "no_rooms_hintText": "Es wurden keine freien Räume gefunden."
+    },
+    "grades": {
+      "title": "Meine Leistungen",
+      "bezeichnung": "Bezeichnung",
+      "note": "Note",
+      "pv": "PV",
+      "lp": "LP",
+      "studienleistung": "Studienleistung",
+      "examiner": "Prüfer",
+      "study": "Studium"
+    },
+    "home": {
+      "title": "Startseite"
+    },
+    "impressum":{
+      "title": "Rechtliches",
+      "listHeader": "Impressum & Rechtliches"
     },
     "lectures": {
       "title": "Vorlesungsverzeichnis",
@@ -128,46 +115,113 @@
       "noCourses": "Keine Kurse verfügbar.",
       "annotation": "Bemerkung"
     },
-    "timetable": {
-      "title": "Stundenplan",
-      "courseInformation": "Kursinformation",
-      "until": "",
-      "today": "Heute",
-      "month": "Monat",
-      "week": "Woche",
-      "comment": "Kommentar",
-      "day": "Tag",
-      "oclock": "Uhr",
-      "time": "Uhrzeit",
-      "period": "Zeitraum",
-      "location": "Ort",
-      "building": "Gebäude",
-      "room": "Raum",
-      "rhythm": "Rhythmus",
-      "lecturer": "Dozent"
+    "legalNotice": {
+      "title": "Impressum"
+    },
+    "library-account": {
+      "title": "UB-Benutzerkonto"
+    },
+    "library-search": {
+      "title": "Bibliothekssuche",
+      "titleDetail": "Detailansicht",
+      "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
+      "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
+      "bookSet": "Hierbei handelt es sich um einen übergeordneten Titel. Bitte recherchieren Sie nach Teilbänden.",
+      "location": "Standort",
+      "details": "Details",
+      "keywords": "Schlagwörter",
+      "annotations": "Anmerkungen",
+      "serie": "Serie",
+      "extent": "Umfang",
+      "noDetails": "Keine weiteren Details verfügbar.",
+      "allResults": "Liste aller Ergebnisse",
+      "toc": "Inhaltsverzeichnis"
+    },
+    "login": {
+      "title":"Login",
+      "loginInProgress": "Login läuft...",
+      "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
+      "notLoggedIn": "Sind sind nicht eingeloggt.",
+      "loginError": {
+        "0": "Benutzername und Passwort stimmen nicht überein.",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
+      }
+    },
+    "logout": {
+      "title": "Logout",
+      "text": "Sie sind dabei sich abzumelden.",
+      "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
     "mail": {
       "title": "Mail.UP"
+    },
+    "mensa":{
+      "title": "Mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm",
+      "students": "Studierende",
+      "date": "Datum",
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarisch",
+      "guests": "Gäste",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
+    },
+    "moodle": {
+      "title": "Moodle.UP"
     },
     "news": {
       "title": "Neuigkeiten",
       "articlePublished": "Veröffentlicht"
     },
-    "tipps": {
-      "title": "Tipps & Tricks"
+    "opening-hours":{
+      "title":"Öffnungszeiten",
+      "time": " Uhr",
+      "open": "geöffnet",
+      "opens": "öffnet ",
+      "closed": "geschlossen",
+      "closes": "schließt ",
+      "comment": "Kommentar",
+      "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
     },
-    "transport": {
-      "title": "Nahverkehr",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
-      "journeys": "Fahrten ab",
-      "track": "Gleis",
-      "cancelled": "Fällt aus"
+    "person-search": {
+      "title": "Personensuche"
+    },
+    "practice": {
+      "title": "Ab in die Praxis",
+      "item": {
+        "contact": "Ansprechperson:",
+        "foreign": "Ausland",
+        "partner": "Partner",
+        "language": "Sprache",
+        "familyfriendly": "Familienfreundlich",
+        "student": "Job für Studierende",
+        "graduate": "Job für Absolventen",
+        "thesis": "Abschlussarbeit",
+        "praktika": "Praktika",
+        "firm": "Firma",
+        "art": "Art",
+        "field": "Studienrichtung",
+        "pubDate": "veröffentlicht am",
+        "jobPosting": "Stellenausschreibung"
+      },
+      "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
+    },
+    "privacyPolicy": {
+      "title": "Datenschutzbedingungen"
     },
     "reflectUP": {
       "title": "Reflect.UP"
     },
-    "sports": {
-      "title": "Hochschulsport"
+    "roomplan": {
+      "title": "Raumplan",
+      "no_house": "Das gewählte Haus ist heute gantägig frei.",
+      "no_room": "Der gewählte Raum ist heute ganztägig frei.",
+      "date": "Datum",
+      "no_rooms_hintText": "Für diesen Tag ist kein Raumplan vorhanden."
     },
     "settings": {
       "title": "Einstellungen",
@@ -224,94 +278,42 @@
         }
       }
     },
-    "athletics":{
-      "title":"Hochschulsport"
+    "sports": {
+      "title": "Hochschulsport"
     },
-    "free-rooms": {
-      "title": "Freie Räume",
-      "time": "Uhrzeit",
-      "no_rooms_hintText": "Es wurden keine freien Räume gefunden."
+    "termsOfUse": {
+      "title": "Nutzungsbedingungen"
     },
-    "roomplan": {
-      "title": "Raumplan",
-      "no_house": "Das gewählte Haus ist heute gantägig frei.",
-      "no_room": "Der gewählte Raum ist heute ganztägig frei.",
-      "date": "Datum",
-      "no_rooms_hintText": "Für diesen Tag ist kein Raumplan vorhanden."
-    },
-    "opening-hours":{
-      "title":"Öffnungszeiten",
-      "time": " Uhr",
-      "open": "geöffnet",
-      "opens": "öffnet ",
-      "closed": "geschlossen",
-      "closes": "schließt ",
+    "timetable": {
+      "title": "Stundenplan",
+      "courseInformation": "Kursinformation",
+      "until": "",
+      "today": "Heute",
+      "month": "Monat",
+      "week": "Woche",
       "comment": "Kommentar",
-      "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
+      "day": "Tag",
+      "oclock": "Uhr",
+      "time": "Uhrzeit",
+      "period": "Zeitraum",
+      "location": "Ort",
+      "building": "Gebäude",
+      "room": "Raum",
+      "rhythm": "Rhythmus",
+      "lecturer": "Dozent"
     },
-    "mensa":{
-      "title": "Mensa",
-      "campus1": "Griebnitzsee",
-      "campus2": "Neues Palais",
-      "campus3": "Golm",
-      "students": "Studierende",
-      "date": "Datum",
-      "vegan": "Vegan",
-      "vegetarian": "Vegetarisch",
-      "guests": "Gäste",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
+    "tipps": {
+      "title": "Tipps & Tricks"
+    },
+    "transport": {
+      "title": "Nahverkehr",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "journeys": "Fahrten ab",
+      "track": "Gleis",
+      "cancelled": "Fällt aus"
     },
     "unishop": {
       "title": "UNIshop"
-    },
-    "app-info": {
-      "title": "Info",
-      "platform": "Plattform",
-      "uuid": "Benutzer-ID",
-      "manufacturer": "Geräte-Hersteller",
-      "model": "Geräte-Modell",
-      "version": "Version",
-      "appVersion": "App-Version",
-      "buildNumber": "Build-Nr.",
-      "app": "Applikation",
-      "device": "Gerät",
-      "contact": "Ansprechpartner",
-      "participate": "Mitmachen",
-      "libraries": "Bibliotheken & Lizenzen"
-    },
-    "campus-map": {
-      "campus": {
-        "neuespalais": "Neues Palais",
-        "golm": "Golm",
-        "griebnitzsee": "Griebnitzsee"
-      },
-      "title": "Lageplan",
-      "placeholder_search": "Suche",
-      "cancel": "Suche abbrechen",
-      "no_results": "Keine Ergebnisse gefunden",
-      "select_categories": "Kategorien zum Anzeigen wählen",
-      "enable_geolocation": "Standort anzeigen",
-      "disable_geolocation": "Standort nicht mehr anzeigen",
-      "here_is_multiple": "Hier befinden sich",
-      "here_is_single": "Hier befindet sich",
-      "no_description": "Keine Beschreibung vorhanden",
-      "category": {
-        "associateinstitutes": "An-Institute",
-        "institutes": "Institute",
-        "canteens": "Mensas",
-        "parking": "Parkplätze",
-        "student": "Studentisches",
-        "terminals": "Service-Stationen",
-        "sport": "Sport"
-      }
-    },
-    "feedback": {
-      "title": "Feedback",
-      "rating": "Was hältst du von Mobile.UP?",
-      "feedback": "Was willst du uns mitteilen?",
-      "thoughts": "Deine Meinung... (optional)",
-      "recommendation": "Wie wahrscheinlich würdest du Mobile.UP deinen Freunden oder Kollegen empfehlen?",
-      "anonymous": "Anonym übermitteln"
     }
   },
   "button": {
@@ -374,37 +376,6 @@
     "feedback-fail": "Fehler beim Senden des Feedbacks.",
     "permission-denied": "Berechtigung verweigert."
   },
-  "university": {
-    "location": {
-      "np": "Neues Palais",
-      "gs": "Griebnitzsee",
-      "go": "Golm"
-    }
-  },
-  "words": {
-    "clock": "Uhr",
-    "house": "Haus",
-    "room": "Raum",
-    "rooms": "Räume",
-    "booking": "Belegung",
-    "bookings": "Belegungen",
-    "of": "von",
-    "results": "Einträgen",
-    "all": "Alle"
-  },
-  "menu": {
-    "title": "Menü"
-  },
-  "popover":{
-    "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt",
-    "general": "Allgemein"
-  },
-  "launchNavigator": {
-    "headerText": "Auswahl merken?",
-    "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
-    "dialogHeaderText": "App zur Navigation auswählen..."
-  },
   "hints": {
     "type": {
       "hint": "Hinweis",
@@ -426,10 +397,41 @@
       "noInformation": "Informationen konnten nicht abgerufen werden."
     }
   },
+  "launchNavigator": {
+    "headerText": "Auswahl merken?",
+    "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
+    "dialogHeaderText": "App zur Navigation auswählen..."
+  },
+  "menu": {
+    "title": "Menü"
+  },
   "placeholder": {
     "search": "Suchbegriff eingeben...",
     "username": "Benutzername (ohne @uni...)",
     "password": "Passwort",
     "calendarName": "Mobile.UP: Studium"
+  },
+  "popover":{
+    "loggedInText": "Eingeloggt als",
+    "notLoggedInText": "Nicht eingeloggt",
+    "general": "Allgemein"
+  },
+  "university": {
+    "location": {
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
+    }
+  },
+  "words": {
+    "clock": "Uhr",
+    "house": "Haus",
+    "room": "Raum",
+    "rooms": "Räume",
+    "booking": "Belegung",
+    "bookings": "Belegungen",
+    "of": "von",
+    "results": "Einträgen",
+    "all": "Alle"
   }
 }

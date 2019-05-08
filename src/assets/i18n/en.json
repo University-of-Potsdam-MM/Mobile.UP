@@ -1,92 +1,52 @@
 {
   "appName": "Mobile.UP",
   "page": {
-    "home": {
-      "title": "Homepage"
+    "app-info": {
+      "title": "About",
+      "platform": "Platform",
+      "uuid": "User ID",
+      "manufacturer": "Manufacturer",
+      "model": "Model",
+      "version": "Version",
+      "appVersion": "App Version",
+      "buildNumber": "Build number",
+      "app": "Application",
+      "device": "Device",
+      "contact": "Contact",
+      "participate": "Participate",
+      "libraries": "Libraries & Licences"
     },
-    "impressum":{
-      "title": "Legal Aspects",
-      "listHeader": "Overview"
+    "athletics":{
+      "title":"College sports"
     },
-    "legalNotice": {
-      "title": "Legal Notice"
-    },
-    "privacyPolicy": {
-      "title": "Privacy Policy"
-    },
-    "termsOfUse": {
-      "title": "Terms of Use"
-    },
-    "login":{
-      "title":"Login",
-      "loginInProgress": "Login in progress...",
-      "alreadyLoggedIn": "You are already logged in.",
-      "notLoggedIn": "You are not logged in.",
-      "loginError": {
-        "0": "Username and Password don't match.",
-        "1": "There is a technical difficulty, please contact the development team.",
-        "2": "Please check your network connection.",
-        "3": "An unknown login-method has been used, please contact the development team.",
-        "4": "An unknown error has occured, please contact the development team"
+    "campus-map": {
+      "campus": {
+        "neuespalais": "Neues Palais",
+        "golm": "Golm",
+        "griebnitzsee": "Griebnitzsee"
+      },
+      "placeholder_search": "Seerch",
+      "cancel": "Cancel search",
+      "no_results": "No results found",
+      "here_is_multiple": "Here are",
+      "here_is_single": "Here is",
+      "no_description": "No description available",
+      "title": "Site map",
+      "select_categories": "Choose displayed categories",
+      "enable_geolocation": "Show current location",
+      "disable_geolocation": "Hide current location",
+      "category": {
+        "associateinstitutes": "Related institutes",
+        "institutes": "Institutes",
+        "canteens": "Canteens",
+        "parking": "Parking spaces",
+        "student": "Student dorms",
+        "terminals": "Service terminals",
+        "sport": "Sports"
       }
-    },
-    "logout": {
-      "title": "Logout",
-      "text": "You're about to logout.",
-      "affirmativeQuestion": "Do you really want to logout?"
     },
     "emergency": {
       "title": "Emergency numbers"
-    },
-    "person-search": {
-      "title": "People search"
-    },
-    "practice": {
-      "title": "Starting your career!",
-      "item": {
-        "contact": "Contact:",
-        "foreign": "Abroad",
-        "partner": "Partner",
-        "language": "Language",
-        "familyfriendly": "Family friendly",
-        "student": "Student job",
-        "graduate": "Graduate job",
-        "thesis": "Final thesis",
-        "praktika": "Internships",
-        "firm": "Company",
-        "art": "Type",
-        "field": "Study field",
-        "pubDate": "published on",
-        "jobPosting": "Job posting"
-
-      },
-      "no_results": "No results found for this keyword."
-    },
-    "grades": {
-      "title": "My achievements",
-      "bezeichnung": "description",
-      "note": "Grade",
-      "pv": "PV",
-      "lp": "LP",
-      "studienleistung": "Study achievements",
-      "examiner": "Examiner",
-      "study": "Study"
-    },
-    "library-search": {
-      "title": "Library search",
-      "titleDetail": "Detail view",
-      "copyright": "Copies and downloads of certain chapters or sites are only allowed for personal use. No distribution to third parties. No automated downloading.",
-      "electronicUsage": "You have to be in the IP range (LAN, WLAN, VPN) of the University to access this ressource.",
-      "bookSet": "This set contains multiple volumes. Please consider researching these subvolumes.",
-      "location": "Location",
-      "details": "Details",
-      "keywords": "Keywords",
-      "annotations": "Annotations",
-      "serie": "Series",
-      "extent": "Extent",
-      "noDetails": "No further details available.",
-      "allResults": "List of all results",
-      "toc": "Table of Contents"
     },
     "events":{
       "title":"Events",
@@ -100,8 +60,35 @@
       "address": "Address",
       "description": "Description"
     },
-    "moodle": {
-      "title": "Moodle.UP"
+    "feedback": {
+      "title": "Feedback",
+      "rating": "What do you think of Mobile.UP?",
+      "feedback": "What would you like to share with us?",
+      "thoughts": "Your opinion... (optional)",
+      "recommendation": "How likely would you recommend Mobile.UP to your friends and colleagues?",
+      "anonymous": "Submit anonymously"
+    },
+    "free-rooms": {
+      "title": "Available rooms",
+      "time": "Time of day",
+      "no_rooms_hintText": "No free rooms found."
+    },
+    "grades": {
+      "title": "My achievements",
+      "bezeichnung": "description",
+      "note": "Grade",
+      "pv": "PV",
+      "lp": "LP",
+      "studienleistung": "Study achievements",
+      "examiner": "Examiner",
+      "study": "Study"
+    },
+    "home": {
+      "title": "Homepage"
+    },
+    "impressum":{
+      "title": "Legal Aspects",
+      "listHeader": "Overview"
     },
     "lectures": {
       "title": "Lectures",
@@ -128,46 +115,114 @@
       "noCourses": "No courses available.",
       "annotation": "Annotation"
     },
-    "timetable": {
-      "title": "Timetable",
-      "courseInformation": "Course information",
-      "until": "",
-      "today": "Today",
-      "month": "Month",
-      "week": "Week",
-      "comment": "Comment",
-      "day": "Day",
-      "oclock": "",
-      "time": "Time",
-      "period": "Duration",
+    "legalNotice": {
+      "title": "Legal Notice"
+    },
+    "library-account": {
+      "title": "UB-Account"
+    },
+    "library-search": {
+      "title": "Library search",
+      "titleDetail": "Detail view",
+      "copyright": "Copies and downloads of certain chapters or sites are only allowed for personal use. No distribution to third parties. No automated downloading.",
+      "electronicUsage": "You have to be in the IP range (LAN, WLAN, VPN) of the University to access this ressource.",
+      "bookSet": "This set contains multiple volumes. Please consider researching these subvolumes.",
       "location": "Location",
-      "building": "Building",
-      "room": "Room",
-      "rhythm": "Frequency",
-      "lecturer": "Lecturer"
+      "details": "Details",
+      "keywords": "Keywords",
+      "annotations": "Annotations",
+      "serie": "Series",
+      "extent": "Extent",
+      "noDetails": "No further details available.",
+      "allResults": "List of all results",
+      "toc": "Table of Contents"
+    },
+    "login":{
+      "title":"Login",
+      "loginInProgress": "Login in progress...",
+      "alreadyLoggedIn": "You are already logged in.",
+      "notLoggedIn": "You are not logged in.",
+      "loginError": {
+        "0": "Username and Password don't match.",
+        "1": "There is a technical difficulty, please contact the development team.",
+        "2": "Please check your network connection.",
+        "3": "An unknown login-method has been used, please contact the development team.",
+        "4": "An unknown error has occured, please contact the development team"
+      }
+    },
+    "logout": {
+      "title": "Logout",
+      "text": "You're about to logout.",
+      "affirmativeQuestion": "Do you really want to logout?"
     },
     "mail": {
       "title": "Mail.UP"
+    },
+    "mensa":{
+      "title": "Mensa",
+      "campus1": "Griebnitzsee",
+      "campus2": "Neues Palais",
+      "campus3": "Golm",
+      "students": "Students",
+      "date": "Date",
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarian",
+      "guests": "Guests",
+      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam."
+    },
+    "moodle": {
+      "title": "Moodle.UP"
     },
     "news": {
       "title": "News",
       "articlePublished": "Published"
     },
-    "tipps": {
-      "title": "Tips & tricks"
+    "opening-hours":{
+      "title":"Opening hours",
+      "time": "",
+      "open": "open",
+      "opens": "opens ",
+      "closed": "closed",
+      "closes": "closes ",
+      "comment": "Comment",
+      "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
-    "transport": {
-      "title": "Journeys",
-      "disclaimer": "All data is used with the kind support of the VBB.",
-      "journeys": "Departures from",
-      "track": "Track",
-      "cancelled": "Cancelled"
+    "person-search": {
+      "title": "People search"
+    },
+    "practice": {
+      "title": "Starting your career!",
+      "item": {
+        "contact": "Contact:",
+        "foreign": "Abroad",
+        "partner": "Partner",
+        "language": "Language",
+        "familyfriendly": "Family friendly",
+        "student": "Student job",
+        "graduate": "Graduate job",
+        "thesis": "Final thesis",
+        "praktika": "Internships",
+        "firm": "Company",
+        "art": "Type",
+        "field": "Study field",
+        "pubDate": "published on",
+        "jobPosting": "Job posting"
+
+      },
+      "no_results": "No results found for this keyword."
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy"
     },
     "reflectUP": {
       "title": "Reflect.UP"
     },
-    "sports": {
-      "title": "College sports"
+    "roomplan": {
+      "title": "Roomplan",
+      "no_house": "The chosen house is free all-day.",
+      "no_room": "The chosen room is free all-day.",
+      "date": "Date",
+      "no_rooms_hintText": "No roomplan found for this day."
     },
     "settings": {
       "title": "Settings",
@@ -224,94 +279,42 @@
         }
       }
     },
-    "athletics":{
-      "title":"College sports"
+    "sports": {
+      "title": "College sports"
     },
-    "free-rooms": {
-      "title": "Available rooms",
-      "time": "Time of day",
-      "no_rooms_hintText": "No free rooms found."
+    "termsOfUse": {
+      "title": "Terms of Use"
     },
-    "roomplan": {
-      "title": "Roomplan",
-      "no_house": "The chosen house is free all-day.",
-      "no_room": "The chosen room is free all-day.",
-      "date": "Date",
-      "no_rooms_hintText": "No roomplan found for this day."
-    },
-    "opening-hours":{
-      "title":"Opening hours",
-      "time": "",
-      "open": "open",
-      "opens": "opens ",
-      "closed": "closed",
-      "closes": "closes ",
+    "timetable": {
+      "title": "Timetable",
+      "courseInformation": "Course information",
+      "until": "",
+      "today": "Today",
+      "month": "Month",
+      "week": "Week",
       "comment": "Comment",
-      "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
+      "day": "Day",
+      "oclock": "",
+      "time": "Time",
+      "period": "Duration",
+      "location": "Location",
+      "building": "Building",
+      "room": "Room",
+      "rhythm": "Frequency",
+      "lecturer": "Lecturer"
     },
-    "mensa":{
-      "title": "Mensa",
-      "campus1": "Griebnitzsee",
-      "campus2": "Neues Palais",
-      "campus3": "Golm",
-      "students": "Students",
-      "date": "Date",
-      "vegan": "Vegan",
-      "vegetarian": "Vegetarian",
-      "guests": "Guests",
-      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam."
+    "tipps": {
+      "title": "Tips & tricks"
+    },
+    "transport": {
+      "title": "Journeys",
+      "disclaimer": "All data is used with the kind support of the VBB.",
+      "journeys": "Departures from",
+      "track": "Track",
+      "cancelled": "Cancelled"
     },
     "unishop": {
       "title": "UNIshop"
-    },
-    "app-info": {
-      "title": "About",
-      "platform": "Platform",
-      "uuid": "User ID",
-      "manufacturer": "Manufacturer",
-      "model": "Model",
-      "version": "Version",
-      "appVersion": "App Version",
-      "buildNumber": "Build number",
-      "app": "Application",
-      "device": "Device",
-      "contact": "Contact",
-      "participate": "Participate",
-      "libraries": "Libraries & Licences"
-    },
-    "campus-map": {
-      "campus": {
-        "neuespalais": "Neues Palais",
-        "golm": "Golm",
-        "griebnitzsee": "Griebnitzsee"
-      },
-      "placeholder_search": "Seerch",
-      "cancel": "Cancel search",
-      "no_results": "No results found",
-      "here_is_multiple": "Here are",
-      "here_is_single": "Here is",
-      "no_description": "No description available",
-      "title": "Site map",
-      "select_categories": "Choose displayed categories",
-      "enable_geolocation": "Show current location",
-      "disable_geolocation": "Hide current location",
-      "category": {
-        "associateinstitutes": "Related institutes",
-        "institutes": "Institutes",
-        "canteens": "Canteens",
-        "parking": "Parking spaces",
-        "student": "Student dorms",
-        "terminals": "Service terminals",
-        "sport": "Sports"
-      }
-    },
-    "feedback": {
-      "title": "Feedback",
-      "rating": "What do you think of Mobile.UP?",
-      "feedback": "What would you like to share with us?",
-      "thoughts": "Your opinion... (optional)",
-      "recommendation": "How likely would you recommend Mobile.UP to your friends and colleagues?",
-      "anonymous": "Submit anonymously"
     }
   },
   "button": {
@@ -374,37 +377,6 @@
     "feedback-fail": "Failed to send your feedback.",
     "permission-denied": "Permission denied."
   },
-  "university": {
-    "location": {
-      "np": "Neues Palais",
-      "gs": "Griebnitzsee",
-      "go": "Golm"
-    }
-  },
-  "words": {
-    "clock": "",
-    "house": "House",
-    "room": "room",
-    "rooms": "rooms",
-    "booking": "booking",
-    "bookings": "bookings",
-    "of": "of",
-    "results": "results",
-    "all": "All"
-  },
-  "menu": {
-    "title": "Menu"
-  },
-  "popover":{
-    "loggedInText": "Logged in as",
-    "notLoggedInText": "Not logged in",
-    "general": "General"
-  },
-  "launchNavigator": {
-    "headerText": "Remember your choice?",
-    "bodyText": "Use the same app for navigating next time?",
-    "dialogHeaderText": "Select app for navigation..."
-  },
   "hints": {
     "type": {
       "hint": "Hint",
@@ -426,10 +398,41 @@
       "noInformation": "Couldn't retrieve any information."
     }
   },
+  "launchNavigator": {
+    "headerText": "Remember your choice?",
+    "bodyText": "Use the same app for navigating next time?",
+    "dialogHeaderText": "Select app for navigation..."
+  },
+  "menu": {
+    "title": "Menu"
+  },
   "placeholder": {
     "search": "Search...",
     "username": "Username (without @uni...)",
     "password": "Password",
     "calendarName": "Mobile.UP: Studies"
+  },
+  "popover":{
+    "loggedInText": "Logged in as",
+    "notLoggedInText": "Not logged in",
+    "general": "General"
+  },
+  "university": {
+    "location": {
+      "np": "Neues Palais",
+      "gs": "Griebnitzsee",
+      "go": "Golm"
+    }
+  },
+  "words": {
+    "clock": "",
+    "house": "House",
+    "room": "room",
+    "rooms": "rooms",
+    "booking": "booking",
+    "bookings": "bookings",
+    "of": "of",
+    "results": "results",
+    "all": "All"
   }
 }
