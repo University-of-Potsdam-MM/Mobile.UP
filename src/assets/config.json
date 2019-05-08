@@ -1,5 +1,7 @@
 {
-  "appVersion": "6.2.2",
+  "appVersion": "6.1.0",
+  "urlIOS": "https://itunes.apple.com/de/app/mobile-up/id541440873",
+  "urlAndroid": "https://play.google.com/store/apps/details?id=de.floriangoessler.upapp",
   "modules": {
     "person-search": {
       "componentName": "person-search",
@@ -188,6 +190,7 @@
   },
   "webservices": {
     "endpoint": {
+      "config": "https://mobileup.uni-potsdam.de/assets/config.json",
       "personSearch": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
       "mensa": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
       "practiceSearch": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json",

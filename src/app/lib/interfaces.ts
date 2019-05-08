@@ -127,6 +127,8 @@ export interface IADSResponse extends Array<ADS> {}
 
 export interface IConfig {
   appVersion: string;
+  urlAndroid: string;
+  urlIOS: string;
   modules: {[moduleName: string]: IModule};
   authorization: ILoginConfig;
   webservices: IWebServices;
@@ -183,6 +185,7 @@ export interface IWebServices {
 }
 
 export interface IEndpoints {
+  config: string;
   personSearch: string;
   mensa: string;
   practiceSearch: string;
