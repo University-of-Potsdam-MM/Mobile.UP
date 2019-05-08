@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'timetable', loadChildren: './pages/timetable/timetable.module#TimetablePageModule' },
   { path: 'transport', loadChildren: './pages/transport/transport.module#TransportPageModule' },
   { path: 'feedback', loadChildren: './pages/feedback/feedback.module#FeedbackPageModule' },
+  { path: 'library-account', loadChildren: './pages/library-account/library-account.module#LibraryAccountPageModule' },
 ];
 
 @NgModule({

@@ -42,6 +42,11 @@
       "icon": "restaurant",
       "selected": true
     },
+    "library-account": {
+      "componentName": "library-account",
+      "icon": "school",
+      "selected": false
+    },
     "library-search": {
       "componentName": "library-search",
       "icon": "bookmark",
