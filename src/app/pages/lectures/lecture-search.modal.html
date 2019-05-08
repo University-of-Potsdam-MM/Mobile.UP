@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-button slot="start" (click)="closeModal()" fill="clear">
+            <ion-icon style="color: black; font-size: x-large;" name="ios-arrow-back"></ion-icon>
+        </ion-button>
+        <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding-bottom>
+    <span *ngIf="showItemTreePath && !isCourse">
+        <span *ngFor="let treeItem of itemTree; let last = last">
+            <ion-item-divider *ngIf="!last">
+                <ion-label text-wrap>
+                    {{ treeItem }}
+                </ion-label>
+            </ion-item-divider>
+        </span>
+    </span>
+    <ion-item-divider (click)="showItemTreePath = !showItemTreePath">
+        <ion-label text-wrap>
+            {{ unescapeHTML(name) }}
+        </ion-label>
+        <ion-icon *ngIf="!isCourse" [name]="!showItemTreePath ? 'arrow-dropright' : 'arrow-dropup'" size="small" slot="end" padding-end></ion-icon>
+    </ion-item-divider>
+    <app-lecture-list *ngIf="!isCourse" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
+    <app-course-data *ngIf="isCourse" [course]="item"></app-course-data>
+</ion-content>

@@ -113,7 +113,12 @@
       "room": "Room",
       "lecturer": "Lecturer",
       "noCourses": "No courses available.",
-      "annotation": "Annotation"
+      "annotation": "Annotation",
+      "filter": "Filter",
+      "directories": "Directories",
+      "courses": "Courses",
+      "courseBadge": "Course",
+      "preparingSearch": "Preparing search"
     },
     "legalNotice": {
       "title": "Legal Notice"

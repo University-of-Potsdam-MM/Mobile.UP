@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { ConfigService } from '../config/config.service';
+import { CacheService } from 'ionic-cache';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private cache: CacheService
+    ) { }
 
   /**
    * @name getMapData
@@ -18,9 +22,8 @@ export class MapsService {
     const headers = new HttpHeaders()
       .set('Authorization', config.webservices.apiToken);
 
-    return this.http.get(
-      config.webservices.endpoint.maps,
-      { headers: headers }
-    );
+    const request = this.http.get(config.webservices.endpoint.maps, { headers: headers });
+
+    return this.cache.loadFromObservable('getMapData', request);
   }
 }
