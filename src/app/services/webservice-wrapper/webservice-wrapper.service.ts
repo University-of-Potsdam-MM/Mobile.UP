@@ -82,6 +82,23 @@ export class WebserviceWrapperService {
     }
   };
 
+  pulsResponseCallback(response) {
+    // PULS simply responds with "no user rights" if credentials are incorrect
+    if (response.message === 'no user rights') {
+      // we're having a contradiction here, the password is wrong, but
+      // the token is still valid. We'll log the user out and send the
+      // user to LoginPage
+      this.alertService.showAlert({
+        alertTitleI18nKey: 'alert.title.error',
+        messageI18nKey: 'alert.token_valid_credentials_invalid',
+      });
+
+      return response;
+    } else {
+      return response;
+    }
+  }
+
   /**
    * Definition of the webservices that can be used in this application.
    *
@@ -258,8 +275,9 @@ export class WebserviceWrapperService {
         );
       }
     },
+    // PULS webservices
     pulsGetLectureScheduleRoot: {
-      buildRequest: (params, url) => {
+      buildRequest: (_, url) => {
         return this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
           url,
           {condition: {semester: 0}},
@@ -267,80 +285,104 @@ export class WebserviceWrapperService {
         );
       }
     },
-    pulsGetLectureScheduleSubTree: {
-      buildRequest: (headerId, url) => {
+    pulsGetLectureScheduleAll: {
+      buildRequest: (params, url) => {
         return this.http.post(
           url,
-          {condition: {headerId: headerId}},
+          {
+            condition: {
+              semester: 0
+            }
+          },
+          {
+            headers: this.pulsHeaders
+          }
+        );
+      },
+      responseCallback: this.pulsResponseCallback
+    },
+    pulsGetLectureScheduleSubTree: {
+      buildRequest: (params, url) => {
+        return this.http.post(
+          url,
+          {condition: {headerId: params.headerId}},
           {headers: this.pulsHeaders}
         );
       }
     },
     pulsGetLectureScheduleCourses: {
-      buildRequest: (headerId, url) => {
+      buildRequest: (params, url) => {
         return this.http.post(
           url,
-          {condition: {headerId: headerId}},
+          {condition: {headerId: params.headerId}},
           {headers: this.pulsHeaders}
         );
       }
     },
     pulsGetCourseData: {
-      buildRequest: (courseId, url) => {
+      buildRequest: (params, url) => {
         return this.http.post(
           url,
-          {condition: {courseId: courseId}},
+          {condition: {courseId: params.courseId}},
           {headers: this.pulsHeaders}
         );
       }
     },
     pulsGetPersonalStudyAreas: {
-      buildRequest: (session: ISession, url) => {
+      buildRequest: (params, url) => {
         return this.http.post(
           url,
         {'user-auth': {
-            username: session.credentials.username,
-            password: session.credentials.password
+            username: params.session.credentials.username,
+            password: params.session.credentials.password
           }},
           {headers: this.pulsHeaders}
         );
       },
-      responseCallback: (response: IPulsAPIResponse_getPersonalStudyAreas) => {
-        // PULS simply responds with "no user rights" if credentials are incorrect
-        if (response.message === 'no user rights') {
-
-          // we're having a contradiction here, the password is wrong, but
-          // the token is still valid  so we're having
-          // case #81 here. We'll log the user out and send the
-          // user to LoginPage
-
-          // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions
-          // should not log out
-          // this.puls.handleSpecialCase();
-
-          this.alertService.showAlert({
-            alertTitleI18nKey: 'alert.title.error',
-            messageI18nKey: 'alert.token_valid_credentials_invalid',
-          });
-          return response;
-        } else {
-          return response;
-        }
-      }
+      responseCallback: this.pulsResponseCallback
     },
     pulsGetAcademicAchievements: {
       buildRequest: (params, url) => {
-
+        return this.http.post(
+          url,
+          {
+            condition: {
+              Semester: params.semester,
+              MtkNr: params.mtknr,
+              StgNr: params.stgnr
+            },
+            'user-auth': {
+              username: params.session.credentials.username,
+              password: params.session.credentials.password
+            }
+          },
+          {
+            headers: this.pulsHeaders
+          }
+        );
       }
     },
     pulsGetStudentCourses: {
       buildRequest: (params, url) => {
-
+        return this.http.post(
+          url,
+          {
+            condition: {
+              semester: 0,
+              allLectures: 0
+            },
+            // TODO: refactor this someday so credentials are not used
+            'user-auth': {
+              username: params.session.credentials.username,
+              password: params.session.credentials.password
+            }
+          },
+          {
+            headers: this.pulsHeaders
+          }
+        );
       }
     },
-
-
   };
 
   constructor(private http: HttpClient,

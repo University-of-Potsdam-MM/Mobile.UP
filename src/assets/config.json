@@ -228,6 +228,10 @@
       "pulsGetLectureScheduleSubTree": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleSubTree"
       },
+      "pulsGetLectureScheduleAll": {
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleAll",
+        "cachingTTL": 604800
+      },
       "pulsGetLectureScheduleCourses": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleCourses"
       },
