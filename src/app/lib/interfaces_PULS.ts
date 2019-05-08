@@ -102,6 +102,19 @@ export interface IPulsApiRequest_getStudentCourses_condition {
   allLectures: number;
 }
 
+export interface IPulsAPIResponse_getLectureScheduleAll {
+  studentCourses: IStudentCourses;
+  message?: string;
+}
+
+export interface IPulsApiRequest_getLectureScheduleAll {
+  condition: IPulsApiRequest_getLectureScheduleAll_condition;
+}
+
+export interface IPulsApiRequest_getLectureScheduleAll_condition {
+  semester: number;
+}
+
 export interface IPulsAPIResponse_getLectureScheduleRoot {
 }
 

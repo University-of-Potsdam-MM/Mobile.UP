@@ -21,9 +21,12 @@ import {
   IPulsAPIResponse_getCourseData,
   IPulsApiRequest_getCourseData,
   IPulsAPIResponse_getPersonalStudyAreas,
-  IPulsApiRequest_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
+  IPulsApiRequest_getPersonalStudyAreas,
+  IPulsApiRequest_getLectureScheduleAll,
+  IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { ISession } from '../login-provider/interfaces';
 import { LoginPage } from 'src/app/pages/login/login.page';
+import { CacheService } from 'ionic-cache';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +42,8 @@ export class PulsService {
     private userSession: UserSessionService,
     private navCtrl: NavController,
     private alertService: AlertService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private cache: CacheService
   ) {
     // set headers for all requests
     this.headers = new HttpHeaders({
@@ -57,8 +61,10 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleRoot>();
 
-    this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
-      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleRoot.url, request, {headers: this.headers}).subscribe(
+    const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
+      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleRoot', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getLectureScheduleRoot', httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         rs.next(response);
       }
@@ -77,8 +83,10 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleSubTree>();
 
-    this.http.post<IPulsAPIResponse_getLectureScheduleSubTree>(
-      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleSubTree.url, request, {headers: this.headers}).subscribe(
+    const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleSubTree>(
+      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleSubTree', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getLectureScheduleSubTree' + headerId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         rs.next(response);
       }
@@ -96,8 +104,10 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleCourses>();
 
-    this.http.post<IPulsAPIResponse_getLectureScheduleCourses>(
-      ConfigService.config.webservices.endpoint.pulsGetLectureScheduleCourses.url, request, {headers: this.headers}).subscribe(
+    const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleCourses>(
+      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleCourses', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getLectureScheduleCourses' + headerId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getLectureScheduleCourses) => {
         rs.next(response);
       }
@@ -115,8 +125,10 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getCourseData>();
 
-    this.http.post<IPulsAPIResponse_getCourseData>(
-      ConfigService.config.webservices.endpoint.pulsGetCourseData.url, request, {headers: this.headers}).subscribe(
+    const httpRequest = this.http.post<IPulsAPIResponse_getCourseData>(
+      ConfigService.config.webservices.endpoint.puls + 'getCourseData', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getCourseData' + courseId, httpRequest, 'lectureScheduleGroup').subscribe(
       (response: IPulsAPIResponse_getCourseData) => {
         rs.next(response);
       }
@@ -141,35 +153,37 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getPersonalStudyAreas>();
 
+    const httpRequest = this.http.post<IPulsAPIResponse_getPersonalStudyAreas>(
+      ConfigService.config.webservices.endpoint.puls + 'getPersonalStudyAreas', request, {headers: this.headers});
+
     // TODO: check for connection first!
-    this.http.post<IPulsAPIResponse_getPersonalStudyAreas>(
-      ConfigService.config.webservices.endpoint.pulsGetPersonalStudyAreas.url, request, {headers: this.headers}).subscribe(
-      (response: IPulsAPIResponse_getPersonalStudyAreas) => {
-        // PULS simply responds with "no user rights" if credentials are incorrect
-        if (response.message === 'no user rights') {
+    this.cache.loadFromObservable('getPersonalStudyAreas', httpRequest).subscribe((response: IPulsAPIResponse_getPersonalStudyAreas) => {
+      // PULS simply responds with "no user rights" if credentials are incorrect
+      if (response.message === 'no user rights') {
 
-          // we're having a contradiction here, the password is wrong, but
-          // the token is still valid  so we're having
-          // case #81 here. We'll log the user out and send the
-          // user to LoginPage
+        // we're having a contradiction here, the password is wrong, but
+        // the token is still valid  so we're having
+        // case #81 here. We'll log the user out and send the
+        // user to LoginPage
 
-          // this does not necessarily mean that the password is wrong
-          // the elistest account f.e. just does not support the grades / timetable functions
-          // should not log out
-          // this.puls.handleSpecialCase();
+        // this does not necessarily mean that the password is wrong
+        // the elistest account f.e. just does not support the grades / timetable functions
+        // should not log out
+        // this.puls.handleSpecialCase();
 
-          rs.next(response);
+        rs.next(response);
 
-          this.alertService.showAlert({
-            alertTitleI18nKey: 'alert.title.error',
-            messageI18nKey: 'alert.token_valid_credentials_invalid',
-          });
-        } else {
-          rs.next(response);
-        }
-      },
-      error => {}
-    );
+        this.alertService.showAlert({
+          alertTitleI18nKey: 'alert.title.error',
+          messageI18nKey: 'alert.token_valid_credentials_invalid',
+        });
+      } else {
+        rs.next(response);
+      }
+    }, error => {
+      console.log(error);
+    });
+
     return rs;
   }
 
@@ -196,12 +210,14 @@ export class PulsService {
 
     const rs = new ReplaySubject<IPulsAPIResponse_getAcademicAchievements>();
 
-    this.http.post<IPulsAPIResponse_getAcademicAchievements>(
-      ConfigService.config.webservices.endpoint.pulsGetAcademicAchievements.url, request, {headers: this.headers}).subscribe(
-      (response: IPulsAPIResponse_getAcademicAchievements) => {
-        rs.next(response);
-      }
-    );
+    const httpRequest = this.http.post<IPulsAPIResponse_getAcademicAchievements>(
+      ConfigService.config.webservices.endpoint.puls + 'getAcademicAchievements', request, {headers: this.headers});
+
+    this.cache.loadFromObservable('getAcademicAchievements' + stgnr, httpRequest).subscribe(
+    (response: IPulsAPIResponse_getAcademicAchievements) => {
+      rs.next(response);
+    });
+
     return rs;
   }
 
@@ -227,7 +243,7 @@ export class PulsService {
 
     // TODO: check for connection first!
     this.http.post<IPulsAPIResponse_getStudentCourses>(
-      ConfigService.config.webservices.endpoint.pulsGetStudentCourses.url, request, {headers: this.headers}).subscribe(
+      ConfigService.config.webservices.endpoint.puls + 'getStudentCourses', request, {headers: this.headers}).subscribe(
       (response: IPulsAPIResponse_getStudentCourses) => {
         // PULS simply responds with "no user rights" if credentials are incorrect
         if (response.message === 'no user rights') {
@@ -247,6 +263,51 @@ export class PulsService {
       }, error => {
         console.log(error);
       });
+
+    return rs;
+  }
+
+  public getLectureScheduleAll(): Observable<IPulsAPIResponse_getLectureScheduleAll> {
+
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': ConfigService.config.webservices.apiToken
+    });
+
+    const request: IPulsApiRequest_getLectureScheduleAll = {
+      condition: {
+        semester: 0
+      }
+    };
+
+    const rs = new ReplaySubject<IPulsAPIResponse_getLectureScheduleAll>();
+
+    const httpRequest = this.http.post<IPulsAPIResponse_getLectureScheduleAll>(
+      ConfigService.config.webservices.endpoint.puls + 'getLectureScheduleAll',
+      request,
+      {headers: headers}
+    );
+
+    const ttl = 604800; // 1 week in seconds
+    this.cache.loadFromObservable('getLectureScheduleAll', httpRequest, 'lectureScheduleGroup', ttl).subscribe(
+      (response: IPulsAPIResponse_getLectureScheduleAll) => {
+        // PULS simply responds with "no user rights" if credentials are incorrect (?)
+        if (response.message === 'no user rights') {
+          rs.next(response);
+
+          this.alertService.showAlert({
+            alertTitleI18nKey: 'alert.title.error',
+            messageI18nKey: 'alert.token_valid_credentials_invalid',
+          });
+        } else {
+          rs.next(response);
+        }
+      },
+      error => {
+        console.log('[PulsService]: Error getting lecture schedule.');
+        console.log(error);
+      }
+    );
 
     return rs;
   }

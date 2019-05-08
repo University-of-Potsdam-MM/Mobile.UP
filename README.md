@@ -53,7 +53,7 @@ npm run compodoc
 ionic serve
 ```
 
-Sollte `ionic serve` einen Fehler ausgeben kann es daran liegen das ionic nicht installiert ist. Ihr könnt es z.B. mit `npm install -g cordova ionic` installieren.
+Sollte `ionic serve` einen Fehler ausgeben kann es daran liegen, dass ionic nicht installiert ist. Ihr könnt es z.B. mit `npm install -g cordova ionic` installieren.
 
 ## Weiterführende Informationen
 

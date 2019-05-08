@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { LectureSearchModalPage } from './lecture-search.modal';
 
 const routes: Routes = [
   {
@@ -31,6 +32,12 @@ const routes: Routes = [
     }),
     RouterModule.forChild(routes)
   ],
-  declarations: [LecturesPage]
+  declarations: [
+    LecturesPage,
+    LectureSearchModalPage
+  ],
+  entryComponents: [
+    LectureSearchModalPage
+  ]
 })
 export class LecturesPageModule {}

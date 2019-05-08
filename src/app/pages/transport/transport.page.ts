@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
-import { Events } from '@ionic/angular';
 import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
