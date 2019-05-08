@@ -49,6 +49,15 @@ function createRoomParams(params: IRoomsRequestParams) {
  *   individually.
  *   By default (see {@link defaults}) the error is simply logged to console and
  *   passed on.
+ *
+ * Usage example:
+ *
+ * this.webserviceWrapper.call('maps').subscribe( ... )
+ *
+ * or
+ *
+ * this.webserviceWrapper.call('mensa', {campus_canteen_name: 'NeuesPalais'}).subscribe( ... )
+ *
  */
 @Injectable({
   providedIn: 'root'
