@@ -282,7 +282,7 @@ export class WebserviceWrapperService {
           }
         );
       },
-      responseCallback: this.pulsResponseCallback
+      responseCallback: (response) => this.pulsResponseCallback(response)
     },
     pulsGetLectureScheduleSubTree: {
       buildRequest: (params, url) => {
@@ -322,7 +322,7 @@ export class WebserviceWrapperService {
           {headers: this.pulsHeaders}
         );
       },
-      responseCallback: this.pulsResponseCallback
+      responseCallback: (response) => this.pulsResponseCallback(response)
     },
     pulsGetAcademicAchievements: {
       buildRequest: (params, url) => {
