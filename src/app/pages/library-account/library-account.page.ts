@@ -172,7 +172,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       let status;
       if (dayDiff < 0) {
         status = 2;
-      } else if (dayDiff < 15) {
+      } else if (dayDiff < 4) {
         status = 1;
       } else { status = 0; }
 
