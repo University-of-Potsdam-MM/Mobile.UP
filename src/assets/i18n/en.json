@@ -380,7 +380,8 @@
     "calendar-exists": "It seems like you already exported the calendar. Do you want to keep or delete existing events?",
     "feedback-sent": "Your feedback was sent.",
     "feedback-fail": "Failed to send your feedback.",
-    "permission-denied": "Permission denied."
+    "permission-denied": "Permission denied.",
+    "app-update": "App update available!"
   },
   "hints": {
     "type": {
