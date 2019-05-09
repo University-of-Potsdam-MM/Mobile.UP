@@ -93,10 +93,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   };
 
   itemStatus = [];
-  grayedOutItemsHint = false;
+  grayedOutItemsHint;
   userLoaded;
   itemsLoaded;
   feesLoaded;
+  noLoanItems = true;
 
   constructor(
     private translate: TranslateService
@@ -154,22 +155,19 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   prepareForm() {
     for (let i = 0; i < this.items.doc.length; i++) {
+      if (this.items.doc[i].status === 3) { this.noLoanItems = false; }
+
       let renewable;
-      if (this.items.doc[i].queue !== 0) {
+      if ((this.items.doc[i].queue !== 0) || !this.items.doc[i].canrenew) {
         // item can not be renewed
         renewable = false;
-      } else if (this.items.doc[i].canrenew) {
-        renewable = true;
-      } else { renewable = false; }
+      } else if (this.items.doc[i].canrenew) { renewable = true; }
 
-      if (!renewable) {
-        this.grayedOutItemsHint = true;
-      }
+      if (!renewable) { this.grayedOutItemsHint = true; }
 
       const endDate = moment(this.items.doc[i].endtime);
       const currentDate = moment();
       const dayDiff = endDate.diff(currentDate, 'days');
-      console.log(dayDiff);
 
       let status;
       if (dayDiff < 0) {

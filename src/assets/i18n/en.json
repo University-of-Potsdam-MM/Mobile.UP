@@ -129,7 +129,8 @@
       "fees": "Fees",
       "loanItems": "Loaned items",
       "notRenewable": "Items that are grayed out can not be renewed.",
-      "days": "Days"
+      "days": "Days",
+      "noLoanItems": "No loaned items found."
     },
     "library-search": {
       "title": "Library search",

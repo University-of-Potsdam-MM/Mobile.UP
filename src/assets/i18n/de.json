@@ -129,7 +129,8 @@
       "fees": "Gebühren",
       "loanItems": "Geliehene Items",
       "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
-      "days": "Tage"
+      "days": "Tage",
+      "noLoanItems": "Keine ausgeliehenen Items gefunden."
     },
     "library-search": {
       "title": "Bibliothekssuche",
