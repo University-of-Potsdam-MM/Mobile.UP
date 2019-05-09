@@ -520,3 +520,45 @@ export interface IFeedback extends IDeviceInfo {
   recommend?: string;
   uid?: string;
 }
+
+export interface IUBUser {
+  name: string;
+  email: string;
+  address: string;
+  expires: string;
+  status: number;
+  type: string[];
+}
+
+export interface IUBItems {
+  doc: IUBItem[];
+}
+
+interface IUBItem {
+  status: number;
+  item: string;
+  edition: string;
+  about: string;
+  label: string;
+  queue: number;
+  renewals: number;
+  reminder: number;
+  starttime: string;
+  endtime: string;
+  cancancel: boolean;
+}
+
+export interface IUBFees {
+  amount: number;
+  fee: IUBFee[];
+}
+
+interface IUBFee {
+  amount: number;
+  date: string;
+  about: string;
+  item: string;
+  edition: string;
+  feetype: string;
+  feeid: string;
+}
