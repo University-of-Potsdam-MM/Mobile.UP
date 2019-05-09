@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IUBUser, IUBFees, IUBItems, IUBItem } from 'src/app/lib/interfaces';
+import { IUBUser, IUBFees, IUBItems } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup } from '@angular/forms';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-library-account',
@@ -98,14 +98,21 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   itemsLoaded;
   feesLoaded;
   noLoanItems = true;
+  // uri_escaped_patron_identifier;
+  // endpoint;
+
+  // httpHeaders = new HttpHeaders()
+  //   .append('Authorization', this.config.webservices.apiToken);
 
   constructor(
-    private translate: TranslateService
+    private translate: TranslateService,
+    private http: HttpClient
   ) {
     super({ requireSession: true, requireNetwork: true });
   }
 
   ngOnInit() {
+    // this.endpoint = this.config.webservices.endpoint.libraryPAIA + this.uri_escaped_patron_identifier + '/';
     this.getUser();
     this.getItems();
     this.getFees();
@@ -113,14 +120,34 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   getUser() {
     this.userLoaded = false;
-    // TODO: http get items
+
+    // this.http.get(this.endpoint + 'patron', {headers: this.httpHeaders}).subscribe((userData: IUBUser) => {
+    //   this.user = userData;
+    //   this.userLoaded = true;
+    // }, error => {
+    //   console.log(error);
+    // });
+
     this.userLoaded = true;
   }
 
   getItems() {
     this.itemsLoaded = false;
-    // TODO: http get items
-    this.items.doc.sort((a,b) => {
+
+    // this.http.get(this.endpoint + 'items', {headers: this.httpHeaders}).subscribe((itemData: IUBItems) => {
+    //   this.items = itemData;
+    //   this.items.doc.sort((a, b) => {
+    //     if (a.endtime > b.endtime) {
+    //       return 1;
+    //     } else { return -1; }
+    //   });
+    //   this.itemsLoaded = true;
+    //   this.prepareForm();
+    // }, error => {
+    //   console.log(error);
+    // });
+
+    this.items.doc.sort((a, b) => {
       if (a.endtime > b.endtime) {
         return 1;
       } else { return -1; }
@@ -131,7 +158,14 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   getFees() {
     this.feesLoaded = false;
-    // TODO: http get items
+
+    // this.http.get(this.endpoint + 'fees', {headers: this.httpHeaders}).subscribe((feeData: IUBFees) => {
+    //   this.fees = feeData;
+    //   this.feesLoaded = true;
+    // }, error => {
+    //   console.log(error);
+    // });
+
     this.feesLoaded = true;
   }
 
@@ -139,23 +173,31 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.getUser();
     this.getItems();
     this.getFees();
-    setTimeout(() => {
-      refresher.target.complete();
-    }, 1000);
+    refresher.target.complete();
   }
 
   renewItems() {
+    const docsToRenew: IUBItems = {
+      'doc': []
+    };
+
     for (let i = 0; i < this.items.doc.length; i++) {
       if (this.itemStatus[i].isChecked) {
-        this.renewRequest(this.items.doc[i]);
+        docsToRenew.doc.push(this.items.doc[i]);
       }
     }
+
+    this.renewRequest(docsToRenew);
   }
 
-  renewRequest(item: IUBItem) {
-    console.log('[UB-Account]: Renew item ' + item.about);
-
-    // TODO: http renew request
+  renewRequest(items: IUBItems) {
+    // this.http.post(this.endpoint + 'renew', items, {headers: this.httpHeaders}).subscribe(success => {
+    //   console.log(success);
+    //   this.getItems();
+    //   this.getFees();
+    // }, error => {
+    //   console.log(error);
+    // });
   }
 
   prepareForm() {

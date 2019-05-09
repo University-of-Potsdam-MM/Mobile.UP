@@ -196,6 +196,7 @@ export interface IEndpoints {
   events: string;
   library: string;
   libraryDAIA: string;
+  libraryPAIA: string;
   libraryLKZ: string;
   puls: string;
   maps: string;
