@@ -6,6 +6,43 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!(userLoaded && feesLoaded && itemsLoaded)" padding>
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <ion-item *ngIf="userLoaded" lines="none">
+    <ion-label><b>{{ user.name }}</b></ion-label>
+  </ion-item>
+  <ion-item *ngIf="feesLoaded" lines="none">
+    <ion-label>{{ "page.library-account.fees" | translate }}: <span class="feeAmount">{{ fees.amount }}</span></ion-label>
+  </ion-item>
+
+  <ion-list *ngIf="itemsLoaded">
+    <ion-item-divider color="light" lines="none">
+      <ion-label>{{ "page.library-account.loanItems" | translate }}</ion-label>
+      <ion-label slot="end" padding-end>{{ "page.library-account.days" | translate }}</ion-label>
+    </ion-item-divider>
+    <span *ngFor="let item of items.doc; let i = index">
+      <ion-item *ngIf="item.status === 3" lines="none">
+        <ion-checkbox slot="start" [disabled]="!itemStatus[i].isRenewable" [(ngModel)]="itemStatus[i].isChecked"></ion-checkbox>
+        <ion-label text-wrap>
+          {{ item.about }}
+          <p>
+            {{ "page.library-account.returnUntil" | translate }}: {{ formatItemDates(item.endtime) }}
+          </p>
+        </ion-label>
+        <ion-chip *ngIf="itemStatus[i].status === 0" color="success">{{ itemStatus[i].daysToReturn }}</ion-chip>
+        <ion-chip *ngIf="itemStatus[i].status === 1" color="warning">{{ itemStatus[i].daysToReturn }}</ion-chip>
+        <ion-chip *ngIf="itemStatus[i].status === 2" color="danger">{{ itemStatus[i].daysToReturn }}</ion-chip>
+      </ion-item>
+    </span>
+  </ion-list>
+  <ion-button (click)="renewItems()" padding-start [disabled]="validateCheckboxes()">{{ "button.renew" | translate }}</ion-button>
+  <app-hint-box *ngIf="grayedOutItemsHint" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.notRenewable"></app-hint-box>
 </ion-content>

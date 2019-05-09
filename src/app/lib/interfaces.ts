@@ -523,42 +523,49 @@ export interface IFeedback extends IDeviceInfo {
 
 export interface IUBUser {
   name: string;
-  email: string;
-  address: string;
-  expires: string;
-  status: number;
-  type: string[];
+  email?: string;
+  address?: string;
+  expires?: string;
+  status?: number;
+  type?: string[];
+  note?: string;
 }
 
 export interface IUBItems {
   doc: IUBItem[];
 }
 
-interface IUBItem {
+export interface IUBItem {
   status: number;
-  item: string;
-  edition: string;
-  about: string;
-  label: string;
-  queue: number;
-  renewals: number;
-  reminder: number;
-  starttime: string;
-  endtime: string;
-  cancancel: boolean;
+  item?: string;
+  edition?: string;
+  requested?: string;
+  about?: string;
+  label?: string;
+  queue?: number;
+  renewals?: number;
+  reminder?: number;
+  starttime?: string;
+  endtime?: string;
+  cancancel?: boolean;
+  canrenew?: boolean;
+  error?: string;
+  condition?: any;
+  storage?: string;
+  storageid?: string;
 }
 
 export interface IUBFees {
-  amount: number;
-  fee: IUBFee[];
+  amount?: string;
+  fee?: IUBFee[];
 }
 
-interface IUBFee {
-  amount: number;
-  date: string;
-  about: string;
-  item: string;
-  edition: string;
-  feetype: string;
-  feeid: string;
+export interface IUBFee {
+  amount: string;
+  date?: string;
+  about?: string;
+  item?: string;
+  edition?: string;
+  feetype?: string;
+  feeid?: string;
 }

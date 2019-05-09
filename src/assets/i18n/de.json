@@ -124,7 +124,12 @@
       "title": "Impressum"
     },
     "library-account": {
-      "title": "UB-Benutzerkonto"
+      "title": "UB-Benutzerkonto",
+      "returnUntil": "abzugeben am",
+      "fees": "Gebühren",
+      "loanItems": "Geliehene Items",
+      "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
+      "days": "Tage"
     },
     "library-search": {
       "title": "Bibliothekssuche",
@@ -342,7 +347,8 @@
     "webpage": "Webseite",
     "submit": "Abschicken",
     "keep": "Behalten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "renew": "verlängern"
   },
   "alert": {
     "title": {

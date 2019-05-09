@@ -124,7 +124,12 @@
       "title": "Legal Notice"
     },
     "library-account": {
-      "title": "UB-Account"
+      "title": "UB-Account",
+      "returnUntil": "return until",
+      "fees": "Fees",
+      "loanItems": "Loaned items",
+      "notRenewable": "Items that are grayed out can not be renewed.",
+      "days": "Days"
     },
     "library-search": {
       "title": "Library search",
@@ -343,7 +348,8 @@
     "webpage": "Website",
     "submit": "Submit",
     "keep": "Keep",
-    "delete": "Delete"
+    "delete": "Delete",
+    "renew": "renew"
   },
   "alert": {
     "title": {
