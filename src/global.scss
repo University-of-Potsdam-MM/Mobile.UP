@@ -56,6 +56,10 @@ ion-item {
   }
 }
 
+.updateToast {
+  --button-color: white!important;
+}
+
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before {
 	background-image:none;
 }

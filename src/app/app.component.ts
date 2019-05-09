@@ -1,5 +1,5 @@
-import {Component, QueryList, ViewChildren} from '@angular/core';
-import {Platform, Events, MenuController, NavController, AlertController, IonRouterOutlet} from '@ionic/angular';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Platform, Events, MenuController, NavController, AlertController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -13,7 +13,7 @@ import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
 import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
 import { UPLoginProvider } from './services/login-provider/login';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +26,7 @@ export class AppComponent {
   userInformation: IOIDCUserInformationResponse = null;
   loggedIn = false;
   username;
+  config: IConfig;
 
   constructor(
     private platform: Platform,
@@ -49,6 +50,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.config = ConfigService.config;
       this.prepareStorageOnAppUpdate();
       this.initTranslate();
       this.connection.initializeNetworkEvents();
@@ -81,7 +83,6 @@ export class AppComponent {
    * @description clears the storage if user has a old version of the app
    */
   async prepareStorageOnAppUpdate() {
-    const config = ConfigService.config;
     const savedVersion = await this.storage.get('appVersion');
 
     if (!savedVersion) {
@@ -89,15 +90,15 @@ export class AppComponent {
       // clear the whole storage
       this.storage.clear().then(() => {
         console.log('[Mobile.UP]: cleared storage');
-        this.storage.set('appVersion', config.appVersion);
-        this.checkSessionValidity(config);
+        this.storage.set('appVersion', this.config.appVersion);
+        this.checkSessionValidity();
       }, error => {
         console.log('[ERROR]: clearing storage failed');
         console.log(error);
       });
     } else {
-      this.storage.set('appVersion', config.appVersion);
-      this.checkSessionValidity(config);
+      this.storage.set('appVersion', this.config.appVersion);
+      this.checkSessionValidity();
     }
   }
 
@@ -107,7 +108,7 @@ export class AppComponent {
    * session will be refreshed anyway. Otherwise the currently stored session
    * object is deleted.
    */
-  async checkSessionValidity(config: IConfig) {
+  async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
     if (session) {
@@ -120,8 +121,8 @@ export class AppComponent {
         return (validUntilUnixTime - nowUnixTime) > boundary;
       };
 
-      if (sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, config.general.tokenRefreshBoundary)) {
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, config.authorization.oidc)
+      if (sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
               oidcTokenObject:  response.oidcTokenObject,
@@ -132,7 +133,7 @@ export class AppComponent {
 
             this.userSession.setSession(newSession);
 
-            this.login.oidcGetUserInformation(newSession, config.authorization.oidc).subscribe(userInformation => {
+            this.login.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
               console.log(error);
@@ -146,12 +147,12 @@ export class AppComponent {
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 console.log('[Mobile.UP]: Re-authenticating...');
-                this.login.oidcLogin(session.credentials, config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
                   console.log(`[Mobile.UP]: Re-authenticating successful`);
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
-                  this.login.oidcGetUserInformation(sessionRes, config.authorization.oidc).subscribe(userInformation => {
+                  this.login.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
                     console.log(error);
