@@ -33,7 +33,7 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   ngOnInit() {
-    this.platform.ready().then(async () => {
+    this.platform.ready().then(() => {
       this.setupModules();
       if (this.platform.is('android') || this.platform.is('ios')) {
         this.checkAppUpdate();
