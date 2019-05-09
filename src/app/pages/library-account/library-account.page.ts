@@ -53,7 +53,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       'renewals': 0,
       'reminder': 0,
       'starttime': '2014-05-08T12:37Z',
-      'endtime': '2019-06-09',
+      'endtime': '2020-06-09',
       'cancancel': false,
       'canrenew': true,
       }, {
@@ -63,7 +63,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       'label': 'BIO SED 03',
       'queue': 0,
       'starttime': '2014-05-12T18:07Z',
-      'endtime': '2019-05-24',
+      'endtime': '2019-05-13',
       'cancancel': true,
       'storage': 'pickup service desk',
       'storageid': 'http://bib.example.org/library/desk/7'
@@ -120,6 +120,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   getItems() {
     this.itemsLoaded = false;
     // TODO: http get items
+    this.items.doc.sort((a,b) => {
+      if (a.endtime > b.endtime) {
+        return 1;
+      } else { return -1; }
+    });
     this.itemsLoaded = true;
     this.prepareForm();
   }
