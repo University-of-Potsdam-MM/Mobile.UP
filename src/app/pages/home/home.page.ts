@@ -32,11 +32,15 @@ export class HomePage extends AbstractPage implements OnInit {
     super();
   }
 
-  async ngOnInit() {
-    this.setupModules();
-    if (this.platform.is('android') || this.platform.is('ios')) {
-      this.checkAppUpdate();
-    }
+  ngOnInit() {
+    this.platform.ready().then(async () => {
+      this.setupModules();
+      if (this.platform.is('android') || this.platform.is('ios')) {
+        this.checkAppUpdate();
+      }
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   async setupModules() {
@@ -94,13 +98,14 @@ export class HomePage extends AbstractPage implements OnInit {
           const toast = await this.toastCtrl.create({
             message: this.translate.instant('alert.app-update'),
             position: 'top',
+            // color: 'primary',
+            cssClass: 'updateToast',
             buttons: [
               {
                 side: 'end',
                 // role: 'cancel',
                 icon: 'appstore',
                 handler: () => {
-                  console.log('Cancel clicked');
                   if (this.platform.is('android')) {
                     this.inAppBrowser.create(this.config.urlAndroid, '_system');
                   } else { this.inAppBrowser.create(this.config.urlIOS, '_system'); }
