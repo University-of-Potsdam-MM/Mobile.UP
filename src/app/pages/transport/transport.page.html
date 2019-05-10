@@ -5,7 +5,7 @@
     <ion-title>{{ "page.transport.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <app-campus-tab (campusChanged)="campusTabComponent.handleSwipeEvent($event)"></app-campus-tab>
+    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
 
