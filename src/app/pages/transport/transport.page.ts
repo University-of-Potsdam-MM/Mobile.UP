@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
@@ -10,7 +10,7 @@ import {CampusTabComponent} from '../../components/campus-tab/campus-tab.compone
   templateUrl: './transport.page.html',
   styleUrls: ['./transport.page.scss'],
 })
-export class TransportPage extends AbstractPage {
+export class TransportPage extends AbstractPage implements OnInit {
 
   currentDate;
   isLoaded = false;
@@ -31,6 +31,10 @@ export class TransportPage extends AbstractPage {
     super({ requireNetwork: true });
   }
 
+  ngOnInit() {
+    this.loadCampusMenu();
+  }
+
   changeCampus(campus: ICampus) {
     this.campus = campus.name;
     this.loadCampusMenu();
@@ -42,22 +46,18 @@ export class TransportPage extends AbstractPage {
 
     if (refresher) {
       this.hardRefresh = true;
-    } else if (!infiniteScroll) {
-      this.isLoaded = false;
-    }
+    } else if (!infiniteScroll) { this.isLoaded = false; }
 
     if (!infiniteScroll) { this.maxJourneys = 15; }
 
     const headers: HttpHeaders = new HttpHeaders()
       .append('Authorization', this.config.webservices.apiToken);
 
-    if (this.campus === 'Griebnitzsee') {
+    if (this.campus === 'griebnitzsee') {
       this.campusid  = '900230003';
-    } else if (this.campus === 'Golm') {
+    } else if (this.campus === 'golm') {
       this.campusid = '900220365';
-    } else {
-      this.campusid = '900230133';
-    }
+    } else { this.campusid = '900230133'; }
 
     this.error = null;
 
