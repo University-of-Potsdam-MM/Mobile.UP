@@ -80,5 +80,24 @@ export const SETTINGS = [
         type: ESettingType.boolean,
         icon: 'log-in',
         options: []
-    }
+    },
+    {
+        key: 'externalRedirect',
+        value: '',
+        type: ESettingType.placeholder
+    },
+    {
+        key: 'showDialog',
+        value: true,
+        type: ESettingType.boolean,
+        icon: 'albums',
+        options: []
+    },
+    {
+        key: 'appRedirect',
+        value: false,
+        type: ESettingType.boolean,
+        icon: 'appstore',
+        options: []
+    },
 ];

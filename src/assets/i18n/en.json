@@ -193,6 +193,15 @@
         "mail": {
           "lbl": "Mail"
         },
+        "externalRedirect": {
+          "lbl": "Redirection to external services"
+        },
+        "showDialog": {
+          "lbl": "Show dialog"
+        },
+        "appRedirect": {
+          "lbl": "Open external apps"
+        },
         "autologin": {
           "lbl": "Automatic login"
         },
@@ -365,7 +374,7 @@
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",
-    "redirect-website-app": "Redirect to external website or app?",
+    "redirect-website-app": "Redirect to external service?",
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",
