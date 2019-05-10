@@ -273,7 +273,8 @@
       "vegan": "Vegan",
       "vegetarian": "Vegetarisch",
       "guests": "Gäste",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
+      "mensaClosed": "Diese Mensa ist derzeit geschlossen."
     },
     "unishop": {
       "title": "UNIshop"

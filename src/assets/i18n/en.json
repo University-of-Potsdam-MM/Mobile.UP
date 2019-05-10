@@ -264,7 +264,7 @@
       "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
     "mensa":{
-      "title": "Mensa",
+      "title": "Canteen",
       "campus1": "Griebnitzsee",
       "campus2": "Neues Palais",
       "campus3": "Golm",
@@ -273,7 +273,8 @@
       "vegan": "Vegan",
       "vegetarian": "Vegetarian",
       "guests": "Guests",
-      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam."
+      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
+      "mensaClosed": "This canteen is closed at the moment."
     },
     "unishop": {
       "title": "UNIshop"

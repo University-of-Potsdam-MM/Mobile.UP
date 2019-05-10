@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
-import { IConfig } from 'src/app/lib/interfaces';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 
@@ -47,7 +46,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
       this.nominatim = data;
 
       const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
+        .append('Authorization', this.config.webservices.apiToken);
 
       const url = this.config.webservices.endpoint.openingHours;
       const request = this.http.get(url, {headers: headers});
@@ -139,10 +138,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         + this.addZero(willClose.getMinutes())
         + this.translate.instant('page.opening-hours.time');
       }
-    } else {
-      return '';
-    }
-    return '';
+    } else { return ''; }
   }
 
   closedUntil(index) {

@@ -18,6 +18,8 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
+  <app-hint-box *ngIf="isLoaded && !mensaIsOpen" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
+
   <ion-item *ngIf="isLoaded" lines="none">
     <ion-icon slot="start" name="calendar" (click)="showBasicCalendar = !showBasicCalendar;"
     [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"></ion-icon>

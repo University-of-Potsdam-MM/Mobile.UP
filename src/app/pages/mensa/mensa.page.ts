@@ -9,6 +9,7 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { utils } from 'src/app/lib/util';
 import * as jquery from 'jquery';
+import * as opening from 'opening_hours';
 
 @Component({
   selector: 'app-mensa',
@@ -40,6 +41,7 @@ export class MensaPage extends AbstractPage {
 
   iconMapping = [];
   ulfIconMapping = [];
+  mensaIsOpen = true;
 
   isLoaded;
   hardRefresh;
@@ -70,6 +72,8 @@ export class MensaPage extends AbstractPage {
       this.cache.removeItems('mensaResponse*');
       this.hardRefresh = true;
     } else { this.isLoaded = false; }
+
+    this.getOpening();
 
     this.allMeals = [];
     this.displayedMeals = [];
@@ -242,5 +246,36 @@ export class MensaPage extends AbstractPage {
     if (this.translate.currentLang === 'de') {
       return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
+  }
+
+  getOpening() {
+    this.mensaIsOpen = true;
+    const headers: HttpHeaders = new HttpHeaders()
+      .append('Authorization', this.config.webservices.apiToken);
+
+    const searchTerm = 'mensa ' + this.campus;
+
+    const url = this.config.webservices.endpoint.openingHours;
+    const request = this.http.get(url, {headers: headers});
+    const requestNom = this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397');
+    this.cache.loadFromObservable('openingHours', request).subscribe(response => {
+      this.cache.loadFromObservable('nominatim', requestNom).subscribe(nominatim => {
+        if (response) {
+          response = utils.convertToArray(response);
+          response = response.filter(function(item) {
+            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+          });
+
+          if (response.length > 0) {
+            response = response[0];
+            response.parsedOpening = new opening(
+              response.opening_hours,
+              nominatim,
+              { 'locale': this.translate.currentLang });
+            this.mensaIsOpen = response.parsedOpening.getState();
+          }
+        }
+      });
+    });
   }
 }
