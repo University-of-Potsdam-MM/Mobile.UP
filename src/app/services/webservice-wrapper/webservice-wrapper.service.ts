@@ -503,24 +503,9 @@ export class WebserviceWrapperService {
       cacheTTL
     );
 
-    if (cachingOptions.forceRefreshGroup) {
-      // if desired the complete cache-group will be removed
-      // after it has been removed we return the cacheObservable
-      console.log(`[WebserviceWrapper]: Force refresh group '${cacheGroupKey}': ${webserviceName}`);
-      return from(this.cache.clearGroup(cacheGroupKey))
-        .pipe(switchMap(val => cacheObservable));
-    }
-
-    if (cachingOptions.forceRefresh) {
-      // if desired an already existing cache-item will be removed
-      // after it has been removed we return the cacheObservable
-      console.log(`[WebserviceWrapper]: Force refresh item: ${webserviceName}`);
-      return from(this.cache.removeItem(cacheItemKey))
-        .pipe(switchMap(val => cacheObservable));
-    }
-
-    // else we just return the cacheObservable without any extra steps
-    console.log(`[WebserviceWrapper]: With caching: ${webserviceName}`);
-    return cacheObservable;
+    return from(Promise.all([
+      cachingOptions.forceRefreshGroup ? this.cache.clearGroup(cacheGroupKey) : undefined,
+      cachingOptions.forceRefresh ? this.cache.removeItem(cacheItemKey) : undefined
+    ])).pipe(switchMap(val => cacheObservable));
   }
 }
