@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';

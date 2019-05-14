@@ -1,10 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RoomplanPage } from '../roomplan/roomplan.page';
-import {IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
+import {IHouse, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
@@ -32,8 +30,6 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private cache: CacheService,
-    private http: HttpClient,
     private alertProvider: AlertService,
     private ws: WebserviceWrapperService
   ) {

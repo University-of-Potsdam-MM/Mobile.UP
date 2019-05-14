@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CacheService } from 'ionic-cache';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IonSlides } from '@ionic/angular';
 import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';

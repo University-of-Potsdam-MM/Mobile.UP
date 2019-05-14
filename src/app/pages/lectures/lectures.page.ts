@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import { CacheService } from 'ionic-cache';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
@@ -16,7 +15,6 @@ import {WebserviceWrapperService} from '../../services/webservice-wrapper/webser
 export class LecturesPage extends AbstractPage implements OnInit {
 
   constructor(
-    private cache: CacheService,
     private ws: WebserviceWrapperService,
     private modalCtrl: ModalController,
     private platform: Platform,

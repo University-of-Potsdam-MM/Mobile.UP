@@ -2,16 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
 import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { CacheService } from 'ionic-cache';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 import {ILibraryRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
@@ -44,7 +41,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     private translate: TranslateService,
     private alert: AlertService,
     private storage: Storage,
-    private cache: CacheService,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private ws: WebserviceWrapperService

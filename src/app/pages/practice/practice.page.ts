@@ -1,7 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse, } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { CacheService } from 'ionic-cache';
 import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
@@ -36,10 +35,8 @@ export class PracticePage extends AbstractPage {
 
   constructor(
     private storage: Storage,
-    private cache: CacheService,
     private platform: Platform,
     private settingsProvider: SettingsService,
-    private http: HttpClient,
     private keyboard: Keyboard,
     private translate: TranslateService,
     private chRef: ChangeDetectorRef,

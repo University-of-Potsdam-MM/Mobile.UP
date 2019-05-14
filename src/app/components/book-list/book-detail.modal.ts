@@ -1,13 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../../services/alert/alert.service';
 import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
 import { ConfigService } from '../../services/config/config.service';
-import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
+import { utils } from '../../lib/util';
 import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
@@ -44,8 +42,6 @@ export class BookDetailModalPage implements OnInit {
 
   constructor(
       private modalCtrl: ModalController,
-      private cache: CacheService,
-      private http: HttpClient,
       private translate: TranslateService,
       private alert: AlertService,
       public webIntent: WebIntentService, // is used in the HTML

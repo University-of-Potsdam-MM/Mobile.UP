@@ -1,18 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { HttpErrorResponse, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import {
   IHouse,
   IRoom,
   IHousePlan,
   IRoomEvent,
-  IConfig,
-  IRoomApiRequest,
   IReservationRequestResponse,
   ICampus
 } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
@@ -26,8 +22,6 @@ import {CampusTabComponent} from '../../components/campus-tab/campus-tab.compone
 export class RoomplanPage extends AbstractPage implements OnInit {
 
   constructor(
-    private http: HttpClient,
-    private cache: CacheService,
     private alert: AlertService,
     private alertProvider: AlertService,
     private ws: WebserviceWrapperService

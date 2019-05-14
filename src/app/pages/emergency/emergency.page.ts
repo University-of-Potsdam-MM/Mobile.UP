@@ -1,6 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
 import { Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import * as jquery from 'jquery';
@@ -28,8 +26,6 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   cordova = false;
 
   constructor(
-    private http: HttpClient,
-    private cache: CacheService,
     private platform: Platform,
     private keyboard: Keyboard,
     private chRef: ChangeDetectorRef,
