@@ -193,7 +193,8 @@
         "cachingEnabled": false
       },
       "mensa": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals"
+        "url": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals",
+        "cacheGroupKey": "mensaGroup"
       },
       "practiceSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json"

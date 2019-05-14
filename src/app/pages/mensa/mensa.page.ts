@@ -2,8 +2,6 @@ import {Component, ViewChild} from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from 'ionic-cache';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
@@ -61,8 +59,6 @@ export class MensaPage extends AbstractPage {
 
   constructor(
     private translate: TranslateService,
-    private cache: CacheService,
-    private http: HttpClient,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
@@ -80,7 +76,6 @@ export class MensaPage extends AbstractPage {
     let i;
 
     if (refresher) {
-      this.cache.removeItems('mensaResponse*');
       this.hardRefresh = true;
     } else { this.isLoaded = false; }
 
@@ -102,7 +97,8 @@ export class MensaPage extends AbstractPage {
       'mensa',
       <IMensaRequestParams>{
         campus_canteen_name: this.campus.canteen_name
-      }
+      },
+      {forceRefreshGroup: this.hardRefresh}
     ).subscribe((res: IMensaResponse) => {
 
       if (res.meal) {
