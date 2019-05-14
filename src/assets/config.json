@@ -273,7 +273,6 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
       }
     },
-    "cachingEnabled": true,
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf",
     "defaultCachingTTL": 7200,
     "cacheGroupKeySuffix": "Group"

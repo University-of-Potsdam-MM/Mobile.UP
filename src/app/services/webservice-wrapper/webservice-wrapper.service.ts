@@ -428,7 +428,7 @@ export class WebserviceWrapperService {
    */
   public call(webserviceName: string,
               params = {},
-              cachingOptions?: ICachingOptions) {
+              cachingOptions: ICachingOptions = {}) {
 
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
@@ -441,6 +441,7 @@ export class WebserviceWrapperService {
       throw new Error(`[WebserviceWrapper]: No url defined for endpoint '${webserviceName}'`);
     }
 
+    // shortcut for less repetition
     const endpoint = this.config.webservices.endpoint[webserviceName];
 
     // create the request by calling the defined buildRequest function
@@ -462,65 +463,64 @@ export class WebserviceWrapperService {
       }
     );
 
-    if (!(this.config.webservices.cachingEnabled && endpoint.cachingEnabled !== false)) {
-      // if caching was not desired we just return the observable itself
+    if (endpoint.cachingEnabled === false) {
+      // if caching is not desired for this endpoint we just return the observable itself
       console.log(`[WebserviceWrapper]: Without caching: ${webserviceName}`);
       return wrapperObservable;
-    } else {
-      // if desired we're caching the response. By default it is always desired
-      // except 'cachingEnabled' is set to false in the endpoints config.
-      //
-      // Following values will be considered for caching (in ascending order):
-      //
-      // - key 1. key as defined in cachingOptions
-      //       2. name of the webservice plus base64 encoding of the used parameters
-      //
-      // - groupKey 1. key as defined in cachingOptions
-      //            2. key specified in endpoint config
-      //            3. name of the webservice plus "Group", e.g. 'library' -> 'libraryGroup'
-      //
-      // - ttl 1: ttl in cachingOptions
-      //       2: ttl in config or default ttl
-      //       3: no explicit ttl, which will use the default ttl set in app.component
-
-      const cacheItemKey = cachingOptions.key
-        || webserviceName + (isEmptyObject(params) ? '' : (':' + btoa(JSON.stringify(params))));
-
-      const cacheGroupKey = cachingOptions.groupKey
-        || this.config.webservices.endpoint[webserviceName].cacheGroupKey
-        || webserviceName + this.config.webservices.cacheGroupKeySuffix;
-
-      const cacheTTL = cachingOptions.ttl
-        || this.config.webservices.endpoint[webserviceName].cachingTTL
-        || null;
-
-      const cacheObservable = this.cache.loadFromObservable(
-        cacheItemKey,
-        wrapperObservable,
-        cacheGroupKey,
-        cacheTTL
-      );
-
-      if (cachingOptions.forceRefreshGroup) {
-        // if desired the complete cache-group will be removed
-        // after it has been removed we return the cacheObservable
-        console.log(`[WebserviceWrapper]: Force refresh group '${cacheGroupKey}': ${webserviceName}`);
-        return from(this.cache.clearGroup(cacheGroupKey))
-          .pipe(switchMap(val => cacheObservable));
-      }
-
-      if (cachingOptions.forceRefresh) {
-        // if desired an already existing cache-item will be removed
-        // after it has been removed we return the cacheObservable
-        console.log(`[WebserviceWrapper]: Force refresh item: ${webserviceName}`);
-        return from(this.cache.removeItem(cacheItemKey))
-          .pipe(switchMap(val => cacheObservable));
-      }
-
-      // else we just return the cacheObservable without any extra steps
-      console.log(`[WebserviceWrapper]: With caching: ${webserviceName}`);
-      return cacheObservable;
     }
 
+    // at this point caching seems to be desired
+
+    /* key:
+     *   1. key as defined in cachingOptions
+     *   2. key = name of the webservice plus base64 encoding of the used parameters
+     */
+    const cacheItemKey = cachingOptions.key
+      || webserviceName + (isEmptyObject(params) ? '' : (':' + btoa(JSON.stringify(params))));
+
+    /* groupKey:
+     *   1. key as defined in cachingOptions
+     *   2. key specified in endpoint config
+     *   3. key = name of the webservice plus "Group", e.g. 'library' -> 'libraryGroup'
+     */
+    const cacheGroupKey = cachingOptions.groupKey
+      || this.config.webservices.endpoint[webserviceName].cacheGroupKey
+      || webserviceName + this.config.webservices.cacheGroupKeySuffix;
+
+    /* ttl:
+     *   1: ttl in cachingOptions
+     *   2: ttl in config or default ttl
+     *   3: no explicit ttl, which will use the default ttl set in app.component
+     */
+    const cacheTTL = cachingOptions.ttl
+      || this.config.webservices.endpoint[webserviceName].cachingTTL
+      || null;
+
+    const cacheObservable = this.cache.loadFromObservable(
+      cacheItemKey,
+      wrapperObservable,
+      cacheGroupKey,
+      cacheTTL
+    );
+
+    if (cachingOptions.forceRefreshGroup) {
+      // if desired the complete cache-group will be removed
+      // after it has been removed we return the cacheObservable
+      console.log(`[WebserviceWrapper]: Force refresh group '${cacheGroupKey}': ${webserviceName}`);
+      return from(this.cache.clearGroup(cacheGroupKey))
+        .pipe(switchMap(val => cacheObservable));
+    }
+
+    if (cachingOptions.forceRefresh) {
+      // if desired an already existing cache-item will be removed
+      // after it has been removed we return the cacheObservable
+      console.log(`[WebserviceWrapper]: Force refresh item: ${webserviceName}`);
+      return from(this.cache.removeItem(cacheItemKey))
+        .pipe(switchMap(val => cacheObservable));
+    }
+
+    // else we just return the cacheObservable without any extra steps
+    console.log(`[WebserviceWrapper]: With caching: ${webserviceName}`);
+    return cacheObservable;
   }
 }
