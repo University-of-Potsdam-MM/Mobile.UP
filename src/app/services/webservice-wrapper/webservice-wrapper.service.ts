@@ -463,7 +463,7 @@ export class WebserviceWrapperService {
       }
     );
 
-    if (endpoint.cachingEnabled === false) {
+    if (endpoint.cachingEnabled === false || cachingOptions.dontCache === true) {
       // if caching is not desired for this endpoint we just return the observable itself
       console.log(`[WebserviceWrapper]: Without caching: ${webserviceName}`);
       return wrapperObservable;

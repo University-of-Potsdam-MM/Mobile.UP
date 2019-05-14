@@ -54,6 +54,10 @@ export interface ICachingOptions {
    * the groupKey for this cache item. Optional because it can be auto-generated
    */
   groupKey?: string;
+  /**
+   * whether the request should not be cached this time
+   */
+  dontCache?: boolean;
 }
 
 /**

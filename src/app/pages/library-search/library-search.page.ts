@@ -88,6 +88,9 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             query: this.query.trim(),
             startRecord: this.startRecord,
             maximumRecords: this.maximumRecords
+          },
+          {
+            dontCache: true
           }
         ).subscribe(res => {
           this.parseXMLtoJSON(res).then(data => {
@@ -304,10 +307,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.isLoadedFavorites = false;
     this.updatedFavorites = 0;
 
-    if (refresher) {
-      this.cache.removeItems('libraryFavoriteResource*');
-    }
-
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
         // console.log(utils.convertToArray(tmp[i].identifier));
@@ -351,6 +350,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               query: query,
               startRecord: '1',
               maximumRecords: '5'
+            },
+            {
+              groupKey: 'libraryFavoriteResource',
+              forceRefreshGroup: this.refresher != null
             }
           ).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {
