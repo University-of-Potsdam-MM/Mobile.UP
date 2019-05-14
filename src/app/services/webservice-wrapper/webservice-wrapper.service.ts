@@ -51,13 +51,37 @@ function createRoomParams(params: IRoomsRequestParams) {
  *   By default (see {@link defaults}) the error is simply logged to console and
  *   passed on.
  *
- * Usage example:
+ * This service also supports caching. Caching is enabled for every endpoint by
+ * default, if it should be disabled set 'cachingEnabled' to false in the endpoint
+ * definition.
+ * When calling a webservice an optional object for caching options can be used.
+ * In this object you can manually set some caching parameters and make the request
+ * remove any cached items before execution by using:
+ *  - 'forceRefresh': will remove item with same cacheItemKey
+ *  - 'forceRefreshGroup': will remove all items with same cacheGroupKey
+ *
+ * Usage examples:
  *
  * @example
  * // without parameters
- * this.webserviceWrapper.call('maps').subscribe()
+ * this.webserviceWrapper.call('maps')
+ *
  * // with parameters
- * this.webserviceWrapper.call('mensa', {campus_canteen_name: 'NeuesPalais'}).subscribe()
+ * this.webserviceWrapper.call('mensa', {campus_canteen_name: 'NeuesPalais'})
+ *
+ * // will get a new element because forceRefresh is set to true
+ * this.webserviceWrapper.call(
+ *    'mensa',
+ *    {campus_canteen_name: 'NeuesPalais'},
+ *    {forceRefresh: true}
+ * )
+ *
+ * // will remove any cached mensa request because forceRefrehGroup is set to true
+ * this.webserviceWrapper.call(
+ *    'mensa',
+ *    {campus_canteen_name: 'NeuesPalais'},
+ *    {forceRefreshGroup: true}
+ * )
  */
 @Injectable({
   providedIn: 'root'
