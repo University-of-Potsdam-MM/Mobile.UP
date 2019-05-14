@@ -32,9 +32,27 @@ export interface IWebservice {
 }
 
 export interface ICachingOptions {
-  cache: boolean;
+  /**
+   * whether existing cache items should be removed prior to this request or not.
+   * Default is false
+   */
+  forceRefresh?: boolean;
+  /**
+   *
+   */
+  forceRefreshGroup?: boolean;
+  /**
+   * the ttl for this cache item. Optional, by default either the specified ttl
+   * from the config will be used or the genera default ttl
+   */
   ttl?: number;
+  /**
+   * the key for this cache item. Optional because it can be auto-generated
+   */
   key?: string;
+  /**
+   * the groupKey for this cache item. Optional because it can be auto-generated
+   */
   groupKey?: string;
 }
 

@@ -182,11 +182,14 @@ export interface IWebServices {
   apiToken: string;
   defaultCachingTTL: number;
   cacheGroupKeySuffix: string;
+  cachingEnabled: boolean;
 }
 
 export interface IEndpoint {
   url: string;
-  cachingTTL: number;
+  cachingTTL?: number;
+  cacheGroupKey?: string;
+  cachingEnabled?: boolean;
 }
 
 export interface IEndpoints {

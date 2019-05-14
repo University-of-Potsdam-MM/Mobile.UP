@@ -189,7 +189,8 @@
   "webservices": {
     "endpoint": {
       "personSearch": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/"
+        "url": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
+        "cachingEnabled": false
       },
       "mensa": {
         "url": "https://apiup.uni-potsdam.de/endpoints/mensaAPI/meals"
@@ -223,17 +224,21 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/lkzAPI/epn2lkz.php"
       },
       "pulsGetLectureScheduleRoot": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot"
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot",
+        "cacheGroupKey": "lectureSchedule"
       },
       "pulsGetLectureScheduleSubTree": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleSubTree"
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleSubTree",
+        "cacheGroupKey": "lectureSchedule"
       },
       "pulsGetLectureScheduleAll": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleAll",
+        "cacheGroupKey": "lectureSchedule",
         "cachingTTL": 604800
       },
       "pulsGetLectureScheduleCourses": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleCourses"
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleCourses",
+        "cacheGroupKey": "lectureSchedule"
       },
       "pulsGetCourseData": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getCourseData"
@@ -257,15 +262,18 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/emergencyCallsAPI"
       },
       "logging": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/log"
+        "url": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/log",
+        "cachingEnabled": false
       },
       "feedback": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/feedback"
+        "url": "https://apiup.uni-potsdam.de/endpoints/loggingAPI/feedback",
+        "cachingEnabled": false
       },
       "transport": {
         "url": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
       }
     },
+    "cachingEnabled": true,
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf",
     "defaultCachingTTL": 7200,
     "cacheGroupKeySuffix": "Group"
