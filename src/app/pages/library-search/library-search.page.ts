@@ -353,7 +353,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             },
             {
               groupKey: 'libraryFavoriteResource',
-              forceRefreshGroup: this.refresher != null
+              forceRefreshGroup: refresher
             }
           ).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {
