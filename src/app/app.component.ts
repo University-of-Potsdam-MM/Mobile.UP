@@ -59,6 +59,7 @@ export class AppComponent {
       this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
 
+
       this.events.subscribe('userLogin', () => {
         this.updateLoginStatus();
       });

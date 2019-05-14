@@ -494,7 +494,7 @@ export class WebserviceWrapperService {
      */
     const cacheTTL = cachingOptions.ttl
       || this.config.webservices.endpoint[webserviceName].cachingTTL
-      || null;
+      || undefined;
 
     const cacheObservable = this.cache.loadFromObservable(
       cacheItemKey,
