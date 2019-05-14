@@ -424,7 +424,7 @@ export class WebserviceWrapperService {
    * executes the specified call
    * @param webserviceName {string} The name of the service to be called
    * @param params {any} Additional params that will be given to the call building function
-   * @param cachingOptions {ICachingOptions} Defines whether the call should be cached, default is true
+   * @param cachingOptions {ICachingOptions} Optional parameters for caching
    */
   public call(webserviceName: string,
               params = {},

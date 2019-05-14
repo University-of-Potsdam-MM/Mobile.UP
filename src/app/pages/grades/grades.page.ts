@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CacheService } from 'ionic-cache';
 import { IConfig } from 'src/app/lib/interfaces';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -27,8 +26,7 @@ export class GradesPage extends AbstractPage {
   isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
 
   constructor(
-    private ws: WebserviceWrapperService,
-    private cache: CacheService
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true, requireSession: true });
   }
@@ -78,13 +76,14 @@ export class GradesPage extends AbstractPage {
       stgnr = this.studentDetails.StgNr;
     }
 
-    if (this.refresher != null) {
-      this.cache.removeItem('getAcademicAchievements' + stgnr);
-    } else { this.loadingGrades = true; }
+    if (this.refresher == null) {
+      this.loadingGrades = true;
+    }
 
     this.ws.call(
       'pulsGetAcademicAchievements',
-      {session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr}
+      {session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr},
+      {forceRefresh: this.refresher != null}
     ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
@@ -121,9 +120,9 @@ export class GradesPage extends AbstractPage {
    */
   async getStudentDetails() {
 
-    if (this.refresher != null) {
-      this.cache.removeItem('getPersonalStudyAreas');
-    } else { this.studentLoaded = false; }
+    if (this.refresher == null) {
+      this.studentLoaded = false;
+    }
 
     if (!(this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password)) {
       // try to reload session since no login data is found
@@ -133,7 +132,8 @@ export class GradesPage extends AbstractPage {
 
     this.ws.call(
       'pulsGetPersonalStudyAreas',
-      {session: this.session}
+      {session: this.session},
+      {forceRefresh: this.refresher != null}
     ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
