@@ -496,16 +496,21 @@ export class WebserviceWrapperService {
       || this.config.webservices.endpoint[webserviceName].cachingTTL
       || undefined;
 
-    const cacheObservable = this.cache.loadFromObservable(
-      cacheItemKey,
-      wrapperObservable,
-      cacheGroupKey,
-      cacheTTL
+    // removes items from cache if desired and then, after cache has been modified
+    // returns a cached Observable
+    return from(
+      Promise.all([
+        cachingOptions.forceRefreshGroup ? this.cache.clearGroup(cacheGroupKey) : undefined,
+        cachingOptions.forceRefresh ? this.cache.removeItem(cacheItemKey) : undefined
+      ])
+    ).pipe(
+      switchMap(val => this.cache.loadFromObservable(
+        cacheItemKey,
+        wrapperObservable,
+        cacheGroupKey,
+        cacheTTL
+        )
+      )
     );
-
-    return from(Promise.all([
-      cachingOptions.forceRefreshGroup ? this.cache.clearGroup(cacheGroupKey) : undefined,
-      cachingOptions.forceRefresh ? this.cache.removeItem(cacheItemKey) : undefined
-    ])).pipe(switchMap(val => cacheObservable));
   }
 }
