@@ -292,6 +292,20 @@ export class WebserviceWrapperService {
         );
       }
     },
+    nominatim: {
+      buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          {
+            params: {
+              format: 'jsonv2',
+              lat: this.config.campus[0].coordinates[0].toString(),
+              lon: this.config.campus[0].coordinates[1].toString()
+            }
+          }
+        );
+      }
+    },
     // PULS webservices
     pulsGetLectureScheduleRoot: {
       buildRequest: (_, url) => {

@@ -83,7 +83,7 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   checkAppUpdate() {
-    const remoteConfigUrl = this.config.webservices.endpoint.config;
+    const remoteConfigUrl = this.config.webservices.endpoint.config.url;
 
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);

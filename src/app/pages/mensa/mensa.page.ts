@@ -8,7 +8,6 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { utils } from '../../lib/util';
-import {HttpClient} from '@angular/common/http';
 import * as jquery from 'jquery';
 import * as opening from 'opening_hours';
 
@@ -55,8 +54,7 @@ export class MensaPage extends AbstractPage {
 
   constructor(
     private translate: TranslateService,
-    private ws: WebserviceWrapperService,
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -252,10 +250,9 @@ export class MensaPage extends AbstractPage {
   getOpening() {
     this.mensaIsOpen = true;
     const searchTerm = 'mensa ' + this.campus;
-    const requestNom = this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397');
 
     this.ws.call('openingHours').subscribe(response => {
-      requestNom.subscribe(nominatim => {
+      this.ws.call('nominatim').subscribe(nominatim => {
         if (response) {
           response = utils.convertToArray(response);
           response = response.filter(function(item) {

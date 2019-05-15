@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
@@ -18,14 +17,11 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   openingHours;
   allOpeningHours;
-
-  nominatim;
   weekday = [];
   isLoaded;
   modalOpen;
 
   constructor(
-    private http: HttpClient,
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,
@@ -40,10 +36,8 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
-    // needed for providing the country code to opening_hours?
-    // maybe put lat / lon in config and fetch?
-    this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397').subscribe(data => {
-      this.nominatim = data;
+    this.ws.call('nominatim').subscribe(
+      nominatim => {
 
       if (!refresher) {
         this.isLoaded = false;
@@ -60,7 +54,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         for (let i = 0; i < this.allOpeningHours.length; i++) {
           this.allOpeningHours[i].parsedOpening = new opening(
             this.allOpeningHours[i].opening_hours,
-            this.nominatim,
+            nominatim,
             { 'locale': this.translate.currentLang });
 
           this.allOpeningHours[i].nextChange = this.allOpeningHours[i].parsedOpening.getNextChange(from, to);

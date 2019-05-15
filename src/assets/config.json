@@ -190,6 +190,10 @@
   },
   "webservices": {
     "endpoint": {
+      "config": {
+        "url": "https://mobileup.uni-potsdam.de/assets/config.json",
+        "cachingEnabled": false
+      },
       "personSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
         "cachingEnabled": false
@@ -273,6 +277,10 @@
       },
       "transport": {
         "url": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
+      },
+      "nominatim": {
+        "url": "https://nominatim.openstreetmap.org/reverse",
+        "cachingTTL": 604800
       }
     },
     "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf",
