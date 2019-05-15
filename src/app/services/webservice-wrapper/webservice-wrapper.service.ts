@@ -489,7 +489,6 @@ export class WebserviceWrapperService {
 
     if (endpoint.cachingEnabled === false || cachingOptions.dontCache === true) {
       // if caching is not desired for this endpoint we just return the observable itself
-      console.log(`[WebserviceWrapper]: Without caching: ${webserviceName}`);
       return wrapperObservable;
     }
 
@@ -524,8 +523,12 @@ export class WebserviceWrapperService {
     // returns a cached Observable
     return from(
       Promise.all([
-        cachingOptions.forceRefreshGroup ? this.cache.clearGroup(cacheGroupKey) : undefined,
-        cachingOptions.forceRefresh ? this.cache.removeItem(cacheItemKey) : undefined
+        cachingOptions.forceRefreshGroup
+          ? this.cache.clearGroup(cacheGroupKey)
+          : Promise.resolve(),
+        cachingOptions.forceRefresh
+          ? this.cache.removeItem(cacheItemKey)
+          : Promise.resolve()
       ])
     ).pipe(
       switchMap(val => this.cache.loadFromObservable(
