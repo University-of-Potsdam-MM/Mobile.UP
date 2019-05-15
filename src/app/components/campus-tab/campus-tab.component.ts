@@ -27,7 +27,7 @@ export class CampusTabComponent implements OnInit {
    * @param campus
    */
   @Input() set selectedCampus(campus: ICampus) {
-    this.selectCampus(campus, );
+    this.selectCampus(campus);
   }
 
   /**

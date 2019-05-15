@@ -193,6 +193,15 @@
         "mail": {
           "lbl": "Mail"
         },
+        "externalRedirect": {
+          "lbl": "Redirection to external services"
+        },
+        "showDialog": {
+          "lbl": "Show dialog"
+        },
+        "appRedirect": {
+          "lbl": "Open external apps"
+        },
         "autologin": {
           "lbl": "Automatic login"
         },
@@ -255,7 +264,7 @@
       "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },
     "mensa":{
-      "title": "Mensa",
+      "title": "Canteen",
       "campus1": "Griebnitzsee",
       "campus2": "Neues Palais",
       "campus3": "Golm",
@@ -264,7 +273,8 @@
       "vegan": "Vegan",
       "vegetarian": "Vegetarian",
       "guests": "Guests",
-      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam."
+      "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
+      "mensaClosed": "This canteen is closed at the moment."
     },
     "unishop": {
       "title": "UNIshop"
@@ -365,7 +375,7 @@
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",
-    "redirect-website-app": "Redirect to external website or app?",
+    "redirect-website-app": "Redirect to external service?",
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",
@@ -377,7 +387,8 @@
     "calendar-exists": "It seems like you already exported the calendar. Do you want to keep or delete existing events?",
     "feedback-sent": "Your feedback was sent.",
     "feedback-fail": "Failed to send your feedback.",
-    "permission-denied": "Permission denied."
+    "permission-denied": "Permission denied.",
+    "app-update": "App update available!"
   },
   "university": {
     "location": {

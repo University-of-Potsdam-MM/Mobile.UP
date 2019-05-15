@@ -1,5 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
-import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -12,13 +11,12 @@ import {ITransportRequestParams} from '../../services/webservice-wrapper/webserv
   templateUrl: './transport.page.html',
   styleUrls: ['./transport.page.scss'],
 })
-export class TransportPage extends AbstractPage {
+export class TransportPage extends AbstractPage implements OnInit {
 
   currentDate;
   isLoaded = false;
   hardRefresh = false;
   campus: ICampus;
-  campusid;
   departures = [];
   isEnd = false;
   maxJourneys = 15;
@@ -31,6 +29,10 @@ export class TransportPage extends AbstractPage {
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
+  }
+
+  ngOnInit() {
+    this.loadCampusMenu();
   }
 
   changeCampus(campus: ICampus) {

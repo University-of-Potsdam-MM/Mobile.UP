@@ -59,25 +59,29 @@ export class WebIntentService implements OnInit {
    * @param {IModule} moduleConfig - mmoduleConfig
    */
   async permissionPromptWebsite(url: string) {
-    // ask for permission to open Module externaly
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.redirect'),
-      message: this.translate.instant('alert.redirect-website'),
-      buttons: [
-        {
-          text: this.translate.instant('button.cancel'),
-          role: 'cancel',
-          handler: () => {}
-        },
-        {
-          text: this.translate.instant('button.ok'),
-          handler: () => {
-            this.handleWebIntentForWebsite(url);
+    const showDialog = await this.settingsProvider.getSettingValue('showDialog');
+
+    if (showDialog) {
+      // ask for permission to open Module externaly
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('alert.title.redirect'),
+        message: this.translate.instant('alert.redirect-website'),
+        buttons: [
+          {
+            text: this.translate.instant('button.cancel'),
+            role: 'cancel',
+            handler: () => {}
+          },
+          {
+            text: this.translate.instant('button.ok'),
+            handler: () => {
+              this.handleWebIntentForWebsite(url);
+            }
           }
-        }
-      ]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+    } else { this.handleWebIntentForWebsite(url); }
   }
 
   /**
@@ -93,34 +97,52 @@ export class WebIntentService implements OnInit {
       if (this.platform.is('cordova') && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
 
         if (moduleConfig.appId) {
-          // ask for permission to open Module externaly with three options
-          const alert = await this.alertCtrl.create({
-            header: this.translate.instant('alert.title.redirect'),
-            message: this.translate.instant('alert.redirect-website-app'),
-            buttons: [
-              {
-                text: this.translate.instant('button.app'),
-                handler: () => {
-                    const androidUrl = moduleConfig.urlAndroid;
-                    const iosUrl = moduleConfig.urlIOS;
-                    const bundle = moduleConfig.bundleName;
-                    this.launchExternalApp(moduleConfig.appId, bundle, androidUrl, iosUrl);
+          const showDialog = await this.settingsProvider.getSettingValue('showDialog');
+          const appRedirect = await this.settingsProvider.getSettingValue('appRedirect');
+          if (showDialog) {
+
+            let buttons = [];
+            if (appRedirect) {
+              buttons = [
+                {
+                  text: this.translate.instant('button.cancel'),
+                  role: 'cancel',
+                  handler: () => {}
+                },
+                {
+                  text: this.translate.instant('button.app'),
+                  handler: () => {
+                    this.launchExternalApp(moduleConfig.appId, moduleConfig.bundleName, moduleConfig.urlAndroid, moduleConfig.urlIOS);
+                  }
                 }
-              },
-              {
-                text: this.translate.instant('button.webpage'),
-                handler: () => {
-                  this.handleWebIntentForWebsite(moduleConfig.url);
+              ];
+            } else {
+              buttons = [
+                {
+                  text: this.translate.instant('button.cancel'),
+                  role: 'cancel',
+                  handler: () => {}
+                },
+                {
+                  text: this.translate.instant('button.webpage'),
+                  handler: () => {
+                    this.handleWebIntentForWebsite(moduleConfig.url);
+                  }
                 }
-              },
-              {
-                text: this.translate.instant('button.cancel'),
-                role: 'cancel',
-                handler: () => {}
-              }
-            ]
-          });
-          alert.present();
+              ];
+            }
+
+            const alert = await this.alertCtrl.create({
+              header: this.translate.instant('alert.title.redirect'),
+              message: this.translate.instant('alert.redirect-website-app'),
+              buttons: buttons
+            });
+            alert.present();
+          } else {
+            if (appRedirect) {
+              this.launchExternalApp(moduleConfig.appId, moduleConfig.bundleName, moduleConfig.urlAndroid, moduleConfig.urlIOS);
+            } else { this.handleWebIntentForWebsite(moduleConfig.url); }
+          }
         } else {
           this.permissionPromptWebsite(moduleConfig.url);
         }

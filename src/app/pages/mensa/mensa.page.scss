@@ -2,14 +2,8 @@
     color:var(--ion-color-primary);
 }
 
-.calendarButton {
-    --background: var(--ion-color-secondary);
-    color: var(--ion-color-primary);
-}
-
 .activeCalendarButton {
-    --background: var(--ion-color-primary);
-    color:#fff;
+    color: var(--ion-color-primary);
 }
 
 ion-calendar {

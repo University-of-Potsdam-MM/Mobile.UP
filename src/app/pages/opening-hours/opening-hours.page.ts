@@ -130,10 +130,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         + this.addZero(willClose.getMinutes())
         + this.translate.instant('page.opening-hours.time');
       }
-    } else {
-      return '';
-    }
-    return '';
+    } else { return ''; }
   }
 
   closedUntil(index) {

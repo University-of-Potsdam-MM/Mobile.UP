@@ -193,6 +193,15 @@
         "mail": {
           "lbl": "Mail"
         },
+        "externalRedirect": {
+          "lbl": "Weiterleitung auf externe Dienste"
+        },
+        "showDialog": {
+          "lbl": "Dialog anzeigen"
+        },
+        "appRedirect": {
+          "lbl": "Externe Apps öffnen"
+        },
         "autologin": {
           "lbl": "Automatischer Login"
         },
@@ -264,7 +273,8 @@
       "vegan": "Vegan",
       "vegetarian": "Vegetarisch",
       "guests": "Gäste",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt."
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
+      "mensaClosed": "Diese Mensa ist derzeit geschlossen."
     },
     "unishop": {
       "title": "UNIshop"
@@ -365,7 +375,7 @@
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",
-    "redirect-website-app": "Auf externe Webseite oder App weiterleiten?",
+    "redirect-website-app": "Auf externen Dienst weiterleiten?",
     "contact-export-success": "Kontakt gespeichert!",
     "contact-export-fail": "Fehler beim Speichern des Kontaktes.",
     "contact-exists": "Kontakt existiert bereits.",
@@ -377,7 +387,8 @@
     "calendar-exists": "Es scheint, als hätten Sie den Kalender bereits exportiert. Sollen existierende Veranstaltungen beibehalten oder gelöscht werden?",
     "feedback-sent": "Dein Feedback wurde übermittelt.",
     "feedback-fail": "Fehler beim Senden des Feedbacks.",
-    "permission-denied": "Berechtigung verweigert."
+    "permission-denied": "Berechtigung verweigert.",
+    "app-update": "App Update verfügbar!"
   },
   "university": {
     "location": {
