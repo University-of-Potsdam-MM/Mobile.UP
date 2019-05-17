@@ -26,7 +26,7 @@ export class LectureListComponent implements OnInit {
     private ws: WebserviceWrapperService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(refresh: boolean = false) {
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
     }
@@ -36,7 +36,9 @@ export class LectureListComponent implements OnInit {
 
     if (!this.headerId) {
       this.ws.call(
-        'pulsGetLectureScheduleRoot'
+        'pulsGetLectureScheduleRoot',
+        {},
+        {forceRefresh: refresh}
       ).subscribe(
         (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
@@ -44,14 +46,16 @@ export class LectureListComponent implements OnInit {
     } else if (this.hasSubTree) {
       this.ws.call(
         'pulsGetLectureScheduleSubTree',
-        {headerId: this.headerId}
+        {headerId: this.headerId},
+        {forceRefresh: refresh}
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
       });
     } else {
       this.ws.call(
         'pulsGetLectureScheduleCourses',
-        {headerId: this.headerId}
+        {headerId: this.headerId},
+        {forceRefresh: refresh}
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;
       });

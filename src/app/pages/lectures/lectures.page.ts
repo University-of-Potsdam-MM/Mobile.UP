@@ -47,7 +47,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.query = '';
     this.searchLecture();
     this.isLoaded = false;
-    this.lectureList.ngOnInit();
+    this.lectureList.ngOnInit(true);
     this.loadLectureTree(true);
   }
 
@@ -57,7 +57,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.ws.call(
       'pulsGetLectureScheduleAll',
       {},
-      {forceRefreshGroup: forceRefresh}
+      {forceRefresh: forceRefresh}
     ).subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       this.allLectures = response;
       this.lectures = this.allLectures;
