@@ -96,7 +96,11 @@ export class PracticePage extends AbstractPage {
       this.isLoaded = false;
     }
 
-    this.ws.call('practiceSearch').subscribe(
+    this.ws.call(
+      'practiceSearch',
+      {},
+      {forceRefresh: refresher}
+    ).subscribe(
       (response: IADSResponse) => {
         if (refresher) {
           refresher.target.complete();

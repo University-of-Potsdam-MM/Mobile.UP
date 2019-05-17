@@ -43,7 +43,11 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.isLoaded = false;
       }
 
-      this.ws.call('openingHours').subscribe((response) => {
+      this.ws.call(
+        'openingHours',
+        {},
+        {forceRefresh: refresher}
+      ).subscribe((response) => {
         this.allOpeningHours = response;
 
         const from = new Date();
