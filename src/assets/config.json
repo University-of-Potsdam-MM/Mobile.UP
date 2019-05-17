@@ -211,10 +211,12 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/"
       },
       "roomsSearch": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time"
+        "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
+        "cachingEnabled": false
       },
       "roomPlanSearch": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations"
+        "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/reservations",
+        "cachingEnabled": false
       },
       "events": {
         "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
@@ -276,7 +278,8 @@
         "cachingEnabled": false
       },
       "transport": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard"
+        "url": "https://apiup.uni-potsdam.de/endpoints/transportAPI/departureBoard",
+        "cachingEnabled": false
       },
       "nominatim": {
         "url": "https://nominatim.openstreetmap.org/reverse",
