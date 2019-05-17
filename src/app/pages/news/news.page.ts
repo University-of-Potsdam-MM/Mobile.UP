@@ -40,7 +40,11 @@ export class NewsPage extends AbstractPage implements OnInit {
       this.isLoaded = false;
     }
 
-    this.ws.call('news').subscribe((response: INewsApiResponse) => {
+    this.ws.call(
+      'news',
+      {},
+      {forceRefresh: refresher}
+    ).subscribe((response: INewsApiResponse) => {
 
       if (refresher) {
         refresher.target.complete();
