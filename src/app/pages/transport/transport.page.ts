@@ -1,17 +1,17 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
+import { ICampus, IJourneyResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
-import {ITransportRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ITransportRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-transport',
   templateUrl: './transport.page.html',
   styleUrls: ['./transport.page.scss'],
 })
-export class TransportPage extends AbstractPage implements OnInit {
+export class TransportPage extends AbstractPage {
 
   currentDate;
   isLoaded = false;
@@ -29,10 +29,6 @@ export class TransportPage extends AbstractPage implements OnInit {
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
-  }
-
-  ngOnInit() {
-    this.loadCampusMenu();
   }
 
   changeCampus(campus: ICampus) {
