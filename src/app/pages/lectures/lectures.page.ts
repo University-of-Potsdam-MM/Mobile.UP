@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
@@ -6,6 +6,7 @@ import { LectureSearchModalPage } from './lecture-search.modal';
 import { ModalController, Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import {LectureListComponent} from '../../components/lecture-list/lecture-list.component';
 
 @Component({
   selector: 'app-lectures',
@@ -32,8 +33,10 @@ export class LecturesPage extends AbstractPage implements OnInit {
   resultKeys = [];
   query = '';
   modalOpen;
-
   valueArray = [];
+
+  // used for refreshing lectureList
+  @ViewChild(LectureListComponent) lectureList: LectureListComponent;
 
   ngOnInit() {
     this.loadLectureTree();
@@ -44,6 +47,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.query = '';
     this.searchLecture();
     this.isLoaded = false;
+    this.lectureList.ngOnInit();
     this.loadLectureTree(true);
   }
 
