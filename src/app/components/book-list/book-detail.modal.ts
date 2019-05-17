@@ -97,7 +97,8 @@ export class BookDetailModalPage implements OnInit {
       'libraryDAIA',
       {
         id: 'ppn:' + this.book.recordInfo.recordIdentifier._
-      }
+      },
+      {forceRefresh: refresher}
     ).subscribe(data => {
       if (refresher) {
         refresher.target.complete();
