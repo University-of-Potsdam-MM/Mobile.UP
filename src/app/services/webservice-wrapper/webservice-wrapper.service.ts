@@ -501,8 +501,11 @@ export class WebserviceWrapperService {
       }
     );
 
+    console.log(`[WSW]: Handling request '${webserviceName}'`);
+
     if (endpoint.cachingEnabled === false || cachingOptions.dontCache === true) {
       // if caching is not desired for this endpoint we just return the observable itself
+      console.log(`[WSW]: Returning '${webserviceName}' - no caching`);
       return wrapperObservable;
     }
 
@@ -532,6 +535,8 @@ export class WebserviceWrapperService {
     const cacheTTL = cachingOptions.ttl
       || this.config.webservices.endpoint[webserviceName].cachingTTL
       || undefined;
+
+    console.log(`[WSW]: Returning '${webserviceName}' - with caching}`, cachingOptions);
 
     // removes items from cache if desired and then, after cache has been modified
     // returns a cached Observable
