@@ -4,7 +4,7 @@ import {
   IPulsAPIResponse_getLectureScheduleSubTree,
   IPulsAPIResponse_getLectureScheduleCourses } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-lecture-list',
@@ -17,6 +17,7 @@ export class LectureListComponent implements OnInit {
   @Input() hasSubTreeInput;
   headerId: string;
   hasSubTree;
+  @Input() refresh = false;
 
   lectureSchedule;
   isExpanded = [];
@@ -26,19 +27,15 @@ export class LectureListComponent implements OnInit {
     private ws: WebserviceWrapperService
   ) { }
 
-  ngOnInit(refresh: boolean = false) {
-    if (this.headerIdInput) {
-      this.headerId = this.headerIdInput;
-    }
-    if (this.hasSubTreeInput) {
-      this.hasSubTree = true;
-    }
+  ngOnInit() {
+    if (this.headerIdInput) { this.headerId = this.headerIdInput; }
+    if (this.hasSubTreeInput) { this.hasSubTree = true; }
 
     if (!this.headerId) {
       this.ws.call(
         'pulsGetLectureScheduleRoot',
         {},
-        {forceRefresh: refresh}
+        { forceRefreshGroup: this.refresh }
       ).subscribe(
         (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
@@ -46,16 +43,16 @@ export class LectureListComponent implements OnInit {
     } else if (this.hasSubTree) {
       this.ws.call(
         'pulsGetLectureScheduleSubTree',
-        {headerId: this.headerId},
-        {forceRefresh: refresh}
+        { headerId: this.headerId },
+        { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
       });
     } else {
       this.ws.call(
         'pulsGetLectureScheduleCourses',
-        {headerId: this.headerId},
-        {forceRefresh: refresh}
+        { headerId: this.headerId },
+        { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;
       });

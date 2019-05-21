@@ -2,7 +2,6 @@ import {Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {IConfig} from '../../lib/interfaces';
 import {ConfigService} from '../config/config.service';
-import {UserSessionService} from '../user-session/user-session.service';
 import {from, Observable} from 'rxjs';
 import {CacheService} from 'ionic-cache';
 import {
@@ -418,8 +417,7 @@ export class WebserviceWrapperService {
 
   constructor(private http: HttpClient,
               private cache: CacheService,
-              private alertService: AlertService,
-              private session: UserSessionService) {}
+              private alertService: AlertService) {}
 
 
   pulsResponseCallback(response) {

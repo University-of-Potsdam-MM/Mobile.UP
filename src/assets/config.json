@@ -249,7 +249,8 @@
         "cacheGroupKey": "lectureSchedule"
       },
       "pulsGetCourseData": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getCourseData"
+        "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getCourseData",
+        "cacheGroupKey": "lectureSchedule"
       },
       "pulsGetPersonalStudyAreas": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getPersonalStudyAreas"

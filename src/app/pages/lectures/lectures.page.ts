@@ -1,12 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
 import { ModalController, Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
-import {LectureListComponent} from '../../components/lecture-list/lecture-list.component';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-lectures',
@@ -26,6 +25,8 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   isLoaded;
   isSearching;
+  isRefreshing;
+  refreshLectureComponent = false;
   allLectures;
   lectures;
   flattenedLectures;
@@ -35,20 +36,21 @@ export class LecturesPage extends AbstractPage implements OnInit {
   modalOpen;
   valueArray = [];
 
-  // used for refreshing lectureList
-  @ViewChild(LectureListComponent) lectureList: LectureListComponent;
-
   ngOnInit() {
     this.loadLectureTree();
   }
 
   refreshLectureTree(refresher) {
-    refresher.target.complete();
+    this.isRefreshing = true;
+    this.refreshLectureComponent = true;
     this.query = '';
     this.searchLecture();
     this.isLoaded = false;
-    this.lectureList.ngOnInit(true);
     this.loadLectureTree(true);
+    setTimeout(() => {
+      refresher.target.complete();
+      this.isRefreshing = false;
+    }, 500);
   }
 
   loadLectureTree(forceRefresh: boolean = false) {
@@ -57,7 +59,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.ws.call(
       'pulsGetLectureScheduleAll',
       {},
-      {forceRefresh: forceRefresh}
+      { forceRefresh: forceRefresh }
     ).subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       this.allLectures = response;
       this.lectures = this.allLectures;
