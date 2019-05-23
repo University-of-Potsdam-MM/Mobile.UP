@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import { CacheService } from 'ionic-cache';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
 import { ModalController, Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-lectures',
@@ -16,8 +15,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 export class LecturesPage extends AbstractPage implements OnInit {
 
   constructor(
-    private cache: CacheService,
-    private puls: PulsService,
+    private ws: WebserviceWrapperService,
     private modalCtrl: ModalController,
     private platform: Platform,
     private keyboard: Keyboard
@@ -27,6 +25,8 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   isLoaded;
   isSearching;
+  isRefreshing;
+  refreshLectureComponent = false;
   allLectures;
   lectures;
   flattenedLectures;
@@ -34,7 +34,6 @@ export class LecturesPage extends AbstractPage implements OnInit {
   resultKeys = [];
   query = '';
   modalOpen;
-
   valueArray = [];
 
   ngOnInit() {
@@ -42,19 +41,26 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   refreshLectureTree(refresher) {
-    refresher.target.complete();
+    this.isRefreshing = true;
+    this.refreshLectureComponent = true;
     this.query = '';
     this.searchLecture();
     this.isLoaded = false;
-    this.cache.clearGroup('lectureScheduleGroup').finally(() => {
-      this.loadLectureTree();
-    });
+    this.loadLectureTree(true);
+    setTimeout(() => {
+      refresher.target.complete();
+      this.isRefreshing = false;
+    }, 500);
   }
 
-  loadLectureTree() {
+  loadLectureTree(forceRefresh: boolean = false) {
     this.isLoaded = false;
 
-    this.puls.getLectureScheduleAll().subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
+    this.ws.call(
+      'pulsGetLectureScheduleAll',
+      {},
+      { forceRefresh: forceRefresh }
+    ).subscribe((response: IPulsAPIResponse_getLectureScheduleAll) => {
       this.allLectures = response;
       this.lectures = this.allLectures;
       this.flattenedLectures = this.flattenJSON(response, '', {});

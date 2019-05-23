@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import {IPersonsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-person-search',
@@ -34,7 +36,8 @@ export class PersonSearchPage extends AbstractPage {
     private callNumber: CallNumber,
     private alert: AlertService,
     private login: UPLoginProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true, requireSession: true });
     if (this.platform.is('cordova')) {
@@ -79,12 +82,14 @@ export class PersonSearchPage extends AbstractPage {
       console.log(`[PersonsPage]: Searching for \"${query}\"`);
 
       if (!this.session) { this.session = await this.sessionProvider.getSession(); }
-      const headers: HttpHeaders = new HttpHeaders()
-        .append('Authorization', `${this.session.oidcTokenObject.token_type} ${this.session.token}`);
 
-      const url = this.config.webservices.endpoint.personSearch + query;
-
-      this.http.get(url, {headers: headers}).subscribe(
+      this.ws.call(
+        'personSearch',
+        <IPersonsRequestParams>{
+          query: query,
+          session: this.session
+        }
+      ).subscribe(
         (personsList: IPerson[]) => {
           // console.log(personsList);
 

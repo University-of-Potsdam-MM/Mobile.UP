@@ -180,8 +180,17 @@ export interface IModule {
 }
 
 export interface IWebServices {
-  endpoint: IEndpoints;
+  endpoint: {[name: string]: IEndpoint};
   apiToken: string;
+  defaultCachingTTL: number;
+  cacheGroupKeySuffix: string;
+}
+
+export interface IEndpoint {
+  url: string;
+  cachingTTL?: number;
+  cacheGroupKey?: string;
+  cachingEnabled?: boolean;
 }
 
 export interface IEndpoints {
@@ -502,6 +511,7 @@ export interface ICampus {
   pretty_name: string;
   canteen_name: string;
   shortcode: string;
+  transport_station_id: string;
   coordinates: [number, number];
   lat_long_bounds: ILatLongBounds;
 }

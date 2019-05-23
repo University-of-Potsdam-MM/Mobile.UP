@@ -2,14 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from 'ionic-cache';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
-import { utils } from 'src/app/lib/util';
+import { utils } from '../../lib/util';
 import * as jquery from 'jquery';
 import * as opening from 'opening_hours';
+
 
 @Component({
   selector: 'app-mensa',
@@ -47,29 +48,28 @@ export class MensaPage extends AbstractPage {
   hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
-  campus;
+  campus: ICampus;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
     private translate: TranslateService,
-    private cache: CacheService,
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
 
   /**
-   * @param query
+   * switches the currently selected campus
+   * @param campus {ICampus}
    */
   changeCampus(campus: ICampus) {
-    this.campus = campus.canteen_name;
+    this.campus = campus;
     this.loadCampusMenu();
   }
 
   loadCampusMenu(refresher?) {
     if (refresher) {
-      this.cache.removeItems('mensaResponse*');
       this.hardRefresh = true;
     } else { this.isLoaded = false; }
 
@@ -85,14 +85,13 @@ export class MensaPage extends AbstractPage {
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    const params: HttpParams = new HttpParams()
-      .append('location', this.campus);
-
-    const request = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: params});
-    this.cache.loadFromObservable('mensaResponse' + this.campus, request).subscribe((res: IMensaResponse) => {
+    this.ws.call(
+      'mensa',
+      <IMensaRequestParams>{
+        campus_canteen_name: this.campus.canteen_name
+      },
+      { forceRefreshGroup: this.hardRefresh }
+    ).subscribe((res: IMensaResponse) => {
 
       if (res.meal) {
         this.allMeals = res.meal;
@@ -100,14 +99,14 @@ export class MensaPage extends AbstractPage {
       }
       if (res.iconHashMap && res.iconHashMap.entry) { this.iconMapping = res.iconHashMap.entry; }
 
-      if (this.campus === 'Griebnitzsee') {
+      if (this.campus.canteen_name === 'Griebnitzsee') {
         const ulfParam = 'UlfsCafe';
-        const paramsUlf: HttpParams = new HttpParams()
-          .append('location', ulfParam);
-
-        const requestUlf = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: paramsUlf});
-
-        this.cache.loadFromObservable('mensaResponse' + ulfParam, requestUlf).subscribe((resUlf: IMensaResponse) => {
+        this.ws.call(
+          'mensa',
+          <IMensaRequestParams>{
+            campus_canteen_name: ulfParam
+          }
+        ).subscribe((resUlf: IMensaResponse) => {
           if (resUlf.meal) {
             this.ulfMeals = resUlf.meal;
             this.displayedUlfMeals = resUlf.meal;
@@ -250,16 +249,10 @@ export class MensaPage extends AbstractPage {
 
   getOpening() {
     this.mensaIsOpen = true;
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
     const searchTerm = 'mensa ' + this.campus;
 
-    const url = this.config.webservices.endpoint.openingHours;
-    const request = this.http.get(url, {headers: headers});
-    const requestNom = this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397');
-    this.cache.loadFromObservable('openingHours', request).subscribe(response => {
-      this.cache.loadFromObservable('nominatim', requestNom).subscribe(nominatim => {
+    this.ws.call('openingHours').subscribe(response => {
+      this.ws.call('nominatim').subscribe(nominatim => {
         if (response) {
           response = utils.convertToArray(response);
           response = response.filter(function(item) {

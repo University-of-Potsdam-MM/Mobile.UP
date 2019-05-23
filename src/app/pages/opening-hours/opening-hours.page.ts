@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
@@ -8,6 +6,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-opening-hours',
@@ -18,19 +17,16 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   openingHours;
   allOpeningHours;
-
-  nominatim;
   weekday = [];
   isLoaded;
   modalOpen;
 
   constructor(
-    private http: HttpClient,
-    private cache: CacheService,
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -40,24 +36,18 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
-    // needed for providing the country code to opening_hours?
-    // maybe put lat / lon in config and fetch?
-    this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397').subscribe(data => {
-      this.nominatim = data;
+    this.ws.call('nominatim').subscribe(
+      nominatim => {
 
-      const headers: HttpHeaders = new HttpHeaders()
-        .append('Authorization', this.config.webservices.apiToken);
-
-      const url = this.config.webservices.endpoint.openingHours;
-      const request = this.http.get(url, {headers: headers});
-
-      if (refresher) {
-        this.cache.removeItem('openingHours');
-      } else {
+      if (!refresher) {
         this.isLoaded = false;
       }
 
-      this.cache.loadFromObservable('openingHours', request).subscribe((response) => {
+      this.ws.call(
+        'openingHours',
+        {},
+        { forceRefresh: refresher !== null }
+      ).subscribe((response) => {
         this.allOpeningHours = response;
 
         const from = new Date();
@@ -68,7 +58,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         for (let i = 0; i < this.allOpeningHours.length; i++) {
           this.allOpeningHours[i].parsedOpening = new opening(
             this.allOpeningHours[i].opening_hours,
-            this.nominatim,
+            nominatim,
             { 'locale': this.translate.currentLang });
 
           this.allOpeningHours[i].nextChange = this.allOpeningHours[i].parsedOpening.getNextChange(from, to);

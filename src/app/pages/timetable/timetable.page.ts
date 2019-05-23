@@ -5,12 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EventModalPage } from './event.modal';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-timetable',
@@ -55,7 +55,7 @@ export class TimetablePage extends AbstractPage {
   constructor(
     private platform: Platform,
     private translate: TranslateService,
-    private puls: PulsService,
+    private ws: WebserviceWrapperService,
     private sanitizer: DomSanitizer,
     private alertCtrl: AlertController,
     private calendar: Calendar,
@@ -73,7 +73,10 @@ export class TimetablePage extends AbstractPage {
     if (this.session) {
       this.isLoading = true;
       // there is a session
-      this.puls.getStudentCourses(this.session).subscribe(
+      this.ws.call(
+        'pulsGetStudentCourses',
+        {session: this.session}
+      ).subscribe(
         (response: IPulsAPIResponse_getStudentCourses) => {
           if (response.message && response.message === 'no user rights') {
             this.noUserRights = true;

@@ -1,22 +1,22 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import { HttpParams, HttpHeaders, HttpClient } from '@angular/common/http';
+import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import {ICampus, IJourneyResponse} from 'src/app/lib/interfaces';
+import { ICampus, IJourneyResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ITransportRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-transport',
   templateUrl: './transport.page.html',
   styleUrls: ['./transport.page.scss'],
 })
-export class TransportPage extends AbstractPage implements OnInit {
+export class TransportPage extends AbstractPage {
 
   currentDate;
   isLoaded = false;
   hardRefresh = false;
-  campus;
-  campusid;
+  campus: ICampus;
   departures = [];
   isEnd = false;
   maxJourneys = 15;
@@ -26,17 +26,13 @@ export class TransportPage extends AbstractPage implements OnInit {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
 
-  ngOnInit() {
-    this.loadCampusMenu();
-  }
-
   changeCampus(campus: ICampus) {
-    this.campus = campus.name;
+    this.campus = campus;
     this.loadCampusMenu();
   }
 
@@ -46,28 +42,22 @@ export class TransportPage extends AbstractPage implements OnInit {
 
     if (refresher) {
       this.hardRefresh = true;
-    } else if (!infiniteScroll) { this.isLoaded = false; }
+    } else if (!infiniteScroll) {
+      this.isLoaded = false;
+    }
 
     if (!infiniteScroll) { this.maxJourneys = 15; }
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-    if (this.campus === 'griebnitzsee') {
-      this.campusid  = '900230003';
-    } else if (this.campus === 'golm') {
-      this.campusid = '900220365';
-    } else { this.campusid = '900230133'; }
-
     this.error = null;
 
-    const params: HttpParams = new HttpParams()
-      .append('maxJourneys', this.maxJourneys.toString())
-      .append('format', 'json')
-      .append('time', this.currentDate.format('HH:mm:ss'))
-      .append('id', this.campusid);
-
-    this.http.get(this.config.webservices.endpoint.transport, {headers: headers, params: params}).subscribe((res: IJourneyResponse) => {
+    this.ws.call(
+      'transport',
+      <ITransportRequestParams>{
+        time: this.currentDate.format('HH:mm:ss'),
+        campus: this.campus,
+        maxJourneys: this.maxJourneys.toString()
+      }
+    ).subscribe((res: IJourneyResponse) => {
 
       if (res && res.Departure && !infiniteScroll) {
         this.departures = res.Departure;

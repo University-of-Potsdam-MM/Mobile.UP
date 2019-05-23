@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
 import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { CacheService } from 'ionic-cache';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ILibraryRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-library-search',
@@ -39,13 +38,12 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   constructor(
     private platform: Platform,
     private keyboard: Keyboard,
-    private http: HttpClient,
     private translate: TranslateService,
     private alert: AlertService,
     private storage: Storage,
-    private cache: CacheService,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
   }
@@ -80,19 +78,17 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
           this.isLoaded = false;
         }
 
-        const url = this.config.webservices.endpoint.library;
-
-        const headers = new HttpHeaders()
-          .append('Authorization', this.config.webservices.apiToken);
-
-        const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append('operation', 'searchRetrieve')
-          .append('query', query.trim())
-          .append('startRecord', this.startRecord)
-          .append('maximumRecords', this.maximumRecords)
-          .append('recordSchema', 'mods');
-
-        this.http.get(url, {headers: headers, params: params, responseType: 'text'}).subscribe(res => {
+        this.ws.call(
+          'library',
+          <ILibraryRequestParams>{
+            query: this.query.trim(),
+            startRecord: this.startRecord,
+            maximumRecords: this.maximumRecords
+          },
+          {
+            dontCache: true
+          }
+        ).subscribe(res => {
           this.parseXMLtoJSON(res).then(data => {
 
             let tmp, tmpList, i;
@@ -307,10 +303,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.isLoadedFavorites = false;
     this.updatedFavorites = 0;
 
-    if (refresher) {
-      this.cache.removeItems('libraryFavoriteResource*');
-    }
-
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
         // console.log(utils.convertToArray(tmp[i].identifier));
@@ -348,21 +340,18 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }
 
         if (query.trim() !== '') {
-          const url = this.config.webservices.endpoint.library;
-
-          const headers = new HttpHeaders()
-            .append('Authorization', this.config.webservices.apiToken);
-
-          const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-            .append('operation', 'searchRetrieve')
-            .append('query', query.trim())
-            .append('startRecord', '1')
-            .append('maximumRecords', '5')
-            .append('recordSchema', 'mods');
-
-          const request = this.http.get(url, {headers: headers, params: params, responseType: 'text'});
-          const ttl = 60 * 60 * 24 * 7; // TTL in seconds for one week
-          this.cache.loadFromObservable('libraryFavoriteResource' + query, request, 'libraryFavoriteResource', ttl).subscribe(res => {
+          this.ws.call(
+            'library',
+            <ILibraryRequestParams>{
+              query: query,
+              startRecord: '1',
+              maximumRecords: '5'
+            },
+            {
+              groupKey: 'libraryFavoriteResource',
+              forceRefreshGroup: refresher !== null
+            }
+          ).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {
               let tmpRes, tmpList, numberOfRecords;
               if (data['zs:searchRetrieveResponse']) {
