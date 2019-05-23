@@ -6,7 +6,7 @@ import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
 import { ConfigService } from '../../services/config/config.service';
 import { utils } from '../../lib/util';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'book-modal-page',
@@ -98,7 +98,7 @@ export class BookDetailModalPage implements OnInit {
       {
         id: 'ppn:' + this.book.recordInfo.recordIdentifier._
       },
-      {forceRefresh: refresher}
+      { forceRefresh: refresher !== null }
     ).subscribe(data => {
       if (refresher) {
         refresher.target.complete();

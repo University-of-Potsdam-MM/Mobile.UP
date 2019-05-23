@@ -10,8 +10,8 @@ import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
-import {ILibraryRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ILibraryRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-library-search',
@@ -349,7 +349,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             },
             {
               groupKey: 'libraryFavoriteResource',
-              forceRefreshGroup: refresher
+              forceRefreshGroup: refresher !== null
             }
           ).subscribe(res => {
             this.parseXMLtoJSON(res).then(data => {

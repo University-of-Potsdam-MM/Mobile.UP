@@ -1,9 +1,9 @@
-import {Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {IConfig} from '../../lib/interfaces';
-import {ConfigService} from '../config/config.service';
-import {from, Observable} from 'rxjs';
-import {CacheService} from 'ionic-cache';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { IConfig } from '../../lib/interfaces';
+import { ConfigService } from '../config/config.service';
+import { from, Observable } from 'rxjs';
+import { CacheService } from 'ionic-cache';
 import {
   ICachingOptions,
   ILibraryRequestParams, IMensaRequestParams,
@@ -11,11 +11,11 @@ import {
   IRoomsRequestParams, ITransportRequestParams,
   IWebservice
 } from './webservice-definition-interfaces';
-import {IPulsAPIResponse_getLectureScheduleRoot} from '../../lib/interfaces_PULS';
-import {AlertService} from '../alert/alert.service';
-import {utils} from '../../lib/util';
+import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PULS';
+import { AlertService } from '../alert/alert.service';
+import { utils } from '../../lib/util';
 import isEmptyObject = utils.isEmptyObject;
-import {switchMap} from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -540,7 +540,7 @@ export class WebserviceWrapperService {
           : Promise.resolve()
       ])
     ).pipe(
-      switchMap(val => this.cache.loadFromObservable(
+      switchMap(() => this.cache.loadFromObservable(
         cacheItemKey,
         wrapperObservable,
         cacheGroupKey,

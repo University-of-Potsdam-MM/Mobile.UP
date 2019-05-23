@@ -11,7 +11,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { utils } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-practice',
@@ -99,7 +99,7 @@ export class PracticePage extends AbstractPage {
     this.ws.call(
       'practiceSearch',
       {},
-      {forceRefresh: refresher}
+      { forceRefresh: refresher !== null }
     ).subscribe(
       (response: IADSResponse) => {
         if (refresher) {

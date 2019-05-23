@@ -69,7 +69,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     this.ws.call(
       'emergencyCalls',
       {},
-      {forceRefresh: refresher != null}
+      { forceRefresh: refresher !== null }
     ).subscribe((response) => {
 
       if (refresher) {

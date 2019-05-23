@@ -6,7 +6,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-opening-hours',
@@ -46,7 +46,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
       this.ws.call(
         'openingHours',
         {},
-        {forceRefresh: refresher}
+        { forceRefresh: refresher !== null }
       ).subscribe((response) => {
         this.allOpeningHours = response;
 

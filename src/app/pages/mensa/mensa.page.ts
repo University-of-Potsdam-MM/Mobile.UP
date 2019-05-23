@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -90,7 +90,7 @@ export class MensaPage extends AbstractPage {
       <IMensaRequestParams>{
         campus_canteen_name: this.campus.canteen_name
       },
-      {forceRefreshGroup: this.hardRefresh}
+      { forceRefreshGroup: this.hardRefresh }
     ).subscribe((res: IMensaResponse) => {
 
       if (res.meal) {

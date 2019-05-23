@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-news',
@@ -43,7 +43,7 @@ export class NewsPage extends AbstractPage implements OnInit {
     this.ws.call(
       'news',
       {},
-      {forceRefresh: refresher}
+      { forceRefresh: refresher !== null }
     ).subscribe((response: INewsApiResponse) => {
 
       if (refresher) {

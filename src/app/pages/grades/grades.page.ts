@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IConfig } from 'src/app/lib/interfaces';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-grades',
@@ -82,8 +82,8 @@ export class GradesPage extends AbstractPage {
 
     this.ws.call(
       'pulsGetAcademicAchievements',
-      {session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr},
-      {forceRefresh: this.refresher != null}
+      { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
+      { forceRefresh: this.refresher !== null }
     ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
@@ -132,8 +132,8 @@ export class GradesPage extends AbstractPage {
 
     this.ws.call(
       'pulsGetPersonalStudyAreas',
-      {session: this.session},
-      {forceRefresh: this.refresher != null}
+      { session: this.session },
+      { forceRefresh: this.refresher !== null }
     ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
