@@ -100,7 +100,7 @@
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="~5.0.4">
         <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyBJTt7cQeRL_GeCV_RfXMguf1Gua_vkW3Y" />
-        <variable name="OKHTTP_VERSION" value="3.+" />
+        <variable name="OKHTTP_VERSION" value="3.12.0" />
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
     </plugin>
     <edit-config file="*-Info.plist" mode="merge" target="NSContactsUsageDescription">
@@ -113,7 +113,7 @@
     <plugin name="cordova-plugin-calendar" spec="^5.1.4">
         <variable name="CALENDAR_USAGE_DESCRIPTION" value="This app uses your calendar to export your timetable" />
     </plugin>
-    <engine name="ios" spec="5.0.1" />
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="8.0.0" />
     <engine name="browser" spec="6.0.0" />
+    <engine name="ios" spec="5.0.1" />
 </widget>
