@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { utils } from 'src/app/lib/util';
 import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
-import { PulsService } from 'src/app/services/puls/puls.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-course-data',
@@ -11,12 +11,13 @@ import { PulsService } from 'src/app/services/puls/puls.service';
 export class CourseDataComponent implements OnInit {
 
   @Input() course;
+  @Input() refresh = false;
   courseData;
   courseGroups = [];
   lecturerList = [];
 
   constructor(
-    private puls: PulsService
+    private ws: WebserviceWrapperService
   ) { }
 
   ngOnInit() {
@@ -24,7 +25,11 @@ export class CourseDataComponent implements OnInit {
   }
 
   getCourseData(courseId) {
-    this.puls.getCourseData(courseId).subscribe((response: IPulsAPIResponse_getCourseData) => {
+    this.ws.call(
+      'pulsGetCourseData',
+      { courseId: courseId },
+      { forceRefreshGroup: this.refresh }
+    ).subscribe((response: IPulsAPIResponse_getCourseData) => {
       this.courseData = response;
 
       let i;

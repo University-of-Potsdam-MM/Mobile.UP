@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { ConfigService } from '../config/config.service';
+import {WebserviceWrapperService} from '../webservice-wrapper/webservice-wrapper.service';
 
 export interface IErrorLogging {
   message?: string;
@@ -16,7 +17,7 @@ export interface IErrorLogging {
 })
 export class ErrorHandlerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private ws: WebserviceWrapperService) { }
 
   /**
    * @name logError
@@ -24,17 +25,9 @@ export class ErrorHandlerService {
    * @param {IErrorLogging} errorObject
    */
   logError(errorObject: IErrorLogging) {
-    const config = ConfigService.config;
-    const headers: HttpHeaders = new HttpHeaders()
-      .set('Authorization', config.webservices.apiToken);
-
     console.log(`[ErrorService]: Logging error`);
     console.log(errorObject);
-    this.http.post(
-      config.webservices.endpoint.logging,
-      errorObject,
-      {headers: headers}
-    ).subscribe(response => {
+    this.ws.call('logging', errorObject).subscribe(response => {
         console.log(`[ErrorService]: Logged error: ${JSON.stringify(response)}`);
       },
       error => {
