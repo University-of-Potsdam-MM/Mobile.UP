@@ -424,7 +424,7 @@ export class WebserviceWrapperService {
     // PULS simply responds with "no user rights" if credentials are incorrect
     if (response.message === 'no user rights') {
       this.alertService.showAlert({
-        alertTitleI18nKey: 'alert.title.error',
+        headerI18nKey: 'alert.title.error',
         messageI18nKey: 'alert.token_valid_credentials_invalid'
       });
     }

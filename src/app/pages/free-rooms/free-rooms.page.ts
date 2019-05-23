@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RoomplanPage } from '../roomplan/roomplan.page';
-import {IHouse, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
+import { IHouse, IRoomRequestResponse, IRoom, ICampus } from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-free-rooms',
@@ -30,7 +30,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private alertProvider: AlertService,
+    private alertService: AlertService,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
@@ -201,8 +201,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
           this.refresher.target.complete();
         }
 
-        this.alertProvider.showAlert({
-          alertTitleI18nKey: 'alert.title.error',
+        this.alertService.showAlert({
+          headerI18nKey: 'alert.title.error',
           messageI18nKey: `alert.httpErrorStatus.${error.status}`
         });
       }

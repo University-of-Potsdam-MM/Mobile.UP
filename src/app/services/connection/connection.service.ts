@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
-import { AlertController, Events, NavController } from '@ionic/angular';
+import { Events, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from '../alert/alert.service';
+import { AlertButton } from '@ionic/core';
 
 export enum EConnection {
   OFFLINE, ONLINE
@@ -14,11 +16,13 @@ export class ConnectionService {
 
   connectionState: EConnection;
 
-  constructor(private network: Network,
-              private alertCtrl: AlertController,
-              private translate: TranslateService,
-              private navCtrl: NavController,
-              private eventCtrl: Events) {
+  constructor(
+    private network: Network,
+    private translate: TranslateService,
+    private navCtrl: NavController,
+    private eventCtrl: Events,
+    private alertService: AlertService
+  ) {
     if (this.network.type === this.network.Connection.NONE) {
       this.connectionState = EConnection.OFFLINE;
     } else { this.connectionState = EConnection.ONLINE; }
@@ -55,8 +59,17 @@ export class ConnectionService {
    */
   checkOnline(showAlert: boolean = false, sendHome: boolean = false): EConnection {
     if (this.connectionState === EConnection.OFFLINE) {
-      if (showAlert) {
-        this.showAlert();
+      if (showAlert && !sendHome) {
+        this.alertService.showToast('alert.network');
+      } else if (showAlert && sendHome) {
+        const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+        this.alertService.showAlert(
+          {
+            headerI18nKey: 'alert.title.error',
+            messageI18nKey: 'alert.network'
+          },
+          buttons
+        );
       }
 
       if (sendHome) {
@@ -68,14 +81,4 @@ export class ConnectionService {
     return this.connectionState;
   }
 
-  async showAlert() {
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.error'),
-      message: this.translate.instant('alert.network'),
-      buttons: [
-        this.translate.instant('button.continue')
-      ]
-    });
-    alert.present();
-  }
 }

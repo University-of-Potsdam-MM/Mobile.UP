@@ -11,8 +11,8 @@ import {
 } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import {IRoomsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 
 @Component({
   selector: 'app-roomplan',
@@ -22,8 +22,7 @@ import {CampusTabComponent} from '../../components/campus-tab/campus-tab.compone
 export class RoomplanPage extends AbstractPage implements OnInit {
 
   constructor(
-    private alert: AlertService,
-    private alertProvider: AlertService,
+    private alertService: AlertService,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true });
@@ -298,7 +297,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
           }
 
           if (default_error !== '') {
-            this.alert.presentToast(default_error);
+            this.alertService.showToast(default_error);
           }
 
           // sadly templates cannot parse maps,
@@ -338,8 +337,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
           this.refresher.target.complete();
         }
 
-        this.alertProvider.showAlert({
-          alertTitleI18nKey: 'alert.title.error',
+        this.alertService.showAlert({
+          headerI18nKey: 'alert.title.error',
           messageI18nKey: `alert.httpErrorStatus.${error.status}`
         });
       }

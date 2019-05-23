@@ -7,11 +7,12 @@ import { AlertService } from '../services/alert/alert.service';
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {
-  constructor(private alertProvider: AlertService,
-              private logging: ErrorHandlerService,
-              private platform: Platform,
-              private device: Device) {
-  }
+  constructor(
+    private alertService: AlertService,
+    private logging: ErrorHandlerService,
+    private platform: Platform,
+    private device: Device
+  ) { }
 
   /**
    * @name handleError
@@ -28,15 +29,11 @@ export class MobileUPErrorHandler implements ErrorHandler {
     if (error instanceof HttpErrorResponse) {
       console.log(`[MobileUPErrorHandler]: Uncaught HTTP error!`);
 
-      const alertTitleI18nKey = `alert.title.httpError`;
       let messageI18nKey = `alert.httpErrorStatus.unknown`;
+      if (error.status) { messageI18nKey = `alert.httpErrorStatus.${error.status}`; }
 
-      if (error.status) {
-        messageI18nKey = `alert.httpErrorStatus.${error.status}`;
-      }
-
-      this.alertProvider.showAlert({
-        alertTitleI18nKey: alertTitleI18nKey,
+      this.alertService.showAlert({
+        headerI18nKey: 'alert.title.httpError',
         messageI18nKey: messageI18nKey
       });
 
@@ -48,8 +45,8 @@ export class MobileUPErrorHandler implements ErrorHandler {
     } else {
       console.log(`[MobileUPErrorHandler]: Uncaught error!`);
 
-      this.alertProvider.showAlert({
-        alertTitleI18nKey: 'alert.title.unexpectedError',
+      this.alertService.showAlert({
+        headerI18nKey: 'alert.title.unexpectedError',
         messageI18nKey: 'alert.unknown_error'
       });
 

@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IFeedback } from 'src/app/lib/interfaces';
 import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { TranslateService } from '@ngx-translate/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-feedback',
@@ -22,9 +20,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
 
   /**
    * @constructor
-   * @param {HttpClient} http
    * @param {NavController} navCtrl
-   * @param {ConnectionProvider} connection
    * @param {DeviceService} DeviceService
    * @param {FormBuilder} formBuilder
    */
@@ -32,8 +28,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     public navCtrl: NavController,
     private deviceService: DeviceService,
     private formBuilder: FormBuilder,
-    private alert: AlertService,
-    private translate: TranslateService,
+    private alertService: AlertService,
     private ws: WebserviceWrapperService
   ) {
       super({ requireNetwork: true, optionalSession: true });
@@ -50,11 +45,10 @@ export class FeedbackPage extends AbstractPage implements OnInit {
   }
 
   /**
-   * @async
    * @name submitForm
    * @description submitForm
    */
-  async submitForm() {
+  submitForm() {
     this.feedback = {};
     if (this.deviceInfo) {
       this.feedback = {
@@ -89,11 +83,11 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     ).subscribe(
       (response) => {
         console.log(response);
-        this.alert.presentToast(this.translate.instant('alert.feedback-sent'));
+        this.alertService.showToast('alert.feedback-sent');
       },
       (error) => {
         console.log(error);
-        this.alert.presentToast(this.translate.instant('alert.feedback-fail'));
+        this.alertService.showToast('alert.feedback-fail');
       }
     );
   }

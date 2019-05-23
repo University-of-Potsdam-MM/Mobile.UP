@@ -249,7 +249,7 @@ export class MensaPage extends AbstractPage {
 
   getOpening() {
     this.mensaIsOpen = true;
-    const searchTerm = 'mensa ' + this.campus;
+    const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
 
     this.ws.call('openingHours').subscribe(response => {
       this.ws.call('nominatim').subscribe(nominatim => {

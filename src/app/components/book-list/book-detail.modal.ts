@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../../services/alert/alert.service';
 import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
@@ -42,8 +41,7 @@ export class BookDetailModalPage implements OnInit {
 
   constructor(
       private modalCtrl: ModalController,
-      private translate: TranslateService,
-      private alert: AlertService,
+      private alertService: AlertService,
       public webIntent: WebIntentService, // is used in the HTML
       private ws: WebserviceWrapperService
     ) {
@@ -65,9 +63,9 @@ export class BookDetailModalPage implements OnInit {
     this.isFavorite = !this.isFavorite;
 
     if (!this.isFavorite) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     } else {
-      this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+      this.alertService.showToast('hints.text.favAdded');
     }
   }
 
