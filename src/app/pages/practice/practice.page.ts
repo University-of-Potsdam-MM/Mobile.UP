@@ -99,7 +99,7 @@ export class PracticePage extends AbstractPage {
     this.ws.call(
       'practiceSearch',
       {},
-      { forceRefresh: refresher !== null }
+      { forceRefresh: refresher !== undefined }
     ).subscribe(
       (response: IADSResponse) => {
         if (refresher) {

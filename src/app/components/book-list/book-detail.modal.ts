@@ -98,7 +98,7 @@ export class BookDetailModalPage implements OnInit {
       {
         id: 'ppn:' + this.book.recordInfo.recordIdentifier._
       },
-      { forceRefresh: refresher !== null }
+      { forceRefresh: refresher !== undefined }
     ).subscribe(data => {
       if (refresher) {
         refresher.target.complete();

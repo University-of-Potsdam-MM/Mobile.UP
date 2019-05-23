@@ -83,7 +83,7 @@ export class GradesPage extends AbstractPage {
     this.ws.call(
       'pulsGetAcademicAchievements',
       { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
-      { forceRefresh: this.refresher !== null }
+      { forceRefresh: this.refresher !== undefined }
     ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
@@ -133,7 +133,7 @@ export class GradesPage extends AbstractPage {
     this.ws.call(
       'pulsGetPersonalStudyAreas',
       { session: this.session },
-      { forceRefresh: this.refresher !== null }
+      { forceRefresh: this.refresher !== undefined }
     ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {

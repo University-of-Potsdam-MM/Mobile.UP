@@ -46,7 +46,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
       this.ws.call(
         'openingHours',
         {},
-        { forceRefresh: refresher !== null }
+        { forceRefresh: refresher !== undefined }
       ).subscribe((response) => {
         this.allOpeningHours = response;
 
