@@ -371,7 +371,7 @@
       "404": "Fehler 404: Ressource nicht gefunden"
     },
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
-    "network": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
+    "network": "Keine Internetverbindung!",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",

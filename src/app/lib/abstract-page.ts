@@ -12,6 +12,7 @@ export interface IPageOptions {
     requireSession?: boolean;
     requireNetwork?: boolean;
     optionalSession?: boolean;
+    optionalNetwork?: boolean;
 }
 
 /**
@@ -48,9 +49,10 @@ export abstract class AbstractPage  {
     }
 
     private processOptions(pageOptions: IPageOptions) {
-        if (pageOptions.requireSession) { this.requireSession(); }
-        if (pageOptions.requireNetwork) { this.requireNetwork(); }
+        if (pageOptions.requireSession) { this.requireSession(false); }
+        if (pageOptions.requireNetwork) { this.requireNetwork(false); }
         if (pageOptions.optionalSession) { this.requireSession(true); }
+        if (pageOptions.optionalNetwork) { this.requireNetwork(true); }
     }
 
     private setMenuStatus() {
@@ -70,10 +72,10 @@ export abstract class AbstractPage  {
      * @desc tests for network connection and sends the user back to the HomePage
      * if there is none;
      */
-    requireNetwork() {
+    requireNetwork(optional?) {
         console.log('[AbstractPage]: Network required.');
         // I think we have to re-evalue this; how do we handle cached content?
-        this.connection.checkOnline(true, true);
+        this.connection.checkOnline(true, optional);
     }
 
     /**
