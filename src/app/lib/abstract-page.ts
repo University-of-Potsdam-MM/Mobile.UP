@@ -74,7 +74,6 @@ export abstract class AbstractPage  {
      */
     requireNetwork(necessary?) {
         console.log('[AbstractPage]: Network required.');
-        // I think we have to re-evalue this; how do we handle cached content?
         this.connection.checkOnline(true, necessary);
     }
 

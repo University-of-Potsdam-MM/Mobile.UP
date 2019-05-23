@@ -16,6 +16,7 @@ import { AlertService } from '../alert/alert.service';
 import { utils } from '../../lib/util';
 import isEmptyObject = utils.isEmptyObject;
 import { switchMap } from 'rxjs/operators';
+import { ConnectionService } from '../connection/connection.service';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -415,9 +416,12 @@ export class WebserviceWrapperService {
     },
   };
 
-  constructor(private http: HttpClient,
-              private cache: CacheService,
-              private alertService: AlertService) {}
+  constructor(
+    private http: HttpClient,
+    private cache: CacheService,
+    private alertService: AlertService,
+    private connection: ConnectionService
+    ) {}
 
 
   pulsResponseCallback(response) {
@@ -530,23 +534,47 @@ export class WebserviceWrapperService {
 
     // removes items from cache if desired and then, after cache has been modified
     // returns a cached Observable
-    return from(
-      Promise.all([
-        cachingOptions.forceRefreshGroup
-          ? this.cache.clearGroup(cacheGroupKey)
-          : Promise.resolve(),
-        cachingOptions.forceRefresh
-          ? this.cache.removeItem(cacheItemKey)
-          : Promise.resolve()
-      ])
-    ).pipe(
-      switchMap(() => this.cache.loadFromObservable(
-        cacheItemKey,
-        wrapperObservable,
-        cacheGroupKey,
-        cacheTTL
+    let connection = false;
+    if (this.connection.checkOnline(false, false) === 1) { connection = true; }
+
+    if (connection) {
+      return from(
+        Promise.all([
+          cachingOptions.forceRefreshGroup
+            ? this.cache.clearGroup(cacheGroupKey)
+            : Promise.resolve(),
+          cachingOptions.forceRefresh
+            ? this.cache.removeItem(cacheItemKey)
+            : Promise.resolve()
+        ])
+      ).pipe(
+        switchMap(() => this.cache.loadFromObservable(
+          cacheItemKey,
+          wrapperObservable,
+          cacheGroupKey,
+          cacheTTL
+          )
         )
-      )
-    );
+      );
+    } else {
+      return from(
+        Promise.all([
+          cachingOptions.forceRefreshGroup
+            ? console.log('Not clearing cache, since there is not internet connection!')
+            : Promise.resolve(),
+          cachingOptions.forceRefresh
+            ? console.log('Not clearing cache, since there is not internet connection!')
+            : Promise.resolve()
+        ])
+      ).pipe(
+        switchMap(() => this.cache.loadFromObservable(
+          cacheItemKey,
+          wrapperObservable,
+          cacheGroupKey,
+          cacheTTL
+          )
+        )
+      );
+    }
   }
 }
