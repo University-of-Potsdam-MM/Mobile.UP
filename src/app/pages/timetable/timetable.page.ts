@@ -62,7 +62,7 @@ export class TimetablePage extends AbstractPage {
     private alertService: AlertService,
     private alertCtrl: AlertController
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   async ionViewWillEnter() {
@@ -89,6 +89,9 @@ export class TimetablePage extends AbstractPage {
             );
             console.log(this.eventSource);
           }
+        }, error => {
+          console.log(error);
+          this.isLoading = false;
         }
       );
     } else {

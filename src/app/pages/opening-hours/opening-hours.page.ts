@@ -28,7 +28,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -46,7 +46,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
       this.ws.call(
         'openingHours',
         {},
-        { forceRefresh: refresher !== null }
+        { forceRefresh: refresher !== undefined }
       ).subscribe((response) => {
         this.allOpeningHours = response;
 
@@ -69,10 +69,15 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.openingHours = this.sortOpenings(this.allOpeningHours);
         this.isLoaded = true;
 
-        if (refresher) {
-          refresher.target.complete();
-        }
+        if (refresher) { refresher.target.complete(); }
+      }, error => {
+        console.log(error);
+        this.isLoaded = true;
+        if (refresher) { refresher.target.complete(); }
       });
+    }, error => {
+      console.log(error);
+      if (refresher) { refresher.target.complete(); }
     });
   }
 

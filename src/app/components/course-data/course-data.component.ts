@@ -41,6 +41,8 @@ export class CourseDataComponent implements OnInit {
           this.courseGroups.push(tmp[i].groupId);
         }
       }
+    }, error => {
+      console.log(error);
     });
   }
 

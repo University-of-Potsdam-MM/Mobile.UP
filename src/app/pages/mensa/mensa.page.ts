@@ -56,7 +56,7 @@ export class MensaPage extends AbstractPage {
     private translate: TranslateService,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   /**
@@ -115,7 +115,7 @@ export class MensaPage extends AbstractPage {
           this.getFilterKeywords();
           this.classifyMeals();
           if (refresher) { refresher.target.complete(); }
-        });
+        }, error => console.log(error));
       } else {
         this.getFilterKeywords();
         this.classifyMeals();
@@ -123,6 +123,9 @@ export class MensaPage extends AbstractPage {
       }
     }, error => {
       console.log(error);
+      this.isLoaded = true;
+      this.hardRefresh = false;
+      if (refresher) { refresher.target.complete(); }
     });
   }
 
@@ -268,7 +271,7 @@ export class MensaPage extends AbstractPage {
             this.mensaIsOpen = response.parsedOpening.getState();
           }
         }
-      });
-    });
+      }, error => console.log(error));
+    }, error => console.log(error));
   }
 }

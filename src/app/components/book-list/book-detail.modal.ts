@@ -96,23 +96,15 @@ export class BookDetailModalPage implements OnInit {
       {
         id: 'ppn:' + this.book.recordInfo.recordIdentifier._
       },
-      { forceRefresh: refresher !== null }
+      { forceRefresh: refresher !== undefined }
     ).subscribe(data => {
-      if (refresher) {
-        refresher.target.complete();
-      }
-
-      if (data) {
-        this.locationData = data;
-      }
-
+      if (refresher) { refresher.target.complete(); }
+      if (data) { this.locationData = data; }
       this.isLoaded = true;
     }, error => {
       console.log(error);
       this.isLoaded = true;
-      if (refresher) {
-        refresher.target.complete();
-      }
+      if (refresher) { refresher.target.complete(); }
     });
   }
 

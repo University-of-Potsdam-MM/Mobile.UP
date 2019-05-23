@@ -28,7 +28,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   constructor(
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -43,12 +43,10 @@ export class NewsPage extends AbstractPage implements OnInit {
     this.ws.call(
       'news',
       {},
-      { forceRefresh: refresher !== null }
+      { forceRefresh: refresher !== undefined }
     ).subscribe((response: INewsApiResponse) => {
 
-      if (refresher) {
-        refresher.target.complete();
-      }
+      if (refresher) { refresher.target.complete(); }
 
       if (response.errors.exist === false) {
         this.newsList = response.vars.news;
@@ -76,6 +74,10 @@ export class NewsPage extends AbstractPage implements OnInit {
           this.showLeftButton = false;
         }
       }
+    }, error => {
+      console.log(error);
+      this.isLoaded = true;
+      if (refresher) { refresher.target.complete(); }
     });
   }
 

@@ -67,7 +67,9 @@ export class AlertService {
       });
 
       this.currentAlert.present();
-    }
+      await this.currentAlert.onDidDismiss();
+      this.currentAlert = undefined;
+    } else { console.log('[AlertService]: Not showing alert, because there is another alert shown'); }
   }
 
   /**

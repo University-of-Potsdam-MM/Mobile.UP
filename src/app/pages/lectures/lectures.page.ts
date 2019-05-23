@@ -20,7 +20,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     private platform: Platform,
     private keyboard: Keyboard
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   isLoaded;
@@ -68,6 +68,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       this.isLoaded = true;
     }, error => {
       console.log(error);
+      this.isLoaded = true;
     });
   }
 

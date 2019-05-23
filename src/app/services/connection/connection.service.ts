@@ -62,7 +62,12 @@ export class ConnectionService {
       if (showAlert && !sendHome) {
         this.alertService.showToast('alert.network');
       } else if (showAlert && sendHome) {
-        const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+        const buttons: AlertButton[] = [{
+          text: this.translate.instant('button.continue'),
+          handler: () => {
+            this.navCtrl.navigateRoot('/home');
+          }
+        }];
         this.alertService.showAlert(
           {
             headerI18nKey: 'alert.title.error',
@@ -72,7 +77,7 @@ export class ConnectionService {
         );
       }
 
-      if (sendHome) {
+      if (!showAlert && sendHome) {
         this.navCtrl.navigateRoot('/home');
       }
     }

@@ -34,6 +34,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   numberOfRecords = '0';
   updatedFavorites = 0;
   modalOpen;
+  networkError;
 
   constructor(
     private platform: Platform,
@@ -45,7 +46,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -89,6 +90,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             dontCache: true
           }
         ).subscribe(res => {
+          this.networkError = false;
           this.parseXMLtoJSON(res).then(data => {
 
             let tmp, tmpList, i;
@@ -127,6 +129,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }, error => {
           console.log(error);
           this.isLoaded = true;
+          this.networkError = true;
           if (infiniteScroll) { infiniteScroll.target.complete(); }
         });
       } else { this.isLoaded = true; }
@@ -349,9 +352,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             },
             {
               groupKey: 'libraryFavoriteResource',
-              forceRefreshGroup: refresher !== null
+              forceRefreshGroup: refresher !== undefined
             }
           ).subscribe(res => {
+            this.networkError = false;
             this.parseXMLtoJSON(res).then(data => {
               let tmpRes, tmpList, numberOfRecords;
               if (data['zs:searchRetrieveResponse']) {
@@ -406,6 +410,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               this.updateComplete(tmp.length, refresher);
             });
           }, error => {
+            this.networkError = true;
             this.allFavorites.push(tmp[i]);
             this.updatedFavorites++;
             console.log(error);

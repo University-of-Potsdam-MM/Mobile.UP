@@ -39,7 +39,7 @@ export class LectureListComponent implements OnInit {
       ).subscribe(
         (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
-      });
+      }, error => console.log(error));
     } else if (this.hasSubTree) {
       this.ws.call(
         'pulsGetLectureScheduleSubTree',
@@ -47,7 +47,7 @@ export class LectureListComponent implements OnInit {
         { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
-      });
+      }, error => console.log(error));
     } else {
       this.ws.call(
         'pulsGetLectureScheduleCourses',
@@ -55,7 +55,7 @@ export class LectureListComponent implements OnInit {
         { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;
-      });
+      }, error => console.log(error));
     }
   }
 

@@ -90,6 +90,9 @@ export class TransportPage extends AbstractPage {
     }, error => {
       if (infiniteScroll) { infiniteScroll.target.complete(); }
       console.log(error);
+      if (refresher) { refresher.target.complete(); }
+      this.hardRefresh = false;
+      this.isLoaded = true;
       this.error = error;
     });
   }

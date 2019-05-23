@@ -35,7 +35,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     private alertService: AlertService,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -67,16 +67,16 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     this.ws.call(
       'emergencyCalls',
       {},
-      { forceRefresh: refresher !== null }
+      { forceRefresh: refresher !== undefined }
     ).subscribe((response) => {
-
-      if (refresher) {
-        refresher.target.complete();
-      }
-
+      if (refresher) { refresher.target.complete(); }
       this.defaultList = response;
       this.isLoaded = true;
       this.initializeList();
+    }, error => {
+      console.log(error);
+      this.isLoaded = true;
+      if (refresher) { refresher.target.complete(); }
     });
     // on error //this.defaultList = require("../../assets/json/emergency");
 

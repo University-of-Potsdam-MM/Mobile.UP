@@ -28,7 +28,7 @@ export class GradesPage extends AbstractPage {
   constructor(
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   /**
@@ -83,7 +83,7 @@ export class GradesPage extends AbstractPage {
     this.ws.call(
       'pulsGetAcademicAchievements',
       { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
-      { forceRefresh: this.refresher !== null }
+      { forceRefresh: this.refresher !== undefined }
     ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
@@ -95,6 +95,7 @@ export class GradesPage extends AbstractPage {
     }, error => {
       console.log('ERROR while getting grades');
       console.log(error);
+      this.loadingGrades = false;
     });
 
     if (this.refresher != null) {
@@ -133,7 +134,7 @@ export class GradesPage extends AbstractPage {
     this.ws.call(
       'pulsGetPersonalStudyAreas',
       { session: this.session },
-      { forceRefresh: this.refresher !== null }
+      { forceRefresh: this.refresher !== undefined }
     ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
@@ -160,6 +161,7 @@ export class GradesPage extends AbstractPage {
     }, error => {
       console.log('ERROR while getting student details');
       console.log(error);
+      this.studentLoaded = true;
     });
 
     if (this.refresher != null) {

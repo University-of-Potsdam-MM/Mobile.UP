@@ -336,11 +336,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
         if (this.refresher != null) {
           this.refresher.target.complete();
         }
-
-        this.alertService.showAlert({
-          headerI18nKey: 'alert.title.error',
-          messageI18nKey: `alert.httpErrorStatus.${error.status}`
-        });
       }
     );
   }
