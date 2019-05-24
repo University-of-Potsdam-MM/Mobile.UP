@@ -20,6 +20,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   weekday = [];
   isLoaded;
   modalOpen;
+  query = '';
 
   constructor(
     private translate: TranslateService,
@@ -41,7 +42,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
       if (!refresher) {
         this.isLoaded = false;
-      }
+      } else { this.query = ''; }
 
       this.ws.call(
         'openingHours',

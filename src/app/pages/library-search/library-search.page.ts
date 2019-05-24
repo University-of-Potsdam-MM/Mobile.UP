@@ -305,6 +305,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.allFavorites = [];
     this.isLoadedFavorites = false;
     this.updatedFavorites = 0;
+    if (refresher) { this.query = ''; }
 
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {

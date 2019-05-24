@@ -29,7 +29,7 @@ export class PracticePage extends AbstractPage {
   error: HttpErrorResponse;
   itemsShown = 0;
   isLoadedFavorites = false;
-  query;
+  query = '';
   activeSegment = 'search';
   modalOpen;
 
@@ -94,7 +94,7 @@ export class PracticePage extends AbstractPage {
   public loadData(refresher?) {
     if (!refresher) {
       this.isLoaded = false;
-    }
+    } else { this.query = ''; }
 
     this.ws.call(
       'practiceSearch',

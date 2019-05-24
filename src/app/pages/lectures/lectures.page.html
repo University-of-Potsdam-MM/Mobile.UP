@@ -12,6 +12,7 @@
       <ion-spinner name="dots" slot="end"></ion-spinner>
     </ion-item>
     <ion-searchbar *ngIf="!(!isLoaded || isSearching)"
+    [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLecture($event)"
     debounce="750">

@@ -23,6 +23,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   defaultList: Array<EmergencyCall>;
   isLoaded;
   cordova = false;
+  query = '';
 
   constructor(
     private platform: Platform,
@@ -62,7 +63,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
 
     if (!refresher) {
       this.isLoaded = false;
-    }
+    } else { this.query = ''; }
 
     this.ws.call(
       'emergencyCalls',

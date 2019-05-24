@@ -6,6 +6,7 @@
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar
+    [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="filterItems($event)"
     debounce="500">
