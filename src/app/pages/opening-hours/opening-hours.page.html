@@ -4,7 +4,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.opening-hours.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar *ngIf="!networkError">
     <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
@@ -24,7 +24,8 @@
   </div>
 
   <div *ngIf="isLoaded && openingHours.length == 0">
-    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+    <app-hint-box *ngIf="!networkError" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+    <app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
   </div>
 
   <ion-list>

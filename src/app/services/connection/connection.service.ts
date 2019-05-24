@@ -70,7 +70,7 @@ export class ConnectionService {
         }];
         this.alertService.showAlert(
           {
-            headerI18nKey: 'alert.title.error',
+            headerI18nKey: 'alert.title.httpError',
             messageI18nKey: 'alert.network'
           },
           buttons

@@ -1,7 +1,7 @@
 <div align="center" *ngIf="!isLoaded && !networkError" padding>
   <ion-spinner name="dots"></ion-spinner>
 </div>
-<app-hint-box *ngIf="networkError" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="alert.network"></app-hint-box>
+<app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
 <ion-list *ngIf="lectureSchedule && lectureSchedule.lectureScheduleRoot">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
       <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" (click)="expandChild(childNode)">

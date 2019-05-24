@@ -41,8 +41,9 @@
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
-  <div *ngIf="isLoaded && displayedList.length == 0 && error == null">
-    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+  <div *ngIf="isLoaded && displayedList.length == 0">
+    <app-hint-box *ngIf="error == null" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+    <app-hint-box *ngIf="error && activeSegment === 'search'" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'favorites'">

@@ -19,11 +19,12 @@ import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/we
 export class EmergencyPage  extends AbstractPage implements OnInit {
 
   jsonPath = '../../assets/json/emergency';
-  displayedList: Array<EmergencyCall>;
-  defaultList: Array<EmergencyCall>;
+  displayedList: Array<EmergencyCall> = [];
+  defaultList: Array<EmergencyCall> = [];
   isLoaded;
   cordova = false;
   query = '';
+  networkError;
 
   constructor(
     private platform: Platform,
@@ -34,7 +35,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     private contacts: Contacts,
     private callNumber: CallNumber,
     private alertService: AlertService,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
   ) {
     super({ optionalNetwork: true });
   }
@@ -65,6 +66,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       this.isLoaded = false;
     } else { this.query = ''; }
 
+    this.networkError = false;
     this.ws.call(
       'emergencyCalls',
       {},
@@ -78,6 +80,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       console.log(error);
       this.isLoaded = true;
       if (refresher) { refresher.target.complete(); }
+      this.networkError = true;
     });
     // on error //this.defaultList = require("../../assets/json/emergency");
 

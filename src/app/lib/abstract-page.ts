@@ -10,8 +10,12 @@ import { ConfigService } from '../services/config/config.service';
 
 export interface IPageOptions {
     requireSession?: boolean;
+    // if the page doesn't work without network at all
+    // f.e. library search
     requireNetwork?: boolean;
     optionalSession?: boolean;
+    // if the page could work with cached content
+    // make sure you show an hint if there is no cached content available
     optionalNetwork?: boolean;
 }
 

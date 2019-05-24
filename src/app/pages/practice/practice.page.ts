@@ -92,6 +92,7 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   public loadData(refresher?) {
+    this.error = null;
     if (!refresher) {
       this.isLoaded = false;
     } else { this.query = ''; }

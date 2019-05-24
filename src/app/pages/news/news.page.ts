@@ -20,6 +20,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   public showRightButton = true;
   public selectedCategory = 0;
   public categories = [];
+  networkError;
 
   slideOptions = {
     slidesPerView: 'auto'
@@ -36,9 +37,8 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    if (!refresher) {
-      this.isLoaded = false;
-    }
+    if (!refresher) { this.isLoaded = false; }
+    this.networkError = false;
 
     this.ws.call(
       'news',
@@ -78,6 +78,7 @@ export class NewsPage extends AbstractPage implements OnInit {
       console.log(error);
       this.isLoaded = true;
       if (refresher) { refresher.target.complete(); }
+      this.networkError = true;
     });
   }
 

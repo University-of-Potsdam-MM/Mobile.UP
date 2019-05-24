@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
 
 @Component({
   selector: 'app-campus-map',
@@ -42,6 +44,7 @@ export class CampusMapPage extends AbstractPage {
     private translate: TranslateService,
     private location: Geolocation,
     private modalCtrl: ModalController,
+    private alertService: AlertService
   ) {
     super({ optionalNetwork: true });
   }
@@ -251,7 +254,22 @@ export class CampusMapPage extends AbstractPage {
       (response: IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON, map);
-      }, error => { console.log(error); }
+      }, error => {
+        console.log(error);
+        const buttons: AlertButton[] = [{
+          text: this.translate.instant('button.continue'),
+          handler: () => {
+            this.navCtrl.navigateRoot('/home');
+          }
+        }];
+        this.alertService.showAlert(
+          {
+            headerI18nKey: 'alert.title.httpError',
+            messageI18nKey: 'alert.network'
+          },
+          buttons
+        );
+      }
     );
   }
 

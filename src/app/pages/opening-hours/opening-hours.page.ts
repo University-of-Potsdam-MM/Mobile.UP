@@ -15,12 +15,13 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 })
 export class OpeningHoursPage extends AbstractPage implements OnInit {
 
-  openingHours;
-  allOpeningHours;
+  openingHours = [];
+  allOpeningHours = [];
   weekday = [];
   isLoaded;
   modalOpen;
   query = '';
+  networkError;
 
   constructor(
     private translate: TranslateService,
@@ -37,6 +38,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
+    this.networkError = false;
     this.ws.call('nominatim').subscribe(
       nominatim => {
 
@@ -75,10 +77,13 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         console.log(error);
         this.isLoaded = true;
         if (refresher) { refresher.target.complete(); }
+        this.networkError = true;
       });
     }, error => {
       console.log(error);
       if (refresher) { refresher.target.complete(); }
+      this.isLoaded = true;
+      this.networkError = true;
     });
   }
 

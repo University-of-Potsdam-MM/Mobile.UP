@@ -4,8 +4,8 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-item align="center" *ngIf="!isLoaded || isSearching" lines="none" class="searchPrepareItem">
+  <ion-toolbar *ngIf="!networkError">
+    <ion-item align="center" *ngIf="(!isLoaded || isSearching)" lines="none" class="searchPrepareItem">
       <ion-label>
         {{ "page.lectures.preparingSearch" | translate }}
       </ion-label>

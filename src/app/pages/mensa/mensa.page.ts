@@ -48,6 +48,7 @@ export class MensaPage extends AbstractPage {
   hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
+  networkError;
   campus: ICampus;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
@@ -84,6 +85,7 @@ export class MensaPage extends AbstractPage {
 
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
+    this.networkError = false;
 
     this.ws.call(
       'mensa',
@@ -125,6 +127,7 @@ export class MensaPage extends AbstractPage {
       console.log(error);
       this.isLoaded = true;
       this.hardRefresh = false;
+      this.networkError = true;
       if (refresher) { refresher.target.complete(); }
     });
   }
