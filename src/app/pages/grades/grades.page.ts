@@ -88,7 +88,7 @@ export class GradesPage extends AbstractPage {
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
         this.studentGrades = resGrades;
-        this.gradesLoaded = true;
+        if (!this.refresher) { this.gradesLoaded = true; }
       } else { this.studentGrades = undefined; }
 
       this.loadingGrades = false;

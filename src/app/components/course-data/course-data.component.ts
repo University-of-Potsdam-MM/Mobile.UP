@@ -15,6 +15,8 @@ export class CourseDataComponent implements OnInit {
   courseData;
   courseGroups = [];
   lecturerList = [];
+  isLoaded;
+  networkError;
 
   constructor(
     private ws: WebserviceWrapperService
@@ -25,6 +27,8 @@ export class CourseDataComponent implements OnInit {
   }
 
   getCourseData(courseId) {
+    this.isLoaded = false;
+    this.networkError = false;
     this.ws.call(
       'pulsGetCourseData',
       { courseId: courseId },
@@ -41,8 +45,11 @@ export class CourseDataComponent implements OnInit {
           this.courseGroups.push(tmp[i].groupId);
         }
       }
+
+      this.isLoaded = true;
     }, error => {
       console.log(error);
+      this.networkError = true;
     });
   }
 

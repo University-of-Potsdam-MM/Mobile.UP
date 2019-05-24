@@ -20,6 +20,8 @@ export class LectureListComponent implements OnInit {
   @Input() refresh = false;
 
   lectureSchedule;
+  isLoaded;
+  networkError;
   isExpanded = [];
   isExpandedCourse = [];
 
@@ -30,6 +32,8 @@ export class LectureListComponent implements OnInit {
   ngOnInit() {
     if (this.headerIdInput) { this.headerId = this.headerIdInput; }
     if (this.hasSubTreeInput) { this.hasSubTree = true; }
+    this.isLoaded = false;
+    this.networkError = false;
 
     if (!this.headerId) {
       this.ws.call(
@@ -39,7 +43,11 @@ export class LectureListComponent implements OnInit {
       ).subscribe(
         (response: IPulsAPIResponse_getLectureScheduleRoot) => {
         this.lectureSchedule = response;
-      }, error => console.log(error));
+        this.isLoaded = true;
+      }, error => {
+        console.log(error);
+        this.networkError = true;
+      });
     } else if (this.hasSubTree) {
       this.ws.call(
         'pulsGetLectureScheduleSubTree',
@@ -47,7 +55,11 @@ export class LectureListComponent implements OnInit {
         { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleSubTree) => {
         this.lectureSchedule = response;
-      }, error => console.log(error));
+        this.isLoaded = true;
+      }, error => {
+        console.log(error);
+        this.networkError = true;
+      });
     } else {
       this.ws.call(
         'pulsGetLectureScheduleCourses',
@@ -55,7 +67,11 @@ export class LectureListComponent implements OnInit {
         { forceRefreshGroup: this.refresh }
       ).subscribe((response: IPulsAPIResponse_getLectureScheduleCourses) => {
         this.lectureSchedule = response;
-      }, error => console.log(error));
+        this.isLoaded = true;
+      }, error => {
+        console.log(error);
+        this.networkError = true;
+      });
     }
   }
 

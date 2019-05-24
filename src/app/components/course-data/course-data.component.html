@@ -1,3 +1,7 @@
+<div align="center" *ngIf="!isLoaded && !networkError" padding>
+    <ion-spinner name="dots"></ion-spinner>
+</div>
+<app-hint-box *ngIf="networkError" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="alert.network"></app-hint-box>
 <ion-item class="courseData" *ngIf="course.courseId && courseData" padding-top>
     <ion-grid class="courseData">
         <ion-row *ngIf="course.semester">

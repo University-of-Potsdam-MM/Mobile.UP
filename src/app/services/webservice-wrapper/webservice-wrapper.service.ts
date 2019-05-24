@@ -560,10 +560,10 @@ export class WebserviceWrapperService {
       return from(
         Promise.all([
           cachingOptions.forceRefreshGroup
-            ? console.log('Not clearing cache, since there is not internet connection!')
+            ? console.log('Not clearing cache, since there is no internet connection!')
             : Promise.resolve(),
           cachingOptions.forceRefresh
-            ? console.log('Not clearing cache, since there is not internet connection!')
+            ? console.log('Not clearing cache, since there is no internet connection!')
             : Promise.resolve()
         ])
       ).pipe(
