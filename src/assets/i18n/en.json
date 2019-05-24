@@ -371,7 +371,7 @@
       "404": "Error 404: Resource not found"
     },
     "unknown_error": "An unknown error occured. Please contact the development team.",
-    "network": "A network error occured. Is the device connected to the internet?",
+    "network": "No internet connection.",
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",

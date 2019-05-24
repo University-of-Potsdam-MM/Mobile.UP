@@ -15,11 +15,13 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 })
 export class OpeningHoursPage extends AbstractPage implements OnInit {
 
-  openingHours;
-  allOpeningHours;
+  openingHours = [];
+  allOpeningHours = [];
   weekday = [];
   isLoaded;
   modalOpen;
+  query = '';
+  networkError;
 
   constructor(
     private translate: TranslateService,
@@ -28,7 +30,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -36,12 +38,13 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
+    this.networkError = false;
     this.ws.call('nominatim').subscribe(
       nominatim => {
 
       if (!refresher) {
         this.isLoaded = false;
-      }
+      } else { this.query = ''; }
 
       this.ws.call(
         'openingHours',
@@ -69,10 +72,18 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.openingHours = this.sortOpenings(this.allOpeningHours);
         this.isLoaded = true;
 
-        if (refresher) {
-          refresher.target.complete();
-        }
+        if (refresher) { refresher.target.complete(); }
+      }, error => {
+        console.log(error);
+        this.isLoaded = true;
+        if (refresher) { refresher.target.complete(); }
+        this.networkError = true;
       });
+    }, error => {
+      console.log(error);
+      if (refresher) { refresher.target.complete(); }
+      this.isLoaded = true;
+      this.networkError = true;
     });
   }
 

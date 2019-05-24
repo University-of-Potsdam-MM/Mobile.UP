@@ -20,7 +20,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     private platform: Platform,
     private keyboard: Keyboard
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   isLoaded;
@@ -33,6 +33,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
   searchResults = [];
   resultKeys = [];
   query = '';
+  networkError;
   modalOpen;
   valueArray = [];
 
@@ -55,6 +56,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   loadLectureTree(forceRefresh: boolean = false) {
     this.isLoaded = false;
+    this.networkError = false;
 
     this.ws.call(
       'pulsGetLectureScheduleAll',
@@ -68,6 +70,8 @@ export class LecturesPage extends AbstractPage implements OnInit {
       this.isLoaded = true;
     }, error => {
       console.log(error);
+      this.isLoaded = true;
+      this.networkError = true;
     });
   }
 

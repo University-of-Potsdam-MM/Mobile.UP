@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, AlertController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -14,6 +14,8 @@ import { ConfigService } from './services/config/config.service';
 import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
 import { UPLoginProvider } from './services/login-provider/login';
 import { Router } from '@angular/router';
+import { AlertService } from './services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
 
 @Component({
   selector: 'app-root',
@@ -37,13 +39,13 @@ export class AppComponent {
     private menuCtrl: MenuController,
     private cache: CacheService,
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
     private userSession: UserSessionService,
     private setting: SettingsService,
     private connection: ConnectionService,
     private events: Events,
     private login: UPLoginProvider,
-    private storage: Storage
+    private storage: Storage,
+    private alertService: AlertService
   ) {
     this.initializeApp();
   }
@@ -233,29 +235,32 @@ export class AppComponent {
     this.navCtrl.navigateRoot('/home');
   }
 
-  async doLogout() {
+  doLogout() {
     this.close();
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('page.logout.title'),
-      message: this.translate.instant('page.logout.affirmativeQuestion'),
-      buttons: [
-        {
-          text: this.translate.instant('button.cancel'),
-        },
-        {
-          text: this.translate.instant('button.ok'),
-          handler: () => {
-            this.userSession.removeSession();
-            this.userSession.removeUserInfo();
-            for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
-            this.cache.clearAll();
-            this.updateLoginStatus();
-            this.navCtrl.navigateRoot('/home');
-          }
+    const buttons: AlertButton[] = [
+      {
+        text: this.translate.instant('button.cancel'),
+      },
+      {
+        text: this.translate.instant('button.ok'),
+        handler: () => {
+          this.userSession.removeSession();
+          this.userSession.removeUserInfo();
+          for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+          this.cache.clearAll();
+          this.updateLoginStatus();
+          this.navCtrl.navigateRoot('/home');
         }
-      ]
-    });
-    alert.present();
+      }
+    ];
+
+    this.alertService.showAlert(
+      {
+        headerI18nKey: 'page.logout.title',
+        messageI18nKey: 'page.logout.affirmativeQuestion'
+      },
+      buttons
+    );
   }
 
   toLogin() {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
+import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { IConfig } from 'src/app/lib/interfaces';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
@@ -34,18 +34,19 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   numberOfRecords = '0';
   updatedFavorites = 0;
   modalOpen;
+  networkError;
 
   constructor(
     private platform: Platform,
     private keyboard: Keyboard,
     private translate: TranslateService,
-    private alert: AlertService,
+    private alertService: AlertService,
+    private alertCtrl: AlertController,
     private storage: Storage,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -89,6 +90,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             dontCache: true
           }
         ).subscribe(res => {
+          this.networkError = false;
           this.parseXMLtoJSON(res).then(data => {
 
             let tmp, tmpList, i;
@@ -127,6 +129,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }, error => {
           console.log(error);
           this.isLoaded = true;
+          this.networkError = true;
           if (infiniteScroll) { infiniteScroll.target.complete(); }
         });
       } else { this.isLoaded = true; }
@@ -228,11 +231,11 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       }
 
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alertService.showToast('hints.text.favAdded');
       }
     } else {
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alertService.showToast('hints.text.favExists');
       }
     }
 
@@ -269,7 +272,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.displayedFavorites = [];
     this.displayedFavorites = this.sortFavorites(tmp2);
     if (!disableHints) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     }
     this.storage.set('favoriteBooks', this.allFavorites);
   }
@@ -282,7 +285,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       this.isLoadedFavorites = true;
       this.storage.set('favoriteBooks', this.allFavorites);
       if (tmpLength > this.allFavorites.length) {
-        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+        this.alertService.showToast('hints.text.favNotAvailable');
       }
     }
 
@@ -302,6 +305,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.allFavorites = [];
     this.isLoadedFavorites = false;
     this.updatedFavorites = 0;
+    if (refresher) { this.query = ''; }
 
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
@@ -352,6 +356,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               forceRefreshGroup: refresher !== undefined
             }
           ).subscribe(res => {
+            this.networkError = false;
             this.parseXMLtoJSON(res).then(data => {
               let tmpRes, tmpList, numberOfRecords;
               if (data['zs:searchRetrieveResponse']) {
@@ -406,6 +411,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               this.updateComplete(tmp.length, refresher);
             });
           }, error => {
+            this.networkError = true;
             this.allFavorites.push(tmp[i]);
             this.updatedFavorites++;
             console.log(error);

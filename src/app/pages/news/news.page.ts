@@ -20,6 +20,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   public showRightButton = true;
   public selectedCategory = 0;
   public categories = [];
+  networkError;
 
   slideOptions = {
     slidesPerView: 'auto'
@@ -28,7 +29,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   constructor(
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -36,9 +37,8 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    if (!refresher) {
-      this.isLoaded = false;
-    }
+    if (!refresher) { this.isLoaded = false; }
+    this.networkError = false;
 
     this.ws.call(
       'news',
@@ -46,9 +46,7 @@ export class NewsPage extends AbstractPage implements OnInit {
       { forceRefresh: refresher !== undefined }
     ).subscribe((response: INewsApiResponse) => {
 
-      if (refresher) {
-        refresher.target.complete();
-      }
+      if (refresher) { refresher.target.complete(); }
 
       if (response.errors.exist === false) {
         this.newsList = response.vars.news;
@@ -76,6 +74,11 @@ export class NewsPage extends AbstractPage implements OnInit {
           this.showLeftButton = false;
         }
       }
+    }, error => {
+      console.log(error);
+      this.isLoaded = true;
+      if (refresher) { refresher.target.complete(); }
+      this.networkError = true;
     });
   }
 

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { AlertController, Events, LoadingController, ModalController } from '@ionic/angular';
+import { Events, LoadingController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ICredentials, ISession, IOIDCUserInformationResponse, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
 
 @Component({
   selector: 'app-login',
@@ -24,13 +26,13 @@ export class LoginPage extends AbstractPage {
   };
 
   constructor(
-    private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
     private upLogin: UPLoginProvider,
     private events: Events,
     private modalCtrl: ModalController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private alertService: AlertService
   ) {
     super({ requireNetwork: true });
     this.loginForm = this.formBuilder.group({
@@ -139,13 +141,15 @@ export class LoginPage extends AbstractPage {
    * @name showAlert
    * @param errorCode
    */
-  async showAlert(errorCode: ELoginErrors) {
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.error'),
-      message: this.translate.instant(`page.login.loginError.${errorCode}`),
-      buttons: [ this.translate.instant('button.continue') ]
-    });
-    alert.present();
+  showAlert(errorCode: ELoginErrors) {
+    const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+    this.alertService.showAlert(
+      {
+        headerI18nKey: 'alert.title.error',
+        messageI18nKey: `page.login.loginError.${errorCode}`
+      },
+      buttons
+    );
   }
 
   public abort() {

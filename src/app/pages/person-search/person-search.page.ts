@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { IPerson } from 'src/app/lib/interfaces';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
-import {IPersonsRequestParams} from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { IPersonsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-person-search',
@@ -30,13 +29,11 @@ export class PersonSearchPage extends AbstractPage {
   constructor(
     private platform: Platform,
     private keyboard: Keyboard,
-    private http: HttpClient,
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
-    private alert: AlertService,
+    private alertService: AlertService,
     private login: UPLoginProvider,
-    private translate: TranslateService,
     private ws: WebserviceWrapperService
   ) {
     super({ requireNetwork: true, requireSession: true });
@@ -225,7 +222,7 @@ export class PersonSearchPage extends AbstractPage {
         if (!contactFound) {
           if (contactID) { contact.id = contactID; }
           this.saveContact(contact);
-        } else { this.alert.presentToast(this.translate.instant('alert.contact-exists')); }
+        } else { this.alertService.showToast('alert.contact-exists'); }
       }, error => {
         console.log('[Error]: While finding contacts...');
         console.log(error);
@@ -238,14 +235,14 @@ export class PersonSearchPage extends AbstractPage {
     contact.save().then(
       () => {
         console.log('Contact saved!', contact);
-        this.alert.presentToast(this.translate.instant('alert.contact-export-success'));
+        this.alertService.showToast('alert.contact-export-success');
       },
       (error: any) => {
         console.error('Error saving contact.', error);
         if (error.code && (error.code === 20 || error.code === '20')) {
-          this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+          this.alertService.showToast('alert.permission-denied');
         } else {
-          this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+          this.alertService.showToast('alert.contact-export-fail');
         }
       }
     );

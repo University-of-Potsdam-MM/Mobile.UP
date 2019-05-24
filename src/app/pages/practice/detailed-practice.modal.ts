@@ -3,7 +3,6 @@ import { ModalController } from '@ionic/angular';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { IConfig } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
@@ -19,8 +18,7 @@ export class DetailedPracticeModalPage implements OnInit {
   constructor(
       private modalCtrl: ModalController,
       private webIntent: WebIntentService,
-      private translate: TranslateService,
-      private alert: AlertService
+      private alertService: AlertService
     ) {
   }
 
@@ -43,9 +41,9 @@ export class DetailedPracticeModalPage implements OnInit {
     this.isFavorite = !this.isFavorite;
 
     if (!this.isFavorite) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     } else {
-      this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+      this.alertService.showToast('hints.text.favAdded');
     }
   }
 

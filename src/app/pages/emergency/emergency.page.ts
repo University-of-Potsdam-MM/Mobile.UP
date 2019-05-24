@@ -6,7 +6,6 @@ import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/cont
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { EmergencyCall } from 'src/app/lib/interfaces';
 import { NavigatorService } from 'src/app/services/navigator/navigator.service';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -20,10 +19,12 @@ import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/we
 export class EmergencyPage  extends AbstractPage implements OnInit {
 
   jsonPath = '../../assets/json/emergency';
-  displayedList: Array<EmergencyCall>;
-  defaultList: Array<EmergencyCall>;
+  displayedList: Array<EmergencyCall> = [];
+  defaultList: Array<EmergencyCall> = [];
   isLoaded;
   cordova = false;
+  query = '';
+  networkError;
 
   constructor(
     private platform: Platform,
@@ -33,11 +34,10 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
-    private alert: AlertService,
-    private translate: TranslateService,
-    private ws: WebserviceWrapperService
+    private alertService: AlertService,
+    private ws: WebserviceWrapperService,
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -64,21 +64,23 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
 
     if (!refresher) {
       this.isLoaded = false;
-    }
+    } else { this.query = ''; }
 
+    this.networkError = false;
     this.ws.call(
       'emergencyCalls',
       {},
       { forceRefresh: refresher !== undefined }
     ).subscribe((response) => {
-
-      if (refresher) {
-        refresher.target.complete();
-      }
-
+      if (refresher) { refresher.target.complete(); }
       this.defaultList = response;
       this.isLoaded = true;
       this.initializeList();
+    }, error => {
+      console.log(error);
+      this.isLoaded = true;
+      if (refresher) { refresher.target.complete(); }
+      this.networkError = true;
     });
     // on error //this.defaultList = require("../../assets/json/emergency");
 
@@ -214,7 +216,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
         if (!contactFound) {
           if (contactID) { contact.id = contactID; }
           this.saveContact(contact);
-        } else { this.alert.presentToast(this.translate.instant('alert.contact-exists')); }
+        } else { this.alertService.showToast('alert.contact-exists'); }
       }, error => {
         console.log('[Error]: While finding contacts...');
         console.log(error);
@@ -227,14 +229,14 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
     contact.save().then(
       () => {
         console.log('Contact saved!', contact);
-        this.alert.presentToast(this.translate.instant('alert.contact-export-success'));
+        this.alertService.showToast('alert.contact-export-success');
       },
       (error: any) => {
         console.error('Error saving contact.', error);
         if (error.code && (error.code === 20 || error.code === '20')) {
-          this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+          this.alertService.showToast('alert.permission-denied');
         } else {
-          this.alert.presentToast(this.translate.instant('alert.contact-export-fail'));
+          this.alertService.showToast('alert.contact-export-fail');
         }
       }
     );

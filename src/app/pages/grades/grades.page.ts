@@ -18,6 +18,7 @@ export class GradesPage extends AbstractPage {
   studentGrades;
   i;
   noUserRights = false;
+  networkError;
 
   loadingGrades = false;
   gradesLoaded = false;
@@ -28,7 +29,7 @@ export class GradesPage extends AbstractPage {
   constructor(
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   /**
@@ -80,6 +81,7 @@ export class GradesPage extends AbstractPage {
       this.loadingGrades = true;
     }
 
+    this.networkError = false;
     this.ws.call(
       'pulsGetAcademicAchievements',
       { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
@@ -88,13 +90,15 @@ export class GradesPage extends AbstractPage {
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
         this.studentGrades = resGrades;
-        this.gradesLoaded = true;
+        if (!this.refresher) { this.gradesLoaded = true; }
       } else { this.studentGrades = undefined; }
 
       this.loadingGrades = false;
     }, error => {
       console.log('ERROR while getting grades');
       console.log(error);
+      this.loadingGrades = false;
+      this.networkError = true;
     });
 
     if (this.refresher != null) {
@@ -119,7 +123,7 @@ export class GradesPage extends AbstractPage {
    * @name getStudentDetails
    */
   async getStudentDetails() {
-
+    this.networkError = false;
     if (this.refresher == null) {
       this.studentLoaded = false;
     }
@@ -160,6 +164,8 @@ export class GradesPage extends AbstractPage {
     }, error => {
       console.log('ERROR while getting student details');
       console.log(error);
+      this.studentLoaded = true;
+      this.networkError = true;
     });
 
     if (this.refresher != null) {

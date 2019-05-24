@@ -40,11 +40,11 @@ export class WebIntentService implements OnInit {
     private inAppBrowser: InAppBrowser,
     private translate: TranslateService,
     private platform: Platform,
-    private alertCtrl: AlertController,
     private userSession: UserSessionService,
     private settingsProvider: SettingsService,
     private appAvailability: AppAvailability,
-    private safari: SafariViewController
+    private safari: SafariViewController,
+    private alertCtrl: AlertController
     ) { }
 
   ngOnInit() {

@@ -11,16 +11,20 @@
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="studentLoaded">
+  <div *ngIf="studentLoaded && !networkError">
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-selectDegree-hint"></app-hint-box>
   </div>
 
-  <div align="center" *ngIf="!studentLoaded && !noUserRights" padding>
+  <div align="center" *ngIf="!studentLoaded && !noUserRights && !networkError" padding>
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div *ngIf="noUserRights">
+  <div *ngIf="noUserRights && !networkError">
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></app-hint-box>
+  </div>
+
+  <div *ngIf="networkError">
+    <app-hint-box hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
   </div>
 
   <div *ngIf="studentLoaded && !multipleDegrees && studentDetails">

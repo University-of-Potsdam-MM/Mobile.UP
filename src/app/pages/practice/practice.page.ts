@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
+import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +29,7 @@ export class PracticePage extends AbstractPage {
   error: HttpErrorResponse;
   itemsShown = 0;
   isLoadedFavorites = false;
-  query;
+  query = '';
   activeSegment = 'search';
   modalOpen;
 
@@ -40,12 +40,12 @@ export class PracticePage extends AbstractPage {
     private keyboard: Keyboard,
     private translate: TranslateService,
     private chRef: ChangeDetectorRef,
-    private alert: AlertService,
+    private alertService: AlertService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
-    super();
+    super({ optionalNetwork: true });
   }
 
   ionViewWillEnter() {
@@ -92,9 +92,10 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   public loadData(refresher?) {
+    this.error = null;
     if (!refresher) {
       this.isLoaded = false;
-    }
+    } else { this.query = ''; }
 
     this.ws.call(
       'practiceSearch',
@@ -342,11 +343,11 @@ export class PracticePage extends AbstractPage {
         this.allFavorites.push(ads);
       }
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alertService.showToast('hints.text.favAdded');
       }
     } else {
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alertService.showToast('hints.text.favExists');
       }
     }
 
@@ -382,7 +383,7 @@ export class PracticePage extends AbstractPage {
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
     if (!disableHints) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     }
     this.storage.set('favoriteJobs', this.allFavorites);
   }
@@ -411,7 +412,7 @@ export class PracticePage extends AbstractPage {
       }
 
       if (tmp.length > this.allFavorites.length) {
-        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+        this.alertService.showToast('hints.text.favNotAvailable');
       }
     }
 

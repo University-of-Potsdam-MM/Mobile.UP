@@ -10,7 +10,7 @@ import { Calendar } from '@ionic-native/calendar/ngx';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-timetable',
@@ -57,12 +57,12 @@ export class TimetablePage extends AbstractPage {
     private translate: TranslateService,
     private ws: WebserviceWrapperService,
     private sanitizer: DomSanitizer,
-    private alertCtrl: AlertController,
     private calendar: Calendar,
     private modalCtrl: ModalController,
-    private alert: AlertService
+    private alertService: AlertService,
+    private alertCtrl: AlertController
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   async ionViewWillEnter() {
@@ -89,6 +89,9 @@ export class TimetablePage extends AbstractPage {
             );
             console.log(this.eventSource);
           }
+        }, error => {
+          console.log(error);
+          this.isLoading = false;
         }
       );
     } else {
@@ -282,7 +285,7 @@ export class TimetablePage extends AbstractPage {
                         console.log('[Timetable]: Deleted calendar.');
                         this.exportCalendar();
                       }, error => {
-                        this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+                        this.alertService.showToast('alert.calendar-export-fail');
                         console.log(error);
                       });
                     }
@@ -365,7 +368,7 @@ export class TimetablePage extends AbstractPage {
                   console.log('[Timetable]: Error creating event');
                   console.log(error);
                   this.exportedEvents++;
-                  this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
+                  this.alertService.showToast('alert.calendar-event-fail');
                   fin();
                 });
               }
@@ -373,7 +376,7 @@ export class TimetablePage extends AbstractPage {
 
             loop.then(() => {
               this.exportFinished = true;
-              this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+              this.alertService.showToast('alert.calendar-export-success');
             });
           } else {
             this.exportFinished = true;
@@ -381,16 +384,16 @@ export class TimetablePage extends AbstractPage {
         }, error => {
           console.log('[Timetable]: Error creating calendar');
           console.log(error);
-          this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+          this.alertService.showToast('alert.calendar-export-fail');
         });
       } else {
         console.log('[Timetable]: Calendar access DENIED.');
-        this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+        this.alertService.showToast('alert.permission-denied');
       }
     }, error => {
       console.log(error);
       console.log('[Timetable]: Can not check for calendar permissions.');
-      this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+      this.alertService.showToast('alert.calendar-export-fail');
     });
   }
 

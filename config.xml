@@ -113,6 +113,7 @@
     <plugin name="cordova-plugin-calendar" spec="^5.1.4">
         <variable name="CALENDAR_USAGE_DESCRIPTION" value="This app uses your calendar to export your timetable" />
     </plugin>
+    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <engine name="android" spec="8.0.0" />
     <engine name="browser" spec="6.0.0" />
     <engine name="ios" spec="5.0.1" />

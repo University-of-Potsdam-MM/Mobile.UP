@@ -48,6 +48,7 @@ export class MensaPage extends AbstractPage {
   hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
+  networkError;
   campus: ICampus;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
@@ -56,7 +57,7 @@ export class MensaPage extends AbstractPage {
     private translate: TranslateService,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   /**
@@ -84,6 +85,7 @@ export class MensaPage extends AbstractPage {
 
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
+    this.networkError = false;
 
     this.ws.call(
       'mensa',
@@ -115,7 +117,7 @@ export class MensaPage extends AbstractPage {
           this.getFilterKeywords();
           this.classifyMeals();
           if (refresher) { refresher.target.complete(); }
-        });
+        }, error => console.log(error));
       } else {
         this.getFilterKeywords();
         this.classifyMeals();
@@ -123,6 +125,10 @@ export class MensaPage extends AbstractPage {
       }
     }, error => {
       console.log(error);
+      this.isLoaded = true;
+      this.hardRefresh = false;
+      this.networkError = true;
+      if (refresher) { refresher.target.complete(); }
     });
   }
 
@@ -249,7 +255,7 @@ export class MensaPage extends AbstractPage {
 
   getOpening() {
     this.mensaIsOpen = true;
-    const searchTerm = 'mensa ' + this.campus;
+    const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
 
     this.ws.call('openingHours').subscribe(response => {
       this.ws.call('nominatim').subscribe(nominatim => {
@@ -268,7 +274,7 @@ export class MensaPage extends AbstractPage {
             this.mensaIsOpen = response.parsedOpening.getState();
           }
         }
-      });
-    });
+      }, error => console.log(error));
+    }, error => console.log(error));
   }
 }

@@ -18,10 +18,6 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div *ngIf="error != null" style="text-align: center" text-wrap>
-    <app-hint-box hintTypeI18nKey="hints.type.attention" hintTextI18nKey="alert.network"></app-hint-box>
-  </div>
-
   <div align="center" *ngIf="isLoaded && departures[0]">
     <ion-item-divider>
       <ion-label text-wrap>

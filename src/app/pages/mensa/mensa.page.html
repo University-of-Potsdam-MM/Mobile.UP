@@ -18,7 +18,7 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <app-hint-box *ngIf="isLoaded && !mensaIsOpen" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
+  <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
 
   <ion-item *ngIf="isLoaded" lines="none">
     <ion-icon slot="start" name="calendar" (click)="showBasicCalendar = !showBasicCalendar;"
@@ -56,9 +56,10 @@
     </ion-list>
   </div>
 
-  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate">
+  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate && !networkError">
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.mensa-nomeals-hint"></app-hint-box>
   </div>
+  <app-hint-box *ngIf="isLoaded && networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
 
 </ion-content>
 
