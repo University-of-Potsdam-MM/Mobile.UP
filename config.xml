@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60202" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201904110900" version="6.2.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="de.floriangoessler.upapp" android-versionCode="60300" id="de.floriangoessler.upapp" ios-CFBundleIdentifier="com.floriangoessler.Uni-Potsdam" ios-CFBundleVersion="201905241400" version="6.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Mobile.UP</name>
     <description>Offizielle App der Universität Potsdam</description>
     <author email="mobileup-service@uni-potsdam.de" href="http://www.uni-potsdam.de/elis/">eLiS Team</author>
