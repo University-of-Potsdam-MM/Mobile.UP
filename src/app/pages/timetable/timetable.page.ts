@@ -87,7 +87,6 @@ export class TimetablePage extends AbstractPage {
             this.eventSource = createEventSource(
               response.studentCourses.student.actualCourses.course
             );
-            console.log(this.eventSource);
           }
         }, error => {
           console.log(error);
