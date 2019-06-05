@@ -55,8 +55,6 @@ export class BookLocationComponent implements OnInit {
 
         this.isLoaded = true;
       }, error => {
-        console.log('[Library]: Could not get LKZ');
-        console.log(error);
         this.isLoaded = true;
       });
     } else { this.isLoaded = true; }

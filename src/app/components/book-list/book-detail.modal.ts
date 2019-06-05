@@ -44,8 +44,7 @@ export class BookDetailModalPage implements OnInit {
       private alertService: AlertService,
       public webIntent: WebIntentService, // is used in the HTML
       private ws: WebserviceWrapperService
-    ) {
-  }
+    ) { }
 
   ngOnInit() {
     this.config = ConfigService.config;
@@ -101,8 +100,7 @@ export class BookDetailModalPage implements OnInit {
       if (refresher) { refresher.target.complete(); }
       if (data) { this.locationData = data; }
       this.isLoaded = true;
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
       if (refresher) { refresher.target.complete(); }
     });

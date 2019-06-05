@@ -414,7 +414,8 @@
   "popover":{
     "loggedInText": "Eingeloggt als",
     "notLoggedInText": "Nicht eingeloggt",
-    "general": "Allgemein"
+    "general": "Allgemein",
+    "exportLog": "Log exportieren"
   },
   "launchNavigator": {
     "headerText": "Auswahl merken?",

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,14 @@ import { IConfig } from 'src/app/lib/interfaces';
 export class ConfigService {
 
   static config: IConfig;
+  logger: Logger;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private loggingService: LoggingService
+    ) {
+      this.logger = this.loggingService.getLogger('[/config-service]');
+    }
 
   /**
    * loads config file.
@@ -26,7 +33,7 @@ export class ConfigService {
       ).catch(
         (response: any) => {
           reject(`Could not load file '${uri}'`);
-          console.log(response);
+          this.logger.error('load', response);
         });
     });
   }

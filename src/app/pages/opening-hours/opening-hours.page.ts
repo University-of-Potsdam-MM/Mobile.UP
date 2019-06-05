@@ -73,14 +73,12 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.isLoaded = true;
 
         if (refresher) { refresher.target.complete(); }
-      }, error => {
-        console.log(error);
+      }, () => {
         this.isLoaded = true;
         if (refresher) { refresher.target.complete(); }
         this.networkError = true;
       });
-    }, error => {
-      console.log(error);
+    }, () => {
       if (refresher) { refresher.target.complete(); }
       this.isLoaded = true;
       this.networkError = true;

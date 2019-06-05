@@ -9,6 +9,7 @@ import { UserSessionService } from '../user-session/user-session.service';
 import { ConfigService } from '../config/config.service';
 import { ISession } from '../login-provider/interfaces';
 import { SettingsService } from '../settings/settings.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class WebIntentService implements OnInit {
   };
 
   session: ISession;
+  logger: Logger;
 
   constructor(
     private inAppBrowser: InAppBrowser,
@@ -44,8 +46,11 @@ export class WebIntentService implements OnInit {
     private settingsProvider: SettingsService,
     private appAvailability: AppAvailability,
     private safari: SafariViewController,
-    private alertCtrl: AlertController
-    ) { }
+    private alertCtrl: AlertController,
+    private loggingService: LoggingService
+    ) {
+      this.logger = this.loggingService.getLogger('[/web-intent-service]');
+    }
 
   ngOnInit() {
     if (this.translate.currentLang === 'en') {
@@ -199,7 +204,7 @@ export class WebIntentService implements OnInit {
     const browser = this.inAppBrowser.create(url, '_blank', this.options);
 
     if (this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password) {
-      console.log('[Mail] trying to login...');
+      this.logger.debug('mailLogin', 'trying to login...');
       const enterCredentials =
       `$('input.uname').val(\'${this.session.credentials.username}\');
       $('input.pewe').val(\'${this.session.credentials.password}\');
@@ -207,10 +212,9 @@ export class WebIntentService implements OnInit {
 
       browser.on('loadstop').subscribe(() => {
         browser.executeScript({ code: enterCredentials }).then(() => {
-          console.log('successfully entered login data...');
+          this.logger.debug('mailLogin', 'successfully entered login data...');
         }, error => {
-          console.log('ERROR injecting login data...');
-          console.log(error);
+          this.logger.error('mailLogin', 'error injecting credentials', error);
         });
       });
     }
@@ -224,7 +228,7 @@ export class WebIntentService implements OnInit {
   private openWithSafari(url: string) {
     this.safari.show({
       url: url
-    }).subscribe(result => {console.log(result); }, error => { console.log(error); });
+    }).subscribe(result => { this.logger.debug('openWithSafari', result); }, error => { this.logger.error('openWithSafari', error); });
   }
 
   /**

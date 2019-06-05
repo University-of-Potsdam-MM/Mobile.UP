@@ -414,7 +414,8 @@
   "popover":{
     "loggedInText": "Logged in as",
     "notLoggedInText": "Not logged in",
-    "general": "General"
+    "general": "General",
+    "exportLog": "Export log"
   },
   "launchNavigator": {
     "headerText": "Remember your choice?",

@@ -76,8 +76,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       this.defaultList = response;
       this.isLoaded = true;
       this.initializeList();
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
       if (refresher) { refresher.target.complete(); }
       this.networkError = true;
@@ -171,7 +170,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
 
       const exportName = emergencyCall.name;
       this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
-        console.log(response);
+        this.logger.debug('exportContact', 'contacts.find', response);
         let contactFound = false;
         let contactID;
         for (let i = 0; i < response.length; i++) {
@@ -218,8 +217,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
           this.saveContact(contact);
         } else { this.alertService.showToast('alert.contact-exists'); }
       }, error => {
-        console.log('[Error]: While finding contacts...');
-        console.log(error);
+        this.logger.error('exportContact', 'contacts.find', error);
         this.saveContact(contact);
       });
     }
@@ -228,11 +226,11 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   saveContact(contact: Contact) {
     contact.save().then(
       () => {
-        console.log('Contact saved!', contact);
+        this.logger.debug('saveContact', contact);
         this.alertService.showToast('alert.contact-export-success');
       },
       (error: any) => {
-        console.error('Error saving contact.', error);
+        this.logger.error('saveContact', error);
         if (error.code && (error.code === 20 || error.code === '20')) {
           this.alertService.showToast('alert.permission-denied');
         } else {
@@ -255,8 +253,8 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   callContact(number: string) {
     if (this.platform.is('cordova')) {
       this.callNumber.callNumber(number, true)
-      .then(() => console.log('Dialer Launched!'))
-      .catch(() => console.log('Error launching dialer'));
+      .then(() => this.logger.debug('callContact', 'dialer launched'))
+      .catch((error) => this.logger.error('callContact', error));
     } else {
       window.location.href = 'tel:' + number;
     }

@@ -95,8 +95,6 @@ export class GradesPage extends AbstractPage {
 
       this.loadingGrades = false;
     }, error => {
-      console.log('ERROR while getting grades');
-      console.log(error);
       this.loadingGrades = false;
       this.networkError = true;
     });
@@ -131,7 +129,6 @@ export class GradesPage extends AbstractPage {
     if (!(this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password)) {
       // try to reload session since no login data is found
       this.session = await this.sessionProvider.getSession();
-      console.log(this.session);
     }
 
     this.ws.call(
@@ -161,9 +158,7 @@ export class GradesPage extends AbstractPage {
           this.noUserRights = true;
         }
       }
-    }, error => {
-      console.log('ERROR while getting student details');
-      console.log(error);
+    }, () => {
       this.studentLoaded = true;
       this.networkError = true;
     });

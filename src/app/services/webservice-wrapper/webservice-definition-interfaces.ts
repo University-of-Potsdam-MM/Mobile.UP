@@ -20,7 +20,7 @@ export interface IWebservice {
    * that the corresponding page can use directly
    * @param response
    */
-  responseCallback?: (response: any) => any;
+  responseCallback?: (response: any, name: string) => any;
   /**
    * function that will be used as callback function for the http requests error
    * callback.

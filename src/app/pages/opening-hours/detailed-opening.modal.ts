@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { utils } from 'src/app/lib/util';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Component({
   selector: 'detailed-opening-modal-page',
@@ -15,13 +16,16 @@ export class DetailedOpeningModalPage implements OnInit {
   intervals = [];
   every_week_is_same;
   comment;
+  logger: Logger;
 
   constructor(
       private modalCtrl: ModalController,
       private translate: TranslateService,
       private webIntent: WebIntentService,
-      private callNumber: CallNumber
+      private callNumber: CallNumber,
+      private loggingService: LoggingService
     ) {
+      this.logger = this.loggingService.getLogger('[/detailed-opening-modal]');
   }
 
   ngOnInit() {
@@ -45,8 +49,8 @@ export class DetailedOpeningModalPage implements OnInit {
    */
   callContact(number: string) {
     this.callNumber.callNumber(number, true)
-      .then(() => console.log('Dialer Launched!'))
-      .catch(() => console.log('Error launching dialer'));
+      .then(() => this.logger.debug('callContact', 'dialer launched'))
+      .catch((error) => this.logger.error('callContact', error));
   }
 
   shortenLink(link: string) {

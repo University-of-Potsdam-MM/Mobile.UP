@@ -74,8 +74,7 @@ export class NewsPage extends AbstractPage implements OnInit {
           this.showLeftButton = false;
         }
       }
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
       if (refresher) { refresher.target.complete(); }
       this.networkError = true;
@@ -114,7 +113,6 @@ export class NewsPage extends AbstractPage implements OnInit {
       const maxIndex = this.sourcesList.length - 1;
       const currentIndex = this.newsSource;
       let newIndex;
-      console.log(event);
       if (event.deltaX > 0) {
         // user swiped from left to right
         if (currentIndex > 0) {

@@ -66,8 +66,6 @@ export class BookListComponent implements OnInit {
 
     const soundRec: boolean = typeOfResource.includes('sound recording');
 
-    // console.log(originInfo.issuance, physicalDescription, typeOfResource);
-
     if (physicalDescription === 'remote') {
       this.mediaType.emit('mediatype_o');
       this.bookDetails.icon = 'cloud'; // O = Online
@@ -113,7 +111,6 @@ export class BookListComponent implements OnInit {
           }
         }
         case 'software, multimedia': {
-          // console.log('software?');
           if (originInfo && (originInfo.issuance === 'serial' || originInfo.issuance === 'continuing')) {
             if (physicalDescription === 'remote') {
               this.mediaType.emit('mediatype_p');

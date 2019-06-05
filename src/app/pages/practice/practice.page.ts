@@ -112,7 +112,6 @@ export class PracticePage extends AbstractPage {
         // use inner object only because it's wrapped in another object
         const uidArray = [];
         for (const ads of response) {
-          // console.log(ads);
           ads.date = ads.date * 1000;
           ads.expanded = false;
           if (!utils.isInArray(uidArray, ads.uid)) {
@@ -127,13 +126,10 @@ export class PracticePage extends AbstractPage {
         this.checkFavorites();
       },
       error => {
-        if (refresher) {
-          refresher.target.complete();
-        }
+        if (refresher) { refresher.target.complete(); }
         // reset array so new persons are displayed
         this.defaultList = [];
         this.error = error;
-        // console.log(error);
         this.isLoaded = true;
       }
     );
@@ -161,16 +157,6 @@ export class PracticePage extends AbstractPage {
     const practice = await this.settingsProvider.getSettingValue('practice');
     const domestic = await this.settingsProvider.getSettingValue('domestic');
     const foreign = await this.settingsProvider.getSettingValue('foreign');
-
-    // console.log(domestic, foreign);
-
-    // console.log("FILTER");
-    // console.log(studyarea);
-    // console.log(practice);
-    // console.log(this.displayedList);
-
-    // console.log("DISPLAYED")
-    // console.log(this.displayedList.length);
 
     let tmp = this.filteredList;
     let tmpFav = this.displayedFavorites;
@@ -250,9 +236,6 @@ export class PracticePage extends AbstractPage {
         this.itemsShown++;
       }
     }
-
-    // console.log("DISPLAYED NEW")
-    // console.log(this.displayedList.length);
   }
 
   /**

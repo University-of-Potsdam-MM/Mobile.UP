@@ -80,11 +80,9 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     this.ws.call(
       'feedback',
       this.feedback
-    ).subscribe((response) => {
-        console.log(response);
+    ).subscribe(() => {
         this.alertService.showToast('alert.feedback-sent');
-      }, error => {
-        console.log(error);
+      }, () => {
         this.alertService.showToast('alert.feedback-fail');
       }
     );

@@ -16,6 +16,10 @@ import { UPLoginProvider } from './services/login-provider/login';
 import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
+import { Logger, LoggingService } from 'ionic-logging-service';
+import { File } from '@ionic-native/file/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
+import { DeviceService } from './services/device/device.service';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +33,7 @@ export class AppComponent {
   loggedIn = false;
   username;
   config: IConfig;
+  logger: Logger;
 
   constructor(
     private platform: Platform,
@@ -45,9 +50,14 @@ export class AppComponent {
     private events: Events,
     private login: UPLoginProvider,
     private storage: Storage,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private logginService: LoggingService,
+    private file: File,
+    private emailComposer: EmailComposer,
+    private deviceService: DeviceService
   ) {
     this.initializeApp();
+    this.logger = this.logginService.getLogger('[/app-component]');
   }
 
   initializeApp() {
@@ -91,12 +101,11 @@ export class AppComponent {
       // user has never opened a 6.x version of the app, since nothing is stored
       // clear the whole storage
       this.storage.clear().then(() => {
-        console.log('[Mobile.UP]: cleared storage');
+        this.logger.debug('prepareStorageOnAppUpdate', 'cleared storage');
         this.storage.set('appVersion', this.config.appVersion);
         this.checkSessionValidity();
       }, error => {
-        console.log('[ERROR]: clearing storage failed');
-        console.log(error);
+        this.logger.error('prepareStorageOnAppUpdate', 'clearing storage failed', error);
       });
     } else {
       this.storage.set('appVersion', this.config.appVersion);
@@ -123,7 +132,10 @@ export class AppComponent {
         return (validUntilUnixTime - nowUnixTime) > boundary;
       };
 
-      if (sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+      const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
+        && session.oidcTokenObject.expires_in && this.config;
+      if (variablesNotUndefined
+        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
@@ -138,30 +150,28 @@ export class AppComponent {
             this.login.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
-              console.log(error);
+              this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
             });
           }, response => {
-            console.log('[Mobile.UP]: Error refreshing token');
-            console.log(response);
+            this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
             if (response.error === 'invalid_grant' || response.description === 'Provided Authorization Grant is invalid') {
               this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
-                console.log('[Mobile.UP]: Re-authenticating...');
+                this.logger.debug('checkSessionValidity', 're-authenticating...');
                 this.login.oidcLogin(session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
-                  console.log(`[Mobile.UP]: Re-authenticating successful`);
+                  this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
                   this.login.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
-                    console.log(error);
+                    this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
                   });
                 }, error => {
-                  console.log(error);
-                  console.log(`[Mobile.UP]: Error: Re-authenticating not possible`);
+                  this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
                 });
               }
             }
@@ -281,6 +291,33 @@ export class AppComponent {
   toImprint() {
     this.close();
     this.navCtrl.navigateForward('/impressum');
+  }
+
+  async exportLog() {
+    this.close();
+
+    if (this.platform.is('cordova')) {
+      const deviceInfo = this.deviceService.getDeviceInfo();
+      deviceInfo.appVersion = await this.storage.get('appVersion');
+      const body = JSON.stringify(deviceInfo);
+      let subject = 'Log Export (' + new Date().toLocaleString() + ')';
+      if (this.userInformation) { subject = this.userInformation.name + ': ' + subject; }
+
+      this.file.writeFile(this.file.cacheDirectory, 'log.txt', localStorage.getItem('localLogStorage'), { replace: true })
+        .then(response => {
+          this.logger.debug('exportLog', response);
+          const email = {
+            to: 'mobileup-service@uni-potsdam.de',
+            attachments: [ this.file.cacheDirectory + 'log.txt' ],
+            body: body,
+            subject: subject,
+            isHtml: true
+          };
+
+          this.emailComposer.open(email).then(res => this.logger.debug('exportLog', res),
+            error => this.logger.error('exportLog', 'open email', error));
+        }, error => this.logger.error('exportLog', 'write file', error));
+    } else { console.log(JSON.parse(localStorage.getItem('localLogStorage'))); }
   }
 
 }

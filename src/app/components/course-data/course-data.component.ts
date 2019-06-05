@@ -48,7 +48,6 @@ export class CourseDataComponent implements OnInit {
 
       this.isLoaded = true;
     }, error => {
-      console.log(error);
       this.networkError = true;
     });
   }
