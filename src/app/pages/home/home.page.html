@@ -17,7 +17,7 @@
     (click)="openPage(module)" [id]="module.selected ? icon_selected : icon_not_selected">
       <ion-icon color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
-      <ion-label *ngIf="module.selected" position="stacked">
+      <ion-label *ngIf="module.selected" position="stacked" style="margin-left: 10%">
         <div align="center" class="hyphen">{{ module.i18nKey | translate }}</div>
       </ion-label>
     </ion-item>
