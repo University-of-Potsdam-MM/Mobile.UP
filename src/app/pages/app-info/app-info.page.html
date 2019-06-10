@@ -166,5 +166,12 @@
           </ion-label>
         </ion-item>
       </span>
+      <ion-item-divider color="light"><ion-label>Log</ion-label></ion-item-divider>
+      <ion-item (click)="exportLog()">
+        <ion-icon color="primary" name="bug" slot="start"></ion-icon>
+        <ion-label>
+          {{ "popover.exportLog" | translate }}
+        </ion-label>
+      </ion-item>
     </ion-list>
   </ion-content>

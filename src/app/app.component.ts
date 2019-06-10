@@ -17,9 +17,6 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
-import { File } from '@ionic-native/file/ngx';
-import { EmailComposer } from '@ionic-native/email-composer/ngx';
-import { DeviceService } from './services/device/device.service';
 
 @Component({
   selector: 'app-root',
@@ -51,10 +48,7 @@ export class AppComponent {
     private login: UPLoginProvider,
     private storage: Storage,
     private alertService: AlertService,
-    private logginService: LoggingService,
-    private file: File,
-    private emailComposer: EmailComposer,
-    private deviceService: DeviceService
+    private logginService: LoggingService
   ) {
     this.initializeApp();
     this.logger = this.logginService.getLogger('[/app-component]');
@@ -291,33 +285,6 @@ export class AppComponent {
   toImprint() {
     this.close();
     this.navCtrl.navigateForward('/impressum');
-  }
-
-  async exportLog() {
-    this.close();
-
-    if (this.platform.is('cordova')) {
-      const deviceInfo = this.deviceService.getDeviceInfo();
-      deviceInfo.appVersion = await this.storage.get('appVersion');
-      const body = JSON.stringify(deviceInfo);
-      let subject = 'Log Export (' + new Date().toLocaleString() + ')';
-      if (this.userInformation) { subject = this.userInformation.name + ': ' + subject; }
-
-      this.file.writeFile(this.file.cacheDirectory, 'log.txt', localStorage.getItem('localLogStorage'), { replace: true })
-        .then(response => {
-          this.logger.debug('exportLog', response);
-          const email = {
-            to: 'mobileup-service@uni-potsdam.de',
-            attachments: [ this.file.cacheDirectory + 'log.txt' ],
-            body: body,
-            subject: subject,
-            isHtml: true
-          };
-
-          this.emailComposer.open(email).then(res => this.logger.debug('exportLog', res),
-            error => this.logger.error('exportLog', 'open email', error));
-        }, error => this.logger.error('exportLog', 'write file', error));
-    } else { console.log(JSON.parse(localStorage.getItem('localLogStorage'))); }
   }
 
 }
