@@ -32,8 +32,16 @@ registerLocaleData(localeEn);
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import {WebserviceWrapperService} from './services/webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from './services/webservice-wrapper/webservice-wrapper.service';
 import { HTTP } from '@ionic-native/http/ngx';
+import { LoggingService } from 'ionic-logging-service';
+import { environment } from 'src/environments/environment';
+import { File } from '@ionic-native/file/ngx';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
+
+export function configureLogging(loggingService: LoggingService): () => void {
+  return () => loggingService.configure(environment.logging);
+}
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -72,7 +80,9 @@ export class IonicGestureConfig extends HammerGestureConfig {
       rippleEffect: true
     }),
     LeafletModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      driverOrder: ['indexeddb', 'sqlite', 'websql', 'localstorage']
+    }),
     AppRoutingModule,
     HttpClientModule,
     CacheModule.forRoot({ keyPrefix: 'cache-' }),
@@ -103,11 +113,19 @@ export class IonicGestureConfig extends HammerGestureConfig {
     Calendar,
     WebserviceWrapperService,
     HTTP,
+    File,
+    EmailComposer,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,
       deps: [ConfigService],
       multi: true
+    },
+    {
+      deps: [LoggingService],
+      multi: true,
+      provide: APP_INITIALIZER,
+      useFactory: configureLogging
     },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }

@@ -216,12 +216,12 @@ export class CampusMapPage extends AbstractPage {
           this.setPosition(positionResponse);
           enableCallback();
         } else {
-          console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
+          this.logger.debug('enableGeolocation', `error getting position: ${positionResponse.message}`);
           disableCallback();
         }
       },
       error => {
-        console.log('[CampusMap]: Error:', error);
+        this.logger.error('enableGeolocation', error);
         disableCallback();
       }
     );
@@ -255,7 +255,6 @@ export class CampusMapPage extends AbstractPage {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       }, error => {
-        console.log(error);
         const buttons: AlertButton[] = [{
           text: this.translate.instant('button.continue'),
           handler: () => {

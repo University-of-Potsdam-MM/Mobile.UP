@@ -76,7 +76,7 @@ export class PersonSearchPage extends AbstractPage {
 
       this.response_received = false;
 
-      console.log(`[PersonsPage]: Searching for \"${query}\"`);
+      this.logger.debug('search', `searching for \"${query}\"`);
 
       if (!this.session) { this.session = await this.sessionProvider.getSession(); }
 
@@ -88,8 +88,6 @@ export class PersonSearchPage extends AbstractPage {
         }
       ).subscribe(
         (personsList: IPerson[]) => {
-          // console.log(personsList);
-
           for (const person of personsList) {
             const newPerson = person;
             newPerson.expanded = false;
@@ -106,26 +104,23 @@ export class PersonSearchPage extends AbstractPage {
             if (response.status === 401) {
               // refresh token expired; f.e. if user logs into a second device
               if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
-                console.log('[PersonSearch]: Re-authenticating...');
+                this.logger.debug('search', 're-authenticating...');
                 this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
-                  console.log(`[PersonSearch]: Re-authenticating successful`);
+                  this.logger.debug('search', 're-authenticating successfull');
                   this.sessionProvider.setSession(sessionRes);
                   this.session = sessionRes;
                   this.triedRefreshingSession = true;
                   this.search();
                 }, error => {
-                  console.log(error);
-                  console.log(`[PersonSearch]: Error: Re-authenticating not possible`);
+                  this.logger.error('search', 're-authenticating not possible', error);
                 });
               }
             } else {
               this.error = response;
-              console.log(response);
               this.response_received = true;
             }
           } else {
             this.error = response;
-            console.log(response);
             this.response_received = true;
           }
         }
@@ -136,7 +131,7 @@ export class PersonSearchPage extends AbstractPage {
       } else { this.noResults = true; }
 
     } else {
-      console.log('[PersonsPage]: Empty query');
+      this.logger.debug('search', 'empty query');
       this.response_received = true;
       this.noResults = true;
     }
@@ -177,7 +172,7 @@ export class PersonSearchPage extends AbstractPage {
 
       const exportName = person.Vorname + ' ' + person.Nachname;
       this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
-        console.log(response);
+        this.logger.debug('exportContact', 'contacts.find', response);
         let contactFound = false;
         let contactID;
         for (let i = 0; i < response.length; i++) {
@@ -224,8 +219,7 @@ export class PersonSearchPage extends AbstractPage {
           this.saveContact(contact);
         } else { this.alertService.showToast('alert.contact-exists'); }
       }, error => {
-        console.log('[Error]: While finding contacts...');
-        console.log(error);
+        this.logger.error('exportContact', 'contacts.find', error);
         this.saveContact(contact);
       });
     }
@@ -234,11 +228,11 @@ export class PersonSearchPage extends AbstractPage {
   saveContact(contact: Contact) {
     contact.save().then(
       () => {
-        console.log('Contact saved!', contact);
+        this.logger.debug('saveContact', contact);
         this.alertService.showToast('alert.contact-export-success');
       },
       (error: any) => {
-        console.error('Error saving contact.', error);
+        this.logger.error('saveContact', error);
         if (error.code && (error.code === 20 || error.code === '20')) {
           this.alertService.showToast('alert.permission-denied');
         } else {
@@ -261,8 +255,8 @@ export class PersonSearchPage extends AbstractPage {
   callContact(number: string) {
     if (this.platform.is('cordova')) {
       this.callNumber.callNumber(number, true)
-      .then(() => console.log('Dialer Launched!'))
-      .catch(() => console.log('Error launching dialer'));
+      .then(() => this.logger.debug('callContact', 'dialer launched'))
+      .catch((error) => this.logger.error('callContact', error));
     } else {
       window.location.href = 'tel:' + number;
     }

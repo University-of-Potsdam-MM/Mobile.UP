@@ -193,7 +193,6 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
         }
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
         this.error = error;
         this.housesFound = [];
         this.no_timeslot = true;

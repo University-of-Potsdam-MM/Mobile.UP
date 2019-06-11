@@ -45,7 +45,6 @@ export class LectureListComponent implements OnInit {
         this.lectureSchedule = response;
         this.isLoaded = true;
       }, error => {
-        console.log(error);
         this.networkError = true;
       });
     } else if (this.hasSubTree) {
@@ -57,7 +56,6 @@ export class LectureListComponent implements OnInit {
         this.lectureSchedule = response;
         this.isLoaded = true;
       }, error => {
-        console.log(error);
         this.networkError = true;
       });
     } else {
@@ -69,7 +67,6 @@ export class LectureListComponent implements OnInit {
         this.lectureSchedule = response;
         this.isLoaded = true;
       }, error => {
-        console.log(error);
         this.networkError = true;
       });
     }
@@ -80,8 +77,6 @@ export class LectureListComponent implements OnInit {
    * @param childNode
    */
   expandChild(childNode): void {
-    // console.log(childNode);
-
     if (childNode.subNodes) {
       if (Number(childNode.subNodes.count) > 0) {
         this.hasSubTree = true;
@@ -102,7 +97,6 @@ export class LectureListComponent implements OnInit {
    * @param course
    */
   expandCourse(course): void {
-
     if (course.courseId) {
       const courseId = course.courseId;
 
@@ -110,7 +104,6 @@ export class LectureListComponent implements OnInit {
         this.isExpandedCourse[courseId] = false;
       } else {
         this.isExpandedCourse[courseId] = true;
-        // console.log(course);
       }
     }
   }

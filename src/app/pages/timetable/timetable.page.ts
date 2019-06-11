@@ -88,10 +88,7 @@ export class TimetablePage extends AbstractPage {
               response.studentCourses.student.actualCourses.course
             );
           }
-        }, error => {
-          console.log(error);
-          this.isLoading = false;
-        }
+        }, () => { this.isLoading = false; }
       );
     } else {
       setTimeout(() => {
@@ -281,11 +278,11 @@ export class TimetablePage extends AbstractPage {
                     text: this.translate.instant('button.delete'),
                     handler: () => {
                       this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
-                        console.log('[Timetable]: Deleted calendar.');
+                        this.logger.debug('exportPrompt', 'deleted calendar');
                         this.exportCalendar();
                       }, error => {
                         this.alertService.showToast('alert.calendar-export-fail');
-                        console.log(error);
+                        this.logger.error('exportPrompt', 'calendar deletion', error);
                       });
                     }
                   }
@@ -303,7 +300,7 @@ export class TimetablePage extends AbstractPage {
   exportCalendar() {
     this.calendar.hasReadWritePermission().then(result => {
       if (result) {
-        console.log('[Timetable]: Calendar access given.');
+        this.logger.debug('exportCalendar', 'calendar access given');
         const createCalendarOpts = this.calendar.getCreateCalendarOptions();
         createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
         createCalendarOpts.calendarColor = '#ff9900';
@@ -360,12 +357,11 @@ export class TimetablePage extends AbstractPage {
                 calOptions.firstReminderMinutes = null;
 
                 this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
-                  console.log('[Timetable]: Successfully exported event');
+                  this.logger.debug('exportCalendar', 'exported event');
                   this.exportedEvents++;
                   fin();
                 }, error => {
-                  console.log('[Timetable]: Error creating event');
-                  console.log(error);
+                  this.logger.error('exportCalendar', 'event creation', error);
                   this.exportedEvents++;
                   this.alertService.showToast('alert.calendar-event-fail');
                   fin();
@@ -381,17 +377,15 @@ export class TimetablePage extends AbstractPage {
             this.exportFinished = true;
           }
         }, error => {
-          console.log('[Timetable]: Error creating calendar');
-          console.log(error);
+          this.logger.error('exportCalendar', 'calendar creation', error);
           this.alertService.showToast('alert.calendar-export-fail');
         });
       } else {
-        console.log('[Timetable]: Calendar access DENIED.');
+        this.logger.error('exportCalendar', 'calendar access denied');
         this.alertService.showToast('alert.permission-denied');
       }
     }, error => {
-      console.log(error);
-      console.log('[Timetable]: Can not check for calendar permissions.');
+      this.logger.error('exportCalendar', 'cant check permissions', error);
       this.alertService.showToast('alert.calendar-export-fail');
     });
   }

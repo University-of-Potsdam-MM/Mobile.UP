@@ -117,14 +117,13 @@ export class MensaPage extends AbstractPage {
           this.getFilterKeywords();
           this.classifyMeals();
           if (refresher) { refresher.target.complete(); }
-        }, error => console.log(error));
+        });
       } else {
         this.getFilterKeywords();
         this.classifyMeals();
         if (refresher) { refresher.target.complete(); }
       }
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
       this.hardRefresh = false;
       this.networkError = true;
@@ -274,7 +273,7 @@ export class MensaPage extends AbstractPage {
             this.mensaIsOpen = response.parsedOpening.getState();
           }
         }
-      }, error => console.log(error));
-    }, error => console.log(error));
+      });
+    });
   }
 }

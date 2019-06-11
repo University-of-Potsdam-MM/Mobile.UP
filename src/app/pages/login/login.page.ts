@@ -66,7 +66,7 @@ export class LoginPage extends AbstractPage {
         // now handle the Observable which hopefully contains a session
         session.subscribe(
           (sessionRes: any) => {
-            console.log(`[LoginPage]: Login successfully executed. Token: ${sessionRes.token}`);
+            this.logger.debug('login', `successfully executed. Token: ${sessionRes.token}`);
             this.sessionProvider.setSession(sessionRes);
 
             this.endLoading();
@@ -78,7 +78,7 @@ export class LoginPage extends AbstractPage {
               }, error => {
                 // user must not know if something goes wrong here, so we don't
                 // create an alert
-                console.log(`[LoginPage]: Could not retrieve user information because:\n${JSON.stringify(error)}`);
+                this.logger.error('login', 'oidcGetUserInformation', error);
               }
             );
 
@@ -89,14 +89,14 @@ export class LoginPage extends AbstractPage {
               });
             }, 1000);
           }, error => {
-            console.log(error);
+            this.logger.error('login', 'getting session', error);
             this.endLoading();
             this.showAlert(error.reason);
           }
         );
       } else {
         this.showAlert(ELoginErrors.UNKNOWN_ERROR);
-        console.log('[LoginPage]: Somehow no session has been passed by login-provider');
+        this.logger.error('login', 'no session passed by login-provider');
       }
     }
   }
@@ -154,7 +154,7 @@ export class LoginPage extends AbstractPage {
 
   public abort() {
     this.modalCtrl.dismiss({ 'success': false }).then(() => {}, () => {
-      console.log('[LoginPage]: no overlay, using navCtrl');
+      this.logger.debug('abort', 'no overlay, using navCtrl');
       this.navCtrl.navigateRoot('/home');
     });
   }

@@ -4,15 +4,22 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 import { AlertService } from '../services/alert/alert.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {
+
+  logger: Logger;
+
   constructor(
     private alertService: AlertService,
     private logging: ErrorHandlerService,
     private platform: Platform,
-    private device: Device
-  ) { }
+    private device: Device,
+    private logginService: LoggingService
+  ) {
+    this.logger = this.logginService.getLogger('[/error-handler]');
+  }
 
   /**
    * @name handleError
@@ -27,7 +34,7 @@ export class MobileUPErrorHandler implements ErrorHandler {
     }
 
     if (error instanceof HttpErrorResponse) {
-      console.log(`[MobileUPErrorHandler]: Uncaught HTTP error!`);
+      this.logger.error('handleError', 'uncaught http error', error);
 
       let messageI18nKey = `alert.httpErrorStatus.unknown`;
       if (error.status) { messageI18nKey = `alert.httpErrorStatus.${error.status}`; }
@@ -43,7 +50,7 @@ export class MobileUPErrorHandler implements ErrorHandler {
         message: `HttpError ${error.status} occured`
       });
     } else {
-      console.log(`[MobileUPErrorHandler]: Uncaught error!`);
+      this.logger.error('handleError', 'uncaught error', error);
 
       this.alertService.showAlert({
         headerI18nKey: 'alert.title.unexpectedError',

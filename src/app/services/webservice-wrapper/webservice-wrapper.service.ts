@@ -17,6 +17,7 @@ import { utils } from '../../lib/util';
 import isEmptyObject = utils.isEmptyObject;
 import { switchMap } from 'rxjs/operators';
 import { ConnectionService } from '../connection/connection.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -106,12 +107,13 @@ export class WebserviceWrapperService {
    */
   private defaults = {
     // by default the response will be passed on
-    responseCallback: (response: any) => {
+    responseCallback: (response: any, wsName) => {
+      this.logger.debug('responseCallback', `calling '${wsName}': `, response);
       return response;
     },
     // by default in case of an error the error will be passed on
     errorCallback: (error, wsName) => {
-      console.log(`[WebserviceWrapper]: Error when calling '${wsName}': ${error}`);
+      this.logger.error('errorCallback', `calling '${wsName}': `, error);
       return error;
     }
   };
@@ -330,7 +332,7 @@ export class WebserviceWrapperService {
           }
         );
       },
-      responseCallback: (response) => this.pulsResponseCallback(response)
+      responseCallback: (response) => this.pulsResponseCallback(response, 'pulsGetLectureScheduleAll')
     },
     pulsGetLectureScheduleSubTree: {
       buildRequest: (params, url) => {
@@ -370,7 +372,7 @@ export class WebserviceWrapperService {
           {headers: this.pulsHeaders}
         );
       },
-      responseCallback: (response) => this.pulsResponseCallback(response)
+      responseCallback: (response) => this.pulsResponseCallback(response, 'pulsGetPersonalStudyAreas')
     },
     pulsGetAcademicAchievements: {
       buildRequest: (params, url) => {
@@ -416,15 +418,20 @@ export class WebserviceWrapperService {
     },
   };
 
+  logger: Logger;
+
   constructor(
     private http: HttpClient,
     private cache: CacheService,
     private alertService: AlertService,
-    private connection: ConnectionService
-    ) {}
+    private connection: ConnectionService,
+    private loggingService: LoggingService
+    ) {
+      this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
+    }
 
-
-  pulsResponseCallback(response) {
+  pulsResponseCallback(response, wsName) {
+    this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, response);
     // PULS simply responds with "no user rights" if credentials are incorrect
     if (response.message === 'no user rights') {
       this.alertService.showAlert({
@@ -443,7 +450,7 @@ export class WebserviceWrapperService {
    */
   private getDefinition(name: string) {
     if (!this.webservices.hasOwnProperty(name)) {
-      throw new Error(`[WebserviceWrapper]: No webservice named ${name} defined`);
+      this.logger.error('getDefinition', `no webservice named ${name} defined`);
     }
     const ws = this.webservices[name];
     for (const k in this.defaults) {
@@ -468,11 +475,11 @@ export class WebserviceWrapperService {
     const ws = this.getDefinition(webserviceName);
 
     if (!this.config.webservices.endpoint.hasOwnProperty(webserviceName)) {
-      throw new Error(`[WebserviceWrapper]: No endpoint defined for '${webserviceName}'`);
+      this.logger.error('call', `no endpoint defined for '${webserviceName}'`);
     }
 
     if (!this.config.webservices.endpoint[webserviceName].hasOwnProperty('url')) {
-      throw new Error(`[WebserviceWrapper]: No url defined for endpoint '${webserviceName}'`);
+      this.logger.error('call', `no url defined for endpoint '${webserviceName}'`);
     }
 
     // shortcut for less repetition
@@ -487,7 +494,7 @@ export class WebserviceWrapperService {
       observer => {
         request.subscribe(
           response => {
-            observer.next(ws.responseCallback(response));
+            observer.next(ws.responseCallback(response, webserviceName));
             observer.complete();
           },
           error => {
@@ -499,7 +506,7 @@ export class WebserviceWrapperService {
 
     if (endpoint.cachingEnabled === false || cachingOptions.dontCache === true) {
       // if caching is not desired for this endpoint we just return the observable itself
-      console.log(`[WSW]: Returning '${webserviceName}' without caching`);
+      this.logger.debug('call', `returning '${webserviceName}' without caching`);
       return wrapperObservable;
     }
 
@@ -530,7 +537,7 @@ export class WebserviceWrapperService {
       || this.config.webservices.endpoint[webserviceName].cachingTTL
       || undefined;
 
-    console.log(`[WSW]: Returning '${webserviceName}' with caching, options: ${JSON.stringify(cachingOptions)}`);
+    this.logger.debug('call', `returning '${webserviceName}' with caching, options: ${JSON.stringify(cachingOptions)}`);
 
     // removes items from cache if desired and then, after cache has been modified
     // returns a cached Observable
@@ -560,10 +567,10 @@ export class WebserviceWrapperService {
       return from(
         Promise.all([
           cachingOptions.forceRefreshGroup
-            ? console.log('Not clearing cache, since there is no internet connection!')
+            ? this.logger.debug('call', 'not clearing cache, since there is no internet connection!')
             : Promise.resolve(),
           cachingOptions.forceRefresh
-            ? console.log('Not clearing cache, since there is no internet connection!')
+            ? this.logger.debug('call', 'not clearing cache, since there is no internet connection!')
             : Promise.resolve()
         ])
       ).pipe(

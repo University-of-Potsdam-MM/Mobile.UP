@@ -3,10 +3,11 @@ import { ConnectionService } from '../services/connection/connection.service';
 import { UserSessionService } from '../services/user-session/user-session.service';
 import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController } from '@ionic/angular';
 import { IConfig } from './interfaces';
 import { ConfigService } from '../services/config/config.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 export interface IPageOptions {
     requireSession?: boolean;
@@ -29,6 +30,7 @@ export interface IPageOptions {
  */
 export abstract class AbstractPage  {
 
+    logger: Logger;
     session: ISession;
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
@@ -36,11 +38,18 @@ export abstract class AbstractPage  {
     protected menu: MenuController;
     protected navCtrl: NavController;
     protected config: IConfig;
+    protected loggingService: LoggingService;
+    protected router: Router;
 
     protected constructor(
         pageOptions?: IPageOptions
     ) {
         const injector: Injector = StaticInjectorService.getInjector();
+
+        this.loggingService = injector.get<LoggingService>(LoggingService as Type<LoggingService>);
+        this.router = injector.get<Router>(Router as Type<Router>);
+        this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
+
         this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
         this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
         this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
@@ -66,7 +75,7 @@ export abstract class AbstractPage  {
                 this.menu.enable(false);
             } else { this.menu.enable(true); }
         }, error => {
-            console.log(error);
+            this.logger.error('setMenuStatus', error);
             this.menu.enable(true);
         });
     }
@@ -77,7 +86,7 @@ export abstract class AbstractPage  {
      * if there is none;
      */
     requireNetwork(necessary?) {
-        console.log('[AbstractPage]: Network required.');
+        this.logger.debug('requireNetwork');
         this.connection.checkOnline(true, necessary);
     }
 
@@ -86,7 +95,7 @@ export abstract class AbstractPage  {
      * @desc tests for existing session and sends user to LoginPage in case none is found
      */
     async requireSession(optional?) {
-        console.log('[AbstractPage]: Requires session');
+        this.logger.debug('requireSession');
 
         this.session = await this.sessionProvider.getSession();
         if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }

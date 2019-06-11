@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertButton } from '@ionic/core';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**
  * @type {IAlertOptions}
@@ -17,6 +18,7 @@ export interface IAlertOptions {
 export class AlertService {
 
   currentAlert = null;
+  logger: Logger;
 
   /**
    * @constructor
@@ -28,8 +30,11 @@ export class AlertService {
     private alertCtrl: AlertController,
     private translate: TranslateService,
     private navCtrl: NavController,
-    private toastCtrl: ToastController
-  ) { }
+    private toastCtrl: ToastController,
+    private loggingService: LoggingService
+  ) {
+    this.logger = this.loggingService.getLogger('[/alert-service]');
+  }
 
   /**
    * @name showAlert
@@ -64,12 +69,12 @@ export class AlertService {
         message: this.translate.instant(alertOptions.messageI18nKey),
         backdropDismiss: false,
         buttons: alertButtons
-      });
+      }).catch(error => this.logger.error('showAlert', error));
 
       this.currentAlert.present();
       await this.currentAlert.onDidDismiss();
       this.currentAlert = undefined;
-    } else { console.log('[AlertService]: Not showing alert, because there is another alert shown'); }
+    } else { this.logger.debug('showAlert', 'another alert is shown'); }
   }
 
   /**

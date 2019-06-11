@@ -116,18 +116,16 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               }
             }
 
-            // console.log(this.numberOfRecords);
-            // console.log(this.bookList);
+            this.logger.debug('searchLibrary', this.numberOfRecords, this.bookList);
 
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           }, error => {
-            console.log(error);
+            this.logger.error('searchLibrary', 'XML parsing', error);
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           });
-        }, error => {
-          console.log(error);
+        }, () => {
           this.isLoaded = true;
           this.networkError = true;
           if (infiniteScroll) { infiniteScroll.target.complete(); }
@@ -181,8 +179,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
   loadMore(infiniteScroll) {
     this.startRecord = String(Number(this.startRecord) + 15);
-    // console.log(this.startRecord);
-    // console.log(this.numberOfRecords);
     if (Number(this.startRecord) <= Number(this.numberOfRecords)) {
       this.searchLibrary(false, undefined, infiniteScroll);
     } else { infiniteScroll.target.complete(); }
@@ -279,7 +275,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
   updateComplete(tmpLength, refresher) {
     if (tmpLength === this.updatedFavorites) {
-      console.log('[Library]: Updated favorites.');
+      this.logger.debug('updateComplete', 'updated favorites');
       this.allFavorites = this.sortFavorites(this.allFavorites);
       this.displayedFavorites = this.sortFavorites(this.allFavorites);
       this.isLoadedFavorites = true;
@@ -309,7 +305,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
-        // console.log(utils.convertToArray(tmp[i].identifier));
         const ident = utils.convertToArray(tmp[i].identifier);
         let query = '';
 
@@ -379,7 +374,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                 }
               } else {
                 if (tmp[i] && tmp[i].identifier) {
-                  // console.log('checking identifier');
                   for (let j = 0; j < tmpList.length; j++ ) {
                     if (tmpList[j] && tmpList[j]['zs:recordData']['mods'].identifier) {
                       if (JSON.stringify(tmp[i].identifier) === JSON.stringify(tmpList[j]['zs:recordData']['mods'].identifier)) {
@@ -389,7 +383,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                     }
                   }
                 } else if (tmp[i] && tmp[i].titleInfo) {
-                  // console.log('checking titleinfo');
                   for (let n = 0; n < tmpList.length; n++) {
                     if (tmpList[n] && tmpList[n]['zs:recordData']['mods'].titleInfo) {
                       if (JSON.stringify(utils.convertToArray(tmp[i].titleInfo)[0]) ===
@@ -407,21 +400,20 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             }, error => {
               this.allFavorites.push(tmp[i]);
               this.updatedFavorites++;
-              console.log(error);
+              this.logger.error('checkFavorites', 'XML parsing', error);
               this.updateComplete(tmp.length, refresher);
             });
-          }, error => {
+          }, () => {
             this.networkError = true;
             this.allFavorites.push(tmp[i]);
             this.updatedFavorites++;
-            console.log(error);
             this.updateComplete(tmp.length, refresher);
           });
         } else {
           this.allFavorites.push(tmp[i]);
           this.updatedFavorites++;
           this.updateComplete(tmp.length, refresher);
-          console.log('[Library]: No identifier or title found.');
+          this.logger.debug('checkFavorites', 'no identifier or title found');
         }
       }
     } else {

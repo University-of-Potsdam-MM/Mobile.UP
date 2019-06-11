@@ -39,7 +39,7 @@ export class HomePage extends AbstractPage implements OnInit {
         this.checkAppUpdate();
       }
     }).catch(error => {
-      console.log(error);
+      this.logger.error('ngOnInit', 'platformReady', error);
     });
   }
 
@@ -91,7 +91,7 @@ export class HomePage extends AbstractPage implements OnInit {
         const remoteVersion = remoteConfig.appVersion;
         const localVersion = this.config.appVersion;
 
-        console.log('App Version: ' + localVersion + ' / ' + remoteVersion);
+        this.logger.debug('checkAppUpdate', 'App Version: ' + localVersion + ' / ' + remoteVersion);
 
         if (remoteVersion > localVersion) {
           // app update should be available in app stores
@@ -120,10 +120,7 @@ export class HomePage extends AbstractPage implements OnInit {
         }
       }
     }).catch(error => {
-      console.log('[App Component]: Could not fetch remote config.');
-      console.log(error.status);
-      console.log(error.error);
-      console.log(error.headers);
+      this.logger.error('checkAppUpdate', 'fetching config', error);
     });
   }
 
@@ -160,10 +157,11 @@ export class HomePage extends AbstractPage implements OnInit {
     event.stopPropagation();
 
     this.modules[moduleName].selected = !this.modules[moduleName].selected;
-    console.log(`[HomePage]: '${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
+    this.logger.debug('toggleSelectedState',
+    `'${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
 
     this.storage.set('moduleList', this.modules).then(
-      () => console.log(`[HomePage]: Saved module list after toggling '${moduleName}'`)
+      () => this.logger.debug('toggleSelectedState', `saved module list after toggling '${moduleName}'`)
     );
   }
 
@@ -199,7 +197,7 @@ export class HomePage extends AbstractPage implements OnInit {
       }
     }
 
-    console.log('[Mobile.UP]: created default moduleList from config');
+    this.logger.debug('buildDefaultModulesList');
     return moduleList;
   }
 }

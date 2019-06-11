@@ -89,7 +89,6 @@ export class TransportPage extends AbstractPage {
       if (infiniteScroll) { infiniteScroll.target.complete(); }
     }, error => {
       if (infiniteScroll) { infiniteScroll.target.complete(); }
-      console.log(error);
       if (refresher) { refresher.target.complete(); }
       this.hardRefresh = false;
       this.isLoaded = true;

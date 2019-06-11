@@ -68,8 +68,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       this.flattenedLectures = this.flattenJSON(response, '', {});
 
       this.isLoaded = true;
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
       this.networkError = true;
     });
