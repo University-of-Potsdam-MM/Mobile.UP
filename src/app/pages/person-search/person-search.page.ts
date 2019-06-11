@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
@@ -16,7 +16,7 @@ import { IPersonsRequestParams } from '../../services/webservice-wrapper/webserv
   templateUrl: './person-search.page.html',
   styleUrls: ['./person-search.page.scss'],
 })
-export class PersonSearchPage extends AbstractPage {
+export class PersonSearchPage extends AbstractPage implements OnInit {
 
   personsFound: IPerson[] = [];
   response_received: boolean;
@@ -40,6 +40,10 @@ export class PersonSearchPage extends AbstractPage {
     if (this.platform.is('cordova')) {
       this.cordova = true;
     }
+  }
+
+  ngOnInit() {
+    this.refreshToken();
   }
 
   // hides keyboard once the user is scrolling
@@ -90,8 +94,8 @@ export class PersonSearchPage extends AbstractPage {
         (personsList: IPerson[]) => {
           for (const person of personsList) {
             const newPerson = person;
-            newPerson.expanded = false;
-            newPerson.Raum = person.Raum.replace(/_/g, ' ');
+            newPerson['expanded'] = false;
+            newPerson.Room_Name = person.Room_Name.replace(/_/g, ' ');
             this.personsFound.push(newPerson);
           }
 
@@ -103,18 +107,7 @@ export class PersonSearchPage extends AbstractPage {
           if (!this.triedRefreshingSession) {
             if (response.status === 401) {
               // refresh token expired; f.e. if user logs into a second device
-              if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
-                this.logger.debug('search', 're-authenticating...');
-                this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
-                  this.logger.debug('search', 're-authenticating successfull');
-                  this.sessionProvider.setSession(sessionRes);
-                  this.session = sessionRes;
-                  this.triedRefreshingSession = true;
-                  this.search();
-                }, error => {
-                  this.logger.error('search', 're-authenticating not possible', error);
-                });
-              }
+              this.refreshToken(true);
             } else {
               this.error = response;
               this.response_received = true;
@@ -146,7 +139,7 @@ export class PersonSearchPage extends AbstractPage {
     for (let i = 0; i < this.personsFound.length; i++) {
       const currentPerson = this.personsFound[i];
       if (currentPerson.Id === person.Id) {
-        currentPerson.expanded = !currentPerson.expanded;
+        currentPerson['expanded'] = !currentPerson['expanded'];
       }
     }
   }
@@ -160,17 +153,17 @@ export class PersonSearchPage extends AbstractPage {
     if (this.platform.is('cordova')) {
       const contact: Contact = this.contacts.create();
 
-      contact.name = new ContactName(null, person.Nachname, person.Vorname);
+      contact.name = new ContactName(null, person.Last_Name, person.First_Name);
 
-      if (person.Telefon) { contact.phoneNumbers = [new ContactField('work', person.Telefon)]; }
+      if (person.Extension) { contact.phoneNumbers = [new ContactField('work', person.Extension)]; }
       if (person.Email)   { contact.emails = [new ContactField('work', person.Email)]; }
-      if (person.Raum) {
+      if (person.Room_Name) {
         contact.addresses = [new ContactField()];
         contact.addresses[0].type = 'work';
-        contact.addresses[0].streetAddress = person.Raum;
+        contact.addresses[0].streetAddress = person.Room_Name;
       }
 
-      const exportName = person.Vorname + ' ' + person.Nachname;
+      const exportName = person.First_Name + ' ' + person.Last_Name;
       this.contacts.find(['name'], { filter: exportName, multiple: true }).then(response => {
         this.logger.debug('exportContact', 'contacts.find', response);
         let contactFound = false;
@@ -179,14 +172,14 @@ export class PersonSearchPage extends AbstractPage {
           let foundTel = false;
           let foundMail = false;
           let foundRoom = false;
-          if (person.Telefon && response[i].phoneNumbers.length > 0) {
+          if (person.Extension && response[i].phoneNumbers.length > 0) {
             for (let j = 0; j < response[i].phoneNumbers.length; j++) {
-              if (response[i].phoneNumbers[j].value === person.Telefon) {
+              if (response[i].phoneNumbers[j].value === person.Extension) {
                 foundTel = true;
                 break;
               }
             }
-          } else if (!person.Telefon) { foundTel = true; }
+          } else if (!person.Extension) { foundTel = true; }
 
           if (person.Email && response[i].emails.length > 0) {
             for (let j = 0; j < response[i].emails.length; j++) {
@@ -197,14 +190,14 @@ export class PersonSearchPage extends AbstractPage {
             }
           } else if (!person.Email) { foundMail = true; }
 
-          if (person.Raum && response[i].addresses.length > 0) {
+          if (person.Room_Name && response[i].addresses.length > 0) {
             for (let j = 0; j < response[i].addresses.length; j++) {
-              if (response[i].addresses[j].streetAddress === person.Raum) {
+              if (response[i].addresses[j].streetAddress === person.Room_Name) {
                 foundRoom = true;
                 break;
               }
             }
-          } else if (!person.Raum) { foundRoom = true; }
+          } else if (!person.Room_Name) { foundRoom = true; }
 
           if (foundTel && foundMail && foundRoom) {
             contactFound = true;
@@ -259,6 +252,23 @@ export class PersonSearchPage extends AbstractPage {
       .catch((error) => this.logger.error('callContact', error));
     } else {
       window.location.href = 'tel:' + number;
+    }
+  }
+
+  refreshToken(searchAfterRefresh?: boolean) {
+    if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
+      this.logger.debug('refreshToken', 're-authenticating...');
+      this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
+        this.logger.debug('refreshToken', 're-authenticating successfull');
+        this.sessionProvider.setSession(sessionRes);
+        this.session = sessionRes;
+        if (searchAfterRefresh) {
+          this.triedRefreshingSession = true;
+          this.search();
+        } else { this.triedRefreshingSession = false; }
+      }, error => {
+        this.logger.error('refreshToken', 're-authenticating not possible', error);
+      });
     }
   }
 
