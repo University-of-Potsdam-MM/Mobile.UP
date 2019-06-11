@@ -39,23 +39,47 @@ export interface EmergencyCall {
 
 export interface IPerson {
   Id?: string;
-  Abteilung?: string;
+  Last_Name?: string;
+  First_Name?: string;
+  Company_Name?: string;
+  Department?: string;
+  Full_Job_Title?: string;
   Email?: string;
-  Fax?: number;
-  Nachname?: string;
-  Namenszusatz?: string;
-  Raum?: string;
-  show_only_altPhone?: string;
-  Struktureinheiten?: string;
-  Suchbegriffe?: string;
-  Telefon?: string;
-  Vorname?: string;
-  'zweites Telefon'?: string;
-  'PC-Fax'?: string;
-  'gueltig bis'?: string;
-  Titel?: string;
-  'Langform-Email'?: string;
-  expanded?: boolean;
+  Email_2?: string;
+  Email_3?: string;
+  Extension?: string;
+  Business_1?: string;
+  Business_2?: string;
+  Home?: string;
+  Mobile?: string;
+  Fax?: string;
+  Pager?: string;
+  User_Profile?: string;
+  PIN?: string;
+  User_Field_1?: string;
+  User_Field_2?: string;
+  User_Field_3?: string;
+  Company_Section?: string;
+  Location?: string;
+  Title?: string;
+  Initials?: string;
+  Middle_Name?: string;
+  Room_Name?: string;
+  Cost_Centre?: string;
+  Contact_Type?: string;
+  Alternate_First_Names_List?: string;
+  Alternate_Last_Names_List?: string;
+  Address_Line_1?: string;
+  Address_Line_2?: string;
+  Address_Line_3?: string;
+  Address_Line_4?: string;
+  PostZip_Code?: string;
+  Directory_Group?: string;
+  Pickup_Extension?: string;
+  Main_Extension_MAC_Address?: string;
+  Keywords?: string;
+  Contact_Information?: string;
+  Absent_Message?: string;
 }
 
 /* ~~~ Mensa ~~~ */

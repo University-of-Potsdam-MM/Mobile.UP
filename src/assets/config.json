@@ -195,7 +195,7 @@
         "cachingEnabled": false
       },
       "personSearch": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/personAPI/2.0/people/like/",
+        "url": "https://apiup.uni-potsdam.de/endpoints/personAPI/3.0/people/like",
         "cachingEnabled": false
       },
       "mensa": {
