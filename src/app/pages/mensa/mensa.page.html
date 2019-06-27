@@ -56,7 +56,7 @@
     </ion-list>
   </div>
 
-  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate && !networkError">
+  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate && !networkError && mensaIsOpen">
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.mensa-nomeals-hint"></app-hint-box>
   </div>
   <app-hint-box *ngIf="isLoaded && networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>

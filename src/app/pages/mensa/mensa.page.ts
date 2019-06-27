@@ -256,7 +256,7 @@ export class MensaPage extends AbstractPage {
     this.mensaIsOpen = true;
     const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
 
-    this.ws.call('openingHours').subscribe(response => {
+    this.ws.call('openingHours').subscribe((response: any) => {
       this.ws.call('nominatim').subscribe(nominatim => {
         if (response) {
           response = utils.convertToArray(response);
