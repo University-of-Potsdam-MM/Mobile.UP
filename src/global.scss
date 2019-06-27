@@ -151,6 +151,10 @@ ion-card {
   -webkit-box-shadow:none!important;
 }
 
+ion-toolbar {
+  --min-height: 0px;
+}
+
 ion-content.modalOpened {
   --overflow: hidden;
 }
