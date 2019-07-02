@@ -79,11 +79,11 @@ export class CampusMapPage extends AbstractPage {
       if (this.currentCampus) {
         this.moveToCampus(this.currentCampus);
       }
-    }
 
-    this.loadMapData(this.map);
-    this.addLeafletSearch(this.map);
-    this.addGeoLocationButton(this.map);
+      this.loadMapData(this.map);
+      this.addLeafletSearch(this.map);
+      this.addGeoLocationButton(this.map);
+    }
   }
 
   /**
@@ -254,7 +254,7 @@ export class CampusMapPage extends AbstractPage {
       (response: IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON, map);
-      }, error => {
+      }, () => {
         const buttons: AlertButton[] = [{
           text: this.translate.instant('button.continue'),
           handler: () => {
