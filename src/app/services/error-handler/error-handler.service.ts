@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { ConfigService } from '../config/config.service';
-import {WebserviceWrapperService} from '../webservice-wrapper/webservice-wrapper.service';
+import { WebserviceWrapperService } from '../webservice-wrapper/webservice-wrapper.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
 
 export interface IErrorLogging {

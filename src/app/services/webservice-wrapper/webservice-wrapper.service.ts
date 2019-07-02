@@ -108,7 +108,10 @@ export class WebserviceWrapperService {
   private defaults = {
     // by default the response will be passed on
     responseCallback: (response: any, wsName) => {
-      this.logger.debug('responseCallback', `calling '${wsName}': `, response);
+      const stringResponse = JSON.stringify(response);
+      if (stringResponse.length > 100000) {
+        this.logger.debug('responseCallback', `calling '${wsName}': `, stringResponse.substring(0, 100000));
+      } else { this.logger.debug('responseCallback', `calling '${wsName}': `, response); }
       return response;
     },
     // by default in case of an error the error will be passed on
@@ -431,7 +434,11 @@ export class WebserviceWrapperService {
     }
 
   pulsResponseCallback(response, wsName) {
-    this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, response);
+    const stringResponse = JSON.stringify(response);
+    if (stringResponse.length > 100000) {
+      this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, stringResponse.substring(0, 100000));
+    } else { this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, response); }
+
     // PULS simply responds with "no user rights" if credentials are incorrect
     if (response.message === 'no user rights') {
       this.alertService.showAlert({

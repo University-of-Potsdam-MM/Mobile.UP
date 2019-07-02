@@ -48,10 +48,10 @@ export class AppComponent {
     private login: UPLoginProvider,
     private storage: Storage,
     private alertService: AlertService,
-    private logginService: LoggingService
+    private loggingService: LoggingService
   ) {
     this.initializeApp();
-    this.logger = this.logginService.getLogger('[/app-component]');
+    this.logger = this.loggingService.getLogger('[/app-component]');
   }
 
   initializeApp() {

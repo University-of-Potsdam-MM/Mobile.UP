@@ -16,9 +16,9 @@ export class MobileUPErrorHandler implements ErrorHandler {
     private logging: ErrorHandlerService,
     private platform: Platform,
     private device: Device,
-    private logginService: LoggingService
+    private loggingService: LoggingService
   ) {
-    this.logger = this.logginService.getLogger('[/error-handler]');
+    this.logger = this.loggingService.getLogger('[/error-handler]');
   }
 
   /**
