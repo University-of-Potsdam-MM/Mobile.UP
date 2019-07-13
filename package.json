@@ -114,7 +114,7 @@
     "@angular/compiler": "^7.2.15",
     "@angular/compiler-cli": "^7.2.15",
     "@angular/language-service": "^7.2.15",
-    "@compodoc/compodoc": "^1.1.9",
+    "@compodoc/compodoc": "^1.1.10",
     "@ionic/angular-toolkit": "~1.5.1",
     "@types/jasmine": "^3.3.13",
     "@types/jasminewd2": "~2.0.6",
