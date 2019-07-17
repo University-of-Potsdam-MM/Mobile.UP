@@ -1,4 +1,6 @@
 import { HttpParameterCodec } from '@angular/common/http';
+import { routes } from '../app-routing.module';
+import {IModule} from './interfaces';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -64,5 +66,4 @@ export module utils {
   export function isEmptyObject(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
-
 }

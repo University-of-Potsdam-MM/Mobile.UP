@@ -14,7 +14,7 @@
     <!-- list of shortcuts -->
 
     <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'"
-    (click)="openPage(module)" [id]="module.selected ? icon_selected : icon_not_selected">
+    (click)="openModule(module)" [id]="module.selected ? icon_selected : icon_not_selected">
       <ion-icon color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
       <ion-label *ngIf="module.selected" position="stacked" style="margin-left: 10%">
@@ -26,7 +26,7 @@
   <!-- menu with all available modules -->
   <ion-card *ngIf="sortedModules.length > 0" scrollY="true" id="drawer" style="width:100%">
     <ion-list lines="none">
-      <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openPage(module)">
+      <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openModule(module)">
 
         <ion-icon *ngIf="module.icon" slot="start" [name]="module.icon"></ion-icon>
         <ion-icon *ngIf="module.customIcon" slot="start" [src]="module.customIcon"></ion-icon>

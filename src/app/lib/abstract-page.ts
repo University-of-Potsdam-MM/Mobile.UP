@@ -5,9 +5,11 @@ import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController } from '@ionic/angular';
-import { IConfig } from './interfaces';
+import {IConfig, IModule} from './interfaces';
 import { ConfigService } from '../services/config/config.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import {WebIntentService} from '../services/web-intent/web-intent.service';
+import {Observable} from 'rxjs';
 
 export interface IPageOptions {
     requireSession?: boolean;
@@ -40,8 +42,10 @@ export abstract class AbstractPage  {
     protected config: IConfig;
     protected loggingService: LoggingService;
     protected router: Router;
+    protected webIntent: WebIntentService;
 
-    protected constructor(
+
+  protected constructor(
         pageOptions?: IPageOptions
     ) {
         const injector: Injector = StaticInjectorService.getInjector();
@@ -55,10 +59,15 @@ export abstract class AbstractPage  {
         this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
         this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
         this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
+        this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
         this.config = ConfigService.config;
 
         if (pageOptions) { this.processOptions(pageOptions); }
         this.setMenuStatus();
+
+        this.activatedRoute.queryParams.subscribe(
+          params => this.handleQueryParams(params)
+        );
     }
 
     private processOptions(pageOptions: IPageOptions) {
@@ -78,6 +87,45 @@ export abstract class AbstractPage  {
             this.logger.error('setMenuStatus', error);
             this.menu.enable(true);
         });
+    }
+
+    /**
+     * handles the queryParams for a page. Should be overwritten.
+     * @param params {any} the params that should be handled
+     */
+    handleQueryParams(params: any) {
+      this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`)
+    }
+
+    /**
+     * opens a page by using it's module
+     * @description opens selected page by pushing it on the stack
+     * @param module {IModule} module to be used
+     * @param params {any} params {any} params that should by passed on
+     */
+    openModule(module: IModule, params: any = {}) {
+      if (module.url) {
+        this.webIntent.handleWebIntentForModule(module.componentName);
+      } else {
+        this.navCtrl.navigateForward(
+          '/' + module.componentName,
+          {state: params}
+        );
+      }
+    }
+
+    /**
+     * opens a page by name
+     * @param moduleName {string} name of the module
+     * @param params {any} params that should by passed on
+     */
+    openModuleByName(moduleName: string, params: any = {}) {
+      const module = this.config.modules[moduleName];
+      if (module) {
+        this.openModule(module, params);
+      } else {
+        this.logger.error(`Cannot open unknown module '${moduleName}'`);
+      }
     }
 
     /**

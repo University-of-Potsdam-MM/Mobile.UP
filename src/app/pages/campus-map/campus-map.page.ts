@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import { ModalController } from '@ionic/angular';
+import {ModalController, NavParams} from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
@@ -15,6 +15,7 @@ import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-campus-map',
@@ -41,6 +42,7 @@ export class CampusMapPage extends AbstractPage {
 
   constructor(
     private ws: WebserviceWrapperService,
+    private route: ActivatedRoute,
     private translate: TranslateService,
     private location: Geolocation,
     private modalCtrl: ModalController,
@@ -62,6 +64,12 @@ export class CampusMapPage extends AbstractPage {
         maxZoom: 18
       }).addTo(map);
     return map;
+  }
+
+  handleQueryParams(params: {campus?: ICampus, building?: string, coordinates?: [number, number]}) {
+    if (params.coordinates) {
+      console.log(params.coordinates)
+    }
   }
 
   /**

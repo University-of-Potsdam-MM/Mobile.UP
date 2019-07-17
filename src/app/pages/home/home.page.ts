@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from 'src/app/lib/interfaces';
-import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController, Platform } from '@ionic/angular';
@@ -22,7 +21,6 @@ export class HomePage extends AbstractPage implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private webIntent: WebIntentService,
     private storage: Storage,
     private nativeHTTP: HTTP,
     private toastCtrl: ToastController,
@@ -163,20 +161,6 @@ export class HomePage extends AbstractPage implements OnInit {
     this.storage.set('moduleList', this.modules).then(
       () => this.logger.debug('toggleSelectedState', `saved module list after toggling '${moduleName}'`)
     );
-  }
-
-  /**
-   * @name openPage
-   * @description opens selected page by pushing it on the stack
-   * @param event
-   * @param {string} pageTitle
-   */
-  openPage(modules: IModule) {
-    if (modules.url) {
-      this.webIntent.handleWebIntentForModule(modules.componentName);
-    } else {
-      this.navCtrl.navigateForward('/' + modules.componentName);
-    }
   }
 
   /**
