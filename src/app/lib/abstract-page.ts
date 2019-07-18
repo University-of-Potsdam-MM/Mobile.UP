@@ -34,6 +34,11 @@ export abstract class AbstractPage  {
 
     logger: Logger;
     session: ISession;
+
+    pageReady: Promise<void>;
+    pageReadyResolve: () => void;
+    pageReadyReject: () => void;
+
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
     protected activatedRoute: ActivatedRoute;
@@ -45,29 +50,47 @@ export abstract class AbstractPage  {
     protected webIntent: WebIntentService;
 
 
-  protected constructor(
+    protected constructor(
         pageOptions?: IPageOptions
     ) {
-        const injector: Injector = StaticInjectorService.getInjector();
+      const injector: Injector = StaticInjectorService.getInjector();
 
-        this.loggingService = injector.get<LoggingService>(LoggingService as Type<LoggingService>);
-        this.router = injector.get<Router>(Router as Type<Router>);
-        this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
+      this.loggingService = injector.get<LoggingService>(LoggingService as Type<LoggingService>);
+      this.router = injector.get<Router>(Router as Type<Router>);
+      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
 
-        this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
-        this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
-        this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
-        this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
-        this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
-        this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
-        this.config = ConfigService.config;
+      this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
+      this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
+      this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
+      this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
+      this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
+      this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
+      this.config = ConfigService.config;
 
-        if (pageOptions) { this.processOptions(pageOptions); }
-        this.setMenuStatus();
+      if (pageOptions) { this.processOptions(pageOptions); }
 
-        this.activatedRoute.queryParams.subscribe(
-          params => this.handleQueryParams(params)
-        );
+      this.setMenuStatus();
+
+      // assign pageReady promises. Those should be called from a page
+      // implementing this one
+      this.pageReady = new Promise(
+        (resolve, reject) => {
+          this.pageReadyResolve = resolve;
+          this.pageReadyReject = reject;
+        }
+      );
+
+      // forwarding queryParams to the pre-existing handleQueryParams function
+      // the existing one doesn't do anything, though
+      this.activatedRoute.queryParams.subscribe(
+        params => {
+          const parsedParams = {};
+          for (const k in params) {
+            parsedParams[k] = JSON.parse(params[k]);
+          }
+          this.handleQueryParams(parsedParams);
+        }
+      );
     }
 
     private processOptions(pageOptions: IPageOptions) {
