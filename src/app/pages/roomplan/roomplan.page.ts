@@ -13,6 +13,7 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-roomplan',
@@ -23,7 +24,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
 
   constructor(
     private alertService: AlertService,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    private translate: TranslateService // used in template
   ) {
     super({ requireNetwork: true });
   }
