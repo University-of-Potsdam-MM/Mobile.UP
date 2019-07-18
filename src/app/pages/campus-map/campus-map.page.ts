@@ -1,36 +1,42 @@
-import { Component, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import {ModalController, NavParams} from '@ionic/angular';
+import {ModalController} from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import { Observable } from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import {ActivatedRoute} from '@angular/router';
+import {LatLngExpression} from 'leaflet';
+
+export interface CampusMapQueryParams {
+  campus?: ICampus;
+  building?: string;
+  coordinates?: LatLngExpression;
+}
 
 @Component({
   selector: 'app-campus-map',
   templateUrl: './campus-map.page.html',
   styleUrls: ['./campus-map.page.scss'],
 })
-export class CampusMapPage extends AbstractPage {
+export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
   campusList: ICampus[] = ConfigService.config.campus;
   currentCampus: ICampus;
   geoJSON: IMapsResponseObject[];
   selectedCampus: ICampus;
+  searchControl;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
-  mapReady: Observable<void>;
 
   positionCircle: L.Circle;
   positionMarker: L.Marker;
@@ -66,10 +72,25 @@ export class CampusMapPage extends AbstractPage {
     return map;
   }
 
-  handleQueryParams(params: {campus?: ICampus, building?: string, coordinates?: [number, number]}) {
-    if (params.coordinates) {
-      console.log(params.coordinates)
-    }
+  /**
+   * implementation of abstract page function
+   * @param params
+   */
+  handleQueryParams(params: CampusMapQueryParams) {
+    this.pageReady.then(
+      r => {
+        if (params.coordinates) {
+
+        }
+
+        if (params.building) {
+
+        }
+
+        if (params.campus) {
+        }
+      }
+    );
   }
 
   /**
@@ -78,7 +99,7 @@ export class CampusMapPage extends AbstractPage {
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  ionViewWillEnter() {
+  ngAfterViewInit () {
     // initialize map
     if (!this.map) {
       this.map = this.initializeLeafletMap();
@@ -92,6 +113,7 @@ export class CampusMapPage extends AbstractPage {
       this.addLeafletSearch(this.map);
       this.addGeoLocationButton(this.map);
     }
+    this.pageReadyResolve();
   }
 
   /**
@@ -100,7 +122,7 @@ export class CampusMapPage extends AbstractPage {
    * this.searchableLayers is already populated with geoJSON objects.
    */
   addLeafletSearch(map) {
-    map.addControl(new L.Control['Search']({
+    this.searchControl = new L.Control['Search']({
       layer: this.searchableLayers,
       propertyName: 'searchProperty',
       collapsed: false,
@@ -122,7 +144,8 @@ export class CampusMapPage extends AbstractPage {
         tip['_text'] = content;
         return tip;
       }
-    }));
+    });
+    map.addControl(this.searchControl);
   }
 
   /**
@@ -301,6 +324,14 @@ export class CampusMapPage extends AbstractPage {
     this.map.fitBounds(
       campus.lat_long_bounds
     );
+  }
+
+  /**
+   * flys to given coordinates
+   * @param coordinates
+   */
+  moveToPosition(coordinates: LatLngExpression) {
+    this.map.panTo(coordinates);
   }
 
   /**
