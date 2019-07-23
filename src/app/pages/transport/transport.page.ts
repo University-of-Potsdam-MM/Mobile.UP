@@ -5,6 +5,7 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { ITransportRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-transport',
@@ -26,7 +27,8 @@ export class TransportPage extends AbstractPage {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    private translate: TranslateService // used in template
   ) {
     super({ requireNetwork: true });
   }

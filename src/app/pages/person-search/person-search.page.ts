@@ -256,7 +256,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
   }
 
   refreshToken(searchAfterRefresh?: boolean) {
-    if (this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
+    if (this.session && this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
       this.logger.debug('refreshToken', 're-authenticating...');
       this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
         this.logger.debug('refreshToken', 're-authenticating successfull');

@@ -30,7 +30,6 @@
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               },
-
               {
                 "glob": "**/*",
                 "input": "node_modules/leaflet-search",
@@ -48,6 +47,9 @@
               },
               {
                 "input": "src/global.scss"
+              },
+              {
+                "input": "node_modules/font-awesome/css/font-awesome.css"
               }
             ],
             "scripts": []

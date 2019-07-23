@@ -34,7 +34,8 @@
         <ion-item>
             <ion-label text-wrap>
                 <h2>{{ "page.practice.item.pubDate" | translate }}</h2>
-                <p>{{ADS.date | date:'dd.MM.yy'}}</p>
+                <p *ngIf="translate.currentLang === 'de'">{{ADS.date | date:'dd.MM.yy'}}</p>
+                <p *ngIf="translate.currentLang !== 'de'">{{ADS.date | date:'MM/dd/yy'}}</p>
             </ion-label>
         </ion-item>
 

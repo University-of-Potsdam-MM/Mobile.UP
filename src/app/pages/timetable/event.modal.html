@@ -72,11 +72,8 @@
                             {{ "page.timetable.period" | translate }}
                         </h2>
 
-                        <p>
-                            {{ event.eventDetails.startDate }}
-                            -
-                            {{ event.eventDetails.endDate }}
-                        </p>
+                        <p *ngIf="translate.currentLang === 'de'">{{ event.eventDetails.startDate | date:'dd.MM.yy' }} - {{ event.eventDetails.endDate | date:'dd.MM.yy' }}</p>
+                        <p *ngIf="translate.currentLang !== 'de'">{{ event.eventDetails.startDate | date:'MM/dd/yy' }} - {{ event.eventDetails.endDate | date:'MM/dd/yy' }}</p>
                     </ion-label>
                 </ion-item>
 

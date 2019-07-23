@@ -60,7 +60,8 @@
                 </ion-row>
               </ion-grid>
             </ion-label>
-            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang === 'de'">{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang !== 'de'">{{ADS.date | date:'MM/dd/yy'}}</ion-note>
           </ion-item>
 
           <ion-item-options slot="end">
@@ -91,7 +92,8 @@
                 </ion-row>
               </ion-grid>
             </ion-label>
-            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang === 'de'">{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang !== 'de'">{{ADS.date | date:'MM/dd/yy'}}</ion-note>
           </ion-item>
 
           <ion-item-options slot="end">

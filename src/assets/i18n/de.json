@@ -388,7 +388,8 @@
     "feedback-sent": "Dein Feedback wurde übermittelt.",
     "feedback-fail": "Fehler beim Senden des Feedbacks.",
     "permission-denied": "Berechtigung verweigert.",
-    "app-update": "App Update verfügbar!"
+    "app-update": "App Update verfügbar!",
+    "login-expired": "Ihr Login ist abgelaufen. Bitte melden Sie sich erneut an."
   },
   "university": {
     "location": {

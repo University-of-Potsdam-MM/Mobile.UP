@@ -300,7 +300,7 @@
         "golm": "Golm",
         "griebnitzsee": "Griebnitzsee"
       },
-      "placeholder_search": "Seerch",
+      "placeholder_search": "Search",
       "cancel": "Cancel search",
       "no_results": "No results found",
       "here_is_multiple": "Here are",
@@ -388,7 +388,8 @@
     "feedback-sent": "Your feedback was sent.",
     "feedback-fail": "Failed to send your feedback.",
     "permission-denied": "Permission denied.",
-    "app-update": "App update available!"
+    "app-update": "App update available!",
+    "login-expired": "Your login is expired. Please sign in again."
   },
   "university": {
     "location": {

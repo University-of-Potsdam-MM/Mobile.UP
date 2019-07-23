@@ -16,7 +16,7 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   openingHours = [];
-  allOpeningHours = [];
+  allOpeningHours: any = [];
   weekday = [];
   isLoaded;
   modalOpen;
@@ -127,14 +127,12 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     if (willClose) {
       if (this.isToday(willClose)) {
         return this.translate.instant('page.opening-hours.closes')
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.closes')
         + this.weekday[willClose.getDay()]
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
     } else { return ''; }
@@ -146,14 +144,12 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     if (willChange) {
       if (this.isToday(willChange)) {
         return this.translate.instant('page.opening-hours.opens')
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.opens')
         + this.weekday[willChange.getDay()]
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
     } else {
@@ -175,13 +171,6 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   isToday(td) {
     const d = new Date();
     return td.getDate() === d.getDate() && td.getMonth() === d.getMonth() && td.getFullYear() === d.getFullYear();
-  }
-
-  addZero(i) {
-    if (i < 10) {
-      i = '0' + i;
-    }
-    return i;
   }
 
   ionViewDidEnter() {

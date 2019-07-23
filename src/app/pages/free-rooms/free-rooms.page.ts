@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RoomplanPage } from '../roomplan/roomplan.page';
 import { IHouse, IRoomRequestResponse, IRoom, ICampus } from 'src/app/lib/interfaces';
-import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-free-rooms',
@@ -22,6 +22,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   // vars
   housesFound: IHouse[] = [];
   time_slots: any;
+  timeLabels: string[] = [];
   current_timeslot: any;
   current_location: ICampus;
   error: HttpErrorResponse;
@@ -30,8 +31,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private alertService: AlertService,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    private translate: TranslateService
   ) {
     super({ requireNetwork: true });
   }
@@ -43,6 +44,18 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     for (let i = 8; i < 22; i = i + 2) {
       const slot = {'lbl': i + ' - ' + (i + 2), 'value': i};
       this.time_slots.push(slot);
+
+      if (this.translate.currentLang === 'de') {
+        this.timeLabels.push(slot.lbl);
+      } else {
+        const begin = i === 12 ? 12 : i % 12;
+        const end = (i + 2) === 12 ? 12 : (i + 2) % 12;
+        let label: string = String(begin);
+        if (i > 11) { label += ' PM'; } else { label += ' AM'; }
+        label += ' - ' + end;
+        if ((i + 2) > 11) { label += ' PM'; } else { label += ' AM'; }
+        this.timeLabels.push(label);
+      }
     }
     this.select_timeslot = this.current_timeslot.start;
   }
