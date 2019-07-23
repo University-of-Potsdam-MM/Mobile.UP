@@ -174,10 +174,12 @@ export class AppComponent {
               } else {
                 this.performLogout();
                 this.navCtrl.navigateForward('/login');
+                this.alertService.showToast('alert.login-expired');
               }
             } else {
               this.performLogout();
               this.navCtrl.navigateForward('/login');
+              this.alertService.showToast('alert.login-expired');
             }
           });
       } else {
