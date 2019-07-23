@@ -168,6 +168,9 @@ export class AppComponent {
                   });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
+                  this.performLogout();
+                  this.navCtrl.navigateForward('/login');
+                  this.alertService.showToast('alert.login-expired');
                 });
 
                 this.triedToRefreshLogin = true;
