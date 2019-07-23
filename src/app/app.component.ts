@@ -32,6 +32,8 @@ export class AppComponent {
   config: IConfig;
   logger: Logger;
 
+  triedToRefreshLogin = false;
+
   constructor(
     private platform: Platform,
     private router: Router,
@@ -149,7 +151,7 @@ export class AppComponent {
           }, response => {
             this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
-            if (response.error === 'invalid_grant' || response.description === 'Provided Authorization Grant is invalid') {
+            if (!this.triedToRefreshLogin) {
               this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
@@ -167,7 +169,15 @@ export class AppComponent {
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
                 });
+
+                this.triedToRefreshLogin = true;
+              } else {
+                this.performLogout();
+                this.navCtrl.navigateForward('/login');
               }
+            } else {
+              this.performLogout();
+              this.navCtrl.navigateForward('/login');
             }
           });
       } else {
@@ -248,11 +258,7 @@ export class AppComponent {
       {
         text: this.translate.instant('button.ok'),
         handler: () => {
-          this.userSession.removeSession();
-          this.userSession.removeUserInfo();
-          for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
-          this.cache.clearAll();
-          this.updateLoginStatus();
+          this.performLogout();
           this.navCtrl.navigateRoot('/home');
         }
       }
@@ -265,6 +271,14 @@ export class AppComponent {
       },
       buttons
     );
+  }
+
+  performLogout() {
+    this.userSession.removeSession();
+    this.userSession.removeUserInfo();
+    for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+    this.cache.clearAll();
+    this.updateLoginStatus();
   }
 
   toLogin() {
