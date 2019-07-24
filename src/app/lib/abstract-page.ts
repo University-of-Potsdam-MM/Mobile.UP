@@ -10,6 +10,8 @@ import { ConfigService } from '../services/config/config.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import {WebIntentService} from '../services/web-intent/web-intent.service';
 import {Observable} from 'rxjs';
+import {utils} from './util';
+import isEmptyObject = utils.isEmptyObject;
 
 export interface IPageOptions {
     requireSession?: boolean;
@@ -88,7 +90,9 @@ export abstract class AbstractPage  {
           for (const k in params) {
             parsedParams[k] = JSON.parse(params[k]);
           }
-          this.handleQueryParams(parsedParams);
+          if (!isEmptyObject(parsedParams)) {
+            this.handleQueryParams(parsedParams);
+          }
         }
       );
     }
@@ -117,7 +121,7 @@ export abstract class AbstractPage  {
      * @param params {any} the params that should be handled
      */
     handleQueryParams(params: any) {
-      this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`)
+      this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`);
     }
 
     /**
