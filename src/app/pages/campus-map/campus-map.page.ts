@@ -19,7 +19,7 @@ import {LatLngExpression} from 'leaflet';
 
 export interface CampusMapQueryParams {
   campus?: ICampus;
-  building?: string;
+  feature?: string;
   coordinates?: LatLngExpression;
 }
 
@@ -80,14 +80,15 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.pageReady.then(
       r => {
         if (params.coordinates) {
-
+          this.moveToPosition(params.coordinates);
         }
 
-        if (params.building) {
-
+        if (params.feature) {
+          this.moveToFeature(params.feature);
         }
 
         if (params.campus) {
+          this.selectCampus(params.campus);
         }
       }
     );
@@ -284,6 +285,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.ws.call('maps').subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
+        console.log(response)
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       }, () => {
         const buttons: AlertButton[] = [{
@@ -324,6 +326,13 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.map.fitBounds(
       campus.lat_long_bounds
     );
+  }
+
+  /**
+   * move map to given feature, if it exists
+   */
+  moveToFeature(feature) {
+
   }
 
   /**
@@ -372,6 +381,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         props['campus'] = campusMapping[obj.campus];
         props['category'] = category;
         props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''} (${props.campus.pretty_name})`;
+        props['code'] = ``;
 
         const geoJson = L.geoJSON(feature);
 
