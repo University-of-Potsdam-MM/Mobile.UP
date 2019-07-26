@@ -76,23 +76,23 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * implementation of abstract page function
    * @param params
    */
-  handleQueryParams(params: CampusMapQueryParams) {
-    this.pageReady.then(
-      r => {
-        if (params.coordinates) {
-          this.moveToPosition(params.coordinates);
-        }
-
-        if (params.feature) {
-          this.moveToFeature(params.feature);
-        }
-
-        if (params.campus) {
-          this.selectCampus(params.campus);
-        }
-      }
-    );
-  }
+  // handleQueryParams(params: CampusMapQueryParams) {
+  //   this.pageReady.then(
+  //     r => {
+  //       if (params.coordinates) {
+  //         this.moveToPosition(params.coordinates);
+  //       }
+  //
+  //       if (params.feature) {
+  //         this.moveToFeature(params.feature);
+  //       }
+  //
+  //       if (params.campus) {
+  //         this.selectCampus(params.campus);
+  //       }
+  //     }
+  //   );
+  // }
 
   /**
    * @name ionViewWillEnter
