@@ -39,7 +39,7 @@ export abstract class AbstractPage  {
 
     pageReady: Promise<void>;
     pageReadyResolve: () => void;
-    pageReadyReject: () => void;
+    pageReadyReject: (error) => void;
 
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
@@ -76,8 +76,14 @@ export abstract class AbstractPage  {
       // implementing this one
       this.pageReady = new Promise(
         (resolve, reject) => {
-          this.pageReadyResolve = resolve;
-          this.pageReadyReject = reject;
+          this.pageReadyResolve = () => {
+            this.logger.info('page is now ready');
+            resolve();
+          };
+          this.pageReadyReject = (error) => {
+            this.logger.error(`page is not ready: ${error}`);
+            reject();
+          };
         }
       );
 
@@ -91,7 +97,9 @@ export abstract class AbstractPage  {
           }
           if (!isEmptyObject(parsedParams)) {
             this.setMenuStatus(parsedParams['menu']);
-            this.handleQueryParams(parsedParams);
+            this.pageReady.then(
+              () => this.handleQueryParams(parsedParams)
+            );
           }
         }
       );

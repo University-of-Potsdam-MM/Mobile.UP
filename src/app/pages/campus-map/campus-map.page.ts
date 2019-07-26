@@ -63,7 +63,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    */
   initializeLeafletMap() {
     // create map object
-    const map = L.map('map').fitWorld();
+    const map = L.map('map');
     L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
@@ -76,23 +76,20 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * implementation of abstract page function
    * @param params
    */
-  // handleQueryParams(params: CampusMapQueryParams) {
-  //   this.pageReady.then(
-  //     r => {
-  //       if (params.coordinates) {
-  //         this.moveToPosition(params.coordinates);
-  //       }
-  //
-  //       if (params.feature) {
-  //         this.moveToFeature(params.feature);
-  //       }
-  //
-  //       if (params.campus) {
-  //         this.selectCampus(params.campus);
-  //       }
-  //     }
-  //   );
-  // }
+  handleQueryParams(params: CampusMapQueryParams) {
+    this.logger.entry('handleQueryParams', params)
+    if (params.coordinates) {
+      this.moveToPosition(params.coordinates);
+    }
+
+    if (params.feature) {
+      this.moveToFeature(params.feature);
+    }
+
+    if (params.campus) {
+      this.selectCampus(params.campus);
+    }
+  }
 
   /**
    * @name ionViewWillEnter
@@ -114,7 +111,12 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       this.addLeafletSearch(this.map);
       this.addGeoLocationButton(this.map);
     }
-    this.pageReadyResolve();
+    // trigger pageReadyResolve, need to wait a second until map is really ready
+    // TODO: find out why this timeout is necessary and find better solution
+    setTimeout(
+      () => this.pageReadyResolve(),
+      1000
+    );
   }
 
   /**
@@ -285,7 +287,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.ws.call('maps').subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
-        console.log(response)
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       }, () => {
         const buttons: AlertButton[] = [{
@@ -340,6 +341,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @param coordinates
    */
   moveToPosition(coordinates: LatLngExpression) {
+    this.logger.entry('moveToPosition', coordinates);
     this.map.panTo(coordinates);
   }
 
