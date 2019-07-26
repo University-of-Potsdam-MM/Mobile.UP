@@ -54,7 +54,6 @@ export abstract class AbstractPage  {
     protected constructor(
         pageOptions?: IPageOptions
     ) {
-      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
 
       const injector: Injector = StaticInjectorService.getInjector();
 
@@ -66,6 +65,8 @@ export abstract class AbstractPage  {
       this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
       this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
       this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
+
+      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
 
       this.config = ConfigService.config;
 
