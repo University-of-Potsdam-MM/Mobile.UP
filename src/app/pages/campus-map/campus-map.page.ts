@@ -18,7 +18,7 @@ import {ActivatedRoute} from '@angular/router';
 import {LatLngExpression} from 'leaflet';
 
 export interface CampusMapQueryParams {
-  campus?: ICampus;
+  campus?: string | number;
   feature?: string;
   coordinates?: LatLngExpression;
 }
@@ -77,7 +77,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @param params
    */
   handleQueryParams(params: CampusMapQueryParams) {
-    this.logger.entry('handleQueryParams', params)
+    this.logger.entry('handleQueryParams', params);
     if (params.coordinates) {
       this.moveToPosition(params.coordinates);
     }
@@ -87,7 +87,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     }
 
     if (params.campus) {
-      this.selectCampus(params.campus);
+      this.moveToQueriedCampus(params.campus);
     }
   }
 
@@ -307,8 +307,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   }
 
   /**
-   * @name selectCampus
-   * @description selects the given campus and sets fitBounds to the campus' bounds
+   * selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
@@ -319,14 +318,44 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   }
 
   /**
-   * @name moveToCampus
-   * @description fits map to given campus
-   * @param {ICampus} campus
+   * moves to given campus
+   * @param campus {ICampus}
    */
   moveToCampus(campus: ICampus) {
-    this.map.fitBounds(
-      campus.lat_long_bounds
+    this.map.fitBounds(campus.lat_long_bounds);
+  }
+
+  /**
+   * Finds a campus by query. Campus can be specified in multiple ways:
+   *  - location_id (as string or number)
+   *  - name
+   *  - pretty_name
+   * @description fits map to given campus
+   * @param {string | name} query
+   */
+  queryCampus(query: string | number) {
+    return this.config.campus.find(
+      (campus: ICampus) => {
+        return campus.location_id === query
+          || campus.location_id === query.toString()
+          || campus.name === query
+          || campus.pretty_name === query;
+      }
     );
+  }
+
+  /**
+   * Queries the desired campus and moves there if it can be found
+   * @param query
+   */
+  moveToQueriedCampus(query: string | number) {
+    const foundCampus = this.queryCampus(query);
+    if (foundCampus) {
+      this.logger.info(`moving to campus ${foundCampus.pretty_name}`);
+      this.selectCampus(foundCampus);
+    } else {
+      this.logger.error(`could not find campus by query: '${query}'`);
+    }
   }
 
   /**
