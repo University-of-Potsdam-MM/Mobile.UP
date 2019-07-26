@@ -51,29 +51,27 @@ export abstract class AbstractPage  {
     protected router: Router;
     protected webIntent: WebIntentService;
 
-
     protected constructor(
         pageOptions?: IPageOptions
     ) {
+      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
+
       const injector: Injector = StaticInjectorService.getInjector();
 
       this.loggingService = injector.get<LoggingService>(LoggingService as Type<LoggingService>);
       this.router = injector.get<Router>(Router as Type<Router>);
-      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
-
       this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
       this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
       this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
       this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
       this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
       this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
+
       this.config = ConfigService.config;
 
       if (pageOptions) { this.processOptions(pageOptions); }
 
-      this.setMenuStatus();
-
-      // assign pageReady promises. Those should be called from a page
+      // Assign pageReady promises. Those should be called from a page
       // implementing this one
       this.pageReady = new Promise(
         (resolve, reject) => {
@@ -82,8 +80,8 @@ export abstract class AbstractPage  {
         }
       );
 
-      // forwarding queryParams to the pre-existing handleQueryParams function
-      // the existing one doesn't do anything, though
+      // Forwarding queryParams to the pre-existing handleQueryParams function.
+      // The existing one doesn't do anything, though
       this.activatedRoute.queryParams.subscribe(
         params => {
           const parsedParams = {};
@@ -91,29 +89,30 @@ export abstract class AbstractPage  {
             parsedParams[k] = JSON.parse(params[k]);
           }
           if (!isEmptyObject(parsedParams)) {
+            this.setMenuStatus(parsedParams['menu']);
             this.handleQueryParams(parsedParams);
           }
         }
       );
     }
 
+    /**
+     * process the given pageOptions and execute desired functions
+     * @param pageOptions
+     */
     private processOptions(pageOptions: IPageOptions) {
-        if (pageOptions.requireSession) { this.requireSession(false); }
-        if (pageOptions.requireNetwork) { this.requireNetwork(true); }
-        if (pageOptions.optionalSession) { this.requireSession(true); }
-        if (pageOptions.optionalNetwork) { this.requireNetwork(false); }
+      if (pageOptions.requireSession) { this.requireSession(false); }
+      if (pageOptions.requireNetwork) { this.requireNetwork(true); }
+      if (pageOptions.optionalSession) { this.requireSession(true); }
+      if (pageOptions.optionalNetwork) { this.requireNetwork(false); }
     }
 
-    private setMenuStatus() {
-        // if url parameter = .../pagename?menu=false  then hide the menu
-        this.activatedRoute.queryParams.subscribe(urlParams => {
-            if (urlParams && (urlParams.menu === 'false')) {
-                this.menu.enable(false);
-            } else { this.menu.enable(true); }
-        }, error => {
-            this.logger.error('setMenuStatus', error);
-            this.menu.enable(true);
-        });
+    /**
+     * enables or disables the pages menu section
+     * @param shouldEnable
+     */
+    private setMenuStatus(shouldEnable: boolean = true) {
+      this.menu.enable(shouldEnable);
     }
 
     /**
