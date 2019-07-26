@@ -33,7 +33,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   campusList: ICampus[] = ConfigService.config.campus;
   currentCampus: ICampus;
   geoJSON: IMapsResponseObject[];
-  selectedCampus: ICampus;
   searchControl;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
@@ -419,7 +418,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         // add click listener that will open a Modal displaying some information
         geoJson.on('click', async () => {
           if (props.campus !== this.currentCampus) {
-            this.selectedCampus = props.campus;
+            this.currentCampus = props.campus;
           }
 
           const modal = await this.modalCtrl.create({
