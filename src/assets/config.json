@@ -359,6 +359,44 @@
           13.1338
         ]
       ]
+    },
+    {
+      "name": "maulbeerallee",
+      "location_id": "4",
+      "pretty_name": "Maulbeerallee",
+      "canteen_name": "Maulbeerallee",
+      "shortcode": "mb",
+      "transport_station_id": "900230003",
+      "coordinates": [52.39281, 13.1288],
+      "lat_long_bounds": [
+        [
+          52.3945,
+          13.1258
+        ],
+        [
+          52.3912,
+          13.1338
+        ]
+      ]
+    },
+    {
+      "name": "pirschheide",
+      "location_id": "5",
+      "pretty_name": "Pirschheide",
+      "canteen_name": "Pirschheide",
+      "shortcode": "ph",
+      "transport_station_id": "900230003",
+      "coordinates": [52.39281, 13.1288],
+      "lat_long_bounds": [
+        [
+          52.3945,
+          13.1258
+        ],
+        [
+          52.3912,
+          13.1338
+        ]
+      ]
     }
   ]
 }
