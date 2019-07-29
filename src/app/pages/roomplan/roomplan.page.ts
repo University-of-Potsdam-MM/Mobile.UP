@@ -233,9 +233,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
         this.housesFound = [];
         this.error = null;
 
-        if (response.reservationsResponse.return.length === 0 || !response.reservationsResponse.return) {
-          // list will remain empty
-        } else {
+        if (response && response.reservationsResponse && response.reservationsResponse.return) {
           for (const reservation of response.reservationsResponse.return) {
             // API often returns basically empty reservations, we want to ignore these
             if (reservation.veranstaltung !== '' && reservation.veranstaltung != null) {
@@ -321,12 +319,12 @@ export class RoomplanPage extends AbstractPage implements OnInit {
             this.housesFound.push(tmpHouse);
           }
           this.housesFound.sort(RoomplanPage.compareHouses);
+        }
 
-          // if refresher is running complete it
-          if (this.refresher != null) {
-            this.refresher.target.complete();
-          }
-          this.requestProcessed = true;
+        this.requestProcessed = true;
+        // if refresher is running complete it
+        if (this.refresher != null) {
+          this.refresher.target.complete();
         }
       },
       (error: HttpErrorResponse) => {

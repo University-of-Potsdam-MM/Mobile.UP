@@ -167,33 +167,35 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
       (response: IRoomRequestResponse) => {
         this.housesFound = [];
         this.error = null;
-        for (const response_room of response.rooms4TimeResponse.return) {
+        if (response && response.rooms4TimeResponse && response.rooms4TimeResponse.return) {
+          for (const response_room of response.rooms4TimeResponse.return) {
 
-          const split = response_room.split('.');
+            const split = response_room.split('.');
 
-          const room: IRoom = {
-            lbl: split.splice(2, 5).join('.')
-          };
-
-          let house: IHouse = null;
-          for (let i = 0; i < this.housesFound.length; i++) {
-            if (this.housesFound[i].lbl === split[1]) {
-              house = this.housesFound[i];
-              house.rooms.push(room);
-              this.housesFound[i] = house;
-            }
-          }
-
-          if (house == null) {
-            house = {
-              lbl: split[1],
-              rooms: [room],
-              expanded: false
+            const room: IRoom = {
+              lbl: split.splice(2, 5).join('.')
             };
-            this.housesFound.push(house);
-          }
 
-        }
+            let house: IHouse = null;
+            for (let i = 0; i < this.housesFound.length; i++) {
+              if (this.housesFound[i].lbl === split[1]) {
+                house = this.housesFound[i];
+                house.rooms.push(room);
+                this.housesFound[i] = house;
+              }
+            }
+
+            if (house == null) {
+              house = {
+                lbl: split[1],
+                rooms: [room],
+                expanded: false
+              };
+              this.housesFound.push(house);
+            }
+
+          }
+        } else { this.no_timeslot = true; }
 
         // sort elements for nicer display
         this.housesFound.sort(RoomplanPage.compareHouses);
