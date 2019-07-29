@@ -53,15 +53,28 @@ ion-card {
         flex:1 1 120px;
         border:2px solid #fff;
         height: 80px;
+        --padding-start: 0;
 
         ion-label {
             overflow: visible;
             width: 100%;
+            font-size: small;
         }
 
         ion-icon {
             padding-top: 2%!important;
-            font-size: 2.2em;
+            padding-bottom: 30px;
+            font-size: 2em;
+            margin: 0;
         }
      }
+}
+
+.centered {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }

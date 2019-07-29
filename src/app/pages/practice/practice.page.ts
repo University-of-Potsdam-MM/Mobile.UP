@@ -38,7 +38,7 @@ export class PracticePage extends AbstractPage {
     private platform: Platform,
     private settingsProvider: SettingsService,
     private keyboard: Keyboard,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private chRef: ChangeDetectorRef,
     private alertService: AlertService,
     private alertCtrl: AlertController,

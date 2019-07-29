@@ -28,7 +28,7 @@ export class TransportPage extends AbstractPage {
 
   constructor(
     private ws: WebserviceWrapperService,
-    private translate: TranslateService // used in template
+    public translate: TranslateService // used in template
   ) {
     super({ requireNetwork: true });
   }

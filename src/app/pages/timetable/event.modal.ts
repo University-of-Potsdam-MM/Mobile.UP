@@ -22,7 +22,7 @@ export class EventModalPage implements OnInit {
 
     constructor(
         private modalCtrl: ModalController,
-        private translate: TranslateService // used in template
+        public translate: TranslateService // used in template
     ) { }
 
     closeModal() {
