@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-button slot="start" (click)="closeModal()" fill="clear">
+            <ion-icon style="color: black; font-size: x-large;" name="ios-arrow-back"></ion-icon>
+        </ion-button>
+        <ion-title>{{ "words.changeOrder" | translate }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
+        <ion-item *ngFor="let campus of campusList">
+            <ion-label>
+                {{ campus.pretty_name }}
+            </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+    </ion-reorder-group>
+</ion-content>

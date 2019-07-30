@@ -1,7 +1,7 @@
-<ion-grid>
+<ion-grid [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-row nowrap>
     <ion-col size="1">
-      <ion-segment-button class="reorder-button" size="small" fill="clear" layout="icon-start">
+      <ion-segment-button (click)="openModal()" class="reorder-button" size="small" fill="clear" layout="icon-start">
         <ion-icon name="reorder"></ion-icon>
       </ion-segment-button>
     </ion-col>

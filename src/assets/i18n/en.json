@@ -265,9 +265,6 @@
     },
     "mensa":{
       "title": "Canteen",
-      "campus1": "Griebnitzsee",
-      "campus2": "Neues Palais",
-      "campus3": "Golm",
       "students": "Students",
       "date": "Date",
       "vegan": "Vegan",
@@ -295,11 +292,6 @@
       "libraries": "Libraries & Licences"
     },
     "campus-map": {
-      "campus": {
-        "neuespalais": "Neues Palais",
-        "golm": "Golm",
-        "griebnitzsee": "Griebnitzsee"
-      },
       "placeholder_search": "Search",
       "cancel": "Cancel search",
       "no_results": "No results found",
@@ -400,7 +392,8 @@
     "bookings": "bookings",
     "of": "of",
     "results": "results",
-    "all": "All"
+    "all": "All",
+    "changeOrder": "Change order"
   },
   "menu": {
     "title": "Menu"

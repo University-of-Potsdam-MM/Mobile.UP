@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ICampus } from '../../lib/interfaces';
 import { ConfigService } from '../../services/config/config.service';
+import { ModalController } from '@ionic/angular';
+import { CampusReorderModalPage } from './campus-reorder.modal';
 
 /**
  * Component for displaying a campus menu using ion-segments.
@@ -48,8 +50,11 @@ export class CampusTabComponent implements OnInit {
    */
   _selectedCampus: ICampus;
 
+  modalOpen = false;
+
   constructor(
-    private settings: SettingsService
+    private settings: SettingsService,
+    private modalCtrl: ModalController
   ) {  }
 
   /**
@@ -122,6 +127,18 @@ export class CampusTabComponent implements OnInit {
     this.selectCampus(
       this.campusList.find(c =>  c.pretty_name === defaultCampusName)
     );
+  }
+
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
+      component: CampusReorderModalPage,
+      componentProps: { campusList: this.campusList }
+    });
+    modal.present();
+    this.modalOpen = true;
+    await modal.onWillDismiss();
+    this.modalOpen = false;
   }
 
 }
