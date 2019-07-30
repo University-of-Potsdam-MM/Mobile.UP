@@ -4,6 +4,7 @@ import { ICampus } from '../../lib/interfaces';
 import { ConfigService } from '../../services/config/config.service';
 import { ModalController } from '@ionic/angular';
 import { CampusReorderModalPage } from './campus-reorder.modal';
+import { Storage } from '@ionic/storage';
 
 /**
  * Component for displaying a campus menu using ion-segments.
@@ -43,7 +44,7 @@ export class CampusTabComponent implements OnInit {
   /**
    * @desc list of ICampus object that will be used
    */
-  campusList: ICampus[] = ConfigService.config.campus;
+  campusList: ICampus[] = [];
 
   /**
    * @desc holds the currently selected campus object
@@ -51,10 +52,12 @@ export class CampusTabComponent implements OnInit {
   _selectedCampus: ICampus;
 
   modalOpen = false;
+  listProcessed = false;
 
   constructor(
     private settings: SettingsService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private storage: Storage
   ) {  }
 
   /**
@@ -64,7 +67,7 @@ export class CampusTabComponent implements OnInit {
   selectCampus(campus: ICampus, dontEmit = false) {
     this._selectedCampus = campus;
 
-    if (!dontEmit) {
+    if (!dontEmit && this._selectedCampus) {
       this.campusChanged.emit(this._selectedCampus);
     }
   }
@@ -115,7 +118,39 @@ export class CampusTabComponent implements OnInit {
    * initializes this component
    */
   ngOnInit() {
-    this.initCampusTab();
+    this.storage.get('campusListOrdered').then((savedList: ICampus[]) => {
+      const configList: ICampus[] = Array.from(ConfigService.config.campus);
+
+      if (!savedList) {
+        this.campusList = configList;
+      } else {
+        // add campus in user-preferred order
+        for (let i = 0; i < savedList.length; i++) {
+          for (let j = 0; j < configList.length; j++) {
+            if (configList[j].pretty_name === savedList[i].pretty_name) {
+              // add campus-object from config to account for changes
+              this.campusList.push(configList[j]);
+              // remove the added item from the "to add" list
+              configList.splice(j, 1);
+              break;
+            }
+          }
+        }
+
+        // if there are items left in configList
+        // it means these locations are newly added
+        // so we still have to add them
+        if (configList.length > 0) {
+          for (let i = 0; i < configList.length; i++) {
+            this.campusList.push(configList[i]);
+          }
+        }
+      }
+
+      this.storage.set('campusListOrdered', this.campusList);
+      this.listProcessed = true;
+      this.initCampusTab();
+    });
   }
 
   /**

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ICampus } from 'src/app/lib/interfaces';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -13,7 +14,8 @@ export class CampusReorderModalPage {
   @Input() campusList: ICampus[];
 
   constructor(
-      private modalCtrl: ModalController
+      private modalCtrl: ModalController,
+      private storage: Storage
     ) { }
 
   closeModal() {
@@ -28,6 +30,7 @@ export class CampusReorderModalPage {
 
     // reorders the list
     this.campusList.splice(ev.detail.to, 0, this.campusList.splice(ev.detail.from, 1)[0]);
+    this.storage.set('campusListOrdered', this.campusList);
 
     // Finish the reorder
     ev.detail.complete();

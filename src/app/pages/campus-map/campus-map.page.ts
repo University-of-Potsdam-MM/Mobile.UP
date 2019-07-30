@@ -285,7 +285,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.ws.call('maps').subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
-        console.log(response)
+        // console.log(response);
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       }, () => {
         const buttons: AlertButton[] = [{

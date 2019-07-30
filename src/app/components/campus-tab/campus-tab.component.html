@@ -6,7 +6,7 @@
       </ion-segment-button>
     </ion-col>
     <ion-col>
-      <ion-segment color="primary" scrollable="true">
+      <ion-segment *ngIf="listProcessed" color="primary" scrollable="true">
         <ion-segment-button *ngFor="let campus of campusList"
         (click)="selectCampus(campus)" [checked]="campus == _selectedCampus">
           {{ campus.pretty_name }}

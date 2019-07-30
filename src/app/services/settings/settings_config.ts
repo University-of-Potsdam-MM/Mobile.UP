@@ -18,7 +18,7 @@ export const SETTINGS = [
     {
         key: 'campus',
         value: 'Griebnitzsee',
-        options: [{key: 'Neues Palais'}, {key: 'Griebnitzsee'}, {key: 'Golm'}],
+        options: [{key: 'Neues Palais'}, {key: 'Griebnitzsee'}, {key: 'Golm'}, {key: 'Maulbeerallee'}, {key: 'Pirschheide'}],
         type: ESettingType.string_radio,
         icon: 'locate'
     },
