@@ -20,7 +20,7 @@ export class DetailedOpeningModalPage implements OnInit {
 
   constructor(
       private modalCtrl: ModalController,
-      private translate: TranslateService,
+      public translate: TranslateService,
       private webIntent: WebIntentService,
       private callNumber: CallNumber,
       private loggingService: LoggingService

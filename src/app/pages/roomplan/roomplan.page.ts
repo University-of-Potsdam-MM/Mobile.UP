@@ -25,7 +25,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   constructor(
     private alertService: AlertService,
     private ws: WebserviceWrapperService,
-    private translate: TranslateService // used in template
+    public translate: TranslateService // used in template
   ) {
     super({ requireNetwork: true });
   }

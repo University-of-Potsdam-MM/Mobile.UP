@@ -20,7 +20,7 @@ export class DetailedPracticeModalPage implements OnInit {
       private modalCtrl: ModalController,
       private webIntent: WebIntentService,
       private alertService: AlertService,
-      private translate: TranslateService // used in template
+      public translate: TranslateService // used in template
     ) {
   }
 
