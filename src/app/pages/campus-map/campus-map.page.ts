@@ -18,7 +18,7 @@ import {ActivatedRoute} from '@angular/router';
 import {LatLngExpression} from 'leaflet';
 
 export interface CampusMapQueryParams {
-  campus?: ICampus;
+  campus?: string | number;
   feature?: string;
   coordinates?: LatLngExpression;
 }
@@ -33,7 +33,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   campusList: ICampus[] = ConfigService.config.campus;
   currentCampus: ICampus;
   geoJSON: IMapsResponseObject[];
-  selectedCampus: ICampus;
   searchControl;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
@@ -63,7 +62,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    */
   initializeLeafletMap() {
     // create map object
-    const map = L.map('map').fitWorld();
+    const map = L.map('map');
     L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
@@ -76,23 +75,20 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * implementation of abstract page function
    * @param params
    */
-  // handleQueryParams(params: CampusMapQueryParams) {
-  //   this.pageReady.then(
-  //     r => {
-  //       if (params.coordinates) {
-  //         this.moveToPosition(params.coordinates);
-  //       }
-  //
-  //       if (params.feature) {
-  //         this.moveToFeature(params.feature);
-  //       }
-  //
-  //       if (params.campus) {
-  //         this.selectCampus(params.campus);
-  //       }
-  //     }
-  //   );
-  // }
+  handleQueryParams(params: CampusMapQueryParams) {
+    this.logger.entry('handleQueryParams', params);
+    if (params.coordinates) {
+      this.moveToPosition(params.coordinates);
+    }
+
+    if (params.feature) {
+      this.moveToFeature(params.feature);
+    }
+
+    if (params.campus) {
+      this.moveToQueriedCampus(params.campus);
+    }
+  }
 
   /**
    * @name ionViewWillEnter
@@ -114,7 +110,12 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       this.addLeafletSearch(this.map);
       this.addGeoLocationButton(this.map);
     }
-    this.pageReadyResolve();
+    // trigger pageReadyResolve, need to wait a second until map is really ready
+    // TODO: find out why this timeout is necessary and find better solution
+    setTimeout(
+      () => this.pageReadyResolve(),
+      1000
+    );
   }
 
   /**
@@ -285,7 +286,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.ws.call('maps').subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
-        console.log(response)
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       }, () => {
         const buttons: AlertButton[] = [{
@@ -306,8 +306,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   }
 
   /**
-   * @name selectCampus
-   * @description selects the given campus and sets fitBounds to the campus' bounds
+   * selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
@@ -318,14 +317,44 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   }
 
   /**
-   * @name moveToCampus
-   * @description fits map to given campus
-   * @param {ICampus} campus
+   * moves to given campus
+   * @param campus {ICampus}
    */
   moveToCampus(campus: ICampus) {
-    this.map.fitBounds(
-      campus.lat_long_bounds
+    this.map.fitBounds(campus.lat_long_bounds);
+  }
+
+  /**
+   * Finds a campus by query. Campus can be specified in multiple ways:
+   *  - location_id (as string or number)
+   *  - name
+   *  - pretty_name
+   * @description fits map to given campus
+   * @param {string | name} query
+   */
+  queryCampus(query: string | number) {
+    return this.config.campus.find(
+      (campus: ICampus) => {
+        return campus.location_id === query
+          || campus.location_id === query.toString()
+          || campus.name === query
+          || campus.pretty_name === query;
+      }
     );
+  }
+
+  /**
+   * Queries the desired campus and moves there if it can be found
+   * @param query
+   */
+  moveToQueriedCampus(query: string | number) {
+    const foundCampus = this.queryCampus(query);
+    if (foundCampus) {
+      this.logger.info(`moving to campus ${foundCampus.pretty_name}`);
+      this.selectCampus(foundCampus);
+    } else {
+      this.logger.error(`could not find campus by query: '${query}'`);
+    }
   }
 
   /**
@@ -340,6 +369,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @param coordinates
    */
   moveToPosition(coordinates: LatLngExpression) {
+    this.logger.entry('moveToPosition', coordinates);
     this.map.panTo(coordinates);
   }
 
@@ -388,7 +418,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         // add click listener that will open a Modal displaying some information
         geoJson.on('click', async () => {
           if (props.campus !== this.currentCampus) {
-            this.selectedCampus = props.campus;
+            this.currentCampus = props.campus;
           }
 
           const modal = await this.modalCtrl.create({
