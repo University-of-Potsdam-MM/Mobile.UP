@@ -427,7 +427,8 @@
       "favNotAvailable": "Some of your favorites are not available anymore.",
       "favRemoved": "Removed from your favorites!",
       "noFavorites": "No favorites found.",
-      "noInformation": "Couldn't retrieve any information."
+      "noInformation": "Couldn't retrieve any information.",
+      "functionNotAvailable": "This function is not available for the chosen location."
     }
   },
   "placeholder": {

@@ -50,6 +50,7 @@ export class MensaPage extends AbstractPage {
   noUlfMealsForDate;
   networkError;
   campus: ICampus;
+  noMensaForLocation = false;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
@@ -87,48 +88,54 @@ export class MensaPage extends AbstractPage {
     this.noUlfMealsForDate = true;
     this.networkError = false;
 
-    this.ws.call(
-      'mensa',
-      <IMensaRequestParams>{
-        campus_canteen_name: this.campus.canteen_name
-      },
-      { forceRefreshGroup: this.hardRefresh }
-    ).subscribe((res: IMensaResponse) => {
+    if (this.campus.canteen_name && this.campus.canteen_name.length > 0) {
+      this.noMensaForLocation = false;
+      this.ws.call(
+        'mensa',
+        <IMensaRequestParams>{
+          campus_canteen_name: this.campus.canteen_name
+        },
+        { forceRefreshGroup: this.hardRefresh }
+      ).subscribe((res: IMensaResponse) => {
+        if (res.meal) {
+          this.allMeals = res.meal;
+          this.displayedMeals = res.meal;
+        }
+        if (res.iconHashMap && res.iconHashMap.entry) { this.iconMapping = res.iconHashMap.entry; }
 
-      if (res.meal) {
-        this.allMeals = res.meal;
-        this.displayedMeals = res.meal;
-      }
-      if (res.iconHashMap && res.iconHashMap.entry) { this.iconMapping = res.iconHashMap.entry; }
-
-      if (this.campus.canteen_name === 'Griebnitzsee') {
-        const ulfParam = 'UlfsCafe';
-        this.ws.call(
-          'mensa',
-          <IMensaRequestParams>{
-            campus_canteen_name: ulfParam
-          }
-        ).subscribe((resUlf: IMensaResponse) => {
-          if (resUlf.meal) {
-            this.ulfMeals = resUlf.meal;
-            this.displayedUlfMeals = resUlf.meal;
-          }
-          if (resUlf.iconHashMap && resUlf.iconHashMap.entry) { this.ulfIconMapping = resUlf.iconHashMap.entry; }
+        if (this.campus.canteen_name === 'Griebnitzsee') {
+          const ulfParam = 'UlfsCafe';
+          this.ws.call(
+            'mensa',
+            <IMensaRequestParams>{
+              campus_canteen_name: ulfParam
+            }
+          ).subscribe((resUlf: IMensaResponse) => {
+            if (resUlf.meal) {
+              this.ulfMeals = resUlf.meal;
+              this.displayedUlfMeals = resUlf.meal;
+            }
+            if (resUlf.iconHashMap && resUlf.iconHashMap.entry) { this.ulfIconMapping = resUlf.iconHashMap.entry; }
+            this.getFilterKeywords();
+            this.classifyMeals();
+            if (refresher) { refresher.target.complete(); }
+          });
+        } else {
           this.getFilterKeywords();
           this.classifyMeals();
           if (refresher) { refresher.target.complete(); }
-        });
-      } else {
-        this.getFilterKeywords();
-        this.classifyMeals();
+        }
+      }, () => {
+        this.isLoaded = true;
+        this.hardRefresh = false;
+        this.networkError = true;
         if (refresher) { refresher.target.complete(); }
-      }
-    }, () => {
-      this.isLoaded = true;
-      this.hardRefresh = false;
-      this.networkError = true;
+      });
+    } else {
+      this.noMensaForLocation = true;
       if (refresher) { refresher.target.complete(); }
-    });
+      this.isLoaded = true;
+    }
   }
 
   getFilterKeywords() {
