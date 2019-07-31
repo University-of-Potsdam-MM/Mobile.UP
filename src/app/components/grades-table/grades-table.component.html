@@ -1,4 +1,4 @@
-<ion-segment scrollable *ngIf="isDualDegree[i]" [value]="currentProfession" (ionChange)="changeProfession($event)" color="primary">
+<ion-segment scrollable="true" *ngIf="isDualDegree[i]" [value]="currentProfession" (ionChange)="changeProfession($event)" color="primary">
   <ion-segment-button *ngFor="let profession of gradeArray; let j = index" value="{{j}}">
     <span *ngIf="profession.fieldName">{{ profession.fieldName }}</span>
   </ion-segment-button>

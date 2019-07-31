@@ -265,9 +265,6 @@
     },
     "mensa":{
       "title": "Mensa",
-      "campus1": "Griebnitzsee",
-      "campus2": "Neues Palais",
-      "campus3": "Golm",
       "students": "Studierende",
       "date": "Datum",
       "vegan": "Vegan",
@@ -295,11 +292,6 @@
       "libraries": "Bibliotheken & Lizenzen"
     },
     "campus-map": {
-      "campus": {
-        "neuespalais": "Neues Palais",
-        "golm": "Golm",
-        "griebnitzsee": "Griebnitzsee"
-      },
       "title": "Lageplan",
       "placeholder_search": "Suche",
       "cancel": "Suche abbrechen",
@@ -371,7 +363,7 @@
       "404": "Fehler 404: Ressource nicht gefunden"
     },
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
-    "network": "Keine Internetverbindung!",
+    "network": "Netzwerkfehler!",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",
@@ -391,13 +383,6 @@
     "app-update": "App Update verfügbar!",
     "login-expired": "Ihr Login ist abgelaufen. Bitte melden Sie sich erneut an."
   },
-  "university": {
-    "location": {
-      "np": "Neues Palais",
-      "gs": "Griebnitzsee",
-      "go": "Golm"
-    }
-  },
   "words": {
     "clock": "Uhr",
     "house": "Haus",
@@ -407,7 +392,8 @@
     "bookings": "Belegungen",
     "of": "von",
     "results": "Einträgen",
-    "all": "Alle"
+    "all": "Alle",
+    "changeOrder": "Reihenfolge ändern"
   },
   "menu": {
     "title": "Menü"
@@ -441,7 +427,8 @@
       "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
       "favRemoved": "Von Favoriten entfernt!",
       "noFavorites": "Keine Favoriten gefunden.",
-      "noInformation": "Informationen konnten nicht abgerufen werden."
+      "noInformation": "Informationen konnten nicht abgerufen werden.",
+      "functionNotAvailable": "Diese Funktion ist für den ausgewählten Ort nicht verfügbar."
     }
   },
   "placeholder": {

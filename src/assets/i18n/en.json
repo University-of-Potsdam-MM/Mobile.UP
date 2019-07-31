@@ -265,9 +265,6 @@
     },
     "mensa":{
       "title": "Canteen",
-      "campus1": "Griebnitzsee",
-      "campus2": "Neues Palais",
-      "campus3": "Golm",
       "students": "Students",
       "date": "Date",
       "vegan": "Vegan",
@@ -295,11 +292,6 @@
       "libraries": "Libraries & Licences"
     },
     "campus-map": {
-      "campus": {
-        "neuespalais": "Neues Palais",
-        "golm": "Golm",
-        "griebnitzsee": "Griebnitzsee"
-      },
       "placeholder_search": "Search",
       "cancel": "Cancel search",
       "no_results": "No results found",
@@ -371,7 +363,7 @@
       "404": "Error 404: Resource not found"
     },
     "unknown_error": "An unknown error occured. Please contact the development team.",
-    "network": "No internet connection.",
+    "network": "Network error.",
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",
@@ -391,13 +383,6 @@
     "app-update": "App update available!",
     "login-expired": "Your login is expired. Please sign in again."
   },
-  "university": {
-    "location": {
-      "np": "Neues Palais",
-      "gs": "Griebnitzsee",
-      "go": "Golm"
-    }
-  },
   "words": {
     "clock": "",
     "house": "House",
@@ -407,7 +392,8 @@
     "bookings": "bookings",
     "of": "of",
     "results": "results",
-    "all": "All"
+    "all": "All",
+    "changeOrder": "Change order"
   },
   "menu": {
     "title": "Menu"
@@ -441,7 +427,8 @@
       "favNotAvailable": "Some of your favorites are not available anymore.",
       "favRemoved": "Removed from your favorites!",
       "noFavorites": "No favorites found.",
-      "noInformation": "Couldn't retrieve any information."
+      "noInformation": "Couldn't retrieve any information.",
+      "functionNotAvailable": "This function is not available for the chosen location."
     }
   },
   "placeholder": {

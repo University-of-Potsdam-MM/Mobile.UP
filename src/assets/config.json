@@ -359,6 +359,25 @@
           13.1338
         ]
       ]
+    },
+    {
+      "name": "botanischergarten",
+      "location_id": "5",
+      "pretty_name": "Botanischer Garten",
+      "canteen_name": "",
+      "shortcode": "bg",
+      "transport_station_id": "900230136",
+      "coordinates": [52.4039, 13.02529],
+      "lat_long_bounds": [
+        [
+          52.40504,
+          13.02465
+        ],
+        [
+          52.40288,
+          13.03057
+        ]
+      ]
     }
   ]
 }
