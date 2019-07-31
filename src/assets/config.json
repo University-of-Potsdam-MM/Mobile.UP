@@ -365,17 +365,17 @@
       "location_id": "4",
       "pretty_name": "Botanischer Garten",
       "canteen_name": "",
-      "shortcode": "mb",
+      "shortcode": "bg",
       "transport_station_id": "900230136",
       "coordinates": [52.4039, 13.02529],
       "lat_long_bounds": [
         [
-          52.3945,
-          13.1258
+          52.40504,
+          13.02465
         ],
         [
-          52.3912,
-          13.1338
+          52.40288,
+          13.03057
         ]
       ]
     }
