@@ -27,7 +27,7 @@
       {{ "page.mensa.date" | translate }}
     </ion-chip>
     <ion-label>Filter</ion-label>
-    <ion-select multiple="true" (ionChange)="filterMenus($event)" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+    <ion-select multiple="true" (ionChange)="filterMenus($event)" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}" [disabled]="filterKeywords.length === 0">
       <ion-select-option *ngFor="let filter of filterKeywords">{{ filter }}</ion-select-option>
     </ion-select>
   </ion-item>

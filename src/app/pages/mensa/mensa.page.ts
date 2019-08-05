@@ -139,6 +139,7 @@ export class MensaPage extends AbstractPage {
   }
 
   getFilterKeywords() {
+    this.filterKeywords = [];
     for (let i = 0; i < this.displayedMeals.length; i++) {
       for (let j = 0; j < this.displayedMeals[i].type.length; j++) {
         if (!utils.isInArray(this.filterKeywords, this.displayedMeals[i].type[j])) {
