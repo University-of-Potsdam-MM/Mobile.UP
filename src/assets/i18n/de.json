@@ -428,7 +428,8 @@
       "favRemoved": "Von Favoriten entfernt!",
       "noFavorites": "Keine Favoriten gefunden.",
       "noInformation": "Informationen konnten nicht abgerufen werden.",
-      "functionNotAvailable": "Diese Funktion ist für den ausgewählten Ort nicht verfügbar."
+      "functionNotAvailable": "Diese Funktion ist für den ausgewählten Ort nicht verfügbar.",
+      "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein."
     }
   },
   "placeholder": {

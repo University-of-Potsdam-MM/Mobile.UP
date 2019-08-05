@@ -36,6 +36,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
   networkError;
   modalOpen;
   valueArray = [];
+  queryTooShort = false;
 
   ngOnInit() {
     this.loadLectureTree();
@@ -109,13 +110,15 @@ export class LecturesPage extends AbstractPage implements OnInit {
     if (event) { this.query = event.detail.value.trim(); }
     this.searchResults = [];
     this.resultKeys = [];
+    this.queryTooShort = false;
 
     if (this.query && this.query.length > 2) {
       this.isSearching = true;
       if (this.valueArray.length === 1) {
         this.searchResults = this.getValues(this.valueArray[0]);
       } else { this.searchResults = this.getValues(); }
-      this.isSearching = false;
+    } else if (this.query && this.query.length > 0 && this.query.length < 3) {
+      this.queryTooShort = true;
     }
   }
 
@@ -152,6 +155,11 @@ export class LecturesPage extends AbstractPage implements OnInit {
         }
       }
     }
+
+    setTimeout(() => {
+      this.isSearching = false;
+    }, 500);
+
     return objects;
   }
 
