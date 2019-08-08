@@ -5,6 +5,7 @@ import * as Constants from '../../services/settings/settings_config';
 import * as moment from 'moment';
 import { ISetting, ESettingType } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +19,8 @@ export class SettingsPage extends AbstractPage implements OnInit {
 
   constructor(
     private storage: Storage,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public platform: Platform
   ) {
     super();
   }

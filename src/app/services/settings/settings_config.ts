@@ -98,6 +98,7 @@ export const SETTINGS = [
         value: false,
         type: ESettingType.boolean,
         icon: 'appstore',
-        options: []
+        options: [],
+        mobileOnly: true
     },
 ];
