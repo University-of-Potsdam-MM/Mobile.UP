@@ -71,7 +71,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       'emergencyCalls',
       {},
       { forceRefresh: refresher !== undefined }
-    ).subscribe((response) => {
+    ).subscribe((response: any) => {
       if (refresher) { refresher.target.complete(); }
       this.defaultList = response;
       this.isLoaded = true;
@@ -163,9 +163,11 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       if (emergencyCall.contact.mail)   { contact.emails = [new ContactField('work', emergencyCall.contact.mail)]; }
       if (emergencyCall.address && emergencyCall.address.street) {
         contact.addresses = [new ContactField()];
-        contact.addresses[0].type = 'work';
-        if (emergencyCall.address.postal) { contact.addresses[0].postalCode = emergencyCall.address.postal; }
-        contact.addresses[0].streetAddress =  emergencyCall.address.street;
+        if (contact.addresses && contact.addresses[0]) {
+          contact.addresses[0].type = 'work';
+          if (emergencyCall.address.postal) { contact.addresses[0].postalCode = emergencyCall.address.postal; }
+          contact.addresses[0].streetAddress =  emergencyCall.address.street;
+        }
       }
 
       const exportName = emergencyCall.name;

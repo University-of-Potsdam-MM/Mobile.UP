@@ -66,11 +66,13 @@ export class NavigatorService implements OnInit {
   }
 
   public navigateToLatLong(latLong: number[]) {
-    this.launchNavigator.navigate(latLong, this.options).then(() => {
-      this.logger.debug('navigateToLatLong', 'launched navigator');
-    }, error => {
-      this.logger.error('navigateToLatLong', error);
-      this.webIntent.permissionPromptWebsite('https://maps.google.com/?q=' + String(latLong[0]) + ',' + String(latLong[1]));
-    });
+    if (latLong && latLong.length > 1) {
+      this.launchNavigator.navigate(latLong, this.options).then(() => {
+        this.logger.debug('navigateToLatLong', 'launched navigator');
+      }, error => {
+        this.logger.error('navigateToLatLong', error);
+        this.webIntent.permissionPromptWebsite('https://maps.google.com/?q=' + String(latLong[0]) + ',' + String(latLong[1]));
+      });
+    }
   }
 }

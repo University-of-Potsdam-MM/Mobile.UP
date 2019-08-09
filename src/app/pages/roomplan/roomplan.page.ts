@@ -189,7 +189,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
    */
   addRoomToHouse(houseLbl, room: IRoom) {
     let house: IHousePlan;
-    if (this.houseMap.has(houseLbl)) {
+    if (this.houseMap && this.houseMap.has(houseLbl)) {
       house = this.houseMap.get(houseLbl);
     } else {
       house = {
@@ -273,7 +273,14 @@ export class RoomplanPage extends AbstractPage implements OnInit {
                   persons: persons
                 };
 
-                this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event);
+                if (
+                  this.houseMap && split && split[1]
+                  && this.houseMap.has(split[1])
+                  && this.houseMap.get(split[1]).rooms.has(room.lbl)
+                  && this.houseMap.get(split[1]).rooms.get(room.lbl).events
+                ) {
+                  this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event);
+                }
               }
             }
           }
@@ -281,7 +288,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
           // load defaults if they are passed to the page by other files
           let default_error = '';
           if (this.default_house != null) {
-            if (this.houseMap.has(this.default_house.lbl)) {
+            if (this.houseMap && this.houseMap.has(this.default_house.lbl)) {
               this.houseMap.get(this.default_house.lbl).expanded = true;
 
               if (this.default_room != null) {

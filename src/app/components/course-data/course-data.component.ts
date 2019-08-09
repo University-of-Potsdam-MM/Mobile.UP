@@ -39,10 +39,20 @@ export class CourseDataComponent implements OnInit {
       let i;
       this.courseGroups = [];
       // check how many different groups exist
-      const tmp = utils.convertToArray(utils.convertToArray(this.courseData.courseData.course)[0].events.event);
-      for (i = 0; i < tmp.length; i++) {
-        if (!utils.isInArray(this.courseGroups, tmp[i].groupId)) {
-          this.courseGroups.push(tmp[i].groupId);
+      if (
+        this.courseData
+        && this.courseData.courseData
+        && this.courseData.courseData.course
+      ) {
+        const coursetmp = utils.convertToArray(this.courseData.courseData.course)[0];
+
+        if (coursetmp && coursetmp.events && coursetmp.events.event) {
+          const tmp = utils.convertToArray(coursetmp.events.event);
+          for (i = 0; i < tmp.length; i++) {
+            if (tmp[i].groupId && !utils.isInArray(this.courseGroups, tmp[i].groupId)) {
+              this.courseGroups.push(tmp[i].groupId);
+            }
+          }
         }
       }
 
@@ -69,7 +79,7 @@ export class CourseDataComponent implements OnInit {
    * @param index
    */
   checkDoubledLecturers(event, lecturer, index) {
-    if (event.eventId && lecturer.lecturerId) {
+    if (event && event.eventId && lecturer && lecturer.lecturerId) {
       if ((this.lecturerList[event.eventId] !== undefined)  && (this.lecturerList[event.eventId].length > 0)) {
         if (utils.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
           return true;
@@ -102,9 +112,7 @@ export class CourseDataComponent implements OnInit {
   replaceUnderscore(roomSc: string) {
     if (roomSc !== undefined) {
       return roomSc.replace(/_/g, '.');
-    } else {
-      return '';
-    }
+    } else { return ''; }
   }
 
 }

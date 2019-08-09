@@ -112,15 +112,19 @@ export class BookLocationComponent implements OnInit {
     if (item.available) {
       // tslint:disable-next-line:no-var-keyword
       const availableArray = utils.convertToArray(item.available);
-      loanAvailable = availableArray.find(x => x.service === 'loan');
-      presentationAvailable = availableArray.find(x => x.service === 'presentation');
+      if (availableArray) {
+        loanAvailable = availableArray.find(x => x.service === 'loan');
+        presentationAvailable = availableArray.find(x => x.service === 'presentation');
+      }
     }
 
     let loanUnavailable, presentationUnavailable;
     if (item.unavailable) {
       const unavailableArray = utils.convertToArray(item.unavailable);
-      loanUnavailable = unavailableArray.find(x => x.service === 'loan');
-      presentationUnavailable = unavailableArray.find(x => x.service === 'presentation');
+      if (unavailableArray) {
+        loanUnavailable = unavailableArray.find(x => x.service === 'loan');
+        presentationUnavailable = unavailableArray.find(x => x.service === 'presentation');
+      }
     }
 
     if (loanAvailable) {
@@ -208,7 +212,7 @@ export class BookLocationComponent implements OnInit {
 
     if (this.mediaType === 'mediatype_o') {
       let tmp;
-      if (item.unavailable && item.unavailable[0].service === 'openaccess') {
+      if (item.unavailable && item.unavailable[0] && item.unavailable[0].service === 'openaccess') {
         tmp = item.unavailable[0].href;
       } else { tmp = null; }
       if (tmp != null) { url = tmp; }

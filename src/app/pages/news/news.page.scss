@@ -28,7 +28,14 @@
 ion-slide {
     width: auto !important;
     min-width: 100px!important;
-    padding: 10px;
+    padding: 0;
+}
+
+ion-segment-button {
+    --padding-end: 5px;
+    --padding-start: 5px;
+    --margin-end: 0;
+    --margin-start: 0;
 }
 
 ion-col {

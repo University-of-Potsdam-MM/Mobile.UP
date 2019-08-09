@@ -65,16 +65,22 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     this.personsFound = [];
     this.noResults = false;
 
-    const query = encodeURI(this.query.trim())
-      .replace(/\+/g, '')
-      .replace(/\,/g, '')
-      .replace(/\//g, '')
-      .replace(/\:/g, '')
-      .replace(/\;/g, '')
-      .replace(/\@/g, '')
-      .replace(/\=/g, '')
-      .replace(/\$/g, '')
-      .replace(/\&/g, '');
+    let query;
+
+    if (this.query) { query = encodeURI(this.query.trim()); }
+
+    if (query) {
+      query = query
+        .replace(/\+/g, '')
+        .replace(/\,/g, '')
+        .replace(/\//g, '')
+        .replace(/\:/g, '')
+        .replace(/\;/g, '')
+        .replace(/\@/g, '')
+        .replace(/\=/g, '')
+        .replace(/\$/g, '')
+        .replace(/\&/g, '');
+    }
 
     if (query && query.trim() !== '' && query.trim().length > 1) {
 
@@ -95,6 +101,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
           for (const person of personsList) {
             const newPerson = person;
             newPerson['expanded'] = false;
+            if (!newPerson.Room_Name) { newPerson.Room_Name = ''; }
             newPerson.Room_Name = person.Room_Name.replace(/_/g, ' ');
             this.personsFound.push(newPerson);
           }
@@ -159,8 +166,10 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
       if (person.Email)   { contact.emails = [new ContactField('work', person.Email)]; }
       if (person.Room_Name) {
         contact.addresses = [new ContactField()];
-        contact.addresses[0].type = 'work';
-        contact.addresses[0].streetAddress = person.Room_Name;
+        if (contact.addresses) {
+          contact.addresses[0].type = 'work';
+          contact.addresses[0].streetAddress = person.Room_Name;
+        }
       }
 
       const exportName = person.First_Name + ' ' + person.Last_Name;
