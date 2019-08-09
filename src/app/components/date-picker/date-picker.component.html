@@ -1,0 +1,9 @@
+<ion-item [lines]="lines">
+  <ion-label>{{ "page.roomplan.date" | translate }}</ion-label>
+  <ion-select [(ngModel)]="dayOffset" (ionChange)="emitDayChange()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+    <ion-select-option *ngFor="let day of days" [value]="day.value">
+      <span *ngIf="translate.currentLang === 'de'">{{day.lbl | date:'dd.MM.yyyy'}}</span>
+      <span *ngIf="translate.currentLang !== 'de'">{{day.lbl | date:'MM/dd/yyyy'}}</span>
+    </ion-select-option>
+  </ion-select>
+</ion-item>

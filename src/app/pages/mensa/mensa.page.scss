@@ -2,59 +2,11 @@
     color:var(--ion-color-primary);
 }
 
-.activeCalendarButton {
-    color: var(--ion-color-primary);
+ion-grid {
+    padding: 0;
 }
 
-ion-calendar {
-    background-color: var(--ion-color-medium);
-    .title .switch-btn {
-        color: #000;
-    }
-}
-
-ion-chip {
-    -webkit-margin-end: 10px;
-    margin-inline-end: 10px;
-    margin: 0;
-    padding: 5px;
-    margin-right: 5px;
-}
-
-ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
-ion-calendar-month .primary button.days-btn small {
-    color: var(--ion-color-primary);
-}
-
-ion-calendar-month .primary .days .on-selected, ion-calendar-month .primary .endSelection button.days-btn,
-ion-calendar-month .primary .startSelection button.days-btn {
-    background-color: var(--ion-color-primary);
-    color: var(--ion-color-secondary);
-}
-
-ion-calendar-month .primary .startSelection:after,
-ion-calendar-month .primary .between button.days-btn,
-ion-calendar-month .primary .endSelection:after  {
-    background-color: var(--ion-color-secondary);
-}
-
-ion-calendar-month .primary .days .marked.on-selected p, ion-calendar-month .primary .days .today.on-selected p,
-ion-calendar-month .primary .endSelection button.days-btn p {
-    color: var(--ion-color-secondary);
-}
-
-ion-calendar-month .primary .between button.days-btn p {
-    color: var(--ion-color-primary);
-}
-
-.list {
-    margin-top:10px;
-}
-
-.calendarExpanded {
-    margin-top:10px
-}
-
-.calendarCollapsed {
-    margin-top:0px
+ion-item {
+    --min-height: 10px;
+    min-height: 10px;
 }
