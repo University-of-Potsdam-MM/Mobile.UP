@@ -1,4 +1,14 @@
-<ion-list *ngIf="lectureSchedule && lectureSchedule.lectureScheduleRoot">
+<div align="center" *ngIf="!isLoaded && !networkError" padding>
+  <ion-spinner name="dots"></ion-spinner>
+</div>
+<app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
+<ion-list *ngIf="
+lectureSchedule
+&& lectureSchedule.lectureScheduleRoot
+&& lectureSchedule.lectureScheduleRoot.rootNode
+&& lectureSchedule.lectureScheduleRoot.rootNode.childNodes
+&& lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode
+">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
       <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" (click)="expandChild(childNode)">
           <ion-label text-wrap>
@@ -9,7 +19,13 @@
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
 </ion-list>
-<div *ngIf="lectureSchedule && lectureSchedule.lectureScheduleSubTree">
+<div *ngIf="
+lectureSchedule
+&& lectureSchedule.lectureScheduleSubTree
+&& lectureSchedule.lectureScheduleSubTree.currentNode
+&& lectureSchedule.lectureScheduleSubTree.currentNode.childNodes
+&& lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode
+">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode); let last = last" [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'">
       <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" (click)="expandChild(childNode)">
           <ion-label text-wrap>
@@ -20,7 +36,12 @@
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
 </div>
-<div *ngIf="lectureSchedule && lectureSchedule.lectureScheduleCourses && lectureSchedule.lectureScheduleCourses.currentNode.courses.course">
+<div *ngIf="
+lectureSchedule
+&& lectureSchedule.lectureScheduleCourses
+&& lectureSchedule.lectureScheduleCourses.currentNode
+&& lectureSchedule.lectureScheduleCourses.currentNode.courses
+&& lectureSchedule.lectureScheduleCourses.currentNode.courses.course">
   <div *ngFor="let course of convertToArray(lectureSchedule.lectureScheduleCourses.currentNode.courses.course); let last = last" [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'">
       <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" (click)="expandCourse(course)">
           <ion-label text-wrap>
@@ -31,7 +52,12 @@
       <app-course-data *ngIf="isExpandedCourse[course.courseId]" [course]="course"></app-course-data>
   </div>
 </div>
-<div *ngIf="lectureSchedule && lectureSchedule.lectureScheduleCourses && !lectureSchedule.lectureScheduleCourses.currentNode.courses.course" class="courseItem">
+<div *ngIf="
+lectureSchedule
+&& lectureSchedule.lectureScheduleCourses
+&& lectureSchedule.lectureScheduleCourses.currentNode
+&& lectureSchedule.lectureScheduleCourses.currentNode.courses
+&& !lectureSchedule.lectureScheduleCourses.currentNode.courses.course" class="courseItem">
   <ion-item class="noCourses">
       <ion-label text-wrap>
         {{ "page.lectures.noCourses" | translate }}

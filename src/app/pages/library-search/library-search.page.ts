@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
+import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { IConfig } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { utils } from 'src/app/lib/util';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import * as jquery from 'jquery';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { CacheService } from 'ionic-cache';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ILibraryRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-library-search',
@@ -35,19 +34,19 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   numberOfRecords = '0';
   updatedFavorites = 0;
   modalOpen;
+  networkError;
 
   constructor(
     private platform: Platform,
     private keyboard: Keyboard,
-    private http: HttpClient,
     private translate: TranslateService,
-    private alert: AlertService,
+    private alertService: AlertService,
+    private alertCtrl: AlertController,
     private storage: Storage,
-    private cache: CacheService,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -80,19 +79,18 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
           this.isLoaded = false;
         }
 
-        const url = this.config.webservices.endpoint.library;
-
-        const headers = new HttpHeaders()
-          .append('Authorization', this.config.webservices.apiToken);
-
-        const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-          .append('operation', 'searchRetrieve')
-          .append('query', query.trim())
-          .append('startRecord', this.startRecord)
-          .append('maximumRecords', this.maximumRecords)
-          .append('recordSchema', 'mods');
-
-        this.http.get(url, {headers: headers, params: params, responseType: 'text'}).subscribe(res => {
+        this.ws.call(
+          'library',
+          <ILibraryRequestParams>{
+            query: this.query.trim(),
+            startRecord: this.startRecord,
+            maximumRecords: this.maximumRecords
+          },
+          {
+            dontCache: true
+          }
+        ).subscribe(res => {
+          this.networkError = false;
           this.parseXMLtoJSON(res).then(data => {
 
             let tmp, tmpList, i;
@@ -118,19 +116,18 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               }
             }
 
-            // console.log(this.numberOfRecords);
-            // console.log(this.bookList);
+            this.logger.debug('searchLibrary', this.numberOfRecords, this.bookList);
 
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           }, error => {
-            console.log(error);
+            this.logger.error('searchLibrary', 'XML parsing', error);
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           });
-        }, error => {
-          console.log(error);
+        }, () => {
           this.isLoaded = true;
+          this.networkError = true;
           if (infiniteScroll) { infiniteScroll.target.complete(); }
         });
       } else { this.isLoaded = true; }
@@ -182,8 +179,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
   loadMore(infiniteScroll) {
     this.startRecord = String(Number(this.startRecord) + 15);
-    // console.log(this.startRecord);
-    // console.log(this.numberOfRecords);
     if (Number(this.startRecord) <= Number(this.numberOfRecords)) {
       this.searchLibrary(false, undefined, infiniteScroll);
     } else { infiniteScroll.target.complete(); }
@@ -232,11 +227,11 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       }
 
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alertService.showToast('hints.text.favAdded');
       }
     } else {
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alertService.showToast('hints.text.favExists');
       }
     }
 
@@ -273,20 +268,20 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.displayedFavorites = [];
     this.displayedFavorites = this.sortFavorites(tmp2);
     if (!disableHints) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     }
     this.storage.set('favoriteBooks', this.allFavorites);
   }
 
   updateComplete(tmpLength, refresher) {
     if (tmpLength === this.updatedFavorites) {
-      console.log('[Library]: Updated favorites.');
+      this.logger.debug('updateComplete', 'updated favorites');
       this.allFavorites = this.sortFavorites(this.allFavorites);
       this.displayedFavorites = this.sortFavorites(this.allFavorites);
       this.isLoadedFavorites = true;
       this.storage.set('favoriteBooks', this.allFavorites);
       if (tmpLength > this.allFavorites.length) {
-        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+        this.alertService.showToast('hints.text.favNotAvailable');
       }
     }
 
@@ -306,14 +301,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.allFavorites = [];
     this.isLoadedFavorites = false;
     this.updatedFavorites = 0;
-
-    if (refresher) {
-      this.cache.removeItems('libraryFavoriteResource*');
-    }
+    if (refresher) { this.query = ''; }
 
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
-        // console.log(utils.convertToArray(tmp[i].identifier));
         const ident = utils.convertToArray(tmp[i].identifier);
         let query = '';
 
@@ -348,21 +339,19 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }
 
         if (query.trim() !== '') {
-          const url = this.config.webservices.endpoint.library;
-
-          const headers = new HttpHeaders()
-            .append('Authorization', this.config.webservices.apiToken);
-
-          const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-            .append('operation', 'searchRetrieve')
-            .append('query', query.trim())
-            .append('startRecord', '1')
-            .append('maximumRecords', '5')
-            .append('recordSchema', 'mods');
-
-          const request = this.http.get(url, {headers: headers, params: params, responseType: 'text'});
-          const ttl = 60 * 60 * 24 * 7; // TTL in seconds for one week
-          this.cache.loadFromObservable('libraryFavoriteResource' + query, request, 'libraryFavoriteResource', ttl).subscribe(res => {
+          this.ws.call(
+            'library',
+            <ILibraryRequestParams>{
+              query: query,
+              startRecord: '1',
+              maximumRecords: '5'
+            },
+            {
+              groupKey: 'libraryFavoriteResource',
+              forceRefreshGroup: refresher !== undefined
+            }
+          ).subscribe(res => {
+            this.networkError = false;
             this.parseXMLtoJSON(res).then(data => {
               let tmpRes, tmpList, numberOfRecords;
               if (data['zs:searchRetrieveResponse']) {
@@ -385,7 +374,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                 }
               } else {
                 if (tmp[i] && tmp[i].identifier) {
-                  // console.log('checking identifier');
                   for (let j = 0; j < tmpList.length; j++ ) {
                     if (tmpList[j] && tmpList[j]['zs:recordData']['mods'].identifier) {
                       if (JSON.stringify(tmp[i].identifier) === JSON.stringify(tmpList[j]['zs:recordData']['mods'].identifier)) {
@@ -395,7 +383,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                     }
                   }
                 } else if (tmp[i] && tmp[i].titleInfo) {
-                  // console.log('checking titleinfo');
                   for (let n = 0; n < tmpList.length; n++) {
                     if (tmpList[n] && tmpList[n]['zs:recordData']['mods'].titleInfo) {
                       if (JSON.stringify(utils.convertToArray(tmp[i].titleInfo)[0]) ===
@@ -413,20 +400,20 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             }, error => {
               this.allFavorites.push(tmp[i]);
               this.updatedFavorites++;
-              console.log(error);
+              this.logger.error('checkFavorites', 'XML parsing', error);
               this.updateComplete(tmp.length, refresher);
             });
-          }, error => {
+          }, () => {
+            this.networkError = true;
             this.allFavorites.push(tmp[i]);
             this.updatedFavorites++;
-            console.log(error);
             this.updateComplete(tmp.length, refresher);
           });
         } else {
           this.allFavorites.push(tmp[i]);
           this.updatedFavorites++;
           this.updateComplete(tmp.length, refresher);
-          console.log('[Library]: No identifier or title found.');
+          this.logger.debug('checkFavorites', 'no identifier or title found');
         }
       }
     } else {

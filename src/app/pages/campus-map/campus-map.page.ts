@@ -1,33 +1,41 @@
-import { Component, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
-import { MapsService } from 'src/app/services/maps/maps.service';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import { ModalController } from '@ionic/angular';
+import {ModalController} from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
 import 'leaflet-easybutton';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
-import { Observable } from 'rxjs';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
+import {ActivatedRoute} from '@angular/router';
+import {LatLngExpression} from 'leaflet';
+
+export interface CampusMapQueryParams {
+  campus?: string | number;
+  feature?: string;
+  coordinates?: LatLngExpression;
+}
 
 @Component({
   selector: 'app-campus-map',
   templateUrl: './campus-map.page.html',
   styleUrls: ['./campus-map.page.scss'],
 })
-export class CampusMapPage extends AbstractPage {
+export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
   campusList: ICampus[] = ConfigService.config.campus;
   currentCampus: ICampus;
   geoJSON: IMapsResponseObject[];
-  selectedCampus: ICampus;
+  searchControl;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
-  mapReady: Observable<void>;
 
   positionCircle: L.Circle;
   positionMarker: L.Marker;
@@ -38,12 +46,14 @@ export class CampusMapPage extends AbstractPage {
   @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
 
   constructor(
-    private wsProvider: MapsService,
+    private ws: WebserviceWrapperService,
+    private route: ActivatedRoute,
     private translate: TranslateService,
     private location: Geolocation,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertService: AlertService
   ) {
-    super({requireNetwork: true});
+    super({ optionalNetwork: true });
   }
 
   /**
@@ -52,7 +62,7 @@ export class CampusMapPage extends AbstractPage {
    */
   initializeLeafletMap() {
     // create map object
-    const map = L.map('map').fitWorld();
+    const map = L.map('map');
     L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
@@ -62,12 +72,31 @@ export class CampusMapPage extends AbstractPage {
   }
 
   /**
+   * implementation of abstract page function
+   * @param params
+   */
+  handleQueryParams(params: CampusMapQueryParams) {
+    this.logger.entry('handleQueryParams', params);
+    if (params.coordinates) {
+      this.moveToPosition(params.coordinates);
+    }
+
+    if (params.feature) {
+      this.moveToFeature(params.feature);
+    }
+
+    if (params.campus) {
+      this.moveToQueriedCampus(params.campus);
+    }
+  }
+
+  /**
    * @name ionViewWillEnter
    * @desc take user to login if there is no session.
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  ionViewWillEnter() {
+  ngAfterViewInit () {
     // initialize map
     if (!this.map) {
       this.map = this.initializeLeafletMap();
@@ -76,11 +105,17 @@ export class CampusMapPage extends AbstractPage {
       if (this.currentCampus) {
         this.moveToCampus(this.currentCampus);
       }
-    }
 
-    this.loadMapData(this.map);
-    this.addLeafletSearch(this.map);
-    this.addGeoLocationButton(this.map);
+      this.loadMapData(this.map);
+      this.addLeafletSearch(this.map);
+      this.addGeoLocationButton(this.map);
+    }
+    // trigger pageReadyResolve, need to wait a second until map is really ready
+    // TODO: find out why this timeout is necessary and find better solution
+    setTimeout(
+      () => this.pageReadyResolve(),
+      1000
+    );
   }
 
   /**
@@ -89,7 +124,7 @@ export class CampusMapPage extends AbstractPage {
    * this.searchableLayers is already populated with geoJSON objects.
    */
   addLeafletSearch(map) {
-    map.addControl(new L.Control['Search']({
+    this.searchControl = new L.Control['Search']({
       layer: this.searchableLayers,
       propertyName: 'searchProperty',
       collapsed: false,
@@ -102,16 +137,21 @@ export class CampusMapPage extends AbstractPage {
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
         const properties = val.layer.feature.properties;
-        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
-        if (properties.description) {
-          content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+        if (properties.Name && properties.campus.pretty_name) {
+          let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
+          if (properties.description) {
+            content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+          }
+
+          tip.innerHTML = content;
+          L.DomUtil.addClass(tip, 'search-tip');
+          tip['_text'] = content;
         }
-        tip.innerHTML = content;
-        L.DomUtil.addClass(tip, 'search-tip');
-        tip['_text'] = content;
+
         return tip;
       }
-    }));
+    });
+    map.addControl(this.searchControl);
   }
 
   /**
@@ -213,12 +253,12 @@ export class CampusMapPage extends AbstractPage {
           this.setPosition(positionResponse);
           enableCallback();
         } else {
-          console.log(`[CampusMap]: Error getting position: ${positionResponse.message}`);
+          this.logger.debug('enableGeolocation', `error getting position: ${positionResponse.message ? positionResponse.message : ''}`);
           disableCallback();
         }
       },
       error => {
-        console.log('[CampusMap]: Error:', error);
+        this.logger.error('enableGeolocation', error);
         disableCallback();
       }
     );
@@ -247,17 +287,30 @@ export class CampusMapPage extends AbstractPage {
    * @description loads campus map data from cache
    */
   loadMapData(map) {
-    this.wsProvider.getMapData().subscribe((response: IMapsResponse) => {
-      this.geoJSON = response;
-      this.addFeaturesToLayerGroups(this.geoJSON, map);
-    }, error => {
-      console.log(error);
-    });
+    this.ws.call('maps').subscribe(
+      (response: IMapsResponse) => {
+        this.geoJSON = response;
+        this.addFeaturesToLayerGroups(this.geoJSON, map);
+      }, () => {
+        const buttons: AlertButton[] = [{
+          text: this.translate.instant('button.continue'),
+          handler: () => {
+            this.navCtrl.navigateRoot('/home');
+          }
+        }];
+        this.alertService.showAlert(
+          {
+            headerI18nKey: 'alert.title.httpError',
+            messageI18nKey: 'alert.network'
+          },
+          buttons
+        );
+      }
+    );
   }
 
   /**
-   * @name selectCampus
-   * @description selects the given campus and sets fitBounds to the campus' bounds
+   * selects the given campus and sets fitBounds to the campus' bounds
    * @param {ICampus} campus
    */
   selectCampus(campus: ICampus) {
@@ -268,14 +321,62 @@ export class CampusMapPage extends AbstractPage {
   }
 
   /**
-   * @name moveToCampus
-   * @description fits map to given campus
-   * @param {ICampus} campus
+   * moves to given campus
+   * @param campus {ICampus}
    */
   moveToCampus(campus: ICampus) {
-    this.map.fitBounds(
-      campus.lat_long_bounds
-    );
+    this.map.fitBounds(campus.lat_long_bounds);
+  }
+
+  /**
+   * Finds a campus by query. Campus can be specified in multiple ways:
+   *  - location_id (as string or number)
+   *  - name
+   *  - pretty_name
+   * @description fits map to given campus
+   * @param {string | name} query
+   */
+  queryCampus(query: string | number) {
+    if (this.config.campus) {
+      return this.config.campus.find(
+        (campus: ICampus) => {
+          return campus.location_id === query
+            || campus.location_id === query.toString()
+            || campus.name === query
+            || campus.pretty_name === query;
+        }
+      );
+    } else { return undefined; }
+  }
+
+  /**
+   * Queries the desired campus and moves there if it can be found
+   * @param query
+   */
+  moveToQueriedCampus(query: string | number) {
+    const foundCampus = this.queryCampus(query);
+    if (foundCampus) {
+      this.logger.info(`moving to campus ${foundCampus.pretty_name}`);
+      this.selectCampus(foundCampus);
+    } else {
+      this.logger.error(`could not find campus by query: '${query}'`);
+    }
+  }
+
+  /**
+   * move map to given feature, if it exists
+   */
+  moveToFeature(feature) {
+
+  }
+
+  /**
+   * flys to given coordinates
+   * @param coordinates
+   */
+  moveToPosition(coordinates: LatLngExpression) {
+    this.logger.entry('moveToPosition', coordinates);
+    this.map.panTo(coordinates);
   }
 
   /**
@@ -315,14 +416,15 @@ export class CampusMapPage extends AbstractPage {
         // create new property that can easily be searched by leaflet-search
         props['campus'] = campusMapping[obj.campus];
         props['category'] = category;
-        props['searchProperty'] = `${props.Name} (${props.campus})`;
+        props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''} (${props.campus.pretty_name})`;
+        props['code'] = ``;
 
         const geoJson = L.geoJSON(feature);
 
         // add click listener that will open a Modal displaying some information
         geoJson.on('click', async () => {
           if (props.campus !== this.currentCampus) {
-            this.selectedCampus = props.campus;
+            this.currentCampus = props.campus;
           }
 
           const modal = await this.modalCtrl.create({

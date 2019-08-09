@@ -24,20 +24,16 @@
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
   </div>
 
-  <div *ngIf="error != null" style="text-align: center" text-wrap>
-    <app-hint-box hintTypeI18nKey="hints.type.attention" hintTextI18nKey="alert.network"></app-hint-box>
-  </div>
-
   <ion-list lines="none">
     <span *ngFor="let person of personsFound">
       <ion-item-sliding>
         <ion-item (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
           <ion-icon color="primary" slot="start" name="person"></ion-icon>
           <ion-label text-wrap>
-            <h2>{{person.Titel}} {{person.Vorname}} {{person.Nachname}}</h2>
-            <p *ngIf="person.Abteilung != ''">{{person.Abteilung}}</p>
+            <h2>{{person.Initials}} {{person.First_Name}} {{person.Last_Name}}</h2>
+            <p *ngIf="person.Department != ''">{{person.Department}}</p>
           </ion-label>
-          <ion-icon *ngIf="(person.Raum || person.Telefon || person.Email)" [name]="!person.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+          <ion-icon *ngIf="(person.Room_Name || person.Extension || person.Email)" [name]="!person.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
         </ion-item>
 
         <ion-item-options slot="end">
@@ -45,7 +41,7 @@
               <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
               <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
-          <ion-item-option (click)="callContact(person.Telefon)" color="secondary" *ngIf="person.Telefon != ''">
+          <ion-item-option (click)="callContact(person.Extension)" color="secondary" *ngIf="person.Extension != ''">
             <!-- <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }} </a>
           </ion-item-option>
@@ -56,21 +52,21 @@
         </ion-item-options>
       </ion-item-sliding>
 
-      <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Telefon != '') || (person.Raum != ''))">
+      <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Extension != '') || (person.Room_Name != ''))">
         <ion-icon slot="start"></ion-icon>
         <ion-label no-margin text-wrap>
           <ion-grid>
             <ion-row *ngIf="person.Email != ''">
               <ion-col size="auto"><ion-icon color="primary" name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
             </ion-row>
-            <ion-row *ngIf="person.Telefon != ''">
+            <ion-row *ngIf="person.Extension != ''">
               <ion-col size="auto"><ion-icon color="primary" name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
               <ion-col>
-                  <a (click)="callContact(person.Telefon)" style="text-decoration: underline">{{person.Telefon}}</a>
+                  <a (click)="callContact(person.Extension)" style="text-decoration: underline">{{person.Extension}}</a>
               </ion-col>
             </ion-row>
-            <ion-row *ngIf="person.Raum != ''">
-              <ion-col size="auto"><ion-icon color="primary" name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Raum}}</ion-col>
+            <ion-row *ngIf="person.Room_Name != ''">
+              <ion-col size="auto"><ion-icon color="primary" name="home" margin-right></ion-icon></ion-col><ion-col>{{person.Room_Name}}</ion-col>
             </ion-row>
           </ion-grid>
         </ion-label>

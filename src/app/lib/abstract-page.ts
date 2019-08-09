@@ -3,15 +3,25 @@ import { ConnectionService } from '../services/connection/connection.service';
 import { UserSessionService } from '../services/user-session/user-session.service';
 import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController } from '@ionic/angular';
-import { IConfig } from './interfaces';
+import {IConfig, IModule} from './interfaces';
 import { ConfigService } from '../services/config/config.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
+import {WebIntentService} from '../services/web-intent/web-intent.service';
+import {Observable} from 'rxjs';
+import {utils} from './util';
+import isEmptyObject = utils.isEmptyObject;
 
 export interface IPageOptions {
     requireSession?: boolean;
+    // if the page doesn't work without network at all
+    // f.e. library search
     requireNetwork?: boolean;
     optionalSession?: boolean;
+    // if the page could work with cached content
+    // make sure you show an hint if there is no cached content available
+    optionalNetwork?: boolean;
 }
 
 /**
@@ -24,45 +34,135 @@ export interface IPageOptions {
  */
 export abstract class AbstractPage  {
 
+    logger: Logger;
     session: ISession;
+
+    pageReady: Promise<void>;
+    pageReadyResolve: () => void;
+    pageReadyReject: (error) => void;
+
     protected sessionProvider: UserSessionService;
     protected connection: ConnectionService;
     protected activatedRoute: ActivatedRoute;
     protected menu: MenuController;
     protected navCtrl: NavController;
     protected config: IConfig;
+    protected loggingService: LoggingService;
+    protected router: Router;
+    protected webIntent: WebIntentService;
 
     protected constructor(
         pageOptions?: IPageOptions
     ) {
-        const injector: Injector = StaticInjectorService.getInjector();
-        this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
-        this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
-        this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
-        this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
-        this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
-        this.config = ConfigService.config;
 
-        if (pageOptions) { this.processOptions(pageOptions); }
-        this.setMenuStatus();
+      const injector: Injector = StaticInjectorService.getInjector();
+
+      this.loggingService = injector.get<LoggingService>(LoggingService as Type<LoggingService>);
+      this.router = injector.get<Router>(Router as Type<Router>);
+      this.connection = injector.get<ConnectionService>(ConnectionService as Type<ConnectionService>);
+      this.sessionProvider = injector.get<UserSessionService>(UserSessionService as Type<UserSessionService>);
+      this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute as Type<ActivatedRoute>);
+      this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
+      this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
+      this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
+
+      this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
+
+      this.config = ConfigService.config;
+
+      if (pageOptions) { this.processOptions(pageOptions); }
+
+      // Assign pageReady promises. Those should be called from a page
+      // implementing this one
+      this.pageReady = new Promise(
+        (resolve, reject) => {
+          this.pageReadyResolve = () => {
+            this.logger.info('page is now ready');
+            resolve();
+          };
+          this.pageReadyReject = (error) => {
+            this.logger.error(`page is not ready: ${error}`);
+            reject();
+          };
+        }
+      );
+
+      // Forwarding queryParams to the pre-existing handleQueryParams function.
+      // The existing one doesn't do anything, though
+      this.activatedRoute.queryParams.subscribe(
+        params => {
+          const parsedParams = {};
+          for (const k in params) {
+            if (params.hasOwnProperty(k)) {
+              parsedParams[k] = JSON.parse(params[k]);
+            }
+          }
+          if (!isEmptyObject(parsedParams)) {
+            this.setMenuStatus(parsedParams['menu']);
+            this.pageReady.then(
+              () => this.handleQueryParams(parsedParams)
+            );
+          }
+        }
+      );
     }
 
+    /**
+     * process the given pageOptions and execute desired functions
+     * @param pageOptions
+     */
     private processOptions(pageOptions: IPageOptions) {
-        if (pageOptions.requireSession) { this.requireSession(); }
-        if (pageOptions.requireNetwork) { this.requireNetwork(); }
-        if (pageOptions.optionalSession) { this.requireSession(true); }
+      if (pageOptions.requireSession) { this.requireSession(false); }
+      if (pageOptions.requireNetwork) { this.requireNetwork(true); }
+      if (pageOptions.optionalSession) { this.requireSession(true); }
+      if (pageOptions.optionalNetwork) { this.requireNetwork(false); }
     }
 
-    private setMenuStatus() {
-        // if url parameter = .../pagename?menu=false  then hide the menu
-        this.activatedRoute.queryParams.subscribe(urlParams => {
-            if (urlParams && (urlParams.menu === 'false')) {
-                this.menu.enable(false);
-            } else { this.menu.enable(true); }
-        }, error => {
-            console.log(error);
-            this.menu.enable(true);
-        });
+    /**
+     * enables or disables the pages menu section
+     * @param shouldEnable
+     */
+    private setMenuStatus(shouldEnable: boolean = true) {
+      this.menu.enable(shouldEnable);
+    }
+
+    /**
+     * handles the queryParams for a page. Should be overwritten.
+     * @param params {any} the params that should be handled
+     */
+    handleQueryParams(params: any) {
+      this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`);
+    }
+
+    /**
+     * opens a page by using it's module
+     * @description opens selected page by pushing it on the stack
+     * @param module {IModule} module to be used
+     * @param params {any} params {any} params that should by passed on
+     */
+    openModule(moduleToOpen: IModule, params: any = {}) {
+      if (moduleToOpen.url) {
+        this.webIntent.handleWebIntentForModule(moduleToOpen);
+      } else {
+        this.navCtrl.navigateForward(
+          '/' + moduleToOpen.componentName,
+          {state: params}
+        );
+      }
+    }
+
+    /**
+     * opens a page by name
+     * @param moduleName {string} name of the module
+     * @param params {any} params that should by passed on
+     */
+    openModuleByName(moduleName: string, params: any = {}) {
+      const moduleToOpen = this.config.modules[moduleName];
+      if (moduleToOpen) {
+        this.openModule(moduleToOpen, params);
+      } else {
+        this.logger.error(`Cannot open unknown module '${moduleName}'`);
+      }
     }
 
     /**
@@ -70,10 +170,9 @@ export abstract class AbstractPage  {
      * @desc tests for network connection and sends the user back to the HomePage
      * if there is none;
      */
-    requireNetwork() {
-        console.log('[AbstractPage]: Network required.');
-        // I think we have to re-evalue this; how do we handle cached content?
-        this.connection.checkOnline(true, true);
+    requireNetwork(necessary?) {
+        this.logger.debug('requireNetwork');
+        this.connection.checkOnline(true, necessary);
     }
 
     /**
@@ -81,7 +180,7 @@ export abstract class AbstractPage  {
      * @desc tests for existing session and sends user to LoginPage in case none is found
      */
     async requireSession(optional?) {
-        console.log('[AbstractPage]: Requires session');
+        this.logger.debug('requireSession');
 
         this.session = await this.sessionProvider.getSession();
         if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }

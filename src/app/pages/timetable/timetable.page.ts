@@ -5,12 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EventModalPage } from './event.modal';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-timetable',
@@ -55,14 +55,14 @@ export class TimetablePage extends AbstractPage {
   constructor(
     private platform: Platform,
     private translate: TranslateService,
-    private puls: PulsService,
+    private ws: WebserviceWrapperService,
     private sanitizer: DomSanitizer,
-    private alertCtrl: AlertController,
     private calendar: Calendar,
     private modalCtrl: ModalController,
-    private alert: AlertService
+    private alertService: AlertService,
+    private alertCtrl: AlertController
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   async ionViewWillEnter() {
@@ -73,20 +73,30 @@ export class TimetablePage extends AbstractPage {
     if (this.session) {
       this.isLoading = true;
       // there is a session
-      this.puls.getStudentCourses(this.session).subscribe(
+      this.ws.call(
+        'pulsGetStudentCourses',
+        {session: this.session}
+      ).subscribe(
         (response: IPulsAPIResponse_getStudentCourses) => {
-          if (response.message && response.message === 'no user rights') {
+          if (response && response.message && response.message === 'no user rights') {
             this.noUserRights = true;
             this.isLoading = false;
           } else {
             this.noUserRights = false;
             this.isLoading = false;
-            this.eventSource = createEventSource(
-              response.studentCourses.student.actualCourses.course
-            );
-            console.log(this.eventSource);
+            if (
+              response
+              && response.studentCourses
+              && response.studentCourses.student
+              && response.studentCourses.student.actualCourses
+              && response.studentCourses.student.actualCourses.course
+            ) {
+              this.eventSource = createEventSource(
+                response.studentCourses.student.actualCourses.course
+              );
+            }
           }
-        }
+        }, () => { this.isLoading = false; }
       );
     } else {
       setTimeout(() => {
@@ -176,7 +186,7 @@ export class TimetablePage extends AbstractPage {
    * @param time
    */
   timeSelected(time) {
-    if (this.calendarOptions.calendarMode === 'month' && time.events.length > 0) {
+    if (this.calendarOptions.calendarMode === 'month' && time && time.events && time.events.length > 0) {
       this.calendarOptions.calendarMode = 'day';
     }
   }
@@ -200,8 +210,10 @@ export class TimetablePage extends AbstractPage {
   }
 
   getColor(event) {
-    const eventColor = this.courseIdToHexColor(event.event.courseDetails.courseId);
-    return this.sanitizer.bypassSecurityTrustStyle('background-color: ' + eventColor + '!important;');
+    if (event && event.event && event.event.courseDetails && event.event.courseDetails.courseId) {
+      const eventColor = this.courseIdToHexColor(event.event.courseDetails.courseId);
+      return this.sanitizer.bypassSecurityTrustStyle('background-color: ' + eventColor + '!important;');
+    } else { return this.sanitizer.bypassSecurityTrustStyle(''); }
   }
 
   /**
@@ -221,7 +233,7 @@ export class TimetablePage extends AbstractPage {
       let i;
       let found = false;
       for (i = 0; i < this.courseToHex.length; i++) {
-        if (this.courseToHex[i] && this.courseToHex[i][0] === hex) {
+        if (this.courseToHex[i] && this.courseToHex[i][0] && this.courseToHex[i][0] === hex) {
           found = true;
           return this.courseToHex[i][1];
         }
@@ -276,11 +288,11 @@ export class TimetablePage extends AbstractPage {
                     text: this.translate.instant('button.delete'),
                     handler: () => {
                       this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
-                        console.log('[Timetable]: Deleted calendar.');
+                        this.logger.debug('exportPrompt', 'deleted calendar');
                         this.exportCalendar();
                       }, error => {
-                        this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
-                        console.log(error);
+                        this.alertService.showToast('alert.calendar-export-fail');
+                        this.logger.error('exportPrompt', 'calendar deletion', error);
                       });
                     }
                   }
@@ -298,7 +310,7 @@ export class TimetablePage extends AbstractPage {
   exportCalendar() {
     this.calendar.hasReadWritePermission().then(result => {
       if (result) {
-        console.log('[Timetable]: Calendar access given.');
+        this.logger.debug('exportCalendar', 'calendar access given');
         const createCalendarOpts = this.calendar.getCreateCalendarOptions();
         createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
         createCalendarOpts.calendarColor = '#ff9900';
@@ -355,14 +367,13 @@ export class TimetablePage extends AbstractPage {
                 calOptions.firstReminderMinutes = null;
 
                 this.calendar.createEventWithOptions(title, eventLocation, notes, startDate, endDate, calOptions).then(() => {
-                  console.log('[Timetable]: Successfully exported event');
+                  this.logger.debug('exportCalendar', 'exported event');
                   this.exportedEvents++;
                   fin();
                 }, error => {
-                  console.log('[Timetable]: Error creating event');
-                  console.log(error);
+                  this.logger.error('exportCalendar', 'event creation', error);
                   this.exportedEvents++;
-                  this.alert.presentToast(this.translate.instant('alert.calendar-event-fail'));
+                  this.alertService.showToast('alert.calendar-event-fail');
                   fin();
                 });
               }
@@ -370,24 +381,22 @@ export class TimetablePage extends AbstractPage {
 
             loop.then(() => {
               this.exportFinished = true;
-              this.alert.presentToast(this.translate.instant('alert.calendar-export-success'));
+              this.alertService.showToast('alert.calendar-export-success');
             });
           } else {
             this.exportFinished = true;
           }
         }, error => {
-          console.log('[Timetable]: Error creating calendar');
-          console.log(error);
-          this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+          this.logger.error('exportCalendar', 'calendar creation', error);
+          this.alertService.showToast('alert.calendar-export-fail');
         });
       } else {
-        console.log('[Timetable]: Calendar access DENIED.');
-        this.alert.presentToast(this.translate.instant('alert.permission-denied'));
+        this.logger.error('exportCalendar', 'calendar access denied');
+        this.alertService.showToast('alert.permission-denied');
       }
     }, error => {
-      console.log(error);
-      console.log('[Timetable]: Can not check for calendar permissions.');
-      this.alert.presentToast(this.translate.instant('alert.calendar-export-fail'));
+      this.logger.error('exportCalendar', 'cant check permissions', error);
+      this.alertService.showToast('alert.calendar-export-fail');
     });
   }
 

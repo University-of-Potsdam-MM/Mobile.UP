@@ -1,11 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
-import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
+import { utils } from '../../lib/util';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
-import { ConfigService } from '../../services/config/config.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { IConfig } from '../../lib/interfaces';
 import { TranslateService } from '@ngx-translate/core';
+import {WebserviceWrapperService} from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-book-location',
@@ -27,8 +25,8 @@ export class BookLocationComponent implements OnInit {
   isLoaded = false;
 
   constructor(
-    private http: HttpClient,
     private translate: TranslateService,
+    private ws: WebserviceWrapperService,
     public webIntent: WebIntentService // is used in the HTML
   ) { }
 
@@ -47,10 +45,7 @@ export class BookLocationComponent implements OnInit {
     if (epn && this.label && this.label !== 'bestellt'
     && this.departmentName.trim() !== 'Handapparat'
     && this.departmentName.trim() !== 'Universität Potsdam, Universitätsbibliothek') {
-      const config: IConfig = ConfigService.config;
-      const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()}).append('epn', epn);
-
-      this.http.get(config.webservices.endpoint.libraryLKZ, {params: params}).subscribe(data => {
+      this.ws.call('libraryLKZ', {epn: epn}).subscribe(data => {
         const lkz = data['msg'];
         if (lkz && lkz !== 'no results' && lkz !== 'parameter incorrect') {
           let url = 'https://uni-potsdam.mapongo.de/viewer?search_key=' + encodeURI(this.label);
@@ -60,8 +55,6 @@ export class BookLocationComponent implements OnInit {
 
         this.isLoaded = true;
       }, error => {
-        console.log('[Library]: Could not get LKZ');
-        console.log(error);
         this.isLoaded = true;
       });
     } else { this.isLoaded = true; }
@@ -119,15 +112,19 @@ export class BookLocationComponent implements OnInit {
     if (item.available) {
       // tslint:disable-next-line:no-var-keyword
       const availableArray = utils.convertToArray(item.available);
-      loanAvailable = availableArray.find(x => x.service === 'loan');
-      presentationAvailable = availableArray.find(x => x.service === 'presentation');
+      if (availableArray) {
+        loanAvailable = availableArray.find(x => x.service === 'loan');
+        presentationAvailable = availableArray.find(x => x.service === 'presentation');
+      }
     }
 
     let loanUnavailable, presentationUnavailable;
     if (item.unavailable) {
       const unavailableArray = utils.convertToArray(item.unavailable);
-      loanUnavailable = unavailableArray.find(x => x.service === 'loan');
-      presentationUnavailable = unavailableArray.find(x => x.service === 'presentation');
+      if (unavailableArray) {
+        loanUnavailable = unavailableArray.find(x => x.service === 'loan');
+        presentationUnavailable = unavailableArray.find(x => x.service === 'presentation');
+      }
     }
 
     if (loanAvailable) {
@@ -215,7 +212,7 @@ export class BookLocationComponent implements OnInit {
 
     if (this.mediaType === 'mediatype_o') {
       let tmp;
-      if (item.unavailable && item.unavailable[0].service === 'openaccess') {
+      if (item.unavailable && item.unavailable[0] && item.unavailable[0].service === 'openaccess') {
         tmp = item.unavailable[0].href;
       } else { tmp = null; }
       if (tmp != null) { url = tmp; }

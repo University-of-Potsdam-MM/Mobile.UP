@@ -3,7 +3,27 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  /**
+	 * Threshold:
+   * Valid values are: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL, ALL
+	 */
+  logging: {
+    'logLevels': [
+      {
+        'loggerName': 'root',
+        'logLevel': 'ALL'
+      }
+    ],
+    'browserConsoleAppender': {
+      'threshold': 'ALL'
+    },
+    'localStorageAppender': {
+      'localStorageKey': 'localLogStorage',
+      'threshold': 'ALL'
+    },
+  }
 };
 
 /*

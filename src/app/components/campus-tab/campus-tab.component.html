@@ -1,8 +1,18 @@
-<ion-segment color="primary">
-  <ng-container *ngFor="let campus of campusList">
-    <ion-segment-button (click)="selectCampus(campus)"
-                        [checked]="campus == _selectedCampus">
-      {{ campus.pretty_name }}
-    </ion-segment-button>
-  </ng-container>
-</ion-segment>
+<ion-grid [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
+  <ion-row nowrap>
+    <ion-col size="1">
+      <ion-segment-button (click)="openModal()" class="reorder-button" size="small" fill="clear" layout="icon-start">
+        <ion-icon name="reorder"></ion-icon>
+      </ion-segment-button>
+    </ion-col>
+    <ion-col>
+      <ion-segment *ngIf="listProcessed" color="primary" scrollable="true">
+        <ion-segment-button *ngFor="let campus of campusList"
+        (click)="selectCampus(campus)" [checked]="campus == _selectedCampus">
+          {{ campus.pretty_name }}
+        </ion-segment-button>
+        <ion-segment-button class="reorder-button" disabled="true"></ion-segment-button>
+      </ion-segment>
+    </ion-col>
+  </ion-row>
+</ion-grid>

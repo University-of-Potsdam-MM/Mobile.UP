@@ -36,7 +36,6 @@ ion-card {
 .shortcutlist {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
     border-bottom: 1px solid #ededed;
     padding-bottom: 5px;
 
@@ -50,40 +49,32 @@ ion-card {
     }
 
     ion-item {
-        text-align: center;
+        display: flex;
         flex:1 1 120px;
         border:2px solid #fff;
         height: 80px;
-        width: 120px;
-        padding: 0;
-        --padding-start: 0px;
-        --inner-padding-end: 0px;
-
-        position: relative;
-        font-size: 0.8rem;
-        font-weight: normal;
-        text-transform: none;
-        transition: cubic-bezier(0.4, 0, 0.2, 1);
-        margin: 0;
-        display: flex;
-        overflow: hidden;
-        min-height: 4.4rem;
+        --padding-start: 0;
 
         ion-label {
-            border:none;
-            margin:0;
-            text-align:center;
-            white-space: normal;
-            font-size: 1rem;
-            margin-left: 20%;
+            overflow: visible;
+            width: 100%;
+            font-size: small;
         }
 
         ion-icon {
-            padding-top: 10px!important;
-            padding: 0;
+            padding-top: 2%!important;
+            padding-bottom: 30px;
+            font-size: 2em;
             margin: 0;
-            text-align: center;
-            font-size: 2.2em;
         }
      }
+}
+
+.centered {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }

@@ -59,9 +59,9 @@
     <h5 *ngIf="intervals.length > 0" padding-start>{{ "page.opening-hours.title" | translate }}</h5>
     <ion-list class="openingDetails" *ngIf="intervals.length > 0">
         <ion-item *ngFor="let timespot of intervals">
-            <ion-label text-wrap>
+            <ion-label *ngIf="timespot[0]" text-wrap>
                 <h2>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString(translate.currentLang) }}</h2>
-                <p>{{ parseDate(timespot[0], timespot[1]) }}</p>
+                <p *ngIf="timespot[1]">{{ parseDate(timespot[0], timespot[1]) }}</p>
             </ion-label>
         </ion-item>
     </ion-list>

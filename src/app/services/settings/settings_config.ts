@@ -18,7 +18,7 @@ export const SETTINGS = [
     {
         key: 'campus',
         value: 'Griebnitzsee',
-        options: [{key: 'Neues Palais'}, {key: 'Griebnitzsee'}, {key: 'Golm'}],
+        options: [{key: 'Neues Palais'}, {key: 'Griebnitzsee'}, {key: 'Golm'}, {key: 'Botanischer Garten'}],
         type: ESettingType.string_radio,
         icon: 'locate'
     },
@@ -80,5 +80,28 @@ export const SETTINGS = [
         type: ESettingType.boolean,
         icon: 'log-in',
         options: []
+    },
+    {
+        key: 'externalRedirect',
+        value: '',
+        type: ESettingType.placeholder
+    },
+    {
+        key: 'showDialog',
+        value: true,
+        type: ESettingType.boolean,
+        icon: 'albums',
+        options: []
+    },
+    {
+        key: 'appRedirect',
+        value: [],
+        options: [
+            {key: 'Moodle.UP'},
+            {key: 'Reflect.UP'}
+        ],
+        type: ESettingType.checkbox,
+        icon: 'appstore',
+        mobileOnly: true
     }
 ];

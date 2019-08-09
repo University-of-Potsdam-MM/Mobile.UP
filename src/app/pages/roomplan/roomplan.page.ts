@@ -1,20 +1,19 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { HttpErrorResponse, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import {
   IHouse,
   IRoom,
   IHousePlan,
   IRoomEvent,
-  IConfig,
-  IRoomApiRequest,
   IReservationRequestResponse,
   ICampus
 } from 'src/app/lib/interfaces';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-roomplan',
@@ -24,10 +23,9 @@ import {CampusTabComponent} from '../../components/campus-tab/campus-tab.compone
 export class RoomplanPage extends AbstractPage implements OnInit {
 
   constructor(
-    private http: HttpClient,
-    private cache: CacheService,
-    private alert: AlertService,
-    private alertProvider: AlertService
+    private alertService: AlertService,
+    private ws: WebserviceWrapperService,
+    public translate: TranslateService // used in template
   ) {
     super({ requireNetwork: true });
   }
@@ -46,7 +44,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   housesFound: Array<IHouse> = [];
   day_offset: string;
   response: any;
-  current_location: string;
+  current_location: ICampus;
   error: HttpErrorResponse;
   requestProcessed = false;
 
@@ -143,7 +141,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   switchLocation(campus: ICampus) {
     this.houseMap = new Map<string, IHousePlan>();
     this.housesFound = [];
-    this.current_location = campus.location_id;
+    this.current_location = campus;
     this.getRoomInfo();
   }
 
@@ -191,7 +189,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
    */
   addRoomToHouse(houseLbl, room: IRoom) {
     let house: IHousePlan;
-    if (this.houseMap.has(houseLbl)) {
+    if (this.houseMap && this.houseMap.has(houseLbl)) {
       house = this.houseMap.get(houseLbl);
     } else {
       house = {
@@ -214,13 +212,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
    */
   getRoomInfo() {
     this.requestProcessed = false;
-    const location = this.current_location;
-
-    const roomRequest: IRoomApiRequest = {
-      authToken: this.config.authorization.credentials.accessToken,
-    };
-
-    const headers: HttpHeaders = new HttpHeaders().append('Authorization', roomRequest.authToken);
 
     const start = new Date();
     const end = new Date();
@@ -229,27 +220,20 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     start.setDate(start.getDate() + +this.day_offset); // unary plus for string->num conversion
     end.setDate(end.getDate() + +this.day_offset);
 
-    const params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('format', 'json')
-      .append('startTime', start.toISOString())
-      .append('endTime', end.toISOString())
-      .append('campus', location);
-
-    if (this.refresher != null) {
-      this.cache.removeItem('roomplanInfo' + location + start.toString() + end.toString());
-    }
-
-    const request = this.http.get(this.config.webservices.endpoint.roomplanSearch, {headers: headers, params: params});
-    this.cache.loadFromObservable('roomplanInfo' + location + start.toString() + end.toString(), request).subscribe(
+    this.ws.call(
+      'roomPlanSearch',
+      <IRoomsRequestParams>{
+        campus: this.current_location,
+        timeSlot: {start: start, end: end}
+      }
+    ).subscribe(
       (response: IReservationRequestResponse) => {
 
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
         this.error = null;
 
-        if (response.reservationsResponse.return.length === 0 || !response.reservationsResponse.return) {
-          // list will remain empty
-        } else {
+        if (response && response.reservationsResponse && response.reservationsResponse.return) {
           for (const reservation of response.reservationsResponse.return) {
             // API often returns basically empty reservations, we want to ignore these
             if (reservation.veranstaltung !== '' && reservation.veranstaltung != null) {
@@ -289,7 +273,14 @@ export class RoomplanPage extends AbstractPage implements OnInit {
                   persons: persons
                 };
 
-                this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event);
+                if (
+                  this.houseMap && split && split[1]
+                  && this.houseMap.has(split[1])
+                  && this.houseMap.get(split[1]).rooms.has(room.lbl)
+                  && this.houseMap.get(split[1]).rooms.get(room.lbl).events
+                ) {
+                  this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event);
+                }
               }
             }
           }
@@ -297,7 +288,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
           // load defaults if they are passed to the page by other files
           let default_error = '';
           if (this.default_house != null) {
-            if (this.houseMap.has(this.default_house.lbl)) {
+            if (this.houseMap && this.houseMap.has(this.default_house.lbl)) {
               this.houseMap.get(this.default_house.lbl).expanded = true;
 
               if (this.default_room != null) {
@@ -313,7 +304,7 @@ export class RoomplanPage extends AbstractPage implements OnInit {
           }
 
           if (default_error !== '') {
-            this.alert.presentToast(default_error);
+            this.alertService.showToast(default_error);
           }
 
           // sadly templates cannot parse maps,
@@ -335,12 +326,12 @@ export class RoomplanPage extends AbstractPage implements OnInit {
             this.housesFound.push(tmpHouse);
           }
           this.housesFound.sort(RoomplanPage.compareHouses);
+        }
 
-          // if refresher is running complete it
-          if (this.refresher != null) {
-            this.refresher.target.complete();
-          }
-          this.requestProcessed = true;
+        this.requestProcessed = true;
+        // if refresher is running complete it
+        if (this.refresher != null) {
+          this.refresher.target.complete();
         }
       },
       (error: HttpErrorResponse) => {
@@ -352,11 +343,6 @@ export class RoomplanPage extends AbstractPage implements OnInit {
         if (this.refresher != null) {
           this.refresher.target.complete();
         }
-
-        this.alertProvider.showAlert({
-          alertTitleI18nKey: 'alert.title.error',
-          messageI18nKey: `alert.httpErrorStatus.${error.status}`
-        });
       }
     );
   }

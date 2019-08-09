@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { utils } from 'src/app/lib/util';
 import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
-import { PulsService } from 'src/app/services/puls/puls.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-course-data',
@@ -11,12 +11,15 @@ import { PulsService } from 'src/app/services/puls/puls.service';
 export class CourseDataComponent implements OnInit {
 
   @Input() course;
+  @Input() refresh = false;
   courseData;
   courseGroups = [];
   lecturerList = [];
+  isLoaded;
+  networkError;
 
   constructor(
-    private puls: PulsService
+    private ws: WebserviceWrapperService
   ) { }
 
   ngOnInit() {
@@ -24,18 +27,38 @@ export class CourseDataComponent implements OnInit {
   }
 
   getCourseData(courseId) {
-    this.puls.getCourseData(courseId).subscribe((response: IPulsAPIResponse_getCourseData) => {
+    this.isLoaded = false;
+    this.networkError = false;
+    this.ws.call(
+      'pulsGetCourseData',
+      { courseId: courseId },
+      { forceRefreshGroup: this.refresh }
+    ).subscribe((response: IPulsAPIResponse_getCourseData) => {
       this.courseData = response;
 
       let i;
       this.courseGroups = [];
       // check how many different groups exist
-      const tmp = utils.convertToArray(utils.convertToArray(this.courseData.courseData.course)[0].events.event);
-      for (i = 0; i < tmp.length; i++) {
-        if (!utils.isInArray(this.courseGroups, tmp[i].groupId)) {
-          this.courseGroups.push(tmp[i].groupId);
+      if (
+        this.courseData
+        && this.courseData.courseData
+        && this.courseData.courseData.course
+      ) {
+        const coursetmp = utils.convertToArray(this.courseData.courseData.course)[0];
+
+        if (coursetmp && coursetmp.events && coursetmp.events.event) {
+          const tmp = utils.convertToArray(coursetmp.events.event);
+          for (i = 0; i < tmp.length; i++) {
+            if (tmp[i].groupId && !utils.isInArray(this.courseGroups, tmp[i].groupId)) {
+              this.courseGroups.push(tmp[i].groupId);
+            }
+          }
         }
       }
+
+      this.isLoaded = true;
+    }, error => {
+      this.networkError = true;
     });
   }
 
@@ -56,7 +79,7 @@ export class CourseDataComponent implements OnInit {
    * @param index
    */
   checkDoubledLecturers(event, lecturer, index) {
-    if (event.eventId && lecturer.lecturerId) {
+    if (event && event.eventId && lecturer && lecturer.lecturerId) {
       if ((this.lecturerList[event.eventId] !== undefined)  && (this.lecturerList[event.eventId].length > 0)) {
         if (utils.isInArray(this.lecturerList[event.eventId], [lecturer.lecturerId][index])) {
           return true;
@@ -89,9 +112,7 @@ export class CourseDataComponent implements OnInit {
   replaceUnderscore(roomSc: string) {
     if (roomSc !== undefined) {
       return roomSc.replace(/_/g, '.');
-    } else {
-      return '';
-    }
+    } else { return ''; }
   }
 
 }

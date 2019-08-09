@@ -2,14 +2,8 @@
     color:var(--ion-color-primary);
 }
 
-.calendarButton {
-    --background: var(--ion-color-secondary);
-    color: var(--ion-color-primary);
-}
-
 .activeCalendarButton {
-    --background: var(--ion-color-primary);
-    color:#fff;
+    color: var(--ion-color-primary);
 }
 
 ion-calendar {
@@ -19,6 +13,13 @@ ion-calendar {
     }
 }
 
+ion-chip {
+    -webkit-margin-end: 10px;
+    margin-inline-end: 10px;
+    margin: 0;
+    padding: 5px;
+    margin-right: 5px;
+}
 
 ion-calendar-month .primary .days .marked p, ion-calendar-month .primary .days .today p,
 ion-calendar-month .primary button.days-btn small {

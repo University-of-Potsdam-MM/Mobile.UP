@@ -1,13 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../../services/alert/alert.service';
 import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
 import { ConfigService } from '../../services/config/config.service';
-import { utils, WebHttpUrlEncodingCodec } from '../../lib/util';
+import { utils } from '../../lib/util';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'book-modal-page',
@@ -43,13 +41,10 @@ export class BookDetailModalPage implements OnInit {
 
   constructor(
       private modalCtrl: ModalController,
-      private cache: CacheService,
-      private http: HttpClient,
-      private translate: TranslateService,
-      private alert: AlertService,
-      public webIntent: WebIntentService // is used in the HTML
-    ) {
-  }
+      private alertService: AlertService,
+      public webIntent: WebIntentService, // is used in the HTML
+      private ws: WebserviceWrapperService
+    ) { }
 
   ngOnInit() {
     this.config = ConfigService.config;
@@ -67,9 +62,9 @@ export class BookDetailModalPage implements OnInit {
     this.isFavorite = !this.isFavorite;
 
     if (!this.isFavorite) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     } else {
-      this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+      this.alertService.showToast('hints.text.favAdded');
     }
   }
 
@@ -91,36 +86,23 @@ export class BookDetailModalPage implements OnInit {
    * @param refresher
    */
   updateLocation(refresher?): void {
-    if (refresher) {
-      this.cache.removeItem('bookLocation' + this.book.recordInfo.recordIdentifier._);
-    } else { this.isLoaded = false; }
+    if (!refresher) {
+      this.isLoaded = false;
+    }
 
-    const url = this.config.webservices.endpoint.libraryDAIA;
-
-    const headers = new HttpHeaders()
-        .append('Authorization', this.config.webservices.apiToken);
-
-    const params = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('id', 'ppn:' + this.book.recordInfo.recordIdentifier._)
-      .append('format', 'json');
-
-    const request = this.http.get(url, {headers: headers, params: params});
-    this.cache.loadFromObservable('bookLocation' + this.book.recordInfo.recordIdentifier._, request).subscribe(data => {
-      if (refresher) {
-        refresher.target.complete();
-      }
-
-      if (data) {
-        this.locationData = data;
-      }
-
+    this.ws.call(
+      'libraryDAIA',
+      {
+        id: 'ppn:' + this.book.recordInfo.recordIdentifier._
+      },
+      { forceRefresh: refresher !== undefined }
+    ).subscribe(data => {
+      if (refresher) { refresher.target.complete(); }
+      if (data) { this.locationData = data; }
       this.isLoaded = true;
-    }, error => {
-      console.log(error);
+    }, () => {
       this.isLoaded = true;
-      if (refresher) {
-        refresher.target.complete();
-      }
+      if (refresher) { refresher.target.complete(); }
     });
   }
 

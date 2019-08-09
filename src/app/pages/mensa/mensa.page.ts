@@ -1,12 +1,16 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from 'ionic-cache';
-import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import {ICampus, IMeals, IMensaResponse} from 'src/app/lib/interfaces';
+import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { utils } from '../../lib/util';
+import * as jquery from 'jquery';
+import * as opening from 'opening_hours';
+
 
 @Component({
   selector: 'app-mensa',
@@ -25,192 +29,195 @@ export class MensaPage extends AbstractPage {
     weekStart: 1
   };
 
+  filterKeywords = [];
   currentDate = moment();
+
   allMeals: IMeals[] = [];
+  displayedMeals: IMeals[] = [];
   ulfMeals: IMeals[] = [];
+  displayedUlfMeals: IMeals[] = [];
 
   mealForDate: boolean[] = [];
   ulfMealForDate: boolean[] = [];
 
-  mealIsExpanded: boolean[] = [];
-  ulfMealIsExpanded: boolean[] = [];
-
-  mealIsVegan: boolean[] = [];
-  ulfMealIsVegan: boolean[] = [];
-
-  mealIsVegetarian: boolean[] = [];
-  ulfMealIsVegetarian: boolean[] = [];
-
-  allergenIsExpanded: boolean[][] = [];
-  ulfAllergenIsExpanded: boolean[][] = [];
-
   iconMapping = [];
   ulfIconMapping = [];
+  mensaIsOpen = true;
 
-  onlyVeganFood = false;
-  onlyVeggieFood = false;
-  isLoaded = false;
-  hardRefresh = false;
+  isLoaded;
+  hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
-  campus;
+  networkError;
+  campus: ICampus;
+  noMensaForLocation = false;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
     private translate: TranslateService,
-    private cache: CacheService,
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   /**
-   * @param query
+   * switches the currently selected campus
+   * @param campus {ICampus}
    */
   changeCampus(campus: ICampus) {
-    this.campus = campus.canteen_name;
+    this.campus = campus;
     this.loadCampusMenu();
   }
 
   loadCampusMenu(refresher?) {
-    let i;
-
     if (refresher) {
-      this.cache.removeItems('mensaResponse*');
       this.hardRefresh = true;
     } else { this.isLoaded = false; }
 
-    this.allMeals = [];
-    this.ulfMeals = undefined;
-    for (i = 0; i < this.mealIsExpanded.length; i++) { this.mealIsExpanded[i] = false; }
-    for (i = 0; i < this.mealForDate.length; i++) { this.mealForDate[i] = false; }
-    for (i = 0; i < this.mealIsVegan.length; i++) { this.mealIsVegan[i] = false; }
-    for (i = 0; i < this.mealIsVegetarian.length; i++) { this.mealIsVegetarian[i] = false; }
+    this.getOpening();
 
-    for (i = 0; i < this.ulfMealIsExpanded.length; i++) { this.ulfMealIsExpanded[i] = false; }
-    for (i = 0; i < this.ulfMealForDate.length; i++) { this.ulfMealForDate[i] = false; }
-    for (i = 0; i < this.ulfMealIsVegan.length; i++) { this.ulfMealIsVegan[i] = false; }
-    for (i = 0; i < this.ulfMealIsVegetarian.length; i++) { this.ulfMealIsVegetarian[i] = false; }
+    this.allMeals = [];
+    this.displayedMeals = [];
+    this.ulfMeals = undefined;
+    this.displayedUlfMeals = undefined;
+    for (let i = 0; i < this.mealForDate.length; i++) { this.mealForDate[i] = false; }
+    for (let i = 0; i < this.ulfMealForDate.length; i++) { this.ulfMealForDate[i] = false; }
+
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
+    this.networkError = false;
 
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
+    if (this.campus.canteen_name && this.campus.canteen_name.length > 0) {
+      this.noMensaForLocation = false;
+      this.ws.call(
+        'mensa',
+        <IMensaRequestParams>{
+          campus_canteen_name: this.campus.canteen_name
+        },
+        { forceRefreshGroup: this.hardRefresh }
+      ).subscribe((res: IMensaResponse) => {
+        if (res.meal) {
+          this.allMeals = res.meal;
+          this.displayedMeals = res.meal;
+        }
+        if (res.iconHashMap && res.iconHashMap.entry) { this.iconMapping = res.iconHashMap.entry; }
 
-    const params: HttpParams = new HttpParams()
-      .append('location', this.campus);
-
-    const request = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: params});
-    this.cache.loadFromObservable('mensaResponse' + this.campus, request).subscribe((res: IMensaResponse) => {
-
-      if (res.meal) {
-        this.allMeals = res.meal;
-      }
-
-      if (res.iconHashMap && res.iconHashMap.entry) {
-        this.iconMapping = res.iconHashMap.entry;
-      }
-
-      if (this.campus === 'Griebnitzsee') {
-        const ulfParam = 'UlfsCafe';
-        const paramsUlf: HttpParams = new HttpParams()
-          .append('location', ulfParam);
-
-        const requestUlf = this.http.get(this.config.webservices.endpoint.mensa, {headers: headers, params: paramsUlf});
-
-        this.cache.loadFromObservable('mensaResponse' + ulfParam, requestUlf).subscribe((resUlf: IMensaResponse) => {
-          if (resUlf.meal) {
-            this.ulfMeals = resUlf.meal;
-          }
-
-          if (resUlf.iconHashMap && resUlf.iconHashMap.entry) {
-            this.ulfIconMapping = resUlf.iconHashMap.entry;
-          }
-
+        if (this.campus.canteen_name === 'Griebnitzsee') {
+          const ulfParam = 'UlfsCafe';
+          this.ws.call(
+            'mensa',
+            <IMensaRequestParams>{
+              campus_canteen_name: ulfParam
+            }
+          ).subscribe((resUlf: IMensaResponse) => {
+            if (resUlf.meal) {
+              this.ulfMeals = resUlf.meal;
+              this.displayedUlfMeals = resUlf.meal;
+            }
+            if (resUlf.iconHashMap && resUlf.iconHashMap.entry) { this.ulfIconMapping = resUlf.iconHashMap.entry; }
+            this.getFilterKeywords();
+            this.classifyMeals();
+            if (refresher) { refresher.target.complete(); }
+          });
+        } else {
+          this.getFilterKeywords();
           this.classifyMeals();
+          if (refresher) { refresher.target.complete(); }
+        }
+      }, () => {
+        this.isLoaded = true;
+        this.hardRefresh = false;
+        this.networkError = true;
+        if (refresher) { refresher.target.complete(); }
+      });
+    } else {
+      this.noMensaForLocation = true;
+      if (refresher) { refresher.target.complete(); }
+      this.isLoaded = true;
+    }
+  }
 
-          if (refresher) {
-            refresher.target.complete();
-          }
-        });
-      } else {
-        this.classifyMeals();
-
-        if (refresher) {
-          refresher.target.complete();
+  getFilterKeywords() {
+    this.filterKeywords = [];
+    for (let i = 0; i < this.displayedMeals.length; i++) {
+      for (let j = 0; j < this.displayedMeals[i].type.length; j++) {
+        if (!utils.isInArray(this.filterKeywords, this.displayedMeals[i].type[j])) {
+          this.filterKeywords.push(this.displayedMeals[i].type[j]);
         }
       }
-
-    }, error => {
-      console.log(error);
-    });
+      this.filterKeywords.sort();
+    }
   }
 
   classifyMeals() {
-    let i, mealDate;
-
-    for (i = 0; i < this.allMeals.length; i++) {
-      this.allergenIsExpanded[i] = [];
-      if (this.allMeals[i].date) {
-        mealDate = moment(this.allMeals[i].date);
+    let mealDate;
+    for (let i = 0; i < this.displayedMeals.length; i++) {
+      if (this.displayedMeals[i].date) {
+        mealDate = moment(this.displayedMeals[i].date);
       } else { mealDate = moment(); }
 
       if (this.currentDate.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else { this.mealForDate[i] = false; }
-
-      // check for vegan, vegetarian
-      if (this.allMeals[i].type && this.allMeals[i].type.length > 0) {
-        switch (this.allMeals[i].type[0]) {
-          case 'Vegan': {
-            this.mealIsVegan[i] = true;
-            this.mealIsVegetarian[i] = false;
-            break;
-          }
-          case 'Vegetarisch': {
-            this.mealIsVegan[i] = false;
-            this.mealIsVegetarian[i] = true;
-            break;
-          }
-        }
-      }
     }
 
-    if (this.ulfMeals) {
-      for (i = 0; i < this.ulfMeals.length; i++) {
-        this.ulfAllergenIsExpanded[i] = [];
-        if (this.ulfMeals[i].date) {
-          mealDate = moment(this.ulfMeals[i].date);
+    if (this.displayedUlfMeals) {
+      for (let i = 0; i < this.displayedUlfMeals.length; i++) {
+        if (this.displayedUlfMeals[i].date) {
+          mealDate = moment(this.displayedUlfMeals[i].date);
         } else { mealDate = moment(); }
 
         if (this.currentDate.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
           this.ulfMealForDate[i] = true;
           this.noUlfMealsForDate = false;
         } else { this.ulfMealForDate[i] = false; }
-
-        // check for vegan, vegetarian
-        if (this.ulfMeals[i].type && this.ulfMeals[i].type.length > 0) {
-          switch (this.ulfMeals[i].type[0]) {
-            case 'Vegan': {
-              this.ulfMealIsVegan[i] = true;
-              this.ulfMealIsVegetarian[i] = false;
-              break;
-            }
-            case 'Vegetarisch': {
-              this.ulfMealIsVegan[i] = false;
-              this.ulfMealIsVegetarian[i] = true;
-              break;
-            }
-          }
-        }
       }
     }
 
     this.hardRefresh = false;
     this.isLoaded = true;
     this.pickDate(this.date);
+  }
+
+  filterMenus(event) {
+    const filter = utils.convertToArray(event.detail.value);
+
+    this.displayedMeals = this.allMeals;
+    this.displayedUlfMeals = this.ulfMeals;
+
+    if (filter && filter.length > 0) {
+      this.displayedMeals = jquery.grep(this.displayedMeals, (meal) => {
+        if (meal.type) {
+          let fulfillsConditions = false;
+          for (let i = 0; i < filter.length; i++) {
+            if (utils.isInArray(meal.type, filter[i])) {
+              fulfillsConditions = true;
+              break;
+            }
+          }
+          return fulfillsConditions;
+        } else { return false; }
+      });
+
+      if (this.displayedUlfMeals) {
+        this.displayedUlfMeals = jquery.grep(this.displayedUlfMeals, (meal) => {
+          if (meal.type) {
+            let fulfillsConditions = false;
+            for (let i = 0; i < filter.length; i++) {
+              if (utils.isInArray(meal.type, filter[i])) {
+                fulfillsConditions = true;
+                break;
+              }
+            }
+            return fulfillsConditions;
+          } else { return false; }
+        });
+      }
+    }
+
+    this.classifyMeals();
   }
 
   pickDate($event) {
@@ -222,9 +229,9 @@ export class MensaPage extends AbstractPage {
     this.noUlfMealsForDate = true;
 
     let i, mealDate;
-    for (i = 0; i < this.allMeals.length; i++) {
-      if (this.allMeals[i].date) {
-        mealDate = moment(this.allMeals[i].date);
+    for (i = 0; i < this.displayedMeals.length; i++) {
+      if (this.displayedMeals[i].date) {
+        mealDate = moment(this.displayedMeals[i].date);
       } else { mealDate = moment(); }
 
       if ($event.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
@@ -233,10 +240,10 @@ export class MensaPage extends AbstractPage {
       } else { this.mealForDate[i] = false; }
     }
 
-    if (this.ulfMeals) {
-      for (i = 0; i < this.ulfMeals.length; i++) {
-        if (this.ulfMeals[i].date) {
-          mealDate = moment(this.ulfMeals[i].date);
+    if (this.displayedUlfMeals) {
+      for (i = 0; i < this.displayedUlfMeals.length; i++) {
+        if (this.displayedUlfMeals[i].date) {
+          mealDate = moment(this.displayedUlfMeals[i].date);
         } else { mealDate = moment(); }
 
         if ($event.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
@@ -247,90 +254,34 @@ export class MensaPage extends AbstractPage {
     }
   }
 
-  veganOnly() {
-    this.onlyVeganFood = !this.onlyVeganFood;
-    this.onlyVeggieFood = false;
-
-    this.noMealsForDate = true;
-    this.noUlfMealsForDate = true;
-    let i;
-    for (i = 0; i < this.allMeals.length; i++) {
-      if (this.checkConditions(i)) {
-        this.noMealsForDate = false;
-      }
-    }
-
-    if (this.ulfMeals) {
-      for (i = 0; i < this.ulfMeals.length; i++) {
-        if (this.checkConditions(i, true)) {
-          this.noUlfMealsForDate = false;
-        }
-      }
-    }
-  }
-
-  vegetarianOnly() {
-    this.onlyVeggieFood = !this.onlyVeggieFood;
-    this.onlyVeganFood = false;
-
-    this.noMealsForDate = true;
-    this.noUlfMealsForDate = true;
-
-    let i;
-    for (i = 0; i < this.allMeals.length; i++) {
-      if (this.checkConditions(i)) {
-        this.noMealsForDate = false;
-      }
-    }
-
-    if (this.ulfMeals) {
-      for (i = 0; i < this.ulfMeals.length; i++) {
-        if (this.checkConditions(i, true)) {
-          this.noUlfMealsForDate = false;
-        }
-      }
-    }
-  }
-
-  checkConditions(i, ulf?) {
-    if (!ulf) {
-      if (this.mealForDate[i]) {
-        if (this.onlyVeganFood) {
-          if (this.mealIsVegan[i]) {
-            return true;
-          } else if (this.onlyVeggieFood) {
-            if (this.mealIsVegetarian[i]) {
-              return true;
-            } else { return false; }
-          }
-        } else if (this.onlyVeggieFood) {
-          if (this.mealIsVegetarian[i] || this.mealIsVegan[i]) {
-            return true;
-          } else { return false; }
-        } else { return true; }
-      } else { return false; }
-    } else {
-      if (this.ulfMealForDate[i]) {
-        if (this.onlyVeganFood) {
-          if (this.ulfMealIsVegan[i]) {
-            return true;
-          } else if (this.onlyVeggieFood) {
-            if (this.ulfMealIsVegetarian[i]) {
-              return true;
-            } else { return false; }
-          }
-        } else if (this.onlyVeggieFood) {
-          if (this.ulfMealIsVegetarian[i] || this.ulfMealIsVegan[i]) {
-            return true;
-          } else { return false; }
-        } else { return true; }
-      } else { return false; }
-    }
-  }
-
   getWeekdays(): string[] {
     if (this.translate.currentLang === 'de') {
       return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
+  }
+
+  getOpening() {
+    this.mensaIsOpen = true;
+    const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
+
+    this.ws.call('openingHours').subscribe((response: any) => {
+      this.ws.call('nominatim').subscribe(nominatim => {
+        if (response) {
+          response = utils.convertToArray(response);
+          response = response.filter(function(item) {
+            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+          });
+
+          if (response.length > 0) {
+            response = response[0];
+            response.parsedOpening = new opening(
+              response.opening_hours,
+              nominatim,
+              { 'locale': this.translate.currentLang });
+            this.mensaIsOpen = response.parsedOpening.getState();
+          }
+        }
+      });
+    });
   }
 }

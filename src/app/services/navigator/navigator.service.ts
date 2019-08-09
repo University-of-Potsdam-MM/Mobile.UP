@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LaunchNavigatorOptions, AppSelectionOptions, RememberChoiceOptions, PromptsOptions } from '@ionic-native/launch-navigator/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { WebIntentService } from '../web-intent/web-intent.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +31,16 @@ export class NavigatorService implements OnInit {
     'appSelection': this.appSelectionOptions
   };
 
+  logger: Logger;
+
   constructor(
     private translate: TranslateService,
     private launchNavigator: LaunchNavigator,
-    private webIntent: WebIntentService
-  ) { }
+    private webIntent: WebIntentService,
+    private loggingService: LoggingService
+  ) {
+    this.logger = this.loggingService.getLogger('[/navigator-service]');
+  }
 
   ngOnInit() {
     this.promptsOptions = {
@@ -51,20 +57,22 @@ export class NavigatorService implements OnInit {
   }
 
   public navigateToAdress(location: string) {
-    this.launchNavigator.navigate(location, this.options).then(success => {
-      console.log('Launched navigator');
+    this.launchNavigator.navigate(location, this.options).then(() => {
+      this.logger.debug('navigateToAdress', 'launched navigator');
     }, error => {
-      console.log('Error launching navigator: ', error);
+      this.logger.error('navigateToAdress', error);
       this.webIntent.permissionPromptWebsite('https://maps.google.com/?q=' + location);
     });
   }
 
   public navigateToLatLong(latLong: number[]) {
-    this.launchNavigator.navigate(latLong, this.options).then(success => {
-      console.log('Launched navigator');
-    }, error => {
-      console.log('Error launching navigator: ', error);
-      this.webIntent.permissionPromptWebsite('https://maps.google.com/?q=' + String(latLong[0]) + ',' + String(latLong[1]));
-    });
+    if (latLong && latLong.length > 1) {
+      this.launchNavigator.navigate(latLong, this.options).then(() => {
+        this.logger.debug('navigateToLatLong', 'launched navigator');
+      }, error => {
+        this.logger.error('navigateToLatLong', error);
+        this.webIntent.permissionPromptWebsite('https://maps.google.com/?q=' + String(latLong[0]) + ',' + String(latLong[1]));
+      });
+    }
   }
 }

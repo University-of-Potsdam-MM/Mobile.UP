@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, AlertController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -14,6 +14,9 @@ import { ConfigService } from './services/config/config.service';
 import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
 import { UPLoginProvider } from './services/login-provider/login';
 import { Router } from '@angular/router';
+import { AlertService } from './services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +30,9 @@ export class AppComponent {
   loggedIn = false;
   username;
   config: IConfig;
+  logger: Logger;
+
+  triedToRefreshLogin = false;
 
   constructor(
     private platform: Platform,
@@ -37,15 +43,17 @@ export class AppComponent {
     private menuCtrl: MenuController,
     private cache: CacheService,
     private navCtrl: NavController,
-    private alertCtrl: AlertController,
     private userSession: UserSessionService,
     private setting: SettingsService,
     private connection: ConnectionService,
     private events: Events,
     private login: UPLoginProvider,
-    private storage: Storage
+    private storage: Storage,
+    private alertService: AlertService,
+    private loggingService: LoggingService
   ) {
     this.initializeApp();
+    this.logger = this.loggingService.getLogger('[/app-component]');
   }
 
   initializeApp() {
@@ -55,7 +63,7 @@ export class AppComponent {
       this.initTranslate();
       this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(60 * 60 * 24); // 24 hour caching
+      this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
 
       this.events.subscribe('userLogin', () => {
@@ -89,12 +97,11 @@ export class AppComponent {
       // user has never opened a 6.x version of the app, since nothing is stored
       // clear the whole storage
       this.storage.clear().then(() => {
-        console.log('[Mobile.UP]: cleared storage');
+        this.logger.debug('prepareStorageOnAppUpdate', 'cleared storage');
         this.storage.set('appVersion', this.config.appVersion);
         this.checkSessionValidity();
       }, error => {
-        console.log('[ERROR]: clearing storage failed');
-        console.log(error);
+        this.logger.error('prepareStorageOnAppUpdate', 'clearing storage failed', error);
       });
     } else {
       this.storage.set('appVersion', this.config.appVersion);
@@ -121,7 +128,10 @@ export class AppComponent {
         return (validUntilUnixTime - nowUnixTime) > boundary;
       };
 
-      if (sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+      const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
+        && session.oidcTokenObject.expires_in && this.config;
+      if (variablesNotUndefined
+        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
@@ -136,32 +146,43 @@ export class AppComponent {
             this.login.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
-              console.log(error);
+              this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
             });
           }, response => {
-            console.log('[Mobile.UP]: Error refreshing token');
-            console.log(response);
+            this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
-            if (response.error === 'invalid_grant' || response.description === 'Provided Authorization Grant is invalid') {
+            if (!this.triedToRefreshLogin) {
               this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
-                console.log('[Mobile.UP]: Re-authenticating...');
+                this.logger.debug('checkSessionValidity', 're-authenticating...');
                 this.login.oidcLogin(session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
-                  console.log(`[Mobile.UP]: Re-authenticating successful`);
+                  this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
                   this.login.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
-                    console.log(error);
+                    this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
                   });
                 }, error => {
-                  console.log(error);
-                  console.log(`[Mobile.UP]: Error: Re-authenticating not possible`);
+                  this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
+                  this.performLogout();
+                  this.navCtrl.navigateForward('/login');
+                  this.alertService.showToast('alert.login-expired');
                 });
+
+                this.triedToRefreshLogin = true;
+              } else {
+                this.performLogout();
+                this.navCtrl.navigateForward('/login');
+                this.alertService.showToast('alert.login-expired');
               }
+            } else {
+              this.performLogout();
+              this.navCtrl.navigateForward('/login');
+              this.alertService.showToast('alert.login-expired');
             }
           });
       } else {
@@ -233,29 +254,36 @@ export class AppComponent {
     this.navCtrl.navigateRoot('/home');
   }
 
-  async doLogout() {
+  doLogout() {
     this.close();
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('page.logout.title'),
-      message: this.translate.instant('page.logout.affirmativeQuestion'),
-      buttons: [
-        {
-          text: this.translate.instant('button.cancel'),
-        },
-        {
-          text: this.translate.instant('button.ok'),
-          handler: () => {
-            this.userSession.removeSession();
-            this.userSession.removeUserInfo();
-            for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
-            this.cache.clearAll();
-            this.updateLoginStatus();
-            this.navCtrl.navigateRoot('/home');
-          }
+    const buttons: AlertButton[] = [
+      {
+        text: this.translate.instant('button.cancel'),
+      },
+      {
+        text: this.translate.instant('button.ok'),
+        handler: () => {
+          this.performLogout();
+          this.navCtrl.navigateRoot('/home');
         }
-      ]
-    });
-    alert.present();
+      }
+    ];
+
+    this.alertService.showAlert(
+      {
+        headerI18nKey: 'page.logout.title',
+        messageI18nKey: 'page.logout.affirmativeQuestion'
+      },
+      buttons
+    );
+  }
+
+  performLogout() {
+    this.userSession.removeSession();
+    this.userSession.removeUserInfo();
+    for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+    this.cache.clearAll();
+    this.updateLoginStatus();
   }
 
   toLogin() {

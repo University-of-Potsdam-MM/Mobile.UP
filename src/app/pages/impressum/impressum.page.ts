@@ -20,7 +20,7 @@ export class ImpressumPage extends AbstractPage {
     super();
   }
 
-  async openPage(pageHeader: string) {
+  async openSection(pageHeader: string) {
     let pageText;
     switch (pageHeader) {
       case 'page.termsOfUse.title': {

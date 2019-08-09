@@ -35,8 +35,8 @@ export interface IEvent {
   eventId: string;
   groupId: string;
   group: string;
-  startDate: string;
-  endDate: string;
+  startDate: any;
+  endDate: any;
   startTime: string;
   endTime: string;
   daySC: string;

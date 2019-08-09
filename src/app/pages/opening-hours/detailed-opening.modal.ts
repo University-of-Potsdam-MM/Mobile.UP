@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { utils } from 'src/app/lib/util';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Component({
   selector: 'detailed-opening-modal-page',
@@ -15,13 +16,16 @@ export class DetailedOpeningModalPage implements OnInit {
   intervals = [];
   every_week_is_same;
   comment;
+  logger: Logger;
 
   constructor(
       private modalCtrl: ModalController,
-      private translate: TranslateService,
+      public translate: TranslateService,
       private webIntent: WebIntentService,
-      private callNumber: CallNumber
+      private callNumber: CallNumber,
+      private loggingService: LoggingService
     ) {
+      this.logger = this.loggingService.getLogger('[/detailed-opening-modal]');
   }
 
   ngOnInit() {
@@ -45,8 +49,8 @@ export class DetailedOpeningModalPage implements OnInit {
    */
   callContact(number: string) {
     this.callNumber.callNumber(number, true)
-      .then(() => console.log('Dialer Launched!'))
-      .catch(() => console.log('Error launching dialer'));
+      .then(() => this.logger.debug('callContact', 'dialer launched'))
+      .catch((error) => this.logger.error('callContact', error));
   }
 
   shortenLink(link: string) {
@@ -61,14 +65,12 @@ export class DetailedOpeningModalPage implements OnInit {
     if (willClose) {
       if (this.isToday(willClose)) {
         return this.translate.instant('page.opening-hours.closes')
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.closes')
         + this.weekday(willClose.getDay()) + ' '
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
     } else {
@@ -82,14 +84,12 @@ export class DetailedOpeningModalPage implements OnInit {
     if (willChange) {
       if (this.isToday(willChange)) {
         return this.translate.instant('page.opening-hours.opens')
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.opens')
         + this.weekday(willChange.getDay()) + ' '
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
     } else {
@@ -112,13 +112,6 @@ export class DetailedOpeningModalPage implements OnInit {
    isToday(td) {
     const d = new Date();
     return td.getDate() === d.getDate() && td.getMonth() === d.getMonth() && td.getFullYear() === d.getFullYear();
-  }
-
-  addZero(i) {
-    if (i < 10) {
-      i = '0' + i;
-    }
-    return i;
   }
 
   weekday(i) {
@@ -156,11 +149,9 @@ export class DetailedOpeningModalPage implements OnInit {
   }
 
   parseDate(from: Date, to: Date) {
-    return this.addZero(from.getHours()) + ':'
-    + this.addZero(from.getMinutes())
+    return from.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
     + this.translate.instant('page.opening-hours.time') + ' - '
-    + this.addZero(to.getHours()) + ':'
-    + this.addZero(to.getMinutes())
+    + to.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
     + this.translate.instant('page.opening-hours.time');
   }
 

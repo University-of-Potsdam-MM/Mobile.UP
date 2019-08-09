@@ -1,4 +1,6 @@
 import { HttpParameterCodec } from '@angular/common/http';
+import { routes } from '../app-routing.module';
+import {IModule} from './interfaces';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -56,4 +58,12 @@ export module utils {
     return x.toLowerCase().includes(y.toLowerCase());
   }
 
+  /**
+   * tests whether obj is an empty object
+   * from here https://stackoverflow.com/a/32108184/6800122
+   * @param obj
+   */
+  export function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
 }

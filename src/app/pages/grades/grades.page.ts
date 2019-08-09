@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { CacheService } from 'ionic-cache';
 import { IConfig } from 'src/app/lib/interfaces';
-import { PulsService } from 'src/app/services/puls/puls.service';
 import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-grades',
@@ -19,6 +18,7 @@ export class GradesPage extends AbstractPage {
   studentGrades;
   i;
   noUserRights = false;
+  networkError;
 
   loadingGrades = false;
   gradesLoaded = false;
@@ -27,10 +27,9 @@ export class GradesPage extends AbstractPage {
   isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
 
   constructor(
-    private puls: PulsService,
-    private cache: CacheService
+    private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
   }
 
   /**
@@ -78,21 +77,26 @@ export class GradesPage extends AbstractPage {
       stgnr = this.studentDetails.StgNr;
     }
 
-    if (this.refresher != null) {
-      this.cache.removeItem('getAcademicAchievements' + stgnr);
-    } else { this.loadingGrades = true; }
+    if (this.refresher == null) {
+      this.loadingGrades = true;
+    }
 
-    this.puls.getAcademicAchievements(this.session, semester, mtknr, stgnr).subscribe(
+    this.networkError = false;
+    this.ws.call(
+      'pulsGetAcademicAchievements',
+      { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
+      { forceRefresh: this.refresher !== undefined }
+    ).subscribe(
     (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
       if (resGrades) {
         this.studentGrades = resGrades;
-        this.gradesLoaded = true;
+        if (!this.refresher) { this.gradesLoaded = true; }
       } else { this.studentGrades = undefined; }
 
       this.loadingGrades = false;
     }, error => {
-      console.log('ERROR while getting grades');
-      console.log(error);
+      this.loadingGrades = false;
+      this.networkError = true;
     });
 
     if (this.refresher != null) {
@@ -117,18 +121,21 @@ export class GradesPage extends AbstractPage {
    * @name getStudentDetails
    */
   async getStudentDetails() {
-
-    if (this.refresher != null) {
-      this.cache.removeItem('getPersonalStudyAreas');
-    } else { this.studentLoaded = false; }
+    this.networkError = false;
+    if (this.refresher == null) {
+      this.studentLoaded = false;
+    }
 
     if (!(this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password)) {
       // try to reload session since no login data is found
       this.session = await this.sessionProvider.getSession();
-      console.log(this.session);
     }
 
-    this.puls.getPersonalStudyAreas(this.session).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
+    this.ws.call(
+      'pulsGetPersonalStudyAreas',
+      { session: this.session },
+      { forceRefresh: this.refresher !== undefined }
+    ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
       if (resStudentDetail) {
         if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
           this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
@@ -151,9 +158,9 @@ export class GradesPage extends AbstractPage {
           this.noUserRights = true;
         }
       }
-    }, error => {
-      console.log('ERROR while getting student details');
-      console.log(error);
+    }, () => {
+      this.studentLoaded = true;
+      this.networkError = true;
     });
 
     if (this.refresher != null) {

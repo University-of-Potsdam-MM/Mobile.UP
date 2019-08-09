@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
-import { AlertController, Events, NavController } from '@ionic/angular';
+import { Events, NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { AlertService } from '../alert/alert.service';
+import { AlertButton } from '@ionic/core';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 export enum EConnection {
   OFFLINE, ONLINE
@@ -13,12 +16,18 @@ export enum EConnection {
 export class ConnectionService {
 
   connectionState: EConnection;
+  logger: Logger;
 
-  constructor(private network: Network,
-              private alertCtrl: AlertController,
-              private translate: TranslateService,
-              private navCtrl: NavController,
-              private eventCtrl: Events) {
+  constructor(
+    private network: Network,
+    private translate: TranslateService,
+    private navCtrl: NavController,
+    private eventCtrl: Events,
+    private alertService: AlertService,
+    private loggingService: LoggingService
+  ) {
+    this.logger = this.loggingService.getLogger('[/connection-service]');
+
     if (this.network.type === this.network.Connection.NONE) {
       this.connectionState = EConnection.OFFLINE;
     } else { this.connectionState = EConnection.ONLINE; }
@@ -34,16 +43,16 @@ export class ConnectionService {
         this.eventCtrl.publish('connection:offline');
       }
       this.connectionState = EConnection.OFFLINE;
-      console.log(`[ConnectionProvider]: Went ${EConnection[this.connectionState]}`);
+      this.logger.debug('initializeNetworkEvents', `went ${EConnection[this.connectionState]}`);
     });
     this.network.onConnect().subscribe(() => {
       if (this.connectionState === EConnection.OFFLINE) {
         this.eventCtrl.publish('connection:online');
       }
       this.connectionState = EConnection.ONLINE;
-      console.log(`[ConnectionProvider]: Went ${EConnection[this.connectionState]}`);
+      this.logger.debug('initializeNetworkEvents', `went ${EConnection[this.connectionState]}`);
     });
-    console.log('[ConnectionProvider]: Initialized network events');
+    this.logger.debug('initializeNetworkEvents');
   }
 
   /**
@@ -55,27 +64,31 @@ export class ConnectionService {
    */
   checkOnline(showAlert: boolean = false, sendHome: boolean = false): EConnection {
     if (this.connectionState === EConnection.OFFLINE) {
-      if (showAlert) {
-        this.showAlert();
+      if (showAlert && !sendHome) {
+        this.alertService.showToast('alert.network');
+      } else if (showAlert && sendHome) {
+        const buttons: AlertButton[] = [{
+          text: this.translate.instant('button.continue'),
+          handler: () => {
+            this.navCtrl.navigateRoot('/home');
+          }
+        }];
+        this.alertService.showAlert(
+          {
+            headerI18nKey: 'alert.title.httpError',
+            messageI18nKey: 'alert.network'
+          },
+          buttons
+        );
       }
 
-      if (sendHome) {
+      if (!showAlert && sendHome) {
         this.navCtrl.navigateRoot('/home');
       }
     }
 
-    console.log(`[ConnectionProvider]: App is ${EConnection[this.connectionState]}`);
+    this.logger.debug('checkOnline', `app is ${EConnection[this.connectionState]}`);
     return this.connectionState;
   }
 
-  async showAlert() {
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.error'),
-      message: this.translate.instant('alert.network'),
-      buttons: [
-        this.translate.instant('button.continue')
-      ]
-    });
-    alert.present();
-  }
 }

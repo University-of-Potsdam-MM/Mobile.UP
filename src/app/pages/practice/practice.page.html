@@ -41,8 +41,9 @@
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
-  <div *ngIf="isLoaded && displayedList.length == 0 && error == null">
-    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+  <div *ngIf="isLoaded && displayedList.length == 0">
+    <app-hint-box *ngIf="error == null" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
+    <app-hint-box *ngIf="error && activeSegment === 'search'" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'favorites'">
@@ -59,7 +60,8 @@
                 </ion-row>
               </ion-grid>
             </ion-label>
-            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang === 'de'">{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang !== 'de'">{{ADS.date | date:'MM/dd/yy'}}</ion-note>
           </ion-item>
 
           <ion-item-options slot="end">
@@ -85,12 +87,13 @@
               <h3 text-wrap>{{ADS.title}}</h3>
               <ion-grid>
                 <ion-row>
-                  <ion-col size="6"><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
-                  <ion-col size="6" *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
+                  <ion-col><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
+                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-label>
-            <ion-note>{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang === 'de'">{{ADS.date | date:'dd.MM.yy'}}</ion-note>
+            <ion-note *ngIf="translate.currentLang !== 'de'">{{ADS.date | date:'MM/dd/yy'}}</ion-note>
           </ion-item>
 
           <ion-item-options slot="end">

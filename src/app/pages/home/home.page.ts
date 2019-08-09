@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from 'src/app/lib/interfaces';
-import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController, Platform } from '@ionic/angular';
@@ -22,7 +21,6 @@ export class HomePage extends AbstractPage implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private webIntent: WebIntentService,
     private storage: Storage,
     private nativeHTTP: HTTP,
     private toastCtrl: ToastController,
@@ -39,7 +37,7 @@ export class HomePage extends AbstractPage implements OnInit {
         this.checkAppUpdate();
       }
     }).catch(error => {
-      console.log(error);
+      this.logger.error('ngOnInit', 'platformReady', error);
     });
   }
 
@@ -83,7 +81,7 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   checkAppUpdate() {
-    const remoteConfigUrl = this.config.webservices.endpoint.config;
+    const remoteConfigUrl = this.config.webservices.endpoint.config.url;
 
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);
@@ -91,7 +89,7 @@ export class HomePage extends AbstractPage implements OnInit {
         const remoteVersion = remoteConfig.appVersion;
         const localVersion = this.config.appVersion;
 
-        console.log('App Version: ' + localVersion + ' / ' + remoteVersion);
+        this.logger.debug('checkAppUpdate', 'App Version: ' + localVersion + ' / ' + remoteVersion);
 
         if (remoteVersion > localVersion) {
           // app update should be available in app stores
@@ -120,10 +118,7 @@ export class HomePage extends AbstractPage implements OnInit {
         }
       }
     }).catch(error => {
-      console.log('[App Component]: Could not fetch remote config.');
-      console.log(error.status);
-      console.log(error.error);
-      console.log(error.headers);
+      this.logger.error('checkAppUpdate', 'fetching config', error);
     });
   }
 
@@ -160,25 +155,12 @@ export class HomePage extends AbstractPage implements OnInit {
     event.stopPropagation();
 
     this.modules[moduleName].selected = !this.modules[moduleName].selected;
-    console.log(`[HomePage]: '${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
+    this.logger.debug('toggleSelectedState',
+    `'${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
 
     this.storage.set('moduleList', this.modules).then(
-      () => console.log(`[HomePage]: Saved module list after toggling '${moduleName}'`)
+      () => this.logger.debug('toggleSelectedState', `saved module list after toggling '${moduleName}'`)
     );
-  }
-
-  /**
-   * @name openPage
-   * @description opens selected page by pushing it on the stack
-   * @param event
-   * @param {string} pageTitle
-   */
-  openPage(modules: IModule) {
-    if (modules.url) {
-      this.webIntent.handleWebIntentForModule(modules.componentName);
-    } else {
-      this.navCtrl.navigateForward('/' + modules.componentName);
-    }
   }
 
   /**
@@ -199,7 +181,7 @@ export class HomePage extends AbstractPage implements OnInit {
       }
     }
 
-    console.log('[Mobile.UP]: created default moduleList from config');
+    this.logger.debug('buildDefaultModulesList');
     return moduleList;
   }
 }

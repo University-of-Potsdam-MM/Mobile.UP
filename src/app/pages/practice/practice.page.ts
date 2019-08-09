@@ -1,8 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpErrorResponse, } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { CacheService } from 'ionic-cache';
-import { Platform, IonItemSliding, AlertController, ModalController } from '@ionic/angular';
+import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +11,7 @@ import { SettingsService } from 'src/app/services/settings/settings.service';
 import { utils } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-practice',
@@ -29,24 +29,23 @@ export class PracticePage extends AbstractPage {
   error: HttpErrorResponse;
   itemsShown = 0;
   isLoadedFavorites = false;
-  query;
+  query = '';
   activeSegment = 'search';
   modalOpen;
 
   constructor(
     private storage: Storage,
-    private cache: CacheService,
     private platform: Platform,
     private settingsProvider: SettingsService,
-    private http: HttpClient,
     private keyboard: Keyboard,
-    private translate: TranslateService,
+    public translate: TranslateService,
     private chRef: ChangeDetectorRef,
-    private alert: AlertService,
+    private alertService: AlertService,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ws: WebserviceWrapperService
   ) {
-    super();
+    super({ optionalNetwork: true });
   }
 
   ionViewWillEnter() {
@@ -93,18 +92,16 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   public loadData(refresher?) {
-    const headers: HttpHeaders = new HttpHeaders()
-    .append('Authorization', this.config.webservices.apiToken);
-
-    const request = this.http.get(this.config.webservices.endpoint.practiceSearch, {headers: headers});
-
-    if (refresher) {
-      this.cache.removeItem('practiceResponse');
-    } else {
+    this.error = null;
+    if (!refresher) {
       this.isLoaded = false;
-    }
+    } else { this.query = ''; }
 
-    this.cache.loadFromObservable('practiceResponse', request).subscribe(
+    this.ws.call(
+      'practiceSearch',
+      {},
+      { forceRefresh: refresher !== undefined }
+    ).subscribe(
       (response: IADSResponse) => {
         if (refresher) {
           refresher.target.complete();
@@ -115,7 +112,6 @@ export class PracticePage extends AbstractPage {
         // use inner object only because it's wrapped in another object
         const uidArray = [];
         for (const ads of response) {
-          // console.log(ads);
           ads.date = ads.date * 1000;
           ads.expanded = false;
           if (!utils.isInArray(uidArray, ads.uid)) {
@@ -130,13 +126,10 @@ export class PracticePage extends AbstractPage {
         this.checkFavorites();
       },
       error => {
-        if (refresher) {
-          refresher.target.complete();
-        }
+        if (refresher) { refresher.target.complete(); }
         // reset array so new persons are displayed
         this.defaultList = [];
         this.error = error;
-        // console.log(error);
         this.isLoaded = true;
       }
     );
@@ -165,29 +158,23 @@ export class PracticePage extends AbstractPage {
     const domestic = await this.settingsProvider.getSettingValue('domestic');
     const foreign = await this.settingsProvider.getSettingValue('foreign');
 
-    // console.log(domestic, foreign);
-
-    // console.log("FILTER");
-    // console.log(studyarea);
-    // console.log(practice);
-    // console.log(this.displayedList);
-
-    // console.log("DISPLAYED")
-    // console.log(this.displayedList.length);
-
     let tmp = this.filteredList;
     let tmpFav = this.displayedFavorites;
     // filter according to practice option
     if (practice.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS1) => {
-          return practice.includes(this.practiceMapping(ADS1.art));
+          let key = '';
+          if (ADS1 && ADS1.art) { key = this.practiceMapping(ADS1.art); }
+          return practice.includes(key);
         }
       );
 
       tmpFav = jquery.grep(
         tmpFav, (ADS2) => {
-          return practice.includes(this.practiceMapping(ADS2.art));
+          let key = '';
+          if (ADS2 && ADS2.art) { key = this.practiceMapping(ADS2.art); }
+          return practice.includes(key);
         }
       );
     }
@@ -196,13 +183,17 @@ export class PracticePage extends AbstractPage {
     if (studyarea.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS3) => {
-          return studyarea.includes(ADS3.field);
+          let key = '';
+          if (ADS3 && ADS3.field) { key += ADS3.field; }
+          return studyarea.includes(key);
         }
       );
 
       tmpFav = jquery.grep(
         tmpFav, (ADS4) => {
-          return studyarea.includes(ADS4.field);
+          let key = '';
+          if (ADS4 && ADS4.field) { key += ADS4.field; }
+          return studyarea.includes(key);
         }
       );
     }
@@ -253,9 +244,6 @@ export class PracticePage extends AbstractPage {
         this.itemsShown++;
       }
     }
-
-    // console.log("DISPLAYED NEW")
-    // console.log(this.displayedList.length);
   }
 
   /**
@@ -346,11 +334,11 @@ export class PracticePage extends AbstractPage {
         this.allFavorites.push(ads);
       }
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favAdded'));
+        this.alertService.showToast('hints.text.favAdded');
       }
     } else {
       if (!disableHints) {
-        this.alert.presentToast(this.translate.instant('hints.text.favExists'));
+        this.alertService.showToast('hints.text.favExists');
       }
     }
 
@@ -386,7 +374,7 @@ export class PracticePage extends AbstractPage {
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
     if (!disableHints) {
-      this.alert.presentToast(this.translate.instant('hints.text.favRemoved'));
+      this.alertService.showToast('hints.text.favRemoved');
     }
     this.storage.set('favoriteJobs', this.allFavorites);
   }
@@ -415,7 +403,7 @@ export class PracticePage extends AbstractPage {
       }
 
       if (tmp.length > this.allFavorites.length) {
-        this.alert.presentToast(this.translate.instant('hints.text.favNotAvailable'));
+        this.alertService.showToast('hints.text.favNotAvailable');
       }
     }
 

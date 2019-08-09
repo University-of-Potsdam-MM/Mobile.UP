@@ -17,7 +17,7 @@
   <ion-item>
     <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
     <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
-      <ion-select-option *ngFor="let slot of time_slots" [value]="slot.value">{{slot.lbl}} {{ "words.clock" | translate }}
+      <ion-select-option *ngFor="let slot of time_slots; let i = index" [value]="slot.value">{{timeLabels[i]}} {{ "words.clock" | translate }}
       </ion-select-option>
     </ion-select>
   </ion-item>
@@ -54,8 +54,7 @@
   </p>
 
   <ng-template #noHousesFoundTemplate>
-    <app-hint-box hintTextI18nKey="page.free-rooms.no_rooms_hintText"
-          hintTypeI18nKey=""></app-hint-box>
+    <app-hint-box hintTextI18nKey="page.free-rooms.no_rooms_hintText" hintTypeI18nKey="hints.type.hint"></app-hint-box>
   </ng-template>
 
   <ng-container *ngIf="no_timeslot;

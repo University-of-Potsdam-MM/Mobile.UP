@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CacheService } from 'ionic-cache';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IonSlides } from '@ionic/angular';
 import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-news',
@@ -21,16 +20,16 @@ export class NewsPage extends AbstractPage implements OnInit {
   public showRightButton = true;
   public selectedCategory = 0;
   public categories = [];
+  networkError;
 
   slideOptions = {
     slidesPerView: 'auto'
   };
 
   constructor(
-    private cache: CacheService,
-    private http: HttpClient
+    private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -38,23 +37,16 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
+    if (!refresher) { this.isLoaded = false; }
+    this.networkError = false;
 
-    const url = this.config.webservices.endpoint.news;
-    const request = this.http.get(url, {headers: headers});
+    this.ws.call(
+      'news',
+      {},
+      { forceRefresh: refresher !== undefined }
+    ).subscribe((response: INewsApiResponse) => {
 
-    if (refresher) {
-      this.cache.removeItem('newsResponse');
-    } else {
-      this.isLoaded = false;
-    }
-
-    this.cache.loadFromObservable('newsResponse', request).subscribe((response: INewsApiResponse) => {
-
-      if (refresher) {
-        refresher.target.complete();
-      }
+      if (refresher) { refresher.target.complete(); }
 
       if (response.errors.exist === false) {
         this.newsList = response.vars.news;
@@ -82,6 +74,10 @@ export class NewsPage extends AbstractPage implements OnInit {
           this.showLeftButton = false;
         }
       }
+    }, () => {
+      this.isLoaded = true;
+      if (refresher) { refresher.target.complete(); }
+      this.networkError = true;
     });
   }
 
@@ -117,7 +113,6 @@ export class NewsPage extends AbstractPage implements OnInit {
       const maxIndex = this.sourcesList.length - 1;
       const currentIndex = this.newsSource;
       let newIndex;
-      console.log(event);
       if (event.deltaX > 0) {
         // user swiped from left to right
         if (currentIndex > 0) {

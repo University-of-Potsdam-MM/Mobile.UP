@@ -10,34 +10,25 @@ export class MensaMealComponent implements OnInit {
 
   @Input() meals: IMeals[];
   @Input() mealForDate: boolean[];
-  @Input() onlyVeganFood: boolean;
-  @Input() onlyVeggieFood: boolean;
-  @Input() mealIsVegan: boolean[];
-  @Input() mealIsVegetarian: boolean[];
-  @Input() mealIsExpanded: boolean[];
-  @Input() allergenIsExpanded: boolean[][];
   @Input() iconMapping;
+
+  allergenIsExpanded: boolean[][] = [];
+  mealIsExpanded: boolean[] = [];
 
   constructor() { }
 
   ngOnInit() {
+    this.allergenIsExpanded = [];
+    this.mealIsExpanded = [];
+    for (let i = 0; i < this.meals.length; i++) {
+      this.allergenIsExpanded[i] = [];
+      this.mealIsExpanded[i] = false;
+    }
   }
 
   checkConditions(i) {
     if (this.mealForDate[i]) {
-      if (this.onlyVeganFood) {
-        if (this.mealIsVegan[i]) {
-          return true;
-        } else if (this.onlyVeggieFood) {
-          if (this.mealIsVegetarian[i]) {
-            return true;
-          } else { return false; }
-        }
-      } else if (this.onlyVeggieFood) {
-        if (this.mealIsVegetarian[i] || this.mealIsVegan[i]) {
-          return true;
-        } else { return false; }
-      } else { return true; }
+      return true;
     } else { return false; }
   }
 

@@ -17,7 +17,10 @@
   <ion-item>
     <ion-label>{{ "page.roomplan.date" | translate }}</ion-label>
     <ion-select [(ngModel)]="select_day" (ionChange)="changeDay()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
-      <ion-select-option *ngFor="let day of days" [value]="day.value">{{day.lbl | date:'dd.MM.yyyy'}}</ion-select-option>
+      <ion-select-option *ngFor="let day of days" [value]="day.value">
+        <span *ngIf="translate.currentLang === 'de'">{{day.lbl | date:'dd.MM.yyyy'}}</span>
+        <span *ngIf="translate.currentLang !== 'de'">{{day.lbl | date:'MM/dd/yyyy'}}</span>
+      </ion-select-option>
     </ion-select>
   </ion-item>
 
@@ -46,25 +49,24 @@
           <div *ngFor="let room of house.rooms">
             <ion-item (click)="expandRoom(house.lbl,room.lbl)">
               <ion-label no-margin>
-                <h2>{{room.lbl}}<ion-badge color="secondary">{{room.events.length}}</ion-badge></h2>
+                <h2 *ngIf="room.lbl">{{room.lbl}}<ion-badge *ngIf="room.events" color="secondary">{{room.events.length}}</ion-badge></h2>
               </ion-label>
               <ion-icon [name]="!room.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
             </ion-item>
-            <div *ngIf="room.expanded">
+            <div *ngIf="room.expanded && room.events">
               <ion-item margin-left *ngFor="let event of room.events">
                 <ion-label text-wrap>
                   <u>
-                      <b>
-                        {{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}
-                      </b>
-                    </u>
-                    <br/>
+                    <b *ngIf="translate.currentLang === 'de'">{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}</b>
+                    <b *ngIf="translate.currentLang !== 'de'">{{event.startTime | date:'h:mm a'}} - {{event.endTime | date:'h:mm a'}} {{ "words.clock" | translate }}</b>
+                  </u>
+                  <br/>
 
-                    <i>{{event.lbl}}</i>
-                    <br/>
-                    <p *ngFor="let person of event.persons">
-                      <ion-badge color="danger">{{person}}</ion-badge>
-                    </p>
+                  <i>{{event.lbl}}</i>
+                  <br/>
+                  <p *ngFor="let person of event.persons">
+                    <ion-badge color="danger">{{person}}</ion-badge>
+                  </p>
                 </ion-label>
               </ion-item>
             </div>

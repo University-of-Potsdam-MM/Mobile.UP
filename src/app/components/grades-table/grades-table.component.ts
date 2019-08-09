@@ -22,7 +22,7 @@ export class GradesTableComponent implements OnInit {
 
   ngOnInit() {
     this.currentProfession = '0';
-    if (this.studentGrades.academicAchievements) {
+    if (this.studentGrades && this.studentGrades.academicAchievements) {
       this.thesis = this.studentGrades.academicAchievements.thesis;
       this.graduation = this.studentGrades.academicAchievements.graduation;
 
@@ -52,7 +52,9 @@ export class GradesTableComponent implements OnInit {
   }
 
   unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
-    return s.replace(/&colon;/g, ':');
+    if (s !== undefined) {
+      return s.replace(/&colon;/g, ':');
+    } else { return ''; }
   }
 
 }

@@ -4,14 +4,15 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-item align="center" *ngIf="!isLoaded || isSearching" lines="none" class="searchPrepareItem">
+  <ion-toolbar *ngIf="!networkError">
+    <ion-item align="center" *ngIf="!isLoaded" lines="none" class="searchPrepareItem">
       <ion-label>
         {{ "page.lectures.preparingSearch" | translate }}
       </ion-label>
       <ion-spinner name="dots" slot="end"></ion-spinner>
     </ion-item>
-    <ion-searchbar *ngIf="!(!isLoaded || isSearching)"
+    <ion-searchbar *ngIf="isLoaded"
+    [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
     (ionChange)="searchLecture($event)"
     debounce="750">
@@ -21,12 +22,20 @@
 
 <ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'" no-padding>
   <ion-refresher slot="fixed" (ionRefresh)="refreshLectureTree($event)">
-      <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <app-lecture-list *ngIf="searchResults.length === 0 && query.length === 0"></app-lecture-list>
+  <div align="center" *ngIf="isSearching" padding>
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
 
-  <div *ngIf="!isSearching && searchResults.length > 0">
+  <div *ngIf="queryTooShort">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.queryTooShort"></app-hint-box>
+  </div>
+
+  <app-lecture-list *ngIf="!isRefreshing && searchResults.length === 0 && query.length === 0" [refresh]="refreshLectureComponent"></app-lecture-list>
+
+  <div *ngIf="!isRefreshing && !isSearching && searchResults.length > 0">
     <ion-item color="light">
       <ion-label>
         {{ "page.lectures.filter" | translate }}

@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
-import { IConfig } from 'src/app/lib/interfaces';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-opening-hours',
@@ -17,23 +15,22 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 })
 export class OpeningHoursPage extends AbstractPage implements OnInit {
 
-  openingHours;
-  allOpeningHours;
-
-  nominatim;
+  openingHours = [];
+  allOpeningHours: any = [];
   weekday = [];
   isLoaded;
   modalOpen;
+  query = '';
+  networkError;
 
   constructor(
-    private http: HttpClient,
-    private cache: CacheService,
     private translate: TranslateService,
     private platform: Platform,
     private keyboard: Keyboard,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
@@ -41,24 +38,19 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   }
 
   loadOpeningHours(refresher?) {
-    // needed for providing the country code to opening_hours?
-    // maybe put lat / lon in config and fetch?
-    this.http.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=52.40093096&lon=13.0591397').subscribe(data => {
-      this.nominatim = data;
+    this.networkError = false;
+    this.ws.call('nominatim').subscribe(
+      nominatim => {
 
-      const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', this.config.webservices.apiToken);
-
-      const url = this.config.webservices.endpoint.openingHours;
-      const request = this.http.get(url, {headers: headers});
-
-      if (refresher) {
-        this.cache.removeItem('openingHours');
-      } else {
+      if (!refresher) {
         this.isLoaded = false;
-      }
+      } else { this.query = ''; }
 
-      this.cache.loadFromObservable('openingHours', request).subscribe((response) => {
+      this.ws.call(
+        'openingHours',
+        {},
+        { forceRefresh: refresher !== undefined }
+      ).subscribe((response) => {
         this.allOpeningHours = response;
 
         const from = new Date();
@@ -69,7 +61,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         for (let i = 0; i < this.allOpeningHours.length; i++) {
           this.allOpeningHours[i].parsedOpening = new opening(
             this.allOpeningHours[i].opening_hours,
-            this.nominatim,
+            nominatim,
             { 'locale': this.translate.currentLang });
 
           this.allOpeningHours[i].nextChange = this.allOpeningHours[i].parsedOpening.getNextChange(from, to);
@@ -80,10 +72,16 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.openingHours = this.sortOpenings(this.allOpeningHours);
         this.isLoaded = true;
 
-        if (refresher) {
-          refresher.target.complete();
-        }
+        if (refresher) { refresher.target.complete(); }
+      }, () => {
+        this.isLoaded = true;
+        if (refresher) { refresher.target.complete(); }
+        this.networkError = true;
       });
+    }, () => {
+      if (refresher) { refresher.target.complete(); }
+      this.isLoaded = true;
+      this.networkError = true;
     });
   }
 
@@ -129,20 +127,15 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     if (willClose) {
       if (this.isToday(willClose)) {
         return this.translate.instant('page.opening-hours.closes')
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.closes')
         + this.weekday[willClose.getDay()]
-        + this.addZero(willClose.getHours()) + ':'
-        + this.addZero(willClose.getMinutes())
+        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
-    } else {
-      return '';
-    }
-    return '';
+    } else { return ''; }
   }
 
   closedUntil(index) {
@@ -151,14 +144,12 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     if (willChange) {
       if (this.isToday(willChange)) {
         return this.translate.instant('page.opening-hours.opens')
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       } else {
         return this.translate.instant('page.opening-hours.opens')
         + this.weekday[willChange.getDay()]
-        + this.addZero(willChange.getHours()) + ':'
-        + this.addZero(willChange.getMinutes())
+        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
         + this.translate.instant('page.opening-hours.time');
       }
     } else {
@@ -180,13 +171,6 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
   isToday(td) {
     const d = new Date();
     return td.getDate() === d.getDate() && td.getMonth() === d.getMonth() && td.getFullYear() === d.getFullYear();
-  }
-
-  addZero(i) {
-    if (i < 10) {
-      i = '0' + i;
-    }
-    return i;
   }
 
   ionViewDidEnter() {

@@ -4,7 +4,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar *ngIf="sourcesList">
+  <ion-toolbar *ngIf="sourcesList && !networkError">
     <ion-row class="filters">
         <ion-col class="col-with-arrow" no-padding size="1">
           <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="arrow-back"></ion-icon>
@@ -12,7 +12,7 @@
         <ion-col no-padding size="10">
           <ion-slides [options]="slideOptions">
             <ion-slide (click)="setNewsSource(i)" *ngFor="let category of categories; let i = index">
-              <p [class.selected]="selectedCategory === i">{{ category }}</p>
+              <ion-segment-button [class.selected]="selectedCategory === i">{{ category }}</ion-segment-button>
             </ion-slide>
           </ion-slides>
         </ion-col>
@@ -31,6 +31,8 @@
   <div align="center" *ngIf="!isLoaded" padding>
     <ion-spinner name="dots"></ion-spinner>
   </div>
+
+  <app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
 
   <div *ngFor="let article of newsList" class="news-article">
     <app-news-article  *ngIf="article.NewsSource.name == sourcesList[newsSource]" [article]="article"></app-news-article>

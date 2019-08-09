@@ -1,12 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
-import { CacheService } from 'ionic-cache';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RoomplanPage } from '../roomplan/roomplan.page';
-import {IHouse, IRoomApiRequest, IRoomRequestResponse, IRoom, ICampus} from 'src/app/lib/interfaces';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { WebHttpUrlEncodingCodec } from 'src/app/services/login-provider/lib';
+import { IHouse, IRoomRequestResponse, IRoom, ICampus } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import {CampusTabComponent} from '../../components/campus-tab/campus-tab.component';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-free-rooms',
@@ -22,17 +22,17 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   // vars
   housesFound: IHouse[] = [];
   time_slots: any;
+  timeLabels: string[] = [];
   current_timeslot: any;
-  current_location: string;
+  current_location: ICampus;
   error: HttpErrorResponse;
   no_timeslot = false;
 
   @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
 
   constructor(
-    private cache: CacheService,
-    private http: HttpClient,
-    private alertProvider: AlertService
+    private ws: WebserviceWrapperService,
+    private translate: TranslateService
   ) {
     super({ requireNetwork: true });
   }
@@ -44,6 +44,18 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     for (let i = 8; i < 22; i = i + 2) {
       const slot = {'lbl': i + ' - ' + (i + 2), 'value': i};
       this.time_slots.push(slot);
+
+      if (this.translate.currentLang === 'de') {
+        this.timeLabels.push(slot.lbl);
+      } else {
+        const begin = i === 12 ? 12 : i % 12;
+        const end = (i + 2) === 12 ? 12 : (i + 2) % 12;
+        let label: string = String(begin);
+        if (i > 11) { label += ' PM'; } else { label += ' AM'; }
+        label += ' - ' + end;
+        if ((i + 2) > 11) { label += ' PM'; } else { label += ' AM'; }
+        this.timeLabels.push(label);
+      }
     }
     this.select_timeslot = this.current_timeslot.start;
   }
@@ -94,11 +106,11 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
   /**
    * Switch campus location and reload info for new campus
-   * @param location - number as string representing campus
+   * @param campus {ICampus} the current campus
    */
   switchLocation(campus: ICampus) {
     this.housesFound = [];
-    this.current_location = campus.location_id;
+    this.current_location = campus;
     this.getRoomInfo();
   }
 
@@ -139,62 +151,51 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     }
 
     this.no_timeslot = false;
-    const location = this.current_location;
-
-    const roomRequest: IRoomApiRequest = {
-      authToken: this.config.authorization.credentials.accessToken,
-    };
-
-    const headers: HttpHeaders = new HttpHeaders()
-      .append('Authorization', roomRequest.authToken);
 
     const start = new Date();
     const end = new Date();
     start.setHours(this.current_timeslot.start);
     end.setHours(this.current_timeslot.end);
 
-    const params: HttpParams = new HttpParams({encoder: new WebHttpUrlEncodingCodec()})
-      .append('format', 'json')
-      .append('startTime', start.toISOString())
-      .append('endTime', end.toISOString())
-      .append('campus', location);
-
-    if (this.refresher != null) {
-      this.cache.removeItem('roomInfo' + location + start.toString() + end.toString());
-    }
-
-    const request = this.http.get(this.config.webservices.endpoint.roomsSearch, {headers: headers, params: params});
-    this.cache.loadFromObservable('roomInfo' + location + start.toString() + end.toString(), request).subscribe(
+    this.ws.call(
+      'roomsSearch',
+      <IRoomsRequestParams>{
+        campus: this.current_location,
+        timeSlot: {start: start, end: end}
+      }
+    ).subscribe(
       (response: IRoomRequestResponse) => {
         this.housesFound = [];
         this.error = null;
-        for (const response_room of response.rooms4TimeResponse.return) {
+        if (response && response.rooms4TimeResponse && response.rooms4TimeResponse.return) {
+          for (const response_room of response.rooms4TimeResponse.return) {
 
-          const split = response_room.split('.');
+            const split = response_room.split('.');
 
-          const room: IRoom = {
-            lbl: split.splice(2, 5).join('.')
-          };
-
-          let house: IHouse = null;
-          for (let i = 0; i < this.housesFound.length; i++) {
-            if (this.housesFound[i].lbl === split[1]) {
-              house = this.housesFound[i];
-              house.rooms.push(room);
-              this.housesFound[i] = house;
-            }
-          }
-
-          if (house == null) {
-            house = {
-              lbl: split[1],
-              rooms: [room],
-              expanded: false
+            const room: IRoom = {
+              lbl: split.splice(2, 5).join('.')
             };
-            this.housesFound.push(house);
-          }
 
-        }
+            let house: IHouse = null;
+            for (let i = 0; i < this.housesFound.length; i++) {
+              if (this.housesFound[i].lbl === split[1]) {
+                house = this.housesFound[i];
+                house.rooms.push(room);
+                this.housesFound[i] = house;
+              }
+            }
+
+            if (house == null) {
+              house = {
+                lbl: split[1],
+                rooms: [room],
+                expanded: false
+              };
+              this.housesFound.push(house);
+            }
+
+          }
+        } else { this.no_timeslot = true; }
 
         // sort elements for nicer display
         this.housesFound.sort(RoomplanPage.compareHouses);
@@ -207,18 +208,12 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
         }
       },
       (error: HttpErrorResponse) => {
-        console.log(error);
         this.error = error;
         this.housesFound = [];
         this.no_timeslot = true;
         if (this.refresher != null) {
           this.refresher.target.complete();
         }
-
-        this.alertProvider.showAlert({
-          alertTitleI18nKey: 'alert.title.error',
-          messageI18nKey: `alert.httpErrorStatus.${error.status}`
-        });
       }
     );
   }

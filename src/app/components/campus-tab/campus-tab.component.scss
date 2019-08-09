@@ -1,0 +1,23 @@
+ion-grid {
+    ion-col {
+        --ion-grid-column-padding: 0;
+    }
+
+    --ion-grid-padding: 0;
+}
+
+ion-segment-button.reorder-button {
+    max-width: 40px !important;
+    min-width: 30px !important;
+
+    ion-icon {
+        color: black;
+    }
+}
+
+ion-segment-button {
+    --padding-end: 5px;
+    --padding-start: 5px;
+    --margin-end: 0;
+    --margin-start: 0;
+}

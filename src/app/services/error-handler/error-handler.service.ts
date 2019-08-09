@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { ConfigService } from '../config/config.service';
+import { WebserviceWrapperService } from '../webservice-wrapper/webservice-wrapper.service';
+import { Logger, LoggingService } from 'ionic-logging-service';
 
 export interface IErrorLogging {
   message?: string;
@@ -16,7 +16,14 @@ export interface IErrorLogging {
 })
 export class ErrorHandlerService {
 
-  constructor(private http: HttpClient) { }
+  logger: Logger;
+
+  constructor(
+    private ws: WebserviceWrapperService,
+    private loggingService: LoggingService
+    ) {
+      this.logger = this.loggingService.getLogger('[/error-handler]');
+    }
 
   /**
    * @name logError
@@ -24,21 +31,11 @@ export class ErrorHandlerService {
    * @param {IErrorLogging} errorObject
    */
   logError(errorObject: IErrorLogging) {
-    const config = ConfigService.config;
-    const headers: HttpHeaders = new HttpHeaders()
-      .set('Authorization', config.webservices.apiToken);
-
-    console.log(`[ErrorService]: Logging error`);
-    console.log(errorObject);
-    this.http.post(
-      config.webservices.endpoint.logging,
-      errorObject,
-      {headers: headers}
-    ).subscribe(response => {
-        console.log(`[ErrorService]: Logged error: ${JSON.stringify(response)}`);
-      },
-      error => {
-        console.log(`[ErrorService]: Could not log error, because of yet another error: ${error}`);
-      });
+    this.logger.error('logError', errorObject);
+    this.ws.call('logging', errorObject).subscribe(response => {
+      this.logger.debug('logError', 'logged error', response);
+    }, error => {
+      this.logger.error('logError', 'could not log error, because of yet another error', error);
+    });
   }
 }

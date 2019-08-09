@@ -18,20 +18,19 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div align="center" *ngIf="isLoaded">
-    <ion-row nowrap justify-content-center>
-      <ion-col size="auto">
-        <ion-button size="small" expand="full" [ngClass]="showBasicCalendar ? 'activeCalendarButton' : 'calendarButton'"
-        (click)="showBasicCalendar = !showBasicCalendar;">{{ "page.mensa.date" | translate }}  <ion-icon slot="end" name="arrow-dropdown"></ion-icon></ion-button>
-      </ion-col>
-      <ion-col size="auto">
-        <ion-button size="small" expand="full" [ngClass]="onlyVeganFood ? 'activeCalendarButton' : 'calendarButton'" (click)="veganOnly()">{{ "page.mensa.vegan" | translate }}</ion-button>
-      </ion-col>
-      <ion-col size="auto">
-        <ion-button size="small" expand="full" [ngClass]="onlyVeggieFood ? 'activeCalendarButton' : 'calendarButton'" (click)="vegetarianOnly()">{{ "page.mensa.vegetarian" | translate }}</ion-button>
-      </ion-col>
-    </ion-row>
-  </div>
+  <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
+  <app-hint-box *ngIf="noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.functionNotAvailable"></app-hint-box>
+
+  <ion-item *ngIf="isLoaded && !noMensaForLocation && !networkError" lines="none" style="--padding-start: 5px; font-size: 0.95em;">
+    <ion-chip slot="start" outline="true" (click)="showBasicCalendar = !showBasicCalendar;">
+      <ion-icon name="calendar"></ion-icon>
+      {{ "page.mensa.date" | translate }}
+    </ion-chip>
+    <ion-label>Filter</ion-label>
+    <ion-select multiple="true" (ionChange)="filterMenus($event)" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}" [disabled]="filterKeywords.length === 0">
+      <ion-select-option *ngFor="let filter of filterKeywords">{{ filter }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
   <ion-calendar *ngIf="showBasicCalendar" [(ngModel)]="date"
   (change)="pickDate($event)"
@@ -40,18 +39,12 @@
   [format]="'YYYY-MM-DD'">
   </ion-calendar>
 
-  <div *ngIf="isLoaded">
+  <div *ngIf="isLoaded && !noMensaForLocation && !networkError">
     <ion-list lines="none" [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
       <app-mensa-meal *ngIf="!noMealsForDate"
-      [meals]="allMeals"
+      [meals]="displayedMeals"
       [mealForDate]="mealForDate"
-      [mealIsVegan]="mealIsVegan"
-      [mealIsVegetarian]="mealIsVegetarian"
-      [mealIsExpanded]="mealIsExpanded"
-      [allergenIsExpanded]="allergenIsExpanded"
-      [iconMapping]="iconMapping"
-      [onlyVeganFood]="onlyVeganFood"
-      [onlyVeggieFood]="onlyVeggieFood"></app-mensa-meal>
+      [iconMapping]="iconMapping"></app-mensa-meal>
 
       <ion-item-divider *ngIf="ulfMeals && !noUlfMealsForDate" color="light">
         <ion-label>
@@ -60,21 +53,16 @@
       </ion-item-divider>
 
       <app-mensa-meal *ngIf="ulfMeals && !noUlfMealsForDate"
-      [meals]="ulfMeals"
+      [meals]="displayedUlfMeals"
       [mealForDate]="ulfMealForDate"
-      [mealIsVegan]="ulfMealIsVegan"
-      [mealIsVegetarian]="ulfMealIsVegetarian"
-      [mealIsExpanded]="ulfMealIsExpanded"
-      [allergenIsExpanded]="ulfAllergenIsExpanded"
-      [iconMapping]="ulfIconMapping"
-      [onlyVeganFood]="onlyVeganFood"
-      [onlyVeggieFood]="onlyVeggieFood"></app-mensa-meal>
+      [iconMapping]="ulfIconMapping"></app-mensa-meal>
     </ion-list>
   </div>
 
-  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate">
+  <div *ngIf="(isLoaded && !hardRefresh) && noMealsForDate && noUlfMealsForDate && !networkError && mensaIsOpen && !noMensaForLocation">
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.mensa-nomeals-hint"></app-hint-box>
   </div>
+  <app-hint-box *ngIf="isLoaded && networkError && !noMensaForLocation" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
 
 </ion-content>
 
