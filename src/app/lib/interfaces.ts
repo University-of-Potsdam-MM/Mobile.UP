@@ -469,6 +469,7 @@ export interface ISetting {
   icon?: string;
   options?: Array<ISettingOption>;
   type: ESettingType;
+  mobileOnly?: boolean;
 }
 
 export interface ISettingOption {

@@ -9,26 +9,28 @@
 <ion-content>
 
   <ion-list *ngIf="settings_initializes" no-padding>
-    <div *ngFor="let setting of settings" style="border-bottom:solid #f4f4f4 2px !important" id="test_div">
-      <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
-        <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
-        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
-        <ion-toggle slot="end" checked="{{ setting.value }}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
-      </ion-item>
+    <div *ngFor="let setting of settings" id="test_div">
+      <div *ngIf="!(setting.mobileOnly && !(platform.is('ios') || platform.is('android')))" style="border-bottom:solid #f4f4f4 2px !important">
+        <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
+          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+          <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
+          <ion-toggle slot="end" checked="{{ setting.value }}" (ionChange)="changeBoolSetting(setting)"></ion-toggle>
+        </ion-item>
 
-      <ion-item-divider color="light" *ngIf="getSettingType(setting) == 'placeholder'">
-        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
-      </ion-item-divider>
+        <ion-item-divider color="light" *ngIf="getSettingType(setting) == 'placeholder'">
+          <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
+        </ion-item-divider>
 
-      <ion-item *ngIf="getSettingType(setting) !== 'boolean' && getSettingType(setting) !== 'placeholder'" lines="none">
-        <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
-        <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
-        <ion-select [value]="setting.value" [multiple]="setting.type === 5 ? 'true' : 'false'"
-        (ionChange)="setIonSelectSetting($event, setting)" [interfaceOptions]="customAlertOptions(setting)"
-        okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
-          <ion-select-option *ngFor="let option of setting.options" [value]="option.key">{{ getOptionLabel(setting, option) }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <ion-item *ngIf="getSettingType(setting) !== 'boolean' && getSettingType(setting) !== 'placeholder'" lines="none">
+          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+          <ion-label text-wrap>{{ "page.settings.setting." + setting.key + ".lbl" | translate }}</ion-label>
+          <ion-select [value]="setting.value" [multiple]="setting.type === 5 ? 'true' : 'false'"
+          (ionChange)="setIonSelectSetting($event, setting)" [interfaceOptions]="customAlertOptions(setting)"
+          okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+            <ion-select-option *ngFor="let option of setting.options" [value]="option.key">{{ getOptionLabel(setting, option) }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
     </div>
   </ion-list>
 

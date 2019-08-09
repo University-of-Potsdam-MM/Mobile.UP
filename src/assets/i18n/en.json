@@ -342,7 +342,8 @@
     "webpage": "Website",
     "submit": "Submit",
     "keep": "Keep",
-    "delete": "Delete"
+    "delete": "Delete",
+    "save": "Save"
   },
   "alert": {
     "title": {
@@ -367,7 +368,8 @@
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",
-    "redirect-website-app": "Redirect to external service?",
+    "redirect-website-app": "Redirect to external app?",
+    "redirect-first-start": "Which services should open an external app instead of a website?",
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",

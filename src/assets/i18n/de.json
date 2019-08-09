@@ -342,7 +342,8 @@
     "webpage": "Webseite",
     "submit": "Abschicken",
     "keep": "Behalten",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "save": "Speichern"
   },
   "alert": {
     "title": {
@@ -367,7 +368,8 @@
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",
-    "redirect-website-app": "Auf externen Dienst weiterleiten?",
+    "redirect-website-app": "Auf externe App weiterleiten?",
+    "redirect-first-start": "Für welche Dienste soll eine externe App anstatt der Website geöffnet werden?",
     "contact-export-success": "Kontakt gespeichert!",
     "contact-export-fail": "Fehler beim Speichern des Kontaktes.",
     "contact-exists": "Kontakt existiert bereits.",
