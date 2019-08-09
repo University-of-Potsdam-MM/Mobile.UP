@@ -22,7 +22,7 @@ export class LectureSearchModalPage implements OnInit {
     }
 
     ngOnInit() {
-        if (this.item.childNodes) {
+        if (this.item && this.item.childNodes) {
             this.hasSubTree = true;
         } else { this.hasSubTree = false; }
 
@@ -36,6 +36,8 @@ export class LectureSearchModalPage implements OnInit {
     }
 
     unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
-        return s.replace(/&colon;/g, ':');
+        if (s !== undefined) {
+            return s.replace(/&colon;/g, ':');
+        } else { return ''; }
     }
 }

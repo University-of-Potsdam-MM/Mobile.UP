@@ -299,13 +299,26 @@ export class WebserviceWrapperService {
     },
     nominatim: {
       buildRequest: (params, url) => {
+        let lat = '';
+        let lon = '';
+        if (
+          this.config
+          && this.config.campus
+          && this.config.campus[0]
+          && this.config.campus[0].coordinates
+          && this.config.campus[0].coordinates[0]
+          && this.config.campus[0].coordinates[1]
+        ) {
+          lat = this.config.campus[0].coordinates[0].toString();
+          lon = this.config.campus[0].coordinates[1].toString();
+        }
         return this.http.get(
           url,
           {
             params: {
               format: 'jsonv2',
-              lat: this.config.campus[0].coordinates[0].toString(),
-              lon: this.config.campus[0].coordinates[1].toString()
+              lat: lat,
+              lon: lon
             }
           }
         );
@@ -440,7 +453,7 @@ export class WebserviceWrapperService {
     } else { this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, response); }
 
     // PULS simply responds with "no user rights" if credentials are incorrect
-    if (response.message === 'no user rights') {
+    if (response && response.message && response.message === 'no user rights') {
       this.alertService.showAlert({
         headerI18nKey: 'alert.title.error',
         messageI18nKey: 'alert.token_valid_credentials_invalid'

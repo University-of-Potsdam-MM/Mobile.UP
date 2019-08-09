@@ -61,7 +61,7 @@
 
       <!-- custom template for event in weekview -->
       <ng-template #templateWeekViewEvent let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style]="getColor(displayEvent)">
+        <div *ngIf="displayEvent && displayEvent.event && displayEvent.event.title" class="calendar-event-inner" [style]="getColor(displayEvent)">
           <span *ngIf="!isMobile" class="eventTitle">{{ displayEvent.event.title }}</span>
           <span *ngIf="isMobile" class="eventTitle">{{ displayEvent.event.title.charAt(0) }}</span>
         </div>
@@ -69,7 +69,7 @@
 
       <!-- custom template for event in dayview -->
       <ng-template #templateDayViewEvent let-displayEvent="displayEvent">
-        <div class="calendar-event-inner" [style]="getColor(displayEvent)">
+        <div *ngIf="displayEvent && displayEvent.event && displayEvent.event.title" class="calendar-event-inner" [style]="getColor(displayEvent)">
           <span class="eventTitle">{{displayEvent.event.title}}</span>
         </div>
       </ng-template>

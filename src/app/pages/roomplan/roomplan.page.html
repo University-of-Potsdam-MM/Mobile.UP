@@ -49,11 +49,11 @@
           <div *ngFor="let room of house.rooms">
             <ion-item (click)="expandRoom(house.lbl,room.lbl)">
               <ion-label no-margin>
-                <h2>{{room.lbl}}<ion-badge color="secondary">{{room.events.length}}</ion-badge></h2>
+                <h2 *ngIf="room.lbl">{{room.lbl}}<ion-badge *ngIf="room.events" color="secondary">{{room.events.length}}</ion-badge></h2>
               </ion-label>
               <ion-icon [name]="!room.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
             </ion-item>
-            <div *ngIf="room.expanded">
+            <div *ngIf="room.expanded && room.events">
               <ion-item margin-left *ngFor="let event of room.events">
                 <ion-label text-wrap>
                   <u>

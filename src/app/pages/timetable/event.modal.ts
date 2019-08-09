@@ -30,19 +30,33 @@ export class EventModalPage implements OnInit {
     }
 
     ngOnInit() {
-        for (let i = 0; i < this.events.length; i++) {
-            const startArray = this.events[i].eventDetails.startDate.split('.');
-            const endArray = this.events[i].eventDetails.endDate.split('.');
-            this.events[i].eventDetails.startDate = new Date(
-                startArray[2],
-                startArray[1],
-                startArray[0]
-            );
-            this.events[i].eventDetails.endDate = new Date(
-                endArray[2],
-                endArray[1],
-                endArray[0]
-            );
+        if (this.events) {
+            for (let i = 0; i < this.events.length; i++) {
+                if (
+                    this.events[i].eventDetails
+                    && this.events[i].eventDetails.startDate
+                    && this.events[i].eventDetails.endDate
+                ) {
+                    const startArray = this.events[i].eventDetails.startDate.split('.');
+                    const endArray = this.events[i].eventDetails.endDate.split('.');
+
+                    if (startArray.length > 2) {
+                        this.events[i].eventDetails.startDate = new Date(
+                            startArray[2],
+                            startArray[1],
+                            startArray[0]
+                        );
+                    }
+
+                    if (endArray.length > 2) {
+                        this.events[i].eventDetails.endDate = new Date(
+                            endArray[2],
+                            endArray[1],
+                            endArray[0]
+                        );
+                    }
+                }
+            }
         }
     }
 }

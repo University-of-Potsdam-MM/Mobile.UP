@@ -164,13 +164,17 @@ export class PracticePage extends AbstractPage {
     if (practice.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS1) => {
-          return practice.includes(this.practiceMapping(ADS1.art));
+          let key = '';
+          if (ADS1 && ADS1.art) { key = this.practiceMapping(ADS1.art); }
+          return practice.includes(key);
         }
       );
 
       tmpFav = jquery.grep(
         tmpFav, (ADS2) => {
-          return practice.includes(this.practiceMapping(ADS2.art));
+          let key = '';
+          if (ADS2 && ADS2.art) { key = this.practiceMapping(ADS2.art); }
+          return practice.includes(key);
         }
       );
     }
@@ -179,13 +183,17 @@ export class PracticePage extends AbstractPage {
     if (studyarea.length > 0) {
       tmp = jquery.grep(
         tmp, (ADS3) => {
-          return studyarea.includes(ADS3.field);
+          let key = '';
+          if (ADS3 && ADS3.field) { key += ADS3.field; }
+          return studyarea.includes(key);
         }
       );
 
       tmpFav = jquery.grep(
         tmpFav, (ADS4) => {
-          return studyarea.includes(ADS4.field);
+          let key = '';
+          if (ADS4 && ADS4.field) { key += ADS4.field; }
+          return studyarea.includes(key);
         }
       );
     }

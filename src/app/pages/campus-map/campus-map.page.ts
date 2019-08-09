@@ -137,13 +137,17 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
         const properties = val.layer.feature.properties;
-        let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
-        if (properties.description) {
-          content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+        if (properties.Name && properties.campus.pretty_name) {
+          let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
+          if (properties.description) {
+            content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
+          }
+
+          tip.innerHTML = content;
+          L.DomUtil.addClass(tip, 'search-tip');
+          tip['_text'] = content;
         }
-        tip.innerHTML = content;
-        L.DomUtil.addClass(tip, 'search-tip');
-        tip['_text'] = content;
+
         return tip;
       }
     });
@@ -249,7 +253,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
           this.setPosition(positionResponse);
           enableCallback();
         } else {
-          this.logger.debug('enableGeolocation', `error getting position: ${positionResponse.message}`);
+          this.logger.debug('enableGeolocation', `error getting position: ${positionResponse.message ? positionResponse.message : ''}`);
           disableCallback();
         }
       },
@@ -333,14 +337,16 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @param {string | name} query
    */
   queryCampus(query: string | number) {
-    return this.config.campus.find(
-      (campus: ICampus) => {
-        return campus.location_id === query
-          || campus.location_id === query.toString()
-          || campus.name === query
-          || campus.pretty_name === query;
-      }
-    );
+    if (this.config.campus) {
+      return this.config.campus.find(
+        (campus: ICampus) => {
+          return campus.location_id === query
+            || campus.location_id === query.toString()
+            || campus.name === query
+            || campus.pretty_name === query;
+        }
+      );
+    } else { return undefined; }
   }
 
   /**

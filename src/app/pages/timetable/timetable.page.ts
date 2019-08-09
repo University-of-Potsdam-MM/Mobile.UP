@@ -78,15 +78,23 @@ export class TimetablePage extends AbstractPage {
         {session: this.session}
       ).subscribe(
         (response: IPulsAPIResponse_getStudentCourses) => {
-          if (response.message && response.message === 'no user rights') {
+          if (response && response.message && response.message === 'no user rights') {
             this.noUserRights = true;
             this.isLoading = false;
           } else {
             this.noUserRights = false;
             this.isLoading = false;
-            this.eventSource = createEventSource(
-              response.studentCourses.student.actualCourses.course
-            );
+            if (
+              response
+              && response.studentCourses
+              && response.studentCourses.student
+              && response.studentCourses.student.actualCourses
+              && response.studentCourses.student.actualCourses.course
+            ) {
+              this.eventSource = createEventSource(
+                response.studentCourses.student.actualCourses.course
+              );
+            }
           }
         }, () => { this.isLoading = false; }
       );
@@ -178,7 +186,7 @@ export class TimetablePage extends AbstractPage {
    * @param time
    */
   timeSelected(time) {
-    if (this.calendarOptions.calendarMode === 'month' && time.events.length > 0) {
+    if (this.calendarOptions.calendarMode === 'month' && time && time.events && time.events.length > 0) {
       this.calendarOptions.calendarMode = 'day';
     }
   }
@@ -202,8 +210,10 @@ export class TimetablePage extends AbstractPage {
   }
 
   getColor(event) {
-    const eventColor = this.courseIdToHexColor(event.event.courseDetails.courseId);
-    return this.sanitizer.bypassSecurityTrustStyle('background-color: ' + eventColor + '!important;');
+    if (event && event.event && event.event.courseDetails && event.event.courseDetails.courseId) {
+      const eventColor = this.courseIdToHexColor(event.event.courseDetails.courseId);
+      return this.sanitizer.bypassSecurityTrustStyle('background-color: ' + eventColor + '!important;');
+    } else { return this.sanitizer.bypassSecurityTrustStyle(''); }
   }
 
   /**
@@ -223,7 +233,7 @@ export class TimetablePage extends AbstractPage {
       let i;
       let found = false;
       for (i = 0; i < this.courseToHex.length; i++) {
-        if (this.courseToHex[i] && this.courseToHex[i][0] === hex) {
+        if (this.courseToHex[i] && this.courseToHex[i][0] && this.courseToHex[i][0] === hex) {
           found = true;
           return this.courseToHex[i][1];
         }

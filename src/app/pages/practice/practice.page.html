@@ -87,8 +87,8 @@
               <h3 text-wrap>{{ADS.title}}</h3>
               <ion-grid>
                 <ion-row>
-                  <ion-col size="6"><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
-                  <ion-col size="6" *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
+                  <ion-col><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
+                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"><p style="color: gray">{{ADS.firm}}</p></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-label>

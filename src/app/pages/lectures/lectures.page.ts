@@ -165,7 +165,8 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   async openItem(index) {
     const name = this.searchResults[index];
-    const ref = this.resultKeys[index].replace('courseName', 'courseId');
+    let ref = this.resultKeys[index];
+    if (ref) { ref = ref.replace('courseName', 'courseId'); }
     const isCourse = utils.contains(ref, 'courseId');
 
     const pathKeys = utils.convertToArray(ref.split('.'));
@@ -183,7 +184,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
         toOpen = toOpen[pathKeys[i]];
       }
 
-      if (!Array.isArray(toOpen)) {
+      if (toOpen && !Array.isArray(toOpen)) {
         let treeItemName;
         if (toOpen.courseName) {
           treeItemName = toOpen.courseName;
@@ -234,6 +235,8 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
-    return s.replace(/&colon;/g, ':');
+    if (s !== undefined) {
+      return s.replace(/&colon;/g, ':');
+    } else { return ''; }
   }
 }

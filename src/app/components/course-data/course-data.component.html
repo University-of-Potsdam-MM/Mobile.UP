@@ -88,7 +88,16 @@
         </ion-row>
     </ion-grid>
 </ion-item>
-<ion-list class="courseData" *ngIf="course.courseId && courseData && courseGroups && courseGroups.length > 0">
+<ion-list *ngIf="
+course.courseId
+&& courseData
+&& courseData.courseData
+&& courseData.courseData.course
+&& convertToArray(this.courseData.courseData.course)[0].events
+&& convertToArray(this.courseData.courseData.course)[0].events.event
+&& courseGroups
+&& courseGroups.length > 0
+" class="courseData" >
     <span *ngFor="let group of courseGroups; let i = index" class="groupTable courseData">
       <ion-item lines="none" style="font-weight: bold">
           <ion-label>

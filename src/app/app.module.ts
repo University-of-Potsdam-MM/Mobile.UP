@@ -56,7 +56,7 @@ export class IonicGestureConfig extends HammerGestureConfig {
       const mc = new (<any> window).Hammer(element);
 
       for (const eventName in this.overrides) {
-          if (eventName) {
+          if (mc && eventName) {
               mc.get(eventName).set(this.overrides[eventName]);
           }
       }
