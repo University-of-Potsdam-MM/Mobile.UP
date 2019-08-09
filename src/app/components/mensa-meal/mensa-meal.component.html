@@ -29,8 +29,8 @@
   <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
     <ion-thumbnail *ngIf="meal.type" name="" slot="start"></ion-thumbnail>
     <ion-label text-wrap>
-      <span *ngIf="meal.prices.student">{{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }}</span> <br *ngIf="meal.prices.student">
-      <span *ngIf="meal.prices.guest">{{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }}</span> <br *ngIf="meal.prices.guest">
+      <span *ngIf="meal.prices && meal.prices.student">{{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }}</span> <br *ngIf="meal.prices && meal.prices.student">
+      <span *ngIf="meal.prices && meal.prices.guest">{{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }}</span> <br *ngIf="meal.prices && meal.prices.guest">
       <div *ngIf="meal.allergens">
         <ion-button *ngFor="let allergen of meal.allergens; let j = index" size="small" fill="outline" (click)="expandAllergen(i,j)">
           <span *ngIf="allergen.shortName">({{ allergen.shortName }})</span>

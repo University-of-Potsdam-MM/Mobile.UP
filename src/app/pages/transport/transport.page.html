@@ -18,9 +18,9 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div align="center" *ngIf="isLoaded && departures[0]">
+  <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-item-divider>
-      <ion-label text-wrap>
+      <ion-label *ngIf="departures[0].stop" text-wrap>
         {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
       </ion-label>
     </ion-item-divider>

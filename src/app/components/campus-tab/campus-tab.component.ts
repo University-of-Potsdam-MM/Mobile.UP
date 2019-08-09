@@ -159,9 +159,11 @@ export class CampusTabComponent implements OnInit {
    */
   async initCampusTab() {
     const defaultCampusName = await this.settings.getSettingValue('campus');
-    this.selectCampus(
-      this.campusList.find(c =>  c.pretty_name === defaultCampusName)
-    );
+    if (this.campusList) {
+      this.selectCampus(
+        this.campusList.find(c =>  c.pretty_name === defaultCampusName)
+      );
+    }
   }
 
   async openModal() {
