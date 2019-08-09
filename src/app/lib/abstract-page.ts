@@ -93,7 +93,9 @@ export abstract class AbstractPage  {
         params => {
           const parsedParams = {};
           for (const k in params) {
-            parsedParams[k] = JSON.parse(params[k]);
+            if (params.hasOwnProperty(k)) {
+              parsedParams[k] = JSON.parse(params[k]);
+            }
           }
           if (!isEmptyObject(parsedParams)) {
             this.setMenuStatus(parsedParams['menu']);
@@ -138,12 +140,12 @@ export abstract class AbstractPage  {
      * @param module {IModule} module to be used
      * @param params {any} params {any} params that should by passed on
      */
-    openModule(module: IModule, params: any = {}) {
-      if (module.url) {
-        this.webIntent.handleWebIntentForModule(module.componentName);
+    openModule(moduleToOpen: IModule, params: any = {}) {
+      if (moduleToOpen.url) {
+        this.webIntent.handleWebIntentForModule(moduleToOpen);
       } else {
         this.navCtrl.navigateForward(
-          '/' + module.componentName,
+          '/' + moduleToOpen.componentName,
           {state: params}
         );
       }
@@ -155,9 +157,9 @@ export abstract class AbstractPage  {
      * @param params {any} params that should by passed on
      */
     openModuleByName(moduleName: string, params: any = {}) {
-      const module = this.config.modules[moduleName];
-      if (module) {
-        this.openModule(module, params);
+      const moduleToOpen = this.config.modules[moduleName];
+      if (moduleToOpen) {
+        this.openModule(moduleToOpen, params);
       } else {
         this.logger.error(`Cannot open unknown module '${moduleName}'`);
       }

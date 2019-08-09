@@ -95,10 +95,13 @@ export const SETTINGS = [
     },
     {
         key: 'appRedirect',
-        value: false,
-        type: ESettingType.boolean,
+        value: [],
+        options: [
+            {key: 'Moodle.UP'},
+            {key: 'Reflect.UP'}
+        ],
+        type: ESettingType.checkbox,
         icon: 'appstore',
-        options: [],
         mobileOnly: true
-    },
+    }
 ];

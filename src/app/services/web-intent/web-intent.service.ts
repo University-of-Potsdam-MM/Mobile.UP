@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
-import { IModule } from '../../lib/interfaces';
+import { IModule, ISetting } from '../../lib/interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, AlertController } from '@ionic/angular';
 import { AppAvailability } from '@ionic-native/app-availability/ngx';
@@ -10,6 +10,9 @@ import { ConfigService } from '../config/config.service';
 import { ISession } from '../login-provider/interfaces';
 import { SettingsService } from '../settings/settings.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { utils } from 'src/app/lib/util';
+import { Storage } from '@ionic/storage';
+import * as Constants from '../../services/settings/settings_config';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +50,7 @@ export class WebIntentService implements OnInit {
     private appAvailability: AppAvailability,
     private safari: SafariViewController,
     private alertCtrl: AlertController,
+    private storage: Storage,
     private loggingService: LoggingService
     ) {
       this.logger = this.loggingService.getLogger('[/web-intent-service]');
@@ -85,7 +89,7 @@ export class WebIntentService implements OnInit {
           }
         ]
       });
-      alert.present();
+      await alert.present();
     } else { this.handleWebIntentForWebsite(url); }
   }
 
@@ -94,55 +98,52 @@ export class WebIntentService implements OnInit {
    * @description handles the webIntent for a page component and opens a webpage or the installed app
    * @param {string} moduleName - moduleName which is to be opened
    */
-  async handleWebIntentForModule(moduleName: string) {
-    const moduleConfig: IModule = ConfigService.config.modules[moduleName];
-
+  async handleWebIntentForModule(moduleConfig: IModule) {
     if (moduleConfig) {
-      // in app context therefore display three buttons
       if (this.platform.is('cordova') && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
 
         if (moduleConfig.appId) {
+          const setPreference = await this.storage.get('setExternalAppPreference');
+
+          if (setPreference === null) {
+            this.alertAppPreferences(moduleConfig);
+            return;
+          }
+
           const showDialog = await this.settingsProvider.getSettingValue('showDialog');
-          const appRedirect = await this.settingsProvider.getSettingValue('appRedirect');
+          const appRedirectArray = await this.settingsProvider.getSettingValue('appRedirect');
+          const moduleName = this.translate.instant('page.' + moduleConfig.componentName + '.title');
+          let appRedirect = false;
+
+          if (
+            appRedirectArray
+            && Array.isArray(appRedirectArray)
+            && utils.isInArray(appRedirectArray, moduleName)
+          ) { appRedirect = true; }
+
           if (showDialog) {
-
-            let buttons = [];
             if (appRedirect) {
-              buttons = [
-                {
-                  text: this.translate.instant('button.cancel'),
-                  role: 'cancel',
-                  handler: () => {}
-                },
-                {
-                  text: this.translate.instant('button.app'),
-                  handler: () => {
-                    this.launchExternalApp(moduleConfig.appId, moduleConfig.bundleName, moduleConfig.urlAndroid, moduleConfig.urlIOS);
+              const alert = await this.alertCtrl.create({
+                header: this.translate.instant('alert.title.redirect'),
+                message: this.translate.instant('alert.redirect-website-app'),
+                buttons: [
+                  {
+                    text: this.translate.instant('button.cancel'),
+                    role: 'cancel',
+                    handler: () => {}
+                  },
+                  {
+                    text: this.translate.instant('button.ok'),
+                    handler: () => {
+                      this.launchExternalApp(moduleConfig.appId, moduleConfig.bundleName, moduleConfig.urlAndroid, moduleConfig.urlIOS);
+                    }
                   }
-                }
-              ];
+                ]
+              });
+              await alert.present();
             } else {
-              buttons = [
-                {
-                  text: this.translate.instant('button.cancel'),
-                  role: 'cancel',
-                  handler: () => {}
-                },
-                {
-                  text: this.translate.instant('button.webpage'),
-                  handler: () => {
-                    this.handleWebIntentForWebsite(moduleConfig.url);
-                  }
-                }
-              ];
+              this.permissionPromptWebsite(moduleConfig.url);
             }
-
-            const alert = await this.alertCtrl.create({
-              header: this.translate.instant('alert.title.redirect'),
-              message: this.translate.instant('alert.redirect-website-app'),
-              buttons: buttons
-            });
-            alert.present();
           } else {
             if (appRedirect) {
               this.launchExternalApp(moduleConfig.appId, moduleConfig.bundleName, moduleConfig.urlAndroid, moduleConfig.urlIOS);
@@ -256,4 +257,57 @@ export class WebIntentService implements OnInit {
       }
     );
   }
+
+  async alertAppPreferences(moduleConfig: IModule) {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('page.settings.setting.appRedirect.lbl'),
+      message: this.translate.instant('alert.redirect-first-start'),
+      backdropDismiss: false,
+      inputs: [
+        {
+          name: 'Moodle.UP',
+          type: 'checkbox',
+          label: 'Moodle.UP',
+          value: 'Moodle.UP',
+          checked: false
+        },
+        {
+          name: 'Reflect.UP',
+          type: 'checkbox',
+          label: 'Reflect.UP',
+          value: 'Reflect.UP',
+          checked: false
+        }
+      ],
+      buttons: [
+        {
+          text: this.translate.instant('button.save'),
+          handler: () => { this.storage.set('setExternalAppPreference', true); }
+        }
+      ]
+    });
+
+    await alert.present();
+    const result = await alert.onWillDismiss();
+
+    let value = [];
+    if (result && result.data && result.data.values) {
+      value = result.data.values;
+    }
+
+    const settings: ISetting[] = Constants.SETTINGS;
+    let setting: ISetting;
+    for (let i = 0; i < settings.length; i++) {
+      if (settings[i].key === 'appRedirect') {
+        setting = settings[i];
+      }
+    }
+
+    setting.value = value;
+    this.logger.debug('saveSettings', 'saved setting', setting, value);
+    this.storage.set('settings.' + setting.key, setting).then(() => {
+      this.handleWebIntentForModule(moduleConfig);
+    });
+  }
+
 }
