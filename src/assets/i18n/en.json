@@ -72,6 +72,15 @@
       "examiner": "Examiner",
       "study": "Study"
     },
+    "library-account": {
+      "title": "UB-Account",
+      "returnUntil": "return until",
+      "fees": "Fees",
+      "loanItems": "Loaned items",
+      "notRenewable": "Items that are grayed out can not be renewed.",
+      "days": "Days",
+      "noLoanItems": "No loaned items found."
+    },
     "library-search": {
       "title": "Library search",
       "titleDetail": "Detail view",
@@ -343,7 +352,8 @@
     "submit": "Submit",
     "keep": "Keep",
     "delete": "Delete",
-    "save": "Save"
+    "save": "Save",
+    "renew": "Renew"
   },
   "alert": {
     "title": {

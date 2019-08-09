@@ -72,6 +72,15 @@
       "examiner": "Prüfer",
       "study": "Studium"
     },
+    "library-account": {
+      "title": "UB-Benutzerkonto",
+      "returnUntil": "abzugeben am",
+      "fees": "Gebühren",
+      "loanItems": "Geliehene Items",
+      "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
+      "days": "Tage",
+      "noLoanItems": "Keine ausgeliehenen Items gefunden."
+    },
     "library-search": {
       "title": "Bibliothekssuche",
       "titleDetail": "Detailansicht",
@@ -343,7 +352,8 @@
     "submit": "Abschicken",
     "keep": "Behalten",
     "delete": "Löschen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "renew": "Verlängern"
   },
   "alert": {
     "title": {
