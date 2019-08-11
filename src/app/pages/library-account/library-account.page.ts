@@ -53,7 +53,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       'renewals': 0,
       'reminder': 0,
       'starttime': '2014-05-08T12:37Z',
-      'endtime': '2020-06-09',
+      'endtime': '2019-09-09',
       'cancancel': false,
       'canrenew': true,
       }, {
@@ -74,7 +74,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       'label': 'EDU SED 01',
       'queue': 0,
       'starttime': '2014-05-12T18:07Z',
-      'endtime': '2015-01-01',
+      'endtime': '2019-08-01',
       'cancancel': true,
       'canrenew': true,
       'storage': 'pickup service desk',
@@ -98,6 +98,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   itemsLoaded;
   feesLoaded;
   noLoanItems = true;
+  activeSegment = 'loan';
   // uri_escaped_patron_identifier;
   // endpoint;
 

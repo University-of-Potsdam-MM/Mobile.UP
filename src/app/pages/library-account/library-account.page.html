@@ -4,6 +4,16 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.library-account.title" | translate }}</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="activeSegment">
+      <ion-segment-button value="loan" (click)="activeSegment = 'loan'">
+        <ion-label>Ausleihe</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="reservation" (click)="activeSegment = 'reservation'">
+        <ion-label>Reservierung</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -19,7 +29,7 @@
   <ion-item *ngIf="userLoaded" lines="none">
     <ion-label><b>{{ user.name }}</b></ion-label>
   </ion-item>
-  <ion-item *ngIf="feesLoaded" lines="none">
+  <ion-item *ngIf="feesLoaded && activeSegment == 'loan'" lines="none">
     <ion-label>{{ "page.library-account.fees" | translate }}: <span class="feeAmount">{{ fees.amount }}</span></ion-label>
   </ion-item>
 
@@ -27,11 +37,12 @@
   <span *ngIf="itemsLoaded && !noLoanItems">
     <ion-list>
       <ion-item-divider color="light" lines="none">
-        <ion-label>{{ "page.library-account.loanItems" | translate }}</ion-label>
+        <ion-label *ngIf="activeSegment == 'loan'">{{ "page.library-account.loanItems" | translate }}</ion-label>
+        <ion-label *ngIf="activeSegment == 'reservation'">Reservierte Items</ion-label>
         <ion-label slot="end" padding-end>{{ "page.library-account.days" | translate }}</ion-label>
       </ion-item-divider>
       <span *ngFor="let item of items.doc; let i = index">
-        <ion-item *ngIf="item.status === 3" lines="none">
+        <ion-item *ngIf="item.status === 3 && !(activeSegment == 'reservation' && !itemStatus[i].isRenewable)" lines="none">
           <ion-checkbox slot="start" [disabled]="!itemStatus[i].isRenewable" [(ngModel)]="itemStatus[i].isChecked"></ion-checkbox>
           <ion-label text-wrap>
             {{ item.about }}
@@ -45,8 +56,9 @@
         </ion-item>
       </span>
     </ion-list>
-    <ion-button (click)="renewItems()" padding-start [disabled]="validateCheckboxes()">{{ "button.renew" | translate }}</ion-button>
-    <app-hint-box *ngIf="grayedOutItemsHint" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.notRenewable"></app-hint-box>
+    <ion-button *ngIf="activeSegment == 'loan'" (click)="renewItems()" padding-start [disabled]="validateCheckboxes()">{{ "button.renew" | translate }}</ion-button>
+    <ion-button *ngIf="activeSegment == 'reservation'" (click)="renewItems()" padding-start [disabled]="validateCheckboxes()">Stornieren</ion-button>
+    <app-hint-box *ngIf="grayedOutItemsHint && activeSegment == 'loan'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.notRenewable"></app-hint-box>
   </span>
   <app-hint-box *ngIf="itemsLoaded && noLoanItems" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.noLoanItems"></app-hint-box>
 </ion-content>
