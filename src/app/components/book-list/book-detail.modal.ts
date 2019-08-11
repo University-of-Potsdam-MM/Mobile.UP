@@ -245,16 +245,19 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.abstract);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].indexOf('--') >= 0) {
-          const toc = tmp[i].split('--');
+        let tocToSplit = tmp[i];
+        if (tocToSplit && tocToSplit._) { tocToSplit = tocToSplit._; }
+
+        if (tocToSplit && tocToSplit.indexOf('--') >= 0) {
+          const toc = tocToSplit.split('--');
           for (j = 0; j < toc.length; j++) {
             if (toc[j] !== '') {
               this.bookDetails.toc.push(toc[j]);
               this.bookDetails.noDetails = false;
             }
           }
-        } else {
-          this.bookDetails.abstract += tmp[i];
+        } else if (tocToSplit) {
+          this.bookDetails.abstract += tocToSplit;
           this.bookDetails.noDetails = false;
         }
       }

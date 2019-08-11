@@ -116,12 +116,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
               }
             }
 
-            this.logger.debug('searchLibrary', this.numberOfRecords, this.bookList);
-
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           }, error => {
-            this.logger.error('searchLibrary', 'XML parsing', error);
+            this.logger.error('searchLibrary XML parsing', error);
             this.isLoaded = true;
             if (infiniteScroll) { infiniteScroll.target.complete(); }
           });
