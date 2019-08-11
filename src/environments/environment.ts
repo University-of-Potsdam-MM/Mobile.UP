@@ -21,6 +21,7 @@ export const environment = {
     },
     'localStorageAppender': {
       'localStorageKey': 'localLogStorage',
+      'maxMessages': 50,
       'threshold': 'ALL'
     },
   }
