@@ -109,8 +109,8 @@ export class WebserviceWrapperService {
     // by default the response will be passed on
     responseCallback: (response: any, wsName) => {
       const stringResponse = JSON.stringify(response);
-      if (stringResponse.length > 100000) {
-        this.logger.debug('responseCallback', `calling '${wsName}': `, stringResponse.substring(0, 100000));
+      if (stringResponse.length > 30000) {
+        this.logger.debug('responseCallback', `calling '${wsName}': `, stringResponse.substring(0, 30000));
       } else { this.logger.debug('responseCallback', `calling '${wsName}': `, response); }
       return response;
     },
@@ -448,8 +448,8 @@ export class WebserviceWrapperService {
 
   pulsResponseCallback(response, wsName) {
     const stringResponse = JSON.stringify(response);
-    if (stringResponse.length > 100000) {
-      this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, stringResponse.substring(0, 100000));
+    if (stringResponse && stringResponse.length > 30000) {
+      this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, stringResponse.substring(0, 30000));
     } else { this.logger.debug('pulsResponseCallback', `calling '${wsName}': `, response); }
 
     // PULS simply responds with "no user rights" if credentials are incorrect
