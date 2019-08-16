@@ -14,15 +14,7 @@
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item>
-    <ion-label>{{ "page.roomplan.date" | translate }}</ion-label>
-    <ion-select [(ngModel)]="select_day" (ionChange)="changeDay()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
-      <ion-select-option *ngFor="let day of days" [value]="day.value">
-        <span *ngIf="translate.currentLang === 'de'">{{day.lbl | date:'dd.MM.yyyy'}}</span>
-        <span *ngIf="translate.currentLang !== 'de'">{{day.lbl | date:'MM/dd/yyyy'}}</span>
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
+  <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
 
   <ng-template #noRoomsFoundTemplate>
     <app-hint-box hintTextI18nKey="page.roomplan.no_rooms_hintText"

@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { MensaPage } from './mensa.page';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { CalendarModule } from 'ion2-calendar';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
 
@@ -22,7 +21,6 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    CalendarModule,
     ComponentsModule,
     TranslateModule.forChild({
       loader: {

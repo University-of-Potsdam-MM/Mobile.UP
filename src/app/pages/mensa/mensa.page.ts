@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
@@ -19,18 +18,9 @@ import * as opening from 'opening_hours';
 })
 export class MensaPage extends AbstractPage {
 
-  // calendar variables
-  showBasicCalendar = false;
-  date = moment();
-  type: 'moment';
-  optionsBasic: CalendarComponentOptions = {
-    weekdays: this.getWeekdays(),
-    showMonthPicker: false,
-    weekStart: 1
-  };
-
   filterKeywords = [];
   currentDate = moment();
+  selectedDate = moment();
 
   allMeals: IMeals[] = [];
   displayedMeals: IMeals[] = [];
@@ -178,7 +168,7 @@ export class MensaPage extends AbstractPage {
 
     this.hardRefresh = false;
     this.isLoaded = true;
-    this.pickDate(this.date);
+    this.pickDate(this.selectedDate);
   }
 
   filterMenus(event) {
@@ -221,10 +211,7 @@ export class MensaPage extends AbstractPage {
   }
 
   pickDate($event) {
-    setTimeout(() => {
-      this.showBasicCalendar = false;
-    }, 100);
-
+    this.selectedDate = $event;
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
@@ -254,12 +241,6 @@ export class MensaPage extends AbstractPage {
     }
   }
 
-  getWeekdays(): string[] {
-    if (this.translate.currentLang === 'de') {
-      return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-    } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
-  }
-
   getOpening() {
     this.mensaIsOpen = true;
     const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
@@ -284,4 +265,5 @@ export class MensaPage extends AbstractPage {
       });
     });
   }
+
 }

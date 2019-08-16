@@ -19,6 +19,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campus-map-feature-modal.component';
 import { CourseDataComponent } from './course-data/course-data.component';
 import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
     BookLocationComponent,
     CampusMapFeatureModalComponent,
     CourseDataComponent,
-    CampusReorderModalPage
+    CampusReorderModalPage,
+    DatePickerComponent
   ],
   imports: [
     IonicModule,
@@ -61,7 +63,8 @@ import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
     EventViewComponent,
     BookLocationComponent,
     CampusMapFeatureModalComponent,
-    CourseDataComponent
+    CourseDataComponent,
+    DatePickerComponent
   ],
   entryComponents: [
     CampusMapFeatureModalComponent,
