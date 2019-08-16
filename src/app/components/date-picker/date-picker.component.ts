@@ -11,9 +11,21 @@ export class DatePickerComponent implements OnInit {
 
   days: any[] = [];
   dayOffset: string;
+  currentDay: string;
 
+  selectedText: string;
+
+  /**
+   * How the bottom border should be displayed on the item.
+   * [lines] = "full" | "inset" | "none" | undefined
+   *
+   * inputDate – moment object as input to change dates from outside
+   *
+   * compactMode – removes the label 'Date' and just displays the selected date string
+   */
   @Input() lines: string;
   @Input() inputDate;
+  @Input() compactMode: boolean;
 
   @Output() dayOffsetEmitter: EventEmitter<string> = new EventEmitter<string>();
   @Output() momentObjectEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -29,6 +41,8 @@ export class DatePickerComponent implements OnInit {
       day_offset = String(this.inputDate.startOf('day').diff(current, 'days'));
     }
 
+    if (this.compactMode) { this.selectedText = ' '; }
+
     this.days = [];
     for (let i = 0; i < 7; i++) {
       const day: Date = new Date();
@@ -41,6 +55,12 @@ export class DatePickerComponent implements OnInit {
 
   emitDayChange() {
     this.dayOffsetEmitter.emit(this.dayOffset);
+
+    for (let i = 0; i < this.days.length; i++) {
+      if (this.days[i].value === this.dayOffset) {
+        this.currentDay = this.days[i].lbl.toLocaleDateString(this.translate.currentLang);
+      }
+    }
 
     const momentObject = moment().add(Number(this.dayOffset), 'days');
     this.momentObjectEmitter.emit(momentObject);

@@ -14,7 +14,7 @@
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item>
+  <ion-item class="timePicker">
     <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
     <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
       <ion-select-option *ngFor="let slot of time_slots; let i = index" [value]="slot.value">{{timeLabels[i]}} {{ "words.clock" | translate }}

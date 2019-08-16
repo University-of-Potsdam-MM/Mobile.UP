@@ -21,15 +21,21 @@
   <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
   <app-hint-box *ngIf="noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.functionNotAvailable"></app-hint-box>
 
-  <span *ngIf="isLoaded && !noMensaForLocation && !networkError">
-    <app-date-picker [inputDate]="selectedDate" (momentObjectEmitter)="pickDate($event)"></app-date-picker>
-    <ion-item>
-      <ion-label>Filter</ion-label>
-      <ion-select multiple="true" (ionChange)="filterMenus($event)" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}" [disabled]="filterKeywords.length === 0">
-        <ion-select-option *ngFor="let filter of filterKeywords">{{ filter }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </span>
+  <ion-grid *ngIf="isLoaded && !noMensaForLocation && !networkError">
+    <ion-row>
+      <ion-col size="6">
+        <app-date-picker [compactMode]="true" [inputDate]="selectedDate" (momentObjectEmitter)="pickDate($event)"></app-date-picker>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label>Filter</ion-label>
+          <ion-select multiple="true" (ionChange)="filterMenus($event)" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}" [disabled]="filterKeywords.length === 0">
+            <ion-select-option *ngFor="let filter of filterKeywords">{{ filter }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div *ngIf="isLoaded && !noMensaForLocation && !networkError">
     <ion-list lines="none" [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' ">
