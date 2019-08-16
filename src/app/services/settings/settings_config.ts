@@ -70,18 +70,6 @@ export const SETTINGS = [
         options: []
     },
     {
-        key: 'mail',
-        value: '',
-        type: ESettingType.placeholder
-    },
-    {
-        key: 'autologin',
-        value: true,
-        type: ESettingType.boolean,
-        icon: 'log-in',
-        options: []
-    },
-    {
         key: 'externalRedirect',
         value: '',
         type: ESettingType.placeholder

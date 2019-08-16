@@ -202,9 +202,6 @@
         "appRedirect": {
           "lbl": "Open external apps"
         },
-        "autologin": {
-          "lbl": "Automatic login"
-        },
         "inpractice": {
           "lbl": "In practice"
         },
