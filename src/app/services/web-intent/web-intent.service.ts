@@ -51,9 +51,9 @@ export class WebIntentService implements OnInit {
     private alertCtrl: AlertController,
     private storage: Storage,
     private loggingService: LoggingService
-    ) {
-      this.logger = this.loggingService.getLogger('[/web-intent-service]');
-    }
+  ) {
+    this.logger = this.loggingService.getLogger('[/web-intent-service]');
+  }
 
   ngOnInit() {
     if (this.translate.currentLang === 'en') {

@@ -77,7 +77,7 @@ export class GradesPage extends AbstractPage {
       stgnr = this.studentDetails.StgNr;
     }
 
-    if (this.refresher == null) {
+    if (!(this.refresher && this.refresher.target)) {
       this.loadingGrades = true;
     }
 
@@ -99,7 +99,7 @@ export class GradesPage extends AbstractPage {
       this.networkError = true;
     });
 
-    if (this.refresher != null) {
+    if (this.refresher && this.refresher.target) {
       this.refresher.target.complete();
     }
   }
@@ -122,7 +122,7 @@ export class GradesPage extends AbstractPage {
    */
   async getStudentDetails() {
     this.networkError = false;
-    if (this.refresher == null) {
+    if (!(this.refresher && this.refresher.target)) {
       this.studentLoaded = false;
     }
 
@@ -163,7 +163,7 @@ export class GradesPage extends AbstractPage {
       this.networkError = true;
     });
 
-    if (this.refresher != null) {
+    if (this.refresher && this.refresher.target) {
       this.refresher.target.complete();
     }
   }

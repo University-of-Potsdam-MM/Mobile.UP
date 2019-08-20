@@ -29,9 +29,11 @@ export class DeviceService {
    * @param {Storage} storage
    * @param {Platform} platform
    */
-  constructor(private device: Device,
-              private storage: Storage,
-              private platform: Platform) {
+  constructor(
+    private device: Device,
+    private storage: Storage,
+    private platform: Platform
+  ) {
   }
 
   /**

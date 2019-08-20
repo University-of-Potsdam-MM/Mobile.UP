@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
+import { IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { IConfig } from 'src/app/lib/interfaces';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
@@ -37,7 +37,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   networkError;
 
   constructor(
-    private platform: Platform,
     private keyboard: Keyboard,
     private translate: TranslateService,
     private alertService: AlertService,
@@ -283,7 +282,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       }
     }
 
-    if (refresher) {
+    if (refresher && refresher.target) {
       refresher.target.complete();
     }
   }
@@ -416,7 +415,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       }
     } else {
       this.isLoadedFavorites = true;
-      if (refresher) {
+      if (refresher && refresher.target) {
         refresher.target.complete();
       }
     }

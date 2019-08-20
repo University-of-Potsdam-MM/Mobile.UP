@@ -4,7 +4,6 @@ import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.servi
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { IOIDCUserInformationResponse } from 'src/app/services/login-provider/interfaces';
@@ -28,7 +27,6 @@ export class AppInfoPage extends AbstractPage implements OnInit {
     private deviceService: DeviceService,
     private file: File,
     private emailComposer: EmailComposer,
-    private platform: Platform,
     private storage: Storage,
     private userSession: UserSessionService
   ) {

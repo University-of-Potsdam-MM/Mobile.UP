@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadData(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.practice.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -33,7 +36,8 @@
 </ion-header>
 
 <ion-content no-padding (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher slot="fixed" (ionRefresh)="loadData($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadData($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 

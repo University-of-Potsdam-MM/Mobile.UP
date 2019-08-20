@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { AlertService } from '../../services/alert/alert.service';
 import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
@@ -42,7 +42,8 @@ export class BookDetailModalPage implements OnInit {
   constructor(
       private modalCtrl: ModalController,
       private alertService: AlertService,
-      public webIntent: WebIntentService, // is used in the HTML
+      public webIntent: WebIntentService,
+      public platform: Platform,
       private ws: WebserviceWrapperService
     ) { }
 
@@ -86,7 +87,7 @@ export class BookDetailModalPage implements OnInit {
    * @param refresher
    */
   updateLocation(refresher?): void {
-    if (!refresher) {
+    if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     }
 
@@ -97,12 +98,12 @@ export class BookDetailModalPage implements OnInit {
       },
       { forceRefresh: refresher !== undefined }
     ).subscribe(data => {
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       if (data) { this.locationData = data; }
       this.isLoaded = true;
     }, () => {
       this.isLoaded = true;
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
     });
   }
 

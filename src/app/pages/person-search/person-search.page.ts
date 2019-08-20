@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
@@ -27,7 +26,6 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
   cordova = false;
 
   constructor(
-    private platform: Platform,
     private keyboard: Keyboard,
     // tslint:disable-next-line: deprecation
     private contacts: Contacts,
