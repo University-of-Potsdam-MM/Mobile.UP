@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadNews(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -24,7 +27,8 @@
 </ion-header>
 
 <ion-content no-padding (swipe)="swipeNewsSource($event)">
-  <ion-refresher slot="fixed" (ionRefresh)="loadNews($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadNews($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 

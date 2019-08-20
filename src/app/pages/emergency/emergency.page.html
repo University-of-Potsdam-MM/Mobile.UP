@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadEmergencyCalls(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.emergency.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -16,7 +19,7 @@
 
 <ion-content no-padding (ionScrollStart)="onScrollListener()">
 
-  <ion-refresher slot="fixed" (ionRefresh)="loadEmergencyCalls($event)">
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadEmergencyCalls($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 

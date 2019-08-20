@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
-import { Platform, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { utils } from 'src/app/lib/util';
@@ -25,7 +25,6 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private platform: Platform,
     private keyboard: Keyboard,
     private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
@@ -42,7 +41,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
     this.ws.call('nominatim').subscribe(
       nominatim => {
 
-      if (!refresher) {
+      if (!(refresher && refresher.target)) {
         this.isLoaded = false;
       } else { this.query = ''; }
 
@@ -72,14 +71,14 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         this.openingHours = this.sortOpenings(this.allOpeningHours);
         this.isLoaded = true;
 
-        if (refresher) { refresher.target.complete(); }
+        if (refresher && refresher.target) { refresher.target.complete(); }
       }, () => {
         this.isLoaded = true;
-        if (refresher) { refresher.target.complete(); }
+        if (refresher && refresher.target) { refresher.target.complete(); }
         this.networkError = true;
       });
     }, () => {
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.isLoaded = true;
       this.networkError = true;
     });

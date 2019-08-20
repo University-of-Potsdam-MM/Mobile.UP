@@ -36,6 +36,7 @@ export class RoomplanPage extends AbstractPage {
 
   // bindings
   refresher: any;
+  isLoaded;
 
   // vars
   houseMap: Map<string, IHousePlan> = new Map<string, IHousePlan>();
@@ -121,7 +122,9 @@ export class RoomplanPage extends AbstractPage {
    */
   refreshRoom(refresher) {
     this.getRoomInfo();
-    this.refresher = refresher;
+    if (refresher) {
+      this.refresher = refresher;
+    } else { this.isLoaded = false; }
   }
 
   /**
@@ -319,8 +322,9 @@ export class RoomplanPage extends AbstractPage {
         }
 
         this.requestProcessed = true;
+        this.isLoaded = true;
         // if refresher is running complete it
-        if (this.refresher != null) {
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       },
@@ -330,7 +334,8 @@ export class RoomplanPage extends AbstractPage {
         this.error = error;
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
-        if (this.refresher != null) {
+        this.isLoaded = true;
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       }

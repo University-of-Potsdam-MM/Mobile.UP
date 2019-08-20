@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IEventObject, createEventSource } from './createEvents';
-import { Platform, ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -53,7 +53,6 @@ export class TimetablePage extends AbstractPage {
   };
 
   constructor(
-    private platform: Platform,
     private translate: TranslateService,
     private ws: WebserviceWrapperService,
     private sanitizer: DomSanitizer,

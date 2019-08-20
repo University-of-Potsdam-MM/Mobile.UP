@@ -4,6 +4,9 @@
             <ion-icon style="color: black; font-size: x-large;" name="ios-arrow-back"></ion-icon>
         </ion-button>
         <ion-title>{{ "page.library-search.titleDetail" | translate }}</ion-title>
+        <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="updateLocation(true)" slot="end" fill="clear">
+            <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+        </ion-button>
         <ion-button slot="end" (click)="favorite()" fill="clear">
             <ion-icon style="font-size: x-large;" [name]="isFavorite ? 'star' : 'star-outline'"></ion-icon>
         </ion-button>
@@ -11,7 +14,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-refresher slot="fixed" (ionRefresh)="updateLocation($event)">
+    <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="updateLocation($event)">
         <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
     </ion-refresher>
 

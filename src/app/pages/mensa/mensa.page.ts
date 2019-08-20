@@ -35,7 +35,6 @@ export class MensaPage extends AbstractPage {
   mensaIsOpen = true;
 
   isLoaded;
-  hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
   networkError;
@@ -61,9 +60,9 @@ export class MensaPage extends AbstractPage {
   }
 
   loadCampusMenu(refresher?) {
-    if (refresher) {
-      this.hardRefresh = true;
-    } else { this.isLoaded = false; }
+    if (!(refresher && refresher.target)) {
+      this.isLoaded = false;
+    }
 
     this.getOpening();
 
@@ -85,7 +84,7 @@ export class MensaPage extends AbstractPage {
         <IMensaRequestParams>{
           campus_canteen_name: this.campus.canteen_name
         },
-        { forceRefreshGroup: this.hardRefresh }
+        { forceRefreshGroup: refresher !== undefined }
       ).subscribe((res: IMensaResponse) => {
         if (res.meal) {
           this.allMeals = res.meal;
@@ -108,22 +107,21 @@ export class MensaPage extends AbstractPage {
             if (resUlf.iconHashMap && resUlf.iconHashMap.entry) { this.ulfIconMapping = resUlf.iconHashMap.entry; }
             this.getFilterKeywords();
             this.classifyMeals();
-            if (refresher) { refresher.target.complete(); }
+            if (refresher && refresher.target) { refresher.target.complete(); }
           });
         } else {
           this.getFilterKeywords();
           this.classifyMeals();
-          if (refresher) { refresher.target.complete(); }
+          if (refresher && refresher.target) { refresher.target.complete(); }
         }
       }, () => {
         this.isLoaded = true;
-        this.hardRefresh = false;
         this.networkError = true;
-        if (refresher) { refresher.target.complete(); }
+        if (refresher && refresher.target) { refresher.target.complete(); }
       });
     } else {
       this.noMensaForLocation = true;
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.isLoaded = true;
     }
   }
@@ -166,7 +164,6 @@ export class MensaPage extends AbstractPage {
       }
     }
 
-    this.hardRefresh = false;
     this.isLoaded = true;
     this.pickDate(this.selectedDate);
   }

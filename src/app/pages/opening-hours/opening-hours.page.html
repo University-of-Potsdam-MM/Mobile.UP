@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadOpeningHours(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.opening-hours.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -15,7 +18,8 @@
 </ion-header>
 
 <ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher slot="fixed" (ionRefresh)="loadOpeningHours($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadOpeningHours($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 

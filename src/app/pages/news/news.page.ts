@@ -37,7 +37,7 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    if (!refresher) { this.isLoaded = false; }
+    if (!(refresher && refresher.target)) { this.isLoaded = false; }
     this.networkError = false;
 
     this.ws.call(
@@ -46,7 +46,7 @@ export class NewsPage extends AbstractPage implements OnInit {
       { forceRefresh: refresher !== undefined }
     ).subscribe((response: INewsApiResponse) => {
 
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
 
       if (response.errors.exist === false) {
         this.newsList = response.vars.news;
@@ -76,7 +76,7 @@ export class NewsPage extends AbstractPage implements OnInit {
       }
     }, () => {
       this.isLoaded = true;
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.networkError = true;
     });
   }
