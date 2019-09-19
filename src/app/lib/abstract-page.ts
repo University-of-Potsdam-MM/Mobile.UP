@@ -49,7 +49,7 @@ export abstract class AbstractPage  {
     protected loggingService: LoggingService;
     protected router: Router;
     protected webIntent: WebIntentService;
-    protected platform: Platform;
+    public platform: Platform;
 
     protected constructor(
         pageOptions?: IPageOptions
