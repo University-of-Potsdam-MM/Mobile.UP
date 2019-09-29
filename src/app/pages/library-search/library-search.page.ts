@@ -62,10 +62,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   searchLibrary(resetList: boolean, event?, infiniteScroll?) {
     if (event) {
       this.query = event.detail.value;
-      this.query = this.query.trim();
+      this.query = this.query.replace(/\//g, ' ').trim();
     }
 
-    const query = this.query.trim();
+    const query = this.query.replace(/\//g, ' ').trim();
 
     if (this.activeSegment === 'search') {
 

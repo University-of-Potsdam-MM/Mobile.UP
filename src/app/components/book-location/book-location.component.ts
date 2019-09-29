@@ -15,6 +15,7 @@ export class BookLocationComponent implements OnInit {
   @Input() bookLocation;
   @Input() mediaType;
   @Input() department;
+  @Input() isbn;
 
   departmentName;
   departmentURL;
@@ -155,7 +156,7 @@ export class BookLocationComponent implements OnInit {
             statusInfo = '';
           } else {
             status = 'Präsenzbestand';
-            if (presentationAvailable.limitation) {
+            if (presentationAvailable && presentationAvailable.limitation) {
               statusInfo = presentationAvailable.limitation[0].content;
             }
           }
@@ -189,7 +190,7 @@ export class BookLocationComponent implements OnInit {
    * @name getBookUrl
    * @param item
    */
-  getBookUrl(item): void {
+  getBookUrl(item): string {
     let url;
     if (this.bookLocation) {
       let i;
@@ -216,6 +217,16 @@ export class BookLocationComponent implements OnInit {
         tmp = item.unavailable[0].href;
       } else { tmp = null; }
       if (tmp != null) { url = tmp; }
+
+      if (url === null || url === undefined) {
+        if (this.isbn && Array.isArray(this.isbn)) {
+          for (const identifier of this.isbn) {
+            if (identifier.toLowerCase().indexOf('[doi]') !== -1) {
+              url = 'https://doi.org/' + identifier.replace('[doi]', '').trim();
+            }
+          }
+        }
+      }
     }
 
     return url;
