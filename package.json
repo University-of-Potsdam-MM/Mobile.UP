@@ -158,12 +158,16 @@
         "CALENDAR_USAGE_DESCRIPTION": "This app uses your calendar to export your timetable",
         "CONTACTS_USAGE_DESCRIPTION": "Contact access is required to save people to the contacts list"
       },
-      "cordova-plugin-advanced-http": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      },
       "mx.ferreyra.callnumber": {},
       "cordova-sqlite-storage": {},
       "call-number": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-email-composer": {}
+      "cordova-plugin-email-composer": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
     },
     "platforms": [
       "android",
