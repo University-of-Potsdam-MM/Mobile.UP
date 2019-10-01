@@ -20,6 +20,8 @@ import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campu
 import { CourseDataComponent } from './course-data/course-data.component';
 import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import {ModulesGridComponent} from './modules-grid/modules-grid.component';
+import {GridsterModule} from 'angular-gridster2';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
     CampusMapFeatureModalComponent,
     CourseDataComponent,
     CampusReorderModalPage,
-    DatePickerComponent
+    DatePickerComponent,
+    ModulesGridComponent
   ],
   imports: [
     IonicModule,
@@ -50,6 +53,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
         deps: [HttpClient]
       }
     }),
+    GridsterModule,
   ],
   exports: [
     HintBoxComponent,
@@ -64,7 +68,8 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
     BookLocationComponent,
     CampusMapFeatureModalComponent,
     CourseDataComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ModulesGridComponent
   ],
   entryComponents: [
     CampusMapFeatureModalComponent,
