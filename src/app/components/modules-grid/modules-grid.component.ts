@@ -25,7 +25,6 @@ export class ModulesGridComponent implements OnInit {
         };
       }
     );
-    // this.options.maxRows = this.items.length / this.options.maxCols;
   }
 
   /**
@@ -40,11 +39,11 @@ export class ModulesGridComponent implements OnInit {
   constructor() {
     this.options = {
       gridType: 'scrollVertical',
-      compactType: 'compactLeft&Up',
+      compactType: 'compactUp&Left',
       defaultItemCols: 1,
       defaultItemRows: 1,
       minRows: 1,
-      maxRows: 5,
+      maxRows: 3,
       minCols: 4,
       maxCols: 4,
       emptyCellDragMaxRows: 1,
@@ -53,6 +52,7 @@ export class ModulesGridComponent implements OnInit {
       // delay after which dragging starts
       displayGrid: DisplayGrid.OnDragAndResize,
       draggable: {
+        delayStart: 250,
         enabled: true
       },
       resizable: {

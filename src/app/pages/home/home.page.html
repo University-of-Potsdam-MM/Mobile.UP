@@ -12,11 +12,13 @@
   <h2><ion-icon name=star></ion-icon>{{ "button.favorites" | translate }}</h2>
 
   <ng-template #moduleTemplate let-module="module">
-    <ion-icon class="centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
-    <ion-icon class="centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
-    <ion-label *ngIf="module.selected" class="centered">
-      <div align="center" class="hyphen">{{ module.i18nKey | translate }}</div>
-    </ion-label>
+    <div (click)="openModule(module)">
+      <ion-icon class="centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
+      <ion-icon class="centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
+      <ion-label *ngIf="module.selected" class="centered">
+        <div align="center" class="hyphen">{{ module.i18nKey | translate }}</div>
+      </ion-label>
+    </div>
   </ng-template>
 
   <modules-grid [modules]="sortedModules" [template]="moduleTemplate">
