@@ -25,6 +25,7 @@ export class ModulesGridComponent implements OnInit {
         };
       }
     );
+    // this.options.maxRows = this.items.length / this.options.maxCols;
   }
 
   /**
@@ -36,21 +37,21 @@ export class ModulesGridComponent implements OnInit {
   items: GridsterItem[] = [];
   options: GridsterConfig;
 
-  constructor() {}
-
-  ngOnInit() {
+  constructor() {
     this.options = {
-      gridType: 'fit',
+      gridType: 'scrollVertical',
       compactType: 'compactLeft&Up',
       defaultItemCols: 1,
       defaultItemRows: 1,
       minRows: 1,
-      maxRows: 10,
+      maxRows: 5,
       minCols: 4,
       maxCols: 4,
-      mobileBreakpoint: 1,
-      displayGrid: DisplayGrid.None,
-      delayStart: 10,
+      emptyCellDragMaxRows: 1,
+      // kinda arbitrary
+      mobileBreakpoint: 300,
+      // delay after which dragging starts
+      displayGrid: DisplayGrid.OnDragAndResize,
       draggable: {
         enabled: true
       },
@@ -58,6 +59,10 @@ export class ModulesGridComponent implements OnInit {
         enabled: false
       }
     };
+  }
+
+  ngOnInit() {
+
   }
 
 }
