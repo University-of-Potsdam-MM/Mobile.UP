@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DisplayGrid, GridsterConfig, GridsterItem} from 'angular-gridster2';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem} from 'angular-gridster2';
 import {IModule} from '../../lib/interfaces';
 
 @Component({
@@ -40,18 +40,22 @@ export class ModulesGridComponent implements OnInit {
     this.options = {
       gridType: 'scrollVertical',
       compactType: 'compactUp&Left',
+      // default size of a tile
       defaultItemCols: 1,
       defaultItemRows: 1,
+      // minimum/maximum dimensions of grid
       minRows: 1,
-      maxRows: 3,
+      maxRows: 4,
       minCols: 4,
       maxCols: 4,
-      emptyCellDragMaxRows: 1,
+      // tiles cannot be dragged further than 0 (?) tiles away
+      emptyCellDragMaxRows: 0,
       // kinda arbitrary
       mobileBreakpoint: 300,
-      // delay after which dragging starts
+      // show grid-lines when dragging
       displayGrid: DisplayGrid.OnDragAndResize,
       draggable: {
+        // delay after which dragging starts
         delayStart: 250,
         enabled: true
       },
