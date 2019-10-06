@@ -47,7 +47,7 @@ export class DatePickerComponent implements OnInit {
     for (let i = 0; i < 7; i++) {
       const day: Date = new Date();
       day.setDate(day.getDate() + i);
-      this.days.push({'lbl': day, 'value': i.toString()});
+      this.days.push({'lbl': moment(day).format('ddd D. MMMM'), 'value': i.toString()});
     }
     this.dayOffset = day_offset;
     this.emitDayChange();
@@ -58,7 +58,7 @@ export class DatePickerComponent implements OnInit {
 
     for (let i = 0; i < this.days.length; i++) {
       if (this.days[i].value === this.dayOffset) {
-        this.currentDay = this.days[i].lbl.toLocaleDateString(this.translate.currentLang);
+        this.currentDay = this.days[i].lbl;
       }
     }
 
