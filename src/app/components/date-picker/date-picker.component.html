@@ -3,7 +3,7 @@
   <ion-label *ngIf="compactMode">{{ currentDay }}</ion-label>
   <ion-select [(ngModel)]="dayOffset" (ionChange)="emitDayChange()" [selectedText]="selectedText" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
     <ion-select-option *ngFor="let day of days" [value]="day.value">
-      {{ day.lbl.toLocaleDateString(translate.currentLang) }}
+      {{ day.lbl }}
     </ion-select-option>
   </ion-select>
 </ion-item>
