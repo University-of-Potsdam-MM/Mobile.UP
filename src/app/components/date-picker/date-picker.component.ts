@@ -47,7 +47,7 @@ export class DatePickerComponent implements OnInit {
     for (let i = 0; i < 7; i++) {
       const day: Date = new Date();
       day.setDate(day.getDate() + i);
-      this.days.push({'lbl': moment(day).format('ddd D. MMMM'), 'value': i.toString()});
+      this.days.push({'lbl': moment(day).format('ddd D. MMM'), 'value': i.toString()});
     }
     this.dayOffset = day_offset;
     this.emitDayChange();
