@@ -3,6 +3,11 @@ import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem, GridsterIt
 import {IModule} from '../../lib/interfaces';
 import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEventType.interface';
 
+/**
+ * This components takes a list of modules and displays those modules as tiles.
+ * modules with 'selected=false' will not be displayed. When some tile of the grid
+ * has been modified this component will emit a 'gridChanged' signal.
+ */
 @Component({
   selector: 'modules-grid',
   templateUrl: './modules-grid.component.html',
@@ -16,23 +21,25 @@ export class ModulesGridComponent {
    * converts passed modules list to gridsterItems
    * @param modulesList
    */
-  @Input() set modules(modulesList: IModule[]) {
-    this.items = modulesList;
-  }
-
-  @Output() gridChanged: EventEmitter<void> = new EventEmitter<void>();
+  @Input() modules: IModule[];
 
   /**
    * input for the template to be used inside the gridsterItems.
    * Inside the template "module" will be available as context
    */
   @Input() template;
-  items: GridsterItem[] = [];
+
+  /**
+   * emits a signal, when the grid has changed
+   */
+  @Output() gridChanged: EventEmitter<void> = new EventEmitter<void>();
+
   options: GridsterConfig;
 
   constructor() {
     this.options = {
       gridType: 'scrollVertical',
+      // makes the tiles float upwards first then to the left
       compactType: 'compactUp&Left',
       // default size of a tile
       defaultItemCols: 1,
@@ -44,31 +51,33 @@ export class ModulesGridComponent {
       maxCols: 4,
       // tiles cannot be dragged further than 0 (?) tiles away
       emptyCellDragMaxRows: 0,
-      // kinda arbitrary
-      mobileBreakpoint: 300,
+      // this defines the boundary at which gridster breaks the tiled layout
+      // and just stacks the tiles in one column. We don't want that in any case,
+      // so we use a value that won't be reached by any device
+      mobileBreakpoint: 1,
       // show grid-lines when dragging
       displayGrid: DisplayGrid.OnDragAndResize,
       draggable: {
-        // delay after which dragging starts
+        // delay after which dragging starts, also arbitrary. There might be a
+        // better value
         delayStart: 250,
         enabled: true
       },
       resizable: {
         enabled: false
       },
-      itemChangeCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
-        this.gridChanged.emit();
-      },
-      itemInitCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
-        this.gridChanged.emit();
-      },
-      itemRemovedCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
-        // position needs to be reset to avoid conflicts when
-        //  1. remove module
-        //  2. select some other module
-        //  3. add removed module again
-        // in this scenario both modules would have the same position, which annoys
-        // gridster a bit.
+      // we don't really care about what actually happened. It's sufficient to tell
+      // the page using this component that the modules have been altered
+      itemChangeCallback: () => { this.gridChanged.emit(); },
+      itemInitCallback: () => { this.gridChanged.emit(); },
+      // here we do care about the items position, though
+      // position needs to be reset to avoid conflicts that arise when we do:
+      //   1. remove module
+      //   2. select some other module
+      //   3. add removed module again
+      // in this scenario both modules would have the same position, which annoys
+      // gridster a bit.
+      itemRemovedCallback: (item: GridsterItem) => {
         item.x = undefined;
         item.y = undefined;
         this.gridChanged.emit();
