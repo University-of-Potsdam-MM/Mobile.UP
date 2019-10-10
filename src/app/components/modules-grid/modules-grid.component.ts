@@ -3,22 +3,6 @@ import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem, GridsterIt
 import {IModule} from '../../lib/interfaces';
 import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEventType.interface';
 
-function moduleToItem(module: IModule): GridsterItem {
-  return {
-    x: module.gridPosition.x,
-    y: module.gridPosition.y,
-    cols: 1,
-    rows: 1,
-    module: module
-  };
-}
-
-function itemToModule(item: GridsterItem): IModule {
-  item['module'].gridPosition.x = undefined;
-  item['module'].gridPosition.y = undefined;
-  return item['module'];
-}
-
 @Component({
   selector: 'modules-grid',
   templateUrl: './modules-grid.component.html',
@@ -47,7 +31,6 @@ export class ModulesGridComponent {
   options: GridsterConfig;
 
   constructor() {
-
     this.options = {
       gridType: 'scrollVertical',
       compactType: 'compactUp&Left',
