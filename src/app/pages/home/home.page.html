@@ -22,7 +22,8 @@
     </div>
   </ng-template>
 
-  <!-- gridster grid displaying selected modules -->
+  <!-- gridster grid displaying selected modules. Using the sortedModules object
+   here because it already is an array, which is nice -->
   <modules-grid [modules]="sortedModules"
                 [template]="moduleTemplate"
                 (gridChanged)="onGridChanged()">
