@@ -11,17 +11,21 @@
 
   <h2><ion-icon name=star></ion-icon>{{ "button.favorites" | translate }}</h2>
 
+  <!-- template for each tile -->
   <ng-template #moduleTemplate let-module="module">
     <div (click)="openModule(module)">
       <ion-icon class="centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon class="centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
-      <ion-label class="no-select" *ngIf="module.selected" class="centered">
+      <ion-label class="no-select">
         <div align="center" class="hyphen">{{ module.i18nKey | translate }}</div>
       </ion-label>
     </div>
   </ng-template>
 
-  <modules-grid [modules]="sortedModules" [template]="moduleTemplate">
+  <!-- gridster grid displaying selected modules -->
+  <modules-grid [modules]="sortedModules"
+                [template]="moduleTemplate"
+                (gridChanged)="onGridChanged()">
   </modules-grid>
 
   <!-- menu with all available modules -->

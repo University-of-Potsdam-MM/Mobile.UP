@@ -1,42 +1,53 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem} from 'angular-gridster2';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponentInterface} from 'angular-gridster2';
 import {IModule} from '../../lib/interfaces';
+import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEventType.interface';
+
+function moduleToItem(module: IModule): GridsterItem {
+  return {
+    x: module.gridPosition.x,
+    y: module.gridPosition.y,
+    cols: 1,
+    rows: 1,
+    module: module
+  };
+}
+
+function itemToModule(item: GridsterItem): IModule {
+  item['module'].gridPosition.x = undefined;
+  item['module'].gridPosition.y = undefined;
+  return item['module'];
+}
 
 @Component({
   selector: 'modules-grid',
   templateUrl: './modules-grid.component.html',
   styleUrls: ['./modules-grid.component.scss'],
 })
-export class ModulesGridComponent implements OnInit {
+export class ModulesGridComponent {
+
+  @ViewChild(GridsterComponent) gridster: GridsterComponent;
 
   /**
    * converts passed modules list to gridsterItems
-   * @param modules
+   * @param modulesList
    */
-  @Input() set modules(modules: IModule[]) {
-    this.items = modules.map(
-      m => {
-        return {
-          x: undefined,
-          y: undefined,
-          rows: 1,
-          cols: 1,
-          module: m
-        };
-      }
-    );
+  @Input() set modules(modulesList: IModule[]) {
+    this.items = modulesList;
   }
+
+  @Output() gridChanged: EventEmitter<void> = new EventEmitter<void>();
 
   /**
    * input for the template to be used inside the gridsterItems.
    * Inside the template "module" will be available as context
    */
   @Input() template;
-
   items: GridsterItem[] = [];
   options: GridsterConfig;
 
   constructor() {
+
     this.options = {
       gridType: 'scrollVertical',
       compactType: 'compactUp&Left',
@@ -61,12 +72,24 @@ export class ModulesGridComponent implements OnInit {
       },
       resizable: {
         enabled: false
+      },
+      itemChangeCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
+        this.gridChanged.emit();
+      },
+      itemInitCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
+        this.gridChanged.emit();
+      },
+      itemRemovedCallback: (item: GridsterItem, itemComponent: GridsterItemComponentInterface) => {
+        // position needs to be reset to avoid conflicts when
+        //  1. remove module
+        //  2. select some other module
+        //  3. add removed module again
+        // in this scenario both modules would have the same position, which annoys
+        // gridster a bit.
+        item.x = undefined;
+        item.y = undefined;
+        this.gridChanged.emit();
       }
     };
   }
-
-  ngOnInit() {
-
-  }
-
 }

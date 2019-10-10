@@ -7,6 +7,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -173,6 +174,7 @@ export class HomePage extends AbstractPage implements OnInit {
     for (const moduleName in modules) {
       if (modules.hasOwnProperty(moduleName)) {
         const moduleToAdd: IModule = modules[moduleName];
+        moduleToAdd.x = moduleToAdd.y = moduleToAdd.rows = moduleToAdd.cols = undefined;
         if (!moduleToAdd.hide) {
           moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
           moduleList[moduleName] = moduleToAdd;
@@ -182,5 +184,12 @@ export class HomePage extends AbstractPage implements OnInit {
 
     this.logger.debug('buildDefaultModulesList');
     return moduleList;
+  }
+
+  onGridChanged() {
+    // we can just store the existing modules again because gridster is
+    // operating on the same object
+    this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
+    this.storage.set('moduleList', this.modules);
   }
 }

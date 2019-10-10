@@ -1,8 +1,8 @@
 <gridster [options]="options" id="grid">
   <ng-container *ngFor="let i of items">
-    <gridster-item *ngIf="i.module.selected" [item]="i">
+    <gridster-item *ngIf="i.selected" [item]="i">
       <ng-template [ngTemplateOutlet]="template"
-                   [ngTemplateOutletContext]="{module: i.module}">
+                   [ngTemplateOutletContext]="{module: i}">
       </ng-template>
     </gridster-item>
   </ng-container>
