@@ -16,8 +16,10 @@
     <div (click)="openModule(module)">
       <ion-icon class="centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon class="centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
-      <ion-label class="no-select">
-        <div align="center" class="hyphen">{{ module.i18nKey | translate }}</div>
+      <ion-label>
+        <div align="center" class="hyphen no-select">
+          {{ module.i18nKey | translate }}
+        </div>
       </ion-label>
     </div>
   </ng-template>
