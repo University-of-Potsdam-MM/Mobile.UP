@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponentInterface} from 'angular-gridster2';
 import {IModule} from '../../lib/interfaces';
 import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEventType.interface';
@@ -36,6 +36,8 @@ export class ModulesGridComponent {
 
   options: GridsterConfig;
 
+  gridsterWrapperHeight: number;
+
   constructor() {
     this.options = {
       gridType: 'scrollVertical',
@@ -49,6 +51,8 @@ export class ModulesGridComponent {
       maxRows: 4,
       minCols: 4,
       maxCols: 4,
+      disableScrollHorizontal: true,
+      disableScrollVertical: true,
       // tiles cannot be dragged further than 0 (?) tiles away
       emptyCellDragMaxRows: 0,
       // this defines the boundary at which gridster breaks the tiled layout
@@ -68,8 +72,15 @@ export class ModulesGridComponent {
       },
       // we don't really care about what actually happened. It's sufficient to tell
       // the page using this component that the modules have been altered
-      itemChangeCallback: () => { this.gridChanged.emit(); },
-      itemInitCallback: () => { this.gridChanged.emit(); },
+      itemChangeCallback: () => {
+        this.gridChanged.emit();
+      },
+      // here we also want the wrapper to resize because the grid dimensions may
+      // have changed
+      itemInitCallback: () => {
+        this.resizeWrapper();
+        this.gridChanged.emit();
+      },
       // here we do care about the items position, though
       // position needs to be reset to avoid conflicts that arise when we do:
       //   1. remove module
@@ -80,8 +91,21 @@ export class ModulesGridComponent {
       itemRemovedCallback: (item: GridsterItem) => {
         item.x = undefined;
         item.y = undefined;
+        this.resizeWrapper();
         this.gridChanged.emit();
+      },
+      gridSizeChangedCallback: () => {
+        this.resizeWrapper();
       }
     };
   }
+
+  /**
+   * Resizes the div wrapping the grid. This needs to be done, because gridster
+   * does not resize itself.
+   */
+  resizeWrapper() {
+    this.gridsterWrapperHeight = this.gridster.curRowHeight * this.gridster.rows;
+  }
+
 }
