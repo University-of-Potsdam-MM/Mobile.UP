@@ -189,7 +189,6 @@ export class HomePage extends AbstractPage implements OnInit {
   onGridChanged() {
     // we can just store the existing modules again because gridster is
     // operating on the same object
-    console.log(this.modules)
     this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
     this.storage.set('moduleList', this.modules);
   }
