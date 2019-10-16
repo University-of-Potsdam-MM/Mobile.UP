@@ -43,7 +43,7 @@ export class EventModalPage implements OnInit {
                     if (startArray.length > 2) {
                         this.events[i].eventDetails.startDate = new Date(
                             startArray[2],
-                            startArray[1],
+                            startArray[1] - 1, // Javascript dates range from 0-11
                             startArray[0]
                         );
                     }
@@ -51,7 +51,7 @@ export class EventModalPage implements OnInit {
                     if (endArray.length > 2) {
                         this.events[i].eventDetails.endDate = new Date(
                             endArray[2],
-                            endArray[1],
+                            endArray[1] - 1, // Javascript dates range from 0-11
                             endArray[0]
                         );
                     }
