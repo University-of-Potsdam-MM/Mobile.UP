@@ -199,7 +199,9 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
     if (val && val.trim() !== '') {
       this.openingHours = this.openingHours.filter(function(item) {
-        return item.name.toLowerCase().includes(val.toLowerCase());
+        if (item && item.name) {
+          return item.name.toLowerCase().includes(val.toLowerCase());
+        } else { return false; }
       });
     }
   }

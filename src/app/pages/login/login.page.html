@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="ion-padding">
   <ion-grid>
     <ion-row class="logo-row">
       <ion-col></ion-col>
@@ -69,7 +69,7 @@
 
   <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.login-hint"></app-hint-box>
 
-  <div align="center" *ngIf="session" padding>
+  <div align="center" *ngIf="session" class="ion-padding">
     {{ "page.login.alreadyLoggedIn" | translate }}
   </div>
 </ion-content>

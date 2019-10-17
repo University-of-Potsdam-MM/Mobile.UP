@@ -247,10 +247,12 @@ export class MensaPage extends AbstractPage {
         if (response) {
           response = utils.convertToArray(response);
           response = response.filter(function(item) {
-            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+            if (item && item.name) {
+              return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+            } else { return false; }
           });
 
-          if (response.length > 0) {
+          if (response && response.length > 0) {
             response = response[0];
             response.parsedOpening = new opening(
               response.opening_hours,

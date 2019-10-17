@@ -48,10 +48,6 @@ export class TransportPage extends AbstractPage {
       this.isLoaded = false;
     }
 
-    if (!(refresher && refresher.target)) {
-      this.isLoaded = false;
-    }
-
     if (!infiniteScroll) { this.maxJourneys = 15; }
 
     this.error = null;

@@ -7,10 +7,10 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding>
+<ion-content class="ion-no-padding">
     <!-- template for one single event, will be wrapped in ion-card tag -->
     <ng-template #singleEventTemplate let-event="event">
-            <h6 text-wrap [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'" padding-start></h6>
+            <h6 class="ion-text-wrap ion-padding-start" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'"></h6>
             <ion-list>
                 <!-- lecturer(s)-->
                 <ng-container *ngIf="isArray(event.eventDetails.lecturers.lecturer);
@@ -19,7 +19,7 @@
                 <!-- template for event with single lecturer-->
                 <ng-template #singleLecturerTemplate>
                     <ion-item>
-                        <ion-label text-wrap>
+                        <ion-label class="ion-text-wrap">
                             <h2>
                                 {{ "page.timetable.lecturer" | translate }}
                             </h2>
@@ -34,7 +34,7 @@
                 <!-- template for event with multiple lecturers -->
                 <ng-template #multipleLecturersTemplate>
                     <ion-item>
-                        <ion-label text-wrap>
+                        <ion-label class="ion-text-wrap">
                             <h2>
                                 {{ "page.timetable.lecturer" | translate }}
                             </h2>
@@ -49,7 +49,7 @@
 
                 <!-- time -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.time" | translate }}
                         </h2>
@@ -67,7 +67,7 @@
 
                 <!-- period -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.period" | translate }}
                         </h2>
@@ -79,7 +79,7 @@
 
                 <!-- rhythm -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.rhythm" | translate }}
                         </h2>
@@ -91,7 +91,7 @@
 
                 <!-- location -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.location" | translate }}
                         </h2>
@@ -104,7 +104,7 @@
 
                 <!-- building -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.building" | translate }}
                         </h2>
@@ -121,7 +121,7 @@
 
                 <!-- roomtype and room -->
                 <ion-item>
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.room" | translate }}
                         </h2>
@@ -135,7 +135,7 @@
 
                 <!-- comment -->
                 <ion-item *ngIf="event.eventDetails.comment">
-                    <ion-label text-wrap>
+                    <ion-label class="ion-text-wrap">
                         <h2>
                             {{ "page.timetable.comment" | translate }}
                         </h2>

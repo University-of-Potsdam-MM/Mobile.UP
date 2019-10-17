@@ -10,9 +10,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
+<ion-content [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'">
 
-  <div align="center" *ngIf="isLoading && !noUserRights" padding>
+  <div align="center" *ngIf="isLoading && !noUserRights" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
@@ -24,7 +24,7 @@
 
   <span *ngIf="!noUserRights && !isLoading">
       <ion-grid>
-        <ion-row nowrap justify-content-center align-items-center>
+        <ion-row nowrap class="ion-align-items-center ion-justify-content-center">
           <ion-col size="auto">
             <ion-button expand="full" [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'" size="small" (click)="changeCalendarMode('month')">
               {{ "page.timetable.month" | translate }}

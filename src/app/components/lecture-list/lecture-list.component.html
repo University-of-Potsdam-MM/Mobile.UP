@@ -1,4 +1,4 @@
-<div align="center" *ngIf="!isLoaded && !networkError" padding>
+<div align="center" *ngIf="!isLoaded && !networkError" class="ion-padding">
   <ion-spinner name="dots"></ion-spinner>
 </div>
 <app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
@@ -11,7 +11,7 @@ lectureSchedule
 ">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
       <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" (click)="expandChild(childNode)">
-          <ion-label text-wrap>
+          <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
           <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
@@ -28,7 +28,7 @@ lectureSchedule
 ">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode); let last = last" [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'">
       <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" (click)="expandChild(childNode)">
-          <ion-label text-wrap>
+          <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
           <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
@@ -44,7 +44,7 @@ lectureSchedule
 && lectureSchedule.lectureScheduleCourses.currentNode.courses.course">
   <div *ngFor="let course of convertToArray(lectureSchedule.lectureScheduleCourses.currentNode.courses.course); let last = last" [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'">
       <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" (click)="expandCourse(course)">
-          <ion-label text-wrap>
+          <ion-label class="ion-text-wrap">
             {{ course.courseType }}: {{ htmlDecode(course.courseName) }}
           </ion-label>
           <ion-icon *ngIf="course.courseId" [name]="!isExpandedCourse[course.courseId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
@@ -59,7 +59,7 @@ lectureSchedule
 && lectureSchedule.lectureScheduleCourses.currentNode.courses
 && !lectureSchedule.lectureScheduleCourses.currentNode.courses.course" class="courseItem">
   <ion-item class="noCourses">
-      <ion-label text-wrap>
+      <ion-label class="ion-text-wrap">
         {{ "page.lectures.noCourses" | translate }}
       </ion-label>
   </ion-item>

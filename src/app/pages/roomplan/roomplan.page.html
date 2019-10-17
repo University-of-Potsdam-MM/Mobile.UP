@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (swipe)="campusTabComponent.handleSwipeEvent($event)">
+<ion-content class="ion-no-padding" (swipe)="campusTabComponent.handleSwipeEvent($event)">
 
   <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="refreshRoom($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
@@ -29,7 +29,7 @@
     <ion-list>
       <div *ngFor="let house of housesFound">
         <ion-item (click)="expandHouse(house.lbl)">
-          <ion-label no-margin>
+          <ion-label class="ion-no-margin">
             <h2>
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
               <ion-badge color="primary">
@@ -44,14 +44,14 @@
         <div *ngIf="house.expanded">
           <div *ngFor="let room of house.rooms">
             <ion-item (click)="expandRoom(house.lbl,room.lbl)">
-              <ion-label no-margin>
+              <ion-label class="ion-no-margin">
                 <h2 *ngIf="room.lbl">{{room.lbl}}<ion-badge *ngIf="room.events" color="secondary">{{room.events.length}}</ion-badge></h2>
               </ion-label>
               <ion-icon [name]="!room.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
             </ion-item>
             <div *ngIf="room.expanded && room.events">
               <ion-item margin-left *ngFor="let event of room.events">
-                <ion-label text-wrap>
+                <ion-label class="ion-text-wrap">
                   <u>
                     <b *ngIf="translate.currentLang === 'de'">{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}} {{ "words.clock" | translate }}</b>
                     <b *ngIf="translate.currentLang !== 'de'">{{event.startTime | date:'h:mm a'}} - {{event.endTime | date:'h:mm a'}} {{ "words.clock" | translate }}</b>

@@ -19,12 +19,12 @@
     </ion-refresher>
 
     <app-book-list [book]="book" (mediaType)="setMediaType($event)"></app-book-list>
-    <p *ngIf="bookDetails.mediaType == 'mediatype_o'" class="copyright-info" padding-horizontal>
+    <p *ngIf="bookDetails.mediaType == 'mediatype_o'" class="copyright-info ion-padding-horizontal">
         {{ "page.library-search.copyright" | translate }}
         <br><br>
         {{ "page.library-search.electronicUsage" | translate }}
     </p>
-    <p *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') != -1)" class="copyright-info" padding-horizontal>
+    <p *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') != -1)" class="copyright-info ion-padding-horizontal">
         {{ "page.library-search.bookSet" | translate }}
     </p>
     <ion-segment [value]="activeSegment">
@@ -33,7 +33,7 @@
     </ion-segment>
 
     <div *ngIf="showLocation">
-        <div align="center" *ngIf="!isLoaded" padding>
+        <div align="center" *ngIf="!isLoaded" class="ion-padding">
             <ion-spinner name="dots"></ion-spinner>
         </div>
         <span *ngIf="isLoaded && locationData && locationData.document">
@@ -52,7 +52,7 @@
 
     <ion-list *ngIf="showDetails" lines="none">
         <ion-item *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0">
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>Abstract</h2>
                 <p *ngIf="!shortAbstract || !showShortAbstract">{{ bookDetails.abstract }}</p>
                 <p *ngIf="shortAbstract && showShortAbstract">{{ bookDetails.shortAbstract }}</p>
@@ -65,7 +65,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.keywords" | translate }}</h2>
                 <p class="list" *ngFor="let keyword of bookDetails.keywords">
                     <span class="link item" (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</span>
@@ -73,7 +73,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.toc && bookDetails.toc.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.toc" | translate }}</h2>
                 <p class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
                     <span class="item" *ngIf="!showFullTOC && i < 3">{{ chapter }}</span>
@@ -88,7 +88,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.notes && bookDetails.notes.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.annotations" | translate }}</h2>
                 <p class="list" *ngFor="let note of bookDetails.notes">
                     <span class="item">{{ note }}</span>
@@ -96,7 +96,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.series && bookDetails.series.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.serie" | translate }}</h2>
                 <p class="list" *ngFor="let serie of bookDetails.series">
                     <span class="item">{{ serie }}</span>
@@ -104,7 +104,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>Identifier</h2>
                 <p class="list" *ngFor="let isbn of bookDetails.isbn">
                     <span class="item">{{ isbn }}</span>
@@ -112,7 +112,7 @@
             </ion-label>
         </ion-item>
         <ion-item *ngIf="bookDetails.extent && bookDetails.extent.length != 0" >
-            <ion-label text-wrap>
+            <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.extent" | translate }}</h2>
                 <p class="list" *ngFor="let extent of bookDetails.extent">
                     <span class="item">{{ extent }}</span>
