@@ -221,7 +221,7 @@ export class BookLocationComponent implements OnInit {
       if (url === null || url === undefined) {
         if (this.isbn && Array.isArray(this.isbn)) {
           for (const identifier of this.isbn) {
-            if (identifier.toLowerCase().indexOf('[doi]') !== -1) {
+            if (identifier && identifier.toLowerCase().indexOf('[doi]') !== -1) {
               url = 'https://doi.org/' + identifier.replace('[doi]', '').trim();
             }
           }
