@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
-    <ion-chip *ngIf="isMobile && !noUserRights" slot="end" outline="true" (click)="exportPrompt()">
+    <ion-chip *ngIf="isMobile && !noUserRights && (eventSource.length > 0)" slot="end" outline="true" (click)="exportPrompt()">
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Export</ion-label>
     </ion-chip>
