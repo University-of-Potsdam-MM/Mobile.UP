@@ -48,9 +48,8 @@ export class ModulesGridComponent {
       defaultItemRows: 1,
       // minimum/maximum dimensions of grid
       minRows: 1,
-      maxRows: 4,
-      minCols: 4,
-      maxCols: 4,
+      minCols: 3,
+      maxCols: 3,
       disableScrollHorizontal: true,
       disableScrollVertical: true,
       // tiles cannot be dragged further than 0 (?) tiles away
