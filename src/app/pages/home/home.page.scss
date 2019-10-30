@@ -84,6 +84,7 @@ ion-card {
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 
 #grid-wrapper {
