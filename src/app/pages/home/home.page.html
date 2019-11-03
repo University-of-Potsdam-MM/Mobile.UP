@@ -12,11 +12,11 @@
   <h2><ion-icon name=star></ion-icon>{{ "button.favorites" | translate }}</h2>
 
   <!-- template for each tile -->
-  <ng-template #moduleTemplate let-module="module">
-    <div (click)="openModule(module)">
+  <ng-template #moduleTemplate let-module="module" class="no-select">
+    <div (click)="openModule(module)" class="no-select">
       <ion-icon class="centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon class="centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
-      <ion-label>
+      <ion-label class="no-select">
         <div align="center" class="hyphen no-select">
           {{ module.i18nKey | translate }}
         </div>
@@ -28,7 +28,8 @@
    here because it already is an array, which is nice -->
   <modules-grid [modules]="sortedModules"
                 [template]="moduleTemplate"
-                (gridChanged)="onGridChanged()">
+                (gridChanged)="onGridChanged()"
+                class="no-select">
   </modules-grid>
 
   <!-- menu with all available modules -->

@@ -80,11 +80,11 @@ ion-card {
 }
 
 .no-select {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+    -webkit-user-select: none !important; /* Safari */
+    -moz-user-select: none !important; /* Firefox */
+    -ms-user-select: none !important; /* IE10+/Edge */
+    user-select: none !important; /* Standard */
+    -webkit-touch-callout: none !important; /* Disable Android and iOS callouts*/
 }
 
 #grid-wrapper {
