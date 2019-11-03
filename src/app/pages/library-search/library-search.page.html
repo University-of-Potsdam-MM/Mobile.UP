@@ -41,15 +41,15 @@
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" padding>
+  <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
-  <div align="center" *ngIf="!isLoadedFavorites && activeSegment === 'favorites'" padding>
+  <div align="center" *ngIf="!isLoadedFavorites && activeSegment === 'favorites'" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'search'">
-    <ion-item padding-left>
+    <ion-item class="ion-padding-start">
       <ion-label>
         <p>{{ "page.library-search.allResults" | translate}}:</p>
         <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}

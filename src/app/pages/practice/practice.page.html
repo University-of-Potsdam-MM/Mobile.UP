@@ -35,13 +35,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
+<ion-content class="ion-no-padding" (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
 
   <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadData($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <p *ngIf="!isLoaded && activeSegment === 'search'" style="text-align: center" padding>
+  <p *ngIf="!isLoaded && activeSegment === 'search'" style="text-align: center" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
@@ -56,7 +56,7 @@
         <ion-item-sliding>
           <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
             <ion-label>
-              <h3 text-wrap>{{ADS.title}}</h3>
+              <h3 class="ion-text-wrap">{{ADS.title}}</h3>
               <ion-grid>
                 <ion-row>
                   <ion-col><p [ngSwitch]="ADS.art" style="color: gray"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>
@@ -88,7 +88,7 @@
         <ion-item-sliding #slidingItem>
           <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
             <ion-label>
-              <h3 text-wrap>{{ADS.title}}</h3>
+              <h3 class="ion-text-wrap">{{ADS.title}}</h3>
               <ion-grid>
                 <ion-row>
                   <ion-col><p style="color: gray" [ngSwitch]="ADS.art"><span *ngSwitchCase="'1'">{{ "page.practice.item.praktika" | translate }}</span><span *ngSwitchCase="'2'">{{ "page.practice.item.student" | translate }}</span><span *ngSwitchCase="'3'">{{ "page.practice.item.graduate" | translate }}</span><span *ngSwitchCase="'4'">{{ "page.practice.item.thesis" | translate }}</span></p></ion-col>

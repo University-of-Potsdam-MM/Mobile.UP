@@ -17,13 +17,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScrollStart)="onScrollListener()">
+<ion-content class="ion-no-padding" (ionScrollStart)="onScrollListener()">
 
   <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadEmergencyCalls($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" padding>
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
@@ -38,7 +38,7 @@
         <!-- template for emergencyCalls -->
         <ion-item (click)="expand(emergencyCall)" [ngClass]="{'noborder': emergencyCall.expanded}">
           <ion-icon color="primary" name="person" slot="start"></ion-icon>
-          <ion-label text-wrap>
+          <ion-label class="ion-text-wrap">
             <h2>{{emergencyCall.name}}</h2>
             <p *ngIf="emergencyCall.description">{{emergencyCall.description}}</p>
           </ion-label>
@@ -63,7 +63,7 @@
 
       <ion-item *ngIf="emergencyCall.expanded">
         <ion-icon slot="start"></ion-icon>
-        <ion-label no-margin text-wrap>
+        <ion-label class="ion-no-margin ion-text-wrap">
           <ion-grid>
             <ion-row *ngIf="emergencyCall.contact.mail">
               <ion-col size="auto">
@@ -86,7 +86,7 @@
                 <ion-icon color="primary" name="home"></ion-icon>
               </ion-col>
               <ion-col>
-                <a (click)="callMap(emergencyCall)" class="link" text-wrap>
+                <a (click)="callMap(emergencyCall)" class="link" class="ion-text-wrap">
                   <span *ngIf="emergencyCall.address.street">{{emergencyCall.address.street}}</span>
                   <span *ngIf="emergencyCall.address.postal && emergencyCall.address.street">, </span>
                   <span *ngIf="emergencyCall.address.postal">{{emergencyCall.address.postal}}</span>

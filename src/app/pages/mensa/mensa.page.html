@@ -12,13 +12,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (swipe)="campusTabComponent.handleSwipeEvent($event)">
+<ion-content class="ion-no-padding" (swipe)="campusTabComponent.handleSwipeEvent($event)">
 
   <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadCampusMenu($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" padding>
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
