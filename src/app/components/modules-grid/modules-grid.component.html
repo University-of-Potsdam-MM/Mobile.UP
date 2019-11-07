@@ -7,7 +7,7 @@
     <ion-button *ngIf="editingMode" (click)="toggleEditingMode()" slot="end" style="--border-radius: 0;">{{ 'button.done' | translate }}</ion-button>
 </ion-item>
 
-<div id="gridster-wrapper" [style.height]="gridsterWrapperHeight+'px'">
+<div id="gridster-wrapper" [style.height]="gridsterWrapperHeight+'px'" (window:resize)="onWindowResize()">
   <gridster [options]="options" id="grid">
     <ng-container *ngFor="let m of modules">
       <gridster-item *ngIf="m.selected" [item]="m">

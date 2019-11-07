@@ -1,7 +1,8 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem, GridsterItemComponentInterface} from 'angular-gridster2';
-import {IModule} from '../../lib/interfaces';
-import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEventType.interface';
+import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
+import { DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { IModule } from '../../lib/interfaces';
+import { Platform } from '@ionic/angular';
+import * as dLoop from 'delayed-loop';
 
 /**
  * This components takes a list of modules and displays those modules as tiles.
@@ -13,7 +14,7 @@ import {GridsterResizeEventType} from 'angular-gridster2/lib/gridsterResizeEvent
   templateUrl: './modules-grid.component.html',
   styleUrls: ['./modules-grid.component.scss'],
 })
-export class ModulesGridComponent {
+export class ModulesGridComponent implements OnInit {
 
   @ViewChild(GridsterComponent) gridster: GridsterComponent;
 
@@ -40,7 +41,11 @@ export class ModulesGridComponent {
   editingMode = false;
   gridsterWrapperHeight: number;
 
-  constructor() {
+  constructor(
+    private platform: Platform
+  ) { }
+
+  ngOnInit() {
     this.options = {
       gridType: 'scrollVertical',
       // makes the tiles float upwards first then to the left
@@ -50,8 +55,8 @@ export class ModulesGridComponent {
       defaultItemRows: 1,
       // minimum/maximum dimensions of grid
       minRows: 1,
-      minCols: 3,
-      maxCols: 3,
+      minCols: Math.floor(this.platform.width() / 120),
+      maxCols: Math.floor(this.platform.width() / 120),
       disableScrollHorizontal: true,
       disableScrollVertical: true,
       // tiles cannot be dragged further than 0 (?) tiles away
@@ -65,7 +70,7 @@ export class ModulesGridComponent {
       draggable: {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
-        delayStart: 500,
+        delayStart: 250,
         enabled: false
       },
       resizable: {
@@ -114,6 +119,51 @@ export class ModulesGridComponent {
     this.options.draggable.enabled = !this.options.draggable.enabled;
     this.options.api.optionsChanged();
     this.editingModeChanged.emit();
+  }
+
+  setColumnSizeForScreenWidth() {
+    const newColumnSize = Math.floor(this.platform.width() / 120);
+    this.options.minCols = newColumnSize;
+    this.options.maxCols = newColumnSize;
+    this.options.api.optionsChanged();
+  }
+
+  onWindowResize() {
+    this.setColumnSizeForScreenWidth();
+
+    if (this.gridster && this.gridster.grid) {
+      this.gridster.grid.sort((a, b) => {
+        if (a.$item.y < b.$item.y) {
+          return -1;
+        } else if (b.$item.y < a.$item.y) {
+          return 1;
+        } else if (a.$item.x < b.$item.x) {
+          return -1;
+        } else if (b.$item.x < a.$item.x) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      const loop = dLoop(this.gridster.grid, (itm, idx, fin) => {
+        if (this.gridster.getNextPossiblePosition(itm.$item)) {
+          itm.item.x = itm.$item.x;
+          itm.item.y = itm.$item.y;
+          itm.itemChanged();
+          this.gridster.updateGrid();
+          fin();
+        } else { fin(); }
+      });
+
+      loop.then(() => {
+        setTimeout(() => {
+          this.resizeWrapper();
+        }, 500);
+      });
+    } else {
+      this.resizeWrapper();
+    }
   }
 
 }
