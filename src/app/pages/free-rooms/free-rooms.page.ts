@@ -18,6 +18,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   // bindings
   select_timeslot: string;
   refresher: any;
+  isLoaded;
 
   // vars
   housesFound: IHouse[] = [];
@@ -101,7 +102,10 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    */
   refreshRoom(refresher) {
     this.getRoomInfo();
-    this.refresher = refresher;
+
+    if (refresher) {
+      this.refresher = refresher;
+    } else { this.isLoaded = false; }
   }
 
   /**
@@ -203,7 +207,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
           house.rooms.sort(RoomplanPage.compareRooms);
         });
 
-        if (this.refresher != null) {
+        this.isLoaded = true;
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       },
@@ -211,7 +216,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
         this.error = error;
         this.housesFound = [];
         this.no_timeslot = true;
-        if (this.refresher != null) {
+        this.isLoaded = true;
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       }

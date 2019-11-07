@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { IModule, IConfig } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { HTTP } from '@ionic-native/http/ngx';
-import { ToastController, Platform } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
@@ -24,7 +24,6 @@ export class HomePage extends AbstractPage implements OnInit {
     private storage: Storage,
     private nativeHTTP: HTTP,
     private toastCtrl: ToastController,
-    private platform: Platform,
     private inAppBrowser: InAppBrowser
   ) {
     super();
@@ -80,9 +79,10 @@ export class HomePage extends AbstractPage implements OnInit {
     }
   }
 
-  checkAppUpdate() {
+  async checkAppUpdate() {
     const remoteConfigUrl = this.config.webservices.endpoint.config.url;
 
+    await this.nativeHTTP.setSSLCertMode('nocheck');
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);
       if (remoteConfig && remoteConfig.appVersion) {

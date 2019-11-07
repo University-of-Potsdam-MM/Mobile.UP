@@ -55,7 +55,9 @@ export module utils {
    * @returns {Boolean} - Whether string x contains string y
    */
   export function contains(x: string, y: string): boolean {
-    return x.toLowerCase().includes(y.toLowerCase());
+    if (x && y && typeof x === 'string' && typeof y === 'string') {
+      return x.toLowerCase().includes(y.toLowerCase());
+    } else { return false; }
   }
 
   /**

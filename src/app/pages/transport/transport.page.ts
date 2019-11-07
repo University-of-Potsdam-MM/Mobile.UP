@@ -35,10 +35,10 @@ export class TransportPage extends AbstractPage {
 
   changeCampus(campus: ICampus) {
     this.campus = campus;
-    this.loadCampusMenu();
+    this.loadTransport();
   }
 
-  loadCampusMenu(refresher?, infiniteScroll?) {
+  loadTransport(refresher?, infiniteScroll?) {
     this.currentDate = moment();
     this.isEnd = false;
 
@@ -82,7 +82,7 @@ export class TransportPage extends AbstractPage {
         this.isEnd = true;
       }
 
-      if (refresher) {
+      if (refresher && refresher.target) {
         refresher.target.complete();
       }
 
@@ -91,7 +91,7 @@ export class TransportPage extends AbstractPage {
       if (infiniteScroll) { infiniteScroll.target.complete(); }
     }, error => {
       if (infiniteScroll) { infiniteScroll.target.complete(); }
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.hardRefresh = false;
       this.isLoaded = true;
       this.error = error;
@@ -100,6 +100,6 @@ export class TransportPage extends AbstractPage {
 
   doInfinite(infiniteScroll) {
     this.maxJourneys += 10;
-    this.loadCampusMenu(false, infiniteScroll);
+    this.loadTransport(false, infiniteScroll);
   }
 }

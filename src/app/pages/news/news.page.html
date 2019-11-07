@@ -1,34 +1,38 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadNews(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar *ngIf="sourcesList && !networkError">
     <ion-row class="filters">
-        <ion-col class="col-with-arrow" no-padding size="1">
+        <ion-col class="col-with-arrow ion-no-padding" size="1">
           <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="arrow-back"></ion-icon>
         </ion-col>
-        <ion-col no-padding size="10">
+        <ion-col class="ion-no-padding" size="10">
           <ion-slides [options]="slideOptions">
             <ion-slide (click)="setNewsSource(i)" *ngFor="let category of categories; let i = index">
               <ion-segment-button [class.selected]="selectedCategory === i">{{ category }}</ion-segment-button>
             </ion-slide>
           </ion-slides>
         </ion-col>
-        <ion-col class="col-with-arrow" no-padding size="1">
+        <ion-col class="col-with-arrow ion-no-padding" size="1">
           <ion-icon *ngIf="showRightButton" (click)="slideNext()" name="arrow-forward"></ion-icon>
         </ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (swipe)="swipeNewsSource($event)">
-  <ion-refresher slot="fixed" (ionRefresh)="loadNews($event)">
+<ion-content class="ion-no-padding" (swipe)="swipeNewsSource($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadNews($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" padding>
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 

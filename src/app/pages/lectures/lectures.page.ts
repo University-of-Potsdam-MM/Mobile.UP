@@ -3,7 +3,7 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
 import { utils } from 'src/app/lib/util';
 import { LectureSearchModalPage } from './lecture-search.modal';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
@@ -17,7 +17,6 @@ export class LecturesPage extends AbstractPage implements OnInit {
   constructor(
     private ws: WebserviceWrapperService,
     private modalCtrl: ModalController,
-    private platform: Platform,
     private keyboard: Keyboard
   ) {
     super({ optionalNetwork: true });
@@ -50,7 +49,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.isLoaded = false;
     this.loadLectureTree(true);
     setTimeout(() => {
-      refresher.target.complete();
+      if (refresher) { refresher.target.complete(); }
       this.isRefreshing = false;
     }, 500);
   }

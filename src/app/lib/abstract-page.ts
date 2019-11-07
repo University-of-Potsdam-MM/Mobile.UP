@@ -4,13 +4,12 @@ import { UserSessionService } from '../services/user-session/user-session.servic
 import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuController, NavController } from '@ionic/angular';
+import { MenuController, NavController, Platform } from '@ionic/angular';
 import {IConfig, IModule} from './interfaces';
 import { ConfigService } from '../services/config/config.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
-import {WebIntentService} from '../services/web-intent/web-intent.service';
-import {Observable} from 'rxjs';
-import {utils} from './util';
+import { WebIntentService } from '../services/web-intent/web-intent.service';
+import { utils } from './util';
 import isEmptyObject = utils.isEmptyObject;
 
 export interface IPageOptions {
@@ -50,6 +49,7 @@ export abstract class AbstractPage  {
     protected loggingService: LoggingService;
     protected router: Router;
     protected webIntent: WebIntentService;
+    public platform: Platform;
 
     protected constructor(
         pageOptions?: IPageOptions
@@ -65,6 +65,7 @@ export abstract class AbstractPage  {
       this.menu = injector.get<MenuController>(MenuController as Type<MenuController>);
       this.navCtrl = injector.get<NavController>(NavController as Type<NavController>);
       this.webIntent = injector.get<WebIntentService>(WebIntentService as Type<WebIntentService>);
+      this.platform = injector.get<Platform>(Platform as Type<Platform>);
 
       this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
 

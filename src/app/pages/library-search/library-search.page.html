@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="activeSegment === 'favorites' && !(platform.is('ios') || platform.is('android'))" (click)="checkFavorites(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.library-search.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -33,19 +36,20 @@
 </ion-header>
 
 <ion-content (ionScrollStart)="onScrollListener()" [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
-  <ion-refresher slot="fixed" *ngIf="activeSegment === 'favorites'" (ionRefresh)="checkFavorites($event)">
-      <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+
+  <ion-refresher *ngIf="activeSegment === 'favorites' && (platform.is('ios') || platform.is('android'))" slot="fixed" (ionRefresh)="checkFavorites($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" padding>
+  <div align="center" *ngIf="!isLoaded && query && query.length > 0 && activeSegment === 'search'" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
-  <div align="center" *ngIf="!isLoadedFavorites && activeSegment === 'favorites'" padding>
+  <div align="center" *ngIf="!isLoadedFavorites && activeSegment === 'favorites'" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'search'">
-    <ion-item padding-left>
+    <ion-item class="ion-padding-start">
       <ion-label>
         <p>{{ "page.library-search.allResults" | translate}}:</p>
         <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}

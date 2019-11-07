@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import * as jquery from 'jquery';
 import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
@@ -27,7 +26,6 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   networkError;
 
   constructor(
-    private platform: Platform,
     private keyboard: Keyboard,
     private chRef: ChangeDetectorRef,
     private mapProvider: NavigatorService,
@@ -62,7 +60,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
    */
   loadEmergencyCalls(refresher?) {
 
-    if (!refresher) {
+    if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     } else { this.query = ''; }
 
@@ -72,13 +70,13 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       {},
       { forceRefresh: refresher !== undefined }
     ).subscribe((response: any) => {
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.defaultList = response;
       this.isLoaded = true;
       this.initializeList();
     }, () => {
       this.isLoaded = true;
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.networkError = true;
     });
     // on error //this.defaultList = require("../../assets/json/emergency");

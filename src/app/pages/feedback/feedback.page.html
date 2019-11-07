@@ -9,7 +9,7 @@
 <ion-content>
   <form [formGroup]="form" (ngSubmit)="submitForm()" id="smileys">
       <ion-item-divider color="light">
-        <ion-label text-wrap>
+        <ion-label class="ion-text-wrap">
           {{ "page.feedback.rating" | translate}}
         </ion-label>
       </ion-item-divider>
@@ -26,7 +26,7 @@
       </ion-list>
 
       <ion-item-divider color="light">
-        <ion-label text-wrap>
+        <ion-label class="ion-text-wrap">
           {{ "page.feedback.feedback" | translate}}
         </ion-label>
       </ion-item-divider>
@@ -35,7 +35,7 @@
       </ion-item>
 
       <ion-item-divider color="light">
-        <ion-label text-wrap>
+        <ion-label class="ion-text-wrap">
           {{ "page.feedback.recommendation" | translate}}
         </ion-label>
       </ion-item-divider>
@@ -52,7 +52,7 @@
       <ion-toggle checked="false" formControlName="anonymous"></ion-toggle>
     </ion-item>
 
-    <div text-center padding-top>
+    <div class="ion-padding-top ion-text-center">
       <ion-button type="submit" [disabled]="!form.valid">{{ "button.submit" | translate}}</ion-button>
     </div>
   </form>

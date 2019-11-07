@@ -211,9 +211,6 @@
         "appRedirect": {
           "lbl": "Open external apps"
         },
-        "autologin": {
-          "lbl": "Automatic login"
-        },
         "inpractice": {
           "lbl": "In practice"
         },
@@ -363,7 +360,8 @@
       "website": "Open website?",
       "redirect": "Redirect",
       "clearAll": "Clear all?",
-      "exportCalendar": "Export calendar?"
+      "exportCalendar": "Export events?",
+      "choose": "Choose..."
     },
     "httpErrorStatus": {
       "unknown": "Unknown HTTP status",
@@ -393,7 +391,9 @@
     "feedback-fail": "Failed to send your feedback.",
     "permission-denied": "Permission denied.",
     "app-update": "App update available!",
-    "login-expired": "Your login is expired. Please sign in again."
+    "login-expired": "Your login is expired. Please sign in again.",
+    "addToExistingHeader": "Add to existing calendar?",
+    "addToExistingMessage": "Do you want to add the events to an existing calendar? We will create a new calendar otherwise."
   },
   "words": {
     "clock": "",
@@ -448,6 +448,6 @@
     "search": "Search...",
     "username": "Username (without @uni...)",
     "password": "Password",
-    "calendarName": "Mobile.UP: Studies"
+    "calendarName": "Mobile.UP: Timetable"
   }
 }

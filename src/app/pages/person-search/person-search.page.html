@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (ionScrollStart)="onScrollListener()">
+<ion-content class="ion-no-padding" (ionScrollStart)="onScrollListener()">
 
   <p *ngIf="!response_received && query.length > 0" style="text-align: center">
     <ion-spinner name="dots"></ion-spinner>
@@ -29,7 +29,7 @@
       <ion-item-sliding>
         <ion-item (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
           <ion-icon color="primary" slot="start" name="person"></ion-icon>
-          <ion-label text-wrap>
+          <ion-label class="ion-text-wrap">
             <h2>{{person.Initials}} {{person.First_Name}} {{person.Last_Name}}</h2>
             <p *ngIf="person.Department != ''">{{person.Department}}</p>
           </ion-label>
@@ -54,7 +54,7 @@
 
       <ion-item *ngIf="person.expanded && ((person.Email != '') || (person.Extension != '') || (person.Room_Name != ''))">
         <ion-icon slot="start"></ion-icon>
-        <ion-label no-margin text-wrap>
+        <ion-label class="ion-no-margin ion-text-wrap">
           <ion-grid>
             <ion-row *ngIf="person.Email != ''">
               <ion-col size="auto"><ion-icon color="primary" name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>

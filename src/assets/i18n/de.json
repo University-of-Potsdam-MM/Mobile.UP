@@ -211,9 +211,6 @@
         "appRedirect": {
           "lbl": "Externe Apps öffnen"
         },
-        "autologin": {
-          "lbl": "Automatischer Login"
-        },
         "inpractice": {
           "lbl": "Ab in die Praxis"
         },
@@ -363,7 +360,8 @@
       "website": "Website öffnen?",
       "redirect": "Weiterleitung",
       "clearAll": "Alles entfernen?",
-      "exportCalendar": "Kalender exportieren?"
+      "exportCalendar": "Veranstaltungen exportieren?",
+      "choose": "Auswählen..."
     },
     "httpErrorStatus": {
       "unknown": "Unbekannter HTTP-Status",
@@ -393,7 +391,9 @@
     "feedback-fail": "Fehler beim Senden des Feedbacks.",
     "permission-denied": "Berechtigung verweigert.",
     "app-update": "App Update verfügbar!",
-    "login-expired": "Ihr Login ist abgelaufen. Bitte melden Sie sich erneut an."
+    "login-expired": "Ihr Login ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "addToExistingHeader": "Zu existierendem Kalender hinzufügen?",
+    "addToExistingMessage": "Sollen die Veranstaltungen zu einem bereits existierenden Kalender hinzugefügt werden? Ansonsten wird ein neuer Kalender erstellt."
   },
   "words": {
     "clock": "Uhr",
@@ -448,6 +448,6 @@
     "search": "Suchbegriff eingeben...",
     "username": "Benutzername (ohne @uni...)",
     "password": "Passwort",
-    "calendarName": "Mobile.UP: Studium"
+    "calendarName": "Mobile.UP: Stundenplan"
   }
 }

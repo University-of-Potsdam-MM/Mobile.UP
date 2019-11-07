@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse, } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Platform, IonItemSliding, ModalController, AlertController } from '@ionic/angular';
+import { IonItemSliding, ModalController, AlertController } from '@ionic/angular';
 import * as jquery from 'jquery';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,7 +35,6 @@ export class PracticePage extends AbstractPage {
 
   constructor(
     private storage: Storage,
-    private platform: Platform,
     private settingsProvider: SettingsService,
     private keyboard: Keyboard,
     public translate: TranslateService,
@@ -93,7 +92,7 @@ export class PracticePage extends AbstractPage {
    */
   public loadData(refresher?) {
     this.error = null;
-    if (!refresher) {
+    if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     } else { this.query = ''; }
 
@@ -103,7 +102,7 @@ export class PracticePage extends AbstractPage {
       { forceRefresh: refresher !== undefined }
     ).subscribe(
       (response: IADSResponse) => {
-        if (refresher) {
+        if (refresher && refresher.target) {
           refresher.target.complete();
         }
 
@@ -126,7 +125,7 @@ export class PracticePage extends AbstractPage {
         this.checkFavorites();
       },
       error => {
-        if (refresher) { refresher.target.complete(); }
+        if (refresher && refresher.target) { refresher.target.complete(); }
         // reset array so new persons are displayed
         this.defaultList = [];
         this.error = error;

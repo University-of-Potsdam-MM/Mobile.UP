@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadTransport(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.transport.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -9,18 +12,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content no-padding (swipe)="campusTabComponent.handleSwipeEvent($event)">
-  <ion-refresher slot="fixed" (ionRefresh)="loadCampusMenu($event)">
+<ion-content class="ion-no-padding" (swipe)="campusTabComponent.handleSwipeEvent($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadTransport($event)">
     <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
   </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" padding>
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-item-divider>
-      <ion-label *ngIf="departures[0].stop" text-wrap>
+      <ion-label *ngIf="departures[0].stop" class="ion-text-wrap">
         {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
       </ion-label>
     </ion-item-divider>
@@ -30,7 +34,7 @@
         <ion-icon slot="start" *ngIf="dep.Product.catOut.trim() == 'Bus'" src="./assets/icon/bus.svg"></ion-icon>
         <ion-icon slot="start" *ngIf="dep.Product.catOut.trim() == 'RB'" src="./assets/icon/bahn.svg"></ion-icon>
         <ion-icon slot="start" *ngIf="dep.Product.catOut.trim() == 'S'" src="./assets/icon/s-bahn.svg"></ion-icon>
-        <ion-label text-wrap>
+        <ion-label class="ion-text-wrap">
           <h2 *ngIf="dep.name">{{ dep.name }}</h2>
           <p *ngIf="dep.direction">{{ dep.direction }}<span *ngIf="dep.track && !dep.rtTrack"><br>{{ "page.transport.track" | translate}}: {{ dep.track }}</span><span *ngIf="dep.track && dep.rtTrack"><br>{{ "page.transport.track" | translate}}: {{ dep.rtTrack }}</span></p>
         </ion-label>

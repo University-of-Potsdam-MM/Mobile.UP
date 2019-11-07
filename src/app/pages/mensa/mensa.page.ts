@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
@@ -19,18 +18,9 @@ import * as opening from 'opening_hours';
 })
 export class MensaPage extends AbstractPage {
 
-  // calendar variables
-  showBasicCalendar = false;
-  date = moment();
-  type: 'moment';
-  optionsBasic: CalendarComponentOptions = {
-    weekdays: this.getWeekdays(),
-    showMonthPicker: false,
-    weekStart: 1
-  };
-
   filterKeywords = [];
   currentDate = moment();
+  selectedDate = moment();
 
   allMeals: IMeals[] = [];
   displayedMeals: IMeals[] = [];
@@ -45,7 +35,6 @@ export class MensaPage extends AbstractPage {
   mensaIsOpen = true;
 
   isLoaded;
-  hardRefresh;
   noMealsForDate;
   noUlfMealsForDate;
   networkError;
@@ -71,9 +60,9 @@ export class MensaPage extends AbstractPage {
   }
 
   loadCampusMenu(refresher?) {
-    if (refresher) {
-      this.hardRefresh = true;
-    } else { this.isLoaded = false; }
+    if (!(refresher && refresher.target)) {
+      this.isLoaded = false;
+    }
 
     this.getOpening();
 
@@ -95,7 +84,7 @@ export class MensaPage extends AbstractPage {
         <IMensaRequestParams>{
           campus_canteen_name: this.campus.canteen_name
         },
-        { forceRefreshGroup: this.hardRefresh }
+        { forceRefreshGroup: refresher !== undefined }
       ).subscribe((res: IMensaResponse) => {
         if (res.meal) {
           this.allMeals = res.meal;
@@ -118,22 +107,21 @@ export class MensaPage extends AbstractPage {
             if (resUlf.iconHashMap && resUlf.iconHashMap.entry) { this.ulfIconMapping = resUlf.iconHashMap.entry; }
             this.getFilterKeywords();
             this.classifyMeals();
-            if (refresher) { refresher.target.complete(); }
+            if (refresher && refresher.target) { refresher.target.complete(); }
           });
         } else {
           this.getFilterKeywords();
           this.classifyMeals();
-          if (refresher) { refresher.target.complete(); }
+          if (refresher && refresher.target) { refresher.target.complete(); }
         }
       }, () => {
         this.isLoaded = true;
-        this.hardRefresh = false;
         this.networkError = true;
-        if (refresher) { refresher.target.complete(); }
+        if (refresher && refresher.target) { refresher.target.complete(); }
       });
     } else {
       this.noMensaForLocation = true;
-      if (refresher) { refresher.target.complete(); }
+      if (refresher && refresher.target) { refresher.target.complete(); }
       this.isLoaded = true;
     }
   }
@@ -176,9 +164,8 @@ export class MensaPage extends AbstractPage {
       }
     }
 
-    this.hardRefresh = false;
     this.isLoaded = true;
-    this.pickDate(this.date);
+    this.pickDate(this.selectedDate);
   }
 
   filterMenus(event) {
@@ -221,10 +208,7 @@ export class MensaPage extends AbstractPage {
   }
 
   pickDate($event) {
-    setTimeout(() => {
-      this.showBasicCalendar = false;
-    }, 100);
-
+    this.selectedDate = $event;
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
@@ -254,12 +238,6 @@ export class MensaPage extends AbstractPage {
     }
   }
 
-  getWeekdays(): string[] {
-    if (this.translate.currentLang === 'de') {
-      return ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
-    } else { return ['S', 'M', 'T', 'W', 'T', 'F', 'S']; }
-  }
-
   getOpening() {
     this.mensaIsOpen = true;
     const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
@@ -269,10 +247,12 @@ export class MensaPage extends AbstractPage {
         if (response) {
           response = utils.convertToArray(response);
           response = response.filter(function(item) {
-            return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+            if (item && item.name) {
+              return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+            } else { return false; }
           });
 
-          if (response.length > 0) {
+          if (response && response.length > 0) {
             response = response[0];
             response.parsedOpening = new opening(
               response.opening_hours,
@@ -284,4 +264,5 @@ export class MensaPage extends AbstractPage {
       });
     });
   }
+
 }

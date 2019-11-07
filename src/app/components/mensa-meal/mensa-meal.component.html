@@ -16,7 +16,7 @@
         </ion-slide>
       </ion-slides>
     </ion-thumbnail>
-    <ion-label text-wrap>
+    <ion-label class="ion-text-wrap">
       <p class="mealtitle" *ngIf="meal.title">{{ meal.title }}
         <span *ngIf="meal.type">
           <span *ngFor="let type of meal.type; let last = last">{{ type }}<span *ngIf="!last">, </span></span>
@@ -28,7 +28,7 @@
   </ion-item>
   <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
     <ion-thumbnail *ngIf="meal.type" name="" slot="start"></ion-thumbnail>
-    <ion-label text-wrap>
+    <ion-label class="ion-text-wrap">
       <span *ngIf="meal.prices && meal.prices.student">{{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }}</span> <br *ngIf="meal.prices && meal.prices.student">
       <span *ngIf="meal.prices && meal.prices.guest">{{ "page.mensa.guests" | translate }}: {{ formatPrices(meal.prices.guest) }}</span> <br *ngIf="meal.prices && meal.prices.guest">
       <div *ngIf="meal.allergens">

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import {
@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './roomplan.page.html',
   styleUrls: ['./roomplan.page.scss'],
 })
-export class RoomplanPage extends AbstractPage implements OnInit {
+export class RoomplanPage extends AbstractPage {
 
   constructor(
     private alertService: AlertService,
@@ -35,9 +35,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
   default_room: IRoom;
 
   // bindings
-  select_day: string;
   refresher: any;
-  days: any;
+  isLoaded;
 
   // vars
   houseMap: Map<string, IHousePlan> = new Map<string, IHousePlan>();
@@ -98,30 +97,22 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     return 0;
   }
 
-  ngOnInit() {
-    this.day_offset = '0';
-
-    this.days = [];
-    for (let i = 0; i < 7; i++) {
-      const day: Date = new Date();
-      day.setDate(day.getDate() + i);
-      this.days.push({'lbl': day, 'value': i.toString()});
-    }
-    this.select_day = this.day_offset;
-  }
-
   /**
    * Changes the day for which to load data
    * Day comes from DOM select element "select_day"
    */
-  changeDay() {
+  changeDay(newDay) {
+    this.day_offset = newDay;
+
     this.housesFound = [];
     this.houseMap = new Map<string, IHousePlan>();
-    this.day_offset = this.select_day;
     // reset defaults so they don't open on new day
     this.default_room = null;
     this.default_house = null;
-    this.getRoomInfo();
+
+    if (this.current_location) {
+      this.getRoomInfo();
+    }
   }
 
   /**
@@ -131,7 +122,9 @@ export class RoomplanPage extends AbstractPage implements OnInit {
    */
   refreshRoom(refresher) {
     this.getRoomInfo();
-    this.refresher = refresher;
+    if (refresher) {
+      this.refresher = refresher;
+    } else { this.isLoaded = false; }
   }
 
   /**
@@ -217,8 +210,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
     const end = new Date();
     start.setHours(8);
     end.setHours(22);
-    start.setDate(start.getDate() + +this.day_offset); // unary plus for string->num conversion
-    end.setDate(end.getDate() + +this.day_offset);
+    start.setDate(start.getDate() + + this.day_offset); // unary plus for string->num conversion
+    end.setDate(end.getDate() + + this.day_offset);
 
     this.ws.call(
       'roomPlanSearch',
@@ -329,8 +322,9 @@ export class RoomplanPage extends AbstractPage implements OnInit {
         }
 
         this.requestProcessed = true;
+        this.isLoaded = true;
         // if refresher is running complete it
-        if (this.refresher != null) {
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       },
@@ -340,7 +334,8 @@ export class RoomplanPage extends AbstractPage implements OnInit {
         this.error = error;
         this.houseMap = new Map<string, IHousePlan>();
         this.housesFound = [];
-        if (this.refresher != null) {
+        this.isLoaded = true;
+        if (this.refresher) {
           this.refresher.target.complete();
         }
       }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IEventObject, createEventSource } from './createEvents';
-import { Platform, ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,6 +11,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { utils } from 'src/app/lib/util';
 
 @Component({
   selector: 'app-timetable',
@@ -53,7 +54,6 @@ export class TimetablePage extends AbstractPage {
   };
 
   constructor(
-    private platform: Platform,
     private translate: TranslateService,
     private ws: WebserviceWrapperService,
     private sanitizer: DomSanitizer,
@@ -263,42 +263,79 @@ export class TimetablePage extends AbstractPage {
         {
           text: this.translate.instant('button.yes'),
           handler: async () => {
-            const existingCalendars = await this.calendar.listCalendars();
-            let found = false;
-            if (Array.isArray(existingCalendars)) {
-              for (let i = 0; i < existingCalendars.length; i++) {
-                if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
-                  found = true;
-                  break;
-                }
-              }
-            }
-            if (found) {
-              const alert2 = await this.alertCtrl.create({
-                header: this.translate.instant('hints.type.hint'),
-                message: this.translate.instant('alert.calendar-exists'),
-                buttons: [
-                  {
-                    text: this.translate.instant('button.keep'),
-                    handler: () => {
-                      this.exportCalendar();
+            let existingCalendars = await this.calendar.listCalendars();
+            if (existingCalendars) {
+              existingCalendars = utils.convertToArray(existingCalendars);
+              if (Array.isArray(existingCalendars)) {
+                // ask if the user wants to add the events to an existing calender
+                const addToExistingAlert = await this.alertCtrl.create({
+                  header: this.translate.instant('alert.addToExistingHeader'),
+                  message: this.translate.instant('alert.addToExistingMessage'),
+                  buttons: [
+                    {
+                      text: this.translate.instant('button.no'),
+                      handler: async () => {
+                        let found = false;
+                        for (let i = 0; i < existingCalendars.length; i++) {
+                          if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
+                            found = true;
+                            break;
+                          }
+                        }
+
+                        if (found) {
+                          this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
+                            this.logger.debug('exportPrompt', 'deleted calendar');
+                            this.exportCalendar();
+                          }, error => {
+                            this.alertService.showToast('alert.calendar-export-fail');
+                            this.logger.error('exportPrompt', 'calendar deletion', error);
+                          });
+                        } else {
+                          this.exportCalendar();
+                        }
+                      }
+                    },
+                    {
+                      text: this.translate.instant('button.yes'),
+                      handler: async () => {
+                        const calendarInputs = [];
+                        for (let i = 0; i < existingCalendars.length; i++) {
+                          if (!(existingCalendars[i].type && existingCalendars[i].type === 'Birthday')) {
+                            calendarInputs.push({
+                              name: existingCalendars[i].name,
+                              type: 'radio',
+                              label: existingCalendars[i].name,
+                              value: i
+                            });
+                          }
+                        }
+
+                        const chooseCalendarAlert = await this.alertCtrl.create({
+                          header: this.translate.instant('alert.title.choose'),
+                          inputs: calendarInputs,
+                          buttons: [
+                            {
+                              text: this.translate.instant('button.cancel'),
+                              role: 'cancel'
+                            },
+                            {
+                              text: this.translate.instant('button.ok'),
+                              handler: (data) => {
+                                if (data && existingCalendars && existingCalendars[data]) {
+                                  this.exportCalendar(existingCalendars[data].name, existingCalendars[data].id);
+                                }
+                              }
+                            }
+                          ]
+                        });
+                        await chooseCalendarAlert.present();
+                      }
                     }
-                  },
-                  {
-                    text: this.translate.instant('button.delete'),
-                    handler: () => {
-                      this.calendar.deleteCalendar(this.translate.instant('placeholder.calendarName')).then(() => {
-                        this.logger.debug('exportPrompt', 'deleted calendar');
-                        this.exportCalendar();
-                      }, error => {
-                        this.alertService.showToast('alert.calendar-export-fail');
-                        this.logger.error('exportPrompt', 'calendar deletion', error);
-                      });
-                    }
-                  }
-                ]
-              });
-              alert2.present();
+                  ]
+                });
+                addToExistingAlert.present();
+              } else { this.exportCalendar(); }
             } else { this.exportCalendar(); }
           }
         }
@@ -307,22 +344,30 @@ export class TimetablePage extends AbstractPage {
     alert.present();
   }
 
-  exportCalendar() {
+  exportCalendar(calendarName?: string, calendarID?: string) {
     this.calendar.hasReadWritePermission().then(result => {
       if (result) {
         this.logger.debug('exportCalendar', 'calendar access given');
         const createCalendarOpts = this.calendar.getCreateCalendarOptions();
-        createCalendarOpts.calendarName = this.translate.instant('placeholder.calendarName');
-        createCalendarOpts.calendarColor = '#ff9900';
+        createCalendarOpts.calendarName = calendarName ? calendarName : this.translate.instant('placeholder.calendarName');
+
+        if (!calendarName || !calendarID) {
+          createCalendarOpts.calendarColor = '#ff9900';
+        }
+
         this.calendar.createCalendar(createCalendarOpts).then(async () => {
 
           let calID;
-          const existingCalendars = await this.calendar.listCalendars();
-          if (Array.isArray(existingCalendars)) {
-            for (let i = 0; i < existingCalendars.length; i++) {
-              if (existingCalendars[i].name === this.translate.instant('placeholder.calendarName')) {
-                calID = existingCalendars[i].id;
-                break;
+          if (calendarID) {
+            calID = calendarID;
+          } else {
+            const existingCalendars = await this.calendar.listCalendars();
+            if (Array.isArray(existingCalendars)) {
+              for (let i = 0; i < existingCalendars.length; i++) {
+                if (existingCalendars[i].name === createCalendarOpts.calendarName) {
+                  calID = existingCalendars[i].id;
+                  break;
+                }
               }
             }
           }

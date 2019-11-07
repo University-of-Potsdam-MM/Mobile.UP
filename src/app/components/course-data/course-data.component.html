@@ -1,8 +1,8 @@
-<div align="center" *ngIf="!isLoaded && !networkError" padding>
+<div align="center" *ngIf="!isLoaded && !networkError" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
 </div>
 <app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
-<ion-item class="courseData" *ngIf="course.courseId && courseData" padding-top>
+<ion-item class="courseData ion-padding-top" *ngIf="course.courseId && courseData">
     <ion-grid class="courseData">
         <ion-row *ngIf="course.semester">
             <ion-col size="12" class="courseKeywords">{{ "page.lectures.term" | translate }}:</ion-col>

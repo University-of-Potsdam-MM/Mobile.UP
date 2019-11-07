@@ -6,13 +6,13 @@
 
 <!-- components that should only show once at the beginng and not for every recursive loop -->
 <ion-grid *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
-  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints" nowrap no-padding>
-    <ion-col text-left size="8">
+  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints ion-no-padding" nowrap>
+    <ion-col class="ion-text-left" size="8">
       <b *ngIf="ac.description">
         {{ ac.description }}
       </b>
     </ion-col>
-    <ion-col text-right>
+    <ion-col class="ion-text-right">
       <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
         {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
       </b>
@@ -79,7 +79,7 @@
 
 
 <ion-grid class="gradeTable">
-  <ion-row class="tableHead" nowrap no-padding>
+  <ion-row class="tableHead ion-no-padding" nowrap>
     <ion-col size="8">
       {{ "page.grades.bezeichnung" | translate }}
     </ion-col>
@@ -107,7 +107,7 @@
     <div class="moduleGroup" *ngFor="let moduleGroup of convertToArray(gradeArray)">
       <ion-grid>
         <ion-row class="moduleGroupHead">
-          <ion-col text-left size="8">
+          <ion-col class="ion-text-left" size="8">
             <b *ngIf="moduleGroup.examDesc">{{ moduleGroup.examDesc }}</b>
           </ion-col>
           <ion-col>
@@ -125,7 +125,7 @@
         <div class="examination" *ngIf="moduleGroup.examination">
           <div *ngIf="moduleGroup.examination.graded">
             <ion-row *ngFor="let studyPerformance of convertToArray(moduleGroup.examination.graded)">
-              <ion-col size="8" text-left>
+              <ion-col size="8" class="ion-text-left">
                 <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">
                   {{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}
                 </span>
@@ -156,7 +156,7 @@
           </div>
           <div *ngIf="moduleGroup.examination.nonGraded">
             <ion-row *ngFor="let studyPerformance of convertToArray(moduleGroup.examination.nonGraded)">
-              <ion-col size="8" text-left>
+              <ion-col size="8" class="ion-text-left">
                 <span *ngIf="studyPerformance.courseType && studyPerformance.courseName">
                   {{ studyPerformance.courseType }}: {{ unescapeHTML(studyPerformance.courseName) }}
                 </span>
@@ -182,14 +182,14 @@
   </div>
 </ng-template>
 
-<ion-grid padding-bottom *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
-  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints" nowrap no-padding>
-    <ion-col text-left size="8">
+<ion-grid class="ion-padding-bottom" *ngIf="gradeArray && gradeArray[currentProfession] && gradeArray[currentProfession].credits && gradeArray[currentProfession].credits.accountCredits">
+  <ion-row *ngFor="let ac of convertToArray(gradeArray[currentProfession].credits.accountCredits)" class="creditPoints ion-no-padding" nowrap>
+    <ion-col class="ion-text-left" size="8">
       <b *ngIf="ac.description">
         {{ ac.description }}
       </b>
     </ion-col>
-    <ion-col text-right>
+    <ion-col class="ion-text-right">
       <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
         {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
       </b>

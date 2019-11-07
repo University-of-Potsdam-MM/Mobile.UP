@@ -20,7 +20,6 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Contacts } from '@ionic-native/contacts/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
-import { CalendarModule } from 'ion2-calendar';
 import 'hammerjs';
 import { ConfigService } from './services/config/config.service';
 import localeDe from '@angular/common/locales/de';
@@ -72,7 +71,6 @@ export class IonicGestureConfig extends HammerGestureConfig {
   entryComponents: [],
   imports: [
     BrowserModule,
-    CalendarModule,
     IonicModule.forRoot({
       backButtonIcon: 'ios-arrow-back',
       backButtonText: '',

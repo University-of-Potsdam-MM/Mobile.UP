@@ -6,7 +6,6 @@ import { Platform, AlertController } from '@ionic/angular';
 import { AppAvailability } from '@ionic-native/app-availability/ngx';
 import { SafariViewController } from '@ionic-native/safari-view-controller/ngx';
 import { UserSessionService } from '../user-session/user-session.service';
-import { ConfigService } from '../config/config.service';
 import { ISession } from '../login-provider/interfaces';
 import { SettingsService } from '../settings/settings.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
@@ -48,13 +47,13 @@ export class WebIntentService implements OnInit {
     private userSession: UserSessionService,
     private settingsProvider: SettingsService,
     private appAvailability: AppAvailability,
-    private safari: SafariViewController,
+    private safariOrChrome: SafariViewController,
     private alertCtrl: AlertController,
     private storage: Storage,
     private loggingService: LoggingService
-    ) {
-      this.logger = this.loggingService.getLogger('[/web-intent-service]');
-    }
+  ) {
+    this.logger = this.loggingService.getLogger('[/web-intent-service]');
+  }
 
   ngOnInit() {
     if (this.translate.currentLang === 'en') {
@@ -164,23 +163,15 @@ export class WebIntentService implements OnInit {
    * @param {string} url
    */
   private async handleWebIntentForWebsite(url: string) {
-    const mailAutoLogin = await this.settingsProvider.getSettingValue('autologin');
     this.session = await this.userSession.getSession();
 
-    if (this.platform.is('cordova')
-      && mailAutoLogin
-      && url === ConfigService.config.modules.mail.url
-      && this.session && this.session.credentials
-      && this.session.credentials.username
-      && this.session.credentials.password) {
-        this.openWithInAppBrowser(url, true);
-    } else if (this.platform.is('cordova')) {
-      this.safari.isAvailable().then((available: boolean) => {
+    if (this.platform.is('cordova')) {
+      this.safariOrChrome.isAvailable().then((available: boolean) => {
         if (available) {
-          this.openWithSafari(url);
-        } else { this.openWithInAppBrowser(url, false); }
+          this.openWithSafariOrChrome(url);
+        } else { this.openWithInAppBrowser(url); }
       });
-    } else { this.openWithInAppBrowser(url, false); }
+    } else { this.openWithInAppBrowser(url); }
   }
 
   /**
@@ -188,48 +179,54 @@ export class WebIntentService implements OnInit {
    * @description opens a url with the InAppBrowser
    * @param {string} url
    */
-  private openWithInAppBrowser(url: string, mailLogin: boolean) {
-    if (mailLogin && this.platform.is('cordova')) {
-      this.mailLogin(url);
-    } else {
-      const target = '_blank';
-      this.inAppBrowser.create(url, target, this.options);
-    }
+  private openWithInAppBrowser(url: string) {
+    const target = '_blank';
+    this.inAppBrowser.create(url, target, this.options);
   }
 
-  /**
+  /** DISABLED because InAppBrowser-Plugin causes multiple problems, f.e.
+   * - not being able to write an email
+   * - not being able to open attachements
+   * - layout issues with newer devices (like iPhone X)
+   * - Mail.UP 'not supported' warning on iOS
+   *
+   * alternative browsers do not support script injection for security reasons
+   *
    * @name mailLogin
    * @description opens mail in browser and injects credentials
    */
-  private mailLogin(url: string) {
-    const browser = this.inAppBrowser.create(url, '_blank', this.options);
+  // private mailLogin(url: string) {
+  //   const browser = this.inAppBrowser.create(url, '_blank', this.options);
 
-    if (this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password) {
-      this.logger.debug('mailLogin', 'trying to login...');
-      const enterCredentials =
-      `$('input.uname').val(\'${this.session.credentials.username}\');
-      $('input.pewe').val(\'${this.session.credentials.password}\');
-      $('button.loginbutton').click();`;
+  //   if (this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password) {
+  //     this.logger.debug('mailLogin', 'trying to login...');
+  //     const enterCredentials =
+  //     `$('input.uname').val(\'${this.session.credentials.username}\');
+  //     $('input.pewe').val(\'${this.session.credentials.password}\');
+  //     $('button.loginbutton').click();`;
 
-      browser.on('loadstop').subscribe(() => {
-        browser.executeScript({ code: enterCredentials }).then(() => {
-          this.logger.debug('mailLogin', 'successfully entered login data...');
-        }, error => {
-          this.logger.error('mailLogin', 'error injecting credentials', error);
-        });
-      });
-    }
-  }
+  //     browser.on('loadstop').subscribe(() => {
+  //       browser.executeScript({ code: enterCredentials }).then(() => {
+  //         this.logger.debug('mailLogin', 'successfully entered login data...');
+  //       }, error => {
+  //         this.logger.error('mailLogin', 'error injecting credentials', error);
+  //       });
+  //     });
+  //   }
+  // }
 
   /**
-   * @name openWithSafari
-   * @description opens a url with safari
+   * @name openWithSafariOrChrome
+   * @description opens a url with safari or chrome custom tabs
    * @param {string} url
    */
-  private openWithSafari(url: string) {
-    this.safari.show({
+  private openWithSafariOrChrome(url: string) {
+    this.safariOrChrome.show({
       url: url
-    }).subscribe(result => { this.logger.debug('openWithSafari', result); }, error => { this.logger.error('openWithSafari', error); });
+    }).subscribe(
+      result => { this.logger.debug('openWithSafariOrChrome', result); },
+      error => { this.logger.error('openWithSafariOrChrome', error); }
+    );
   }
 
   /**
