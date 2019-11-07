@@ -71,7 +71,10 @@ export class ModulesGridComponent implements OnInit {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
         delayStart: 250,
-        enabled: false
+        enabled: false,
+        stop: () => {
+          this.onWindowResize();
+        }
       },
       resizable: {
         enabled: false
