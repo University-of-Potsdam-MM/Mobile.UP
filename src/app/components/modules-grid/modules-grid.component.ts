@@ -63,7 +63,7 @@ export class ModulesGridComponent {
       draggable: {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
-        delayStart: 250,
+        delayStart: 500,
         enabled: true
       },
       resizable: {

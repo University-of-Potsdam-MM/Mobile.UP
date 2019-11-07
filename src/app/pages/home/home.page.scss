@@ -32,44 +32,6 @@ ion-card {
     }
 }
 
-/*arrange tiles */
-.shortcutlist {
-    display: flex;
-    flex-flow: row wrap;
-    border-bottom: 1px solid #ededed;
-    padding-bottom: 5px;
-
-    #star-outline {
-        display: none;
-    }
-
-    #star {
-        --background: var(--ion-color-secondary);
-        color: var(--ion-color-primary);
-    }
-
-    ion-item {
-        display: flex;
-        flex:1 1 120px;
-        border:2px solid #fff;
-        height: 80px;
-        --padding-start: 0;
-
-        ion-label {
-            overflow: visible;
-            width: 100%;
-            font-size: small;
-        }
-
-        ion-icon {
-            padding-top: 2%!important;
-            padding-bottom: 30px;
-            font-size: 2em;
-            margin: 0;
-        }
-     }
-}
-
 .centered {
     width: 100%;
     position: absolute;
@@ -87,6 +49,16 @@ ion-card {
     -webkit-touch-callout: none !important; /* Disable Android and iOS callouts*/
 }
 
-#grid-wrapper {
-  height: 30%;
+ion-icon.moduleIcon {
+    font-size: 1.25rem;
+}
+
+ion-label.moduleLabel {
+    font-size: 0.9rem;
+}
+
+ion-icon.moveModuleIcon {
+    display: block;
+    padding-top: 5px;
+    padding-right: 5px;
 }
