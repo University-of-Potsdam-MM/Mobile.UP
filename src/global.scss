@@ -152,10 +152,10 @@ ion-card {
 }
 
 ion-toolbar {
-  --min-height: 0px;
+  --min-height: 48px;
 }
 
-ion-content.modalOpened {
+ion-content.modalOpened, ion-content.disableScrolling {
   --overflow: hidden;
 }
 

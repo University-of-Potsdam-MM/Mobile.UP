@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [ngClass]="editingMode ? 'disableScrolling' : ''">
 
   <!-- template for each tile -->
   <ng-template #moduleTemplate let-module="module" class="no-select">
@@ -35,7 +35,7 @@
   </modules-grid>
 
   <!-- menu with all available modules -->
-  <ion-card *ngIf="sortedModules.length > 0" scrollY="true" id="drawer" style="width:100%">
+  <ion-card *ngIf="!editingMode && sortedModules.length > 0" scrollY="true" id="drawer" style="width:100%">
     <ion-list lines="none">
       <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openModule(module, {}, false)">
 

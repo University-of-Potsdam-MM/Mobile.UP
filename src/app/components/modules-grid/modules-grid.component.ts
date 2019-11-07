@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { IModule } from '../../lib/interfaces';
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import * as dLoop from 'delayed-loop';
 
 /**
@@ -42,7 +42,8 @@ export class ModulesGridComponent implements OnInit {
   gridsterWrapperHeight: number;
 
   constructor(
-    private platform: Platform
+    private platform: Platform,
+    private menuCtrl: MenuController
   ) { }
 
   ngOnInit() {
@@ -54,7 +55,7 @@ export class ModulesGridComponent implements OnInit {
       defaultItemCols: 1,
       defaultItemRows: 1,
       // minimum/maximum dimensions of grid
-      minRows: 1,
+      minRows: 0,
       minCols: Math.floor(this.platform.width() / 120),
       maxCols: Math.floor(this.platform.width() / 120),
       disableScrollHorizontal: true,
@@ -79,7 +80,7 @@ export class ModulesGridComponent implements OnInit {
       // we don't really care about what actually happened. It's sufficient to tell
       // the page using this component that the modules have been altered
       itemChangeCallback: (_, itm) => {
-        if (this.gridster.getNextPossiblePosition(itm.$item)) {
+        if (itm && itm.$item && this.gridster.getNextPossiblePosition(itm.$item)) {
           itm.item.x = itm.$item.x;
           itm.item.y = itm.$item.y;
           this.resizeWrapper();
@@ -89,8 +90,7 @@ export class ModulesGridComponent implements OnInit {
       // here we also want the wrapper to resize because the grid dimensions may
       // have changed
       itemInitCallback: () => {
-        this.resizeWrapper();
-        this.gridChanged.emit();
+        this.onWindowResize();
       },
       // here we do care about the items position, though
       // position needs to be reset to avoid conflicts that arise when we do:
@@ -102,8 +102,7 @@ export class ModulesGridComponent implements OnInit {
       itemRemovedCallback: (item: GridsterItem) => {
         item.x = undefined;
         item.y = undefined;
-        this.resizeWrapper();
-        this.gridChanged.emit();
+        this.onWindowResize();
       },
       gridSizeChangedCallback: () => {
         this.resizeWrapper();
@@ -123,6 +122,7 @@ export class ModulesGridComponent implements OnInit {
     this.editingMode = !this.editingMode;
     this.options.draggable.enabled = !this.options.draggable.enabled;
     this.options.api.optionsChanged();
+    this.menuCtrl.enable(!this.editingMode);
     this.editingModeChanged.emit();
   }
 
@@ -134,41 +134,49 @@ export class ModulesGridComponent implements OnInit {
   }
 
   onWindowResize() {
-    this.setColumnSizeForScreenWidth();
+    setTimeout(() => {
+      // uses available screen width to determine grid size
+      this.setColumnSizeForScreenWidth();
 
-    if (this.gridster && this.gridster.grid) {
-      this.gridster.grid.sort((a, b) => {
-        if (a.$item.y < b.$item.y) {
-          return -1;
-        } else if (b.$item.y < a.$item.y) {
-          return 1;
-        } else if (a.$item.x < b.$item.x) {
-          return -1;
-        } else if (b.$item.x < a.$item.x) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+      // sort favorites by coordinates in grid
+      // from upper left corner to bottom right
+      if (this.gridster && this.gridster.grid) {
+        this.gridster.grid.sort((a, b) => {
+          if (a.$item.y < b.$item.y) {
+            return -1;
+          } else if (b.$item.y < a.$item.y) {
+            return 1;
+          } else if (a.$item.x < b.$item.x) {
+            return -1;
+          } else if (b.$item.x < a.$item.x) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
 
-      const loop = dLoop(this.gridster.grid, (itm, idx, fin) => {
-        if (this.gridster.getNextPossiblePosition(itm.$item)) {
-          itm.item.x = itm.$item.x;
-          itm.item.y = itm.$item.y;
-          itm.itemChanged();
-          this.gridster.updateGrid();
+        // set new x-y-coordinates depending on index and grid-size
+        const loop = dLoop(this.gridster.grid, (itm, idx, fin) => {
+          if (itm && itm.$item && itm.item) {
+            itm.$item.x = idx % this.gridster.options.maxCols;
+            itm.$item.y = Math.floor(idx / this.gridster.options.maxCols);
+            itm.item.x = itm.$item.x;
+            itm.item.y = itm.$item.y;
+          }
           fin();
-        } else { fin(); }
-      });
+        });
 
-      loop.then(() => {
-        setTimeout(() => {
+        // once all item coordinates are updated,
+        // resize wrapper to fit new grid size
+        loop.then(() => {
           this.resizeWrapper();
-        }, 500);
-      });
-    } else {
-      this.resizeWrapper();
-    }
+          this.gridChanged.emit();
+        });
+      } else {
+        this.resizeWrapper();
+        this.gridChanged.emit();
+      }
+    }, 250);
   }
 
 }
