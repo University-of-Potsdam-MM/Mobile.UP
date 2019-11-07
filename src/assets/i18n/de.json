@@ -340,7 +340,8 @@
     "submit": "Abschicken",
     "keep": "Behalten",
     "delete": "Löschen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "done": "Fertig"
   },
   "alert": {
     "title": {

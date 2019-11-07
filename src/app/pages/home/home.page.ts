@@ -19,6 +19,7 @@ export class HomePage extends AbstractPage implements OnInit {
 
   modules: {[moduleName: string]: IModule} = {};
   sortedModules = [];
+  editingMode = false;
 
   constructor(
     private translate: TranslateService,
@@ -192,5 +193,24 @@ export class HomePage extends AbstractPage implements OnInit {
     // operating on the same object
     this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
     this.storage.set('moduleList', this.modules);
+  }
+
+  /**
+   * opens a page by using it's module
+   * @description opens selected page by pushing it on the stack
+   * @param module {IModule} module to be used
+   * @param params {any} params {any} params that should by passed on
+   */
+  openModule(moduleToOpen: IModule, params: any = {}, fromFavorites) {
+    if (!(this.editingMode && fromFavorites)) {
+      if (moduleToOpen.url) {
+        this.webIntent.handleWebIntentForModule(moduleToOpen);
+      } else {
+        this.navCtrl.navigateForward(
+          '/' + moduleToOpen.componentName,
+          {state: params}
+        );
+      }
+    }
   }
 }

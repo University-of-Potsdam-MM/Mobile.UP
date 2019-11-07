@@ -136,27 +136,6 @@ export abstract class AbstractPage  {
     }
 
     /**
-     * opens a page by using it's module
-     * @description opens selected page by pushing it on the stack
-     * @param module {IModule} module to be used
-     * @param params {any} params {any} params that should by passed on
-     */
-    openModule($event, moduleToOpen: IModule, params: any = {}) {
-      if ($event && $event.target && $event.target.className) {
-        if (!$event.target.className.includes('moveModuleIcon')) {
-          if (moduleToOpen.url) {
-            this.webIntent.handleWebIntentForModule(moduleToOpen);
-          } else {
-            this.navCtrl.navigateForward(
-              '/' + moduleToOpen.componentName,
-              {state: params}
-            );
-          }
-        }
-      }
-    }
-
-    /**
      * @name requireNetwork
      * @desc tests for network connection and sends the user back to the HomePage
      * if there is none;

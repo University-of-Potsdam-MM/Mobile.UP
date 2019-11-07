@@ -7,3 +7,12 @@ gridster {
 gridster-item {
   background-color: var(--ion-color-secondary);
 }
+
+.favoritesItem {
+  font-size: 0.9em;
+  --min-height: 10px;
+
+  ion-icon {
+      font-size: 0.9em;
+  }
+}

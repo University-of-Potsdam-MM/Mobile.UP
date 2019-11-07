@@ -9,14 +9,12 @@
 
 <ion-content>
 
-  <h2><ion-icon name=star></ion-icon>{{ "button.favorites" | translate }}</h2>
-
   <!-- template for each tile -->
   <ng-template #moduleTemplate let-module="module" class="no-select">
-    <div (click)="openModule($event, module)" class="no-select">
-      <!-- <div align="right">
+    <div (click)="openModule(module, {}, true)" class="no-select">
+      <div *ngIf="editingMode" align="right">
           <ion-icon class="moveModuleIcon" color="primary" name="move"></ion-icon>
-      </div> -->
+      </div>
       <ion-icon class="moduleIcon centered" color="primary" *ngIf="module.icon" [name]="module.icon"></ion-icon>
       <ion-icon class="moduleIcon centered" color="primary" *ngIf="module.customIcon" [src]="module.customIcon"></ion-icon>
       <ion-label class="moduleLabel no-select">
@@ -31,6 +29,7 @@
    here because it already is an array, which is nice -->
   <modules-grid [modules]="sortedModules"
                 [template]="moduleTemplate"
+                (editingModeChanged)="editingMode = !editingMode"
                 (gridChanged)="onGridChanged()"
                 class="no-select">
   </modules-grid>
@@ -38,7 +37,7 @@
   <!-- menu with all available modules -->
   <ion-card *ngIf="sortedModules.length > 0" scrollY="true" id="drawer" style="width:100%">
     <ion-list lines="none">
-      <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openModule($event, module)">
+      <ion-item *ngFor="let module of sortedModules | orderBy: 'translation'" (click)="openModule(module, {}, false)">
 
         <ion-icon *ngIf="module.icon" slot="start" [name]="module.icon"></ion-icon>
         <ion-icon *ngIf="module.customIcon" slot="start" [src]="module.customIcon"></ion-icon>

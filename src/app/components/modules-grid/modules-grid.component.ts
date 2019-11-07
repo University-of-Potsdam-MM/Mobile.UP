@@ -29,13 +29,15 @@ export class ModulesGridComponent {
    */
   @Input() template;
 
+  @Output() editingModeChanged: EventEmitter<void> = new EventEmitter<void>();
+
   /**
    * emits a signal, when the grid has changed
    */
   @Output() gridChanged: EventEmitter<void> = new EventEmitter<void>();
 
   options: GridsterConfig;
-
+  editingMode = false;
   gridsterWrapperHeight: number;
 
   constructor() {
@@ -64,7 +66,7 @@ export class ModulesGridComponent {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
         delayStart: 500,
-        enabled: true
+        enabled: false
       },
       resizable: {
         enabled: false
@@ -105,6 +107,13 @@ export class ModulesGridComponent {
    */
   resizeWrapper() {
     this.gridsterWrapperHeight = this.gridster.curRowHeight * this.gridster.rows;
+  }
+
+  toggleEditingMode() {
+    this.editingMode = !this.editingMode;
+    this.options.draggable.enabled = !this.options.draggable.enabled;
+    this.options.api.optionsChanged();
+    this.editingModeChanged.emit();
   }
 
 }
