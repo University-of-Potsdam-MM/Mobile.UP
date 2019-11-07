@@ -71,17 +71,19 @@ export class ModulesGridComponent implements OnInit {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
         delayStart: 250,
-        enabled: false,
-        stop: () => {
-          this.onWindowResize();
-        }
+        enabled: false
       },
       resizable: {
         enabled: false
       },
       // we don't really care about what actually happened. It's sufficient to tell
       // the page using this component that the modules have been altered
-      itemChangeCallback: () => {
+      itemChangeCallback: (_, itm) => {
+        if (this.gridster.getNextPossiblePosition(itm.$item)) {
+          itm.item.x = itm.$item.x;
+          itm.item.y = itm.$item.y;
+          this.resizeWrapper();
+        }
         this.gridChanged.emit();
       },
       // here we also want the wrapper to resize because the grid dimensions may
