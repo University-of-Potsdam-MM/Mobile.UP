@@ -47,6 +47,21 @@ export class ModulesGridComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscribeToResizeEvent();
+    this.setupGridOptions();
+  }
+
+  // listen to resize event on browser, so that the grid can resize
+  // depending on window width
+  subscribeToResizeEvent() {
+    if (!(this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android')))) {
+      this.platform.resize.subscribe(() => {
+        this.onWindowResize();
+      });
+    }
+  }
+
+  setupGridOptions() {
     this.options = {
       gridType: 'scrollVertical',
       // makes the tiles float upwards first then to the left
@@ -134,49 +149,52 @@ export class ModulesGridComponent implements OnInit {
   }
 
   onWindowResize() {
-    setTimeout(() => {
-      // uses available screen width to determine grid size
-      this.setColumnSizeForScreenWidth();
+    // uses available screen width to determine grid size
+    this.setColumnSizeForScreenWidth();
 
-      // sort favorites by coordinates in grid
-      // from upper left corner to bottom right
-      if (this.gridster && this.gridster.grid) {
-        this.gridster.grid.sort((a, b) => {
-          if (a.$item.y < b.$item.y) {
-            return -1;
-          } else if (b.$item.y < a.$item.y) {
-            return 1;
-          } else if (a.$item.x < b.$item.x) {
-            return -1;
-          } else if (b.$item.x < a.$item.x) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+    // sort favorites by coordinates in grid
+    // from upper left corner to bottom right
+    if (this.gridster && this.gridster.grid) {
+      this.gridster.grid.sort((a, b) => {
+        if (a.$item.y < b.$item.y) {
+          return -1;
+        } else if (b.$item.y < a.$item.y) {
+          return 1;
+        } else if (a.$item.x < b.$item.x) {
+          return -1;
+        } else if (b.$item.x < a.$item.x) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
 
-        // set new x-y-coordinates depending on index and grid-size
-        const loop = dLoop(this.gridster.grid, (itm, idx, fin) => {
-          if (itm && itm.$item && itm.item) {
-            itm.$item.x = idx % this.gridster.options.maxCols;
-            itm.$item.y = Math.floor(idx / this.gridster.options.maxCols);
-            itm.item.x = itm.$item.x;
-            itm.item.y = itm.$item.y;
-          }
-          fin();
-        });
+      // set new x-y-coordinates depending on index and grid-size
+      const loop = dLoop(this.gridster.grid, (itm, idx, fin) => {
+        if (itm && itm.$item && itm.item) {
+          itm.$item.x = idx % this.gridster.options.maxCols;
+          itm.$item.y = Math.floor(idx / this.gridster.options.maxCols);
+          itm.item.x = itm.$item.x;
+          itm.item.y = itm.$item.y;
+        }
+        fin();
+      });
 
-        // once all item coordinates are updated,
-        // resize wrapper to fit new grid size
-        loop.then(() => {
-          this.resizeWrapper();
-          this.gridChanged.emit();
-        });
-      } else {
+      // once all item coordinates are updated,
+      // resize wrapper to fit new grid size
+      loop.then(() => {
         this.resizeWrapper();
+        if (this.platform.is('cordova')) {
+          setTimeout(() => {
+            this.resizeWrapper();
+          }, 250);
+        }
         this.gridChanged.emit();
-      }
-    }, 250);
+      });
+    } else {
+      this.resizeWrapper();
+      this.gridChanged.emit();
+    }
   }
 
 }

@@ -8,8 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { OrderModule } from 'ngx-order-pipe';
 import { HttpLoaderFactory } from 'src/app/app.module';
-import {GridsterModule} from 'angular-gridster2';
-import {ComponentsModule} from '../../components/components.module';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   imports: [
@@ -30,7 +29,6 @@ import {ComponentsModule} from '../../components/components.module';
         component: HomePage
       }
     ]),
-    GridsterModule,
     ComponentsModule
   ],
   declarations: [HomePage]
