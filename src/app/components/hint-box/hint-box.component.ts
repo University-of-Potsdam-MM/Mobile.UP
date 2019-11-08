@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hint-box',
@@ -14,7 +15,15 @@ export class HintBoxComponent {
   hintTextI18nKey: string;
 
   @Input()
+  secondHintTextI18nKey: string;
+
+  @Input()
+  disableTextCentering: boolean;
+
+  @Input()
   hintIcon = 'warning';
-  constructor() { }
+  constructor(
+    public translate: TranslateService
+  ) { }
 
 }

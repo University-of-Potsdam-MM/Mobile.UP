@@ -79,7 +79,14 @@
       "loanItems": "Geliehene Items",
       "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
       "days": "Tage",
-      "noLoanItems": "Keine ausgeliehenen Items gefunden."
+      "noLoanItems": "Keine ausgeliehenen Items gefunden.",
+      "loginError": {
+        "0": "Ausweisnummer und Passwort stimmen nicht überein.",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
+      }
     },
     "library-search": {
       "title": "Bibliothekssuche",
@@ -428,6 +435,8 @@
     },
     "text": {
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
+      "login-hint-bib": "<b>Ausweisnummer</b><br> Für Studierende der Universität Potsdam gilt die Ausweisnummer des Studierendenausweises (PUCK), ansonsten die Nummer der Nutzerkarte (Eingabe ohne 'UB').",
+      "login-hint-bib-firstlogin": "<b>Passwort beim Erstlogin</b><br> Bei Bibliotheksanmeldung vor dem 20.08.2019: die ersten drei Buchstaben des Nachnamens. Für Erstsemesterstudierende ab 2019/20: Geburtsdatum im Format TTMMJJ.",
       "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
@@ -447,6 +456,7 @@
   "placeholder": {
     "search": "Suchbegriff eingeben...",
     "username": "Benutzername (ohne @uni...)",
+    "usernameBib": "Ausweisnummer",
     "password": "Passwort",
     "calendarName": "Mobile.UP: Stundenplan"
   }

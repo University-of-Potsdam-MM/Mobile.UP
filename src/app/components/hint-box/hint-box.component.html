@@ -4,8 +4,13 @@
     <ion-icon [name]="hintIcon" margin-right></ion-icon> {{ hintTypeI18nKey | translate }}
   </ion-card-header>
 
-  <ion-card-content class="ion-text-center">
-    {{ hintTextI18nKey | translate }}
+  <ion-card-content [ngClass]="disableTextCentering ? '' : 'ion-text-center'">
+    <div class="ion-padding-top" [innerHTML]="translate.instant(hintTextI18nKey)"></div>
+
+    <ng-container *ngIf="secondHintTextI18nKey">
+      <br>
+      <div [innerHTML]="translate.instant(secondHintTextI18nKey)"></div>
+    </ng-container>
   </ion-card-content>
 
 </ion-card>

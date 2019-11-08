@@ -3,7 +3,7 @@
 import { InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
 import * as geojson from 'geojson';
 import { IDeviceInfo } from '../services/device/device.service';
-import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC } from '../services/login-provider/interfaces';
+import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC, ICredentials } from '../services/login-provider/interfaces';
 
 /**
  * Interface for a contact with telephone number and email address
@@ -188,6 +188,21 @@ export interface ILoginConfig {
   credentials?: ILoginConfig_Credentials;
   sso?: ILoginConfig_SSO;
   oidc?: ILoginConfig_OIDC;
+}
+
+export interface IBibSessionResponse {
+  access_token: string;
+  expires_in: number;
+  scope: string;
+  token_type: string;
+  patron: string;
+}
+
+export interface IBibSession {
+  credentials: ICredentials;
+  token: string;
+  oidcTokenObject: IBibSessionResponse;
+  timestamp: Date;
 }
 
 export interface IModule {
