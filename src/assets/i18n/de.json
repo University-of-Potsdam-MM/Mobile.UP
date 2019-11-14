@@ -76,10 +76,15 @@
       "title": "UB-Benutzerkonto",
       "returnUntil": "abzugeben am",
       "fees": "Gebühren",
+      "feeType": "Gebührentyp",
       "loanItems": "Geliehene Items",
+      "reservedItems": "Reservierte Items",
       "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
       "days": "Tage",
       "noLoanItems": "Keine ausgeliehenen Items gefunden.",
+      "noReservedItems": "Keine reservierten Items gefunden.",
+      "loan": "Ausleihe",
+      "reservation": "Reservierung",
       "loginError": {
         "0": "Ausweisnummer und Passwort stimmen nicht überein.",
         "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
@@ -357,7 +362,8 @@
     "keep": "Behalten",
     "delete": "Löschen",
     "save": "Speichern",
-    "renew": "Verlängern"
+    "renew": "Verlängern",
+    "stornieren": "Stornieren"
   },
   "alert": {
     "title": {

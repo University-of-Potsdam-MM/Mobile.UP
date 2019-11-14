@@ -76,10 +76,15 @@
       "title": "UB-Account",
       "returnUntil": "return until",
       "fees": "Fees",
+      "feeType": "Gebührentyp",
       "loanItems": "Loaned items",
+      "reservedItems": "Reserved items",
       "notRenewable": "Items that are grayed out can not be renewed.",
       "days": "Days",
       "noLoanItems": "No loaned items found.",
+      "noReservedItems": "No reserved items found.",
+      "loan": "Loan",
+      "reservation": "Reservation",
       "loginError": {
         "0": "Card ID Number and Password don't match.",
         "1": "There is a technical difficulty, please contact the development team.",
@@ -357,7 +362,8 @@
     "keep": "Keep",
     "delete": "Delete",
     "save": "Save",
-    "renew": "Renew"
+    "renew": "Renew",
+    "stornieren": "Cancel"
   },
   "alert": {
     "title": {

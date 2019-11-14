@@ -11,6 +11,7 @@ import { LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AlertButton } from '@ionic/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
+import { utils } from 'src/app/lib/util';
 
 @Component({
   selector: 'app-library-account',
@@ -21,6 +22,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   user: IUBUser;
   fees: IUBFees;
+  feesExpanded = false;
 
   items: IUBItems = {
     'doc': [{
@@ -117,20 +119,28 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
     if (this.bibSession) {
-      this.getUser();
-      this.getItems();
-      this.getFees();
-
-      console.log(this.bibSession);
+      if (utils.sessionIsValid(this.bibSession.timestamp, this.bibSession.oidcTokenObject.expires_in, 600)) {
+        this.getUser();
+        this.getItems();
+        this.getFees();
+      } else {
+        this.loginUB(this.bibSession.credentials);
+      }
     }
   }
 
-  loginUB() {
-    if (this.loginForm.valid) {
-      this.loginCredentials.username = this.loginForm.controls['username'].value;
-      this.loginCredentials.password = this.loginForm.controls['password'].value;
+  loginUB(loginCredentials?: ICredentials) {
+    if (this.loginForm.valid || loginCredentials) {
 
-      this.showLoading();
+      if (!loginCredentials) {
+        this.loginCredentials.username = this.loginForm.controls['username'].value;
+        this.loginCredentials.password = this.loginForm.controls['password'].value;
+        this.showLoading();
+      } else {
+        this.loginCredentials.username = loginCredentials.username;
+        this.loginCredentials.password = loginCredentials.password;
+      }
+
 
       const body = {
         username: this.loginCredentials.username,
@@ -148,7 +158,9 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
         this.storage.set('bibSession', this.bibSession);
 
-        this.endLoading();
+        if (!loginCredentials) {
+          this.endLoading();
+        }
 
         this.getUser();
         this.getItems();
@@ -161,6 +173,45 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     }
   }
 
+  logoutUB() {
+    const body = {
+      patron: this.bibSession.oidcTokenObject.patron
+    };
+
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + this.bibSession.token);
+
+    this.http.post(this.endpoint + 'auth/logout', body, { headers: headers }).subscribe(data => {
+      this.bibSession = undefined;
+      this.user = undefined;
+      this.items = undefined;
+      this.fees = undefined;
+      this.grayedOutItemsHint = false;
+      this.userLoaded = false;
+      this.itemsLoaded = false;
+      this.feesLoaded = false;
+    	this.feesExpanded = false;
+      this.noLoanItems = true;
+      this.activeSegment = 'loan';
+      this.itemStatus = [];
+
+      this.loginCredentials = {
+        username: '',
+        password: ''
+      };
+
+      this.loginForm = this.formBuilder.group({
+        username: ['', Validators.required],
+        password: ['', Validators.required]
+      });
+
+      this.storage.remove('bibSession');
+      this.logger.debug('logoutUB()', 'successfully logged out ub-user');
+    }, error => {
+      this.logger.debug('logoutUB()', error);
+    });
+  }
+
   getUser() {
     this.userLoaded = false;
 
@@ -168,11 +219,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
     this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron, { headers: headers }).subscribe((userData: IUBUser) => {
-      console.log(userData);
       this.user = userData;
       this.userLoaded = true;
     }, error => {
-      console.log(error);
+      this.logger.debug('getUser()', error);
       this.userLoaded = true;
     });
   }
@@ -180,26 +230,31 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   getItems() {
     this.itemsLoaded = false;
 
-    // this.http.get(this.endpoint + 'items', {headers: this.httpHeaders}).subscribe((itemData: IUBItems) => {
-    //   this.items = itemData;
-    //   this.items.doc.sort((a, b) => {
-    //     if (a.endtime > b.endtime) {
-    //       return 1;
-    //     } else { return -1; }
-    //   });
-    //   this.itemsLoaded = true;
-    //   this.prepareForm();
-    // }, error => {
-    //   console.log(error);
-    // });
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    this.items.doc.sort((a, b) => {
-      if (a.endtime > b.endtime) {
-        return 1;
-      } else { return -1; }
+    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', {headers: headers}).subscribe((itemData: IUBItems) => {
+      console.log(itemData);
+      this.items = itemData;
+      this.items.doc.sort((a, b) => {
+        if (a.endtime > b.endtime) {
+          return 1;
+        } else { return -1; }
+      });
+      this.itemsLoaded = true;
+      this.prepareForm();
+    }, error => {
+      this.logger.debug('getItems()', error);
+      this.itemsLoaded = true;
     });
-    this.itemsLoaded = true;
-    this.prepareForm();
+
+    // this.items.doc.sort((a, b) => {
+    //   if (a.endtime > b.endtime) {
+    //     return 1;
+    //   } else { return -1; }
+    // });
+    // this.itemsLoaded = true;
+    // this.prepareForm();
   }
 
   getFees() {
@@ -209,11 +264,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
     this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/fees', { headers: headers }).subscribe((feeData: IUBFees) => {
-      console.log(feeData);
       this.fees = feeData;
       this.feesLoaded = true;
     }, error => {
-      console.log(error);
+      this.logger.debug('getFees()', error);
       this.feesLoaded = true;
     });
   }
@@ -222,7 +276,9 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.getUser();
     this.getItems();
     this.getFees();
-    refresher.target.complete();
+    if (refresher && refresher.target) {
+      refresher.target.complete();
+    }
   }
 
   renewItems() {
@@ -240,12 +296,16 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   renewRequest(items: IUBItems) {
-    // this.http.post(this.endpoint + 'renew', items, {headers: this.httpHeaders}).subscribe(success => {
+    console.log(items);
+    // const headers = new HttpHeaders()
+    //   .append('Authorization', 'Bearer ' + this.bibSession.token);
+
+    // this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, {headers: headers}).subscribe(success => {
     //   console.log(success);
     //   this.getItems();
     //   this.getFees();
     // }, error => {
-    //   console.log(error);
+    //   this.logger.debug('renewRequest()', error);
     // });
   }
 
@@ -345,6 +405,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       },
       buttons
     );
+  }
+
+  formatDate(date) {
+    const dateString = new Date(date).toLocaleDateString(this.translate.currentLang);
+    return dateString;
   }
 
 }

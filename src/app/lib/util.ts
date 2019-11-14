@@ -1,6 +1,5 @@
 import { HttpParameterCodec } from '@angular/common/http';
-import { routes } from '../app-routing.module';
-import {IModule} from './interfaces';
+import * as moment from 'moment';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -68,4 +67,13 @@ export module utils {
   export function isEmptyObject(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
+
+  // helper function for determining whether session is still valid
+  export function sessionIsValid(timestampThen: Date, expiresIn: number, boundary: number) {
+    // determine date until the token is valid
+    const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
+    const nowUnixTime = moment().unix();
+    // check if we are not past this date already with a certain boundary
+    return (validUntilUnixTime - nowUnixTime) > boundary;
+  };
 }

@@ -5,7 +5,7 @@
   </ion-card-header>
 
   <ion-card-content [ngClass]="disableTextCentering ? '' : 'ion-text-center'">
-    <div class="ion-padding-top" [innerHTML]="translate.instant(hintTextI18nKey)"></div>
+    <div [innerHTML]="translate.instant(hintTextI18nKey)"></div>
 
     <ng-container *ngIf="secondHintTextI18nKey">
       <br>

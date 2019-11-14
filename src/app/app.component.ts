@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { utils } from './lib/util';
 
 @Component({
   selector: 'app-root',
@@ -119,19 +120,10 @@ export class AppComponent {
     let session: ISession = await this.userSession.getSession();
 
     if (session) {
-      // helper function for determining whether session is still valid
-      const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
-        // determine date until the token is valid
-        const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
-        const nowUnixTime = moment().unix();
-        // check if we are not past this date already with a certain boundary
-        return (validUntilUnixTime - nowUnixTime) > boundary;
-      };
-
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
         && session.oidcTokenObject.expires_in && this.config;
       if (variablesNotUndefined
-        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
