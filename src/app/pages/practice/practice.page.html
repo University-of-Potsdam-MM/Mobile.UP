@@ -51,6 +51,9 @@
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'favorites'">
+    <div *ngIf="displayedFavorites.length == 0">
+      <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noFavorites"></app-hint-box>
+    </div>
     <ion-list class="favList">
       <div *ngFor="let ADS of displayedFavorites; let i = index">
         <ion-item-sliding>
@@ -77,9 +80,6 @@
         </ion-item-sliding>
       </div>
     </ion-list>
-    <div *ngIf="displayedFavorites.length == 0">
-      <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noFavorites"></app-hint-box>
-    </div>
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'search'">

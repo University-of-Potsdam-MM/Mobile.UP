@@ -16,7 +16,6 @@ import { AlertService } from '../alert/alert.service';
 import { utils } from '../../lib/util';
 import isEmptyObject = utils.isEmptyObject;
 import { switchMap } from 'rxjs/operators';
-import { ConnectionService } from '../connection/connection.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**
@@ -440,7 +439,6 @@ export class WebserviceWrapperService {
     private http: HttpClient,
     private cache: CacheService,
     private alertService: AlertService,
-    private connection: ConnectionService,
     private loggingService: LoggingService
     ) {
       this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
@@ -561,8 +559,7 @@ export class WebserviceWrapperService {
 
     // removes items from cache if desired and then, after cache has been modified
     // returns a cached Observable
-    let connection = false;
-    if (this.connection.checkOnline(false, false) === 1) { connection = true; }
+    const connection = navigator.onLine;
 
     if (connection) {
       return from(

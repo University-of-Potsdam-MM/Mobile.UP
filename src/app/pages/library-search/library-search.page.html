@@ -49,7 +49,7 @@
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'search'">
-    <ion-item class="ion-padding-start">
+    <ion-item>
       <ion-label>
         <p>{{ "page.library-search.allResults" | translate}}:</p>
         <b>{{ resultIndex() }}</b> {{ "words.of" | translate}} <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}

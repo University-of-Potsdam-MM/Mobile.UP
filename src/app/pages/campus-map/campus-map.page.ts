@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import {ModalController} from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
@@ -12,10 +12,7 @@ import 'leaflet-search';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
-import {ActivatedRoute} from '@angular/router';
-import {LatLngExpression} from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -47,11 +44,9 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
   constructor(
     private ws: WebserviceWrapperService,
-    private route: ActivatedRoute,
     private translate: TranslateService,
     private location: Geolocation,
-    private modalCtrl: ModalController,
-    private alertService: AlertService
+    private modalCtrl: ModalController
   ) {
     super({ optionalNetwork: true });
   }
@@ -291,22 +286,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       (response: IMapsResponse) => {
         this.geoJSON = response;
         this.addFeaturesToLayerGroups(this.geoJSON, map);
-      }, () => {
-        const buttons: AlertButton[] = [{
-          text: this.translate.instant('button.continue'),
-          handler: () => {
-            this.navCtrl.navigateRoot('/home');
-          }
-        }];
-        this.alertService.showAlert(
-          {
-            headerI18nKey: 'alert.title.httpError',
-            messageI18nKey: 'alert.network'
-          },
-          buttons
-        );
-      }
-    );
+      });
   }
 
   /**

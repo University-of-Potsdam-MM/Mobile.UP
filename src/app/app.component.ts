@@ -7,7 +7,6 @@ import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
-import { ConnectionService } from './services/connection/connection.service';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
@@ -45,7 +44,6 @@ export class AppComponent {
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
-    private connection: ConnectionService,
     private events: Events,
     private login: UPLoginProvider,
     private storage: Storage,
@@ -61,7 +59,6 @@ export class AppComponent {
       this.config = ConfigService.config;
       this.prepareStorageOnAppUpdate();
       this.initTranslate();
-      this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
       this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
@@ -152,7 +149,6 @@ export class AppComponent {
             this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
             if (!this.triedToRefreshLogin) {
-              this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
