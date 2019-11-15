@@ -22,81 +22,29 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   user: IUBUser;
   fees: IUBFees;
-  feesExpanded = false;
+  items: IUBItems;
 
-  items: IUBItems = {
-    'doc': [{
-      'status': 3,
-      'item': 'http://bib.example.org/105359165',
-      'edition': 'http://bib.example.org/9782356',
-      'about': 'Maurice Sendak (1963): Where the wild things are',
-      'label': 'Y B SEN 101',
-      'queue': 0,
-      'renewals': 0,
-      'reminder': 0,
-      'starttime': '2014-05-08T12:37Z',
-      'endtime': '2019-09-09',
-      'cancancel': false,
-      'canrenew': true,
-      }, {
-      'status': 3,
-      'item': 'http://bib.example.org/8861930',
-      'about': 'Janet B. Pascal (2013): Who was Maurice Sendak?',
-      'label': 'BIO SED 03',
-      'queue': 0,
-      'starttime': '2014-05-12T18:07Z',
-      'endtime': '2019-05-13',
-      'cancancel': true,
-      'storage': 'pickup service desk',
-      'storageid': 'http://bib.example.org/library/desk/7'
-      }, {
-      'status': 3,
-      'item': 'http://bib.example.org/8861930',
-      'about': 'Hattori H. Hanzo (1503): Learn Japanese in 3 Hours',
-      'label': 'EDU SED 01',
-      'queue': 0,
-      'starttime': '2014-05-12T18:07Z',
-      'endtime': '2019-08-01',
-      'cancancel': true,
-      'canrenew': true,
-      'storage': 'pickup service desk',
-      'storageid': 'http://bib.example.org/library/desk/1'
-      }, {
-      'status': 1,
-      'item': 'http://bib.example.org/8831930',
-      'about': 'Aaron Aaranovitch (2010): Die Flüsse von London',
-      'label': 'ROM FAN 110',
-      'queue': 1,
-      'starttime': '2017-01-12T18:07Z',
-      'endtime': '2017-01-18',
-      'storage': 'pickup service desk',
-      'storageid': 'http://bib.example.org/library/desk/7'
-    }]
-  };
-
-  itemStatus = [];
-  grayedOutItemsHint;
   userLoaded;
   itemsLoaded;
   feesLoaded;
+  feesExpanded = false;
+
+  itemStatus = [];
+  grayedOutItemsHint;
   noLoanItems = true;
   activeSegment = 'loan';
   endpoint;
 
-  // This object will hold the data the user enters in the login form
+  // this object will hold the data the user enters in the login form
   loginCredentials: ICredentials = {
     username: '',
     password: ''
   };
-  
-  // testAccount = {
-  //  username: '16355766',
-  //  password: 'test'
-  // };
 
   bibSession: IBibSession;
   loginForm: FormGroup;
   loading;
+  showLoginScreen;
 
   constructor(
     private translate: TranslateService,
@@ -114,7 +62,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   async ngOnInit() {
-    // this.endpoint = this.config.webservices.endpoint.libraryPAIA + this.uri_escaped_patron_identifier + '/';
     this.bibSession = await this.storage.get('bibSession');
     this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
@@ -126,7 +73,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       } else {
         this.loginUB(this.bibSession.credentials);
       }
-    }
+    } else { this.showLoginScreen = true; }
   }
 
   loginUB(loginCredentials?: ICredentials) {
@@ -147,14 +94,14 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         password: this.loginCredentials.password,
         grant_type: 'password'
       };
-  
+
       this.http.post(this.endpoint + 'auth/login', body).subscribe((data: IBibSessionResponse) => {
         this.bibSession = {
           credentials: this.loginCredentials,
           token: data.access_token,
           oidcTokenObject: data,
           timestamp: new Date()
-        }
+        };
 
         this.storage.set('bibSession', this.bibSession);
 
@@ -181,7 +128,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    this.http.post(this.endpoint + 'auth/logout', body, { headers: headers }).subscribe(data => {
+    this.http.post(this.endpoint + 'auth/logout', body, { headers: headers }).subscribe(() => {
       this.bibSession = undefined;
       this.user = undefined;
       this.items = undefined;
@@ -190,7 +137,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.userLoaded = false;
       this.itemsLoaded = false;
       this.feesLoaded = false;
-    	this.feesExpanded = false;
+      this.feesExpanded = false;
       this.noLoanItems = true;
       this.activeSegment = 'loan';
       this.itemStatus = [];
@@ -233,7 +180,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', {headers: headers}).subscribe((itemData: IUBItems) => {
+    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', {headers: headers})
+    .subscribe((itemData: IUBItems) => {
       console.log(itemData);
       this.items = itemData;
       this.items.doc.sort((a, b) => {
@@ -247,14 +195,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.logger.debug('getItems()', error);
       this.itemsLoaded = true;
     });
-
-    // this.items.doc.sort((a, b) => {
-    //   if (a.endtime > b.endtime) {
-    //     return 1;
-    //   } else { return -1; }
-    // });
-    // this.itemsLoaded = true;
-    // this.prepareForm();
   }
 
   getFees() {
@@ -263,7 +203,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/fees', { headers: headers }).subscribe((feeData: IUBFees) => {
+    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/fees', { headers: headers })
+    .subscribe((feeData: IUBFees) => {
       this.fees = feeData;
       this.feesLoaded = true;
     }, error => {
@@ -300,7 +241,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     // const headers = new HttpHeaders()
     //   .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    // this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, {headers: headers}).subscribe(success => {
+    // this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, {headers: headers})
+    // .subscribe(success => {
     //   console.log(success);
     //   this.getItems();
     //   this.getFees();

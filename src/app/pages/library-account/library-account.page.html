@@ -26,7 +26,7 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div *ngIf="!bibSession">
+  <div *ngIf="!bibSession && showLoginScreen">
     <form (ngSubmit)="loginUB()" #registerForm="ngForm" [formGroup]="loginForm">
       <ion-grid>
         <ion-row>
@@ -85,7 +85,7 @@
 
   <div *ngIf="bibSession">
     <ion-item *ngIf="userLoaded" lines="none">
-      <ion-label><b *ngIf="user.name">{{ user.name }}</b> <span class="patronID" *ngIf="bibSession && bibSession.oidcTokenObject && bibSession.oidcTokenObject.patron">{{ bibSession.oidcTokenObject.patron }}</span></ion-label>
+      <ion-label><b *ngIf="user.name">{{ user.name.trim() }}</b> <span class="patronID" *ngIf="bibSession && bibSession.oidcTokenObject && bibSession.oidcTokenObject.patron">{{ bibSession.oidcTokenObject.patron }}</span></ion-label>
       <ion-button (click)="logoutUB()" color="secondary" slot="end">
         <ion-icon color="primary" name="log-out"></ion-icon>
         <ion-label color="primary">
@@ -94,7 +94,7 @@
       </ion-button>
     </ion-item>
     <ion-item *ngIf="feesLoaded && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
-      <ion-label>{{ "page.library-account.fees" | translate }}: <span class="feeAmount">{{ fees.amount }}</span></ion-label>
+      <ion-label>{{ "page.library-account.fees" | translate }}: <span [ngClass]="fees.amount !== '0.00 EUR' ?  'feeAmount' : 'noFeeAmount'">{{ fees.amount }}</span></ion-label>
       <ion-icon *ngIf="fees && fees.fee && fees.fee.length > 0" [name]="!feesExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
     </ion-item>
     <ng-container *ngIf="feesExpanded && fees && fees.fee && fees.fee.length > 0">
@@ -107,7 +107,7 @@
         </ion-card-content>
       </ion-card>
     </ng-container>
-  
+
     <span *ngIf="itemsLoaded && !noLoanItems">
       <ion-list>
         <ion-item-divider color="light" lines="none">
