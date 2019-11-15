@@ -29,6 +29,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   feesLoaded;
   feesExpanded = false;
 
+  userError;
+  itemsError;
+  feesError;
+
   itemStatus = [];
   grayedOutItemsHint;
   noLoanItems = true;
@@ -161,6 +165,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   getUser() {
     this.userLoaded = false;
+    this.userError = false;
 
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
@@ -171,11 +176,13 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     }, error => {
       this.logger.debug('getUser()', error);
       this.userLoaded = true;
+      this.userError = true;
     });
   }
 
   getItems() {
     this.itemsLoaded = false;
+    this.itemsError = false;
 
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
@@ -194,11 +201,13 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     }, error => {
       this.logger.debug('getItems()', error);
       this.itemsLoaded = true;
+      this.itemsError = true;
     });
   }
 
   getFees() {
     this.feesLoaded = false;
+    this.feesError = false;
 
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
@@ -210,6 +219,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     }, error => {
       this.logger.debug('getFees()', error);
       this.feesLoaded = true;
+      this.feesError = true;
     });
   }
 

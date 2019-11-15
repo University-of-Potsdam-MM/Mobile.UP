@@ -84,7 +84,9 @@
   </div>
 
   <div *ngIf="bibSession">
-    <ion-item *ngIf="userLoaded" lines="none">
+    <app-hint-box *ngIf="userError || feesError || itemsError"
+    hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="page.library-account.errorLoadingItems"></app-hint-box>
+    <ion-item *ngIf="userLoaded && !userError" lines="none">
       <ion-label><b *ngIf="user.name">{{ user.name.trim() }}</b> <span class="patronID" *ngIf="bibSession && bibSession.oidcTokenObject && bibSession.oidcTokenObject.patron">{{ bibSession.oidcTokenObject.patron }}</span></ion-label>
       <ion-button (click)="logoutUB()" color="secondary" slot="end">
         <ion-icon color="primary" name="log-out"></ion-icon>
@@ -93,7 +95,7 @@
         </ion-label>
       </ion-button>
     </ion-item>
-    <ion-item *ngIf="feesLoaded && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
+    <ion-item *ngIf="feesLoaded && !feesError && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
       <ion-label>{{ "page.library-account.fees" | translate }}: <span [ngClass]="fees.amount !== '0.00 EUR' ?  'feeAmount' : 'noFeeAmount'">{{ fees.amount }}</span></ion-label>
       <ion-icon *ngIf="fees && fees.fee && fees.fee.length > 0" [name]="!feesExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
     </ion-item>
@@ -108,7 +110,7 @@
       </ion-card>
     </ng-container>
 
-    <span *ngIf="itemsLoaded && !noLoanItems">
+    <span *ngIf="itemsLoaded && !itemsError && !noLoanItems">
       <ion-list>
         <ion-item-divider color="light" lines="none">
           <ion-label *ngIf="activeSegment == 'loan'">{{ "page.library-account.loanItems" | translate }}</ion-label>
@@ -134,7 +136,7 @@
       <ion-button *ngIf="activeSegment == 'reservation'" (click)="renewItems()" class="ion-padding-start" [disabled]="validateCheckboxes()">{{ "button.stornieren" | translate }}</ion-button>
       <app-hint-box *ngIf="grayedOutItemsHint && activeSegment == 'loan'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.notRenewable"></app-hint-box>
     </span>
-    <app-hint-box *ngIf="itemsLoaded && noLoanItems && activeSegment == 'loan'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.noLoanItems"></app-hint-box>
-    <app-hint-box *ngIf="itemsLoaded && noLoanItems && activeSegment == 'reservation'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.noReservedItems"></app-hint-box>
+    <app-hint-box *ngIf="itemsLoaded && !itemsError && noLoanItems && activeSegment == 'loan'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.noLoanItems"></app-hint-box>
+    <app-hint-box *ngIf="itemsLoaded && !itemsError && noLoanItems && activeSegment == 'reservation'" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.library-account.noReservedItems"></app-hint-box>
   </div>
 </ion-content>

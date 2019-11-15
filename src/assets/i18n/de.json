@@ -80,6 +80,7 @@
       "loanItems": "Geliehene Items",
       "reservedItems": "Reservierte Items",
       "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
+      "errorLoadingItems": "Beim Laden ein oder mehrerer Inhalte ist ein Fehler aufgetreten.",
       "days": "Tage",
       "noLoanItems": "Keine ausgeliehenen Items gefunden.",
       "noReservedItems": "Keine reservierten Items gefunden.",
