@@ -3,20 +3,13 @@ ion-card {
 }
 
 ion-card-header {
+    padding: 5px;
     background-color: var(--ion-color-secondary);
     color: black;
-}
-
-ion-card-content-md {
-    padding: 0 !important;
-}
-
-ion-card-header {
-    padding: 3px;
 }
 
 ion-card-content {
     margin: 0;
     color: black;
-    padding: 5px;
+    padding: 5px !important;
 }

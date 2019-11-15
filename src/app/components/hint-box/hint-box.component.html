@@ -1,7 +1,7 @@
 <ion-card>
 
   <ion-card-header *ngIf="hintTextI18nKey">
-    <ion-icon [name]="hintIcon" margin-right></ion-icon> {{ hintTypeI18nKey | translate }}
+    {{ hintTypeI18nKey | translate }}
   </ion-card-header>
 
   <ion-card-content [ngClass]="disableTextCentering ? '' : 'ion-text-center'">

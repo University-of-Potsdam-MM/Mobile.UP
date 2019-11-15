@@ -19,9 +19,6 @@ export class HintBoxComponent {
 
   @Input()
   disableTextCentering: boolean;
-
-  @Input()
-  hintIcon = 'warning';
   constructor(
     public translate: TranslateService
   ) { }

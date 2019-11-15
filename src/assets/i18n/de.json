@@ -369,7 +369,7 @@
   "alert": {
     "title": {
       "unexpectedError": "Unerwarteter Fehler",
-      "httpError": "HTTP-Fehler",
+      "httpError": "Netzwerkfehler",
       "error": "Fehler",
       "website": "Website öffnen?",
       "redirect": "Weiterleitung",
@@ -386,7 +386,8 @@
       "404": "Fehler 404: Ressource nicht gefunden"
     },
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
-    "network": "Netzwerkfehler!",
+    "network": "Fehler beim Abrufen von Daten vom Server.",
+    "noInternetConnection": "Keine Internetverbindung!",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",
