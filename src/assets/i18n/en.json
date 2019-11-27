@@ -18,7 +18,7 @@
       "title": "Terms of Use"
     },
     "login":{
-      "title":"Login",
+      "title":"PULS-Login",
       "loginInProgress": "Login in progress...",
       "alreadyLoggedIn": "You are already logged in.",
       "notLoggedIn": "You are not logged in.",
@@ -31,7 +31,8 @@
       }
     },
     "logout": {
-      "title": "Logout",
+      "title": "PULS-Logout",
+      "bibTitle": "Library logout",
       "text": "You're about to logout.",
       "affirmativeQuestion": "Do you really want to logout?"
     },
@@ -74,18 +75,19 @@
     },
     "library-account": {
       "title": "UB-Account",
+      "library": "Library",
       "returnUntil": "return until",
       "fees": "Fees",
-      "feeType": "Gebührentyp",
-      "loanItems": "Loaned items",
-      "reservedItems": "Reserved items",
-      "notRenewable": "Items that are grayed out can not be renewed.",
+      "feeType": "Fee type",
+      "loanItems": "Loans",
+      "reservedItems": "Reservations",
+      "notRenewable": "Loans that are grayed out can not be renewed.",
       "errorLoadingItems": "There was an network error while loading user data.",
       "days": "Days",
-      "noLoanItems": "No loaned items found.",
-      "noReservedItems": "No reserved items found.",
-      "loan": "Loan",
-      "reservation": "Reservation",
+      "noLoanItems": "No loans found.",
+      "noReservedItems": "No reservations found.",
+      "loan": "Loans",
+      "reservation": "Reservations",
       "loginError": {
         "0": "Card ID Number and Password don't match.",
         "1": "There is a technical difficulty, please contact the development team.",

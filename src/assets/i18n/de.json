@@ -18,7 +18,7 @@
       "title": "Nutzungsbedingungen"
     },
     "login":{
-      "title":"Login",
+      "title":"PULS-Login",
       "loginInProgress": "Login läuft...",
       "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
       "notLoggedIn": "Sind sind nicht eingeloggt.",
@@ -31,7 +31,8 @@
       }
     },
     "logout": {
-      "title": "Logout",
+      "title": "PULS-Logout",
+      "bibTitle": "Bibliothekslogout",
       "text": "Sie sind dabei sich abzumelden.",
       "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
@@ -74,18 +75,19 @@
     },
     "library-account": {
       "title": "UB-Benutzerkonto",
+      "library": "Bibliothek",
       "returnUntil": "abzugeben am",
       "fees": "Gebühren",
       "feeType": "Gebührentyp",
-      "loanItems": "Geliehene Items",
-      "reservedItems": "Reservierte Items",
-      "notRenewable": "Ausgegraute Items können nicht verlängert werden.",
+      "loanItems": "Entleihungen",
+      "reservedItems": "Vormerkungen",
+      "notRenewable": "Ausgegraute Entleihungen können nicht verlängert werden.",
       "errorLoadingItems": "Beim Laden ein oder mehrerer Inhalte ist ein Fehler aufgetreten.",
       "days": "Tage",
-      "noLoanItems": "Keine ausgeliehenen Items gefunden.",
-      "noReservedItems": "Keine reservierten Items gefunden.",
-      "loan": "Ausleihe",
-      "reservation": "Reservierung",
+      "noLoanItems": "Keine Entleihungen gefunden.",
+      "noReservedItems": "Keine Vormerkungen gefunden.",
+      "loan": "Entleihungen",
+      "reservation": "Vormerkungen",
       "loginError": {
         "0": "Ausweisnummer und Passwort stimmen nicht überein.",
         "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",

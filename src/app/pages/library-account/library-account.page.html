@@ -88,12 +88,6 @@
     hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="page.library-account.errorLoadingItems"></app-hint-box>
     <ion-item *ngIf="userLoaded && !userError" lines="none">
       <ion-label><b *ngIf="user.name">{{ user.name.trim() }}</b> <span class="patronID" *ngIf="bibSession && bibSession.oidcTokenObject && bibSession.oidcTokenObject.patron">{{ bibSession.oidcTokenObject.patron }}</span></ion-label>
-      <ion-button (click)="logoutUB()" color="secondary" slot="end">
-        <ion-icon color="primary" name="log-out"></ion-icon>
-        <ion-label color="primary">
-          {{ "button.logout" | translate }}
-        </ion-label>
-      </ion-button>
     </ion-item>
     <ion-item *ngIf="feesLoaded && !feesError && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
       <ion-label>{{ "page.library-account.fees" | translate }}: <span [ngClass]="fees.amount !== '0.00 EUR' ?  'feeAmount' : 'noFeeAmount'">{{ fees.amount }}</span></ion-label>

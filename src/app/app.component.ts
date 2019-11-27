@@ -2,7 +2,7 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IConfig } from './lib/interfaces';
+import { IConfig, IBibSession } from './lib/interfaces';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -27,8 +27,13 @@ export class AppComponent {
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
 
   userInformation: IOIDCUserInformationResponse = null;
+
   loggedIn = false;
   username;
+
+  bibLoggedIn = false;
+  bibID;
+
   config: IConfig;
   logger: Logger;
 
@@ -221,10 +226,18 @@ export class AppComponent {
 
   async updateLoginStatus() {
     this.loggedIn = false;
+    this.bibLoggedIn = false;
     this.userInformation = undefined;
+    this.bibID = undefined;
     this.username = undefined;
 
     const session: ISession = await this.userSession.getSession();
+    const bibSession: IBibSession = await this.storage.get('bibSession');
+
+    if (bibSession) {
+      this.bibLoggedIn = true;
+      this.bibID = bibSession.oidcTokenObject.patron;
+    }
 
     if (session && session.credentials && session.credentials.username) {
       this.loggedIn = true;
@@ -237,6 +250,7 @@ export class AppComponent {
   close() {
     this.menuCtrl.close();
   }
+
   toHome() {
     this.close();
     this.navCtrl.navigateRoot('/home');
@@ -266,10 +280,39 @@ export class AppComponent {
     );
   }
 
+  doBibLogout() {
+    this.close();
+    const buttons: AlertButton[] = [
+      {
+        text: this.translate.instant('button.cancel'),
+      },
+      {
+        text: this.translate.instant('button.ok'),
+        handler: () => {
+          this.storage.remove('bibSession');
+          this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
+          this.updateLoginStatus();
+          this.navCtrl.navigateRoot('/home');
+        }
+      }
+    ];
+
+    this.alertService.showAlert(
+      {
+        headerI18nKey: 'page.logout.bibTitle',
+        messageI18nKey: 'page.logout.affirmativeQuestion'
+      },
+      buttons
+    );
+  }
+
   performLogout() {
     this.userSession.removeSession();
     this.userSession.removeUserInfo();
-    for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+    for (let i = 0; i < 10; i++) {
+      this.storage.remove('studentGrades[' + i + ']');
+      this.storage.remove('studentGrades*');
+    }
     this.cache.clearAll();
     this.updateLoginStatus();
   }
@@ -277,6 +320,11 @@ export class AppComponent {
   toLogin() {
     this.close();
     this.navCtrl.navigateForward('/login');
+  }
+
+  toBibLogin() {
+    this.close();
+    this.navCtrl.navigateForward('/library-account');
   }
 
   toSettings() {

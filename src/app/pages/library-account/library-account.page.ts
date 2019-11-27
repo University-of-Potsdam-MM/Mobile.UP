@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { ICredentials, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AlertButton } from '@ionic/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -56,7 +56,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     private loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
     private storage: Storage,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private events: Events
   ) {
     super({ requireNetwork: true });
     this.loginForm = this.formBuilder.group({
@@ -99,7 +100,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         grant_type: 'password'
       };
 
-      this.http.post(this.endpoint + 'auth/login', body).subscribe((data: IBibSessionResponse) => {
+      const headers = new HttpHeaders()
+        .append('Authorization', ConfigService.config.webservices.apiToken);
+
+      this.http.post(this.endpoint + 'auth/login', body, { headers: headers }).subscribe((data: IBibSessionResponse) => {
         this.bibSession = {
           credentials: this.loginCredentials,
           token: data.access_token,
@@ -108,6 +112,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         };
 
         this.storage.set('bibSession', this.bibSession);
+
+        setTimeout(() => {
+          this.events.publish('userLogin');
+        }, 1000);
 
         if (!loginCredentials) {
           this.endLoading();
@@ -122,45 +130,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         this.showAlert(ELoginErrors.AUTHENTICATION);
       });
     }
-  }
-
-  logoutUB() {
-    const body = {
-      patron: this.bibSession.oidcTokenObject.patron
-    };
-
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
-
-    this.http.post(this.endpoint + 'auth/logout', body, { headers: headers }).subscribe(() => {
-      this.bibSession = undefined;
-      this.user = undefined;
-      this.items = undefined;
-      this.fees = undefined;
-      this.grayedOutItemsHint = false;
-      this.userLoaded = false;
-      this.itemsLoaded = false;
-      this.feesLoaded = false;
-      this.feesExpanded = false;
-      this.noLoanItems = true;
-      this.activeSegment = 'loan';
-      this.itemStatus = [];
-
-      this.loginCredentials = {
-        username: '',
-        password: ''
-      };
-
-      this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
-        password: ['', Validators.required]
-      });
-
-      this.storage.remove('bibSession');
-      this.logger.debug('logoutUB()', 'successfully logged out ub-user');
-    }, error => {
-      this.logger.debug('logoutUB()', error);
-    });
   }
 
   getUser() {
@@ -189,7 +158,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
     this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', {headers: headers})
     .subscribe((itemData: IUBItems) => {
-      console.log(itemData);
       this.items = itemData;
       this.items.doc.sort((a, b) => {
         if (a.endtime > b.endtime) {
