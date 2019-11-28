@@ -31,7 +31,7 @@
       }
     },
     "logout": {
-      "title": "PULS-Logout",
+      "title": "PULS logout",
       "bibTitle": "Library logout",
       "text": "You're about to logout.",
       "affirmativeQuestion": "Do you really want to logout?"
@@ -76,18 +76,25 @@
     "library-account": {
       "title": "UB-Account",
       "library": "Library",
-      "returnUntil": "return until",
+      "ordered": "Ordered",
+      "reserved": "Reserved",
+      "loaned": "Borrowed",
+      "shelfMark": "Shelf mark",
+      "expectedUntil": "Return date",
       "fees": "Fees",
       "feeType": "Fee type",
       "loanItems": "Loans",
       "reservedItems": "Reservations",
       "notRenewable": "Loans that are grayed out can not be renewed.",
+      "notCancable": "Reservations that are grayed out can not be cancelled.",
       "errorLoadingItems": "There was an network error while loading user data.",
-      "days": "Days",
+      "daysToReturn": "Days until return date",
       "noLoanItems": "No loans found.",
       "noReservedItems": "No reservations found.",
       "loan": "Loans",
       "reservation": "Reservations",
+      "renewError": "Renewal could not be completed.",
+      "cancelError": "Cancellation could not be completed.",
       "loginError": {
         "0": "Card ID Number and Password don't match.",
         "1": "There is a technical difficulty, please contact the development team.",
@@ -428,8 +435,8 @@
     "title": "Menu"
   },
   "popover":{
-    "loggedInText": "Logged in as",
-    "notLoggedInText": "Not logged in",
+    "loggedInText": "logged in as",
+    "notLoggedInText": "not logged in",
     "general": "General",
     "exportLog": "Export log"
   },

@@ -31,8 +31,8 @@
       }
     },
     "logout": {
-      "title": "PULS-Logout",
-      "bibTitle": "Bibliothekslogout",
+      "title": "Logout PULS",
+      "bibTitle": "Logout Bibliothek",
       "text": "Sie sind dabei sich abzumelden.",
       "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
@@ -76,18 +76,25 @@
     "library-account": {
       "title": "UB-Benutzerkonto",
       "library": "Bibliothek",
-      "returnUntil": "abzugeben am",
+      "ordered": "Bestellt",
+      "reserved": "Vorgemerkt",
+      "loaned": "Ausgeliehen",
+      "shelfMark": "Signatur",
+      "expectedUntil": "Ende der Leihfrist",
       "fees": "Gebühren",
       "feeType": "Gebührentyp",
       "loanItems": "Entleihungen",
       "reservedItems": "Vormerkungen",
       "notRenewable": "Ausgegraute Entleihungen können nicht verlängert werden.",
+      "notCancable": "Ausgegraute Vormerkungen können nicht storniert werden.",
       "errorLoadingItems": "Beim Laden ein oder mehrerer Inhalte ist ein Fehler aufgetreten.",
-      "days": "Tage",
-      "noLoanItems": "Keine Entleihungen gefunden.",
-      "noReservedItems": "Keine Vormerkungen gefunden.",
+      "daysToReturn": "Tage bis Leihfristende",
+      "noLoanItems": "Keine Entleihungen vorhanden.",
+      "noReservedItems": "Keine Vormerkungen vorhanden.",
       "loan": "Entleihungen",
       "reservation": "Vormerkungen",
+      "renewError": "Verlängerung konnte nicht abgeschlossen werden.",
+      "cancelError": "Stornierung konnte nicht abgeschlossen werden.",
       "loginError": {
         "0": "Ausweisnummer und Passwort stimmen nicht überein.",
         "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
@@ -428,8 +435,8 @@
     "title": "Menü"
   },
   "popover":{
-    "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt",
+    "loggedInText": "eingeloggt als",
+    "notLoggedInText": "nicht eingeloggt",
     "general": "Allgemein",
     "exportLog": "Log exportieren"
   },

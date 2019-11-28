@@ -34,8 +34,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   feesError;
 
   itemStatus = [];
-  grayedOutItemsHint;
+  grayedOutItemsHintRenew;
+  grayedOutItemsHintCancel;
   noLoanItems = true;
+  noReservedItems = true;
   activeSegment = 'loan';
   endpoint;
 
@@ -71,12 +73,17 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
     if (this.bibSession) {
-      if (utils.sessionIsValid(this.bibSession.timestamp, this.bibSession.oidcTokenObject.expires_in, 600)) {
+      if (
+        this.bibSession.timestamp && this.bibSession.oidcTokenObject && this.bibSession.oidcTokenObject.expires_in &&
+        utils.sessionIsValid(this.bibSession.timestamp, this.bibSession.oidcTokenObject.expires_in, 600)
+      ) {
         this.getUser();
         this.getItems();
         this.getFees();
-      } else {
+      } else if (this.bibSession.credentials) {
         this.loginUB(this.bibSession.credentials);
+      } else {
+        this.logoutUB();
       }
     } else { this.showLoginScreen = true; }
   }
@@ -92,7 +99,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         this.loginCredentials.username = loginCredentials.username;
         this.loginCredentials.password = loginCredentials.password;
       }
-
 
       const body = {
         username: this.loginCredentials.username,
@@ -111,11 +117,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           timestamp: new Date()
         };
 
-        this.storage.set('bibSession', this.bibSession);
-
-        setTimeout(() => {
-          this.events.publish('userLogin');
-        }, 1000);
+        this.storage.set('bibSession', this.bibSession).then(() => {
+          setTimeout(() => {
+            this.events.publish('userLogin');
+          }, 1000);
+        });
 
         if (!loginCredentials) {
           this.endLoading();
@@ -125,11 +131,47 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         this.getItems();
         this.getFees();
       }, error => {
-        this.logger.debug('loginUB()', error);
-        this.endLoading();
+        this.logger.error('loginUB()', error);
+
+        if (!loginCredentials) {
+          this.endLoading();
+        }
+
         this.showAlert(ELoginErrors.AUTHENTICATION);
+        this.logoutUB();
       });
     }
+  }
+
+  logoutUB() {
+    this.bibSession = undefined;
+    this.user = undefined;
+    this.items = undefined;
+    this.fees = undefined;
+    this.grayedOutItemsHintRenew = false;
+    this.grayedOutItemsHintCancel = false;
+    this.userLoaded = false;
+    this.itemsLoaded = false;
+    this.feesLoaded = false;
+    this.feesExpanded = false;
+    this.noLoanItems = true;
+    this.noReservedItems = true;
+    this.activeSegment = 'loan';
+    this.itemStatus = [];
+    this.showLoginScreen = true;
+
+    this.loginCredentials = {
+      username: '',
+      password: ''
+    };
+
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
+    this.storage.remove('bibSession');
+    this.logger.debug('logoutUB()', 'successfully logged out ub-user');
   }
 
   getUser() {
@@ -143,7 +185,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.user = userData;
       this.userLoaded = true;
     }, error => {
-      this.logger.debug('getUser()', error);
+      this.logger.error('getUser()', error);
       this.userLoaded = true;
       this.userError = true;
     });
@@ -156,7 +198,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     const headers = new HttpHeaders()
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', {headers: headers})
+    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', { headers: headers })
     .subscribe((itemData: IUBItems) => {
       this.items = itemData;
       this.items.doc.sort((a, b) => {
@@ -167,7 +209,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.itemsLoaded = true;
       this.prepareForm();
     }, error => {
-      this.logger.debug('getItems()', error);
+      this.logger.error('getItems()', error);
       this.itemsLoaded = true;
       this.itemsError = true;
     });
@@ -185,7 +227,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.fees = feeData;
       this.feesLoaded = true;
     }, error => {
-      this.logger.debug('getFees()', error);
+      this.logger.error('getFees()', error);
       this.feesLoaded = true;
       this.feesError = true;
     });
@@ -205,9 +247,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       'doc': []
     };
 
-    for (let i = 0; i < this.items.doc.length; i++) {
-      if (this.itemStatus[i].isChecked) {
-        docsToRenew.doc.push(this.items.doc[i]);
+    if (this.items && this.items.doc) {
+      for (let i = 0; i < this.items.doc.length; i++) {
+        if (this.itemStatus[i] && this.itemStatus[i].isCheckedToRenew) {
+          docsToRenew.doc.push(this.items.doc[i]);
+        }
       }
     }
 
@@ -215,57 +259,136 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   renewRequest(items: IUBItems) {
-    console.log(items);
-    // const headers = new HttpHeaders()
-    //   .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + this.bibSession.token);
 
-    // this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, {headers: headers})
-    // .subscribe(success => {
-    //   console.log(success);
-    //   this.getItems();
-    //   this.getFees();
-    // }, error => {
-    //   this.logger.debug('renewRequest()', error);
-    // });
+    this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, { headers: headers })
+    .subscribe(() => {
+      this.getItems();
+    }, error => {
+      this.logger.error('renewRequest()', error);
+      const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+      this.alertService.showAlert(
+        {
+          headerI18nKey: 'alert.title.error',
+          messageI18nKey: 'page.library-account.renewError'
+        },
+        buttons
+      );
+    });
+  }
+
+  cancelItems() {
+    const docsToCancel: IUBItems = {
+      'doc': []
+    };
+
+    if (this.items && this.items.doc) {
+      for (let i = 0; i < this.items.doc.length; i++) {
+        if (this.itemStatus[i] && this.itemStatus[i].isCheckedToCancel) {
+          docsToCancel.doc.push(this.items.doc[i]);
+        }
+      }
+    }
+
+    this.cancelRequest(docsToCancel);
+  }
+
+  cancelRequest(items: IUBItems) {
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + this.bibSession.token);
+
+    this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/cancel', items, { headers: headers })
+    .subscribe(() => {
+      this.getItems();
+    }, error => {
+      this.logger.error('cancelRequest()', error);
+      const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+      this.alertService.showAlert(
+        {
+          headerI18nKey: 'alert.title.error',
+          messageI18nKey: 'page.library-account.cancelError'
+        },
+        buttons
+      );
+    });
   }
 
   prepareForm() {
-    for (let i = 0; i < this.items.doc.length; i++) {
-      if (this.items.doc[i].status === 3) { this.noLoanItems = false; }
+    // reset variables
+    this.itemStatus = [];
+    this.noReservedItems = true;
+    this.noLoanItems = true;
+    this.grayedOutItemsHintCancel = false;
+    this.grayedOutItemsHintRenew = false;
 
-      let renewable;
-      if ((this.items.doc[i].queue !== 0) || !this.items.doc[i].canrenew) {
-        // item can not be renewed
-        renewable = false;
-      } else if (this.items.doc[i].canrenew) { renewable = true; }
+    if (this.items && this.items.doc) {
+      for (let i = 0; i < this.items.doc.length; i++) {
+        if (this.items.doc[i].status === 1) { this.noReservedItems = false; }
 
-      if (!renewable) { this.grayedOutItemsHint = true; }
+        if ((this.items.doc[i].status === 3) || (this.items.doc[i].status === 2)) {
+          this.noLoanItems = false;
+        }
 
-      const endDate = moment(this.items.doc[i].endtime);
-      const currentDate = moment();
-      const dayDiff = endDate.diff(currentDate, 'days');
+        let renewable;
+        if ((this.items.doc[i].queue !== 0) || !this.items.doc[i].canrenew) {
+          // item can not be renewed
+          renewable = false;
+        } else if (this.items.doc[i].canrenew) { renewable = true; }
 
-      let status;
-      if (dayDiff < 0) {
-        status = 2;
-      } else if (dayDiff < 4) {
-        status = 1;
-      } else { status = 0; }
+        const canCancel = this.items.doc[i].cancancel;
 
-      this.itemStatus[i] = {
-        'isChecked': false,
-        'isRenewable': renewable,
-        // status: 0 = ok, 1 = due soon, 2 = late
-        'status': status,
-        'daysToReturn': dayDiff
-      };
+        if (!this.items.doc[i].cancancel && this.items.doc[i].status === 1) {
+          this.grayedOutItemsHintCancel = true;
+        }
+
+        if (!renewable && ((this.items.doc[i].status === 3) || (this.items.doc[i].status === 2))) {
+          this.grayedOutItemsHintRenew = true;
+        }
+
+        let endDate;
+        if (this.items.doc[i].endtime) { endDate = moment(this.items.doc[i].endtime); }
+
+        const currentDate = moment();
+        let dayDiff = 0;
+        if (endDate && currentDate) { dayDiff = endDate.diff(currentDate, 'days'); }
+
+        let status;
+        if (dayDiff < 0) {
+          status = 2;
+        } else if (dayDiff < 4) {
+          status = 1;
+        } else { status = 0; }
+
+        this.itemStatus[i] = {
+          'isCheckedToRenew': false,
+          'isCheckedToCancel': false,
+          'canRenew': renewable,
+          'canCancel': canCancel,
+          // status: 0 = ok, 1 = due soon, 2 = late
+          'status': status,
+          'daysToReturn': dayDiff
+        };
+      }
     }
   }
 
-  validateCheckboxes() {
+  validateCheckboxesRenew() {
     let checked = false;
     for (const status of this.itemStatus) {
-      if (status.isChecked) {
+      if (status.isCheckedToRenew) {
+        checked = true;
+        break;
+      }
+    }
+
+    return !checked;
+  }
+
+  validateCheckboxesCancel() {
+    let checked = false;
+    for (const status of this.itemStatus) {
+      if (status.isCheckedToCancel) {
         checked = true;
         break;
       }
