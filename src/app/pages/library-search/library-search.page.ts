@@ -197,11 +197,13 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     modal.present();
     this.modalOpen = true;
     const result = await modal.onWillDismiss();
-    if (isFavorite !== result.data.isFavoriteNew) {
-      if (result.data.isFavoriteNew) {
-        this.makeFavorite(book, undefined, true);
-      } else {
-        this.removeFavorite(book, true);
+    if (result && result.data) {
+      if (isFavorite !== result.data.isFavoriteNew) {
+        if (result.data.isFavoriteNew) {
+          this.makeFavorite(book, undefined, true);
+        } else {
+          this.removeFavorite(book, true);
+        }
       }
     }
     this.modalOpen = false;

@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, Events, MenuController, NavController, IonRouterOutlet, ModalController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig, IBibSession } from './lib/interfaces';
@@ -52,6 +52,7 @@ export class AppComponent {
     private setting: SettingsService,
     private events: Events,
     private login: UPLoginProvider,
+    private modalCtrl: ModalController,
     private storage: Storage,
     private alertService: AlertService,
     private loggingService: LoggingService
@@ -213,14 +214,28 @@ export class AppComponent {
   listenToBackButton() {
     // workaround for #694
     // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
-    this.platform.backButton.subscribe(async() => {
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        if (this.router.url === '/home') {
-          navigator['app'].exitApp();
+    this.platform.backButton.subscribeWithPriority(1, async() => {
+      const openMenu = await this.menuCtrl.getOpen();
+
+      if (openMenu) {
+        this.menuCtrl.close();
+      } else {
+        const openModal = await this.modalCtrl.getTop();
+
+        if (openModal) {
+          this.modalCtrl.dismiss();
         } else {
-          window.history.back();
+          this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+            if (this.router.url === '/home') {
+              navigator['app'].exitApp();
+            } else if (this.router.url === '/login') {
+              this.navCtrl.navigateRoot('/home');
+            } else if (outlet && outlet.canGoBack()) {
+              outlet.pop();
+            }
+          });
         }
-      });
+      }
     });
   }
 
