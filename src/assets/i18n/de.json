@@ -86,7 +86,7 @@
       "feeType": "Gebührentyp",
       "loanItems": "Entleihungen",
       "reservedItems": "Vormerkungen",
-      "notRenewable": "Ausgegraute Entleihungen können nicht verlängert werden.",
+      "notRenewable": "Ausgegraute Entleihungen können nicht verlängert werden. (Lehrbuchsammlung, Fernleihbestellung, Sonderleihfrist oder bereits zu viele Verlängerungen)",
       "notCancable": "Ausgegraute Vormerkungen können nicht storniert werden.",
       "errorLoadingItems": "Beim Laden ein oder mehrerer Inhalte ist ein Fehler aufgetreten.",
       "daysToReturn": "Tage bis Leihfristende",
