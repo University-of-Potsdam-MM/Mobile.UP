@@ -114,7 +114,7 @@
         <span *ngFor="let item of items.doc; let i = index">
 
           <!-- Loans -->
-          <ion-item *ngIf="((item.status === 3) || (item.status === 2)) && activeSegment == 'loan'" lines="none">
+          <ion-item *ngIf="((item.status === 4) || (item.status === 3) || (item.status === 2)) && activeSegment == 'loan'" lines="none">
             <ion-checkbox slot="start" [disabled]="!itemStatus[i].canRenew" [(ngModel)]="itemStatus[i].isCheckedToRenew"></ion-checkbox>
             <ion-label class="ion-text-wrap">
               <h2 *ngIf="item.about">{{ item.about }}</h2>
@@ -124,6 +124,9 @@
               </p>
               <p *ngIf="item.status === 3" style="color: green;">
                 {{ "page.library-account.loaned" | translate }} <ng-container *ngIf="item.storage">({{ item.storage }})</ng-container>
+              </p>
+              <p *ngIf="item.status === 4" style="color: red;">
+                {{ "page.library-account.provided" | translate }} <ng-container *ngIf="item.storage">({{ item.storage }})</ng-container>
               </p>
               <p *ngIf="item.label">{{ "page.library-account.shelfMark" | translate }}: {{ item.label }}</p>
               <p *ngIf="item.endtime">{{ "page.library-account.expectedUntil" | translate }}: {{ formatItemDates(item.endtime) }}</p>

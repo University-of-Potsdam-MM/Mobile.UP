@@ -79,6 +79,7 @@
       "ordered": "Bestellt",
       "reserved": "Vorgemerkt",
       "loaned": "Ausgeliehen",
+      "provided": "Zur Abholung bereit",
       "shelfMark": "Signatur",
       "expectedUntil": "Ende der Leihfrist",
       "fees": "Gebühren",

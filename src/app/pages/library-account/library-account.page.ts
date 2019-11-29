@@ -326,7 +326,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       for (let i = 0; i < this.items.doc.length; i++) {
         if (this.items.doc[i].status === 1) { this.noReservedItems = false; }
 
-        if ((this.items.doc[i].status === 3) || (this.items.doc[i].status === 2)) {
+        if ((this.items.doc[i].status === 4) || (this.items.doc[i].status === 3) || (this.items.doc[i].status === 2)) {
           this.noLoanItems = false;
         }
 
@@ -342,7 +342,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.grayedOutItemsHintCancel = true;
         }
 
-        if (!renewable && ((this.items.doc[i].status === 3) || (this.items.doc[i].status === 2))) {
+        if (!renewable && ((this.items.doc[i].status === 4) || (this.items.doc[i].status === 3) || (this.items.doc[i].status === 2))) {
           this.grayedOutItemsHintRenew = true;
         }
 

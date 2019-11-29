@@ -79,6 +79,7 @@
       "ordered": "Ordered",
       "reserved": "Reserved",
       "loaned": "Borrowed",
+      "provided": "Can be picked up",
       "shelfMark": "Shelf mark",
       "expectedUntil": "Return date",
       "fees": "Fees",
