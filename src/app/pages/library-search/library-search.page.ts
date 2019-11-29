@@ -466,6 +466,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('alert.title.clearAll'),
       message: this.translate.instant('alert.deleteAllFavs'),
+      backdropDismiss: false,
       buttons: [
         {
           text: this.translate.instant('button.no'),

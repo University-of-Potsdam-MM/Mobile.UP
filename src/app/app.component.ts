@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet, ModalController } from '@ionic/angular';
+import { Platform, Events, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig, IBibSession } from './lib/interfaces';
@@ -53,6 +53,7 @@ export class AppComponent {
     private events: Events,
     private login: UPLoginProvider,
     private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private storage: Storage,
     private alertService: AlertService,
     private loggingService: LoggingService
@@ -225,13 +226,19 @@ export class AppComponent {
         if (openModal) {
           this.modalCtrl.dismiss();
         } else {
-          this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-            if (this.router.url === '/home') {
-              navigator['app'].exitApp();
-            } else if (outlet && outlet.canGoBack()) {
-              outlet.pop();
-            }
-          });
+          const openAlert = await this.alertCtrl.getTop();
+
+          if (openAlert) {
+            this.alertCtrl.dismiss();
+          } else {
+            this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+              if (this.router.url === '/home') {
+                navigator['app'].exitApp();
+              } else if (outlet && outlet.canGoBack()) {
+                outlet.pop();
+              }
+            });
+          }
         }
       }
     });

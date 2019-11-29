@@ -438,6 +438,7 @@ export class PracticePage extends AbstractPage {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('alert.title.clearAll'),
       message: this.translate.instant('alert.deleteAllFavs'),
+      backdropDismiss: false,
       buttons: [
         {
           text: this.translate.instant('button.no'),
