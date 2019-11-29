@@ -5,7 +5,7 @@ import { Injector, Type } from '@angular/core';
 import { StaticInjectorService } from './static-injector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController, Platform } from '@ionic/angular';
-import {IConfig, IModule} from './interfaces';
+import { IConfig, IModule } from './interfaces';
 import { ConfigService } from '../services/config/config.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import { WebIntentService } from '../services/web-intent/web-intent.service';
@@ -184,6 +184,10 @@ export abstract class AbstractPage  {
       this.logger.debug('requireSession');
 
       this.session = await this.sessionProvider.getSession();
-      if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }
+      if (!this.session && !optional) {
+        this.navCtrl.navigateRoot('/home').then(() => {
+          this.navCtrl.navigateForward('/login');
+        });
+      }
     }
 }
