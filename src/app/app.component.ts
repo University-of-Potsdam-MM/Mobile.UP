@@ -228,8 +228,6 @@ export class AppComponent {
           this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
             if (this.router.url === '/home') {
               navigator['app'].exitApp();
-            } else if (this.router.url === '/login') {
-              this.navCtrl.navigateRoot('/home');
             } else if (outlet && outlet.canGoBack()) {
               outlet.pop();
             }
