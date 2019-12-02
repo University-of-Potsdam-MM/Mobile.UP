@@ -133,6 +133,61 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       textPlaceholder: this.translate.instant('page.campus-map.placeholder_search'),
       initial: false,
       minLength: 3,
+      filterData: (text, records) => { // Filters records based on search input
+        let I, icase, regSearch, frecords = {};
+        // text = text.replace(/[.*+?^${}()|[\]\\]/g, '');  // Sanitize remove all special characters
+
+        if (text === '') {
+          return [];
+        }
+
+        let testtext = text;
+        let test = '';
+        let hilf = '';
+        // Matches "Haus <Nr.>"
+        hilf = testtext.match(/haus \d{1,2}/i);
+        if ((hilf) && (hilf[0] !== '')) {
+          if (hilf[0].length === 7) {
+            test += hilf[0] + '|' + '\\d\\.' + hilf[0].slice(-2);
+          } else {
+            test += hilf[0] + '|' + '\\d\\.0' + hilf[0][5];
+          }
+          // Removes "Haus" from search query as it is not necessarily part of the searchProperty (name + description + campus name)
+          testtext = testtext.replace(/Haus /i, ' ');
+        }
+        hilf = '';
+        // Matches house numbers, formats them correctly and removes room numbers
+        hilf = testtext.match(/(\d{1,2}\.\d{1,2}\.\d{1,2})|(\d{1,2}\.\d{1,2})/i);
+        if ((hilf) && (hilf[0] !== '')) {
+          let hilf2 = hilf[0].split('.');
+          if (test !== '') {
+            test += '|';
+          }
+          test += hilf2[0].slice(-1) + '\\.' + ('0' + hilf2[1]).slice(-2);
+          if (hilf2.length === 2) {
+            test += '|\\d\\.' + ('0' + hilf2[0]).slice(-2);
+          }
+        }
+        // CARE: maybe limit the amount of characters that can be entered in the input box to prevent too long strings
+        if (test !== '') {
+          test += '|';
+        }
+        // Matches records that have every word of the search query in them
+        test += '\\?(?=(.|\\n)*' + testtext.trim().split(' ').join(')(?=(.|\\n)*') + ')';
+        console.log(test);
+        I = this.searchControl.options.initial ? '^' : '';  // search only initial text
+        icase = !this.searchControl.options.casesensitive ? 'i' : undefined;
+
+        regSearch = new RegExp(I + test, icase);
+
+        // TODO use .filter or .map (from _defaultFilterData in /node_modules/leaflet-search/scr/leaflet-search.js))
+        for(let key in records) {
+          if (regSearch.test('\?' + key)) {
+            frecords[key] = records[key];
+          }
+        }
+        return frecords;
+      },
       autoType: false, // guess that would just annoy most users,
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
