@@ -174,7 +174,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         }
         // Matches records that have every word of the search query in them
         test += '\\?(?=(.|\\n)*' + testtext.trim().split(' ').join(')(?=(.|\\n)*') + ')';
-        console.log(test);
         I = this.searchControl.options.initial ? '^' : '';  // search only initial text
         icase = !this.searchControl.options.casesensitive ? 'i' : undefined;
 
