@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import {ModalController} from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
@@ -14,8 +14,7 @@ import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
-import {ActivatedRoute} from '@angular/router';
-import {LatLngExpression} from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -36,6 +35,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   searchControl;
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
+  query = '';
 
   positionCircle: L.Circle;
   positionMarker: L.Marker;
@@ -47,7 +47,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
   constructor(
     private ws: WebserviceWrapperService,
-    private route: ActivatedRoute,
     private translate: TranslateService,
     private location: Geolocation,
     private modalCtrl: ModalController,
@@ -108,7 +107,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
       this.loadMapData(this.map);
       this.addLeafletSearch(this.map);
-      this.addGeoLocationButton(this.map);
     }
     // trigger pageReadyResolve, need to wait a second until map is really ready
     // TODO: find out why this timeout is necessary and find better solution
@@ -134,7 +132,8 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       initial: false,
       minLength: 3,
       filterData: (text, records) => { // Filters records based on search input
-        let I, icase, regSearch, frecords = {};
+        let I, icase, regSearch;
+        const frecords = {};
         // text = text.replace(/[.*+?^${}()|[\]\\]/g, '');  // Sanitize remove all special characters
 
         if (text === '') {
@@ -159,7 +158,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         // Matches house numbers, formats them correctly and removes room numbers
         hilf = testtext.match(/(\d{1,2}\.\d{1,2}\.\d{1,2})|(\d{1,2}\.\d{1,2})/i);
         if ((hilf) && (hilf[0] !== '')) {
-          let hilf2 = hilf[0].split('.');
+          const hilf2 = hilf[0].split('.');
           if (test !== '') {
             test += '|';
           }
@@ -180,19 +179,32 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         regSearch = new RegExp(I + test, icase);
 
         // TODO use .filter or .map (from _defaultFilterData in /node_modules/leaflet-search/scr/leaflet-search.js))
-        for(let key in records) {
+        for (const key in records) {
           if (regSearch.test('\?' + key)) {
             frecords[key] = records[key];
           }
         }
-        return frecords;
+
+        // if there are no search results, show a toast alert
+        if (Object.getOwnPropertyNames(frecords).length === 0) {
+          this.alertService.showToast('page.campus-map.no_results');
+        }
+
+       return frecords;
       },
       autoType: false, // guess that would just annoy most users,
       buildTip: (text, val) => {
         const tip = L.DomUtil.create('li', '');
         const properties = val.layer.feature.properties;
-        if (properties.Name && properties.campus.pretty_name) {
-          let content = `<div id="tooltip-title">${properties.Name} (${properties.campus.pretty_name})</div>`;
+        if (properties.Name) {
+          let content = `<div id="tooltip-title">${properties.Name}`;
+
+          if (properties.campus && properties.campus.pretty_name) {
+            content += ` (${properties.campus.pretty_name})`;
+          }
+
+          content += '</div>';
+
           if (properties.description) {
             content += `<div id="tooltip-description">${properties.description.replace(/\n/g, '<br>')}</div>`;
           }
@@ -208,38 +220,22 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     map.addControl(this.searchControl);
   }
 
-  /**
-   * @name addGeoLocationButton
-   * @desc adds geolocation button to map
-   */
-  addGeoLocationButton(map) {
-    const toggleGeolocationButton = L.easyButton({
-      states: [{
-        stateName: 'geolocation-disabled',
-        icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="locate"></ion-icon>',
-        title: this.translate.instant('page.campus-map.enable_geolocation'),
-        onClick: (control) => {
-          const enableCallback = () => {
-            this.geoLocationEnabled = true;
-            control.state('geolocation-enabled');
-          };
-          const disableCallback = () => {
-            this.geoLocationEnabled = false;
-            control.state('geolocation-disabled');
-          };
-          this.enableGeolocation(enableCallback, disableCallback);
-        }
-      }, {
-        stateName: 'geolocation-enabled',
-        icon: '<ion-icon style="font-size: 1.4em; padding-top: 5px;" name="close-circle"></ion-icon>',
-        title: this.translate.instant('page.campus-map.disable_geolocation'),
-        onClick: (control) => {
-          this.disableGeolocation();
-          control.state('geolocation-disabled');
-        },
-      }]
-    });
-    toggleGeolocationButton.addTo(map);
+  search() {
+    this.searchControl.searchText(this.query);
+  }
+
+  toggleGeolocation() {
+    if (this.geoLocationEnabled) {
+      this.disableGeolocation();
+    } else {
+      const enableCallback = () => {
+        this.geoLocationEnabled = true;
+      };
+      const disableCallback = () => {
+        this.geoLocationEnabled = false;
+      };
+      this.enableGeolocation(enableCallback, disableCallback);
+    }
   }
 
   /**
