@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, Injector, Type } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
 import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
@@ -15,6 +15,9 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { LatLngExpression } from 'leaflet';
+// import { HttpClient } from '@angular/common/http';
+import { StaticInjectorService } from 'src/app/lib/static-injector';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -36,6 +39,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   searchableLayers: L.LayerGroup = L.layerGroup();
   map: L.Map;
   query = '';
+  scrollListenerAdded = false;
 
   positionCircle: L.Circle;
   positionMarker: L.Marker;
@@ -50,7 +54,8 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private translate: TranslateService,
     private location: Geolocation,
     private modalCtrl: ModalController,
-    private alertService: AlertService
+    private alertService: AlertService,
+    // private http: HttpClient
   ) {
     super({ optionalNetwork: true });
   }
@@ -132,6 +137,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       initial: false,
       minLength: 3,
       filterData: (text, records) => { // Filters records based on search input
+        this.scrollListenerAdded = false;
         let I, icase, regSearch;
         const frecords = {};
         // text = text.replace(/[.*+?^${}()|[\]\\]/g, '');  // Sanitize remove all special characters
@@ -211,6 +217,27 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
           tip.innerHTML = content;
           L.DomUtil.addClass(tip, 'search-tip');
+
+          // adds a scroll-listener on mobile devices to hide the keyboard when scrolling search results
+          const injector: Injector = StaticInjectorService.getInjector();
+          const platform = injector.get<Platform>(Platform as Type<Platform>);
+          if (!this.scrollListenerAdded && platform.is('cordova') && (platform.is('ios') || platform.is('android'))) {
+            const list = document.getElementsByClassName('search-tooltip');
+
+            if (list && list[0]) {
+              const keyboard = injector.get<Keyboard>(Keyboard as Type<Keyboard>);
+
+              const onScrollListener = () => {
+                if (platform.is('cordova') && (platform.is('ios') || platform.is('android'))) {
+                  keyboard.hide();
+                }
+              };
+
+              list[0].addEventListener('scroll', onScrollListener);
+              this.scrollListenerAdded = true;
+            }
+          }
+
           tip['_text'] = content;
         }
 
@@ -357,6 +384,15 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         );
       }
     );
+
+    // load local geojson.json instead of the one from the mapsAPI
+
+    // this.http.get('assets/json/geojson.json').subscribe((response: IMapsResponse) => {
+    //   this.geoJSON = response;
+    //   this.addFeaturesToLayerGroups(this.geoJSON, map);
+    // }, error => {
+    //   console.log(error);
+    // });
   }
 
   /**
