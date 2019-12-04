@@ -542,7 +542,8 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         // create new property that can easily be searched by leaflet-search
         props['campus'] = campusMapping[obj.campus];
         props['category'] = category;
-        props['searchProperty'] = `${props.Name} ${props.description ? props.description : ''} (${props.campus.pretty_name})`;
+        const searchString = `${props.Name} ${props.description ? props.description : ''} (${props.campus.pretty_name})`;
+        props['searchProperty'] = searchString.replace( /[\r\n]+/gm, '');
         props['code'] = ``;
 
         const geoJson = L.geoJSON(feature);
