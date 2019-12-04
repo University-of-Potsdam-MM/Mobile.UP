@@ -70,6 +70,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: 'www.uni-potsdam.de',
+        minZoom: 14,
         maxZoom: 18
       }).addTo(map);
     return map;
@@ -100,7 +101,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * We are using ionViewDidEnter here because it is run every time the view is
    * entered, other than ionViewDidLoad which will run only once
    */
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     // initialize map
     if (!this.map) {
       this.map = this.initializeLeafletMap();
@@ -138,8 +139,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       minLength: 3,
       filterData: (text, records) => { // Filters records based on search input
         this.scrollListenerAdded = false;
-        let I, icase, regSearch;
-        const frecords = {};
+        let I, icase, regSearch, frecords = [];
         // text = text.replace(/[.*+?^${}()|[\]\\]/g, '');  // Sanitize remove all special characters
 
         if (text === '') {
@@ -191,12 +191,41 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
           }
         }
 
+        // convert object to array, so that we can sort results later on
+        frecords = Object.keys(frecords).map(function(key) {
+          const tmp = [];
+          tmp[0] = [];
+          tmp[0][0] = key;
+          tmp[0][1] = frecords[key];
+          return tmp;
+        });
+
         // if there are no search results, show a toast alert
-        if (Object.getOwnPropertyNames(frecords).length === 0) {
+        if (frecords.length === 0) {
           this.alertService.showToast('page.campus-map.no_results');
+        } else {
+          // sort results, so that results for current campus go first
+          frecords.sort((a, b) => {
+            const campusA = a[0][1].layer.feature.properties.campus.pretty_name;
+            const campusB = b[0][1].layer.feature.properties.campus.pretty_name;
+            const currentCampus = this.currentCampus.pretty_name;
+
+            if (campusA === currentCampus && !(campusB === currentCampus)) {
+              return -1;
+            } else if (campusB === currentCampus && !(campusA === currentCampus)) {
+              return 1;
+            }
+
+            return 0;
+          });
         }
 
-       return frecords;
+        const result = {};
+        for (let i = 0; i < frecords.length; i++) {
+          result[frecords[i][0][0]] = frecords[i][0][1];
+        }
+
+        return result;
       },
       autoType: false, // guess that would just annoy most users,
       buildTip: (text, val) => {
@@ -242,6 +271,17 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
         }
 
         return tip;
+      },
+      moveToLocation: (latlng, title) => {
+        // move map to selected search result, with default zoom = 16
+        this.map.setView(latlng, 16);
+
+        // set currentCampus to match what the map displays
+        for (const campus of this.campusList) {
+          if (title.includes(campus.pretty_name)) {
+            this.currentCampus = campus;
+          }
+        }
       }
     });
     map.addControl(this.searchControl);
