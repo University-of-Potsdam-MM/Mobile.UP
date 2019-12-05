@@ -62,7 +62,7 @@ ion-item {
   top: calc(12em + env(safe-area-inset-top)) !important;
   left: 4em !important;
   right: 5em !important;
-  bottom: calc(1em + env(safe-area-inset-bottom)) !important;
+  bottom: calc(env(safe-area-inset-bottom)) !important;
   overflow: auto !important;
   box-shadow: none;
   background-color: transparent;
