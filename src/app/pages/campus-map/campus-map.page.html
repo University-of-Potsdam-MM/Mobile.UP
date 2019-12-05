@@ -8,6 +8,17 @@
     <app-campus-tab (campusChanged)="selectCampus($event)"
                     [selectedCampusNoEmit]="currentCampus"></app-campus-tab>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+    [(ngModel)]="query"
+    [placeholder]="'placeholder.search' | translate"
+    (ionChange)="search()"
+    debounce="750">
+    </ion-searchbar>
+    <ion-button slot="end" fill="clear" (click)="toggleGeolocation()">
+      <ion-icon [name]="geoLocationEnabled ? 'close-circle' : 'locate'"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
