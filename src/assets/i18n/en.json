@@ -323,7 +323,7 @@
     "campus-map": {
       "placeholder_search": "Search",
       "cancel": "Cancel search",
-      "no_results": "No results found",
+      "no_results": "No results found.",
       "here_is_multiple": "Here are",
       "here_is_single": "Here is",
       "no_description": "No description available",

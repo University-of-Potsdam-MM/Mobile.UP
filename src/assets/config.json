@@ -386,6 +386,25 @@
           13.03057
         ]
       ]
+    },
+    {
+      "name": "rehbrücke",
+      "location_id": "",
+      "pretty_name": "Rehbrücke",
+      "canteen_name": "",
+      "shortcode": "rb",
+      "transport_station_id": "900220156",
+      "coordinates": [52.34555,13.10626],
+      "lat_long_bounds": [
+        [
+          52.34932,
+          13.10432
+        ],
+        [
+          52.34177,
+          13.10922
+        ]
+      ]
     }
   ]
 }
