@@ -56,6 +56,34 @@ ion-item {
   }
 }
 
+.leaflet-control-search .search-tooltip {
+  max-height: none !important;
+  position: fixed;
+  top: calc(12em + env(safe-area-inset-top)) !important;
+  left: 4em !important;
+  right: 5em !important;
+  bottom: calc(env(safe-area-inset-bottom)) !important;
+  overflow: auto !important;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.leaflet-control-search .search-tip {
+  box-shadow: 1px 1px 6px rgba(0,0,0,.4);
+}
+
+.leaflet-control-search .search-tip {
+  white-space: normal !important;
+}
+
+.leaflet-control-search.search-exp {
+  border: none !important;
+}
+
+.search-input, .search-button, .search-cancel, .search-alert {
+  display: none !important;
+}
+
 .updateToast {
   --button-color: white!important;
 }
