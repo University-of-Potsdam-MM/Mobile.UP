@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -49,7 +49,9 @@ export class AppComponent {
     private storage: Storage,
     private alertService: AlertService,
     private loggingService: LoggingService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -218,14 +220,32 @@ export class AppComponent {
   listenToBackButton() {
     // workaround for #694
     // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
-    this.platform.backButton.subscribe(async() => {
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        if (this.router.url === '/home') {
-          navigator['app'].exitApp();
+    this.platform.backButton.subscribeWithPriority(1, async() => {
+      const openMenu = await this.menuCtrl.getOpen();
+
+      if (openMenu) {
+        this.menuCtrl.close();
+      } else {
+        const openModal = await this.modalCtrl.getTop();
+
+        if (openModal) {
+          this.modalCtrl.dismiss();
         } else {
-          window.history.back();
+          const openAlert = await this.alertCtrl.getTop();
+
+          if (openAlert) {
+            this.alertCtrl.dismiss();
+          } else {
+            this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+              if (this.router.url === '/home') {
+                navigator['app'].exitApp();
+              } else if (outlet && outlet.canGoBack()) {
+                outlet.pop();
+              }
+            });
+          }
         }
-      });
+      }
     });
   }
 
