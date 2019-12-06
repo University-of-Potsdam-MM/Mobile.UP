@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginPage extends AbstractPage {
     private loadingCtrl: LoadingController,
     private translate: TranslateService,
     private upLogin: UPLoginProvider,
-    private events: Events,
+    private app: AppComponent,
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private alertService: AlertService
@@ -83,7 +84,7 @@ export class LoginPage extends AbstractPage {
             );
 
             setTimeout(() => {
-              this.events.publish('userLogin');
+              this.app.updateLoginStatus();
               this.modalCtrl.dismiss({ 'success': true }).then(() => {}, () => {
                 this.navCtrl.navigateRoot('/home');
               });

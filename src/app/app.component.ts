@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from './services/connection/connection.service';
 
 @Component({
   selector: 'app-root',
@@ -44,11 +45,11 @@ export class AppComponent {
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
-    private events: Events,
     private login: UPLoginProvider,
     private storage: Storage,
     private alertService: AlertService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private connectionService: ConnectionService
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -62,10 +63,6 @@ export class AppComponent {
       this.updateLoginStatus();
       this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
-
-      this.events.subscribe('userLogin', () => {
-        this.updateLoginStatus();
-      });
 
       if (this.platform.is('cordova')) {
 
@@ -115,7 +112,7 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session) {
+    if (session && this.connectionService.checkOnline(true)) {
       // helper function for determining whether session is still valid
       const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
         // determine date until the token is valid
@@ -127,8 +124,11 @@ export class AppComponent {
 
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
         && session.oidcTokenObject.expires_in && this.config;
-      if (variablesNotUndefined
-        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+      if (
+        variablesNotUndefined
+        && this.connectionService.checkOnline()
+        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
+      ) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
@@ -164,31 +164,33 @@ export class AppComponent {
                   });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
-                  this.performLogout();
-                  this.navCtrl.navigateForward('/login');
-                  this.alertService.showToast('alert.login-expired');
+                  this.loginExpired();
                 });
 
                 this.triedToRefreshLogin = true;
               } else {
-                this.performLogout();
-                this.navCtrl.navigateForward('/login');
-                this.alertService.showToast('alert.login-expired');
+                this.loginExpired();
               }
             } else {
-              this.performLogout();
-              this.navCtrl.navigateForward('/login');
-              this.alertService.showToast('alert.login-expired');
+              this.loginExpired();
             }
           });
       } else {
         // session no longer valid
-        this.userSession.removeSession();
-        this.userSession.removeUserInfo();
-        setTimeout(() => {
-          this.events.publish('userLogin');
-        }, 1000);
+        this.loginExpired();
       }
+    }
+  }
+
+  /**
+   * @name loginExpired
+   * @description if device is online: performs user logout and shows toast message
+   */
+  loginExpired() {
+    if (this.connectionService.checkOnline()) {
+      this.performLogout();
+      this.navCtrl.navigateForward('/login');
+      this.alertService.showToast('alert.login-expired');
     }
   }
 
