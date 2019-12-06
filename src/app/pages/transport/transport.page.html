@@ -22,6 +22,8 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
+  <app-hint-box *ngIf="error" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
+
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-item-divider>
       <ion-label *ngIf="departures[0].stop" class="ion-text-wrap">

@@ -7,7 +7,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar *ngIf="sourcesList && !networkError">
+  <ion-toolbar *ngIf="sourcesList && sourcesList.length > 0 && !networkError">
     <ion-row class="filters">
         <ion-col class="col-with-arrow ion-no-padding" size="1">
           <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="arrow-back"></ion-icon>

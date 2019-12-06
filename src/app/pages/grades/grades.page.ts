@@ -29,7 +29,7 @@ export class GradesPage extends AbstractPage {
   constructor(
     private ws: WebserviceWrapperService
   ) {
-    super({ optionalNetwork: true, requireSession: true });
+    super({ requireNetwork: true, requireSession: true });
   }
 
   /**

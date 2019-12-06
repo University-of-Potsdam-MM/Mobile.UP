@@ -69,7 +69,10 @@ export class NewsPage extends AbstractPage implements OnInit {
         this.categories = this.sourcesList;
         this.isLoaded = true;
 
-        this.slides.update();
+        if (this.slides) {
+          this.slides.update();
+        }
+
         if (this.selectedCategory === 0) {
           this.showLeftButton = false;
         }

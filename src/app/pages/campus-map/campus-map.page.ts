@@ -57,7 +57,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private alertService: AlertService,
     // private http: HttpClient
   ) {
-    super({ optionalNetwork: true });
+    super({ requireNetwork: true });
   }
 
   /**
@@ -402,26 +402,10 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @description loads campus map data from cache
    */
   loadMapData(map) {
-    this.ws.call('maps').subscribe(
-      (response: IMapsResponse) => {
-        this.geoJSON = response;
-        this.addFeaturesToLayerGroups(this.geoJSON, map);
-      }, () => {
-        const buttons: AlertButton[] = [{
-          text: this.translate.instant('button.continue'),
-          handler: () => {
-            this.navCtrl.navigateRoot('/home');
-          }
-        }];
-        this.alertService.showAlert(
-          {
-            headerI18nKey: 'alert.title.httpError',
-            messageI18nKey: 'alert.network'
-          },
-          buttons
-        );
-      }
-    );
+    this.ws.call('maps').subscribe((response: IMapsResponse) => {
+      this.geoJSON = response;
+      this.addFeaturesToLayerGroups(this.geoJSON, map);
+    });
 
     // load local geojson.json instead of the one from the mapsAPI
 
