@@ -4,6 +4,7 @@
     <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadNews(true)" slot="end" fill="clear">
       <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
     </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>

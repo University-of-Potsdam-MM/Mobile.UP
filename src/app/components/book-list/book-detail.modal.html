@@ -46,7 +46,8 @@
             </span>
         </span>
         <div *ngIf="isLoaded && !locationData">
-            <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
+            <app-hint-box *ngIf="!error" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
+            <app-hint-box *ngIf="error" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
         </div>
     </div>
 

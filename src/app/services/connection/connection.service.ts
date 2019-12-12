@@ -27,9 +27,7 @@ export class ConnectionService {
    */
   checkOnline(showAlert: boolean = false, sendHome: boolean = false): boolean {
     if (!navigator.onLine) {
-      if (showAlert && !sendHome) {
-        this.alertService.showToast('alert.noInternetConnection');
-      } else if (showAlert && sendHome) {
+      if (showAlert && sendHome) {
         this.alertService.showAlert(
           {
             messageI18nKey: 'alert.noInternetConnection'

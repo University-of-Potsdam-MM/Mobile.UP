@@ -135,7 +135,13 @@ export class LoginPage extends AbstractPage {
    * @description ends the loading animation
    */
   private endLoading(): void {
-    this.loading.dismiss();
+    if (this.loading) {
+      this.loading.dismiss();
+    } else {
+      setTimeout(() => {
+        this.endLoading();
+      }, 250);
+    }
   }
 
   /**

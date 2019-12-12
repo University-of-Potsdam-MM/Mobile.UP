@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { ImpressumModalPage } from './impressum.modal';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    ComponentsModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

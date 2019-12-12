@@ -31,7 +31,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     private alertService: AlertService,
     private ws: WebserviceWrapperService
   ) {
-      super({ requireNetwork: true, optionalSession: true });
+      super({ optionalNetwork: true, optionalSession: true });
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
@@ -81,7 +81,9 @@ export class FeedbackPage extends AbstractPage implements OnInit {
       'feedback',
       this.feedback
     ).subscribe(() => {
-        this.alertService.showToast('alert.feedback-sent');
+        this.alertService.showToast('alert.feedback-sent').then(() => {
+          this.navCtrl.navigateBack('/home');
+        });
       }, () => {
         this.alertService.showToast('alert.feedback-fail');
       }
