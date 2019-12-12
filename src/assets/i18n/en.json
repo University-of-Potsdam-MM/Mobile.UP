@@ -355,6 +355,8 @@
     },
     "httpErrorStatus": {
       "generic": "This service is currently unavailable.",
+      "moreInformation": "More Details",
+      "lessInformation": "Less Details",
       "unknown": "Unknown HTTP status",
       "0": "A network error occured. Are you connected with the internet?",
       "400": "Error 400: Bad Request",

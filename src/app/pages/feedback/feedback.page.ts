@@ -89,6 +89,8 @@ export class FeedbackPage extends AbstractPage implements OnInit {
       }, () => {
         if (!this.connectionService.checkOnline()) {
           this.alertService.showToast('alert.noInternetConnection');
+        } else {
+          this.alertService.showToast('alert.httpErrorStatus.generic');
         }
       }
     );

@@ -18,6 +18,7 @@ import isEmptyObject = utils.isEmptyObject;
 import { switchMap } from 'rxjs/operators';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../connection/connection.service';
+import { Storage } from '@ionic/storage';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -115,14 +116,9 @@ export class WebserviceWrapperService {
       return response;
     },
     // by default in case of an error the error will be passed on
-    errorCallback: (error, wsName) => {
+    errorCallback: async (error, wsName) => {
       this.logger.error('errorCallback', `calling '${wsName}': `, error);
-
-      // if the user is connected but we still get an network error
-      // the error is probably server side, so show a toast
-      if (this.connectionService.checkOnline()) {
-        this.alertService.showToast('alert.httpErrorStatus.generic', error);
-      }
+      await this.storage.set('latestWebserviceError', error);
 
       return error;
     }
@@ -448,6 +444,7 @@ export class WebserviceWrapperService {
     private cache: CacheService,
     private alertService: AlertService,
     private connectionService: ConnectionService,
+    private storage: Storage,
     private loggingService: LoggingService
   ) {
     this.logger = this.loggingService.getLogger('[/webservice-wrapper]');

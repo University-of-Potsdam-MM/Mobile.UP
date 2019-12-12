@@ -15,6 +15,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { LatLngExpression } from 'leaflet';
 // import { HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -55,6 +56,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private modalCtrl: ModalController,
     private keyboard: Keyboard,
     private alertService: AlertService,
+    private connectionService: ConnectionService
     // private http: HttpClient
   ) {
     super({ optionalNetwork: true });
@@ -406,6 +408,10 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     this.ws.call('maps').subscribe((response: IMapsResponse) => {
       this.geoJSON = response;
       this.addFeaturesToLayerGroups(this.geoJSON, map);
+    }, () => {
+      if (this.connectionService.checkOnline()) {
+        this.alertService.showToast('alert.httpErrorStatus.generic');
+      }
     });
 
     // load local geojson.json instead of the one from the mapsAPI
