@@ -72,7 +72,7 @@
     </ion-list>
     <div *ngIf="!bookList || bookList.length == 0">
       <app-hint-box *ngIf="!networkError" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
-      <app-hint-box *ngIf="networkError" hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="alert.network"></app-hint-box>
+      <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
     </div>
 
     <ion-infinite-scroll *ngIf="!isEnd()" (ionInfinite)="loadMore($event)">

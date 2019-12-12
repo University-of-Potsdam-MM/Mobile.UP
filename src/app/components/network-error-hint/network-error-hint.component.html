@@ -1,0 +1,12 @@
+<ion-card [ngClass]="error ? 'hasErrorDetails' : ''">
+
+  <ion-card-header>
+    {{ 'hints.type.hint' | translate }}
+  </ion-card-header>
+
+  <ion-card-content class="ion-text-center">
+    <ng-container *ngIf="hasInternet">{{ "alert.httpErrorStatus.generic" | translate }}</ng-container>
+    <ng-container *ngIf="!hasInternet">{{ "alert.noInternetConnection" | translate }}</ng-container>
+  </ion-card-content>
+
+</ion-card>

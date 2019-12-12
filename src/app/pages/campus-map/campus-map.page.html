@@ -9,7 +9,7 @@
     <app-campus-tab (campusChanged)="selectCampus($event)"
                     [selectedCampusNoEmit]="currentCampus"></app-campus-tab>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar *ngIf="!networkIndicator || (networkIndicator && networkIndicator.onLine)">
     <ion-searchbar
     [(ngModel)]="query"
     [placeholder]="'placeholder.search' | translate"
@@ -23,5 +23,6 @@
 </ion-header>
 
 <ion-content>
-  <div id="map" style="height: 100%; width: 100%;"></div>
+  <div *ngIf="!networkIndicator || (networkIndicator && networkIndicator.onLine)" id="map" style="height: 100%; width: 100%;"></div>
+  <app-network-error-hint *ngIf="networkIndicator && !networkIndicator.onLine"></app-network-error-hint>
 </ion-content>

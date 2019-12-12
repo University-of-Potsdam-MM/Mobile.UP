@@ -22,6 +22,7 @@ import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ConnectionIndicatorComponent } from './connection-indicator/connection-indicator.component';
 import { ConnectionIndicatorPopoverComponent } from './connection-indicator/connection-indicator-popover/connection-indicator-popover.component';
+import { NetworkErrorHintComponent } from './network-error-hint/network-error-hint.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ConnectionIndicatorPopoverComponent } from './connection-indicator/conn
     CampusReorderModalPage,
     DatePickerComponent,
     ConnectionIndicatorComponent,
-    ConnectionIndicatorPopoverComponent
+    ConnectionIndicatorPopoverComponent,
+    NetworkErrorHintComponent
   ],
   imports: [
     IonicModule,
@@ -70,7 +72,8 @@ import { ConnectionIndicatorPopoverComponent } from './connection-indicator/conn
     CourseDataComponent,
     DatePickerComponent,
     ConnectionIndicatorComponent,
-    ConnectionIndicatorPopoverComponent
+    ConnectionIndicatorPopoverComponent,
+    NetworkErrorHintComponent
   ],
   entryComponents: [
     CampusMapFeatureModalComponent,

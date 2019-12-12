@@ -354,6 +354,7 @@
       "choose": "Auswählen..."
     },
     "httpErrorStatus": {
+      "generic": "Dieser Dienst steht derzeit nicht zur Verfügung.",
       "unknown": "Unbekannter HTTP-Status",
       "0": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
       "400": "Fehler 400: Anfrage fehlerhaft",

@@ -117,6 +117,13 @@ export class WebserviceWrapperService {
     // by default in case of an error the error will be passed on
     errorCallback: (error, wsName) => {
       this.logger.error('errorCallback', `calling '${wsName}': `, error);
+
+      // if the user is connected but we still get an network error
+      // the error is probably server side, so show a toast
+      if (this.connectionService.checkOnline()) {
+        this.alertService.showToast('alert.httpErrorStatus.generic', error);
+      }
+
       return error;
     }
   };
