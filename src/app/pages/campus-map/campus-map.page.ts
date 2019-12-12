@@ -12,7 +12,6 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
 import { LatLngExpression } from 'leaflet';
 // import { HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
@@ -57,7 +56,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private alertService: AlertService,
     // private http: HttpClient
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   /**

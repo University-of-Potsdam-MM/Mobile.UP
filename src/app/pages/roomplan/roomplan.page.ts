@@ -27,7 +27,7 @@ export class RoomplanPage extends AbstractPage {
     private ws: WebserviceWrapperService,
     public translate: TranslateService // used in template
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   // params

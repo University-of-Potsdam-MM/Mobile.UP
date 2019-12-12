@@ -95,6 +95,7 @@ export class HomePage extends AbstractPage implements OnInit {
           // app update should be available in app stores
           const toast = await this.toastCtrl.create({
             message: this.translate.instant('alert.app-update'),
+            duration: 2000,
             position: 'top',
             // color: 'primary',
             cssClass: 'updateToast',

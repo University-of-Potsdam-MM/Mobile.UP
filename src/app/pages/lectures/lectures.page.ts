@@ -19,7 +19,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     private modalCtrl: ModalController,
     private keyboard: Keyboard
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   isLoaded;

@@ -35,7 +35,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     private ws: WebserviceWrapperService,
     private translate: TranslateService
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   ngOnInit() {
