@@ -16,6 +16,7 @@ export class BookLocationComponent implements OnInit {
   @Input() mediaType;
   @Input() department;
   @Input() isbn;
+  @Input() title;
 
   departmentName;
   departmentURL;
@@ -38,6 +39,11 @@ export class BookLocationComponent implements OnInit {
     this.label = this.getLabel(this.department);
     this.item = this.getItem(this.department);
     this.url = this.getBookUrl(this.department);
+
+    if (this.departmentName === '' && this.url) {
+      this.departmentName = 'Onlineangebot (Lizenz der UB)';
+    }
+
     this.getRoomInfo();
   }
 
@@ -230,6 +236,12 @@ export class BookLocationComponent implements OnInit {
     }
 
     return url;
+  }
+
+  redirectToOpac() {
+    this.webIntent.permissionPromptWebsite(
+      'https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=1016&SRT=YOP&TRM=' + encodeURI(this.title)
+    );
   }
 
 }

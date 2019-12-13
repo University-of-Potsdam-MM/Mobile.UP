@@ -40,7 +40,7 @@
             <span *ngFor="let document of locationData.document">
                 <span *ngIf="document.item">
                     <span *ngFor="let department of document.item">
-                        <app-book-location [department]="department" [bookLocation]="book.location" [mediaType]="bookDetails.mediaType" [isbn]="bookDetails.isbn"></app-book-location>
+                        <app-book-location [department]="department" [bookLocation]="book.location" [mediaType]="bookDetails.mediaType" [isbn]="bookDetails.isbn" [title]="bookDetails.title"></app-book-location>
                     </span>
                 </span>
             </span>
