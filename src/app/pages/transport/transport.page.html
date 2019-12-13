@@ -4,6 +4,7 @@
     <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadTransport(true)" slot="end" fill="clear">
       <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
     </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.transport.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -21,6 +22,8 @@
   <div align="center" *ngIf="!isLoaded" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
+
+  <app-network-error-hint *ngIf="error"></app-network-error-hint>
 
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-item-divider>

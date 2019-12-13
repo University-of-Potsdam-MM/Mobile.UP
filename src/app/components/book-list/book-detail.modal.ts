@@ -22,6 +22,7 @@ export class BookDetailModalPage implements OnInit {
   showFullTOC = false;
   isLoaded = false;
   locationData;
+  error;
 
   @Input() book;
   @Input() isFavorite;
@@ -98,10 +99,12 @@ export class BookDetailModalPage implements OnInit {
       },
       { forceRefresh: refresher !== undefined }
     ).subscribe(data => {
+      this.error = undefined;
       if (refresher && refresher.target) { refresher.target.complete(); }
       if (data) { this.locationData = data; }
       this.isLoaded = true;
-    }, () => {
+    }, (error) => {
+      this.error = error;
       this.isLoaded = true;
       if (refresher && refresher.target) { refresher.target.complete(); }
     });

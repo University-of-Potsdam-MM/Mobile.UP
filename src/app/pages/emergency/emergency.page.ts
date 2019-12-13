@@ -9,6 +9,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-emergency',
@@ -23,7 +24,6 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   isLoaded;
   cordova = false;
   query = '';
-  networkError;
 
   constructor(
     private keyboard: Keyboard,
@@ -64,23 +64,21 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
       this.isLoaded = false;
     } else { this.query = ''; }
 
-    this.networkError = false;
     this.ws.call(
       'emergencyCalls',
       {},
       { forceRefresh: refresher !== undefined }
     ).subscribe((response: any) => {
-      if (refresher && refresher.target) { refresher.target.complete(); }
       this.defaultList = response;
-      this.isLoaded = true;
       this.initializeList();
-    }, () => {
       this.isLoaded = true;
       if (refresher && refresher.target) { refresher.target.complete(); }
-      this.networkError = true;
+    }, () => {
+      this.defaultList = ConfigService.emergency;
+      this.initializeList();
+      this.isLoaded = true;
+      if (refresher && refresher.target) { refresher.target.complete(); }
     });
-    // on error //this.defaultList = require("../../assets/json/emergency");
-
   }
 
 
@@ -101,15 +99,19 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   filterItems(query) {
     this.initializeList();
 
-    if (query) {
+    if (query && query.detail && query.detail.value) {
       query = query.detail.value;
-      this.displayedList = jquery.grep(
-        this.defaultList,
-        (emergencyCall, index) => {
-          return utils.contains(emergencyCall.name, query);
-        }
-      );
-      this.chRef.detectChanges();
+      query = query.trim();
+
+      if (query && query.length > 0) {
+        this.displayedList = jquery.grep(
+          this.defaultList,
+          (emergencyCall, index) => {
+            return utils.contains(emergencyCall.name, query);
+          }
+        );
+        this.chRef.detectChanges();
+      }
     }
   }
 

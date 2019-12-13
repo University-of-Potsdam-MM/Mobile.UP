@@ -7,7 +7,6 @@ export const routes: Routes = [
   { path: 'app-info', loadChildren: './pages/app-info/app-info.module#AppInfoPageModule' },
   { path: 'campus-map', loadChildren: './pages/campus-map/campus-map.module#CampusMapPageModule' },
   { path: 'emergency', loadChildren: './pages/emergency/emergency.module#EmergencyPageModule' },
-  { path: 'events', loadChildren: './pages/events/events.module#EventsPageModule' },
   { path: 'grades', loadChildren: './pages/grades/grades.module#GradesPageModule' },
   { path: 'impressum', loadChildren: './pages/impressum/impressum.module#ImpressumPageModule' },
   { path: 'lectures', loadChildren: './pages/lectures/lectures.module#LecturesPageModule' },

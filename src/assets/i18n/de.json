@@ -345,7 +345,7 @@
   "alert": {
     "title": {
       "unexpectedError": "Unerwarteter Fehler",
-      "httpError": "HTTP-Fehler",
+      "httpError": "Netzwerkfehler",
       "error": "Fehler",
       "website": "Website öffnen?",
       "redirect": "Weiterleitung",
@@ -354,6 +354,9 @@
       "choose": "Auswählen..."
     },
     "httpErrorStatus": {
+      "generic": "Dieser Dienst steht derzeit nicht zur Verfügung.",
+      "moreInformation": "Mehr Informationen",
+      "lessInformation": "Weniger Informationen",
       "unknown": "Unbekannter HTTP-Status",
       "0": "Ein Netzwerkfehler ist aufgetreten. Ist das Gerät mit dem Internet verbunden?",
       "400": "Fehler 400: Anfrage fehlerhaft",
@@ -362,7 +365,8 @@
       "404": "Fehler 404: Ressource nicht gefunden"
     },
     "unknown_error": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam.",
-    "network": "Netzwerkfehler!",
+    "network": "Fehler beim Abrufen der Daten vom Server.",
+    "noInternetConnection": "Keine Internetverbindung!",
     "no_info_for_time": "Für diesen Zeitraum sind keine Informationen verfügbar.",
     "token_valid_credentials_invalid": "Falls Sie ein Student sind, versuchen Sie bitte, sich erneut anzumelden. Andernfalls ist die aufgerufene Funktion für Sie nicht verfügbar.",
     "redirect-website": "Auf externe Webseite weiterleiten?",
@@ -430,7 +434,7 @@
       "favRemoved": "Von Favoriten entfernt!",
       "noFavorites": "Keine Favoriten gefunden.",
       "noInformation": "Informationen konnten nicht abgerufen werden.",
-      "functionNotAvailable": "Diese Funktion ist für den ausgewählten Ort nicht verfügbar.",
+      "functionNotAvailable": "Diese Funktion wird für diesen Campus nicht unterstützt.",
       "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein."
     }
   },

@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig } from './lib/interfaces';
@@ -7,7 +7,6 @@ import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
-import { ConnectionService } from './services/connection/connection.service';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
@@ -17,6 +16,7 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from './services/connection/connection.service';
 
 @Component({
   selector: 'app-root',
@@ -45,12 +45,13 @@ export class AppComponent {
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
-    private connection: ConnectionService,
-    private events: Events,
     private login: UPLoginProvider,
     private storage: Storage,
     private alertService: AlertService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private connectionService: ConnectionService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -61,14 +62,9 @@ export class AppComponent {
       this.config = ConfigService.config;
       this.prepareStorageOnAppUpdate();
       this.initTranslate();
-      this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
       this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
-
-      this.events.subscribe('userLogin', () => {
-        this.updateLoginStatus();
-      });
 
       if (this.platform.is('cordova')) {
 
@@ -118,7 +114,7 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session) {
+    if (session && this.connectionService.checkOnline(true)) {
       // helper function for determining whether session is still valid
       const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
         // determine date until the token is valid
@@ -130,8 +126,11 @@ export class AppComponent {
 
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
         && session.oidcTokenObject.expires_in && this.config;
-      if (variablesNotUndefined
-        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+      if (
+        variablesNotUndefined
+        && this.connectionService.checkOnline()
+        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
+      ) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
@@ -152,7 +151,6 @@ export class AppComponent {
             this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
             if (!this.triedToRefreshLogin) {
-              this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
@@ -168,31 +166,33 @@ export class AppComponent {
                   });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
-                  this.performLogout();
-                  this.navCtrl.navigateForward('/login');
-                  this.alertService.showToast('alert.login-expired');
+                  this.loginExpired();
                 });
 
                 this.triedToRefreshLogin = true;
               } else {
-                this.performLogout();
-                this.navCtrl.navigateForward('/login');
-                this.alertService.showToast('alert.login-expired');
+                this.loginExpired();
               }
             } else {
-              this.performLogout();
-              this.navCtrl.navigateForward('/login');
-              this.alertService.showToast('alert.login-expired');
+              this.loginExpired();
             }
           });
       } else {
         // session no longer valid
-        this.userSession.removeSession();
-        this.userSession.removeUserInfo();
-        setTimeout(() => {
-          this.events.publish('userLogin');
-        }, 1000);
+        this.loginExpired();
       }
+    }
+  }
+
+  /**
+   * @name loginExpired
+   * @description if device is online: performs user logout and shows toast message
+   */
+  loginExpired() {
+    if (this.connectionService.checkOnline()) {
+      this.performLogout();
+      this.navCtrl.navigateForward('/login');
+      this.alertService.showToast('alert.login-expired');
     }
   }
 
@@ -220,14 +220,32 @@ export class AppComponent {
   listenToBackButton() {
     // workaround for #694
     // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
-    this.platform.backButton.subscribe(async() => {
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        if (this.router.url === '/home') {
-          navigator['app'].exitApp();
+    this.platform.backButton.subscribeWithPriority(1, async() => {
+      const openMenu = await this.menuCtrl.getOpen();
+
+      if (openMenu) {
+        this.menuCtrl.close();
+      } else {
+        const openModal = await this.modalCtrl.getTop();
+
+        if (openModal) {
+          this.modalCtrl.dismiss();
         } else {
-          window.history.back();
+          const openAlert = await this.alertCtrl.getTop();
+
+          if (openAlert) {
+            this.alertCtrl.dismiss();
+          } else {
+            this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+              if (this.router.url === '/home') {
+                navigator['app'].exitApp();
+              } else if (outlet && outlet.canGoBack()) {
+                outlet.pop();
+              }
+            });
+          }
         }
-      });
+      }
     });
   }
 

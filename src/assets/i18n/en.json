@@ -345,7 +345,7 @@
   "alert": {
     "title": {
       "unexpectedError": "Unexpected Error",
-      "httpError": "HTTP-Error",
+      "httpError": "Network Error",
       "error": "Error",
       "website": "Open website?",
       "redirect": "Redirect",
@@ -354,6 +354,9 @@
       "choose": "Choose..."
     },
     "httpErrorStatus": {
+      "generic": "This service is currently unavailable.",
+      "moreInformation": "More Details",
+      "lessInformation": "Less Details",
       "unknown": "Unknown HTTP status",
       "0": "A network error occured. Are you connected with the internet?",
       "400": "Error 400: Bad Request",
@@ -362,7 +365,8 @@
       "404": "Error 404: Resource not found"
     },
     "unknown_error": "An unknown error occured. Please contact the development team.",
-    "network": "Network error.",
+    "network": "Error while fetching data from server.",
+    "noInternetConnection": "No internet connection!",
     "no_info_for_time": "There is no information available for this timespan.",
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",

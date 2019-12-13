@@ -172,8 +172,8 @@ export abstract class AbstractPage  {
      * if there is none;
      */
     requireNetwork(necessary?) {
-        this.logger.debug('requireNetwork');
-        this.connection.checkOnline(true, necessary);
+      this.logger.debug('requireNetwork');
+      this.connection.checkOnline(true, necessary);
     }
 
     /**
@@ -181,9 +181,9 @@ export abstract class AbstractPage  {
      * @desc tests for existing session and sends user to LoginPage in case none is found
      */
     async requireSession(optional?) {
-        this.logger.debug('requireSession');
+      this.logger.debug('requireSession');
 
-        this.session = await this.sessionProvider.getSession();
-        if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }
+      this.session = await this.sessionProvider.getSession();
+      if (!this.session && !optional) { this.navCtrl.navigateForward('/login'); }
     }
 }
