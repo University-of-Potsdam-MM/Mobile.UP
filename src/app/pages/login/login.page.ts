@@ -70,7 +70,12 @@ export class LoginPage extends AbstractPage {
         session.subscribe(
           (sessionRes: any) => {
             this.logger.debug('login', `successfully executed. Token: ${sessionRes.token}`);
-            this.sessionProvider.setSession(sessionRes);
+            this.sessionProvider.setSession(sessionRes).then(() => {
+              this.logger.debug('login', 'successfully saved login token');
+            }, error => {
+              this.logger.error('login', 'error saving login token', error);
+              this.showAlert(ELoginErrors.UNKNOWN_ERROR);
+            });
 
             this.endLoading();
 
