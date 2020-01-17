@@ -2,7 +2,6 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IConfig } from './lib/interfaces';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';

@@ -29,7 +29,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   error: HttpErrorResponse;
   no_timeslot = false;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,

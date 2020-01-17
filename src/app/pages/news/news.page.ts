@@ -10,7 +10,7 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
   styleUrls: ['./news.page.scss'],
 })
 export class NewsPage extends AbstractPage implements OnInit {
-  @ViewChild(IonSlides) slides: IonSlides;
+  @ViewChild(IonSlides, { static: false }) slides: IonSlides;
 
   public newsSource = 0;
   public newsList;

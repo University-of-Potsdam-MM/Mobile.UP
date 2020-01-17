@@ -24,7 +24,7 @@ export class TransportPage extends AbstractPage {
 
   error = null;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,

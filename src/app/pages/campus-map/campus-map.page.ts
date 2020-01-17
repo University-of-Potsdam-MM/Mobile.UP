@@ -46,8 +46,8 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
   geoLocationWatch;
   geoLocationEnabled = false;
-  @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
-  @ViewChild(IonSearchbar) ionSearchbar: IonSearchbar;
+  @ViewChild(CampusTabComponent, { static: false }) campusTab: CampusTabComponent;
+  @ViewChild(IonSearchbar, { static: false }) ionSearchbar: IonSearchbar;
 
   constructor(
     private ws: WebserviceWrapperService,

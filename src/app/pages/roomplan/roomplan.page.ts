@@ -47,7 +47,7 @@ export class RoomplanPage extends AbstractPage {
   error: HttpErrorResponse;
   requestProcessed = false;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   /**
    * Comparator for event sorting
