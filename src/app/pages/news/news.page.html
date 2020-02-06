@@ -43,4 +43,8 @@
     <app-news-article  *ngIf="article.NewsSource.name == sourcesList[newsSource]" [article]="article"></app-news-article>
   </div>
 
+  <div *ngIf="isLoaded && newsList.length == 0 && !networkError">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noNews"></app-hint-box>
+  </div>
+
 </ion-content>

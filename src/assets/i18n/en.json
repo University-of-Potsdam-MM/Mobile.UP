@@ -435,7 +435,8 @@
       "noFavorites": "No favorites found.",
       "noInformation": "Couldn't retrieve any information.",
       "functionNotAvailable": "This function is not available for the chosen location.",
-      "queryTooShort": "Please enter a longer search term."
+      "queryTooShort": "Please enter a longer search term.",
+      "noNews": "There are no news to be displayed."
     }
   },
   "placeholder": {

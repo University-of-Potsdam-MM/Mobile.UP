@@ -435,7 +435,8 @@
       "noFavorites": "Keine Favoriten gefunden.",
       "noInformation": "Informationen konnten nicht abgerufen werden.",
       "functionNotAvailable": "Diese Funktion wird für diesen Campus nicht unterstützt.",
-      "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein."
+      "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein.",
+      "noNews": "Derzeit sind keine Neuigkeiten vorhanden."
     }
   },
   "placeholder": {
