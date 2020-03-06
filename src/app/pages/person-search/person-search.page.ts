@@ -34,7 +34,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     private login: UPLoginProvider,
     private ws: WebserviceWrapperService
   ) {
-    super({ requireNetwork: true, requireSession: true });
+    super({ optionalNetwork: true, requireSession: true });
     if (this.platform.is('cordova')) {
       this.cordova = true;
     }

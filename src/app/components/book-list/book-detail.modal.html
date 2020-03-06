@@ -40,13 +40,14 @@
             <span *ngFor="let document of locationData.document">
                 <span *ngIf="document.item">
                     <span *ngFor="let department of document.item">
-                        <app-book-location [department]="department" [bookLocation]="book.location" [mediaType]="bookDetails.mediaType" [isbn]="bookDetails.isbn"></app-book-location>
+                        <app-book-location [department]="department" [bookLocation]="book.location" [mediaType]="bookDetails.mediaType" [isbn]="bookDetails.isbn" [title]="bookDetails.title"></app-book-location>
                     </span>
                 </span>
             </span>
         </span>
         <div *ngIf="isLoaded && !locationData">
-            <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
+            <app-hint-box *ngIf="!error" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noInformation"></app-hint-box>
+            <app-network-error-hint *ngIf="error"></app-network-error-hint>
         </div>
     </div>
 

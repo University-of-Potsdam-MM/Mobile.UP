@@ -75,5 +75,5 @@ export module utils {
     const nowUnixTime = moment().unix();
     // check if we are not past this date already with a certain boundary
     return (validUntilUnixTime - nowUnixTime) > boundary;
-  };
+  }
 }

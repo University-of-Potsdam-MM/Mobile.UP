@@ -4,6 +4,7 @@
     <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="refreshRoom()" slot="end" fill="clear">
       <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
     </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -21,7 +22,8 @@
   <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
 
   <ng-template #noRoomsFoundTemplate>
-    <app-hint-box hintTextI18nKey="page.roomplan.no_rooms_hintText" hintTypeI18nKey="hints.type.hint"></app-hint-box>
+    <app-hint-box *ngIf="!error" hintTextI18nKey="page.roomplan.no_rooms_hintText" hintTypeI18nKey="hints.type.hint"></app-hint-box>
+    <app-network-error-hint *ngIf="error"></app-network-error-hint>
   </ng-template>
 
   <ng-template #roomsFoundTemplate>

@@ -5,6 +5,7 @@
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Export</ion-label>
     </ion-chip>
+    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.timetable.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -20,9 +21,11 @@
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.grades-notSupported-hint"></app-hint-box>
   </div>
 
+  <app-network-error-hint *ngIf="error"></app-network-error-hint>
+
   <ion-progress-bar *ngIf="!noUserRights && !isLoading && !exportFinished" [value]="exportedEvents / eventSource.length"></ion-progress-bar>
 
-  <span *ngIf="!noUserRights && !isLoading">
+  <span *ngIf="!noUserRights && !isLoading && !error">
       <ion-grid>
         <ion-row nowrap class="ion-align-items-center ion-justify-content-center">
           <ion-col size="auto">

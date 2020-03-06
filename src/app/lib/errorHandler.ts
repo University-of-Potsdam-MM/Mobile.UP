@@ -5,6 +5,7 @@ import { Platform } from '@ionic/angular';
 import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 import { AlertService } from '../services/alert/alert.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from '../services/connection/connection.service';
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {
@@ -16,7 +17,8 @@ export class MobileUPErrorHandler implements ErrorHandler {
     private logging: ErrorHandlerService,
     private platform: Platform,
     private device: Device,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private connectionService: ConnectionService
   ) {
     this.logger = this.loggingService.getLogger('[/error-handler]');
   }
@@ -36,13 +38,11 @@ export class MobileUPErrorHandler implements ErrorHandler {
     if (error instanceof HttpErrorResponse) {
       this.logger.error('handleError', 'uncaught http error', error);
 
-      let messageI18nKey = `alert.httpErrorStatus.unknown`;
-      if (error.status) { messageI18nKey = `alert.httpErrorStatus.${error.status}`; }
-
-      this.alertService.showAlert({
-        headerI18nKey: 'alert.title.httpError',
-        messageI18nKey: messageI18nKey
-      });
+      // if the user is connected but we still get an network error
+      // the error is probably server side, so show a toast
+      if (this.connectionService.checkOnline()) {
+        this.alertService.showToast('alert.httpErrorStatus.generic', error);
+      }
 
       this.logging.logError({
         uuid: uuid,

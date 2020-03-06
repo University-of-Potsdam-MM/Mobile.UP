@@ -33,6 +33,7 @@ export class TimetablePage extends AbstractPage {
   exportFinished = true;
   exportedEvents = 0;
   modalOpen;
+  error;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
@@ -78,6 +79,7 @@ export class TimetablePage extends AbstractPage {
         {session: this.session}
       ).subscribe(
         (response: IPulsAPIResponse_getStudentCourses) => {
+          this.error = undefined;
           if (response && response.message && response.message === 'no user rights') {
             this.noUserRights = true;
             this.isLoading = false;
@@ -96,7 +98,10 @@ export class TimetablePage extends AbstractPage {
               );
             }
           }
-        }, () => { this.isLoading = false; }
+        }, (error) => {
+          this.isLoading = false;
+          this.error = error;
+        }
       );
     } else {
       setTimeout(() => {

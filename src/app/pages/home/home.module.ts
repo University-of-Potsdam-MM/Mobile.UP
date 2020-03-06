@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { OrderModule } from 'ngx-order-pipe';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { HttpLoaderFactory } from 'src/app/app.module';
     FormsModule,
     IonicModule,
     OrderModule,
+    ComponentsModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

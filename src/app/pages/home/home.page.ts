@@ -82,7 +82,7 @@ export class HomePage extends AbstractPage implements OnInit {
   async checkAppUpdate() {
     const remoteConfigUrl = this.config.webservices.endpoint.config.url;
 
-    await this.nativeHTTP.setSSLCertMode('nocheck');
+    await this.nativeHTTP.setServerTrustMode('nocheck');
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);
       if (remoteConfig && remoteConfig.appVersion) {
@@ -95,6 +95,7 @@ export class HomePage extends AbstractPage implements OnInit {
           // app update should be available in app stores
           const toast = await this.toastCtrl.create({
             message: this.translate.instant('alert.app-update'),
+            duration: 2000,
             position: 'top',
             // color: 'primary',
             cssClass: 'updateToast',

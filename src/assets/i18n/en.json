@@ -388,6 +388,9 @@
       "choose": "Choose..."
     },
     "httpErrorStatus": {
+      "generic": "This service is currently unavailable.",
+      "moreInformation": "More Details",
+      "lessInformation": "Less Details",
       "unknown": "Unknown HTTP status",
       "0": "A network error occured. Are you connected with the internet?",
       "400": "Error 400: Bad Request",
@@ -469,7 +472,8 @@
       "noFavorites": "No favorites found.",
       "noInformation": "Couldn't retrieve any information.",
       "functionNotAvailable": "This function is not available for the chosen location.",
-      "queryTooShort": "Please enter a longer search term."
+      "queryTooShort": "Please enter a longer search term.",
+      "noNews": "There are no news to be displayed."
     }
   },
   "placeholder": {

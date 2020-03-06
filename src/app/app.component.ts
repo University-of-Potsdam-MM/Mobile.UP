@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
+import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IConfig, IBibSession } from './lib/interfaces';
@@ -17,6 +17,7 @@ import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import { utils } from './lib/util';
+import { ConnectionService } from './services/connection/connection.service';
 
 @Component({
   selector: 'app-root',
@@ -50,13 +51,13 @@ export class AppComponent {
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
-    private events: Events,
     private login: UPLoginProvider,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private storage: Storage,
     private alertService: AlertService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private connectionService: ConnectionService
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -64,16 +65,12 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.config = ConfigService.config;
-      this.prepareStorageOnAppUpdate();
+      this.storage.set('appVersion', ConfigService.config.appVersion);
+      this.checkSessionValidity();
       this.initTranslate();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
+      this.cache.setDefaultTTL(ConfigService.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
-
-      this.events.subscribe('userLogin', () => {
-        this.updateLoginStatus();
-      });
 
       if (this.platform.is('cordova')) {
 
@@ -92,29 +89,6 @@ export class AppComponent {
   }
 
   /**
-   * @name prepareStorageOnAppUpdate
-   * @description clears the storage if user has a old version of the app
-   */
-  async prepareStorageOnAppUpdate() {
-    const savedVersion = await this.storage.get('appVersion');
-
-    if (!savedVersion) {
-      // user has never opened a 6.x version of the app, since nothing is stored
-      // clear the whole storage
-      this.storage.clear().then(() => {
-        this.logger.debug('prepareStorageOnAppUpdate', 'cleared storage');
-        this.storage.set('appVersion', this.config.appVersion);
-        this.checkSessionValidity();
-      }, error => {
-        this.logger.error('prepareStorageOnAppUpdate', 'clearing storage failed', error);
-      });
-    } else {
-      this.storage.set('appVersion', this.config.appVersion);
-      this.checkSessionValidity();
-    }
-  }
-
-  /**
    * @name checkSessionValidity
    * @description checks whether the current session is still valid. In case it is, the
    * session will be refreshed anyway. Otherwise the currently stored session
@@ -123,11 +97,14 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session) {
+    if (session && this.connectionService.checkOnline(true)) {
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
         && session.oidcTokenObject.expires_in && this.config;
-      if (variablesNotUndefined
-        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
+      if (
+        variablesNotUndefined
+        && this.connectionService.checkOnline()
+        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
+      ) {
         this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
@@ -139,7 +116,7 @@ export class AppComponent {
 
             this.userSession.setSession(newSession);
 
-            this.login.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(userInformation => {
+            this.login.oidcGetUserInformation(newSession, ConfigService.config.authorization.oidc).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
               this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
@@ -151,43 +128,45 @@ export class AppComponent {
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
-                this.login.oidcLogin(session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(session.credentials, ConfigService.config.authorization.oidc).subscribe(sessionRes => {
                   this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
-                  this.login.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(userInformation => {
+                  this.login.oidcGetUserInformation(sessionRes, ConfigService.config.authorization.oidc).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
                     this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
                   });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
-                  this.performLogout();
-                  this.navCtrl.navigateForward('/login');
-                  this.alertService.showToast('alert.login-expired');
+                  this.loginExpired();
                 });
 
                 this.triedToRefreshLogin = true;
               } else {
-                this.performLogout();
-                this.navCtrl.navigateForward('/login');
-                this.alertService.showToast('alert.login-expired');
+                this.loginExpired();
               }
             } else {
-              this.performLogout();
-              this.navCtrl.navigateForward('/login');
-              this.alertService.showToast('alert.login-expired');
+              this.loginExpired();
             }
           });
       } else {
         // session no longer valid
-        this.userSession.removeSession();
-        this.userSession.removeUserInfo();
-        setTimeout(() => {
-          this.events.publish('userLogin');
-        }, 1000);
+        this.loginExpired();
       }
+    }
+  }
+
+  /**
+   * @name loginExpired
+   * @description if device is online: performs user logout and shows toast message
+   */
+  loginExpired() {
+    if (this.connectionService.checkOnline()) {
+      this.performLogout();
+      this.navCtrl.navigateForward('/login');
+      this.alertService.showToast('alert.login-expired');
     }
   }
 

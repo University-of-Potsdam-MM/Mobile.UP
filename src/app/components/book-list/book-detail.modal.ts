@@ -22,11 +22,13 @@ export class BookDetailModalPage implements OnInit {
   showFullTOC = false;
   isLoaded = false;
   locationData;
+  error;
 
   @Input() book;
   @Input() isFavorite;
   shortAbstract = false;
   bookDetails = {
+    'title': '',
     'keywords': [],
     'isbn': [],
     'series': [],
@@ -74,12 +76,20 @@ export class BookDetailModalPage implements OnInit {
    * @description updates the details of the requested book
    */
   updateDetails(): void {
+    this.getTitle();
     this.getKeywords();
     this.getISBN();
     this.getSeries();
     this.getExtent();
     this.getNotes();
     this.getAbstractAndTOC();
+  }
+
+  getTitle() {
+    if (this.book && this.book.titleInfo) {
+      this.bookDetails.title = utils.convertToArray(this.book.titleInfo)[0].title;
+      this.bookDetails.title = this.bookDetails.title.replace(new RegExp('-', 'g'), ' ');
+    }
   }
 
   /**
@@ -98,10 +108,12 @@ export class BookDetailModalPage implements OnInit {
       },
       { forceRefresh: refresher !== undefined }
     ).subscribe(data => {
+      this.error = undefined;
       if (refresher && refresher.target) { refresher.target.complete(); }
       if (data) { this.locationData = data; }
       this.isLoaded = true;
-    }, () => {
+    }, (error) => {
+      this.error = error;
       this.isLoaded = true;
       if (refresher && refresher.target) { refresher.target.complete(); }
     });

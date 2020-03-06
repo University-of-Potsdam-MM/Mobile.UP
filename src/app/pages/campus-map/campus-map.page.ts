@@ -12,10 +12,10 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
 import { LatLngExpression } from 'leaflet';
 // import { HttpClient } from '@angular/common/http';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -42,11 +42,12 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   positionCircle: L.Circle;
   positionMarker: L.Marker;
   latestHeading: number;
+  networkIndicator;
 
   geoLocationWatch;
   geoLocationEnabled = false;
-  @ViewChild(CampusTabComponent) campusTab: CampusTabComponent;
-  @ViewChild(IonSearchbar) ionSearchbar: IonSearchbar;
+  @ViewChild(CampusTabComponent, { static: false }) campusTab: CampusTabComponent;
+  @ViewChild(IonSearchbar, { static: false }) ionSearchbar: IonSearchbar;
 
   constructor(
     private ws: WebserviceWrapperService,
@@ -55,6 +56,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private modalCtrl: ModalController,
     private keyboard: Keyboard,
     private alertService: AlertService,
+    private connectionService: ConnectionService
     // private http: HttpClient
   ) {
     super({ optionalNetwork: true });
@@ -102,6 +104,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * entered, other than ionViewDidLoad which will run only once
    */
   ngAfterViewInit() {
+    this.networkIndicator = navigator;
     // initialize map
     if (!this.map) {
       this.map = this.initializeLeafletMap();
@@ -402,26 +405,14 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @description loads campus map data from cache
    */
   loadMapData(map) {
-    this.ws.call('maps').subscribe(
-      (response: IMapsResponse) => {
-        this.geoJSON = response;
-        this.addFeaturesToLayerGroups(this.geoJSON, map);
-      }, () => {
-        const buttons: AlertButton[] = [{
-          text: this.translate.instant('button.continue'),
-          handler: () => {
-            this.navCtrl.navigateRoot('/home');
-          }
-        }];
-        this.alertService.showAlert(
-          {
-            headerI18nKey: 'alert.title.httpError',
-            messageI18nKey: 'alert.network'
-          },
-          buttons
-        );
+    this.ws.call('maps').subscribe((response: IMapsResponse) => {
+      this.geoJSON = response;
+      this.addFeaturesToLayerGroups(this.geoJSON, map);
+    }, () => {
+      if (this.connectionService.checkOnline()) {
+        this.alertService.showToast('alert.httpErrorStatus.generic');
       }
-    );
+    });
 
     // load local geojson.json instead of the one from the mapsAPI
 

@@ -41,7 +41,7 @@ export class MensaPage extends AbstractPage {
   campus: ICampus;
   noMensaForLocation = false;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   constructor(
     private translate: TranslateService,

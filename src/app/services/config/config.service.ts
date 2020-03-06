@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IConfig } from 'src/app/lib/interfaces';
+import { IConfig, EmergencyCall } from 'src/app/lib/interfaces';
 import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { Logger, LoggingService } from 'ionic-logging-service';
 export class ConfigService {
 
   static config: IConfig;
+  static emergency: EmergencyCall[];
   logger: Logger;
 
   constructor(
@@ -28,6 +29,21 @@ export class ConfigService {
       this.http.get(uri).toPromise().then(
         (response: IConfig) => {
           ConfigService.config = response;
+          resolve();
+        }
+      ).catch(
+        (response: any) => {
+          reject(`Could not load file '${uri}'`);
+          this.logger.error('load', response);
+        });
+    });
+  }
+
+  loadEmergency(uri: string) {
+    return new Promise<void>((resolve, reject) => {
+      this.http.get(uri).toPromise().then(
+        (response: EmergencyCall[]) => {
+          ConfigService.emergency = response;
           resolve();
         }
       ).catch(
