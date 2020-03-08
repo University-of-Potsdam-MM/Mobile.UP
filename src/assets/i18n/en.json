@@ -94,6 +94,16 @@
       "noReservedItems": "No reservations found.",
       "loan": "Loans",
       "reservation": "Reservations",
+      "address": "Address",
+      "expires": "Expires at",
+      "changePassword": "Change password",
+      "status": {
+        "0": "active",
+        "1": "inactive",
+        "2": "inactive, account expired",
+        "3": "inactive, outstanding fees",
+        "4": "inactive, accound expired and outstandind fees"
+      },
       "renewError": "Renewal could not be completed.",
       "cancelError": "Cancellation could not be completed.",
       "loginError": {

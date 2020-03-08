@@ -28,6 +28,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   itemsLoaded;
   feesLoaded;
   feesExpanded = false;
+  userExpanded = false;
 
   userError;
   itemsError;
@@ -70,7 +71,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   async ngOnInit() {
     this.bibSession = await this.storage.get('bibSession');
-    this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
+    this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIAdev.url;
 
     if (this.bibSession) {
       if (
@@ -154,6 +155,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.itemsLoaded = false;
     this.feesLoaded = false;
     this.feesExpanded = false;
+    this.userExpanded = false;
     this.noLoanItems = true;
     this.noReservedItems = true;
     this.activeSegment = 'loan';
@@ -182,6 +184,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
     this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron, { headers: headers }).subscribe((userData: IUBUser) => {
+      console.log(userData);
       this.user = userData;
       this.userLoaded = true;
     }, error => {
@@ -407,6 +410,11 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   abort() {
     this.navCtrl.navigateBack('/home');
+  }
+
+  getAccountStatus(status) {
+    const s = 'page.library-account.status.' + String(status).trim();
+    return this.translate.instant(s);
   }
 
   /**

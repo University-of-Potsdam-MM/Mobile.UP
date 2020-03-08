@@ -239,6 +239,9 @@
       "libraryPAIA": {
         "url": "https://paia.gbv.de/DE-517/"
       },
+      "libraryPAIAdev": {
+        "url": "http://xpot.gbv.de:7242/DE-517/"
+      },
       "pulsGetLectureScheduleRoot": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot",
         "cacheGroupKey": "lectureSchedule"

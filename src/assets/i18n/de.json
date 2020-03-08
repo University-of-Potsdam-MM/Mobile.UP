@@ -94,6 +94,16 @@
       "noReservedItems": "Keine Vormerkungen vorhanden.",
       "loan": "Entleihungen",
       "reservation": "Vormerkungen",
+      "address": "Adresse",
+      "expires": "Endet am",
+      "changePassword": "Passwort ändern",
+      "status": {
+        "0": "aktiv",
+        "1": "inaktiv",
+        "2": "inaktiv, Account abgelaufen",
+        "3": "inaktiv, austehende Gebühren",
+        "4": "inaktiv, Account abgelaufen und ausstehende Gebühren"
+      },
       "renewError": "Verlängerung konnte nicht abgeschlossen werden.",
       "cancelError": "Stornierung konnte nicht abgeschlossen werden.",
       "loginError": {
