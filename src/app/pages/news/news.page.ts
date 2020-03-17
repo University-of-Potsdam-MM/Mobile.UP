@@ -48,7 +48,7 @@ export class NewsPage extends AbstractPage implements OnInit {
 
       if (refresher && refresher.target) { refresher.target.complete(); }
 
-      if (response.errors.exist === false) {
+      if (response.errors === undefined || response.errors.exist === false) {
         this.newsList = response.vars.news;
         const tmpArray = [];
         for (const source in response.vars.newsSources) {
