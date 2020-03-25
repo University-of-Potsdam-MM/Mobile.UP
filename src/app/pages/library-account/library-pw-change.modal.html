@@ -8,19 +8,19 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-    <form [formGroup]="changeForm" (ngSubmit)="changePassword($event)">
+    <form [formGroup]="changeForm" (ngSubmit)="changePassword()">
         <ion-item>
             <ion-label position="floating">{{ 'page.library-account.oldPassword' | translate }}</ion-label>
             <ion-input formControlName="oldPassword" [type]="pwVisibility" placeholder="{{ 'page.library-account.oldPassword' | translate }}"></ion-input>
         </ion-item>
         <br>
-    
+
         <ion-item>
             <ion-label position="floating">{{ 'page.library-account.newPassword' | translate }}</ion-label>
             <ion-input formControlName="newPassword" [type]="pwVisibility" placeholder="{{ 'page.library-account.newPassword' | translate }}"></ion-input>
         </ion-item>
         <br>
-    
+
         <ion-item>
             <ion-label position="floating">{{ 'page.library-account.newPasswordAgain' | translate }}</ion-label>
             <ion-input formControlName="newPasswordVerify" [type]="pwVisibility" placeholder="{{ 'page.library-account.newPassword' | translate }}"></ion-input>
@@ -30,7 +30,7 @@
         <div align="right" class="ion-padding-end">
             <ion-icon [name]="pwVisibility == 'password' ? 'eye' : 'eye-off'" (click)="togglePwVisibility()" style="font-size: x-large;"></ion-icon>
         </div>
-    
+
         <app-hint-box hintTypeI18nKey="hints.type.hint"
         hintTextI18nKey="hints.text.password-change-hint-bib"
         disableTextCentering="true"></app-hint-box>
@@ -38,7 +38,7 @@
         <div align="right" class="ion-padding-end">
             <ion-button [disabled]="!changeForm.valid" type="submit" class="ion-no-margin">{{ "page.library-account.changePassword" | translate }}</ion-button>
         </div>
-        
+
     </form>
 
 </ion-content>
