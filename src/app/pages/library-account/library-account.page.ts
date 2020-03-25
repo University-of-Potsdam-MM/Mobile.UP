@@ -7,11 +7,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { ICredentials, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, Events } from '@ionic/angular';
+import { LoadingController, Events, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AlertButton } from '@ionic/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { utils } from 'src/app/lib/util';
+import { LibraryPwChangePage } from './library-pw-change.module';
 
 @Component({
   selector: 'app-library-account',
@@ -52,6 +53,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   loginForm: FormGroup;
   loading;
   showLoginScreen;
+  modalOpen;
 
   constructor(
     private translate: TranslateService,
@@ -60,7 +62,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     private formBuilder: FormBuilder,
     private storage: Storage,
     private alertService: AlertService,
-    private events: Events
+    private events: Events,
+    private modalCtrl: ModalController
   ) {
     super({ requireNetwork: true });
     this.loginForm = this.formBuilder.group({
@@ -71,7 +74,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   async ngOnInit() {
     this.bibSession = await this.storage.get('bibSession');
-    this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIAdev.url;
+    this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
     if (this.bibSession) {
       if (
@@ -104,13 +107,15 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       const body = {
         username: this.loginCredentials.username,
         password: this.loginCredentials.password,
-        grant_type: 'password'
+        grant_type: 'password',
+        scope: 'read_patron read_fees read_items write_items change_password read_availability'
       };
 
       const headers = new HttpHeaders()
         .append('Authorization', ConfigService.config.webservices.apiToken);
 
       this.http.post(this.endpoint + 'auth/login', body, { headers: headers }).subscribe((data: IBibSessionResponse) => {
+        console.log(data);
         this.bibSession = {
           credentials: this.loginCredentials,
           token: data.access_token,
@@ -184,7 +189,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       .append('Authorization', 'Bearer ' + this.bibSession.token);
 
     this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron, { headers: headers }).subscribe((userData: IUBUser) => {
-      console.log(userData);
       this.user = userData;
       this.userLoaded = true;
     }, error => {
@@ -461,6 +465,26 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   formatDate(date) {
     const dateString = new Date(date).toLocaleDateString(this.translate.currentLang);
     return dateString;
+  }
+
+  async goToChangePassword() {
+    const modal = await this.modalCtrl.create({
+      backdropDismiss: false,
+      component: LibraryPwChangePage,
+      componentProps: {
+        header: this.translate.instant('page.library-account.changePassword'),
+        endpoint: this.endpoint
+      }
+    });
+    modal.present();
+    this.modalOpen = true;
+    const response = await modal.onDidDismiss();
+    if (response && response.data && response.data.shouldRelogin) {
+      this.bibSession = await this.storage.get('bibSession');
+      this.loginUB(this.bibSession.credentials);
+      this.alertService.showToast('hints.text.changedPassword');
+    }
+    this.modalOpen = false;
   }
 
 }

@@ -97,6 +97,9 @@
       "address": "Adresse",
       "expires": "Endet am",
       "changePassword": "Passwort ändern",
+      "oldPassword": "Altes Passwort",
+      "newPassword": "Neues Passwort",
+      "newPasswordAgain": "Neues Passwort wiederholen",
       "status": {
         "0": "aktiv",
         "1": "inaktiv",
@@ -468,6 +471,7 @@
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
       "login-hint-bib": "<b>Ausweisnummer</b><br> Für Studierende der Universität Potsdam gilt die Ausweisnummer des Studierendenausweises (PUCK), ansonsten die Nummer der Nutzerkarte (Eingabe ohne 'UB').",
       "login-hint-bib-firstlogin": "<b>Passwort beim Erstlogin</b><br> Bei Bibliotheksanmeldung vor dem 20.08.2019: die ersten drei Buchstaben des Nachnamens. Für Erstsemesterstudierende ab 2019/20: Geburtsdatum im Format TTMMJJ.",
+      "password-change-hint-bib": "Beachten Sie bitte bei der Vergabe des neuen Passwortes:<br>- 8 bis 12 Zeichen<br>- mindestens 1 Kleinbuchstabe<br>- keine Umlaute<br>- mindestens 1 Zahl<br>- erlaubte Sonderzeichen: - + _ ; : ?",
       "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
@@ -482,7 +486,9 @@
       "noInformation": "Informationen konnten nicht abgerufen werden.",
       "functionNotAvailable": "Diese Funktion wird für diesen Campus nicht unterstützt.",
       "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein.",
-      "noNews": "Derzeit sind keine Neuigkeiten vorhanden."
+      "noNews": "Derzeit sind keine Neuigkeiten vorhanden.",
+      "changedPassword": "Passwort wurde erfolgreich geändert.",
+      "failedPasswordChange": "Fehler beim Ändern des Passworts."
     }
   },
   "placeholder": {

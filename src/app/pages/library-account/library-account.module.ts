@@ -8,6 +8,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { LibraryPwChangePage } from './library-pw-change.module';
 
 const routes: Routes = [
   {
@@ -33,7 +34,11 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    LibraryAccountPage
+    LibraryAccountPage,
+    LibraryPwChangePage
+  ],
+  entryComponents: [
+    LibraryPwChangePage
   ]
 })
 export class LibraryAccountPageModule {}

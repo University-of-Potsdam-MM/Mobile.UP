@@ -98,7 +98,9 @@
         <ng-container *ngIf="user.status"><b>Status: </b> {{ getAccountStatus(user.status) }}</ng-container>
       </ion-label>
     </ion-item>
-    <ion-button *ngIf="userExpanded" class="changePassword" size="small">{{ "page.library-account.changePassword" | translate }}</ion-button>
+    <ion-button *ngIf="userExpanded" (click)="goToChangePassword()" class="changePassword" size="small">
+      {{ "page.library-account.changePassword" | translate }}
+    </ion-button>
     <ion-item *ngIf="feesLoaded && !feesError && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
       <ion-label>{{ "page.library-account.fees" | translate }}: <span [ngClass]="fees.amount !== '0.00 EUR' ?  'feeAmount' : 'noFeeAmount'">{{ fees.amount }}</span></ion-label>
       <ion-icon *ngIf="fees && fees.fee && fees.fee.length > 0" [name]="!feesExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
