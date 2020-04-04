@@ -1,0 +1,187 @@
+# General info: https://docs.gitlab.com/ee/ci/yaml/
+#
+# Requires several environment variables to be set in Git.UP (most should be protected):
+#  * SSH_DEPLOY_HOSTS (one host per line, if multiple)
+#  * SSH_DEPLOY_KEY (SSH-key for the gitup-deploy user)
+#  * SSH_KNOWN_HOSTS (hosts keys of the servers to which the artifacts should be deployed; `ssh-keyscan hostname`)
+# except SSH_DEPLOY_HOSTS and SSH_DEPLOY_KEY all variables can be set in the Group
+
+image: node:12
+
+stages:
+  - prepare
+  - build
+  - deploy
+
+# Cache downloaded dependencies and plugins between builds.
+# To keep cache across branches add 'key: "$CI_JOB_NAME"'
+cache:
+  paths:
+    - android-sdk-linux/
+    - node_modules/
+    - .npm/
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+install_dependencies:
+  stage: prepare
+  script:
+    - npm ci --cache .npm --prefer-offline
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 day
+  except:
+    refs:
+      - tags
+
+.compodoc:
+  stage: build
+  cache:
+    policy: pull
+  script:
+    - npm run doc
+  artifacts:
+    paths:
+      - documentation/
+    expire_in: 1 day
+  only:
+    - master
+  except:
+    refs:
+      - tags
+
+.android:
+  stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
+    ANDROID_API: "android-26"
+    ANDROID_BUILD_TOOLS: "26.0.3"
+    ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
+    ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
+  before_script:
+    - apt-get update; apt-get install -y openjdk-8-jdk gradle
+    - if [ ! -d android-sdk-linux ] || [ ! -d android-sdk-linux/tools/bin ] || [ ! -d android-sdk-linux/build-tools/$ANDROID_BUILD_TOOLS/ ] || [ ! -d android-sdk-linux/platform-tools/ ];
+      then
+        rm -rf android-sdk-linux/;
+        mkdir android-sdk-linux;
+        pushd android-sdk-linux;
+          wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip && rm -f tools.zip;
+          set +o pipefail;
+          yes | tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
+          set -o pipefail;
+          tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS";
+        popd;
+      fi
+    - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+    - npm install -g cordova ionic
+    - npm install -g cordova-res --unsafe-perm
+    - npm install -D -E @angular/cli
+  script:
+    - ionic cordova platform add android
+    - ionic cordova prepare android
+    - ionic cordova build android --prod --release
+    - zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk MobileUP-unsigned.apk
+
+# only used for merge requests (and branches != master in order to avoid double building)
+android-test:
+  extends: .android
+  # keep built artifacts on Git.UP for one day for manual testing/inspection
+  artifacts:
+    paths:
+      - MobileUP-unsigned.apk
+    expire_in: 1 week
+  except:
+    refs:
+      - master
+      - tags
+
+# special job for building and keeping the artifacts for production, only executed for master
+android-production:
+  extends: .android
+  after_script:
+    - if [ ! -f "MobileUP-unsigned.apk" ]; then
+        exit 1;
+      fi
+    - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+    - echo "$KEYSTORE" | base64 -d > keystore
+    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore -storepass:env KEYSTORE_PASS MobileUP-unsigned.apk /my-release-key
+    - zipalign -v 4 MobileUP-unsigned.apk MobileUP.apk
+  # keep built artifacts on Git.UP for one day for manual testing/inspection, final versions are published on Google PlayStore anyway
+  artifacts:
+    paths:
+      - MobileUP.apk
+    expire_in: 1 month
+  only:
+    - master
+  except:
+    refs:
+      - tags
+
+.browser:
+  stage: build
+  script:
+    - npm install -g cordova ionic
+    # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
+    - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
+    - ionic cordova platform add browser
+    - ionic cordova prepare browser
+    - ionic cordova build browser --release
+    # set proper title
+    - perl -pi -e 's|<title>Ionic App</title>|<title>Mobile.UP</title>|' platforms/browser/www/index.html
+
+# only used for merge requests (and branches != master in order to avoid double building)
+browser-test:
+  extends: .browser
+  # keep built artifacts on Git.UP for one day for manual testing/inspection
+  artifacts:
+    paths:
+      - platforms/browser/www/
+    expire_in: 1 day
+  except:
+    refs:
+      - master
+      - tags
+
+# special job for building and keeping the artifacts for production, only executed for master
+browser-production:
+  extends: .browser
+  # keep built artifacts on Git.UP, only do this for builds on master branch we want to deploy in order to save space on Git.UP
+  artifacts:
+    paths:
+      # I compared www/ and platforms/browser/www/ and both are identical, therefore we take platforms/browser/www/
+      - platforms/browser/www/
+  only:
+    - master
+  except:
+    refs:
+      - tags
+
+deploy-browser-production:
+  stage: deploy
+  cache: {}
+  dependencies:
+    - browser-production
+  before_script:
+    - mkdir /root/.ssh
+    - chmod 700 /root/.ssh
+    - echo "$SSH_DEPLOY_KEY" | tr -d '\r' > /root/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - if [ -z "$SSH_DEPLOY_HOSTS" ]; then echo "no servers (SSH_DEPLOY_HOSTS) defined."; exit 1; fi
+    - for server in $SSH_DEPLOY_HOSTS; do
+        tar cfz - platforms/browser/www/ | ssh -i /root/.ssh/id_rsa gitup-deploy@$server;
+      done
+  # uncomment to only deploy manually and not on every push
+  #when: manual
+  #allow_failure: false
+  only:
+    - master
+  except:
+    refs:
+      - tags
