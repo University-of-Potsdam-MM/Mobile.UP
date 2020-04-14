@@ -130,6 +130,8 @@ android-production:
     - ionic cordova platform add browser
     - ionic cordova prepare browser
     - ionic cordova build browser --release
+    # HACK to make Mobile.UP work in an iframe as we do on Campus.UP, cf. https://github.com/apache/cordova-plugin-inappbrowser/issues/419
+    - perl -pi -e 's|if \(window.parent && !!window.parent.ripple\) \{|if (window.parent && false) {|' platforms/browser/www/plugins/cordova-plugin-inappbrowser/www/inappbrowser.js
     # set proper title
     - perl -pi -e 's|<title>Ionic App</title>|<title>Mobile.UP</title>|' platforms/browser/www/index.html
 
