@@ -91,7 +91,7 @@
       <ion-icon [name]="!userExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
     </ion-item>
     <ion-item *ngIf="userExpanded" lines="none">
-      <ion-label>
+      <ion-label class="ion-text-wrap accountDetails">
         <ng-container *ngIf="user.address"><b>{{ "page.library-account.address" | translate }}: </b> {{ user.address }}<br></ng-container>
         <ng-container *ngIf="user.expires"><b>{{ "page.library-account.expires" | translate }}: </b> {{ user.expires }}<br></ng-container>
         <ng-container *ngIf="user.email"><b>Email: </b> {{ user.email }}<br></ng-container>

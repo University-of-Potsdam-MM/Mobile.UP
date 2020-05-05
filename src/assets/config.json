@@ -236,8 +236,11 @@
       "libraryLKZ": {
         "url": "https://apiup.uni-potsdam.de/endpoints/lkzAPI/epn2lkz.php"
       },
-      "libraryPAIA": {
+      "libraryPAIA-UP": {
         "url": "https://apiup.uni-potsdam.de/endpoints/paiaAPI/DE-517/"
+      },
+      "libraryPAIA": {
+        "url": "https://paia.gbv.de/DE-517/"
       },
       "libraryPAIAdev": {
         "url": "http://xpot.gbv.de:7242/DE-517/"
