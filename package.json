@@ -82,7 +82,7 @@
     "ionic-cache": "^4.1.0",
     "ionic-logging-service": "^8.0.0",
     "ionic2-calendar": "^0.5.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "leaflet": "^1.6.0",
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-search": "^2.9.8",
