@@ -14,6 +14,7 @@ export class DetailedOpeningModalPage implements OnInit {
 
   @Input() item;
   intervals = [];
+  itv = [];
   every_week_is_same;
   comment;
   logger: Logger;
@@ -144,6 +145,31 @@ export class DetailedOpeningModalPage implements OnInit {
     to.setHours(23, 59, 59, 999);
 
     this.intervals = this.item.parsedOpening.getOpenIntervals(from, to);
+
+    this.itv = [];
+    for (let interval of this.intervals) {
+        const dayLocaleString = this.weekday(interval[0].getDay()) + ', ' +  interval[0].toLocaleDateString(this.translate.currentLang);
+        const openInterval = this.parseDate(interval[0], interval[1]);
+
+        let found;
+        for (let i = 0; i < this.itv.length; i++) {
+          if (Array.isArray(this.itv[i])) {
+            if (this.itv[i][0] == dayLocaleString) {
+              found = i;
+              break;
+            }
+          }
+        }
+
+        if (found !== undefined) {
+          this.itv[found].push(openInterval);
+        } else {
+          const lgth = this.itv.length;
+          this.itv[lgth] = [];
+          this.itv[lgth][0] = dayLocaleString;
+          this.itv[lgth].push(openInterval);
+        }
+    }
 
     this.every_week_is_same = this.item.parsedOpening.isWeekStable();
   }
