@@ -257,6 +257,7 @@
       "opens": "opens ",
       "closed": "closed",
       "closes": "closes ",
+      "unknown": "unknown",
       "comment": "Comment",
       "noGuarantee": "All information is supplied without guarantee. Please check the respective websites for short term changes."
     },

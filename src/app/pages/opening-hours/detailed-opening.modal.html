@@ -14,9 +14,21 @@
             <ion-label class="ion-text-wrap">
                 <h2>Status</h2>
 
-                <p>
+                <p *ngIf="!item.unknownState">
                     <span *ngIf="item.state" style="color: green">{{ "page.opening-hours.open" | translate }}<span *ngIf="openUntil(i) != ''">,</span> {{ openUntil() }}</span>
                     <span *ngIf="!item.state" style="color: red">{{ "page.opening-hours.closed" | translate }}<span *ngIf="closedUntil(i) != ''">,</span> {{ closedUntil() }}</span>
+                </p>
+                <p *ngIf="item.unknownState">
+                    <span style="color: blue">{{ "page.opening-hours.unknown" | translate }}</span>
+                </p>
+            </ion-label>
+        </ion-item>
+        <ion-item *ngIf="comment">
+            <ion-label class="ion-text-wrap">
+                <h2>{{ "page.opening-hours.comment" | translate }}</h2>
+
+                <p>
+                    <span>{{ comment }}</span>
                 </p>
             </ion-label>
         </ion-item>
@@ -43,15 +55,6 @@
 
                 <p (click)="callContact(item.telephone)">
                     <a style="text-decoration: underline;">{{ item.telephone }}</a>
-                </p>
-            </ion-label>
-        </ion-item>
-        <ion-item *ngIf="comment && comment != 'nach Vereinbarung'">
-            <ion-label class="ion-text-wrap">
-                <h2>{{ "page.opening-hours.comment" | translate }}</h2>
-
-                <p>
-                    <span>{{ comment }}</span>
                 </p>
             </ion-label>
         </ion-item>

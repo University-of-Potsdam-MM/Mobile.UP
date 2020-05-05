@@ -35,22 +35,44 @@
 
   <ion-list>
     <span *ngFor="let item of openingHours; let i = index">
-      <ion-item detail *ngIf="item.state; else closedLocation" (click)="itemSelected(item, i)">
-        <ion-label>
-          <h3>{{ item.name }}</h3>
-          <p style="color: green">{{ "page.opening-hours.open" | translate }}, {{ openUntil(i) }}</p>
-        </ion-label>
-        <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
-      </ion-item>
-      <ng-template #closedLocation>
-        <ion-item detail (click)="itemSelected(item, i)">
+      <ng-container *ngIf="!item.unknownState">
+        <ion-item detail *ngIf="item.state; else closedLocation" (click)="itemSelected(item, i)">
           <ion-label>
             <h3>{{ item.name }}</h3>
-            <p style="color: red">{{ "page.opening-hours.closed" | translate }}, {{ closedUntil(i) }}</p>
+            <p style="color: green">
+              <ng-container>{{ "page.opening-hours.open" | translate }}</ng-container>
+              <ng-container *ngIf="openUntil(i) != ''">, {{ openUntil(i) }}</ng-container>
+              <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
+            </p>
           </ion-label>
           <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
         </ion-item>
-      </ng-template>
+        <ng-template #closedLocation>
+          <ion-item detail (click)="itemSelected(item, i)">
+            <ion-label>
+              <h3>{{ item.name }}</h3>
+              <p style="color: red">
+                <ng-container>{{ "page.opening-hours.closed" | translate }}</ng-container>
+                <ng-container *ngIf="closedUntil(i) != ''">, {{ closedUntil(i) }}</ng-container>
+                <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
+              </p>
+            </ion-label>
+            <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+          </ion-item>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="item.unknownState">
+        <ion-item detail (click)="itemSelected(item, i)">
+          <ion-label>
+            <h3>{{ item.name }}</h3>
+            <p style="color: blue">
+              <ng-container>{{ "page.opening-hours.unknown" | translate }}</ng-container>
+              <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
+            </p>
+          </ion-label>
+          <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+        </ion-item>
+      </ng-container>
     </span>
   </ion-list>
 </ion-content>
