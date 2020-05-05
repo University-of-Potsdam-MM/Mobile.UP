@@ -9,7 +9,7 @@
 
 <ion-content class="ion-padding-bottom">
     <h5 class="ion-padding-start">{{ item.name }}</h5>
-    <ion-list class="openingDetails">
+    <ion-list class="openingDetails" style="padding-left: 6px;">
         <ion-item>
             <ion-label class="ion-text-wrap">
                 <h2>Status</h2>
@@ -60,14 +60,17 @@
         </ion-item>
     </ion-list>
     <h5 *ngIf="intervals.length > 0" class="ion-padding-start">{{ "page.opening-hours.title" | translate }}</h5>
-    <ion-list class="openingDetails" *ngIf="intervals.length > 0">
-        <ion-item *ngFor="let timespot of intervals">
-            <ion-label *ngIf="timespot[0]" class="ion-text-wrap">
-                <h2>{{ weekday(timespot[0].getDay()) }}, {{ timespot[0].toLocaleDateString(translate.currentLang) }}</h2>
-                <p *ngIf="timespot[1]">{{ parseDate(timespot[0], timespot[1]) }}</p>
+    <ion-list class="openingDetails" *ngIf="itv.length > 0" style="padding-left: 6px;">
+        <ion-item *ngFor="let interval of itv">
+            <ion-label class="ion-text-wrap">
+                <ng-container *ngFor="let timespot of interval; let i = index">
+                    <h2 *ngIf="i == 0">{{ timespot }}</h2>
+                    <p *ngIf="i != 0">{{ timespot }}</p>
+                </ng-container>
             </ion-label>
         </ion-item>
     </ion-list>
+
     <div *ngIf="intervals.length > 0 && !every_week_is_same">
         <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.openings-planCanChange-hint"></app-hint-box>
     </div>
