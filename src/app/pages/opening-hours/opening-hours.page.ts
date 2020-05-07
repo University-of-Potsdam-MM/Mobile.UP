@@ -66,6 +66,7 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
           this.allOpeningHours[i].nextChange = this.allOpeningHours[i].parsedOpening.getNextChange(from, to);
 
           this.allOpeningHours[i].state = this.allOpeningHours[i].parsedOpening.getState();
+          this.allOpeningHours[i].unknownState = this.allOpeningHours[i].parsedOpening.getUnknown();
         }
 
         this.openingHours = this.sortOpenings(this.allOpeningHours);
@@ -152,18 +153,16 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
         + this.translate.instant('page.opening-hours.time');
       }
     } else {
-      const comment = this.openingHours[index].parsedOpening.getComment();
-      if (comment != null) {
-        if (this.translate.currentLang === 'en' && utils.contains(comment, 'nach Vereinbarung')) {
-          return 'by appointment only';
-        } else if (utils.contains(comment, 'nach Vereinbarung')) {
-          return 'nach Vereinbarung';
-        } else {
-          return '';
-        }
-      } else {
-        return '';
-      }
+      return '';
+    }
+  }
+
+  getComment(index) {
+    const comment = this.openingHours[index].parsedOpening.getComment();
+    if (comment != null) {
+      return comment;
+    } else {
+      return '';
     }
   }
 
