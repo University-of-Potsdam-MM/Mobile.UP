@@ -16,7 +16,7 @@ import * as dLoop from 'delayed-loop';
 })
 export class ModulesGridComponent implements OnInit {
 
-  @ViewChild(GridsterComponent) gridster: GridsterComponent;
+  @ViewChild(GridsterComponent, { static: false }) gridster: GridsterComponent;
 
   /**
    * converts passed modules list to gridsterItems
