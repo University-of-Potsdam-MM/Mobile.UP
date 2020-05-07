@@ -16,8 +16,9 @@ import { AlertService } from '../alert/alert.service';
 import { utils } from '../../lib/util';
 import isEmptyObject = utils.isEmptyObject;
 import { switchMap } from 'rxjs/operators';
-import { ConnectionService } from '../connection/connection.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from '../connection/connection.service';
+import { Storage } from '@ionic/storage';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -115,8 +116,10 @@ export class WebserviceWrapperService {
       return response;
     },
     // by default in case of an error the error will be passed on
-    errorCallback: (error, wsName) => {
+    errorCallback: async (error, wsName) => {
       this.logger.error('errorCallback', `calling '${wsName}': `, error);
+      await this.storage.set('latestWebserviceError', error);
+
       return error;
     }
   };
@@ -440,11 +443,12 @@ export class WebserviceWrapperService {
     private http: HttpClient,
     private cache: CacheService,
     private alertService: AlertService,
-    private connection: ConnectionService,
+    private connectionService: ConnectionService,
+    private storage: Storage,
     private loggingService: LoggingService
-    ) {
-      this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
-    }
+  ) {
+    this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
+  }
 
   pulsResponseCallback(response, wsName) {
     const stringResponse = JSON.stringify(response);
@@ -559,12 +563,7 @@ export class WebserviceWrapperService {
 
     this.logger.debug('call', `returning '${webserviceName}' with caching, options: ${JSON.stringify(cachingOptions)}`);
 
-    // removes items from cache if desired and then, after cache has been modified
-    // returns a cached Observable
-    let connection = false;
-    if (this.connection.checkOnline(false, false) === 1) { connection = true; }
-
-    if (connection) {
+    if (this.connectionService.checkOnline()) {
       return from(
         Promise.all([
           cachingOptions.forceRefreshGroup

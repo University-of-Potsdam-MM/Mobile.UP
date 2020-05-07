@@ -1,6 +1,4 @@
 import { HttpParameterCodec } from '@angular/common/http';
-import { routes } from '../app-routing.module';
-import {IModule} from './interfaces';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to

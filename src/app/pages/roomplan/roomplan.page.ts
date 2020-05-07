@@ -27,7 +27,7 @@ export class RoomplanPage extends AbstractPage {
     private ws: WebserviceWrapperService,
     public translate: TranslateService // used in template
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   // params
@@ -47,7 +47,7 @@ export class RoomplanPage extends AbstractPage {
   error: HttpErrorResponse;
   requestProcessed = false;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   /**
    * Comparator for event sorting

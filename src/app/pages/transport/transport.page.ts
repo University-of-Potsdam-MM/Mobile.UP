@@ -24,13 +24,13 @@ export class TransportPage extends AbstractPage {
 
   error = null;
 
-  @ViewChild(CampusTabComponent) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,
     public translate: TranslateService // used in template
   ) {
-    super({ requireNetwork: true });
+    super({ optionalNetwork: true });
   }
 
   changeCampus(campus: ICampus) {

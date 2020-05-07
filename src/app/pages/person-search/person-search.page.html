@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.person-search.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -24,7 +25,7 @@
     <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noResults-hint"></app-hint-box>
   </div>
 
-  <ion-list lines="none">
+  <ion-list *ngIf="!error" lines="none">
     <span *ngFor="let person of personsFound">
       <ion-item-sliding>
         <ion-item (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
@@ -73,5 +74,7 @@
       </ion-item>
     </span>
   </ion-list>
+
+  <app-network-error-hint *ngIf="error"></app-network-error-hint>
 
 </ion-content>

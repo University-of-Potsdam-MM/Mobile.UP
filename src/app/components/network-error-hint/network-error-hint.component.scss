@@ -13,3 +13,18 @@ ion-card-content {
     color: black;
     padding: 5px !important;
 }
+
+.hasErrorDetails {
+    margin-bottom: 0;
+}
+
+ion-label {
+    padding-right: 15px;
+    color: gray;
+    font-size: small;
+}
+
+p {
+    font-size: small;
+    color: gray;
+}

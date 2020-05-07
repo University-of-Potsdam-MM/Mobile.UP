@@ -6,6 +6,7 @@ import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.servi
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
 
 @Component({
   selector: 'app-feedback',
@@ -29,9 +30,10 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     private deviceService: DeviceService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
+    private connectionService: ConnectionService,
     private ws: WebserviceWrapperService
   ) {
-      super({ requireNetwork: true, optionalSession: true });
+      super({ optionalNetwork: true, optionalSession: true });
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
@@ -81,9 +83,15 @@ export class FeedbackPage extends AbstractPage implements OnInit {
       'feedback',
       this.feedback
     ).subscribe(() => {
-        this.alertService.showToast('alert.feedback-sent');
+        this.alertService.showToast('alert.feedback-sent').then(() => {
+          this.navCtrl.navigateBack('/home');
+        });
       }, () => {
-        this.alertService.showToast('alert.feedback-fail');
+        if (!this.connectionService.checkOnline()) {
+          this.alertService.showToast('alert.noInternetConnection');
+        } else {
+          this.alertService.showToast('alert.httpErrorStatus.generic');
+        }
       }
     );
   }

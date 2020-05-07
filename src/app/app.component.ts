@@ -1,13 +1,11 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, Events, MenuController, NavController, IonRouterOutlet } from '@ionic/angular';
+import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IConfig } from './lib/interfaces';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
-import { ConnectionService } from './services/connection/connection.service';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
@@ -17,6 +15,7 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from './services/connection/connection.service';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +28,6 @@ export class AppComponent {
   userInformation: IOIDCUserInformationResponse = null;
   loggedIn = false;
   username;
-  config: IConfig;
   logger: Logger;
 
   triedToRefreshLogin = false;
@@ -45,12 +43,13 @@ export class AppComponent {
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
-    private connection: ConnectionService,
-    private events: Events,
     private login: UPLoginProvider,
     private storage: Storage,
     private alertService: AlertService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private connectionService: ConnectionService,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -58,17 +57,12 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.config = ConfigService.config;
-      this.prepareStorageOnAppUpdate();
+      this.storage.set('appVersion', ConfigService.config.appVersion);
+      this.checkSessionValidity();
       this.initTranslate();
-      this.connection.initializeNetworkEvents();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(this.config.webservices.defaultCachingTTL);
+      this.cache.setDefaultTTL(ConfigService.config.webservices.defaultCachingTTL);
       this.cache.setOfflineInvalidate(false);
-
-      this.events.subscribe('userLogin', () => {
-        this.updateLoginStatus();
-      });
 
       if (this.platform.is('cordova')) {
 
@@ -87,29 +81,6 @@ export class AppComponent {
   }
 
   /**
-   * @name prepareStorageOnAppUpdate
-   * @description clears the storage if user has a old version of the app
-   */
-  async prepareStorageOnAppUpdate() {
-    const savedVersion = await this.storage.get('appVersion');
-
-    if (!savedVersion) {
-      // user has never opened a 6.x version of the app, since nothing is stored
-      // clear the whole storage
-      this.storage.clear().then(() => {
-        this.logger.debug('prepareStorageOnAppUpdate', 'cleared storage');
-        this.storage.set('appVersion', this.config.appVersion);
-        this.checkSessionValidity();
-      }, error => {
-        this.logger.error('prepareStorageOnAppUpdate', 'clearing storage failed', error);
-      });
-    } else {
-      this.storage.set('appVersion', this.config.appVersion);
-      this.checkSessionValidity();
-    }
-  }
-
-  /**
    * @name checkSessionValidity
    * @description checks whether the current session is still valid. In case it is, the
    * session will be refreshed anyway. Otherwise the currently stored session
@@ -118,7 +89,7 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session) {
+    if (session && this.connectionService.checkOnline(true)) {
       // helper function for determining whether session is still valid
       const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
         // determine date until the token is valid
@@ -129,10 +100,13 @@ export class AppComponent {
       };
 
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
-        && session.oidcTokenObject.expires_in && this.config;
-      if (variablesNotUndefined
-        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)) {
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
+        && session.oidcTokenObject.expires_in && ConfigService.config;
+      if (
+        variablesNotUndefined
+        && this.connectionService.checkOnline()
+        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
+      ) {
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, ConfigService.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
               oidcTokenObject:  response.oidcTokenObject,
@@ -143,7 +117,7 @@ export class AppComponent {
 
             this.userSession.setSession(newSession);
 
-            this.login.oidcGetUserInformation(newSession, this.config.authorization.oidc).subscribe(userInformation => {
+            this.login.oidcGetUserInformation(newSession, ConfigService.config.authorization.oidc).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
               this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
@@ -152,47 +126,48 @@ export class AppComponent {
             this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
             if (!this.triedToRefreshLogin) {
-              this.connection.checkOnline(true, true);
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
-                this.login.oidcLogin(session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(session.credentials, ConfigService.config.authorization.oidc).subscribe(sessionRes => {
                   this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
-                  this.login.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(userInformation => {
+                  this.login.oidcGetUserInformation(sessionRes, ConfigService.config.authorization.oidc).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
                     this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
                   });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
-                  this.performLogout();
-                  this.navCtrl.navigateForward('/login');
-                  this.alertService.showToast('alert.login-expired');
+                  this.loginExpired();
                 });
 
                 this.triedToRefreshLogin = true;
               } else {
-                this.performLogout();
-                this.navCtrl.navigateForward('/login');
-                this.alertService.showToast('alert.login-expired');
+                this.loginExpired();
               }
             } else {
-              this.performLogout();
-              this.navCtrl.navigateForward('/login');
-              this.alertService.showToast('alert.login-expired');
+              this.loginExpired();
             }
           });
       } else {
         // session no longer valid
-        this.userSession.removeSession();
-        this.userSession.removeUserInfo();
-        setTimeout(() => {
-          this.events.publish('userLogin');
-        }, 1000);
+        this.loginExpired();
       }
+    }
+  }
+
+  /**
+   * @name loginExpired
+   * @description if device is online: performs user logout and shows toast message
+   */
+  loginExpired() {
+    if (this.connectionService.checkOnline()) {
+      this.performLogout();
+      this.navCtrl.navigateForward('/login');
+      this.alertService.showToast('alert.login-expired');
     }
   }
 
@@ -220,14 +195,32 @@ export class AppComponent {
   listenToBackButton() {
     // workaround for #694
     // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
-    this.platform.backButton.subscribe(async() => {
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        if (this.router.url === '/home') {
-          navigator['app'].exitApp();
+    this.platform.backButton.subscribeWithPriority(1, async() => {
+      const openMenu = await this.menuCtrl.getOpen();
+
+      if (openMenu) {
+        this.menuCtrl.close();
+      } else {
+        const openModal = await this.modalCtrl.getTop();
+
+        if (openModal) {
+          this.modalCtrl.dismiss();
         } else {
-          window.history.back();
+          const openAlert = await this.alertCtrl.getTop();
+
+          if (openAlert) {
+            this.alertCtrl.dismiss();
+          } else {
+            this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+              if (this.router.url === '/home') {
+                navigator['app'].exitApp();
+              } else if (outlet && outlet.canGoBack()) {
+                outlet.pop();
+              }
+            });
+          }
         }
-      });
+      }
     });
   }
 

@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertButton } from '@ionic/core';
+import { AlertButton, ToastButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**
  * @type {IAlertOptions}
  */
 export interface IAlertOptions {
-  headerI18nKey: string;
-  messageI18nKey: string;
+  headerI18nKey?: string;
+  messageI18nKey?: string;
+  errorMessage?: string;
 }
 
 @Injectable({
@@ -18,6 +19,7 @@ export interface IAlertOptions {
 export class AlertService {
 
   currentAlert = null;
+  currentToast = null;
   logger: Logger;
 
   /**
@@ -62,15 +64,32 @@ export class AlertService {
       ];
     }
 
+    let headerText = '';
+    let messageText = '';
+    if (alertOptions.headerI18nKey) {
+      headerText = this.translate.instant(alertOptions.headerI18nKey);
+    }
+
+    if (alertOptions.messageI18nKey) {
+      messageText = this.translate.instant(alertOptions.messageI18nKey);
+    }
+
+    if (alertOptions.errorMessage) {
+      if (messageText === '') {
+        messageText = alertOptions.errorMessage;
+      } else {
+        messageText += ' ERROR: ' + alertOptions.errorMessage;
+      }
+    }
+
     // only show new alert if no other alert is currently open
     if (!this.currentAlert) {
       this.currentAlert = await this.alertCtrl.create({
-        header: this.translate.instant(alertOptions.headerI18nKey),
-        message: this.translate.instant(alertOptions.messageI18nKey),
+        header: headerText,
+        message: messageText,
         backdropDismiss: false,
         buttons: alertButtons
-      }).catch(error => this.logger.error('showAlert', error));
-
+      });
       this.currentAlert.present();
       await this.currentAlert.onDidDismiss();
       this.currentAlert = undefined;
@@ -81,13 +100,43 @@ export class AlertService {
    * @name presentToast
    * @param message
    */
-  async showToast(messageI18nKey) {
-    const toast = await this.toastCtrl.create({
-      message: this.translate.instant(messageI18nKey),
-      duration: 2000,
-      position: 'top',
-      cssClass: 'toastPosition'
-    });
-    toast.present();
+  async showToast(messageI18nKey, error?) {
+    const messageText = this.translate.instant(messageI18nKey);
+    let buttons: ToastButton[];
+
+    if (error) {
+      const alertButtons: AlertButton[] = [
+        {
+          text: this.translate.instant('button.continue'),
+          handler: () => {
+            this.currentAlert = null;
+          }
+        }
+      ];
+
+      buttons = [
+        {
+          side: 'end',
+          // role: 'cancel',
+          icon: 'information-circle',
+          handler: () => {
+            this.showAlert({ headerI18nKey: 'alert.title.httpError', errorMessage: String(error.message) }, alertButtons);
+          }
+        }
+      ];
+    }
+
+    if (!this.currentToast) {
+      this.currentToast = await this.toastCtrl.create({
+        message: messageText,
+        duration: 2000,
+        position: 'top',
+        cssClass: 'updateToast',
+        buttons: buttons
+      });
+      this.currentToast.present();
+      await this.currentToast.onDidDismiss();
+      this.currentToast = undefined;
+    } else { this.logger.debug('showToast', 'another toast is shown'); }
   }
 }

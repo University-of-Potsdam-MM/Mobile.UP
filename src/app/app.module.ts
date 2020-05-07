@@ -51,6 +51,10 @@ export function initConfig(config: ConfigService) {
   return () => config.load('assets/config.json');
 }
 
+export function initEmergency(config: ConfigService) {
+  return () => config.loadEmergency('assets/json/emergency.json');
+}
+
 export class IonicGestureConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
       const mc = new (<any> window).Hammer(element);
@@ -122,10 +126,16 @@ export class IonicGestureConfig extends HammerGestureConfig {
       multi: true
     },
     {
-      deps: [LoggingService],
-      multi: true,
       provide: APP_INITIALIZER,
-      useFactory: configureLogging
+      useFactory: initEmergency,
+      deps: [ConfigService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configureLogging,
+      deps: [LoggingService],
+      multi: true
     },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig }

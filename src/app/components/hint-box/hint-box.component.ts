@@ -13,8 +13,6 @@ export class HintBoxComponent {
   @Input()
   hintTextI18nKey: string;
 
-  @Input()
-  hintIcon = 'warning';
   constructor() { }
 
 }

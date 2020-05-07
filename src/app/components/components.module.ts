@@ -20,8 +20,11 @@ import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campu
 import { CourseDataComponent } from './course-data/course-data.component';
 import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
-import {ModulesGridComponent} from './modules-grid/modules-grid.component';
-import {GridsterModule} from 'angular-gridster2';
+import { ModulesGridComponent } from './modules-grid/modules-grid.component';
+import { GridsterModule } from 'angular-gridster2';
+import { ConnectionIndicatorComponent } from './connection-indicator/connection-indicator.component';
+import { ConnectionIndicatorPopoverComponent } from './connection-indicator/connection-indicator-popover/connection-indicator-popover.component';
+import { NetworkErrorHintComponent } from './network-error-hint/network-error-hint.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import {GridsterModule} from 'angular-gridster2';
     CourseDataComponent,
     CampusReorderModalPage,
     DatePickerComponent,
-    ModulesGridComponent
+    ModulesGridComponent,
+    ConnectionIndicatorComponent,
+    ConnectionIndicatorPopoverComponent,
+    NetworkErrorHintComponent
   ],
   imports: [
     IonicModule,
@@ -69,11 +75,15 @@ import {GridsterModule} from 'angular-gridster2';
     CampusMapFeatureModalComponent,
     CourseDataComponent,
     DatePickerComponent,
-    ModulesGridComponent
+    ModulesGridComponent,
+    ConnectionIndicatorComponent,
+    ConnectionIndicatorPopoverComponent,
+    NetworkErrorHintComponent
   ],
   entryComponents: [
     CampusMapFeatureModalComponent,
-    CampusReorderModalPage
+    CampusReorderModalPage,
+    ConnectionIndicatorPopoverComponent
   ]
 })
 export class ComponentsModule { }
