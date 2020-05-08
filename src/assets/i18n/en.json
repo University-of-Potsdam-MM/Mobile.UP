@@ -341,7 +341,8 @@
     "submit": "Submit",
     "keep": "Keep",
     "delete": "Delete",
-    "save": "Save"
+    "save": "Save",
+    "done": "Done"
   },
   "alert": {
     "title": {

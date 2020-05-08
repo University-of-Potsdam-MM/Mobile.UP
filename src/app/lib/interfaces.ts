@@ -201,6 +201,12 @@ export interface IModule {
   urlAndroid?: string;
   urlIOS?: string;
   bundleName?: string;
+  // needed for supporting gridster. Adding these properties makes a module
+  // also a valid grid item.
+  x: number;
+  y: number;
+  rows: number;
+  cols: number;
 }
 
 export interface IWebServices {

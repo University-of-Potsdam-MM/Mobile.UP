@@ -29,7 +29,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
         path: '',
         component: HomePage
       }
-    ])
+    ]),
+    ComponentsModule
   ],
   declarations: [HomePage]
 })
