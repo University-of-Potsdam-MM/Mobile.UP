@@ -236,10 +236,10 @@
       "libraryLKZ": {
         "url": "https://apiup.uni-potsdam.de/endpoints/lkzAPI/epn2lkz.php"
       },
-      "libraryPAIA-UP": {
+      "libraryPAIA": {
         "url": "https://apiup.uni-potsdam.de/endpoints/paiaAPI/DE-517/"
       },
-      "libraryPAIA": {
+      "libraryPAIA-direct": {
         "url": "https://paia.gbv.de/DE-517/"
       },
       "libraryPAIAdev": {
