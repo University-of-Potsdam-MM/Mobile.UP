@@ -20,6 +20,8 @@ import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campu
 import { CourseDataComponent } from './course-data/course-data.component';
 import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { ModulesGridComponent } from './modules-grid/modules-grid.component';
+import { GridsterModule } from 'angular-gridster2';
 import { ConnectionIndicatorComponent } from './connection-indicator/connection-indicator.component';
 import { ConnectionIndicatorPopoverComponent } from './connection-indicator/connection-indicator-popover/connection-indicator-popover.component';
 import { NetworkErrorHintComponent } from './network-error-hint/network-error-hint.component';
@@ -40,6 +42,7 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     CourseDataComponent,
     CampusReorderModalPage,
     DatePickerComponent,
+    ModulesGridComponent,
     ConnectionIndicatorComponent,
     ConnectionIndicatorPopoverComponent,
     NetworkErrorHintComponent
@@ -56,6 +59,7 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
         deps: [HttpClient]
       }
     }),
+    GridsterModule,
   ],
   exports: [
     HintBoxComponent,
@@ -71,6 +75,7 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     CampusMapFeatureModalComponent,
     CourseDataComponent,
     DatePickerComponent,
+    ModulesGridComponent,
     ConnectionIndicatorComponent,
     ConnectionIndicatorPopoverComponent,
     NetworkErrorHintComponent

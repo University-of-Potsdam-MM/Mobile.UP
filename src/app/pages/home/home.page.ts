@@ -7,6 +7,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -18,6 +19,7 @@ export class HomePage extends AbstractPage implements OnInit {
 
   modules: {[moduleName: string]: IModule} = {};
   sortedModules = [];
+  editingMode = false;
 
   constructor(
     private translate: TranslateService,
@@ -175,6 +177,7 @@ export class HomePage extends AbstractPage implements OnInit {
     for (const moduleName in modules) {
       if (modules.hasOwnProperty(moduleName)) {
         const moduleToAdd: IModule = modules[moduleName];
+        moduleToAdd.x = moduleToAdd.y = moduleToAdd.rows = moduleToAdd.cols = undefined;
         if (!moduleToAdd.hide) {
           moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
           moduleList[moduleName] = moduleToAdd;
@@ -184,5 +187,31 @@ export class HomePage extends AbstractPage implements OnInit {
 
     this.logger.debug('buildDefaultModulesList');
     return moduleList;
+  }
+
+  onGridChanged() {
+    // we can just store the existing modules again because gridster is
+    // operating on the same object
+    // this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
+    this.storage.set('moduleList', this.modules);
+  }
+
+  /**
+   * opens a page by using it's module
+   * @description opens selected page by pushing it on the stack
+   * @param module {IModule} module to be used
+   * @param params {any} params {any} params that should by passed on
+   */
+  openModule(moduleToOpen: IModule, params: any = {}, fromFavorites) {
+    if (!(this.editingMode && fromFavorites)) {
+      if (moduleToOpen.url) {
+        this.webIntent.handleWebIntentForModule(moduleToOpen);
+      } else {
+        this.navCtrl.navigateForward(
+          '/' + moduleToOpen.componentName,
+          {state: params}
+        );
+      }
+    }
   }
 }

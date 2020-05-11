@@ -302,6 +302,7 @@
       "opens": "öffnet ",
       "closed": "geschlossen",
       "closes": "schließt ",
+      "unknown": "unbekannt",
       "comment": "Kommentar",
       "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
     },
@@ -387,7 +388,8 @@
     "delete": "Löschen",
     "save": "Speichern",
     "renew": "Verlängern",
-    "stornieren": "Stornieren"
+    "stornieren": "Stornieren",
+    "done": "Fertig"
   },
   "alert": {
     "title": {

@@ -136,37 +136,6 @@ export abstract class AbstractPage  {
     }
 
     /**
-     * opens a page by using it's module
-     * @description opens selected page by pushing it on the stack
-     * @param module {IModule} module to be used
-     * @param params {any} params {any} params that should by passed on
-     */
-    openModule(moduleToOpen: IModule, params: any = {}) {
-      if (moduleToOpen.url) {
-        this.webIntent.handleWebIntentForModule(moduleToOpen);
-      } else {
-        this.navCtrl.navigateForward(
-          '/' + moduleToOpen.componentName,
-          {state: params}
-        );
-      }
-    }
-
-    /**
-     * opens a page by name
-     * @param moduleName {string} name of the module
-     * @param params {any} params that should by passed on
-     */
-    openModuleByName(moduleName: string, params: any = {}) {
-      const moduleToOpen = this.config.modules[moduleName];
-      if (moduleToOpen) {
-        this.openModule(moduleToOpen, params);
-      } else {
-        this.logger.error(`Cannot open unknown module '${moduleName}'`);
-      }
-    }
-
-    /**
      * @name requireNetwork
      * @desc tests for network connection and sends the user back to the HomePage
      * if there is none;

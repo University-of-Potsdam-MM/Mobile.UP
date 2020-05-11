@@ -207,7 +207,7 @@ ion-toolbar {
   --min-height: 48px;
 }
 
-ion-content.modalOpened {
+ion-content.modalOpened, ion-content.disableScrolling {
   --overflow: hidden;
 }
 
