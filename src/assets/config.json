@@ -208,7 +208,7 @@
         "url": "https://www.uni-potsdam.de/abindiepraxis/download/"
       },
       "news": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/"
+        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/news/"
       },
       "roomsSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",
