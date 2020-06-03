@@ -11,7 +11,7 @@
   <ion-toolbar *ngIf="sourcesList && sourcesList.length > 0 && !networkError">
     <ion-row class="filters">
         <ion-col class="col-with-arrow ion-no-padding" size="1">
-          <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="arrow-back"></ion-icon>
+          <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="caret-back"></ion-icon>
         </ion-col>
         <ion-col class="ion-no-padding" size="10">
           <ion-slides [options]="slideOptions">
@@ -21,7 +21,7 @@
           </ion-slides>
         </ion-col>
         <ion-col class="col-with-arrow ion-no-padding" size="1">
-          <ion-icon *ngIf="showRightButton" (click)="slideNext()" name="arrow-forward"></ion-icon>
+          <ion-icon *ngIf="showRightButton" (click)="slideNext()" name="caret-forward"></ion-icon>
         </ion-col>
     </ion-row>
   </ion-toolbar>

@@ -39,9 +39,6 @@ const routes: Routes = [
   declarations: [
     TimetablePage,
     EventModalPage
-  ],
-  entryComponents: [
-    EventModalPage
   ]
 })
 export class TimetablePageModule {}

@@ -37,7 +37,7 @@ export const SETTINGS = [
             {key: 'Praktika'}
         ],
         type: ESettingType.checkbox,
-        icon: 'filing'
+        icon: 'layers'
     },
     {
         key: 'studyarea',
@@ -53,7 +53,7 @@ export const SETTINGS = [
             {key: 'fächerübergreifend'},
         ],
         type: ESettingType.checkbox,
-        icon: 'filing'
+        icon: 'layers'
     },
     {
         key: 'domestic',
@@ -89,7 +89,7 @@ export const SETTINGS = [
             {key: 'Reflect.UP'}
         ],
         type: ESettingType.checkbox,
-        icon: 'appstore',
+        icon: 'logo-apple-appstore',
         mobileOnly: true
     }
 ];
