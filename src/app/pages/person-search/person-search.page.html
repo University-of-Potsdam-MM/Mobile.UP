@@ -34,7 +34,7 @@
             <h2>{{person.Initials}} {{person.First_Name}} {{person.Last_Name}}</h2>
             <p *ngIf="person.Department != ''">{{person.Department}}</p>
           </ion-label>
-          <ion-icon *ngIf="(person.Room_Name || person.Extension || person.Email)" [name]="!person.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+          <ion-icon *ngIf="(person.Room_Name || person.Extension || person.Email)" [name]="!person.expanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
         </ion-item>
 
         <ion-item-options slot="end">
@@ -61,7 +61,7 @@
               <ion-col size="auto"><ion-icon color="primary" name="mail" margin-right></ion-icon></ion-col><ion-col><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col>
             </ion-row>
             <ion-row *ngIf="person.Extension != ''">
-              <ion-col size="auto"><ion-icon color="primary" name="call" ios="ios-call" md="md-call" margin-right></ion-icon></ion-col>
+              <ion-col size="auto"><ion-icon color="primary" name="call" margin-right></ion-icon></ion-col>
               <ion-col>
                   <a (click)="callContact(person.Extension)" style="text-decoration: underline">{{person.Extension}}</a>
               </ion-col>

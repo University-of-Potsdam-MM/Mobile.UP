@@ -28,9 +28,6 @@ import { HttpLoaderFactory } from 'src/app/app.module';
   ],
   exports: [
     LoginPage
-  ],
-  entryComponents: [
-    LoginPage
   ]
 })
 export class LoginModule { }

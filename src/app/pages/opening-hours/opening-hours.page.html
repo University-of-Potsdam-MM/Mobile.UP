@@ -45,7 +45,7 @@
               <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
             </p>
           </ion-label>
-          <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+          <ion-icon name="alert-circle" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
         </ion-item>
         <ng-template #closedLocation>
           <ion-item detail (click)="itemSelected(item, i)">
@@ -57,7 +57,7 @@
                 <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
               </p>
             </ion-label>
-            <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+            <ion-icon name="alert-circle" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
           </ion-item>
         </ng-template>
       </ng-container>
@@ -70,7 +70,7 @@
               <ng-container *ngIf="getComment(i) != ''">, {{ getComment(i) }}</ng-container>
             </p>
           </ion-label>
-          <ion-icon name="warning" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
+          <ion-icon name="alert-circle" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
         </ion-item>
       </ng-container>
     </span>
@@ -79,6 +79,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <app-footer-disclaimer iconName="warning" disclaimerReference="page.opening-hours.noGuarantee"></app-footer-disclaimer>
+    <app-footer-disclaimer iconName="alert-circle" disclaimerReference="page.opening-hours.noGuarantee"></app-footer-disclaimer>
   </ion-toolbar>
 </ion-footer>

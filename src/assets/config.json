@@ -1,5 +1,5 @@
 {
-  "appVersion": "6.3.4",
+  "appVersion": "6.4.0",
   "urlIOS": "https://itunes.apple.com/de/app/mobile-up/id541440873",
   "urlAndroid": "https://play.google.com/store/apps/details?id=de.floriangoessler.upapp",
   "modules": {
@@ -10,7 +10,7 @@
     },
     "news": {
       "componentName": "news",
-      "icon": "paper",
+      "icon": "newspaper",
       "selected": false
     },
     "opening-hours": {

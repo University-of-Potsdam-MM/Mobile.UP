@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, Injectable } from '@angular/core';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -55,6 +55,9 @@ export function initEmergency(config: ConfigService) {
   return () => config.loadEmergency('assets/json/emergency.json');
 }
 
+@Injectable({
+  providedIn: 'root',
+})
 export class IonicGestureConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
       const mc = new (<any> window).Hammer(element);
@@ -73,16 +76,15 @@ export class IonicGestureConfig extends HammerGestureConfig {
   declarations: [
     AppComponent
   ],
-  entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot({
-      backButtonIcon: 'ios-arrow-back',
+      backButtonIcon: 'chevron-back',
       backButtonText: '',
       mode: 'md',
       rippleEffect: true
     }),
-    LeafletModule.forRoot(),
+    LeafletModule,
     IonicStorageModule.forRoot({
       driverOrder: ['indexeddb', 'sqlite', 'websql', 'localstorage']
     }),
