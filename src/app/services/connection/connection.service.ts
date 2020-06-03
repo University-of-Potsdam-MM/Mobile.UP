@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../alert/alert.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { Network } from '@ionic-native/network/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class ConnectionService {
     private translate: TranslateService,
     private navCtrl: NavController,
     private alertService: AlertService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private network: Network,
+    private platform: Platform
   ) {
     this.logger = this.loggingService.getLogger('[/connection-service]');
   }
@@ -26,7 +29,14 @@ export class ConnectionService {
    * @return boolean
    */
   checkOnline(showAlert: boolean = false, sendHome: boolean = false): boolean {
-    if (!navigator.onLine) {
+    let isOnline;
+    if (this.platform.is('cordova')) {
+      if (this.network.type === this.network.Connection.NONE) {
+        isOnline = false;
+      } else { isOnline = true; }
+    } else { isOnline = navigator.onLine; }
+
+    if (!isOnline) {
       if (showAlert && sendHome) {
         this.alertService.showAlert(
           {
@@ -48,8 +58,8 @@ export class ConnectionService {
       }
     }
 
-    this.logger.debug('checkOnline', `is app connected? -> ${navigator.onLine}`);
-    return navigator.onLine;
+    this.logger.debug('checkOnline', `is app connected? -> ${isOnline}`);
+    return isOnline;
   }
 
 }
