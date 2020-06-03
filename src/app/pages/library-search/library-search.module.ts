@@ -35,9 +35,6 @@ const routes: Routes = [
   declarations: [
     LibrarySearchPage,
     BookDetailModalPage
-  ],
-  entryComponents: [
-    BookDetailModalPage
   ]
 })
 export class LibrarySearchPageModule {}

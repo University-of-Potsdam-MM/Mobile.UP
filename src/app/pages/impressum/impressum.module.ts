@@ -35,9 +35,6 @@ const routes: Routes = [
   declarations: [
     ImpressumPage,
     ImpressumModalPage
-  ],
-  entryComponents: [
-    ImpressumModalPage
   ]
 })
 export class ImpressumPageModule {}

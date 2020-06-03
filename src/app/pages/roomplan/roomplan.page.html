@@ -40,15 +40,15 @@
               </ion-badge>
             </h2>
           </ion-label>
-          <ion-icon [name]="!house.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+          <ion-icon [name]="!house.expanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
         </ion-item>
         <div *ngIf="house.expanded">
           <div *ngFor="let room of house.rooms">
             <ion-item (click)="expandRoom(house.lbl,room.lbl)">
               <ion-label class="ion-no-margin">
-                <h2 *ngIf="room.lbl">{{room.lbl}}<ion-badge *ngIf="room.events" color="secondary">{{room.events.length}}</ion-badge></h2>
+                <h2 *ngIf="room.lbl">{{room.lbl}}<ion-badge *ngIf="room.events" color="primary">{{room.events.length}}</ion-badge></h2>
               </ion-label>
-              <ion-icon [name]="!room.expanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+              <ion-icon [name]="!room.expanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
             </ion-item>
             <div *ngIf="room.expanded && room.events">
               <ion-item margin-left *ngFor="let event of room.events">
@@ -62,7 +62,7 @@
                   <i>{{event.lbl}}</i>
                   <br/>
                   <p *ngFor="let person of event.persons">
-                    <ion-badge color="danger">{{person}}</ion-badge>
+                    <ion-badge color="primary">{{person}}</ion-badge>
                   </p>
                 </ion-label>
               </ion-item>

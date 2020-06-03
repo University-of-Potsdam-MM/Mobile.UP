@@ -35,9 +35,6 @@ const routes: Routes = [
   declarations: [
     OpeningHoursPage,
     DetailedOpeningModalPage
-  ],
-  entryComponents: [
-    DetailedOpeningModalPage
   ]
 })
 export class OpeningHoursPageModule {}

@@ -79,11 +79,6 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     ConnectionIndicatorComponent,
     ConnectionIndicatorPopoverComponent,
     NetworkErrorHintComponent
-  ],
-  entryComponents: [
-    CampusMapFeatureModalComponent,
-    CampusReorderModalPage,
-    ConnectionIndicatorPopoverComponent
   ]
 })
 export class ComponentsModule { }

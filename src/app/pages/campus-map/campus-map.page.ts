@@ -42,7 +42,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   positionCircle: L.Circle;
   positionMarker: L.Marker;
   latestHeading: number;
-  networkIndicator;
 
   geoLocationWatch;
   geoLocationEnabled = false;
@@ -59,7 +58,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     private connectionService: ConnectionService
     // private http: HttpClient
   ) {
-    super({ optionalNetwork: true });
+    super({ requireNetwork: true });
   }
 
   /**
@@ -104,7 +103,6 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * entered, other than ionViewDidLoad which will run only once
    */
   ngAfterViewInit() {
-    this.networkIndicator = navigator;
     // initialize map
     if (!this.map) {
       this.map = this.initializeLeafletMap();

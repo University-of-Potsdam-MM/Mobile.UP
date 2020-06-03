@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ConnectionIndicatorPopoverComponent } from './connection-indicator-popover/connection-indicator-popover.component';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, Platform } from '@ionic/angular';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-connection-indicator',
   templateUrl: './connection-indicator.component.html',
   styleUrls: ['./connection-indicator.component.scss'],
 })
-export class ConnectionIndicatorComponent implements OnInit {
+export class ConnectionIndicatorComponent {
 
   indicator;
 
   constructor(
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    public network: Network,
+    public platform: Platform
   ) {
     this.indicator = navigator;
   }
-
-  ngOnInit() {}
 
   async openPopover(ev) {
     const popover = await this.popoverCtrl.create({

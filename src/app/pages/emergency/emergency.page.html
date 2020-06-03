@@ -37,12 +37,12 @@
       <ion-item-sliding>
         <!-- template for emergencyCalls -->
         <ion-item (click)="expand(emergencyCall)" [ngClass]="{'noborder': emergencyCall.expanded}">
-          <ion-icon color="primary" name="person" slot="start"></ion-icon>
+          <ion-icon color="primary" name="people" slot="start"></ion-icon>
           <ion-label class="ion-text-wrap">
             <h2>{{emergencyCall.name}}</h2>
             <p *ngIf="emergencyCall.description">{{emergencyCall.description}}</p>
           </ion-label>
-          <ion-icon [name]="!emergencyCall.expanded ? 'arrow-dropright' : 'arrow-dropdown'" *ngIf="(emergencyCall.address || emergencyCall.contact)" slot="end"></ion-icon>
+          <ion-icon [name]="!emergencyCall.expanded ? 'caret-forward' : 'caret-down'" *ngIf="(emergencyCall.address || emergencyCall.contact)" slot="end"></ion-icon>
         </ion-item>
 
         <ion-item-options side="end">
@@ -75,7 +75,7 @@
             </ion-row>
             <ion-row *ngIf="emergencyCall.contact.telephone">
               <ion-col size="auto">
-                <ion-icon color="primary" name="call" ios="ios-call" md="md-call"></ion-icon>
+                <ion-icon color="primary" name="call"></ion-icon>
               </ion-col>
               <ion-col>
                 <a (click)="callContact(emergencyCall.contact.telephone)" style="text-decoration: underline">{{emergencyCall.contact.telephone}}</a>

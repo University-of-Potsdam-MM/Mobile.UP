@@ -14,7 +14,7 @@ lectureSchedule
           <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
-          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
+          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'caret-forward' : 'caret-down'" size="small" slot="end"></ion-icon>
       </ion-item>
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
@@ -31,7 +31,7 @@ lectureSchedule
           <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
-          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
+          <ion-icon *ngIf="childNode.headerId" [name]="!isExpanded[childNode.headerId] ? 'caret-forward' : 'caret-down'" size="small" slot="end"></ion-icon>
       </ion-item>
       <app-lecture-list *ngIf="childNode.headerId && isExpanded[childNode.headerId]" [headerIdInput]="headerId" [hasSubTreeInput]="hasSubTree"></app-lecture-list>
   </div>
@@ -47,7 +47,7 @@ lectureSchedule
           <ion-label class="ion-text-wrap">
             {{ course.courseType }}: {{ htmlDecode(course.courseName) }}
           </ion-label>
-          <ion-icon *ngIf="course.courseId" [name]="!isExpandedCourse[course.courseId] ? 'arrow-dropright' : 'arrow-dropdown'" size="small" slot="end"></ion-icon>
+          <ion-icon *ngIf="course.courseId" [name]="!isExpandedCourse[course.courseId] ? 'caret-forward' : 'caret-down'" size="small" slot="end"></ion-icon>
       </ion-item>
       <app-course-data *ngIf="isExpandedCourse[course.courseId]" [course]="course"></app-course-data>
   </div>

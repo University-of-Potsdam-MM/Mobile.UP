@@ -35,9 +35,6 @@ const routes: Routes = [
   declarations: [
     PracticePage,
     DetailedPracticeModalPage
-  ],
-  entryComponents: [
-    DetailedPracticeModalPage
   ]
 })
 export class PracticePageModule {}

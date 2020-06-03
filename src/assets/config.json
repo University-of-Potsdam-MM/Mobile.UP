@@ -1,5 +1,5 @@
 {
-  "appVersion": "6.3.4",
+  "appVersion": "6.4.0",
   "urlIOS": "https://itunes.apple.com/de/app/mobile-up/id541440873",
   "urlAndroid": "https://play.google.com/store/apps/details?id=de.floriangoessler.upapp",
   "modules": {
@@ -102,7 +102,7 @@
     },
     "news": {
       "componentName": "news",
-      "icon": "paper",
+      "icon": "newspaper",
       "selected": false
     },
     "opening-hours": {
@@ -213,7 +213,7 @@
         "url": "https://www.uni-potsdam.de/abindiepraxis/download/"
       },
       "news": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/news/"
+        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/news/"
       },
       "roomsSearch": {
         "url": "https://apiup.uni-potsdam.de/endpoints/roomsAPI/1.0/rooms4Time",

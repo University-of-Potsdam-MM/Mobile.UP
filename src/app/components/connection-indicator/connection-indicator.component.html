@@ -1,1 +1,7 @@
-<ion-icon *ngIf="!indicator.onLine" slot="icon-only" src="./assets/icon/noconnection.svg" class="ion-margin-right" (click)="openPopover($event)"></ion-icon>
+<ng-container *ngIf="platform.is('cordova')">
+    <ion-icon *ngIf="network.type === network.Connection.NONE" slot="icon-only" src="./assets/icon/noconnection.svg" class="ion-margin-right" (click)="openPopover($event)"></ion-icon>
+</ng-container>
+
+<ng-container *ngIf="!platform.is('cordova')">
+    <ion-icon *ngIf="!indicator.onLine" slot="icon-only" src="./assets/icon/noconnection.svg" class="ion-margin-right" (click)="openPopover($event)"></ion-icon>
+</ng-container>

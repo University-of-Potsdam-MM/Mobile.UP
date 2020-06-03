@@ -3,7 +3,7 @@
     <ion-label color="primary">
       {{ "button.favorites" | translate }}
     </ion-label>
-    <ion-icon *ngIf="!editingMode" color="primary" name="create" slot="end" (click)="toggleEditingMode()"></ion-icon>
+    <ion-icon *ngIf="!editingMode" class="editingIcon" color="primary" name="create" slot="end" (click)="toggleEditingMode()"></ion-icon>
     <ion-button *ngIf="editingMode" (click)="toggleEditingMode()" slot="end" style="--border-radius: 0;">{{ 'button.done' | translate }}</ion-button>
 </ion-item>
 
