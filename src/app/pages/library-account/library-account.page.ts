@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';
 import { ICredentials, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, Events, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AlertButton } from '@ionic/core';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -62,7 +62,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     private formBuilder: FormBuilder,
     private storage: Storage,
     private alertService: AlertService,
-    private events: Events,
     private modalCtrl: ModalController
   ) {
     super({ requireNetwork: true });
@@ -123,11 +122,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           timestamp: new Date()
         };
 
-        this.storage.set('bibSession', this.bibSession).then(() => {
-          setTimeout(() => {
-            this.events.publish('userLogin');
-          }, 1000);
-        });
+        this.storage.set('bibSession', this.bibSession);
 
         if (!loginCredentials) {
           this.endLoading();

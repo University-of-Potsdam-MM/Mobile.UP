@@ -88,7 +88,7 @@
     hintTypeI18nKey="alert.title.httpError" hintTextI18nKey="page.library-account.errorLoadingItems"></app-hint-box>
     <ion-item *ngIf="userLoaded && !userError" (click)="userExpanded = !userExpanded" lines="none">
       <ion-label><b *ngIf="user.name">{{ user.name.trim() }}</b> <span class="patronID" *ngIf="bibSession && bibSession.oidcTokenObject && bibSession.oidcTokenObject.patron">{{ bibSession.oidcTokenObject.patron }}</span></ion-label>
-      <ion-icon [name]="!userExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+      <ion-icon [name]="!userExpanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
     </ion-item>
     <ion-item *ngIf="userExpanded" lines="none">
       <ion-label class="ion-text-wrap accountDetails">
@@ -103,7 +103,7 @@
     </ion-button>
     <ion-item *ngIf="feesLoaded && !feesError && activeSegment == 'loan' && fees && fees.amount" lines="none" (click)="feesExpanded = !feesExpanded">
       <ion-label>{{ "page.library-account.fees" | translate }}: <span [ngClass]="fees.amount !== '0.00 EUR' ?  'feeAmount' : 'noFeeAmount'">{{ fees.amount }}</span></ion-label>
-      <ion-icon *ngIf="fees && fees.fee && fees.fee.length > 0" [name]="!feesExpanded ? 'arrow-dropright' : 'arrow-dropdown'" slot="end"></ion-icon>
+      <ion-icon *ngIf="fees && fees.fee && fees.fee.length > 0" [name]="!feesExpanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
     </ion-item>
     <ng-container *ngIf="feesExpanded && fees && fees.fee && fees.fee.length > 0">
       <ion-card *ngFor="let fee of fees.fee">
