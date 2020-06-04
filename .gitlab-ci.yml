@@ -77,7 +77,8 @@ install_dependencies:
         popd;
       fi
     - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
-    - npm install -g cordova ionic
+    - npm remove -g ionic
+    - npm install -g cordova @ionic/cli
     - npm install -g cordova-res --unsafe-perm
     - npm install -D -E @angular/cli
   script:
@@ -124,7 +125,8 @@ android-production:
 .browser:
   stage: build
   script:
-    - npm install -g cordova ionic
+    - npm remove -g ionic
+    - npm install -g cordova @ionic/cli
     # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
     - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
     - ionic cordova platform add browser
