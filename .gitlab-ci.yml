@@ -129,6 +129,7 @@ android-production:
     - npm install -g cordova @ionic/cli
     # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
     - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
+    - perl -pi -e 's|OpenStreetMap-Mitwirkende|<a href="//www.openstreetmap.org/copyright" target="_blank">OpenStreetMap-Mitwirkende</a>|g' src/app/pages/campus-map/campus-map.page.ts
     - ionic cordova platform add browser --no-interactive --confirm
     - ionic cordova prepare browser --no-interactive --confirm
     - ionic cordova build browser --release

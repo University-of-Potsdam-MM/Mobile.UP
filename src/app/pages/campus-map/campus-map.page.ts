@@ -70,7 +70,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
     const map = L.map('map');
     L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'www.uni-potsdam.de',
+        attribution: '© OpenStreetMap-Mitwirkende und www.uni-potsdam.de',
         minZoom: 14,
         maxZoom: 18
       }).addTo(map);
