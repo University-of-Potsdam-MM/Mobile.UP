@@ -129,8 +129,8 @@ android-production:
     - npm install -g cordova @ionic/cli
     # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
     - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
-    - ionic cordova platform add browser
-    - ionic cordova prepare browser
+    - ionic cordova platform add browser --no-interactive --confirm
+    - ionic cordova prepare browser --no-interactive --confirm
     - ionic cordova build browser --release
     # HACK to make Mobile.UP work in an iframe as we do on Campus.UP, cf. https://github.com/apache/cordova-plugin-inappbrowser/issues/419
     - perl -pi -e 's|if \(window.parent && !!window.parent.ripple\) \{|if (window.parent && false) {|' platforms/browser/www/plugins/cordova-plugin-inappbrowser/www/inappbrowser.js
