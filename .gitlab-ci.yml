@@ -131,7 +131,7 @@ android-production:
     - perl -pi -e 's|OpenStreetMap-Mitwirkende|<a href="//www.openstreetmap.org/copyright" target="_blank">OpenStreetMap-Mitwirkende</a>|g' src/app/pages/campus-map/campus-map.page.ts
     - ionic cordova platform add browser --no-interactive --confirm
     - ionic cordova prepare browser --no-interactive --confirm
-    - ionic cordova build browser --release
+    - ionic cordova build browser --prod --release
     # HACK to make Mobile.UP work in an iframe as we do on Campus.UP, cf. https://github.com/apache/cordova-plugin-inappbrowser/issues/419
     - perl -pi -e 's|if \(window.parent && !!window.parent.ripple\) \{|if (window.parent && false) {|' platforms/browser/www/plugins/cordova-plugin-inappbrowser/www/inappbrowser.js
     # set proper title
