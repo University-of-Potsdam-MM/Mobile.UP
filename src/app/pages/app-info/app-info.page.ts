@@ -7,6 +7,8 @@ import { File } from '@ionic-native/file/ngx';
 import { Storage } from '@ionic/storage';
 import { UserSessionService } from 'src/app/services/user-session/user-session.service';
 import { IOIDCUserInformationResponse } from 'src/app/services/login-provider/interfaces';
+// @ts-ignore - this works
+import * as packageJson from '../../../../package.json';
 
 @Component({
   selector: 'app-app-info',
@@ -21,6 +23,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
   showContactPerson = false;
 
   deviceInfo: IDeviceInfo;
+  dependencies;
 
   constructor(
     private mapsProvider: NavigatorService,
@@ -35,6 +38,9 @@ export class AppInfoPage extends AbstractPage implements OnInit {
 
   ngOnInit() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
+    this.dependencies = Object.keys(packageJson.dependencies).map(
+      dep => ({name: dep, version: packageJson.dependencies[dep] })
+    );
   }
 
   callMap(location: string) {
