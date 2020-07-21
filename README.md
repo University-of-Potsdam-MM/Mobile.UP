@@ -33,6 +33,11 @@ Zum entwickeln wird Node.js benötigt:
 git clone https://github.com/University-of-Potsdam-MM/Mobile.UP.git
 
 ##
+## Falls nicht vorhanden Ionic und Cordova installieren
+##
+npm install -g cordova ionic
+
+##
 ## Submodule installieren und aktualisieren
 ##
 git submodule update --init --recursive
@@ -52,8 +57,6 @@ npm run compodoc
 ##
 ionic serve
 ```
-
-Sollte `ionic serve` einen Fehler ausgeben kann es daran liegen, dass ionic nicht installiert ist. Ihr könnt es z.B. mit `npm install -g cordova ionic` installieren.
 
 ## Weiterführende Informationen
 
