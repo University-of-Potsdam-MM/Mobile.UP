@@ -1,5 +1,7 @@
 # Mobile.UP
 
+![Home](screenshots/Mobile.UP_Home.png)
+
 Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.floriangoessler.upapp) und [iOS](https://itunes.apple.com/de/app/mobile.up/id541440873?mt=8).
 
 Die ganze Uni in deiner Hand: Finde dich auf dem Campus zurecht, habe immer den aktuellsten Speiseplan der Mensen dabei, hole dir Infos aus dem Vorlesungsverzeichnis, schau in deinen Stundenplan, checke deine Leistungen und vieles mehr!
