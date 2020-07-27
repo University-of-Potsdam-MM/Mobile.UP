@@ -124,7 +124,7 @@
       "componentName": "reflectUP",
       "customIcon": "./assets/icon/reflect.svg",
       "selected": false,
-      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/platforms/browser/www/",
+      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/",
       "appId": "reflectup://",
       "urlAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
       "urlIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
