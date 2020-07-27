@@ -23,7 +23,8 @@ export const routes: Routes = [
   { path: 'settings', loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule) },
   { path: 'timetable', loadChildren: () => import('./pages/timetable/timetable.module').then(m => m.TimetablePageModule) },
   { path: 'transport', loadChildren: () => import('./pages/transport/transport.module').then(m => m.TransportPageModule) },
-  { path: 'feedback', loadChildren: () => import('./pages/feedback/feedback.module').then(m => m.FeedbackPageModule) }
+  { path: 'feedback', loadChildren: () => import('./pages/feedback/feedback.module').then(m => m.FeedbackPageModule) },
+  { path: 'library-account', loadChildren: () => import('./pages/library-account/library-account.module').then(m => m.LibraryAccountPageModule) },
 ];
 
 @NgModule({

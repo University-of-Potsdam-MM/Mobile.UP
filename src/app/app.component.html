@@ -39,30 +39,31 @@
                 {{ "page.impressum.title" | translate }}
               </ion-label>
           </ion-item>
-          <ng-container *ngIf="loggedIn; then loggedInTemplate; else notLoggedInTemplate "></ng-container>
+
+          <!-- Account View -->
+          <ion-item-divider color="light">
+            <ion-label>Accounts</ion-label>
+          </ion-item-divider>
+
+          <ion-item (click)="loggedIn ? doLogout() : toLogin()">
+            <ion-label>
+              PULS
+              <ng-container *ngIf="!loggedIn">({{ "popover.notLoggedInText" | translate}})</ng-container>
+              <ng-container *ngIf="loggedIn && username">({{ username }})</ng-container>
+            </ion-label>
+            <ion-icon slot="end" [name]="loggedIn ? 'log-out' : 'log-in'"></ion-icon>
+          </ion-item>
+
+          <ion-item (click)="bibLoggedIn ? doBibLogout() : toBibLogin()">
+            <ion-label>
+              {{ "page.library-account.library" | translate }}
+              <ng-container *ngIf="!bibLoggedIn">({{ "popover.notLoggedInText" | translate}})</ng-container>
+              <ng-container *ngIf="bibLoggedIn && bibID">({{ bibID }})</ng-container>
+            </ion-label>
+            <ion-icon slot="end" [name]="bibLoggedIn ? 'log-out' : 'log-in'"></ion-icon>
+          </ion-item>
+
         </ion-item-group>
-
-        <!-- logged in -->
-        <ng-template #loggedInTemplate>
-          <ion-item-divider color="light" *ngIf="username"><ion-label>{{ "popover.loggedInText" | translate}}: {{ username }}</ion-label></ion-item-divider>
-          <ion-item (click)="doLogout()">
-              <ion-icon color="primary" name="log-out" slot="start"></ion-icon>
-              <ion-label>
-                {{ "button.logout" | translate }}
-              </ion-label>
-          </ion-item>
-        </ng-template>
-
-        <!-- not logged in -->
-        <ng-template #notLoggedInTemplate>
-          <ion-item-divider color="light"><ion-label>{{ "popover.notLoggedInText" | translate}}</ion-label></ion-item-divider>
-          <ion-item (click)="toLogin()">
-              <ion-icon color="primary" name="log-in" slot="start"></ion-icon>
-              <ion-label>
-                {{ "button.login" | translate }}
-              </ion-label>
-          </ion-item>
-        </ng-template>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="content" main></ion-router-outlet>

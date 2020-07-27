@@ -261,6 +261,7 @@ export class TimetablePage extends AbstractPage {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('alert.title.exportCalendar'),
       message: this.translate.instant('alert.exportCalendar'),
+      backdropDismiss: false,
       buttons: [
         {
           text: this.translate.instant('button.no'),
@@ -276,6 +277,7 @@ export class TimetablePage extends AbstractPage {
                 const addToExistingAlert = await this.alertCtrl.create({
                   header: this.translate.instant('alert.addToExistingHeader'),
                   message: this.translate.instant('alert.addToExistingMessage'),
+                  backdropDismiss: false,
                   buttons: [
                     {
                       text: this.translate.instant('button.no'),
@@ -319,6 +321,7 @@ export class TimetablePage extends AbstractPage {
                         const chooseCalendarAlert = await this.alertCtrl.create({
                           header: this.translate.instant('alert.title.choose'),
                           inputs: calendarInputs,
+                          backdropDismiss: false,
                           buttons: [
                             {
                               text: this.translate.instant('button.cancel'),

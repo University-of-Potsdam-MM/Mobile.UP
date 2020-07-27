@@ -197,11 +197,13 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     modal.present();
     this.modalOpen = true;
     const result = await modal.onWillDismiss();
-    if (isFavorite !== result.data.isFavoriteNew) {
-      if (result.data.isFavoriteNew) {
-        this.makeFavorite(book, undefined, true);
-      } else {
-        this.removeFavorite(book, true);
+    if (result && result.data) {
+      if (isFavorite !== result.data.isFavoriteNew) {
+        if (result.data.isFavoriteNew) {
+          this.makeFavorite(book, undefined, true);
+        } else {
+          this.removeFavorite(book, true);
+        }
       }
     }
     this.modalOpen = false;
@@ -464,6 +466,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('alert.title.clearAll'),
       message: this.translate.instant('alert.deleteAllFavs'),
+      backdropDismiss: false,
       buttons: [
         {
           text: this.translate.instant('button.no'),

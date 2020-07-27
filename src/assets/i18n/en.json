@@ -18,7 +18,7 @@
       "title": "Terms of Use"
     },
     "login":{
-      "title":"Login",
+      "title":"PULS-Login",
       "loginInProgress": "Login in progress...",
       "alreadyLoggedIn": "You are already logged in.",
       "notLoggedIn": "You are not logged in.",
@@ -31,7 +31,8 @@
       }
     },
     "logout": {
-      "title": "Logout",
+      "title": "PULS logout",
+      "bibTitle": "Library logout",
       "text": "You're about to logout.",
       "affirmativeQuestion": "Do you really want to logout?"
     },
@@ -72,8 +73,52 @@
       "examiner": "Examiner",
       "study": "Study"
     },
+    "library-account": {
+      "title": "UB Account",
+      "library": "Library",
+      "ordered": "Ordered",
+      "reserved": "Reserved",
+      "loaned": "Borrowed",
+      "provided": "Can be picked up",
+      "shelfMark": "Shelf mark",
+      "expectedUntil": "Return date",
+      "fees": "Fees",
+      "feeType": "Fee type",
+      "loanItems": "Loans",
+      "reservedItems": "Reservations",
+      "notRenewable": "Loans that are grayed out can not be renewed.",
+      "notCancable": "Reservations that are grayed out can not be cancelled.",
+      "errorLoadingItems": "There was an network error while loading user data.",
+      "daysToReturn": "Days until return date",
+      "noLoanItems": "No loans found.",
+      "noReservedItems": "No reservations found.",
+      "loan": "Loans",
+      "reservation": "Reservations",
+      "address": "Address",
+      "expires": "Expires at",
+      "changePassword": "Change password",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "newPasswordAgain": "Re-enter new password",
+      "status": {
+        "0": "active",
+        "1": "inactive",
+        "2": "inactive, account expired",
+        "3": "inactive, outstanding fees",
+        "4": "inactive, accound expired and outstandind fees"
+      },
+      "renewError": "Renewal could not be completed.",
+      "cancelError": "Cancellation could not be completed.",
+      "loginError": {
+        "0": "Card ID Number and Password don't match.",
+        "1": "There is a technical difficulty, please contact the development team.",
+        "2": "Please check your network connection.",
+        "3": "An unknown login-method has been used, please contact the development team.",
+        "4": "An unknown error has occured, please contact the development team"
+      }
+    },
     "library-search": {
-      "title": "Library search",
+      "title": "UB Research",
       "titleDetail": "Detail view",
       "copyright": "Copies and downloads of certain chapters or sites are only allowed for personal use. No distribution to third parties. No automated downloading.",
       "electronicUsage": "You have to be in the IP range (LAN, WLAN, VPN) of the University to access this ressource.",
@@ -342,6 +387,8 @@
     "keep": "Keep",
     "delete": "Delete",
     "save": "Save",
+    "renew": "Renew",
+    "stornieren": "Cancel",
     "done": "Done"
   },
   "alert": {
@@ -407,8 +454,8 @@
     "title": "Menu"
   },
   "popover":{
-    "loggedInText": "Logged in as",
-    "notLoggedInText": "Not logged in",
+    "loggedInText": "logged in as",
+    "notLoggedInText": "not logged in",
     "general": "General",
     "exportLog": "Export log"
   },
@@ -424,6 +471,9 @@
     },
     "text": {
       "login-hint": "Please use your short email address without @uni-potsdam.de to login.",
+      "login-hint-bib": "<b>Card ID Number</b><br> Students of the University of Potsdam use the number of the student ID card (PUCK). Everyone else uses the number of the library card (enter without 'UB').",
+      "login-hint-bib-firstlogin": "<b>Password for the first login</b><br> Library registration before 20.08.2019: the first three characters of your last name. For first semester students since 2019/20: Date of birth in the format DDMMYY.",
+      "password-change-hint-bib": "Beachten Sie bitte bei der Vergabe des neuen Passwortes:<br>- 8 bis 12 Zeichen<br>- mindestens 1 Kleinbuchstabe<br>- keine Umlaute<br>- mindestens 1 Zahl<br>- erlaubte Sonderzeichen: - + _ ; : ?",
       "mensa-nomeals-hint": "No meals were found that match the criteria.",
       "grades-selectDegree-hint": "Please select a degree, to which the achievements are to be displayed.",
       "grades-notSupported-hint": "This feature is not supported for your account.",
@@ -438,12 +488,15 @@
       "noInformation": "Couldn't retrieve any information.",
       "functionNotAvailable": "This function is not available for the chosen location.",
       "queryTooShort": "Please enter a longer search term.",
-      "noNews": "There are no news to be displayed."
+      "noNews": "There are no news to be displayed.",
+      "changedPassword": "Your password was changed successfully.",
+      "failedPasswordChange": "Error while changing the password."
     }
   },
   "placeholder": {
     "search": "Search...",
     "username": "Username (without @uni...)",
+    "usernameBib": "Card ID Number",
     "password": "Password",
     "calendarName": "Mobile.UP: Timetable"
   }

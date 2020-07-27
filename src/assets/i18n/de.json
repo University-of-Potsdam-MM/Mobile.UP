@@ -18,7 +18,7 @@
       "title": "Nutzungsbedingungen"
     },
     "login":{
-      "title":"Login",
+      "title":"PULS-Login",
       "loginInProgress": "Login läuft...",
       "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
       "notLoggedIn": "Sind sind nicht eingeloggt.",
@@ -31,7 +31,8 @@
       }
     },
     "logout": {
-      "title": "Logout",
+      "title": "Logout PULS",
+      "bibTitle": "Logout Bibliothek",
       "text": "Sie sind dabei sich abzumelden.",
       "affirmativeQuestion": "Wollen Sie sich wirklich abmelden?"
     },
@@ -72,8 +73,52 @@
       "examiner": "Prüfer",
       "study": "Studium"
     },
+    "library-account": {
+      "title": "UB Benutzerkonto",
+      "library": "Bibliothek",
+      "ordered": "Bestellt",
+      "reserved": "Vorgemerkt",
+      "loaned": "Ausgeliehen",
+      "provided": "Zur Abholung bereit",
+      "shelfMark": "Signatur",
+      "expectedUntil": "Ende der Leihfrist",
+      "fees": "Gebühren",
+      "feeType": "Gebührentyp",
+      "loanItems": "Entleihungen",
+      "reservedItems": "Vormerkungen",
+      "notRenewable": "Ausgegraute Entleihungen können nicht verlängert werden. (Lehrbuchsammlung, Fernleihbestellung, Sonderleihfrist oder bereits zu viele Verlängerungen)",
+      "notCancable": "Ausgegraute Vormerkungen können nicht storniert werden.",
+      "errorLoadingItems": "Beim Laden ein oder mehrerer Inhalte ist ein Fehler aufgetreten.",
+      "daysToReturn": "Tage bis Leihfristende",
+      "noLoanItems": "Keine Entleihungen vorhanden.",
+      "noReservedItems": "Keine Vormerkungen vorhanden.",
+      "loan": "Entleihungen",
+      "reservation": "Vormerkungen",
+      "address": "Adresse",
+      "expires": "Endet am",
+      "changePassword": "Passwort ändern",
+      "oldPassword": "Altes Passwort",
+      "newPassword": "Neues Passwort",
+      "newPasswordAgain": "Neues Passwort wiederholen",
+      "status": {
+        "0": "aktiv",
+        "1": "inaktiv",
+        "2": "inaktiv, Account abgelaufen",
+        "3": "inaktiv, austehende Gebühren",
+        "4": "inaktiv, Account abgelaufen und ausstehende Gebühren"
+      },
+      "renewError": "Verlängerung konnte nicht abgeschlossen werden.",
+      "cancelError": "Stornierung konnte nicht abgeschlossen werden.",
+      "loginError": {
+        "0": "Ausweisnummer und Passwort stimmen nicht überein.",
+        "1": "Ein technischer Fehler liegt vor, bitte kontaktieren Sie das Entwicklerteam.",
+        "2": "Bitte prüfen Sie Ihre Netzwerverbindung.",
+        "3": "Es wurde eine unbekannte Login-Methode verwendet, bitte kontaktieren Sie das Entwicklerteam.",
+        "4": "Es liegt ein unbekannter Fehler vor, bitte kontaktieren Sie das Entwicklerteam."
+      }
+    },
     "library-search": {
-      "title": "Bibliothekssuche",
+      "title": "UB Recherche",
       "titleDetail": "Detailansicht",
       "copyright": "Vervielfältigungen (z.B. Kopien, Downloads) sind nur von einzelnen Kapiteln oder Seiten und nur zum eigenen wissenschaftlichen Gebrauch erlaubt. Keine Weitergabe an Dritte. Kein systematisiertes Downloaden.",
       "electronicUsage": "Zur Nutzung der elektronischen Ressourcen müssen Sie sich im IP-Bereich (LAN, WLAN, VPN) der Universität befinden.",
@@ -342,6 +387,8 @@
     "keep": "Behalten",
     "delete": "Löschen",
     "save": "Speichern",
+    "renew": "Verlängern",
+    "stornieren": "Stornieren",
     "done": "Fertig"
   },
   "alert": {
@@ -407,8 +454,8 @@
     "title": "Menü"
   },
   "popover":{
-    "loggedInText": "Eingeloggt als",
-    "notLoggedInText": "Nicht eingeloggt",
+    "loggedInText": "eingeloggt als",
+    "notLoggedInText": "nicht eingeloggt",
     "general": "Allgemein",
     "exportLog": "Log exportieren"
   },
@@ -424,6 +471,9 @@
     },
     "text": {
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
+      "login-hint-bib": "<b>Ausweisnummer</b><br> Für Studierende der Universität Potsdam gilt die Ausweisnummer des Studierendenausweises (PUCK), ansonsten die Nummer der Nutzerkarte (Eingabe ohne 'UB').",
+      "login-hint-bib-firstlogin": "<b>Passwort beim Erstlogin</b><br> Bei Bibliotheksanmeldung vor dem 20.08.2019: die ersten drei Buchstaben des Nachnamens. Für Erstsemesterstudierende ab 2019/20: Geburtsdatum im Format TTMMJJ.",
+      "password-change-hint-bib": "Beachten Sie bitte bei der Vergabe des neuen Passwortes:<br>- 8 bis 12 Zeichen<br>- mindestens 1 Kleinbuchstabe<br>- keine Umlaute<br>- mindestens 1 Zahl<br>- erlaubte Sonderzeichen: - + _ ; : ?",
       "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
@@ -438,12 +488,15 @@
       "noInformation": "Informationen konnten nicht abgerufen werden.",
       "functionNotAvailable": "Diese Funktion wird für diesen Campus nicht unterstützt.",
       "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein.",
-      "noNews": "Derzeit sind keine Neuigkeiten vorhanden."
+      "noNews": "Derzeit sind keine Neuigkeiten vorhanden.",
+      "changedPassword": "Passwort wurde erfolgreich geändert.",
+      "failedPasswordChange": "Fehler beim Ändern des Passworts."
     }
   },
   "placeholder": {
     "search": "Suchbegriff eingeben...",
     "username": "Benutzername (ohne @uni...)",
+    "usernameBib": "Ausweisnummer",
     "password": "Passwort",
     "calendarName": "Mobile.UP: Stundenplan"
   }

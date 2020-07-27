@@ -3,71 +3,10 @@
   "urlIOS": "https://itunes.apple.com/de/app/mobile-up/id541440873",
   "urlAndroid": "https://play.google.com/store/apps/details?id=de.floriangoessler.upapp",
   "modules": {
-    "person-search": {
-      "componentName": "person-search",
-      "icon": "people",
-      "selected": false
-    },
-    "news": {
-      "componentName": "news",
-      "icon": "newspaper",
-      "selected": false
-    },
-    "opening-hours": {
-      "componentName": "opening-hours",
-      "icon": "time",
-      "selected": false
-    },
-    "events": {
-      "componentName": "events",
-      "icon": "calendar",
-      "selected": false,
-      "hide": true
-    },
-    "free-rooms": {
-      "componentName": "free-rooms",
-      "icon": "square-outline",
-      "selected": false
-    },
-    "feedback": {
-      "componentName": "feedback",
-      "icon": "send",
-      "selected": false
-    },
-    "roomplan": {
-      "componentName": "roomplan",
-      "icon": "grid",
-      "selected": false
-    },
-    "mensa": {
-      "componentName": "mensa",
-      "icon": "restaurant",
-      "selected": true
-    },
-    "library-search": {
-      "componentName": "library-search",
-      "icon": "bookmark",
-      "selected": false
-    },
-    "practice": {
-      "componentName": "practice",
-      "icon": "briefcase",
-      "selected": false
-    },
-    "grades": {
-      "componentName": "grades",
-      "icon": "book",
-      "selected": false
-    },
-    "emergency": {
-      "componentName": "emergency",
-      "icon": "pulse",
-      "selected": false
-    },
-    "impressum": {
-      "componentName": "impressum",
-      "icon": "information-circle",
-      "selected": false,
+    "app-info": {
+      "componentName": "app-info",
+      "icon": "info",
+      "selected": "false",
       "hide": true
     },
     "athletics": {
@@ -76,59 +15,57 @@
       "selected": false,
       "url": "https://www.uni-potsdam.de/hochschulsport/"
     },
-    "unishop": {
-      "componentName": "unishop",
-      "icon": "pricetags",
-      "selected": false,
-      "url": "https://www.unishop-potsdam.de/de/"
+    "campus-map": {
+      "componentName": "campus-map",
+      "icon": "map",
+      "selected": false
     },
-    "mail": {
-      "componentName": "mail",
-      "icon": "mail",
-      "selected": true,
-      "url": "https://mailup.uni-potsdam.de/"
+    "emergency": {
+      "componentName": "emergency",
+      "icon": "pulse",
+      "selected": false
     },
-    "reflectUP": {
-      "componentName": "reflectUP",
-      "customIcon": "./assets/icon/reflect.svg",
+    "events": {
+      "componentName": "events",
+      "icon": "calendar",
       "selected": false,
-      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/",
-      "appId": "reflectup://",
-      "urlAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
-      "urlIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
-      "bundleName": "de.unipotsdam.reflectup"
+      "hide": true
     },
-    "moodle": {
-      "componentName": "moodle",
-      "customIcon": "./assets/icon/moodle.svg",
+    "feedback": {
+      "componentName": "feedback",
+      "icon": "send",
+      "selected": false
+    },
+    "free-rooms": {
+      "componentName": "free-rooms",
+      "icon": "square-outline",
+      "selected": false
+    },
+    "grades": {
+      "componentName": "grades",
+      "icon": "book",
+      "selected": false
+    },
+    "impressum": {
+      "componentName": "impressum",
+      "icon": "information-circle",
       "selected": false,
-      "url": "https://moodle2.uni-potsdam.de/",
-      "appId": "moodlemobile://",
-      "urlAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
-      "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
-      "bundleName": "com.moodle.moodlemobile"
+      "hide": true
     },
     "lectures": {
       "componentName": "lectures",
       "icon": "bookmarks",
       "selected": false
     },
-    "settings": {
-      "componentName": "settings",
-      "icon": "settings",
-      "selected": false,
-      "hide": true
+    "library-account": {
+      "componentName": "library-account",
+      "icon": "school",
+      "selected": false
     },
-    "timetable": {
-      "componentName": "timetable",
-      "icon": "calendar",
-      "selected": true
-    },
-    "app-info": {
-      "componentName": "app-info",
-      "icon": "info",
-      "selected": "false",
-      "hide": true
+    "library-search": {
+      "componentName": "library-search",
+      "icon": "bookmark",
+      "selected": false
     },
     "login": {
       "componentName": "login",
@@ -142,15 +79,83 @@
       "selected": false,
       "hide": true
     },
+    "mail": {
+      "componentName": "mail",
+      "icon": "mail",
+      "selected": true,
+      "url": "https://mailup.uni-potsdam.de/"
+    },
+    "mensa": {
+      "componentName": "mensa",
+      "icon": "restaurant",
+      "selected": true
+    },
+    "moodle": {
+      "componentName": "moodle",
+      "customIcon": "./assets/icon/moodle.svg",
+      "selected": false,
+      "url": "https://moodle2.uni-potsdam.de/",
+      "appId": "moodlemobile://",
+      "urlAndroid": "https://play.google.com/store/apps/details?id=com.moodle.moodlemobile&hl=de",
+      "urlIOS": "https://itunes.apple.com/de/app/moodle-mobile/id633359593?mt=8",
+      "bundleName": "com.moodle.moodlemobile"
+    },
+    "news": {
+      "componentName": "news",
+      "icon": "newspaper",
+      "selected": false
+    },
+    "opening-hours": {
+      "componentName": "opening-hours",
+      "icon": "time",
+      "selected": false
+    },
+    "person-search": {
+      "componentName": "person-search",
+      "icon": "people",
+      "selected": false
+    },
+    "practice": {
+      "componentName": "practice",
+      "icon": "briefcase",
+      "selected": false
+    },
+    "reflectUP": {
+      "componentName": "reflectUP",
+      "customIcon": "./assets/icon/reflect.svg",
+      "selected": false,
+      "url": "https://musang.soft.cs.uni-potsdam.de/reflectup/",
+      "appId": "reflectup://",
+      "urlAndroid": "https://play.google.com/store/apps/details?id=de.unipotsdam.reflectup&hl=de",
+      "urlIOS": "https://itunes.apple.com/de/app/reflect-up/id930109466?mt=8",
+      "bundleName": "de.unipotsdam.reflectup"
+    },
+    "roomplan": {
+      "componentName": "roomplan",
+      "icon": "grid",
+      "selected": false
+    },
+    "settings": {
+      "componentName": "settings",
+      "icon": "settings",
+      "selected": false,
+      "hide": true
+    },
+    "timetable": {
+      "componentName": "timetable",
+      "icon": "calendar",
+      "selected": true
+    },
     "transport": {
       "componentName": "transport",
       "icon": "train",
       "selected": false
     },
-    "campus-map": {
-      "componentName": "campus-map",
-      "icon": "map",
-      "selected": false
+    "unishop": {
+      "componentName": "unishop",
+      "icon": "pricetags",
+      "selected": false,
+      "url": "https://www.unishop-potsdam.de/de/"
     }
   },
   "authorization": {
@@ -230,6 +235,15 @@
       },
       "libraryLKZ": {
         "url": "https://apiup.uni-potsdam.de/endpoints/lkzAPI/epn2lkz.php"
+      },
+      "libraryPAIA": {
+        "url": "https://apiup.uni-potsdam.de/endpoints/paiaAPI/DE-517/"
+      },
+      "libraryPAIA-direct": {
+        "url": "https://paia.gbv.de/DE-517/"
+      },
+      "libraryPAIAdev": {
+        "url": "http://xpot.gbv.de:7242/DE-517/"
       },
       "pulsGetLectureScheduleRoot": {
         "url": "https://apiup.uni-potsdam.de/endpoints/pulsAPI/2.0/getLectureScheduleRoot",

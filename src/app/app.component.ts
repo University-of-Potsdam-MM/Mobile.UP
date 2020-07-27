@@ -2,6 +2,7 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { IConfig, IBibSession } from './lib/interfaces';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { utils } from './lib/util';
 import { ConnectionService } from './services/connection/connection.service';
 
 @Component({
@@ -26,8 +28,14 @@ export class AppComponent {
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
 
   userInformation: IOIDCUserInformationResponse = null;
+
   loggedIn = false;
   username;
+
+  bibLoggedIn = false;
+  bibID;
+
+  config: IConfig;
   logger: Logger;
 
   triedToRefreshLogin = false;
@@ -44,12 +52,12 @@ export class AppComponent {
     private userSession: UserSessionService,
     private setting: SettingsService,
     private login: UPLoginProvider,
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private storage: Storage,
     private alertService: AlertService,
     private loggingService: LoggingService,
-    private connectionService: ConnectionService,
-    private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private connectionService: ConnectionService
   ) {
     this.initializeApp();
     this.logger = this.loggingService.getLogger('[/app-component]');
@@ -90,23 +98,14 @@ export class AppComponent {
     let session: ISession = await this.userSession.getSession();
 
     if (session && this.connectionService.checkOnline(true)) {
-      // helper function for determining whether session is still valid
-      const sessionIsValid = (timestampThen: Date, expiresIn: number, boundary: number) => {
-        // determine date until the token is valid
-        const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
-        const nowUnixTime = moment().unix();
-        // check if we are not past this date already with a certain boundary
-        return (validUntilUnixTime - nowUnixTime) > boundary;
-      };
-
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
-        && session.oidcTokenObject.expires_in && ConfigService.config;
+        && session.oidcTokenObject.expires_in && this.config;
       if (
         variablesNotUndefined
         && this.connectionService.checkOnline()
-        && sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
+        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
       ) {
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, ConfigService.config.authorization.oidc)
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
               oidcTokenObject:  response.oidcTokenObject,
@@ -226,10 +225,18 @@ export class AppComponent {
 
   async updateLoginStatus() {
     this.loggedIn = false;
+    this.bibLoggedIn = false;
     this.userInformation = undefined;
+    this.bibID = undefined;
     this.username = undefined;
 
     const session: ISession = await this.userSession.getSession();
+    const bibSession: IBibSession = await this.storage.get('bibSession');
+
+    if (bibSession) {
+      this.bibLoggedIn = true;
+      this.bibID = bibSession.oidcTokenObject.patron;
+    }
 
     if (session && session.credentials && session.credentials.username) {
       this.loggedIn = true;
@@ -242,6 +249,7 @@ export class AppComponent {
   close() {
     this.menuCtrl.close();
   }
+
   toHome() {
     this.close();
     this.navCtrl.navigateRoot('/home');
@@ -271,10 +279,39 @@ export class AppComponent {
     );
   }
 
+  doBibLogout() {
+    this.close();
+    const buttons: AlertButton[] = [
+      {
+        text: this.translate.instant('button.cancel'),
+      },
+      {
+        text: this.translate.instant('button.ok'),
+        handler: () => {
+          this.storage.remove('bibSession');
+          this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
+          this.updateLoginStatus();
+          this.navCtrl.navigateRoot('/home');
+        }
+      }
+    ];
+
+    this.alertService.showAlert(
+      {
+        headerI18nKey: 'page.logout.bibTitle',
+        messageI18nKey: 'page.logout.affirmativeQuestion'
+      },
+      buttons
+    );
+  }
+
   performLogout() {
     this.userSession.removeSession();
     this.userSession.removeUserInfo();
-    for (let i = 0; i < 10; i++) { this.storage.remove('studentGrades[' + i + ']'); }
+    for (let i = 0; i < 10; i++) {
+      this.storage.remove('studentGrades[' + i + ']');
+      this.storage.remove('studentGrades*');
+    }
     this.cache.clearAll();
     this.updateLoginStatus();
   }
@@ -282,6 +319,11 @@ export class AppComponent {
   toLogin() {
     this.close();
     this.navCtrl.navigateForward('/login');
+  }
+
+  toBibLogin() {
+    this.close();
+    this.navCtrl.navigateForward('/library-account');
   }
 
   toSettings() {

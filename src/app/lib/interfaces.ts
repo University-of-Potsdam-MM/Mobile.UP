@@ -3,7 +3,7 @@
 import { InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
 import * as geojson from 'geojson';
 import { IDeviceInfo } from '../services/device/device.service';
-import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC } from '../services/login-provider/interfaces';
+import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC, ICredentials } from '../services/login-provider/interfaces';
 
 /**
  * Interface for a contact with telephone number and email address
@@ -190,6 +190,21 @@ export interface ILoginConfig {
   oidc?: ILoginConfig_OIDC;
 }
 
+export interface IBibSessionResponse {
+  access_token: string;
+  expires_in: number;
+  scope: string;
+  token_type: string;
+  patron: string;
+}
+
+export interface IBibSession {
+  credentials: ICredentials;
+  token: string;
+  oidcTokenObject: IBibSessionResponse;
+  timestamp: Date;
+}
+
 export interface IModule {
   componentName: string;
   i18nKey?: string;
@@ -235,6 +250,7 @@ export interface IEndpoints {
   events: string;
   library: string;
   libraryDAIA: string;
+  libraryPAIA: string;
   libraryLKZ: string;
   puls: string;
   maps: string;
@@ -560,4 +576,53 @@ export interface IFeedback extends IDeviceInfo {
   description?: string;
   recommend?: string;
   uid?: string;
+}
+
+export interface IUBUser {
+  name: string;
+  email?: string;
+  address?: string;
+  expires?: string;
+  status?: number;
+  type?: string[];
+  note?: string;
+}
+
+export interface IUBItems {
+  doc: IUBItem[];
+}
+
+export interface IUBItem {
+  status: number;
+  item?: string;
+  edition?: string;
+  requested?: string;
+  about?: string;
+  label?: string;
+  queue?: number;
+  renewals?: number;
+  reminder?: number;
+  starttime?: string;
+  endtime?: string;
+  cancancel?: boolean;
+  canrenew?: boolean;
+  error?: string;
+  condition?: any;
+  storage?: string;
+  storageid?: string;
+}
+
+export interface IUBFees {
+  amount?: string;
+  fee?: IUBFee[];
+}
+
+export interface IUBFee {
+  amount: string;
+  date?: string;
+  about?: string;
+  item?: string;
+  edition?: string;
+  feetype?: string;
+  feeid?: string;
 }

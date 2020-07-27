@@ -88,6 +88,26 @@ ion-item {
   --button-color: white!important;
 }
 
+.modalBackButton {
+  --border-radius: 50%;
+  min-width: 48px;
+  height: 48px;
+  margin: 0;
+  --background-focused: rgba(66,66,66,0.24);
+  --background-hover: rgba(66,66,66,0.08);
+  --icon-margin-end: 0;
+  --icon-margin-start: 0;
+  --icon-font-size: 24px;
+  --icon-font-weight: normal;
+  --min-height: 32px;
+  --min-width: 44px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
 .header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before {
 	background-image:none;
 }
@@ -117,6 +137,10 @@ ion-segment-button {
 ion-back-button {
   --color: black!important;
   --ion-text-color: black!important;
+}
+
+ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color), ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
+  color: black!important;
 }
 
 .card-background-page {

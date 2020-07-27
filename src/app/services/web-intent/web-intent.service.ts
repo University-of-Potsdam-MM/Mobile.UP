@@ -74,6 +74,7 @@ export class WebIntentService implements OnInit {
       const alert = await this.alertCtrl.create({
         header: this.translate.instant('alert.title.redirect'),
         message: this.translate.instant('alert.redirect-website'),
+        backdropDismiss: false,
         buttons: [
           {
             text: this.translate.instant('button.cancel'),
@@ -125,6 +126,7 @@ export class WebIntentService implements OnInit {
               const alert = await this.alertCtrl.create({
                 header: this.translate.instant('alert.title.redirect'),
                 message: this.translate.instant('alert.redirect-website-app'),
+                backdropDismiss: false,
                 buttons: [
                   {
                     text: this.translate.instant('button.cancel'),
