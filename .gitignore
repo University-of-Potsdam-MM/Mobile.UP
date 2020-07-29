@@ -37,3 +37,4 @@ documentation/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+config.json
