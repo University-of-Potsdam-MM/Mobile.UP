@@ -159,31 +159,10 @@
     }
   },
   "authorization": {
-    "credentials": {
-      "method": "credentials",
-      "moodleLoginEndpoint": "https://apiup.uni-potsdam.de/endpoints/moodleAPI/1.0/login/token.php",
-      "accessToken": "Bearer 031a83e6-a122-3735-99e0-9986dcee99a0",
-      "service": "moodle_mobile_app",
-      "moodlewsrestformat": "json"
-    },
-    "sso": {
-      "ssoUrls": {
-        "pluginUrl": "https://moodle2.uni-potsdam.de/local/mobile/launch.php",
-        "login": "https://moodle2.uni-potsdam.de/login/index.php",
-        "tokenUrl": "moodlemobile://token=",
-        "idpBaseUrl": "https://idp.uni-potsdam.de/idp/profile/SAML2/Redirect/SSO",
-        "idpUrl": "https://idp.uni-potsdam.de/idp/Authn/UserPassword",
-        "attributeReleaseUrl": "https://idp.uni-potsdam.de/idp/uApprove/AttributeRelease",
-        "pluginUrlParams": {
-          "service": "local_mobile",
-          "passport": "1002"
-        }
-      }
-    },
     "oidc": {
       "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
       "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
-      "accessToken": "Basic Vk9hQmRLT2N0U1FraTRmcFpZdWRXOTZQSDc0YTpWSXA2aXhmMVBZTXdRUE0xcUxhUnliNVQ4Nllh",
+      "accessToken": "[BASIC_AUTH_STRING]",
       "contentType": "application/x-www-form-urlencoded",
       "grantType_password": "password",
       "grantType_refresh": "refresh_token",
@@ -301,7 +280,7 @@
         "cachingTTL": 604800
       }
     },
-    "apiToken": "Bearer c58bcde9-973d-37ff-8290-c57a82b73daf",
+    "apiToken": "[ACCESS_TOKEN]",
     "defaultCachingTTL": 7200,
     "cacheGroupKeySuffix": "Group"
   },
