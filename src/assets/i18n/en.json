@@ -242,10 +242,10 @@
           "lbl": "Redirection to external services"
         },
         "showDialog": {
-          "lbl": "Show dialog"
+          "lbl": "Show hint-dialog"
         },
         "appRedirect": {
-          "lbl": "Open external apps"
+          "lbl": "Open website or app?"
         },
         "inpractice": {
           "lbl": "In practice"
@@ -420,7 +420,7 @@
     "token_valid_credentials_invalid": "Your login credentials seem invalid. Please login again.",
     "redirect-website": "Redirect to external website?",
     "redirect-website-app": "Redirect to external app?",
-    "redirect-first-start": "Which services should open an external app instead of a website?",
+    "redirect-first-start": "You can change this in the settings later.",
     "contact-export-success": "Contact saved!",
     "contact-export-fail": "Failed to save contact.",
     "contact-exists": "Contact already exists.",
