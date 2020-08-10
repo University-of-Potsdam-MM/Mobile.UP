@@ -83,12 +83,12 @@ export const SETTINGS = [
     },
     {
         key: 'appRedirect',
-        value: [],
+        value: ['Website'],
         options: [
-            {key: 'Moodle.UP'},
-            {key: 'Reflect.UP'}
+            {key: 'Website'},
+            {key: 'App'}
         ],
-        type: ESettingType.checkbox,
+        type: ESettingType.string_radio,
         icon: 'logo-apple-appstore',
         mobileOnly: true
     }

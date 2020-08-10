@@ -72,8 +72,7 @@ export class WebIntentService implements OnInit {
     if (showDialog) {
       // ask for permission to open Module externaly
       const alert = await this.alertCtrl.create({
-        header: this.translate.instant('alert.title.redirect'),
-        message: this.translate.instant('alert.redirect-website'),
+        header: this.translate.instant('alert.redirect-website'),
         backdropDismiss: false,
         buttons: [
           {
@@ -100,10 +99,13 @@ export class WebIntentService implements OnInit {
    */
   async handleWebIntentForModule(moduleConfig: IModule) {
     if (moduleConfig) {
-      if (this.platform.is('cordova') && moduleConfig.urlIOS && moduleConfig.urlAndroid) {
+      if (
+        this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android')) &&
+        moduleConfig.urlIOS && moduleConfig.urlAndroid
+      ) {
 
         if (moduleConfig.appId) {
-          const setPreference = await this.storage.get('setExternalAppPreference');
+          const setPreference = await this.storage.get('setUserPreferenceWebsiteOrApp');
 
           if (setPreference === null) {
             this.alertAppPreferences(moduleConfig);
@@ -111,21 +113,15 @@ export class WebIntentService implements OnInit {
           }
 
           const showDialog = await this.settingsProvider.getSettingValue('showDialog');
-          const appRedirectArray = await this.settingsProvider.getSettingValue('appRedirect');
-          const moduleName = this.translate.instant('page.' + moduleConfig.componentName + '.title');
-          let appRedirect = false;
+          const userPreferenceWebsiteOrApp = await this.settingsProvider.getSettingValue('appRedirect');
 
-          if (
-            appRedirectArray
-            && Array.isArray(appRedirectArray)
-            && utils.isInArray(appRedirectArray, moduleName)
-          ) { appRedirect = true; }
+          let appRedirect = false;
+          if (userPreferenceWebsiteOrApp == 'App') { appRedirect = true; }
 
           if (showDialog) {
             if (appRedirect) {
               const alert = await this.alertCtrl.create({
-                header: this.translate.instant('alert.title.redirect'),
-                message: this.translate.instant('alert.redirect-website-app'),
+                header: this.translate.instant('alert.redirect-website-app'),
                 backdropDismiss: false,
                 buttons: [
                   {
@@ -264,49 +260,51 @@ export class WebIntentService implements OnInit {
       backdropDismiss: false,
       inputs: [
         {
-          name: 'Moodle.UP',
-          type: 'checkbox',
-          label: 'Moodle.UP',
-          value: 'Moodle.UP',
-          checked: false
+          name: 'Website',
+          type: 'radio',
+          label: 'Website',
+          value: 'Website',
+          checked: true
         },
         {
-          name: 'Reflect.UP',
-          type: 'checkbox',
-          label: 'Reflect.UP',
-          value: 'Reflect.UP',
+          name: 'App',
+          type: 'radio',
+          label: 'App',
+          value: 'App',
           checked: false
         }
       ],
       buttons: [
         {
+          text: this.translate.instant('button.cancel'),
+          role: 'cancel',
+          handler: () => {
+            return;
+          }
+        },
+        {
           text: this.translate.instant('button.save'),
-          handler: () => { this.storage.set('setExternalAppPreference', true); }
+          handler: (decision) => {
+            this.storage.set('setUserPreferenceWebsiteOrApp', true);
+
+            const settings: ISetting[] = Constants.SETTINGS;
+            let setting: ISetting;
+            for (let i = 0; i < settings.length; i++) {
+              if (settings[i].key === 'appRedirect') {
+                setting = settings[i];
+              }
+            }
+
+            setting.value = decision;
+            this.logger.debug('saveSettings', 'saved setting', setting, decision);
+            this.storage.set('settings.' + setting.key, setting).then(() => {
+              this.handleWebIntentForModule(moduleConfig);
+            });
+          }
         }
       ]
     });
-
-    await alert.present();
-    const result = await alert.onWillDismiss();
-
-    let value = [];
-    if (result && result.data && result.data.values) {
-      value = result.data.values;
-    }
-
-    const settings: ISetting[] = Constants.SETTINGS;
-    let setting: ISetting;
-    for (let i = 0; i < settings.length; i++) {
-      if (settings[i].key === 'appRedirect') {
-        setting = settings[i];
-      }
-    }
-
-    setting.value = value;
-    this.logger.debug('saveSettings', 'saved setting', setting, value);
-    this.storage.set('settings.' + setting.key, setting).then(() => {
-      this.handleWebIntentForModule(moduleConfig);
-    });
+    alert.present();
   }
 
 }
