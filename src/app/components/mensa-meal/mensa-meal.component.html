@@ -24,9 +24,9 @@
       </p>
       <h2 *ngIf="meal.description">{{ meal.description }}</h2>
     </ion-label>
-    <ion-icon [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'" slot="end"></ion-icon>
+    <ion-icon *ngIf="(meal.prices || (allergen && allergen.length > 0))" [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'" slot="end"></ion-icon>
   </ion-item>
-  <ion-item *ngIf="mealIsExpanded[i]" class="mealDescription">
+  <ion-item *ngIf="mealIsExpanded[i] && (meal.prices || (allergen && allergen.length > 0))" class="mealDescription">
     <ion-thumbnail *ngIf="meal.type" name="" slot="start"></ion-thumbnail>
     <ion-label class="ion-text-wrap">
       <span *ngIf="meal.prices && meal.prices.student">{{ "page.mensa.students" | translate }}: {{ formatPrices(meal.prices.student) }}</span> <br *ngIf="meal.prices && meal.prices.student">

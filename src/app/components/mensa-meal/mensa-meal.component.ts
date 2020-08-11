@@ -33,23 +33,25 @@ export class MensaMealComponent implements OnInit {
   }
 
   expandMeal(i) {
-    if (this.mealIsExpanded[i]) {
-      this.mealIsExpanded[i] = false;
-      if (this.meals[i].allergens) {
-        for (let k = 0; k < this.meals[i].allergens.length; k++) {
-          this.allergenIsExpanded[i][k] = false;
-        }
-      }
-    } else {
-      for (let j = 0; j < this.meals.length; j++) {
-        this.mealIsExpanded[j] = false;
-        if (this.meals[j].allergens) {
-          for (let k = 0; k < this.meals[j].allergens.length; k++) {
-            this.allergenIsExpanded[j][k] = false;
+    if (this.meals[i].prices || (this.meals[i].allergens && this.meals[i].allergens.length > 0)) {
+      if (this.mealIsExpanded[i]) {
+        this.mealIsExpanded[i] = false;
+        if (this.meals[i].allergens) {
+          for (let k = 0; k < this.meals[i].allergens.length; k++) {
+            this.allergenIsExpanded[i][k] = false;
           }
         }
+      } else {
+        for (let j = 0; j < this.meals.length; j++) {
+          this.mealIsExpanded[j] = false;
+          if (this.meals[j].allergens) {
+            for (let k = 0; k < this.meals[j].allergens.length; k++) {
+              this.allergenIsExpanded[j][k] = false;
+            }
+          }
+        }
+        this.mealIsExpanded[i] = true;
       }
-      this.mealIsExpanded[i] = true;
     }
   }
 
