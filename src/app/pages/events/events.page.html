@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-button (click)="openEventWebsite()" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="globe"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadEvents(true)" slot="end" fill="clear">
+      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.events.title" | translate }}</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="listOfPlaces && listOfPlaces.length > 1 && !networkError">
+    <ion-row class="filters">
+      <ion-col class="col-with-arrow ion-no-padding" size="1">
+        <ion-icon *ngIf="showLeftButton" (click)="slidePrev()" name="caret-back"></ion-icon>
+      </ion-col>
+      <ion-col class="ion-no-padding" size="10">
+        <ion-slides [options]="slideOptions">
+          <ion-slide (click)="setPlace(i)" *ngFor="let place of listOfPlaces; let i = index">
+            <ion-segment-button [class.selected]="selectedPlace === i">{{ place }}</ion-segment-button>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col class="col-with-arrow ion-no-padding" size="1">
+        <ion-icon *ngIf="showRightButton" (click)="slideNext()" name="caret-forward"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-no-padding" (swipe)="swipeListOfPlaces($event)">
+
+  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadEvents($event)">
+    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+
+  <div *ngFor="let event of listOfEvents">
+    <app-event-view *ngIf="event.Place.name == listOfPlaces[selectedPlace]" [event]="event"></app-event-view>
+  </div>
+
+  <div *ngIf="isLoaded && listOfEvents.length == 0 && !networkError">
+    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noEvents"></app-hint-box>
+  </div>
+
+</ion-content>

@@ -1,3 +1,37 @@
-<p>
-  event-view works!
-</p>
+<ion-grid>
+  <ion-row class="event">
+    <ion-col>
+      <ion-card>
+        <ion-card-header class="ion-text-wrap">
+          <h3>{{ event.Event.name }}</h3>
+          <h4>
+            <ion-row>
+              <ion-col size="1"><ion-icon name="time" color="primary"></ion-icon></ion-col>
+              <ion-col size="11">{{ dateString }}</ion-col>
+            </ion-row>
+          </h4>
+          <h4>
+            <ion-row>
+              <ion-col size="1"><ion-icon name="pin" color="primary"></ion-icon></ion-col>
+              <ion-col size="11">{{ eventVenue }}</ion-col>
+            </ion-row>
+          </h4>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div *ngIf="showDescription" [innerHTML]="event.Event.description"></div>
+
+          <div align="right">
+            <ion-button *ngIf="!showDescription" fill="clear" size="small" (click)="toggleDescription()">
+              {{ "button.showMore" | translate }}
+            </ion-button>
+            <ion-button *ngIf="showDescription" fill="clear" size="small" (click)="toggleDescription()">
+              {{ "button.showLess" | translate }}
+            </ion-button>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -212,6 +212,7 @@ export interface IModule {
   selected?: boolean;
   hide?: boolean;
   url?: string;
+  additionalUrl?:string;
   appId?: string;
   urlAndroid?: string;
   urlIOS?: string;
@@ -292,12 +293,20 @@ export interface INewsVars {
   request: INewsRequest;
   news?: INewsArticle[];
   newsSources?: INewsSources;
-  events?: INewsEventsObject[];
-  places?: INewsPlaces;
   requestMethod: string;
   browser: INewsBrowser;
   isAjax: boolean;
   loggedIn: boolean;
+}
+
+export interface IEventApiResponse {
+  vars: IEventVars;
+  errors: INewsErrors;
+}
+
+export interface IEventVars {
+  events: INewsEventsObject[];
+  places: INewsPlaces;
 }
 
 export interface INewsErrors {
@@ -352,7 +361,7 @@ export interface INewsArticleSource {
 export interface INewsEventsObject {
   Event: INewsEventsData;
   Place: INewsEventsPlace;
-  Link: string;
+  Link?: string;
 }
 
 export interface INewsPlaces {

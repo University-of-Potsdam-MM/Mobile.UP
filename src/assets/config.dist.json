@@ -27,9 +27,10 @@
     },
     "events": {
       "componentName": "events",
-      "icon": "calendar",
+      "icon": "bonfire",
       "selected": false,
-      "hide": true
+      "hide": false,
+      "additionalUrl": "https://www.uni-potsdam.de/de/veranstaltungen"
     },
     "feedback": {
       "componentName": "feedback",
@@ -143,7 +144,7 @@
     },
     "timetable": {
       "componentName": "timetable",
-      "icon": "calendar",
+      "icon": "today",
       "selected": true
     },
     "transport": {
@@ -203,7 +204,7 @@
         "cachingEnabled": false
       },
       "events": {
-        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/json/events/"
+        "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/events/from/"
       },
       "library": {
         "url": "https://apiup.uni-potsdam.de/endpoints/libraryAPI/",

@@ -489,6 +489,7 @@
       "functionNotAvailable": "Diese Funktion wird für diesen Campus nicht unterstützt.",
       "queryTooShort": "Bitte geben Sie einen längeren Suchbegriff ein.",
       "noNews": "Derzeit sind keine Neuigkeiten vorhanden.",
+      "noEvents": "Derzeit gibt es keine bevorstehenden Events.",
       "changedPassword": "Passwort wurde erfolgreich geändert.",
       "failedPasswordChange": "Fehler beim Ändern des Passworts."
     }

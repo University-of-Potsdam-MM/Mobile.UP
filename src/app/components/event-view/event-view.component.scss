@@ -1,0 +1,35 @@
+ion-row.event {
+    border-bottom:1px solid #ededed;
+}
+
+ion-card {
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+
+    h3 {
+        font-size: 0.9rem;
+        color: var(--ion-color-primary);
+    }
+
+    h4 {
+        font-size: 0.8rem;
+        color: black;
+        font-weight: 500;
+        margin-top: 0px;
+        margin-bottom: 5px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+ion-card-header {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 5px;
+}
+
+ion-card-content {
+    font-size: 0.85rem;
+}

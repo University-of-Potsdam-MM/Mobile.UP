@@ -489,6 +489,7 @@
       "functionNotAvailable": "This function is not available for the chosen location.",
       "queryTooShort": "Please enter a longer search term.",
       "noNews": "There are no news to be displayed.",
+      "noEvents": "There are no events to be displayed.",
       "changedPassword": "Your password was changed successfully.",
       "failedPasswordChange": "Error while changing the password."
     }

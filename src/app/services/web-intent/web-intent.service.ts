@@ -9,7 +9,6 @@ import { UserSessionService } from '../user-session/user-session.service';
 import { ISession } from '../login-provider/interfaces';
 import { SettingsService } from '../settings/settings.service';
 import { Logger, LoggingService } from 'ionic-logging-service';
-import { utils } from 'src/app/lib/util';
 import { Storage } from '@ionic/storage';
 import * as Constants from '../../services/settings/settings_config';
 

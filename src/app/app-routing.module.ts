@@ -25,6 +25,7 @@ export const routes: Routes = [
   { path: 'transport', loadChildren: () => import('./pages/transport/transport.module').then(m => m.TransportPageModule) },
   { path: 'feedback', loadChildren: () => import('./pages/feedback/feedback.module').then(m => m.FeedbackPageModule) },
   { path: 'library-account', loadChildren: () => import('./pages/library-account/library-account.module').then(m => m.LibraryAccountPageModule) },
+  { path: 'events', loadChildren: () => import('./pages/events/events.module').then( m => m.EventsPageModule) },
 ];
 
 @NgModule({

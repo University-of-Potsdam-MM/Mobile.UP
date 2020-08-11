@@ -114,7 +114,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         .append('Authorization', ConfigService.config.webservices.apiToken);
 
       this.http.post(this.endpoint + 'auth/login', body, { headers: headers }).subscribe((data: IBibSessionResponse) => {
-        console.log(data);
         this.bibSession = {
           credentials: this.loginCredentials,
           token: data.access_token,

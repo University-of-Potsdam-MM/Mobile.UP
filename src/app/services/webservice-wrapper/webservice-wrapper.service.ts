@@ -19,6 +19,7 @@ import { switchMap } from 'rxjs/operators';
 import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../connection/connection.service';
 import { Storage } from '@ionic/storage';
+import * as moment from 'moment';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -269,6 +270,15 @@ export class WebserviceWrapperService {
     },
     news: {
       buildRequest: (params, url) => {
+        return this.http.get(
+          url,
+          {headers: this.apiTokenHeader}
+        );
+      }
+    },
+    events: {
+      buildRequest: (params, url) => {
+        url += moment().unix();
         return this.http.get(
           url,
           {headers: this.apiTokenHeader}
