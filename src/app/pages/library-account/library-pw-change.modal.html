@@ -28,7 +28,7 @@
         <br>
 
         <div align="right" class="ion-padding-end">
-            <ion-icon [name]="pwVisibility == 'password' ? 'eye' : 'eye-off'" (click)="togglePwVisibility()" style="font-size: x-large;"></ion-icon>
+            <ion-icon [name]="pwVisibility == 'password' ? 'eye' : 'eye-off'" class="linkItem" (click)="togglePwVisibility()" style="font-size: x-large;"></ion-icon>
         </div>
 
         <app-hint-box hintTypeI18nKey="hints.type.hint"

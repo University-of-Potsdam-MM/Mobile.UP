@@ -1,5 +1,5 @@
 <div *ngFor="let meal of meals; let i = index">
-  <ion-item *ngIf="checkConditions(i)" (click)="expandMeal(i)" [ngClass]="{'noborder': mealIsExpanded[i]}">
+  <ion-item *ngIf="checkConditions(i)" button (click)="expandMeal(i)" [ngClass]="{'noborder': mealIsExpanded[i]}">
     <ion-thumbnail slot="start" *ngIf="meal.type && meal.type.length == 1">
       <span *ngFor="let type of meal.type">
         <span *ngFor="let icon of iconMapping">

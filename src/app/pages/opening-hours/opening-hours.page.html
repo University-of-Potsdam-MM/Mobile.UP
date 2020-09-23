@@ -36,7 +36,7 @@
   <ion-list>
     <span *ngFor="let item of openingHours; let i = index">
       <ng-container *ngIf="!item.unknownState">
-        <ion-item detail *ngIf="item.state; else closedLocation" (click)="itemSelected(item, i)">
+        <ion-item detail *ngIf="item.state; else closedLocation" button (click)="itemSelected(item, i)">
           <ion-label>
             <h3>{{ item.name }}</h3>
             <p style="color: green">
@@ -48,7 +48,7 @@
           <ion-icon name="alert-circle" *ngIf="item.displayWarning" slot="end" style="font-size: large"></ion-icon>
         </ion-item>
         <ng-template #closedLocation>
-          <ion-item detail (click)="itemSelected(item, i)">
+          <ion-item detail button (click)="itemSelected(item, i)">
             <ion-label>
               <h3>{{ item.name }}</h3>
               <p style="color: red">
@@ -62,7 +62,7 @@
         </ng-template>
       </ng-container>
       <ng-container *ngIf="item.unknownState">
-        <ion-item detail (click)="itemSelected(item, i)">
+        <ion-item detail button (click)="itemSelected(item, i)">
           <ion-label>
             <h3>{{ item.name }}</h3>
             <p style="color: blue">

@@ -11,7 +11,7 @@
 
     <ion-list class="showSysInfo">
 
-      <ion-item (click)="showContactPerson = !showContactPerson">
+      <ion-item button (click)="showContactPerson = !showContactPerson">
         <ion-label>
           <b>{{ "page.app-info.contact" | translate }}</b>
         </ion-label>
@@ -22,7 +22,7 @@
           <ion-label class="ion-text-wrap">
             <b>Ulrike Lucke</b><br>
             Universität Potsdam<br>
-            <div class="link" (click)="callMap('Haus 4 Institut für Informatik, August-Bebel-Str. 89, 14482 Potsdam')">
+            <div class="link linkItem" (click)="callMap('Haus 4 Institut für Informatik, August-Bebel-Str. 89, 14482 Potsdam')">
               Institut für Informatik & Computational Science<br>
               August-Bebel-Str. 89<br>
               14482 Potsdam<br>
@@ -30,7 +30,7 @@
           </ion-label>
         </ion-item>
       </span>
-      <ion-item (click)="showParticipationInfo = !showParticipationInfo">
+      <ion-item button (click)="showParticipationInfo = !showParticipationInfo">
         <ion-label>
           <b>{{ "page.app-info.participate" | translate }}</b>
         </ion-label>
@@ -46,7 +46,7 @@
           </ion-label>
         </ion-item>
       </span>
-      <ion-item class="sysHeader" (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo && (deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel)">
+      <ion-item class="sysHeader" button (click)="showSysInfo = !showSysInfo" *ngIf="deviceInfo && (deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel)">
         <ion-label>
           <b>{{ "page.app-info.app" | translate }}</b>
         </ion-label>
@@ -75,7 +75,7 @@
           <ion-label><h2>{{ "page.app-info.model" | translate }}</h2><p>{{ deviceInfo.deviceModel }}</p></ion-label>
         </ion-item>
       </span>
-      <ion-item (click)="showLibraryInfo = !showLibraryInfo">
+      <ion-item button (click)="showLibraryInfo = !showLibraryInfo">
         <ion-label>
           <b>{{ "page.app-info.libraries" | translate }}</b>
         </ion-label>
@@ -91,7 +91,7 @@
         </ion-item>
       </span>
       <ion-item-divider color="light"><ion-label>Log</ion-label></ion-item-divider>
-      <ion-item (click)="exportLog()">
+      <ion-item button (click)="exportLog()">
         <ion-icon color="primary" name="bug" slot="start"></ion-icon>
         <ion-label>
           {{ "popover.exportLog" | translate }}

@@ -15,7 +15,7 @@
   </ion-card-content>
 
 </ion-card>
-<div align="right" *ngIf="error" (click)="showErrorDetails()">
+<div align="right" *ngIf="error" class="linkItem" (click)="showErrorDetails()">
   <ion-label *ngIf="!showError">{{ "alert.httpErrorStatus.moreInformation" | translate }}</ion-label>
   <ion-label *ngIf="showError">{{ "alert.httpErrorStatus.lessInformation" | translate }}</ion-label>
 </div>

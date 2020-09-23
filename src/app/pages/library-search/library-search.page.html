@@ -59,10 +59,10 @@
     <ion-list *ngIf="bookList && bookList.length > 0">
       <span *ngFor="let book of bookList; let i = index">
         <ion-item-sliding #slidingItem>
-            <app-book-list (click)="bookDetailView(book)"
+            <app-book-list class="linkItem" (click)="bookDetailView(book)"
             [book]="book" [i]="i+1"></app-book-list>
             <ion-item-options>
-              <ion-item-option (click)="makeFavorite(book, slidingItem)">
+              <ion-item-option button (click)="makeFavorite(book, slidingItem)">
                   <!-- <ion-icon name="star"></ion-icon> -->
                   <span class="notUnderlined">{{ "button.fav" | translate }}</span>
               </ion-item-option>
@@ -84,10 +84,10 @@
     <ion-list *ngIf="displayedFavorites && displayedFavorites.length > 0">
       <span *ngFor="let book of displayedFavorites; let i = index">
         <ion-item-sliding>
-            <app-book-list (click)="bookDetailView(book)"
+            <app-book-list class="linkItem" (click)="bookDetailView(book)"
             [book]="book" [i]="i+1"></app-book-list>
             <ion-item-options>
-              <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(book)">
+              <ion-item-option color="secondary" class="removeFavButton" button (click)="removeFavorite(book)">
                   <!-- <ion-icon name="star-outline"></ion-icon> -->
                   <span class="notUnderlined">{{ "button.remove" | translate }}</span>
               </ion-item-option>

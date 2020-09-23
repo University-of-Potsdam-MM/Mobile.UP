@@ -36,7 +36,7 @@
             <ion-label>
                 <h2>Website</h2>
 
-                <p (click)="openURL(item.link)">
+                <p class="linkItem" (click)="openURL(item.link)">
                     <a style="text-decoration: underline;">{{ item.link }}</a>
                 </p>
             </ion-label>
@@ -53,7 +53,7 @@
             <ion-label class="ion-text-wrap">
                 <h2>Tel.</h2>
 
-                <p (click)="callContact(item.telephone)">
+                <p class="linkItem" (click)="callContact(item.telephone)">
                     <a style="text-decoration: underline;">{{ item.telephone }}</a>
                 </p>
             </ion-label>

@@ -250,3 +250,9 @@ ion-content.modalOpened, ion-content.disableScrolling {
   }
 
 }
+
+// letting the browser know which elements are clickable
+
+.linkItem {
+  cursor: pointer;
+}

@@ -58,7 +58,7 @@
     <ion-list class="favList">
       <div *ngFor="let ADS of displayedFavorites; let i = index">
         <ion-item-sliding>
-          <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
+          <ion-item button (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
             <ion-label>
               <h3 class="ion-text-wrap">{{ADS.title}}</h3>
               <ion-grid>
@@ -73,7 +73,7 @@
           </ion-item>
 
           <ion-item-options slot="end">
-            <ion-item-option color="secondary" class="removeFavButton" (click)="removeFavorite(ADS)">
+            <ion-item-option color="secondary" class="removeFavButton" button (click)="removeFavorite(ADS)">
               <!-- <ion-icon name="star-outline"></ion-icon> -->
               <span class="notUnderlined">{{ "button.remove" | translate }}</span>
             </ion-item-option>
@@ -87,7 +87,7 @@
     <ion-list>
       <div *ngFor="let ADS of displayedList; let i = index">
         <ion-item-sliding #slidingItem>
-          <ion-item (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
+          <ion-item button (click)="itemSelected(ADS)" [ngClass]="{'partner': ADS.partner!='0'}">
             <ion-label>
               <h3 class="ion-text-wrap">{{ADS.title}}</h3>
               <ion-grid>
@@ -102,7 +102,7 @@
           </ion-item>
 
           <ion-item-options slot="end">
-            <ion-item-option color="primary" (click)="makeFavorite(ADS, slidingItem)">
+            <ion-item-option color="primary" button (click)="makeFavorite(ADS, slidingItem)">
               <!-- <ion-icon name="star"></ion-icon> -->
               <span class="notUnderlined">{{ "button.fav" | translate }}</span>
             </ion-item-option>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
-    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadEmergencyCalls(true)" slot="end" fill="clear">
+    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" button (click)="loadEmergencyCalls(true)" slot="end" fill="clear">
       <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
     </ion-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
@@ -36,7 +36,7 @@
     <span *ngFor="let emergencyCall of displayedList">
       <ion-item-sliding>
         <!-- template for emergencyCalls -->
-        <ion-item (click)="expand(emergencyCall)" [ngClass]="{'noborder': emergencyCall.expanded}">
+        <ion-item button (click)="expand(emergencyCall)" [ngClass]="{'noborder': emergencyCall.expanded}">
           <ion-icon color="primary" name="people" slot="start"></ion-icon>
           <ion-label class="ion-text-wrap">
             <h2>{{emergencyCall.name}}</h2>
@@ -46,15 +46,15 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option (click)="openMail(emergencyCall.contact.mail)" color="primary" *ngIf="emergencyCall.contact.mail">
+          <ion-item-option button (click)="openMail(emergencyCall.contact.mail)" color="primary" *ngIf="emergencyCall.contact.mail">
             <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
             <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
-          <ion-item-option (click)="callContact(emergencyCall.contact.telephone)" color="secondary" *ngIf="emergencyCall.contact.telephone">
+          <ion-item-option button (click)="callContact(emergencyCall.contact.telephone)" color="secondary" *ngIf="emergencyCall.contact.telephone">
             <!-- <ion-icon name="call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }}</a>
           </ion-item-option>
-          <ion-item-option (click)="exportContact(emergencyCall)" color="medium" *ngIf="cordova">
+          <ion-item-option button (click)="exportContact(emergencyCall)" color="medium" *ngIf="cordova">
             <!-- <ion-icon name="person-add"></ion-icon> -->
             <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
@@ -78,7 +78,7 @@
                 <ion-icon color="primary" name="call"></ion-icon>
               </ion-col>
               <ion-col>
-                <a (click)="callContact(emergencyCall.contact.telephone)" style="text-decoration: underline">{{emergencyCall.contact.telephone}}</a>
+                <a class="linkItem" (click)="callContact(emergencyCall.contact.telephone)" style="text-decoration: underline">{{emergencyCall.contact.telephone}}</a>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="emergencyCall.address && (emergencyCall.address.street || emergencyCall.address.postal)">
@@ -86,7 +86,7 @@
                 <ion-icon color="primary" name="home"></ion-icon>
               </ion-col>
               <ion-col>
-                <a (click)="callMap(emergencyCall)" class="link" class="ion-text-wrap">
+                <a (click)="callMap(emergencyCall)" class="link linkItem" class="ion-text-wrap">
                   <span *ngIf="emergencyCall.address.street">{{emergencyCall.address.street}}</span>
                   <span *ngIf="emergencyCall.address.postal && emergencyCall.address.street">, </span>
                   <span *ngIf="emergencyCall.address.postal">{{emergencyCall.address.postal}}</span>

@@ -51,7 +51,7 @@
       </ion-select>
     </ion-item>
     <ion-list>
-      <ion-item *ngFor="let result of searchResults; let i = index" (click)="openItem(i)">
+      <ion-item *ngFor="let result of searchResults; let i = index" button (click)="openItem(i)">
         <ion-label class="ion-text-wrap">
           {{ unescapeHTML(result) }}
         </ion-label>

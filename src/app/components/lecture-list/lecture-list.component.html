@@ -10,7 +10,7 @@ lectureSchedule
 && lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode
 ">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleRoot.rootNode.childNodes.childNode)" [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'">
-      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" (click)="expandChild(childNode)">
+      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'" button (click)="expandChild(childNode)">
           <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
@@ -27,7 +27,7 @@ lectureSchedule
 && lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode
 ">
   <div *ngFor="let childNode of convertToArray(lectureSchedule.lectureScheduleSubTree.currentNode.childNodes.childNode); let last = last" [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'">
-      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" (click)="expandChild(childNode)">
+      <ion-item [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'" button (click)="expandChild(childNode)">
           <ion-label class="ion-text-wrap">
             {{ htmlDecode(childNode.headerName) }}
           </ion-label>
@@ -43,7 +43,7 @@ lectureSchedule
 && lectureSchedule.lectureScheduleCourses.currentNode.courses
 && lectureSchedule.lectureScheduleCourses.currentNode.courses.course">
   <div *ngFor="let course of convertToArray(lectureSchedule.lectureScheduleCourses.currentNode.courses.course); let last = last" [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'">
-      <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" (click)="expandCourse(course)">
+      <ion-item [ngClass]="!isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'" button (click)="expandCourse(course)">
           <ion-label class="ion-text-wrap">
             {{ course.courseType }}: {{ htmlDecode(course.courseName) }}
           </ion-label>

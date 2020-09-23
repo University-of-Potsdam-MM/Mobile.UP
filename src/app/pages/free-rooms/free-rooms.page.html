@@ -30,7 +30,7 @@
   <ng-template #housesFoundTemplate>
     <ion-list>
       <div *ngFor="let house of housesFound">
-        <ion-item (click)="expand(house.lbl)">
+        <ion-item button (click)="expand(house.lbl)">
           <ion-label class="ion-no-margin ion-text-wrap">
             <h2>
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>

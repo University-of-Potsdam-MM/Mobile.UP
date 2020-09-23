@@ -60,7 +60,7 @@
         </ion-item>
         <ion-item *ngIf="ADS.file != ''">
             <ion-label class="ion-text-wrap">
-                <h2><ion-icon name="document"></ion-icon> <a (click)="openPdfLink(ADS.file)">{{ "page.practice.item.jobPosting" | translate }}</a></h2>
+                <h2><ion-icon name="document"></ion-icon> <a class="linkItem" (click)="openPdfLink(ADS.file)">{{ "page.practice.item.jobPosting" | translate }}</a></h2>
             </ion-label>
         </ion-item>
     </ion-list>

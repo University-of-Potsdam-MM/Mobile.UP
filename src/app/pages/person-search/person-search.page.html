@@ -28,7 +28,7 @@
   <ion-list *ngIf="!error" lines="none">
     <span *ngFor="let person of personsFound">
       <ion-item-sliding>
-        <ion-item (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
+        <ion-item button (click)="expandPerson(person)" [ngClass]="{'noborder': person.expanded}">
           <ion-icon color="primary" slot="start" name="person"></ion-icon>
           <ion-label class="ion-text-wrap">
             <h2>{{person.Initials}} {{person.First_Name}} {{person.Last_Name}}</h2>
@@ -38,15 +38,15 @@
         </ion-item>
 
         <ion-item-options slot="end">
-          <ion-item-option (click)="openMail(person.Email)" color="primary" *ngIf="person.Email != ''">
+          <ion-item-option button (click)="openMail(person.Email)" color="primary" *ngIf="person.Email != ''">
               <!-- <ion-icon name="mail" style="color: white"></ion-icon> -->
               <a class="notUnderlined whiteFont">Mail</a>
           </ion-item-option>
-          <ion-item-option (click)="callContact(person.Extension)" color="secondary" *ngIf="person.Extension != ''">
+          <ion-item-option button (click)="callContact(person.Extension)" color="secondary" *ngIf="person.Extension != ''">
             <!-- <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon> -->
             <a class="notUnderlined">{{ "button.call" | translate }} </a>
           </ion-item-option>
-          <ion-item-option (click)="exportContact(person)" color="medium" *ngIf="cordova">
+          <ion-item-option button (click)="exportContact(person)" color="medium" *ngIf="cordova">
             <!-- <ion-icon name="person-add"></ion-icon> -->
             <a class="notUnderlined">{{ "button.add" | translate }}</a>
           </ion-item-option>
@@ -63,7 +63,7 @@
             <ion-row *ngIf="person.Extension != ''">
               <ion-col size="auto"><ion-icon color="primary" name="call" margin-right></ion-icon></ion-col>
               <ion-col>
-                  <a (click)="callContact(person.Extension)" style="text-decoration: underline">{{person.Extension}}</a>
+                  <a class="linkItem" (click)="callContact(person.Extension)" style="text-decoration: underline">{{person.Extension}}</a>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="person.Room_Name != ''">

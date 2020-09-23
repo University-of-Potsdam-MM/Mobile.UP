@@ -69,7 +69,7 @@
             <ion-label class="ion-text-wrap">
                 <h2>{{ "page.library-search.keywords" | translate }}</h2>
                 <p class="list" *ngFor="let keyword of bookDetails.keywords">
-                    <span class="link item" (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</span>
+                    <span class="linkItem" (click)="webIntent.permissionPromptWebsite('https://opac.ub.uni-potsdam.de/DB=1/SET=25/TTL=2/CMD?ACT=SRCHA&IKT=46&SRT=YOP&TRM='+keyword)">{{ keyword }}</span>
                 </p>
             </ion-label>
         </ion-item>
