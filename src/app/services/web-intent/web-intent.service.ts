@@ -162,7 +162,7 @@ export class WebIntentService implements OnInit {
   private async handleWebIntentForWebsite(url: string) {
     this.session = await this.userSession.getSession();
 
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       this.safariOrChrome.isAvailable().then((available: boolean) => {
         if (available) {
           this.openWithSafariOrChrome(url);
@@ -177,7 +177,7 @@ export class WebIntentService implements OnInit {
    * @param {string} url
    */
   private openWithInAppBrowser(url: string) {
-    const target = '_blank';
+    const target = '_system';
     this.inAppBrowser.create(url, target, this.options);
   }
 

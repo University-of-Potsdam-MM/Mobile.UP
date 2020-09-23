@@ -31,7 +31,7 @@ export class MobileUPErrorHandler implements ErrorHandler {
   handleError(error) {
 
     let uuid = 'none';
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       uuid = this.device.uuid;
     }
 

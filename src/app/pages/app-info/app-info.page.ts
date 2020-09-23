@@ -48,7 +48,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
   }
 
   async exportLog() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       const deviceInfo = this.deviceService.getDeviceInfo();
       deviceInfo.appVersion = await this.storage.get('appVersion');
       const userInformation: IOIDCUserInformationResponse = await this.userSession.getUserInfo();

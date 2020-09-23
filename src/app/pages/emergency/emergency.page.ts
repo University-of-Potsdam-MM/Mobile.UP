@@ -39,7 +39,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
   }
 
   ngOnInit() {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       this.cordova = true;
     }
 
@@ -154,7 +154,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
    * @param {EmergencyCall} emergencyCall
    */
   exportContact(emergencyCall: EmergencyCall) {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       const contact: Contact = this.contacts.create();
 
       contact.name = new ContactName(null, emergencyCall.name);
@@ -253,7 +253,7 @@ export class EmergencyPage  extends AbstractPage implements OnInit {
    * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
    */
   callContact(number: string) {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       this.callNumber.callNumber(number, true)
       .then(() => this.logger.debug('callContact', 'dialer launched'))
       .catch((error) => this.logger.error('callContact', error));

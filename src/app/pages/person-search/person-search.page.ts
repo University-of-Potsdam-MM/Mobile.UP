@@ -35,7 +35,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     private ws: WebserviceWrapperService
   ) {
     super({ optionalNetwork: true, requireSession: true });
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       this.cordova = true;
     }
   }
@@ -155,7 +155,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
    * @param {IPerson} person
    */
   exportContact(person: IPerson) {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       const contact: Contact = this.contacts.create();
 
       contact.name = new ContactName(null, person.Last_Name, person.First_Name);
@@ -253,7 +253,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
    * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
    */
   callContact(number: string) {
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       this.callNumber.callNumber(number, true)
       .then(() => this.logger.debug('callContact', 'dialer launched'))
       .catch((error) => this.logger.error('callContact', error));
