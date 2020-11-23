@@ -9,6 +9,7 @@ import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { IPersonsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-person-search',
@@ -265,7 +266,8 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
   refreshToken(searchAfterRefresh?: boolean) {
     if (this.session && this.session.credentials && this.session.credentials.password && this.session.credentials.username) {
       this.logger.debug('refreshToken', 're-authenticating...');
-      this.login.oidcLogin(this.session.credentials, this.config.authorization.oidc).subscribe(sessionRes => {
+      let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
+      this.login.oidcLogin(this.session.credentials, oidcObject).subscribe(sessionRes => {
         this.logger.debug('refreshToken', 're-authenticating successfull');
         this.sessionProvider.setSession(sessionRes);
         this.session = sessionRes;

@@ -188,6 +188,7 @@ export interface ILoginConfig {
   credentials?: ILoginConfig_Credentials;
   sso?: ILoginConfig_SSO;
   oidc?: ILoginConfig_OIDC;
+  oidc_new?: ILoginConfig_OIDC;
 }
 
 export interface IBibSessionResponse {
@@ -228,6 +229,7 @@ export interface IModule {
 export interface IWebServices {
   endpoint: {[name: string]: IEndpoint};
   apiToken: string;
+  apiTokenNew: string;
   defaultCachingTTL: number;
   cacheGroupKeySuffix: string;
 }

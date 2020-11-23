@@ -45,7 +45,6 @@ export abstract class AbstractPage  {
     protected activatedRoute: ActivatedRoute;
     protected menu: MenuController;
     protected navCtrl: NavController;
-    protected config: IConfig;
     protected loggingService: LoggingService;
     protected router: Router;
     protected webIntent: WebIntentService;
@@ -68,8 +67,6 @@ export abstract class AbstractPage  {
       this.platform = injector.get<Platform>(Platform as Type<Platform>);
 
       this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
-
-      this.config = ConfigService.config;
 
       if (pageOptions) { this.processOptions(pageOptions); }
 

@@ -10,6 +10,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { AppComponent } from 'src/app/app.component';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-login',
@@ -59,10 +60,12 @@ export class LoginPage extends AbstractPage {
 
       this.showLoading();
 
+      let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
+
       // prepare Observable for use in switch
       const session: Observable<ISession> = this.upLogin.oidcLogin(
         this.autoCorrectUsername(this.loginCredentials),
-        this.config.authorization.oidc
+        oidcObject
       );
 
       if (session) {
@@ -80,7 +83,7 @@ export class LoginPage extends AbstractPage {
             this.endLoading();
 
             // in the meantime get user information and save it to storage
-            this.upLogin.oidcGetUserInformation(sessionRes, this.config.authorization.oidc).subscribe(
+            this.upLogin.oidcGetUserInformation(sessionRes, oidcObject).subscribe(
               (userInformation: IOIDCUserInformationResponse) => {
                 this.sessionProvider.setUserInfo(userInformation);
               }, error => {

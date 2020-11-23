@@ -37,7 +37,7 @@ import { LoggingService } from 'ionic-logging-service';
 import { environment } from 'src/environments/environment';
 import { File } from '@ionic-native/file/ngx';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
-import {GridsterModule} from 'angular-gridster2';
+import { GridsterModule } from 'angular-gridster2';
 
 export function configureLogging(loggingService: LoggingService): () => void {
   return () => loggingService.configure(environment.logging);
@@ -53,6 +53,10 @@ export function initConfig(config: ConfigService) {
 
 export function initEmergency(config: ConfigService) {
   return () => config.loadEmergency('assets/json/emergency.json');
+}
+
+export function initApiManagerStatus(config: ConfigService) {
+  return () => config.loadApiManagerStatus();
 }
 
 @Injectable({
@@ -130,6 +134,12 @@ export class IonicGestureConfig extends HammerGestureConfig {
     {
       provide: APP_INITIALIZER,
       useFactory: initEmergency,
+      deps: [ConfigService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initApiManagerStatus,
       deps: [ConfigService],
       multi: true
     },

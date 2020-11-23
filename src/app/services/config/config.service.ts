@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IConfig, EmergencyCall } from 'src/app/lib/interfaces';
 import { Logger, LoggingService } from 'ionic-logging-service';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,11 @@ export class ConfigService {
   static config: IConfig;
   static emergency: EmergencyCall[];
   logger: Logger;
+  static isApiManagerUpdated: boolean;
 
   constructor(
     private http: HttpClient,
+    private storage: Storage,
     private loggingService: LoggingService
     ) {
       this.logger = this.loggingService.getLogger('[/config-service]');
@@ -49,8 +52,21 @@ export class ConfigService {
       ).catch(
         (response: any) => {
           reject(`Could not load file '${uri}'`);
-          this.logger.error('load', response);
+          this.logger.error('loadEmergency', response);
         });
+    });
+  }
+
+  loadApiManagerStatus() {
+    return new Promise<void>((resolve, reject) => {
+      this.storage.get("isApiManagerUpdated").then(response => {
+        //ConfigService.isApiManagerUpdated = response ? true : false;
+        ConfigService.isApiManagerUpdated = true;
+        resolve();
+      }).catch(error => {
+        reject("Could not load api manager status");
+        this.logger.error("loadApiManagerStatus", error);
+      })
     });
   }
 }

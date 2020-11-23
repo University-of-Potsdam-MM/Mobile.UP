@@ -81,7 +81,7 @@ install_dependencies:
     - npm install -g cordova-res --unsafe-perm
     - npm install -D -E @angular/cli
   script:
-    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
+    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
     - ionic cordova platform add android
     - ionic cordova prepare android
     - ionic cordova build android --prod --release
@@ -127,7 +127,7 @@ android-production:
   script:
     - npm remove -g ionic
     - npm install -g cordova @ionic/cli
-    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
+    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
     # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
     - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
     - perl -pi -e 's|OpenStreetMap-Mitwirkende|<a href="//www.openstreetmap.org/copyright" target="_blank">OpenStreetMap-Mitwirkende</a>|g' src/app/pages/campus-map/campus-map.page.ts

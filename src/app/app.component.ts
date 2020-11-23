@@ -35,7 +35,6 @@ export class AppComponent {
   bibLoggedIn = false;
   bibID;
 
-  config: IConfig;
   logger: Logger;
 
   triedToRefreshLogin = false;
@@ -99,13 +98,15 @@ export class AppComponent {
 
     if (session && this.connectionService.checkOnline(true)) {
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
-        && session.oidcTokenObject.expires_in && this.config;
+        && session.oidcTokenObject.expires_in && ConfigService.config;
       if (
         variablesNotUndefined
         && this.connectionService.checkOnline()
-        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
+        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
+        let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
+
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, oidcObject)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
               oidcTokenObject:  response.oidcTokenObject,
@@ -116,7 +117,7 @@ export class AppComponent {
 
             this.userSession.setSession(newSession);
 
-            this.login.oidcGetUserInformation(newSession, ConfigService.config.authorization.oidc).subscribe(userInformation => {
+            this.login.oidcGetUserInformation(newSession, oidcObject).subscribe(userInformation => {
               this.userSession.setUserInfo(userInformation);
             }, error => {
               this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
@@ -128,12 +129,12 @@ export class AppComponent {
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
-                this.login.oidcLogin(session.credentials, ConfigService.config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(session.credentials, oidcObject).subscribe(sessionRes => {
                   this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
 
-                  this.login.oidcGetUserInformation(sessionRes, ConfigService.config.authorization.oidc).subscribe(userInformation => {
+                  this.login.oidcGetUserInformation(sessionRes, oidcObject).subscribe(userInformation => {
                     this.userSession.setUserInfo(userInformation);
                   }, error => {
                     this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);

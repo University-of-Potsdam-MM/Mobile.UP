@@ -171,6 +171,18 @@
       "userInfoParams": {
         "schema": "openid"
       }
+    },
+    "oidc_new": {
+      "tokenUrl": "https://apiup.uni-potsdam.de/endpoints/token",
+      "userInformationUrl": "https://apiup.uni-potsdam.de/oauth2/userinfo?schema=openid",
+      "accessToken": "[BASIC_AUTH_STRING_NEW]",
+      "contentType": "application/x-www-form-urlencoded",
+      "grantType_password": "password",
+      "grantType_refresh": "refresh_token",
+      "scope": "openid",
+      "userInfoParams": {
+        "schema": "openid"
+      }
     }
   },
   "webservices": {
@@ -282,6 +294,7 @@
       }
     },
     "apiToken": "[ACCESS_TOKEN]",
+    "apiTokenNew": "[ACCESS_TOKEN_NEW]",
     "defaultCachingTTL": 7200,
     "cacheGroupKeySuffix": "Group"
   },

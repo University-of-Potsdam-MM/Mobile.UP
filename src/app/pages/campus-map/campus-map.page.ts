@@ -450,8 +450,8 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * @param {string | name} query
    */
   queryCampus(query: string | number) {
-    if (this.config.campus) {
-      return this.config.campus.find(
+    if (ConfigService.config.campus) {
+      return ConfigService.config.campus.find(
         (campus: ICampus) => {
           return campus.location_id === query
             || campus.location_id === query.toString()
