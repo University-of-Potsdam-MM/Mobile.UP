@@ -295,7 +295,7 @@ export class WebserviceWrapperService {
     },
     logging: {
       buildRequest: (errorObject, url) => {
-        return this.http.get(
+        return this.http.post(
           url,
           {
             headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
