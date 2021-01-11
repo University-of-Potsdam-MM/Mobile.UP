@@ -112,16 +112,21 @@ export class WebserviceWrapperService {
    */
   private defaults = {
     // by default the response will be passed on
-    responseCallback: (response: any, wsName) => {
+    responseCallback: (response: any, wsName, usingUpdatedApiManager: boolean) => {
       const stringResponse = JSON.stringify(response);
       if (stringResponse.length > 30000) {
         this.logger.debug('responseCallback', `calling '${wsName}': `, stringResponse.substring(0, 30000));
-      } else { this.logger.debug('responseCallback', `calling '${wsName}': `, response); }
+        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+      } else {
+        this.logger.debug('responseCallback', `calling '${wsName}': `, response);
+        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+      }
       return response;
     },
     // by default in case of an error the error will be passed on
-    errorCallback: async (error, wsName) => {
+    errorCallback: async (error, wsName, usingUpdatedApiManager) => {
       this.logger.error('errorCallback', `calling '${wsName}': `, error);
+      this.logger.error("USING NEW API MANAGER: " + usingUpdatedApiManager);
       await this.storage.set('latestWebserviceError', error);
 
       return error;
@@ -528,11 +533,11 @@ export class WebserviceWrapperService {
       observer => {
         request.subscribe(
           response => {
-            observer.next(ws.responseCallback(response, webserviceName));
+            observer.next(ws.responseCallback(response, webserviceName, ConfigService.isApiManagerUpdated));
             observer.complete();
           },
           error => {
-            observer.error(ws.errorCallback(error, webserviceName));
+            observer.error(ws.errorCallback(error, webserviceName, ConfigService.isApiManagerUpdated));
           }
         );
       }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IConfig, EmergencyCall } from 'src/app/lib/interfaces';
 import { Logger, LoggingService } from 'ionic-logging-service';
-import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,6 @@ export class ConfigService {
 
   constructor(
     private http: HttpClient,
-    private storage: Storage,
     private loggingService: LoggingService
     ) {
       this.logger = this.loggingService.getLogger('[/config-service]');
@@ -59,14 +57,22 @@ export class ConfigService {
 
   loadApiManagerStatus() {
     return new Promise<void>((resolve, reject) => {
-      this.storage.get("isApiManagerUpdated").then(response => {
-        //ConfigService.isApiManagerUpdated = response ? true : false;
-        ConfigService.isApiManagerUpdated = true;
-        resolve();
-      }).catch(error => {
+      this.http.get('https://apiup.uni-potsdam.de/endpoints/services/Version', { responseType: 'text' }).subscribe(apiManagerVersion => {
+
+        if (apiManagerVersion.includes('WSO2 API Manager-2.1.0')) {
+          ConfigService.isApiManagerUpdated = false;
+          this.logger.debug('API Manager is not updated yet.');
+          resolve();
+        } else {
+          ConfigService.isApiManagerUpdated = true;
+          this.logger.debug('API Manager is updated.');
+          resolve();
+        }
+
+      }, error => {
+        this.logger.error('loadApiManagerStatus', error);
         reject("Could not load api manager status");
-        this.logger.error("loadApiManagerStatus", error);
-      })
+      });
     });
   }
 }
