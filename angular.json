@@ -18,6 +18,13 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
+            "allowedCommonJsDependencies": [
+              "xml2js",
+              "leaflet-search",
+              "opening_hours",
+              "jquery",
+              "hammerjs"
+           ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               {
