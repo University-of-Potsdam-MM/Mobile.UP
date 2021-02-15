@@ -102,7 +102,7 @@ export class AppComponent {
       if (
         variablesNotUndefined
         && this.connectionService.checkOnline()
-        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
+        // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
         let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
 
