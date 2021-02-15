@@ -71,7 +71,9 @@ export class ConfigService {
 
       }, error => {
         this.logger.error('loadApiManagerStatus', error);
-        reject("Could not load api manager status");
+        ConfigService.isApiManagerUpdated = false;
+        this.logger.debug('API Manager status could not be loaded // is not updated yet.');
+        resolve();
       });
     });
   }

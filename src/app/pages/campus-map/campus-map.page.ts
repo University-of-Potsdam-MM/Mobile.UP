@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IMapsResponseObject, ICampus, IMapsResponse } from 'src/app/lib/interfaces';
-import { Geolocation, PositionError } from '@ionic-native/geolocation/ngx';
+import { Geolocation, Geoposition, PositionError } from '@ionic-native/geolocation/ngx';
 import { ModalController, IonSearchbar } from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
@@ -311,7 +311,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    * is heading.
    * @param position {Position}
    */
-  setPosition(position: Position) {
+  setPosition(position: Geoposition) {
     // remove existing circle, if there is one
     if (this.positionCircle) {
       this.map.removeLayer(this.positionCircle);
@@ -364,7 +364,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
    */
   enableGeolocation(enableCallback, disableCallback) {
     this.geoLocationWatch = this.location.watchPosition().subscribe(
-      (positionResponse: Position & PositionError) => {
+      (positionResponse: Geoposition & PositionError) => {
         if (!positionResponse.code) {
           this.setPosition(positionResponse);
           enableCallback();
