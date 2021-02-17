@@ -20,7 +20,7 @@ export interface IWebservice {
    * that the corresponding page can use directly
    * @param response
    */
-  responseCallback?: (response: any, name: string) => any;
+  responseCallback?: (response: any, name: string, isUsingUpdatedApiManager: boolean) => any;
   /**
    * function that will be used as callback function for the http requests error
    * callback.
@@ -28,7 +28,7 @@ export interface IWebservice {
    * because that is something that can easily be checked.
    * @param error
    */
-  errorCallback?: (error: any, name: string) => any;
+  errorCallback?: (error: any, name: string, isUsingUpdatedApiManager: boolean) => any;
 }
 
 export interface ICachingOptions {

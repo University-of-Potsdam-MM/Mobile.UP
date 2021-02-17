@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { AlertService } from '../../services/alert/alert.service';
-import { IConfig } from '../../lib/interfaces';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
-import { ConfigService } from '../../services/config/config.service';
 import { utils } from '../../lib/util';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
@@ -15,7 +13,6 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
 export class BookDetailModalPage implements OnInit {
 
   activeSegment = 'location';
-  config: IConfig;
   showLocation = true;
   showDetails = false;
   showShortAbstract = true;
@@ -50,7 +47,6 @@ export class BookDetailModalPage implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.config = ConfigService.config;
     this.updateLocation();
     this.updateDetails();
   }

@@ -5,8 +5,6 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { EmailComposer } from '@ionic-native/email-composer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Storage } from '@ionic/storage';
-import { UserSessionService } from 'src/app/services/user-session/user-session.service';
-import { IOIDCUserInformationResponse } from 'src/app/services/login-provider/interfaces';
 // @ts-ignore - this works
 import * as packageJson from '../../../../package.json';
 
@@ -30,8 +28,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
     private deviceService: DeviceService,
     private file: File,
     private emailComposer: EmailComposer,
-    private storage: Storage,
-    private userSession: UserSessionService
+    private storage: Storage
   ) {
     super();
   }
@@ -51,10 +48,8 @@ export class AppInfoPage extends AbstractPage implements OnInit {
     if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
       const deviceInfo = this.deviceService.getDeviceInfo();
       deviceInfo.appVersion = await this.storage.get('appVersion');
-      const userInformation: IOIDCUserInformationResponse = await this.userSession.getUserInfo();
       const body = JSON.stringify(deviceInfo);
       let subject = 'Log Export (' + new Date().toLocaleString() + ')';
-      if (userInformation) { subject = userInformation.name + ': ' + subject; }
 
       this.file.writeFile(this.file.cacheDirectory, 'log.txt', localStorage.getItem('localLogStorage'), { replace: true })
         .then(response => {

@@ -6,6 +6,7 @@ import { AbstractPage } from 'src/app/lib/abstract-page';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 
 @Component({
@@ -82,14 +83,14 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   async checkAppUpdate() {
-    const remoteConfigUrl = this.config.webservices.endpoint.config.url;
+    const remoteConfigUrl = ConfigService.config.webservices.endpoint.config.url;
 
     await this.nativeHTTP.setServerTrustMode('nocheck');
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);
       if (remoteConfig && remoteConfig.appVersion) {
         const remoteVersion = remoteConfig.appVersion;
-        const localVersion = this.config.appVersion;
+        const localVersion = ConfigService.config.appVersion;
 
         this.logger.debug('checkAppUpdate', 'App Version: ' + localVersion + ' / ' + remoteVersion);
 
@@ -108,8 +109,8 @@ export class HomePage extends AbstractPage implements OnInit {
                 icon: 'appstore',
                 handler: () => {
                   if (this.platform.is('android')) {
-                    this.inAppBrowser.create(this.config.urlAndroid, '_system');
-                  } else { this.inAppBrowser.create(this.config.urlIOS, '_system'); }
+                    this.inAppBrowser.create(ConfigService.config.urlAndroid, '_system');
+                  } else { this.inAppBrowser.create(ConfigService.config.urlIOS, '_system'); }
                 }
               }
             ]
@@ -172,7 +173,7 @@ export class HomePage extends AbstractPage implements OnInit {
    */
   buildDefaultModulesList(): {[modulesName: string]: IModule} {
     const moduleList: {[modulesName: string]: IModule} = {};
-    const modules = this.config.modules;
+    const modules = ConfigService.config.modules;
 
     for (const moduleName in modules) {
       if (modules.hasOwnProperty(moduleName)) {

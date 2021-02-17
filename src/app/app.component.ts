@@ -2,7 +2,7 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IConfig, IBibSession } from './lib/interfaces';
+import { IBibSession } from './lib/interfaces';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,14 +10,14 @@ import { CacheService } from 'ionic-cache';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { SettingsService } from './services/settings/settings.service';
 import { ConfigService } from './services/config/config.service';
-import { IOIDCUserInformationResponse, ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
+import { ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
 import { UPLoginProvider } from './services/login-provider/login';
 import { Router } from '@angular/router';
 import { AlertService } from './services/alert/alert.service';
 import { AlertButton } from '@ionic/core';
 import { Logger, LoggingService } from 'ionic-logging-service';
-import { utils } from './lib/util';
 import { ConnectionService } from './services/connection/connection.service';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-root',
@@ -27,15 +27,14 @@ export class AppComponent {
 
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
 
-  userInformation: IOIDCUserInformationResponse = null;
 
   loggedIn = false;
   username;
+  fullName;
 
   bibLoggedIn = false;
   bibID;
 
-  config: IConfig;
   logger: Logger;
 
   triedToRefreshLogin = false;
@@ -99,13 +98,15 @@ export class AppComponent {
 
     if (session && this.connectionService.checkOnline(true)) {
       const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
-        && session.oidcTokenObject.expires_in && this.config;
+        && session.oidcTokenObject.expires_in && ConfigService.config;
       if (
         variablesNotUndefined
         && this.connectionService.checkOnline()
-        && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, this.config.general.tokenRefreshBoundary)
+        // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, this.config.authorization.oidc)
+        let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
+
+        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, oidcObject)
           .subscribe((response: IOIDCRefreshResponseObject) => {
             const newSession = {
               oidcTokenObject:  response.oidcTokenObject,
@@ -115,12 +116,6 @@ export class AppComponent {
             };
 
             this.userSession.setSession(newSession);
-
-            this.login.oidcGetUserInformation(newSession, ConfigService.config.authorization.oidc).subscribe(userInformation => {
-              this.userSession.setUserInfo(userInformation);
-            }, error => {
-              this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
-            });
           }, response => {
             this.logger.error('checkSessionValidity', 'error refreshing token', response);
 
@@ -128,16 +123,10 @@ export class AppComponent {
               // refresh token expired; f.e. if user logs into a second device
               if (session.credentials && session.credentials.password && session.credentials.username) {
                 this.logger.debug('checkSessionValidity', 're-authenticating...');
-                this.login.oidcLogin(session.credentials, ConfigService.config.authorization.oidc).subscribe(sessionRes => {
+                this.login.oidcLogin(session.credentials, oidcObject).subscribe(sessionRes => {
                   this.logger.debug('checkSessionValidity', 're-authenticating successful');
                   this.userSession.setSession(sessionRes);
                   session = sessionRes;
-
-                  this.login.oidcGetUserInformation(sessionRes, ConfigService.config.authorization.oidc).subscribe(userInformation => {
-                    this.userSession.setUserInfo(userInformation);
-                  }, error => {
-                    this.logger.error('checkSessionValidity', 'oidcGetUserInformation', error);
-                  });
                 }, error => {
                   this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
                   this.loginExpired();
@@ -226,9 +215,9 @@ export class AppComponent {
   async updateLoginStatus() {
     this.loggedIn = false;
     this.bibLoggedIn = false;
-    this.userInformation = undefined;
     this.bibID = undefined;
     this.username = undefined;
+    this.fullName = undefined;
 
     const session: ISession = await this.userSession.getSession();
     const bibSession: IBibSession = await this.storage.get('bibSession');
@@ -241,9 +230,15 @@ export class AppComponent {
     if (session && session.credentials && session.credentials.username) {
       this.loggedIn = true;
       this.username = session.credentials.username;
+
+      if (session.oidcTokenObject && session.oidcTokenObject.id_token) {
+        let decoded = jwt_decode(session.oidcTokenObject.id_token);
+        if (decoded['name']) {
+          this.fullName = decoded['name'];
+        }
+      }
     }
 
-    this.userInformation = await this.userSession.getUserInfo();
   }
 
   close() {
@@ -307,11 +302,11 @@ export class AppComponent {
 
   performLogout() {
     this.userSession.removeSession();
-    this.userSession.removeUserInfo();
     for (let i = 0; i < 10; i++) {
       this.storage.remove('studentGrades[' + i + ']');
       this.storage.remove('studentGrades*');
     }
+    this.storage.remove('userInformation');
     this.cache.clearAll();
     this.updateLoginStatus();
   }

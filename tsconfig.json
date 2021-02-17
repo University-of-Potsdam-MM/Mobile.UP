@@ -18,6 +18,10 @@
       "dom"
     ]
   },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
   "exclude": [
     "node_modules",
     "src/**/*.spec.ts",

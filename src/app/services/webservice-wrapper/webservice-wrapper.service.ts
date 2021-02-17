@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IConfig } from '../../lib/interfaces';
 import { ConfigService } from '../config/config.service';
 import { from, Observable } from 'rxjs';
 import { CacheService } from 'ionic-cache';
@@ -91,16 +90,20 @@ function createRoomParams(params: IRoomsRequestParams) {
 })
 export class WebserviceWrapperService {
 
-  private config: IConfig = ConfigService.config;
-
   /**
    * oftenly used header, can be used in buildRequest functions
    */
-  private apiTokenHeader = {Authorization: this.config.webservices.apiToken};
+  private apiTokenHeader = { Authorization: ConfigService.config.webservices.apiToken };
+  private apiTokenHeaderNew = { apikey: ConfigService.config.webservices.apiTokenNew }
 
   private pulsHeaders = {
     'Content-Type': 'application/json',
-    'Authorization': this.config.webservices.apiToken
+    'Authorization': ConfigService.config.webservices.apiToken
+  };
+
+  private pulsHeadersNew = {
+    'Content-Type': 'application/json',
+    'apikey': ConfigService.config.webservices.apiTokenNew
   };
 
   /**
@@ -109,16 +112,21 @@ export class WebserviceWrapperService {
    */
   private defaults = {
     // by default the response will be passed on
-    responseCallback: (response: any, wsName) => {
+    responseCallback: (response: any, wsName, usingUpdatedApiManager: boolean) => {
       const stringResponse = JSON.stringify(response);
       if (stringResponse.length > 30000) {
         this.logger.debug('responseCallback', `calling '${wsName}': `, stringResponse.substring(0, 30000));
-      } else { this.logger.debug('responseCallback', `calling '${wsName}': `, response); }
+        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+      } else {
+        this.logger.debug('responseCallback', `calling '${wsName}': `, response);
+        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+      }
       return response;
     },
     // by default in case of an error the error will be passed on
-    errorCallback: async (error, wsName) => {
+    errorCallback: async (error, wsName, usingUpdatedApiManager) => {
       this.logger.error('errorCallback', `calling '${wsName}': `, error);
+      this.logger.error("USING NEW API MANAGER: " + usingUpdatedApiManager);
       await this.storage.set('latestWebserviceError', error);
 
       return error;
@@ -138,7 +146,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader
           }
         );
       }
@@ -148,7 +156,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: {location: params.campus_canteen_name}
           }
         );
@@ -171,7 +179,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: createRoomParams(params)
           }
         );
@@ -182,7 +190,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: createRoomParams(params)
           }
         );
@@ -193,7 +201,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: {
               operation: 'searchRetrieve',
               query: requestParams.query,
@@ -211,7 +219,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: {
               id: params.id,
               format: 'json'
@@ -232,7 +240,7 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) => {
         return this.http.get(
           url,
-          {headers: this.apiTokenHeader}
+          {headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader}
         );
       }
     },
@@ -240,7 +248,7 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) => {
         return this.http.get(
           url,
-          { headers: this.apiTokenHeader }
+          { headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader }
         );
       }
     },
@@ -249,7 +257,7 @@ export class WebserviceWrapperService {
         return this.http.get(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: {
               maxJourneys: params.maxJourneys,
               format: 'json',
@@ -264,7 +272,7 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) => {
         return this.http.get(
           url,
-          {headers: this.apiTokenHeader}
+          {headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader}
         );
       }
     },
@@ -272,7 +280,7 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) => {
         return this.http.get(
           url,
-          {headers: this.apiTokenHeader}
+          {headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader}
         );
       }
     },
@@ -281,16 +289,16 @@ export class WebserviceWrapperService {
         url += moment().unix();
         return this.http.get(
           url,
-          {headers: this.apiTokenHeader}
+          {headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader}
         );
       }
     },
     logging: {
       buildRequest: (errorObject, url) => {
-        return this.http.get(
+        return this.http.post(
           url,
           {
-            headers: this.apiTokenHeader,
+            headers: ConfigService.isApiManagerUpdated ? this.apiTokenHeaderNew : this.apiTokenHeader,
             params: errorObject
           }
         );
@@ -302,10 +310,7 @@ export class WebserviceWrapperService {
           url,
           request,
           {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: this.apiTokenHeader.Authorization
-            }
+            headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders
           }
         );
       }
@@ -315,15 +320,15 @@ export class WebserviceWrapperService {
         let lat = '';
         let lon = '';
         if (
-          this.config
-          && this.config.campus
-          && this.config.campus[0]
-          && this.config.campus[0].coordinates
-          && this.config.campus[0].coordinates[0]
-          && this.config.campus[0].coordinates[1]
+          ConfigService.config
+          && ConfigService.config.campus
+          && ConfigService.config.campus[0]
+          && ConfigService.config.campus[0].coordinates
+          && ConfigService.config.campus[0].coordinates[0]
+          && ConfigService.config.campus[0].coordinates[1]
         ) {
-          lat = this.config.campus[0].coordinates[0].toString();
-          lon = this.config.campus[0].coordinates[1].toString();
+          lat = ConfigService.config.campus[0].coordinates[0].toString();
+          lon = ConfigService.config.campus[0].coordinates[1].toString();
         }
         return this.http.get(
           url,
@@ -343,7 +348,7 @@ export class WebserviceWrapperService {
         return this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
           url,
           {condition: {semester: 0}},
-          {headers: this.pulsHeaders}
+          {headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders}
         );
       }
     },
@@ -357,7 +362,7 @@ export class WebserviceWrapperService {
             }
           },
           {
-            headers: this.pulsHeaders
+            headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders
           }
         );
       },
@@ -368,7 +373,7 @@ export class WebserviceWrapperService {
         return this.http.post(
           url,
           {condition: {headerId: params.headerId}},
-          {headers: this.pulsHeaders}
+          {headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders}
         );
       }
     },
@@ -377,7 +382,7 @@ export class WebserviceWrapperService {
         return this.http.post(
           url,
           {condition: {headerId: params.headerId}},
-          {headers: this.pulsHeaders}
+          {headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders}
         );
       }
     },
@@ -386,7 +391,7 @@ export class WebserviceWrapperService {
         return this.http.post(
           url,
           {condition: {courseId: params.courseId}},
-          {headers: this.pulsHeaders}
+          {headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders}
         );
       }
     },
@@ -398,7 +403,7 @@ export class WebserviceWrapperService {
             username: params.session.credentials.username,
             password: params.session.credentials.password
           }},
-          {headers: this.pulsHeaders}
+          {headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders}
         );
       },
       responseCallback: (response) => this.pulsResponseCallback(response, 'pulsGetPersonalStudyAreas')
@@ -419,7 +424,7 @@ export class WebserviceWrapperService {
             }
           },
           {
-            headers: this.pulsHeaders
+            headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders
           }
         );
       }
@@ -440,7 +445,7 @@ export class WebserviceWrapperService {
             }
           },
           {
-            headers: this.pulsHeaders
+            headers: ConfigService.isApiManagerUpdated ? this.pulsHeadersNew : this.pulsHeaders
           }
         );
       }
@@ -508,16 +513,16 @@ export class WebserviceWrapperService {
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
 
-    if (!this.config.webservices.endpoint.hasOwnProperty(webserviceName)) {
+    if (!ConfigService.config.webservices.endpoint.hasOwnProperty(webserviceName)) {
       this.logger.error('call', `no endpoint defined for '${webserviceName}'`);
     }
 
-    if (!this.config.webservices.endpoint[webserviceName].hasOwnProperty('url')) {
+    if (!ConfigService.config.webservices.endpoint[webserviceName].hasOwnProperty('url')) {
       this.logger.error('call', `no url defined for endpoint '${webserviceName}'`);
     }
 
     // shortcut for less repetition
-    const endpoint = this.config.webservices.endpoint[webserviceName];
+    const endpoint = ConfigService.config.webservices.endpoint[webserviceName];
 
     // create the request by calling the defined buildRequest function
     const request = ws.buildRequest(params, endpoint.url);
@@ -528,11 +533,11 @@ export class WebserviceWrapperService {
       observer => {
         request.subscribe(
           response => {
-            observer.next(ws.responseCallback(response, webserviceName));
+            observer.next(ws.responseCallback(response, webserviceName, ConfigService.isApiManagerUpdated));
             observer.complete();
           },
           error => {
-            observer.error(ws.errorCallback(error, webserviceName));
+            observer.error(ws.errorCallback(error, webserviceName, ConfigService.isApiManagerUpdated));
           }
         );
       }
@@ -559,8 +564,8 @@ export class WebserviceWrapperService {
      *   3. key = name of the webservice plus "Group", e.g. 'library' -> 'libraryGroup'
      */
     const cacheGroupKey = cachingOptions.groupKey
-      || this.config.webservices.endpoint[webserviceName].cacheGroupKey
-      || webserviceName + this.config.webservices.cacheGroupKeySuffix;
+      || ConfigService.config.webservices.endpoint[webserviceName].cacheGroupKey
+      || webserviceName + ConfigService.config.webservices.cacheGroupKeySuffix;
 
     /* ttl:
      *   1: ttl in cachingOptions
@@ -568,7 +573,7 @@ export class WebserviceWrapperService {
      *   3: no explicit ttl, which will use the default ttl set in app.component
      */
     const cacheTTL = cachingOptions.ttl
-      || this.config.webservices.endpoint[webserviceName].cachingTTL
+      || ConfigService.config.webservices.endpoint[webserviceName].cachingTTL
       || undefined;
 
     this.logger.debug('call', `returning '${webserviceName}' with caching, options: ${JSON.stringify(cachingOptions)}`);
