@@ -9,8 +9,8 @@
 
         <ion-card>
             <img [class.loggedIn]="loggedIn" [class.loggedOut]="!loggedIn" src="assets/imgs/logo/logo_uni_potsdam.svg"/>
-            <div class="card-title"><span *ngIf="loggedIn && userInformation">{{ userInformation.name }}</span><span *ngIf="loggedIn && !userInformation && username">{{username}}</span></div>
-            <div class="card-subtitle"><span *ngIf="loggedIn && userInformation">{{ userInformation.sub }}</span></div>
+            <div class="card-title"><span *ngIf="loggedIn && fullName">{{fullName}}</span><span *ngIf="loggedIn && !fullName && username">{{username}}</span></div>
+            <div class="card-subtitle"><span *ngIf="bibLoggedIn && bibID">{{bibID}}</span></div>
         </ion-card>
 
         <ion-item-group>

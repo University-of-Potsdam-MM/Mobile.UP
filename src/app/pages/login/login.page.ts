@@ -3,7 +3,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ICredentials, ISession, IOIDCUserInformationResponse, ELoginErrors } from 'src/app/services/login-provider/interfaces';
+import { ICredentials, ISession, ELoginErrors } from 'src/app/services/login-provider/interfaces';
 import { UPLoginProvider } from 'src/app/services/login-provider/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -81,17 +81,6 @@ export class LoginPage extends AbstractPage {
             });
 
             this.endLoading();
-
-            // in the meantime get user information and save it to storage
-            this.upLogin.oidcGetUserInformation(sessionRes, oidcObject).subscribe(
-              (userInformation: IOIDCUserInformationResponse) => {
-                this.sessionProvider.setUserInfo(userInformation);
-              }, error => {
-                // user must not know if something goes wrong here, so we don't
-                // create an alert
-                this.logger.error('login', 'oidcGetUserInformation', error);
-              }
-            );
 
             setTimeout(() => {
               this.app.updateLoginStatus();

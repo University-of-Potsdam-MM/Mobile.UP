@@ -113,10 +113,10 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       const headers = new HttpHeaders()
         .append('Authorization', ConfigService.config.webservices.apiToken);
 
-      const headersNew = new HttpHeaders()
-        .append('apikey', ConfigService.config.webservices.apiTokenNew);
+      // const headersNew = new HttpHeaders()
+      //   .append('apikey', ConfigService.config.webservices.apiTokenNew);
 
-      this.http.get(this.endpoint + 'auth/login', { params: body, headers: ConfigService.isApiManagerUpdated ? headersNew : headers }).subscribe((data: IBibSessionResponse) => {
+      this.http.get(this.endpoint + 'auth/login', { params: body, headers: headers }).subscribe((data: IBibSessionResponse) => {
         this.bibSession = {
           credentials: this.loginCredentials,
           token: data.access_token,

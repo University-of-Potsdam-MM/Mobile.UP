@@ -19,16 +19,4 @@ export class UserSessionService {
   removeSession(): Promise<any> {
     return this.storage.remove('session');
   }
-
-  getUserInfo(): Promise<any> {
-    return this.storage.get('userInformation');
-  }
-
-  setUserInfo(userInformation): Promise<any> {
-    return this.storage.set('userInformation', userInformation);
-  }
-
-  removeUserInfo(): Promise<any> {
-    return this.storage.remove('userInformation');
-  }
 }
