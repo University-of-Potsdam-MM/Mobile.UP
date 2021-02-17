@@ -306,6 +306,7 @@ export class AppComponent {
       this.storage.remove('studentGrades[' + i + ']');
       this.storage.remove('studentGrades*');
     }
+    this.storage.remove('userInformation');
     this.cache.clearAll();
     this.updateLoginStatus();
   }
