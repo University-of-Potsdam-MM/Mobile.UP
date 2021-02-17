@@ -8,8 +8,9 @@
     <ion-content class="card-background-page">
 
         <ion-card>
-            <img [class.loggedIn]="loggedIn" [class.loggedOut]="!loggedIn" src="assets/imgs/logo/logo_uni_potsdam.svg"/>
+            <img [class.loggedIn]="loggedIn || bibLoggedIn" [class.loggedOut]="!loggedIn && !bibLoggedIn" src="assets/imgs/logo/logo_uni_potsdam.svg"/>
             <div class="card-title"><span *ngIf="loggedIn && fullName">{{fullName}}</span><span *ngIf="loggedIn && !fullName && username">{{username}}</span></div>
+            <div class="card-title"><span *ngIf="!loggedIn && bibLoggedIn && bibID">Mobile.UP</span></div>
             <div class="card-subtitle"><span *ngIf="bibLoggedIn && bibID">{{bibID}}</span></div>
         </ion-card>
 
