@@ -89,16 +89,20 @@ export class HomePage extends AbstractPage implements OnInit {
     this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
       const remoteConfig: IConfig = JSON.parse(response.data);
       if (remoteConfig && remoteConfig.appVersion) {
-        const remoteVersion = remoteConfig.appVersion;
-        const localVersion = ConfigService.config.appVersion;
+        const remoteVersionString = remoteConfig.appVersion;
+        const localVersionString = ConfigService.config.appVersion;
 
-        this.logger.debug('checkAppUpdate', 'App Version: ' + localVersion + ' / ' + remoteVersion);
+        this.logger.debug('checkAppUpdate', 'App Version: ' + localVersionString + ' / ' + remoteVersionString);
 
-        if (remoteVersion > localVersion) {
+        const remoteVersionNumber = Number(remoteVersionString.split('.').join(""));
+        const localVersionNumber = Number(remoteVersionString.split('.').join(""));
+
+        if (remoteVersionNumber > localVersionNumber) {
           // app update should be available in app stores
+          const platformStoreIcon = this.platform.is('ios') ? 'logo-apple-appstore' : 'logo-google-playstore';
           const toast = await this.toastCtrl.create({
             message: this.translate.instant('alert.app-update'),
-            duration: 2000,
+            duration: 3000,
             position: 'top',
             // color: 'primary',
             cssClass: 'updateToast',
@@ -106,7 +110,7 @@ export class HomePage extends AbstractPage implements OnInit {
               {
                 side: 'end',
                 // role: 'cancel',
-                icon: 'appstore',
+                icon: platformStoreIcon,
                 handler: () => {
                   if (this.platform.is('android')) {
                     this.inAppBrowser.create(ConfigService.config.urlAndroid, '_system');
