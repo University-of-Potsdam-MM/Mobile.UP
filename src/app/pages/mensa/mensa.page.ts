@@ -33,6 +33,7 @@ export class MensaPage extends AbstractPage {
   iconMapping = [];
   ulfIconMapping = [];
   mensaIsOpen = true;
+  foodhopperIsOpen = false;
 
   isLoaded;
   noMealsForDate;
@@ -64,7 +65,7 @@ export class MensaPage extends AbstractPage {
       this.isLoaded = false;
     }
 
-    this.getOpening();
+    this.getOpening(refresher);
 
     this.allMeals = [];
     this.displayedMeals = [];
@@ -238,27 +239,47 @@ export class MensaPage extends AbstractPage {
     }
   }
 
-  getOpening() {
+  getOpening(refresher?) {
     this.mensaIsOpen = true;
+    this.foodhopperIsOpen = false;
     const searchTerm = 'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
 
-    this.ws.call('openingHours').subscribe((response: any) => {
+    this.ws.call('openingHours', {}, { forceRefresh: refresher !== undefined }).subscribe((response: any) => {
       this.ws.call('nominatim').subscribe(nominatim => {
         if (response) {
           response = utils.convertToArray(response);
-          response = response.filter(function(item) {
+          var mensaOpening = response.filter(function(item) {
             if (item && item.name) {
               return item.name.toLowerCase().includes(searchTerm.toLowerCase());
             } else { return false; }
           });
 
-          if (response && response.length > 0) {
-            response = response[0];
-            response.parsedOpening = new opening(
-              response.opening_hours,
+          if (mensaOpening && mensaOpening.length > 0) {
+            mensaOpening = mensaOpening[0];
+            mensaOpening.parsedOpening = new opening(
+              mensaOpening.opening_hours,
               nominatim,
               { 'locale': this.translate.currentLang });
-            this.mensaIsOpen = response.parsedOpening.getState();
+            this.mensaIsOpen = mensaOpening.parsedOpening.getState();
+          }
+
+          if (this.campus.canteen_name === 'Griebnitzsee') {
+            const searchTermFoodhopper = 'foodhopper stahnsdorfer straße';
+
+            var foodhopperOpening = response.filter(function(item) {
+              if (item && item.name) {
+                return item.name.toLowerCase().includes(searchTermFoodhopper.toLowerCase());
+              } else { return false; }
+            });
+
+            if (foodhopperOpening && foodhopperOpening.length > 0) {
+              foodhopperOpening = foodhopperOpening[0];
+              foodhopperOpening.parsedOpening = new opening(
+                foodhopperOpening.opening_hours,
+                nominatim,
+                { 'locale': this.translate.currentLang });
+              this.foodhopperIsOpen = foodhopperOpening.parsedOpening.getState();
+            }
           }
         }
       });

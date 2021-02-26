@@ -23,7 +23,9 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
+  <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation && !foodhopperIsOpen" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed"></app-hint-box>
+  <app-hint-box *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation && foodhopperIsOpen" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.mensaClosed" secondHintTextI18nKey="page.mensa.foodhopperGriebnitzsee"></app-hint-box>
+  <app-hint-box *ngIf="isLoaded && mensaIsOpen && !networkError && !noMensaForLocation && foodhopperIsOpen" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="page.mensa.foodhopperGriebnitzsee"></app-hint-box>
   <app-hint-box *ngIf="noMensaForLocation" hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.functionNotAvailable"></app-hint-box>
 
   <ion-grid *ngIf="isLoaded && !noMensaForLocation && !networkError">
