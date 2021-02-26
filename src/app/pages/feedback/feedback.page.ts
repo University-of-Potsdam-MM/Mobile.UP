@@ -7,6 +7,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { ConnectionService } from 'src/app/services/connection/connection.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feedback',
@@ -18,6 +19,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
   form: FormGroup;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
+  isCordova = false;
 
   /**
    * @constructor
@@ -31,19 +33,22 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     private connectionService: ConnectionService,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    private translate: TranslateService
   ) {
       super({ optionalNetwork: true, optionalSession: true });
       this.form = this.formBuilder.group({
         rating: ['', Validators.required], // , Validators.required
         description: [''],
         recommend: ['', Validators.required],
-        anonymous: [false, Validators.required],
+        sendDeviceData: [false, Validators.required],
+        sendUsername: [false, Validators.required],
       });
   }
 
   ngOnInit() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
+    this.isCordova = this.platform.is('cordova');
   }
 
   /**
@@ -52,7 +57,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
    */
   submitForm() {
     this.feedback = {};
-    if (this.deviceInfo) {
+    if (this.deviceInfo && this.form.value.sendDeviceData) {
       this.feedback = {
         cordovaVersion: this.deviceInfo.cordovaVersion,
         appVersion: this.deviceInfo.appVersion,
@@ -68,7 +73,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     this.feedback.description = this.form.value.description;
     this.feedback.recommend = this.form.value.recommend;
 
-    if (this.session && !this.form.value.anonymous) {
+    if (this.session && this.form.value.sendUsername) {
       this.feedback.uid = this.session.credentials.username;
     }
 
@@ -94,5 +99,23 @@ export class FeedbackPage extends AbstractPage implements OnInit {
         }
       }
     );
+  }
+
+  showToggleHint(toggleName) {
+    var hintString = 'page.feedback.hint';
+    if (toggleName == 'SendUsername' && this.form.value.sendUsername) {
+      hintString += toggleName;
+    } else if (toggleName == 'SendDeviceData' && this.form.value.sendDeviceData) {
+      hintString += toggleName;
+    }
+
+    if (hintString !== 'page.feedback.hint') {
+      this.alertService.showAlert({
+        headerI18nKey: 'hints.type.hint',
+        messageI18nKey: hintString
+      }, [{
+        text: this.translate.instant('button.ok'),
+      }]); 
+    }
   }
 }

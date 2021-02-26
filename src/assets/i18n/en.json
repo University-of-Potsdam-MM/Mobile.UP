@@ -362,7 +362,10 @@
       "feedback": "What would you like to share with us?",
       "thoughts": "Your opinion... (optional)",
       "recommendation": "How likely would you recommend Mobile.UP to your friends and colleagues?",
-      "anonymous": "Submit anonymously"
+      "sendUsername": "Attach username",
+      "sendDeviceData": "Attach device information",
+      "hintSendUsername": "If you select this option your <b>PULS username</b> will be send to us. This can be helpful if you are experiencing an account-spezific problem. We may contact your via e-mail if that's necessary to solve your problem.",
+      "hintSendDeviceData": "If you select this option the following information will be send to us: <br><br> a) <b>device information</b> (manufacturer, model, identifier (UUID)) <br><br> b) <b>app information</b> (Mobile.UP version, Cordova version) <br><br> c) <b>information about your operating system</b> (version of Android / iOS) <br><br> We will only use this information to analyse the problem that you are experiencing."
     }
   },
   "button": {

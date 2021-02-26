@@ -358,11 +358,14 @@
     },
     "feedback": {
       "title": "Feedback",
-      "rating": "Was hältst du von Mobile.UP?",
-      "feedback": "Was willst du uns mitteilen?",
-      "thoughts": "Deine Meinung... (optional)",
-      "recommendation": "Wie wahrscheinlich würdest du Mobile.UP deinen Freunden oder Kollegen empfehlen?",
-      "anonymous": "Anonym übermitteln"
+      "rating": "Was halten Sie von Mobile.UP?",
+      "feedback": "Was wollen Sie uns mitteilen?",
+      "thoughts": "Ihre Meinung... (optional)",
+      "recommendation": "Wie wahrscheinlich würden Sie Mobile.UP Ihren Freunden oder Kollegen empfehlen?",
+      "sendUsername": "Benutzernamen anhängen",
+      "sendDeviceData": "Geräteinformationen anhängen",
+      "hintSendUsername": "Wenn diese Option aktiviert ist, wird Ihr <b>PULS-Benutzername</b> an uns übermittelt. Dies kann nützlich sein, wenn ein accountspezifisches Problem in der App auftritt. Bei Bedarf kontaktieren wir Sie per E-Mail bezüglich Ihres Problems.",
+      "hintSendDeviceData": "Wenn diese Option aktiviert ist, werden folgende Geräte-Informationen übermittelt: <br><br> a) <b>Information über Ihr Gerät</b> (Hersteller, Modell, Identifier (UUID)) <br><br> b) <b>Informationen über die App</b> (Mobile.UP-Version, Cordova-Version) <br><br> c) <b>Informationen über Ihr Betriebssystem</b> (Versionsnummer von Android / iOS) <br><br> Wir nutzen diese Informationen ausschließlich zur Analyse Ihres Problems."
     }
   },
   "button": {
@@ -431,7 +434,7 @@
     "calendar-export-fail": "Fehler beim Exportieren des Kalenders.",
     "calendar-event-fail": "Fehler beim Erstellen des Events.",
     "calendar-exists": "Es scheint, als hätten Sie den Kalender bereits exportiert. Sollen existierende Veranstaltungen beibehalten oder gelöscht werden?",
-    "feedback-sent": "Dein Feedback wurde übermittelt.",
+    "feedback-sent": "Ihr Feedback wurde übermittelt.",
     "feedback-fail": "Fehler beim Senden des Feedbacks.",
     "permission-denied": "Berechtigung verweigert.",
     "app-update": "App Update verfügbar!",
@@ -483,7 +486,7 @@
       "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden.",
       "favAdded": "Zu Favoriten hinzugefügt!",
       "favExists": "Bereits favorisiert!",
-      "favNotAvailable": "Einige deiner Favoriten sind nicht mehr verfügbar!",
+      "favNotAvailable": "Einige Ihrer Favoriten sind nicht mehr verfügbar!",
       "favRemoved": "Von Favoriten entfernt!",
       "noFavorites": "Keine Favoriten gefunden.",
       "noInformation": "Informationen konnten nicht abgerufen werden.",

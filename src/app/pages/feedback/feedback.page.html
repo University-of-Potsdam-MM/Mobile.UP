@@ -48,9 +48,14 @@
       </ion-range>
     </ion-item>
 
+    <ion-item *ngIf="isCordova">
+      <ion-label style="font-size: 0.9rem;">{{ "page.feedback.sendDeviceData" | translate}}</ion-label>
+      <ion-toggle (ionChange)="showToggleHint('SendDeviceData')" checked="false" formControlName="sendDeviceData"></ion-toggle>
+    </ion-item>
+
     <ion-item *ngIf="session">
-      <ion-label style="font-size: 0.9rem;">{{ "page.feedback.anonymous" | translate}}</ion-label>
-      <ion-toggle checked="false" formControlName="anonymous"></ion-toggle>
+      <ion-label style="font-size: 0.9rem;">{{ "page.feedback.sendUsername" | translate}}</ion-label>
+      <ion-toggle (ionChange)="showToggleHint('SendUsername')" checked="false" formControlName="sendUsername"></ion-toggle>
     </ion-item>
 
     <div class="ion-padding-top ion-text-center">
