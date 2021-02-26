@@ -27,7 +27,7 @@ export class MensaMealComponent implements OnInit {
   }
 
   checkConditions(i) {
-    if (this.mealForDate[i]) {
+    if (this.mealForDate[i] && this.meals[i].description && this.meals[i].description.length > 1) {
       return true;
     } else { return false; }
   }
