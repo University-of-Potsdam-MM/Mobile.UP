@@ -1,41 +1,41 @@
 ion-item ion-thumbnail {
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  max-width: 2.1rem;
+  max-height: 2.1rem;
+  img {
     min-width: 2.1rem;
     min-height: 2.1rem;
     max-width: 2.1rem;
     max-height: 2.1rem;
-    img {
-      min-width: 2.1rem;
-      min-height: 2.1rem;
-      max-width: 2.1rem;
-      max-height: 2.1rem;
-    }
+  }
 }
 
 .mealDescription {
-    color: var(--ion-color-primary);
-    padding-bottom: 5px;
+  color: var(--ion-color-primary);
+  padding-bottom: 5px;
 }
 
 ion-item {
-    border-bottom:1px solid #ededed !important;
+  border-bottom: 1px solid #ededed !important;
 
-    ion-label {
-        font-size:80%;
-        margin-top:5px;
-        margin-bottom:0;
-    }
+  ion-label {
+    font-size: 80%;
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
 }
 
 ion-item.noborder {
-    border-width:0 !important;
+  border-width: 0 !important;
 }
 
 .mealtitle {
-    font-size:80%;
-    color:#000;
+  font-size: 80%;
+  color: #000;
 
-    span {
-        color:#016c69;
-        font-weight:bold;
-    }
+  span {
+    color: #016c69;
+    font-weight: bold;
+  }
 }

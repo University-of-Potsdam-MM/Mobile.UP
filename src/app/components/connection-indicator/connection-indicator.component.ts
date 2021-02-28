@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { ConnectionIndicatorPopoverComponent } from './connection-indicator-popover/connection-indicator-popover.component';
-import { PopoverController, Platform } from '@ionic/angular';
-import { Network } from '@ionic-native/network/ngx';
+import { Component } from "@angular/core";
+import { ConnectionIndicatorPopoverComponent } from "./connection-indicator-popover/connection-indicator-popover.component";
+import { PopoverController, Platform } from "@ionic/angular";
+import { Network } from "@ionic-native/network/ngx";
 
 @Component({
-  selector: 'app-connection-indicator',
-  templateUrl: './connection-indicator.component.html',
-  styleUrls: ['./connection-indicator.component.scss'],
+  selector: "app-connection-indicator",
+  templateUrl: "./connection-indicator.component.html",
+  styleUrls: ["./connection-indicator.component.scss"],
 })
 export class ConnectionIndicatorComponent {
-
   indicator;
 
   constructor(
@@ -25,9 +24,8 @@ export class ConnectionIndicatorComponent {
       component: ConnectionIndicatorPopoverComponent,
       animated: true,
       event: ev,
-      showBackdrop: true
+      showBackdrop: true,
     });
     return await popover.present();
   }
-
 }

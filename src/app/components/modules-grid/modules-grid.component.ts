@@ -1,8 +1,20 @@
-import { Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
-import { DisplayGrid, GridsterComponent, GridsterConfig, GridsterItem } from 'angular-gridster2';
-import { IModule } from '../../lib/interfaces';
-import { Platform, MenuController } from '@ionic/angular';
-import * as dLoop from 'delayed-loop';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  OnInit,
+} from "@angular/core";
+import {
+  DisplayGrid,
+  GridsterComponent,
+  GridsterConfig,
+  GridsterItem,
+} from "angular-gridster2";
+import { IModule } from "../../lib/interfaces";
+import { Platform, MenuController } from "@ionic/angular";
+import * as dLoop from "delayed-loop";
 
 /**
  * This components takes a list of modules and displays those modules as tiles.
@@ -10,12 +22,11 @@ import * as dLoop from 'delayed-loop';
  * has been modified this component will emit a 'gridChanged' signal.
  */
 @Component({
-  selector: 'modules-grid',
-  templateUrl: './modules-grid.component.html',
-  styleUrls: ['./modules-grid.component.scss'],
+  selector: "modules-grid",
+  templateUrl: "./modules-grid.component.html",
+  styleUrls: ["./modules-grid.component.scss"],
 })
 export class ModulesGridComponent implements OnInit {
-
   @ViewChild(GridsterComponent, { static: false }) gridster: GridsterComponent;
 
   /**
@@ -41,10 +52,7 @@ export class ModulesGridComponent implements OnInit {
   editingMode = false;
   gridsterWrapperHeight: number;
 
-  constructor(
-    private platform: Platform,
-    private menuCtrl: MenuController
-  ) { }
+  constructor(private platform: Platform, private menuCtrl: MenuController) {}
 
   ngOnInit() {
     this.subscribeToResizeEvent();
@@ -54,7 +62,12 @@ export class ModulesGridComponent implements OnInit {
   // listen to resize event on browser, so that the grid can resize
   // depending on window width
   subscribeToResizeEvent() {
-    if (!(this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android')))) {
+    if (
+      !(
+        this.platform.is("cordova") &&
+        (this.platform.is("ios") || this.platform.is("android"))
+      )
+    ) {
       this.platform.resize.subscribe(() => {
         this.onWindowResize();
       });
@@ -63,9 +76,9 @@ export class ModulesGridComponent implements OnInit {
 
   setupGridOptions() {
     this.options = {
-      gridType: 'scrollVertical',
+      gridType: "scrollVertical",
       // makes the tiles float upwards first then to the left
-      compactType: 'compactUp&Left',
+      compactType: "compactUp&Left",
       // default size of a tile
       defaultItemCols: 1,
       defaultItemRows: 1,
@@ -87,15 +100,19 @@ export class ModulesGridComponent implements OnInit {
         // delay after which dragging starts, also arbitrary. There might be a
         // better value
         delayStart: 250,
-        enabled: false
+        enabled: false,
       },
       resizable: {
-        enabled: false
+        enabled: false,
       },
       // we don't really care about what actually happened. It's sufficient to tell
       // the page using this component that the modules have been altered
       itemChangeCallback: (_, itm) => {
-        if (itm && itm.$item && this.gridster.getNextPossiblePosition(itm.$item)) {
+        if (
+          itm &&
+          itm.$item &&
+          this.gridster.getNextPossiblePosition(itm.$item)
+        ) {
           itm.item.x = itm.$item.x;
           itm.item.y = itm.$item.y;
           this.resizeWrapper();
@@ -121,7 +138,7 @@ export class ModulesGridComponent implements OnInit {
       },
       gridSizeChangedCallback: () => {
         this.resizeWrapper();
-      }
+      },
     };
   }
 
@@ -130,7 +147,8 @@ export class ModulesGridComponent implements OnInit {
    * does not resize itself.
    */
   resizeWrapper() {
-    this.gridsterWrapperHeight = this.gridster.curRowHeight * this.gridster.rows;
+    this.gridsterWrapperHeight =
+      this.gridster.curRowHeight * this.gridster.rows;
   }
 
   toggleEditingMode() {
@@ -184,7 +202,7 @@ export class ModulesGridComponent implements OnInit {
       // resize wrapper to fit new grid size
       loop.then(() => {
         this.resizeWrapper();
-        if (this.platform.is('cordova')) {
+        if (this.platform.is("cordova")) {
           setTimeout(() => {
             this.resizeWrapper();
           }, 250);
@@ -196,5 +214,4 @@ export class ModulesGridComponent implements OnInit {
       this.gridChanged.emit();
     }
   }
-
 }

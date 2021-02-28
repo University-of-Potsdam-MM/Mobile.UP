@@ -1,12 +1,20 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-button slot="start" (click)="closeModal()" fill="clear" class="modalBackButton">
-            <ion-icon style="color: black; font-size: x-large;" name="chevron-back"></ion-icon>
-        </ion-button>
-        <ion-title *ngIf="header">{{ header }}</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="closeModal()"
+      fill="clear"
+      class="modalBackButton"
+    >
+      <ion-icon
+        style="color: black; font-size: x-large"
+        name="chevron-back"
+      ></ion-icon>
+    </ion-button>
+    <ion-title *ngIf="header">{{ header }}</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-    <div *ngIf="text" [innerHTML]="text" style="hyphens: auto!important;"></div>
+  <div *ngIf="text" [innerHTML]="text" style="hyphens: auto !important"></div>
 </ion-content>

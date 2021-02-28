@@ -1,159 +1,163 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-button slot="start" (click)="closeModal()" fill="clear" class="modalBackButton">
-            <ion-icon style="color: black; font-size: x-large;" name="chevron-back"></ion-icon>
-        </ion-button>
-        <ion-title>{{"page.timetable.courseInformation" | translate }}</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="closeModal()"
+      fill="clear"
+      class="modalBackButton"
+    >
+      <ion-icon
+        style="color: black; font-size: x-large"
+        name="chevron-back"
+      ></ion-icon>
+    </ion-button>
+    <ion-title>{{"page.timetable.courseInformation" | translate }}</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-no-padding">
-    <!-- template for one single event, will be wrapped in ion-card tag -->
-    <ng-template #singleEventTemplate let-event="event">
-            <h6 class="ion-text-wrap ion-padding-start" [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'"></h6>
-            <ion-list>
-                <!-- lecturer(s)-->
-                <ng-container *ngIf="isArray(event.eventDetails.lecturers.lecturer);
-                            then multipleLecturersTemplate else singleLecturerTemplate"></ng-container>
+  <!-- template for one single event, will be wrapped in ion-card tag -->
+  <ng-template #singleEventTemplate let-event="event">
+    <h6
+      class="ion-text-wrap ion-padding-start"
+      [innerHtml]="event.title+' ('+event.courseDetails.courseType+')'"
+    ></h6>
+    <ion-list>
+      <!-- lecturer(s)-->
+      <ng-container
+        *ngIf="isArray(event.eventDetails.lecturers.lecturer);
+                            then multipleLecturersTemplate else singleLecturerTemplate"
+      ></ng-container>
 
-                <!-- template for event with single lecturer-->
-                <ng-template #singleLecturerTemplate>
-                    <ion-item>
-                        <ion-label class="ion-text-wrap">
-                            <h2>
-                                {{ "page.timetable.lecturer" | translate }}
-                            </h2>
-                            <p>
-                                {{ event.eventDetails.lecturers.lecturer.lecturerTitle }}
-                                {{ event.eventDetails.lecturers.lecturer.lecturerLastname }}
-                            </p>
-                        </ion-label>
-                    </ion-item>
-                </ng-template>
+      <!-- template for event with single lecturer-->
+      <ng-template #singleLecturerTemplate>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h2>{{ "page.timetable.lecturer" | translate }}</h2>
+            <p>
+              {{ event.eventDetails.lecturers.lecturer.lecturerTitle }} {{
+              event.eventDetails.lecturers.lecturer.lecturerLastname }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-template>
 
-                <!-- template for event with multiple lecturers -->
-                <ng-template #multipleLecturersTemplate>
-                    <ion-item>
-                        <ion-label class="ion-text-wrap">
-                            <h2>
-                                {{ "page.timetable.lecturer" | translate }}
-                            </h2>
-                            <p>
-                                <ng-container *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last">
-                                    {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname }}<span *ngIf="!last">, </span>
-                                </ng-container>
-                            </p>
-                        </ion-label>
-                    </ion-item>
-                </ng-template>
+      <!-- template for event with multiple lecturers -->
+      <ng-template #multipleLecturersTemplate>
+        <ion-item>
+          <ion-label class="ion-text-wrap">
+            <h2>{{ "page.timetable.lecturer" | translate }}</h2>
+            <p>
+              <ng-container
+                *ngFor="let lecturer of event.eventDetails.lecturers.lecturer; let first = first; let last = last"
+              >
+                {{ lecturer.lecturerTitle }} {{ lecturer.lecturerLastname
+                }}<span *ngIf="!last">, </span>
+              </ng-container>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-template>
 
-                <!-- time -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.time" | translate }}
-                        </h2>
+      <!-- time -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.time" | translate }}</h2>
 
-                        <p>
-                            {{ moment(event.startTime).format("LT")}}
-                            {{ "page.timetable.oclock" | translate }}
-                            -
-                            {{ "page.timetable.until" | translate }}
-                            {{ moment(event.endTime).format("LT") }}
-                            {{ "page.timetable.oclock" | translate }}
-                        </p>
-                    </ion-label>
-                </ion-item>
+          <p>
+            {{ moment(event.startTime).format("LT")}} {{ "page.timetable.oclock"
+            | translate }} - {{ "page.timetable.until" | translate }} {{
+            moment(event.endTime).format("LT") }} {{ "page.timetable.oclock" |
+            translate }}
+          </p>
+        </ion-label>
+      </ion-item>
 
-                <!-- period -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.period" | translate }}
-                        </h2>
+      <!-- period -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.period" | translate }}</h2>
 
-                        <p *ngIf="translate.currentLang === 'de'">{{ event.eventDetails.startDate | date:'dd.MM.yy' }} - {{ event.eventDetails.endDate | date:'dd.MM.yy' }}</p>
-                        <p *ngIf="translate.currentLang !== 'de'">{{ event.eventDetails.startDate | date:'MM/dd/yy' }} - {{ event.eventDetails.endDate | date:'MM/dd/yy' }}</p>
-                    </ion-label>
-                </ion-item>
+          <p *ngIf="translate.currentLang === 'de'">
+            {{ event.eventDetails.startDate | date:'dd.MM.yy' }} - {{
+            event.eventDetails.endDate | date:'dd.MM.yy' }}
+          </p>
+          <p *ngIf="translate.currentLang !== 'de'">
+            {{ event.eventDetails.startDate | date:'MM/dd/yy' }} - {{
+            event.eventDetails.endDate | date:'MM/dd/yy' }}
+          </p>
+        </ion-label>
+      </ion-item>
 
-                <!-- rhythm -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.rhythm" | translate }}
-                        </h2>
-                        <p>
-                            {{ event.eventDetails.rhythm }}
-                        </p>
-                    </ion-label>
-                </ion-item>
+      <!-- rhythm -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.rhythm" | translate }}</h2>
+          <p>{{ event.eventDetails.rhythm }}</p>
+        </ion-label>
+      </ion-item>
 
-                <!-- location -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.location" | translate }}
-                        </h2>
+      <!-- location -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.location" | translate }}</h2>
 
-                        <p>
-                            {{ event.eventDetails.location}}
-                        </p>
-                    </ion-label>
-                </ion-item>
+          <p>{{ event.eventDetails.location}}</p>
+        </ion-label>
+      </ion-item>
 
-                <!-- building -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.building" | translate }}
-                        </h2>
+      <!-- building -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.building" | translate }}</h2>
 
-                        <p *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building != 'N'">
-                            {{ event.eventDetails.building }}
-                        </p>
+          <p
+            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building != 'N'"
+          >
+            {{ event.eventDetails.building }}
+          </p>
 
-                        <p *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'">
-                            /
-                        </p>
-                    </ion-label>
-                </ion-item>
+          <p
+            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'"
+          >
+            /
+          </p>
+        </ion-label>
+      </ion-item>
 
-                <!-- roomtype and room -->
-                <ion-item>
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.room" | translate }}
-                        </h2>
+      <!-- roomtype and room -->
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.room" | translate }}</h2>
 
-                        <p>
-                            {{ event.eventDetails.roomType }}
-                            <span *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room != 'N.'">{{ event.eventDetails.room }}</span>
-                        </p>
-                    </ion-label>
-                </ion-item>
+          <p>
+            {{ event.eventDetails.roomType }}
+            <span
+              *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room != 'N.'"
+              >{{ event.eventDetails.room }}</span
+            >
+          </p>
+        </ion-label>
+      </ion-item>
 
-                <!-- comment -->
-                <ion-item *ngIf="event.eventDetails.comment">
-                    <ion-label class="ion-text-wrap">
-                        <h2>
-                            {{ "page.timetable.comment" | translate }}
-                        </h2>
+      <!-- comment -->
+      <ion-item *ngIf="event.eventDetails.comment">
+        <ion-label class="ion-text-wrap">
+          <h2>{{ "page.timetable.comment" | translate }}</h2>
 
-                        <p>
-                            {{ event.eventDetails.comment }}
-                        </p>
-                    </ion-label>
-                </ion-item>
-            </ion-list>
-    </ng-template>
+          <p>{{ event.eventDetails.comment }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
 
-    <!-- append details about selected events below -->
-    <ng-container *ngIf="events">
-        <ng-container *ngFor="let event of events">
-        <ng-template
-            *ngTemplateOutlet="singleEventTemplate; context:{event:event}">
-        </ng-template>
-        </ng-container>
+  <!-- append details about selected events below -->
+  <ng-container *ngIf="events">
+    <ng-container *ngFor="let event of events">
+      <ng-template
+        *ngTemplateOutlet="singleEventTemplate; context:{event:event}"
+      >
+      </ng-template>
     </ng-container>
+  </ng-container>
 </ion-content>

@@ -1,20 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { LecturesPage } from './lectures.page';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { ComponentsModule } from 'src/app/components/components.module';
-import { HttpLoaderFactory } from 'src/app/app.module';
-import { LectureSearchModalPage } from './lecture-search.modal';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Routes, RouterModule } from "@angular/router";
+import { IonicModule } from "@ionic/angular";
+import { LecturesPage } from "./lectures.page";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { HttpClient } from "@angular/common/http";
+import { ComponentsModule } from "src/app/components/components.module";
+import { HttpLoaderFactory } from "src/app/app.module";
+import { LectureSearchModalPage } from "./lecture-search.modal";
 
 const routes: Routes = [
   {
-    path: '',
-    component: LecturesPage
-  }
+    path: "",
+    component: LecturesPage,
+  },
 ];
 
 @NgModule({
@@ -26,15 +26,12 @@ const routes: Routes = [
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
-        useFactory: (HttpLoaderFactory),
-        deps: [HttpClient]
-      }
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
     }),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
-  declarations: [
-    LecturesPage,
-    LectureSearchModalPage
-  ]
+  declarations: [LecturesPage, LectureSearchModalPage],
 })
 export class LecturesPageModule {}

@@ -1,48 +1,47 @@
 .filters {
+  ion-col {
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.6rem;
 
-    ion-col {
-        text-align: center;
-        font-size: 0.9rem;
-        line-height: 1.6rem;
-
-        &.col-with-arrow {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    &.col-with-arrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+  }
 
-    p {
-        margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.6rem;
-    }
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6rem;
+  }
 
-    .selected {
-        border-bottom: 2px solid var(--ion-color-primary);
+  .selected {
+    border-bottom: 2px solid var(--ion-color-primary);
 
-        color: var(--ion-color-primary);
-    }
+    color: var(--ion-color-primary);
+  }
 }
 
 ion-slide {
-    width: auto !important;
-    min-width: 100px!important;
-    padding: 0;
+  width: auto !important;
+  min-width: 100px !important;
+  padding: 0;
 }
 
 ion-segment-button {
-    --padding-end: 5px;
-    --padding-start: 5px;
-    --margin-end: 0;
-    --margin-start: 0;
+  --padding-end: 5px;
+  --padding-start: 5px;
+  --margin-end: 0;
+  --margin-start: 0;
 }
 
 ion-col {
-  padding:0;
+  padding: 0;
 
   ion-card {
-      margin:0;
+    margin: 0;
   }
 }
 

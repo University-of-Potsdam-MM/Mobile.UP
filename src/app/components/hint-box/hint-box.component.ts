@@ -1,13 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, Input } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-hint-box',
-  templateUrl: './hint-box.component.html',
-  styleUrls: ['./hint-box.component.scss']
+  selector: "app-hint-box",
+  templateUrl: "./hint-box.component.html",
+  styleUrls: ["./hint-box.component.scss"],
 })
 export class HintBoxComponent {
-
   @Input()
   hintTypeI18nKey: string;
 
@@ -19,8 +18,5 @@ export class HintBoxComponent {
 
   @Input()
   disableTextCentering: boolean;
-  constructor(
-    public translate: TranslateService
-  ) { }
-
+  constructor(public translate: TranslateService) {}
 }

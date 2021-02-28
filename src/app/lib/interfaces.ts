@@ -1,24 +1,29 @@
 /* ~~~ EmergencyPage ~~~ */
 
-import { InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
-import * as geojson from 'geojson';
-import { IDeviceInfo } from '../services/device/device.service';
-import { ILoginConfig_Credentials, ILoginConfig_SSO, ILoginConfig_OIDC, ICredentials } from '../services/login-provider/interfaces';
+import { InAppBrowserObject } from "@ionic-native/in-app-browser/ngx";
+import * as geojson from "geojson";
+import { IDeviceInfo } from "../services/device/device.service";
+import {
+  ILoginConfig_Credentials,
+  ILoginConfig_SSO,
+  ILoginConfig_OIDC,
+  ICredentials,
+} from "../services/login-provider/interfaces";
 
 /**
  * Interface for a contact with telephone number and email address
  */
 export interface Contact {
-    telephone:  string;
-    mail?:      string;
+  telephone: string;
+  mail?: string;
 }
 
 /**
  * Interface for an address consisting og postal zip code and street
  */
 export interface Address {
-    postal:     string;
-    street:     string;
+  postal: string;
+  street: string;
 }
 
 /**
@@ -27,13 +32,12 @@ export interface Address {
  * other attribute is optional.
  */
 export interface EmergencyCall {
-    name:       string;
-    contact:    Contact;
-    description?: string;
-    address?:   Address;
-    expanded: boolean;
+  name: string;
+  contact: Contact;
+  description?: string;
+  address?: Address;
+  expanded: boolean;
 }
-
 
 /* ~~~ PersonsPage ~~~ */
 
@@ -123,26 +127,26 @@ export interface IMensaIcon {
   value: string;
 }
 export interface ADS {
-  uid:      number;
-  art:      number;
-  field:    string;
-  title:    string;
-  date:     number;
-  file:     string;
-  foreign:  string;
-  firm:     string;
+  uid: number;
+  art: number;
+  field: string;
+  title: string;
+  date: number;
+  file: string;
+  foreign: string;
+  firm: string;
   location: string;
-  street:   string;
-  plz:      number;
+  street: string;
+  plz: number;
   language: string;
   homepage: string;
   firstname: string;
   lastname: string;
-  phone:    string;
-  mail:     string;
-  partner:  number;
+  phone: string;
+  mail: string;
+  partner: number;
   famFriendly: number;
-  expanded:  boolean;
+  expanded: boolean;
 }
 
 export interface IADSResponse extends Array<ADS> {}
@@ -153,7 +157,7 @@ export interface IConfig {
   appVersion: string;
   urlAndroid: string;
   urlIOS: string;
-  modules: {[moduleName: string]: IModule};
+  modules: { [moduleName: string]: IModule };
   authorization: ILoginConfig;
   webservices: IWebServices;
   policies: IPolicies;
@@ -213,7 +217,7 @@ export interface IModule {
   selected?: boolean;
   hide?: boolean;
   url?: string;
-  additionalUrl?:string;
+  additionalUrl?: string;
   appId?: string;
   urlAndroid?: string;
   urlIOS?: string;
@@ -227,7 +231,7 @@ export interface IModule {
 }
 
 export interface IWebServices {
-  endpoint: {[name: string]: IEndpoint};
+  endpoint: { [name: string]: IEndpoint };
   apiToken: string;
   apiTokenNew: string;
   defaultCachingTTL: number;
@@ -431,7 +435,6 @@ export interface IRoomRequestResponse {
   rooms4TimeResponse?: IRoomRequestResponseReturn;
 }
 
-
 /** API mappings for reservations request (RoomplanPage) */
 export interface IReservationRequestResponse {
   reservationsResponse?: IReservationRequestResponseReturn;
@@ -491,7 +494,7 @@ export enum ESettingType {
   number_radio,
   string_radio,
   checkbox,
-  placeholder
+  placeholder,
 }
 
 export interface ISetting {
@@ -515,7 +518,7 @@ export interface IStudieCourse {
   dtxt: string;
   ltxt: string;
   stg: string;
-  'stg.pversion': string;
+  "stg.pversion": string;
   stgsem: string;
 }
 

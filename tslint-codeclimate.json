@@ -12,15 +12,14 @@
     "jsdoc-format": true,
     "member-access": false,
     "no-console": false,
-    "whitespace": [true,
+    "whitespace": [
+      true,
       "check-decl",
       "check-operator",
       "check-separator",
       "check-type"
     ],
-    "variable-name": [
-      "allow-leading-underscore"
-    ],
+    "variable-name": ["allow-leading-underscore"],
     "curly": false,
     "no-reference": false,
     "no-var-requires": false,

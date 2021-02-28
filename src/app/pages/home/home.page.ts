@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Storage } from '@ionic/storage';
-import { IModule, IConfig } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { HTTP } from '@ionic-native/http/ngx';
-import { ToastController } from '@ionic/angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { ConfigService } from 'src/app/services/config/config.service';
-
+import { Component, OnInit } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { Storage } from "@ionic/storage";
+import { IModule, IConfig } from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { HTTP } from "@ionic-native/http/ngx";
+import { ToastController } from "@ionic/angular";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { ConfigService } from "src/app/services/config/config.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: "app-home",
+  templateUrl: "home.page.html",
+  styleUrls: ["home.page.scss"],
 })
 export class HomePage extends AbstractPage implements OnInit {
-  icon_selected = 'star';
-  icon_not_selected = 'star-outline';
+  icon_selected = "star";
+  icon_not_selected = "star-outline";
 
-  modules: {[moduleName: string]: IModule} = {};
+  modules: { [moduleName: string]: IModule } = {};
   sortedModules = [];
   editingMode = false;
 
@@ -33,18 +32,21 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   ngOnInit() {
-    this.platform.ready().then(() => {
-      this.setupModules();
-      if (this.platform.is('android') || this.platform.is('ios')) {
-        this.checkAppUpdate();
-      }
-    }).catch(error => {
-      this.logger.error('ngOnInit', 'platformReady', error);
-    });
+    this.platform
+      .ready()
+      .then(() => {
+        this.setupModules();
+        if (this.platform.is("android") || this.platform.is("ios")) {
+          this.checkAppUpdate();
+        }
+      })
+      .catch((error) => {
+        this.logger.error("ngOnInit", "platformReady", error);
+      });
   }
 
   async setupModules() {
-    const userModules = await this.storage.get('moduleList');
+    const userModules = await this.storage.get("moduleList");
     const configModules = this.buildDefaultModulesList();
 
     if (!userModules) {
@@ -54,7 +56,7 @@ export class HomePage extends AbstractPage implements OnInit {
     } else {
       // user has set custom favorites
       // check if pages still exist and if new pages are in config
-      const moduleList: {[modulesName: string]: IModule} = {};
+      const moduleList: { [modulesName: string]: IModule } = {};
       for (const moduleName in configModules) {
         if (configModules.hasOwnProperty(moduleName)) {
           let found = false;
@@ -83,51 +85,72 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   async checkAppUpdate() {
-    const remoteConfigUrl = ConfigService.config.webservices.endpoint.config.url;
+    const remoteConfigUrl =
+      ConfigService.config.webservices.endpoint.config.url;
 
-    await this.nativeHTTP.setServerTrustMode('nocheck');
-    this.nativeHTTP.get(remoteConfigUrl, {}, {}).then(async response => {
-      const remoteConfig: IConfig = JSON.parse(response.data);
-      if (remoteConfig && remoteConfig.appVersion) {
-        const remoteVersionString = remoteConfig.appVersion;
-        const localVersionString = ConfigService.config.appVersion;
+    await this.nativeHTTP.setServerTrustMode("nocheck");
+    this.nativeHTTP
+      .get(remoteConfigUrl, {}, {})
+      .then(async (response) => {
+        const remoteConfig: IConfig = JSON.parse(response.data);
+        if (remoteConfig && remoteConfig.appVersion) {
+          const remoteVersionString = remoteConfig.appVersion;
+          const localVersionString = ConfigService.config.appVersion;
 
-        this.logger.debug('checkAppUpdate', 'App Version: ' + localVersionString + ' / ' + remoteVersionString);
+          this.logger.debug(
+            "checkAppUpdate",
+            "App Version: " + localVersionString + " / " + remoteVersionString
+          );
 
-        const remoteVersionNumber = Number(remoteVersionString.split('.').join(""));
-        const localVersionNumber = Number(remoteVersionString.split('.').join(""));
+          const remoteVersionNumber = Number(
+            remoteVersionString.split(".").join("")
+          );
+          const localVersionNumber = Number(
+            remoteVersionString.split(".").join("")
+          );
 
-        if (remoteVersionNumber > localVersionNumber) {
-          // app update should be available in app stores
-          const platformStoreIcon = this.platform.is('ios') ? 'logo-apple-appstore' : 'logo-google-playstore';
-          const toast = await this.toastCtrl.create({
-            message: this.translate.instant('alert.app-update'),
-            duration: 3000,
-            position: 'top',
-            // color: 'primary',
-            cssClass: 'updateToast',
-            buttons: [
-              {
-                side: 'end',
-                // role: 'cancel',
-                icon: platformStoreIcon,
-                handler: () => {
-                  if (this.platform.is('android')) {
-                    this.inAppBrowser.create(ConfigService.config.urlAndroid, '_system');
-                  } else { this.inAppBrowser.create(ConfigService.config.urlIOS, '_system'); }
-                }
-              }
-            ]
-          });
-          toast.present();
-          setTimeout(() => {
-            toast.dismiss();
-          }, 5000);
+          if (remoteVersionNumber > localVersionNumber) {
+            // app update should be available in app stores
+            const platformStoreIcon = this.platform.is("ios")
+              ? "logo-apple-appstore"
+              : "logo-google-playstore";
+            const toast = await this.toastCtrl.create({
+              message: this.translate.instant("alert.app-update"),
+              duration: 3000,
+              position: "top",
+              // color: 'primary',
+              cssClass: "updateToast",
+              buttons: [
+                {
+                  side: "end",
+                  // role: 'cancel',
+                  icon: platformStoreIcon,
+                  handler: () => {
+                    if (this.platform.is("android")) {
+                      this.inAppBrowser.create(
+                        ConfigService.config.urlAndroid,
+                        "_system"
+                      );
+                    } else {
+                      this.inAppBrowser.create(
+                        ConfigService.config.urlIOS,
+                        "_system"
+                      );
+                    }
+                  },
+                },
+              ],
+            });
+            toast.present();
+            setTimeout(() => {
+              toast.dismiss();
+            }, 5000);
+          }
         }
-      }
-    }).catch(error => {
-      this.logger.error('checkAppUpdate', 'fetching config', error);
-    });
+      })
+      .catch((error) => {
+        this.logger.error("checkAppUpdate", "fetching config", error);
+      });
   }
 
   /**
@@ -140,12 +163,10 @@ export class HomePage extends AbstractPage implements OnInit {
     const array = [];
     for (const key in modules) {
       if (modules.hasOwnProperty(key)) {
-        this.translate.get(modules[key].i18nKey).subscribe(
-          value => {
-            modules[key].translation = value;
-            array.push(modules[key]);
-          }
-        );
+        this.translate.get(modules[key].i18nKey).subscribe((value) => {
+          modules[key].translation = value;
+          array.push(modules[key]);
+        });
       }
     }
     // this.orderPipe.transform(this.sortedModules, 'translation');
@@ -163,20 +184,29 @@ export class HomePage extends AbstractPage implements OnInit {
     event.stopPropagation();
 
     this.modules[moduleName].selected = !this.modules[moduleName].selected;
-    this.logger.debug('toggleSelectedState',
-    `'${moduleName}' is now ${this.modules[moduleName].selected ? 'selected' : 'not selected'}`);
-
-    this.storage.set('moduleList', this.modules).then(
-      () => this.logger.debug('toggleSelectedState', `saved module list after toggling '${moduleName}'`)
+    this.logger.debug(
+      "toggleSelectedState",
+      `'${moduleName}' is now ${
+        this.modules[moduleName].selected ? "selected" : "not selected"
+      }`
     );
+
+    this.storage
+      .set("moduleList", this.modules)
+      .then(() =>
+        this.logger.debug(
+          "toggleSelectedState",
+          `saved module list after toggling '${moduleName}'`
+        )
+      );
   }
 
   /**
    * @name buildDefaultModulesList
    * @description builds list of default_modules that should be displayed on HomePage
    */
-  buildDefaultModulesList(): {[modulesName: string]: IModule} {
-    const moduleList: {[modulesName: string]: IModule} = {};
+  buildDefaultModulesList(): { [modulesName: string]: IModule } {
+    const moduleList: { [modulesName: string]: IModule } = {};
     const modules = ConfigService.config.modules;
 
     for (const moduleName in modules) {
@@ -190,7 +220,7 @@ export class HomePage extends AbstractPage implements OnInit {
       }
     }
 
-    this.logger.debug('buildDefaultModulesList');
+    this.logger.debug("buildDefaultModulesList");
     return moduleList;
   }
 
@@ -198,7 +228,7 @@ export class HomePage extends AbstractPage implements OnInit {
     // we can just store the existing modules again because gridster is
     // operating on the same object
     // this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
-    this.storage.set('moduleList', this.modules);
+    this.storage.set("moduleList", this.modules);
   }
 
   /**
@@ -212,10 +242,9 @@ export class HomePage extends AbstractPage implements OnInit {
       if (moduleToOpen.url) {
         this.webIntent.handleWebIntentForModule(moduleToOpen);
       } else {
-        this.navCtrl.navigateForward(
-          '/' + moduleToOpen.componentName,
-          {state: params}
-        );
+        this.navCtrl.navigateForward("/" + moduleToOpen.componentName, {
+          state: params,
+        });
       }
     }
   }

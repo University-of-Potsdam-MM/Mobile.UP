@@ -1,27 +1,26 @@
-import { Component, ViewChild } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { Component, ViewChild } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { AlertService } from "src/app/services/alert/alert.service";
 import {
   IHouse,
   IRoom,
   IHousePlan,
   IRoomEvent,
   IReservationRequestResponse,
-  ICampus
-} from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
-import { TranslateService } from '@ngx-translate/core';
+  ICampus,
+} from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/webservice-wrapper.service";
+import { IRoomsRequestParams } from "../../services/webservice-wrapper/webservice-definition-interfaces";
+import { CampusTabComponent } from "../../components/campus-tab/campus-tab.component";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-roomplan',
-  templateUrl: './roomplan.page.html',
-  styleUrls: ['./roomplan.page.scss'],
+  selector: "app-roomplan",
+  templateUrl: "./roomplan.page.html",
+  styleUrls: ["./roomplan.page.scss"],
 })
 export class RoomplanPage extends AbstractPage {
-
   constructor(
     private alertService: AlertService,
     private ws: WebserviceWrapperService,
@@ -47,7 +46,8 @@ export class RoomplanPage extends AbstractPage {
   error: HttpErrorResponse;
   requestProcessed = false;
 
-  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
 
   /**
    * Comparator for event sorting
@@ -124,7 +124,9 @@ export class RoomplanPage extends AbstractPage {
     this.getRoomInfo();
     if (refresher) {
       this.refresher = refresher;
-    } else { this.isLoaded = false; }
+    } else {
+      this.isLoaded = false;
+    }
   }
 
   /**
@@ -166,7 +168,9 @@ export class RoomplanPage extends AbstractPage {
       if (this.housesFound[i].lbl === house) {
         for (let h = 0; h < this.housesFound[i].rooms.length; h++) {
           if (this.housesFound[i].rooms[h].lbl === room) {
-            this.housesFound[i].rooms[h].expanded = !this.housesFound[i].rooms[h].expanded;
+            this.housesFound[i].rooms[h].expanded = !this.housesFound[i].rooms[
+              h
+            ].expanded;
           }
         }
       }
@@ -188,7 +192,7 @@ export class RoomplanPage extends AbstractPage {
       house = {
         lbl: houseLbl,
         rooms: new Map<string, IRoom>(),
-        expanded: false
+        expanded: false,
       };
     }
 
@@ -210,136 +214,153 @@ export class RoomplanPage extends AbstractPage {
     const end = new Date();
     start.setHours(8);
     end.setHours(22);
-    start.setDate(start.getDate() + + this.day_offset); // unary plus for string->num conversion
-    end.setDate(end.getDate() + + this.day_offset);
+    start.setDate(start.getDate() + +this.day_offset); // unary plus for string->num conversion
+    end.setDate(end.getDate() + +this.day_offset);
 
-    this.ws.call(
-      'roomPlanSearch',
-      <IRoomsRequestParams>{
+    this.ws
+      .call("roomPlanSearch", <IRoomsRequestParams>{
         campus: this.current_location,
-        timeSlot: {start: start, end: end}
-      }
-    ).subscribe(
-      (response: IReservationRequestResponse) => {
+        timeSlot: { start: start, end: end },
+      })
+      .subscribe(
+        (response: IReservationRequestResponse) => {
+          this.houseMap = new Map<string, IHousePlan>();
+          this.housesFound = [];
+          this.error = null;
 
-        this.houseMap = new Map<string, IHousePlan>();
-        this.housesFound = [];
-        this.error = null;
+          if (
+            response &&
+            response.reservationsResponse &&
+            response.reservationsResponse.return
+          ) {
+            for (const reservation of response.reservationsResponse.return) {
+              // API often returns basically empty reservations, we want to ignore these
+              if (
+                reservation.veranstaltung !== "" &&
+                reservation.veranstaltung != null
+              ) {
+                if (reservation.roomList.room instanceof Array === false) {
+                  reservation.roomList.room = [reservation.roomList.room];
+                }
 
-        if (response && response.reservationsResponse && response.reservationsResponse.return) {
-          for (const reservation of response.reservationsResponse.return) {
-            // API often returns basically empty reservations, we want to ignore these
-            if (reservation.veranstaltung !== '' && reservation.veranstaltung != null) {
+                const roomList = <Array<string>>reservation.roomList.room;
+                for (let i = 0; i < roomList.length; i++) {
+                  const split = roomList[i].split(".");
+                  const room: IRoom = {
+                    lbl: split.splice(2, 5).join("."),
+                    events: [],
+                    expanded: false,
+                  };
 
-              if ((reservation.roomList.room instanceof Array) === false) {
-                reservation.roomList.room = [reservation.roomList.room];
-              }
+                  this.addRoomToHouse(split[1], room);
 
-              const roomList = <Array<string>> reservation.roomList.room;
-              for (let i = 0; i < roomList.length; i++) {
-                const split = roomList[i].split('.');
-                const room: IRoom = {
-                  lbl: split.splice(2, 5).join('.'),
-                  events: [],
-                  expanded: false
-                };
-
-                this.addRoomToHouse(split[1], room);
-
-                let persons: Array<String> = [];
-                const personArray = reservation.personList.person;
-                for (let h = 0; h < personArray.length; h = h + 2) {
-                  if (personArray[h] === 'N.N' ) {
-                    persons.push('N.N ');
+                  let persons: Array<String> = [];
+                  const personArray = reservation.personList.person;
+                  for (let h = 0; h < personArray.length; h = h + 2) {
+                    if (personArray[h] === "N.N") {
+                      persons.push("N.N ");
+                    }
+                    if (personArray[h] !== "" && personArray[h + 1] !== "") {
+                      persons.push(
+                        personArray[h + 1].trim() + " " + personArray[h].trim()
+                      );
+                    }
                   }
-                  if (personArray[h] !== '' && personArray[h + 1] !== '') {
-                    persons.push(personArray[h + 1].trim() + ' ' + personArray[h].trim());
+
+                  persons = persons.filter(this.uniqueFilter);
+
+                  const event: IRoomEvent = {
+                    lbl: reservation.veranstaltung,
+                    startTime: new Date(reservation.startTime),
+                    endTime: new Date(reservation.endTime),
+                    persons: persons,
+                  };
+
+                  if (
+                    this.houseMap &&
+                    split &&
+                    split[1] &&
+                    this.houseMap.has(split[1]) &&
+                    this.houseMap.get(split[1]).rooms.has(room.lbl) &&
+                    this.houseMap.get(split[1]).rooms.get(room.lbl).events
+                  ) {
+                    this.houseMap
+                      .get(split[1])
+                      .rooms.get(room.lbl)
+                      .events.push(event);
                   }
                 }
-
-                persons = persons.filter(this.uniqueFilter);
-
-                const event: IRoomEvent = {
-                  lbl: reservation.veranstaltung,
-                  startTime: new Date(reservation.startTime),
-                  endTime: new Date(reservation.endTime),
-                  persons: persons
-                };
-
-                if (
-                  this.houseMap && split && split[1]
-                  && this.houseMap.has(split[1])
-                  && this.houseMap.get(split[1]).rooms.has(room.lbl)
-                  && this.houseMap.get(split[1]).rooms.get(room.lbl).events
-                ) {
-                  this.houseMap.get(split[1]).rooms.get(room.lbl).events.push(event);
-                }
               }
             }
-          }
 
-          // load defaults if they are passed to the page by other files
-          let default_error = '';
-          if (this.default_house != null) {
-            if (this.houseMap && this.houseMap.has(this.default_house.lbl)) {
-              this.houseMap.get(this.default_house.lbl).expanded = true;
+            // load defaults if they are passed to the page by other files
+            let default_error = "";
+            if (this.default_house != null) {
+              if (this.houseMap && this.houseMap.has(this.default_house.lbl)) {
+                this.houseMap.get(this.default_house.lbl).expanded = true;
 
-              if (this.default_room != null) {
-                if (this.houseMap.get(this.default_house.lbl).rooms.has(this.default_room.lbl)) {
-                  this.houseMap.get(this.default_house.lbl).rooms.get(this.default_room.lbl).expanded = true;
-                } else {
-                  default_error = 'page.roomplan.no_room';
+                if (this.default_room != null) {
+                  if (
+                    this.houseMap
+                      .get(this.default_house.lbl)
+                      .rooms.has(this.default_room.lbl)
+                  ) {
+                    this.houseMap
+                      .get(this.default_house.lbl)
+                      .rooms.get(this.default_room.lbl).expanded = true;
+                  } else {
+                    default_error = "page.roomplan.no_room";
+                  }
                 }
+              } else {
+                default_error = "page.roomplan.no_house";
               }
-            } else {
-              default_error = 'page.roomplan.no_house';
-            }
-          }
-
-          if (default_error !== '') {
-            this.alertService.showToast(default_error);
-          }
-
-          // sadly templates cannot parse maps,
-          // therefore we will generate a new data structure based on arrays and parse everything into there
-          const tmpHouseList = Array.from(this.houseMap.values());
-          for (let i = 0; i < tmpHouseList.length; i++) {
-            const tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
-
-            tmpRoomArray.sort(RoomplanPage.compareRooms);
-            for (let h = 0; h < tmpRoomArray.length; h++) {
-              tmpRoomArray[h].events.sort(RoomplanPage.compareEvents);
             }
 
-            const tmpHouse: IHouse = {
-              lbl: tmpHouseList[i].lbl,
-              rooms: tmpRoomArray,
-              expanded: tmpHouseList[i].expanded
-            };
-            this.housesFound.push(tmpHouse);
-          }
-          this.housesFound.sort(RoomplanPage.compareHouses);
-        }
+            if (default_error !== "") {
+              this.alertService.showToast(default_error);
+            }
 
-        this.requestProcessed = true;
-        this.isLoaded = true;
-        // if refresher is running complete it
-        if (this.refresher) {
-          this.refresher.target.complete();
+            // sadly templates cannot parse maps,
+            // therefore we will generate a new data structure based on arrays and parse everything into there
+            const tmpHouseList = Array.from(this.houseMap.values());
+            for (let i = 0; i < tmpHouseList.length; i++) {
+              const tmpRoomArray = Array.from(tmpHouseList[i].rooms.values());
+
+              tmpRoomArray.sort(RoomplanPage.compareRooms);
+              for (let h = 0; h < tmpRoomArray.length; h++) {
+                tmpRoomArray[h].events.sort(RoomplanPage.compareEvents);
+              }
+
+              const tmpHouse: IHouse = {
+                lbl: tmpHouseList[i].lbl,
+                rooms: tmpRoomArray,
+                expanded: tmpHouseList[i].expanded,
+              };
+              this.housesFound.push(tmpHouse);
+            }
+            this.housesFound.sort(RoomplanPage.compareHouses);
+          }
+
+          this.requestProcessed = true;
+          this.isLoaded = true;
+          // if refresher is running complete it
+          if (this.refresher) {
+            this.refresher.target.complete();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          // if error reset vars and set error variable for display
+          this.requestProcessed = true;
+          this.error = error;
+          this.houseMap = new Map<string, IHousePlan>();
+          this.housesFound = [];
+          this.isLoaded = true;
+          if (this.refresher) {
+            this.refresher.target.complete();
+          }
         }
-      },
-      (error: HttpErrorResponse) => {
-        // if error reset vars and set error variable for display
-        this.requestProcessed = true;
-        this.error = error;
-        this.houseMap = new Map<string, IHousePlan>();
-        this.housesFound = [];
-        this.isLoaded = true;
-        if (this.refresher) {
-          this.refresher.target.complete();
-        }
-      }
-    );
+      );
   }
 
   /**

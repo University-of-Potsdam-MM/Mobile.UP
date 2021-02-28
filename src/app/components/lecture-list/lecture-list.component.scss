@@ -1,85 +1,87 @@
 .expandedRootItem {
-    --background: var(--ion-color-secondary);
-    color: var(--ion-color-primary);
-    border-radius: 0px;
-    font-size: 0.75rem;
+  --background: var(--ion-color-secondary);
+  color: var(--ion-color-primary);
+  border-radius: 0px;
+  font-size: 0.75rem;
 }
 
 .rootItem {
-    color: black;
-    border-radius: 0px;
-    font-size: 0.75rem;
+  color: black;
+  border-radius: 0px;
+  font-size: 0.75rem;
 }
 
-.expandedItem, .expandedCourse {
-    --background: var(--ion-color-secondary);
-    color: var(--ion-color-primary);
-    border-radius: 0px;
-    margin-left: 0.5%;
-    font-size: 0.75rem;
+.expandedItem,
+.expandedCourse {
+  --background: var(--ion-color-secondary);
+  color: var(--ion-color-primary);
+  border-radius: 0px;
+  margin-left: 0.5%;
+  font-size: 0.75rem;
 }
 
 .subTreeItem {
-    --background: var(--ion-color-light);
-    border-radius: 0px;
-    margin-left: 0.5%;
-    font-size: 0.75rem;
+  --background: var(--ion-color-light);
+  border-radius: 0px;
+  margin-left: 0.5%;
+  font-size: 0.75rem;
 }
 
 .courseItem {
-    --background: var(--ion-color-light);
-    border-radius: 0px;
-    margin-left: 0.5%;
-    font-size: 0.75rem;
+  --background: var(--ion-color-light);
+  border-radius: 0px;
+  margin-left: 0.5%;
+  font-size: 0.75rem;
 }
 
 .courseData {
-    border-radius: 0px;
-    font-size: 0.75rem;
-    margin-left: 0.5%;
-    padding: 0;
-    margin-right: 0;
+  border-radius: 0px;
+  font-size: 0.75rem;
+  margin-left: 0.5%;
+  padding: 0;
+  margin-right: 0;
 
-    p {
-        font-size: 0.75rem;
-        color: var(--ion-color-primary);
-    }
+  p {
+    font-size: 0.75rem;
+    color: var(--ion-color-primary);
+  }
 }
 
 .courseKeywords {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .noCourses {
-    --background: var(--ion-color-light);
-    color: black;
-    border-radius: 0px;
-    margin-left: 0.5%;
-    font-size: 0.75rem;
+  --background: var(--ion-color-light);
+  color: black;
+  border-radius: 0px;
+  margin-left: 0.5%;
+  font-size: 0.75rem;
 }
 
 /*
 Generic Styling, for Desktops/Laptops
 */
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 /* Zebra striping */
 tr:nth-of-type(odd) {
-    background: #eee;
+  background: #eee;
 }
 th {
-    background: var(--ion-color-primary);
-    color: white;
-    font-weight: bold;
-    font-size: 0.75rem;
+  background: var(--ion-color-primary);
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
 }
-td, th {
-    padding: 6px;
-    border: 1px solid #ededed;
-    text-align: left;
+td,
+th {
+  padding: 6px;
+  border: 1px solid #ededed;
+  text-align: left;
 }
 
 /*
@@ -87,69 +89,86 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+@media only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Force table to not be like tables anymore */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    font-size: 0.75rem;
+    display: block;
+  }
 
-    /* Force table to not be like tables anymore */
-    table, thead, tbody, th, td, tr {
-        font-size: 0.75rem;
-        display: block;
-    }
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
 
-    /* Hide table headers (but not display: none;, for accessibility) */
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
+  tr {
+    border: 1px solid #ededed;
+  }
+  tr.emptyRow {
+    border: 0px solid #ededed;
+  }
 
-    tr { border: 1px solid #ededed; }
-    tr.emptyRow { border: 0px solid #ededed; }
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #ededed;
+    position: relative;
+  }
 
-    td {
-        /* Behave  like a "row" */
-        border: none;
-        border-bottom: 1px solid #ededed;
-        position: relative;
-    }
+  td:before {
+    /* Now like a table header */
+    position: relative;
+    /* Top/left values mimic padding */
+    top: 0px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
 
-    td:before {
-        /* Now like a table header */
-        position: relative;
-        /* Top/left values mimic padding */
-        top: 0px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-    }
-
-    /*
+  /*
     Label the data
     */
-    td:nth-of-type(1):before { content: "Tag:"; }
-    td:nth-of-type(2):before { content: "Zeit:"; }
-    td:nth-of-type(3):before { content: "Rhythmus:"; }
-    td:nth-of-type(4):before { content: "Dauer:"; }
-    td:nth-of-type(5):before { content: "Raum:"; }
-    td:nth-of-type(6):before { content: "Lehrperson:"; }
+  td:nth-of-type(1):before {
+    content: "Tag:";
+  }
+  td:nth-of-type(2):before {
+    content: "Zeit:";
+  }
+  td:nth-of-type(3):before {
+    content: "Rhythmus:";
+  }
+  td:nth-of-type(4):before {
+    content: "Dauer:";
+  }
+  td:nth-of-type(5):before {
+    content: "Raum:";
+  }
+  td:nth-of-type(6):before {
+    content: "Lehrperson:";
+  }
 }
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-    body {
-        padding: 0;
-        margin: 0;
-        width: 320px;
-    }
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  body {
+    padding: 0;
+    margin: 0;
+    width: 320px;
+  }
 }
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-    body {
-        width: 495px;
-    }
+  body {
+    width: 495px;
+  }
 }

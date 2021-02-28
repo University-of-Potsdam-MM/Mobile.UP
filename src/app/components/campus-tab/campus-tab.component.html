@@ -1,17 +1,33 @@
 <ion-grid [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-row class="ion-nowrap">
     <ion-col>
-      <ion-button (click)="openModal()" class="reorder-button" size="small" fill="clear">
+      <ion-button
+        (click)="openModal()"
+        class="reorder-button"
+        size="small"
+        fill="clear"
+      >
         <ion-icon name="reorder-four"></ion-icon>
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-segment *ngIf="listProcessed" color="primary" scrollable="true" [value]="_selectedCampus">
-        <ion-segment-button *ngFor="let campus of campusList"
-        (click)="selectCampus(campus)" [value]="campus">
+      <ion-segment
+        *ngIf="listProcessed"
+        color="primary"
+        scrollable="true"
+        [value]="_selectedCampus"
+      >
+        <ion-segment-button
+          *ngFor="let campus of campusList"
+          (click)="selectCampus(campus)"
+          [value]="campus"
+        >
           {{ campus.pretty_name }}
         </ion-segment-button>
-        <ion-segment-button class="reorder-button" disabled="true"></ion-segment-button>
+        <ion-segment-button
+          class="reorder-button"
+          disabled="true"
+        ></ion-segment-button>
       </ion-segment>
     </ion-col>
   </ion-row>

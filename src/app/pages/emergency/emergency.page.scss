@@ -1,30 +1,30 @@
 ion-icon {
-    margin-inline-end: 10px;
+  margin-inline-end: 10px;
 }
 
 ion-item {
-    --padding-start: 5px;
-    border-bottom:1px solid #ededed !important;
+  --padding-start: 5px;
+  border-bottom: 1px solid #ededed !important;
 }
 
 ion-col {
-    font-size: 0.9rem;
+  font-size: 0.9rem;
 }
 
 .link {
-    color: var(--ion-color-primary);
-    text-decoration: underline;
+  color: var(--ion-color-primary);
+  text-decoration: underline;
 }
 
 .notUnderlined {
-    text-transform: capitalize;
-    text-decoration: none;
+  text-transform: capitalize;
+  text-decoration: none;
 }
 
 .whiteFont {
-    color: white;
+  color: white;
 }
 
 ion-item.noborder {
-    border-width:0 !important;
+  border-width: 0 !important;
 }

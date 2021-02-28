@@ -1,4 +1,4 @@
-import { ICredentials } from '../services/login-provider/interfaces';
+import { ICredentials } from "../services/login-provider/interfaces";
 
 export interface IModul {
   moduleTitle: string;
@@ -94,7 +94,7 @@ export interface IPulsAPIResponse_getStudentCourses {
 
 export interface IPulsApiRequest_getStudentCourses {
   condition: IPulsApiRequest_getStudentCourses_condition;
-  'user-auth': ICredentials;
+  "user-auth": ICredentials;
 }
 
 export interface IPulsApiRequest_getStudentCourses_condition {
@@ -115,8 +115,7 @@ export interface IPulsApiRequest_getLectureScheduleAll_condition {
   semester: number;
 }
 
-export interface IPulsAPIResponse_getLectureScheduleRoot {
-}
+export interface IPulsAPIResponse_getLectureScheduleRoot {}
 
 export interface IPulsApiRequest_getLectureScheduleRoot {
   condition: IPulsApiRequest_getLectureScheduleRoot_condition;
@@ -126,8 +125,7 @@ export interface IPulsApiRequest_getLectureScheduleRoot_condition {
   semester: number;
 }
 
-export interface IPulsAPIResponse_getLectureScheduleSubTree {
-}
+export interface IPulsAPIResponse_getLectureScheduleSubTree {}
 
 export interface IPulsApiRequest_getLectureScheduleSubTree {
   condition: IPulsApiRequest_getLectureScheduleSubTree_condition;
@@ -145,8 +143,7 @@ export interface IPulsApiRequest_getLectureScheduleCourses_condition {
   headerId: number;
 }
 
-export interface IPulsAPIResponse_getLectureScheduleCourses {
-}
+export interface IPulsAPIResponse_getLectureScheduleCourses {}
 
 export interface IPulsApiRequest_getCourseData {
   condition: IPulsApiRequest_getCourseData_condition;
@@ -156,11 +153,10 @@ export interface IPulsApiRequest_getCourseData_condition {
   courseId: number;
 }
 
-export interface IPulsAPIResponse_getCourseData {
-}
+export interface IPulsAPIResponse_getCourseData {}
 
 export interface IPulsApiRequest_getPersonalStudyAreas {
-  'user-auth': ICredentials;
+  "user-auth": ICredentials;
 }
 
 export interface IPulsAPIResponse_getPersonalStudyAreas {
@@ -179,10 +175,9 @@ export interface IGradeDegree {
   Studiengaenge: any;
 }
 
-
 export interface IPulsApiRequest_getAcademicAchievements {
   condition: IPulsApiRequest_getAcademicAchievements_condition;
-  'user-auth': ICredentials;
+  "user-auth": ICredentials;
 }
 
 export interface IPulsApiRequest_getAcademicAchievements_condition {
@@ -191,5 +186,4 @@ export interface IPulsApiRequest_getAcademicAchievements_condition {
   StgNr: string;
 }
 
-export interface IPulsAPIResponse_getAcademicAchievements {
-}
+export interface IPulsAPIResponse_getAcademicAchievements {}

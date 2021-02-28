@@ -1,26 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { IUBUser, IUBFees, IUBItems, IBibSessionResponse, IBibSession } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import * as moment from 'moment';
-import { TranslateService } from '@ngx-translate/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ConfigService } from '../../services/config/config.service';
-import { ICredentials, ELoginErrors } from 'src/app/services/login-provider/interfaces';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, ModalController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
-import { AlertButton } from '@ionic/core';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { utils } from 'src/app/lib/util';
-import { LibraryPwChangePage } from './library-pw-change.module';
+import { Component, OnInit } from "@angular/core";
+import {
+  IUBUser,
+  IUBFees,
+  IUBItems,
+  IBibSessionResponse,
+  IBibSession,
+} from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import * as moment from "moment";
+import { TranslateService } from "@ngx-translate/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { ConfigService } from "../../services/config/config.service";
+import {
+  ICredentials,
+  ELoginErrors,
+} from "src/app/services/login-provider/interfaces";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { LoadingController, ModalController } from "@ionic/angular";
+import { Storage } from "@ionic/storage";
+import { AlertButton } from "@ionic/core";
+import { AlertService } from "src/app/services/alert/alert.service";
+import { utils } from "src/app/lib/util";
+import { LibraryPwChangePage } from "./library-pw-change.module";
 
 @Component({
-  selector: 'app-library-account',
-  templateUrl: './library-account.page.html',
-  styleUrls: ['./library-account.page.scss'],
+  selector: "app-library-account",
+  templateUrl: "./library-account.page.html",
+  styleUrls: ["./library-account.page.scss"],
 })
 export class LibraryAccountPage extends AbstractPage implements OnInit {
-
   user: IUBUser;
   fees: IUBFees;
   items: IUBItems;
@@ -40,13 +48,13 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   grayedOutItemsHintCancel;
   noLoanItems = true;
   noReservedItems = true;
-  activeSegment = 'loan';
+  activeSegment = "loan";
   endpoint;
 
   // this object will hold the data the user enters in the login form
   loginCredentials: ICredentials = {
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   };
 
   bibSession: IBibSession;
@@ -66,19 +74,25 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   ) {
     super({ requireNetwork: true });
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ["", Validators.required],
+      password: ["", Validators.required],
     });
   }
 
   async ngOnInit() {
-    this.bibSession = await this.storage.get('bibSession');
+    this.bibSession = await this.storage.get("bibSession");
     this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
     if (this.bibSession) {
       if (
-        this.bibSession.timestamp && this.bibSession.oidcTokenObject && this.bibSession.oidcTokenObject.expires_in &&
-        utils.sessionIsValid(this.bibSession.timestamp, this.bibSession.oidcTokenObject.expires_in, 600)
+        this.bibSession.timestamp &&
+        this.bibSession.oidcTokenObject &&
+        this.bibSession.oidcTokenObject.expires_in &&
+        utils.sessionIsValid(
+          this.bibSession.timestamp,
+          this.bibSession.oidcTokenObject.expires_in,
+          600
+        )
       ) {
         this.getUser();
         this.getItems();
@@ -88,15 +102,20 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       } else {
         this.logoutUB();
       }
-    } else { this.showLoginScreen = true; }
+    } else {
+      this.showLoginScreen = true;
+    }
   }
 
   loginUB(loginCredentials?: ICredentials) {
     if (this.loginForm.valid || loginCredentials) {
-
       if (!loginCredentials) {
-        this.loginCredentials.username = this.loginForm.controls['username'].value;
-        this.loginCredentials.password = this.loginForm.controls['password'].value;
+        this.loginCredentials.username = this.loginForm.controls[
+          "username"
+        ].value;
+        this.loginCredentials.password = this.loginForm.controls[
+          "password"
+        ].value;
         this.showLoading();
       } else {
         this.loginCredentials.username = loginCredentials.username;
@@ -106,43 +125,51 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       const body = {
         username: this.loginCredentials.username,
         password: this.loginCredentials.password,
-        grant_type: 'password',
-        scope: 'read_patron read_fees read_items write_items change_password read_availability'
+        grant_type: "password",
+        scope:
+          "read_patron read_fees read_items write_items change_password read_availability",
       };
 
-      const headers = new HttpHeaders()
-        .append('Authorization', ConfigService.config.webservices.apiToken);
+      const headers = new HttpHeaders().append(
+        "Authorization",
+        ConfigService.config.webservices.apiToken
+      );
 
       // const headersNew = new HttpHeaders()
       //   .append('apikey', ConfigService.config.webservices.apiTokenNew);
 
-      this.http.get(this.endpoint + 'auth/login', { params: body, headers: headers }).subscribe((data: IBibSessionResponse) => {
-        this.bibSession = {
-          credentials: this.loginCredentials,
-          token: data.access_token,
-          oidcTokenObject: data,
-          timestamp: new Date()
-        };
+      this.http
+        .get(this.endpoint + "auth/login", { params: body, headers: headers })
+        .subscribe(
+          (data: IBibSessionResponse) => {
+            this.bibSession = {
+              credentials: this.loginCredentials,
+              token: data.access_token,
+              oidcTokenObject: data,
+              timestamp: new Date(),
+            };
 
-        this.storage.set('bibSession', this.bibSession);
+            this.storage.set("bibSession", this.bibSession);
 
-        if (!loginCredentials) {
-          this.endLoading();
-        }
+            if (!loginCredentials) {
+              this.endLoading();
+            }
 
-        this.getUser();
-        this.getItems();
-        this.getFees();
-      }, error => {
-        this.logger.error('loginUB()', error);
+            this.getUser();
+            this.getItems();
+            this.getFees();
+          },
+          (error) => {
+            this.logger.error("loginUB()", error);
 
-        if (!loginCredentials) {
-          this.endLoading();
-        }
+            if (!loginCredentials) {
+              this.endLoading();
+            }
 
-        this.showAlert(ELoginErrors.AUTHENTICATION);
-        this.logoutUB();
-      });
+            this.showAlert(ELoginErrors.AUTHENTICATION);
+            this.logoutUB();
+          }
+        );
     }
   }
 
@@ -160,81 +187,116 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     this.userExpanded = false;
     this.noLoanItems = true;
     this.noReservedItems = true;
-    this.activeSegment = 'loan';
+    this.activeSegment = "loan";
     this.itemStatus = [];
     this.showLoginScreen = true;
 
     this.loginCredentials = {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     };
 
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ["", Validators.required],
+      password: ["", Validators.required],
     });
 
-    this.storage.remove('bibSession');
-    this.logger.debug('logoutUB()', 'successfully logged out ub-user');
+    this.storage.remove("bibSession");
+    this.logger.debug("logoutUB()", "successfully logged out ub-user");
   }
 
   getUser() {
     this.userLoaded = false;
     this.userError = false;
 
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders().append(
+      "Authorization",
+      "Bearer " + this.bibSession.token
+    );
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron, { headers: headers }).subscribe((userData: IUBUser) => {
-      this.user = userData;
-      this.userLoaded = true;
-    }, error => {
-      this.logger.error('getUser()', error);
-      this.userLoaded = true;
-      this.userError = true;
-    });
+    this.http
+      .get(this.endpoint + "core/" + this.bibSession.oidcTokenObject.patron, {
+        headers: headers,
+      })
+      .subscribe(
+        (userData: IUBUser) => {
+          this.user = userData;
+          this.userLoaded = true;
+        },
+        (error) => {
+          this.logger.error("getUser()", error);
+          this.userLoaded = true;
+          this.userError = true;
+        }
+      );
   }
 
   getItems() {
     this.itemsLoaded = false;
     this.itemsError = false;
 
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders().append(
+      "Authorization",
+      "Bearer " + this.bibSession.token
+    );
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/items', { headers: headers })
-    .subscribe((itemData: IUBItems) => {
-      this.items = itemData;
-      this.items.doc.sort((a, b) => {
-        if (a.endtime > b.endtime) {
-          return 1;
-        } else { return -1; }
-      });
-      this.itemsLoaded = true;
-      this.prepareForm();
-    }, error => {
-      this.logger.error('getItems()', error);
-      this.itemsLoaded = true;
-      this.itemsError = true;
-    });
+    this.http
+      .get(
+        this.endpoint +
+          "core/" +
+          this.bibSession.oidcTokenObject.patron +
+          "/items",
+        { headers: headers }
+      )
+      .subscribe(
+        (itemData: IUBItems) => {
+          this.items = itemData;
+          this.items.doc.sort((a, b) => {
+            if (a.endtime > b.endtime) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          this.itemsLoaded = true;
+          this.prepareForm();
+        },
+        (error) => {
+          this.logger.error("getItems()", error);
+          this.itemsLoaded = true;
+          this.itemsError = true;
+        }
+      );
   }
 
   getFees() {
     this.feesLoaded = false;
     this.feesError = false;
 
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders().append(
+      "Authorization",
+      "Bearer " + this.bibSession.token
+    );
 
-    this.http.get(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/fees', { headers: headers })
-    .subscribe((feeData: IUBFees) => {
-      this.fees = feeData;
-      this.feesLoaded = true;
-    }, error => {
-      this.logger.error('getFees()', error);
-      this.feesLoaded = true;
-      this.feesError = true;
-    });
+    this.http
+      .get(
+        this.endpoint +
+          "core/" +
+          this.bibSession.oidcTokenObject.patron +
+          "/fees",
+        { headers: headers }
+      )
+      .subscribe(
+        (feeData: IUBFees) => {
+          this.fees = feeData;
+          this.feesLoaded = true;
+        },
+        (error) => {
+          this.logger.error("getFees()", error);
+          this.feesLoaded = true;
+          this.feesError = true;
+        }
+      );
   }
 
   refresh(refresher) {
@@ -248,7 +310,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   renewItems() {
     const docsToRenew: IUBItems = {
-      'doc': []
+      doc: [],
     };
 
     if (this.items && this.items.doc) {
@@ -263,28 +325,43 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   renewRequest(items: IUBItems) {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders().append(
+      "Authorization",
+      "Bearer " + this.bibSession.token
+    );
 
-    this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/renew', items, { headers: headers })
-    .subscribe(() => {
-      this.getItems();
-    }, error => {
-      this.logger.error('renewRequest()', error);
-      const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
-      this.alertService.showAlert(
-        {
-          headerI18nKey: 'alert.title.error',
-          messageI18nKey: 'page.library-account.renewError'
+    this.http
+      .post(
+        this.endpoint +
+          "core/" +
+          this.bibSession.oidcTokenObject.patron +
+          "/renew",
+        items,
+        { headers: headers }
+      )
+      .subscribe(
+        () => {
+          this.getItems();
         },
-        buttons
+        (error) => {
+          this.logger.error("renewRequest()", error);
+          const buttons: AlertButton[] = [
+            { text: this.translate.instant("button.continue") },
+          ];
+          this.alertService.showAlert(
+            {
+              headerI18nKey: "alert.title.error",
+              messageI18nKey: "page.library-account.renewError",
+            },
+            buttons
+          );
+        }
       );
-    });
   }
 
   cancelItems() {
     const docsToCancel: IUBItems = {
-      'doc': []
+      doc: [],
     };
 
     if (this.items && this.items.doc) {
@@ -299,23 +376,38 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   cancelRequest(items: IUBItems) {
-    const headers = new HttpHeaders()
-      .append('Authorization', 'Bearer ' + this.bibSession.token);
+    const headers = new HttpHeaders().append(
+      "Authorization",
+      "Bearer " + this.bibSession.token
+    );
 
-    this.http.post(this.endpoint + 'core/' + this.bibSession.oidcTokenObject.patron + '/cancel', items, { headers: headers })
-    .subscribe(() => {
-      this.getItems();
-    }, error => {
-      this.logger.error('cancelRequest()', error);
-      const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
-      this.alertService.showAlert(
-        {
-          headerI18nKey: 'alert.title.error',
-          messageI18nKey: 'page.library-account.cancelError'
+    this.http
+      .post(
+        this.endpoint +
+          "core/" +
+          this.bibSession.oidcTokenObject.patron +
+          "/cancel",
+        items,
+        { headers: headers }
+      )
+      .subscribe(
+        () => {
+          this.getItems();
         },
-        buttons
+        (error) => {
+          this.logger.error("cancelRequest()", error);
+          const buttons: AlertButton[] = [
+            { text: this.translate.instant("button.continue") },
+          ];
+          this.alertService.showAlert(
+            {
+              headerI18nKey: "alert.title.error",
+              messageI18nKey: "page.library-account.cancelError",
+            },
+            buttons
+          );
+        }
       );
-    });
   }
 
   prepareForm() {
@@ -328,17 +420,25 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
     if (this.items && this.items.doc) {
       for (let i = 0; i < this.items.doc.length; i++) {
-        if (this.items.doc[i].status === 1) { this.noReservedItems = false; }
+        if (this.items.doc[i].status === 1) {
+          this.noReservedItems = false;
+        }
 
-        if ((this.items.doc[i].status === 4) || (this.items.doc[i].status === 3) || (this.items.doc[i].status === 2)) {
+        if (
+          this.items.doc[i].status === 4 ||
+          this.items.doc[i].status === 3 ||
+          this.items.doc[i].status === 2
+        ) {
           this.noLoanItems = false;
         }
 
         let renewable;
-        if ((this.items.doc[i].queue !== 0) || !this.items.doc[i].canrenew) {
+        if (this.items.doc[i].queue !== 0 || !this.items.doc[i].canrenew) {
           // item can not be renewed
           renewable = false;
-        } else if (this.items.doc[i].canrenew) { renewable = true; }
+        } else if (this.items.doc[i].canrenew) {
+          renewable = true;
+        }
 
         const canCancel = this.items.doc[i].cancancel;
 
@@ -346,32 +446,43 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.grayedOutItemsHintCancel = true;
         }
 
-        if (!renewable && ((this.items.doc[i].status === 4) || (this.items.doc[i].status === 3) || (this.items.doc[i].status === 2))) {
+        if (
+          !renewable &&
+          (this.items.doc[i].status === 4 ||
+            this.items.doc[i].status === 3 ||
+            this.items.doc[i].status === 2)
+        ) {
           this.grayedOutItemsHintRenew = true;
         }
 
         let endDate;
-        if (this.items.doc[i].endtime) { endDate = moment(this.items.doc[i].endtime); }
+        if (this.items.doc[i].endtime) {
+          endDate = moment(this.items.doc[i].endtime);
+        }
 
         const currentDate = moment();
         let dayDiff = 0;
-        if (endDate && currentDate) { dayDiff = endDate.diff(currentDate, 'days'); }
+        if (endDate && currentDate) {
+          dayDiff = endDate.diff(currentDate, "days");
+        }
 
         let status;
         if (dayDiff < 0) {
           status = 2;
         } else if (dayDiff < 4) {
           status = 1;
-        } else { status = 0; }
+        } else {
+          status = 0;
+        }
 
         this.itemStatus[i] = {
-          'isCheckedToRenew': false,
-          'isCheckedToCancel': false,
-          'canRenew': renewable,
-          'canCancel': canCancel,
+          isCheckedToRenew: false,
+          isCheckedToCancel: false,
+          canRenew: renewable,
+          canCancel: canCancel,
           // status: 0 = ok, 1 = due soon, 2 = late
-          'status': status,
-          'daysToReturn': dayDiff
+          status: status,
+          daysToReturn: dayDiff,
         };
       }
     }
@@ -403,18 +514,20 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
 
   formatItemDates(date) {
     let tmp;
-    if (this.translate.currentLang === 'de') {
-      tmp = moment(date).format('DD.MM.YYYY');
-    } else { tmp = moment(date).format('L'); }
+    if (this.translate.currentLang === "de") {
+      tmp = moment(date).format("DD.MM.YYYY");
+    } else {
+      tmp = moment(date).format("L");
+    }
     return tmp;
   }
 
   abort() {
-    this.navCtrl.navigateBack('/home');
+    this.navCtrl.navigateBack("/home");
   }
 
   getAccountStatus(status) {
-    const s = 'page.library-account.status.' + String(status).trim();
+    const s = "page.library-account.status." + String(status).trim();
     return this.translate.instant(s);
   }
 
@@ -424,8 +537,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
    */
   async showLoading() {
     this.loading = await this.loadingCtrl.create({
-      message: this.translate.instant('page.login.loginInProgress'),
-      spinner: 'crescent'
+      message: this.translate.instant("page.login.loginInProgress"),
+      spinner: "crescent",
     });
     this.loading.present();
   }
@@ -449,18 +562,22 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
    * @param errorCode
    */
   showAlert(errorCode: ELoginErrors) {
-    const buttons: AlertButton[] = [{ text: this.translate.instant('button.continue') }];
+    const buttons: AlertButton[] = [
+      { text: this.translate.instant("button.continue") },
+    ];
     this.alertService.showAlert(
       {
-        headerI18nKey: 'alert.title.error',
-        messageI18nKey: `page.library-account.loginError.${errorCode}`
+        headerI18nKey: "alert.title.error",
+        messageI18nKey: `page.library-account.loginError.${errorCode}`,
       },
       buttons
     );
   }
 
   formatDate(date) {
-    const dateString = new Date(date).toLocaleDateString(this.translate.currentLang);
+    const dateString = new Date(date).toLocaleDateString(
+      this.translate.currentLang
+    );
     return dateString;
   }
 
@@ -469,19 +586,18 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       backdropDismiss: false,
       component: LibraryPwChangePage,
       componentProps: {
-        header: this.translate.instant('page.library-account.changePassword'),
-        endpoint: this.endpoint
-      }
+        header: this.translate.instant("page.library-account.changePassword"),
+        endpoint: this.endpoint,
+      },
     });
     modal.present();
     this.modalOpen = true;
     const response = await modal.onDidDismiss();
     if (response && response.data && response.data.shouldRelogin) {
-      this.bibSession = await this.storage.get('bibSession');
+      this.bibSession = await this.storage.get("bibSession");
       this.loginUB(this.bibSession.credentials);
-      this.alertService.showToast('hints.text.changedPassword');
+      this.alertService.showToast("hints.text.changedPassword");
     }
     this.modalOpen = false;
   }
-
 }

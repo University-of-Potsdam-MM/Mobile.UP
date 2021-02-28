@@ -1,13 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IMeals } from 'src/app/lib/interfaces';
+import { Component, OnInit, Input } from "@angular/core";
+import { IMeals } from "src/app/lib/interfaces";
 
 @Component({
-  selector: 'app-mensa-meal',
-  templateUrl: './mensa-meal.component.html',
-  styleUrls: ['./mensa-meal.component.scss']
+  selector: "app-mensa-meal",
+  templateUrl: "./mensa-meal.component.html",
+  styleUrls: ["./mensa-meal.component.scss"],
 })
 export class MensaMealComponent implements OnInit {
-
   @Input() meals: IMeals[];
   @Input() mealForDate: boolean[];
   @Input() iconMapping;
@@ -15,7 +14,7 @@ export class MensaMealComponent implements OnInit {
   allergenIsExpanded: boolean[][] = [];
   mealIsExpanded: boolean[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.allergenIsExpanded = [];
@@ -27,13 +26,22 @@ export class MensaMealComponent implements OnInit {
   }
 
   checkConditions(i) {
-    if (this.mealForDate[i] && this.meals[i].description && this.meals[i].description.length > 1) {
+    if (
+      this.mealForDate[i] &&
+      this.meals[i].description &&
+      this.meals[i].description.length > 1
+    ) {
       return true;
-    } else { return false; }
+    } else {
+      return false;
+    }
   }
 
   expandMeal(i) {
-    if (this.meals[i].prices || (this.meals[i].allergens && this.meals[i].allergens.length > 0)) {
+    if (
+      this.meals[i].prices ||
+      (this.meals[i].allergens && this.meals[i].allergens.length > 0)
+    ) {
       if (this.mealIsExpanded[i]) {
         this.mealIsExpanded[i] = false;
         if (this.meals[i].allergens) {
@@ -69,12 +77,11 @@ export class MensaMealComponent implements OnInit {
   }
 
   formatPrices(number: number) {
-    return number.toFixed(2) + ' €';
+    return number.toFixed(2) + " €";
   }
 
   slideLoaded($event) {
     const slides = $event.target;
     slides.swiper.autoplay.start();
   }
-
 }

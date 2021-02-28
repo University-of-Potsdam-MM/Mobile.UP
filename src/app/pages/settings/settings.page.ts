@@ -1,25 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { TranslateService } from '@ngx-translate/core';
-import * as Constants from '../../services/settings/settings_config';
-import * as moment from 'moment';
-import { ISetting, ESettingType } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
+import { Component, OnInit } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
+import * as Constants from "../../services/settings/settings_config";
+import * as moment from "moment";
+import { ISetting, ESettingType } from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+  selector: "app-settings",
+  templateUrl: "./settings.page.html",
+  styleUrls: ["./settings.page.scss"],
 })
 export class SettingsPage extends AbstractPage implements OnInit {
-
   settings: Array<ISetting> = [];
   settings_initializes = false;
 
-  constructor(
-    private storage: Storage,
-    private translate: TranslateService,
-  ) {
+  constructor(private storage: Storage, private translate: TranslateService) {
     super();
   }
 
@@ -39,7 +35,11 @@ export class SettingsPage extends AbstractPage implements OnInit {
       const val = await this.getSettingValue(this.settings[i].key);
       if (val != null) {
         this.settings[i].value = val;
-        this.logger.debug('loadInitialSettings', 'loaded value for ', this.settings[i]);
+        this.logger.debug(
+          "loadInitialSettings",
+          "loaded value for ",
+          this.settings[i]
+        );
       }
     }
   }
@@ -50,7 +50,7 @@ export class SettingsPage extends AbstractPage implements OnInit {
    * @returns {Promise<any>}
    */
   public async getSettingValue(key) {
-    const setting: ISetting = await this.storage.get('settings.' + key);
+    const setting: ISetting = await this.storage.get("settings." + key);
     if (setting == null) {
       return null;
     }
@@ -75,11 +75,15 @@ export class SettingsPage extends AbstractPage implements OnInit {
   }
 
   customAlertOptions(setting) {
-    const value = this.translate.instant('page.settings.setting.' + setting.key);
-    let infoText = '';
-    if (value.info) { infoText = value.info; }
+    const value = this.translate.instant(
+      "page.settings.setting." + setting.key
+    );
+    let infoText = "";
+    if (value.info) {
+      infoText = value.info;
+    }
     return {
-      message: infoText
+      message: infoText,
     };
   }
 
@@ -89,12 +93,18 @@ export class SettingsPage extends AbstractPage implements OnInit {
   }
 
   getOptionLabel(setting, option) {
-    const value = this.translate.instant('page.settings.setting.' + setting.key);
+    const value = this.translate.instant(
+      "page.settings.setting." + setting.key
+    );
     if (value.options) {
       if (value.options[option.key] == null) {
         return option.key;
-      } else { return value.options[option.key]; }
-    } else { return option.key; }
+      } else {
+        return value.options[option.key];
+      }
+    } else {
+      return option.key;
+    }
   }
 
   /**
@@ -106,21 +116,21 @@ export class SettingsPage extends AbstractPage implements OnInit {
   setSetting(setting: ISetting, value) {
     // mainly so the boolean setting does not get caught in a onChange loop by loading/setting/change/change/..
     if (!this.settings_initializes) {
-      this.logger.debug('setSettings', 'prevented save before load');
+      this.logger.debug("setSettings", "prevented save before load");
       return false;
     }
     setting.value = value;
-    this.logger.debug('saveSettings', 'saved setting', setting, value);
-    this.storage.set('settings.' + setting.key, setting);
+    this.logger.debug("saveSettings", "saved setting", setting, value);
+    this.storage.set("settings." + setting.key, setting);
 
     // check if language was changed because it needs to change immediatly
-    if (setting.key === 'language') {
-      if (value === 'Deutsch') {
-        this.translate.use('de');
-        moment.locale('de');
+    if (setting.key === "language") {
+      if (value === "Deutsch") {
+        this.translate.use("de");
+        moment.locale("de");
       } else {
-        this.translate.use('en');
-        moment.locale('en');
+        this.translate.use("en");
+        moment.locale("en");
       }
     }
   }
@@ -141,27 +151,26 @@ export class SettingsPage extends AbstractPage implements OnInit {
   getSettingType(setting: ISetting) {
     switch (setting.type) {
       case ESettingType.number: {
-        return 'number';
+        return "number";
       }
       case ESettingType.boolean: {
-        return 'boolean';
+        return "boolean";
       }
       case ESettingType.string_radio: {
-        return 'radio';
+        return "radio";
       }
       case ESettingType.number_radio: {
-        return 'radio';
+        return "radio";
       }
       case ESettingType.checkbox: {
-        return 'checkbox';
+        return "checkbox";
       }
       case ESettingType.placeholder: {
-        return 'placeholder';
+        return "placeholder";
       }
       default: {
-        return 'string';
+        return "string";
       }
     }
   }
-
 }

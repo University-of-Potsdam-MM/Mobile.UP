@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { WebserviceWrapperService } from '../webservice-wrapper/webservice-wrapper.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+import { Injectable } from "@angular/core";
+import { WebserviceWrapperService } from "../webservice-wrapper/webservice-wrapper.service";
+import { Logger, LoggingService } from "ionic-logging-service";
 
 export interface IErrorLogging {
   message?: string;
@@ -12,18 +12,17 @@ export interface IErrorLogging {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ErrorHandlerService {
-
   logger: Logger;
 
   constructor(
     private ws: WebserviceWrapperService,
     private loggingService: LoggingService
-    ) {
-      this.logger = this.loggingService.getLogger('[/error-handler]');
-    }
+  ) {
+    this.logger = this.loggingService.getLogger("[/error-handler]");
+  }
 
   /**
    * @name logError
@@ -31,11 +30,18 @@ export class ErrorHandlerService {
    * @param {IErrorLogging} errorObject
    */
   logError(errorObject: IErrorLogging) {
-    this.logger.error('logError', errorObject);
-    this.ws.call('logging', errorObject).subscribe(response => {
-      this.logger.debug('logError', 'logged error', response);
-    }, error => {
-      this.logger.error('logError', 'could not log error, because of yet another error', error);
-    });
+    this.logger.error("logError", errorObject);
+    this.ws.call("logging", errorObject).subscribe(
+      (response) => {
+        this.logger.debug("logError", "logged error", response);
+      },
+      (error) => {
+        this.logger.error(
+          "logError",
+          "could not log error, because of yet another error",
+          error
+        );
+      }
+    );
   }
 }

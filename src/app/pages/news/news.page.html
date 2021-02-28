@@ -1,8 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
-    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="loadNews(true)" slot="end" fill="clear">
-      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="loadNews(true)"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
@@ -10,27 +15,49 @@
   </ion-toolbar>
   <ion-toolbar *ngIf="sourcesList && sourcesList.length > 0 && !networkError">
     <ion-row class="filters">
-        <ion-col class="col-with-arrow ion-no-padding" size="1">
-          <ion-icon *ngIf="showLeftButton" class="linkItem" (click)="slidePrev()" name="caret-back"></ion-icon>
-        </ion-col>
-        <ion-col class="ion-no-padding" size="10">
-          <ion-slides [options]="slideOptions">
-            <ion-slide class="linkItem" (click)="setNewsSource(i)" *ngFor="let category of categories; let i = index">
-              <ion-segment-button [class.selected]="selectedCategory === i">{{ category }}</ion-segment-button>
-            </ion-slide>
-          </ion-slides>
-        </ion-col>
-        <ion-col class="col-with-arrow ion-no-padding" size="1">
-          <ion-icon *ngIf="showRightButton" class="linkItem" (click)="slideNext()" name="caret-forward"></ion-icon>
-        </ion-col>
+      <ion-col class="col-with-arrow ion-no-padding" size="1">
+        <ion-icon
+          *ngIf="showLeftButton"
+          class="linkItem"
+          (click)="slidePrev()"
+          name="caret-back"
+        ></ion-icon>
+      </ion-col>
+      <ion-col class="ion-no-padding" size="10">
+        <ion-slides [options]="slideOptions">
+          <ion-slide
+            class="linkItem"
+            (click)="setNewsSource(i)"
+            *ngFor="let category of categories; let i = index"
+          >
+            <ion-segment-button [class.selected]="selectedCategory === i"
+              >{{ category }}</ion-segment-button
+            >
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col class="col-with-arrow ion-no-padding" size="1">
+        <ion-icon
+          *ngIf="showRightButton"
+          class="linkItem"
+          (click)="slideNext()"
+          name="caret-forward"
+        ></ion-icon>
+      </ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-no-padding" (swipe)="swipeNewsSource($event)">
-
-  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="loadNews($event)">
-    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="loadNews($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
   </ion-refresher>
 
   <div align="center" *ngIf="!isLoaded" class="ion-padding">
@@ -40,11 +67,16 @@
   <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
 
   <div *ngFor="let article of newsList" class="news-article">
-    <app-news-article  *ngIf="article.NewsSource.name == sourcesList[newsSource]" [article]="article"></app-news-article>
+    <app-news-article
+      *ngIf="article.NewsSource.name == sourcesList[newsSource]"
+      [article]="article"
+    ></app-news-article>
   </div>
 
   <div *ngIf="isLoaded && newsList.length == 0 && !networkError">
-    <app-hint-box hintTypeI18nKey="hints.type.hint" hintTextI18nKey="hints.text.noNews"></app-hint-box>
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="hints.text.noNews"
+    ></app-hint-box>
   </div>
-
 </ion-content>

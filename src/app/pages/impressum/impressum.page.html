@@ -10,9 +10,9 @@
 <ion-content [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
   <ion-grid>
     <ion-row>
-      <ion-col  class="placeholder-img">
-       <img src="assets/imgs/testbild.png"/>
-       <em>Foto: Karla Fritze</em>
+      <ion-col class="placeholder-img">
+        <img src="assets/imgs/testbild.png" />
+        <em>Foto: Karla Fritze</em>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -23,14 +23,10 @@
       </ion-label>
     </ion-item>
     <ion-item detail button (click)="openSection('page.legalNotice.title')">
-      <ion-label>
-        {{ "page.legalNotice.title" | translate }}
-      </ion-label>
+      <ion-label> {{ "page.legalNotice.title" | translate }} </ion-label>
     </ion-item>
     <ion-item detail button (click)="openSection('page.privacyPolicy.title')">
-      <ion-label>
-        {{ "page.privacyPolicy.title" | translate }}
-      </ion-label>
+      <ion-label> {{ "page.privacyPolicy.title" | translate }} </ion-label>
     </ion-item>
     <!-- <ion-item detail button (click)="openPage('page.termsOfUse.title')">
       <ion-label>

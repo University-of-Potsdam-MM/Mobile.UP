@@ -1,38 +1,41 @@
 // http://ionicframework.com/docs/theming/
-@import '~@ionic/angular/css/core.css';
-@import '~@ionic/angular/css/normalize.css';
-@import '~@ionic/angular/css/structure.css';
-@import '~@ionic/angular/css/typography.css';
+@import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
 
-@import '~@ionic/angular/css/padding.css';
-@import '~@ionic/angular/css/float-elements.css';
-@import '~@ionic/angular/css/text-alignment.css';
-@import '~@ionic/angular/css/text-transformation.css';
-@import '~@ionic/angular/css/flex-utils.css';
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
 
 // // Add UP Font
 // /* Source Sans Pro Regular */
 @font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Source Sans Pro Regular"), local("Source-Sans-Pro-Regular") format("truetype");
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Source Sans Pro Regular"),
+    local("Source-Sans-Pro-Regular") format("truetype");
 }
 
 /* Source Sans Pro Light */
 @font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 300;
-    src: local("Source Sans Pro Light"), local("Source-Sans-Pro-Light") format("truetype");
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Source Sans Pro Light"),
+    local("Source-Sans-Pro-Light") format("truetype");
 }
 
 /* Source Sans Pro Bold */
 @font-face {
-    font-family: "Source Sans Pro";
-    font-style: normal;
-    font-weight: 700;
-    src: local("Source Sans Pro Bold"), local("Sourc-Sans-Pro-Bold") format("truetype");
+  font-family: "Source Sans Pro";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Source Sans Pro Bold"),
+    local("Sourc-Sans-Pro-Bold") format("truetype");
 }
 
 /*reset default theme box shadows and border radius */
@@ -51,8 +54,8 @@ ion-item {
   }
 
   ion-icon {
-      -webkit-margin-start: 5px;
-      margin-inline-end: 5px;
+    -webkit-margin-start: 5px;
+    margin-inline-end: 5px;
   }
 }
 
@@ -69,7 +72,7 @@ ion-item {
 }
 
 .leaflet-control-search .search-tip {
-  box-shadow: 1px 1px 6px rgba(0,0,0,.4);
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
 }
 
 .leaflet-control-search .search-tip {
@@ -80,12 +83,15 @@ ion-item {
   border: none !important;
 }
 
-.search-input, .search-button, .search-cancel, .search-alert {
+.search-input,
+.search-button,
+.search-cancel,
+.search-alert {
   display: none !important;
 }
 
 .updateToast {
-  --button-color: white!important;
+  --button-color: white !important;
 }
 
 .modalBackButton {
@@ -93,8 +99,8 @@ ion-item {
   min-width: 48px;
   height: 48px;
   margin: 0;
-  --background-focused: rgba(66,66,66,0.24);
-  --background-hover: rgba(66,66,66,0.08);
+  --background-focused: rgba(66, 66, 66, 0.24);
+  --background-hover: rgba(66, 66, 66, 0.08);
   --icon-margin-end: 0;
   --icon-margin-start: 0;
   --icon-font-size: 24px;
@@ -108,13 +114,15 @@ ion-item {
   text-transform: uppercase;
 }
 
-.header-md::after, .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before {
-	background-image:none;
+.header-md::after,
+.tabs-md[tabsPlacement="top"] > .tabbar::after,
+.footer-md::before {
+  background-image: none;
 }
 
 // adjust global layout settings
 .scroll-content {
-  overflow-y:auto !important;
+  overflow-y: auto !important;
   padding: 0;
 }
 
@@ -135,22 +143,22 @@ ion-segment-button {
 }
 
 ion-back-button {
-  --color: black!important;
-  --ion-text-color: black!important;
+  --color: black !important;
+  --ion-text-color: black !important;
 }
 
-ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color), ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
-  color: black!important;
+ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color),
+ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
+  color: black !important;
 }
 
 .card-background-page {
-
   ion-card {
     position: relative;
     text-align: center;
     margin: 0px;
     width: 100%;
-    border-radius:0;
+    border-radius: 0;
 
     img {
       margin: auto;
@@ -160,7 +168,6 @@ ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color), ion-toolbar
     .loggedIn {
       opacity: 0.05 !important;
     }
-
   }
 
   .card-title {
@@ -179,13 +186,12 @@ ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color), ion-toolbar
     width: 100%;
     color: #000;
   }
-
 }
 
 // placeholder image
 .placeholder-img {
-  padding:0 !important;
-  margin-bottom:10px;
+  padding: 0 !important;
+  margin-bottom: 10px;
 
   em {
     position: absolute;
@@ -194,25 +200,26 @@ ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color), ion-toolbar
     color: white;
     bottom: 0;
     padding: 1px;
-    font-size: .8em;
+    font-size: 0.8em;
   }
 }
 
 ion-card {
-  box-shadow: none!important;
-  -webkit-box-shadow:none!important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
 
 ion-toolbar {
   --min-height: 48px;
 }
 
-ion-content.modalOpened, ion-content.disableScrolling {
+ion-content.modalOpened,
+ion-content.disableScrolling {
   --overflow: hidden;
 }
 
 .calendar {
-  hyphens: auto!important;
+  hyphens: auto !important;
 
   .monthview-datetable td.monthview-primary-with-event {
     background-color: var(--ion-color-primary) !important;
@@ -228,27 +235,28 @@ ion-content.modalOpened, ion-content.disableScrolling {
   }
 
   .calendar-event-inner {
-    height: 100%!important;
-    overflow: hidden!important;
+    height: 100% !important;
+    overflow: hidden !important;
   }
 
   .calendar-hour-column {
-    width: 5rem!important;
+    width: 5rem !important;
   }
 
   // https://github.com/twinssbc/Ionic2-Calendar/issues/54#issuecomment-354191281
-  .weekview-allday-table, .dayview-allday-table {
-    display: none!important;
+  .weekview-allday-table,
+  .dayview-allday-table {
+    display: none !important;
   }
 
-  .weekview-normal-event-container, .dayview-normal-event-container {
+  .weekview-normal-event-container,
+  .dayview-normal-event-container {
     margin: 0;
   }
 
   .weekview-normal-event-container {
-    margin-top: 37px!important;
+    margin-top: 37px !important;
   }
-
 }
 
 // letting the browser know which elements are clickable

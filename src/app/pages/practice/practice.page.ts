@@ -1,25 +1,28 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { HttpErrorResponse, } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
-import { IonItemSliding, ModalController, AlertController } from '@ionic/angular';
-import * as jquery from 'jquery';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { TranslateService } from '@ngx-translate/core';
-import { DetailedPracticeModalPage } from './detailed-practice.modal';
-import { ADS, IADSResponse } from 'src/app/lib/interfaces';
-import { SettingsService } from 'src/app/services/settings/settings.service';
-import { utils } from 'src/app/lib/util';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { Component, ChangeDetectorRef } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Storage } from "@ionic/storage";
+import {
+  IonItemSliding,
+  ModalController,
+  AlertController,
+} from "@ionic/angular";
+import * as jquery from "jquery";
+import { Keyboard } from "@ionic-native/keyboard/ngx";
+import { TranslateService } from "@ngx-translate/core";
+import { DetailedPracticeModalPage } from "./detailed-practice.modal";
+import { ADS, IADSResponse } from "src/app/lib/interfaces";
+import { SettingsService } from "src/app/services/settings/settings.service";
+import { utils } from "src/app/lib/util";
+import { AlertService } from "src/app/services/alert/alert.service";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
-  selector: 'app-practice',
-  templateUrl: './practice.page.html',
-  styleUrls: ['./practice.page.scss'],
+  selector: "app-practice",
+  templateUrl: "./practice.page.html",
+  styleUrls: ["./practice.page.scss"],
 })
 export class PracticePage extends AbstractPage {
-
   defaultList: ADS[] = [];
   filteredList: ADS[] = [];
   displayedList: ADS[] = [];
@@ -29,8 +32,8 @@ export class PracticePage extends AbstractPage {
   error: HttpErrorResponse;
   itemsShown = 0;
   isLoadedFavorites = false;
-  query = '';
-  activeSegment = 'search';
+  query = "";
+  activeSegment = "search";
   modalOpen;
 
   constructor(
@@ -58,19 +61,19 @@ export class PracticePage extends AbstractPage {
    * @param num
    */
   private practiceMapping(num) {
-    let practice = '';
+    let practice = "";
     switch (num) {
-      case '1':
-        practice = 'Praktika';
+      case "1":
+        practice = "Praktika";
         break;
-      case '2':
-        practice = 'Jobs für Studierende';
+      case "2":
+        practice = "Jobs für Studierende";
         break;
-      case '3':
-        practice = 'Jobs für Absolventen';
+      case "3":
+        practice = "Jobs für Absolventen";
         break;
-      case '4':
-        practice = 'Abschlussarbeit';
+      case "4":
+        practice = "Abschlussarbeit";
         break;
     }
     return practice;
@@ -94,45 +97,46 @@ export class PracticePage extends AbstractPage {
     this.error = null;
     if (!(refresher && refresher.target)) {
       this.isLoaded = false;
-    } else { this.query = ''; }
+    } else {
+      this.query = "";
+    }
 
-    this.ws.call(
-      'practiceSearch',
-      {},
-      { forceRefresh: refresher !== undefined }
-    ).subscribe(
-      (response: IADSResponse) => {
-        if (refresher && refresher.target) {
-          refresher.target.complete();
-        }
-
-        // reset array so new persons are displayed
-        this.defaultList = [];
-        // use inner object only because it's wrapped in another object
-        const uidArray = [];
-        for (const ads of response) {
-          ads.date = ads.date * 1000;
-          ads.expanded = false;
-          if (!utils.isInArray(uidArray, ads.uid)) {
-            uidArray.push(ads.uid);
-            this.defaultList.push(ads);
+    this.ws
+      .call("practiceSearch", {}, { forceRefresh: refresher !== undefined })
+      .subscribe(
+        (response: IADSResponse) => {
+          if (refresher && refresher.target) {
+            refresher.target.complete();
           }
-        }
-        this.initializeList();
-        this.useFilterSettings().then((res) => {
-          this.isLoaded = true;
-        });
-        this.checkFavorites();
-      },
-      error => {
-        if (refresher && refresher.target) { refresher.target.complete(); }
-        // reset array so new persons are displayed
-        this.defaultList = [];
-        this.error = error;
-        this.isLoaded = true;
-      }
-    );
 
+          // reset array so new persons are displayed
+          this.defaultList = [];
+          // use inner object only because it's wrapped in another object
+          const uidArray = [];
+          for (const ads of response) {
+            ads.date = ads.date * 1000;
+            ads.expanded = false;
+            if (!utils.isInArray(uidArray, ads.uid)) {
+              uidArray.push(ads.uid);
+              this.defaultList.push(ads);
+            }
+          }
+          this.initializeList();
+          this.useFilterSettings().then((res) => {
+            this.isLoaded = true;
+          });
+          this.checkFavorites();
+        },
+        (error) => {
+          if (refresher && refresher.target) {
+            refresher.target.complete();
+          }
+          // reset array so new persons are displayed
+          this.defaultList = [];
+          this.error = error;
+          this.isLoaded = true;
+        }
+      );
   }
 
   /**
@@ -140,7 +144,10 @@ export class PracticePage extends AbstractPage {
    * @description hides keyboard once the user is scrolling
    */
   onScrollListener() {
-    if (this.platform.is('cordova') && (this.platform.is('ios') || this.platform.is('android'))) {
+    if (
+      this.platform.is("cordova") &&
+      (this.platform.is("ios") || this.platform.is("android"))
+    ) {
       this.keyboard.hide();
     }
   }
@@ -151,84 +158,83 @@ export class PracticePage extends AbstractPage {
    * @description filters displayedList according to the preferences of the user
    */
   private async useFilterSettings() {
-
-    const studyarea = await this.settingsProvider.getSettingValue('studyarea');
-    const practice = await this.settingsProvider.getSettingValue('practice');
-    const domestic = await this.settingsProvider.getSettingValue('domestic');
-    const foreign = await this.settingsProvider.getSettingValue('foreign');
+    const studyarea = await this.settingsProvider.getSettingValue("studyarea");
+    const practice = await this.settingsProvider.getSettingValue("practice");
+    const domestic = await this.settingsProvider.getSettingValue("domestic");
+    const foreign = await this.settingsProvider.getSettingValue("foreign");
 
     let tmp = this.filteredList;
     let tmpFav = this.displayedFavorites;
     // filter according to practice option
     if (practice.length > 0) {
-      tmp = jquery.grep(
-        tmp, (ADS1) => {
-          let key = '';
-          if (ADS1 && ADS1.art) { key = this.practiceMapping(ADS1.art); }
-          return practice.includes(key);
+      tmp = jquery.grep(tmp, (ADS1) => {
+        let key = "";
+        if (ADS1 && ADS1.art) {
+          key = this.practiceMapping(ADS1.art);
         }
-      );
+        return practice.includes(key);
+      });
 
-      tmpFav = jquery.grep(
-        tmpFav, (ADS2) => {
-          let key = '';
-          if (ADS2 && ADS2.art) { key = this.practiceMapping(ADS2.art); }
-          return practice.includes(key);
+      tmpFav = jquery.grep(tmpFav, (ADS2) => {
+        let key = "";
+        if (ADS2 && ADS2.art) {
+          key = this.practiceMapping(ADS2.art);
         }
-      );
+        return practice.includes(key);
+      });
     }
 
     // filter according to studyarea
     if (studyarea.length > 0) {
-      tmp = jquery.grep(
-        tmp, (ADS3) => {
-          let key = '';
-          if (ADS3 && ADS3.field) { key += ADS3.field; }
-          return studyarea.includes(key);
+      tmp = jquery.grep(tmp, (ADS3) => {
+        let key = "";
+        if (ADS3 && ADS3.field) {
+          key += ADS3.field;
         }
-      );
+        return studyarea.includes(key);
+      });
 
-      tmpFav = jquery.grep(
-        tmpFav, (ADS4) => {
-          let key = '';
-          if (ADS4 && ADS4.field) { key += ADS4.field; }
-          return studyarea.includes(key);
+      tmpFav = jquery.grep(tmpFav, (ADS4) => {
+        let key = "";
+        if (ADS4 && ADS4.field) {
+          key += ADS4.field;
         }
-      );
+        return studyarea.includes(key);
+      });
     }
 
     if (domestic && !foreign) {
-      tmp = jquery.grep(
-        tmp, (ADS5) => {
-          if (ADS5.foreign === '0') {
-            return true;
-          } else { return false; }
+      tmp = jquery.grep(tmp, (ADS5) => {
+        if (ADS5.foreign === "0") {
+          return true;
+        } else {
+          return false;
         }
-      );
+      });
 
-      tmpFav = jquery.grep(
-        tmpFav, (ADS6) => {
-          if (ADS6.foreign === '0') {
-            return true;
-          } else { return false; }
+      tmpFav = jquery.grep(tmpFav, (ADS6) => {
+        if (ADS6.foreign === "0") {
+          return true;
+        } else {
+          return false;
         }
-      );
+      });
     } else if (foreign && !domestic) {
-      tmp = jquery.grep(
-        tmp, (ADS7) => {
-          if (ADS7.foreign === '1') {
-            return true;
-          } else { return false; }
+      tmp = jquery.grep(tmp, (ADS7) => {
+        if (ADS7.foreign === "1") {
+          return true;
+        } else {
+          return false;
         }
-      );
+      });
 
-      tmpFav = jquery.grep(
-        tmpFav, (ADS8) => {
-          if (ADS8.foreign === '1') {
-            return true;
-          } else { return false; }
+      tmpFav = jquery.grep(tmpFav, (ADS8) => {
+        if (ADS8.foreign === "1") {
+          return true;
+        } else {
+          return false;
         }
-      );
+      });
     }
 
     this.filteredList = tmp;
@@ -256,14 +262,14 @@ export class PracticePage extends AbstractPage {
   public async filterItems(query: string) {
     this.isLoaded = false;
     this.initializeList();
-    this.useFilterSettings().then(resolve => {
+    this.useFilterSettings().then((resolve) => {
       if (query) {
-        this.filteredList = jquery.grep(
-          this.filteredList,
-          (ADS1) => {
-            return utils.contains(ADS1.title, query) || utils.contains(ADS1.firm, query);
-          }
-        );
+        this.filteredList = jquery.grep(this.filteredList, (ADS1) => {
+          return (
+            utils.contains(ADS1.title, query) ||
+            utils.contains(ADS1.firm, query)
+          );
+        });
 
         let i;
         this.displayedList = [];
@@ -278,7 +284,10 @@ export class PracticePage extends AbstractPage {
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
           (ADS2) => {
-            return utils.contains(ADS2.title, query) || utils.contains(ADS2.firm, query);
+            return (
+              utils.contains(ADS2.title, query) ||
+              utils.contains(ADS2.firm, query)
+            );
           }
         );
       }
@@ -292,7 +301,7 @@ export class PracticePage extends AbstractPage {
    * @description opens settings page
    */
   openSettings() {
-    this.navCtrl.navigateForward('/settings');
+    this.navCtrl.navigateForward("/settings");
   }
 
   /**
@@ -304,7 +313,7 @@ export class PracticePage extends AbstractPage {
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: DetailedPracticeModalPage,
-      componentProps: { ADS: ads, isFavorite: isFavorite }
+      componentProps: { ADS: ads, isFavorite: isFavorite },
     });
     modal.present();
     this.modalOpen = true;
@@ -335,15 +344,15 @@ export class PracticePage extends AbstractPage {
         this.allFavorites.push(ads);
       }
       if (!disableHints) {
-        this.alertService.showToast('hints.text.favAdded');
+        this.alertService.showToast("hints.text.favAdded");
       }
     } else {
       if (!disableHints) {
-        this.alertService.showToast('hints.text.favExists');
+        this.alertService.showToast("hints.text.favExists");
       }
     }
 
-    this.storage.set('favoriteJobs', this.allFavorites);
+    this.storage.set("favoriteJobs", this.allFavorites);
 
     if (slidingItem) {
       slidingItem.close();
@@ -375,9 +384,9 @@ export class PracticePage extends AbstractPage {
     this.displayedFavorites = [];
     this.displayedFavorites = tmp2;
     if (!disableHints) {
-      this.alertService.showToast('hints.text.favRemoved');
+      this.alertService.showToast("hints.text.favRemoved");
     }
-    this.storage.set('favoriteJobs', this.allFavorites);
+    this.storage.set("favoriteJobs", this.allFavorites);
   }
 
   /**
@@ -386,7 +395,7 @@ export class PracticePage extends AbstractPage {
    * @description checks if favorites are still valid
    */
   async checkFavorites() {
-    const tmp: ADS[] = await this.storage.get('favoriteJobs');
+    const tmp: ADS[] = await this.storage.get("favoriteJobs");
 
     this.allFavorites = [];
     this.displayedFavorites = [];
@@ -404,13 +413,13 @@ export class PracticePage extends AbstractPage {
       }
 
       if (tmp.length > this.allFavorites.length) {
-        this.alertService.showToast('hints.text.favNotAvailable');
+        this.alertService.showToast("hints.text.favNotAvailable");
       }
     }
 
     this.isLoadedFavorites = true;
     this.displayedFavorites = this.allFavorites;
-    this.storage.set('favoriteJobs', this.allFavorites);
+    this.storage.set("favoriteJobs", this.allFavorites);
   }
 
   /**
@@ -419,11 +428,10 @@ export class PracticePage extends AbstractPage {
    * @param infiniteScroll
    */
   doInfinite(infiniteScroll) {
-
     setTimeout(() => {
       let i, j;
       j = 0;
-      for (i = this.itemsShown; i < (this.itemsShown + 10); i++) {
+      for (i = this.itemsShown; i < this.itemsShown + 10; i++) {
         if (this.filteredList[i]) {
           this.displayedList.push(this.filteredList[i]);
           j++;
@@ -436,24 +444,23 @@ export class PracticePage extends AbstractPage {
 
   async clearAllFavorites() {
     const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.clearAll'),
-      message: this.translate.instant('alert.deleteAllFavs'),
+      header: this.translate.instant("alert.title.clearAll"),
+      message: this.translate.instant("alert.deleteAllFavs"),
       backdropDismiss: false,
       buttons: [
         {
-          text: this.translate.instant('button.no'),
+          text: this.translate.instant("button.no"),
         },
         {
-          text: this.translate.instant('button.yes'),
+          text: this.translate.instant("button.yes"),
           handler: () => {
             this.displayedFavorites = [];
             this.allFavorites = [];
-            this.storage.set('favoriteJobs', this.allFavorites);
-          }
-        }
-      ]
+            this.storage.set("favoriteJobs", this.allFavorites);
+          },
+        },
+      ],
     });
     alert.present();
   }
-
 }

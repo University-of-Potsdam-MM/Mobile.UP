@@ -1,19 +1,39 @@
 <ion-grid>
   <ion-row>
     <ion-col>
-      <ion-card class="linkItem" (click)="webIntent.permissionPromptWebsite(article.News.link)">
+      <ion-card
+        class="linkItem"
+        (click)="webIntent.permissionPromptWebsite(article.News.link)"
+      >
         <ion-card-header class="ion-text-wrap">
           <h3>
             {{ article.News.headline }}
           </h3>
         </ion-card-header>
-        <ion-card-content *ngIf="article.News.text || article.News.description || article.News.DateString" class="ion-text-wrap">
-          <div *ngIf="(article.NewsSource.name == 'Uni-Nachrichten' || article.NewsSource.name == 'Uni-Medienmitteilungen' || article.NewsSource.name == 'Zur Quelle' || article.NewsSource.name == 'AstA Protokolle'); else descriptionOnly" [innerHTML]="article.News.text"></div>
+        <ion-card-content
+          *ngIf="
+            article.News.text ||
+            article.News.description ||
+            article.News.DateString
+          "
+          class="ion-text-wrap"
+        >
+          <div
+            *ngIf="
+              article.NewsSource.name == 'Uni-Nachrichten' ||
+                article.NewsSource.name == 'Uni-Medienmitteilungen' ||
+                article.NewsSource.name == 'Zur Quelle' ||
+                article.NewsSource.name == 'AstA Protokolle';
+              else descriptionOnly
+            "
+            [innerHTML]="article.News.text"
+          ></div>
           <ng-template #descriptionOnly>
             <div [innerHTML]="article.News.description"></div>
           </ng-template>
           <div *ngIf="article.News.DateString" class="news-date">
-            {{ "page.news.articlePublished" | translate }}: {{ article.News.DateString }}
+            {{ "page.news.articlePublished" | translate }}:
+            {{ article.News.DateString }}
           </div>
         </ion-card-content>
       </ion-card>

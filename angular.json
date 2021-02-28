@@ -24,7 +24,7 @@
               "opening_hours",
               "jquery",
               "hammerjs"
-           ],
+            ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               {

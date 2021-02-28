@@ -7,6 +7,7 @@ Verfügbar für [Android](https://play.google.com/store/apps/details?id=de.flori
 Die ganze Uni in deiner Hand: Finde dich auf dem Campus zurecht, habe immer den aktuellsten Speiseplan der Mensen dabei, hole dir Infos aus dem Vorlesungsverzeichnis, schau in deinen Stundenplan, checke deine Leistungen und vieles mehr!
 
 Features:
+
 - aktueller Mensaplan
 - deinen Stundenplan direkt aktuell aus PULS
 - deine bisherigen Leistungen direkt aus PULS
@@ -62,20 +63,19 @@ ionic serve
 
 ## Weiterführende Informationen
 
-* [Wiki](https://github.com/University-of-Potsdam-MM/Mobile.UP/wiki)
+- [Wiki](https://github.com/University-of-Potsdam-MM/Mobile.UP/wiki)
 
 ## Demo Version
 
-* [Mobile.UP](https://mobileup.uni-potsdam.de/)
+- [Mobile.UP](https://mobileup.uni-potsdam.de/)
 
 ## Dokumentation
 
-* [GitHub-Pages](https://university-of-potsdam-mm.github.io/Mobile.UP/)
+- [GitHub-Pages](https://university-of-potsdam-mm.github.io/Mobile.UP/)
 
 ## Kontakt
 
 Bei Interesse kontaktieren Sie mobileup-service@uni-potsdam.de
-
 
 ## CodeClimate
 

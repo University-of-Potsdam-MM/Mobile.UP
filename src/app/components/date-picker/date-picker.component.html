@@ -1,7 +1,15 @@
 <ion-item [lines]="lines">
-  <ion-label *ngIf="!compactMode">{{ "page.roomplan.date" | translate }}</ion-label>
+  <ion-label *ngIf="!compactMode">{{
+    "page.roomplan.date" | translate
+  }}</ion-label>
   <ion-label *ngIf="compactMode">{{ currentDay }}</ion-label>
-  <ion-select [(ngModel)]="dayOffset" (ionChange)="emitDayChange()" [selectedText]="selectedText" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
+  <ion-select
+    [(ngModel)]="dayOffset"
+    (ionChange)="emitDayChange()"
+    [selectedText]="selectedText"
+    okText="{{ 'button.ok' | translate }}"
+    cancelText="{{ 'button.cancel' | translate }}"
+  >
     <ion-select-option *ngFor="let day of days" [value]="day.value">
       {{ day.lbl }}
     </ion-select-option>

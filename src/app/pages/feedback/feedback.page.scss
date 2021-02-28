@@ -1,58 +1,59 @@
 ionic3-star-rating {
-    text-align: center;
+  text-align: center;
 }
 
 ion-item-divider {
-	--padding-start: 10px;
-	--padding-end: 5px;
+  --padding-start: 10px;
+  --padding-end: 5px;
 }
 
 // Custom radio buttons
 form {
-	&#smileys {
-		input[type="radio"] {
-			-webkit-appearance: none;
-			width: 30px;
-			height: 30px;
-			border: none;
-			cursor: pointer;
-			transition: border .2s ease;
-			filter: brightness(0%);
-			margin: 0 5px;
-			transition: all .2s ease;
+  &#smileys {
+    input[type="radio"] {
+      -webkit-appearance: none;
+      width: 30px;
+      height: 30px;
+      border: none;
+      cursor: pointer;
+      transition: border 0.2s ease;
+      filter: brightness(0%);
+      margin: 0 5px;
+      transition: all 0.2s ease;
 
-			&:hover, &:checked {
-                filter:	brightness(100%);
-			}
+      &:hover,
+      &:checked {
+        filter: brightness(100%);
+      }
 
-			&:focus {
-				outline: 0;
-            }
+      &:focus {
+        outline: 0;
+      }
 
-            &.smile {
-				background: url(../../../assets/icon/smile-solid.svg) center;
-				background-size: cover;
-            }
+      &.smile {
+        background: url(../../../assets/icon/smile-solid.svg) center;
+        background-size: cover;
+      }
 
-			&.angry {
-				background: url(../../../assets/icon/angry-solid.svg) center;
-				background-size: cover;
-            }
+      &.angry {
+        background: url(../../../assets/icon/angry-solid.svg) center;
+        background-size: cover;
+      }
 
-			&.heart {
-				background: url(../../../assets/icon/heart-solid.svg) center;
-				background-size: cover;
-			}
+      &.heart {
+        background: url(../../../assets/icon/heart-solid.svg) center;
+        background-size: cover;
+      }
 
-			&.frown {
-				background: url(../../../assets/icon/frown-solid.svg) center;
-				background-size: cover;
-            }
+      &.frown {
+        background: url(../../../assets/icon/frown-solid.svg) center;
+        background-size: cover;
+      }
 
-			&.meh {
-				background: url(../../../assets/icon/meh-solid.svg) center;
-				background-size: cover;
-			}
-		}
-	}
+      &.meh {
+        background: url(../../../assets/icon/meh-solid.svg) center;
+        background-size: cover;
+      }
+    }
+  }
 }

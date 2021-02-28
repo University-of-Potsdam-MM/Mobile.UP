@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { ISetting, ESettingType } from '../../lib/interfaces';
-import * as Constants from './settings_config';
+import { Injectable } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { ISetting, ESettingType } from "../../lib/interfaces";
+import * as Constants from "./settings_config";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class SettingsService {
-
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {}
 
   async getSettingValue(key: string) {
-    const setting: ISetting = await this.storage.get('settings.' + key);
+    const setting: ISetting = await this.storage.get("settings." + key);
 
     if (setting === null) {
       // if no user choice is set, try finding default value if setting exist

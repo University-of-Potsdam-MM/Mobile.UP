@@ -1,7 +1,7 @@
-import { Frequency, RRule, Weekday } from 'rrule';
-import * as moment from 'moment';
-import { ICourse, IEvent } from 'src/app/lib/interfaces_PULS';
-import { utils } from 'src/app/lib/util';
+import { Frequency, RRule, Weekday } from "rrule";
+import * as moment from "moment";
+import { ICourse, IEvent } from "src/app/lib/interfaces_PULS";
+import { utils } from "src/app/lib/util";
 
 export interface IEventRules {
   begin: RRule;
@@ -19,45 +19,49 @@ export interface IEventObject {
 }
 
 export type IEventSource = IEventObject[];
-export interface IWeekDaysMapping {[weekday: string]: Weekday; }
-export interface IRhythmMapping {[rhyhtm: string]: {freq: Frequency, interval: number}; }
+export interface IWeekDaysMapping {
+  [weekday: string]: Weekday;
+}
+export interface IRhythmMapping {
+  [rhyhtm: string]: { freq: Frequency; interval: number };
+}
 
 const weekdaysMapping: IWeekDaysMapping = {
-  'Montag': RRule.MO,
-  'Dienstag': RRule.TU,
-  'Mittwoch': RRule.WE,
-  'Donnerstag': RRule.TH,
-  'Freitag': RRule.FR,
-  'Samstag': RRule.SA,
-  'Sonntag': RRule.SU,
+  Montag: RRule.MO,
+  Dienstag: RRule.TU,
+  Mittwoch: RRule.WE,
+  Donnerstag: RRule.TH,
+  Freitag: RRule.FR,
+  Samstag: RRule.SA,
+  Sonntag: RRule.SU,
 };
 
 const rhythmMapping: IRhythmMapping = {
-  'wöchentlich': {
+  wöchentlich: {
     freq: RRule.WEEKLY,
-    interval: 1
+    interval: 1,
   },
-  '14-täglich': {
+  "14-täglich": {
     freq: RRule.WEEKLY,
-    interval: 2
+    interval: 2,
   },
-  'Einzel': {
+  Einzel: {
     // can be treated as weekly event that occurs in a single week
     freq: RRule.WEEKLY,
-    interval: 1
+    interval: 1,
   },
-  'Einzeltermin': {
+  Einzeltermin: {
     // can be treated as weekly event that occurs in a single week
     freq: RRule.WEEKLY,
-    interval: 1
+    interval: 1,
   },
-  'Block': {
+  Block: {
     freq: RRule.DAILY,
-    interval: 1
+    interval: 1,
   },
 };
 
-function pulsToUTC(date, time, second= '00') {
+function pulsToUTC(date, time, second = "00") {
   const day = date.substr(0, 2);
   const month = date.substr(3, 2);
   const year = date.substr(6);
@@ -85,28 +89,35 @@ function pulsToUTC(date, time, second= '00') {
  * @returns eventrules
  */
 function createEventRules(event: IEvent, tzid): IEventRules {
-
   if (!rhythmMapping[event.rhythm]) {
-    throw new Error(`[createRule]: Event ${event.eventId}: Unknown rhythm: ${event.rhythm}`);
+    throw new Error(
+      `[createRule]: Event ${event.eventId}: Unknown rhythm: ${event.rhythm}`
+    );
   }
   if (!weekdaysMapping[event.day]) {
-    throw new Error(`[createRule]: Event ${event.eventId}: Unknown weekday: ${event.day}`);
+    throw new Error(
+      `[createRule]: Event ${event.eventId}: Unknown weekday: ${event.day}`
+    );
   }
   if (event.startDate === undefined || event.endDate === undefined) {
-    throw new Error(`[createRule]: Event ${event.eventId}: Missing startTime or endTime`);
+    throw new Error(
+      `[createRule]: Event ${event.eventId}: Missing startTime or endTime`
+    );
   }
   if (event.startTime === undefined || event.endTime === undefined) {
-    throw new Error(`[createRule]: Event ${event.eventId}: Missing startTime or endTime`);
+    throw new Error(
+      `[createRule]: Event ${event.eventId}: Missing startTime or endTime`
+    );
   }
 
-  return <IEventRules> {
+  return <IEventRules>{
     // create rule for beginning time on each day the event takes place
     begin: new RRule({
       freq: rhythmMapping[event.rhythm].freq,
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.startTime),
-      until: pulsToUTC(event.endDate, '24:00')
+      until: pulsToUTC(event.endDate, "24:00"),
     }),
     // create rule for end time on each day the event takes place
     end: new RRule({
@@ -114,8 +125,8 @@ function createEventRules(event: IEvent, tzid): IEventRules {
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.endTime),
-      until: pulsToUTC(event.endDate, '24:00')
-    })
+      until: pulsToUTC(event.endDate, "24:00"),
+    }),
   };
 }
 
@@ -129,8 +140,10 @@ function createEventRules(event: IEvent, tzid): IEventRules {
  * @param tzid Id of timezone to be used
  * @returns IEventSource
  */
-export function createEventSource(studentCourses: ICourse[],
-                                  tzid: string= 'Europe/Berlin'): IEventSource {
+export function createEventSource(
+  studentCourses: ICourse[],
+  tzid: string = "Europe/Berlin"
+): IEventSource {
   // the eventSource we will be returning, actually the main result of this function
   const eventSource: IEventSource = new Array<IEventObject>();
 
@@ -173,11 +186,13 @@ export function createEventSource(studentCourses: ICourse[],
               startTime: begin[i],
               endTime: end[i],
               courseDetails: c,
-              eventDetails: e
+              eventDetails: e,
             });
           }
         } catch (error) {
-          console.log(`[createEventSource]: Could not parse one event for '${c.courseName}' because: '${error}'`);
+          console.log(
+            `[createEventSource]: Could not parse one event for '${c.courseName}' because: '${error}'`
+          );
           break;
         }
       }

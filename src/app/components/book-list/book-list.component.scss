@@ -1,27 +1,27 @@
 ion-item {
-    p.number {
-        font-weight: bold;
-        text-align: right;
-    }
+  p.number {
+    font-weight: bold;
+    text-align: right;
+  }
 }
 
 ion-item [item-start] {
-    position: absolute;
-    display: inline-block;
+  position: absolute;
+  display: inline-block;
 
-    ion-icon {
-        font-size: 1.5em;
-    }
+  ion-icon {
+    font-size: 1.5em;
+  }
 }
 
 .bookIndex {
-    margin-inline-end: 10px;
+  margin-inline-end: 10px;
 }
 
 .item-inner {
-    margin-left:25px;
+  margin-left: 25px;
 }
 
 .breakLine {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }

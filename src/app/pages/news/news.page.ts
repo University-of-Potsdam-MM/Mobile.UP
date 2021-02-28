@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
-import { INewsApiResponse } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { IonSlides } from "@ionic/angular";
+import { INewsApiResponse } from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
-  selector: 'app-news',
-  templateUrl: './news.page.html',
-  styleUrls: ['./news.page.scss'],
+  selector: "app-news",
+  templateUrl: "./news.page.html",
+  styleUrls: ["./news.page.scss"],
 })
 export class NewsPage extends AbstractPage implements OnInit {
   @ViewChild(IonSlides, { static: false }) slides: IonSlides;
@@ -23,12 +23,10 @@ export class NewsPage extends AbstractPage implements OnInit {
   networkError;
 
   slideOptions = {
-    slidesPerView: 'auto'
+    slidesPerView: "auto",
   };
 
-  constructor(
-    private ws: WebserviceWrapperService
-  ) {
+  constructor(private ws: WebserviceWrapperService) {
     super({ optionalNetwork: true });
   }
 
@@ -37,60 +35,67 @@ export class NewsPage extends AbstractPage implements OnInit {
   }
 
   loadNews(refresher?) {
-    if (!(refresher && refresher.target)) { this.isLoaded = false; }
+    if (!(refresher && refresher.target)) {
+      this.isLoaded = false;
+    }
     this.networkError = false;
 
-    this.ws.call(
-      'news',
-      {},
-      { forceRefresh: refresher !== undefined }
-    ).subscribe((response: INewsApiResponse) => {
-
-      if (refresher && refresher.target) { refresher.target.complete(); }
-
-      if (response.errors === undefined || response.errors.exist === false) {
-        this.newsList = response.vars.news;
-        const tmpArray = [];
-        for (const source in response.vars.newsSources) {
-          if (response.vars.newsSources.hasOwnProperty(source)) {
-            tmpArray.push(response.vars.newsSources[source]);
+    this.ws
+      .call("news", {}, { forceRefresh: refresher !== undefined })
+      .subscribe(
+        (response: INewsApiResponse) => {
+          if (refresher && refresher.target) {
+            refresher.target.complete();
           }
-        }
-        let i, j;
-        this.sourcesList = [];
-        for (i = 0; i < tmpArray.length; i++) {
-          for (j = 0; j < this.newsList.length; j++) {
-            if (this.newsList[j].NewsSource.name === tmpArray[i]) {
-              this.sourcesList.push(tmpArray[i]);
-              break;
+
+          if (
+            response.errors === undefined ||
+            response.errors.exist === false
+          ) {
+            this.newsList = response.vars.news;
+            const tmpArray = [];
+            for (const source in response.vars.newsSources) {
+              if (response.vars.newsSources.hasOwnProperty(source)) {
+                tmpArray.push(response.vars.newsSources[source]);
+              }
+            }
+            let i, j;
+            this.sourcesList = [];
+            for (i = 0; i < tmpArray.length; i++) {
+              for (j = 0; j < this.newsList.length; j++) {
+                if (this.newsList[j].NewsSource.name === tmpArray[i]) {
+                  this.sourcesList.push(tmpArray[i]);
+                  break;
+                }
+              }
+            }
+            this.categories = this.sourcesList;
+            this.isLoaded = true;
+
+            if (this.slides) {
+              this.slides.update();
+            }
+
+            if (this.selectedCategory === 0) {
+              this.showLeftButton = false;
             }
           }
+        },
+        () => {
+          this.isLoaded = true;
+          if (refresher && refresher.target) {
+            refresher.target.complete();
+          }
+          this.networkError = true;
         }
-        this.categories = this.sourcesList;
-        this.isLoaded = true;
-
-        if (this.slides) {
-          this.slides.update();
-        }
-
-        if (this.selectedCategory === 0) {
-          this.showLeftButton = false;
-        }
-      }
-    }, () => {
-      this.isLoaded = true;
-      if (refresher && refresher.target) { refresher.target.complete(); }
-      this.networkError = true;
-    });
+      );
   }
-
 
   // Method executed when the slides are changed
   public async slideChanged() {
-    this.showLeftButton = !await this.slides.isBeginning();
-    this.showRightButton = !await this.slides.isEnd();
+    this.showLeftButton = !(await this.slides.isBeginning());
+    this.showRightButton = !(await this.slides.isEnd());
   }
-
 
   // Method that shows the next slide
   public slideNext(): void {
@@ -98,13 +103,11 @@ export class NewsPage extends AbstractPage implements OnInit {
     this.slideChanged();
   }
 
-
   // Method that shows the previous slide
   public slidePrev(): void {
     this.slides.slidePrev();
     this.slideChanged();
   }
-
 
   public setNewsSource(i: number): void {
     this.newsSource = i;
@@ -135,5 +138,4 @@ export class NewsPage extends AbstractPage implements OnInit {
       }
     }
   }
-
 }

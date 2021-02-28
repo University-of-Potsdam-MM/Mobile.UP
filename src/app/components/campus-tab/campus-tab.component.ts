@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SettingsService } from 'src/app/services/settings/settings.service';
-import { ICampus } from '../../lib/interfaces';
-import { ConfigService } from '../../services/config/config.service';
-import { ModalController } from '@ionic/angular';
-import { CampusReorderModalPage } from './campus-reorder.modal';
-import { Storage } from '@ionic/storage';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { SettingsService } from "src/app/services/settings/settings.service";
+import { ICampus } from "../../lib/interfaces";
+import { ConfigService } from "../../services/config/config.service";
+import { ModalController } from "@ionic/angular";
+import { CampusReorderModalPage } from "./campus-reorder.modal";
+import { Storage } from "@ionic/storage";
 
 /**
  * Component for displaying a campus menu using ion-segments.
@@ -14,12 +14,11 @@ import { Storage } from '@ionic/storage';
  * 'selectedCampus' input.
  */
 @Component({
-  selector: 'app-campus-tab',
-  templateUrl: './campus-tab.component.html',
-  styleUrls: ['./campus-tab.component.scss']
+  selector: "app-campus-tab",
+  templateUrl: "./campus-tab.component.html",
+  styleUrls: ["./campus-tab.component.scss"],
 })
 export class CampusTabComponent implements OnInit {
-
   /**
    * is emitted every time the campus is changed and emits the selected campus
    */
@@ -58,7 +57,7 @@ export class CampusTabComponent implements OnInit {
     private settings: SettingsService,
     private modalCtrl: ModalController,
     private storage: Storage
-  ) {  }
+  ) {}
 
   /**
    * selects the specified campus directly and then emits the campusChanged event
@@ -118,7 +117,7 @@ export class CampusTabComponent implements OnInit {
    * initializes this component
    */
   ngOnInit() {
-    this.storage.get('campusListOrdered').then((savedList: ICampus[]) => {
+    this.storage.get("campusListOrdered").then((savedList: ICampus[]) => {
       const configList: ICampus[] = Array.from(ConfigService.config.campus);
 
       if (!savedList) {
@@ -147,7 +146,7 @@ export class CampusTabComponent implements OnInit {
         }
       }
 
-      this.storage.set('campusListOrdered', this.campusList);
+      this.storage.set("campusListOrdered", this.campusList);
       this.listProcessed = true;
       this.initCampusTab();
     });
@@ -158,10 +157,10 @@ export class CampusTabComponent implements OnInit {
    * selected campus
    */
   async initCampusTab() {
-    const defaultCampusName = await this.settings.getSettingValue('campus');
+    const defaultCampusName = await this.settings.getSettingValue("campus");
     if (this.campusList) {
       this.selectCampus(
-        this.campusList.find(c =>  c.pretty_name === defaultCampusName)
+        this.campusList.find((c) => c.pretty_name === defaultCampusName)
       );
     }
   }
@@ -170,12 +169,11 @@ export class CampusTabComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: CampusReorderModalPage,
-      componentProps: { campusList: this.campusList }
+      componentProps: { campusList: this.campusList },
     });
     modal.present();
     this.modalOpen = true;
     await modal.onWillDismiss();
     this.modalOpen = false;
   }
-
 }

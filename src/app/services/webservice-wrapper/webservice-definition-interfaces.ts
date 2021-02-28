@@ -1,6 +1,6 @@
-import {ICampus} from '../../lib/interfaces';
-import {Observable} from 'rxjs';
-import {ISession} from '../login-provider/interfaces';
+import { ICampus } from "../../lib/interfaces";
+import { Observable } from "rxjs";
+import { ISession } from "../login-provider/interfaces";
 
 /**
  * Defines a webservice in a more or less standardized way
@@ -20,7 +20,11 @@ export interface IWebservice {
    * that the corresponding page can use directly
    * @param response
    */
-  responseCallback?: (response: any, name: string, isUsingUpdatedApiManager: boolean) => any;
+  responseCallback?: (
+    response: any,
+    name: string,
+    isUsingUpdatedApiManager: boolean
+  ) => any;
   /**
    * function that will be used as callback function for the http requests error
    * callback.
@@ -28,7 +32,11 @@ export interface IWebservice {
    * because that is something that can easily be checked.
    * @param error
    */
-  errorCallback?: (error: any, name: string, isUsingUpdatedApiManager: boolean) => any;
+  errorCallback?: (
+    error: any,
+    name: string,
+    isUsingUpdatedApiManager: boolean
+  ) => any;
 }
 
 export interface ICachingOptions {

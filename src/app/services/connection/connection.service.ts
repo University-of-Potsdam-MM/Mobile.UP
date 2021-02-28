@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { NavController, Platform } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { AlertService } from '../alert/alert.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
-import { Network } from '@ionic-native/network/ngx';
+import { Injectable } from "@angular/core";
+import { NavController, Platform } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { AlertService } from "../alert/alert.service";
+import { Logger, LoggingService } from "ionic-logging-service";
+import { Network } from "@ionic-native/network/ngx";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ConnectionService {
-
   logger: Logger;
 
   constructor(
@@ -20,7 +19,7 @@ export class ConnectionService {
     private network: Network,
     private platform: Platform
   ) {
-    this.logger = this.loggingService.getLogger('[/connection-service]');
+    this.logger = this.loggingService.getLogger("[/connection-service]");
   }
 
   /**
@@ -30,36 +29,39 @@ export class ConnectionService {
    */
   checkOnline(showAlert: boolean = false, sendHome: boolean = false): boolean {
     let isOnline;
-    if (this.platform.is('cordova')) {
+    if (this.platform.is("cordova")) {
       if (this.network.type === this.network.Connection.NONE) {
         isOnline = false;
-      } else { isOnline = true; }
-    } else { isOnline = navigator.onLine; }
+      } else {
+        isOnline = true;
+      }
+    } else {
+      isOnline = navigator.onLine;
+    }
 
     if (!isOnline) {
       if (showAlert && sendHome) {
         this.alertService.showAlert(
           {
-            messageI18nKey: 'alert.noInternetConnection'
+            messageI18nKey: "alert.noInternetConnection",
           },
           [
             {
-              text: this.translate.instant('button.continue'),
+              text: this.translate.instant("button.continue"),
               handler: () => {
-                this.navCtrl.navigateRoot('/home');
-              }
-            }
+                this.navCtrl.navigateRoot("/home");
+              },
+            },
           ]
         );
       }
 
       if (!showAlert && sendHome) {
-        this.navCtrl.navigateRoot('/home');
+        this.navCtrl.navigateRoot("/home");
       }
     }
 
-    this.logger.debug('checkOnline', `is app connected? -> ${isOnline}`);
+    this.logger.debug("checkOnline", `is app connected? -> ${isOnline}`);
     return isOnline;
   }
-
 }

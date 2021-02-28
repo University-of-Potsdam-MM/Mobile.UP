@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
-import { IConfig } from 'src/app/lib/interfaces';
-import { IPulsAPIResponse_getAcademicAchievements, IPulsAPIResponse_getPersonalStudyAreas } from 'src/app/lib/interfaces_PULS';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { Component } from "@angular/core";
+import { IConfig } from "src/app/lib/interfaces";
+import {
+  IPulsAPIResponse_getAcademicAchievements,
+  IPulsAPIResponse_getPersonalStudyAreas,
+} from "src/app/lib/interfaces_PULS";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
-  selector: 'app-grades',
-  templateUrl: './grades.page.html',
-  styleUrls: ['./grades.page.scss'],
+  selector: "app-grades",
+  templateUrl: "./grades.page.html",
+  styleUrls: ["./grades.page.scss"],
 })
 export class GradesPage extends AbstractPage {
-
   config: IConfig;
 
   refresher;
@@ -23,12 +25,10 @@ export class GradesPage extends AbstractPage {
   loadingGrades = false;
   gradesLoaded = false;
   studentLoaded = false;
-  multipleDegrees = false;          // f.e. bachelor and master
-  isDualDegree: boolean[] = [];     // f.e. dual bachelor with BWL and German
+  multipleDegrees = false; // f.e. bachelor and master
+  isDualDegree: boolean[] = []; // f.e. dual bachelor with BWL and German
 
-  constructor(
-    private ws: WebserviceWrapperService
-  ) {
+  constructor(private ws: WebserviceWrapperService) {
     super({ optionalNetwork: true, requireSession: true });
   }
 
@@ -45,7 +45,6 @@ export class GradesPage extends AbstractPage {
       }, 500);
     }
   }
-
 
   /**
    * @name showGrades
@@ -82,22 +81,35 @@ export class GradesPage extends AbstractPage {
     }
 
     this.networkError = false;
-    this.ws.call(
-      'pulsGetAcademicAchievements',
-      { session: this.session, semester: semester, mtknr: mtknr, stgnr: stgnr },
-      { forceRefresh: this.refresher !== undefined }
-    ).subscribe(
-    (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
-      if (resGrades) {
-        this.studentGrades = resGrades;
-        if (!this.refresher) { this.gradesLoaded = true; }
-      } else { this.studentGrades = undefined; }
+    this.ws
+      .call(
+        "pulsGetAcademicAchievements",
+        {
+          session: this.session,
+          semester: semester,
+          mtknr: mtknr,
+          stgnr: stgnr,
+        },
+        { forceRefresh: this.refresher !== undefined }
+      )
+      .subscribe(
+        (resGrades: IPulsAPIResponse_getAcademicAchievements) => {
+          if (resGrades) {
+            this.studentGrades = resGrades;
+            if (!this.refresher) {
+              this.gradesLoaded = true;
+            }
+          } else {
+            this.studentGrades = undefined;
+          }
 
-      this.loadingGrades = false;
-    }, error => {
-      this.loadingGrades = false;
-      this.networkError = true;
-    });
+          this.loadingGrades = false;
+        },
+        (error) => {
+          this.loadingGrades = false;
+          this.networkError = true;
+        }
+      );
 
     if (this.refresher && this.refresher.target) {
       this.refresher.target.complete();
@@ -126,46 +138,72 @@ export class GradesPage extends AbstractPage {
       this.studentLoaded = false;
     }
 
-    if (!(this.session && this.session.credentials && this.session.credentials.username && this.session.credentials.password)) {
+    if (
+      !(
+        this.session &&
+        this.session.credentials &&
+        this.session.credentials.username &&
+        this.session.credentials.password
+      )
+    ) {
       // try to reload session since no login data is found
       this.session = await this.sessionProvider.getSession();
     }
 
-    this.ws.call(
-      'pulsGetPersonalStudyAreas',
-      { session: this.session },
-      { forceRefresh: this.refresher !== undefined }
-    ).subscribe((resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
-      if (resStudentDetail) {
-        if (resStudentDetail.personalStudyAreas && resStudentDetail.personalStudyAreas.Abschluss) {
-          this.studentDetails = resStudentDetail.personalStudyAreas.Abschluss;
-          if (Array.isArray(this.studentDetails)) {
-            this.multipleDegrees = true;
-            let i;
-            for (i = 0; i < this.studentDetails.length; i++) {
-              if (this.studentDetails[i].Studiengaenge && Array.isArray(this.studentDetails[i].Studiengaenge)) {
-                this.isDualDegree[i] = true;
-              } else { this.isDualDegree[i] = false; }
-            }
-          } else {
-            this.multipleDegrees = false;
-            if (this.studentDetails.Studiengaenge && Array.isArray(this.studentDetails.Studiengaenge)) {
-              this.isDualDegree[0] = true;
+    this.ws
+      .call(
+        "pulsGetPersonalStudyAreas",
+        { session: this.session },
+        { forceRefresh: this.refresher !== undefined }
+      )
+      .subscribe(
+        (resStudentDetail: IPulsAPIResponse_getPersonalStudyAreas) => {
+          if (resStudentDetail) {
+            if (
+              resStudentDetail.personalStudyAreas &&
+              resStudentDetail.personalStudyAreas.Abschluss
+            ) {
+              this.studentDetails =
+                resStudentDetail.personalStudyAreas.Abschluss;
+              if (Array.isArray(this.studentDetails)) {
+                this.multipleDegrees = true;
+                let i;
+                for (i = 0; i < this.studentDetails.length; i++) {
+                  if (
+                    this.studentDetails[i].Studiengaenge &&
+                    Array.isArray(this.studentDetails[i].Studiengaenge)
+                  ) {
+                    this.isDualDegree[i] = true;
+                  } else {
+                    this.isDualDegree[i] = false;
+                  }
+                }
+              } else {
+                this.multipleDegrees = false;
+                if (
+                  this.studentDetails.Studiengaenge &&
+                  Array.isArray(this.studentDetails.Studiengaenge)
+                ) {
+                  this.isDualDegree[0] = true;
+                }
+              }
+              this.studentLoaded = true;
+            } else if (
+              resStudentDetail.message &&
+              resStudentDetail.message === "no user rights"
+            ) {
+              this.noUserRights = true;
             }
           }
+        },
+        () => {
           this.studentLoaded = true;
-        } else if (resStudentDetail.message && resStudentDetail.message === 'no user rights') {
-          this.noUserRights = true;
+          this.networkError = true;
         }
-      }
-    }, () => {
-      this.studentLoaded = true;
-      this.networkError = true;
-    });
+      );
 
     if (this.refresher && this.refresher.target) {
       this.refresher.target.complete();
     }
   }
-
 }

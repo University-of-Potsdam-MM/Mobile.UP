@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { IFeedback } from 'src/app/lib/interfaces';
-import { DeviceService, IDeviceInfo } from 'src/app/services/device/device.service';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from "@angular/core";
+import { NavController } from "@ionic/angular";
+import { Validators, FormBuilder, FormGroup } from "@angular/forms";
+import { IFeedback } from "src/app/lib/interfaces";
+import {
+  DeviceService,
+  IDeviceInfo,
+} from "src/app/services/device/device.service";
+import { AlertService } from "src/app/services/alert/alert.service";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { ConnectionService } from "src/app/services/connection/connection.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-feedback',
-  templateUrl: './feedback.page.html',
-  styleUrls: ['./feedback.page.scss'],
+  selector: "app-feedback",
+  templateUrl: "./feedback.page.html",
+  styleUrls: ["./feedback.page.scss"],
 })
 export class FeedbackPage extends AbstractPage implements OnInit {
-
   form: FormGroup;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
@@ -36,19 +38,19 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     private ws: WebserviceWrapperService,
     private translate: TranslateService
   ) {
-      super({ optionalNetwork: true, optionalSession: true });
-      this.form = this.formBuilder.group({
-        rating: ['', Validators.required], // , Validators.required
-        description: [''],
-        recommend: ['', Validators.required],
-        sendDeviceData: [false, Validators.required],
-        sendUsername: [false, Validators.required],
-      });
+    super({ optionalNetwork: true, optionalSession: true });
+    this.form = this.formBuilder.group({
+      rating: ["", Validators.required], // , Validators.required
+      description: [""],
+      recommend: ["", Validators.required],
+      sendDeviceData: [false, Validators.required],
+      sendUsername: [false, Validators.required],
+    });
   }
 
   ngOnInit() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
-    this.isCordova = this.platform.is('cordova');
+    this.isCordova = this.platform.is("cordova");
   }
 
   /**
@@ -65,7 +67,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
         osVersion: this.deviceInfo.osVersion,
         uuid: this.deviceInfo.uuid,
         deviceManufacturer: this.deviceInfo.deviceManufacturer,
-        deviceModel: this.deviceInfo.deviceModel
+        deviceModel: this.deviceInfo.deviceModel,
       };
     }
 
@@ -84,38 +86,45 @@ export class FeedbackPage extends AbstractPage implements OnInit {
    * @name postFeedback
    */
   postFeedback() {
-    this.ws.call(
-      'feedback',
-      this.feedback
-    ).subscribe(() => {
-        this.alertService.showToast('alert.feedback-sent').then(() => {
-          this.navCtrl.navigateBack('/home');
+    this.ws.call("feedback", this.feedback).subscribe(
+      () => {
+        this.alertService.showToast("alert.feedback-sent").then(() => {
+          this.navCtrl.navigateBack("/home");
         });
-      }, () => {
+      },
+      () => {
         if (!this.connectionService.checkOnline()) {
-          this.alertService.showToast('alert.noInternetConnection');
+          this.alertService.showToast("alert.noInternetConnection");
         } else {
-          this.alertService.showToast('alert.httpErrorStatus.generic');
+          this.alertService.showToast("alert.httpErrorStatus.generic");
         }
       }
     );
   }
 
   showToggleHint(toggleName) {
-    var hintString = 'page.feedback.hint';
-    if (toggleName == 'SendUsername' && this.form.value.sendUsername) {
+    var hintString = "page.feedback.hint";
+    if (toggleName == "SendUsername" && this.form.value.sendUsername) {
       hintString += toggleName;
-    } else if (toggleName == 'SendDeviceData' && this.form.value.sendDeviceData) {
+    } else if (
+      toggleName == "SendDeviceData" &&
+      this.form.value.sendDeviceData
+    ) {
       hintString += toggleName;
     }
 
-    if (hintString !== 'page.feedback.hint') {
-      this.alertService.showAlert({
-        headerI18nKey: 'hints.type.hint',
-        messageI18nKey: hintString
-      }, [{
-        text: this.translate.instant('button.ok'),
-      }]); 
+    if (hintString !== "page.feedback.hint") {
+      this.alertService.showAlert(
+        {
+          headerI18nKey: "hints.type.hint",
+          messageI18nKey: hintString,
+        },
+        [
+          {
+            text: this.translate.instant("button.ok"),
+          },
+        ]
+      );
     }
   }
 }

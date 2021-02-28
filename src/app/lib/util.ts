@@ -1,5 +1,5 @@
-import { HttpParameterCodec } from '@angular/common/http';
-import * as moment from 'moment';
+import { HttpParameterCodec } from "@angular/common/http";
+import * as moment from "moment";
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -8,15 +8,21 @@ import * as moment from 'moment';
  * see https://github.com/angular/angular/issues/11058
  */
 export class WebHttpUrlEncodingCodec implements HttpParameterCodec {
-  encodeKey(k: string): string { return encodeURIComponent(k); }
-  encodeValue(v: string): string { return encodeURIComponent(v); }
-  decodeKey(k: string): string { return decodeURIComponent(k); }
-  decodeValue(v: string) { return decodeURIComponent(v); }
+  encodeKey(k: string): string {
+    return encodeURIComponent(k);
+  }
+  encodeValue(v: string): string {
+    return encodeURIComponent(v);
+  }
+  decodeKey(k: string): string {
+    return decodeURIComponent(k);
+  }
+  decodeValue(v: string) {
+    return decodeURIComponent(v);
+  }
 }
 
 export module utils {
-
-
   /**
    * @name isInArray
    * @description checks if value is in array
@@ -34,7 +40,8 @@ export module utils {
     return found;
   }
 
-  export function convertToArray(toConvert) { // convert everything to an array so you can handle it universally
+  export function convertToArray(toConvert) {
+    // convert everything to an array so you can handle it universally
     if (Array.isArray(toConvert)) {
       return toConvert;
     } else {
@@ -54,9 +61,11 @@ export module utils {
    * @returns {Boolean} - Whether string x contains string y
    */
   export function contains(x: string, y: string): boolean {
-    if (x && y && typeof x === 'string' && typeof y === 'string') {
+    if (x && y && typeof x === "string" && typeof y === "string") {
       return x.toLowerCase().includes(y.toLowerCase());
-    } else { return false; }
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -69,11 +78,15 @@ export module utils {
   }
 
   // helper function for determining whether session is still valid
-  export function sessionIsValid(timestampThen: Date, expiresIn: number, boundary: number) {
+  export function sessionIsValid(
+    timestampThen: Date,
+    expiresIn: number,
+    boundary: number
+  ) {
     // determine date until the token is valid
     const validUntilUnixTime = moment(timestampThen).unix() + expiresIn;
     const nowUnixTime = moment().unix();
     // check if we are not past this date already with a certain boundary
-    return (validUntilUnixTime - nowUnixTime) > boundary;
+    return validUntilUnixTime - nowUnixTime > boundary;
   }
 }

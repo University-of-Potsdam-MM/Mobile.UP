@@ -4,7 +4,7 @@
     "home": {
       "title": "Startseite"
     },
-    "impressum":{
+    "impressum": {
       "title": "Rechtliches",
       "listHeader": "Impressum & Rechtliches"
     },
@@ -17,8 +17,8 @@
     "termsOfUse": {
       "title": "Nutzungsbedingungen"
     },
-    "login":{
-      "title":"PULS-Login",
+    "login": {
+      "title": "PULS-Login",
       "loginInProgress": "Login läuft...",
       "alreadyLoggedIn": "Sie sind bereits eingeloggt.",
       "notLoggedIn": "Sind sind nicht eingeloggt.",
@@ -59,7 +59,6 @@
         "field": "Studienrichtung",
         "pubDate": "veröffentlicht am",
         "jobPosting": "Stellenausschreibung"
-
       },
       "no_results": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden."
     },
@@ -133,8 +132,8 @@
       "allResults": "Liste aller Ergebnisse",
       "toc": "Inhaltsverzeichnis"
     },
-    "events":{
-      "title":"Events",
+    "events": {
+      "title": "Events",
       "showEventDetails": "Details anzeigen",
       "hideEventDetails": "Details ausblenden",
       "eventsAll": "Alle",
@@ -250,7 +249,7 @@
         "inpractice": {
           "lbl": "Ab in die Praxis"
         },
-        "practice" : {
+        "practice": {
           "lbl": "Art",
           "options": {
             "Jobs für Studierende": "Jobs für Studierende",
@@ -259,7 +258,7 @@
             "Praktika": "Praktika"
           }
         },
-        "studyarea" : {
+        "studyarea": {
           "lbl": "Studienrichtung",
           "options": {
             "Geistes- und Kulturwissenschaften": "Geistes- und Kulturwissenschaften",
@@ -280,8 +279,8 @@
         }
       }
     },
-    "athletics":{
-      "title":"Hochschulsport"
+    "athletics": {
+      "title": "Hochschulsport"
     },
     "free-rooms": {
       "title": "Freie Räume",
@@ -295,8 +294,8 @@
       "date": "Datum",
       "no_rooms_hintText": "Für diesen Tag ist kein Raumplan vorhanden."
     },
-    "opening-hours":{
-      "title":"Öffnungszeiten",
+    "opening-hours": {
+      "title": "Öffnungszeiten",
       "time": " Uhr",
       "open": "geöffnet",
       "opens": "öffnet ",
@@ -306,7 +305,7 @@
       "comment": "Kommentar",
       "noGuarantee": "Alle Angaben ohne Gewähr. Bitte informieren Sie sich auf den jeweiligen Webseiten über kurzfristige Änderungen."
     },
-    "mensa":{
+    "mensa": {
       "title": "Mensa",
       "students": "Studierende",
       "date": "Datum",
@@ -457,7 +456,7 @@
   "menu": {
     "title": "Menü"
   },
-  "popover":{
+  "popover": {
     "loggedInText": "eingeloggt als",
     "notLoggedInText": "nicht eingeloggt",
     "general": "Allgemein",

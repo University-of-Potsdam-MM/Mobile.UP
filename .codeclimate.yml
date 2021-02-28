@@ -1,5 +1,5 @@
 languages:
-   JavaScript: true
+  JavaScript: true
 plugins:
   csslint:
     enabled: true
@@ -14,12 +14,12 @@ plugins:
     enabled: true
     config:
       strings:
-      - FIXME
-      - TODO
+        - FIXME
+        - TODO
   scss-lint:
     enabled: true
   stylelint:
-      enabled: true
+    enabled: true
   tslint:
     enabled: true
     config: tslint-codeclimate.json
@@ -48,10 +48,10 @@ checks:
 #   paths:
 #   - "www/**"
 exclude_patterns:
-- "node_modules/*"
-- "scripts/*"
-- "www/*"
-- "documentation/*"
-- "plugins/*"
-- "platforms/*"
-- "resources/*"
+  - "node_modules/*"
+  - "scripts/*"
+  - "www/*"
+  - "documentation/*"
+  - "plugins/*"
+  - "platforms/*"
+  - "resources/*"

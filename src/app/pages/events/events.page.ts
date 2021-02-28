@@ -1,23 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { IEventApiResponse, INewsEventsObject } from 'src/app/lib/interfaces';
-import { IonSlides } from '@ionic/angular';
-import * as moment from 'moment';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/webservice-wrapper.service";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { IEventApiResponse, INewsEventsObject } from "src/app/lib/interfaces";
+import { IonSlides } from "@ionic/angular";
+import * as moment from "moment";
+import { ConfigService } from "src/app/services/config/config.service";
 
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.page.html',
-  styleUrls: ['./events.page.scss'],
+  selector: "app-events",
+  templateUrl: "./events.page.html",
+  styleUrls: ["./events.page.scss"],
 })
 export class EventsPage extends AbstractPage implements OnInit {
-
   isLoaded;
   networkError;
 
   listOfPlaces = [];
-  listOfEvents: INewsEventsObject[]  = [];
+  listOfEvents: INewsEventsObject[] = [];
 
   showLeftButton = false;
   showRightButton = true;
@@ -25,12 +24,10 @@ export class EventsPage extends AbstractPage implements OnInit {
 
   @ViewChild(IonSlides, { static: false }) slides: IonSlides;
   slideOptions = {
-    slidesPerView: 'auto'
+    slidesPerView: "auto",
   };
 
-  constructor(
-    private ws: WebserviceWrapperService
-  ) {
+  constructor(private ws: WebserviceWrapperService) {
     super({ optionalNetwork: true });
   }
 
@@ -39,74 +36,86 @@ export class EventsPage extends AbstractPage implements OnInit {
   }
 
   loadEvents(refresher?) {
-    if (!(refresher && refresher.target)) { this.isLoaded = false; }
+    if (!(refresher && refresher.target)) {
+      this.isLoaded = false;
+    }
     this.networkError = false;
 
-    this.ws.call('events', {}, { forceRefresh: refresher !== undefined }).subscribe((response: IEventApiResponse) => {
-      if (refresher && refresher.target) { refresher.target.complete(); }
-
-      if (response.errors === undefined || response.errors.exist === false) {
-
-        if (response.vars && response.vars.events) {
-          // check if the events is already outdated since the api returns old events
-          this.listOfEvents = response.vars.events;
-
-          this.listOfEvents.sort((a, b) => {
-            return Number(a.Event.startTime) - Number(b.Event.startTime);
-          });
-        } else { this.listOfEvents = []; }
-
-        this.listOfPlaces = [];
-        if (response.vars && response.vars.places) {
-          let tmpArray = [];
-          for (const place in response.vars.places) {
-            if (response.vars.places.hasOwnProperty(place)) {
-              tmpArray.push(response.vars.places[place]);
-            }
+    this.ws
+      .call("events", {}, { forceRefresh: refresher !== undefined })
+      .subscribe(
+        (response: IEventApiResponse) => {
+          if (refresher && refresher.target) {
+            refresher.target.complete();
           }
 
-          // only add places to the list, that actually have corresponding events
-          for (let i = 0; i < tmpArray.length; i++) {
-            for (let j = 0; j < this.listOfEvents.length; j++) {
-              if (tmpArray[i] === this.listOfEvents[j].Place.name) {
-                this.listOfPlaces.push(tmpArray[i]);
-                break;
+          if (
+            response.errors === undefined ||
+            response.errors.exist === false
+          ) {
+            if (response.vars && response.vars.events) {
+              // check if the events is already outdated since the api returns old events
+              this.listOfEvents = response.vars.events;
+
+              this.listOfEvents.sort((a, b) => {
+                return Number(a.Event.startTime) - Number(b.Event.startTime);
+              });
+            } else {
+              this.listOfEvents = [];
+            }
+
+            this.listOfPlaces = [];
+            if (response.vars && response.vars.places) {
+              let tmpArray = [];
+              for (const place in response.vars.places) {
+                if (response.vars.places.hasOwnProperty(place)) {
+                  tmpArray.push(response.vars.places[place]);
+                }
+              }
+
+              // only add places to the list, that actually have corresponding events
+              for (let i = 0; i < tmpArray.length; i++) {
+                for (let j = 0; j < this.listOfEvents.length; j++) {
+                  if (tmpArray[i] === this.listOfEvents[j].Place.name) {
+                    this.listOfPlaces.push(tmpArray[i]);
+                    break;
+                  }
+                }
               }
             }
+
+            this.isLoaded = true;
+
+            if (this.slides) {
+              this.slides.update();
+            }
+
+            if (this.selectedPlace === 0) {
+              this.showLeftButton = false;
+            }
           }
+        },
+        () => {
+          this.isLoaded = true;
+          if (refresher && refresher.target) {
+            refresher.target.complete();
+          }
+          this.networkError = true;
         }
-
-        this.isLoaded = true;
-
-        if (this.slides) {
-          this.slides.update();
-        }
-
-        if (this.selectedPlace === 0) {
-          this.showLeftButton = false;
-        }
-      }
-    }, () => {
-      this.isLoaded = true;
-      if (refresher && refresher.target) { refresher.target.complete(); }
-      this.networkError = true;
-    });
-
+      );
   }
 
   // Method executed when the slides are changed
   async slideChanged() {
-    this.showLeftButton = !await this.slides.isBeginning();
-    this.showRightButton = !await this.slides.isEnd();
+    this.showLeftButton = !(await this.slides.isBeginning());
+    this.showRightButton = !(await this.slides.isEnd());
   }
-
 
   // Method that shows the next slide
   slideNext(): void {
     this.slides.slideNext();
     this.slideChanged();
   }
-
 
   // Method that shows the previous slide
   slidePrev(): void {
@@ -145,7 +154,8 @@ export class EventsPage extends AbstractPage implements OnInit {
   }
 
   openEventWebsite() {
-    this.webIntent.permissionPromptWebsite(ConfigService.config.modules['events'].additionalUrl);
+    this.webIntent.permissionPromptWebsite(
+      ConfigService.config.modules["events"].additionalUrl
+    );
   }
-
 }

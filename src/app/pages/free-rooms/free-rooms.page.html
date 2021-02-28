@@ -1,8 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
-    <ion-button *ngIf="!(platform.is('ios') || platform.is('android'))" (click)="refreshRoom()" slot="end" fill="clear">
-      <ion-icon style="font-size: x-large;" name="refresh"></ion-icon>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="refreshRoom()"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
@@ -13,16 +18,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding" (swipe)="campusTabComponent.handleSwipeEvent($event)">
-
-  <ion-refresher *ngIf="platform.is('ios') || platform.is('android')" slot="fixed" (ionRefresh)="refreshRoom($event)">
-    <ion-refresher-content pullingIcon="refresh" refreshingSpinner="dots"></ion-refresher-content>
+<ion-content
+  class="ion-no-padding"
+  (swipe)="campusTabComponent.handleSwipeEvent($event)"
+>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="refreshRoom($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
   </ion-refresher>
 
   <ion-item class="timePicker">
     <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
-    <ion-select [(ngModel)]="select_timeslot" (ionChange)="changeTimeSlot()" okText="{{ 'button.ok' | translate }}" cancelText="{{ 'button.cancel'  | translate }}">
-      <ion-select-option *ngFor="let slot of time_slots; let i = index" [value]="slot.value">{{timeLabels[i]}} {{ "words.clock" | translate }}
+    <ion-select
+      [(ngModel)]="select_timeslot"
+      (ionChange)="changeTimeSlot()"
+      okText="{{ 'button.ok' | translate }}"
+      cancelText="{{ 'button.cancel'  | translate }}"
+    >
+      <ion-select-option
+        *ngFor="let slot of time_slots; let i = index"
+        [value]="slot.value"
+        >{{timeLabels[i]}} {{ "words.clock" | translate }}
       </ion-select-option>
     </ion-select>
   </ion-item>
@@ -36,33 +58,47 @@
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
               <ion-badge color="primary">
                 {{house.rooms.length}}
-                <span *ngIf="house.rooms.length == 1">{{ "words.room" | translate }}</span>
-                <span *ngIf="house.rooms.length > 1">{{ "words.rooms" | translate }}</span>
+                <span *ngIf="house.rooms.length == 1"
+                  >{{ "words.room" | translate }}</span
+                >
+                <span *ngIf="house.rooms.length > 1"
+                  >{{ "words.rooms" | translate }}</span
+                >
               </ion-badge>
             </h2>
           </ion-label>
-          <ion-icon [name]="!house.expanded ? 'caret-forward' : 'caret-down'" slot="end"></ion-icon>
+          <ion-icon
+            [name]="!house.expanded ? 'caret-forward' : 'caret-down'"
+            slot="end"
+          ></ion-icon>
         </ion-item>
         <div *ngIf="house.expanded">
           <ion-item margin-left *ngFor="let room of house.rooms">
-            <ion-label>
-              {{room.lbl}}
-            </ion-label>
+            <ion-label> {{room.lbl}} </ion-label>
           </ion-item>
         </div>
       </div>
     </ion-list>
   </ng-template>
 
-  <p *ngIf="!isLoaded || (housesFound.length == 0 && !no_timeslot)" style="text-align: center">
+  <p
+    *ngIf="!isLoaded || (housesFound.length == 0 && !no_timeslot)"
+    style="text-align: center"
+  >
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
   <ng-template #noHousesFoundTemplate>
-    <app-hint-box *ngIf="!error" hintTextI18nKey="page.free-rooms.no_rooms_hintText" hintTypeI18nKey="hints.type.hint"></app-hint-box>
+    <app-hint-box
+      *ngIf="!error"
+      hintTextI18nKey="page.free-rooms.no_rooms_hintText"
+      hintTypeI18nKey="hints.type.hint"
+    ></app-hint-box>
     <app-network-error-hint *ngIf="error"></app-network-error-hint>
   </ng-template>
 
-  <ng-container *ngIf="no_timeslot;
-                then noHousesFoundTemplate; else housesFoundTemplate"></ng-container>
+  <ng-container
+    *ngIf="no_timeslot;
+                then noHousesFoundTemplate; else housesFoundTemplate"
+  ></ng-container>
 </ion-content>

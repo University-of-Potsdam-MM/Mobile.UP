@@ -1,14 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { utils } from 'src/app/lib/util';
+import { Component, OnInit, Input } from "@angular/core";
+import { utils } from "src/app/lib/util";
 
 @Component({
-  selector: 'app-grades-table',
-  templateUrl: './grades-table.component.html',
-  styleUrls: ['./grades-table.component.scss']
+  selector: "app-grades-table",
+  templateUrl: "./grades-table.component.html",
+  styleUrls: ["./grades-table.component.scss"],
 })
 export class GradesTableComponent implements OnInit {
-
-  currentProfession = '0';
+  currentProfession = "0";
   gradeArray = [];
   thesis;
   graduation;
@@ -18,16 +17,21 @@ export class GradesTableComponent implements OnInit {
   @Input() isDualDegree;
   @Input() i;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.currentProfession = '0';
+    this.currentProfession = "0";
     if (this.studentGrades && this.studentGrades.academicAchievements) {
       this.thesis = this.studentGrades.academicAchievements.thesis;
       this.graduation = this.studentGrades.academicAchievements.graduation;
 
-      if (this.studentGrades.academicAchievements.achievement && this.studentGrades.academicAchievements.achievement.field) {
-        this.gradeArray = utils.convertToArray(this.studentGrades.academicAchievements.achievement.field);
+      if (
+        this.studentGrades.academicAchievements.achievement &&
+        this.studentGrades.academicAchievements.achievement.field
+      ) {
+        this.gradeArray = utils.convertToArray(
+          this.studentGrades.academicAchievements.achievement.field
+        );
       }
     }
   }
@@ -39,7 +43,9 @@ export class GradesTableComponent implements OnInit {
   isArray(toCheck) {
     if (Array.isArray(toCheck)) {
       return true;
-    } else { return false; }
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -51,10 +57,12 @@ export class GradesTableComponent implements OnInit {
     return utils.convertToArray(array);
   }
 
-  unescapeHTML(s: string) { // replaces &colon; in strings, unescape / decodeURI didnt work (?)
+  unescapeHTML(s: string) {
+    // replaces &colon; in strings, unescape / decodeURI didnt work (?)
     if (s !== undefined) {
-      return s.replace(/&colon;/g, ':');
-    } else { return ''; }
+      return s.replace(/&colon;/g, ":");
+    } else {
+      return "";
+    }
   }
-
 }

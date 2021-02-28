@@ -1,30 +1,30 @@
 ion-card {
-    border: 2px solid var(--ion-color-medium);
+  border: 2px solid var(--ion-color-medium);
 }
 
 ion-card-header {
-    padding: 5px;
-    background-color: var(--ion-color-secondary);
-    color: black;
+  padding: 5px;
+  background-color: var(--ion-color-secondary);
+  color: black;
 }
 
 ion-card-content {
-    margin: 0;
-    color: black;
-    padding: 5px !important;
+  margin: 0;
+  color: black;
+  padding: 5px !important;
 }
 
 .hasErrorDetails {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 ion-label {
-    padding-right: 15px;
-    color: gray;
-    font-size: small;
+  padding-right: 15px;
+  color: gray;
+  font-size: small;
 }
 
 p {
-    font-size: small;
-    color: gray;
+  font-size: small;
+  color: gray;
 }

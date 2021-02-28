@@ -1,20 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { RoomplanPage } from '../roomplan/roomplan.page';
-import { IHouse, IRoomRequestResponse, IRoom, ICampus } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
-import { WebserviceWrapperService} from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { RoomplanPage } from "../roomplan/roomplan.page";
+import {
+  IHouse,
+  IRoomRequestResponse,
+  IRoom,
+  ICampus,
+} from "src/app/lib/interfaces";
+import { AbstractPage } from "src/app/lib/abstract-page";
+import { CampusTabComponent } from "../../components/campus-tab/campus-tab.component";
+import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/webservice-wrapper.service";
+import { IRoomsRequestParams } from "../../services/webservice-wrapper/webservice-definition-interfaces";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'app-free-rooms',
-  templateUrl: './free-rooms.page.html',
-  styleUrls: ['./free-rooms.page.scss'],
+  selector: "app-free-rooms",
+  templateUrl: "./free-rooms.page.html",
+  styleUrls: ["./free-rooms.page.scss"],
 })
 export class FreeRoomsPage extends AbstractPage implements OnInit {
-
   // bindings
   select_timeslot: string;
   refresher: any;
@@ -29,7 +33,8 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   error: HttpErrorResponse;
   no_timeslot = false;
 
-  @ViewChild(CampusTabComponent, { static: false }) campusTabComponent: CampusTabComponent;
+  @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,
@@ -43,18 +48,26 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
     this.time_slots = [];
     for (let i = 8; i < 22; i = i + 2) {
-      const slot = {'lbl': i + ' - ' + (i + 2), 'value': i};
+      const slot = { lbl: i + " - " + (i + 2), value: i };
       this.time_slots.push(slot);
 
-      if (this.translate.currentLang === 'de') {
+      if (this.translate.currentLang === "de") {
         this.timeLabels.push(slot.lbl);
       } else {
         const begin = i === 12 ? 12 : i % 12;
-        const end = (i + 2) === 12 ? 12 : (i + 2) % 12;
+        const end = i + 2 === 12 ? 12 : (i + 2) % 12;
         let label: string = String(begin);
-        if (i > 11) { label += ' PM'; } else { label += ' AM'; }
-        label += ' - ' + end;
-        if ((i + 2) > 11) { label += ' PM'; } else { label += ' AM'; }
+        if (i > 11) {
+          label += " PM";
+        } else {
+          label += " AM";
+        }
+        label += " - " + end;
+        if (i + 2 > 11) {
+          label += " PM";
+        } else {
+          label += " AM";
+        }
         this.timeLabels.push(label);
       }
     }
@@ -72,14 +85,14 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
       const start = new Date();
       start.setHours(i);
       const end = new Date();
-      end.setHours((i + 2));
+      end.setHours(i + 2);
 
       if (start <= now && end > now) {
-        return {'start': i, 'end': (i + 2), 'error': false};
+        return { start: i, end: i + 2, error: false };
       }
     }
 
-    return {'start': 0, 'end': 0, 'error': true};
+    return { start: 0, end: 0, error: true };
   }
 
   /**
@@ -105,7 +118,9 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
 
     if (refresher) {
       this.refresher = refresher;
-    } else { this.isLoaded = false; }
+    } else {
+      this.isLoaded = false;
+    }
   }
 
   /**
@@ -124,7 +139,11 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    */
   changeTimeSlot() {
     this.housesFound = [];
-    this.current_timeslot =  {'start': this.select_timeslot, 'end': (this.select_timeslot + 2), 'error': false};
+    this.current_timeslot = {
+      start: this.select_timeslot,
+      end: this.select_timeslot + 2,
+      error: false,
+    };
     this.getRoomInfo();
   }
 
@@ -161,66 +180,69 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
     start.setHours(this.current_timeslot.start);
     end.setHours(this.current_timeslot.end);
 
-    this.ws.call(
-      'roomsSearch',
-      <IRoomsRequestParams>{
+    this.ws
+      .call("roomsSearch", <IRoomsRequestParams>{
         campus: this.current_location,
-        timeSlot: {start: start, end: end}
-      }
-    ).subscribe(
-      (response: IRoomRequestResponse) => {
-        this.housesFound = [];
-        this.error = null;
-        if (response && response.rooms4TimeResponse && response.rooms4TimeResponse.return) {
-          for (const response_room of response.rooms4TimeResponse.return) {
+        timeSlot: { start: start, end: end },
+      })
+      .subscribe(
+        (response: IRoomRequestResponse) => {
+          this.housesFound = [];
+          this.error = null;
+          if (
+            response &&
+            response.rooms4TimeResponse &&
+            response.rooms4TimeResponse.return
+          ) {
+            for (const response_room of response.rooms4TimeResponse.return) {
+              const split = response_room.split(".");
 
-            const split = response_room.split('.');
+              const room: IRoom = {
+                lbl: split.splice(2, 5).join("."),
+              };
 
-            const room: IRoom = {
-              lbl: split.splice(2, 5).join('.')
-            };
+              let house: IHouse = null;
+              for (let i = 0; i < this.housesFound.length; i++) {
+                if (this.housesFound[i].lbl === split[1]) {
+                  house = this.housesFound[i];
+                  house.rooms.push(room);
+                  this.housesFound[i] = house;
+                }
+              }
 
-            let house: IHouse = null;
-            for (let i = 0; i < this.housesFound.length; i++) {
-              if (this.housesFound[i].lbl === split[1]) {
-                house = this.housesFound[i];
-                house.rooms.push(room);
-                this.housesFound[i] = house;
+              if (house == null) {
+                house = {
+                  lbl: split[1],
+                  rooms: [room],
+                  expanded: false,
+                };
+                this.housesFound.push(house);
               }
             }
-
-            if (house == null) {
-              house = {
-                lbl: split[1],
-                rooms: [room],
-                expanded: false
-              };
-              this.housesFound.push(house);
-            }
-
+          } else {
+            this.no_timeslot = true;
           }
-        } else { this.no_timeslot = true; }
 
-        // sort elements for nicer display
-        this.housesFound.sort(RoomplanPage.compareHouses);
-        this.housesFound.forEach(function (house) {
-          house.rooms.sort(RoomplanPage.compareRooms);
-        });
+          // sort elements for nicer display
+          this.housesFound.sort(RoomplanPage.compareHouses);
+          this.housesFound.forEach(function (house) {
+            house.rooms.sort(RoomplanPage.compareRooms);
+          });
 
-        this.isLoaded = true;
-        if (this.refresher) {
-          this.refresher.target.complete();
+          this.isLoaded = true;
+          if (this.refresher) {
+            this.refresher.target.complete();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.error = error;
+          this.housesFound = [];
+          this.no_timeslot = true;
+          this.isLoaded = true;
+          if (this.refresher) {
+            this.refresher.target.complete();
+          }
         }
-      },
-      (error: HttpErrorResponse) => {
-        this.error = error;
-        this.housesFound = [];
-        this.no_timeslot = true;
-        this.isLoaded = true;
-        if (this.refresher) {
-          this.refresher.target.complete();
-        }
-      }
-    );
+      );
   }
 }

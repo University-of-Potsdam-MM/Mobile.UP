@@ -1,18 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, Platform } from '@ionic/angular';
-import { AlertService } from '../../services/alert/alert.service';
-import { WebIntentService } from '../../services/web-intent/web-intent.service';
-import { utils } from '../../lib/util';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { Component, OnInit, Input } from "@angular/core";
+import { ModalController, Platform } from "@ionic/angular";
+import { AlertService } from "../../services/alert/alert.service";
+import { WebIntentService } from "../../services/web-intent/web-intent.service";
+import { utils } from "../../lib/util";
+import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
-  selector: 'book-modal-page',
-  templateUrl: './book-detail.modal.html',
-  styleUrls: ['../../pages/library-search/library-search.page.scss'],
+  selector: "book-modal-page",
+  templateUrl: "./book-detail.modal.html",
+  styleUrls: ["../../pages/library-search/library-search.page.scss"],
 })
 export class BookDetailModalPage implements OnInit {
-
-  activeSegment = 'location';
+  activeSegment = "location";
   showLocation = true;
   showDetails = false;
   showShortAbstract = true;
@@ -25,26 +24,26 @@ export class BookDetailModalPage implements OnInit {
   @Input() isFavorite;
   shortAbstract = false;
   bookDetails = {
-    'title': '',
-    'keywords': [],
-    'isbn': [],
-    'series': [],
-    'extent': [],
-    'notes': [],
-    'toc': [],
-    'abstract': '',
-    'shortAbstract': null,
-    'mediaType': null,
-    'noDetails': true
+    title: "",
+    keywords: [],
+    isbn: [],
+    series: [],
+    extent: [],
+    notes: [],
+    toc: [],
+    abstract: "",
+    shortAbstract: null,
+    mediaType: null,
+    noDetails: true,
   };
 
   constructor(
-      private modalCtrl: ModalController,
-      private alertService: AlertService,
-      public webIntent: WebIntentService,
-      public platform: Platform,
-      private ws: WebserviceWrapperService
-    ) { }
+    private modalCtrl: ModalController,
+    private alertService: AlertService,
+    public webIntent: WebIntentService,
+    public platform: Platform,
+    private ws: WebserviceWrapperService
+  ) {}
 
   ngOnInit() {
     this.updateLocation();
@@ -53,7 +52,7 @@ export class BookDetailModalPage implements OnInit {
 
   closeModal() {
     this.modalCtrl.dismiss({
-      'isFavoriteNew': this.isFavorite
+      isFavoriteNew: this.isFavorite,
     });
   }
 
@@ -61,9 +60,9 @@ export class BookDetailModalPage implements OnInit {
     this.isFavorite = !this.isFavorite;
 
     if (!this.isFavorite) {
-      this.alertService.showToast('hints.text.favRemoved');
+      this.alertService.showToast("hints.text.favRemoved");
     } else {
-      this.alertService.showToast('hints.text.favAdded');
+      this.alertService.showToast("hints.text.favAdded");
     }
   }
 
@@ -83,8 +82,13 @@ export class BookDetailModalPage implements OnInit {
 
   getTitle() {
     if (this.book && this.book.titleInfo) {
-      this.bookDetails.title = utils.convertToArray(this.book.titleInfo)[0].title;
-      this.bookDetails.title = this.bookDetails.title.replace(new RegExp('-', 'g'), ' ');
+      this.bookDetails.title = utils.convertToArray(
+        this.book.titleInfo
+      )[0].title;
+      this.bookDetails.title = this.bookDetails.title.replace(
+        new RegExp("-", "g"),
+        " "
+      );
     }
   }
 
@@ -97,22 +101,33 @@ export class BookDetailModalPage implements OnInit {
       this.isLoaded = false;
     }
 
-    this.ws.call(
-      'libraryDAIA',
-      {
-        id: 'ppn:' + this.book.recordInfo.recordIdentifier._
-      },
-      { forceRefresh: refresher !== undefined }
-    ).subscribe(data => {
-      this.error = undefined;
-      if (refresher && refresher.target) { refresher.target.complete(); }
-      if (data) { this.locationData = data; }
-      this.isLoaded = true;
-    }, (error) => {
-      this.error = error;
-      this.isLoaded = true;
-      if (refresher && refresher.target) { refresher.target.complete(); }
-    });
+    this.ws
+      .call(
+        "libraryDAIA",
+        {
+          id: "ppn:" + this.book.recordInfo.recordIdentifier._,
+        },
+        { forceRefresh: refresher !== undefined }
+      )
+      .subscribe(
+        (data) => {
+          this.error = undefined;
+          if (refresher && refresher.target) {
+            refresher.target.complete();
+          }
+          if (data) {
+            this.locationData = data;
+          }
+          this.isLoaded = true;
+        },
+        (error) => {
+          this.error = error;
+          this.isLoaded = true;
+          if (refresher && refresher.target) {
+            refresher.target.complete();
+          }
+        }
+      );
   }
 
   /**
@@ -134,7 +149,9 @@ export class BookDetailModalPage implements OnInit {
             this.bookDetails.noDetails = false;
           }
         } else if (tmp[i] && tmp[i].$ && tmp[i].$.displayLabel) {
-          if (!utils.isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)) {
+          if (
+            !utils.isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)
+          ) {
             this.bookDetails.keywords.push(tmp[i].$.displayLabel);
             this.bookDetails.noDetails = false;
           }
@@ -155,8 +172,10 @@ export class BookDetailModalPage implements OnInit {
           if (!utils.isInArray(this.bookDetails.isbn, tmp[i]._)) {
             let identString;
             if (tmp[i].$ && tmp[i].$.type) {
-              identString = tmp[i]._ + ' [' + tmp[i].$.type + ']';
-            } else { identString = tmp[i]._; }
+              identString = tmp[i]._ + " [" + tmp[i].$.type + "]";
+            } else {
+              identString = tmp[i]._;
+            }
 
             this.bookDetails.isbn.push(identString);
             this.bookDetails.noDetails = false;
@@ -175,7 +194,11 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.titleInfo);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].partNumber && !utils.isInArray(this.bookDetails.series, tmp[i].partNumber)) {
+        if (
+          tmp[i] &&
+          tmp[i].partNumber &&
+          !utils.isInArray(this.bookDetails.series, tmp[i].partNumber)
+        ) {
           this.bookDetails.series.push(tmp[i].partNumber);
           this.bookDetails.noDetails = false;
         }
@@ -185,8 +208,12 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.relatedItem);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].$ && tmp[i].$.type === 'series') {
-          if (tmp[i].titleInfo && tmp[i].titleInfo.title && !utils.isInArray(this.bookDetails.series, tmp[i].titleInfo.title)) {
+        if (tmp[i] && tmp[i].$ && tmp[i].$.type === "series") {
+          if (
+            tmp[i].titleInfo &&
+            tmp[i].titleInfo.title &&
+            !utils.isInArray(this.bookDetails.series, tmp[i].titleInfo.title)
+          ) {
             this.bookDetails.series.push(tmp[i].titleInfo.title);
             this.bookDetails.noDetails = false;
           }
@@ -204,7 +231,11 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.physicalDescription);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].extent && !utils.isInArray(this.bookDetails.extent, tmp[i].extent)) {
+        if (
+          tmp[i] &&
+          tmp[i].extent &&
+          !utils.isInArray(this.bookDetails.extent, tmp[i].extent)
+        ) {
           this.bookDetails.extent.push(tmp[i].extent);
           this.bookDetails.noDetails = false;
         }
@@ -221,10 +252,17 @@ export class BookDetailModalPage implements OnInit {
       const tmp = utils.convertToArray(this.book.note);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i]._ && !utils.isInArray(this.bookDetails.notes, tmp[i]._)) {
+        if (
+          tmp[i] &&
+          tmp[i]._ &&
+          !utils.isInArray(this.bookDetails.notes, tmp[i]._)
+        ) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
-        } else if (typeof tmp[i] === 'string' && !utils.isInArray(this.bookDetails.notes, tmp[i])) {
+        } else if (
+          typeof tmp[i] === "string" &&
+          !utils.isInArray(this.bookDetails.notes, tmp[i])
+        ) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
         }
@@ -234,10 +272,17 @@ export class BookDetailModalPage implements OnInit {
     if (this.book.relatedItem && this.book.relatedItem.note) {
       const tmp = utils.convertToArray(this.book.relatedItem.note);
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i]._ && !utils.isInArray(this.bookDetails.notes, tmp[i]._)) {
+        if (
+          tmp[i] &&
+          tmp[i]._ &&
+          !utils.isInArray(this.bookDetails.notes, tmp[i]._)
+        ) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
-        } else if (typeof tmp[i] === 'string' && !utils.isInArray(this.bookDetails.notes, tmp[i])) {
+        } else if (
+          typeof tmp[i] === "string" &&
+          !utils.isInArray(this.bookDetails.notes, tmp[i])
+        ) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
         }
@@ -255,12 +300,14 @@ export class BookDetailModalPage implements OnInit {
 
       for (i = 0; i < tmp.length; i++) {
         let tocToSplit = tmp[i];
-        if (tocToSplit && tocToSplit._) { tocToSplit = tocToSplit._; }
+        if (tocToSplit && tocToSplit._) {
+          tocToSplit = tocToSplit._;
+        }
 
-        if (tocToSplit && tocToSplit.indexOf('--') >= 0) {
-          const toc = tocToSplit.split('--');
+        if (tocToSplit && tocToSplit.indexOf("--") >= 0) {
+          const toc = tocToSplit.split("--");
           for (j = 0; j < toc.length; j++) {
-            if (toc[j] !== '') {
+            if (toc[j] !== "") {
               this.bookDetails.toc.push(toc[j]);
               this.bookDetails.noDetails = false;
             }
@@ -273,7 +320,8 @@ export class BookDetailModalPage implements OnInit {
     }
 
     if (this.bookDetails.abstract.length > 280) {
-      this.bookDetails.shortAbstract = this.bookDetails.abstract.substring(0, 279) + '...';
+      this.bookDetails.shortAbstract =
+        this.bookDetails.abstract.substring(0, 279) + "...";
       this.shortAbstract = true;
     }
   }
@@ -285,5 +333,4 @@ export class BookDetailModalPage implements OnInit {
   setMediaType(mediatype): void {
     this.bookDetails.mediaType = mediatype;
   }
-
 }

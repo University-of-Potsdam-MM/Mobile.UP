@@ -1,32 +1,40 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Platform, MenuController, NavController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IBibSession } from './lib/interfaces';
-import { Storage } from '@ionic/storage';
-import * as moment from 'moment';
-import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from 'ionic-cache';
-import { UserSessionService } from './services/user-session/user-session.service';
-import { SettingsService } from './services/settings/settings.service';
-import { ConfigService } from './services/config/config.service';
-import { ISession, IOIDCRefreshResponseObject } from './services/login-provider/interfaces';
-import { UPLoginProvider } from './services/login-provider/login';
-import { Router } from '@angular/router';
-import { AlertService } from './services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
-import { Logger, LoggingService } from 'ionic-logging-service';
-import { ConnectionService } from './services/connection/connection.service';
-import jwt_decode from 'jwt-decode';
+import { Component, QueryList, ViewChildren } from "@angular/core";
+import {
+  Platform,
+  MenuController,
+  NavController,
+  IonRouterOutlet,
+  ModalController,
+  AlertController,
+} from "@ionic/angular";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { IBibSession } from "./lib/interfaces";
+import { Storage } from "@ionic/storage";
+import * as moment from "moment";
+import { TranslateService } from "@ngx-translate/core";
+import { CacheService } from "ionic-cache";
+import { UserSessionService } from "./services/user-session/user-session.service";
+import { SettingsService } from "./services/settings/settings.service";
+import { ConfigService } from "./services/config/config.service";
+import {
+  ISession,
+  IOIDCRefreshResponseObject,
+} from "./services/login-provider/interfaces";
+import { UPLoginProvider } from "./services/login-provider/login";
+import { Router } from "@angular/router";
+import { AlertService } from "./services/alert/alert.service";
+import { AlertButton } from "@ionic/core";
+import { Logger, LoggingService } from "ionic-logging-service";
+import { ConnectionService } from "./services/connection/connection.service";
+import jwt_decode from "jwt-decode";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html'
+  selector: "app-root",
+  templateUrl: "app.component.html",
 })
 export class AppComponent {
-
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
-
 
   loggedIn = false;
   username;
@@ -59,26 +67,27 @@ export class AppComponent {
     private connectionService: ConnectionService
   ) {
     this.initializeApp();
-    this.logger = this.loggingService.getLogger('[/app-component]');
+    this.logger = this.loggingService.getLogger("[/app-component]");
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.storage.set('appVersion', ConfigService.config.appVersion);
+      this.storage.set("appVersion", ConfigService.config.appVersion);
       this.checkSessionValidity();
       this.initTranslate();
       this.updateLoginStatus();
-      this.cache.setDefaultTTL(ConfigService.config.webservices.defaultCachingTTL);
+      this.cache.setDefaultTTL(
+        ConfigService.config.webservices.defaultCachingTTL
+      );
       this.cache.setOfflineInvalidate(false);
 
-      if (this.platform.is('cordova')) {
-
-        if (this.platform.is('android')) {
+      if (this.platform.is("cordova")) {
+        if (this.platform.is("android")) {
           this.listenToBackButton();
-          this.statusBar.backgroundColorByHexString('#014260');
+          this.statusBar.backgroundColorByHexString("#014260");
         }
 
-        if (this.platform.is('ios')) {
+        if (this.platform.is("ios")) {
           this.statusBar.styleDefault();
         }
 
@@ -97,49 +106,82 @@ export class AppComponent {
     let session: ISession = await this.userSession.getSession();
 
     if (session && this.connectionService.checkOnline(true)) {
-      const variablesNotUndefined = session && session.timestamp && session.oidcTokenObject
-        && session.oidcTokenObject.expires_in && ConfigService.config;
+      const variablesNotUndefined =
+        session &&
+        session.timestamp &&
+        session.oidcTokenObject &&
+        session.oidcTokenObject.expires_in &&
+        ConfigService.config;
       if (
-        variablesNotUndefined
-        && this.connectionService.checkOnline()
+        variablesNotUndefined &&
+        this.connectionService.checkOnline()
         // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
-        let oidcObject = ConfigService.isApiManagerUpdated ? ConfigService.config.authorization.oidc_new : ConfigService.config.authorization.oidc;
+        let oidcObject = ConfigService.isApiManagerUpdated
+          ? ConfigService.config.authorization.oidc_new
+          : ConfigService.config.authorization.oidc;
 
-        this.login.oidcRefreshToken(session.oidcTokenObject.refresh_token, oidcObject)
-          .subscribe((response: IOIDCRefreshResponseObject) => {
-            const newSession = {
-              oidcTokenObject:  response.oidcTokenObject,
-              token:            response.oidcTokenObject.access_token,
-              timestamp:        new Date(),
-              credentials:      session.credentials
-            };
+        this.login
+          .oidcRefreshToken(session.oidcTokenObject.refresh_token, oidcObject)
+          .subscribe(
+            (response: IOIDCRefreshResponseObject) => {
+              const newSession = {
+                oidcTokenObject: response.oidcTokenObject,
+                token: response.oidcTokenObject.access_token,
+                timestamp: new Date(),
+                credentials: session.credentials,
+              };
 
-            this.userSession.setSession(newSession);
-          }, response => {
-            this.logger.error('checkSessionValidity', 'error refreshing token', response);
+              this.userSession.setSession(newSession);
+            },
+            (response) => {
+              this.logger.error(
+                "checkSessionValidity",
+                "error refreshing token",
+                response
+              );
 
-            if (!this.triedToRefreshLogin) {
-              // refresh token expired; f.e. if user logs into a second device
-              if (session.credentials && session.credentials.password && session.credentials.username) {
-                this.logger.debug('checkSessionValidity', 're-authenticating...');
-                this.login.oidcLogin(session.credentials, oidcObject).subscribe(sessionRes => {
-                  this.logger.debug('checkSessionValidity', 're-authenticating successful');
-                  this.userSession.setSession(sessionRes);
-                  session = sessionRes;
-                }, error => {
-                  this.logger.error('checkSessionValidity', 're-authenticating not possible', error);
+              if (!this.triedToRefreshLogin) {
+                // refresh token expired; f.e. if user logs into a second device
+                if (
+                  session.credentials &&
+                  session.credentials.password &&
+                  session.credentials.username
+                ) {
+                  this.logger.debug(
+                    "checkSessionValidity",
+                    "re-authenticating..."
+                  );
+                  this.login
+                    .oidcLogin(session.credentials, oidcObject)
+                    .subscribe(
+                      (sessionRes) => {
+                        this.logger.debug(
+                          "checkSessionValidity",
+                          "re-authenticating successful"
+                        );
+                        this.userSession.setSession(sessionRes);
+                        session = sessionRes;
+                      },
+                      (error) => {
+                        this.logger.error(
+                          "checkSessionValidity",
+                          "re-authenticating not possible",
+                          error
+                        );
+                        this.loginExpired();
+                      }
+                    );
+
+                  this.triedToRefreshLogin = true;
+                } else {
                   this.loginExpired();
-                });
-
-                this.triedToRefreshLogin = true;
+                }
               } else {
                 this.loginExpired();
               }
-            } else {
-              this.loginExpired();
             }
-          });
+          );
       } else {
         // session no longer valid
         this.loginExpired();
@@ -154,8 +196,8 @@ export class AppComponent {
   loginExpired() {
     if (this.connectionService.checkOnline()) {
       this.performLogout();
-      this.navCtrl.navigateForward('/login');
-      this.alertService.showToast('alert.login-expired');
+      this.navCtrl.navigateForward("/login");
+      this.alertService.showToast("alert.login-expired");
     }
   }
 
@@ -164,15 +206,15 @@ export class AppComponent {
    * @description sets up translation
    */
   async initTranslate() {
-    this.translate.setDefaultLang('de');
-    const lang = await this.setting.getSettingValue('language');
+    this.translate.setDefaultLang("de");
+    const lang = await this.setting.getSettingValue("language");
 
-    if (lang === 'Deutsch') {
-      this.translate.use('de');
-      moment.locale('de');
+    if (lang === "Deutsch") {
+      this.translate.use("de");
+      moment.locale("de");
     } else {
-      this.translate.use('en');
-      moment.locale('en');
+      this.translate.use("en");
+      moment.locale("en");
     }
   }
 
@@ -183,7 +225,7 @@ export class AppComponent {
   listenToBackButton() {
     // workaround for #694
     // https://forum.ionicframework.com/t/hardware-back-button-with-ionic-4/137905/56
-    this.platform.backButton.subscribeWithPriority(1, async() => {
+    this.platform.backButton.subscribeWithPriority(1, async () => {
       const openMenu = await this.menuCtrl.getOpen();
 
       if (openMenu) {
@@ -200,8 +242,8 @@ export class AppComponent {
             this.alertCtrl.dismiss();
           } else {
             this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-              if (this.router.url === '/home') {
-                navigator['app'].exitApp();
+              if (this.router.url === "/home") {
+                navigator["app"].exitApp();
               } else if (outlet && outlet.canGoBack()) {
                 outlet.pop();
               }
@@ -220,7 +262,7 @@ export class AppComponent {
     this.fullName = undefined;
 
     const session: ISession = await this.userSession.getSession();
-    const bibSession: IBibSession = await this.storage.get('bibSession');
+    const bibSession: IBibSession = await this.storage.get("bibSession");
 
     if (bibSession) {
       this.bibLoggedIn = true;
@@ -233,12 +275,11 @@ export class AppComponent {
 
       if (session.oidcTokenObject && session.oidcTokenObject.id_token) {
         let decoded = jwt_decode(session.oidcTokenObject.id_token);
-        if (decoded['name']) {
-          this.fullName = decoded['name'];
+        if (decoded["name"]) {
+          this.fullName = decoded["name"];
         }
       }
     }
-
   }
 
   close() {
@@ -247,28 +288,28 @@ export class AppComponent {
 
   toHome() {
     this.close();
-    this.navCtrl.navigateRoot('/home');
+    this.navCtrl.navigateRoot("/home");
   }
 
   doLogout() {
     this.close();
     const buttons: AlertButton[] = [
       {
-        text: this.translate.instant('button.cancel'),
+        text: this.translate.instant("button.cancel"),
       },
       {
-        text: this.translate.instant('button.ok'),
+        text: this.translate.instant("button.ok"),
         handler: () => {
           this.performLogout();
-          this.navCtrl.navigateRoot('/home');
-        }
-      }
+          this.navCtrl.navigateRoot("/home");
+        },
+      },
     ];
 
     this.alertService.showAlert(
       {
-        headerI18nKey: 'page.logout.title',
-        messageI18nKey: 'page.logout.affirmativeQuestion'
+        headerI18nKey: "page.logout.title",
+        messageI18nKey: "page.logout.affirmativeQuestion",
       },
       buttons
     );
@@ -278,23 +319,23 @@ export class AppComponent {
     this.close();
     const buttons: AlertButton[] = [
       {
-        text: this.translate.instant('button.cancel'),
+        text: this.translate.instant("button.cancel"),
       },
       {
-        text: this.translate.instant('button.ok'),
+        text: this.translate.instant("button.ok"),
         handler: () => {
-          this.storage.remove('bibSession');
-          this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
+          this.storage.remove("bibSession");
+          this.logger.debug("doBibLogout()", "successfully logged out ub-user");
           this.updateLoginStatus();
-          this.navCtrl.navigateRoot('/home');
-        }
-      }
+          this.navCtrl.navigateRoot("/home");
+        },
+      },
     ];
 
     this.alertService.showAlert(
       {
-        headerI18nKey: 'page.logout.bibTitle',
-        messageI18nKey: 'page.logout.affirmativeQuestion'
+        headerI18nKey: "page.logout.bibTitle",
+        messageI18nKey: "page.logout.affirmativeQuestion",
       },
       buttons
     );
@@ -303,37 +344,36 @@ export class AppComponent {
   performLogout() {
     this.userSession.removeSession();
     for (let i = 0; i < 10; i++) {
-      this.storage.remove('studentGrades[' + i + ']');
-      this.storage.remove('studentGrades*');
+      this.storage.remove("studentGrades[" + i + "]");
+      this.storage.remove("studentGrades*");
     }
-    this.storage.remove('userInformation');
+    this.storage.remove("userInformation");
     this.cache.clearAll();
     this.updateLoginStatus();
   }
 
   toLogin() {
     this.close();
-    this.navCtrl.navigateForward('/login');
+    this.navCtrl.navigateForward("/login");
   }
 
   toBibLogin() {
     this.close();
-    this.navCtrl.navigateForward('/library-account');
+    this.navCtrl.navigateForward("/library-account");
   }
 
   toSettings() {
     this.close();
-    this.navCtrl.navigateForward('/settings');
+    this.navCtrl.navigateForward("/settings");
   }
 
   toAppInfo() {
     this.close();
-    this.navCtrl.navigateForward('/app-info');
+    this.navCtrl.navigateForward("/app-info");
   }
 
   toImprint() {
     this.close();
-    this.navCtrl.navigateForward('/impressum');
+    this.navCtrl.navigateForward("/impressum");
   }
-
 }

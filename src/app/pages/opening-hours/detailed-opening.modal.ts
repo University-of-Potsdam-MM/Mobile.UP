@@ -1,17 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
-import { CallNumber } from '@ionic-native/call-number/ngx';
-import { utils } from 'src/app/lib/util';
-import { Logger, LoggingService } from 'ionic-logging-service';
+import { Component, Input, OnInit } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { WebIntentService } from "src/app/services/web-intent/web-intent.service";
+import { CallNumber } from "@ionic-native/call-number/ngx";
+import { utils } from "src/app/lib/util";
+import { Logger, LoggingService } from "ionic-logging-service";
 
 @Component({
-  selector: 'detailed-opening-modal-page',
-  templateUrl: './detailed-opening.modal.html',
+  selector: "detailed-opening-modal-page",
+  templateUrl: "./detailed-opening.modal.html",
 })
 export class DetailedOpeningModalPage implements OnInit {
-
   @Input() item;
   intervals = [];
   itv = [];
@@ -20,13 +19,13 @@ export class DetailedOpeningModalPage implements OnInit {
   logger: Logger;
 
   constructor(
-      private modalCtrl: ModalController,
-      public translate: TranslateService,
-      private webIntent: WebIntentService,
-      private callNumber: CallNumber,
-      private loggingService: LoggingService
-    ) {
-      this.logger = this.loggingService.getLogger('[/detailed-opening-modal]');
+    private modalCtrl: ModalController,
+    public translate: TranslateService,
+    private webIntent: WebIntentService,
+    private callNumber: CallNumber,
+    private loggingService: LoggingService
+  ) {
+    this.logger = this.loggingService.getLogger("[/detailed-opening-modal]");
   }
 
   ngOnInit() {
@@ -49,15 +48,18 @@ export class DetailedOpeningModalPage implements OnInit {
    * https://www.javascripttuts.com/making-phone-calls-to-contacts-with-ionic-in-one-go/
    */
   callContact(number: string) {
-    this.callNumber.callNumber(number, true)
-      .then(() => this.logger.debug('callContact', 'dialer launched'))
-      .catch((error) => this.logger.error('callContact', error));
+    this.callNumber
+      .callNumber(number, true)
+      .then(() => this.logger.debug("callContact", "dialer launched"))
+      .catch((error) => this.logger.error("callContact", error));
   }
 
   shortenLink(link: string) {
     if (link.length > 30) {
-      return link.substr(0, 30) + '...';
-    } else { return link; }
+      return link.substr(0, 30) + "...";
+    } else {
+      return link;
+    }
   }
 
   openUntil() {
@@ -65,17 +67,28 @@ export class DetailedOpeningModalPage implements OnInit {
 
     if (willClose) {
       if (this.isToday(willClose)) {
-        return this.translate.instant('page.opening-hours.closes')
-        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-        + this.translate.instant('page.opening-hours.time');
+        return (
+          this.translate.instant("page.opening-hours.closes") +
+          willClose.toLocaleTimeString(this.translate.currentLang, {
+            hour: "numeric",
+            minute: "numeric",
+          }) +
+          this.translate.instant("page.opening-hours.time")
+        );
       } else {
-        return this.translate.instant('page.opening-hours.closes')
-        + this.weekday(willClose.getDay()) + ' '
-        + willClose.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-        + this.translate.instant('page.opening-hours.time');
+        return (
+          this.translate.instant("page.opening-hours.closes") +
+          this.weekday(willClose.getDay()) +
+          " " +
+          willClose.toLocaleTimeString(this.translate.currentLang, {
+            hour: "numeric",
+            minute: "numeric",
+          }) +
+          this.translate.instant("page.opening-hours.time")
+        );
       }
     } else {
-      return '';
+      return "";
     }
   }
 
@@ -84,55 +97,73 @@ export class DetailedOpeningModalPage implements OnInit {
 
     if (willChange) {
       if (this.isToday(willChange)) {
-        return this.translate.instant('page.opening-hours.opens')
-        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-        + this.translate.instant('page.opening-hours.time');
+        return (
+          this.translate.instant("page.opening-hours.opens") +
+          willChange.toLocaleTimeString(this.translate.currentLang, {
+            hour: "numeric",
+            minute: "numeric",
+          }) +
+          this.translate.instant("page.opening-hours.time")
+        );
       } else {
-        return this.translate.instant('page.opening-hours.opens')
-        + this.weekday(willChange.getDay()) + ' '
-        + willChange.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-        + this.translate.instant('page.opening-hours.time');
+        return (
+          this.translate.instant("page.opening-hours.opens") +
+          this.weekday(willChange.getDay()) +
+          " " +
+          willChange.toLocaleTimeString(this.translate.currentLang, {
+            hour: "numeric",
+            minute: "numeric",
+          }) +
+          this.translate.instant("page.opening-hours.time")
+        );
       }
     } else {
       if (this.comment != null) {
-        if (this.translate.currentLang === 'en' && utils.contains(this.comment, 'nach Vereinbarung')) {
-          this.comment = 'nach Vereinbarung';
-          return 'by appointment only';
-        } else if (utils.contains(this.comment, 'nach Vereinbarung')) {
-          this.comment = 'nach Vereinbarung';
+        if (
+          this.translate.currentLang === "en" &&
+          utils.contains(this.comment, "nach Vereinbarung")
+        ) {
+          this.comment = "nach Vereinbarung";
+          return "by appointment only";
+        } else if (utils.contains(this.comment, "nach Vereinbarung")) {
+          this.comment = "nach Vereinbarung";
           return this.comment;
         } else {
-          return '';
+          return "";
         }
       } else {
-        return '';
+        return "";
       }
     }
   }
 
-   isToday(td) {
+  isToday(td) {
     const d = new Date();
-    return td.getDate() === d.getDate() && td.getMonth() === d.getMonth() && td.getFullYear() === d.getFullYear();
+    return (
+      td.getDate() === d.getDate() &&
+      td.getMonth() === d.getMonth() &&
+      td.getFullYear() === d.getFullYear()
+    );
   }
 
   weekday(i) {
     const weekday = [];
-    if (this.translate.currentLang === 'de') {
-      weekday[0] = 'So.';
-      weekday[1] = 'Mo.';
-      weekday[2] = 'Di.';
-      weekday[3] = 'Mi.';
-      weekday[4] = 'Do.';
-      weekday[5] = 'Fr.';
-      weekday[6] = 'Sa.';
+    if (this.translate.currentLang === "de") {
+      weekday[0] = "So.";
+      weekday[1] = "Mo.";
+      weekday[2] = "Di.";
+      weekday[3] = "Mi.";
+      weekday[4] = "Do.";
+      weekday[5] = "Fr.";
+      weekday[6] = "Sa.";
     } else {
-      weekday[0] = 'Su.';
-      weekday[1] = 'Mo.';
-      weekday[2] = 'Tu.';
-      weekday[3] = 'We.';
-      weekday[4] = 'Th.';
-      weekday[5] = 'Fr.';
-      weekday[6] = 'Sa.';
+      weekday[0] = "Su.";
+      weekday[1] = "Mo.";
+      weekday[2] = "Tu.";
+      weekday[3] = "We.";
+      weekday[4] = "Th.";
+      weekday[5] = "Fr.";
+      weekday[6] = "Sa.";
     }
     return weekday[i];
   }
@@ -148,37 +179,48 @@ export class DetailedOpeningModalPage implements OnInit {
 
     this.itv = [];
     for (let interval of this.intervals) {
-        const dayLocaleString = this.weekday(interval[0].getDay()) + ', ' +  interval[0].toLocaleDateString(this.translate.currentLang);
-        const openInterval = this.parseDate(interval[0], interval[1]);
+      const dayLocaleString =
+        this.weekday(interval[0].getDay()) +
+        ", " +
+        interval[0].toLocaleDateString(this.translate.currentLang);
+      const openInterval = this.parseDate(interval[0], interval[1]);
 
-        let found;
-        for (let i = 0; i < this.itv.length; i++) {
-          if (Array.isArray(this.itv[i])) {
-            if (this.itv[i][0] == dayLocaleString) {
-              found = i;
-              break;
-            }
+      let found;
+      for (let i = 0; i < this.itv.length; i++) {
+        if (Array.isArray(this.itv[i])) {
+          if (this.itv[i][0] == dayLocaleString) {
+            found = i;
+            break;
           }
         }
+      }
 
-        if (found !== undefined) {
-          this.itv[found].push(openInterval);
-        } else {
-          const lgth = this.itv.length;
-          this.itv[lgth] = [];
-          this.itv[lgth][0] = dayLocaleString;
-          this.itv[lgth].push(openInterval);
-        }
+      if (found !== undefined) {
+        this.itv[found].push(openInterval);
+      } else {
+        const lgth = this.itv.length;
+        this.itv[lgth] = [];
+        this.itv[lgth][0] = dayLocaleString;
+        this.itv[lgth].push(openInterval);
+      }
     }
 
     this.every_week_is_same = this.item.parsedOpening.isWeekStable();
   }
 
   parseDate(from: Date, to: Date) {
-    return from.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-    + this.translate.instant('page.opening-hours.time') + ' - '
-    + to.toLocaleTimeString(this.translate.currentLang, {hour: 'numeric', minute: 'numeric'})
-    + this.translate.instant('page.opening-hours.time');
+    return (
+      from.toLocaleTimeString(this.translate.currentLang, {
+        hour: "numeric",
+        minute: "numeric",
+      }) +
+      this.translate.instant("page.opening-hours.time") +
+      " - " +
+      to.toLocaleTimeString(this.translate.currentLang, {
+        hour: "numeric",
+        minute: "numeric",
+      }) +
+      this.translate.instant("page.opening-hours.time")
+    );
   }
-
 }

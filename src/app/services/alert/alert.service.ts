@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
-import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { AlertButton, ToastButton } from '@ionic/core';
-import { Logger, LoggingService } from 'ionic-logging-service';
+import { Injectable } from "@angular/core";
+import {
+  AlertController,
+  NavController,
+  ToastController,
+} from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { AlertButton, ToastButton } from "@ionic/core";
+import { Logger, LoggingService } from "ionic-logging-service";
 
 /**
  * @type {IAlertOptions}
@@ -14,10 +18,9 @@ export interface IAlertOptions {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AlertService {
-
   currentAlert = null;
   currentToast = null;
   logger: Logger;
@@ -35,7 +38,7 @@ export class AlertService {
     private toastCtrl: ToastController,
     private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/alert-service]');
+    this.logger = this.loggingService.getLogger("[/alert-service]");
   }
 
   /**
@@ -44,28 +47,29 @@ export class AlertService {
    * @param {IAlertOptions} alertOptions
    */
   async showAlert(alertOptions: IAlertOptions, buttons?: AlertButton[]) {
-
     let alertButtons: AlertButton[] = [];
-    if (buttons) { alertButtons = buttons; } else {
+    if (buttons) {
+      alertButtons = buttons;
+    } else {
       alertButtons = [
         {
-          text: this.translate.instant('button.toHome'),
+          text: this.translate.instant("button.toHome"),
           handler: () => {
-            this.navCtrl.navigateRoot('/home');
+            this.navCtrl.navigateRoot("/home");
             this.currentAlert = null;
-          }
+          },
         },
         {
-          text: this.translate.instant('button.continue'),
+          text: this.translate.instant("button.continue"),
           handler: () => {
             this.currentAlert = null;
-          }
-        }
+          },
+        },
       ];
     }
 
-    let headerText = '';
-    let messageText = '';
+    let headerText = "";
+    let messageText = "";
     if (alertOptions.headerI18nKey) {
       headerText = this.translate.instant(alertOptions.headerI18nKey);
     }
@@ -75,10 +79,10 @@ export class AlertService {
     }
 
     if (alertOptions.errorMessage) {
-      if (messageText === '') {
+      if (messageText === "") {
         messageText = alertOptions.errorMessage;
       } else {
-        messageText += ' ERROR: ' + alertOptions.errorMessage;
+        messageText += " ERROR: " + alertOptions.errorMessage;
       }
     }
 
@@ -88,12 +92,14 @@ export class AlertService {
         header: headerText,
         message: messageText,
         backdropDismiss: false,
-        buttons: alertButtons
+        buttons: alertButtons,
       });
       this.currentAlert.present();
       await this.currentAlert.onDidDismiss();
       this.currentAlert = undefined;
-    } else { this.logger.debug('showAlert', 'another alert is shown'); }
+    } else {
+      this.logger.debug("showAlert", "another alert is shown");
+    }
   }
 
   /**
@@ -107,22 +113,28 @@ export class AlertService {
     if (error) {
       const alertButtons: AlertButton[] = [
         {
-          text: this.translate.instant('button.continue'),
+          text: this.translate.instant("button.continue"),
           handler: () => {
             this.currentAlert = null;
-          }
-        }
+          },
+        },
       ];
 
       buttons = [
         {
-          side: 'end',
+          side: "end",
           // role: 'cancel',
-          icon: 'information-circle',
+          icon: "information-circle",
           handler: () => {
-            this.showAlert({ headerI18nKey: 'alert.title.httpError', errorMessage: String(error.message) }, alertButtons);
-          }
-        }
+            this.showAlert(
+              {
+                headerI18nKey: "alert.title.httpError",
+                errorMessage: String(error.message),
+              },
+              alertButtons
+            );
+          },
+        },
       ];
     }
 
@@ -130,13 +142,15 @@ export class AlertService {
       this.currentToast = await this.toastCtrl.create({
         message: messageText,
         duration: 2000,
-        position: 'top',
-        cssClass: 'updateToast',
-        buttons: buttons
+        position: "top",
+        cssClass: "updateToast",
+        buttons: buttons,
       });
       this.currentToast.present();
       await this.currentToast.onDidDismiss();
       this.currentToast = undefined;
-    } else { this.logger.debug('showToast', 'another toast is shown'); }
+    } else {
+      this.logger.debug("showToast", "another toast is shown");
+    }
   }
 }

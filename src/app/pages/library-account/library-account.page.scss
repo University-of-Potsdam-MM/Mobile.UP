@@ -1,43 +1,43 @@
 ion-checkbox {
-    margin-inline-end: 10px;
-    --webkit-margin-end: 10px;
+  margin-inline-end: 10px;
+  --webkit-margin-end: 10px;
 }
 
 .feeAmount {
-    color: red;
-    font-weight: bold;
+  color: red;
+  font-weight: bold;
 }
 
 .noFeeAmount {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 ion-button {
-    --border-radius: 0;
+  --border-radius: 0;
 }
 
 ion-card {
-    --background: var(--ion-color-secondary);
-    padding: 5px;
-    border-radius: 0;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  --background: var(--ion-color-secondary);
+  padding: 5px;
+  border-radius: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 ion-card-content {
-    padding: 5px;
+  padding: 5px;
 }
 
 .patronID {
-    padding-left: 5px;
-    font-size: 0.8em;
-    opacity: 0.8;
+  padding-left: 5px;
+  font-size: 0.8em;
+  opacity: 0.8;
 }
 
 ion-button.changePassword {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 .accountDetails {
-    font-size: smaller;
+  font-size: smaller;
 }
