@@ -12,15 +12,11 @@
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s",
     "doc": "npx compodoc -p tsconfig.json -n 'Mobile.UP'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pretty-quick": "pretty-quick --staged"
   },
   "config": {
     "ionic_copy": "./scripts/copy-custom-libs.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   },
   "private": true,
   "dependencies": {
