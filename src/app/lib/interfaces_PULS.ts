@@ -115,6 +115,7 @@ export interface IPulsApiRequest_getLectureScheduleAll_condition {
   semester: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPulsAPIResponse_getLectureScheduleRoot {}
 
 export interface IPulsApiRequest_getLectureScheduleRoot {
@@ -125,6 +126,7 @@ export interface IPulsApiRequest_getLectureScheduleRoot_condition {
   semester: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPulsAPIResponse_getLectureScheduleSubTree {}
 
 export interface IPulsApiRequest_getLectureScheduleSubTree {
@@ -143,6 +145,7 @@ export interface IPulsApiRequest_getLectureScheduleCourses_condition {
   headerId: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPulsAPIResponse_getLectureScheduleCourses {}
 
 export interface IPulsApiRequest_getCourseData {
@@ -153,6 +156,7 @@ export interface IPulsApiRequest_getCourseData_condition {
   courseId: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPulsAPIResponse_getCourseData {}
 
 export interface IPulsApiRequest_getPersonalStudyAreas {
@@ -186,4 +190,5 @@ export interface IPulsApiRequest_getAcademicAchievements_condition {
   StgNr: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPulsAPIResponse_getAcademicAchievements {}

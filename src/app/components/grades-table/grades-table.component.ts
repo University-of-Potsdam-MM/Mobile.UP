@@ -17,8 +17,6 @@ export class GradesTableComponent implements OnInit {
   @Input() isDualDegree;
   @Input() i;
 
-  constructor() {}
-
   ngOnInit() {
     this.currentProfession = "0";
     if (this.studentGrades && this.studentGrades.academicAchievements) {

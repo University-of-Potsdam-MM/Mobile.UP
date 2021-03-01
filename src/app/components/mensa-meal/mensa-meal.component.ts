@@ -14,8 +14,6 @@ export class MensaMealComponent implements OnInit {
   allergenIsExpanded: boolean[][] = [];
   mealIsExpanded: boolean[] = [];
 
-  constructor() {}
-
   ngOnInit() {
     this.allergenIsExpanded = [];
     this.mealIsExpanded = [];

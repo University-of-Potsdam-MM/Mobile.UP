@@ -81,7 +81,6 @@ export class WebIntentService implements OnInit {
           {
             text: this.translate.instant("button.cancel"),
             role: "cancel",
-            handler: () => {},
           },
           {
             text: this.translate.instant("button.ok"),
@@ -141,7 +140,6 @@ export class WebIntentService implements OnInit {
                   {
                     text: this.translate.instant("button.cancel"),
                     role: "cancel",
-                    handler: () => {},
                   },
                   {
                     text: this.translate.instant("button.ok"),

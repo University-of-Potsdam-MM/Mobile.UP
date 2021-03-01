@@ -97,12 +97,9 @@ export class LoginPage extends AbstractPage {
 
             setTimeout(() => {
               this.app.updateLoginStatus();
-              this.modalCtrl.dismiss({ success: true }).then(
-                () => {},
-                () => {
-                  this.navCtrl.navigateRoot("/home");
-                }
-              );
+              this.modalCtrl.dismiss({ success: true }).then(undefined, () => {
+                this.navCtrl.navigateRoot("/home");
+              });
             }, 1000);
           },
           (error) => {
@@ -186,12 +183,9 @@ export class LoginPage extends AbstractPage {
   }
 
   public abort() {
-    this.modalCtrl.dismiss({ success: false }).then(
-      () => {},
-      () => {
-        this.logger.debug("abort", "no overlay, using navCtrl");
-        this.navCtrl.navigateRoot("/home");
-      }
-    );
+    this.modalCtrl.dismiss({ success: false }).then(undefined, () => {
+      this.logger.debug("abort", "no overlay, using navCtrl");
+      this.navCtrl.navigateRoot("/home");
+    });
   }
 }

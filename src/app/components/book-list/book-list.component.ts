@@ -16,8 +16,6 @@ export class BookListComponent implements OnInit {
     publisher: "",
   };
 
-  constructor() {}
-
   ngOnInit() {
     this.checkMediaType(
       convertToArray(this.book.typeOfResource)[0],
