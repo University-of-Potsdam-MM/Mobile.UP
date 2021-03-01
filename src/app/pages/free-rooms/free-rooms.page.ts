@@ -56,7 +56,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
       } else {
         const begin = i === 12 ? 12 : i % 12;
         const end = i + 2 === 12 ? 12 : (i + 2) % 12;
-        let label: string = String(begin);
+        let label = String(begin);
         if (i > 11) {
           label += " PM";
         } else {

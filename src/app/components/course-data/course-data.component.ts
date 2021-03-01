@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { utils } from "src/app/lib/util";
 import { IPulsAPIResponse_getCourseData } from "src/app/lib/interfaces_PULS";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { Logger, LoggingService } from "ionic-logging-service";
+import { convertToArray, isInArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-course-data",
@@ -16,11 +17,16 @@ export class CourseDataComponent implements OnInit {
   lecturerList = [];
   isLoaded;
   networkError;
+  logger: Logger;
 
-  constructor(private ws: WebserviceWrapperService) {}
+  constructor(
+    private ws: WebserviceWrapperService,
+    private loggingService: LoggingService
+  ) {}
 
   ngOnInit() {
     this.getCourseData(this.course.courseId);
+    this.logger = this.loggingService.getLogger("[/course-data.component]");
   }
 
   getCourseData(courseId) {
@@ -44,16 +50,16 @@ export class CourseDataComponent implements OnInit {
             this.courseData.courseData &&
             this.courseData.courseData.course
           ) {
-            const coursetmp = utils.convertToArray(
+            const coursetmp = convertToArray(
               this.courseData.courseData.course
             )[0];
 
             if (coursetmp && coursetmp.events && coursetmp.events.event) {
-              const tmp = utils.convertToArray(coursetmp.events.event);
+              const tmp = convertToArray(coursetmp.events.event);
               for (i = 0; i < tmp.length; i++) {
                 if (
                   tmp[i].groupId &&
-                  !utils.isInArray(this.courseGroups, tmp[i].groupId)
+                  !isInArray(this.courseGroups, tmp[i].groupId)
                 ) {
                   this.courseGroups.push(tmp[i].groupId);
                 }
@@ -65,6 +71,7 @@ export class CourseDataComponent implements OnInit {
         },
         (error) => {
           this.networkError = true;
+          this.logger.error("getCourseData()", error);
         }
       );
   }
@@ -75,7 +82,7 @@ export class CourseDataComponent implements OnInit {
    * @param array
    */
   convertToArray(array) {
-    return utils.convertToArray(array);
+    return convertToArray(array);
   }
 
   /**
@@ -92,7 +99,7 @@ export class CourseDataComponent implements OnInit {
         this.lecturerList[event.eventId].length > 0
       ) {
         if (
-          utils.isInArray(
+          isInArray(
             this.lecturerList[event.eventId],
             [lecturer.lecturerId][index]
           )

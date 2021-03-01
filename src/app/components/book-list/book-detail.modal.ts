@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ModalController, Platform } from "@ionic/angular";
+import { convertToArray, isInArray } from "src/app/lib/util";
 import { AlertService } from "../../services/alert/alert.service";
 import { WebIntentService } from "../../services/web-intent/web-intent.service";
-import { utils } from "../../lib/util";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
@@ -82,9 +82,7 @@ export class BookDetailModalPage implements OnInit {
 
   getTitle() {
     if (this.book && this.book.titleInfo) {
-      this.bookDetails.title = utils.convertToArray(
-        this.book.titleInfo
-      )[0].title;
+      this.bookDetails.title = convertToArray(this.book.titleInfo)[0].title;
       this.bookDetails.title = this.bookDetails.title.replace(
         new RegExp("-", "g"),
         " "
@@ -135,23 +133,21 @@ export class BookDetailModalPage implements OnInit {
    */
   getKeywords(): void {
     if (this.book.subject) {
-      const tmp = utils.convertToArray(this.book.subject);
+      const tmp = convertToArray(this.book.subject);
       let i;
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i] && tmp[i].topic) {
-          if (!utils.isInArray(this.bookDetails.keywords, tmp[i].topic)) {
+          if (!isInArray(this.bookDetails.keywords, tmp[i].topic)) {
             this.bookDetails.keywords.push(tmp[i].topic);
             this.bookDetails.noDetails = false;
           }
         } else if (tmp[i] && tmp[i].geographic) {
-          if (!utils.isInArray(this.bookDetails.keywords, tmp[i].geographic)) {
+          if (!isInArray(this.bookDetails.keywords, tmp[i].geographic)) {
             this.bookDetails.keywords.push(tmp[i].geographic);
             this.bookDetails.noDetails = false;
           }
         } else if (tmp[i] && tmp[i].$ && tmp[i].$.displayLabel) {
-          if (
-            !utils.isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)
-          ) {
+          if (!isInArray(this.bookDetails.keywords, tmp[i].$.displayLabel)) {
             this.bookDetails.keywords.push(tmp[i].$.displayLabel);
             this.bookDetails.noDetails = false;
           }
@@ -165,11 +161,11 @@ export class BookDetailModalPage implements OnInit {
    */
   getISBN(): void {
     if (this.book.identifier) {
-      const tmp = utils.convertToArray(this.book.identifier);
+      const tmp = convertToArray(this.book.identifier);
       let i;
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i] && tmp[i]._) {
-          if (!utils.isInArray(this.bookDetails.isbn, tmp[i]._)) {
+          if (!isInArray(this.bookDetails.isbn, tmp[i]._)) {
             let identString;
             if (tmp[i].$ && tmp[i].$.type) {
               identString = tmp[i]._ + " [" + tmp[i].$.type + "]";
@@ -191,13 +187,13 @@ export class BookDetailModalPage implements OnInit {
   getSeries(): void {
     let i;
     if (this.book.titleInfo) {
-      const tmp = utils.convertToArray(this.book.titleInfo);
+      const tmp = convertToArray(this.book.titleInfo);
 
       for (i = 0; i < tmp.length; i++) {
         if (
           tmp[i] &&
           tmp[i].partNumber &&
-          !utils.isInArray(this.bookDetails.series, tmp[i].partNumber)
+          !isInArray(this.bookDetails.series, tmp[i].partNumber)
         ) {
           this.bookDetails.series.push(tmp[i].partNumber);
           this.bookDetails.noDetails = false;
@@ -205,14 +201,14 @@ export class BookDetailModalPage implements OnInit {
       }
     }
     if (this.book.relatedItem) {
-      const tmp = utils.convertToArray(this.book.relatedItem);
+      const tmp = convertToArray(this.book.relatedItem);
 
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i] && tmp[i].$ && tmp[i].$.type === "series") {
           if (
             tmp[i].titleInfo &&
             tmp[i].titleInfo.title &&
-            !utils.isInArray(this.bookDetails.series, tmp[i].titleInfo.title)
+            !isInArray(this.bookDetails.series, tmp[i].titleInfo.title)
           ) {
             this.bookDetails.series.push(tmp[i].titleInfo.title);
             this.bookDetails.noDetails = false;
@@ -228,13 +224,13 @@ export class BookDetailModalPage implements OnInit {
   getExtent(): void {
     let i;
     if (this.book.physicalDescription) {
-      const tmp = utils.convertToArray(this.book.physicalDescription);
+      const tmp = convertToArray(this.book.physicalDescription);
 
       for (i = 0; i < tmp.length; i++) {
         if (
           tmp[i] &&
           tmp[i].extent &&
-          !utils.isInArray(this.bookDetails.extent, tmp[i].extent)
+          !isInArray(this.bookDetails.extent, tmp[i].extent)
         ) {
           this.bookDetails.extent.push(tmp[i].extent);
           this.bookDetails.noDetails = false;
@@ -249,19 +245,19 @@ export class BookDetailModalPage implements OnInit {
   getNotes(): void {
     let i;
     if (this.book.note) {
-      const tmp = utils.convertToArray(this.book.note);
+      const tmp = convertToArray(this.book.note);
 
       for (i = 0; i < tmp.length; i++) {
         if (
           tmp[i] &&
           tmp[i]._ &&
-          !utils.isInArray(this.bookDetails.notes, tmp[i]._)
+          !isInArray(this.bookDetails.notes, tmp[i]._)
         ) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (
           typeof tmp[i] === "string" &&
-          !utils.isInArray(this.bookDetails.notes, tmp[i])
+          !isInArray(this.bookDetails.notes, tmp[i])
         ) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
@@ -270,18 +266,18 @@ export class BookDetailModalPage implements OnInit {
     }
 
     if (this.book.relatedItem && this.book.relatedItem.note) {
-      const tmp = utils.convertToArray(this.book.relatedItem.note);
+      const tmp = convertToArray(this.book.relatedItem.note);
       for (i = 0; i < tmp.length; i++) {
         if (
           tmp[i] &&
           tmp[i]._ &&
-          !utils.isInArray(this.bookDetails.notes, tmp[i]._)
+          !isInArray(this.bookDetails.notes, tmp[i]._)
         ) {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (
           typeof tmp[i] === "string" &&
-          !utils.isInArray(this.bookDetails.notes, tmp[i])
+          !isInArray(this.bookDetails.notes, tmp[i])
         ) {
           this.bookDetails.notes.push(tmp[i]);
           this.bookDetails.noDetails = false;
@@ -296,7 +292,7 @@ export class BookDetailModalPage implements OnInit {
   getAbstractAndTOC(): void {
     let i, j;
     if (this.book.abstract) {
-      const tmp = utils.convertToArray(this.book.abstract);
+      const tmp = convertToArray(this.book.abstract);
 
       for (i = 0; i < tmp.length; i++) {
         let tocToSplit = tmp[i];

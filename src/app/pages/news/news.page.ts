@@ -55,9 +55,7 @@ export class NewsPage extends AbstractPage implements OnInit {
             this.newsList = response.vars.news;
             const tmpArray = [];
             for (const source in response.vars.newsSources) {
-              if (response.vars.newsSources.hasOwnProperty(source)) {
-                tmpArray.push(response.vars.newsSources[source]);
-              }
+              tmpArray.push(response.vars.newsSources[source]);
             }
             let i, j;
             this.sourcesList = [];

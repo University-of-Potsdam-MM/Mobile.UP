@@ -20,8 +20,8 @@ import { LoadingController, ModalController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
 import { AlertButton } from "@ionic/core";
 import { AlertService } from "src/app/services/alert/alert.service";
-import { utils } from "src/app/lib/util";
 import { LibraryPwChangePage } from "./library-pw-change.module";
+import { sessionIsValid } from "src/app/lib/util";
 
 @Component({
   selector: "app-library-account",
@@ -88,7 +88,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
         this.bibSession.timestamp &&
         this.bibSession.oidcTokenObject &&
         this.bibSession.oidcTokenObject.expires_in &&
-        utils.sessionIsValid(
+        sessionIsValid(
           this.bibSession.timestamp,
           this.bibSession.oidcTokenObject.expires_in,
           600

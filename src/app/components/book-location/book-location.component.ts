@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
-import { utils } from "../../lib/util";
 import { WebIntentService } from "../../services/web-intent/web-intent.service";
 import { TranslateService } from "@ngx-translate/core";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { convertToArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-book-location",
@@ -74,7 +74,7 @@ export class BookLocationComponent implements OnInit {
 
           this.isLoaded = true;
         },
-        (error) => {
+        () => {
           this.isLoaded = true;
         }
       );
@@ -139,7 +139,7 @@ export class BookLocationComponent implements OnInit {
     let loanAvailable, presentationAvailable;
     if (item.available) {
       // tslint:disable-next-line:no-var-keyword
-      const availableArray = utils.convertToArray(item.available);
+      const availableArray = convertToArray(item.available);
       if (availableArray) {
         loanAvailable = availableArray.find((x) => x.service === "loan");
         presentationAvailable = availableArray.find(
@@ -150,7 +150,7 @@ export class BookLocationComponent implements OnInit {
 
     let loanUnavailable, presentationUnavailable;
     if (item.unavailable) {
-      const unavailableArray = utils.convertToArray(item.unavailable);
+      const unavailableArray = convertToArray(item.unavailable);
       if (unavailableArray) {
         loanUnavailable = unavailableArray.find((x) => x.service === "loan");
         presentationUnavailable = unavailableArray.find(
@@ -234,10 +234,10 @@ export class BookLocationComponent implements OnInit {
     let url;
     if (this.bookLocation) {
       let i;
-      const tmp = utils.convertToArray(this.bookLocation);
+      const tmp = convertToArray(this.bookLocation);
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i].url) {
-          const tmpUrl = utils.convertToArray(tmp[i].url);
+          const tmpUrl = convertToArray(tmp[i].url);
           let j;
           for (j = 0; j < tmpUrl.length; j++) {
             if (tmpUrl[j].$ && tmpUrl[j].$.usage === "primary display") {

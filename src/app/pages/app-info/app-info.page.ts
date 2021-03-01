@@ -8,6 +8,7 @@ import { AbstractPage } from "src/app/lib/abstract-page";
 import { EmailComposer } from "@ionic-native/email-composer/ngx";
 import { File } from "@ionic-native/file/ngx";
 import { Storage } from "@ionic/storage";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - this works
 import * as packageJson from "../../../../package.json";
 
@@ -55,7 +56,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
       const deviceInfo = this.deviceService.getDeviceInfo();
       deviceInfo.appVersion = await this.storage.get("appVersion");
       const body = JSON.stringify(deviceInfo);
-      let subject = "Log Export (" + new Date().toLocaleString() + ")";
+      const subject = "Log Export (" + new Date().toLocaleString() + ")";
 
       this.file
         .writeFile(

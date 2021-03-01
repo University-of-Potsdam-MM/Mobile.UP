@@ -117,7 +117,7 @@ export class AppComponent {
         this.connectionService.checkOnline()
         // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
-        let oidcObject = ConfigService.isApiManagerUpdated
+        const oidcObject = ConfigService.isApiManagerUpdated
           ? ConfigService.config.authorization.oidc_new
           : ConfigService.config.authorization.oidc;
 
@@ -274,7 +274,7 @@ export class AppComponent {
       this.username = session.credentials.username;
 
       if (session.oidcTokenObject && session.oidcTokenObject.id_token) {
-        let decoded = jwt_decode(session.oidcTokenObject.id_token);
+        const decoded = jwt_decode(session.oidcTokenObject.id_token);
         if (decoded["name"]) {
           this.fullName = decoded["name"];
         }

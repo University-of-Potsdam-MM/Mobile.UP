@@ -103,7 +103,7 @@ export class FeedbackPage extends AbstractPage implements OnInit {
   }
 
   showToggleHint(toggleName) {
-    var hintString = "page.feedback.hint";
+    let hintString = "page.feedback.hint";
     if (toggleName == "SendUsername" && this.form.value.sendUsername) {
       hintString += toggleName;
     } else if (

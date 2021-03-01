@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { Logger, LoggingService } from "ionic-logging-service";
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
   IPulsAPIResponse_getLectureScheduleCourses,
 } from "src/app/lib/interfaces_PULS";
-import { utils } from "src/app/lib/util";
+import { convertToArray } from "src/app/lib/util";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 
 @Component({
@@ -24,10 +25,16 @@ export class LectureListComponent implements OnInit {
   networkError;
   isExpanded = [];
   isExpandedCourse = [];
+  logger: Logger;
 
-  constructor(private ws: WebserviceWrapperService) {}
+  constructor(
+    private ws: WebserviceWrapperService,
+    private loggingService: LoggingService
+  ) {}
 
   ngOnInit() {
+    this.logger = this.loggingService.getLogger("[/lecture-list.component]");
+
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
     }
@@ -51,6 +58,7 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
+            this.logger.error("ngOnInit() pulsGetLectureScheduleRoot", error);
           }
         );
     } else if (this.hasSubTree) {
@@ -67,6 +75,10 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
+            this.logger.error(
+              "ngOnInit() pulsGetLectureScheduleSubTree",
+              error
+            );
           }
         );
     } else {
@@ -83,6 +95,10 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
+            this.logger.error(
+              "ngOnInit() pulsGetLectureScheduleCourses",
+              error
+            );
           }
         );
     }
@@ -145,6 +161,6 @@ export class LectureListComponent implements OnInit {
    * @param array
    */
   convertToArray(array) {
-    return utils.convertToArray(array);
+    return convertToArray(array);
   }
 }

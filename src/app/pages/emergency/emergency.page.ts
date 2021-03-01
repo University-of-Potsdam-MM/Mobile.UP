@@ -11,10 +11,10 @@ import { CallNumber } from "@ionic-native/call-number/ngx";
 import { EmergencyCall } from "src/app/lib/interfaces";
 import { NavigatorService } from "src/app/services/navigator/navigator.service";
 import { AlertService } from "src/app/services/alert/alert.service";
-import { utils } from "src/app/lib/util";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/webservice-wrapper.service";
 import { ConfigService } from "src/app/services/config/config.service";
+import { contains } from "src/app/lib/util";
 
 @Component({
   selector: "app-emergency",
@@ -119,12 +119,9 @@ export class EmergencyPage extends AbstractPage implements OnInit {
       query = query.trim();
 
       if (query && query.length > 0) {
-        this.displayedList = jquery.grep(
-          this.defaultList,
-          (emergencyCall, index) => {
-            return utils.contains(emergencyCall.name, query);
-          }
-        );
+        this.displayedList = jquery.grep(this.defaultList, (emergencyCall) => {
+          return contains(emergencyCall.name, query);
+        });
         this.chRef.detectChanges();
       }
     }

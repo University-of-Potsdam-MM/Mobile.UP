@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-// @ts-ignore
 export const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
   {

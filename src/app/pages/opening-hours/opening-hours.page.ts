@@ -4,7 +4,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { ModalController } from "@ionic/angular";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { DetailedOpeningModalPage } from "./detailed-opening.modal";
-import { utils } from "src/app/lib/util";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 

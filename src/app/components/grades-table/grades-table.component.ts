@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { utils } from "src/app/lib/util";
+import { convertToArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-grades-table",
@@ -29,7 +29,7 @@ export class GradesTableComponent implements OnInit {
         this.studentGrades.academicAchievements.achievement &&
         this.studentGrades.academicAchievements.achievement.field
       ) {
-        this.gradeArray = utils.convertToArray(
+        this.gradeArray = convertToArray(
           this.studentGrades.academicAchievements.achievement.field
         );
       }
@@ -54,7 +54,7 @@ export class GradesTableComponent implements OnInit {
    * @param array
    */
   convertToArray(array) {
-    return utils.convertToArray(array);
+    return convertToArray(array);
   }
 
   unescapeHTML(s: string) {

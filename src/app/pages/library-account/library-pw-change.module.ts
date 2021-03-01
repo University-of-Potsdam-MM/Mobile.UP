@@ -95,7 +95,7 @@ export class LibraryPwChangePage implements OnInit {
     this.http
       .post(this.endpoint + "auth/change", body, { headers: headers })
       .subscribe(
-        (response) => {
+        () => {
           bibSession.credentials.password = this.changeForm.value.newPassword;
           this.storage.set("bibSession", bibSession).then(() => {
             this.modalCtrl.dismiss({ shouldRelogin: true });

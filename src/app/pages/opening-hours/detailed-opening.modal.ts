@@ -3,8 +3,8 @@ import { ModalController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import { WebIntentService } from "src/app/services/web-intent/web-intent.service";
 import { CallNumber } from "@ionic-native/call-number/ngx";
-import { utils } from "src/app/lib/util";
 import { Logger, LoggingService } from "ionic-logging-service";
+import { contains } from "src/app/lib/util";
 
 @Component({
   selector: "detailed-opening-modal-page",
@@ -121,11 +121,11 @@ export class DetailedOpeningModalPage implements OnInit {
       if (this.comment != null) {
         if (
           this.translate.currentLang === "en" &&
-          utils.contains(this.comment, "nach Vereinbarung")
+          contains(this.comment, "nach Vereinbarung")
         ) {
           this.comment = "nach Vereinbarung";
           return "by appointment only";
-        } else if (utils.contains(this.comment, "nach Vereinbarung")) {
+        } else if (contains(this.comment, "nach Vereinbarung")) {
           this.comment = "nach Vereinbarung";
           return this.comment;
         } else {
@@ -178,7 +178,7 @@ export class DetailedOpeningModalPage implements OnInit {
     this.intervals = this.item.parsedOpening.getOpenIntervals(from, to);
 
     this.itv = [];
-    for (let interval of this.intervals) {
+    for (const interval of this.intervals) {
       const dayLocaleString =
         this.weekday(interval[0].getDay()) +
         ", " +

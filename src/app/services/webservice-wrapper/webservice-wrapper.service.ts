@@ -14,8 +14,7 @@ import {
 } from "./webservice-definition-interfaces";
 import { IPulsAPIResponse_getLectureScheduleRoot } from "../../lib/interfaces_PULS";
 import { AlertService } from "../alert/alert.service";
-import { utils } from "../../lib/util";
-import isEmptyObject = utils.isEmptyObject;
+import { isEmptyObject } from "../../lib/util";
 import { switchMap } from "rxjs/operators";
 import { Logger, LoggingService } from "ionic-logging-service";
 import { ConnectionService } from "../connection/connection.service";
@@ -531,12 +530,12 @@ export class WebserviceWrapperService {
    * @param name {string} Name of the webservice to be returned
    */
   private getDefinition(name: string) {
-    if (!this.webservices.hasOwnProperty(name)) {
+    if (!this.webservices[name]) {
       this.logger.error("getDefinition", `no webservice named ${name} defined`);
     }
     const ws = this.webservices[name];
     for (const k in this.defaults) {
-      if (!ws.hasOwnProperty(k)) {
+      if (!ws[k]) {
         ws[k] = this.defaults[k];
       }
     }
@@ -557,17 +556,11 @@ export class WebserviceWrapperService {
     // first prepare the webservice definition by adding default values if possible
     const ws = this.getDefinition(webserviceName);
 
-    if (
-      !ConfigService.config.webservices.endpoint.hasOwnProperty(webserviceName)
-    ) {
+    if (!ConfigService.config.webservices.endpoint[webserviceName]) {
       this.logger.error("call", `no endpoint defined for '${webserviceName}'`);
     }
 
-    if (
-      !ConfigService.config.webservices.endpoint[webserviceName].hasOwnProperty(
-        "url"
-      )
-    ) {
+    if (!ConfigService.config.webservices.endpoint[webserviceName].url) {
       this.logger.error(
         "call",
         `no url defined for endpoint '${webserviceName}'`

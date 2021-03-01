@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ConnectionService } from "src/app/services/connection/connection.service";
 import { Storage } from "@ionic/storage";
 

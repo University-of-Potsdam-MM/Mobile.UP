@@ -3,7 +3,6 @@ import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/we
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { IEventApiResponse, INewsEventsObject } from "src/app/lib/interfaces";
 import { IonSlides } from "@ionic/angular";
-import * as moment from "moment";
 import { ConfigService } from "src/app/services/config/config.service";
 
 @Component({
@@ -66,11 +65,9 @@ export class EventsPage extends AbstractPage implements OnInit {
 
             this.listOfPlaces = [];
             if (response.vars && response.vars.places) {
-              let tmpArray = [];
+              const tmpArray = [];
               for (const place in response.vars.places) {
-                if (response.vars.places.hasOwnProperty(place)) {
-                  tmpArray.push(response.vars.places[place]);
-                }
+                tmpArray.push(response.vars.places[place]);
               }
 
               // only add places to the list, that actually have corresponding events

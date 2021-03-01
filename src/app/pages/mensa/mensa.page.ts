@@ -6,9 +6,9 @@ import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 import { IMensaRequestParams } from "../../services/webservice-wrapper/webservice-definition-interfaces";
 import { CampusTabComponent } from "../../components/campus-tab/campus-tab.component";
-import { utils } from "../../lib/util";
 import * as jquery from "jquery";
 import * as opening from "opening_hours";
+import { convertToArray, isInArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-mensa",
@@ -150,9 +150,7 @@ export class MensaPage extends AbstractPage {
     this.filterKeywords = [];
     for (let i = 0; i < this.displayedMeals.length; i++) {
       for (let j = 0; j < this.displayedMeals[i].type.length; j++) {
-        if (
-          !utils.isInArray(this.filterKeywords, this.displayedMeals[i].type[j])
-        ) {
+        if (!isInArray(this.filterKeywords, this.displayedMeals[i].type[j])) {
           this.filterKeywords.push(this.displayedMeals[i].type[j]);
         }
       }
@@ -204,7 +202,7 @@ export class MensaPage extends AbstractPage {
   }
 
   filterMenus(event) {
-    const filter = utils.convertToArray(event.detail.value);
+    const filter = convertToArray(event.detail.value);
 
     this.displayedMeals = this.allMeals;
     this.displayedUlfMeals = this.ulfMeals;
@@ -214,7 +212,7 @@ export class MensaPage extends AbstractPage {
         if (meal.type) {
           let fulfillsConditions = false;
           for (let i = 0; i < filter.length; i++) {
-            if (utils.isInArray(meal.type, filter[i])) {
+            if (isInArray(meal.type, filter[i])) {
               fulfillsConditions = true;
               break;
             }
@@ -230,7 +228,7 @@ export class MensaPage extends AbstractPage {
           if (meal.type) {
             let fulfillsConditions = false;
             for (let i = 0; i < filter.length; i++) {
-              if (utils.isInArray(meal.type, filter[i])) {
+              if (isInArray(meal.type, filter[i])) {
                 fulfillsConditions = true;
                 break;
               }
@@ -296,8 +294,8 @@ export class MensaPage extends AbstractPage {
       .subscribe((response: any) => {
         this.ws.call("nominatim").subscribe((nominatim) => {
           if (response) {
-            response = utils.convertToArray(response);
-            var mensaOpening = response.filter(function (item) {
+            response = convertToArray(response);
+            let mensaOpening = response.filter(function (item) {
               if (item && item.name) {
                 return item.name
                   .toLowerCase()
@@ -320,7 +318,7 @@ export class MensaPage extends AbstractPage {
             if (this.campus.canteen_name === "Griebnitzsee") {
               const searchTermFoodhopper = "foodhopper stahnsdorfer straße";
 
-              var foodhopperOpening = response.filter(function (item) {
+              let foodhopperOpening = response.filter(function (item) {
                 if (item && item.name) {
                   return item.name
                     .toLowerCase()

@@ -1,7 +1,7 @@
 import { Frequency, RRule, Weekday } from "rrule";
 import * as moment from "moment";
 import { ICourse, IEvent } from "src/app/lib/interfaces_PULS";
-import { utils } from "src/app/lib/util";
+import { convertToArray } from "src/app/lib/util";
 
 export interface IEventRules {
   begin: RRule;
@@ -88,7 +88,7 @@ function pulsToUTC(date, time, second = "00") {
  * @param tzid Id of timezone to be used
  * @returns eventrules
  */
-function createEventRules(event: IEvent, tzid): IEventRules {
+function createEventRules(event: IEvent): IEventRules {
   if (!rhythmMapping[event.rhythm]) {
     throw new Error(
       `[createRule]: Event ${event.eventId}: Unknown rhythm: ${event.rhythm}`
@@ -140,10 +140,7 @@ function createEventRules(event: IEvent, tzid): IEventRules {
  * @param tzid Id of timezone to be used
  * @returns IEventSource
  */
-export function createEventSource(
-  studentCourses: ICourse[],
-  tzid: string = "Europe/Berlin"
-): IEventSource {
+export function createEventSource(studentCourses: ICourse[]): IEventSource {
   // the eventSource we will be returning, actually the main result of this function
   const eventSource: IEventSource = new Array<IEventObject>();
 
@@ -151,7 +148,7 @@ export function createEventSource(
     if (c && c.events && c.events.event) {
       // this step is necessary because c.events.event can be a single object
       // or an array of objects
-      const events = utils.convertToArray(c.events.event);
+      const events = convertToArray(c.events.event);
 
       // iterate events of this course because there can be more than one
       for (const e of events) {
@@ -159,7 +156,7 @@ export function createEventSource(
           // try to create an EventRule object from the event, if not possible
           // createEventRules will throw an exception. Then the event is pushed
           // to list of invalid events
-          const eventRules: IEventRules = createEventRules(e, tzid);
+          const eventRules: IEventRules = createEventRules(e);
 
           // get all matching events
           const begin = eventRules.begin.all();

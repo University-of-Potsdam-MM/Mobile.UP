@@ -27,7 +27,7 @@ export class ConnectionService {
    * about the connection state or/and send the user to HomePage
    * @return boolean
    */
-  checkOnline(showAlert: boolean = false, sendHome: boolean = false): boolean {
+  checkOnline(showAlert = false, sendHome = false): boolean {
     let isOnline;
     if (this.platform.is("cordova")) {
       if (this.network.type === this.network.Connection.NONE) {

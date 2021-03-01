@@ -254,7 +254,7 @@ export class RoomplanPage extends AbstractPage {
 
                   this.addRoomToHouse(split[1], room);
 
-                  let persons: Array<String> = [];
+                  let persons: Array<string> = [];
                   const personArray = reservation.personList.person;
                   for (let h = 0; h < personArray.length; h = h + 2) {
                     if (personArray[h] === "N.N") {

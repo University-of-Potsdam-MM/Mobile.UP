@@ -146,10 +146,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
       filterData: (text, records) => {
         // Filters records based on search input
         this.scrollListenerAdded = false;
-        let I,
-          icase,
-          regSearch,
-          frecords = [];
+        let frecords = [];
         // text = text.replace(/[.*+?^${}()|[\]\\]/g, '');  // Sanitize remove all special characters
 
         if (text === "") {
@@ -194,10 +191,12 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
           "\\?(?=(.|\\n)*" +
           testtext.trim().split(" ").join(")(?=(.|\\n)*") +
           ")";
-        I = this.searchControl.options.initial ? "^" : ""; // search only initial text
-        icase = !this.searchControl.options.casesensitive ? "i" : undefined;
+        const I = this.searchControl.options.initial ? "^" : ""; // search only initial text
+        const icase = !this.searchControl.options.casesensitive
+          ? "i"
+          : undefined;
 
-        regSearch = new RegExp(I + test, icase);
+        const regSearch = new RegExp(I + test, icase);
 
         // TODO use .filter or .map (from _defaultFilterData in /node_modules/leaflet-search/scr/leaflet-search.js))
         for (const key in records) {
@@ -520,7 +519,9 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   /**
    * move map to given feature, if it exists
    */
-  moveToFeature(feature) {}
+  moveToFeature(feature) {
+    console.log(feature);
+  }
 
   /**
    * flys to given coordinates

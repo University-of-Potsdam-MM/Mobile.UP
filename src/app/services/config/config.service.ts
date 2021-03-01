@@ -57,7 +57,7 @@ export class ConfigService {
   }
 
   loadApiManagerStatus() {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       this.http
         .get("https://apiup.uni-potsdam.de/endpoints/services/Version", {
           responseType: "text",

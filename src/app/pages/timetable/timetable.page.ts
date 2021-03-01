@@ -11,7 +11,7 @@ import { AlertService } from "src/app/services/alert/alert.service";
 import * as dLoop from "delayed-loop";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { utils } from "src/app/lib/util";
+import { convertToArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-timetable",
@@ -322,7 +322,7 @@ export class TimetablePage extends AbstractPage {
           handler: async () => {
             let existingCalendars = await this.calendar.listCalendars();
             if (existingCalendars) {
-              existingCalendars = utils.convertToArray(existingCalendars);
+              existingCalendars = convertToArray(existingCalendars);
               if (Array.isArray(existingCalendars)) {
                 // ask if the user wants to add the events to an existing calender
                 const addToExistingAlert = await this.alertCtrl.create({

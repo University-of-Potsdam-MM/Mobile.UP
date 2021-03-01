@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
-import { utils } from "../../lib/util";
+import { convertToArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-book-list",
@@ -20,9 +20,9 @@ export class BookListComponent implements OnInit {
 
   ngOnInit() {
     this.checkMediaType(
-      utils.convertToArray(this.book.typeOfResource)[0],
-      utils.convertToArray(this.book.originInfo)[0],
-      utils.convertToArray(this.book.physicalDescription)[0]
+      convertToArray(this.book.typeOfResource)[0],
+      convertToArray(this.book.originInfo)[0],
+      convertToArray(this.book.physicalDescription)[0]
     );
     this.getPublisher();
   }
@@ -32,7 +32,7 @@ export class BookListComponent implements OnInit {
    */
   getPublisher() {
     if (this.book.relatedItem) {
-      const tmp = utils.convertToArray(this.book.relatedItem);
+      const tmp = convertToArray(this.book.relatedItem);
       let i;
       for (i = 0; i < tmp.length; i++) {
         if (tmp[i].originInfo && tmp[i].originInfo.publisher) {
@@ -52,9 +52,7 @@ export class BookListComponent implements OnInit {
    * @param physicalDescription
    */
   checkMediaType(typeOfResource, originInfo, physicalDescription) {
-    const physicalDescriptionArr = utils.convertToArray(
-      physicalDescription.form
-    );
+    const physicalDescriptionArr = convertToArray(physicalDescription.form);
     if (physicalDescription) {
       physicalDescription = physicalDescriptionArr.filter(
         (x) => x._ === "remote" || x._ === "microform"
@@ -167,6 +165,6 @@ export class BookListComponent implements OnInit {
    * @param array
    */
   convertToArray(array) {
-    return utils.convertToArray(array);
+    return convertToArray(array);
   }
 }

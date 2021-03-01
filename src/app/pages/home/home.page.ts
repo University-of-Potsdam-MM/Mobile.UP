@@ -58,28 +58,24 @@ export class HomePage extends AbstractPage implements OnInit {
       // check if pages still exist and if new pages are in config
       const moduleList: { [modulesName: string]: IModule } = {};
       for (const moduleName in configModules) {
-        if (configModules.hasOwnProperty(moduleName)) {
-          let found = false;
-          for (const userModuleName in userModules) {
-            if (userModules.hasOwnProperty(userModuleName)) {
-              if (moduleName === userModuleName) {
-                found = true;
-                // this preserves favorites that the user eventually modified
-                moduleList[userModuleName] = userModules[userModuleName];
-                break;
-              }
-            }
+        let found = false;
+        for (const userModuleName in userModules) {
+          if (moduleName === userModuleName) {
+            found = true;
+            // this preserves favorites that the user eventually modified
+            moduleList[userModuleName] = userModules[userModuleName];
+            break;
           }
-
-          if (!found) {
-            // the module is either new or has been renamed
-            // add it from config
-            moduleList[moduleName] = configModules[moduleName];
-          }
-
-          this.modules = moduleList;
-          this.sortedModules = this.jsonToArray(moduleList);
         }
+
+        if (!found) {
+          // the module is either new or has been renamed
+          // add it from config
+          moduleList[moduleName] = configModules[moduleName];
+        }
+
+        this.modules = moduleList;
+        this.sortedModules = this.jsonToArray(moduleList);
       }
     }
   }
@@ -162,12 +158,10 @@ export class HomePage extends AbstractPage implements OnInit {
   jsonToArray(modules) {
     const array = [];
     for (const key in modules) {
-      if (modules.hasOwnProperty(key)) {
-        this.translate.get(modules[key].i18nKey).subscribe((value) => {
-          modules[key].translation = value;
-          array.push(modules[key]);
-        });
-      }
+      this.translate.get(modules[key].i18nKey).subscribe((value) => {
+        modules[key].translation = value;
+        array.push(modules[key]);
+      });
     }
     // this.orderPipe.transform(this.sortedModules, 'translation');
     return array;
@@ -210,13 +204,11 @@ export class HomePage extends AbstractPage implements OnInit {
     const modules = ConfigService.config.modules;
 
     for (const moduleName in modules) {
-      if (modules.hasOwnProperty(moduleName)) {
-        const moduleToAdd: IModule = modules[moduleName];
-        moduleToAdd.x = moduleToAdd.y = moduleToAdd.rows = moduleToAdd.cols = undefined;
-        if (!moduleToAdd.hide) {
-          moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
-          moduleList[moduleName] = moduleToAdd;
-        }
+      const moduleToAdd: IModule = modules[moduleName];
+      moduleToAdd.x = moduleToAdd.y = moduleToAdd.rows = moduleToAdd.cols = undefined;
+      if (!moduleToAdd.hide) {
+        moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
+        moduleList[moduleName] = moduleToAdd;
       }
     }
 

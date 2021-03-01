@@ -8,7 +8,6 @@ import {
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { IConfig } from "src/app/lib/interfaces";
 import { BookDetailModalPage } from "src/app/components/book-list/book-detail.modal";
-import { utils } from "src/app/lib/util";
 import { TranslateService } from "@ngx-translate/core";
 import { Storage } from "@ionic/storage";
 import * as jquery from "jquery";
@@ -16,6 +15,7 @@ import { AlertService } from "src/app/services/alert/alert.service";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
 import { ILibraryRequestParams } from "../../services/webservice-wrapper/webservice-definition-interfaces";
+import { contains, convertToArray, isInArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-library-search",
@@ -113,7 +113,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                   }
 
                   if (this.numberOfRecords === "1") {
-                    tmpList = utils.convertToArray(tmpList);
+                    tmpList = convertToArray(tmpList);
                   }
 
                   if (Array.isArray(tmpList)) {
@@ -151,7 +151,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       this.displayedFavorites = this.allFavorites;
       this.displayedFavorites = jquery.grep(this.displayedFavorites, (book) => {
         if (book && book.titleInfo) {
-          const titleInfo = utils.convertToArray(book.titleInfo)[0];
+          const titleInfo = convertToArray(book.titleInfo)[0];
 
           let wholeTitle = "";
           if (titleInfo.title) {
@@ -166,7 +166,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
             wholeTitle = wholeTitle + " " + titleInfo.nonSort;
           }
 
-          return utils.contains(wholeTitle, query);
+          return contains(wholeTitle, query);
         } else {
           return false;
         }
@@ -211,7 +211,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   }
 
   async bookDetailView(book) {
-    const isFavorite = utils.isInArray(this.allFavorites, book);
+    const isFavorite = isInArray(this.allFavorites, book);
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: BookDetailModalPage,
@@ -239,11 +239,11 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
    * @param {ItemSliding} slidingItem
    */
   makeFavorite(book, slidingItem: IonItemSliding, disableHints?: boolean) {
-    if (!utils.isInArray(this.displayedFavorites, book)) {
+    if (!isInArray(this.displayedFavorites, book)) {
       this.displayedFavorites.push(book);
       this.displayedFavorites = this.sortFavorites(this.displayedFavorites);
 
-      if (!utils.isInArray(this.allFavorites, book)) {
+      if (!isInArray(this.allFavorites, book)) {
         this.allFavorites.push(book);
         this.allFavorites = this.sortFavorites(this.allFavorites);
       }
@@ -329,7 +329,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
     if (tmp && tmp.length > 0) {
       for (let i = 0; i < tmp.length; i++) {
-        const ident = utils.convertToArray(tmp[i].identifier);
+        const ident = convertToArray(tmp[i].identifier);
         let query = "";
 
         for (let p = 0; p < ident.length; p++) {
@@ -342,7 +342,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         if (query === "") {
           if (tmp[i] && tmp[i].titleInfo) {
             let wholeTitle = "";
-            const titleInfo = utils.convertToArray(tmp[i].titleInfo)[0];
+            const titleInfo = convertToArray(tmp[i].titleInfo)[0];
 
             if (titleInfo.nonSort) {
               wholeTitle = titleInfo.nonSort;
@@ -394,7 +394,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                       numberOfRecords = tmpRes["zs:numberOfRecords"];
                     }
 
-                    tmpList = utils.convertToArray(tmpList);
+                    tmpList = convertToArray(tmpList);
                     if (numberOfRecords === "1") {
                       for (let j = 0; j < tmpList.length; j++) {
                         this.allFavorites.push(
@@ -430,10 +430,10 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                           ) {
                             if (
                               JSON.stringify(
-                                utils.convertToArray(tmp[i].titleInfo)[0]
+                                convertToArray(tmp[i].titleInfo)[0]
                               ) ===
                               JSON.stringify(
-                                utils.convertToArray(
+                                convertToArray(
                                   tmpList[n]["zs:recordData"]["mods"].titleInfo
                                 )[0]
                               )
@@ -484,12 +484,12 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   }
 
   sortFavorites(favoritesArray) {
-    favoritesArray = utils.convertToArray(favoritesArray);
+    favoritesArray = convertToArray(favoritesArray);
     return favoritesArray.sort((fav1, fav2) => {
       let wholeTitle = "";
       let wholeTitle2 = "";
       if (fav1 && fav1.titleInfo) {
-        const titleInfo = utils.convertToArray(fav1.titleInfo)[0];
+        const titleInfo = convertToArray(fav1.titleInfo)[0];
 
         if (titleInfo.title) {
           wholeTitle = titleInfo.title;
@@ -501,7 +501,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       }
 
       if (fav2 && fav2.titleInfo) {
-        const titleInfo = utils.convertToArray(fav2.titleInfo)[0];
+        const titleInfo = convertToArray(fav2.titleInfo)[0];
 
         if (titleInfo.title) {
           wholeTitle2 = titleInfo.title;

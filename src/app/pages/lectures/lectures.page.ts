@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { IPulsAPIResponse_getLectureScheduleAll } from "src/app/lib/interfaces_PULS";
-import { utils } from "src/app/lib/util";
 import { LectureSearchModalPage } from "./lecture-search.modal";
 import { ModalController } from "@ionic/angular";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { contains, convertToArray, isInArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-lectures",
@@ -55,7 +55,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     }, 500);
   }
 
-  loadLectureTree(forceRefresh: boolean = false) {
+  loadLectureTree(forceRefresh = false) {
     this.isLoaded = false;
     this.networkError = false;
 
@@ -78,7 +78,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   flattenJSON(cur, prop, result) {
     if (Object(cur) !== cur) {
-      if (utils.contains(prop, "name")) {
+      if (contains(prop, "name")) {
         result[prop] = cur;
       }
     } else if (Array.isArray(cur)) {
@@ -134,25 +134,13 @@ export class LecturesPage extends AbstractPage implements OnInit {
   getValues(filterKey?: string) {
     const objects = [];
     for (const i in this.flattenedLectures) {
-      if (this.flattenedLectures.hasOwnProperty(i)) {
-        if (utils.contains(this.flattenedLectures[i], this.query)) {
-          if (utils.contains(i, "courseName")) {
-            // check if course has already been added
-            // since course often are listed multiple times
-            if (!utils.isInArray(objects, this.flattenedLectures[i])) {
-              if (filterKey) {
-                if (utils.contains(i, filterKey)) {
-                  objects.push(this.flattenedLectures[i]);
-                  this.resultKeys.push(i);
-                }
-              } else {
-                objects.push(this.flattenedLectures[i]);
-                this.resultKeys.push(i);
-              }
-            }
-          } else {
+      if (contains(this.flattenedLectures[i], this.query)) {
+        if (contains(i, "courseName")) {
+          // check if course has already been added
+          // since course often are listed multiple times
+          if (!isInArray(objects, this.flattenedLectures[i])) {
             if (filterKey) {
-              if (utils.contains(i, filterKey)) {
+              if (contains(i, filterKey)) {
                 objects.push(this.flattenedLectures[i]);
                 this.resultKeys.push(i);
               }
@@ -160,6 +148,16 @@ export class LecturesPage extends AbstractPage implements OnInit {
               objects.push(this.flattenedLectures[i]);
               this.resultKeys.push(i);
             }
+          }
+        } else {
+          if (filterKey) {
+            if (contains(i, filterKey)) {
+              objects.push(this.flattenedLectures[i]);
+              this.resultKeys.push(i);
+            }
+          } else {
+            objects.push(this.flattenedLectures[i]);
+            this.resultKeys.push(i);
           }
         }
       }
@@ -178,9 +176,9 @@ export class LecturesPage extends AbstractPage implements OnInit {
     if (ref) {
       ref = ref.replace("courseName", "courseId");
     }
-    const isCourse = utils.contains(ref, "courseId");
+    const isCourse = contains(ref, "courseId");
 
-    const pathKeys = utils.convertToArray(ref.split("."));
+    const pathKeys = convertToArray(ref.split("."));
 
     let toOpen = this.allLectures;
     const itemTree = [];
@@ -208,7 +206,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
         if (
           treeItemName &&
           treeItemName !== "Vorlesungsverzeichnis" &&
-          !utils.isInArray(itemTree, treeItemName)
+          !isInArray(itemTree, treeItemName)
         ) {
           itemTree.push(this.unescapeHTML(treeItemName));
         }
@@ -232,7 +230,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   selectFilter(event) {
-    this.valueArray = utils.convertToArray(event.detail.value);
+    this.valueArray = convertToArray(event.detail.value);
 
     this.searchResults = [];
     this.resultKeys = [];
@@ -246,7 +244,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   contains(x, y) {
-    return utils.contains(x, y);
+    return contains(x, y);
   }
 
   // hides keyboard once the user is scrolling

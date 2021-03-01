@@ -12,10 +12,10 @@ import { TranslateService } from "@ngx-translate/core";
 import { DetailedPracticeModalPage } from "./detailed-practice.modal";
 import { ADS, IADSResponse } from "src/app/lib/interfaces";
 import { SettingsService } from "src/app/services/settings/settings.service";
-import { utils } from "src/app/lib/util";
 import { AlertService } from "src/app/services/alert/alert.service";
 import { AbstractPage } from "src/app/lib/abstract-page";
 import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { contains, isInArray } from "src/app/lib/util";
 
 @Component({
   selector: "app-practice",
@@ -116,13 +116,13 @@ export class PracticePage extends AbstractPage {
           for (const ads of response) {
             ads.date = ads.date * 1000;
             ads.expanded = false;
-            if (!utils.isInArray(uidArray, ads.uid)) {
+            if (!isInArray(uidArray, ads.uid)) {
               uidArray.push(ads.uid);
               this.defaultList.push(ads);
             }
           }
           this.initializeList();
-          this.useFilterSettings().then((res) => {
+          this.useFilterSettings().then(() => {
             this.isLoaded = true;
           });
           this.checkFavorites();
@@ -262,13 +262,10 @@ export class PracticePage extends AbstractPage {
   public async filterItems(query: string) {
     this.isLoaded = false;
     this.initializeList();
-    this.useFilterSettings().then((resolve) => {
+    this.useFilterSettings().then(() => {
       if (query) {
         this.filteredList = jquery.grep(this.filteredList, (ADS1) => {
-          return (
-            utils.contains(ADS1.title, query) ||
-            utils.contains(ADS1.firm, query)
-          );
+          return contains(ADS1.title, query) || contains(ADS1.firm, query);
         });
 
         let i;
@@ -284,10 +281,7 @@ export class PracticePage extends AbstractPage {
         this.displayedFavorites = jquery.grep(
           this.displayedFavorites,
           (ADS2) => {
-            return (
-              utils.contains(ADS2.title, query) ||
-              utils.contains(ADS2.firm, query)
-            );
+            return contains(ADS2.title, query) || contains(ADS2.firm, query);
           }
         );
       }
@@ -309,7 +303,7 @@ export class PracticePage extends AbstractPage {
    * @param {ADS} ads     ads-item to be passed to detail page
    */
   async itemSelected(ads: ADS) {
-    const isFavorite = utils.isInArray(this.allFavorites, ads);
+    const isFavorite = isInArray(this.allFavorites, ads);
     const modal = await this.modalCtrl.create({
       backdropDismiss: false,
       component: DetailedPracticeModalPage,
@@ -337,10 +331,10 @@ export class PracticePage extends AbstractPage {
    * @param {ItemSliding} slidingItem
    */
   makeFavorite(ads: ADS, slidingItem: IonItemSliding, disableHints?: boolean) {
-    if (!utils.isInArray(this.displayedFavorites, ads)) {
+    if (!isInArray(this.displayedFavorites, ads)) {
       this.displayedFavorites.push(ads);
 
-      if (!utils.isInArray(this.allFavorites, ads)) {
+      if (!isInArray(this.allFavorites, ads)) {
         this.allFavorites.push(ads);
       }
       if (!disableHints) {
@@ -404,7 +398,7 @@ export class PracticePage extends AbstractPage {
       for (i = 0; i < tmp.length; i++) {
         for (j = 0; j < this.defaultList.length; j++) {
           if (tmp[i].uid === this.defaultList[j].uid) {
-            if (!utils.isInArray(this.allFavorites, tmp[i])) {
+            if (!isInArray(this.allFavorites, tmp[i])) {
               this.allFavorites.push(tmp[i]);
             }
             break;

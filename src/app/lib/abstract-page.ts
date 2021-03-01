@@ -5,12 +5,9 @@ import { Injector, Type } from "@angular/core";
 import { StaticInjectorService } from "./static-injector";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MenuController, NavController, Platform } from "@ionic/angular";
-import { IConfig, IModule } from "./interfaces";
-import { ConfigService } from "../services/config/config.service";
 import { Logger, LoggingService } from "ionic-logging-service";
 import { WebIntentService } from "../services/web-intent/web-intent.service";
-import { utils } from "./util";
-import isEmptyObject = utils.isEmptyObject;
+import { isEmptyObject } from "./util";
 
 export interface IPageOptions {
   requireSession?: boolean;
@@ -100,9 +97,7 @@ export abstract class AbstractPage {
     this.activatedRoute.queryParams.subscribe((params) => {
       const parsedParams = {};
       for (const k in params) {
-        if (params.hasOwnProperty(k)) {
-          parsedParams[k] = JSON.parse(params[k]);
-        }
+        parsedParams[k] = JSON.parse(params[k]);
       }
       if (!isEmptyObject(parsedParams)) {
         this.setMenuStatus(parsedParams["menu"]);
@@ -134,7 +129,7 @@ export abstract class AbstractPage {
    * enables or disables the pages menu section
    * @param shouldEnable
    */
-  private setMenuStatus(shouldEnable: boolean = true) {
+  private setMenuStatus(shouldEnable = true) {
     this.menu.enable(shouldEnable);
   }
 

@@ -65,7 +65,7 @@ export class LoginPage extends AbstractPage {
 
       this.showLoading();
 
-      let oidcObject = ConfigService.isApiManagerUpdated
+      const oidcObject = ConfigService.isApiManagerUpdated
         ? ConfigService.config.authorization.oidc_new
         : ConfigService.config.authorization.oidc;
 

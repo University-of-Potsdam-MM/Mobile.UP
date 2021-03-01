@@ -83,20 +83,20 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     if (query) {
       query = query
         .replace(/\+/g, "")
-        .replace(/\,/g, "")
+        .replace(/,/g, "")
         .replace(/\//g, "")
-        .replace(/\:/g, "")
-        .replace(/\;/g, "")
-        .replace(/\@/g, "")
-        .replace(/\=/g, "")
+        .replace(/:/g, "")
+        .replace(/;/g, "")
+        .replace(/@/g, "")
+        .replace(/=/g, "")
         .replace(/\$/g, "")
-        .replace(/\&/g, "");
+        .replace(/&/g, "");
     }
 
     if (query && query.trim() !== "" && query.trim().length > 1) {
       this.response_received = false;
 
-      this.logger.debug("search", `searching for \"${query}\"`);
+      this.logger.debug("search", `searching for "${query}"`);
 
       if (!this.session) {
         this.session = await this.sessionProvider.getSession();
@@ -312,7 +312,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
       this.session.credentials.username
     ) {
       this.logger.debug("refreshToken", "re-authenticating...");
-      let oidcObject = ConfigService.isApiManagerUpdated
+      const oidcObject = ConfigService.isApiManagerUpdated
         ? ConfigService.config.authorization.oidc_new
         : ConfigService.config.authorization.oidc;
       this.login.oidcLogin(this.session.credentials, oidcObject).subscribe(

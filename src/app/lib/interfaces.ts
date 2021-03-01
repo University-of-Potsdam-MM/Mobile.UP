@@ -149,7 +149,7 @@ export interface ADS {
   expanded: boolean;
 }
 
-export interface IADSResponse extends Array<ADS> {}
+export type IADSResponse = Array<ADS>;
 
 /* ~~~ config ~~~ */
 
@@ -457,7 +457,7 @@ export interface IReservationRequestResponseRoomList {
 }
 
 export interface IReservationRequestResponsePersonList {
-  person: Array<String>;
+  person: Array<string>;
 }
 
 /** Local objects for app data structure */
@@ -481,7 +481,7 @@ export interface IRoom {
 
 export interface IRoomEvent {
   lbl: string;
-  persons: Array<String>;
+  persons: Array<string>;
   startTime: Date;
   endTime: Date;
 }
