@@ -11,7 +11,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s",
-    "doc": "npx compodoc -p tsconfig.json -n 'Mobile.UP'"
+    "doc": "npx compodoc -p tsconfig.json -n 'Mobile.UP'",
+    "prepare": "husky install"
   },
   "config": {
     "ionic_copy": "./scripts/copy-custom-libs.js"
@@ -125,7 +126,7 @@
     "braces": "^3.0.2",
     "codelyzer": "^6.0.1",
     "cordova-plugin-androidx-adapter": "^1.1.3",
-    "husky": "^5.1.1",
+    "husky": "^5.1.2",
     "jasmine-core": "^3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~6.1.1",
