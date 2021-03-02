@@ -38,7 +38,7 @@ git clone https://github.com/University-of-Potsdam-MM/Mobile.UP.git
 ##
 ## Falls nicht vorhanden Ionic und Cordova installieren
 ##
-npm install -g cordova ionic
+npm install -g cordova @ionic/cli
 
 ##
 ## Submodule installieren und aktualisieren
