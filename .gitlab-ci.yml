@@ -56,9 +56,9 @@ install_dependencies:
   stage: build
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
-    ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip
-    ANDROID_API: "android-26"
-    ANDROID_BUILD_TOOLS: "26.0.3"
+    ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
+    ANDROID_API: "android-29"
+    ANDROID_BUILD_TOOLS: "29.0.3"
     ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
     ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
   before_script:
