@@ -6,7 +6,7 @@
 #  * SSH_KNOWN_HOSTS (hosts keys of the servers to which the artifacts should be deployed; `ssh-keyscan hostname`)
 # except SSH_DEPLOY_HOSTS and SSH_DEPLOY_KEY all variables can be set in the Group
 
-image: node:12
+image: node:15
 
 stages:
   - prepare
@@ -27,7 +27,7 @@ install_dependencies:
   stage: prepare
   script:
     - npm ci --cache .npm --prefer-offline
-    - npm install
+    - npm install --legacy-peer-deps
   artifacts:
     paths:
       - node_modules/
@@ -76,7 +76,6 @@ install_dependencies:
         popd;
       fi
     - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
-    - npm remove -g ionic
     - npm install -g cordova @ionic/cli
     - npm install -g cordova-res --unsafe-perm
     - npm install -D -E @angular/cli
@@ -125,12 +124,8 @@ android-production:
 .browser:
   stage: build
   script:
-    - npm remove -g ionic
     - npm install -g cordova @ionic/cli
     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
-    # fix URLs on mobileup.uni-potsdam.de, cf. https://medium.com/@dao.houssene/angular-the-hash-trap-b2d415c2c241
-    - "perl -pi -e 's|imports: \\[RouterModule.forRoot\\(routes\\)\\],|imports: [RouterModule.forRoot(routes, { useHash: true })],|' src/app/app-routing.module.ts"
-    - perl -pi -e 's|OpenStreetMap-Mitwirkende|<a href="//www.openstreetmap.org/copyright" target="_blank">OpenStreetMap-Mitwirkende</a>|g' src/app/pages/campus-map/campus-map.page.ts
     - ionic cordova platform add browser --no-interactive --confirm
     - ionic cordova prepare browser --no-interactive --confirm
     - ionic cordova build browser --prod --release
