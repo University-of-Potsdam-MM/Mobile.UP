@@ -70,12 +70,12 @@ install_dependencies:
         pushd android-sdk-linux;
           wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip -d tools && rm -f tools.zip;
           set +o pipefail;
-          yes | tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
+          yes | tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
           set -o pipefail;
-          tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS";
+          tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS";
         popd;
       fi
-    - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+    - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
     - npm remove -g ionic
     - npm install -g cordova @ionic/cli
     - npm install -g cordova-res --unsafe-perm
