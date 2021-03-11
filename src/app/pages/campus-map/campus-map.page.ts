@@ -49,6 +49,7 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
   positionCircle: L.Circle;
   positionMarker: L.Marker;
   latestHeading: number;
+  modalOpen = false;
 
   geoLocationWatch;
   geoLocationEnabled = false;
@@ -582,18 +583,24 @@ export class CampusMapPage extends AbstractPage implements AfterViewInit {
 
         // add click listener that will open a Modal displaying some information
         geoJson.on("click", async () => {
-          if (props.campus !== this.currentCampus) {
-            this.currentCampus = props.campus;
-          }
+          if (!this.modalOpen) {
+            this.modalOpen = true;
 
-          const modal = await this.modalCtrl.create({
-            // backdropDismiss: false,
-            component: CampusMapFeatureModalComponent,
-            componentProps: { feature: feature },
-            cssClass: "campus-map-modal",
-            showBackdrop: true,
-          });
-          modal.present();
+            if (props.campus !== this.currentCampus) {
+              this.currentCampus = props.campus;
+            }
+
+            const modal = await this.modalCtrl.create({
+              // backdropDismiss: false,
+              component: CampusMapFeatureModalComponent,
+              componentProps: { feature: feature },
+              cssClass: "campus-map-modal",
+              showBackdrop: true,
+            });
+            modal.present();
+            await modal.onWillDismiss();
+            this.modalOpen = false;
+          }
         });
 
         // add this feature to the corresponding overlay catgory
