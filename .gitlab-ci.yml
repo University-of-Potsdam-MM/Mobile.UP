@@ -68,7 +68,7 @@ install_dependencies:
         rm -rf android-sdk-linux/;
         mkdir android-sdk-linux;
         pushd android-sdk-linux;
-          wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip && rm -f tools.zip;
+          wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip -d tools && rm -f tools.zip;
           set +o pipefail;
           yes | tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
           set -o pipefail;
