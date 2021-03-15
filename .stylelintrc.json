@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-sass-guidelines",
+    "stylelint-config-prettier"
+  ],
+  "plugins": ["stylelint-prettier"],
+  "rules": {
+    "prettier/prettier": true,
+    "no-empty-source": null,
+    "selector-class-pattern": null,
+    "selector-type-no-unknown": null,
+    "selector-no-qualifying-type": null,
+    "max-nesting-depth": null,
+    "selector-max-id": null,
+    "no-descending-specificity": null,
+    "selector-max-compound-selectors": null
+  }
+}

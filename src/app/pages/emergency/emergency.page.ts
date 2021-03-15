@@ -33,7 +33,6 @@ export class EmergencyPage extends AbstractPage implements OnInit {
     private keyboard: Keyboard,
     private chRef: ChangeDetectorRef,
     private mapProvider: NavigatorService,
-    // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
     private alertService: AlertService,

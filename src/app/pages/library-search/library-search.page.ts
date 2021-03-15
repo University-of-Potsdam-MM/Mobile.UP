@@ -315,7 +315,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   /**
    * @name checkFavorites
    * @async
-   * @description TODO: checks if favorites are still valid
+   * @description checks if favorites are still valid
    */
   async checkFavorites(refresher?) {
     const tmp = await this.storage.get("favoriteBooks");

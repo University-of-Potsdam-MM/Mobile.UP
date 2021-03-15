@@ -1,28 +1,19 @@
-languages:
-  JavaScript: true
+version: "2"
+
 plugins:
-  csslint:
+  # lints js and ts
+  eslint:
     enabled: true
-    checks:
-      bulletproof-font-face:
-        enabled: false
-      universal-selector:
-        enabled: false
-  duplication:
-    enabled: true
-  fixme:
-    enabled: true
-    config:
-      strings:
-        - FIXME
-        - TODO
-  scss-lint:
-    enabled: true
+  # lints scss
   stylelint:
     enabled: true
-  tslint:
+  # finds similar code blocks
+  duplication:
     enabled: true
-    config: tslint-codeclimate.json
+  # highlights strings TODO, FIXME, HACK, XXX, and BUG
+  fixme:
+    enabled: true
+
 checks:
   argument-count:
     enabled: true
@@ -44,9 +35,7 @@ checks:
     enabled: true
   identical-code:
     enabled: true
-#ratings:
-#   paths:
-#   - "www/**"
+
 exclude_patterns:
   - "node_modules/*"
   - "scripts/*"

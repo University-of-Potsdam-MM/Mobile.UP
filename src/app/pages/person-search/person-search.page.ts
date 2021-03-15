@@ -32,7 +32,6 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
 
   constructor(
     private keyboard: Keyboard,
-    // tslint:disable-next-line: deprecation
     private contacts: Contacts,
     private callNumber: CallNumber,
     private alertService: AlertService,

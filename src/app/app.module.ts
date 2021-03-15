@@ -114,7 +114,6 @@ export class IonicGestureConfig extends HammerGestureConfig {
     SafariViewController,
     InAppBrowser,
     Keyboard,
-    // tslint:disable-next-line: deprecation
     Contacts,
     CallNumber,
     Geolocation,

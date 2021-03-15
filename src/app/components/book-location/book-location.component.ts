@@ -138,7 +138,6 @@ export class BookLocationComponent implements OnInit {
     // check for available / unavailable items and process loan and presentation
     let loanAvailable, presentationAvailable;
     if (item.available) {
-      // tslint:disable-next-line:no-var-keyword
       const availableArray = convertToArray(item.available);
       if (availableArray) {
         loanAvailable = availableArray.find((x) => x.service === "loan");

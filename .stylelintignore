@@ -31,5 +31,6 @@ documentation/
 build/
 bin/
 
-protractor.conf.js
-karma.conf.js
+# only lint .scss files
+*.*
+!*.scss

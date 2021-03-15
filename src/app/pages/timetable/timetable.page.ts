@@ -19,7 +19,6 @@ import { convertToArray } from "src/app/lib/util";
   styleUrls: ["./timetable.page.scss"],
 })
 export class TimetablePage extends AbstractPage {
-  // tslint:disable-next-line: max-line-length
   hexValues = [
     "#FFCC80",
     "#9FA8DA",
