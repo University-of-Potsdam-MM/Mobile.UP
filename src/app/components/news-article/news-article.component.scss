@@ -1,6 +1,6 @@
 .news-date {
-  font-size: 0.8em;
   color: #756b6b;
+  font-size: 0.8em;
 }
 
 ion-row {
@@ -8,19 +8,19 @@ ion-row {
 }
 
 ion-card {
-  width: 100% !important;
   margin: 0;
   padding: 0;
+  width: 100% !important;
 
   h3 {
-    font-size: 0.9rem;
     color: var(--ion-color-primary);
+    font-size: 0.9rem;
   }
 }
 
 ion-card-header {
-  padding-top: 0;
   padding-bottom: 0;
+  padding-top: 0;
 }
 
 ion-card-content {

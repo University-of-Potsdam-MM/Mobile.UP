@@ -1,33 +1,32 @@
 .filters {
   ion-col {
-    text-align: center;
     font-size: 0.9rem;
     line-height: 1.6rem;
+    text-align: center;
 
     &.col-with-arrow {
+      align-items: center;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
   }
 
   p {
-    margin: 0;
     font-size: 0.9rem;
     line-height: 1.6rem;
+    margin: 0;
   }
 
   .selected {
     border-bottom: 2px solid var(--ion-color-primary);
-
     color: var(--ion-color-primary);
   }
 }
 
 ion-slide {
-  width: auto !important;
   min-width: 100px !important;
   padding: 0;
+  width: auto !important;
 }
 
 ion-segment-button {

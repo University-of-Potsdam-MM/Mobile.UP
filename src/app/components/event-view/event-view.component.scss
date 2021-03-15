@@ -3,31 +3,31 @@ ion-row.event {
 }
 
 ion-card {
-  width: 100% !important;
   margin: 0;
   padding: 0;
+  width: 100% !important;
 
   h3 {
-    font-size: 0.9rem;
     color: var(--ion-color-primary);
+    font-size: 0.9rem;
   }
 
   h4 {
+    color: #000;
     font-size: 0.8rem;
-    color: black;
     font-weight: 500;
-    margin-top: 0px;
     margin-bottom: 5px;
+    margin-top: 0;
     padding-left: 0;
     padding-right: 0;
   }
 }
 
 ion-card-header {
-  padding-top: 0;
   padding-bottom: 0;
-  padding-inline-start: 0;
   padding-inline-end: 5px;
+  padding-inline-start: 0;
+  padding-top: 0;
 }
 
 ion-card-content {

@@ -1,13 +1,13 @@
 .courseData {
-  border-radius: 0px;
+  border-radius: 0;
   font-size: 0.75rem;
   margin-left: 0.5%;
-  padding: 0;
   margin-right: 0;
+  padding: 0;
 
   p {
-    font-size: 0.75rem;
     color: var(--ion-color-primary);
+    font-size: 0.75rem;
   }
 }
 
@@ -17,34 +17,37 @@
 
 .noCourses {
   --background: var(--ion-color-light);
-  color: black;
-  border-radius: 0px;
-  margin-left: 0.5%;
+
+  border-radius: 0;
+  color: #000;
   font-size: 0.75rem;
+  margin-left: 0.5%;
 }
 
 /*
 Generic Styling, for Desktops/Laptops
 */
 table {
-  width: 100%;
   border-collapse: collapse;
+  width: 100%;
 }
 
 /* Zebra striping */
 tr:nth-of-type(odd) {
   background: #eee;
 }
+
 th {
   background: var(--ion-color-primary);
-  color: white;
-  font-weight: bold;
+  color: #fff;
   font-size: 0.75rem;
+  font-weight: bold;
 }
+
 td,
 th {
-  padding: 6px;
   border: 1px solid #ededed;
+  padding: 6px;
   text-align: left;
 }
 
@@ -62,61 +65,69 @@ and also iPads specifically.
   th,
   td,
   tr {
-    font-size: 0.75rem;
     display: block;
-  }
-
-  /* Hide table headers (but not display: none;, for accessibility) */
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+    font-size: 0.75rem;
   }
 
   tr {
     border: 1px solid #ededed;
   }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    left: -9999px;
+    position: absolute;
+    top: -9999px;
+  }
+
   tr.emptyRow {
-    border: 0px solid #ededed;
+    border: 0 solid #ededed;
   }
 
   td {
     /* Behave  like a "row" */
-    border: none;
+    border: 0 none;
     border-bottom: 1px solid #ededed;
     position: relative;
   }
 
-  td:before {
+  td::before {
+    left: 6px;
+    padding-right: 10px;
+
     /* Now like a table header */
     position: relative;
+
     /* Top/left values mimic padding */
-    top: 0px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
+    top: 0;
     white-space: nowrap;
+    width: 45%;
   }
 
   /*
     Label the data
     */
-  td:nth-of-type(1):before {
+  td:nth-of-type(1)::before {
     content: "Tag:";
   }
-  td:nth-of-type(2):before {
+
+  td:nth-of-type(2)::before {
     content: "Zeit:";
   }
-  td:nth-of-type(3):before {
+
+  td:nth-of-type(3)::before {
     content: "Rhythmus:";
   }
-  td:nth-of-type(4):before {
+
+  td:nth-of-type(4)::before {
     content: "Dauer:";
   }
-  td:nth-of-type(5):before {
+
+  td:nth-of-type(5)::before {
     content: "Raum:";
   }
-  td:nth-of-type(6):before {
+
+  td:nth-of-type(6)::before {
     content: "Lehrperson:";
   }
 }
@@ -124,8 +135,8 @@ and also iPads specifically.
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
   body {
-    padding: 0;
     margin: 0;
+    padding: 0;
     width: 320px;
   }
 }

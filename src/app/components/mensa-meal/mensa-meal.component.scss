@@ -1,13 +1,14 @@
 ion-item ion-thumbnail {
-  min-width: 2.1rem;
-  min-height: 2.1rem;
-  max-width: 2.1rem;
   max-height: 2.1rem;
+  max-width: 2.1rem;
+  min-height: 2.1rem;
+  min-width: 2.1rem;
+
   img {
-    min-width: 2.1rem;
-    min-height: 2.1rem;
-    max-width: 2.1rem;
     max-height: 2.1rem;
+    max-width: 2.1rem;
+    min-height: 2.1rem;
+    min-width: 2.1rem;
   }
 }
 
@@ -21,8 +22,8 @@ ion-item {
 
   ion-label {
     font-size: 80%;
-    margin-top: 5px;
     margin-bottom: 0;
+    margin-top: 5px;
   }
 }
 
@@ -31,8 +32,8 @@ ion-item.noborder {
 }
 
 .mealtitle {
-  font-size: 80%;
   color: #000;
+  font-size: 80%;
 
   span {
     color: #016c69;

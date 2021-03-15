@@ -1,10 +1,11 @@
 ion-checkbox {
-  margin-inline-end: 10px;
   --webkit-margin-end: 10px;
+
+  margin-inline-end: 10px;
 }
 
 .feeAmount {
-  color: red;
+  color: #f00;
   font-weight: bold;
 }
 
@@ -18,10 +19,11 @@ ion-button {
 
 ion-card {
   --background: var(--ion-color-secondary);
-  padding: 5px;
+
   border-radius: 0;
-  margin-top: 5px;
   margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px;
 }
 
 ion-card-content {
@@ -29,9 +31,9 @@ ion-card-content {
 }
 
 .patronID {
-  padding-left: 5px;
   font-size: 0.8em;
   opacity: 0.8;
+  padding-left: 5px;
 }
 
 ion-button.changePassword {

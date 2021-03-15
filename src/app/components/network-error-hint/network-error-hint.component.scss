@@ -3,14 +3,14 @@ ion-card {
 }
 
 ion-card-header {
-  padding: 5px;
   background-color: var(--ion-color-secondary);
-  color: black;
+  color: #000;
+  padding: 5px;
 }
 
 ion-card-content {
+  color: #000;
   margin: 0;
-  color: black;
   padding: 5px !important;
 }
 
@@ -19,12 +19,12 @@ ion-card-content {
 }
 
 ion-label {
-  padding-right: 15px;
-  color: gray;
+  color: #808080;
   font-size: small;
+  padding-right: 15px;
 }
 
 p {
+  color: #808080;
   font-size: small;
-  color: gray;
 }

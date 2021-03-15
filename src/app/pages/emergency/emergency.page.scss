@@ -4,6 +4,7 @@ ion-icon {
 
 ion-item {
   --padding-start: 5px;
+
   border-bottom: 1px solid #ededed !important;
 }
 
@@ -17,12 +18,12 @@ ion-col {
 }
 
 .notUnderlined {
-  text-transform: capitalize;
   text-decoration: none;
+  text-transform: capitalize;
 }
 
 .whiteFont {
-  color: white;
+  color: #fff;
 }
 
 ion-item.noborder {

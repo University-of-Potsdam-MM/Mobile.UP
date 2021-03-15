@@ -1,11 +1,11 @@
 ion-item,
 ion-icon {
-  margin-inline-end: 10px;
   --padding-start: 5px;
+
+  margin-inline-end: 10px;
 }
 
 ion-item {
-  -webkit-margin-end: 0px;
   border-bottom: 1px solid #ededed !important;
 }
 
@@ -19,12 +19,12 @@ ion-col {
 }
 
 .notUnderlined {
-  text-transform: capitalize;
   text-decoration: none;
+  text-transform: capitalize;
 }
 
 .whiteFont {
-  color: white;
+  color: #fff;
 }
 
 ion-item.noborder {

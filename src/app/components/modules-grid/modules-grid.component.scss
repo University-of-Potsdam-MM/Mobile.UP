@@ -1,7 +1,7 @@
 gridster {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  background-color: white;
+  background-color: #fff;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
 }
 
 gridster-item {
@@ -9,8 +9,9 @@ gridster-item {
 }
 
 .favoritesItem {
-  font-size: 0.9em;
   --min-height: 10px;
+
+  font-size: 0.9em;
 
   ion-icon {
     font-size: 0.9em;

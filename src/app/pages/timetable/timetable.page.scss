@@ -1,9 +1,11 @@
 .calendarButton {
   --background: var(--ion-color-secondary);
+
   color: var(--ion-color-primary);
 }
 
 .activeCalendarButton {
   --background: var(--ion-color-primary);
-  color: white;
+
+  color: #fff;
 }
