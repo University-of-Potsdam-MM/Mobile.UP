@@ -37,7 +37,10 @@
             "style": "camelCase"
           }
         ],
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "jsdoc/no-types": "off",
+        "prefer-arrow/prefer-arrow-functions": "off"
       }
     },
     {
