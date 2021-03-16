@@ -15,7 +15,8 @@
     "pretty-quick": "pretty-quick",
     "pretty-quick:staged": "pretty-quick --staged",
     "stylelint": "stylelint '**/*.scss'",
-    "stylelint:fix": "stylelint '**/*.scss' --fix"
+    "stylelint:fix": "stylelint '**/*.scss' --fix",
+    "compodoc": "compodoc -p tsconfig.app.json src"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +50,7 @@
     "@angular/compiler-cli": "~11.2.5",
     "@angular/language-service": "~11.2.5",
     "@capacitor/cli": "^3.0.0-rc.0",
+    "@compodoc/compodoc": "^1.1.11",
     "@ionic/angular-toolkit": "^3.1.0",
     "@types/jasmine": "~3.6.6",
     "@types/jasminewd2": "~2.0.8",
