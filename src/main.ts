@@ -1,8 +1,8 @@
-import { enableProdMode } from "@angular/core";
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { AppModule } from "./app/app.module";
-import { environment } from "./environments/environment";
-import { StaticInjectorService } from "./app/lib/static-injector";
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
@@ -10,7 +10,4 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .then((moduleRef) => {
-    StaticInjectorService.setInjector(moduleRef.injector);
-  })
   .catch((err) => console.log(err));
