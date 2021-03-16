@@ -126,8 +126,6 @@ android-production:
   script:
     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
     - ionic build --prod
-    # set proper title
-    - perl -pi -e 's|<title>Ionic App</title>|<title>Mobile.UP</title>|' www/index.html
 
 # only used for merge requests (and branches != master in order to avoid double building)
 browser-test:
