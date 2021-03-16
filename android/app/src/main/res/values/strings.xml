@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mobile.UP</string>
+    <string name="title_activity_main">Mobile.UP</string>
+    <string name="package_name">de.floriangoessler.upapp</string>
+    <string name="custom_url_scheme">de.floriangoessler.upapp</string>
+</resources>
