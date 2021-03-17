@@ -12,6 +12,8 @@
     "selector-max-id": null,
     "selector-class-pattern": null,
     "selector-no-qualifying-type": null,
-    "max-nesting-depth": null
+    "max-nesting-depth": null,
+    "no-descending-specificity": null,
+    "selector-max-compound-selectors": null
   }
 }

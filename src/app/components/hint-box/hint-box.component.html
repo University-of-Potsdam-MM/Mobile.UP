@@ -1,1 +1,14 @@
-<p>hint-box works!</p>
+<ion-card>
+  <ion-card-header *ngIf="hintTextI18nKey">
+    {{ hintTypeI18nKey | translate }}
+  </ion-card-header>
+
+  <ion-card-content [ngClass]="disableTextCentering ? '' : 'ion-text-center'">
+    <div [innerHTML]="translate.instant(hintTextI18nKey)"></div>
+
+    <ng-container *ngIf="secondHintTextI18nKey">
+      <br />
+      <div [innerHTML]="translate.instant(secondHintTextI18nKey)"></div>
+    </ng-container>
+  </ion-card-content>
+</ion-card>

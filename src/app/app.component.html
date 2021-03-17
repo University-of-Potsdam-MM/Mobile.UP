@@ -1,3 +1,113 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu
+    contentId="content"
+    side="end"
+    swipeGesture="false"
+    type="overlay"
+    (ionWillOpen)="updateLoginStatus()"
+  >
+    <ion-header>
+      <ion-toolbar style="--min-height: 48px">
+        <ion-title>{{ "menu.title" | translate }}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="card-background-page">
+      <ion-card>
+        <img
+          [class.loggedIn]="loggedIn || bibLoggedIn"
+          [class.loggedOut]="!loggedIn && !bibLoggedIn"
+          src="assets/imgs/logo/logo_uni_potsdam.svg"
+        />
+        <div class="card-title">
+          <span *ngIf="loggedIn && fullName">{{ fullName }}</span
+          ><span *ngIf="loggedIn && !fullName && username">{{ username }}</span>
+        </div>
+        <div class="card-title">
+          <span *ngIf="!loggedIn && bibLoggedIn && bibID">Mobile.UP</span>
+        </div>
+        <div class="card-subtitle">
+          <span *ngIf="bibLoggedIn && bibID">{{ bibID }}</span>
+        </div>
+      </ion-card>
+
+      <ion-item-group>
+        <ion-item-divider color="light"
+          ><ion-label>{{
+            "popover.general" | translate
+          }}</ion-label></ion-item-divider
+        >
+        <ion-item button (click)="toHome()">
+          <ion-icon color="primary" name="home" slot="start"></ion-icon>
+          <ion-label>
+            {{ "page.home.title" | translate }}
+          </ion-label>
+        </ion-item>
+        <ion-item button (click)="toSettings()">
+          <ion-icon color="primary" name="options" slot="start"></ion-icon>
+          <ion-label>
+            {{ "page.settings.title" | translate }}
+          </ion-label>
+        </ion-item>
+        <ion-item button (click)="toAppInfo()">
+          <ion-icon
+            color="primary"
+            name="information-circle"
+            slot="start"
+          ></ion-icon>
+          <ion-label>
+            {{ "page.app-info.title" | translate }}
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none" button (click)="toImprint()">
+          <ion-icon
+            color="primary"
+            name="document-text"
+            aria-hidden="true"
+            slot="start"
+          ></ion-icon>
+          <ion-label>
+            {{ "page.impressum.title" | translate }}
+          </ion-label>
+        </ion-item>
+
+        <!-- Account View -->
+        <ion-item-divider color="light">
+          <ion-label>Accounts</ion-label>
+        </ion-item-divider>
+
+        <ion-item button (click)="loggedIn ? doLogout() : toLogin()">
+          <ion-label>
+            PULS
+            <ng-container *ngIf="!loggedIn"
+              >({{ "popover.notLoggedInText" | translate }})</ng-container
+            >
+            <ng-container *ngIf="loggedIn && username"
+              >({{ username }})</ng-container
+            >
+          </ion-label>
+          <ion-icon
+            slot="end"
+            [name]="loggedIn ? 'log-out' : 'log-in'"
+          ></ion-icon>
+        </ion-item>
+
+        <ion-item button (click)="bibLoggedIn ? doBibLogout() : toBibLogin()">
+          <ion-label>
+            {{ "page.library-account.library" | translate }}
+            <ng-container *ngIf="!bibLoggedIn"
+              >({{ "popover.notLoggedInText" | translate }})</ng-container
+            >
+            <ng-container *ngIf="bibLoggedIn && bibID"
+              >({{ bibID }})</ng-container
+            >
+          </ion-label>
+          <ion-icon
+            slot="end"
+            [name]="bibLoggedIn ? 'log-out' : 'log-in'"
+          ></ion-icon>
+        </ion-item>
+      </ion-item-group>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="content" main></ion-router-outlet>
 </ion-app>

@@ -1,0 +1,23 @@
+gridster {
+  background-color: #fff;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+gridster-item {
+  background-color: var(--ion-color-secondary);
+}
+
+.favoritesItem {
+  --min-height: 10px;
+
+  font-size: 0.9em;
+
+  ion-icon {
+    font-size: 0.9em;
+  }
+
+  ion-icon.editingIcon {
+    font-size: 1.3em;
+  }
+}

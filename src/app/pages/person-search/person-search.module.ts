@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { PersonSearchPageRoutingModule } from './person-search-routing.module';
-
 import { PersonSearchPage } from './person-search.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { LoginModule } from '../login/login.import';
+import { HttpLoaderFactory } from 'src/app/app.module';
 
 @NgModule({
   imports: [
@@ -14,6 +16,15 @@ import { PersonSearchPage } from './person-search.page';
     FormsModule,
     IonicModule,
     PersonSearchPageRoutingModule,
+    ComponentsModule,
+    LoginModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   declarations: [PersonSearchPage],
 })

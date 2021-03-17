@@ -1,0 +1,75 @@
+.tableHead {
+  background-color: var(--ion-color-dark);
+  border-radius: 0;
+  color: var(--ion-color-light);
+}
+
+.creditPoints {
+  background-color: var(--ion-color-primary);
+  border-radius: 0;
+  color: var(--ion-color-light);
+  font-size: smaller;
+}
+
+div.gradeTable {
+  background: #f2f2f2;
+  font-size: small;
+}
+
+ion-col {
+  border-right: 1px solid #808080;
+}
+
+ion-col.moduleHead {
+  border-top: 1px solid #808080;
+}
+
+ion-col:first-child {
+  border-left: 1px solid #808080;
+}
+
+ion-row.moduleGroupHead:first-child {
+  ion-col:first-child {
+    border-bottom: 0 none;
+  }
+}
+
+div.moduleGroup {
+  ion-row {
+    ion-col {
+      background: #f9f9f9;
+      border-bottom: 1px solid #808080;
+    }
+  }
+
+  div.examination {
+    ion-row:first-child {
+      ion-col {
+        border-top: 1px solid #808080;
+      }
+    }
+  }
+}
+
+ion-row.moduleGroupHead:first-child,
+ion-row.moduleHead:first-child {
+  ion-col {
+    border-top: 1px solid #808080;
+  }
+
+  ion-col:first-child {
+    background: #f2f2f2;
+    border-bottom: 0 none;
+    border-left: 0 none;
+    border-top: 0 none;
+  }
+}
+
+ion-row.submoduleHead:first-child {
+  ion-col:first-child {
+    background: #f2f2f2;
+    border-bottom: 0 none;
+    border-left: 0 none;
+    border-top: 0 none;
+  }
+}

@@ -1,7 +1,87 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
+  <ion-toolbar style="--min-height: 48px">
+    <ion-back-button slot="start"></ion-back-button>
+    <app-connection-indicator
+      slot="end"
+      class="ion-padding-end"
+    ></app-connection-indicator>
+    <ion-title>{{ "page.login.title" | translate }}</ion-title>
+    <ion-menu-button slot="end"></ion-menu-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid>
+    <ion-row class="logo-row">
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col width-67>
+        <img src="assets/imgs/logo/logo_uni_potsdam.svg" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="!session">
+    <form (ngSubmit)="login()" #registerForm="ngForm" [formGroup]="loginForm">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+              <ion-item>
+                <ion-input
+                  autocapitalize="none"
+                  autofocus="true"
+                  clearInput="true"
+                  type="text"
+                  [placeholder]="'placeholder.username' | translate"
+                  name="id"
+                  [formControl]="loginForm.controls['username']"
+                  required
+                ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-input
+                  clearOnEdit="false"
+                  clearInput="true"
+                  type="password"
+                  [placeholder]="'placeholder.password' |translate"
+                  name="password"
+                  [formControl]="loginForm.controls['password']"
+                  required
+                ></ion-input>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" type="button" (click)="abort()">
+              {{ "button.cancel" | translate }}
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button
+              expand="full"
+              class="submit-btn"
+              [disabled]="!loginForm.valid"
+              type="submit"
+            >
+              {{ "button.login" | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+
+  <app-hint-box
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="hints.text.login-hint"
+  ></app-hint-box>
+
+  <div align="center" *ngIf="session" class="ion-padding">
+    {{ "page.login.alreadyLoggedIn" | translate }}
+  </div>
+</ion-content>

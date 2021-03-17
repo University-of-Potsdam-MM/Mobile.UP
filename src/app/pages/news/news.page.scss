@@ -1,0 +1,49 @@
+.filters {
+  ion-col {
+    font-size: 0.9rem;
+    line-height: 1.6rem;
+    text-align: center;
+
+    &.col-with-arrow {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.6rem;
+    margin: 0;
+  }
+
+  .selected {
+    border-bottom: 2px solid var(--ion-color-primary);
+    color: var(--ion-color-primary);
+  }
+}
+
+ion-slide {
+  min-width: 100px !important;
+  padding: 0;
+  width: auto !important;
+}
+
+ion-segment-button {
+  --padding-end: 5px;
+  --padding-start: 5px;
+  --margin-end: 0;
+  --margin-start: 0;
+}
+
+ion-col {
+  padding: 0;
+
+  ion-card {
+    margin: 0;
+  }
+}
+
+ion-header ion-toolbar.toolbar .toolbar-background {
+  --background: var(--ion-color-medium) !important;
+}

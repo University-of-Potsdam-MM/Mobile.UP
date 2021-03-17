@@ -1,1 +1,35 @@
-<p>modules-grid works!</p>
+<ion-item class="favoritesItem" lines="none">
+  <ion-icon name="star" slot="start" color="primary"></ion-icon>
+  <ion-label color="primary">
+    {{ "button.favorites" | translate }}
+  </ion-label>
+  <ion-icon
+    *ngIf="!editingMode"
+    class="editingIcon linkItem"
+    color="primary"
+    name="create"
+    slot="end"
+    (click)="toggleEditingMode()"
+  ></ion-icon>
+  <ion-button
+    *ngIf="editingMode"
+    (click)="toggleEditingMode()"
+    slot="end"
+    style="--border-radius: 0"
+    >{{ "button.done" | translate }}</ion-button
+  >
+</ion-item>
+
+<div id="gridster-wrapper" [style.height]="gridsterWrapperHeight + 'px'">
+  <gridster [options]="options" id="grid">
+    <ng-container *ngFor="let m of modules">
+      <gridster-item *ngIf="m.selected" [item]="m">
+        <ng-template
+          [ngTemplateOutlet]="template"
+          [ngTemplateOutletContext]="{ module: m }"
+        >
+        </ng-template>
+      </gridster-item>
+    </ng-container>
+  </gridster>
+</div>

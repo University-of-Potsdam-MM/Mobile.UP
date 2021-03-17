@@ -465,7 +465,8 @@
   "launchNavigator": {
     "headerText": "Remember your choice?",
     "bodyText": "Use the same app for navigating next time?",
-    "dialogHeaderText": "Select app for navigation..."
+    "dialogHeaderText": "Select app for navigation...",
+    "destination": "Destination"
   },
   "hints": {
     "type": {

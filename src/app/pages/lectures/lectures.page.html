@@ -1,7 +1,100 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>lectures</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="refreshLectureTree()"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
+    </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="!networkError">
+    <ion-item
+      align="center"
+      *ngIf="!isLoaded"
+      lines="none"
+      class="searchPrepareItem"
+    >
+      <ion-label> {{ "page.lectures.preparingSearch" | translate }} </ion-label>
+      <ion-spinner name="dots" slot="end"></ion-spinner>
+    </ion-item>
+    <ion-searchbar
+      *ngIf="isLoaded"
+      [(ngModel)]="query"
+      [placeholder]="'placeholder.search' | translate"
+      (ionChange)="searchLecture($event)"
+      debounce="750"
+    >
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content
+  (ionScrollStart)="onScrollListener()"
+  [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'"
+>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="refreshLectureTree($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="isSearching" class="ion-padding">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <div *ngIf="queryTooShort">
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="hints.text.queryTooShort"
+    ></app-hint-box>
+  </div>
+
+  <app-lecture-list
+    *ngIf="!isRefreshing && searchResults.length === 0 && query.length === 0"
+    [refresh]="refreshLectureComponent"
+  ></app-lecture-list>
+
+  <div *ngIf="!isRefreshing && !isSearching && searchResults.length > 0">
+    <ion-item color="light">
+      <ion-label> {{ "page.lectures.filter" | translate }} </ion-label>
+      <ion-select
+        (ionChange)="selectFilter($event)"
+        multiple="true"
+        okText="{{ 'button.ok' | translate }}"
+        cancelText="{{ 'button.cancel' | translate }}"
+      >
+        <ion-select-option value="header" selected
+          >{{ "page.lectures.directories" | translate }}</ion-select-option
+        >
+        <ion-select-option value="courses" selected
+          >{{ "page.lectures.courses" | translate }}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-list>
+      <ion-item
+        *ngFor="let result of searchResults; let i = index"
+        button
+        (click)="openItem(i)"
+      >
+        <ion-label class="ion-text-wrap">
+          {{ unescapeHTML(result) }}
+        </ion-label>
+        <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end"
+          >{{ "page.lectures.courseBadge" | translate }}</ion-badge
+        >
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="closeModal()"
+      fill="clear"
+      class="modalBackButton"
+    >
+      <ion-icon
+        style="color: black; font-size: x-large"
+        name="chevron-back"
+      ></ion-icon>
+    </ion-button>
+    <ion-title>{{ "page.opening-hours.title" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-bottom">
+  <h5 class="ion-padding-start">{{ item.name }}</h5>
+  <ion-list class="openingDetails" style="padding-left: 6px">
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <h2>Status</h2>
+
+        <p *ngIf="!item.unknownState">
+          <span *ngIf="item.state" style="color: green"
+            >{{ "page.opening-hours.open" | translate }}<span
+              *ngIf="openUntil(i) != ''"
+              >,</span
+            >
+            {{ openUntil() }}</span
+          >
+          <span *ngIf="!item.state" style="color: red"
+            >{{ "page.opening-hours.closed" | translate }}<span
+              *ngIf="closedUntil(i) != ''"
+              >,</span
+            >
+            {{ closedUntil() }}</span
+          >
+        </p>
+        <p *ngIf="item.unknownState">
+          <span style="color: blue"
+            >{{ "page.opening-hours.unknown" | translate }}</span
+          >
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="comment">
+      <ion-label class="ion-text-wrap">
+        <h2>{{ "page.opening-hours.comment" | translate }}</h2>
+
+        <p>
+          <span>{{ comment }}</span>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="item.link">
+      <ion-label>
+        <h2>Website</h2>
+
+        <p class="linkItem" (click)="openURL(item.link)">
+          <a style="text-decoration: underline">{{ item.link }}</a>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="item.mail">
+      <ion-label class="ion-text-wrap">
+        <h2>Mail</h2>
+        <p>
+          <a href="mailto:{{ item.mail }}">{{ item.mail }}</a>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item *ngIf="item.telephone">
+      <ion-label class="ion-text-wrap">
+        <h2>Tel.</h2>
+
+        <p class="linkItem" (click)="callContact(item.telephone)">
+          <a style="text-decoration: underline">{{ item.telephone }}</a>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <h5 *ngIf="intervals.length > 0" class="ion-padding-start">
+    {{ "page.opening-hours.title" | translate }}
+  </h5>
+  <ion-list
+    class="openingDetails"
+    *ngIf="itv.length > 0"
+    style="padding-left: 6px"
+  >
+    <ion-item *ngFor="let interval of itv">
+      <ion-label class="ion-text-wrap">
+        <ng-container *ngFor="let timespot of interval; let i = index">
+          <h2 *ngIf="i == 0">{{ timespot }}</h2>
+          <p *ngIf="i != 0">{{ timespot }}</p>
+        </ng-container>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="intervals.length > 0 && !every_week_is_same">
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="hints.text.openings-planCanChange-hint"
+    ></app-hint-box>
+  </div>
+</ion-content>

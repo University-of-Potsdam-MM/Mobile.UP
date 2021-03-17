@@ -1,1 +1,132 @@
-<p>book-list works!</p>
+<ion-item>
+  <span class="bookIndex ion-no-padding" slot="start" *ngIf="i">
+    <p class="number">{{ i }}</p>
+    <ion-icon *ngIf="i" [name]="bookDetails.icon" color="primary"></ion-icon>
+  </span>
+  <ion-icon
+    *ngIf="!i"
+    slot="start"
+    color="primary"
+    [name]="bookDetails.icon"
+  ></ion-icon>
+  <ion-label [ngClass]="!i ? 'breakLine' : ''">
+    <span *ngIf="convertToArray(book.titleInfo)[0]">
+      <b
+        *ngIf="
+          convertToArray(book.titleInfo)[0].nonSort &&
+          !convertToArray(book.titleInfo)[0].nonSort._
+        "
+        >{{ convertToArray(book.titleInfo)[0].nonSort }}
+      </b>
+      <b
+        *ngIf="
+          convertToArray(book.titleInfo)[0].nonSort &&
+          convertToArray(book.titleInfo)[0].nonSort._
+        "
+        >{{ convertToArray(book.titleInfo)[0].nonSort._ }}
+      </b>
+      <b *ngIf="convertToArray(book.titleInfo)[0].title">{{
+        convertToArray(book.titleInfo)[0].title
+      }}</b>
+      <b *ngIf="convertToArray(book.titleInfo)[0].partName"
+        ><span *ngIf="convertToArray(book.titleInfo)[0].title">, </span
+        >{{ convertToArray(book.titleInfo)[0].partName }}</b
+      >
+      <br />
+      <p *ngIf="convertToArray(book.titleInfo)[0].subTitle">
+        {{ convertToArray(book.titleInfo)[0].subTitle }}
+      </p>
+    </span>
+    <p *ngIf="book.titleInfo && convertToArray(book.titleInfo)[0].partNumber">
+      {{ convertToArray(book.titleInfo)[0].partNumber }}
+    </p>
+    <span
+      *ngIf="
+        book.relatedItem &&
+        convertToArray(book.relatedItem)[0].$ &&
+        convertToArray(book.relatedItem)[0].$.type == 'series'
+      "
+    >
+      <p *ngIf="convertToArray(book.relatedItem)[0].titleInfo">
+        {{ convertToArray(book.relatedItem)[0].titleInfo.title }}
+      </p>
+    </span>
+    <span *ngIf="book.name">
+      <p
+        style="display: inline"
+        class="author"
+        *ngFor="
+          let author of convertToArray(book.name);
+          let j = index;
+          let last = last
+        "
+      >
+        <span *ngIf="author.namePart">
+          <span
+            *ngIf="
+              convertToArray(author.namePart)[0] &&
+              convertToArray(author.namePart)[0]._
+            "
+            >{{ convertToArray(author.namePart)[0]._ }}</span
+          >
+          <span
+            *ngIf="
+              convertToArray(author.namePart)[0] &&
+              !convertToArray(author.namePart)[0]._
+            "
+            >{{ convertToArray(author.namePart)[0] }}</span
+          >
+          <span
+            *ngIf="
+              convertToArray(author.namePart)[1] &&
+              convertToArray(author.namePart)[1]._
+            "
+          >
+            {{ convertToArray(author.namePart)[1]._ }}
+          </span>
+          <span *ngIf="!last && convertToArray(book.name)[j + 1].namePart"
+            >;
+          </span>
+        </span>
+      </p>
+    </span>
+    <span *ngIf="book.location">
+      <span *ngFor="let loc of convertToArray(book.location)">
+        <span
+          *ngIf="
+            loc.holdingSimple &&
+            loc.holdingSimple.copyInformation &&
+            convertToArray(loc.holdingSimple.copyInformation)[0]
+              .enumerationAndChronology
+          "
+        >
+          <p class="author">
+            {{
+              convertToArray(loc.holdingSimple.copyInformation)[0]
+                .enumerationAndChronology
+            }}
+          </p>
+        </span>
+      </span>
+    </span>
+    <p *ngIf="book.originInfo">
+      <span *ngIf="book.originInfo.edition">{{
+        convertToArray(book.originInfo.edition)[0]
+      }}</span>
+      <span *ngIf="bookDetails && bookDetails.publisher != ''">
+        <span *ngIf="book.originInfo.edition">, </span>
+        {{ bookDetails.publisher }}
+      </span>
+      <span
+        *ngIf="
+          convertToArray(book.originInfo)[0].dateIssued &&
+          convertToArray(convertToArray(book.originInfo)[0].dateIssued)[0]._ &&
+          !(bookDetails && bookDetails.publisher != '')
+        "
+      >
+        <span *ngIf="bookDetails && bookDetails.publisher != ''">, </span>
+        {{ convertToArray(convertToArray(book.originInfo)[0].dateIssued)[0]._ }}
+      </span>
+    </p>
+  </ion-label>
+</ion-item>

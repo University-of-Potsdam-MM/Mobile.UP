@@ -1,0 +1,15 @@
+#footerTitle {
+  color: var(--ion-color-primary);
+
+  div {
+    font-size: 0.8rem;
+  }
+}
+
+.toolbar-background {
+  --background: var(--ion-color-medium) !important;
+}
+
+ion-icon {
+  color: var(--ion-color-primary);
+}

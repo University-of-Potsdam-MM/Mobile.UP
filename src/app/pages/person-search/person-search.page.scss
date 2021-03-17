@@ -1,0 +1,32 @@
+ion-item,
+ion-icon {
+  --padding-start: 5px;
+
+  margin-inline-end: 10px;
+}
+
+ion-item {
+  border-bottom: 1px solid #ededed !important;
+}
+
+ion-col {
+  font-size: 0.9rem;
+}
+
+.link {
+  color: var(--ion-color-primary);
+  text-decoration: underline;
+}
+
+.notUnderlined {
+  text-decoration: none;
+  text-transform: capitalize;
+}
+
+.whiteFont {
+  color: #fff;
+}
+
+ion-item.noborder {
+  border-width: 0 !important;
+}

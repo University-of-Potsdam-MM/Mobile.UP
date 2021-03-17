@@ -1,1 +1,9 @@
-<p>connection-indicator works!</p>
+<ng-container>
+  <ion-icon
+    *ngIf="!isConnected"
+    slot="icon-only"
+    src="./assets/icon/noconnection.svg"
+    class="ion-margin-right linkItem"
+    (click)="openPopover($event)"
+  ></ion-icon>
+</ng-container>

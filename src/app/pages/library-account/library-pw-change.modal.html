@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="closeModal()"
+      fill="clear"
+      class="modalBackButton"
+    >
+      <ion-icon
+        style="color: black; font-size: x-large"
+        name="chevron-back"
+      ></ion-icon>
+    </ion-button>
+    <ion-title *ngIf="header">{{ header }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="changeForm" (ngSubmit)="changePassword()">
+    <ion-item>
+      <ion-label position="floating"
+        >{{ 'page.library-account.oldPassword' | translate }}</ion-label
+      >
+      <ion-input
+        formControlName="oldPassword"
+        [type]="pwVisibility"
+        placeholder="{{ 'page.library-account.oldPassword' | translate }}"
+      ></ion-input>
+    </ion-item>
+    <br />
+
+    <ion-item>
+      <ion-label position="floating"
+        >{{ 'page.library-account.newPassword' | translate }}</ion-label
+      >
+      <ion-input
+        formControlName="newPassword"
+        [type]="pwVisibility"
+        placeholder="{{ 'page.library-account.newPassword' | translate }}"
+      ></ion-input>
+    </ion-item>
+    <br />
+
+    <ion-item>
+      <ion-label position="floating"
+        >{{ 'page.library-account.newPasswordAgain' | translate }}</ion-label
+      >
+      <ion-input
+        formControlName="newPasswordVerify"
+        [type]="pwVisibility"
+        placeholder="{{ 'page.library-account.newPassword' | translate }}"
+      ></ion-input>
+    </ion-item>
+    <br />
+
+    <div align="right" class="ion-padding-end">
+      <ion-icon
+        [name]="pwVisibility == 'password' ? 'eye' : 'eye-off'"
+        class="linkItem"
+        (click)="togglePwVisibility()"
+        style="font-size: x-large"
+      ></ion-icon>
+    </div>
+
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="hints.text.password-change-hint-bib"
+      disableTextCentering="true"
+    ></app-hint-box>
+
+    <div align="right" class="ion-padding-end">
+      <ion-button
+        [disabled]="!changeForm.valid"
+        type="submit"
+        class="ion-no-margin"
+        >{{ "page.library-account.changePassword" | translate }}</ion-button
+      >
+    </div>
+  </form>
+</ion-content>

@@ -1,1 +1,269 @@
-<p>course-data works!</p>
+<div align="center" *ngIf="!isLoaded && !networkError" class="ion-padding">
+  <ion-spinner name="dots"></ion-spinner>
+</div>
+<app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+<ion-item
+  class="courseData ion-padding-top"
+  *ngIf="course.courseId && courseData"
+>
+  <ion-grid class="courseData">
+    <ion-row *ngIf="course.semester">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.term" | translate }}:</ion-col
+      >
+      <ion-col size="12">{{ course.semester }}</ion-col>
+    </ion-row>
+    <ion-row *ngIf="course.sws">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.sws" | translate }}:</ion-col
+      >
+      <ion-col size="12">{{ course.sws }}</ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].courseLinks"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.links" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          *ngFor="
+            let link of convertToArray(
+              convertToArray(courseData.courseData.course)[0].courseLinks
+            )
+          "
+        >
+          <a [href]="link.courseLink.link" target="_blank">{{
+            link.courseLink.linkName
+          }}</a>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].enrolmentBegin"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.application" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].enrolmentBegin +
+            ' - ' +
+            convertToArray(courseData.courseData.course)[0].enrolmentEnd
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].language">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.lang" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="convertToArray(courseData.courseData.course)[0].language"
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].facilityName"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.department" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].facilityName
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].shortComment"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.sComment" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].shortComment
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].comment">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.comment" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="convertToArray(courseData.courseData.course)[0].comment"
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].note">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.annotation" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="convertToArray(courseData.courseData.course)[0].note"
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].literature">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.literature" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].literature
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].qualification"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.prereq" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].qualification
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row
+      *ngIf="convertToArray(courseData.courseData.course)[0].examination"
+    >
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.certificates" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="
+            convertToArray(courseData.courseData.course)[0].examination
+          "
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].content">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.learnContent" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="convertToArray(courseData.courseData.course)[0].content"
+        ></div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="convertToArray(courseData.courseData.course)[0].audience">
+      <ion-col size="12" class="courseKeywords"
+        >{{ "page.lectures.audience" | translate }}:</ion-col
+      >
+      <ion-col size="12">
+        <div
+          [innerHTML]="convertToArray(courseData.courseData.course)[0].audience"
+        ></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-item>
+<ion-list
+  *ngIf="
+    course.courseId &&
+    courseData &&
+    courseData.courseData &&
+    courseData.courseData.course &&
+    convertToArray(this.courseData.courseData.course)[0].events &&
+    convertToArray(this.courseData.courseData.course)[0].events.event &&
+    courseGroups &&
+    courseGroups.length > 0
+  "
+  class="courseData"
+>
+  <span
+    *ngFor="let group of courseGroups; let i = index"
+    class="groupTable courseData"
+  >
+    <ion-item lines="none" style="font-weight: bold">
+      <ion-label>
+        {{ "page.lectures.group" | translate }} {{ group }}
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ "page.lectures.day" | translate }}</th>
+            <th>{{ "page.lectures.time" | translate }}</th>
+            <th>{{ "page.lectures.freq" | translate }}</th>
+            <th>{{ "page.lectures.duration" | translate }}</th>
+            <th>{{ "page.lectures.room" | translate }}</th>
+            <th>{{ "page.lectures.lecturer" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let event of convertToArray(
+                convertToArray(this.courseData.courseData.course)[0].events
+                  .event
+              );
+              let i = index;
+              let odd = odd
+            "
+            [ngClass]="event.groupId != group ? 'emptyRow' : ''"
+          >
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.daySC">{{ event.daySC }}</span>
+            </td>
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.startTime && event.endTime"
+                >{{ event.startTime }} - {{ event.endTime }}</span
+              >
+            </td>
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.rhythmSC">{{ event.rhythmSC }}</span>
+            </td>
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.startDate && event.endDate"
+                >{{ event.startDate }} - {{ event.endDate }}</span
+              >
+            </td>
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.roomSc">{{
+                replaceUnderscore(event.roomSc)
+              }}</span>
+            </td>
+            <td *ngIf="event.groupId == group">
+              <span *ngIf="event.lecturers && event.lecturers.lecturer">
+                <span
+                  *ngFor="
+                    let lecturer of convertToArray(event.lecturers.lecturer);
+                    let l = index;
+                    let first = first
+                  "
+                >
+                  <span *ngIf="checkDoubledLecturers(event, lecturer, l)">
+                    <span *ngIf="!first">, </span
+                    ><span *ngIf="lecturer.lecturerTitle"
+                      >{{ lecturer.lecturerTitle }} </span
+                    >{{ lecturer.lecturerLastname }}
+                  </span>
+                </span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-item>
+  </span>
+</ion-list>
+<br /><br />

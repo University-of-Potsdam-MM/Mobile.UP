@@ -1,7 +1,214 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>practice</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="loadData(true)"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
+    </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.practice.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [value]="activeSegment">
+      <ion-segment-button value="search" (click)="activeSegment = 'search'">
+        <ion-label>{{ "button.search" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        value="favorites"
+        (click)="activeSegment = 'favorites'"
+      >
+        <ion-label>
+          {{ "button.favorites" | translate }}
+          <ion-badge
+            *ngIf="isLoadedFavorites && allFavorites.length > 0"
+            slot="end"
+            mode="ios"
+            >{{ allFavorites.length }}</ion-badge
+          >
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="query"
+      [placeholder]="'placeholder.search' | translate"
+      (ionChange)="filterItems(query)"
+      debounce="750"
+    >
+    </ion-searchbar>
+    <ion-button
+      *ngIf="activeSegment === 'favorites'"
+      fill="clear"
+      slot="end"
+      (click)="clearAllFavorites()"
+      [disabled]="allFavorites.length === 0"
+    >
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content
+  class="ion-no-padding"
+  (ionScrollStart)="onScrollListener()"
+  [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'"
+>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="loadData($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <p
+    *ngIf="!isLoaded && activeSegment === 'search'"
+    style="text-align: center"
+    class="ion-padding"
+  >
+    <ion-spinner name="dots"></ion-spinner>
+  </p>
+
+  <div *ngIf="isLoaded && displayedList.length == 0">
+    <app-hint-box
+      *ngIf="error == null"
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="hints.text.noResults-hint"
+    ></app-hint-box>
+    <app-network-error-hint
+      *ngIf="error && activeSegment === 'search'"
+    ></app-network-error-hint>
+  </div>
+
+  <div *ngIf="isLoaded && activeSegment === 'favorites'">
+    <div *ngIf="displayedFavorites.length == 0">
+      <app-hint-box
+        hintTypeI18nKey="hints.type.hint"
+        hintTextI18nKey="hints.text.noFavorites"
+      ></app-hint-box>
+    </div>
+    <ion-list class="favList">
+      <div *ngFor="let ADS of displayedFavorites; let i = index">
+        <ion-item-sliding>
+          <ion-item
+            button
+            (click)="itemSelected(ADS)"
+            [ngClass]="{'partner': ADS.partner!='0'}"
+          >
+            <ion-label>
+              <h3 class="ion-text-wrap">{{ADS.title}}</h3>
+              <ion-grid>
+                <ion-row>
+                  <ion-col
+                    ><p [ngSwitch]="ADS.art" style="color: gray">
+                      <span *ngSwitchCase="'1'"
+                        >{{ "page.practice.item.praktika" | translate }}</span
+                      ><span *ngSwitchCase="'2'"
+                        >{{ "page.practice.item.student" | translate }}</span
+                      ><span *ngSwitchCase="'3'"
+                        >{{ "page.practice.item.graduate" | translate }}</span
+                      ><span *ngSwitchCase="'4'"
+                        >{{ "page.practice.item.thesis" | translate }}</span
+                      >
+                    </p></ion-col
+                  >
+                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"
+                    ><p style="color: gray">{{ADS.firm}}</p></ion-col
+                  >
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+            <ion-note *ngIf="translate.currentLang === 'de'"
+              >{{ADS.date | date:'dd.MM.yy'}}</ion-note
+            >
+            <ion-note *ngIf="translate.currentLang !== 'de'"
+              >{{ADS.date | date:'MM/dd/yy'}}</ion-note
+            >
+          </ion-item>
+
+          <ion-item-options slot="end">
+            <ion-item-option
+              color="secondary"
+              class="removeFavButton"
+              button
+              (click)="removeFavorite(ADS)"
+            >
+              <!-- <ion-icon name="star-outline"></ion-icon> -->
+              <span class="notUnderlined"
+                >{{ "button.remove" | translate }}</span
+              >
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
+  </div>
+
+  <div *ngIf="isLoaded && activeSegment === 'search'">
+    <ion-list>
+      <div *ngFor="let ADS of displayedList; let i = index">
+        <ion-item-sliding #slidingItem>
+          <ion-item
+            button
+            (click)="itemSelected(ADS)"
+            [ngClass]="{'partner': ADS.partner!='0'}"
+          >
+            <ion-label>
+              <h3 class="ion-text-wrap">{{ADS.title}}</h3>
+              <ion-grid>
+                <ion-row>
+                  <ion-col
+                    ><p style="color: gray" [ngSwitch]="ADS.art">
+                      <span *ngSwitchCase="'1'"
+                        >{{ "page.practice.item.praktika" | translate }}</span
+                      ><span *ngSwitchCase="'2'"
+                        >{{ "page.practice.item.student" | translate }}</span
+                      ><span *ngSwitchCase="'3'"
+                        >{{ "page.practice.item.graduate" | translate }}</span
+                      ><span *ngSwitchCase="'4'"
+                        >{{ "page.practice.item.thesis" | translate }}</span
+                      >
+                    </p></ion-col
+                  >
+                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"
+                    ><p style="color: gray">{{ADS.firm}}</p></ion-col
+                  >
+                </ion-row>
+              </ion-grid>
+            </ion-label>
+            <ion-note *ngIf="translate.currentLang === 'de'"
+              >{{ADS.date | date:'dd.MM.yy'}}</ion-note
+            >
+            <ion-note *ngIf="translate.currentLang !== 'de'"
+              >{{ADS.date | date:'MM/dd/yy'}}</ion-note
+            >
+          </ion-item>
+
+          <ion-item-options slot="end">
+            <ion-item-option
+              color="primary"
+              button
+              (click)="makeFavorite(ADS, slidingItem)"
+            >
+              <!-- <ion-icon name="star"></ion-icon> -->
+              <span class="notUnderlined">{{ "button.fav" | translate }}</span>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>

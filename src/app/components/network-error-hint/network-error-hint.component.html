@@ -1,1 +1,27 @@
-<p>network-error-hint works!</p>
+<ion-card [ngClass]="error ? 'hasErrorDetails' : ''">
+  <ion-card-header>
+    {{ "hints.type.hint" | translate }}
+  </ion-card-header>
+
+  <ion-card-content class="ion-text-center">
+    <ng-container *ngIf="hasInternet">{{
+      "alert.httpErrorStatus.generic" | translate
+    }}</ng-container>
+    <ng-container *ngIf="!hasInternet">{{
+      "alert.noInternetConnection" | translate
+    }}</ng-container>
+
+    <div *ngIf="showError" align="left">
+      <br />
+      <p>{{ error.message }}</p>
+    </div>
+  </ion-card-content>
+</ion-card>
+<div align="right" *ngIf="error" class="linkItem" (click)="showErrorDetails()">
+  <ion-label *ngIf="!showError">{{
+    "alert.httpErrorStatus.moreInformation" | translate
+  }}</ion-label>
+  <ion-label *ngIf="showError">{{
+    "alert.httpErrorStatus.lessInformation" | translate
+  }}</ion-label>
+</div>

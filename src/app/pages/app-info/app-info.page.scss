@@ -1,0 +1,16 @@
+.sysInfo {
+  font-size: smaller;
+
+  ion-item {
+    font-size: smaller;
+  }
+
+  ion-item.sysHeader {
+    font-size: medium;
+  }
+}
+
+.link {
+  color: var(--ion-color-primary);
+  text-decoration: underline;
+}

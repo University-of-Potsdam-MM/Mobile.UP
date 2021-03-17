@@ -465,7 +465,8 @@
   "launchNavigator": {
     "headerText": "Auswahl merken?",
     "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
-    "dialogHeaderText": "App zur Navigation auswählen..."
+    "dialogHeaderText": "App zur Navigation auswählen...",
+    "destination": "Ziel"
   },
   "hints": {
     "type": {

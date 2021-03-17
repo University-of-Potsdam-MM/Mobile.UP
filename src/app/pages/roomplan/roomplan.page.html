@@ -1,7 +1,126 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>roomplan</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="refreshRoom()"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
+    </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content
+  class="ion-no-padding"
+  (swipe)="campusTabComponent.handleSwipeEvent($event)"
+>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="refreshRoom($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
+
+  <ng-template #noRoomsFoundTemplate>
+    <app-hint-box
+      *ngIf="!error"
+      hintTextI18nKey="page.roomplan.no_rooms_hintText"
+      hintTypeI18nKey="hints.type.hint"
+    ></app-hint-box>
+    <app-network-error-hint *ngIf="error"></app-network-error-hint>
+  </ng-template>
+
+  <ng-template #roomsFoundTemplate>
+    <ion-list>
+      <div *ngFor="let house of housesFound">
+        <ion-item button (click)="expandHouse(house.lbl)">
+          <ion-label class="ion-no-margin">
+            <h2>
+              <b>{{ "words.house" | translate }} {{house.lbl}}</b>
+              <ion-badge color="primary">
+                {{house.rooms.length}}
+                <span *ngIf="house.rooms.length == 1"
+                  >{{ "words.booking" | translate }}</span
+                >
+                <span *ngIf="house.rooms.length > 1"
+                  >{{ "words.bookings" | translate }}</span
+                >
+              </ion-badge>
+            </h2>
+          </ion-label>
+          <ion-icon
+            [name]="!house.expanded ? 'caret-forward' : 'caret-down'"
+            slot="end"
+          ></ion-icon>
+        </ion-item>
+        <div *ngIf="house.expanded">
+          <div *ngFor="let room of house.rooms">
+            <ion-item button (click)="expandRoom(house.lbl,room.lbl)">
+              <ion-label class="ion-no-margin">
+                <h2 *ngIf="room.lbl">
+                  {{room.lbl}}<ion-badge *ngIf="room.events" color="primary"
+                    >{{room.events.length}}</ion-badge
+                  >
+                </h2>
+              </ion-label>
+              <ion-icon
+                [name]="!room.expanded ? 'caret-forward' : 'caret-down'"
+                slot="end"
+              ></ion-icon>
+            </ion-item>
+            <div *ngIf="room.expanded && room.events">
+              <ion-item margin-left *ngFor="let event of room.events">
+                <ion-label class="ion-text-wrap">
+                  <u>
+                    <b *ngIf="translate.currentLang === 'de'"
+                      >{{event.startTime | date:'HH:mm'}} - {{event.endTime |
+                      date:'HH:mm'}} {{ "words.clock" | translate }}</b
+                    >
+                    <b *ngIf="translate.currentLang !== 'de'"
+                      >{{event.startTime | date:'h:mm a'}} - {{event.endTime |
+                      date:'h:mm a'}} {{ "words.clock" | translate }}</b
+                    >
+                  </u>
+                  <br />
+
+                  <i>{{event.lbl}}</i>
+                  <br />
+                  <p *ngFor="let person of event.persons">
+                    <ion-badge color="primary">{{person}}</ion-badge>
+                  </p>
+                </ion-label>
+              </ion-item>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </ng-template>
+
+  <p
+    *ngIf="!isLoaded || (housesFound.length == 0 && error == null && !requestProcessed)"
+    style="text-align: center"
+  >
+    <ion-spinner name="dots"></ion-spinner>
+  </p>
+
+  <ng-container
+    *ngIf="housesFound.length == 0 && requestProcessed;
+                then noRoomsFoundTemplate; else roomsFoundTemplate"
+  >
+  </ng-container>
+</ion-content>

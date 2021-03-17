@@ -1,1 +1,8 @@
-<p>footer-disclaimer works!</p>
+<ion-item id="footerTitle" class="toolbar-background" lines="none" scrollable>
+  <ion-icon *ngIf="iconName" [name]="iconName" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <div *ngIf="disclaimerReference" align="center">
+      {{ disclaimerReference | translate }}
+    </div>
+  </ion-label>
+</ion-item>

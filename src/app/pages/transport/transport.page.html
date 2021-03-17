@@ -1,7 +1,104 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>transport</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-button
+      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      (click)="loadTransport(true)"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
+    </ion-button>
+    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>{{ "page.transport.title" | translate }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content
+  class="ion-no-padding"
+  (swipe)="campusTabComponent.handleSwipeEvent($event)"
+>
+  <ion-refresher
+    *ngIf="platform.is('ios') || platform.is('android')"
+    slot="fixed"
+    (ionRefresh)="loadTransport($event)"
+  >
+    <ion-refresher-content
+      pullingIcon="refresh"
+      refreshingSpinner="dots"
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <app-network-error-hint *ngIf="error"></app-network-error-hint>
+
+  <div align="center" *ngIf="isLoaded && departures && departures[0]">
+    <ion-item-divider>
+      <ion-label *ngIf="departures[0].stop" class="ion-text-wrap">
+        {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-list *ngFor="let dep of departures">
+      <ion-item>
+        <ion-icon
+          slot="start"
+          *ngIf="dep.Product.catOut.trim() == 'Bus'"
+          src="./assets/icon/bus.svg"
+        ></ion-icon>
+        <ion-icon
+          slot="start"
+          *ngIf="dep.Product.catOut.trim() == 'RB'"
+          src="./assets/icon/bahn.svg"
+        ></ion-icon>
+        <ion-icon
+          slot="start"
+          *ngIf="dep.Product.catOut.trim() == 'S'"
+          src="./assets/icon/s-bahn.svg"
+        ></ion-icon>
+        <ion-label class="ion-text-wrap">
+          <h2 *ngIf="dep.name">{{ dep.name }}</h2>
+          <p *ngIf="dep.direction">
+            {{ dep.direction }}<span *ngIf="dep.track && !dep.rtTrack"
+              ><br />{{ "page.transport.track" | translate}}: {{ dep.track
+              }}</span
+            ><span *ngIf="dep.track && dep.rtTrack"
+              ><br />{{ "page.transport.track" | translate}}: {{ dep.rtTrack
+              }}</span
+            >
+          </p>
+        </ion-label>
+        <ion-badge *ngIf="!dep.cancelled" style="font-weight: 300" slot="end">
+          <span *ngIf="translate.currentLang === 'de'"
+            >{{ dep.time | moment:'HH:mm' }}</span
+          >
+          <span *ngIf="translate.currentLang !== 'de'"
+            >{{ dep.time | moment:'h:mm a' }}</span
+          >
+        </ion-badge>
+        <ion-badge *ngIf="dep.cancelled" slot="end" class="cancelled"
+          >{{ "page.transport.cancelled" | translate}}</ion-badge
+        >
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll *ngIf="!isEnd" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <app-footer-disclaimer
+      disclaimerReference="page.transport.disclaimer"
+    ></app-footer-disclaimer>
+  </ion-toolbar>
+</ion-footer>
