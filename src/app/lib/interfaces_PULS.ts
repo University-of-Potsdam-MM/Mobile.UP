@@ -31,7 +31,7 @@ export interface ILecturers {
   lecturer: ILecturer[] | ILecturer;
 }
 
-export interface IEvent {
+export interface IEvent_PULS {
   eventId: string;
   groupId: string;
   group: string;
@@ -52,7 +52,7 @@ export interface IEvent {
 }
 
 export interface IEvents {
-  event: IEvent[];
+  event: IEvent_PULS[];
 }
 
 export interface ICourse {

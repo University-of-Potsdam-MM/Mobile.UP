@@ -102,7 +102,7 @@
           <ion-item
             button
             (click)="itemSelected(ADS)"
-            [ngClass]="{'partner': ADS.partner!='0'}"
+            [ngClass]="{'partner': ADS.partner !== 0 }"
           >
             <ion-label>
               <h3 class="ion-text-wrap">{{ADS.title}}</h3>
@@ -121,7 +121,7 @@
                       >
                     </p></ion-col
                   >
-                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"
+                  <ion-col *ngIf="ADS.firm != ''"
                     ><p style="color: gray">{{ADS.firm}}</p></ion-col
                   >
                 </ion-row>
@@ -160,7 +160,7 @@
           <ion-item
             button
             (click)="itemSelected(ADS)"
-            [ngClass]="{'partner': ADS.partner!='0'}"
+            [ngClass]="{'partner': ADS.partner !== 0}"
           >
             <ion-label>
               <h3 class="ion-text-wrap">{{ADS.title}}</h3>
@@ -179,7 +179,7 @@
                       >
                     </p></ion-col
                   >
-                  <ion-col *ngIf="ADS.firm != ''; else unknown_filed"
+                  <ion-col *ngIf="ADS.firm != ''"
                     ><p style="color: gray">{{ADS.firm}}</p></ion-col
                   >
                 </ion-row>

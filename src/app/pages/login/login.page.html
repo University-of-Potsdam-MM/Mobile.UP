@@ -35,7 +35,7 @@
                   type="text"
                   [placeholder]="'placeholder.username' | translate"
                   name="id"
-                  [formControl]="loginForm.controls['username']"
+                  formControlName="username"
                   required
                 ></ion-input>
               </ion-item>
@@ -47,7 +47,7 @@
                   type="password"
                   [placeholder]="'placeholder.password' |translate"
                   name="password"
-                  [formControl]="loginForm.controls['password']"
+                  formControlName="password"
                   required
                 ></ion-input>
               </ion-item>

@@ -17,6 +17,6 @@ export class HintBoxComponent {
   secondHintTextI18nKey: string;
 
   @Input()
-  disableTextCentering: boolean;
+  disableTextCentering: string;
   constructor(public translate: TranslateService) {}
 }

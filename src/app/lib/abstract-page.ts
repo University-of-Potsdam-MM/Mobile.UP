@@ -2,11 +2,12 @@ import { ISession } from '../services/login-service/interfaces';
 import { ConnectionService } from '../services/connection/connection.service';
 import { UserSessionService } from '../services/user-session/user-session.service';
 import { Injector, Type } from '@angular/core';
-import { StaticInjectorService } from './static-injector';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController, Platform } from '@ionic/angular';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { WebIntentService } from '../services/web-intent/web-intent.service';
+import { StaticInjectorService } from './static-injector';
 import { isEmptyObject } from './util';
 
 export interface IPageOptions {
@@ -29,7 +30,7 @@ export interface IPageOptions {
  * https://robferguson.org/blog/2018/09/28/ionic-3-component-inheritance/
  */
 export abstract class AbstractPage {
-  logger: Logger;
+  // logger: Logger;
   session: ISession;
 
   pageReady: Promise<void>;
@@ -42,16 +43,16 @@ export abstract class AbstractPage {
   protected activatedRoute: ActivatedRoute;
   protected menu: MenuController;
   protected navCtrl: NavController;
-  protected loggingService: LoggingService;
+  // protected loggingService: LoggingService;
   protected router: Router;
   protected webIntent: WebIntentService;
 
   protected constructor(pageOptions?: IPageOptions) {
     const injector: Injector = StaticInjectorService.getInjector();
 
-    this.loggingService = injector.get<LoggingService>(
-      LoggingService as Type<LoggingService>
-    );
+    // this.loggingService = injector.get<LoggingService>(
+    //   LoggingService as Type<LoggingService>
+    // );
     this.router = injector.get<Router>(Router as Type<Router>);
     this.connection = injector.get<ConnectionService>(
       ConnectionService as Type<ConnectionService>
@@ -73,7 +74,7 @@ export abstract class AbstractPage {
     );
     this.platform = injector.get<Platform>(Platform as Type<Platform>);
 
-    this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
+    // this.logger = this.loggingService.getLogger('[' + this.router.url + ']');
 
     if (pageOptions) {
       this.processOptions(pageOptions);
@@ -83,11 +84,11 @@ export abstract class AbstractPage {
     // implementing this one
     this.pageReady = new Promise((resolve, reject) => {
       this.pageReadyResolve = () => {
-        this.logger.info('page is now ready');
+        // this.logger.info('page is now ready');
         resolve();
       };
       this.pageReadyReject = (error) => {
-        this.logger.error(`page is not ready: ${error}`);
+        // this.logger.error(`page is not ready: ${error}`);
         reject();
       };
     });
@@ -113,7 +114,7 @@ export abstract class AbstractPage {
    * @param params {any} the params that should be handled
    */
   handleQueryParams(params: any) {
-    this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`);
+    // this.logger.info(`Did not handle queryParams: '${JSON.stringify(params)}'`);
   }
 
   /**
@@ -122,7 +123,7 @@ export abstract class AbstractPage {
    * if there is none;
    */
   requireNetwork(necessary?) {
-    this.logger.debug('requireNetwork');
+    // this.logger.debug('requireNetwork');
     this.connection.checkOnline(true, necessary);
   }
 
@@ -131,7 +132,7 @@ export abstract class AbstractPage {
    * @desc tests for existing session and sends user to LoginPage in case none is found
    */
   async requireSession(optional?) {
-    this.logger.debug('requireSession');
+    // this.logger.debug('requireSession');
 
     this.session = await this.sessionProvider.getSession();
     if (!this.session && !optional) {

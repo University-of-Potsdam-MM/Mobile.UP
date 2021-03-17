@@ -10,7 +10,7 @@ import {
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { IBibSession } from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { Storage } from '@capacitor/storage';
 
 @Component({
@@ -21,19 +21,18 @@ export class LibraryPwChangePage implements OnInit {
   @Input() header;
   @Input() endpoint;
   changeForm: FormGroup;
-  logger: Logger;
+  // logger: Logger;
   pwVisibility = 'password';
 
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private alertService: AlertService,
-    private loggingService: LoggingService
+    private alertService: AlertService // private loggingService: LoggingService
   ) {}
 
   ngOnInit() {
-    this.logger = this.loggingService.getLogger('[/library-pw-change]');
+    // this.logger = this.loggingService.getLogger('[/library-pw-change]');
 
     this.changeForm = this.formBuilder.group(
       {
@@ -105,7 +104,7 @@ export class LibraryPwChangePage implements OnInit {
           });
         },
         (error) => {
-          this.logger.error(error);
+          // this.logger.error(error);
           this.alertService.showToast('hints.text.failedPasswordChange');
         }
       );

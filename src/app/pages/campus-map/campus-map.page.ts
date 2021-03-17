@@ -37,6 +37,8 @@ export class CampusMapPage
   extends AbstractPage
   implements AfterViewInit, OnDestroy {
   @ViewChild(CampusTabComponent, { static: false })
+  campusTab: CampusTabComponent;
+
   @ViewChild(IonSearchbar, { static: false })
   ionSearchbar: IonSearchbar;
 
@@ -55,8 +57,6 @@ export class CampusMapPage
 
   geoLocationEnabled = false;
   watchPositionCallbackID;
-
-  campusTab: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,
@@ -90,7 +90,7 @@ export class CampusMapPage
    * @param params
    */
   handleQueryParams(params: CampusMapQueryParams) {
-    this.logger.entry('handleQueryParams', params);
+    // this.logger.entry('handleQueryParams', params);
     if (params.coordinates) {
       this.moveToPosition(params.coordinates);
     }
@@ -469,10 +469,10 @@ export class CampusMapPage
   moveToQueriedCampus(query: string | number) {
     const foundCampus = this.queryCampus(query);
     if (foundCampus) {
-      this.logger.info(`moving to campus ${foundCampus.pretty_name}`);
+      // this.logger.info(`moving to campus ${foundCampus.pretty_name}`);
       this.selectCampus(foundCampus);
     } else {
-      this.logger.error(`could not find campus by query: '${query}'`);
+      // this.logger.error(`could not find campus by query: '${query}'`);
     }
   }
 
@@ -489,7 +489,7 @@ export class CampusMapPage
    * @param coordinates
    */
   moveToPosition(coordinates: LatLngExpression) {
-    this.logger.entry('moveToPosition', coordinates);
+    // this.logger.entry('moveToPosition', coordinates);
     this.map.panTo(coordinates);
   }
 

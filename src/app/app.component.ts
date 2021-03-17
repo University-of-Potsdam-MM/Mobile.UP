@@ -25,6 +25,7 @@ import { ConnectionService } from './services/connection/connection.service';
 import jwt_decode from 'jwt-decode';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Storage } from '@capacitor/storage';
+import { CacheService } from 'ionic-cache';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,7 @@ export class AppComponent {
   bibLoggedIn = false;
   bibID;
 
-  logger: Logger;
+  // logger: Logger;
 
   triedToRefreshLogin = false;
 
@@ -56,11 +57,12 @@ export class AppComponent {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private alertService: AlertService,
-    private loggingService: LoggingService,
+    // private loggingService: LoggingService,
+    private cache: CacheService,
     private connectionService: ConnectionService
   ) {
     this.initializeApp();
-    this.logger = this.loggingService.getLogger('[/app-component]');
+    // this.logger = this.loggingService.getLogger('[/app-component]');
   }
 
   initializeApp() {
@@ -116,11 +118,11 @@ export class AppComponent {
               this.userSession.setSession(newSession);
             },
             (response) => {
-              this.logger.error(
-                'checkSessionValidity',
-                'error refreshing token',
-                response
-              );
+              // this.logger.error(
+              //   'checkSessionValidity',
+              //   'error refreshing token',
+              //   response
+              // );
 
               if (!this.triedToRefreshLogin) {
                 // refresh token expired; f.e. if user logs into a second device
@@ -129,27 +131,27 @@ export class AppComponent {
                   session.credentials.password &&
                   session.credentials.username
                 ) {
-                  this.logger.debug(
-                    'checkSessionValidity',
-                    're-authenticating...'
-                  );
+                  // this.logger.debug(
+                  //   'checkSessionValidity',
+                  //   're-authenticating...'
+                  // );
                   this.login
                     .oidcLogin(session.credentials, oidcObject)
                     .subscribe(
                       (sessionRes) => {
-                        this.logger.debug(
-                          'checkSessionValidity',
-                          're-authenticating successful'
-                        );
+                        // this.logger.debug(
+                        //   'checkSessionValidity',
+                        //   're-authenticating successful'
+                        // );
                         this.userSession.setSession(sessionRes);
                         session = sessionRes;
                       },
                       (error) => {
-                        this.logger.error(
-                          'checkSessionValidity',
-                          're-authenticating not possible',
-                          error
-                        );
+                        // this.logger.error(
+                        //   'checkSessionValidity',
+                        //   're-authenticating not possible',
+                        //   error
+                        // );
                         this.loginExpired();
                       }
                     );
@@ -308,7 +310,7 @@ export class AppComponent {
         text: this.translate.instant('button.ok'),
         handler: async () => {
           await Storage.remove({ key: 'bibSession' });
-          this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
+          // this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
           this.updateLoginStatus();
           this.navCtrl.navigateRoot('/home');
         },

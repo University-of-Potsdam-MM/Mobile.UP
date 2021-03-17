@@ -6,7 +6,7 @@ import {
 } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertButton, ToastButton } from '@ionic/core';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**
  * @type {IAlertOptions}
@@ -23,7 +23,7 @@ export interface IAlertOptions {
 export class AlertService {
   currentAlert = null;
   currentToast = null;
-  logger: Logger;
+  // logger: Logger;
 
   /**
    * @constructor
@@ -35,10 +35,9 @@ export class AlertService {
     private alertCtrl: AlertController,
     private translate: TranslateService,
     private navCtrl: NavController,
-    private toastCtrl: ToastController,
-    private loggingService: LoggingService
+    private toastCtrl: ToastController // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/alert-service]');
+    // this.logger = this.loggingService.getLogger('[/alert-service]');
   }
 
   /**
@@ -98,7 +97,7 @@ export class AlertService {
       await this.currentAlert.onDidDismiss();
       this.currentAlert = undefined;
     } else {
-      this.logger.debug('showAlert', 'another alert is shown');
+      // this.logger.debug('showAlert', 'another alert is shown');
     }
   }
 
@@ -150,7 +149,7 @@ export class AlertService {
       await this.currentToast.onDidDismiss();
       this.currentToast = undefined;
     } else {
-      this.logger.debug('showToast', 'another toast is shown');
+      // this.logger.debug('showToast', 'another toast is shown');
     }
   }
 }

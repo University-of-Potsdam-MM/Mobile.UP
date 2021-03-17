@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { convertToArray, isInArray } from 'src/app/lib/util';
 
 @Component({
@@ -17,16 +17,15 @@ export class CourseDataComponent implements OnInit {
   lecturerList = [];
   isLoaded;
   networkError;
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
-    private ws: WebserviceWrapperService,
-    private loggingService: LoggingService
+    private ws: WebserviceWrapperService // private loggingService: LoggingService
   ) {}
 
   ngOnInit() {
     this.getCourseData(this.course.courseId);
-    this.logger = this.loggingService.getLogger('[/course-data.component]');
+    // this.logger = this.loggingService.getLogger('[/course-data.component]');
   }
 
   getCourseData(localId) {
@@ -71,7 +70,7 @@ export class CourseDataComponent implements OnInit {
         },
         (error) => {
           this.networkError = true;
-          this.logger.error('getCourseData()', error);
+          // this.logger.error('getCourseData()', error);
         }
       );
   }

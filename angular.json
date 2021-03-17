@@ -19,6 +19,12 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "jquery",
+              "opening_hours",
+              "leaflet-search",
+              "xml2js"
+            ],
             "assets": [
               {
                 "glob": "**/*",

@@ -40,7 +40,7 @@ export class HomePage extends AbstractPage implements OnInit {
         }
       })
       .catch((error) => {
-        this.logger.error('ngOnInit', 'platformReady', error);
+        // this.logger.error('ngOnInit', 'platformReady', error);
       });
   }
 
@@ -97,10 +97,10 @@ export class HomePage extends AbstractPage implements OnInit {
         const remoteVersionString = remoteConfig.appVersion;
         const localVersionString = ConfigService.config.appVersion;
 
-        this.logger.debug(
-          'checkAppUpdate',
-          'App Version: ' + localVersionString + ' / ' + remoteVersionString
-        );
+        // this.logger.debug(
+        //   'checkAppUpdate',
+        //   'App Version: ' + localVersionString + ' / ' + remoteVersionString
+        // );
 
         const remoteVersionNumber = Number(
           remoteVersionString.split('.').join('')
@@ -179,21 +179,21 @@ export class HomePage extends AbstractPage implements OnInit {
     event.stopPropagation();
 
     this.modules[moduleName].selected = !this.modules[moduleName].selected;
-    this.logger.debug(
-      'toggleSelectedState',
-      `'${moduleName}' is now ${
-        this.modules[moduleName].selected ? 'selected' : 'not selected'
-      }`
-    );
+    // this.logger.debug(
+    //   'toggleSelectedState',
+    //   `'${moduleName}' is now ${
+    //     this.modules[moduleName].selected ? 'selected' : 'not selected'
+    //   }`
+    // );
 
     await Storage.set({
       key: 'moduleList',
       value: JSON.stringify(this.modules),
     }).then(() => {
-      this.logger.debug(
-        'toggleSelectedState',
-        `saved module list after toggling '${moduleName}'`
-      );
+      // this.logger.debug(
+      //   'toggleSelectedState',
+      //   `saved module list after toggling '${moduleName}'`
+      // );
     });
   }
 
@@ -214,7 +214,7 @@ export class HomePage extends AbstractPage implements OnInit {
       }
     }
 
-    this.logger.debug('buildDefaultModulesList');
+    // this.logger.debug('buildDefaultModulesList');
     return moduleList;
   }
 

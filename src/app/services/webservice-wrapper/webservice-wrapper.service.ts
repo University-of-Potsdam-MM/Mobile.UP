@@ -16,10 +16,11 @@ import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PU
 import { AlertService } from '../alert/alert.service';
 import { isEmptyObject } from '../../lib/util';
 import { switchMap } from 'rxjs/operators';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../connection/connection.service';
 import * as moment from 'moment';
 import { Storage } from '@capacitor/storage';
+import { CacheService } from 'ionic-cache';
 
 /**
  * creates the httpParams for a request to the rooms api
@@ -124,26 +125,26 @@ export class WebserviceWrapperService {
     ) => {
       const stringResponse = JSON.stringify(response);
       if (stringResponse.length > 30000) {
-        this.logger.debug(
-          'responseCallback',
-          `calling '${wsName}': `,
-          stringResponse.substring(0, 30000)
-        );
-        this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
+        // this.logger.debug(
+        //   'responseCallback',
+        //   `calling '${wsName}': `,
+        //   stringResponse.substring(0, 30000)
+        // );
+        // this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
       } else {
-        this.logger.debug(
-          'responseCallback',
-          `calling '${wsName}': `,
-          response
-        );
-        this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
+        // this.logger.debug(
+        //   'responseCallback',
+        //   `calling '${wsName}': `,
+        //   response
+        // );
+        // this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
       }
       return response;
     },
     // by default in case of an error the error will be passed on
     errorCallback: async (error, wsName, usingUpdatedApiManager) => {
-      this.logger.error('errorCallback', `calling '${wsName}': `, error);
-      this.logger.error('USING NEW API MANAGER: ' + usingUpdatedApiManager);
+      // this.logger.error('errorCallback', `calling '${wsName}': `, error);
+      // this.logger.error('USING NEW API MANAGER: ' + usingUpdatedApiManager);
       await Storage.set({
         key: 'latestWebserviceError',
         value: JSON.stringify(error),
@@ -465,31 +466,31 @@ export class WebserviceWrapperService {
     },
   };
 
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private http: HttpClient,
     private alertService: AlertService,
     private connectionService: ConnectionService,
-    private loggingService: LoggingService
+    private cache: CacheService // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
+    // this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
   }
 
   pulsResponseCallback(response, wsName) {
     const stringResponse = JSON.stringify(response);
     if (stringResponse && stringResponse.length > 30000) {
-      this.logger.debug(
-        'pulsResponseCallback',
-        `calling '${wsName}': `,
-        stringResponse.substring(0, 30000)
-      );
+      // this.logger.debug(
+      //   'pulsResponseCallback',
+      //   `calling '${wsName}': `,
+      //   stringResponse.substring(0, 30000)
+      // );
     } else {
-      this.logger.debug(
-        'pulsResponseCallback',
-        `calling '${wsName}': `,
-        response
-      );
+      // this.logger.debug(
+      //   'pulsResponseCallback',
+      //   `calling '${wsName}': `,
+      //   response
+      // );
     }
 
     // PULS simply responds with "no user rights" if credentials are incorrect
@@ -511,7 +512,7 @@ export class WebserviceWrapperService {
    */
   private getDefinition(name: string) {
     if (!this.webservices[name]) {
-      this.logger.error('getDefinition', `no webservice named ${name} defined`);
+      // this.logger.error('getDefinition', `no webservice named ${name} defined`);
     }
     const ws = this.webservices[name];
     for (const k in this.defaults) {
@@ -538,14 +539,14 @@ export class WebserviceWrapperService {
     const ws = this.getDefinition(webserviceName);
 
     if (!ConfigService.config.webservices.endpoint[webserviceName]) {
-      this.logger.error('call', `no endpoint defined for '${webserviceName}'`);
+      // this.logger.error('call', `no endpoint defined for '${webserviceName}'`);
     }
 
     if (!ConfigService.config.webservices.endpoint[webserviceName].url) {
-      this.logger.error(
-        'call',
-        `no url defined for endpoint '${webserviceName}'`
-      );
+      // this.logger.error(
+      //   'call',
+      //   `no url defined for endpoint '${webserviceName}'`
+      // );
     }
 
     // shortcut for less repetition
@@ -585,10 +586,10 @@ export class WebserviceWrapperService {
       cachingOptions.dontCache === true
     ) {
       // if caching is not desired for this endpoint we just return the observable itself
-      this.logger.debug(
-        'call',
-        `returning '${webserviceName}' without caching`
-      );
+      // this.logger.debug(
+      //   'call',
+      //   `returning '${webserviceName}' without caching`
+      // );
       return wrapperObservable;
     }
 
@@ -623,12 +624,12 @@ export class WebserviceWrapperService {
       ConfigService.config.webservices.endpoint[webserviceName].cachingTTL ||
       undefined;
 
-    this.logger.debug(
-      'call',
-      `returning '${webserviceName}' with caching, options: ${JSON.stringify(
-        cachingOptions
-      )}`
-    );
+    // this.logger.debug(
+    //   'call',
+    //   `returning '${webserviceName}' with caching, options: ${JSON.stringify(
+    //     cachingOptions
+    //   )}`
+    // );
 
     if (this.connectionService.checkOnline()) {
       return from(
@@ -654,17 +655,19 @@ export class WebserviceWrapperService {
       return from(
         Promise.all([
           cachingOptions.forceRefreshGroup
-            ? this.logger.debug(
-                'call',
-                'not clearing cache, since there is no internet connection!'
-              )
-            : Promise.resolve(),
+            ? null
+            : // this.logger.debug(
+              //     'call',
+              //     'not clearing cache, since there is no internet connection!'
+              //   )
+              Promise.resolve(),
           cachingOptions.forceRefresh
-            ? this.logger.debug(
-                'call',
-                'not clearing cache, since there is no internet connection!'
-              )
-            : Promise.resolve(),
+            ? null
+            : // this.logger.debug(
+              //     'call',
+              //     'not clearing cache, since there is no internet connection!'
+              //   )
+              Promise.resolve(),
         ])
       ).pipe(
         switchMap(() =>

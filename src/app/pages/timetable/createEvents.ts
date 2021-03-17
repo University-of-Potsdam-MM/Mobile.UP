@@ -1,7 +1,8 @@
 import { Frequency, RRule, Weekday } from 'rrule';
 import * as moment from 'moment';
-import { ICourse, IEvent } from 'src/app/lib/interfaces_PULS';
+import { ICourse, IEvent_PULS } from 'src/app/lib/interfaces_PULS';
 import { convertToArray } from 'src/app/lib/util';
+import { IEvent } from 'ionic2-calendar/calendar';
 
 export interface IEventRules {
   begin: RRule;
@@ -14,7 +15,7 @@ export interface IEventObject {
   endTime: Date;
   title: string;
   courseDetails: ICourse;
-  eventDetails: IEvent;
+  eventDetails: IEvent_PULS;
   color: string;
 }
 
@@ -89,7 +90,7 @@ function pulsToUTC(date, time, second = '00') {
  * @param tzid Id of timezone to be used
  * @returns eventrules
  */
-function createEventRules(event: IEvent): IEventRules {
+function createEventRules(event: IEvent_PULS): IEventRules {
   if (!rhythmMapping[event.rhythm]) {
     throw new Error(
       `[createRule]: Event ${event.eventId}: Unknown rhythm: ${event.rhythm}`
@@ -142,9 +143,9 @@ function createEventRules(event: IEvent): IEventRules {
  * @param tzid Id of timezone to be used
  * @returns IEventSource
  */
-export function createEventSource(studentCourses: ICourse[]): IEventSource {
+export function createEventSource(studentCourses: ICourse[]): IEvent[] {
   // the eventSource we will be returning, actually the main result of this function
-  const eventSource: IEventSource = new Array<IEventObject>();
+  const eventSource: IEvent[] = new Array<IEvent>();
 
   for (const c of studentCourses) {
     if (c && c.events && c.events.event) {
@@ -181,12 +182,13 @@ export function createEventSource(studentCourses: ICourse[]): IEventSource {
 
             eventSource.push({
               id: e.eventId,
+              allDay: false,
               title: c.courseName,
               startTime: begin[i],
               endTime: end[i],
               courseDetails: c,
               eventDetails: e,
-            } as IEventObject);
+            } as IEvent);
           }
         } catch (error) {
           console.log(

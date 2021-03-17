@@ -25,14 +25,14 @@
         <p *ngIf="!item.unknownState">
           <span *ngIf="item.state" style="color: green"
             >{{ "page.opening-hours.open" | translate }}<span
-              *ngIf="openUntil(i) != ''"
+              *ngIf="openUntil() != ''"
               >,</span
             >
             {{ openUntil() }}</span
           >
           <span *ngIf="!item.state" style="color: red"
             >{{ "page.opening-hours.closed" | translate }}<span
-              *ngIf="closedUntil(i) != ''"
+              *ngIf="closedUntil() != ''"
               >,</span
             >
             {{ closedUntil() }}</span

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { WebIntentService } from 'src/app/services/web-intent/web-intent.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { contains } from 'src/app/lib/util';
 
 @Component({
@@ -15,15 +15,14 @@ export class DetailedOpeningModalPage implements OnInit {
   itv = [];
   every_week_is_same;
   comment;
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private modalCtrl: ModalController,
     public translate: TranslateService,
-    private webIntent: WebIntentService,
-    private loggingService: LoggingService
+    private webIntent: WebIntentService // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/detailed-opening-modal]');
+    // this.logger = this.loggingService.getLogger('[/detailed-opening-modal]');
   }
 
   ngOnInit() {

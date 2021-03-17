@@ -110,7 +110,7 @@ export class GradesPage extends AbstractPage {
         (error) => {
           this.loadingGrades = false;
           this.networkError = true;
-          this.logger.error('getGrades()', error);
+          // this.logger.error('getGrades()', error);
         }
       );
 

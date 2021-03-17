@@ -3,7 +3,7 @@ import { IModule, ISetting } from '../../lib/interfaces';
 import { TranslateService } from '@ngx-translate/core';
 import { Platform, AlertController } from '@ionic/angular';
 import { SettingsService } from '../settings/settings.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import * as Constants from '../../services/settings/settings_config';
 import { Storage } from '@capacitor/storage';
 import { Browser } from '@capacitor/browser';
@@ -13,16 +13,15 @@ import { AppLauncher } from '@capacitor/app-launcher';
   providedIn: 'root',
 })
 export class WebIntentService {
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private translate: TranslateService,
     private platform: Platform,
     private settingsProvider: SettingsService,
-    private alertCtrl: AlertController,
-    private loggingService: LoggingService
+    private alertCtrl: AlertController // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/web-intent-service]');
+    // this.logger = this.loggingService.getLogger('[/web-intent-service]');
   }
 
   /**
@@ -187,12 +186,12 @@ export class WebIntentService {
             }
 
             setting.value = decision;
-            this.logger.debug(
-              'saveSettings',
-              'saved setting',
-              setting,
-              decision
-            );
+            // this.logger.debug(
+            //   'saveSettings',
+            //   'saved setting',
+            //   setting,
+            //   decision
+            // );
             Storage.set({
               key: 'settings.' + setting.key,
               value: JSON.stringify(setting),

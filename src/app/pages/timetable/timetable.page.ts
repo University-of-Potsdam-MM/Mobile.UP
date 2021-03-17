@@ -13,6 +13,7 @@ import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { convertToArray } from 'src/app/lib/util';
+import { IEvent } from 'ionic2-calendar/calendar';
 
 @Component({
   selector: 'app-timetable',
@@ -44,7 +45,7 @@ export class TimetablePage extends AbstractPage {
   courseToHex: string[][] = [];
   hexIndex = 0;
 
-  eventSource: IEventObject[] = [];
+  eventSource: IEvent[] = [];
   noUserRights = false;
   isLoading = true;
 
@@ -64,10 +65,10 @@ export class TimetablePage extends AbstractPage {
     locale: 'de',
     startingDayWeek: 1,
     startingDayMonth: 1,
-    startHour: '8',
-    endHour: '20',
-    step: '40',
-    timeInterval: '120',
+    startHour: 8,
+    endHour: 20,
+    step: 40,
+    timeInterval: 120,
     showEventDetail: false,
     autoSelect: false,
     dateFormatter: undefined,
@@ -205,7 +206,7 @@ export class TimetablePage extends AbstractPage {
    *
    * @param event
    */
-  async eventSelected(event: IEventObject) {
+  async eventSelected(event: any) {
     if (this.calendarOptions.calendarMode !== 'month') {
       const eventModal = await this.modalCtrl.create({
         backdropDismiss: false,
@@ -355,21 +356,21 @@ export class TimetablePage extends AbstractPage {
                             )
                             .then(
                               () => {
-                                this.logger.debug(
-                                  'exportPrompt',
-                                  'deleted calendar'
-                                );
+                                // this.logger.debug(
+                                //   'exportPrompt',
+                                //   'deleted calendar'
+                                // );
                                 this.exportCalendar();
                               },
                               (error) => {
                                 this.alertService.showToast(
                                   'alert.calendar-export-fail'
                                 );
-                                this.logger.error(
-                                  'exportPrompt',
-                                  'calendar deletion',
-                                  error
-                                );
+                                // this.logger.error(
+                                //   'exportPrompt',
+                                //   'calendar deletion',
+                                //   error
+                                // );
                               }
                             );
                         } else {
@@ -450,7 +451,7 @@ export class TimetablePage extends AbstractPage {
     this.calendar.hasReadWritePermission().then(
       (result) => {
         if (result) {
-          this.logger.debug('exportCalendar', 'calendar access given');
+          // this.logger.debug('exportCalendar', 'calendar access given');
           const createCalendarOpts = this.calendar.getCreateCalendarOptions();
           createCalendarOpts.calendarName = calendarName
             ? calendarName
@@ -538,19 +539,19 @@ export class TimetablePage extends AbstractPage {
                         )
                         .then(
                           () => {
-                            this.logger.debug(
-                              'exportCalendar',
-                              'exported event'
-                            );
+                            // this.logger.debug(
+                            //   'exportCalendar',
+                            //   'exported event'
+                            // );
                             this.exportedEvents++;
                             fin();
                           },
                           (error) => {
-                            this.logger.error(
-                              'exportCalendar',
-                              'event creation',
-                              error
-                            );
+                            // this.logger.error(
+                            //   'exportCalendar',
+                            //   'event creation',
+                            //   error
+                            // );
                             this.exportedEvents++;
                             this.alertService.showToast(
                               'alert.calendar-event-fail'
@@ -571,17 +572,17 @@ export class TimetablePage extends AbstractPage {
               }
             },
             (error) => {
-              this.logger.error('exportCalendar', 'calendar creation', error);
+              // this.logger.error('exportCalendar', 'calendar creation', error);
               this.alertService.showToast('alert.calendar-export-fail');
             }
           );
         } else {
-          this.logger.error('exportCalendar', 'calendar access denied');
+          // this.logger.error('exportCalendar', 'calendar access denied');
           this.alertService.showToast('alert.permission-denied');
         }
       },
       (error) => {
-        this.logger.error('exportCalendar', 'cant check permissions', error);
+        // this.logger.error('exportCalendar', 'cant check permissions', error);
         this.alertService.showToast('alert.calendar-export-fail');
       }
     );

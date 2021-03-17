@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { WebIntentService } from '../web-intent/web-intent.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 
 import { Plugins } from '@capacitor/core';
 const { StartNavigationPlugin } = Plugins;
@@ -10,14 +10,13 @@ const { StartNavigationPlugin } = Plugins;
   providedIn: 'root',
 })
 export class NavigatorService {
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private translate: TranslateService,
-    private webIntent: WebIntentService,
-    private loggingService: LoggingService
+    private webIntent: WebIntentService // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger('[/navigator-service]');
+    // this.logger = this.loggingService.getLogger('[/navigator-service]');
   }
 
   public navigateToLatLong(latLong: number[]) {
@@ -30,7 +29,7 @@ export class NavigatorService {
           name: this.translate.instant('launchNavigator.destination'),
         },
         (error) => {
-          this.logger.error('navigateToLatLong', error);
+          // this.logger.error('navigateToLatLong', error);
           this.webIntent.permissionPromptWebsite(
             'https://maps.google.com/?q=' +
               String(latLong[0]) +

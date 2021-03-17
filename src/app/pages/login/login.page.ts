@@ -75,16 +75,16 @@ export class LoginPage extends AbstractPage {
         // now handle the Observable which hopefully contains a session
         session.subscribe(
           (sessionRes: any) => {
-            this.logger.debug(
-              'login',
-              `successfully executed. Token: ${sessionRes.token}`
-            );
+            // this.logger.debug(
+            //   'login',
+            //   `successfully executed. Token: ${sessionRes.token}`
+            // );
             this.sessionProvider.setSession(sessionRes).then(
               () => {
-                this.logger.debug('login', 'successfully saved login token');
+                // this.logger.debug('login', 'successfully saved login token');
               },
               (error) => {
-                this.logger.error('login', 'error saving login token', error);
+                // this.logger.error('login', 'error saving login token', error);
                 this.showAlert(ELoginErrors.UNKNOWN_ERROR);
               }
             );
@@ -99,14 +99,14 @@ export class LoginPage extends AbstractPage {
             }, 1000);
           },
           (error) => {
-            this.logger.error('login', 'getting session', error);
+            // this.logger.error('login', 'getting session', error);
             this.endLoading();
             this.showAlert(error.reason);
           }
         );
       } else {
         this.showAlert(ELoginErrors.UNKNOWN_ERROR);
-        this.logger.error('login', 'no session passed by login-provider');
+        // this.logger.error('login', 'no session passed by login-provider');
       }
     }
   }
@@ -166,7 +166,7 @@ export class LoginPage extends AbstractPage {
 
   public abort() {
     this.modalCtrl.dismiss({ success: false }).then(undefined, () => {
-      this.logger.debug('abort', 'no overlay, using navCtrl');
+      // this.logger.debug('abort', 'no overlay, using navCtrl');
       this.navCtrl.navigateRoot('/home');
     });
   }

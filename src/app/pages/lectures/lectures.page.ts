@@ -39,7 +39,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     this.loadLectureTree();
   }
 
-  refreshLectureTree(refresher) {
+  refreshLectureTree(refresher?) {
     this.isRefreshing = true;
     this.refreshLectureComponent = true;
     this.query = '';

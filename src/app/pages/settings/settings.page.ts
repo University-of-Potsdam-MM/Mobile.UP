@@ -36,7 +36,7 @@ export class SettingsPage extends AbstractPage implements OnInit {
       const val = await this.getSettingValue(sett.key);
       if (val != null) {
         sett.value = val;
-        this.logger.debug('loadInitialSettings', 'loaded value for ', sett);
+        // this.logger.debug('loadInitialSettings', 'loaded value for ', sett);
       }
     }
   }
@@ -116,11 +116,11 @@ export class SettingsPage extends AbstractPage implements OnInit {
   async setSetting(setting: ISetting, value) {
     // mainly so the boolean setting does not get caught in a onChange loop by loading/setting/change/change/..
     if (!this.settings_initializes) {
-      this.logger.debug('setSettings', 'prevented save before load');
+      // this.logger.debug('setSettings', 'prevented save before load');
       return false;
     }
     setting.value = value;
-    this.logger.debug('saveSettings', 'saved setting', setting, value);
+    // this.logger.debug('saveSettings', 'saved setting', setting, value);
 
     await Storage.set({
       key: 'settings.' + setting.key,

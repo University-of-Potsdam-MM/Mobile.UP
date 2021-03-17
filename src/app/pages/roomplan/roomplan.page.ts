@@ -125,7 +125,7 @@ export class RoomplanPage extends AbstractPage {
    * @param refresher - DOM refresher element, passed for later closing
    * @returns {Promise<void>}
    */
-  refreshRoom(refresher) {
+  refreshRoom(refresher?) {
     this.getRoomInfo();
     if (refresher) {
       this.refresher = refresher;

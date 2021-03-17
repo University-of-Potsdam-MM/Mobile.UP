@@ -82,6 +82,7 @@ export interface IPerson {
   Keywords?: string;
   Contact_Information?: string;
   Absent_Message?: string;
+  expanded?: boolean;
 }
 
 /* ~~~ Mensa ~~~ */

@@ -162,7 +162,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
             this.getFees();
           },
           (error) => {
-            this.logger.error('loginUB()', error);
+            // this.logger.error('loginUB()', error);
 
             if (!loginCredentials) {
               this.endLoading();
@@ -204,7 +204,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     });
 
     Storage.remove({ key: 'bibSession' });
-    this.logger.debug('logoutUB()', 'successfully logged out ub-user');
+    // this.logger.debug('logoutUB()', 'successfully logged out ub-user');
   }
 
   getUser() {
@@ -226,7 +226,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.userLoaded = true;
         },
         (error) => {
-          this.logger.error('getUser()', error);
+          // this.logger.error('getUser()', error);
           this.userLoaded = true;
           this.userError = true;
         }
@@ -264,7 +264,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.prepareForm();
         },
         (error) => {
-          this.logger.error('getItems()', error);
+          // this.logger.error('getItems()', error);
           this.itemsLoaded = true;
           this.itemsError = true;
         }
@@ -294,7 +294,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.feesLoaded = true;
         },
         (error) => {
-          this.logger.error('getFees()', error);
+          // this.logger.error('getFees()', error);
           this.feesLoaded = true;
           this.feesError = true;
         }
@@ -346,7 +346,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.getItems();
         },
         (error) => {
-          this.logger.error('renewRequest()', error);
+          // this.logger.error('renewRequest()', error);
           const buttons: AlertButton[] = [
             { text: this.translate.instant('button.continue') },
           ];
@@ -397,7 +397,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           this.getItems();
         },
         (error) => {
-          this.logger.error('cancelRequest()', error);
+          // this.logger.error('cancelRequest()', error);
           const buttons: AlertButton[] = [
             { text: this.translate.instant('button.continue') },
           ];

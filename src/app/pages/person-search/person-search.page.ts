@@ -76,7 +76,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     if (sQuery && sQuery.trim() !== '' && sQuery.trim().length > 1) {
       this.response_received = false;
 
-      this.logger.debug('search', `searching for "${sQuery}"`);
+      // this.logger.debug('search', `searching for "${sQuery}"`);
 
       if (!this.session) {
         this.session = await this.sessionProvider.getSession();
@@ -125,7 +125,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
         this.noResults = true;
       }
     } else {
-      this.logger.debug('search', 'empty query');
+      // this.logger.debug('search', 'empty query');
       this.response_received = true;
       this.noResults = true;
     }
@@ -140,7 +140,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     for (const pers of this.personsFound) {
       const currentPerson = pers;
       if (currentPerson.Id === person.Id) {
-        currentPerson['expanded'] = !currentPerson['expanded'];
+        currentPerson.expanded = !currentPerson.expanded;
       }
     }
   }
@@ -281,13 +281,13 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
       this.session.credentials.password &&
       this.session.credentials.username
     ) {
-      this.logger.debug('refreshToken', 're-authenticating...');
+      // this.logger.debug('refreshToken', 're-authenticating...');
       const oidcObject = ConfigService.isApiManagerUpdated
         ? ConfigService.config.authorization.oidc_new
         : ConfigService.config.authorization.oidc;
       this.login.oidcLogin(this.session.credentials, oidcObject).subscribe(
         (sessionRes) => {
-          this.logger.debug('refreshToken', 're-authenticating successfull');
+          // this.logger.debug('refreshToken', 're-authenticating successfull');
           this.sessionProvider.setSession(sessionRes);
           this.session = sessionRes;
           if (searchAfterRefresh) {
@@ -298,11 +298,11 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
           }
         },
         (error) => {
-          this.logger.error(
-            'refreshToken',
-            're-authenticating not possible',
-            error
-          );
+          // this.logger.error(
+          //   'refreshToken',
+          //   're-authenticating not possible',
+          //   error
+          // );
         }
       );
     }

@@ -21,13 +21,14 @@ registerLocaleData(localeDe);
 registerLocaleData(localeEn);
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { WebserviceWrapperService } from './services/webservice-wrapper/webservice-wrapper.service';
-import { LoggingService } from 'ionic-logging-service';
-import { environment } from 'src/environments/environment';
+// import { LoggingService } from 'ionic-logging-service';
+// import { environment } from 'src/environments/environment';
 import { GridsterModule } from 'angular-gridster2';
-
-export function configureLogging(loggingService: LoggingService): () => void {
-  return () => loggingService.configure(environment.logging);
-}
+import { CacheModule } from 'ionic-cache';
+import { IonicStorageModule } from '@ionic/storage';
+// export function configureLogging(loggingService: LoggingService): () => void {
+//   return () => loggingService.configure(environment.logging);
+// }
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -83,6 +84,8 @@ export function initApiManagerStatus(config: ConfigService) {
         deps: [HttpClient],
       },
     }),
+    CacheModule.forRoot({ keyPrefix: 'cache-' }),
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     UPLoginProvider,
@@ -106,12 +109,12 @@ export function initApiManagerStatus(config: ConfigService) {
       deps: [ConfigService],
       multi: true,
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: configureLogging,
-      deps: [LoggingService],
-      multi: true,
-    },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: configureLogging,
+    //   deps: [LoggingService],
+    //   multi: true,
+    // },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
   ],

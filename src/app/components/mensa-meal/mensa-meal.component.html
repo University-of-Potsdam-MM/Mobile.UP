@@ -33,14 +33,15 @@
       <h2 *ngIf="meal.description">{{ meal.description }}</h2>
     </ion-label>
     <ion-icon
-      *ngIf="meal.prices || (allergen && allergen.length > 0)"
+      *ngIf="meal.prices || (meal.allergens && meal.allergens.length > 0)"
       [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'"
       slot="end"
     ></ion-icon>
   </ion-item>
   <ion-item
     *ngIf="
-      mealIsExpanded[i] && (meal.prices || (allergen && allergen.length > 0))
+      mealIsExpanded[i] &&
+      (meal.prices || (meal.allergens && meal.allergens.length > 0))
     "
     class="mealDescription"
   >

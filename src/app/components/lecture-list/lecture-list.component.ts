@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
@@ -25,15 +25,14 @@ export class LectureListComponent implements OnInit {
   networkError;
   isExpanded = [];
   isExpandedCourse = [];
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
-    private ws: WebserviceWrapperService,
-    private loggingService: LoggingService
+    private ws: WebserviceWrapperService // private loggingService: LoggingService
   ) {}
 
   ngOnInit() {
-    this.logger = this.loggingService.getLogger('[/lecture-list.component]');
+    // this.logger = this.loggingService.getLogger('[/lecture-list.component]');
 
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
@@ -58,7 +57,7 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error('ngOnInit() pulsGetLectureScheduleRoot', error);
+            // this.logger.error('ngOnInit() pulsGetLectureScheduleRoot', error);
           }
         );
     } else if (this.hasSubTree) {
@@ -75,10 +74,10 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error(
-              'ngOnInit() pulsGetLectureScheduleSubTree',
-              error
-            );
+            // this.logger.error(
+            //   'ngOnInit() pulsGetLectureScheduleSubTree',
+            //   error
+            // );
           }
         );
     } else {
@@ -95,10 +94,10 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error(
-              'ngOnInit() pulsGetLectureScheduleCourses',
-              error
-            );
+            // this.logger.error(
+            //   'ngOnInit() pulsGetLectureScheduleCourses',
+            //   error
+            // );
           }
         );
     }

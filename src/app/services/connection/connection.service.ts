@@ -2,23 +2,23 @@ import { Injectable } from '@angular/core';
 import { NavController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../alert/alert.service';
-import { Logger, LoggingService } from 'ionic-logging-service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConnectionService {
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private translate: TranslateService,
     private navCtrl: NavController,
     private alertService: AlertService,
-    private loggingService: LoggingService,
+    // private loggingService: LoggingService,
     private platform: Platform
   ) {
-    this.logger = this.loggingService.getLogger('[/connection-service]');
+    // this.logger = this.loggingService.getLogger('[/connection-service]');
   }
 
   /**
@@ -58,7 +58,7 @@ export class ConnectionService {
       }
     }
 
-    this.logger.debug('checkOnline', `is app connected? -> ${isOnline}`);
+    // this.logger.debug('checkOnline', `is app connected? -> ${isOnline}`);
     return isOnline;
   }
 }

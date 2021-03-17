@@ -125,7 +125,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                   }
                 },
                 (error) => {
-                  this.logger.error('searchLibrary XML parsing', error);
+                  // this.logger.error('searchLibrary XML parsing', error);
                   this.isLoaded = true;
                   if (infiniteScroll) {
                     infiniteScroll.target.complete();
@@ -305,7 +305,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
 
   async updateComplete(tmpLength, refresher) {
     if (tmpLength === this.updatedFavorites) {
-      this.logger.debug('updateComplete', 'updated favorites');
+      // this.logger.debug('updateComplete', 'updated favorites');
       this.allFavorites = this.sortFavorites(this.allFavorites);
       this.displayedFavorites = this.sortFavorites(this.allFavorites);
       this.isLoadedFavorites = true;
@@ -469,7 +469,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
                   (error) => {
                     this.allFavorites.push(tmpItem);
                     this.updatedFavorites++;
-                    this.logger.error('checkFavorites', 'XML parsing', error);
+                    // this.logger.error('checkFavorites', 'XML parsing', error);
                     this.updateComplete(tmp.length, refresher);
                   }
                 );
@@ -485,7 +485,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
           this.allFavorites.push(tmpItem);
           this.updatedFavorites++;
           this.updateComplete(tmp.length, refresher);
-          this.logger.debug('checkFavorites', 'no identifier or title found');
+          // this.logger.debug('checkFavorites', 'no identifier or title found');
         }
       }
     } else {

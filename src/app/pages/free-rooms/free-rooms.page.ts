@@ -117,7 +117,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    * @param refresher - DOM refresher element, passed for later closing
    * @returns {Promise<void>}
    */
-  refreshRoom(refresher) {
+  refreshRoom(refresher?) {
     this.getRoomInfo();
 
     if (refresher) {

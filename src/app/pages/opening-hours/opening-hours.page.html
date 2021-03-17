@@ -59,7 +59,7 @@
           detail
           *ngIf="item.state; else closedLocation"
           button
-          (click)="itemSelected(item, i)"
+          (click)="itemSelected(item)"
         >
           <ion-label>
             <h3>{{ item.name }}</h3>
@@ -83,7 +83,7 @@
           ></ion-icon>
         </ion-item>
         <ng-template #closedLocation>
-          <ion-item detail button (click)="itemSelected(item, i)">
+          <ion-item detail button (click)="itemSelected(item)">
             <ion-label>
               <h3>{{ item.name }}</h3>
               <p style="color: red">
@@ -108,7 +108,7 @@
         </ng-template>
       </ng-container>
       <ng-container *ngIf="item.unknownState">
-        <ion-item detail button (click)="itemSelected(item, i)">
+        <ion-item detail button (click)="itemSelected(item)">
           <ion-label>
             <h3>{{ item.name }}</h3>
             <p style="color: blue">

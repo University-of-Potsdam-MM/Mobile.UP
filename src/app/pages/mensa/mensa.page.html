@@ -88,10 +88,7 @@
   </ion-grid>
 
   <div *ngIf="isLoaded && !noMensaForLocation && !networkError">
-    <ion-list
-      lines="none"
-      [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' "
-    >
+    <ion-list lines="none">
       <app-mensa-meal
         *ngIf="!noMealsForDate"
         [meals]="displayedMeals"

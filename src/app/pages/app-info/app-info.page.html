@@ -65,7 +65,7 @@
       class="sysHeader"
       button
       (click)="showSysInfo = !showSysInfo"
-      *ngIf="deviceInfo && (deviceInfo.cordovaVersion || deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel)"
+      *ngIf="deviceInfo && (deviceInfo.appVersion || deviceInfo.osPlatform || deviceInfo.osVersion || deviceInfo.uuid || deviceInfo.deviceManufacturer || deviceInfo.deviceModel)"
     >
       <ion-label>
         <b>{{ "page.app-info.app" | translate }}</b>
