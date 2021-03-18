@@ -18,7 +18,7 @@
   }
 
   .selected {
-    border-bottom: 2px solid var(--ion-color-primary);
+    border-bottom: 1px solid var(--ion-color-primary);
     color: var(--ion-color-primary);
   }
 }
@@ -45,5 +45,5 @@ ion-col {
 }
 
 ion-header ion-toolbar.toolbar .toolbar-background {
-  --background: var(--ion-color-medium) !important;
+  --background: var(--ion-color-light-shade) !important;
 }

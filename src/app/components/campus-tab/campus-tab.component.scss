@@ -10,7 +10,7 @@ ion-grid {
   --padding-top: 18px;
 
   ion-icon {
-    color: #000;
+    color: var(--ion-color-dark);
   }
 }
 

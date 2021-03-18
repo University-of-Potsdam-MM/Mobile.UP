@@ -1,15 +1,15 @@
 ion-card {
-  border: 2px solid var(--ion-color-medium);
+  border: 2px solid var(--ion-color-light-shade);
 }
 
 ion-card-header {
   background-color: var(--ion-color-secondary);
-  color: #000;
+  color: var(--ion-color-dark);
   padding: 5px;
 }
 
 ion-card-content {
-  color: #000;
+  color: var(--ion-color-dark);
   margin: 0;
   padding: 5px !important;
 }
@@ -19,12 +19,12 @@ ion-card-content {
 }
 
 ion-label {
-  color: #808080;
+  color: var(--ion-color-medium);
   font-size: small;
   padding-right: 15px;
 }
 
 p {
-  color: #808080;
+  color: var(--ion-color-medium);
   font-size: small;
 }

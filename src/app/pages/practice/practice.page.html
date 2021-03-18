@@ -109,7 +109,10 @@
               <ion-grid>
                 <ion-row>
                   <ion-col
-                    ><p [ngSwitch]="ADS.art" style="color: gray">
+                    ><p
+                      [ngSwitch]="ADS.art"
+                      style="color: var(--ion-color-medium)"
+                    >
                       <span *ngSwitchCase="'1'"
                         >{{ "page.practice.item.praktika" | translate }}</span
                       ><span *ngSwitchCase="'2'"
@@ -122,7 +125,9 @@
                     </p></ion-col
                   >
                   <ion-col *ngIf="ADS.firm != ''"
-                    ><p style="color: gray">{{ADS.firm}}</p></ion-col
+                    ><p style="color: var(--ion-color-medium)">
+                      {{ADS.firm}}
+                    </p></ion-col
                   >
                 </ion-row>
               </ion-grid>
@@ -167,7 +172,10 @@
               <ion-grid>
                 <ion-row>
                   <ion-col
-                    ><p style="color: gray" [ngSwitch]="ADS.art">
+                    ><p
+                      style="color: var(--ion-color-medium)"
+                      [ngSwitch]="ADS.art"
+                    >
                       <span *ngSwitchCase="'1'"
                         >{{ "page.practice.item.praktika" | translate }}</span
                       ><span *ngSwitchCase="'2'"
@@ -180,7 +188,9 @@
                     </p></ion-col
                   >
                   <ion-col *ngIf="ADS.firm != ''"
-                    ><p style="color: gray">{{ADS.firm}}</p></ion-col
+                    ><p style="color: var(--ion-color-medium)">
+                      {{ADS.firm}}
+                    </p></ion-col
                   >
                 </ion-row>
               </ion-grid>

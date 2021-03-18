@@ -68,7 +68,9 @@
           [src]="module.customIcon"
         ></ion-icon>
         <!-- title with icon -->
-        <ion-label> {{ module.i18nKey | translate }} </ion-label>
+        <ion-label class="moduleLabel no-select">
+          {{ module.i18nKey | translate }}
+        </ion-label>
         <!-- favourite-state icon -->
         <ion-icon
           slot="end"

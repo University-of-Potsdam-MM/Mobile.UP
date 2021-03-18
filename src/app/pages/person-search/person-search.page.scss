@@ -6,7 +6,7 @@ ion-icon {
 }
 
 ion-item {
-  border-bottom: 1px solid #ededed !important;
+  border-bottom: 1px solid var(--ion-color-light-shade) !important;
 }
 
 ion-col {
@@ -24,7 +24,7 @@ ion-col {
 }
 
 .whiteFont {
-  color: #fff;
+  color: var(--ion-color-light);
 }
 
 ion-item.noborder {

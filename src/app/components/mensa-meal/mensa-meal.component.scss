@@ -18,7 +18,7 @@ ion-item ion-thumbnail {
 }
 
 ion-item {
-  border-bottom: 1px solid #ededed !important;
+  border-bottom: 1px solid var(--ion-color-light-shade) !important;
 
   ion-label {
     font-size: 80%;
@@ -32,11 +32,11 @@ ion-item.noborder {
 }
 
 .mealtitle {
-  color: #000;
+  color: var(--ion-color-dark);
   font-size: 80%;
 
   span {
-    color: #016c69;
+    color: var(--ion-color-custom-mensa);
     font-weight: bold;
   }
 }

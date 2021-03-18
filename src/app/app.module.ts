@@ -26,6 +26,9 @@ import { WebserviceWrapperService } from './services/webservice-wrapper/webservi
 import { GridsterModule } from 'angular-gridster2';
 import { CacheModule } from 'ionic-cache';
 import { IonicStorageModule } from '@ionic/storage';
+import { FormBuilder } from '@angular/forms';
+import { Calendar } from '@ionic-native/calendar/ngx';
+
 // export function configureLogging(loggingService: LoggingService): () => void {
 //   return () => loggingService.configure(environment.logging);
 // }
@@ -71,7 +74,7 @@ export function initApiManagerStatus(config: ConfigService) {
       backButtonIcon: 'chevron-back',
       backButtonText: '',
       mode: 'md',
-      rippleEffect: true,
+      rippleEffect: false,
     }),
     LeafletModule,
     AppRoutingModule,
@@ -90,7 +93,9 @@ export function initApiManagerStatus(config: ConfigService) {
   providers: [
     UPLoginProvider,
     ConfigService,
+    Calendar,
     WebserviceWrapperService,
+    FormBuilder,
     {
       provide: APP_INITIALIZER,
       useFactory: initConfig,

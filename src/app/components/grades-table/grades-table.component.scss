@@ -12,20 +12,20 @@
 }
 
 div.gradeTable {
-  background: #f2f2f2;
+  background: var(--ion-color-light-shade);
   font-size: small;
 }
 
 ion-col {
-  border-right: 1px solid #808080;
+  border-right: 1px solid var(--ion-color-medium);
 }
 
 ion-col.moduleHead {
-  border-top: 1px solid #808080;
+  border-top: 1px solid var(--ion-color-medium);
 }
 
 ion-col:first-child {
-  border-left: 1px solid #808080;
+  border-left: 1px solid var(--ion-color-medium);
 }
 
 ion-row.moduleGroupHead:first-child {
@@ -37,15 +37,15 @@ ion-row.moduleGroupHead:first-child {
 div.moduleGroup {
   ion-row {
     ion-col {
-      background: #f9f9f9;
-      border-bottom: 1px solid #808080;
+      background: var(--ion-color-light-shade);
+      border-bottom: 1px solid var(--ion-color-medium);
     }
   }
 
   div.examination {
     ion-row:first-child {
       ion-col {
-        border-top: 1px solid #808080;
+        border-top: 1px solid var(--ion-color-medium);
       }
     }
   }
@@ -54,11 +54,11 @@ div.moduleGroup {
 ion-row.moduleGroupHead:first-child,
 ion-row.moduleHead:first-child {
   ion-col {
-    border-top: 1px solid #808080;
+    border-top: 1px solid var(--ion-color-medium);
   }
 
   ion-col:first-child {
-    background: #f2f2f2;
+    background: var(--ion-color-light-shade);
     border-bottom: 0 none;
     border-left: 0 none;
     border-top: 0 none;
@@ -67,7 +67,7 @@ ion-row.moduleHead:first-child {
 
 ion-row.submoduleHead:first-child {
   ion-col:first-child {
-    background: #f2f2f2;
+    background: var(--ion-color-light-shade);
     border-bottom: 0 none;
     border-left: 0 none;
     border-top: 0 none;

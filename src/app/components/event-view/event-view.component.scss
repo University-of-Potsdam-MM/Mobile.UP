@@ -1,5 +1,5 @@
 ion-row.event {
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid var(--ion-color-light-shade);
 }
 
 ion-card {
@@ -13,7 +13,7 @@ ion-card {
   }
 
   h4 {
-    color: #000;
+    color: var(--ion-color-dark);
     font-size: 0.8rem;
     font-weight: 500;
     margin-bottom: 5px;

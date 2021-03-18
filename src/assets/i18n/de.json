@@ -289,7 +289,7 @@
     },
     "roomplan": {
       "title": "Raumplan",
-      "no_house": "Das gewählte Haus ist heute gantägig frei.",
+      "no_house": "Das gewählte Haus ist heute ganztägig frei.",
       "no_room": "Der gewählte Raum ist heute ganztägig frei.",
       "date": "Datum",
       "no_rooms_hintText": "Für diesen Tag ist kein Raumplan vorhanden."

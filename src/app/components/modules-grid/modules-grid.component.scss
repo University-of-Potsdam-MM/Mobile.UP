@@ -1,11 +1,10 @@
 gridster {
-  background-color: #fff;
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
+  background-color: var(--ion-item-background);
 }
 
 gridster-item {
   background-color: var(--ion-color-secondary);
+  margin: 0 !important;
 }
 
 .favoritesItem {

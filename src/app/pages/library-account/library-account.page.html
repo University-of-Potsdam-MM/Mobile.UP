@@ -220,19 +220,28 @@
             <ion-label class="ion-text-wrap">
               <h2 *ngIf="item.about">{{ item.about }}</h2>
 
-              <p *ngIf="item.status === 2" style="color: red">
+              <p
+                *ngIf="item.status === 2"
+                style="color: var(--ion-color-danger)"
+              >
                 {{ "page.library-account.ordered" | translate }}
                 <ng-container *ngIf="item.storage"
                   >({{ item.storage }})</ng-container
                 >
               </p>
-              <p *ngIf="item.status === 3" style="color: green">
+              <p
+                *ngIf="item.status === 3"
+                style="color: var(--ion-color-success)"
+              >
                 {{ "page.library-account.loaned" | translate }}
                 <ng-container *ngIf="item.storage"
                   >({{ item.storage }})</ng-container
                 >
               </p>
-              <p *ngIf="item.status === 4" style="color: red">
+              <p
+                *ngIf="item.status === 4"
+                style="color: var(--ion-color-danger)"
+              >
                 {{ "page.library-account.provided" | translate }}
                 <ng-container *ngIf="item.storage"
                   >({{ item.storage }})</ng-container

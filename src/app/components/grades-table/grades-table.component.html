@@ -247,7 +247,7 @@
                   *ngIf="
                     studyPerformance.status && studyPerformance.status == 'BE'
                   "
-                  style="color: green"
+                  style="color: var(--ion-color-success)"
                   >{{ studyPerformance.status }}</b
                 >
                 <b
@@ -255,14 +255,14 @@
                     studyPerformance.status &&
                     studyPerformance.status == ('NB' || 'EN')
                   "
-                  style="color: red"
+                  style="color: var(--ion-color-danger)"
                   >{{ studyPerformance.status }}</b
                 >
                 <b
                   *ngIf="
                     studyPerformance.status && studyPerformance.status == 'AN'
                   "
-                  style="color: orange"
+                  style="color: var(--ion-color-warning)"
                   >{{ studyPerformance.status }}</b
                 >
               </ion-col>

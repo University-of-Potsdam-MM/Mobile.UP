@@ -6,9 +6,9 @@ import { GradesPageRoutingModule } from './grades-routing.module';
 import { GradesPage } from './grades.page';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginModule } from '../login/login.import';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
+import { LoginModule } from '../login/login.import';
 
 @NgModule({
   imports: [

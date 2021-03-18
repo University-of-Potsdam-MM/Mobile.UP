@@ -63,7 +63,7 @@
         >
           <ion-label>
             <h3>{{ item.name }}</h3>
-            <p style="color: green">
+            <p style="color: var(--ion-color-success)">
               <ng-container
                 >{{ "page.opening-hours.open" | translate }}</ng-container
               >
@@ -86,7 +86,7 @@
           <ion-item detail button (click)="itemSelected(item)">
             <ion-label>
               <h3>{{ item.name }}</h3>
-              <p style="color: red">
+              <p style="color: var(--ion-color-danger)">
                 <ng-container
                   >{{ "page.opening-hours.closed" | translate }}</ng-container
                 >
@@ -111,7 +111,7 @@
         <ion-item detail button (click)="itemSelected(item)">
           <ion-label>
             <h3>{{ item.name }}</h3>
-            <p style="color: blue">
+            <p style="color: var(--ion-color-warning)">
               <ng-container
                 >{{ "page.opening-hours.unknown" | translate }}</ng-container
               >

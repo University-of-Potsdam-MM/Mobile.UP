@@ -18,7 +18,11 @@
       *ngIf="departmentName && departmentName !== ''"
       slot="end"
       size="small"
-      style="color: white; -webkit-margin-start: 0; margin-inline-start: 10px"
+      style="
+        color: var(--ion-color-light);
+        -webkit-margin-start: 0;
+        margin-inline-start: 10px;
+      "
       name="information-circle"
       (click)="webIntent.permissionPromptWebsite(departmentURL)"
     ></ion-icon>
@@ -79,7 +83,7 @@
       >
         <ion-icon
           slot="start"
-          style="color: darkred; -webkit-margin-end: 10px"
+          style="color: var(--ion-color-danger-shade); -webkit-margin-end: 10px"
           *ngIf="
             (item[0] && item[0].indexOf('ausgeliehen') != -1) ||
             item[0].indexOf('nicht') != -1 ||
@@ -89,7 +93,10 @@
         ></ion-icon>
         <ion-icon
           slot="start"
-          style="color: darkgreen; -webkit-margin-end: 10px"
+          style="
+            color: var(--ion-color-success-shade);
+            -webkit-margin-end: 10px;
+          "
           *ngIf="
             (item[0] &&
               departmentName &&
@@ -100,7 +107,10 @@
         ></ion-icon>
         <ion-icon
           slot="start"
-          style="color: darkgreen; -webkit-margin-end: 10px"
+          style="
+            color: var(--ion-color-success-shade);
+            -webkit-margin-end: 10px;
+          "
           *ngIf="
             !(
               (item[0] &&
@@ -156,7 +166,9 @@
         class="itemStatus"
       >
         <ion-label class="ion-text-wrap" style="margin-top: 0">
-          <span style="color: black; font-size: small">{{ item[1] }}</span>
+          <span style="color: var(--ion-color-dark); font-size: small">{{
+            item[1]
+          }}</span>
         </ion-label>
       </ion-item>
     </ng-container>

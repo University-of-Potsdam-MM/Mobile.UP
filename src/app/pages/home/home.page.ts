@@ -106,7 +106,7 @@ export class HomePage extends AbstractPage implements OnInit {
           remoteVersionString.split('.').join('')
         );
         const localVersionNumber = Number(
-          remoteVersionString.split('.').join('')
+          localVersionString.split('.').join('')
         );
 
         if (remoteVersionNumber > localVersionNumber) {

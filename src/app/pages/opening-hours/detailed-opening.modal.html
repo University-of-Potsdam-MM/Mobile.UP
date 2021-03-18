@@ -6,10 +6,7 @@
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title>{{ "page.opening-hours.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -23,14 +20,14 @@
         <h2>Status</h2>
 
         <p *ngIf="!item.unknownState">
-          <span *ngIf="item.state" style="color: green"
+          <span *ngIf="item.state" style="color: var(--ion-color-success)"
             >{{ "page.opening-hours.open" | translate }}<span
               *ngIf="openUntil() != ''"
               >,</span
             >
             {{ openUntil() }}</span
           >
-          <span *ngIf="!item.state" style="color: red"
+          <span *ngIf="!item.state" style="color: var(--ion-color-danger)"
             >{{ "page.opening-hours.closed" | translate }}<span
               *ngIf="closedUntil() != ''"
               >,</span
@@ -39,7 +36,7 @@
           >
         </p>
         <p *ngIf="item.unknownState">
-          <span style="color: blue"
+          <span style="color: var(--ion-color-warning)"
             >{{ "page.opening-hours.unknown" | translate }}</span
           >
         </p>

@@ -144,7 +144,7 @@ export class ModulesGridComponent implements OnInit {
    */
   resizeWrapper() {
     this.gridsterWrapperHeight =
-      this.gridster.curRowHeight * this.gridster.rows;
+      this.gridster.curRowHeight * this.gridster.rows + 10;
   }
 
   toggleEditingMode() {

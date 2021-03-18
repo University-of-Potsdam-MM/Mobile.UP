@@ -11,8 +11,8 @@
   <ion-list *ngIf="settings_initializes" class="ion-no-padding">
     <div *ngFor="let setting of settings" id="test_div">
       <div
+        class="settingsDiv"
         *ngIf="!(setting.mobileOnly && !(platform.is('ios') || platform.is('android')))"
-        style="border-bottom: solid #f4f4f4 2px !important"
       >
         <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
           <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>

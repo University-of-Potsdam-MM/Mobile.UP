@@ -104,7 +104,7 @@ ion-item {
 }
 
 .updateToast {
-  --button-color: #fff !important;
+  --button-color: var(--ion-color-light) !important;
 }
 
 .modalBackButton {
@@ -126,12 +126,29 @@ ion-item {
   margin: 0;
   min-width: 48px;
   text-transform: uppercase;
+
+  ion-icon {
+    color: var(--ion-color-dark) !important;
+    font-size: x-large;
+  }
 }
 
 .header-md::after,
 .tabs-md[tabsPlacement="top"] > .tabbar::after,
 .footer-md::before {
   background-image: none;
+}
+
+.gridster-column,
+.gridster-row {
+  border-bottom: 0 solid var(--ion-color-light) !important;
+  border-left: 0 solid var(--ion-color-light) !important;
+  border-right: 0 solid var(--ion-color-light) !important;
+  border-top: 0 solid var(--ion-color-light) !important;
+}
+
+.moduleLabel {
+  color: var(--ion-color-dark) !important;
 }
 
 // adjust global layout settings
@@ -145,7 +162,7 @@ ion-app.md [padding] .scroll-content {
 }
 
 ion-menu-button {
-  color: #000;
+  color: var(--ion-color-dark);
 }
 
 ion-segment-button {
@@ -153,13 +170,13 @@ ion-segment-button {
 }
 
 ion-back-button {
-  --color: #000 !important;
-  --ion-text-color: #000 !important;
+  --color: var(--ion-color-dark) !important;
+  --ion-text-color: var(--ion-color-dark) !important;
 }
 
 ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color),
 ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
-  color: #000 !important;
+  color: var(--ion-color-dark) !important;
 }
 
 ion-card {
@@ -185,7 +202,7 @@ ion-card {
   }
 
   .card-title {
-    color: #000;
+    color: var(--ion-color-dark);
     font-size: 1.7em;
     font-weight: bold;
     position: absolute;
@@ -194,7 +211,7 @@ ion-card {
   }
 
   .card-subtitle {
-    color: #000;
+    color: var(--ion-color-dark);
     font-size: 1.2em;
     position: absolute;
     top: 65%;
@@ -208,9 +225,9 @@ ion-card {
   padding: 0 !important;
 
   em {
-    background: #000;
+    background: var(--ion-color-dark);
     bottom: 0;
-    color: #fff;
+    color: var(--ion-color-light);
     display: block;
     font-size: 0.8em;
     padding: 1px;
@@ -240,7 +257,7 @@ ion-content.disableScrolling {
 
   .monthview-datetable td.monthview-current {
     background-color: var(--ion-color-light) !important;
-    color: #000 !important;
+    color: var(--ion-color-dark) !important;
   }
 
   .calendar-event-inner {
