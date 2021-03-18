@@ -7,6 +7,10 @@ ion-item-divider {
   --padding-end: 5px;
 }
 
+ion-row {
+  text-align: center;
+}
+
 // Custom radio buttons
 form {
   &#smileys {
@@ -14,11 +18,10 @@ form {
       appearance: none;
       border: 0 none;
       cursor: pointer;
-      filter: brightness(0%);
+      filter: invert(79%) sepia(2%) saturate(1083%) hue-rotate(191deg)
+        brightness(50%) contrast(79%);
       height: 30px;
       margin: 0 5px;
-      transition: border 0.2s ease;
-      transition: all 0.2s ease;
       width: 30px;
 
       &:hover,

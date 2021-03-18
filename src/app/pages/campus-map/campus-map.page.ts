@@ -81,6 +81,7 @@ export class CampusMapPage
       minZoom: 14,
       maxZoom: 18,
     }).addTo(map);
+
     return map;
   }
 
@@ -123,9 +124,6 @@ export class CampusMapPage
       this.loadMapData(this.map);
       this.addLeafletSearch(this.map);
     }
-    // trigger pageReadyResolve, need to wait a second until map is really ready
-    // TODO: find out why this timeout is necessary and find better solution
-    setTimeout(() => this.pageReadyResolve(), 1000);
   }
 
   ngOnDestroy() {
@@ -312,6 +310,7 @@ export class CampusMapPage
       },
     });
     map.addControl(this.searchControl);
+    map.invalidateSize();
   }
 
   search() {
@@ -580,5 +579,6 @@ export class CampusMapPage
 
     // add control with overlays to map
     L.control.layers({}, overlays).addTo(map);
+    map.invalidateSize();
   }
 }

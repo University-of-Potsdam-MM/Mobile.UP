@@ -20,7 +20,7 @@
         [name]="module.icon"
       ></ion-icon>
       <ion-icon
-        class="moduleIcon centered"
+        class="moduleIcon svgThatShouldChangeColor centered"
         color="primary"
         *ngIf="module.customIcon"
         [src]="module.customIcon"
@@ -63,6 +63,7 @@
           [name]="module.icon"
         ></ion-icon>
         <ion-icon
+          class="svgThatShouldChangeColor"
           *ngIf="module.customIcon"
           slot="start"
           [src]="module.customIcon"

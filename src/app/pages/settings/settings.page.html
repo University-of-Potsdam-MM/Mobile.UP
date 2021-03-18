@@ -15,7 +15,11 @@
         *ngIf="!(setting.mobileOnly && !(platform.is('ios') || platform.is('android')))"
       >
         <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
-          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+          <ion-icon
+            color="primary"
+            name="{{ setting.icon }}"
+            slot="start"
+          ></ion-icon>
           <ion-label class="ion-text-wrap"
             >{{ "page.settings.setting." + setting.key + ".lbl" | translate
             }}</ion-label
@@ -41,7 +45,11 @@
           *ngIf="getSettingType(setting) !== 'boolean' && getSettingType(setting) !== 'placeholder'"
           lines="none"
         >
-          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+          <ion-icon
+            color="primary"
+            name="{{ setting.icon }}"
+            slot="start"
+          ></ion-icon>
           <ion-label class="ion-text-wrap"
             >{{ "page.settings.setting." + setting.key + ".lbl" | translate
             }}</ion-label

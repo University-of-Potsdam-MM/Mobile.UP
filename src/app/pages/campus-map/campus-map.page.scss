@@ -1,3 +1,9 @@
 ion-searchbar {
   padding-right: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+  #map {
+    filter: invert(0.85);
+  }
+}

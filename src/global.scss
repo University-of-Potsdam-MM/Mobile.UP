@@ -75,6 +75,24 @@ ion-item {
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  .svgThatShouldChangeColor {
+    filter: invert(51%) sepia(64%) saturate(652%) hue-rotate(175deg)
+      brightness(90%) contrast(91%);
+  }
+
+  .leaflet-marker-shadow {
+    display: none;
+  }
+}
+
+ion-header,
+ion-toolbar.toolbar,
+ion-item-divider,
+.toolbar-background {
+  --background: var(--ion-toolbar-background) !important;
+}
+
 .leaflet-control-search .search-tooltip {
   background-color: transparent;
   bottom: calc(env(safe-area-inset-bottom)) !important;
