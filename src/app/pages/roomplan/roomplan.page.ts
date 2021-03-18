@@ -22,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class RoomplanPage extends AbstractPage {
   @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
 
   // params
   default_house: IHouse;
@@ -39,8 +40,6 @@ export class RoomplanPage extends AbstractPage {
   current_location: ICampus;
   error: HttpErrorResponse;
   requestProcessed = false;
-
-  campusTabComponent: CampusTabComponent;
 
   constructor(
     private alertService: AlertService,

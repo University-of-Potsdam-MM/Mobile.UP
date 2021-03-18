@@ -15,6 +15,13 @@
   </ion-toolbar>
   <ion-toolbar>
     <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+    <ion-item-divider
+      *ngIf="isLoaded && departures && departures[0] && departures[0].stop"
+    >
+      <ion-label class="ion-text-wrap">
+        {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
+      </ion-label>
+    </ion-item-divider>
   </ion-toolbar>
 </ion-header>
 
@@ -40,27 +47,21 @@
   <app-network-error-hint *ngIf="error"></app-network-error-hint>
 
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
-    <ion-item-divider>
-      <ion-label *ngIf="departures[0].stop" class="ion-text-wrap">
-        {{ "page.transport.journeys" | translate}}: {{departures[0].stop}}
-      </ion-label>
-    </ion-item-divider>
-
     <ion-list *ngFor="let dep of departures">
       <ion-item>
         <ion-icon
           slot="start"
-          *ngIf="dep.Product.catOut.trim() == 'Bus'"
+          *ngIf="dep.Product.catOut.trim() === 'Bus'"
           src="./assets/icon/bus.svg"
         ></ion-icon>
         <ion-icon
           slot="start"
-          *ngIf="dep.Product.catOut.trim() == 'RB'"
+          *ngIf="(dep.Product.catOut.trim() === 'RB') || (dep.Product.catOut.trim() === 'RE')"
           src="./assets/icon/bahn.svg"
         ></ion-icon>
         <ion-icon
           slot="start"
-          *ngIf="dep.Product.catOut.trim() == 'S'"
+          *ngIf="dep.Product.catOut.trim() === 'S'"
           src="./assets/icon/s-bahn.svg"
         ></ion-icon>
         <ion-label class="ion-text-wrap">

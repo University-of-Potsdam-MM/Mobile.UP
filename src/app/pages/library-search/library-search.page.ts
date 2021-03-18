@@ -341,7 +341,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     }
 
     if (tmp && tmp.length > 0) {
-      for (const tmpItem of tmp.length) {
+      for (const tmpItem of tmp) {
         const ident = convertToArray(tmpItem.identifier);
         let favQuery = '';
 

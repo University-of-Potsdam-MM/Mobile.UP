@@ -17,6 +17,8 @@ import { convertToArray, isInArray } from 'src/app/lib/util';
 })
 export class MensaPage extends AbstractPage {
   @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
+
   filterKeywords = [];
   currentDate = moment();
   selectedDate = moment();
@@ -40,8 +42,6 @@ export class MensaPage extends AbstractPage {
   networkError;
   campus: ICampus;
   noMensaForLocation = false;
-
-  campusTabComponent: CampusTabComponent;
 
   constructor(
     private translate: TranslateService,

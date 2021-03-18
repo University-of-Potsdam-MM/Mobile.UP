@@ -2,6 +2,7 @@
   <ion-item
     *ngIf="checkConditions(i)"
     button
+    class="mensaMealItem"
     (click)="expandMeal(i)"
     [ngClass]="{ noborder: mealIsExpanded[i] }"
   >
@@ -33,7 +34,10 @@
       <h2 *ngIf="meal.description">{{ meal.description }}</h2>
     </ion-label>
     <ion-icon
-      *ngIf="meal.prices || (meal.allergens && meal.allergens.length > 0)"
+      *ngIf="
+        (meal.prices && (meal.prices.student || meal.prices.guest)) ||
+        (meal.allergens && meal.allergens.length > 0)
+      "
       [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'"
       slot="end"
     ></ion-icon>
@@ -41,7 +45,8 @@
   <ion-item
     *ngIf="
       mealIsExpanded[i] &&
-      (meal.prices || (meal.allergens && meal.allergens.length > 0))
+      ((meal.prices && (meal.prices.student || meal.prices.guest)) ||
+        (meal.allergens && meal.allergens.length > 0))
     "
     class="mealDescription"
   >

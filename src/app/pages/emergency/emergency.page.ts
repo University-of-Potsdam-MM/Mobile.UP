@@ -18,7 +18,7 @@ export class EmergencyPage extends AbstractPage implements OnInit {
   jsonPath = '../../assets/json/emergency';
   displayedList: Array<EmergencyCall> = [];
   defaultList: Array<EmergencyCall> = [];
-  isLoaded;
+  isLoaded = true;
   query = '';
 
   constructor(
@@ -31,6 +31,8 @@ export class EmergencyPage extends AbstractPage implements OnInit {
   }
 
   ngOnInit() {
+    this.defaultList = ConfigService.emergency;
+    this.initializeList();
     this.loadEmergencyCalls();
   }
 

@@ -44,7 +44,7 @@
         <ion-col size="auto">
           <ion-button
             expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'"
+            [ngClass]="calMode == 'month' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
             (click)="changeCalendarMode('month')"
           >
@@ -54,7 +54,7 @@
         <ion-col size="auto">
           <ion-button
             expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'"
+            [ngClass]="calMode == 'week' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
             (click)="changeCalendarMode('week')"
           >
@@ -64,7 +64,7 @@
         <ion-col size="auto">
           <ion-button
             expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'"
+            [ngClass]="calMode == 'day' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
             (click)="changeCalendarMode('day')"
           >
@@ -124,7 +124,7 @@
     <calendar
       class="calendar"
       [eventSource]="eventSource"
-      [calendarMode]="'day'"
+      [calendarMode]="calMode"
       [currentDate]="calendarOptions.currentDate"
       [locale]="calendarOptions.locale"
       [startingDayWeek]="calendarOptions.startingDayWeek"

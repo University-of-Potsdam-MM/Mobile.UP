@@ -1,7 +1,15 @@
 .tableHead {
-  background-color: var(--ion-color-dark);
+  background-color: var(--ion-color-secondary);
   border-radius: 0;
-  color: var(--ion-color-light);
+  color: var(--ion-color-dark);
+}
+
+.tableHeadFirstCol {
+  border-left: 0 none !important;
+}
+
+.tableHeadLastCol {
+  border-right: 0 none !important;
 }
 
 .creditPoints {
@@ -11,9 +19,19 @@
   font-size: smaller;
 }
 
+.creditPointsGrid {
+  border: 0 none;
+}
+
 div.gradeTable {
-  background: var(--ion-color-light-shade);
+  background: var(--ion-color-light);
   font-size: small;
+}
+
+ion-col.creditPoints,
+ion-row.creditPoints {
+  border-left: 0 none !important;
+  border-right: 0 none !important;
 }
 
 ion-col {
@@ -37,7 +55,7 @@ ion-row.moduleGroupHead:first-child {
 div.moduleGroup {
   ion-row {
     ion-col {
-      background: var(--ion-color-light-shade);
+      background: var(--ion-color-light);
       border-bottom: 1px solid var(--ion-color-medium);
     }
   }
@@ -58,7 +76,7 @@ ion-row.moduleHead:first-child {
   }
 
   ion-col:first-child {
-    background: var(--ion-color-light-shade);
+    background: var(--ion-color-light);
     border-bottom: 0 none;
     border-left: 0 none;
     border-top: 0 none;
@@ -67,7 +85,7 @@ ion-row.moduleHead:first-child {
 
 ion-row.submoduleHead:first-child {
   ion-col:first-child {
-    background: var(--ion-color-light-shade);
+    background: var(--ion-color-light);
     border-bottom: 0 none;
     border-left: 0 none;
     border-top: 0 none;

@@ -13,7 +13,7 @@ import * as dLoop from 'delayed-loop';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { convertToArray } from 'src/app/lib/util';
-import { IEvent } from 'ionic2-calendar/calendar';
+import { IEvent, CalendarMode } from 'ionic2-calendar/calendar';
 
 @Component({
   selector: 'app-timetable',
@@ -58,9 +58,10 @@ export class TimetablePage extends AbstractPage {
   // title string that should be displayed for every mode, eg. "24.12.2018"
   currentTitle = '';
 
+  calMode: CalendarMode = 'day';
+
   // options for ionic2-calendar component
   calendarOptions = {
-    calendarMode: 'day',
     currentDate: new Date(),
     locale: 'de',
     startingDayWeek: 1,
@@ -192,7 +193,7 @@ export class TimetablePage extends AbstractPage {
    * @param mode
    */
   changeCalendarMode(mode) {
-    this.calendarOptions.calendarMode = mode;
+    this.calMode = mode;
     if (this.translate.currentLang === 'de') {
       this.calendarOptions.locale = 'de';
     } else {
@@ -207,7 +208,7 @@ export class TimetablePage extends AbstractPage {
    * @param event
    */
   async eventSelected(event: any) {
-    if (this.calendarOptions.calendarMode !== 'month') {
+    if (this.calMode !== 'month') {
       const eventModal = await this.modalCtrl.create({
         backdropDismiss: false,
         component: EventModalPage,
@@ -228,12 +229,12 @@ export class TimetablePage extends AbstractPage {
    */
   timeSelected(time) {
     if (
-      this.calendarOptions.calendarMode === 'month' &&
+      this.calMode === 'month' &&
       time &&
       time.events &&
       time.events.length > 0
     ) {
-      this.calendarOptions.calendarMode = 'day';
+      this.calMode = 'day';
     }
   }
 

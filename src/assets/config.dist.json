@@ -30,7 +30,7 @@
       "icon": "bonfire",
       "selected": false,
       "hide": false,
-      "additionalUrl": "https://www.uni-potsdam.de/de/veranstaltungen"
+      "url": "https://www.uni-potsdam.de/de/veranstaltungen"
     },
     "feedback": {
       "componentName": "feedback",

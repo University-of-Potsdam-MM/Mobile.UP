@@ -144,11 +144,11 @@ const routes: Routes = [
         (m) => m.LibraryAccountPageModule
       ),
   },
-  {
-    path: 'events',
-    loadChildren: () =>
-      import('./pages/events/events.module').then((m) => m.EventsPageModule),
-  },
+  // {
+  //   path: 'events',
+  //   loadChildren: () =>
+  //     import('./pages/events/events.module').then((m) => m.EventsPageModule),
+  // },
 ];
 
 @NgModule({

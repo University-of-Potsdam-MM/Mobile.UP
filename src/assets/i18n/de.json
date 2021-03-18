@@ -132,7 +132,7 @@
       "allResults": "Liste aller Ergebnisse",
       "toc": "Inhaltsverzeichnis"
     },
-    "events": {
+    "event": {
       "title": "Events",
       "showEventDetails": "Details anzeigen",
       "hideEventDetails": "Details ausblenden",

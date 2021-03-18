@@ -37,7 +37,8 @@ export class MensaMealComponent implements OnInit {
 
   expandMeal(i) {
     if (
-      this.meals[i].prices ||
+      (this.meals[i].prices &&
+        (this.meals[i].prices.student || this.meals[i].prices.guest)) ||
       (this.meals[i].allergens && this.meals[i].allergens.length > 0)
     ) {
       if (this.mealIsExpanded[i]) {

@@ -7,12 +7,14 @@ import { Storage } from '@capacitor/storage';
 export class UserSessionService {
   constructor() {}
 
-  getSession(): Promise<any> {
-    return Storage.get({ key: 'session' });
+  async getSession(): Promise<any> {
+    const sessionObj = await Storage.get({ key: 'session' });
+    const session = JSON.parse(sessionObj.value);
+    return session;
   }
 
   setSession(session): Promise<any> {
-    return Storage.set({ key: 'session', value: session });
+    return Storage.set({ key: 'session', value: JSON.stringify(session) });
   }
 
   removeSession(): Promise<any> {

@@ -31,12 +31,12 @@
     class="creditPoints ion-no-padding"
     nowrap
   >
-    <ion-col class="ion-text-left" size="8">
+    <ion-col class="creditPoints ion-text-left" size="8">
       <b *ngIf="ac.description">
         {{ ac.description }}
       </b>
     </ion-col>
-    <ion-col class="ion-text-right">
+    <ion-col class="creditPoints ion-text-right">
       <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
         {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
       </b>
@@ -121,7 +121,7 @@
 
 <ion-grid class="gradeTable">
   <ion-row class="tableHead ion-no-padding" nowrap>
-    <ion-col size="8">
+    <ion-col class="tableHeadFirstCol" size="8">
       {{ "page.grades.bezeichnung" | translate }}
     </ion-col>
     <ion-col>
@@ -130,7 +130,7 @@
     <ion-col>
       {{ "page.grades.pv" | translate }}
     </ion-col>
-    <ion-col>
+    <ion-col class="tableHeadLastCol">
       {{ "page.grades.lp" | translate }}
     </ion-col>
   </ion-row>
@@ -350,12 +350,12 @@
     class="creditPoints ion-no-padding"
     nowrap
   >
-    <ion-col class="ion-text-left" size="8">
+    <ion-col class="creditPoints ion-text-left" size="8">
       <b *ngIf="ac.description">
         {{ ac.description }}
       </b>
     </ion-col>
-    <ion-col class="ion-text-right">
+    <ion-col class="creditPoints ion-text-right">
       <b *ngIf="ac.actualCreditPoints && ac.targetCreditPoints">
         {{ ac.actualCreditPoints }}/{{ ac.targetCreditPoints }}
       </b>

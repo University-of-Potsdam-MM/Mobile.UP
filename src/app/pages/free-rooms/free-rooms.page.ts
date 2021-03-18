@@ -20,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class FreeRoomsPage extends AbstractPage implements OnInit {
   @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
 
   // bindings
   select_timeslot: string;
@@ -34,8 +35,6 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   current_location: ICampus;
   error: HttpErrorResponse;
   no_timeslot = false;
-
-  campusTabComponent: CampusTabComponent;
 
   constructor(
     private ws: WebserviceWrapperService,
