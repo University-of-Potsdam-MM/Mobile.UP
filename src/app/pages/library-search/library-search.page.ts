@@ -540,6 +540,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       header: this.translate.instant('alert.title.clearAll'),
       message: this.translate.instant('alert.deleteAllFavs'),
       backdropDismiss: false,
+      mode: 'ios',
       buttons: [
         {
           text: this.translate.instant('button.no'),

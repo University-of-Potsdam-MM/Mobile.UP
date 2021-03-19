@@ -39,6 +39,7 @@ export class WebIntentService {
       const alert = await this.alertCtrl.create({
         header: this.translate.instant('alert.redirect-website'),
         backdropDismiss: false,
+        mode: 'ios',
         buttons: [
           {
             text: this.translate.instant('button.cancel'),
@@ -98,6 +99,7 @@ export class WebIntentService {
               const alert = await this.alertCtrl.create({
                 header: this.translate.instant('alert.redirect-website-app'),
                 backdropDismiss: false,
+                mode: 'ios',
                 buttons: [
                   {
                     text: this.translate.instant('button.cancel'),
@@ -146,6 +148,7 @@ export class WebIntentService {
       header: this.translate.instant('page.settings.setting.appRedirect.lbl'),
       message: this.translate.instant('alert.redirect-first-start'),
       backdropDismiss: false,
+      mode: 'ios',
       inputs: [
         {
           name: 'Website',

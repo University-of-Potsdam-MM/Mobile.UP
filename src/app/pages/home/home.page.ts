@@ -118,8 +118,9 @@ export class HomePage extends AbstractPage implements OnInit {
             message: this.translate.instant('alert.app-update'),
             duration: 3000,
             position: 'top',
-            // color: 'primary',
+            color: 'primary',
             cssClass: 'updateToast',
+            mode: 'ios',
             buttons: [
               {
                 side: 'end',
