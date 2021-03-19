@@ -55,6 +55,7 @@
 </ion-header>
 
 <ion-content
+  [scrollEvents]="true"
   (ionScrollStart)="onScrollListener()"
   [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'"
 >

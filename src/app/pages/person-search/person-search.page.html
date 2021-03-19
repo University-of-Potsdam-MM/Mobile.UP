@@ -16,7 +16,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding" (ionScrollStart)="onScrollListener()">
+<ion-content
+  class="ion-no-padding"
+  [scrollEvents]="true"
+  (ionScrollStart)="onScrollListener()"
+>
   <p *ngIf="!response_received && query.length > 0" style="text-align: center">
     <ion-spinner name="dots"></ion-spinner>
   </p>

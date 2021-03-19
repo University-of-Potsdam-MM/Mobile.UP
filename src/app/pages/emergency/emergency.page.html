@@ -25,7 +25,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding" (ionScrollStart)="onScrollListener()">
+<ion-content
+  class="ion-no-padding"
+  [scrollEvents]="true"
+  (ionScrollStart)="onScrollListener()"
+>
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"

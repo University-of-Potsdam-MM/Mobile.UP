@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalController } from '@ionic/angular';
 import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { Keyboard } from '@capacitor/keyboard';
+import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-opening-hours',
   templateUrl: './opening-hours.page.html',
   styleUrls: ['./opening-hours.page.scss'],
 })
-export class OpeningHoursPage extends AbstractPage implements OnInit {
+export class OpeningHoursPage
+  extends AbstractPage
+  implements OnInit, OnDestroy {
   openingHours = [];
   allOpeningHours: any = [];
   weekday = [];
@@ -31,6 +33,16 @@ export class OpeningHoursPage extends AbstractPage implements OnInit {
 
   ngOnInit() {
     this.loadOpeningHours();
+
+    if (this.platform.is('ios')) {
+      Keyboard.setResizeMode({ mode: KeyboardResize.None });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.platform.is('ios')) {
+      Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
+    }
   }
 
   loadOpeningHours(refresher?) {

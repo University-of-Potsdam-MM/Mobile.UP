@@ -35,6 +35,7 @@
 </ion-header>
 
 <ion-content
+  [scrollEvents]="true"
   (ionScrollStart)="onScrollListener()"
   [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'"
 >

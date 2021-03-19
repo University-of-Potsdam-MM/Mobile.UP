@@ -26,7 +26,7 @@ import jwt_decode from 'jwt-decode';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Storage } from '@capacitor/storage';
 import { CacheService } from 'ionic-cache';
-import { Keyboard, KeyboardStyle } from '@capacitor/keyboard';
+import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-root',
@@ -75,12 +75,20 @@ export class AppComponent {
         ConfigService.config.webservices.defaultCachingTTL
       );
       this.cache.setOfflineInvalidate(false);
-      this.initKeyboard();
+
+      if (this.platform.is('ios') || this.platform.is('android')) {
+        this.initKeyboard();
+      }
+
       SplashScreen.hide();
     });
   }
 
   initKeyboard() {
+    if (this.platform.is('ios')) {
+      Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
+    }
+
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     this.setKeyboardStyle(prefersDark.matches);
     prefersDark.addEventListener('change', (mediaQuery) =>

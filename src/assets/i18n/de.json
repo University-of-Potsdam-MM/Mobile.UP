@@ -207,7 +207,7 @@
     },
     "transport": {
       "title": "Nahverkehr",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Verkehrsbundes Berlin-Brandenburg genutzt.",
       "journeys": "Fahrten ab",
       "track": "Gleis",
       "cancelled": "Fällt aus"

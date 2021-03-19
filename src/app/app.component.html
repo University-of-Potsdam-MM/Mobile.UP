@@ -1,18 +1,19 @@
 <ion-app>
   <ion-menu
-    contentId="content"
+    contentId="main"
     side="end"
     swipeGesture="false"
-    type="overlay"
+    type="push"
+    mode="ios"
     (ionWillOpen)="updateLoginStatus()"
   >
-    <ion-header>
-      <ion-toolbar style="--min-height: 48px">
+    <ion-header mode="md">
+      <ion-toolbar mode="md" style="--min-height: 48px">
         <ion-title>{{ "menu.title" | translate }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content class="card-background-page">
-      <ion-card>
+      <ion-card mode="md">
         <img
           class="svgThatShouldChangeColor"
           [class.loggedIn]="loggedIn || bibLoggedIn"
@@ -32,24 +33,24 @@
       </ion-card>
 
       <ion-item-group>
-        <ion-item-divider color="light"
+        <ion-item-divider mode="md" color="light"
           ><ion-label>{{
             "popover.general" | translate
           }}</ion-label></ion-item-divider
         >
-        <ion-item button (click)="toHome()">
+        <ion-item mode="md" button (click)="toHome()">
           <ion-icon color="primary" name="home" slot="start"></ion-icon>
           <ion-label>
             {{ "page.home.title" | translate }}
           </ion-label>
         </ion-item>
-        <ion-item button (click)="toSettings()">
+        <ion-item mode="md" button (click)="toSettings()">
           <ion-icon color="primary" name="options" slot="start"></ion-icon>
           <ion-label>
             {{ "page.settings.title" | translate }}
           </ion-label>
         </ion-item>
-        <ion-item button (click)="toAppInfo()">
+        <ion-item mode="md" button (click)="toAppInfo()">
           <ion-icon
             color="primary"
             name="information-circle"
@@ -59,7 +60,7 @@
             {{ "page.app-info.title" | translate }}
           </ion-label>
         </ion-item>
-        <ion-item lines="none" button (click)="toImprint()">
+        <ion-item mode="md" lines="none" button (click)="toImprint()">
           <ion-icon
             color="primary"
             name="document-text"
@@ -72,11 +73,11 @@
         </ion-item>
 
         <!-- Account View -->
-        <ion-item-divider color="light">
+        <ion-item-divider mode="md" color="light">
           <ion-label>Accounts</ion-label>
         </ion-item-divider>
 
-        <ion-item button (click)="loggedIn ? doLogout() : toLogin()">
+        <ion-item mode="md" button (click)="loggedIn ? doLogout() : toLogin()">
           <ion-label>
             PULS
             <ng-container *ngIf="!loggedIn"
@@ -92,7 +93,11 @@
           ></ion-icon>
         </ion-item>
 
-        <ion-item button (click)="bibLoggedIn ? doBibLogout() : toBibLogin()">
+        <ion-item
+          mode="md"
+          button
+          (click)="bibLoggedIn ? doBibLogout() : toBibLogin()"
+        >
           <ion-label>
             {{ "page.library-account.library" | translate }}
             <ng-container *ngIf="!bibLoggedIn"
@@ -110,5 +115,5 @@
       </ion-item-group>
     </ion-content>
   </ion-menu>
-  <ion-router-outlet id="content" main></ion-router-outlet>
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
