@@ -19,6 +19,7 @@
         >{{ 'page.library-account.oldPassword' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="current-password"
         formControlName="oldPassword"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.oldPassword' | translate }}"
@@ -31,6 +32,7 @@
         >{{ 'page.library-account.newPassword' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="new-password"
         formControlName="newPassword"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.newPassword' | translate }}"
@@ -43,6 +45,7 @@
         >{{ 'page.library-account.newPasswordAgain' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="new-password"
         formControlName="newPasswordVerify"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.newPassword' | translate }}"

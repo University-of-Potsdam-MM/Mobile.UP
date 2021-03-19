@@ -107,6 +107,14 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     }
   }
 
+  setPassword($event) {
+    this.loginForm.controls.password.setValue($event.target.value);
+  }
+
+  setUsername($event) {
+    this.loginForm.controls.username.setValue($event.target.value);
+  }
+
   loginUB(loginCredentials?: ICredentials) {
     if (this.loginForm.valid || loginCredentials) {
       if (!loginCredentials) {

@@ -141,6 +141,14 @@ export class LoginPage extends AbstractPage {
     this.loading.present();
   }
 
+  setPassword($event) {
+    this.loginForm.controls.password.setValue($event.target.value);
+  }
+
+  setUsername($event) {
+    this.loginForm.controls.username.setValue($event.target.value);
+  }
+
   /**
    * @name showAlert
    * @param errorCode

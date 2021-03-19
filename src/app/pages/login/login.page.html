@@ -30,30 +30,34 @@
         <ion-row>
           <ion-col>
             <ion-list inset>
-              <ion-item>
+              <div>
                 <ion-input
                   autocapitalize="none"
+                  autocomplete="username"
                   autofocus="true"
+                  (change)="setUsername($event)"
                   clearInput="true"
-                  type="text"
+                  type="email"
                   [placeholder]="'placeholder.username' | translate"
-                  name="id"
+                  name="username"
                   formControlName="username"
                   required
                 ></ion-input>
-              </ion-item>
+              </div>
 
-              <ion-item>
+              <div>
                 <ion-input
+                  autocomplete="current-password"
+                  (change)="setPassword($event)"
                   clearOnEdit="false"
                   clearInput="true"
                   type="password"
-                  [placeholder]="'placeholder.password' |translate"
+                  [placeholder]="'placeholder.password' | translate"
                   name="password"
                   formControlName="password"
                   required
                 ></ion-input>
-              </ion-item>
+              </div>
             </ion-list>
           </ion-col>
         </ion-row>
