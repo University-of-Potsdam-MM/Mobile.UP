@@ -76,12 +76,6 @@
               >
             </p>
           </ion-label>
-          <ion-icon
-            name="alert-circle"
-            *ngIf="item.displayWarning"
-            slot="end"
-            style="font-size: large"
-          ></ion-icon>
         </ion-item>
         <ng-template #closedLocation>
           <ion-item detail button (click)="itemSelected(item)">
@@ -99,12 +93,6 @@
                 >
               </p>
             </ion-label>
-            <ion-icon
-              name="alert-circle"
-              *ngIf="item.displayWarning"
-              slot="end"
-              style="font-size: large"
-            ></ion-icon>
           </ion-item>
         </ng-template>
       </ng-container>
@@ -121,12 +109,6 @@
               >
             </p>
           </ion-label>
-          <ion-icon
-            name="alert-circle"
-            *ngIf="item.displayWarning"
-            slot="end"
-            style="font-size: large"
-          ></ion-icon>
         </ion-item>
       </ng-container>
     </span>
@@ -136,7 +118,6 @@
 <ion-footer>
   <ion-toolbar>
     <app-footer-disclaimer
-      iconName="alert-circle"
       disclaimerReference="page.opening-hours.noGuarantee"
     ></app-footer-disclaimer>
   </ion-toolbar>
