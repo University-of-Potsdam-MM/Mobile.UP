@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
@@ -15,7 +16,7 @@
 <ion-content class="ion-padding-bottom">
   <h5 class="ion-padding-start">{{ item.name }}</h5>
   <ion-list class="openingDetails" style="padding-left: 6px">
-    <ion-item>
+    <ion-item mode="md">
       <ion-label class="ion-text-wrap">
         <h2>Status</h2>
 
@@ -42,7 +43,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="comment">
+    <ion-item mode="md" *ngIf="comment">
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.opening-hours.comment" | translate }}</h2>
 
@@ -51,7 +52,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="item.link">
+    <ion-item mode="md" *ngIf="item.link">
       <ion-label>
         <h2>Website</h2>
 
@@ -60,7 +61,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="item.mail">
+    <ion-item mode="md" *ngIf="item.mail">
       <ion-label class="ion-text-wrap">
         <h2>Mail</h2>
         <p>
@@ -68,7 +69,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="item.telephone">
+    <ion-item mode="md" *ngIf="item.telephone">
       <ion-label class="ion-text-wrap">
         <h2>Tel.</h2>
 
@@ -86,7 +87,7 @@
     *ngIf="itv.length > 0"
     style="padding-left: 6px"
   >
-    <ion-item *ngFor="let interval of itv">
+    <ion-item mode="md" *ngFor="let interval of itv">
       <ion-label class="ion-text-wrap">
         <ng-container *ngFor="let timespot of interval; let i = index">
           <h2 *ngIf="i == 0">{{ timespot }}</h2>

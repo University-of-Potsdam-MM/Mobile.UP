@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshGrades(true)"
       slot="end"
@@ -52,6 +53,7 @@
   <div *ngIf="studentLoaded && !multipleDegrees && studentDetails">
     <ion-list>
       <ion-item
+        mode="md"
         color="primary"
         class="studiengang"
         lines="none"
@@ -81,6 +83,7 @@
   <div *ngIf="studentLoaded && multipleDegrees && studentDetails">
     <ion-list>
       <ion-item
+        mode="md"
         color="primary"
         *ngFor="let degree of studentDetails; let i = index"
         class="studiengang"

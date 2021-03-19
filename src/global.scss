@@ -86,6 +86,11 @@ ion-item {
   }
 }
 
+.toolbar-searchbar,
+ion-searchbar {
+  padding-top: 0 !important;
+}
+
 ion-header,
 ion-toolbar.toolbar,
 ion-item-divider,
@@ -254,7 +259,8 @@ ion-card {
 }
 
 ion-toolbar {
-  --min-height: 48px;
+  --min-height: 54px;
+  --padding-bottom: 0;
 }
 
 ion-content.modalOpened,

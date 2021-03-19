@@ -73,7 +73,7 @@ export function initApiManagerStatus(config: ConfigService) {
     IonicModule.forRoot({
       backButtonIcon: 'chevron-back',
       backButtonText: '',
-      mode: 'md',
+      mode: 'ios',
       rippleEffect: false,
     }),
     LeafletModule,

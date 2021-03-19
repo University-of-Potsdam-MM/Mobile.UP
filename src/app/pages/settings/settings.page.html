@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.settings.title" | translate }}</ion-title>
@@ -14,7 +14,11 @@
         class="settingsDiv"
         *ngIf="!(setting.mobileOnly && !(platform.is('ios') || platform.is('android')))"
       >
-        <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
+        <ion-item
+          mode="md"
+          lines="none"
+          *ngIf="getSettingType(setting) === 'boolean'"
+        >
           <ion-icon
             color="primary"
             name="{{ setting.icon }}"
@@ -25,6 +29,8 @@
             }}</ion-label
           >
           <ion-toggle
+            mode="md"
+            size="small"
             slot="end"
             checked="{{ setting.value }}"
             (ionChange)="changeBoolSetting(setting)"
@@ -32,6 +38,7 @@
         </ion-item>
 
         <ion-item-divider
+          mode="md"
           color="light"
           *ngIf="getSettingType(setting) == 'placeholder'"
         >
@@ -42,6 +49,7 @@
         </ion-item-divider>
 
         <ion-item
+          mode="md"
           *ngIf="getSettingType(setting) !== 'boolean' && getSettingType(setting) !== 'placeholder'"
           lines="none"
         >

@@ -13,16 +13,15 @@
       side="end"
       swipeGesture="false"
       type="push"
-      mode="ios"
       (ionWillOpen)="updateLoginStatus()"
     >
-      <ion-header mode="md">
-        <ion-toolbar mode="md" style="--min-height: 48px">
+      <ion-header>
+        <ion-toolbar style="--min-height: 54px">
           <ion-title>{{ "menu.title" | translate }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content class="card-background-page">
-        <ion-card mode="md">
+        <ion-card>
           <img
             class="svgThatShouldChangeColor"
             [class.loggedIn]="loggedIn || bibLoggedIn"
@@ -130,6 +129,6 @@
         </ion-item-group>
       </ion-content>
     </ion-menu>
-    <ion-router-outlet id="main"></ion-router-outlet>
+    <ion-router-outlet id="main" mode="md"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>

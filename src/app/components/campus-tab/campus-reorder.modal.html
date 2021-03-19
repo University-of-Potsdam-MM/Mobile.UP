@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
@@ -14,7 +15,7 @@
 
 <ion-content>
   <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
-    <ion-item *ngFor="let campus of campusList">
+    <ion-item mode="md" *ngFor="let campus of campusList">
       <ion-label> {{ campus.pretty_name }} </ion-label>
       <ion-reorder slot="end"></ion-reorder>
     </ion-item>

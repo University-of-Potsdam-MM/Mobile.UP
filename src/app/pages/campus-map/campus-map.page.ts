@@ -338,6 +338,10 @@ export class CampusMapPage
         (position: Position | null, err?: any) => {
           if (position) {
             this.setPosition(position);
+            this.moveToPosition([
+              position.coords.latitude,
+              position.coords.latitude,
+            ]);
             this.geoLocationEnabled = true;
           }
         }

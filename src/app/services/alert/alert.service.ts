@@ -90,9 +90,9 @@ export class AlertService {
       this.currentAlert = await this.alertCtrl.create({
         header: headerText,
         message: messageText,
+        mode: 'md',
         backdropDismiss: false,
         buttons: alertButtons,
-        mode: 'ios',
       });
       this.currentAlert.present();
       await this.currentAlert.onDidDismiss();
@@ -146,7 +146,6 @@ export class AlertService {
         position: 'top',
         cssClass: 'updateToast',
         buttons: toastButtons,
-        mode: 'ios',
       });
       this.currentToast.present();
       await this.currentToast.onDidDismiss();

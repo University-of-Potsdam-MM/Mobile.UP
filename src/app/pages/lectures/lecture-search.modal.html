@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
@@ -15,12 +16,13 @@
 <ion-content class="ion-padding-bottom">
   <span *ngIf="showItemTreePath && !isCourse">
     <span *ngFor="let treeItem of itemTree; let last = last">
-      <ion-item-divider *ngIf="!last">
+      <ion-item-divider mode="md" *ngIf="!last">
         <ion-label class="ion-text-wrap"> {{ treeItem }} </ion-label>
       </ion-item-divider>
     </span>
   </span>
   <ion-item-divider
+    mode="md"
     class="linkItem"
     (click)="showItemTreePath = !showItemTreePath"
   >

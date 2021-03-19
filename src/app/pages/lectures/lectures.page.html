@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshLectureTree()"
       slot="end"
@@ -13,8 +14,9 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar *ngIf="!networkError">
+  <ion-toolbar mode="md" *ngIf="!networkError">
     <ion-item
+      mode="md"
       align="center"
       *ngIf="!isLoaded"
       lines="none"
@@ -24,6 +26,7 @@
       <ion-spinner name="dots" slot="end"></ion-spinner>
     </ion-item>
     <ion-searchbar
+      mode="md"
       *ngIf="isLoaded"
       [(ngModel)]="query"
       [placeholder]="'placeholder.search' | translate"
@@ -67,7 +70,7 @@
   ></app-lecture-list>
 
   <div *ngIf="!isRefreshing && !isSearching && searchResults.length > 0">
-    <ion-item color="light">
+    <ion-item mode="md" color="light">
       <ion-label> {{ "page.lectures.filter" | translate }} </ion-label>
       <ion-select
         (ionChange)="selectFilter($event)"
@@ -85,6 +88,7 @@
     </ion-item>
     <ion-list>
       <ion-item
+        mode="md"
         *ngFor="let result of searchResults; let i = index"
         button
         (click)="openItem(i)"
@@ -92,7 +96,10 @@
         <ion-label class="ion-text-wrap">
           {{ unescapeHTML(result) }}
         </ion-label>
-        <ion-badge *ngIf="contains(resultKeys[i], 'courseName')" slot="end"
+        <ion-badge
+          mode="ios"
+          *ngIf="contains(resultKeys[i], 'courseName')"
+          slot="end"
           >{{ "page.lectures.courseBadge" | translate }}</ion-badge
         >
       </ion-item>

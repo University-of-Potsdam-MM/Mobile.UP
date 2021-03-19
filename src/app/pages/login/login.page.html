@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar style="--min-height: 48px">
-    <ion-back-button slot="start"></ion-back-button>
+  <ion-toolbar style="--min-height: 54px">
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <app-connection-indicator
       slot="end"
       class="ion-padding-end"
@@ -64,12 +64,13 @@
 
         <ion-row>
           <ion-col>
-            <ion-button expand="full" type="button" (click)="abort()">
+            <ion-button mode="md" expand="full" type="button" (click)="abort()">
               {{ "button.cancel" | translate }}
             </ion-button>
           </ion-col>
           <ion-col>
             <ion-button
+              mode="md"
               expand="full"
               class="submit-btn"
               [disabled]="!loginForm.valid"

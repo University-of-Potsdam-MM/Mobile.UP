@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
@@ -14,7 +15,7 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="changeForm" (ngSubmit)="changePassword()">
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.oldPassword' | translate }}</ion-label
       >
@@ -27,7 +28,7 @@
     </ion-item>
     <br />
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.newPassword' | translate }}</ion-label
       >
@@ -40,7 +41,7 @@
     </ion-item>
     <br />
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.newPasswordAgain' | translate }}</ion-label
       >
@@ -70,6 +71,7 @@
 
     <div align="right" class="ion-padding-end">
       <ion-button
+        mode="md"
         [disabled]="!changeForm.valid"
         type="submit"
         class="ion-no-margin"

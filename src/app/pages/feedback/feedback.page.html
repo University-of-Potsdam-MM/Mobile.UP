@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.feedback.title" | translate}}</ion-title>
@@ -9,7 +9,7 @@
 
 <ion-content>
   <form [formGroup]="form" (ngSubmit)="submitForm()" id="smileys">
-    <ion-item-divider color="light">
+    <ion-item-divider mode="md" color="light">
       <ion-label class="ion-text-wrap">
         {{ "page.feedback.rating" | translate}}
       </ion-label>
@@ -62,12 +62,12 @@
       </ion-grid>
     </ion-list>
 
-    <ion-item-divider color="light">
+    <ion-item-divider mode="md" color="light">
       <ion-label class="ion-text-wrap">
         {{ "page.feedback.feedback" | translate}}
       </ion-label>
     </ion-item-divider>
-    <ion-item>
+    <ion-item mode="md">
       <ion-textarea
         formControlName="description"
         rows="6"
@@ -77,14 +77,15 @@
       ></ion-textarea>
     </ion-item>
 
-    <ion-item-divider color="light">
+    <ion-item-divider mode="md" color="light">
       <ion-label class="ion-text-wrap">
         {{ "page.feedback.recommendation" | translate}}
       </ion-label>
     </ion-item-divider>
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-range
+        mode="md"
         min="1"
         max="10"
         step="1"
@@ -97,22 +98,26 @@
       </ion-range>
     </ion-item>
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-label style="font-size: 0.9rem"
         >{{ "page.feedback.sendDeviceData" | translate}}</ion-label
       >
       <ion-toggle
+        mode="md"
+        size="small"
         (ionChange)="showToggleHint('SendDeviceData')"
         checked="false"
         formControlName="sendDeviceData"
       ></ion-toggle>
     </ion-item>
 
-    <ion-item *ngIf="session">
+    <ion-item mode="md" *ngIf="session">
       <ion-label style="font-size: 0.9rem"
         >{{ "page.feedback.sendUsername" | translate}}</ion-label
       >
       <ion-toggle
+        mode="md"
+        size="small"
         (ionChange)="showToggleHint('SendUsername')"
         checked="false"
         formControlName="sendUsername"
@@ -120,7 +125,7 @@
     </ion-item>
 
     <div class="ion-padding-top ion-text-center">
-      <ion-button type="submit" [disabled]="!form.valid"
+      <ion-button mode="md" type="submit" [disabled]="!form.valid"
         >{{ "button.submit" | translate}}</ion-button
       >
     </div>

@@ -123,7 +123,7 @@ export class HomePage extends AbstractPage implements OnInit {
             position: 'top',
             color: 'primary',
             cssClass: 'updateToast',
-            mode: 'ios',
+
             buttons: [
               {
                 side: 'end',

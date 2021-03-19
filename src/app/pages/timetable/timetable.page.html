@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-chip
       *ngIf="isMobile && !noUserRights && (eventSource.length > 0)"
       slot="end"
@@ -43,6 +43,7 @@
       <ion-row nowrap class="ion-align-items-center ion-justify-content-center">
         <ion-col size="auto">
           <ion-button
+            mode="md"
             expand="full"
             [ngClass]="calMode == 'month' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
@@ -53,6 +54,7 @@
         </ion-col>
         <ion-col size="auto">
           <ion-button
+            mode="md"
             expand="full"
             [ngClass]="calMode == 'week' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
@@ -63,6 +65,7 @@
         </ion-col>
         <ion-col size="auto">
           <ion-button
+            mode="md"
             expand="full"
             [ngClass]="calMode == 'day' ? 'activeCalendarButton' : 'calendarButton'"
             size="small"
@@ -78,7 +81,7 @@
       <div align="center">
         <ion-row nowrap>
           <ion-col size="2">
-            <ion-button fill="clear" (click)="swipePrevious()"
+            <ion-button mode="md" fill="clear" (click)="swipePrevious()"
               ><ion-icon slot="icon-only" name="caret-back"></ion-icon
             ></ion-button>
           </ion-col>
@@ -86,7 +89,7 @@
             <h6 id="title">{{ currentTitle }}</h6>
           </ion-col>
           <ion-col size="2">
-            <ion-button fill="clear" (click)="swipeNext()"
+            <ion-button mode="md" fill="clear" (click)="swipeNext()"
               ><ion-icon slot="icon-only" name="caret-forward"></ion-icon
             ></ion-button>
           </ion-col>

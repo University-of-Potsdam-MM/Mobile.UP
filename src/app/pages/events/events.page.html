@@ -1,10 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <ion-button (click)="openEventWebsite()" slot="end" fill="clear">
+    <ion-back-button mode="md" slot="start"></ion-back-button>
+    <ion-button mode="md" (click)="openEventWebsite()" slot="end" fill="clear">
       <ion-icon style="font-size: x-large" name="globe"></ion-icon>
     </ion-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadEvents(true)"
       slot="end"
@@ -17,7 +18,10 @@
     <ion-title>{{ "page.event.title" | translate }}</ion-title>
   </ion-toolbar>
 
-  <ion-toolbar *ngIf="listOfPlaces && listOfPlaces.length > 1 && !networkError">
+  <ion-toolbar
+    mode="md"
+    *ngIf="listOfPlaces && listOfPlaces.length > 1 && !networkError"
+  >
     <ion-row class="filters">
       <ion-col class="col-with-arrow ion-no-padding" size="1">
         <ion-icon

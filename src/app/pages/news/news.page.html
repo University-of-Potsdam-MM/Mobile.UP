@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadNews(true)"
       slot="end"
@@ -13,7 +14,10 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.news.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar *ngIf="sourcesList && sourcesList.length > 0 && !networkError">
+  <ion-toolbar
+    mode="md"
+    *ngIf="sourcesList && sourcesList.length > 0 && !networkError"
+  >
     <ion-row class="filters">
       <ion-col class="col-with-arrow ion-no-padding" size="1">
         <ion-icon

@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshRoom()"
       slot="end"
@@ -13,7 +14,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
@@ -47,11 +48,11 @@
   <ng-template #roomsFoundTemplate>
     <ion-list>
       <div *ngFor="let house of housesFound">
-        <ion-item button (click)="expandHouse(house.lbl)">
+        <ion-item mode="md" button (click)="expandHouse(house.lbl)">
           <ion-label class="ion-no-margin">
             <h2>
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
-              <ion-badge color="primary">
+              <ion-badge mode="ios" color="primary">
                 {{house.rooms.length}}
                 <span *ngIf="house.rooms.length == 1"
                   >{{ "words.booking" | translate }}</span
@@ -69,10 +70,13 @@
         </ion-item>
         <div *ngIf="house.expanded">
           <div *ngFor="let room of house.rooms">
-            <ion-item button (click)="expandRoom(house.lbl,room.lbl)">
+            <ion-item mode="md" button (click)="expandRoom(house.lbl,room.lbl)">
               <ion-label class="ion-no-margin">
                 <h2 *ngIf="room.lbl">
-                  {{room.lbl}}<ion-badge *ngIf="room.events" color="primary"
+                  {{room.lbl}}<ion-badge
+                    mode="ios"
+                    *ngIf="room.events"
+                    color="primary"
                     >{{room.events.length}}</ion-badge
                   >
                 </h2>
@@ -83,7 +87,7 @@
               ></ion-icon>
             </ion-item>
             <div *ngIf="room.expanded && room.events">
-              <ion-item margin-left *ngFor="let event of room.events">
+              <ion-item mode="md" margin-left *ngFor="let event of room.events">
                 <ion-label class="ion-text-wrap">
                   <u>
                     <b *ngIf="translate.currentLang === 'de'"
@@ -100,7 +104,7 @@
                   <i>{{event.lbl}}</i>
                   <br />
                   <p *ngFor="let person of event.persons">
-                    <ion-badge color="primary">{{person}}</ion-badge>
+                    <ion-badge mode="ios" color="primary">{{person}}</ion-badge>
                   </p>
                 </ion-label>
               </ion-item>

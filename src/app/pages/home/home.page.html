@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header mode="ios">
   <ion-toolbar>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="editingMode ? 'disableScrolling' : ''">
+<ion-content [ngClass]="editingMode ? 'disableScrolling' : ''" mode="ios">
   <!-- template for each tile -->
   <ng-template #moduleTemplate let-module="module" class="no-select">
     <div (click)="openModule(module, {}, true)" class="no-select linkItem">
@@ -33,31 +33,10 @@
     </div>
   </ng-template>
 
-  <ion-item *ngIf="!favsAreEmpty" class="favoritesItem" lines="none">
-    <ion-icon name="star" slot="start" color="primary"></ion-icon>
-    <ion-label color="primary">
-      {{ "button.favorites" | translate }}
-    </ion-label>
-    <ion-icon
-      *ngIf="!editingMode"
-      class="editingIcon linkItem"
-      color="primary"
-      name="create"
-      slot="end"
-      (click)="toggleEditingMode()"
-    ></ion-icon>
-    <ion-button
-      *ngIf="editingMode"
-      (click)="toggleEditingMode()"
-      slot="end"
-      style="--border-radius: 0"
-      >{{ "button.done" | translate }}</ion-button
-    >
-  </ion-item>
-
   <!-- gridster grid displaying selected modules. Using the sortedModules object
    here because it already is an array, which is nice -->
   <modules-grid
+    [favsAreEmpty]="favsAreEmpty"
     [modules]="sortedModules"
     [template]="moduleTemplate"
     (editingModeChanged)="editingMode = !editingMode"
@@ -75,6 +54,7 @@
   >
     <ion-list lines="none">
       <ion-item
+        mode="md"
         *ngFor="let module of sortedModules | orderBy: 'translation'"
         button
         (click)="openModule(module, {}, false)"

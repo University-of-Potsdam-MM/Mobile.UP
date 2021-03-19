@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
@@ -18,7 +19,7 @@
 <ion-content class="ion-padding">
   <ng-template #descriptionItemsTemplate>
     <ion-list>
-      <ion-item *ngFor="let item of descriptionItems">
+      <ion-item mode="md" *ngFor="let item of descriptionItems">
         {{ item }}
       </ion-item>
     </ion-list>

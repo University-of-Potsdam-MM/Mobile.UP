@@ -1,12 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.person-search.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar
+      mode="md"
       [(ngModel)]="query"
       [placeholder]="'placeholder.search' | translate"
       (ionChange)="search()"
@@ -38,6 +39,7 @@
     <span *ngFor="let person of personsFound">
       <ion-item-sliding>
         <ion-item
+          mode="md"
           button
           (click)="expandPerson(person)"
           [ngClass]="{'noborder': person.expanded}"
@@ -87,6 +89,7 @@
       </ion-item-sliding>
 
       <ion-item
+        mode="md"
         *ngIf="person.expanded && ((person.Email != '') || (person.Extension != '') || (person.Room_Name != ''))"
       >
         <ion-icon slot="start"></ion-icon>

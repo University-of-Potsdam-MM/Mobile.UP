@@ -1,14 +1,16 @@
 <ion-segment
   class="ion-nowrap"
+  mode="md"
   [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'"
 >
   <ion-button
+    mode="md"
     (click)="openModal()"
     class="reorder-button"
     size="small"
     fill="clear"
   >
-    <ion-icon name="reorder-four"></ion-icon>
+    <ion-icon name="reorder-two-outline"></ion-icon>
   </ion-button>
 
   <ion-segment

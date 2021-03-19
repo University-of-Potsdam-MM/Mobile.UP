@@ -38,6 +38,8 @@ export class ModulesGridComponent implements OnInit, OnDestroy {
    */
   @Input() modules: IModule[];
 
+  @Input() favsAreEmpty: boolean;
+
   /**
    * input for the template to be used inside the gridsterItems.
    * Inside the template "module" will be available as context
@@ -178,7 +180,9 @@ export class ModulesGridComponent implements OnInit, OnDestroy {
    */
   resizeWrapper() {
     this.gridsterWrapperHeight =
-      this.gridster.curRowHeight * this.gridster.rows + 10;
+      this.gridster.rows === 0
+        ? 0
+        : this.gridster.curRowHeight * this.gridster.rows + 10;
   }
 
   toggleEditingMode() {

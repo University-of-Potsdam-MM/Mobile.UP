@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadData(true)"
       slot="end"
@@ -14,7 +15,7 @@
     <ion-title>{{ "page.practice.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-segment [value]="activeSegment">
+    <ion-segment [value]="activeSegment" mode="md">
       <ion-segment-button value="search" (click)="activeSegment = 'search'">
         <ion-label>{{ "button.search" | translate }}</ion-label>
       </ion-segment-button>
@@ -25,9 +26,9 @@
         <ion-label>
           {{ "button.favorites" | translate }}
           <ion-badge
+            mode="ios"
             *ngIf="isLoadedFavorites && allFavorites.length > 0"
             slot="end"
-            mode="ios"
             >{{ allFavorites.length }}</ion-badge
           >
         </ion-label>
@@ -36,6 +37,7 @@
   </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar
+      mode="md"
       [(ngModel)]="query"
       [placeholder]="'placeholder.search' | translate"
       (ionChange)="filterItems(query)"
@@ -43,6 +45,7 @@
     >
     </ion-searchbar>
     <ion-button
+      mode="md"
       *ngIf="activeSegment === 'favorites'"
       fill="clear"
       slot="end"
@@ -101,6 +104,7 @@
       <div *ngFor="let ADS of displayedFavorites; let i = index">
         <ion-item-sliding>
           <ion-item
+            mode="md"
             button
             (click)="itemSelected(ADS)"
             [ngClass]="{'partner': ADS.partner !== 0 }"
@@ -164,6 +168,7 @@
       <div *ngFor="let ADS of displayedList; let i = index">
         <ion-item-sliding #slidingItem>
           <ion-item
+            mode="md"
             button
             (click)="itemSelected(ADS)"
             [ngClass]="{'partner': ADS.partner !== 0}"

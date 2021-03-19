@@ -319,7 +319,7 @@ export class TimetablePage extends AbstractPage {
       header: this.translate.instant('alert.title.exportCalendar'),
       message: this.translate.instant('alert.exportCalendar'),
       backdropDismiss: false,
-      mode: 'ios',
+      mode: 'md',
       buttons: [
         {
           text: this.translate.instant('button.no'),
@@ -336,7 +336,7 @@ export class TimetablePage extends AbstractPage {
                   header: this.translate.instant('alert.addToExistingHeader'),
                   message: this.translate.instant('alert.addToExistingMessage'),
                   backdropDismiss: false,
-                  mode: 'ios',
+                  mode: 'md',
                   buttons: [
                     {
                       text: this.translate.instant('button.no'),
@@ -408,7 +408,7 @@ export class TimetablePage extends AbstractPage {
                             ),
                             inputs: calendarInputs,
                             backdropDismiss: false,
-                            mode: 'ios',
+                            mode: 'md',
                             buttons: [
                               {
                                 text: this.translate.instant('button.cancel'),

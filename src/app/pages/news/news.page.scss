@@ -34,6 +34,12 @@ ion-segment-button {
   --padding-start: 5px;
   --margin-end: 0;
   --margin-start: 0;
+
+  border-bottom: 0 none !important;
+}
+
+ion-segment-button.selected {
+  border-bottom: 2px solid var(--ion-color-primary) !important;
 }
 
 ion-col {

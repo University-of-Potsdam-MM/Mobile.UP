@@ -83,6 +83,7 @@ export class SettingsPage extends AbstractPage implements OnInit {
     }
     return {
       message: infoText,
+      backdropDismiss: false,
     };
   }
 

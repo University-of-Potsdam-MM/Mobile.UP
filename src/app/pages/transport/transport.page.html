@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadTransport(true)"
       slot="end"
@@ -13,9 +14,10 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.transport.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
     <ion-item-divider
+      mode="md"
       *ngIf="isLoaded && departures && departures[0] && departures[0].stop"
     >
       <ion-label class="ion-text-wrap">
@@ -48,7 +50,7 @@
 
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-list *ngFor="let dep of departures">
-      <ion-item>
+      <ion-item mode="md">
         <ion-icon
           slot="start"
           *ngIf="dep.Product.catOut.trim() === 'Bus'"
@@ -76,7 +78,12 @@
             >
           </p>
         </ion-label>
-        <ion-badge *ngIf="!dep.cancelled" style="font-weight: 300" slot="end">
+        <ion-badge
+          mode="ios"
+          *ngIf="!dep.cancelled"
+          style="font-weight: 300"
+          slot="end"
+        >
           <span *ngIf="translate.currentLang === 'de'"
             >{{ dep.time | moment:'HH:mm' }}</span
           >
@@ -84,7 +91,7 @@
             >{{ dep.time | moment:'h:mm a' }}</span
           >
         </ion-badge>
-        <ion-badge *ngIf="dep.cancelled" slot="end" class="cancelled"
+        <ion-badge mode="ios" *ngIf="dep.cancelled" slot="end" class="cancelled"
           >{{ "page.transport.cancelled" | translate}}</ion-badge
         >
       </ion-item>

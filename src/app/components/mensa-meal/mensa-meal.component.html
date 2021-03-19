@@ -43,6 +43,7 @@
     ></ion-icon>
   </ion-item>
   <ion-item
+    mode="md"
     *ngIf="
       mealIsExpanded[i] &&
       ((meal.prices && (meal.prices.student || meal.prices.guest)) ||
@@ -64,6 +65,7 @@
       <br *ngIf="meal.prices && meal.prices.guest" />
       <div *ngIf="meal.allergens">
         <ion-button
+          mode="md"
           *ngFor="let allergen of meal.allergens; let j = index"
           size="small"
           fill="outline"

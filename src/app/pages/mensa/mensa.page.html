@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadCampusMenu(true)"
       slot="end"
@@ -13,7 +14,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.mensa.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
@@ -69,7 +70,7 @@
         ></app-date-picker>
       </ion-col>
       <ion-col size="6">
-        <ion-item>
+        <ion-item mode="md">
           <ion-label>Filter</ion-label>
           <ion-select
             multiple="true"
@@ -96,7 +97,11 @@
         [iconMapping]="iconMapping"
       ></app-mensa-meal>
 
-      <ion-item-divider *ngIf="ulfMeals && !noUlfMealsForDate" color="light">
+      <ion-item-divider
+        mode="md"
+        *ngIf="ulfMeals && !noUlfMealsForDate"
+        color="light"
+      >
         <ion-label> Ulf's Café </ion-label>
       </ion-item-divider>
 

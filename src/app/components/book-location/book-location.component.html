@@ -1,5 +1,6 @@
 <ion-list *ngIf="isLoaded">
   <ion-item
+    mode="md"
     style="--padding-start: 5px"
     lines="none"
     class="department"
@@ -29,6 +30,7 @@
   </ion-item>
   <ng-container *ngIf="departmentName && departmentName !== ''">
     <ion-item
+      mode="md"
       style="--padding-start: 5px"
       lines="none"
       *ngIf="url; else noUrl"
@@ -47,6 +49,7 @@
   </ng-container>
   <ng-container *ngIf="!(departmentName && departmentName !== '')">
     <ion-item
+      mode="md"
       style="--padding-start: 5px"
       lines="none"
       color="secondary"
@@ -76,6 +79,7 @@
   <ng-template #noUrl>
     <ng-container *ngIf="departmentName && departmentName !== ''">
       <ion-item
+        mode="md"
         style="--padding-start: 5px"
         lines="none"
         color="secondary"
@@ -159,6 +163,7 @@
         >
       </ion-item>
       <ion-item
+        mode="md"
         *ngIf="item[1]"
         style="--padding-start: 5px"
         lines="none"

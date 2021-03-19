@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshRoom()"
       slot="end"
@@ -13,7 +14,7 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.free-rooms.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
 </ion-header>
@@ -33,7 +34,7 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item class="timePicker">
+  <ion-item mode="md" class="timePicker">
     <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
     <ion-select
       [(ngModel)]="select_timeslot"
@@ -52,11 +53,11 @@
   <ng-template #housesFoundTemplate>
     <ion-list>
       <div *ngFor="let house of housesFound">
-        <ion-item button (click)="expand(house.lbl)">
+        <ion-item mode="md" button (click)="expand(house.lbl)">
           <ion-label class="ion-no-margin ion-text-wrap">
             <h2>
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
-              <ion-badge color="primary">
+              <ion-badge mode="ios" color="primary">
                 {{house.rooms.length}}
                 <span *ngIf="house.rooms.length == 1"
                   >{{ "words.room" | translate }}</span
@@ -73,7 +74,7 @@
           ></ion-icon>
         </ion-item>
         <div *ngIf="house.expanded">
-          <ion-item margin-left *ngFor="let room of house.rooms">
+          <ion-item mode="md" margin-left *ngFor="let room of house.rooms">
             <ion-label> {{room.lbl}} </ion-label>
           </ion-item>
         </div>

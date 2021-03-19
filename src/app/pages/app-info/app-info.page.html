@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.app-info.title" | translate }}</ion-title>
@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list class="showSysInfo">
-    <ion-item button (click)="showContactPerson = !showContactPerson">
+    <ion-item mode="md" button (click)="showContactPerson = !showContactPerson">
       <ion-label>
         <b>{{ "page.app-info.contact" | translate }}</b>
       </ion-label>
@@ -19,7 +19,7 @@
       ></ion-icon>
     </ion-item>
     <span *ngIf="showContactPerson">
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <b>Ulrike Lucke</b><br />
           Universität Potsdam<br />
@@ -31,7 +31,11 @@
         </ion-label>
       </ion-item>
     </span>
-    <ion-item button (click)="showParticipationInfo = !showParticipationInfo">
+    <ion-item
+      mode="md"
+      button
+      (click)="showParticipationInfo = !showParticipationInfo"
+    >
       <ion-label>
         <b>{{ "page.app-info.participate" | translate }}</b>
       </ion-label>
@@ -41,7 +45,7 @@
       ></ion-icon>
     </ion-item>
     <span *ngIf="showParticipationInfo">
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           Es gibt die Möglichkeit als studentische Mitarbeiter innerhalb von
           Lehrprojekten, Aufträgen oder Anstellung an der App-Entwicklung im
@@ -62,6 +66,7 @@
       </ion-item>
     </span>
     <ion-item
+      mode="md"
       class="sysHeader"
       button
       (click)="showSysInfo = !showSysInfo"
@@ -76,38 +81,38 @@
       ></ion-icon>
     </ion-item>
     <span *ngIf="showSysInfo && deviceInfo">
-      <ion-item *ngIf="deviceInfo.appVersion">
+      <ion-item mode="md" *ngIf="deviceInfo.appVersion">
         <ion-label
           ><h2>{{ "page.app-info.version" | translate }}</h2>
           <p>{{ deviceInfo.appVersion }}</p></ion-label
         >
       </ion-item>
-      <ion-item *ngIf="deviceInfo.osPlatform">
+      <ion-item mode="md" *ngIf="deviceInfo.osPlatform">
         <ion-label
           ><h2>{{ "page.app-info.platform" | translate }}</h2>
           <p>{{ deviceInfo.osPlatform }}</p></ion-label
         >
       </ion-item>
-      <ion-item *ngIf="deviceInfo.osVersion">
+      <ion-item mode="md" *ngIf="deviceInfo.osVersion">
         <ion-label
           ><h2>Platform Version</h2>
           <p>{{ deviceInfo.osVersion }}</p></ion-label
         >
       </ion-item>
-      <ion-item *ngIf="deviceInfo.deviceManufacturer">
+      <ion-item mode="md" *ngIf="deviceInfo.deviceManufacturer">
         <ion-label
           ><h2>{{ "page.app-info.manufacturer" | translate }}</h2>
           <p>{{ deviceInfo.deviceManufacturer }}</p></ion-label
         >
       </ion-item>
-      <ion-item *ngIf="deviceInfo.deviceModel">
+      <ion-item mode="md" *ngIf="deviceInfo.deviceModel">
         <ion-label
           ><h2>{{ "page.app-info.model" | translate }}</h2>
           <p>{{ deviceInfo.deviceModel }}</p></ion-label
         >
       </ion-item>
     </span>
-    <ion-item button (click)="showLibraryInfo = !showLibraryInfo">
+    <ion-item mode="md" button (click)="showLibraryInfo = !showLibraryInfo">
       <ion-label>
         <b>{{ "page.app-info.libraries" | translate }}</b>
       </ion-label>
@@ -117,7 +122,7 @@
       ></ion-icon>
     </ion-item>
     <span *ngIf="showLibraryInfo">
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap" style="font-size: small">
           <div *ngFor="let dependency of dependencies">
             {{ dependency.name }}: {{ dependency.version }}
@@ -125,10 +130,10 @@
         </ion-label>
       </ion-item>
     </span>
-    <!-- <ion-item-divider color="light"
+    <!-- <ion-item-divider mode="md" color="light"
       ><ion-label>Log</ion-label></ion-item-divider
     >
-    <ion-item button (click)="exportLog()">
+    <ion-item mode="md" button (click)="exportLog()">
       <ion-icon color="primary" name="bug" slot="start"></ion-icon>
       <ion-label> {{ "popover.exportLog" | translate }} </ion-label>
     </ion-item> -->

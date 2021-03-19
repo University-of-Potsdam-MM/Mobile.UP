@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.library-account.title" | translate }}</ion-title>
   </ion-toolbar>
   <ion-toolbar *ngIf="bibSession">
-    <ion-segment [value]="activeSegment">
+    <ion-segment [value]="activeSegment" mode="md">
       <ion-segment-button value="loan" (click)="activeSegment = 'loan'">
         <ion-label>{{ "page.library-account.loan" | translate }}</ion-label>
       </ion-segment-button>
@@ -77,12 +77,13 @@
 
         <ion-row>
           <ion-col>
-            <ion-button expand="full" type="button" (click)="abort()">
+            <ion-button mode="md" expand="full" type="button" (click)="abort()">
               {{ "button.cancel" | translate }}
             </ion-button>
           </ion-col>
           <ion-col>
             <ion-button
+              mode="md"
               expand="full"
               class="submit-btn"
               [disabled]="!loginForm.valid"
@@ -110,6 +111,7 @@
       hintTextI18nKey="page.library-account.errorLoadingItems"
     ></app-hint-box>
     <ion-item
+      mode="md"
       *ngIf="userLoaded && !userError"
       button
       (click)="userExpanded = !userExpanded"
@@ -128,7 +130,7 @@
         slot="end"
       ></ion-icon>
     </ion-item>
-    <ion-item *ngIf="userExpanded" lines="none">
+    <ion-item mode="md" *ngIf="userExpanded" lines="none">
       <ion-label class="ion-text-wrap accountDetails">
         <ng-container *ngIf="user.address"
           ><b>{{ "page.library-account.address" | translate }}: </b> {{
@@ -147,6 +149,7 @@
       </ion-label>
     </ion-item>
     <ion-button
+      mode="md"
       *ngIf="userExpanded"
       (click)="goToChangePassword()"
       class="changePassword"
@@ -155,6 +158,7 @@
       {{ "page.library-account.changePassword" | translate }}
     </ion-button>
     <ion-item
+      mode="md"
       *ngIf="feesLoaded && !feesError && activeSegment == 'loan' && fees && fees.amount"
       lines="none"
       button
@@ -199,7 +203,7 @@
       *ngIf="itemsLoaded && !itemsError && ((!noLoanItems && activeSegment == 'loan') || (!noReservedItems && activeSegment == 'reservation'))"
     >
       <ion-list>
-        <ion-item-divider color="light" lines="none">
+        <ion-item-divider mode="md" color="light" lines="none">
           <ion-label *ngIf="activeSegment == 'loan'"
             >{{ "page.library-account.loanItems" | translate }}</ion-label
           >
@@ -213,6 +217,7 @@
         <span *ngFor="let item of items.doc; let i = index">
           <!-- Loans -->
           <ion-item
+            mode="md"
             *ngIf="((item.status === 4) || (item.status === 3) || (item.status === 2)) && activeSegment == 'loan'"
             lines="none"
           >
@@ -275,6 +280,7 @@
 
           <!-- Reservations -->
           <ion-item
+            mode="md"
             *ngIf="item.status === 1 && activeSegment == 'reservation'"
             lines="none"
           >
@@ -307,6 +313,7 @@
         </span>
       </ion-list>
       <ion-button
+        mode="md"
         *ngIf="activeSegment == 'loan'"
         (click)="renewItems()"
         class="ion-padding-start"
@@ -314,6 +321,7 @@
         >{{ "button.renew" | translate }}</ion-button
       >
       <ion-button
+        mode="md"
         *ngIf="activeSegment == 'reservation'"
         (click)="cancelItems()"
         class="ion-padding-start"
