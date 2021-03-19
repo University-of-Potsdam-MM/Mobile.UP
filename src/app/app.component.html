@@ -1,6 +1,13 @@
 <ion-app>
   <!-- for screens wider than 992px menu is shown as a split pane -->
-  <ion-split-pane contentId="main">
+  <ion-split-pane
+    contentId="main"
+    style="
+      --side-width: 300px;
+      --side-max-width: 300px;
+      --side-min-width: 300px;
+    "
+  >
     <ion-menu
       contentId="main"
       side="end"
