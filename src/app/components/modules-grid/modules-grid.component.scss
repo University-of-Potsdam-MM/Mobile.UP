@@ -12,17 +12,3 @@ gridster-item {
   min-width: 120px;
   width: 120px;
 }
-
-.favoritesItem {
-  --min-height: 10px;
-
-  font-size: 0.9em;
-
-  ion-icon {
-    font-size: 0.9em;
-  }
-
-  ion-icon.editingIcon {
-    font-size: 1.3em;
-  }
-}

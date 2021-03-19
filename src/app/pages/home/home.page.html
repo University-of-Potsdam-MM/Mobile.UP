@@ -33,6 +33,28 @@
     </div>
   </ng-template>
 
+  <ion-item *ngIf="!favsAreEmpty" class="favoritesItem" lines="none">
+    <ion-icon name="star" slot="start" color="primary"></ion-icon>
+    <ion-label color="primary">
+      {{ "button.favorites" | translate }}
+    </ion-label>
+    <ion-icon
+      *ngIf="!editingMode"
+      class="editingIcon linkItem"
+      color="primary"
+      name="create"
+      slot="end"
+      (click)="toggleEditingMode()"
+    ></ion-icon>
+    <ion-button
+      *ngIf="editingMode"
+      (click)="toggleEditingMode()"
+      slot="end"
+      style="--border-radius: 0"
+      >{{ "button.done" | translate }}</ion-button
+    >
+  </ion-item>
+
   <!-- gridster grid displaying selected modules. Using the sortedModules object
    here because it already is an array, which is nice -->
   <modules-grid

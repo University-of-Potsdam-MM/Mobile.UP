@@ -22,6 +22,7 @@ export class HomePage extends AbstractPage implements OnInit {
   modules: { [moduleName: string]: IModule } = {};
   sortedModules = [];
   editingMode = false;
+  favsAreEmpty = false;
 
   constructor(
     private translate: TranslateService,
@@ -53,6 +54,7 @@ export class HomePage extends AbstractPage implements OnInit {
       // user hasnˋt set any unique favorites
       this.modules = configModules;
       this.sortedModules = this.jsonToArray(configModules);
+      this.userHasFavorites();
     } else {
       // user has set custom favorites
       // check if pages still exist and if new pages are in config
@@ -76,6 +78,7 @@ export class HomePage extends AbstractPage implements OnInit {
 
         this.modules = moduleList;
         this.sortedModules = this.jsonToArray(moduleList);
+        this.userHasFavorites();
       }
     }
   }
@@ -187,6 +190,8 @@ export class HomePage extends AbstractPage implements OnInit {
     //   }`
     // );
 
+    this.userHasFavorites();
+
     await Storage.set({
       key: 'moduleList',
       value: JSON.stringify(this.modules),
@@ -196,6 +201,18 @@ export class HomePage extends AbstractPage implements OnInit {
       //   `saved module list after toggling '${moduleName}'`
       // );
     });
+  }
+
+  userHasFavorites() {
+    let noneSelected = true;
+    for (const mod of this.sortedModules) {
+      if (mod.selected) {
+        noneSelected = false;
+        break;
+      }
+    }
+
+    this.favsAreEmpty = noneSelected;
   }
 
   /**
