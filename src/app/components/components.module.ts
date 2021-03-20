@@ -22,12 +22,12 @@ import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ModulesGridComponent } from './modules-grid/modules-grid.component';
 import { GridsterModule } from 'angular-gridster2';
-import { ConnectionIndicatorComponent } from './connection-indicator/connection-indicator.component';
-import { ConnectionIndicatorPopoverComponent } from './connection-indicator/connection-indicator-popover/connection-indicator-popover.component';
 import { NetworkErrorHintComponent } from './network-error-hint/network-error-hint.component';
+import { CustomCardComponent } from './custom-card/custom-card.component';
 
 @NgModule({
   declarations: [
+    CustomCardComponent,
     HintBoxComponent,
     CampusTabComponent,
     BookListComponent,
@@ -43,8 +43,6 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     CampusReorderModalPage,
     DatePickerComponent,
     ModulesGridComponent,
-    ConnectionIndicatorComponent,
-    ConnectionIndicatorPopoverComponent,
     NetworkErrorHintComponent,
   ],
   imports: [
@@ -62,6 +60,7 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     GridsterModule,
   ],
   exports: [
+    CustomCardComponent,
     HintBoxComponent,
     CampusTabComponent,
     BookListComponent,
@@ -76,8 +75,6 @@ import { NetworkErrorHintComponent } from './network-error-hint/network-error-hi
     CourseDataComponent,
     DatePickerComponent,
     ModulesGridComponent,
-    ConnectionIndicatorComponent,
-    ConnectionIndicatorPopoverComponent,
     NetworkErrorHintComponent,
   ],
 })

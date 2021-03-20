@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ConnectionIndicatorComponent } from './connection-indicator.component';
+import { CustomCardComponent } from './custom-card.component';
 
-describe('ConnectionIndicatorComponent', () => {
-  let component: ConnectionIndicatorComponent;
-  let fixture: ComponentFixture<ConnectionIndicatorComponent>;
+describe('CustomCardComponent', () => {
+  let component: CustomCardComponent;
+  let fixture: ComponentFixture<CustomCardComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ConnectionIndicatorComponent],
+        declarations: [CustomCardComponent],
         imports: [IonicModule.forRoot()],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(ConnectionIndicatorComponent);
+      fixture = TestBed.createComponent(CustomCardComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     })

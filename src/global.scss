@@ -202,13 +202,14 @@ ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
   color: var(--ion-color-dark) !important;
 }
 
-ion-card {
-  box-shadow: none !important;
-}
+// ion-card {
+//   box-shadow: none !important;
+// }
 
 .card-background-page {
   ion-card {
     border-radius: 0;
+    box-shadow: none !important;
     margin: 0;
     position: relative;
     text-align: center;

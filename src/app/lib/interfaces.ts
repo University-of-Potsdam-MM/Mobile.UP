@@ -127,7 +127,7 @@ export interface IMensaIcon {
 }
 export interface ADS {
   uid: number;
-  art: number;
+  art: string;
   field: string;
   title: string;
   date: number;
@@ -144,8 +144,8 @@ export interface ADS {
   phone: string;
   mail: string;
   partner: number;
-  famFriendly: number;
-  expanded: boolean;
+  famfriendly: string;
+  isfavorite?: boolean;
 }
 
 export type IADSResponse = Array<ADS>;

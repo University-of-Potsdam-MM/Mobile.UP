@@ -58,7 +58,8 @@ export class BookLocationComponent implements OnInit {
     ) {
       this.ws.call('libraryLKZ', { epn: localEpn }).subscribe(
         (data) => {
-          const lkz = data.msg;
+          // eslint-disable-next-line @typescript-eslint/dot-notation
+          const lkz = data['msg'];
           if (lkz && lkz !== 'no results' && lkz !== 'parameter incorrect') {
             let url =
               'https://uni-potsdam.mapongo.de/viewer?search_key=' +
