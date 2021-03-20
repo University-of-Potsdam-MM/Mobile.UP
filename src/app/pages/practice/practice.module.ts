@@ -6,7 +6,6 @@ import { PracticePageRoutingModule } from './practice-routing.module';
 import { PracticePage } from './practice.page';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { DetailedPracticeModalPage } from './detailed-practice.modal';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
 
@@ -25,6 +24,6 @@ import { HttpLoaderFactory } from 'src/app/app.module';
       },
     }),
   ],
-  declarations: [PracticePage, DetailedPracticeModalPage],
+  declarations: [PracticePage],
 })
 export class PracticePageModule {}

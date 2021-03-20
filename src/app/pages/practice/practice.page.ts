@@ -1,21 +1,15 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  IonItemSliding,
-  ModalController,
-  AlertController,
-} from '@ionic/angular';
 import * as jquery from 'jquery';
 import { TranslateService } from '@ngx-translate/core';
-import { DetailedPracticeModalPage } from './detailed-practice.modal';
 import { ADS, IADSResponse } from 'src/app/lib/interfaces';
 import { SettingsService } from 'src/app/services/settings/settings.service';
-import { AlertService } from 'src/app/services/alert/alert.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { contains, isInArray } from 'src/app/lib/util';
 import { Keyboard } from '@capacitor/keyboard';
 import { Storage } from '@capacitor/storage';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-practice',
@@ -23,26 +17,30 @@ import { Storage } from '@capacitor/storage';
   styleUrls: ['./practice.page.scss'],
 })
 export class PracticePage extends AbstractPage {
+  // holds all items
   defaultList: ADS[] = [];
+
+  // holds all items that match the search query
   filteredList: ADS[] = [];
+
+  // holds all items that match the search query
+  // and are displayed as part of infinitescroll
   displayedList: ADS[] = [];
-  displayedFavorites: ADS[] = [];
-  allFavorites: ADS[] = [];
+  itemsShown = 0;
+
   isLoaded;
   error: HttpErrorResponse;
-  itemsShown = 0;
-  isLoadedFavorites = false;
+
   query = '';
-  activeSegment = 'search';
   modalOpen;
+
+  noFavoritesSet = true;
+  onlyDisplayFavorites = false;
 
   constructor(
     private settingsProvider: SettingsService,
     public translate: TranslateService,
     private chRef: ChangeDetectorRef,
-    private alertService: AlertService,
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
     super({ optionalNetwork: true });
@@ -58,7 +56,6 @@ export class PracticePage extends AbstractPage {
    */
   public initializeList(): void {
     this.filteredList = this.defaultList;
-    this.displayedFavorites = this.allFavorites;
   }
 
   /**
@@ -67,7 +64,15 @@ export class PracticePage extends AbstractPage {
    * @description loads default items from json file
    * @param refresher
    */
-  public loadData(refresher?) {
+  async loadData(refresher?) {
+    const favObj = await Storage.get({ key: 'favoriteJobs' });
+
+    let favorizedJobs: ADS[] = [];
+    // load favorites if there are any
+    if (favObj && favObj.value) {
+      favorizedJobs = JSON.parse(favObj.value);
+    }
+
     this.error = null;
     if (!(refresher && refresher.target)) {
       this.isLoaded = false;
@@ -78,7 +83,7 @@ export class PracticePage extends AbstractPage {
     this.ws
       .call('practiceSearch', {}, { forceRefresh: refresher !== undefined })
       .subscribe(
-        (response: IADSResponse) => {
+        async (response: IADSResponse) => {
           if (refresher && refresher.target) {
             refresher.target.complete();
           }
@@ -89,17 +94,39 @@ export class PracticePage extends AbstractPage {
           const uidArray = [];
           for (const ads of response) {
             ads.date = ads.date * 1000;
-            ads.expanded = false;
             if (!isInArray(uidArray, ads.uid)) {
               uidArray.push(ads.uid);
               this.defaultList.push(ads);
             }
           }
+
+          const favorizedItemsThatStillExist: ADS[] = [];
+          for (const itm of this.defaultList) {
+            for (const favItm of favorizedJobs) {
+              if (itm.uid === favItm.uid) {
+                itm.isfavorite = true;
+                favorizedItemsThatStillExist.push(itm);
+                break;
+              }
+            }
+          }
+
+          if (favorizedItemsThatStillExist.length === 0) {
+            this.noFavoritesSet = true;
+            this.onlyDisplayFavorites = false;
+          } else {
+            this.noFavoritesSet = false;
+          }
+
+          await Storage.set({
+            key: 'favoriteJobs',
+            value: JSON.stringify(favorizedItemsThatStillExist),
+          });
+
           this.initializeList();
           this.useFilterSettings().then(() => {
             this.isLoaded = true;
           });
-          this.checkFavorites();
         },
         (error) => {
           if (refresher && refresher.target) {
@@ -123,6 +150,11 @@ export class PracticePage extends AbstractPage {
     }
   }
 
+  toggleDisplayFavMode() {
+    this.onlyDisplayFavorites = !this.onlyDisplayFavorites;
+    this.filterItems(this.query);
+  }
+
   /**
    * @name filterItems
    * @description when a query is typed into the searchbar this method is called. It
@@ -136,25 +168,49 @@ export class PracticePage extends AbstractPage {
     this.initializeList();
     this.useFilterSettings().then(() => {
       if (query) {
-        this.filteredList = jquery.grep(
-          this.filteredList,
-          (ADS1) => contains(ADS1.title, query) || contains(ADS1.firm, query)
-        );
+        if (this.onlyDisplayFavorites) {
+          this.filteredList = jquery.grep(
+            this.filteredList,
+            (ADS1: ADS) =>
+              ADS1.isfavorite &&
+              (contains(ADS1.title, query) || contains(ADS1.firm, query))
+          );
+        } else {
+          this.filteredList = jquery.grep(
+            this.filteredList,
+            (ADS1: ADS) =>
+              contains(ADS1.title, query) || contains(ADS1.firm, query)
+          );
+        }
 
-        let i;
         this.displayedList = [];
         this.itemsShown = 0;
-        for (i = 0; i < 15; i++) {
-          if (this.filteredList[i]) {
-            this.displayedList.push(this.filteredList[i]);
+
+        for (const potentialItm of this.filteredList) {
+          if (this.displayedList.length === 15) {
+            break;
+          } else {
+            this.displayedList.push(potentialItm);
             this.itemsShown++;
           }
         }
-
-        this.displayedFavorites = jquery.grep(
-          this.displayedFavorites,
-          (ADS2) => contains(ADS2.title, query) || contains(ADS2.firm, query)
+      } else if (this.onlyDisplayFavorites) {
+        this.filteredList = jquery.grep(
+          this.filteredList,
+          (ADS1: ADS) => ADS1.isfavorite
         );
+
+        this.displayedList = [];
+        this.itemsShown = 0;
+
+        for (const potentialItm of this.filteredList) {
+          if (this.displayedList.length === 15) {
+            break;
+          } else {
+            this.displayedList.push(potentialItm);
+            this.itemsShown++;
+          }
+        }
       }
     });
     this.isLoaded = true;
@@ -169,30 +225,14 @@ export class PracticePage extends AbstractPage {
     this.navCtrl.navigateForward('/settings');
   }
 
-  /**
-   * @name itemSelected
-   * @param {ADS} ads     ads-item to be passed to detail page
-   */
-  async itemSelected(ads: ADS) {
-    const isFav = isInArray(this.allFavorites, ads);
-    const modal = await this.modalCtrl.create({
-      backdropDismiss: false,
-      component: DetailedPracticeModalPage,
-      componentProps: { ADS: ads, isFavorite: isFav },
-    });
-    modal.present();
-    this.modalOpen = true;
-    const result = await modal.onWillDismiss();
-    if (result && result.data) {
-      if (isFav !== result.data.isFavoriteNew) {
-        if (result.data.isFavoriteNew) {
-          this.makeFavorite(ads, undefined, true);
-        } else {
-          this.removeFavorite(ads, true);
-        }
-      }
+  toggleFavorite(ads: ADS) {
+    if (ads.isfavorite) {
+      ads.isfavorite = false;
+      this.removeFavorite(ads);
+    } else {
+      ads.isfavorite = true;
+      this.makeFavorite(ads);
     }
-    this.modalOpen = false;
   }
 
   /**
@@ -201,34 +241,39 @@ export class PracticePage extends AbstractPage {
    * @param {ADS} ads
    * @param {ItemSliding} slidingItem
    */
-  async makeFavorite(
-    ads: ADS,
-    slidingItem: IonItemSliding,
-    disableHints?: boolean
-  ) {
-    if (!isInArray(this.displayedFavorites, ads)) {
-      this.displayedFavorites.push(ads);
+  async makeFavorite(ads) {
+    const favObj = await Storage.get({ key: 'favoriteJobs' });
 
-      if (!isInArray(this.allFavorites, ads)) {
-        this.allFavorites.push(ads);
-      }
-      if (!disableHints) {
-        this.alertService.showToast('hints.text.favAdded');
-      }
-    } else {
-      if (!disableHints) {
-        this.alertService.showToast('hints.text.favExists');
+    let favorizedJobs: ADS[] = [];
+    // load favorites if there are any
+    if (favObj && favObj.value) {
+      favorizedJobs = JSON.parse(favObj.value);
+    }
+
+    for (const listAds of this.defaultList) {
+      if (listAds === ads) {
+        // add new item to the fav array
+        listAds.isfavorite = true;
+        favorizedJobs.push(listAds);
       }
     }
 
+    // apply changes to filteredList and displayedList
+    this.initializeList();
+    // this.useFilterSettings();
+
+    if (favorizedJobs.length === 0) {
+      this.noFavoritesSet = true;
+      this.onlyDisplayFavorites = false;
+    } else {
+      this.noFavoritesSet = false;
+    }
+
+    // save fav array
     await Storage.set({
       key: 'favoriteJobs',
-      value: JSON.stringify(this.allFavorites),
+      value: JSON.stringify(favorizedJobs),
     });
-
-    if (slidingItem) {
-      slidingItem.close();
-    }
   }
 
   /**
@@ -236,69 +281,39 @@ export class PracticePage extends AbstractPage {
    * @description removes favorites
    * @param {ADS} ads
    */
-  async removeFavorite(ads: ADS, disableHints?: boolean) {
-    let i;
-    const tmp: ADS[] = [];
-    for (i = 0; i < this.allFavorites.length; i++) {
-      if (this.allFavorites[i] !== ads) {
-        tmp.push(this.allFavorites[i]);
+  async removeFavorite(ads: ADS) {
+    const favObj = await Storage.get({ key: 'favoriteJobs' });
+    const favorizedJobs: ADS[] = JSON.parse(favObj.value);
+    const newFavorites: ADS[] = [];
+
+    for (const savedFavItm of favorizedJobs) {
+      if (savedFavItm.uid !== ads.uid) {
+        // preserve all favorites except the one we remove
+        newFavorites.push(savedFavItm);
       }
     }
 
-    const tmp2: ADS[] = [];
-    for (i = 0; i < this.displayedFavorites.length; i++) {
-      if (this.displayedFavorites[i] !== ads) {
-        tmp2.push(this.displayedFavorites[i]);
+    // set item in defaultList to non fav
+    for (const itm of this.defaultList) {
+      if (itm.uid === ads.uid) {
+        itm.isfavorite = false;
       }
     }
-    this.allFavorites = [];
-    this.allFavorites = tmp;
-    this.displayedFavorites = [];
-    this.displayedFavorites = tmp2;
-    if (!disableHints) {
-      this.alertService.showToast('hints.text.favRemoved');
+
+    // apply changes to filteredList and displayedList
+    this.initializeList();
+    // this.useFilterSettings();
+
+    if (newFavorites.length === 0) {
+      this.noFavoritesSet = true;
+      this.onlyDisplayFavorites = false;
+    } else {
+      this.noFavoritesSet = false;
     }
+
     await Storage.set({
       key: 'favoriteJobs',
-      value: JSON.stringify(this.allFavorites),
-    });
-  }
-
-  /**
-   * @name checkFavorites
-   * @async
-   * @description checks if favorites are still valid
-   */
-  async checkFavorites() {
-    const tmpObj = await Storage.get({ key: 'favoriteJobs' });
-    const tmp: ADS[] = JSON.parse(tmpObj.value);
-
-    this.allFavorites = [];
-    this.displayedFavorites = [];
-    if (tmp) {
-      let i;
-      let j;
-      for (i = 0; i < tmp.length; i++) {
-        for (j = 0; j < this.defaultList.length; j++) {
-          if (tmp[i].uid === this.defaultList[j].uid) {
-            if (!isInArray(this.allFavorites, tmp[i])) {
-              this.allFavorites.push(tmp[i]);
-            }
-            break;
-          }
-        }
-      }
-
-      if (tmp.length > this.allFavorites.length) {
-        this.alertService.showToast('hints.text.favNotAvailable');
-      }
-    }
-
-    this.isLoadedFavorites = true;
-    this.displayedFavorites = this.allFavorites;
-    await Storage.set({
-      key: 'favoriteJobs',
-      value: JSON.stringify(this.allFavorites),
+      value: JSON.stringify(newFavorites),
     });
   }
 
@@ -323,30 +338,32 @@ export class PracticePage extends AbstractPage {
     }, 500);
   }
 
-  async clearAllFavorites() {
-    const alert = await this.alertCtrl.create({
-      header: this.translate.instant('alert.title.clearAll'),
-      message: this.translate.instant('alert.deleteAllFavs'),
-      backdropDismiss: false,
-      mode: 'md',
-      buttons: [
-        {
-          text: this.translate.instant('button.no'),
-        },
-        {
-          text: this.translate.instant('button.yes'),
-          handler: async () => {
-            this.displayedFavorites = [];
-            this.allFavorites = [];
-            await Storage.set({
-              key: 'favoriteJobs',
-              value: JSON.stringify(this.allFavorites),
-            });
-          },
-        },
-      ],
-    });
-    alert.present();
+  getJobCategory(cat: string) {
+    if (cat && cat !== '') {
+      switch (cat) {
+        case '1':
+          return this.translate.instant('page.practice.item.praktika');
+        case '2':
+          return this.translate.instant('page.practice.item.student');
+        case '3':
+          return this.translate.instant('page.practice.item.graduate');
+        case '4':
+          return this.translate.instant('page.practice.item.thesis');
+        default:
+          return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  getJobPostingURL(fileUrl: string) {
+    if (fileUrl && fileUrl !== '') {
+      return (
+        ConfigService.config.webservices.endpoint.practiceJobPostings.url +
+        fileUrl
+      );
+    }
   }
 
   /**
@@ -361,21 +378,12 @@ export class PracticePage extends AbstractPage {
     const foreign = await this.settingsProvider.getSettingValue('foreign');
 
     let tmp = this.filteredList;
-    let tmpFav = this.displayedFavorites;
     // filter according to practice option
     if (practice.length > 0) {
       tmp = jquery.grep(tmp, (ADS1) => {
         let key = '';
         if (ADS1 && ADS1.art) {
           key = this.practiceMapping(ADS1.art);
-        }
-        return practice.includes(key);
-      });
-
-      tmpFav = jquery.grep(tmpFav, (ADS2) => {
-        let key = '';
-        if (ADS2 && ADS2.art) {
-          key = this.practiceMapping(ADS2.art);
         }
         return practice.includes(key);
       });
@@ -390,27 +398,11 @@ export class PracticePage extends AbstractPage {
         }
         return studyarea.includes(key);
       });
-
-      tmpFav = jquery.grep(tmpFav, (ADS4) => {
-        let key = '';
-        if (ADS4 && ADS4.field) {
-          key += ADS4.field;
-        }
-        return studyarea.includes(key);
-      });
     }
 
     if (domestic && !foreign) {
       tmp = jquery.grep(tmp, (ADS5) => {
         if (ADS5.foreign === '0') {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      tmpFav = jquery.grep(tmpFav, (ADS6) => {
-        if (ADS6.foreign === '0') {
           return true;
         } else {
           return false;
@@ -424,18 +416,9 @@ export class PracticePage extends AbstractPage {
           return false;
         }
       });
-
-      tmpFav = jquery.grep(tmpFav, (ADS8) => {
-        if (ADS8.foreign === '1') {
-          return true;
-        } else {
-          return false;
-        }
-      });
     }
 
     this.filteredList = tmp;
-    this.displayedFavorites = tmpFav;
 
     let i;
     this.displayedList = [];
