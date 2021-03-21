@@ -22,6 +22,7 @@ import { AlertService } from 'src/app/services/alert/alert.service';
 import { LibraryPwChangePage } from './library-pw-change.module';
 import { sessionIsValid } from 'src/app/lib/util';
 import { Storage } from '@capacitor/storage';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-library-account',
@@ -68,6 +69,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     private http: HttpClient,
     private loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
+    private app: AppComponent,
     private alertService: AlertService,
     private modalCtrl: ModalController
   ) {
@@ -165,6 +167,8 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
               this.endLoading();
             }
 
+            this.app.updateLoginStatus();
+
             this.getUser();
             this.getItems();
             this.getFees();
@@ -212,6 +216,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     });
 
     Storage.remove({ key: 'bibSession' });
+    this.app.updateLoginStatus();
     // this.logger.debug('logoutUB()', 'successfully logged out ub-user');
   }
 
