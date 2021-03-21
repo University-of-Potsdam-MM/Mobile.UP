@@ -17,41 +17,21 @@
     mode="md"
     *ngIf="sourcesList && sourcesList.length > 0 && !networkError"
   >
-    <ion-row class="filters">
-      <ion-col class="col-with-arrow ion-no-padding" size="1">
-        <ion-icon
-          *ngIf="showLeftButton"
-          class="linkItem"
-          (click)="slidePrev()"
-          name="caret-back"
-        ></ion-icon>
-      </ion-col>
-      <ion-col class="ion-no-padding" size="10">
-        <ion-slides [options]="slideOptions">
-          <ion-slide
-            class="linkItem"
-            (click)="setNewsSource(i)"
-            *ngFor="let category of categories; let i = index"
-          >
-            <ion-segment-button [class.selected]="selectedCategory === i"
-              >{{ category }}</ion-segment-button
-            >
-          </ion-slide>
-        </ion-slides>
-      </ion-col>
-      <ion-col class="col-with-arrow ion-no-padding" size="1">
-        <ion-icon
-          *ngIf="showRightButton"
-          class="linkItem"
-          (click)="slideNext()"
-          name="caret-forward"
-        ></ion-icon>
-      </ion-col>
-    </ion-row>
+    <ion-segment class="ion-nowrap" mode="md">
+      <ion-segment color="primary" scrollable="true" [value]="selectedCategory">
+        <ion-segment-button
+          (click)="setNewsSource(i)"
+          *ngFor="let category of categories; let i = index"
+          [value]="i"
+        >
+          {{ category }}
+        </ion-segment-button>
+      </ion-segment>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding" (swipe)="swipeNewsSource($event)">
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"
@@ -70,10 +50,13 @@
   <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
 
   <div *ngFor="let article of newsList" class="news-article">
-    <app-news-article
+    <app-custom-card
       *ngIf="article.NewsSource.name == sourcesList[newsSource]"
-      [article]="article"
-    ></app-news-article>
+      [headerNote]="article.News.DateString ? article.News.DateString : null"
+      [cardTitle]="article.News.headline ? article.News.headline : null"
+      [cardContent]="article.News.description ? article.News.description : null"
+      [url]="article.News.link ? article.News.link : null"
+    ></app-custom-card>
   </div>
 
   <div *ngIf="isLoaded && newsList.length == 0 && !networkError">

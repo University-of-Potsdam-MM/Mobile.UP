@@ -26,10 +26,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  class="ion-no-padding"
-  (swipe)="campusTabComponent.handleSwipeEvent($event)"
->
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"

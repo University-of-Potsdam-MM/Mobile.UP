@@ -127,31 +127,6 @@ export class EventsPage extends AbstractPage implements OnInit {
     this.selectedPlace = i;
   }
 
-  swipeListOfPlaces(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      const maxIndex = this.listOfPlaces.length - 1;
-      const currentIndex = this.selectedPlace;
-      let newIndex;
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        if (currentIndex > 0) {
-          newIndex = currentIndex - 1;
-          this.setPlace(newIndex);
-          this.slides.slidePrev();
-          this.slideChanged();
-        }
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        if (currentIndex < maxIndex) {
-          newIndex = currentIndex + 1;
-          this.setPlace(newIndex);
-          this.slides.slideNext();
-          this.slideChanged();
-        }
-      }
-    }
-  }
-
   openEventWebsite() {
     this.webIntent.permissionPromptWebsite(
       ConfigService.config.modules.events.additionalUrl

@@ -23,7 +23,11 @@
   <!-- card header -->
   <ion-card-header
     *ngIf="cardSubTitle || cardTitle"
-    [ngClass]="headerIcon ? 'cardHeaderRemoveTopPadding' : ''"
+    [ngClass]="
+      headerIcon || headerTitle || headerNote
+        ? 'cardHeaderRemoveTopPadding'
+        : ''
+    "
   >
     <ion-card-subtitle *ngIf="cardSubTitle">{{
       cardSubTitle
@@ -34,9 +38,9 @@
   <!-- card content -->
   <ion-card-content *ngIf="cardContent || cardNote">
     <ion-item lines="none">
-      <ion-label *ngIf="cardContent" class="ion-text-wrap">{{
-        cardContent
-      }}</ion-label>
+      <ion-label *ngIf="cardContent" class="ion-text-wrap">
+        <div [innerHTML]="cardContent"></div>
+      </ion-label>
       <ion-note *ngIf="cardNote" slot="end">{{ cardNote }}</ion-note>
     </ion-item>
   </ion-card-content>

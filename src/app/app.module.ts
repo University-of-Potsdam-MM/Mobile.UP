@@ -1,9 +1,5 @@
 import { NgModule, APP_INITIALIZER, Injectable } from '@angular/core';
-import {
-  BrowserModule,
-  // HammerGestureConfig,
-  // HAMMER_GESTURE_CONFIG,
-} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
@@ -11,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-// import 'hammerjs';
 import { ConfigService } from './services/config/config.service';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
@@ -22,7 +17,6 @@ registerLocaleData(localeEn);
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { WebserviceWrapperService } from './services/webservice-wrapper/webservice-wrapper.service';
 // import { LoggingService } from 'ionic-logging-service';
-// import { environment } from 'src/environments/environment';
 import { GridsterModule } from 'angular-gridster2';
 import { CacheModule } from 'ionic-cache';
 import { IonicStorageModule } from '@ionic/storage';
@@ -52,20 +46,6 @@ export function initApiManagerStatus(config: ConfigService) {
 @Injectable({
   providedIn: 'root',
 })
-// export class IonicGestureConfig extends HammerGestureConfig {
-//   buildHammer(element: HTMLElement) {
-//     const mc = new (window as any).Hammer(element);
-
-//     for (const eventName in this.overrides) {
-//       if (mc && eventName) {
-//         mc.get(eventName).set(this.overrides[eventName]);
-//       }
-//     }
-
-//     return mc;
-//   }
-// }
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -121,7 +101,6 @@ export function initApiManagerStatus(config: ConfigService) {
     //   multi: true,
     // },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
   ],
   bootstrap: [AppComponent],
 })
