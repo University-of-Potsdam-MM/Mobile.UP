@@ -25,6 +25,17 @@ export class CampusMapFeatureModalComponent implements OnInit {
     }
   }
 
+  formatItemString(str: string): string {
+    str = str.trim();
+    if (str.charAt(0) === '-' || str.charAt(0) === '–') {
+      str = str.slice(1);
+    }
+
+    str = str.replace(/\/ /g, ' / ');
+
+    return str.trim();
+  }
+
   /**
    * closes this modal
    */

@@ -15,7 +15,7 @@ import {
 import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PULS';
 import { AlertService } from '../alert/alert.service';
 import { isEmptyObject } from '../../lib/util';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, timeout } from 'rxjs/operators';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../connection/connection.service';
 import * as moment from 'moment';
@@ -164,11 +164,13 @@ export class WebserviceWrapperService {
   public webservices: { [wsName: string]: IWebservice } = {
     maps: {
       buildRequest: (params, url) =>
-        this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
-        }),
+        this.http
+          .get(url, {
+            headers: ConfigService.isApiManagerUpdated
+              ? this.apiTokenHeaderNew
+              : this.apiTokenHeader,
+          })
+          .pipe(timeout(2000)),
     },
     mensa: {
       buildRequest: (params: IMensaRequestParams, url) =>

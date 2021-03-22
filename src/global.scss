@@ -107,7 +107,7 @@ ion-item-divider,
   overflow: auto !important;
   position: fixed;
   right: 5em !important;
-  top: calc(12em + env(safe-area-inset-top)) !important;
+  top: calc(13em + env(safe-area-inset-top)) !important;
 }
 
 .leaflet-control-search .search-tip {
@@ -262,6 +262,10 @@ ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
 ion-toolbar {
   --min-height: 54px;
   --padding-bottom: 0;
+}
+
+ion-segment {
+  height: 54px !important;
 }
 
 ion-content.modalOpened,

@@ -25,8 +25,8 @@
       "icon": "pulse",
       "selected": false
     },
-    "events": {
-      "componentName": "events",
+    "event": {
+      "componentName": "event",
       "icon": "bonfire",
       "selected": false,
       "hide": false,

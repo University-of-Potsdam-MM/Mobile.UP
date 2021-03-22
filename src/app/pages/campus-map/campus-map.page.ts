@@ -7,7 +7,7 @@ import {
   IMapsResponse,
 } from 'src/app/lib/interfaces';
 
-import { ModalController, IonSearchbar } from '@ionic/angular';
+import { ModalController, IonSearchbar, Platform } from '@ionic/angular';
 import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as L from 'leaflet';
@@ -18,9 +18,13 @@ import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { LatLngExpression } from 'leaflet';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { Keyboard } from '@capacitor/keyboard';
-import { Geolocation, Position } from '@capacitor/geolocation';
+import {
+  Geolocation,
+  Position,
+  PermissionStatus,
+} from '@capacitor/geolocation';
+import { HttpClient } from '@angular/common/http';
 
 export interface CampusMapQueryParams {
   campus?: string | number;
@@ -55,6 +59,8 @@ export class CampusMapPage
   positionMarker: L.Marker;
   modalOpen = false;
 
+  isLoaded;
+
   geoLocationEnabled = false;
   watchPositionCallbackID;
 
@@ -63,7 +69,8 @@ export class CampusMapPage
     private translate: TranslateService,
     private modalCtrl: ModalController,
     private alertService: AlertService,
-    private connectionService: ConnectionService
+    private http: HttpClient,
+    public platform: Platform
   ) {
     super({ requireNetwork: true });
   }
@@ -78,7 +85,7 @@ export class CampusMapPage
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
         '© <a href="//www.openstreetmap.org/copyright" target="_blank">OpenStreetMap-Mitwirkende</a> und www.uni-potsdam.de',
-      minZoom: 14,
+      minZoom: 10,
       maxZoom: 18,
     }).addTo(map);
 
@@ -122,7 +129,6 @@ export class CampusMapPage
       }
 
       this.loadMapData(this.map);
-      this.addLeafletSearch(this.map);
     }
   }
 
@@ -310,7 +316,6 @@ export class CampusMapPage
       },
     });
     map.addControl(this.searchControl);
-    map.invalidateSize();
   }
 
   search() {
@@ -326,13 +331,21 @@ export class CampusMapPage
   }
 
   async watchGeolocation() {
-    let currentStatus = await Geolocation.checkPermissions();
+    let currentStatus: PermissionStatus = {
+      location: 'prompt',
+    };
+    if (this.platform.is('ios') || this.platform.is('android')) {
+      currentStatus = await Geolocation.checkPermissions();
 
-    if (currentStatus.location !== 'granted') {
-      currentStatus = await Geolocation.requestPermissions();
+      if (currentStatus.location !== 'granted') {
+        currentStatus = await Geolocation.requestPermissions();
+      }
+    } else {
+      currentStatus.location = 'granted';
     }
 
     if (currentStatus.location === 'granted') {
+      this.geoLocationEnabled = true;
       this.watchPositionCallbackID = await Geolocation.watchPosition(
         { enableHighAccuracy: true },
         (position: Position | null, err?: any) => {
@@ -340,9 +353,8 @@ export class CampusMapPage
             this.setPosition(position);
             this.moveToPosition([
               position.coords.latitude,
-              position.coords.latitude,
+              position.coords.longitude,
             ]);
-            this.geoLocationEnabled = true;
           }
         }
       );
@@ -404,20 +416,14 @@ export class CampusMapPage
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       },
       () => {
-        if (this.connectionService.checkOnline()) {
-          this.alertService.showToast('alert.httpErrorStatus.generic');
-        }
+        this.http
+          .get('assets/json/geojson.json')
+          .subscribe((response: IMapsResponse) => {
+            this.geoJSON = response;
+            this.addFeaturesToLayerGroups(this.geoJSON, map);
+          });
       }
     );
-
-    // load local geojson.json instead of the one from the mapsAPI
-
-    // this.http.get('assets/json/geojson.json').subscribe((response: IMapsResponse) => {
-    //   this.geoJSON = response;
-    //   this.addFeaturesToLayerGroups(this.geoJSON, map);
-    // }, error => {
-    //   console.log(error);
-    // });
   }
 
   /**
@@ -583,6 +589,9 @@ export class CampusMapPage
 
     // add control with overlays to map
     L.control.layers({}, overlays).addTo(map);
+    this.addLeafletSearch(this.map);
     map.invalidateSize();
+    this.selectCampus(this.currentCampus);
+    this.isLoaded = true;
   }
 }

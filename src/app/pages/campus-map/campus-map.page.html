@@ -10,8 +10,9 @@
       [selectedCampusNoEmit]="currentCampus"
     ></app-campus-tab>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar *ngIf="isLoaded">
     <ion-searchbar
+      [ngClass]="platform.is('ios') || platform.is('android') ? 'noPaddingRight' : ''"
       mode="md"
       [(ngModel)]="query"
       [placeholder]="'placeholder.search' | translate"
@@ -20,6 +21,7 @@
     >
     </ion-searchbar>
     <ion-button
+      *ngIf="platform.is('ios') || platform.is('android')"
       class="locationButton"
       mode="md"
       slot="end"
@@ -34,5 +36,8 @@
 </ion-header>
 
 <ion-content>
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
   <div id="map" style="height: 100%; width: 100%; max-height: none"></div>
 </ion-content>
