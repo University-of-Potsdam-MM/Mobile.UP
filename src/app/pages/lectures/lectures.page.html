@@ -34,6 +34,26 @@
     >
     </ion-searchbar>
   </ion-toolbar>
+  <ion-toolbar
+    *ngIf="!isRefreshing && !isSearching && searchResults.length > 0"
+  >
+    <ion-item mode="md" color="light" lines="none">
+      <ion-label> {{ "page.lectures.filter" | translate }} </ion-label>
+      <ion-select
+        (ionChange)="selectFilter($event)"
+        multiple="true"
+        okText="{{ 'button.ok' | translate }}"
+        cancelText="{{ 'button.cancel' | translate }}"
+      >
+        <ion-select-option value="header" selected
+          >{{ "page.lectures.directories" | translate }}</ion-select-option
+        >
+        <ion-select-option value="courses" selected
+          >{{ "page.lectures.courses" | translate }}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content
@@ -69,22 +89,6 @@
   ></app-lecture-list>
 
   <div *ngIf="!isRefreshing && !isSearching && searchResults.length > 0">
-    <ion-item mode="md" color="light">
-      <ion-label> {{ "page.lectures.filter" | translate }} </ion-label>
-      <ion-select
-        (ionChange)="selectFilter($event)"
-        multiple="true"
-        okText="{{ 'button.ok' | translate }}"
-        cancelText="{{ 'button.cancel' | translate }}"
-      >
-        <ion-select-option value="header" selected
-          >{{ "page.lectures.directories" | translate }}</ion-select-option
-        >
-        <ion-select-option value="courses" selected
-          >{{ "page.lectures.courses" | translate }}</ion-select-option
-        >
-      </ion-select>
-    </ion-item>
     <ion-list>
       <ion-item
         mode="md"

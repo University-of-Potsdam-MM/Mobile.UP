@@ -16,8 +16,8 @@
   <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-grid *ngIf="isLoaded && !noMensaForLocation && !networkError">
+  <ion-toolbar *ngIf="isLoaded && !noMensaForLocation && !networkError">
+    <ion-grid>
       <ion-row>
         <ion-col size="6">
           <app-date-picker
