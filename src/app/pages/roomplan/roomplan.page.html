@@ -16,6 +16,9 @@
   <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
+  <ion-toolbar>
+    <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-no-padding">
@@ -29,8 +32,6 @@
       refreshingSpinner="dots"
     ></ion-refresher-content>
   </ion-refresher>
-
-  <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
 
   <ng-template #noRoomsFoundTemplate>
     <app-hint-box
@@ -84,7 +85,7 @@
             </ion-item>
             <div *ngIf="room.expanded && room.events">
               <ion-item mode="md" margin-left *ngFor="let event of room.events">
-                <ion-label class="ion-text-wrap">
+                <ion-label class="ion-text-wrap ion-padding-end">
                   <u>
                     <b *ngIf="translate.currentLang === 'de'"
                       >{{event.startTime | date:'HH:mm'}} - {{event.endTime |

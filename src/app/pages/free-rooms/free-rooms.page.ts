@@ -71,6 +71,15 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
         this.timeLabels.push(label);
       }
     }
+
+    const closedSlot = { lbl: 22 + ' - ' + 8, value: 22 };
+    this.time_slots.push(closedSlot);
+    if (this.translate.currentLang === 'de') {
+      this.timeLabels.push('22 - 8');
+    } else {
+      this.timeLabels.push('10 PM - 8 AM');
+    }
+
     this.select_timeslot = this.current_timeslot.start;
   }
 
@@ -93,7 +102,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
       }
     }
 
-    return { start: 0, end: 0, error: true };
+    return { start: 22, end: 8, error: true };
   }
 
   /**
@@ -142,12 +151,14 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
    * Info comes from DOM select element "select_timeslot"
    */
   changeTimeSlot() {
+    console.log(this.select_timeslot);
     this.housesFound = [];
     this.current_timeslot = {
       start: this.select_timeslot,
-      end: this.select_timeslot + 2,
-      error: false,
+      end: Number(this.select_timeslot) === 22 ? 8 : this.select_timeslot + 2,
+      error: Number(this.select_timeslot) === 22 ? true : false,
     };
+    console.log(this.current_timeslot);
     this.getRoomInfo();
   }
 
@@ -175,6 +186,7 @@ export class FreeRoomsPage extends AbstractPage implements OnInit {
   getRoomInfo() {
     if (this.current_timeslot.error) {
       this.no_timeslot = true;
+      this.isLoaded = true;
       this.housesFound = [];
       return;
     }

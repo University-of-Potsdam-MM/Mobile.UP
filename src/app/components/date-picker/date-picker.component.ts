@@ -16,7 +16,6 @@ export class DatePickerComponent implements OnInit {
    *
    * compactMode – removes the label 'Date' and just displays the selected date string
    */
-  @Input() lines: string;
   @Input() inputDate;
   @Input() compactMode: boolean;
 

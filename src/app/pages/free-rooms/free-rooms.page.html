@@ -16,6 +16,23 @@
   <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-item mode="md" lines="none" class="timePicker">
+      <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
+      <ion-select
+        [(ngModel)]="select_timeslot"
+        (ionChange)="changeTimeSlot()"
+        okText="{{ 'button.ok' | translate }}"
+        cancelText="{{ 'button.cancel'  | translate }}"
+      >
+        <ion-select-option
+          *ngFor="let slot of time_slots; let i = index"
+          [value]="slot.value"
+          >{{timeLabels[i]}} {{ "words.clock" | translate }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-no-padding">
@@ -29,22 +46,6 @@
       refreshingSpinner="dots"
     ></ion-refresher-content>
   </ion-refresher>
-
-  <ion-item mode="md" class="timePicker">
-    <ion-label>{{ "page.free-rooms.time" | translate }}</ion-label>
-    <ion-select
-      [(ngModel)]="select_timeslot"
-      (ionChange)="changeTimeSlot()"
-      okText="{{ 'button.ok' | translate }}"
-      cancelText="{{ 'button.cancel'  | translate }}"
-    >
-      <ion-select-option
-        *ngFor="let slot of time_slots; let i = index"
-        [value]="slot.value"
-        >{{timeLabels[i]}} {{ "words.clock" | translate }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
 
   <ng-template #housesFoundTemplate>
     <ion-list>
@@ -71,17 +72,14 @@
         </ion-item>
         <div *ngIf="house.expanded">
           <ion-item mode="md" margin-left *ngFor="let room of house.rooms">
-            <ion-label> {{room.lbl}} </ion-label>
+            <ion-label class="ion-padding-end"> {{room.lbl}} </ion-label>
           </ion-item>
         </div>
       </div>
     </ion-list>
   </ng-template>
 
-  <p
-    *ngIf="!isLoaded || (housesFound.length == 0 && !no_timeslot)"
-    style="text-align: center"
-  >
+  <p *ngIf="!isLoaded" style="text-align: center">
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
