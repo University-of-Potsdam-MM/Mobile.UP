@@ -50,9 +50,5 @@
 	{
 		"pkg": "@capacitor/storage",
 		"classpath": "com.capacitorjs.plugins.storage.StoragePlugin"
-	},
-	{
-		"pkg": "@proteansoftware/capacitor-start-navigation",
-		"classpath": "com.servicesight.capacitor.startnavigation.StartNavigationPlugin"
 	}
 ]

@@ -11,7 +11,7 @@ export class CustomCardComponent implements OnInit {
   @Input() headerTitle: string;
   @Input() headerNote: string;
   @Input() headerIcon: string;
-  @Output() headerIconClickedCallback = new EventEmitter();
+  @Output() headerIconCallback = new EventEmitter();
 
   // card header
   @Input() cardTitle: string;
@@ -24,10 +24,15 @@ export class CustomCardComponent implements OnInit {
   // footer
   @Input() footerFirstString: string;
   @Input() footerFirstIcon: string;
+  @Output() footerFirstIconCallback = new EventEmitter();
+
   @Input() footerSecondString: string;
   @Input() footerSecondIcon: string;
+  @Output() footerSecondIconCallback = new EventEmitter();
+
   @Input() footerThirdString: string;
   @Input() footerThirdIcon: string;
+  @Output() footerThirdIconCallback = new EventEmitter();
 
   // url
   @Input() url: string;
@@ -44,6 +49,21 @@ export class CustomCardComponent implements OnInit {
 
   clickHeaderIcon($event) {
     $event.stopPropagation();
-    this.headerIconClickedCallback.emit();
+    this.headerIconCallback.emit();
+  }
+
+  clickFooterFirstIcon($event) {
+    $event.stopPropagation();
+    this.footerFirstIconCallback.emit();
+  }
+
+  clickFooterSecondIcon($event) {
+    $event.stopPropagation();
+    this.footerSecondIconCallback.emit();
+  }
+
+  clickFooterThirdIcon($event) {
+    $event.stopPropagation();
+    this.footerThirdIconCallback.emit();
   }
 }

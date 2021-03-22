@@ -26,7 +26,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
   dependencies;
 
   constructor(
-    private mapsProvider: NavigatorService,
+    private navigator: NavigatorService,
     private deviceService: DeviceService
   ) {
     super();
@@ -41,8 +41,10 @@ export class AppInfoPage extends AbstractPage implements OnInit {
   }
 
   navigateToInstitut() {
-    // Haus 4 Institut für Informatik
-    this.mapsProvider.navigateToLatLong([52.3934371, 13.1280184]);
+    const address =
+      'Institut für Informatik, August-Bebel-Str. 89 14482 Potsdam';
+
+    this.navigator.navigateToAddress(address);
   }
 
   async exportLog() {

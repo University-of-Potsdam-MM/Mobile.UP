@@ -22,7 +22,6 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-storage')
-    implementation project(':proteansoftware-capacitor-start-navigation')
 
 }
 

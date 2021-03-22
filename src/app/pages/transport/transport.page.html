@@ -49,16 +49,19 @@
       <ion-item mode="md">
         <ion-icon
           slot="start"
+          class="opnvIcon"
           *ngIf="dep.Product.catOut.trim() === 'Bus'"
           src="./assets/icon/bus.svg"
         ></ion-icon>
         <ion-icon
           slot="start"
+          class="opnvIcon"
           *ngIf="(dep.Product.catOut.trim() === 'RB') || (dep.Product.catOut.trim() === 'RE')"
           src="./assets/icon/bahn.svg"
         ></ion-icon>
         <ion-icon
           slot="start"
+          class="opnvIcon"
           *ngIf="dep.Product.catOut.trim() === 'S'"
           src="./assets/icon/s-bahn.svg"
         ></ion-icon>

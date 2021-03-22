@@ -40,6 +40,3 @@ project(':capacitor-splash-screen').projectDir = new File('../node_modules/@capa
 
 include ':capacitor-storage'
 project(':capacitor-storage').projectDir = new File('../node_modules/@capacitor/storage/android')
-
-include ':proteansoftware-capacitor-start-navigation'
-project(':proteansoftware-capacitor-start-navigation').projectDir = new File('../node_modules/@proteansoftware/capacitor-start-navigation/android')

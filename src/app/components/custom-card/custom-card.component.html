@@ -58,13 +58,21 @@
     class="footerItem"
   >
     <ion-row nowrap>
-      <ion-col *ngIf="footerFirstIcon || footerFirstString" align="center">
+      <ion-col
+        *ngIf="footerFirstIcon || footerFirstString"
+        align="center"
+        (click)="clickFooterFirstIcon($event)"
+      >
         <div class="footerButton">
           <ion-icon *ngIf="footerFirstIcon" [name]="footerFirstIcon"></ion-icon>
           <div *ngIf="footerFirstString">{{ footerFirstString }}</div>
         </div>
       </ion-col>
-      <ion-col *ngIf="footerSecondIcon || footerSecondString" align="center">
+      <ion-col
+        *ngIf="footerSecondIcon || footerSecondString"
+        align="center"
+        (click)="clickFooterSecondIcon($event)"
+      >
         <div class="footerButton">
           <ion-icon
             *ngIf="footerSecondIcon"
@@ -73,7 +81,11 @@
           <div *ngIf="footerSecondString">{{ footerSecondString }}</div>
         </div>
       </ion-col>
-      <ion-col *ngIf="footerThirdIcon || footerThirdString" align="center">
+      <ion-col
+        *ngIf="footerThirdIcon || footerThirdString"
+        align="center"
+        (click)="clickFooterThirdIcon($event)"
+      >
         <div class="footerButton">
           <ion-icon *ngIf="footerThirdIcon" [name]="footerThirdIcon"></ion-icon>
           <div *ngIf="footerThirdString">{{ footerThirdString }}</div>
