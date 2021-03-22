@@ -149,14 +149,16 @@ export class MensaPage extends AbstractPage {
 
   getFilterKeywords() {
     this.filterKeywords = [];
-    for (const meal of this.displayedMeals) {
-      for (const mealType of meal.type) {
-        if (!isInArray(this.filterKeywords, mealType)) {
-          this.filterKeywords.push(mealType);
+    for (const [index, meal] of this.displayedMeals.entries()) {
+      if (this.mealForDate[index]) {
+        for (const mealType of meal.type) {
+          if (!isInArray(this.filterKeywords, mealType)) {
+            this.filterKeywords.push(mealType);
+          }
         }
       }
-      this.filterKeywords.sort();
     }
+    this.filterKeywords.sort();
   }
 
   classifyMeals() {
@@ -283,6 +285,8 @@ export class MensaPage extends AbstractPage {
         }
       }
     }
+
+    this.getFilterKeywords();
   }
 
   getOpening(refresher?) {
