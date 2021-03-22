@@ -1,47 +1,43 @@
-ion-item ion-thumbnail {
-  max-height: 2.1rem;
-  max-width: 2.1rem;
-  min-height: 2.1rem;
-  min-width: 2.1rem;
-
-  img {
-    max-height: 2.1rem;
-    max-width: 2.1rem;
-    min-height: 2.1rem;
-    min-width: 2.1rem;
-  }
-}
-
 .mealDescription {
-  color: var(--ion-color-primary);
-  padding-bottom: 5px;
-}
-
-.mensaMealItem {
-  padding-bottom: 5px !important;
-  padding-top: 5px !important;
+  color: var(--ion-color-dark);
+  padding-top: 5px;
 }
 
 ion-item {
-  border-bottom: 1px solid var(--ion-color-light-shade) !important;
+  --background: var(--ion-card-background);
 
-  ion-label {
-    font-size: 80%;
-    margin-bottom: 0;
-    margin-top: 5px;
-  }
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-ion-item.noborder {
-  border-width: 0 !important;
+ion-card-content {
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.marginBottom {
+  margin-bottom: 10px;
 }
 
 .mealtitle {
   color: var(--ion-color-dark);
-  font-size: 80%;
+  font-size: 70%;
+}
 
-  span {
-    color: var(--ion-color-custom-mensa);
-    font-weight: bold;
+.mealtype {
+  color: var(--ion-color-custom-mensa);
+  font-size: 70%;
+  font-weight: bold;
+}
+
+.mealallergens {
+  padding-top: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    --ion-card-background: var(--ion-color-light-shade) !important;
   }
 }

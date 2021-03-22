@@ -94,6 +94,13 @@ export class MensaPage extends AbstractPage {
         )
         .subscribe(
           (res: IMensaResponse) => {
+            res.meal = res.meal.sort((a, b) => {
+              if (a.title === 'Info') {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
             if (res.meal) {
               this.allMeals = res.meal;
               this.displayedMeals = res.meal;
