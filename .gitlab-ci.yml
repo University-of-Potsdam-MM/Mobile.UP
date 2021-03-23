@@ -33,8 +33,6 @@ install_dependencies:
     paths:
       - node_modules/
     expire_in: 1 day
-  tags:
-    - mac
   except:
     refs:
       - tags
