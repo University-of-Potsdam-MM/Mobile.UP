@@ -1,8 +1,43 @@
 ion-item h3 {
   color: var(--ion-color-dark);
-  font-weight: normal;
+  font-weight: bold;
 }
 
-ion-icon {
-  color: var(--ion-color-primary);
+ion-card-header {
+  padding-bottom: 10px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 10px !important;
+
+  ion-icon {
+    margin-right: 10px !important;
+  }
+}
+
+ion-card-content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.footerItem {
+  border-top: 1px solid var(--ion-color-light-shade);
+  padding: 5px;
+}
+
+.footerButton {
+  background-color: var(--ion-card-background);
+}
+
+.smallerText  {
+  font-size: 90%;
+}
+
+ion-item {
+  --background: var(--ion-card-background);
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    --ion-card-background: var(--ion-color-light-shade) !important;
+  }
 }

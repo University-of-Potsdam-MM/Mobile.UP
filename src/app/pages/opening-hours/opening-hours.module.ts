@@ -6,7 +6,6 @@ import { OpeningHoursPageRoutingModule } from './opening-hours-routing.module';
 import { OpeningHoursPage } from './opening-hours.page';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { HttpLoaderFactory } from 'src/app/app.module';
 
@@ -25,6 +24,6 @@ import { HttpLoaderFactory } from 'src/app/app.module';
       },
     }),
   ],
-  declarations: [OpeningHoursPage, DetailedOpeningModalPage],
+  declarations: [OpeningHoursPage],
 })
 export class OpeningHoursPageModule {}

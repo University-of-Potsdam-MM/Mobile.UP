@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as opening from 'opening_hours';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController } from '@ionic/angular';
-import { DetailedOpeningModalPage } from './detailed-opening.modal';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
@@ -19,19 +17,18 @@ export class OpeningHoursPage
   allOpeningHours: any = [];
   weekday = [];
   isLoaded;
-  modalOpen;
   query = '';
   networkError;
 
   constructor(
     private translate: TranslateService,
-    private modalCtrl: ModalController,
     private ws: WebserviceWrapperService
   ) {
     super({ optionalNetwork: true });
   }
 
   ngOnInit() {
+    this.setupWeekdayMapping();
     this.loadOpeningHours();
 
     if (this.platform.is('ios')) {
@@ -80,6 +77,40 @@ export class OpeningHoursPage
 
                 openingHour.state = openingHour.parsedOpening.getState();
                 openingHour.unknownState = openingHour.parsedOpening.getUnknown();
+
+                openingHour.intervals = openingHour.parsedOpening.getOpenIntervals(
+                  from,
+                  to
+                );
+
+                openingHour.itv = [];
+
+                for (const interval of openingHour.intervals) {
+                  const dayLocaleString =
+                    this.weekday[interval[0].getDay()] +
+                    ', ' +
+                    interval[0].toLocaleDateString(this.translate.currentLang);
+                  const openInterval = this.parseDate(interval[0], interval[1]);
+
+                  let found;
+                  for (let i = 0; i < openingHour.itv.length; i++) {
+                    if (Array.isArray(openingHour.itv[i])) {
+                      if (openingHour.itv[i][0] === dayLocaleString) {
+                        found = i;
+                        break;
+                      }
+                    }
+                  }
+
+                  if (found !== undefined) {
+                    openingHour.itv[found].push(openInterval);
+                  } else {
+                    const lgth = openingHour.itv.length;
+                    openingHour.itv[lgth] = [];
+                    openingHour.itv[lgth][0] = dayLocaleString;
+                    openingHour.itv[lgth].push(openInterval);
+                  }
+                }
               }
 
               this.openingHours = this.sortOpenings(this.allOpeningHours);
@@ -110,17 +141,21 @@ export class OpeningHoursPage
 
   sortOpenings(openArray): any[] {
     return openArray.sort((a, b) => {
-      const changeA = a.nextChange;
-      const changeB = b.nextChange;
-      if (changeA === undefined) {
-        // sort B before A, because state of A doesnt change in the next 6 days
-        return 1;
-      } else if (changeB === undefined) {
-        // sort A before B, because state of B doesnt change in the next 6 days
-        return -1;
+      if (a.state !== b.state) {
+        return a.state ? -1 : 1;
       } else {
-        // sort depending on whether state of A or B changes first
-        return changeA - changeB;
+        const changeA = a.nextChange;
+        const changeB = b.nextChange;
+        if (changeA === undefined) {
+          // sort B before A, because state of A doesnt change in the next 6 days
+          return 1;
+        } else if (changeB === undefined) {
+          // sort A before B, because state of B doesnt change in the next 6 days
+          return -1;
+        } else {
+          // sort depending on whether state of A or B changes first
+          return changeA - changeB;
+        }
       }
     });
   }
@@ -130,18 +165,6 @@ export class OpeningHoursPage
     if (this.platform.is('ios') || this.platform.is('android')) {
       Keyboard.hide();
     }
-  }
-
-  async itemSelected(itemSelect) {
-    const modal = await this.modalCtrl.create({
-      backdropDismiss: false,
-      component: DetailedOpeningModalPage,
-      componentProps: { item: itemSelect },
-    });
-    modal.present();
-    this.modalOpen = true;
-    await modal.onDidDismiss();
-    this.modalOpen = false;
   }
 
   openUntil(index) {
@@ -161,6 +184,7 @@ export class OpeningHoursPage
         return (
           this.translate.instant('page.opening-hours.closes') +
           this.weekday[willClose.getDay()] +
+          ' ' +
           willClose.toLocaleTimeString(this.translate.currentLang, {
             hour: 'numeric',
             minute: 'numeric',
@@ -190,6 +214,7 @@ export class OpeningHoursPage
         return (
           this.translate.instant('page.opening-hours.opens') +
           this.weekday[willChange.getDay()] +
+          ' ' +
           willChange.toLocaleTimeString(this.translate.currentLang, {
             hour: 'numeric',
             minute: 'numeric',
@@ -220,24 +245,31 @@ export class OpeningHoursPage
     );
   }
 
-  ionViewDidEnter() {
+  splitItemName(name) {
+    name = name.replace(')', '');
+    name = name.split('(');
+
+    return name;
+  }
+
+  setupWeekdayMapping() {
     this.weekday = [];
     if (this.translate.currentLang === 'de') {
-      this.weekday[0] = 'So. ';
-      this.weekday[1] = 'Mo. ';
-      this.weekday[2] = 'Di. ';
-      this.weekday[3] = 'Mi. ';
-      this.weekday[4] = 'Do. ';
-      this.weekday[5] = 'Fr. ';
-      this.weekday[6] = 'Sa. ';
+      this.weekday[0] = 'So.';
+      this.weekday[1] = 'Mo.';
+      this.weekday[2] = 'Di.';
+      this.weekday[3] = 'Mi.';
+      this.weekday[4] = 'Do.';
+      this.weekday[5] = 'Fr.';
+      this.weekday[6] = 'Sa.';
     } else {
-      this.weekday[0] = 'Su. ';
-      this.weekday[1] = 'Mo. ';
-      this.weekday[2] = 'Tu. ';
-      this.weekday[3] = 'We. ';
-      this.weekday[4] = 'Th. ';
-      this.weekday[5] = 'Fr. ';
-      this.weekday[6] = 'Sa. ';
+      this.weekday[0] = 'Su.';
+      this.weekday[1] = 'Mo.';
+      this.weekday[2] = 'Tu.';
+      this.weekday[3] = 'We.';
+      this.weekday[4] = 'Th.';
+      this.weekday[5] = 'Fr.';
+      this.weekday[6] = 'Sa.';
     }
   }
 
@@ -254,5 +286,41 @@ export class OpeningHoursPage
         }
       });
     }
+  }
+
+  parseDate(from: Date, to: Date) {
+    return (
+      from.toLocaleTimeString(this.translate.currentLang, {
+        hour: 'numeric',
+        minute: 'numeric',
+      }) +
+      this.translate.instant('page.opening-hours.time') +
+      ' - ' +
+      to.toLocaleTimeString(this.translate.currentLang, {
+        hour: 'numeric',
+        minute: 'numeric',
+      }) +
+      this.translate.instant('page.opening-hours.time')
+    );
+  }
+
+  openURL($event, url) {
+    $event.stopPropagation();
+    this.webIntent.permissionPromptWebsite(url);
+  }
+
+  openMail($event, mail) {
+    $event.stopPropagation();
+    window.location.href = 'mailto:' + mail;
+  }
+
+  /**
+   * @name callContact
+   * @description using native call for calling numbers
+   * @param {string} number
+   */
+  callContact($event, num: string) {
+    $event.stopPropagation();
+    window.location.href = 'tel:' + num;
   }
 }
