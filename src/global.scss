@@ -285,8 +285,14 @@ ion-content.disableScrolling {
   }
 
   .monthview-datetable td.monthview-current {
-    background-color: var(--ion-color-light) !important;
+    background-color: var(--ion-color-light-shade) !important;
     color: var(--ion-color-dark) !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .monthview-datetable td.monthview-current {
+      background-color: var(--ion-color-light-tint) !important;
+    }
   }
 
   .calendar-event-inner {

@@ -14,6 +14,24 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.timetable.title" | translate }}</ion-title>
   </ion-toolbar>
+  <ion-toolbar *ngIf="!noUserRights && !isLoading && !error">
+    <ion-segment class="ion-nowrap" mode="md" [value]="calMode">
+      <ion-segment-button
+        (click)="changeCalendarMode('month')"
+        [value]="'month'"
+      >
+        {{ "page.timetable.month" | translate }}
+      </ion-segment-button>
+
+      <ion-segment-button (click)="changeCalendarMode('week')" [value]="'week'">
+        {{ "page.timetable.week" | translate }}
+      </ion-segment-button>
+
+      <ion-segment-button (click)="changeCalendarMode('day')" [value]="'day'">
+        {{ "page.timetable.day" | translate }}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content
@@ -38,44 +56,6 @@
   ></ion-progress-bar>
 
   <span *ngIf="!noUserRights && !isLoading && !error">
-    <ion-grid>
-      <ion-row nowrap class="ion-align-items-center ion-justify-content-center">
-        <ion-col size="auto">
-          <ion-button
-            mode="md"
-            expand="full"
-            [ngClass]="calMode == 'month' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('month')"
-          >
-            {{ "page.timetable.month" | translate }}
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button
-            mode="md"
-            expand="full"
-            [ngClass]="calMode == 'week' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('week')"
-          >
-            {{ "page.timetable.week" | translate }}
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button
-            mode="md"
-            expand="full"
-            [ngClass]="calMode == 'day' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('day')"
-          >
-            {{ "page.timetable.day" | translate }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
     <ion-grid>
       <div align="center">
         <ion-row nowrap>

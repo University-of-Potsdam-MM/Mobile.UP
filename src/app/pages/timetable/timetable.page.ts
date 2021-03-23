@@ -228,12 +228,7 @@ export class TimetablePage extends AbstractPage {
    * @param time
    */
   timeSelected(time) {
-    if (
-      this.calMode === 'month' &&
-      time &&
-      time.events &&
-      time.events.length > 0
-    ) {
+    if (this.calMode === 'month' && time) {
       this.calMode = 'day';
     }
   }
