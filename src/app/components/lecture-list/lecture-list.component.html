@@ -144,14 +144,16 @@
     lectureSchedule &&
     lectureSchedule.lectureScheduleCourses &&
     lectureSchedule.lectureScheduleCourses.currentNode &&
-    lectureSchedule.lectureScheduleCourses.currentNode.courses &&
-    !lectureSchedule.lectureScheduleCourses.currentNode.courses.course
+    (!lectureSchedule.lectureScheduleCourses.currentNode.courses ||
+      (lectureSchedule.lectureScheduleCourses.currentNode.courses &&
+        !lectureSchedule.lectureScheduleCourses.currentNode.courses.course))
   "
   class="courseItem"
 >
-  <ion-item mode="md" class="noCourses">
-    <ion-label class="ion-text-wrap">
-      {{ "page.lectures.noCourses" | translate }}
-    </ion-label>
-  </ion-item>
+  <div class="noCourses">
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="page.lectures.noCourses"
+    ></app-hint-box>
+  </div>
 </div>

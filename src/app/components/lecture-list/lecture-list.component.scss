@@ -86,7 +86,7 @@ th {
 
 td,
 th {
-  border: 1px solid var(--ion-color-light-shade);
+  border: 1px solid var(--ion-color-dark-shade);
   padding: 6px;
   text-align: left;
 }
@@ -117,17 +117,17 @@ th {
   }
 
   tr {
-    border: 1px solid var(--ion-color-light-shade);
+    border: 1px solid var(--ion-color-dark-shade);
   }
 
   tr.emptyRow {
-    border: 0 solid var(--ion-color-light-shade);
+    border: 0 solid var(--ion-color-dark-shade);
   }
 
   td {
     /* Behave  like a "row" */
     border: 0 none;
-    border-bottom: 1px solid var(--ion-color-light-shade);
+    border-bottom: 1px solid var(--ion-color-dark-shade);
     position: relative;
   }
 

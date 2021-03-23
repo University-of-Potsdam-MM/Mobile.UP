@@ -38,7 +38,9 @@
     *ngIf="!isRefreshing && !isSearching && searchResults.length > 0"
   >
     <ion-item mode="md" color="light" lines="none">
-      <ion-label> {{ "page.lectures.filter" | translate }} </ion-label>
+      <ion-label style="font-size: larger !important">
+        {{ "page.lectures.filter" | translate }}
+      </ion-label>
       <ion-select
         (ionChange)="selectFilter($event)"
         multiple="true"
