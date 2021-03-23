@@ -25,9 +25,11 @@
         [src]="module.customIcon"
       ></ion-icon>
       <ion-label class="moduleLabel no-select">
-        <div align="center" class="hyphen no-select ion-padding-top">
-          {{ module.i18nKey | translate }}
-        </div>
+        <div
+          align="center"
+          class="hyphen no-select ion-padding-top"
+          [innerHTML]="module.i18nKey | translate"
+        ></div>
       </ion-label>
     </div>
   </ng-template>
@@ -71,7 +73,7 @@
         ></ion-icon>
         <!-- title with icon -->
         <ion-label class="moduleLabel no-select">
-          {{ module.i18nKey | translate }}
+          <div [innerHTML]=" module.i18nKey | translate"></div>
         </ion-label>
         <!-- favourite-state icon -->
         <ion-icon

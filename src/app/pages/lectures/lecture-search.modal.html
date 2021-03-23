@@ -9,7 +9,9 @@
     >
       <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
-    <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
+    <ion-title>
+      <div [innerHTML]="'page.lectures.title' | translate"></div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 

@@ -11,7 +11,9 @@
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
     <ion-menu-button slot="end"></ion-menu-button>
-    <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
+    <ion-title>
+      <div [innerHTML]="'page.lectures.title' | translate"></div>
+    </ion-title>
   </ion-toolbar>
   <ion-toolbar mode="md" *ngIf="!networkError">
     <ion-item
