@@ -34,104 +34,20 @@
     ></app-hint-box>
   </div>
 
-  <ion-list *ngIf="!error" lines="none">
-    <span *ngFor="let person of personsFound">
-      <ion-item-sliding>
-        <ion-item
-          mode="md"
-          button
-          (click)="expandPerson(person)"
-          [ngClass]="{'noborder': person.expanded}"
-        >
-          <ion-icon color="primary" slot="start" name="person"></ion-icon>
-          <ion-label class="ion-text-wrap">
-            <h2>
-              {{person.Initials}} {{person.First_Name}} {{person.Last_Name}}
-            </h2>
-            <p *ngIf="person.Department != ''">{{person.Department}}</p>
-          </ion-label>
-          <ion-icon
-            *ngIf="(person.Room_Name || person.Extension || person.Email)"
-            [name]="!person.expanded ? 'caret-forward' : 'caret-down'"
-            slot="end"
-          ></ion-icon>
-        </ion-item>
-
-        <ion-item-options slot="end">
-          <ion-item-option
-            button
-            (click)="openMail(person.Email)"
-            color="primary"
-            *ngIf="person.Email != ''"
-          >
-            <a class="notUnderlined whiteFont">Mail</a>
-          </ion-item-option>
-          <ion-item-option
-            button
-            (click)="callContact(person.Extension)"
-            color="secondary"
-            *ngIf="person.Extension != ''"
-          >
-            <!-- <ion-icon name="call" ios="ios-call" md="md-call"></ion-icon> -->
-            <a class="notUnderlined">{{ "button.call" | translate }} </a>
-          </ion-item-option>
-          <!-- <ion-item-option
-            button
-            (click)="exportContact(person)"
-            color="medium"
-            *ngIf="cordova"
-          >
-            <ion-icon name="person-add"></ion-icon>
-            <a class="notUnderlined">{{ "button.add" | translate }}</a>
-          </ion-item-option> -->
-        </ion-item-options>
-      </ion-item-sliding>
-
-      <ion-item
-        mode="md"
-        *ngIf="person.expanded && ((person.Email != '') || (person.Extension != '') || (person.Room_Name != ''))"
-      >
-        <ion-icon slot="start"></ion-icon>
-        <ion-label class="ion-no-margin ion-text-wrap">
-          <ion-grid>
-            <ion-row *ngIf="person.Email != ''">
-              <ion-col size="auto"
-                ><ion-icon
-                  color="primary"
-                  name="mail"
-                  margin-right
-                ></ion-icon></ion-col
-              ><ion-col
-                ><a href="mailto:{{person.Email}}">{{person.Email}}</a></ion-col
-              >
-            </ion-row>
-            <ion-row *ngIf="person.Extension != ''">
-              <ion-col size="auto"
-                ><ion-icon color="primary" name="call" margin-right></ion-icon
-              ></ion-col>
-              <ion-col>
-                <a
-                  class="linkItem"
-                  (click)="callContact(person.Extension)"
-                  style="text-decoration: underline"
-                  >{{person.Extension}}</a
-                >
-              </ion-col>
-            </ion-row>
-            <ion-row *ngIf="person.Room_Name != ''">
-              <ion-col size="auto"
-                ><ion-icon
-                  color="primary"
-                  name="home"
-                  margin-right
-                ></ion-icon></ion-col
-              ><ion-col>{{person.Room_Name}}</ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-label>
-      </ion-item>
-    </span>
-  </ion-list>
+  <span *ngFor="let person of personsFound">
+    <app-custom-card
+      [cardTitle]="getNameString(person)"
+      [cardSubTitle]="person.Department && person.Department !== '' ? person.Department : null"
+      [footerFirstString]="person.Extension && person.Extension !== '' ? translate.instant('button.call') : null"
+      [footerFirstIcon]="person.Extension && person.Extension !== '' ? 'call' : null"
+      (footerFirstIconCallback)="person.Extension && person.Extension !== '' ? callContact(person.Extension) : null"
+      [footerSecondString]="person.Email && person.Email !== '' ? 'Mail' : null"
+      [footerSecondIcon]="person.Email && person.Email !== ''? 'mail' : null"
+      (footerSecondIconCallback)="person.Email && person.Email !== '' ? openMail(person.Email) : null"
+      [footerThirdString]="person.Room_Name  && person.Room_Name !== '' ? person.Room_Name : null"
+      [footerThirdIcon]="person.Room_Name && person.Room_Name !== '' ? 'home' : null"
+    ></app-custom-card>
+  </span>
 
   <app-network-error-hint *ngIf="error"></app-network-error-hint>
 </ion-content>

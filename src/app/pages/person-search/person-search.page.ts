@@ -2,13 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IPerson } from 'src/app/lib/interfaces';
-import { AlertService } from 'src/app/services/alert/alert.service';
 import { UPLoginProvider } from 'src/app/services/login-service/login';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { IPersonsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { Keyboard } from '@capacitor/keyboard';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-person-search',
@@ -24,9 +24,9 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
   triedRefreshingSession = false;
 
   constructor(
-    private alertService: AlertService,
     private login: UPLoginProvider,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    public translate: TranslateService
   ) {
     super({ optionalNetwork: true, requireSession: true });
   }
@@ -91,7 +91,6 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
           (personsList: IPerson[]) => {
             for (const person of personsList) {
               const newPerson = person;
-              newPerson['expanded'] = false;
               if (!newPerson.Room_Name) {
                 newPerson.Room_Name = '';
               }
@@ -131,137 +130,26 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
     }
   }
 
-  /**
-   * @name expandPerson
-   * @description toogles person item in list view to show details
-   * @param person
-   */
-  expandPerson(person) {
-    for (const pers of this.personsFound) {
-      const currentPerson = pers;
-      if (currentPerson.Id === person.Id) {
-        currentPerson.expanded = !currentPerson.expanded;
-      }
-    }
-  }
-
-  /**
-   * @name exportContact
-   * @description exports a contact to the local phone book
-   * @param {IPerson} person
-   */
-  // exportContact(person: IPerson) {
-  //   if (
-  //     this.platform.is('cordova') &&
-  //     (this.platform.is('ios') || this.platform.is('android'))
-  //   ) {
-  //     const contact: Contact = this.contacts.create();
-
-  //     contact.name = new ContactName(null, person.Last_Name, person.First_Name);
-
-  //     if (person.Extension) {
-  //       contact.phoneNumbers = [new ContactField('work', person.Extension)];
-  //     }
-  //     if (person.Email) {
-  //       contact.emails = [new ContactField('work', person.Email)];
-  //     }
-  //     if (person.Room_Name) {
-  //       contact.addresses = [new ContactField()];
-  //       if (contact.addresses) {
-  //         contact.addresses[0].type = 'work';
-  //         contact.addresses[0].streetAddress = person.Room_Name;
-  //       }
-  //     }
-
-  //     const exportName = person.First_Name + ' ' + person.Last_Name;
-  //     this.contacts.find(['name'], { filter: exportName, multiple: true }).then(
-  //       (response) => {
-  //         this.logger.debug('exportContact', 'contacts.find', response);
-  //         let contactFound = false;
-  //         let contactID;
-  //         for (let i = 0; i < response.length; i++) {
-  //           let foundTel = false;
-  //           let foundMail = false;
-  //           let foundRoom = false;
-  //           if (person.Extension && response[i].phoneNumbers.length > 0) {
-  //             for (let j = 0; j < response[i].phoneNumbers.length; j++) {
-  //               if (response[i].phoneNumbers[j].value === person.Extension) {
-  //                 foundTel = true;
-  //                 break;
-  //               }
-  //             }
-  //           } else if (!person.Extension) {
-  //             foundTel = true;
-  //           }
-
-  //           if (person.Email && response[i].emails.length > 0) {
-  //             for (let j = 0; j < response[i].emails.length; j++) {
-  //               if (response[i].emails[j].value === person.Email) {
-  //                 foundMail = true;
-  //                 break;
-  //               }
-  //             }
-  //           } else if (!person.Email) {
-  //             foundMail = true;
-  //           }
-
-  //           if (person.Room_Name && response[i].addresses.length > 0) {
-  //             for (let j = 0; j < response[i].addresses.length; j++) {
-  //               if (
-  //                 response[i].addresses[j].streetAddress === person.Room_Name
-  //               ) {
-  //                 foundRoom = true;
-  //                 break;
-  //               }
-  //             }
-  //           } else if (!person.Room_Name) {
-  //             foundRoom = true;
-  //           }
-
-  //           if (foundTel && foundMail && foundRoom) {
-  //             contactFound = true;
-  //             break;
-  //           } else if (foundTel || foundMail || foundRoom) {
-  //             contactID = response[i].id;
-  //           }
-  //         }
-
-  //         if (!contactFound) {
-  //           if (contactID) {
-  //             contact.id = contactID;
-  //           }
-  //           this.saveContact(contact);
-  //         } else {
-  //           this.alertService.showToast('alert.contact-exists');
-  //         }
-  //       },
-  //       (error) => {
-  //         this.logger.error('exportContact', 'contacts.find', error);
-  //         this.saveContact(contact);
-  //       }
-  //     );
-  //   }
-  // }
-
-  // saveContact(contact: Contact) {
-  //   contact.save().then(
-  //     () => {
-  //       this.logger.debug('saveContact', contact);
-  //       this.alertService.showToast('alert.contact-export-success');
-  //     },
-  //     (error: any) => {
-  //       this.logger.error('saveContact', error);
-  //       if (error.code && (error.code === 20 || error.code === '20')) {
-  //         this.alertService.showToast('alert.permission-denied');
-  //       } else {
-  //         this.alertService.showToast('alert.contact-export-fail');
-  //       }
-  //     }
-  //   );
-  // }
-
   openMail(mail) {
     window.location.href = 'mailto:' + mail;
+  }
+
+  getNameString(person) {
+    let s = '';
+
+    if (person.Initials) {
+      s += person.Initials;
+    }
+
+    if (person.First_Name) {
+      s += ' ' + person.First_Name;
+    }
+
+    if (person.Last_Name) {
+      s += ' ' + person.Last_Name;
+    }
+
+    return s.trim();
   }
 
   /**

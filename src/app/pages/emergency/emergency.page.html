@@ -55,13 +55,13 @@
       <app-custom-card
         [cardTitle]="emergencyCall.name ? emergencyCall.name : null"
         [cardContent]="emergencyCall.description ? emergencyCall.description : null"
-        [footerFirstString]="emergencyCall.contact.telephone ? 'Anrufen' : null"
+        [footerFirstString]="emergencyCall.contact.telephone ? translate.instant('button.call') : null"
         [footerFirstIcon]="emergencyCall.contact.telephone ? 'call' : null"
         (footerFirstIconCallback)="emergencyCall.contact.telephone ? callContact(emergencyCall.contact.telephone) : null"
         [footerSecondString]="emergencyCall.contact.mail ? 'Mail' : null"
         [footerSecondIcon]="emergencyCall.contact.mail ? 'mail' : null"
         (footerSecondIconCallback)="emergencyCall.contact.mail ? openMail(emergencyCall.contact.mail) : null"
-        [footerThirdString]="emergencyCall.address ? 'Standort' : null"
+        [footerThirdString]="emergencyCall.address ? translate.instant('page.library-search.location') : null"
         [footerThirdIcon]="emergencyCall.address ? 'pin' : null"
         (footerThirdIconCallback)="emergencyCall.address ? callMap(emergencyCall) : null"
       ></app-custom-card>

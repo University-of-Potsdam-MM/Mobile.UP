@@ -7,6 +7,7 @@ import { ConfigService } from 'src/app/services/config/config.service';
 import { contains } from 'src/app/lib/util';
 import { Keyboard } from '@capacitor/keyboard';
 import { NavigatorService } from 'src/app/services/navigator/navigator.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-emergency',
@@ -23,7 +24,8 @@ export class EmergencyPage extends AbstractPage implements OnInit {
   constructor(
     private chRef: ChangeDetectorRef,
     private navigator: NavigatorService,
-    private ws: WebserviceWrapperService
+    private ws: WebserviceWrapperService,
+    public translate: TranslateService
   ) {
     super({ optionalNetwork: true });
   }
