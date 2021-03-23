@@ -1,7 +1,3 @@
-ion-card {
-  border: 2px solid var(--ion-color-light-shade);
-}
-
 ion-card-header {
   background-color: var(--ion-color-secondary);
   color: var(--ion-color-dark);
@@ -11,5 +7,11 @@ ion-card-header {
 ion-card-content {
   color: var(--ion-color-dark);
   margin: 0;
-  padding: 5px !important;
+  padding: 10px !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    --ion-card-background: var(--ion-color-light-shade) !important;
+  }
 }

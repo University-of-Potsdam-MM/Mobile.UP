@@ -28,8 +28,8 @@
         </ion-slides>
       </ion-avatar>
       <ion-label class="ion-text-wrap">
-        <p *ngIf="meal.type">
-          <span class="mealtype" *ngFor="let type of meal.type; let last = last"
+        <p *ngIf="meal.type" class="mealtype">
+          <span *ngFor="let type of meal.type; let last = last"
             >{{ type }}<span *ngIf="!last">, </span></span
           >
         </p>
@@ -79,6 +79,7 @@
           </ion-button>
           <div *ngFor="let allergen of meal.allergens; let j = index">
             <div
+              class="mealallergens"
               *ngIf="
                 allergenIsExpanded[i][j] &&
                 allergen.shortName &&

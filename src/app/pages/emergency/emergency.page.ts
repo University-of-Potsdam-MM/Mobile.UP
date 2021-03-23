@@ -32,6 +32,7 @@ export class EmergencyPage extends AbstractPage implements OnInit {
 
   ngOnInit() {
     this.defaultList = ConfigService.emergency;
+    this.isLoaded = true;
     this.initializeList();
     this.loadEmergencyCalls();
   }
@@ -49,9 +50,7 @@ export class EmergencyPage extends AbstractPage implements OnInit {
    * @description loads default items from json file
    */
   loadEmergencyCalls(refresher?) {
-    if (!(refresher && refresher.target)) {
-      this.isLoaded = false;
-    } else {
+    if (refresher && refresher.target) {
       this.query = '';
     }
 
