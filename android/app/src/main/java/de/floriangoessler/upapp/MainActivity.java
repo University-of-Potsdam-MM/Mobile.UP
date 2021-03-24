@@ -4,6 +4,7 @@ import android.os.Bundle;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.plugin.http.Http;
+import java.util.ArrayList;
 
 public class MainActivity extends BridgeActivity {
     @Override
