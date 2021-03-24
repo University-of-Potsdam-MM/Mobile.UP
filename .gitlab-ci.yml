@@ -77,6 +77,7 @@ install_dependencies:
         popd;
       fi
     - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+    - npm install -g @ionic/cli
   script:
     - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
     - rm -rf $PWD/android/app/build
@@ -121,6 +122,8 @@ android-production:
 
 .browser:
   stage: build
+  before_script:
+    - npm install -g @ionic/cli
   script:
     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
     - ionic build --prod
@@ -177,38 +180,40 @@ deploy-browser-production:
     refs:
       - tags
 
-.ios:
-  stage: build
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-  script:
-    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
-    - rm -rf $PWD/ios/ios_build
-    - ionic capacitor sync ios --prod
+# .ios:
+#   stage: build
+#   variables:
+#     GIT_SUBMODULE_STRATEGY: recursive
+#   before_script:
+#     - npm install -g @ionic/cli
+#   script:
+#     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
+#     - rm -rf $PWD/ios/ios_build
+#     - ionic capacitor sync ios --prod
 
-# only used for merge requests (and branches != master in order to avoid double building)
-ios-test:
-  extends: .ios
-  tags:
-    - mac
-  except:
-    refs:
-      - master
-      - tags
+# # only used for merge requests (and branches != master in order to avoid double building)
+# ios-test:
+#   extends: .ios
+#   tags:
+#     - mac
+#   except:
+#     refs:
+#       - master
+#       - tags
 
-ios-production:
-  extends: .ios
-  after_script:
-    - xcodebuild -workspace $PWD/ios/App/App.xcworkspace -scheme App -sdk iphoneos -configuration AppStoreDistribution archive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive
-    - xcodebuild -exportArchive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive -exportOptionsPlist $PWD/ios/App/exportOptions.plist -exportPath $PWD/ios/ios_build/ipa -allowProvisioningUpdates
-  only:
-    - master
-  artifacts:
-    paths:
-      - $PWD/ios/ios_build/ipa/App.ipa
-    expire_in: 1 week
-  tags:
-    - mac
-  except:
-    refs:
-      - tags
+# ios-production:
+#   extends: .ios
+#   after_script:
+#     - xcodebuild -workspace $PWD/ios/App/App.xcworkspace -scheme App -sdk iphoneos -configuration AppStoreDistribution archive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive
+#     - xcodebuild -exportArchive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive -exportOptionsPlist $PWD/ios/App/exportOptions.plist -exportPath $PWD/ios/ios_build/ipa -allowProvisioningUpdates
+#   only:
+#     - master
+#   artifacts:
+#     paths:
+#       - $PWD/ios/ios_build/ipa/App.ipa
+#     expire_in: 1 week
+#   tags:
+#     - mac
+#   except:
+#     refs:
+#       - tags
