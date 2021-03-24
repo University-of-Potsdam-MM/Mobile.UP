@@ -45,7 +45,9 @@ export class NavigatorService {
   }
 
   private async handleMapIntent(googleURL: string, appleURL: string) {
-    if (this.platform.is('ios') || this.isAppleDesktop()) {
+    const isMac = await this.isAppleDesktop();
+
+    if (this.platform.is('ios') || isMac) {
       const actionSheet = await this.actionSheetCtrl.create({
         header: this.translate.instant('launchNavigator.dialogHeaderText'),
         buttons: [
