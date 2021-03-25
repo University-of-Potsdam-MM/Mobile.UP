@@ -24,7 +24,6 @@ export class LecturesPage extends AbstractPage implements OnInit {
   resultKeys = [];
   query = '';
   networkError;
-  modalOpen;
   valueArray = [];
   queryTooShort = false;
 
@@ -223,9 +222,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       },
     });
     modal.present();
-    this.modalOpen = true;
     await modal.onDidDismiss();
-    this.modalOpen = false;
   }
 
   selectFilter(event) {

@@ -53,7 +53,6 @@ export class CampusTabComponent implements OnInit {
    */
   _selectedCampus: ICampus;
 
-  modalOpen = false;
   listProcessed = false;
 
   constructor(
@@ -165,8 +164,6 @@ export class CampusTabComponent implements OnInit {
       componentProps: { campusList: this.campusList },
     });
     modal.present();
-    this.modalOpen = true;
     await modal.onWillDismiss();
-    this.modalOpen = false;
   }
 }

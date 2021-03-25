@@ -66,11 +66,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [scrollEvents]="true"
-  (ionScrollStart)="onScrollListener()"
-  [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'"
->
+<ion-content [scrollEvents]="true" (ionScrollStart)="onScrollListener()">
   <ion-refresher
     *ngIf="activeSegment === 'favorites' && (platform.is('ios') || platform.is('android'))"
     slot="fixed"

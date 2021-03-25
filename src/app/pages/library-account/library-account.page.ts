@@ -62,7 +62,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   loginForm: FormGroup;
   loading;
   showLoginScreen;
-  modalOpen;
 
   constructor(
     private translate: TranslateService,
@@ -592,7 +591,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       },
     });
     modal.present();
-    this.modalOpen = true;
     const response = await modal.onDidDismiss();
     if (response && response.data && response.data.shouldRelogin) {
       const bibObj = await Storage.get({ key: 'bibSession' });
@@ -600,7 +598,6 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       this.loginUB(this.bibSession.credentials);
       this.alertService.showToast('hints.text.changedPassword');
     }
-    this.modalOpen = false;
   }
 
   /**

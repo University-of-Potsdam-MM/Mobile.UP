@@ -32,7 +32,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
   allFavorites = [];
   numberOfRecords = '0';
   updatedFavorites = 0;
-  modalOpen;
   networkError;
 
   constructor(
@@ -211,7 +210,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       componentProps: { book: bookToView, isFavorite: isFav },
     });
     modal.present();
-    this.modalOpen = true;
     const result = await modal.onWillDismiss();
     if (result && result.data) {
       if (isFav !== result.data.isFavoriteNew) {
@@ -222,7 +220,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         }
       }
     }
-    this.modalOpen = false;
   }
 
   toggleFavorite(book) {

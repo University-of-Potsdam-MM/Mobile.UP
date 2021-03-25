@@ -41,7 +41,6 @@
   class="ion-no-padding"
   [scrollEvents]="true"
   (ionScrollStart)="onScrollListener()"
-  [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'"
 >
   <ion-refresher
     *ngIf="!onlyDisplayFavorites && (platform.is('ios') || platform.is('android'))"

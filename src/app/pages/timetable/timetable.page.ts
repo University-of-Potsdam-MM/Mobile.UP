@@ -52,7 +52,6 @@ export class TimetablePage extends AbstractPage {
   isMobile;
   exportFinished = true;
   exportedEvents = 0;
-  modalOpen;
   error;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
@@ -215,9 +214,7 @@ export class TimetablePage extends AbstractPage {
         componentProps: { events: [event], date: event.startTime },
       });
       eventModal.present();
-      this.modalOpen = true;
       await eventModal.onDidDismiss();
-      this.modalOpen = false;
     }
   }
 

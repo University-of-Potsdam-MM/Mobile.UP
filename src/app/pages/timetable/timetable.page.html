@@ -34,9 +34,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'"
->
+<ion-content class="ion-no-padding">
   <div align="center" *ngIf="isLoading && !noUserRights" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>

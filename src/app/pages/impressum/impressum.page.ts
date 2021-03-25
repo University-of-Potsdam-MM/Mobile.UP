@@ -11,8 +11,6 @@ import { ConfigService } from 'src/app/services/config/config.service';
   styleUrls: ['./impressum.page.scss'],
 })
 export class ImpressumPage extends AbstractPage {
-  modalOpen;
-
   constructor(
     private translate: TranslateService,
     private modalCtrl: ModalController
@@ -58,8 +56,6 @@ export class ImpressumPage extends AbstractPage {
       },
     });
     modal.present();
-    this.modalOpen = true;
     await modal.onDidDismiss();
-    this.modalOpen = false;
   }
 }

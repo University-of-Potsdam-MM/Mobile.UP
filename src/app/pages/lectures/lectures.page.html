@@ -60,11 +60,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [scrollEvents]="true"
-  (ionScrollStart)="onScrollListener()"
-  [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'"
->
+<ion-content [scrollEvents]="true" (ionScrollStart)="onScrollListener()">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"

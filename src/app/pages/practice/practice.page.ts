@@ -32,7 +32,6 @@ export class PracticePage extends AbstractPage {
   error: HttpErrorResponse;
 
   query = '';
-  modalOpen;
 
   noFavoritesSet = true;
   onlyDisplayFavorites = false;
