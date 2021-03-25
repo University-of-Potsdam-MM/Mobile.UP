@@ -10,20 +10,15 @@ import { Storage } from '@capacitor/storage';
 export class NetworkErrorHintComponent implements OnInit {
   hasInternet;
   error;
-  showError = false;
 
   constructor(private connectionService: ConnectionService) {}
 
   async ngOnInit() {
-    this.hasInternet = this.connectionService.checkOnline();
+    this.hasInternet = await this.connectionService.checkOnline();
 
     if (this.hasInternet) {
       const errorObj = await Storage.get({ key: 'latestWebserviceError' });
       this.error = JSON.parse(errorObj.value);
     }
-  }
-
-  showErrorDetails() {
-    this.showError = !this.showError;
   }
 }

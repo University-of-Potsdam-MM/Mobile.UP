@@ -84,6 +84,49 @@ ion-item {
   .leaflet-marker-shadow {
     display: none;
   }
+
+  #map {
+    filter: invert(0.85);
+  }
+
+  ion-refresher-content {
+    background-color: var(--ion-color-light);
+    padding-bottom: 200px;
+    position: relative;
+
+    .refresher-pulling,
+    .refresher-refreshing {
+      position: relative;
+      top: 30px;
+    }
+  }
+}
+
+.darkModeManual {
+  .svgThatShouldChangeColor {
+    filter: invert(51%) sepia(64%) saturate(652%) hue-rotate(175deg)
+      brightness(90%) contrast(91%);
+  }
+
+  .leaflet-marker-shadow {
+    display: none;
+  }
+
+  #map {
+    filter: invert(0.85);
+  }
+
+  ion-refresher-content {
+    background-color: var(--ion-color-light);
+    padding-bottom: 200px;
+    position: relative;
+
+    .refresher-pulling,
+    .refresher-refreshing {
+      position: relative;
+      top: 30px;
+    }
+  }
 }
 
 .toolbar-searchbar,
@@ -290,6 +333,12 @@ ion-content.disableScrolling {
   }
 
   @media (prefers-color-scheme: dark) {
+    .monthview-datetable td.monthview-current {
+      background-color: var(--ion-color-light-tint) !important;
+    }
+  }
+
+  .darkModeManual {
     .monthview-datetable td.monthview-current {
       background-color: var(--ion-color-light-tint) !important;
     }

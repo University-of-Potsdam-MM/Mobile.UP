@@ -89,8 +89,8 @@ export class FeedbackPage extends AbstractPage implements OnInit {
           this.navCtrl.navigateBack('/home');
         });
       },
-      () => {
-        if (!this.connectionService.checkOnline()) {
+      async () => {
+        if (!(await this.connectionService.checkOnline())) {
           this.alertService.showToast('alert.noInternetConnection');
         } else {
           this.alertService.showToast('alert.httpErrorStatus.generic');

@@ -1,0 +1,75 @@
+{
+  "api": {
+    "name": "DarkModeAndroidPlugin",
+    "slug": "darkmodeandroidplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "isDarkModeOn",
+        "signature": "() => Promise<any>",
+        "parameters": [],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "isdarkmodeon"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'darkModeStateChanged', listenerFunc: (state: any) => void) => PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'darkModeStateChanged'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(state: any) => void"
+          }
+        ],
+        "returns": "PluginListenerHandle",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistenerdarkmodestatechanged-"
+      },
+      {
+        "name": "registerDarkModeChangeListener",
+        "signature": "() => void",
+        "parameters": [],
+        "returns": "void",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "registerdarkmodechangelistener"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => Promise<void>"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}

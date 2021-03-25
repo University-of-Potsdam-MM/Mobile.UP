@@ -1,0 +1,46 @@
+{
+  "name": "capacitor-dark-mode-android",
+  "version": "2021.1.0",
+  "description": "Checks natively if Android is in Dark Mode. Fires a native event that is then handled by the web framework.",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/"
+  ],
+  "author": "Lewin Kästner",
+  "license": "MIT",
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native"
+  ],
+  "scripts": {
+    "verify": "npm run verify:android",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
+    "docgen": "docgen --api DarkModeAndroidPlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^3.0.0-rc.0",
+    "@capacitor/core": "^3.0.0-rc.0",
+    "@capacitor/docgen": "^0.0.16",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.42.4",
+    "typescript": "~4.2.3"
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^3.0.0-rc.0"
+  },
+  "capacitor": {
+    "android": {
+      "src": "android"
+    }
+  }
+}

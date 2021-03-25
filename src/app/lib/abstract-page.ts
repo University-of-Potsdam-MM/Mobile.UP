@@ -122,9 +122,9 @@ export abstract class AbstractPage {
    * @desc tests for network connection and sends the user back to the HomePage
    * if there is none;
    */
-  requireNetwork(necessary?) {
+  async requireNetwork(necessary?) {
     // this.logger.debug('requireNetwork');
-    this.connection.checkOnline(true, necessary);
+    await this.connection.checkOnline(true, necessary);
   }
 
   /**

@@ -633,54 +633,24 @@ export class WebserviceWrapperService {
     //   )}`
     // );
 
-    if (this.connectionService.checkOnline()) {
-      return from(
-        Promise.all([
-          cachingOptions.forceRefreshGroup
-            ? this.cache.clearGroup(cacheGroupKey)
-            : Promise.resolve(),
-          cachingOptions.forceRefresh
-            ? this.cache.removeItem(cacheItemKey)
-            : Promise.resolve(),
-        ])
-      ).pipe(
-        switchMap(() =>
-          this.cache.loadFromObservable(
-            cacheItemKey,
-            wrapperObservable,
-            cacheGroupKey,
-            cacheTTL
-          )
+    return from(
+      Promise.all([
+        cachingOptions.forceRefreshGroup
+          ? this.cache.clearGroup(cacheGroupKey)
+          : Promise.resolve(),
+        cachingOptions.forceRefresh
+          ? this.cache.removeItem(cacheItemKey)
+          : Promise.resolve(),
+      ])
+    ).pipe(
+      switchMap(() =>
+        this.cache.loadFromObservable(
+          cacheItemKey,
+          wrapperObservable,
+          cacheGroupKey,
+          cacheTTL
         )
-      );
-    } else {
-      return from(
-        Promise.all([
-          cachingOptions.forceRefreshGroup
-            ? null
-            : // this.logger.debug(
-              //     'call',
-              //     'not clearing cache, since there is no internet connection!'
-              //   )
-              Promise.resolve(),
-          cachingOptions.forceRefresh
-            ? null
-            : // this.logger.debug(
-              //     'call',
-              //     'not clearing cache, since there is no internet connection!'
-              //   )
-              Promise.resolve(),
-        ])
-      ).pipe(
-        switchMap(() =>
-          this.cache.loadFromObservable(
-            cacheItemKey,
-            wrapperObservable,
-            cacheGroupKey,
-            cacheTTL
-          )
-        )
-      );
-    }
+      )
+    );
   }
 }

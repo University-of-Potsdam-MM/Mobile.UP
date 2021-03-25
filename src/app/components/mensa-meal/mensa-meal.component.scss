@@ -37,9 +37,3 @@ ion-card-content {
 .mealallergens {
   padding-top: 10px;
 }
-
-@media (prefers-color-scheme: dark) {
-  ion-card {
-    --ion-card-background: var(--ion-color-light-shade) !important;
-  }
-}

@@ -1,4 +1,9 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import {
   Platform,
   MenuController,
@@ -27,6 +32,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { Storage } from '@capacitor/storage';
 import { CacheService } from 'ionic-cache';
 import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
+import { DarkModeAndroid } from './services/dark-mode-android/dist/esm';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +47,8 @@ export class AppComponent {
 
   bibLoggedIn = false;
   bibID;
+
+  darkModeManual = false;
 
   // logger: Logger;
 
@@ -59,6 +67,7 @@ export class AppComponent {
     private alertCtrl: AlertController,
     private alertService: AlertService,
     // private loggingService: LoggingService,
+    private ref: ChangeDetectorRef,
     private cache: CacheService,
     private connectionService: ConnectionService
   ) {
@@ -68,6 +77,18 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      if (this.platform.is('android')) {
+        DarkModeAndroid.addListener('darkModeStateChanged', (state) => {
+          if (state.isDarkModeOn) {
+            this.darkModeManual = true;
+            this.ref.detectChanges();
+          } else {
+            this.darkModeManual = false;
+            this.ref.detectChanges();
+          }
+        });
+      }
+
       this.checkSessionValidity();
       this.initTranslate();
       this.updateLoginStatus();
@@ -90,7 +111,7 @@ export class AppComponent {
     }
 
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.setKeyboardStyle(prefersDark.matches);
+    this.setKeyboardStyle(prefersDark.matches || this.darkModeManual);
     prefersDark.addEventListener('change', (mediaQuery) =>
       this.setKeyboardStyle(mediaQuery.matches)
     );
@@ -111,7 +132,7 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session && this.connectionService.checkOnline(true)) {
+    if (session && (await this.connectionService.checkOnline())) {
       const variablesNotUndefined =
         session &&
         session.timestamp &&
@@ -120,7 +141,7 @@ export class AppComponent {
         ConfigService.config;
       if (
         variablesNotUndefined &&
-        this.connectionService.checkOnline()
+        (await this.connectionService.checkOnline())
         // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
         const oidcObject = ConfigService.isApiManagerUpdated
@@ -199,8 +220,8 @@ export class AppComponent {
    * @name loginExpired
    * @description if device is online: performs user logout and shows toast message
    */
-  loginExpired() {
-    if (this.connectionService.checkOnline()) {
+  async loginExpired() {
+    if (await this.connectionService.checkOnline()) {
       this.performLogout();
       this.navCtrl.navigateForward('/login');
       this.alertService.showToast('alert.login-expired');

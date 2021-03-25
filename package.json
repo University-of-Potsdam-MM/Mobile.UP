@@ -50,6 +50,7 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular-gridster2": "^11.1.4",
+    "capacitor-dark-mode-android": "file:src/app/services/dark-mode-android",
     "cordova-plugin-calendar": "^5.1.5",
     "country-language": "^0.1.7",
     "delayed-loop": "^1.0.1",

@@ -1,4 +1,4 @@
-<ion-app>
+<ion-app [class.darkModeManual]="darkModeManual">
   <!-- for screens wider than 992px menu is shown as a split pane -->
   <ion-split-pane
     contentId="main"
@@ -21,7 +21,9 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="card-background-page">
-        <ion-card>
+        <ion-card
+          style="--ion-card-background: var(--ion-item-background) !important"
+        >
           <img
             class="svgThatShouldChangeColor"
             [class.loggedIn]="loggedIn || bibLoggedIn"

@@ -9,9 +9,3 @@ ion-card-content {
   margin: 0;
   padding: 10px !important;
 }
-
-@media (prefers-color-scheme: dark) {
-  ion-card {
-    --ion-card-background: var(--ion-color-light-shade) !important;
-  }
-}

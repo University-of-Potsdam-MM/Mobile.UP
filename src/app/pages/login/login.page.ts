@@ -153,8 +153,8 @@ export class LoginPage extends AbstractPage {
    * @name showAlert
    * @param errorCode
    */
-  showAlert(errorCode: ELoginErrors) {
-    if (!this.connectionService.checkOnline()) {
+  async showAlert(errorCode: ELoginErrors) {
+    if (!(await this.connectionService.checkOnline())) {
       this.alertService.showToast('alert.noInternetConnection');
     } else if (errorCode !== 0) {
       this.alertService.showToast('alert.httpErrorStatus.generic');

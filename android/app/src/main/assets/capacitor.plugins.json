@@ -50,5 +50,9 @@
 	{
 		"pkg": "@capacitor/storage",
 		"classpath": "com.capacitorjs.plugins.storage.StoragePlugin"
+	},
+	{
+		"pkg": "capacitor-dark-mode-android",
+		"classpath": "de.unipotsdam.capacitor.darkmode.android.DarkModeAndroidPlugin"
 	}
 ]

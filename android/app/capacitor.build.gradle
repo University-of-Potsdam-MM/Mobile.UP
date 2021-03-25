@@ -22,6 +22,7 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-storage')
+    implementation project(':capacitor-dark-mode-android')
 
 }
 

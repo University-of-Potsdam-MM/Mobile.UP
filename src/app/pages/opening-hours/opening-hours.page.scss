@@ -36,9 +36,3 @@ ion-card-content {
 ion-item {
   --background: var(--ion-card-background);
 }
-
-@media (prefers-color-scheme: dark) {
-  ion-card {
-    --ion-card-background: var(--ion-color-light-shade) !important;
-  }
-}
