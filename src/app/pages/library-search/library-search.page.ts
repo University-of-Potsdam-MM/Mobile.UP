@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as xml2js from 'xml2js';
-import {
-  IonItemSliding,
-  ModalController,
-  AlertController,
-} from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { IConfig } from 'src/app/lib/interfaces';
 import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { TranslateService } from '@ngx-translate/core';
@@ -220,7 +216,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     if (result && result.data) {
       if (isFav !== result.data.isFavoriteNew) {
         if (result.data.isFavoriteNew) {
-          this.makeFavorite(bookToView, undefined);
+          this.makeFavorite(bookToView);
         } else {
           this.removeFavorite(bookToView);
         }
@@ -229,13 +225,20 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.modalOpen = false;
   }
 
+  toggleFavorite(book) {
+    if (isInArray(this.allFavorites, book)) {
+      this.removeFavorite(book);
+    } else {
+      this.makeFavorite(book);
+    }
+  }
+
   /**
    * @name makeFavorite
    * @description set favorite and save to storage
    * @param {ADS} ads
-   * @param {ItemSliding} slidingItem
    */
-  async makeFavorite(book, slidingItem: IonItemSliding) {
+  async makeFavorite(book) {
     if (!isInArray(this.displayedFavorites, book)) {
       this.displayedFavorites.push(book);
       this.displayedFavorites = this.sortFavorites(this.displayedFavorites);
@@ -251,10 +254,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       key: 'favoriteBooks',
       value: JSON.stringify(this.allFavorites),
     });
-
-    if (slidingItem) {
-      slidingItem.close();
-    }
   }
 
   /**
@@ -545,5 +544,9 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       ],
     });
     alert.present();
+  }
+
+  isInArray(array, value): boolean {
+    return isInArray(array, value);
   }
 }

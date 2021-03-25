@@ -55,6 +55,15 @@
       <ion-icon name="trash"></ion-icon>
     </ion-button>
   </ion-toolbar>
+  <ion-toolbar *ngIf="isLoaded && activeSegment === 'search'">
+    <ion-item-divider mode="md">
+      <ion-label>
+        <p>{{ "page.library-search.allResults" | translate}}:</p>
+        <b>{{ resultIndex() }}</b> {{ "words.of" | translate}}
+        <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}
+      </ion-label>
+    </ion-item-divider>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content
@@ -89,38 +98,29 @@
   </div>
 
   <div *ngIf="isLoaded && activeSegment === 'search'">
-    <ion-item mode="md">
-      <ion-label>
-        <p>{{ "page.library-search.allResults" | translate}}:</p>
-        <b>{{ resultIndex() }}</b> {{ "words.of" | translate}}
-        <b>{{ numberOfRecords }}</b> {{ "words.results" | translate}}
-      </ion-label>
-    </ion-item>
-    <ion-list *ngIf="bookList && bookList.length > 0">
+    <ng-container *ngIf="bookList && bookList.length > 0">
       <span *ngFor="let book of bookList; let i = index">
-        <ion-item-sliding #slidingItem>
-          <app-book-list
-            class="linkItem"
-            (click)="bookDetailView(book)"
-            [book]="book"
-            [i]="i+1"
-          ></app-book-list>
-          <ion-item-options>
-            <ion-item-option button (click)="makeFavorite(book, slidingItem)">
-              <!-- <ion-icon name="star"></ion-icon> -->
-              <span class="notUnderlined">{{ "button.fav" | translate }}</span>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <app-book-list
+          class="linkItem"
+          (click)="bookDetailView(book)"
+          [book]="book"
+          [i]="i+1"
+          [isFavorite]="isInArray(allFavorites, book)"
+          (favoriteStatusChanged)="toggleFavorite(book)"
+        ></app-book-list>
       </span>
-    </ion-list>
+    </ng-container>
     <div *ngIf="!bookList || bookList.length == 0">
       <app-hint-box
         *ngIf="!networkError"
         hintTypeI18nKey="hints.type.hint"
         hintTextI18nKey="hints.text.noResults-hint"
       ></app-hint-box>
-      <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+      <app-hint-box
+        *ngIf="networkError"
+        hintTypeI18nKey="hints.type.hint"
+        hintTextI18nKey="alert.httpErrorStatus.generic"
+      ></app-hint-box>
     </div>
 
     <ion-infinite-scroll *ngIf="!isEnd()" (ionInfinite)="loadMore($event)">
@@ -129,31 +129,18 @@
   </div>
 
   <div *ngIf="isLoadedFavorites && activeSegment === 'favorites'">
-    <ion-list *ngIf="displayedFavorites && displayedFavorites.length > 0">
+    <ng-container *ngIf="displayedFavorites && displayedFavorites.length > 0">
       <span *ngFor="let book of displayedFavorites; let i = index">
-        <ion-item-sliding>
-          <app-book-list
-            class="linkItem"
-            (click)="bookDetailView(book)"
-            [book]="book"
-            [i]="i+1"
-          ></app-book-list>
-          <ion-item-options>
-            <ion-item-option
-              color="secondary"
-              class="removeFavButton"
-              button
-              (click)="removeFavorite(book)"
-            >
-              <!-- <ion-icon name="star-outline"></ion-icon> -->
-              <span class="notUnderlined"
-                >{{ "button.remove" | translate }}</span
-              >
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <app-book-list
+          class="linkItem"
+          (click)="bookDetailView(book)"
+          [book]="book"
+          [i]="i+1"
+          [isFavorite]="isInArray(allFavorites, book)"
+          (favoriteStatusChanged)="toggleFavorite(book)"
+        ></app-book-list>
       </span>
-    </ion-list>
+    </ng-container>
     <div *ngIf="displayedFavorites.length == 0">
       <app-hint-box
         hintTypeI18nKey="hints.type.hint"

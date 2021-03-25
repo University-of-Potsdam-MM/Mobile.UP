@@ -1,27 +1,34 @@
 ion-item {
+  --background: var(--ion-card-background);
+
   p.number {
     font-weight: bold;
-    text-align: right;
+    text-align: center;
   }
 }
 
-ion-item [item-start] {
-  display: inline-block;
-  position: absolute;
+.cardHeader {
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 10px !important;
+}
 
-  ion-icon {
-    font-size: 1.5em;
-  }
+.cardContent {
+  padding-bottom: 10px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .bookIndex {
-  margin-inline-end: 10px;
+  margin-left: 0 !important;
 }
 
 .item-inner {
   margin-left: 25px;
+  padding-right: 0 !important;
 }
 
-.breakLine {
-  white-space: pre-wrap;
+.favButton {
+  margin-left: 5px !important;
 }

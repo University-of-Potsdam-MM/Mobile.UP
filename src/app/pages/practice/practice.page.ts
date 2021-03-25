@@ -239,7 +239,6 @@ export class PracticePage extends AbstractPage {
    * @name makeFavorite
    * @description set favorite and save to storage
    * @param {ADS} ads
-   * @param {ItemSliding} slidingItem
    */
   async makeFavorite(ads) {
     const favObj = await Storage.get({ key: 'favoriteJobs' });

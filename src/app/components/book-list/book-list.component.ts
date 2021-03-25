@@ -9,7 +9,9 @@ import { convertToArray } from 'src/app/lib/util';
 export class BookListComponent implements OnInit {
   @Input() public book: any;
   @Input() public i;
+  @Input() isFavorite: boolean;
   @Output() mediaType = new EventEmitter();
+  @Output() favoriteStatusChanged = new EventEmitter();
 
   bookDetails = {
     icon: null,
@@ -23,6 +25,11 @@ export class BookListComponent implements OnInit {
       convertToArray(this.book.physicalDescription)[0]
     );
     this.getPublisher();
+  }
+
+  toggleFavorite(event) {
+    event.stopPropagation();
+    this.favoriteStatusChanged.emit();
   }
 
   /**
@@ -71,7 +78,7 @@ export class BookListComponent implements OnInit {
 
     if (physicalDescription === 'remote') {
       this.mediaType.emit('mediatype_o');
-      this.bookDetails.icon = 'cloud'; // O = Online
+      this.bookDetails.icon = 'globe'; // O = Online
       return;
     }
 
@@ -113,7 +120,7 @@ export class BookListComponent implements OnInit {
             break;
           } else {
             this.mediaType.emit('mediatype_b');
-            this.bookDetails.icon = 'bookmarks'; // B = Book
+            this.bookDetails.icon = 'book'; // B = Book
             break;
           }
         }
@@ -125,7 +132,7 @@ export class BookListComponent implements OnInit {
           ) {
             if (physicalDescription === 'remote') {
               this.mediaType.emit('mediatype_p');
-              this.bookDetails.icon = 'paper'; // P = Paper
+              this.bookDetails.icon = 'document-text'; // P = Paper
               break;
             } else {
               this.mediaType.emit('mediatype_t');
@@ -134,7 +141,7 @@ export class BookListComponent implements OnInit {
             }
           } else if (physicalDescription === 'remote') {
             this.mediaType.emit('mediatype_o');
-            this.bookDetails.icon = 'cloud'; // O = Online
+            this.bookDetails.icon = 'globe'; // O = Online
             break;
           } else {
             this.mediaType.emit('mediatype_s');
