@@ -220,9 +220,9 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     if (result && result.data) {
       if (isFav !== result.data.isFavoriteNew) {
         if (result.data.isFavoriteNew) {
-          this.makeFavorite(bookToView, undefined, true);
+          this.makeFavorite(bookToView, undefined);
         } else {
-          this.removeFavorite(bookToView, true);
+          this.removeFavorite(bookToView);
         }
       }
     }
@@ -235,11 +235,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
    * @param {ADS} ads
    * @param {ItemSliding} slidingItem
    */
-  async makeFavorite(
-    book,
-    slidingItem: IonItemSliding,
-    disableHints?: boolean
-  ) {
+  async makeFavorite(book, slidingItem: IonItemSliding) {
     if (!isInArray(this.displayedFavorites, book)) {
       this.displayedFavorites.push(book);
       this.displayedFavorites = this.sortFavorites(this.displayedFavorites);
@@ -248,14 +244,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
         this.allFavorites.push(book);
         this.allFavorites = this.sortFavorites(this.allFavorites);
       }
-
-      if (!disableHints) {
-        this.alertService.showToast('hints.text.favAdded');
-      }
     } else {
-      if (!disableHints) {
-        this.alertService.showToast('hints.text.favExists');
-      }
     }
 
     await Storage.set({
@@ -273,7 +262,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
    * @description removes favorites
    * @param {ADS} ads
    */
-  async removeFavorite(ads, disableHints?: boolean) {
+  async removeFavorite(ads) {
     let i;
     const tmp = [];
     for (i = 0; i < this.allFavorites.length; i++) {
@@ -293,9 +282,6 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.allFavorites = this.sortFavorites(tmp);
     this.displayedFavorites = [];
     this.displayedFavorites = this.sortFavorites(tmp2);
-    if (!disableHints) {
-      this.alertService.showToast('hints.text.favRemoved');
-    }
 
     await Storage.set({
       key: 'favoriteBooks',

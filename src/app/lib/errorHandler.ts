@@ -38,9 +38,9 @@ export class MobileUPErrorHandler implements ErrorHandler {
 
       // if the user is connected but we still get an network error
       // the error is probably server side, so show a toast
-      if (await this.connectionService.checkOnline()) {
-        this.alertService.showToast('alert.httpErrorStatus.generic', error);
-      }
+      // if (await this.connectionService.checkOnline()) {
+      //   this.alertService.showToast('alert.httpErrorStatus.generic', error);
+      // }
 
       this.logging.logError({
         uuid: loclalUuid,

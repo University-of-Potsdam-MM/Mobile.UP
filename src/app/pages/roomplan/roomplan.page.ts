@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'src/app/services/alert/alert.service';
 import {
   IHouse,
   IRoom,
@@ -38,11 +37,10 @@ export class RoomplanPage extends AbstractPage {
   day_offset: string;
   response: any;
   current_location: ICampus;
-  error: HttpErrorResponse;
+  error;
   requestProcessed = false;
 
   constructor(
-    private alertService: AlertService,
     private ws: WebserviceWrapperService,
     public translate: TranslateService // used in template
   ) {
@@ -324,9 +322,7 @@ export class RoomplanPage extends AbstractPage {
               }
             }
 
-            if (default_error !== '') {
-              this.alertService.showToast(default_error);
-            }
+            this.error = default_error;
 
             // sadly templates cannot parse maps,
             // therefore we will generate a new data structure based on arrays and parse everything into there
