@@ -21,7 +21,6 @@ import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ModulesGridComponent } from './modules-grid/modules-grid.component';
 import { GridsterModule } from 'angular-gridster2';
-import { NetworkErrorHintComponent } from './network-error-hint/network-error-hint.component';
 import { CustomCardComponent } from './custom-card/custom-card.component';
 
 @NgModule({
@@ -41,7 +40,6 @@ import { CustomCardComponent } from './custom-card/custom-card.component';
     CampusReorderModalPage,
     DatePickerComponent,
     ModulesGridComponent,
-    NetworkErrorHintComponent,
   ],
   imports: [
     IonicModule,
@@ -72,7 +70,6 @@ import { CustomCardComponent } from './custom-card/custom-card.component';
     CourseDataComponent,
     DatePickerComponent,
     ModulesGridComponent,
-    NetworkErrorHintComponent,
   ],
 })
 export class ComponentsModule {}

@@ -117,9 +117,11 @@
       hintTextI18nKey="hints.text.mensa-nomeals-hint"
     ></app-hint-box>
   </div>
-  <app-network-error-hint
+  <app-hint-box
     *ngIf="isLoaded && networkError && !noMensaForLocation"
-  ></app-network-error-hint>
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 </ion-content>
 
 <ion-footer>

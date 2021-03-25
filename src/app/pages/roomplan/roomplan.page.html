@@ -39,7 +39,11 @@
       hintTextI18nKey="page.roomplan.no_rooms_hintText"
       hintTypeI18nKey="hints.type.hint"
     ></app-hint-box>
-    <app-network-error-hint *ngIf="error"></app-network-error-hint>
+    <app-hint-box
+      *ngIf="error"
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="alert.httpErrorStatus.generic"
+    ></app-hint-box>
   </ng-template>
 
   <ng-template #roomsFoundTemplate>

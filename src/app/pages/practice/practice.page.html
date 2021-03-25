@@ -64,7 +64,11 @@
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noResults-hint"
     ></app-hint-box>
-    <app-network-error-hint *ngIf="error"></app-network-error-hint>
+    <app-hint-box
+      *ngIf="error"
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="alert.httpErrorStatus.generic"
+    ></app-hint-box>
   </div>
 
   <!-- search -->

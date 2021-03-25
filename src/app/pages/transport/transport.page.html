@@ -42,7 +42,11 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <app-network-error-hint *ngIf="error"></app-network-error-hint>
+  <app-hint-box
+    *ngIf="error"
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 
   <div align="center" *ngIf="isLoaded && departures && departures[0]">
     <ion-list *ngFor="let dep of departures">

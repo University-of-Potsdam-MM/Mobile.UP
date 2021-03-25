@@ -47,7 +47,11 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+  <app-hint-box
+    *ngIf="networkError"
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 
   <div *ngFor="let article of newsList" class="news-article">
     <app-custom-card
