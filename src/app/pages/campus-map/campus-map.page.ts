@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   IMapsResponseObject,
@@ -37,9 +37,7 @@ export interface CampusMapQueryParams {
   templateUrl: './campus-map.page.html',
   styleUrls: ['./campus-map.page.scss'],
 })
-export class CampusMapPage
-  extends AbstractPage
-  implements AfterViewInit, OnDestroy {
+export class CampusMapPage extends AbstractPage implements OnInit, OnDestroy {
   @ViewChild(CampusTabComponent, { static: false })
   campusTab: CampusTabComponent;
 
@@ -73,6 +71,21 @@ export class CampusMapPage
     public platform: Platform
   ) {
     super({ requireNetwork: true });
+  }
+
+  ngOnInit() {
+    this.map = this.initializeLeafletMap();
+
+    // if the currentCampus has been set already, move there
+    if (this.currentCampus) {
+      this.moveToCampus(this.currentCampus);
+    }
+
+    this.loadMapData(this.map);
+  }
+
+  ngOnDestroy() {
+    this.clearWatchGeolocation();
   }
 
   /**
@@ -110,30 +123,6 @@ export class CampusMapPage
     if (params.campus) {
       this.moveToQueriedCampus(params.campus);
     }
-  }
-
-  /**
-   * @name ionViewWillEnter
-   * @desc take user to login if there is no session.
-   * We are using ionViewDidEnter here because it is run every time the view is
-   * entered, other than ionViewDidLoad which will run only once
-   */
-  ngAfterViewInit() {
-    // initialize map
-    if (!this.map) {
-      this.map = this.initializeLeafletMap();
-
-      // if the currentCampus has been set already, move there
-      if (this.currentCampus) {
-        this.moveToCampus(this.currentCampus);
-      }
-
-      this.loadMapData(this.map);
-    }
-  }
-
-  ngOnDestroy() {
-    this.clearWatchGeolocation();
   }
 
   /**
