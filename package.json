@@ -45,7 +45,7 @@
     "@capacitor/storage": "^0.3.6",
     "@ionic-native/calendar": "^5.32.0",
     "@ionic-native/core": "^5.32.0",
-    "@ionic/angular": "^5.6.3",
+    "@ionic/angular": "^5.6.4",
     "@ionic/storage": "2.3.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
