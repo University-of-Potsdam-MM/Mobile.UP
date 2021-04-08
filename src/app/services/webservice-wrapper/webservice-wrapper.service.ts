@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { ConfigService } from "../config/config.service";
-import { from, Observable } from "rxjs";
-import { CacheService } from "ionic-cache";
+/* eslint-disable @typescript-eslint/member-ordering */
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ConfigService } from '../config/config.service';
+import { from, Observable } from 'rxjs';
 import {
   ICachingOptions,
   ILibraryRequestParams,
@@ -11,23 +11,25 @@ import {
   IRoomsRequestParams,
   ITransportRequestParams,
   IWebservice,
-} from "./webservice-definition-interfaces";
-import { IPulsAPIResponse_getLectureScheduleRoot } from "../../lib/interfaces_PULS";
-import { AlertService } from "../alert/alert.service";
-import { isEmptyObject } from "../../lib/util";
-import { switchMap } from "rxjs/operators";
-import { Logger, LoggingService } from "ionic-logging-service";
-import { ConnectionService } from "../connection/connection.service";
-import { Storage } from "@ionic/storage";
-import * as moment from "moment";
+} from './webservice-definition-interfaces';
+import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PULS';
+import { AlertService } from '../alert/alert.service';
+import { isEmptyObject } from '../../lib/util';
+import { switchMap, timeout } from 'rxjs/operators';
+// import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from '../connection/connection.service';
+import * as moment from 'moment';
+import { Storage } from '@capacitor/storage';
+import { CacheService } from 'ionic-cache';
 
 /**
  * creates the httpParams for a request to the rooms api
+ *
  * @param params {IRoomsRequestParams} Params to build the request with
  */
 function createRoomParams(params: IRoomsRequestParams) {
   return {
-    format: "json",
+    format: 'json',
     startTime: params.timeSlot.start.toISOString(),
     endTime: params.timeSlot.end.toISOString(),
     campus: params.campus.location_id,
@@ -87,7 +89,7 @@ function createRoomParams(params: IRoomsRequestParams) {
  * )
  */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class WebserviceWrapperService {
   /**
@@ -101,12 +103,12 @@ export class WebserviceWrapperService {
   };
 
   private pulsHeaders = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: ConfigService.config.webservices.apiToken,
   };
 
   private pulsHeadersNew = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     apikey: ConfigService.config.webservices.apiTokenNew,
   };
 
@@ -123,27 +125,30 @@ export class WebserviceWrapperService {
     ) => {
       const stringResponse = JSON.stringify(response);
       if (stringResponse.length > 30000) {
-        this.logger.debug(
-          "responseCallback",
-          `calling '${wsName}': `,
-          stringResponse.substring(0, 30000)
-        );
-        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+        // this.logger.debug(
+        //   'responseCallback',
+        //   `calling '${wsName}': `,
+        //   stringResponse.substring(0, 30000)
+        // );
+        // this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
       } else {
-        this.logger.debug(
-          "responseCallback",
-          `calling '${wsName}': `,
-          response
-        );
-        this.logger.debug("USING NEW API MANAGER: " + usingUpdatedApiManager);
+        // this.logger.debug(
+        //   'responseCallback',
+        //   `calling '${wsName}': `,
+        //   response
+        // );
+        // this.logger.debug('USING NEW API MANAGER: ' + usingUpdatedApiManager);
       }
       return response;
     },
     // by default in case of an error the error will be passed on
     errorCallback: async (error, wsName, usingUpdatedApiManager) => {
-      this.logger.error("errorCallback", `calling '${wsName}': `, error);
-      this.logger.error("USING NEW API MANAGER: " + usingUpdatedApiManager);
-      await this.storage.set("latestWebserviceError", error);
+      // this.logger.error('errorCallback', `calling '${wsName}': `, error);
+      // this.logger.error('USING NEW API MANAGER: ' + usingUpdatedApiManager);
+      await Storage.set({
+        key: 'latestWebserviceError',
+        value: JSON.stringify(error),
+      });
 
       return error;
     },
@@ -158,138 +163,127 @@ export class WebserviceWrapperService {
    */
   public webservices: { [wsName: string]: IWebservice } = {
     maps: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
-        });
-      },
+      buildRequest: (params, url) =>
+        this.http
+          .get(url, {
+            headers: ConfigService.isApiManagerUpdated
+              ? this.apiTokenHeaderNew
+              : this.apiTokenHeader,
+          })
+          .pipe(timeout(2000)),
     },
     mensa: {
-      buildRequest: (params: IMensaRequestParams, url) => {
-        return this.http.get(url, {
+      buildRequest: (params: IMensaRequestParams, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: { location: params.campus_canteen_name },
-        });
-      },
+        }),
     },
     personSearch: {
-      buildRequest: (params: IPersonsRequestParams, url) => {
-        return this.http.get(url + "/" + params.query, {
+      buildRequest: (params: IPersonsRequestParams, url) =>
+        this.http.get(url + '/' + params.query, {
           headers: {
             Authorization: `${params.session.oidcTokenObject.token_type} ${params.session.oidcTokenObject.access_token}`,
           },
-        });
-      },
+        }),
     },
     roomsSearch: {
-      buildRequest: (params: IRoomsRequestParams, url) => {
-        return this.http.get(url, {
+      buildRequest: (params: IRoomsRequestParams, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: createRoomParams(params),
-        });
-      },
+        }),
     },
     roomPlanSearch: {
-      buildRequest: (params: IRoomsRequestParams, url) => {
-        return this.http.get(url, {
+      buildRequest: (params: IRoomsRequestParams, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: createRoomParams(params),
-        });
-      },
+        }),
     },
     library: {
-      buildRequest: (requestParams: ILibraryRequestParams, url) => {
-        return this.http.get(url, {
+      buildRequest: (requestParams: ILibraryRequestParams, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: {
-            operation: "searchRetrieve",
+            operation: 'searchRetrieve',
             query: requestParams.query,
             startRecord: requestParams.startRecord,
             maximumRecords: requestParams.maximumRecords,
-            recordSchema: "mods",
+            recordSchema: 'mods',
           },
-          responseType: "text",
-        });
-      },
+          responseType: 'text',
+        }),
     },
     libraryDAIA: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
+      buildRequest: (params, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: {
             id: params.id,
-            format: "json",
+            format: 'json',
           },
-        });
-      },
+        }),
     },
     libraryLKZ: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, { params: { epn: params.epn } });
-      },
+      buildRequest: (params, url) =>
+        this.http.get(url, { params: { epn: params.epn } }),
     },
     emergencyCalls: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
+      buildRequest: (params, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
-        });
-      },
+        }),
     },
     openingHours: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
+      buildRequest: (params, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
-        });
-      },
+        }),
     },
     transport: {
-      buildRequest: (params: ITransportRequestParams, url) => {
-        return this.http.get(url, {
+      buildRequest: (params: ITransportRequestParams, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: {
             maxJourneys: params.maxJourneys,
-            format: "json",
+            format: 'json',
             time: params.time,
             id: params.campus.transport_station_id,
           },
-        });
-      },
+        }),
     },
     practiceSearch: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
+      buildRequest: (params, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
-        });
-      },
+        }),
     },
     news: {
-      buildRequest: (params, url) => {
-        return this.http.get(url, {
+      buildRequest: (params, url) =>
+        this.http.get(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
-        });
-      },
+        }),
     },
     events: {
       buildRequest: (params, url) => {
@@ -302,28 +296,26 @@ export class WebserviceWrapperService {
       },
     },
     logging: {
-      buildRequest: (errorObject, url) => {
-        return this.http.post(url, {
+      buildRequest: (errorObject, url) =>
+        this.http.post(url, {
           headers: ConfigService.isApiManagerUpdated
             ? this.apiTokenHeaderNew
             : this.apiTokenHeader,
           params: errorObject,
-        });
-      },
+        }),
     },
     feedback: {
-      buildRequest: (request, url) => {
-        return this.http.post(url, request, {
+      buildRequest: (request, url) =>
+        this.http.post(url, request, {
           headers: ConfigService.isApiManagerUpdated
             ? this.pulsHeadersNew
             : this.pulsHeaders,
-        });
-      },
+        }),
     },
     nominatim: {
       buildRequest: (params, url) => {
-        let lat = "";
-        let lon = "";
+        let lat = '';
+        let lon = '';
         if (
           ConfigService.config &&
           ConfigService.config.campus &&
@@ -337,17 +329,17 @@ export class WebserviceWrapperService {
         }
         return this.http.get(url, {
           params: {
-            format: "jsonv2",
-            lat: lat,
-            lon: lon,
+            format: 'jsonv2',
+            lat,
+            lon,
           },
         });
       },
     },
     // PULS webservices
     pulsGetLectureScheduleRoot: {
-      buildRequest: (_, url) => {
-        return this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
+      buildRequest: (_, url) =>
+        this.http.post<IPulsAPIResponse_getLectureScheduleRoot>(
           url,
           { condition: { semester: 0 } },
           {
@@ -355,12 +347,11 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
     pulsGetLectureScheduleAll: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           {
             condition: {
@@ -372,14 +363,13 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
       responseCallback: (response) =>
-        this.pulsResponseCallback(response, "pulsGetLectureScheduleAll"),
+        this.pulsResponseCallback(response, 'pulsGetLectureScheduleAll'),
     },
     pulsGetLectureScheduleSubTree: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           { condition: { headerId: params.headerId } },
           {
@@ -387,12 +377,11 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
     pulsGetLectureScheduleCourses: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           { condition: { headerId: params.headerId } },
           {
@@ -400,12 +389,11 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
     pulsGetCourseData: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           { condition: { courseId: params.courseId } },
           {
@@ -413,15 +401,14 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
     pulsGetPersonalStudyAreas: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           {
-            "user-auth": {
+            'user-auth': {
               username: params.session.credentials.username,
               password: params.session.credentials.password,
             },
@@ -431,14 +418,13 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
       responseCallback: (response) =>
-        this.pulsResponseCallback(response, "pulsGetPersonalStudyAreas"),
+        this.pulsResponseCallback(response, 'pulsGetPersonalStudyAreas'),
     },
     pulsGetAcademicAchievements: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           {
             condition: {
@@ -446,7 +432,7 @@ export class WebserviceWrapperService {
               MtkNr: params.mtknr,
               StgNr: params.stgnr,
             },
-            "user-auth": {
+            'user-auth': {
               username: params.session.credentials.username,
               password: params.session.credentials.password,
             },
@@ -456,12 +442,11 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
     pulsGetStudentCourses: {
-      buildRequest: (params, url) => {
-        return this.http.post(
+      buildRequest: (params, url) =>
+        this.http.post(
           url,
           {
             condition: {
@@ -469,7 +454,7 @@ export class WebserviceWrapperService {
               allLectures: 0,
             },
             // TODO: refactor this someday so credentials are not used
-            "user-auth": {
+            'user-auth': {
               username: params.session.credentials.username,
               password: params.session.credentials.password,
             },
@@ -479,45 +464,42 @@ export class WebserviceWrapperService {
               ? this.pulsHeadersNew
               : this.pulsHeaders,
           }
-        );
-      },
+        ),
     },
   };
 
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
     private http: HttpClient,
-    private cache: CacheService,
     private alertService: AlertService,
     private connectionService: ConnectionService,
-    private storage: Storage,
-    private loggingService: LoggingService
+    private cache: CacheService // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger("[/webservice-wrapper]");
+    // this.logger = this.loggingService.getLogger('[/webservice-wrapper]');
   }
 
   pulsResponseCallback(response, wsName) {
     const stringResponse = JSON.stringify(response);
     if (stringResponse && stringResponse.length > 30000) {
-      this.logger.debug(
-        "pulsResponseCallback",
-        `calling '${wsName}': `,
-        stringResponse.substring(0, 30000)
-      );
+      // this.logger.debug(
+      //   'pulsResponseCallback',
+      //   `calling '${wsName}': `,
+      //   stringResponse.substring(0, 30000)
+      // );
     } else {
-      this.logger.debug(
-        "pulsResponseCallback",
-        `calling '${wsName}': `,
-        response
-      );
+      // this.logger.debug(
+      //   'pulsResponseCallback',
+      //   `calling '${wsName}': `,
+      //   response
+      // );
     }
 
     // PULS simply responds with "no user rights" if credentials are incorrect
-    if (response && response.message && response.message === "no user rights") {
+    if (response && response.message && response.message === 'no user rights') {
       this.alertService.showAlert({
-        headerI18nKey: "alert.title.error",
-        messageI18nKey: "alert.token_valid_credentials_invalid",
+        headerI18nKey: 'alert.title.error',
+        messageI18nKey: 'alert.token_valid_credentials_invalid',
       });
     }
     return response;
@@ -527,11 +509,12 @@ export class WebserviceWrapperService {
    * returns a webservice definition and sets default values for a webservice
    * definitions attributes that are undefined. If the webservice is not known,
    * an error will the thrown.
+   *
    * @param name {string} Name of the webservice to be returned
    */
   private getDefinition(name: string) {
     if (!this.webservices[name]) {
-      this.logger.error("getDefinition", `no webservice named ${name} defined`);
+      // this.logger.error('getDefinition', `no webservice named ${name} defined`);
     }
     const ws = this.webservices[name];
     for (const k in this.defaults) {
@@ -544,6 +527,7 @@ export class WebserviceWrapperService {
 
   /**
    * executes the specified call
+   *
    * @param webserviceName {string} The name of the service to be called
    * @param params {any} Additional params that will be given to the call building function
    * @param cachingOptions {ICachingOptions} Optional parameters for caching
@@ -557,14 +541,14 @@ export class WebserviceWrapperService {
     const ws = this.getDefinition(webserviceName);
 
     if (!ConfigService.config.webservices.endpoint[webserviceName]) {
-      this.logger.error("call", `no endpoint defined for '${webserviceName}'`);
+      // this.logger.error('call', `no endpoint defined for '${webserviceName}'`);
     }
 
     if (!ConfigService.config.webservices.endpoint[webserviceName].url) {
-      this.logger.error(
-        "call",
-        `no url defined for endpoint '${webserviceName}'`
-      );
+      // this.logger.error(
+      //   'call',
+      //   `no url defined for endpoint '${webserviceName}'`
+      // );
     }
 
     // shortcut for less repetition
@@ -604,10 +588,10 @@ export class WebserviceWrapperService {
       cachingOptions.dontCache === true
     ) {
       // if caching is not desired for this endpoint we just return the observable itself
-      this.logger.debug(
-        "call",
-        `returning '${webserviceName}' without caching`
-      );
+      // this.logger.debug(
+      //   'call',
+      //   `returning '${webserviceName}' without caching`
+      // );
       return wrapperObservable;
     }
 
@@ -620,7 +604,7 @@ export class WebserviceWrapperService {
     const cacheItemKey =
       cachingOptions.key ||
       webserviceName +
-        (isEmptyObject(params) ? "" : ":" + btoa(JSON.stringify(params)));
+        (isEmptyObject(params) ? '' : ':' + btoa(JSON.stringify(params)));
 
     /* groupKey:
      *   1. key as defined in cachingOptions
@@ -642,59 +626,31 @@ export class WebserviceWrapperService {
       ConfigService.config.webservices.endpoint[webserviceName].cachingTTL ||
       undefined;
 
-    this.logger.debug(
-      "call",
-      `returning '${webserviceName}' with caching, options: ${JSON.stringify(
-        cachingOptions
-      )}`
-    );
+    // this.logger.debug(
+    //   'call',
+    //   `returning '${webserviceName}' with caching, options: ${JSON.stringify(
+    //     cachingOptions
+    //   )}`
+    // );
 
-    if (this.connectionService.checkOnline()) {
-      return from(
-        Promise.all([
-          cachingOptions.forceRefreshGroup
-            ? this.cache.clearGroup(cacheGroupKey)
-            : Promise.resolve(),
-          cachingOptions.forceRefresh
-            ? this.cache.removeItem(cacheItemKey)
-            : Promise.resolve(),
-        ])
-      ).pipe(
-        switchMap(() =>
-          this.cache.loadFromObservable(
-            cacheItemKey,
-            wrapperObservable,
-            cacheGroupKey,
-            cacheTTL
-          )
+    return from(
+      Promise.all([
+        cachingOptions.forceRefreshGroup
+          ? this.cache.clearGroup(cacheGroupKey)
+          : Promise.resolve(),
+        cachingOptions.forceRefresh
+          ? this.cache.removeItem(cacheItemKey)
+          : Promise.resolve(),
+      ])
+    ).pipe(
+      switchMap(() =>
+        this.cache.loadFromObservable(
+          cacheItemKey,
+          wrapperObservable,
+          cacheGroupKey,
+          cacheTTL
         )
-      );
-    } else {
-      return from(
-        Promise.all([
-          cachingOptions.forceRefreshGroup
-            ? this.logger.debug(
-                "call",
-                "not clearing cache, since there is no internet connection!"
-              )
-            : Promise.resolve(),
-          cachingOptions.forceRefresh
-            ? this.logger.debug(
-                "call",
-                "not clearing cache, since there is no internet connection!"
-              )
-            : Promise.resolve(),
-        ])
-      ).pipe(
-        switchMap(() =>
-          this.cache.loadFromObservable(
-            cacheItemKey,
-            wrapperObservable,
-            cacheGroupKey,
-            cacheTTL
-          )
-        )
-      );
-    }
+      )
+    );
   }
 }

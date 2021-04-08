@@ -36,9 +36,9 @@ Zum entwickeln wird Node.js benötigt:
 git clone https://github.com/University-of-Potsdam-MM/Mobile.UP.git
 
 ##
-## Falls nicht vorhanden Ionic und Cordova installieren
+## Falls nicht vorhanden Ionic installieren
 ##
-npm install -g cordova @ionic/cli
+npm install -g @ionic/cli
 
 ##
 ## Submodule installieren und aktualisieren

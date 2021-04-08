@@ -5,16 +5,18 @@ import {
   Output,
   ViewChild,
   OnInit,
-} from "@angular/core";
+  OnDestroy,
+} from '@angular/core';
 import {
   DisplayGrid,
   GridsterComponent,
   GridsterConfig,
   GridsterItem,
-} from "angular-gridster2";
-import { IModule } from "../../lib/interfaces";
-import { Platform, MenuController } from "@ionic/angular";
-import * as dLoop from "delayed-loop";
+} from 'angular-gridster2';
+import { IModule } from '../../lib/interfaces';
+import { Platform, MenuController } from '@ionic/angular';
+import * as dLoop from 'delayed-loop';
+import { Router } from '@angular/router';
 
 /**
  * This components takes a list of modules and displays those modules as tiles.
@@ -22,18 +24,21 @@ import * as dLoop from "delayed-loop";
  * has been modified this component will emit a 'gridChanged' signal.
  */
 @Component({
-  selector: "modules-grid",
-  templateUrl: "./modules-grid.component.html",
-  styleUrls: ["./modules-grid.component.scss"],
+  selector: 'modules-grid',
+  templateUrl: './modules-grid.component.html',
+  styleUrls: ['./modules-grid.component.scss'],
 })
-export class ModulesGridComponent implements OnInit {
+export class ModulesGridComponent implements OnInit, OnDestroy {
   @ViewChild(GridsterComponent, { static: false }) gridster: GridsterComponent;
 
   /**
    * converts passed modules list to gridsterItems
+   *
    * @param modulesList
    */
   @Input() modules: IModule[];
+
+  @Input() favsAreEmpty: boolean;
 
   /**
    * input for the template to be used inside the gridsterItems.
@@ -52,40 +57,67 @@ export class ModulesGridComponent implements OnInit {
   editingMode = false;
   gridsterWrapperHeight: number;
 
-  constructor(private platform: Platform, private menuCtrl: MenuController) {}
+  constructor(
+    private platform: Platform,
+    private menuCtrl: MenuController,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.subscribeToResizeEvent();
     this.setupGridOptions();
   }
 
+  ngOnDestroy() {
+    this.unsubscribeFromResizeEvent();
+  }
+
   // listen to resize event on browser, so that the grid can resize
   // depending on window width
   subscribeToResizeEvent() {
-    if (
-      !(
-        this.platform.is("cordova") &&
-        (this.platform.is("ios") || this.platform.is("android"))
-      )
-    ) {
-      this.platform.resize.subscribe(() => {
-        this.onWindowResize();
+    if (!(this.platform.is('ios') || this.platform.is('android'))) {
+      window.addEventListener('resize', () => {
+        if (this.router.url === '/home') {
+          this.onWindowResize();
+        }
       });
+    } else {
+      // Listen for orientation changes
+      window.addEventListener('orientationchange', () => {
+        if (this.router.url === '/home') {
+          this.onWindowResize();
+        }
+      });
+    }
+  }
+
+  unsubscribeFromResizeEvent() {
+    if (!(this.platform.is('ios') || this.platform.is('android'))) {
+      window.removeEventListener('resize', () => null);
+    } else {
+      window.removeEventListener('orientationchange', () => null);
     }
   }
 
   setupGridOptions() {
     this.options = {
-      gridType: "scrollVertical",
+      gridType: 'scrollVertical',
       // makes the tiles float upwards first then to the left
-      compactType: "compactUp&Left",
+      compactType: 'compactUp&Left',
       // default size of a tile
       defaultItemCols: 1,
       defaultItemRows: 1,
+      disableWindowResize: true,
       // minimum/maximum dimensions of grid
       minRows: 0,
-      minCols: Math.floor(this.platform.width() / 120),
-      maxCols: Math.floor(this.platform.width() / 120),
+      minCols:
+        this.platform.width() < 992
+          ? Math.floor(this.platform.width() / 125)
+          : Math.floor((this.platform.width() - 300) / 125),
+      maxCols:
+        this.platform.width() < 992
+          ? Math.floor(this.platform.width() / 120)
+          : Math.floor((this.platform.width() - 300) / 125),
       disableScrollHorizontal: true,
       disableScrollVertical: true,
       // tiles cannot be dragged further than 0 (?) tiles away
@@ -148,7 +180,9 @@ export class ModulesGridComponent implements OnInit {
    */
   resizeWrapper() {
     this.gridsterWrapperHeight =
-      this.gridster.curRowHeight * this.gridster.rows;
+      this.gridster.rows === 0
+        ? 0
+        : this.gridster.curRowHeight * this.gridster.rows + 10;
   }
 
   toggleEditingMode() {
@@ -160,7 +194,10 @@ export class ModulesGridComponent implements OnInit {
   }
 
   setColumnSizeForScreenWidth() {
-    const newColumnSize = Math.floor(this.platform.width() / 120);
+    const newColumnSize =
+      this.platform.width() < 992
+        ? Math.floor(this.platform.width() / 125)
+        : Math.floor((this.platform.width() - 300) / 125);
     this.options.minCols = newColumnSize;
     this.options.maxCols = newColumnSize;
     this.options.api.optionsChanged();
@@ -202,11 +239,9 @@ export class ModulesGridComponent implements OnInit {
       // resize wrapper to fit new grid size
       loop.then(() => {
         this.resizeWrapper();
-        if (this.platform.is("cordova")) {
-          setTimeout(() => {
-            this.resizeWrapper();
-          }, 250);
-        }
+        setTimeout(() => {
+          this.resizeWrapper();
+        }, 250);
         this.gridChanged.emit();
       });
     } else {

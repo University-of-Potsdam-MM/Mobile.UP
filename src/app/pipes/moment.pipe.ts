@@ -1,11 +1,11 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import * as moment from "moment";
+import { Pipe, PipeTransform } from '@angular/core';
+import * as moment from 'moment';
 
 @Pipe({
-  name: "moment",
+  name: 'moment',
 })
 export class MomentPipe implements PipeTransform {
-  transform(string, format) {
-    return moment(string, "HH:mm:ss").format(format);
+  transform(str, format) {
+    return moment(str, 'HH:mm:ss').format(format);
   }
 }

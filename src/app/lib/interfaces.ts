@@ -1,14 +1,12 @@
+/* eslint-disable id-blacklist */
 /* ~~~ EmergencyPage ~~~ */
 
-import { InAppBrowserObject } from "@ionic-native/in-app-browser/ngx";
-import * as geojson from "geojson";
-import { IDeviceInfo } from "../services/device/device.service";
+import * as geojson from 'geojson';
+import { IDeviceInfo } from '../services/device/device.service';
 import {
-  ILoginConfig_Credentials,
-  ILoginConfig_SSO,
   ILoginConfig_OIDC,
   ICredentials,
-} from "../services/login-provider/interfaces";
+} from '../services/login-service/interfaces';
 
 /**
  * Interface for a contact with telephone number and email address
@@ -84,6 +82,7 @@ export interface IPerson {
   Keywords?: string;
   Contact_Information?: string;
   Absent_Message?: string;
+  expanded?: boolean;
 }
 
 /* ~~~ Mensa ~~~ */
@@ -128,7 +127,7 @@ export interface IMensaIcon {
 }
 export interface ADS {
   uid: number;
-  art: number;
+  art: string;
   field: string;
   title: string;
   date: number;
@@ -145,8 +144,8 @@ export interface ADS {
   phone: string;
   mail: string;
   partner: number;
-  famFriendly: number;
-  expanded: boolean;
+  famfriendly: string;
+  isfavorite?: boolean;
 }
 
 export type IADSResponse = Array<ADS>;
@@ -189,8 +188,6 @@ export interface IAppUrls {
 
 // references interfaces coming from login-provider
 export interface ILoginConfig {
-  credentials?: ILoginConfig_Credentials;
-  sso?: ILoginConfig_SSO;
   oidc?: ILoginConfig_OIDC;
   oidc_new?: ILoginConfig_OIDC;
 }
@@ -424,7 +421,7 @@ export interface INewsEventsPlace {
 
 /** API mappings for rooms4Time request (RoomsPage) */
 export interface IRoomApiRequest {
-  browser?: InAppBrowserObject;
+  browser?: any;
   authToken: string;
 }
 export interface IRoomRequestResponseReturn {
@@ -518,7 +515,7 @@ export interface IStudieCourse {
   dtxt: string;
   ltxt: string;
   stg: string;
-  "stg.pversion": string;
+  'stg.pversion': string;
   stgsem: string;
 }
 

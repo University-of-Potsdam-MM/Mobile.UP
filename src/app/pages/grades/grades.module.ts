@@ -1,27 +1,21 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { Routes, RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
-import { GradesPage } from "./grades.page";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from "@angular/common/http";
-import { LoginModule } from "../login/login.import";
-import { ComponentsModule } from "src/app/components/components.module";
-import { HttpLoaderFactory } from "src/app/app.module";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: GradesPage,
-  },
-];
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { GradesPageRoutingModule } from './grades-routing.module';
+import { GradesPage } from './grades.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { HttpLoaderFactory } from 'src/app/app.module';
+import { LoginModule } from '../login/login.import';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    GradesPageRoutingModule,
     ComponentsModule,
     LoginModule,
     TranslateModule.forChild({
@@ -31,7 +25,6 @@ const routes: Routes = [
         deps: [HttpClient],
       },
     }),
-    RouterModule.forChild(routes),
   ],
   declarations: [GradesPage],
 })

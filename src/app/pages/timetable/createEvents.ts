@@ -1,7 +1,8 @@
-import { Frequency, RRule, Weekday } from "rrule";
-import * as moment from "moment";
-import { ICourse, IEvent } from "src/app/lib/interfaces_PULS";
-import { convertToArray } from "src/app/lib/util";
+import { Frequency, RRule, Weekday } from 'rrule';
+import * as moment from 'moment';
+import { ICourse, IEvent_PULS } from 'src/app/lib/interfaces_PULS';
+import { convertToArray } from 'src/app/lib/util';
+import { IEvent } from 'ionic2-calendar/calendar';
 
 export interface IEventRules {
   begin: RRule;
@@ -14,7 +15,7 @@ export interface IEventObject {
   endTime: Date;
   title: string;
   courseDetails: ICourse;
-  eventDetails: IEvent;
+  eventDetails: IEvent_PULS;
   color: string;
 }
 
@@ -41,7 +42,7 @@ const rhythmMapping: IRhythmMapping = {
     freq: RRule.WEEKLY,
     interval: 1,
   },
-  "14-täglich": {
+  '14-täglich': {
     freq: RRule.WEEKLY,
     interval: 2,
   },
@@ -61,7 +62,7 @@ const rhythmMapping: IRhythmMapping = {
   },
 };
 
-function pulsToUTC(date, time, second = "00") {
+function pulsToUTC(date, time, second = '00') {
   const day = date.substr(0, 2);
   const month = date.substr(3, 2);
   const year = date.substr(6);
@@ -71,12 +72,12 @@ function pulsToUTC(date, time, second = "00") {
 
   return new Date(
     Date.UTC(
-      parseInt(year),
-      parseInt(month) - 1, // need to subtract 1 because month starts at 0
-      parseInt(day),
-      parseInt(hour),
-      parseInt(minute),
-      parseInt(second)
+      parseInt(year, 10),
+      parseInt(month, 10) - 1, // need to subtract 1 because month starts at 0
+      parseInt(day, 10),
+      parseInt(hour, 10),
+      parseInt(minute, 10),
+      parseInt(second, 10)
     )
   );
 }
@@ -84,11 +85,12 @@ function pulsToUTC(date, time, second = "00") {
 /**
  * Creates event rrules for the given event and returns IEventRules object
  * containing rrules for begin and end of event on each day
+ *
  * @param event
  * @param tzid Id of timezone to be used
  * @returns eventrules
  */
-function createEventRules(event: IEvent): IEventRules {
+function createEventRules(event: IEvent_PULS): IEventRules {
   if (!rhythmMapping[event.rhythm]) {
     throw new Error(
       `[createRule]: Event ${event.eventId}: Unknown rhythm: ${event.rhythm}`
@@ -110,14 +112,14 @@ function createEventRules(event: IEvent): IEventRules {
     );
   }
 
-  return <IEventRules>{
+  return {
     // create rule for beginning time on each day the event takes place
     begin: new RRule({
       freq: rhythmMapping[event.rhythm].freq,
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.startTime),
-      until: pulsToUTC(event.endDate, "24:00"),
+      until: pulsToUTC(event.endDate, '24:00'),
     }),
     // create rule for end time on each day the event takes place
     end: new RRule({
@@ -125,9 +127,9 @@ function createEventRules(event: IEvent): IEventRules {
       interval: rhythmMapping[event.rhythm].interval,
       byweekday: weekdaysMapping[event.day],
       dtstart: pulsToUTC(event.startDate, event.endTime),
-      until: pulsToUTC(event.endDate, "24:00"),
+      until: pulsToUTC(event.endDate, '24:00'),
     }),
-  };
+  } as IEventRules;
 }
 
 /**
@@ -136,13 +138,14 @@ function createEventRules(event: IEvent): IEventRules {
  * and eventID to event which can be used to easily get information about courses
  * and events. Also returns a list of courses containgin invalid events that are
  * not usable.
+ *
  * @param studentCourses
  * @param tzid Id of timezone to be used
  * @returns IEventSource
  */
-export function createEventSource(studentCourses: ICourse[]): IEventSource {
+export function createEventSource(studentCourses: ICourse[]): IEvent[] {
   // the eventSource we will be returning, actually the main result of this function
-  const eventSource: IEventSource = new Array<IEventObject>();
+  const eventSource: IEvent[] = new Array<IEvent>();
 
   for (const c of studentCourses) {
     if (c && c.events && c.events.event) {
@@ -177,14 +180,15 @@ export function createEventSource(studentCourses: ICourse[]): IEventSource {
               end[i].setHours(end[i].getHours() - 2);
             }
 
-            eventSource.push(<IEventObject>{
+            eventSource.push({
               id: e.eventId,
+              allDay: false,
               title: c.courseName,
               startTime: begin[i],
               endTime: end[i],
               courseDetails: c,
               eventDetails: e,
-            });
+            } as IEvent);
           }
         } catch (error) {
           console.log(

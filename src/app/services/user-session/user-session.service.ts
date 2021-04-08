@@ -1,21 +1,23 @@
-import { Injectable } from "@angular/core";
-import { Storage } from "@ionic/storage";
+import { Injectable } from '@angular/core';
+import { Storage } from '@capacitor/storage';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserSessionService {
-  constructor(private storage: Storage) {}
+  constructor() {}
 
-  getSession(): Promise<any> {
-    return this.storage.get("session");
+  async getSession(): Promise<any> {
+    const sessionObj = await Storage.get({ key: 'session' });
+    const session = JSON.parse(sessionObj.value);
+    return session;
   }
 
   setSession(session): Promise<any> {
-    return this.storage.set("session", session);
+    return Storage.set({ key: 'session', value: JSON.stringify(session) });
   }
 
   removeSession(): Promise<any> {
-    return this.storage.remove("session");
+    return Storage.remove({ key: 'session' });
   }
 }

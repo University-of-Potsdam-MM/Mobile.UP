@@ -1,3 +1,3 @@
-[submodule "src/app/services/login-provider"]
-	path = src/app/services/login-provider
+[submodule "src/app/services/login-service"]
+	path = src/app/services/login-service
 	url = https://github.com/University-of-Potsdam-MM/login-provider.git

@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { WebserviceWrapperService } from "src/app/services/webservice-wrapper/webservice-wrapper.service";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { IEventApiResponse, INewsEventsObject } from "src/app/lib/interfaces";
-import { IonSlides } from "@ionic/angular";
-import { ConfigService } from "src/app/services/config/config.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { IEventApiResponse, INewsEventsObject } from 'src/app/lib/interfaces';
+import { IonSlides } from '@ionic/angular';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
-  selector: "app-events",
-  templateUrl: "./events.page.html",
-  styleUrls: ["./events.page.scss"],
+  selector: 'app-events',
+  templateUrl: './events.page.html',
+  styleUrls: ['./events.page.scss'],
 })
 export class EventsPage extends AbstractPage implements OnInit {
+  @ViewChild(IonSlides, { static: false }) slides: IonSlides;
+
   isLoaded;
   networkError;
 
@@ -21,9 +23,8 @@ export class EventsPage extends AbstractPage implements OnInit {
   showRightButton = true;
   selectedPlace = 0;
 
-  @ViewChild(IonSlides, { static: false }) slides: IonSlides;
   slideOptions = {
-    slidesPerView: "auto",
+    slidesPerView: 'auto',
   };
 
   constructor(private ws: WebserviceWrapperService) {
@@ -41,7 +42,7 @@ export class EventsPage extends AbstractPage implements OnInit {
     this.networkError = false;
 
     this.ws
-      .call("events", {}, { forceRefresh: refresher !== undefined })
+      .call('events', {}, { forceRefresh: refresher !== undefined })
       .subscribe(
         (response: IEventApiResponse) => {
           if (refresher && refresher.target) {
@@ -56,9 +57,9 @@ export class EventsPage extends AbstractPage implements OnInit {
               // check if the events is already outdated since the api returns old events
               this.listOfEvents = response.vars.events;
 
-              this.listOfEvents.sort((a, b) => {
-                return Number(a.Event.startTime) - Number(b.Event.startTime);
-              });
+              this.listOfEvents.sort(
+                (a, b) => Number(a.Event.startTime) - Number(b.Event.startTime)
+              );
             } else {
               this.listOfEvents = [];
             }
@@ -66,15 +67,16 @@ export class EventsPage extends AbstractPage implements OnInit {
             this.listOfPlaces = [];
             if (response.vars && response.vars.places) {
               const tmpArray = [];
+              // eslint-disable-next-line guard-for-in
               for (const place in response.vars.places) {
                 tmpArray.push(response.vars.places[place]);
               }
 
               // only add places to the list, that actually have corresponding events
-              for (let i = 0; i < tmpArray.length; i++) {
-                for (let j = 0; j < this.listOfEvents.length; j++) {
-                  if (tmpArray[i] === this.listOfEvents[j].Place.name) {
-                    this.listOfPlaces.push(tmpArray[i]);
+              for (const tmp of tmpArray) {
+                for (const event of this.listOfEvents) {
+                  if (tmp === event.Place.name) {
+                    this.listOfPlaces.push(tmp);
                     break;
                   }
                 }
@@ -125,34 +127,9 @@ export class EventsPage extends AbstractPage implements OnInit {
     this.selectedPlace = i;
   }
 
-  swipeListOfPlaces(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      const maxIndex = this.listOfPlaces.length - 1;
-      const currentIndex = this.selectedPlace;
-      let newIndex;
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        if (currentIndex > 0) {
-          newIndex = currentIndex - 1;
-          this.setPlace(newIndex);
-          this.slides.slidePrev();
-          this.slideChanged();
-        }
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        if (currentIndex < maxIndex) {
-          newIndex = currentIndex + 1;
-          this.setPlace(newIndex);
-          this.slides.slideNext();
-          this.slideChanged();
-        }
-      }
-    }
-  }
-
   openEventWebsite() {
     this.webIntent.permissionPromptWebsite(
-      ConfigService.config.modules["events"].additionalUrl
+      ConfigService.config.modules.events.additionalUrl
     );
   }
 }

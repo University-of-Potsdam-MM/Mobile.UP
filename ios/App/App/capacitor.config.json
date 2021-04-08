@@ -1,0 +1,13 @@
+{
+	"appId": "de.floriangoessler.upapp",
+	"appName": "Mobile.UP",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	},
+	"cordova": {}
+}

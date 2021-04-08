@@ -1,82 +1,96 @@
 <div *ngFor="let meal of meals; let i = index">
-  <ion-item
-    *ngIf="checkConditions(i)"
-    button
-    (click)="expandMeal(i)"
-    [ngClass]="{ noborder: mealIsExpanded[i] }"
-  >
-    <ion-thumbnail slot="start" *ngIf="meal.type && meal.type.length == 1">
-      <span *ngFor="let type of meal.type">
-        <span *ngFor="let icon of iconMapping">
-          <img *ngIf="type == icon.key" [src]="icon.value" />
-        </span>
-      </span>
-    </ion-thumbnail>
-    <ion-thumbnail slot="start" *ngIf="meal.type && meal.type.length > 1">
-      <ion-slides (ionSlidesDidLoad)="slideLoaded($event)">
-        <ion-slide *ngFor="let type of meal.type">
+  <ion-card *ngIf="checkConditions(i)" mode="ios">
+    <ion-item
+      mode="md"
+      (click)="expandMeal(i)"
+      lines="none"
+      [ngClass]="
+        (meal.prices && (meal.prices.student || meal.prices.guest)) ||
+        (meal.allergens && meal.allergens.length > 0)
+          ? ''
+          : 'marginBottom'
+      "
+    >
+      <ion-avatar slot="end" *ngIf="meal.type && meal.type.length == 1">
+        <span *ngFor="let type of meal.type">
           <span *ngFor="let icon of iconMapping">
             <img *ngIf="type == icon.key" [src]="icon.value" />
           </span>
-        </ion-slide>
-      </ion-slides>
-    </ion-thumbnail>
-    <ion-label class="ion-text-wrap">
-      <p class="mealtitle" *ngIf="meal.title">
-        {{ meal.title }}
-        <span *ngIf="meal.type">
+        </span>
+      </ion-avatar>
+      <ion-avatar slot="end" *ngIf="meal.type && meal.type.length > 1">
+        <ion-slides (ionSlidesDidLoad)="slideLoaded($event)">
+          <ion-slide *ngFor="let type of meal.type">
+            <span *ngFor="let icon of iconMapping">
+              <img *ngIf="type == icon.key" [src]="icon.value" />
+            </span>
+          </ion-slide>
+        </ion-slides>
+      </ion-avatar>
+      <ion-label class="ion-text-wrap">
+        <p *ngIf="meal.type" class="mealtype">
           <span *ngFor="let type of meal.type; let last = last"
             >{{ type }}<span *ngIf="!last">, </span></span
           >
-        </span>
-      </p>
-      <h2 *ngIf="meal.description">{{ meal.description }}</h2>
-    </ion-label>
-    <ion-icon
-      *ngIf="meal.prices || (allergen && allergen.length > 0)"
-      [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'"
-      slot="end"
-    ></ion-icon>
-  </ion-item>
-  <ion-item
-    *ngIf="
-      mealIsExpanded[i] && (meal.prices || (allergen && allergen.length > 0))
-    "
-    class="mealDescription"
-  >
-    <ion-thumbnail *ngIf="meal.type" name="" slot="start"></ion-thumbnail>
-    <ion-label class="ion-text-wrap">
-      <span *ngIf="meal.prices && meal.prices.student"
-        >{{ "page.mensa.students" | translate }}:
-        {{ formatPrices(meal.prices.student) }}</span
-      >
-      <br *ngIf="meal.prices && meal.prices.student" />
-      <span *ngIf="meal.prices && meal.prices.guest"
-        >{{ "page.mensa.guests" | translate }}:
-        {{ formatPrices(meal.prices.guest) }}</span
-      >
-      <br *ngIf="meal.prices && meal.prices.guest" />
-      <div *ngIf="meal.allergens">
-        <ion-button
-          *ngFor="let allergen of meal.allergens; let j = index"
-          size="small"
-          fill="outline"
-          (click)="expandAllergen(i, j)"
+        </p>
+        <p class="mealtitle" *ngIf="meal.title">
+          {{ meal.title }}
+        </p>
+
+        <h2 *ngIf="meal.description">{{ meal.description }}</h2>
+      </ion-label>
+      <ion-icon
+        *ngIf="
+          (meal.prices && (meal.prices.student || meal.prices.guest)) ||
+          (meal.allergens && meal.allergens.length > 0)
+        "
+        [name]="mealIsExpanded[i] ? 'caret-down' : 'caret-forward'"
+        slot="end"
+      ></ion-icon>
+    </ion-item>
+    <ion-card-content
+      *ngIf="
+        mealIsExpanded[i] &&
+        ((meal.prices && (meal.prices.student || meal.prices.guest)) ||
+          (meal.allergens && meal.allergens.length > 0))
+      "
+      class="mealDescription"
+    >
+      <ion-label class="ion-text-wrap">
+        <span *ngIf="meal.prices && meal.prices.student"
+          >{{ "page.mensa.students" | translate }}:
+          {{ formatPrices(meal.prices.student) }}</span
         >
-          <span *ngIf="allergen.shortName">({{ allergen.shortName }})</span>
-        </ion-button>
-        <div *ngFor="let allergen of meal.allergens; let j = index">
-          <div
-            *ngIf="
-              allergenIsExpanded[i][j] &&
-              allergen.shortName &&
-              allergen.longName
-            "
+        <br *ngIf="meal.prices && meal.prices.student" />
+        <span *ngIf="meal.prices && meal.prices.guest"
+          >{{ "page.mensa.guests" | translate }}:
+          {{ formatPrices(meal.prices.guest) }}</span
+        >
+        <br *ngIf="meal.prices && meal.prices.guest" />
+        <div *ngIf="meal.allergens" class="mealallergens">
+          <ion-button
+            mode="md"
+            *ngFor="let allergen of meal.allergens; let j = index"
+            size="small"
+            fill="outline"
+            (click)="expandAllergen(i, j)"
           >
-            ({{ allergen.shortName }}): {{ allergen.longName }}
+            <span *ngIf="allergen.shortName">({{ allergen.shortName }})</span>
+          </ion-button>
+          <div *ngFor="let allergen of meal.allergens; let j = index">
+            <div
+              class="mealallergens"
+              *ngIf="
+                allergenIsExpanded[i][j] &&
+                allergen.shortName &&
+                allergen.longName
+              "
+            >
+              ({{ allergen.shortName }}): {{ allergen.longName }}
+            </div>
           </div>
         </div>
-      </div>
-    </ion-label>
-  </ion-item>
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
 </div>

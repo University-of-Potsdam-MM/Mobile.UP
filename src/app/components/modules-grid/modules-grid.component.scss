@@ -1,11 +1,16 @@
 gridster {
-  background-color: #fff;
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
+  background-color: var(--ion-item-background);
 }
 
 gridster-item {
   background-color: var(--ion-color-secondary);
+  height: 120px;
+  margin: 0 !important;
+  max-height: 120px;
+  max-width: 120px;
+  min-height: 120px;
+  min-width: 120px;
+  width: 120px;
 }
 
 .favoritesItem {

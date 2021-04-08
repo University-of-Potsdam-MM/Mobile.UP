@@ -1,27 +1,21 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { Routes, RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
-import { PersonSearchPage } from "./person-search.page";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from "@angular/common/http";
-import { ComponentsModule } from "src/app/components/components.module";
-import { LoginModule } from "../login/login.import";
-import { HttpLoaderFactory } from "src/app/app.module";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: PersonSearchPage,
-  },
-];
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { PersonSearchPageRoutingModule } from './person-search-routing.module';
+import { PersonSearchPage } from './person-search.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { LoginModule } from '../login/login.import';
+import { HttpLoaderFactory } from 'src/app/app.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PersonSearchPageRoutingModule,
     ComponentsModule,
     LoginModule,
     TranslateModule.forChild({
@@ -31,7 +25,6 @@ const routes: Routes = [
         deps: [HttpClient],
       },
     }),
-    RouterModule.forChild(routes),
   ],
   declarations: [PersonSearchPage],
 })

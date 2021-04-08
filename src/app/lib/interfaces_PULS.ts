@@ -1,4 +1,4 @@
-import { ICredentials } from "../services/login-provider/interfaces";
+import { ICredentials } from '../services/login-service/interfaces';
 
 export interface IModul {
   moduleTitle: string;
@@ -31,7 +31,7 @@ export interface ILecturers {
   lecturer: ILecturer[] | ILecturer;
 }
 
-export interface IEvent {
+export interface IEvent_PULS {
   eventId: string;
   groupId: string;
   group: string;
@@ -52,7 +52,7 @@ export interface IEvent {
 }
 
 export interface IEvents {
-  event: IEvent[];
+  event: IEvent_PULS[];
 }
 
 export interface ICourse {
@@ -94,7 +94,7 @@ export interface IPulsAPIResponse_getStudentCourses {
 
 export interface IPulsApiRequest_getStudentCourses {
   condition: IPulsApiRequest_getStudentCourses_condition;
-  "user-auth": ICredentials;
+  'user-auth': ICredentials;
 }
 
 export interface IPulsApiRequest_getStudentCourses_condition {
@@ -160,7 +160,7 @@ export interface IPulsApiRequest_getCourseData_condition {
 export interface IPulsAPIResponse_getCourseData {}
 
 export interface IPulsApiRequest_getPersonalStudyAreas {
-  "user-auth": ICredentials;
+  'user-auth': ICredentials;
 }
 
 export interface IPulsAPIResponse_getPersonalStudyAreas {
@@ -181,7 +181,7 @@ export interface IGradeDegree {
 
 export interface IPulsApiRequest_getAcademicAchievements {
   condition: IPulsApiRequest_getAcademicAchievements_condition;
-  "user-auth": ICredentials;
+  'user-auth': ICredentials;
 }
 
 export interface IPulsApiRequest_getAcademicAchievements_condition {

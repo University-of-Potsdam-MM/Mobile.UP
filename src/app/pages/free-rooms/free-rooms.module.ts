@@ -1,26 +1,20 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { Routes, RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
-import { FreeRoomsPage } from "./free-rooms.page";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from "@angular/common/http";
-import { ComponentsModule } from "src/app/components/components.module";
-import { HttpLoaderFactory } from "src/app/app.module";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: FreeRoomsPage,
-  },
-];
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { FreeRoomsPageRoutingModule } from './free-rooms-routing.module';
+import { FreeRoomsPage } from './free-rooms.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { HttpLoaderFactory } from 'src/app/app.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    FreeRoomsPageRoutingModule,
     ComponentsModule,
     TranslateModule.forChild({
       loader: {
@@ -29,7 +23,6 @@ const routes: Routes = [
         deps: [HttpClient],
       },
     }),
-    RouterModule.forChild(routes),
   ],
   declarations: [FreeRoomsPage],
 })

@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshRoom()"
       slot="end"
@@ -9,19 +10,18 @@
     >
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.roomplan.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="switchLocation($event)"></app-campus-tab>
+  </ion-toolbar>
+  <ion-toolbar>
+    <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  class="ion-no-padding"
-  (swipe)="campusTabComponent.handleSwipeEvent($event)"
->
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"
@@ -33,25 +33,27 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-  <app-date-picker (dayOffsetEmitter)="changeDay($event)"></app-date-picker>
-
   <ng-template #noRoomsFoundTemplate>
     <app-hint-box
       *ngIf="!error"
       hintTextI18nKey="page.roomplan.no_rooms_hintText"
       hintTypeI18nKey="hints.type.hint"
     ></app-hint-box>
-    <app-network-error-hint *ngIf="error"></app-network-error-hint>
+    <app-hint-box
+      *ngIf="error"
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="alert.httpErrorStatus.generic"
+    ></app-hint-box>
   </ng-template>
 
   <ng-template #roomsFoundTemplate>
     <ion-list>
       <div *ngFor="let house of housesFound">
-        <ion-item button (click)="expandHouse(house.lbl)">
+        <ion-item mode="md" button (click)="expandHouse(house.lbl)">
           <ion-label class="ion-no-margin">
             <h2>
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
-              <ion-badge color="primary">
+              <ion-badge mode="ios" color="primary">
                 {{house.rooms.length}}
                 <span *ngIf="house.rooms.length == 1"
                   >{{ "words.booking" | translate }}</span
@@ -69,10 +71,13 @@
         </ion-item>
         <div *ngIf="house.expanded">
           <div *ngFor="let room of house.rooms">
-            <ion-item button (click)="expandRoom(house.lbl,room.lbl)">
+            <ion-item mode="md" button (click)="expandRoom(house.lbl,room.lbl)">
               <ion-label class="ion-no-margin">
                 <h2 *ngIf="room.lbl">
-                  {{room.lbl}}<ion-badge *ngIf="room.events" color="primary"
+                  {{room.lbl}}<ion-badge
+                    mode="ios"
+                    *ngIf="room.events"
+                    color="primary"
                     >{{room.events.length}}</ion-badge
                   >
                 </h2>
@@ -83,8 +88,8 @@
               ></ion-icon>
             </ion-item>
             <div *ngIf="room.expanded && room.events">
-              <ion-item margin-left *ngFor="let event of room.events">
-                <ion-label class="ion-text-wrap">
+              <ion-item mode="md" margin-left *ngFor="let event of room.events">
+                <ion-label class="ion-text-wrap ion-padding-end">
                   <u>
                     <b *ngIf="translate.currentLang === 'de'"
                       >{{event.startTime | date:'HH:mm'}} - {{event.endTime |
@@ -100,7 +105,7 @@
                   <i>{{event.lbl}}</i>
                   <br />
                   <p *ngFor="let person of event.persons">
-                    <ion-badge color="primary">{{person}}</ion-badge>
+                    <ion-badge mode="ios" color="primary">{{person}}</ion-badge>
                   </p>
                 </ion-label>
               </ion-item>

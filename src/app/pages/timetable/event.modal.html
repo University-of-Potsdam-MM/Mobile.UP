@@ -1,15 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title>{{"page.timetable.courseInformation" | translate }}</ion-title>
   </ion-toolbar>
@@ -26,12 +24,12 @@
       <!-- lecturer(s)-->
       <ng-container
         *ngIf="isArray(event.eventDetails.lecturers.lecturer);
-                            then multipleLecturersTemplate else singleLecturerTemplate"
+                              then multipleLecturersTemplate else singleLecturerTemplate"
       ></ng-container>
 
       <!-- template for event with single lecturer-->
       <ng-template #singleLecturerTemplate>
-        <ion-item>
+        <ion-item mode="md">
           <ion-label class="ion-text-wrap">
             <h2>{{ "page.timetable.lecturer" | translate }}</h2>
             <p>
@@ -44,7 +42,7 @@
 
       <!-- template for event with multiple lecturers -->
       <ng-template #multipleLecturersTemplate>
-        <ion-item>
+        <ion-item mode="md">
           <ion-label class="ion-text-wrap">
             <h2>{{ "page.timetable.lecturer" | translate }}</h2>
             <p>
@@ -60,7 +58,7 @@
       </ng-template>
 
       <!-- time -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.time" | translate }}</h2>
 
@@ -74,7 +72,7 @@
       </ion-item>
 
       <!-- period -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.period" | translate }}</h2>
 
@@ -90,7 +88,7 @@
       </ion-item>
 
       <!-- rhythm -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.rhythm" | translate }}</h2>
           <p>{{ event.eventDetails.rhythm }}</p>
@@ -98,7 +96,7 @@
       </ion-item>
 
       <!-- location -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.location" | translate }}</h2>
 
@@ -107,7 +105,7 @@
       </ion-item>
 
       <!-- building -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.building" | translate }}</h2>
 
@@ -126,7 +124,7 @@
       </ion-item>
 
       <!-- roomtype and room -->
-      <ion-item>
+      <ion-item mode="md">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.room" | translate }}</h2>
 
@@ -141,7 +139,7 @@
       </ion-item>
 
       <!-- comment -->
-      <ion-item *ngIf="event.eventDetails.comment">
+      <ion-item mode="md" *ngIf="event.eventDetails.comment">
         <ion-label class="ion-text-wrap">
           <h2>{{ "page.timetable.comment" | translate }}</h2>
 

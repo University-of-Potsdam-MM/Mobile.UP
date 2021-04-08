@@ -1,27 +1,26 @@
-import { Component, OnInit } from "@angular/core";
-import { NavController } from "@ionic/angular";
-import { Validators, FormBuilder, FormGroup } from "@angular/forms";
-import { IFeedback } from "src/app/lib/interfaces";
+import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { IFeedback } from 'src/app/lib/interfaces';
 import {
   DeviceService,
   IDeviceInfo,
-} from "src/app/services/device/device.service";
-import { AlertService } from "src/app/services/alert/alert.service";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { ConnectionService } from "src/app/services/connection/connection.service";
-import { TranslateService } from "@ngx-translate/core";
+} from 'src/app/services/device/device.service';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: "app-feedback",
-  templateUrl: "./feedback.page.html",
-  styleUrls: ["./feedback.page.scss"],
+  selector: 'app-feedback',
+  templateUrl: './feedback.page.html',
+  styleUrls: ['./feedback.page.scss'],
 })
 export class FeedbackPage extends AbstractPage implements OnInit {
   form: FormGroup;
   deviceInfo: IDeviceInfo;
   feedback: IFeedback = {};
-  isCordova = false;
 
   /**
    * @constructor
@@ -40,17 +39,16 @@ export class FeedbackPage extends AbstractPage implements OnInit {
   ) {
     super({ optionalNetwork: true, optionalSession: true });
     this.form = this.formBuilder.group({
-      rating: ["", Validators.required], // , Validators.required
-      description: [""],
-      recommend: ["", Validators.required],
+      rating: ['', Validators.required], // , Validators.required
+      description: [''],
+      recommend: ['', Validators.required],
       sendDeviceData: [false, Validators.required],
       sendUsername: [false, Validators.required],
     });
   }
 
-  ngOnInit() {
-    this.deviceInfo = this.deviceService.getDeviceInfo();
-    this.isCordova = this.platform.is("cordova");
+  async ngOnInit() {
+    this.deviceInfo = await this.deviceService.getDeviceInfo();
   }
 
   /**
@@ -61,7 +59,6 @@ export class FeedbackPage extends AbstractPage implements OnInit {
     this.feedback = {};
     if (this.deviceInfo && this.form.value.sendDeviceData) {
       this.feedback = {
-        cordovaVersion: this.deviceInfo.cordovaVersion,
         appVersion: this.deviceInfo.appVersion,
         osPlatform: this.deviceInfo.osPlatform,
         osVersion: this.deviceInfo.osVersion,
@@ -86,42 +83,42 @@ export class FeedbackPage extends AbstractPage implements OnInit {
    * @name postFeedback
    */
   postFeedback() {
-    this.ws.call("feedback", this.feedback).subscribe(
+    this.ws.call('feedback', this.feedback).subscribe(
       () => {
-        this.alertService.showToast("alert.feedback-sent").then(() => {
-          this.navCtrl.navigateBack("/home");
+        this.alertService.showToast('alert.feedback-sent').then(() => {
+          this.navCtrl.navigateBack('/home');
         });
       },
-      () => {
-        if (!this.connectionService.checkOnline()) {
-          this.alertService.showToast("alert.noInternetConnection");
+      async () => {
+        if (!(await this.connectionService.checkOnline())) {
+          this.alertService.showToast('alert.noInternetConnection');
         } else {
-          this.alertService.showToast("alert.httpErrorStatus.generic");
+          this.alertService.showToast('alert.httpErrorStatus.generic');
         }
       }
     );
   }
 
   showToggleHint(toggleName) {
-    let hintString = "page.feedback.hint";
-    if (toggleName == "SendUsername" && this.form.value.sendUsername) {
+    let hintString = 'page.feedback.hint';
+    if (toggleName === 'SendUsername' && this.form.value.sendUsername) {
       hintString += toggleName;
     } else if (
-      toggleName == "SendDeviceData" &&
+      toggleName === 'SendDeviceData' &&
       this.form.value.sendDeviceData
     ) {
       hintString += toggleName;
     }
 
-    if (hintString !== "page.feedback.hint") {
+    if (hintString !== 'page.feedback.hint') {
       this.alertService.showAlert(
         {
-          headerI18nKey: "hints.type.hint",
+          headerI18nKey: 'hints.type.hint',
           messageI18nKey: hintString,
         },
         [
           {
-            text: this.translate.instant("button.ok"),
+            text: this.translate.instant('button.ok'),
           },
         ]
       );

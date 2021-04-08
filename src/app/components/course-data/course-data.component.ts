@@ -1,13 +1,13 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { IPulsAPIResponse_getCourseData } from "src/app/lib/interfaces_PULS";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { Logger, LoggingService } from "ionic-logging-service";
-import { convertToArray, isInArray } from "src/app/lib/util";
+import { Component, OnInit, Input } from '@angular/core';
+import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
+import { convertToArray, isInArray } from 'src/app/lib/util';
 
 @Component({
-  selector: "app-course-data",
-  templateUrl: "./course-data.component.html",
-  styleUrls: ["./course-data.component.scss"],
+  selector: 'app-course-data',
+  templateUrl: './course-data.component.html',
+  styleUrls: ['./course-data.component.scss'],
 })
 export class CourseDataComponent implements OnInit {
   @Input() course;
@@ -17,25 +17,24 @@ export class CourseDataComponent implements OnInit {
   lecturerList = [];
   isLoaded;
   networkError;
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
-    private ws: WebserviceWrapperService,
-    private loggingService: LoggingService
+    private ws: WebserviceWrapperService // private loggingService: LoggingService
   ) {}
 
   ngOnInit() {
     this.getCourseData(this.course.courseId);
-    this.logger = this.loggingService.getLogger("[/course-data.component]");
+    // this.logger = this.loggingService.getLogger('[/course-data.component]');
   }
 
-  getCourseData(courseId) {
+  getCourseData(localId) {
     this.isLoaded = false;
     this.networkError = false;
     this.ws
       .call(
-        "pulsGetCourseData",
-        { courseId: courseId },
+        'pulsGetCourseData',
+        { courseId: localId },
         { forceRefreshGroup: this.refresh }
       )
       .subscribe(
@@ -71,7 +70,7 @@ export class CourseDataComponent implements OnInit {
         },
         (error) => {
           this.networkError = true;
-          this.logger.error("getCourseData()", error);
+          // this.logger.error('getCourseData()', error);
         }
       );
   }
@@ -79,6 +78,7 @@ export class CourseDataComponent implements OnInit {
   /**
    * has to be declared for html pages to use the imported function
    * couldn't find a better solution
+   *
    * @param array
    */
   convertToArray(array) {
@@ -87,6 +87,7 @@ export class CourseDataComponent implements OnInit {
 
   /**
    * TODO: can be removed when bug in api is fixed
+   *
    * @name checkDoubledLecturers
    * @param event
    * @param lecturer
@@ -138,9 +139,9 @@ export class CourseDataComponent implements OnInit {
    */
   replaceUnderscore(roomSc: string) {
     if (roomSc !== undefined) {
-      return roomSc.replace(/_/g, ".");
+      return roomSc.replace(/_/g, '.');
     } else {
-      return "";
+      return '';
     }
   }
 }

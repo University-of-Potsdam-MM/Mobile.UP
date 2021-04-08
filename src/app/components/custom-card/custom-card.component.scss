@@ -1,0 +1,32 @@
+ion-card-title {
+  font-size: large;
+}
+
+ion-item {
+  --background: var(--ion-card-background);
+}
+
+ion-note {
+  font-size: smaller;
+}
+
+.cardHeaderRemoveTopPadding {
+  padding-top: 0;
+}
+
+.headerItem {
+  padding-top: 20px;
+}
+
+.headerTitle {
+  padding-left: 10px;
+}
+
+.footerButton {
+  background-color: var(--ion-card-background);
+}
+
+.footerItem {
+  border-top: 1px solid var(--ion-color-light-shade);
+  padding: 5px;
+}

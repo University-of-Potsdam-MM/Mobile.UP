@@ -1,21 +1,24 @@
-import { Component, ViewChild } from "@angular/core";
-import * as moment from "moment";
-import { TranslateService } from "@ngx-translate/core";
-import { ICampus, IMeals, IMensaResponse } from "src/app/lib/interfaces";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { IMensaRequestParams } from "../../services/webservice-wrapper/webservice-definition-interfaces";
-import { CampusTabComponent } from "../../components/campus-tab/campus-tab.component";
-import * as jquery from "jquery";
-import * as opening from "opening_hours";
-import { convertToArray, isInArray } from "src/app/lib/util";
+import { Component, ViewChild } from '@angular/core';
+import * as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
+import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import * as jquery from 'jquery';
+import * as opening from 'opening_hours';
+import { convertToArray, isInArray } from 'src/app/lib/util';
 
 @Component({
-  selector: "app-mensa",
-  templateUrl: "./mensa.page.html",
-  styleUrls: ["./mensa.page.scss"],
+  selector: 'app-mensa',
+  templateUrl: './mensa.page.html',
+  styleUrls: ['./mensa.page.scss'],
 })
 export class MensaPage extends AbstractPage {
+  @ViewChild(CampusTabComponent, { static: false })
+  campusTabComponent: CampusTabComponent;
+
   filterKeywords = [];
   currentDate = moment();
   selectedDate = moment();
@@ -40,9 +43,6 @@ export class MensaPage extends AbstractPage {
   campus: ICampus;
   noMensaForLocation = false;
 
-  @ViewChild(CampusTabComponent, { static: false })
-  campusTabComponent: CampusTabComponent;
-
   constructor(
     private translate: TranslateService,
     private ws: WebserviceWrapperService
@@ -52,6 +52,7 @@ export class MensaPage extends AbstractPage {
 
   /**
    * switches the currently selected campus
+   *
    * @param campus {ICampus}
    */
   changeCampus(campus: ICampus) {
@@ -85,14 +86,21 @@ export class MensaPage extends AbstractPage {
       this.noMensaForLocation = false;
       this.ws
         .call(
-          "mensa",
-          <IMensaRequestParams>{
+          'mensa',
+          {
             campus_canteen_name: this.campus.canteen_name,
-          },
+          } as IMensaRequestParams,
           { forceRefreshGroup: refresher !== undefined }
         )
         .subscribe(
           (res: IMensaResponse) => {
+            res.meal = res.meal.sort((a, b) => {
+              if (a.title === 'Info') {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
             if (res.meal) {
               this.allMeals = res.meal;
               this.displayedMeals = res.meal;
@@ -101,12 +109,12 @@ export class MensaPage extends AbstractPage {
               this.iconMapping = res.iconHashMap.entry;
             }
 
-            if (this.campus.canteen_name === "Griebnitzsee") {
-              const ulfParam = "UlfsCafe";
+            if (this.campus.canteen_name === 'Griebnitzsee') {
+              const ulfParam = 'UlfsCafe';
               this.ws
-                .call("mensa", <IMensaRequestParams>{
+                .call('mensa', {
                   campus_canteen_name: ulfParam,
-                })
+                } as IMensaRequestParams)
                 .subscribe((resUlf: IMensaResponse) => {
                   if (resUlf.meal) {
                     this.ulfMeals = resUlf.meal;
@@ -148,14 +156,16 @@ export class MensaPage extends AbstractPage {
 
   getFilterKeywords() {
     this.filterKeywords = [];
-    for (let i = 0; i < this.displayedMeals.length; i++) {
-      for (let j = 0; j < this.displayedMeals[i].type.length; j++) {
-        if (!isInArray(this.filterKeywords, this.displayedMeals[i].type[j])) {
-          this.filterKeywords.push(this.displayedMeals[i].type[j]);
+    for (const [index, meal] of this.displayedMeals.entries()) {
+      if (this.mealForDate[index]) {
+        for (const mealType of meal.type) {
+          if (!isInArray(this.filterKeywords, mealType)) {
+            this.filterKeywords.push(mealType);
+          }
         }
       }
-      this.filterKeywords.sort();
     }
+    this.filterKeywords.sort();
   }
 
   classifyMeals() {
@@ -168,7 +178,7 @@ export class MensaPage extends AbstractPage {
       }
 
       if (
-        this.currentDate.format("MM DD YYYY") === mealDate.format("MM DD YYYY")
+        this.currentDate.format('MM DD YYYY') === mealDate.format('MM DD YYYY')
       ) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
@@ -186,8 +196,8 @@ export class MensaPage extends AbstractPage {
         }
 
         if (
-          this.currentDate.format("MM DD YYYY") ===
-          mealDate.format("MM DD YYYY")
+          this.currentDate.format('MM DD YYYY') ===
+          mealDate.format('MM DD YYYY')
         ) {
           this.ulfMealForDate[i] = true;
           this.noUlfMealsForDate = false;
@@ -211,8 +221,8 @@ export class MensaPage extends AbstractPage {
       this.displayedMeals = jquery.grep(this.displayedMeals, (meal) => {
         if (meal.type) {
           let fulfillsConditions = false;
-          for (let i = 0; i < filter.length; i++) {
-            if (isInArray(meal.type, filter[i])) {
+          for (const flt of filter) {
+            if (isInArray(meal.type, flt)) {
               fulfillsConditions = true;
               break;
             }
@@ -227,8 +237,8 @@ export class MensaPage extends AbstractPage {
         this.displayedUlfMeals = jquery.grep(this.displayedUlfMeals, (meal) => {
           if (meal.type) {
             let fulfillsConditions = false;
-            for (let i = 0; i < filter.length; i++) {
-              if (isInArray(meal.type, filter[i])) {
+            for (const flt of filter) {
+              if (isInArray(meal.type, flt)) {
                 fulfillsConditions = true;
                 break;
               }
@@ -249,7 +259,8 @@ export class MensaPage extends AbstractPage {
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
 
-    let i, mealDate;
+    let i;
+    let mealDate;
     for (i = 0; i < this.displayedMeals.length; i++) {
       if (this.displayedMeals[i].date) {
         mealDate = moment(this.displayedMeals[i].date);
@@ -257,7 +268,7 @@ export class MensaPage extends AbstractPage {
         mealDate = moment();
       }
 
-      if ($event.format("MM DD YYYY") === mealDate.format("MM DD YYYY")) {
+      if ($event.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
         this.mealForDate[i] = true;
         this.noMealsForDate = false;
       } else {
@@ -273,7 +284,7 @@ export class MensaPage extends AbstractPage {
           mealDate = moment();
         }
 
-        if ($event.format("MM DD YYYY") === mealDate.format("MM DD YYYY")) {
+        if ($event.format('MM DD YYYY') === mealDate.format('MM DD YYYY')) {
           this.ulfMealForDate[i] = true;
           this.noUlfMealsForDate = false;
         } else {
@@ -281,18 +292,20 @@ export class MensaPage extends AbstractPage {
         }
       }
     }
+
+    this.getFilterKeywords();
   }
 
   getOpening(refresher?) {
     this.mensaIsOpen = true;
     this.foodhopperIsOpen = false;
     const searchTerm =
-      "mensa " + this.campus.name.replace("neuespalais", "am neuen palais");
+      'mensa ' + this.campus.name.replace('neuespalais', 'am neuen palais');
 
     this.ws
-      .call("openingHours", {}, { forceRefresh: refresher !== undefined })
+      .call('openingHours', {}, { forceRefresh: refresher !== undefined })
       .subscribe((response: any) => {
-        this.ws.call("nominatim").subscribe((nominatim) => {
+        this.ws.call('nominatim').subscribe((nominatim) => {
           if (response) {
             response = convertToArray(response);
             let mensaOpening = response.filter(function (item) {
@@ -315,8 +328,8 @@ export class MensaPage extends AbstractPage {
               this.mensaIsOpen = mensaOpening.parsedOpening.getState();
             }
 
-            if (this.campus.canteen_name === "Griebnitzsee") {
-              const searchTermFoodhopper = "foodhopper stahnsdorfer straße";
+            if (this.campus.canteen_name === 'Griebnitzsee') {
+              const searchTermFoodhopper = 'foodhopper stahnsdorfer straße';
 
               let foodhopperOpening = response.filter(function (item) {
                 if (item && item.name) {

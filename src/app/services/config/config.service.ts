@@ -1,22 +1,21 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { IConfig, EmergencyCall } from "src/app/lib/interfaces";
-import { Logger, LoggingService } from "ionic-logging-service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { IConfig, EmergencyCall } from 'src/app/lib/interfaces';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ConfigService {
   static config: IConfig;
   static emergency: EmergencyCall[];
-  logger: Logger;
   static isApiManagerUpdated: boolean;
+  // logger: Logger;
 
   constructor(
-    private http: HttpClient,
-    private loggingService: LoggingService
+    private http: HttpClient // private loggingService: LoggingService
   ) {
-    this.logger = this.loggingService.getLogger("[/config-service]");
+    // this.logger = this.loggingService.getLogger('[/config-service]');
   }
 
   /**
@@ -35,7 +34,7 @@ export class ConfigService {
         })
         .catch((response: any) => {
           reject(`Could not load file '${uri}'`);
-          this.logger.error("load", response);
+          // this.logger.error('load', response);
         });
     });
   }
@@ -51,7 +50,7 @@ export class ConfigService {
         })
         .catch((response: any) => {
           reject(`Could not load file '${uri}'`);
-          this.logger.error("loadEmergency", response);
+          // this.logger.error('loadEmergency', response);
         });
     });
   }
@@ -59,27 +58,27 @@ export class ConfigService {
   loadApiManagerStatus() {
     return new Promise<void>((resolve) => {
       this.http
-        .get("https://apiup.uni-potsdam.de/endpoints/services/Version", {
-          responseType: "text",
+        .get('https://apiup.uni-potsdam.de/endpoints/services/Version', {
+          responseType: 'text',
         })
         .subscribe(
           (apiManagerVersion) => {
-            if (apiManagerVersion.includes("WSO2 API Manager-2.1.0")) {
+            if (apiManagerVersion.includes('WSO2 API Manager-2.1.0')) {
               ConfigService.isApiManagerUpdated = false;
-              this.logger.debug("API Manager is not updated yet.");
+              // this.logger.debug('API Manager is not updated yet.');
               resolve();
             } else {
               ConfigService.isApiManagerUpdated = true;
-              this.logger.debug("API Manager is updated.");
+              // this.logger.debug('API Manager is updated.');
               resolve();
             }
           },
           (error) => {
-            this.logger.error("loadApiManagerStatus", error);
+            // this.logger.error('loadApiManagerStatus', error);
             ConfigService.isApiManagerUpdated = false;
-            this.logger.debug(
-              "API Manager status could not be loaded // is not updated yet."
-            );
+            // this.logger.debug(
+            //   'API Manager status could not be loaded // is not updated yet.'
+            // );
             resolve();
           }
         );

@@ -1,10 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <ion-button (click)="openEventWebsite()" slot="end" fill="clear">
+    <ion-back-button mode="md" slot="start"></ion-back-button>
+    <ion-button mode="md" (click)="openEventWebsite()" slot="end" fill="clear">
       <ion-icon style="font-size: x-large" name="globe"></ion-icon>
     </ion-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadEvents(true)"
       slot="end"
@@ -12,12 +13,14 @@
     >
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
-    <ion-title>{{ "page.events.title" | translate }}</ion-title>
+    <ion-title>{{ "page.event.title" | translate }}</ion-title>
   </ion-toolbar>
 
-  <ion-toolbar *ngIf="listOfPlaces && listOfPlaces.length > 1 && !networkError">
+  <ion-toolbar
+    mode="md"
+    *ngIf="listOfPlaces && listOfPlaces.length > 1 && !networkError"
+  >
     <ion-row class="filters">
       <ion-col class="col-with-arrow ion-no-padding" size="1">
         <ion-icon
@@ -52,7 +55,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-no-padding" (swipe)="swipeListOfPlaces($event)">
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"
@@ -68,7 +71,11 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+  <app-hint-box
+    *ngIf="networkError"
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 
   <div *ngFor="let event of listOfEvents">
     <app-event-view

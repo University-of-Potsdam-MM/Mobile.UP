@@ -1,26 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { IPulsAPIResponse_getLectureScheduleAll } from "src/app/lib/interfaces_PULS";
-import { LectureSearchModalPage } from "./lecture-search.modal";
-import { ModalController } from "@ionic/angular";
-import { Keyboard } from "@ionic-native/keyboard/ngx";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { contains, convertToArray, isInArray } from "src/app/lib/util";
+import { Component, OnInit } from '@angular/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
+import { LectureSearchModalPage } from './lecture-search.modal';
+import { ModalController } from '@ionic/angular';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { contains, convertToArray, isInArray } from 'src/app/lib/util';
+import { Keyboard } from '@capacitor/keyboard';
 
 @Component({
-  selector: "app-lectures",
-  templateUrl: "./lectures.page.html",
-  styleUrls: ["./lectures.page.scss"],
+  selector: 'app-lectures',
+  templateUrl: './lectures.page.html',
+  styleUrls: ['./lectures.page.scss'],
 })
 export class LecturesPage extends AbstractPage implements OnInit {
-  constructor(
-    private ws: WebserviceWrapperService,
-    private modalCtrl: ModalController,
-    private keyboard: Keyboard
-  ) {
-    super({ optionalNetwork: true });
-  }
-
   isLoaded;
   isSearching;
   isRefreshing;
@@ -30,20 +22,26 @@ export class LecturesPage extends AbstractPage implements OnInit {
   flattenedLectures;
   searchResults = [];
   resultKeys = [];
-  query = "";
+  query = '';
   networkError;
-  modalOpen;
   valueArray = [];
   queryTooShort = false;
+
+  constructor(
+    private ws: WebserviceWrapperService,
+    private modalCtrl: ModalController
+  ) {
+    super({ optionalNetwork: true });
+  }
 
   ngOnInit() {
     this.loadLectureTree();
   }
 
-  refreshLectureTree(refresher) {
+  refreshLectureTree(refresher?) {
     this.isRefreshing = true;
     this.refreshLectureComponent = true;
-    this.query = "";
+    this.query = '';
     this.searchLecture();
     this.isLoaded = false;
     this.loadLectureTree(true);
@@ -55,17 +53,17 @@ export class LecturesPage extends AbstractPage implements OnInit {
     }, 500);
   }
 
-  loadLectureTree(forceRefresh = false) {
+  loadLectureTree(forceRef = false) {
     this.isLoaded = false;
     this.networkError = false;
 
     this.ws
-      .call("pulsGetLectureScheduleAll", {}, { forceRefresh: forceRefresh })
+      .call('pulsGetLectureScheduleAll', {}, { forceRefresh: forceRef })
       .subscribe(
         (response: IPulsAPIResponse_getLectureScheduleAll) => {
           this.allLectures = response;
           this.lectures = this.allLectures;
-          this.flattenedLectures = this.flattenJSON(response, "", {});
+          this.flattenedLectures = this.flattenJSON(response, '', {});
 
           this.isLoaded = true;
         },
@@ -78,7 +76,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   flattenJSON(cur, prop, result) {
     if (Object(cur) !== cur) {
-      if (contains(prop, "name")) {
+      if (contains(prop, 'name')) {
         result[prop] = cur;
       }
     } else if (Array.isArray(cur)) {
@@ -86,7 +84,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       for (let i = 0; i < l; i++) {
         result = this.flattenJSON(
           cur[i],
-          prop ? prop + "." + i : " + i",
+          prop ? prop + '.' + i : ' + i',
           result
         );
       }
@@ -99,7 +97,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
       for (const p in cur) {
         if (p) {
           isEmpty = false;
-          result = this.flattenJSON(cur[p], prop ? prop + "." + p : p, result);
+          result = this.flattenJSON(cur[p], prop ? prop + '.' + p : p, result);
         }
       }
 
@@ -135,7 +133,7 @@ export class LecturesPage extends AbstractPage implements OnInit {
     const objects = [];
     for (const i in this.flattenedLectures) {
       if (contains(this.flattenedLectures[i], this.query)) {
-        if (contains(i, "courseName")) {
+        if (contains(i, 'courseName')) {
           // check if course has already been added
           // since course often are listed multiple times
           if (!isInArray(objects, this.flattenedLectures[i])) {
@@ -171,21 +169,21 @@ export class LecturesPage extends AbstractPage implements OnInit {
   }
 
   async openItem(index) {
-    const name = this.searchResults[index];
+    const localName = this.searchResults[index];
     let ref = this.resultKeys[index];
     if (ref) {
-      ref = ref.replace("courseName", "courseId");
+      ref = ref.replace('courseName', 'courseId');
     }
-    const isCourse = contains(ref, "courseId");
+    const hasCourseId = contains(ref, 'courseId');
 
-    const pathKeys = convertToArray(ref.split("."));
+    const pathKeys = convertToArray(ref.split('.'));
 
     let toOpen = this.allLectures;
-    const itemTree = [];
+    const localItemTree = [];
     for (let i = 0; i < pathKeys.length - 1; i++) {
       // getting course or directory
       if (i > pathKeys.length - 3) {
-        if (isCourse) {
+        if (hasCourseId) {
           // getting the courseId
           toOpen = toOpen[pathKeys[i]];
         }
@@ -205,10 +203,10 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
         if (
           treeItemName &&
-          treeItemName !== "Vorlesungsverzeichnis" &&
-          !isInArray(itemTree, treeItemName)
+          treeItemName !== 'Vorlesungsverzeichnis' &&
+          !isInArray(localItemTree, treeItemName)
         ) {
-          itemTree.push(this.unescapeHTML(treeItemName));
+          localItemTree.push(this.unescapeHTML(treeItemName));
         }
       }
     }
@@ -218,15 +216,13 @@ export class LecturesPage extends AbstractPage implements OnInit {
       component: LectureSearchModalPage,
       componentProps: {
         item: toOpen,
-        isCourse: isCourse,
-        name: name,
-        itemTree: itemTree,
+        isCourse: hasCourseId,
+        name: localName,
+        itemTree: localItemTree,
       },
     });
     modal.present();
-    this.modalOpen = true;
     await modal.onDidDismiss();
-    this.modalOpen = false;
   }
 
   selectFilter(event) {
@@ -249,20 +245,17 @@ export class LecturesPage extends AbstractPage implements OnInit {
 
   // hides keyboard once the user is scrolling
   onScrollListener() {
-    if (
-      this.platform.is("cordova") &&
-      (this.platform.is("ios") || this.platform.is("android"))
-    ) {
-      this.keyboard.hide();
+    if (this.platform.is('ios') || this.platform.is('android')) {
+      Keyboard.hide();
     }
   }
 
   unescapeHTML(s: string) {
     // replaces &colon; in strings, unescape / decodeURI didnt work (?)
     if (s !== undefined) {
-      return s.replace(/&colon;/g, ":");
+      return s.replace(/&colon;/g, ':');
     } else {
-      return "";
+      return '';
     }
   }
 }

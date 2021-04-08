@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="loadCampusMenu(true)"
       slot="end"
@@ -9,19 +10,44 @@
     >
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.mensa.title" | translate }}</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
+  <ion-toolbar mode="md">
     <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="isLoaded && !noMensaForLocation && !networkError">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <app-date-picker
+            [compactMode]="true"
+            [inputDate]="selectedDate"
+            (momentObjectEmitter)="pickDate($event)"
+          ></app-date-picker>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item class="mensaFilter" mode="md" lines="none">
+            <ion-label>Filter</ion-label>
+            <ion-select
+              multiple="true"
+              (ionChange)="filterMenus($event)"
+              okText="{{ 'button.ok' | translate }}"
+              cancelText="{{ 'button.cancel'  | translate }}"
+              [disabled]="filterKeywords.length === 0"
+            >
+              <ion-select-option *ngFor="let filter of filterKeywords"
+                >{{ filter }}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  class="ion-no-padding"
-  (swipe)="campusTabComponent.handleSwipeEvent($event)"
->
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"
@@ -59,57 +85,28 @@
     hintTextI18nKey="hints.text.functionNotAvailable"
   ></app-hint-box>
 
-  <ion-grid *ngIf="isLoaded && !noMensaForLocation && !networkError">
-    <ion-row>
-      <ion-col size="6">
-        <app-date-picker
-          [compactMode]="true"
-          [inputDate]="selectedDate"
-          (momentObjectEmitter)="pickDate($event)"
-        ></app-date-picker>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-label>Filter</ion-label>
-          <ion-select
-            multiple="true"
-            (ionChange)="filterMenus($event)"
-            okText="{{ 'button.ok' | translate }}"
-            cancelText="{{ 'button.cancel'  | translate }}"
-            [disabled]="filterKeywords.length === 0"
-          >
-            <ion-select-option *ngFor="let filter of filterKeywords"
-              >{{ filter }}</ion-select-option
-            >
-          </ion-select>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
   <div *ngIf="isLoaded && !noMensaForLocation && !networkError">
-    <ion-list
-      lines="none"
-      [ngClass]="showBasicCalendar ? 'calendarExpanded' : 'calendarCollapsed' "
+    <app-mensa-meal
+      *ngIf="!noMealsForDate"
+      [meals]="displayedMeals"
+      [mealForDate]="mealForDate"
+      [iconMapping]="iconMapping"
+    ></app-mensa-meal>
+
+    <ion-item-divider
+      mode="md"
+      *ngIf="ulfMeals && !noUlfMealsForDate"
+      color="light"
     >
-      <app-mensa-meal
-        *ngIf="!noMealsForDate"
-        [meals]="displayedMeals"
-        [mealForDate]="mealForDate"
-        [iconMapping]="iconMapping"
-      ></app-mensa-meal>
+      <ion-label>Ulf's Café</ion-label>
+    </ion-item-divider>
 
-      <ion-item-divider *ngIf="ulfMeals && !noUlfMealsForDate" color="light">
-        <ion-label> Ulf's Café </ion-label>
-      </ion-item-divider>
-
-      <app-mensa-meal
-        *ngIf="ulfMeals && !noUlfMealsForDate"
-        [meals]="displayedUlfMeals"
-        [mealForDate]="ulfMealForDate"
-        [iconMapping]="ulfIconMapping"
-      ></app-mensa-meal>
-    </ion-list>
+    <app-mensa-meal
+      *ngIf="ulfMeals && !noUlfMealsForDate"
+      [meals]="displayedUlfMeals"
+      [mealForDate]="ulfMealForDate"
+      [iconMapping]="ulfIconMapping"
+    ></app-mensa-meal>
   </div>
 
   <div
@@ -120,9 +117,11 @@
       hintTextI18nKey="hints.text.mensa-nomeals-hint"
     ></app-hint-box>
   </div>
-  <app-network-error-hint
+  <app-hint-box
     *ngIf="isLoaded && networkError && !noMensaForLocation"
-  ></app-network-error-hint>
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 </ion-content>
 
 <ion-footer>

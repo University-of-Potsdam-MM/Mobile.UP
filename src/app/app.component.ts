@@ -1,4 +1,9 @@
-import { Component, QueryList, ViewChildren } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import {
   Platform,
   MenuController,
@@ -6,32 +11,32 @@ import {
   IonRouterOutlet,
   ModalController,
   AlertController,
-} from "@ionic/angular";
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
-import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { IBibSession } from "./lib/interfaces";
-import { Storage } from "@ionic/storage";
-import * as moment from "moment";
-import { TranslateService } from "@ngx-translate/core";
-import { CacheService } from "ionic-cache";
-import { UserSessionService } from "./services/user-session/user-session.service";
-import { SettingsService } from "./services/settings/settings.service";
-import { ConfigService } from "./services/config/config.service";
+} from '@ionic/angular';
+import { IBibSession } from './lib/interfaces';
+import * as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
+import { UserSessionService } from './services/user-session/user-session.service';
+import { SettingsService } from './services/settings/settings.service';
+import { ConfigService } from './services/config/config.service';
 import {
   ISession,
   IOIDCRefreshResponseObject,
-} from "./services/login-provider/interfaces";
-import { UPLoginProvider } from "./services/login-provider/login";
-import { Router } from "@angular/router";
-import { AlertService } from "./services/alert/alert.service";
-import { AlertButton } from "@ionic/core";
-import { Logger, LoggingService } from "ionic-logging-service";
-import { ConnectionService } from "./services/connection/connection.service";
-import jwt_decode from "jwt-decode";
+} from './services/login-service/interfaces';
+import { UPLoginProvider } from './services/login-service/login';
+import { Router } from '@angular/router';
+import { AlertService } from './services/alert/alert.service';
+import { AlertButton } from '@ionic/core';
+import { ConnectionService } from './services/connection/connection.service';
+import jwt_decode from 'jwt-decode';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { Storage } from '@capacitor/storage';
+import { CacheService } from 'ionic-cache';
+import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
+import { DarkModeAndroid } from './services/dark-mode-android/dist/esm';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "app.component.html",
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
 })
 export class AppComponent {
   @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
@@ -43,36 +48,47 @@ export class AppComponent {
   bibLoggedIn = false;
   bibID;
 
-  logger: Logger;
+  darkModeManual = false;
+
+  // logger: Logger;
 
   triedToRefreshLogin = false;
 
   constructor(
     private platform: Platform,
     private router: Router,
-    private splashScreen: SplashScreen,
     private translate: TranslateService,
-    private statusBar: StatusBar,
     private menuCtrl: MenuController,
-    private cache: CacheService,
     private navCtrl: NavController,
     private userSession: UserSessionService,
     private setting: SettingsService,
     private login: UPLoginProvider,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private storage: Storage,
     private alertService: AlertService,
-    private loggingService: LoggingService,
+    // private loggingService: LoggingService,
+    private ref: ChangeDetectorRef,
+    private cache: CacheService,
     private connectionService: ConnectionService
   ) {
     this.initializeApp();
-    this.logger = this.loggingService.getLogger("[/app-component]");
+    // this.logger = this.loggingService.getLogger('[/app-component]');
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.storage.set("appVersion", ConfigService.config.appVersion);
+      if (this.platform.is('android')) {
+        DarkModeAndroid.addListener('darkModeStateChanged', (state) => {
+          if (state.isDarkModeOn) {
+            this.darkModeManual = true;
+            this.ref.detectChanges();
+          } else {
+            this.darkModeManual = false;
+            this.ref.detectChanges();
+          }
+        });
+      }
+
       this.checkSessionValidity();
       this.initTranslate();
       this.updateLoginStatus();
@@ -81,18 +97,29 @@ export class AppComponent {
       );
       this.cache.setOfflineInvalidate(false);
 
-      if (this.platform.is("cordova")) {
-        if (this.platform.is("android")) {
-          this.listenToBackButton();
-          this.statusBar.backgroundColorByHexString("#014260");
-        }
-
-        if (this.platform.is("ios")) {
-          this.statusBar.styleDefault();
-        }
-
-        this.splashScreen.hide();
+      if (this.platform.is('ios') || this.platform.is('android')) {
+        this.initKeyboard();
       }
+
+      SplashScreen.hide();
+    });
+  }
+
+  initKeyboard() {
+    if (this.platform.is('ios')) {
+      Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
+    }
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.setKeyboardStyle(prefersDark.matches || this.darkModeManual);
+    prefersDark.addEventListener('change', (mediaQuery) =>
+      this.setKeyboardStyle(mediaQuery.matches)
+    );
+  }
+
+  setKeyboardStyle(prefersDark) {
+    Keyboard.setStyle({
+      style: prefersDark ? KeyboardStyle.Dark : KeyboardStyle.Light,
     });
   }
 
@@ -105,7 +132,7 @@ export class AppComponent {
   async checkSessionValidity() {
     let session: ISession = await this.userSession.getSession();
 
-    if (session && this.connectionService.checkOnline(true)) {
+    if (session && (await this.connectionService.checkOnline())) {
       const variablesNotUndefined =
         session &&
         session.timestamp &&
@@ -114,7 +141,7 @@ export class AppComponent {
         ConfigService.config;
       if (
         variablesNotUndefined &&
-        this.connectionService.checkOnline()
+        (await this.connectionService.checkOnline())
         // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
         const oidcObject = ConfigService.isApiManagerUpdated
@@ -135,11 +162,11 @@ export class AppComponent {
               this.userSession.setSession(newSession);
             },
             (response) => {
-              this.logger.error(
-                "checkSessionValidity",
-                "error refreshing token",
-                response
-              );
+              // this.logger.error(
+              //   'checkSessionValidity',
+              //   'error refreshing token',
+              //   response
+              // );
 
               if (!this.triedToRefreshLogin) {
                 // refresh token expired; f.e. if user logs into a second device
@@ -148,27 +175,27 @@ export class AppComponent {
                   session.credentials.password &&
                   session.credentials.username
                 ) {
-                  this.logger.debug(
-                    "checkSessionValidity",
-                    "re-authenticating..."
-                  );
+                  // this.logger.debug(
+                  //   'checkSessionValidity',
+                  //   're-authenticating...'
+                  // );
                   this.login
                     .oidcLogin(session.credentials, oidcObject)
                     .subscribe(
                       (sessionRes) => {
-                        this.logger.debug(
-                          "checkSessionValidity",
-                          "re-authenticating successful"
-                        );
+                        // this.logger.debug(
+                        //   'checkSessionValidity',
+                        //   're-authenticating successful'
+                        // );
                         this.userSession.setSession(sessionRes);
                         session = sessionRes;
                       },
                       (error) => {
-                        this.logger.error(
-                          "checkSessionValidity",
-                          "re-authenticating not possible",
-                          error
-                        );
+                        // this.logger.error(
+                        //   'checkSessionValidity',
+                        //   're-authenticating not possible',
+                        //   error
+                        // );
                         this.loginExpired();
                       }
                     );
@@ -193,11 +220,11 @@ export class AppComponent {
    * @name loginExpired
    * @description if device is online: performs user logout and shows toast message
    */
-  loginExpired() {
-    if (this.connectionService.checkOnline()) {
+  async loginExpired() {
+    if (await this.connectionService.checkOnline()) {
       this.performLogout();
-      this.navCtrl.navigateForward("/login");
-      this.alertService.showToast("alert.login-expired");
+      this.navCtrl.navigateForward('/login');
+      this.alertService.showToast('alert.login-expired');
     }
   }
 
@@ -206,15 +233,15 @@ export class AppComponent {
    * @description sets up translation
    */
   async initTranslate() {
-    this.translate.setDefaultLang("de");
-    const lang = await this.setting.getSettingValue("language");
+    this.translate.setDefaultLang('de');
+    const lang = await this.setting.getSettingValue('language');
 
-    if (lang === "Deutsch") {
-      this.translate.use("de");
-      moment.locale("de");
+    if (lang === 'Deutsch') {
+      this.translate.use('de');
+      moment.locale('de');
     } else {
-      this.translate.use("en");
-      moment.locale("en");
+      this.translate.use('en');
+      moment.locale('en');
     }
   }
 
@@ -242,8 +269,9 @@ export class AppComponent {
             this.alertCtrl.dismiss();
           } else {
             this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-              if (this.router.url === "/home") {
-                navigator["app"].exitApp();
+              if (this.router.url === '/home') {
+                // eslint-disable-next-line @typescript-eslint/dot-notation
+                navigator['app'].exitApp();
               } else if (outlet && outlet.canGoBack()) {
                 outlet.pop();
               }
@@ -262,7 +290,8 @@ export class AppComponent {
     this.fullName = undefined;
 
     const session: ISession = await this.userSession.getSession();
-    const bibSession: IBibSession = await this.storage.get("bibSession");
+    const bibObj = await Storage.get({ key: 'bibSession' });
+    const bibSession: IBibSession = JSON.parse(bibObj.value);
 
     if (bibSession) {
       this.bibLoggedIn = true;
@@ -274,9 +303,9 @@ export class AppComponent {
       this.username = session.credentials.username;
 
       if (session.oidcTokenObject && session.oidcTokenObject.id_token) {
-        const decoded = jwt_decode(session.oidcTokenObject.id_token);
-        if (decoded["name"]) {
-          this.fullName = decoded["name"];
+        const decoded: any = jwt_decode(session.oidcTokenObject.id_token);
+        if (decoded.name) {
+          this.fullName = decoded.name;
         }
       }
     }
@@ -288,28 +317,28 @@ export class AppComponent {
 
   toHome() {
     this.close();
-    this.navCtrl.navigateRoot("/home");
+    this.navCtrl.navigateRoot('/home');
   }
 
   doLogout() {
     this.close();
     const buttons: AlertButton[] = [
       {
-        text: this.translate.instant("button.cancel"),
+        text: this.translate.instant('button.cancel'),
       },
       {
-        text: this.translate.instant("button.ok"),
+        text: this.translate.instant('button.ok'),
         handler: () => {
           this.performLogout();
-          this.navCtrl.navigateRoot("/home");
+          this.navCtrl.navigateRoot('/home');
         },
       },
     ];
 
     this.alertService.showAlert(
       {
-        headerI18nKey: "page.logout.title",
-        messageI18nKey: "page.logout.affirmativeQuestion",
+        headerI18nKey: 'page.logout.title',
+        messageI18nKey: 'page.logout.affirmativeQuestion',
       },
       buttons
     );
@@ -319,61 +348,60 @@ export class AppComponent {
     this.close();
     const buttons: AlertButton[] = [
       {
-        text: this.translate.instant("button.cancel"),
+        text: this.translate.instant('button.cancel'),
       },
       {
-        text: this.translate.instant("button.ok"),
-        handler: () => {
-          this.storage.remove("bibSession");
-          this.logger.debug("doBibLogout()", "successfully logged out ub-user");
+        text: this.translate.instant('button.ok'),
+        handler: async () => {
+          await Storage.remove({ key: 'bibSession' });
+          // this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
           this.updateLoginStatus();
-          this.navCtrl.navigateRoot("/home");
+          this.navCtrl.navigateRoot('/home');
         },
       },
     ];
 
     this.alertService.showAlert(
       {
-        headerI18nKey: "page.logout.bibTitle",
-        messageI18nKey: "page.logout.affirmativeQuestion",
+        headerI18nKey: 'page.logout.bibTitle',
+        messageI18nKey: 'page.logout.affirmativeQuestion',
       },
       buttons
     );
   }
 
-  performLogout() {
+  async performLogout() {
     this.userSession.removeSession();
     for (let i = 0; i < 10; i++) {
-      this.storage.remove("studentGrades[" + i + "]");
-      this.storage.remove("studentGrades*");
+      await Storage.remove({ key: 'studentGrades[' + i + ']' });
     }
-    this.storage.remove("userInformation");
+    await Storage.remove({ key: 'userInformation' });
     this.cache.clearAll();
     this.updateLoginStatus();
   }
 
   toLogin() {
     this.close();
-    this.navCtrl.navigateForward("/login");
+    this.navCtrl.navigateForward('/login');
   }
 
   toBibLogin() {
     this.close();
-    this.navCtrl.navigateForward("/library-account");
+    this.navCtrl.navigateForward('/library-account');
   }
 
   toSettings() {
     this.close();
-    this.navCtrl.navigateForward("/settings");
+    this.navCtrl.navigateForward('/settings');
   }
 
   toAppInfo() {
     this.close();
-    this.navCtrl.navigateForward("/app-info");
+    this.navCtrl.navigateForward('/app-info');
   }
 
   toImprint() {
     this.close();
-    this.navCtrl.navigateForward("/impressum");
+    this.navCtrl.navigateForward('/impressum');
   }
 }

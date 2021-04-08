@@ -6,7 +6,7 @@
 #  * SSH_KNOWN_HOSTS (hosts keys of the servers to which the artifacts should be deployed; `ssh-keyscan hostname`)
 # except SSH_DEPLOY_HOSTS and SSH_DEPLOY_KEY all variables can be set in the Group
 
-image: node:15
+image: node:14
 
 stages:
   - prepare
@@ -27,7 +27,8 @@ install_dependencies:
   stage: prepare
   script:
     - npm ci --cache .npm --prefer-offline
-    - npm install --legacy-peer-deps
+    - npm install -g @ionic/cli
+    - npm install
   artifacts:
     paths:
       - node_modules/
@@ -57,8 +58,8 @@ install_dependencies:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
     ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
-    ANDROID_API: "android-29"
-    ANDROID_BUILD_TOOLS: "29.0.3"
+    ANDROID_API: "android-30"
+    ANDROID_BUILD_TOOLS: "30.0.3"
     ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
     ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
   before_script:
@@ -76,20 +77,18 @@ install_dependencies:
         popd;
       fi
     - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
-    - npm install -g cordova @ionic/cli
-    - npm install -g cordova-res --unsafe-perm
-    - npm install -D -E @angular/cli
+    - npm install -g @ionic/cli
   script:
-    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
-    - ionic cordova platform add android
-    - ionic cordova prepare android
-    - ionic cordova build android --prod --release
-    - zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk MobileUP-unsigned.apk
+    - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+    - rm -rf $PWD/android/app/build
+    - ionic capacitor sync android --prod
+    - cd android && ./gradlew assembleRelease
+    - cd .. && zipalign -v 4 $PWD/android/app/build/outputs/apk/release/app-release-unsigned.apk MobileUP-unsigned.apk
 
 # only used for merge requests (and branches != master in order to avoid double building)
 android-test:
   extends: .android
-  # keep built artifacts on Git.UP for one day for manual testing/inspection
+  # keep built artifacts on Git.UP for one week for manual testing/inspection
   artifacts:
     paths:
       - MobileUP-unsigned.apk
@@ -110,7 +109,7 @@ android-production:
     - echo "$KEYSTORE" | base64 -d > keystore
     - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore -storepass:env KEYSTORE_PASS MobileUP-unsigned.apk /my-release-key
     - zipalign -v 4 MobileUP-unsigned.apk MobileUP.apk
-  # keep built artifacts on Git.UP for one day for manual testing/inspection, final versions are published on Google PlayStore anyway
+  # keep built artifacts on Git.UP for one month for manual testing/inspection, final versions are published on Google PlayStore anyway
   artifacts:
     paths:
       - MobileUP.apk
@@ -123,16 +122,11 @@ android-production:
 
 .browser:
   stage: build
+  before_script:
+    - npm install -g @ionic/cli
   script:
-    - npm install -g cordova @ionic/cli
     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
-    - ionic cordova platform add browser --no-interactive --confirm
-    - ionic cordova prepare browser --no-interactive --confirm
-    - ionic cordova build browser --prod --release
-    # HACK to make Mobile.UP work in an iframe as we do on Campus.UP, cf. https://github.com/apache/cordova-plugin-inappbrowser/issues/419
-    - perl -pi -e 's|if \(window.parent && !!window.parent.ripple\) \{|if (window.parent && false) {|' platforms/browser/www/plugins/cordova-plugin-inappbrowser/www/inappbrowser.js
-    # set proper title
-    - perl -pi -e 's|<title>Ionic App</title>|<title>Mobile.UP</title>|' platforms/browser/www/index.html
+    - ionic build --prod
 
 # only used for merge requests (and branches != master in order to avoid double building)
 browser-test:
@@ -140,7 +134,7 @@ browser-test:
   # keep built artifacts on Git.UP for one day for manual testing/inspection
   artifacts:
     paths:
-      - platforms/browser/www/
+      - www/
     expire_in: 1 day
   except:
     refs:
@@ -153,8 +147,7 @@ browser-production:
   # keep built artifacts on Git.UP, only do this for builds on master branch we want to deploy in order to save space on Git.UP
   artifacts:
     paths:
-      # I compared www/ and platforms/browser/www/ and both are identical, therefore we take platforms/browser/www/
-      - platforms/browser/www/
+      - www/
   only:
     - master
   except:
@@ -176,7 +169,7 @@ deploy-browser-production:
   script:
     - if [ -z "$SSH_DEPLOY_HOSTS" ]; then echo "no servers (SSH_DEPLOY_HOSTS) defined."; exit 1; fi
     - for server in $SSH_DEPLOY_HOSTS; do
-        tar cfz - platforms/browser/www/ | ssh -i /root/.ssh/id_rsa gitup-deploy@$server;
+        tar cfz - www/ | ssh -i /root/.ssh/id_rsa gitup-deploy@$server;
       done
   # uncomment to only deploy manually and not on every push
   #when: manual
@@ -186,3 +179,41 @@ deploy-browser-production:
   except:
     refs:
       - tags
+
+# .ios:
+#   stage: build
+#   variables:
+#     GIT_SUBMODULE_STRATEGY: recursive
+#   before_script:
+#     - npm install -g @ionic/cli
+#   script:
+#     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+#     - rm -rf $PWD/ios/ios_build
+#     - ionic capacitor sync ios --prod
+
+# # only used for merge requests (and branches != master in order to avoid double building)
+# ios-test:
+#   extends: .ios
+#   tags:
+#     - mac
+#   except:
+#     refs:
+#       - master
+#       - tags
+
+# ios-production:
+#   extends: .ios
+#   after_script:
+#     - xcodebuild -workspace $PWD/ios/App/App.xcworkspace -scheme App -sdk iphoneos -configuration AppStoreDistribution archive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive
+#     - xcodebuild -exportArchive -archivePath $PWD/ios/ios_build/archive/Mobile.UP.xcarchive -exportOptionsPlist $PWD/ios/App/exportOptions.plist -exportPath $PWD/ios/ios_build/ipa -allowProvisioningUpdates
+#   only:
+#     - master
+#   artifacts:
+#     paths:
+#       - $PWD/ios/ios_build/ipa/App.ipa
+#     expire_in: 1 week
+#   tags:
+#     - mac
+#   except:
+#     refs:
+#       - tags

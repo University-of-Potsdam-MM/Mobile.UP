@@ -1,154 +1,167 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthenticationGuardService } from './services/authentication-guard/authentication-guard.service';
 
-export const routes: Routes = [
-  { path: "", redirectTo: "home", pathMatch: "full" },
+const routes: Routes = [
   {
-    path: "home",
+    path: 'home',
     loadChildren: () =>
-      import("./pages/home/home.module").then((m) => m.HomePageModule),
+      import('./pages/home/home.module').then((m) => m.HomePageModule),
   },
   {
-    path: "app-info",
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'app-info',
     loadChildren: () =>
-      import("./pages/app-info/app-info.module").then(
+      import('./pages/app-info/app-info.module').then(
         (m) => m.AppInfoPageModule
       ),
   },
   {
-    path: "campus-map",
+    path: 'campus-map',
     loadChildren: () =>
-      import("./pages/campus-map/campus-map.module").then(
+      import('./pages/campus-map/campus-map.module').then(
         (m) => m.CampusMapPageModule
       ),
   },
   {
-    path: "emergency",
+    path: 'emergency',
     loadChildren: () =>
-      import("./pages/emergency/emergency.module").then(
+      import('./pages/emergency/emergency.module').then(
         (m) => m.EmergencyPageModule
       ),
   },
   {
-    path: "grades",
+    path: 'grades',
     loadChildren: () =>
-      import("./pages/grades/grades.module").then((m) => m.GradesPageModule),
+      import('./pages/grades/grades.module').then((m) => m.GradesPageModule),
+    canActivate: [AuthenticationGuardService],
   },
   {
-    path: "impressum",
+    path: 'impressum',
     loadChildren: () =>
-      import("./pages/impressum/impressum.module").then(
+      import('./pages/impressum/impressum.module').then(
         (m) => m.ImpressumPageModule
       ),
   },
   {
-    path: "lectures",
+    path: 'lectures',
     loadChildren: () =>
-      import("./pages/lectures/lectures.module").then(
+      import('./pages/lectures/lectures.module').then(
         (m) => m.LecturesPageModule
       ),
   },
   {
-    path: "library-search",
+    path: 'library-search',
     loadChildren: () =>
-      import("./pages/library-search/library-search.module").then(
+      import('./pages/library-search/library-search.module').then(
         (m) => m.LibrarySearchPageModule
       ),
   },
   {
-    path: "login",
+    path: 'login',
     loadChildren: () =>
-      import("./pages/login/login.module").then((m) => m.LoginPageModule),
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: "mensa",
+    path: 'mensa',
     loadChildren: () =>
-      import("./pages/mensa/mensa.module").then((m) => m.MensaPageModule),
+      import('./pages/mensa/mensa.module').then((m) => m.MensaPageModule),
   },
   {
-    path: "news",
+    path: 'news',
     loadChildren: () =>
-      import("./pages/news/news.module").then((m) => m.NewsPageModule),
+      import('./pages/news/news.module').then((m) => m.NewsPageModule),
   },
   {
-    path: "opening-hours",
+    path: 'opening-hours',
     loadChildren: () =>
-      import("./pages/opening-hours/opening-hours.module").then(
+      import('./pages/opening-hours/opening-hours.module').then(
         (m) => m.OpeningHoursPageModule
       ),
   },
   {
-    path: "person-search",
+    path: 'person-search',
     loadChildren: () =>
-      import("./pages/person-search/person-search.module").then(
+      import('./pages/person-search/person-search.module').then(
         (m) => m.PersonSearchPageModule
       ),
+    canActivate: [AuthenticationGuardService],
   },
   {
-    path: "practice",
+    path: 'practice',
     loadChildren: () =>
-      import("./pages/practice/practice.module").then(
+      import('./pages/practice/practice.module').then(
         (m) => m.PracticePageModule
       ),
   },
   {
-    path: "roomplan",
+    path: 'roomplan',
     loadChildren: () =>
-      import("./pages/roomplan/roomplan.module").then(
+      import('./pages/roomplan/roomplan.module').then(
         (m) => m.RoomplanPageModule
       ),
   },
   {
-    path: "free-rooms",
+    path: 'free-rooms',
     loadChildren: () =>
-      import("./pages/free-rooms/free-rooms.module").then(
+      import('./pages/free-rooms/free-rooms.module').then(
         (m) => m.FreeRoomsPageModule
       ),
   },
   {
-    path: "settings",
+    path: 'settings',
     loadChildren: () =>
-      import("./pages/settings/settings.module").then(
+      import('./pages/settings/settings.module').then(
         (m) => m.SettingsPageModule
       ),
   },
   {
-    path: "timetable",
+    path: 'timetable',
     loadChildren: () =>
-      import("./pages/timetable/timetable.module").then(
+      import('./pages/timetable/timetable.module').then(
         (m) => m.TimetablePageModule
       ),
+    canActivate: [AuthenticationGuardService],
   },
   {
-    path: "transport",
+    path: 'transport',
     loadChildren: () =>
-      import("./pages/transport/transport.module").then(
+      import('./pages/transport/transport.module').then(
         (m) => m.TransportPageModule
       ),
   },
   {
-    path: "feedback",
+    path: 'feedback',
     loadChildren: () =>
-      import("./pages/feedback/feedback.module").then(
+      import('./pages/feedback/feedback.module').then(
         (m) => m.FeedbackPageModule
       ),
   },
   {
-    path: "library-account",
+    path: 'library-account',
     loadChildren: () =>
-      import("./pages/library-account/library-account.module").then(
+      import('./pages/library-account/library-account.module').then(
         (m) => m.LibraryAccountPageModule
       ),
   },
-  {
-    path: "events",
-    loadChildren: () =>
-      import("./pages/events/events.module").then((m) => m.EventsPageModule),
-  },
+  // {
+  //   path: 'events',
+  //   loadChildren: () =>
+  //     import('./pages/events/events.module').then((m) => m.EventsPageModule),
+  // },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      useHash: true,
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

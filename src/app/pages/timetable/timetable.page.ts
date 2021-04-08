@@ -1,72 +1,74 @@
-import { Component } from "@angular/core";
-import { IEventObject, createEventSource } from "./createEvents";
-import { ModalController, AlertController } from "@ionic/angular";
-import { TranslateService } from "@ngx-translate/core";
-import * as moment from "moment";
-import { DomSanitizer } from "@angular/platform-browser";
-import { EventModalPage } from "./event.modal";
-import { IPulsAPIResponse_getStudentCourses } from "src/app/lib/interfaces_PULS";
-import { Calendar } from "@ionic-native/calendar/ngx";
-import { AlertService } from "src/app/services/alert/alert.service";
-import * as dLoop from "delayed-loop";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
-import { convertToArray } from "src/app/lib/util";
+/* eslint-disable @typescript-eslint/dot-notation */
+import { Component } from '@angular/core';
+import { IEventObject, createEventSource } from './createEvents';
+import { ModalController, AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
+import { DomSanitizer } from '@angular/platform-browser';
+import { EventModalPage } from './event.modal';
+import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
+import { Calendar } from '@ionic-native/calendar/ngx';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import * as dLoop from 'delayed-loop';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { convertToArray } from 'src/app/lib/util';
+import { IEvent, CalendarMode } from 'ionic2-calendar/calendar';
 
 @Component({
-  selector: "app-timetable",
-  templateUrl: "./timetable.page.html",
-  styleUrls: ["./timetable.page.scss"],
+  selector: 'app-timetable',
+  templateUrl: './timetable.page.html',
+  styleUrls: ['./timetable.page.scss'],
 })
 export class TimetablePage extends AbstractPage {
   hexValues = [
-    "#FFCC80",
-    "#9FA8DA",
-    "#A5D6A7",
-    "#B0BEC5",
-    "#ef9a9a",
-    "#90CAF9",
-    "#81D4FA",
-    "#80DEEA",
-    "#80CBC4",
-    "#C5E1A5",
-    "#B39DDB",
-    "#E6EE9C",
-    "#FFE082",
-    "#FFAB91",
-    "#BCAAA4",
-    "#EEEEEE",
-    "#F48FB1",
-    "#CE93D8",
-    "#FFF59D",
+    '#FFCC80',
+    '#9FA8DA',
+    '#A5D6A7',
+    '#B0BEC5',
+    '#ef9a9a',
+    '#90CAF9',
+    '#81D4FA',
+    '#80DEEA',
+    '#80CBC4',
+    '#C5E1A5',
+    '#B39DDB',
+    '#E6EE9C',
+    '#FFE082',
+    '#FFAB91',
+    '#BCAAA4',
+    '#EEEEEE',
+    '#F48FB1',
+    '#CE93D8',
+    '#FFF59D',
   ];
   courseToHex: string[][] = [];
   hexIndex = 0;
 
-  eventSource: IEventObject[] = [];
+  eventSource: IEvent[] = [];
   noUserRights = false;
   isLoading = true;
 
   isMobile;
   exportFinished = true;
   exportedEvents = 0;
-  modalOpen;
   error;
 
   // title string that should be displayed for every mode, eg. "24.12.2018"
-  currentTitle = "";
+  currentTitle = '';
+
+  calMode: CalendarMode = 'day';
 
   // options for ionic2-calendar component
   calendarOptions = {
-    calendarMode: "day",
     currentDate: new Date(),
-    locale: "de",
+    locale: 'de',
     startingDayWeek: 1,
     startingDayMonth: 1,
-    startHour: "8",
-    endHour: "20",
-    step: "40",
-    timeInterval: "120",
+    startHour: 8,
+    endHour: 20,
+    step: 40,
+    timeInterval: 120,
     showEventDetail: false,
     autoSelect: false,
     dateFormatter: undefined,
@@ -85,7 +87,7 @@ export class TimetablePage extends AbstractPage {
   }
 
   async ionViewWillEnter() {
-    if (this.platform.is("android") || this.platform.is("ios")) {
+    if (this.platform.is('android') || this.platform.is('ios')) {
       this.isMobile = true;
     }
     this.setupCalendarOptions();
@@ -94,14 +96,14 @@ export class TimetablePage extends AbstractPage {
       this.isLoading = true;
       // there is a session
       this.ws
-        .call("pulsGetStudentCourses", { session: this.session })
+        .call('pulsGetStudentCourses', { session: this.session })
         .subscribe(
           (response: IPulsAPIResponse_getStudentCourses) => {
             this.error = undefined;
             if (
               response &&
               response.message &&
-              response.message === "no user rights"
+              response.message === 'no user rights'
             ) {
               this.noUserRights = true;
               this.isLoading = false;
@@ -136,49 +138,49 @@ export class TimetablePage extends AbstractPage {
   /* ~~~ ionic2-calendar specific methods ~~~ */
 
   setupCalendarOptions() {
-    if (this.translate.currentLang === "de") {
-      this.calendarOptions.locale = "de";
-      const weekString = this.translate.instant("page.timetable.week");
+    if (this.translate.currentLang === 'de') {
+      this.calendarOptions.locale = 'de';
+      const weekString = this.translate.instant('page.timetable.week');
       this.calendarOptions.dateFormatter = {
-        formatWeekViewDayHeader: function (date: Date) {
-          return moment(date).format("dd D");
+        formatWeekViewDayHeader(date: Date) {
+          return moment(date).format('dd D');
         },
-        formatDayViewHourColumn: function (date: Date) {
-          return moment(date).format("HH:mm");
+        formatDayViewHourColumn(date: Date) {
+          return moment(date).format('HH:mm');
         },
-        formatWeekViewHourColumn: function (date: Date) {
-          return moment(date).format("HH:mm");
+        formatWeekViewHourColumn(date: Date) {
+          return moment(date).format('HH:mm');
         },
-        formatWeekViewTitle: function (date: Date) {
+        formatWeekViewTitle(date: Date) {
           return (
-            moment(date).format("MMMM YYYY") +
-            ", " +
+            moment(date).format('MMMM YYYY') +
+            ', ' +
             weekString +
-            " " +
-            moment(date).format("w")
+            ' ' +
+            moment(date).format('w')
           );
         },
-        formatMonthViewTitle: function (date: Date) {
-          return moment(date).format("MMMM YYYY");
+        formatMonthViewTitle(date: Date) {
+          return moment(date).format('MMMM YYYY');
         },
-        formatDayViewTitle: function (date: Date) {
-          return moment(date).format("ddd, Do MMMM YYYY");
+        formatDayViewTitle(date: Date) {
+          return moment(date).format('ddd, Do MMMM YYYY');
         },
       };
     } else {
-      this.calendarOptions.locale = "en";
+      this.calendarOptions.locale = 'en';
       this.calendarOptions.dateFormatter = {
-        formatWeekViewDayHeader: function (date: Date) {
-          return moment(date).format("dd D");
+        formatWeekViewDayHeader(date: Date) {
+          return moment(date).format('dd D');
         },
-        formatDayViewHourColumn: function (date: Date) {
-          return moment(date).format("hh A");
+        formatDayViewHourColumn(date: Date) {
+          return moment(date).format('hh A');
         },
-        formatWeekViewHourColumn: function (date: Date) {
-          return moment(date).format("hh A");
+        formatWeekViewHourColumn(date: Date) {
+          return moment(date).format('hh A');
         },
-        formatDayViewTitle: function (date: Date) {
-          return moment(date).format("ddd, MMMM Do YYYY");
+        formatDayViewTitle(date: Date) {
+          return moment(date).format('ddd, MMMM Do YYYY');
         },
       };
     }
@@ -186,54 +188,51 @@ export class TimetablePage extends AbstractPage {
 
   /**
    * simply changes the calendarMode
+   *
    * @param mode
    */
   changeCalendarMode(mode) {
-    this.calendarOptions.calendarMode = mode;
-    if (this.translate.currentLang === "de") {
-      this.calendarOptions.locale = "de";
+    this.calMode = mode;
+    if (this.translate.currentLang === 'de') {
+      this.calendarOptions.locale = 'de';
     } else {
-      this.calendarOptions.locale = "en";
+      this.calendarOptions.locale = 'en';
     }
   }
 
   /**
    * triggered when event is selected in any other view than monthView. Then
    * a modal with information about the event is shown.
+   *
    * @param event
    */
-  async eventSelected(event: IEventObject) {
-    if (this.calendarOptions.calendarMode !== "month") {
+  async eventSelected(event: any) {
+    if (this.calMode !== 'month') {
       const eventModal = await this.modalCtrl.create({
         backdropDismiss: false,
         component: EventModalPage,
         componentProps: { events: [event], date: event.startTime },
       });
       eventModal.present();
-      this.modalOpen = true;
       await eventModal.onDidDismiss();
-      this.modalOpen = false;
     }
   }
 
   /**
    * triggred when a time is clicked. Here a modal is shown when a time is
    * clicked in monthView and there are events at this timeslot.
+   *
    * @param time
    */
   timeSelected(time) {
-    if (
-      this.calendarOptions.calendarMode === "month" &&
-      time &&
-      time.events &&
-      time.events.length > 0
-    ) {
-      this.calendarOptions.calendarMode = "day";
+    if (this.calMode === 'month' && time) {
+      this.calMode = 'day';
     }
   }
 
   /**
    * simply changes the current views title when month/week/day is changed
+   *
    * @param title
    */
   titleChanged(title) {
@@ -241,12 +240,12 @@ export class TimetablePage extends AbstractPage {
   }
 
   swipePrevious() {
-    const mySwiper = document.querySelector(".swiper-container")["swiper"];
+    const mySwiper = document.querySelector('.swiper-container')['swiper'];
     mySwiper.slidePrev();
   }
 
   swipeNext() {
-    const mySwiper = document.querySelector(".swiper-container")["swiper"];
+    const mySwiper = document.querySelector('.swiper-container')['swiper'];
     mySwiper.slideNext();
   }
 
@@ -261,10 +260,10 @@ export class TimetablePage extends AbstractPage {
         event.event.courseDetails.courseId
       );
       return this.sanitizer.bypassSecurityTrustStyle(
-        "background-color: " + eventColor + "!important;"
+        'background-color: ' + eventColor + '!important;'
       );
     } else {
-      return this.sanitizer.bypassSecurityTrustStyle("");
+      return this.sanitizer.bypassSecurityTrustStyle('');
     }
   }
 
@@ -278,7 +277,7 @@ export class TimetablePage extends AbstractPage {
     const padding = 6;
     let hex = Number(d).toString(16);
     while (hex.length < padding) {
-      hex = "0" + hex;
+      hex = '0' + hex;
     }
 
     if (this.hexIndex < this.hexValues.length) {
@@ -309,15 +308,16 @@ export class TimetablePage extends AbstractPage {
 
   async exportPrompt() {
     const alert = await this.alertCtrl.create({
-      header: this.translate.instant("alert.title.exportCalendar"),
-      message: this.translate.instant("alert.exportCalendar"),
+      header: this.translate.instant('alert.title.exportCalendar'),
+      message: this.translate.instant('alert.exportCalendar'),
       backdropDismiss: false,
+      mode: 'md',
       buttons: [
         {
-          text: this.translate.instant("button.no"),
+          text: this.translate.instant('button.no'),
         },
         {
-          text: this.translate.instant("button.yes"),
+          text: this.translate.instant('button.yes'),
           handler: async () => {
             let existingCalendars = await this.calendar.listCalendars();
             if (existingCalendars) {
@@ -325,18 +325,19 @@ export class TimetablePage extends AbstractPage {
               if (Array.isArray(existingCalendars)) {
                 // ask if the user wants to add the events to an existing calender
                 const addToExistingAlert = await this.alertCtrl.create({
-                  header: this.translate.instant("alert.addToExistingHeader"),
-                  message: this.translate.instant("alert.addToExistingMessage"),
+                  header: this.translate.instant('alert.addToExistingHeader'),
+                  message: this.translate.instant('alert.addToExistingMessage'),
                   backdropDismiss: false,
+                  mode: 'md',
                   buttons: [
                     {
-                      text: this.translate.instant("button.no"),
+                      text: this.translate.instant('button.no'),
                       handler: async () => {
                         let found = false;
-                        for (let i = 0; i < existingCalendars.length; i++) {
+                        for (const cal of existingCalendars) {
                           if (
-                            existingCalendars[i].name ===
-                            this.translate.instant("placeholder.calendarName")
+                            cal.name ===
+                            this.translate.instant('placeholder.calendarName')
                           ) {
                             found = true;
                             break;
@@ -346,25 +347,25 @@ export class TimetablePage extends AbstractPage {
                         if (found) {
                           this.calendar
                             .deleteCalendar(
-                              this.translate.instant("placeholder.calendarName")
+                              this.translate.instant('placeholder.calendarName')
                             )
                             .then(
                               () => {
-                                this.logger.debug(
-                                  "exportPrompt",
-                                  "deleted calendar"
-                                );
+                                // this.logger.debug(
+                                //   'exportPrompt',
+                                //   'deleted calendar'
+                                // );
                                 this.exportCalendar();
                               },
                               (error) => {
                                 this.alertService.showToast(
-                                  "alert.calendar-export-fail"
+                                  'alert.calendar-export-fail'
                                 );
-                                this.logger.error(
-                                  "exportPrompt",
-                                  "calendar deletion",
-                                  error
-                                );
+                                // this.logger.error(
+                                //   'exportPrompt',
+                                //   'calendar deletion',
+                                //   error
+                                // );
                               }
                             );
                         } else {
@@ -373,19 +374,19 @@ export class TimetablePage extends AbstractPage {
                       },
                     },
                     {
-                      text: this.translate.instant("button.yes"),
+                      text: this.translate.instant('button.yes'),
                       handler: async () => {
                         const calendarInputs = [];
                         for (let i = 0; i < existingCalendars.length; i++) {
                           if (
                             !(
                               existingCalendars[i].type &&
-                              existingCalendars[i].type === "Birthday"
+                              existingCalendars[i].type === 'Birthday'
                             )
                           ) {
                             calendarInputs.push({
                               name: existingCalendars[i].name,
-                              type: "radio",
+                              type: 'radio',
                               label: existingCalendars[i].name,
                               value: i,
                             });
@@ -395,17 +396,18 @@ export class TimetablePage extends AbstractPage {
                         const chooseCalendarAlert = await this.alertCtrl.create(
                           {
                             header: this.translate.instant(
-                              "alert.title.choose"
+                              'alert.title.choose'
                             ),
                             inputs: calendarInputs,
                             backdropDismiss: false,
+                            mode: 'md',
                             buttons: [
                               {
-                                text: this.translate.instant("button.cancel"),
-                                role: "cancel",
+                                text: this.translate.instant('button.cancel'),
+                                role: 'cancel',
                               },
                               {
-                                text: this.translate.instant("button.ok"),
+                                text: this.translate.instant('button.ok'),
                                 handler: (data) => {
                                   if (
                                     data &&
@@ -445,14 +447,14 @@ export class TimetablePage extends AbstractPage {
     this.calendar.hasReadWritePermission().then(
       (result) => {
         if (result) {
-          this.logger.debug("exportCalendar", "calendar access given");
+          // this.logger.debug('exportCalendar', 'calendar access given');
           const createCalendarOpts = this.calendar.getCreateCalendarOptions();
           createCalendarOpts.calendarName = calendarName
             ? calendarName
-            : this.translate.instant("placeholder.calendarName");
+            : this.translate.instant('placeholder.calendarName');
 
           if (!calendarName || !calendarID) {
-            createCalendarOpts.calendarColor = "#ff9900";
+            createCalendarOpts.calendarColor = '#ff9900';
           }
 
           this.calendar.createCalendar(createCalendarOpts).then(
@@ -463,12 +465,9 @@ export class TimetablePage extends AbstractPage {
               } else {
                 const existingCalendars = await this.calendar.listCalendars();
                 if (Array.isArray(existingCalendars)) {
-                  for (let i = 0; i < existingCalendars.length; i++) {
-                    if (
-                      existingCalendars[i].name ===
-                      createCalendarOpts.calendarName
-                    ) {
-                      calID = existingCalendars[i].id;
+                  for (const cal of existingCalendars) {
+                    if (cal.name === createCalendarOpts.calendarName) {
+                      calID = cal.id;
                       break;
                     }
                   }
@@ -490,7 +489,7 @@ export class TimetablePage extends AbstractPage {
                       const startDate = itm.startTime;
                       const endDate = itm.endTime;
 
-                      let eventLocation = "";
+                      let eventLocation = '';
                       if (itm.eventDetails) {
                         if (itm.eventDetails.location) {
                           eventLocation += itm.eventDetails.location;
@@ -498,24 +497,24 @@ export class TimetablePage extends AbstractPage {
 
                         if (
                           itm.eventDetails.building &&
-                          itm.eventDetails.building !== "N"
+                          itm.eventDetails.building !== 'N'
                         ) {
-                          if (eventLocation !== "") {
-                            eventLocation += ": ";
+                          if (eventLocation !== '') {
+                            eventLocation += ': ';
                           }
 
                           eventLocation += itm.eventDetails.building;
 
                           if (
                             itm.eventDetails.room &&
-                            itm.eventDetails.room !== "N."
+                            itm.eventDetails.room !== 'N.'
                           ) {
-                            eventLocation += "." + itm.eventDetails.room;
+                            eventLocation += '.' + itm.eventDetails.room;
                           }
                         }
                       }
 
-                      let notes = "";
+                      let notes = '';
                       if (itm.courseDetails && itm.courseDetails.courseType) {
                         notes += itm.courseDetails.courseType;
                       }
@@ -536,22 +535,22 @@ export class TimetablePage extends AbstractPage {
                         )
                         .then(
                           () => {
-                            this.logger.debug(
-                              "exportCalendar",
-                              "exported event"
-                            );
+                            // this.logger.debug(
+                            //   'exportCalendar',
+                            //   'exported event'
+                            // );
                             this.exportedEvents++;
                             fin();
                           },
                           (error) => {
-                            this.logger.error(
-                              "exportCalendar",
-                              "event creation",
-                              error
-                            );
+                            // this.logger.error(
+                            //   'exportCalendar',
+                            //   'event creation',
+                            //   error
+                            // );
                             this.exportedEvents++;
                             this.alertService.showToast(
-                              "alert.calendar-event-fail"
+                              'alert.calendar-event-fail'
                             );
                             fin();
                           }
@@ -562,25 +561,25 @@ export class TimetablePage extends AbstractPage {
 
                 loop.then(() => {
                   this.exportFinished = true;
-                  this.alertService.showToast("alert.calendar-export-success");
+                  this.alertService.showToast('alert.calendar-export-success');
                 });
               } else {
                 this.exportFinished = true;
               }
             },
             (error) => {
-              this.logger.error("exportCalendar", "calendar creation", error);
-              this.alertService.showToast("alert.calendar-export-fail");
+              // this.logger.error('exportCalendar', 'calendar creation', error);
+              this.alertService.showToast('alert.calendar-export-fail');
             }
           );
         } else {
-          this.logger.error("exportCalendar", "calendar access denied");
-          this.alertService.showToast("alert.permission-denied");
+          // this.logger.error('exportCalendar', 'calendar access denied');
+          this.alertService.showToast('alert.permission-denied');
         }
       },
       (error) => {
-        this.logger.error("exportCalendar", "cant check permissions", error);
-        this.alertService.showToast("alert.calendar-export-fail");
+        // this.logger.error('exportCalendar', 'cant check permissions', error);
+        this.alertService.showToast('alert.calendar-export-fail');
       }
     );
   }

@@ -1,16 +1,16 @@
-import { Component } from "@angular/core";
-import { IConfig } from "src/app/lib/interfaces";
+import { Component } from '@angular/core';
+import { IConfig } from 'src/app/lib/interfaces';
 import {
   IPulsAPIResponse_getAcademicAchievements,
   IPulsAPIResponse_getPersonalStudyAreas,
-} from "src/app/lib/interfaces_PULS";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+} from 'src/app/lib/interfaces_PULS';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
-  selector: "app-grades",
-  templateUrl: "./grades.page.html",
-  styleUrls: ["./grades.page.scss"],
+  selector: 'app-grades',
+  templateUrl: './grades.page.html',
+  styleUrls: ['./grades.page.scss'],
 })
 export class GradesPage extends AbstractPage {
   config: IConfig;
@@ -64,16 +64,18 @@ export class GradesPage extends AbstractPage {
    * @name getGrades
    */
   getGrades(): void {
-    let semester, mtknr, stgnr;
+    let localSemester;
+    let localMtknr;
+    let localStgnr;
 
     if (this.multipleDegrees) {
-      semester = this.studentDetails[this.i].Semester;
-      mtknr = this.studentDetails[this.i].MtkNr;
-      stgnr = this.studentDetails[this.i].StgNr;
+      localSemester = this.studentDetails[this.i].Semester;
+      localMtknr = this.studentDetails[this.i].MtkNr;
+      localStgnr = this.studentDetails[this.i].StgNr;
     } else {
-      semester = this.studentDetails.Semester;
-      mtknr = this.studentDetails.MtkNr;
-      stgnr = this.studentDetails.StgNr;
+      localSemester = this.studentDetails.Semester;
+      localMtknr = this.studentDetails.MtkNr;
+      localStgnr = this.studentDetails.StgNr;
     }
 
     if (!(this.refresher && this.refresher.target)) {
@@ -83,12 +85,12 @@ export class GradesPage extends AbstractPage {
     this.networkError = false;
     this.ws
       .call(
-        "pulsGetAcademicAchievements",
+        'pulsGetAcademicAchievements',
         {
           session: this.session,
-          semester: semester,
-          mtknr: mtknr,
-          stgnr: stgnr,
+          semester: localSemester,
+          mtknr: localMtknr,
+          stgnr: localStgnr,
         },
         { forceRefresh: this.refresher !== undefined }
       )
@@ -108,7 +110,7 @@ export class GradesPage extends AbstractPage {
         (error) => {
           this.loadingGrades = false;
           this.networkError = true;
-          this.logger.error("getGrades()", error);
+          // this.logger.error('getGrades()', error);
         }
       );
 
@@ -153,7 +155,7 @@ export class GradesPage extends AbstractPage {
 
     this.ws
       .call(
-        "pulsGetPersonalStudyAreas",
+        'pulsGetPersonalStudyAreas',
         { session: this.session },
         { forceRefresh: this.refresher !== undefined }
       )
@@ -191,7 +193,7 @@ export class GradesPage extends AbstractPage {
               this.studentLoaded = true;
             } else if (
               resStudentDetail.message &&
-              resStudentDetail.message === "no user rights"
+              resStudentDetail.message === 'no user rights'
             ) {
               this.noUserRights = true;
             }

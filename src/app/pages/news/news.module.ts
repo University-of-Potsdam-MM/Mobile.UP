@@ -1,26 +1,20 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { Routes, RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
-import { NewsPage } from "./news.page";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from "@angular/common/http";
-import { ComponentsModule } from "src/app/components/components.module";
-import { HttpLoaderFactory } from "src/app/app.module";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: NewsPage,
-  },
-];
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { NewsPageRoutingModule } from './news-routing.module';
+import { NewsPage } from './news.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { HttpLoaderFactory } from 'src/app/app.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    NewsPageRoutingModule,
     ComponentsModule,
     TranslateModule.forChild({
       loader: {
@@ -29,7 +23,6 @@ const routes: Routes = [
         deps: [HttpClient],
       },
     }),
-    RouterModule.forChild(routes),
   ],
   declarations: [NewsPage],
 })

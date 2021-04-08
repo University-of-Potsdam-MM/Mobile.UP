@@ -1,0 +1,96 @@
+<ion-card mode="ios" class="linkItem" (click)="openURL(url)">
+  <!-- header -->
+  <ion-item
+    *ngIf="headerTitle || headerNote || headerIcon"
+    class="headerItem"
+    lines="none"
+  >
+    <ion-label class="headerTitle ion-text-wrap">
+      <h3 *ngIf="headerTitle">{{ headerTitle }}</h3>
+      <p *ngIf="headerNote">{{ headerNote }}</p>
+    </ion-label>
+    <ion-button
+      *ngIf="headerIcon"
+      (click)="clickHeaderIcon($event)"
+      class="headerIconButton"
+      slot="end"
+      fill="clear"
+    >
+      <ion-icon [name]="headerIcon"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <!-- card header -->
+  <ion-card-header
+    *ngIf="cardSubTitle || cardTitle"
+    [ngClass]="
+      headerIcon || headerTitle || headerNote
+        ? 'cardHeaderRemoveTopPadding'
+        : ''
+    "
+  >
+    <ion-card-subtitle *ngIf="cardSubTitle">{{
+      cardSubTitle
+    }}</ion-card-subtitle>
+    <ion-card-title *ngIf="cardTitle">{{ cardTitle }}</ion-card-title>
+  </ion-card-header>
+
+  <!-- card content -->
+  <ion-card-content *ngIf="cardContent || cardNote">
+    <ion-item lines="none">
+      <ion-label *ngIf="cardContent" class="ion-text-wrap">
+        <div [innerHTML]="cardContent"></div>
+      </ion-label>
+      <ion-note *ngIf="cardNote" slot="end">{{ cardNote }}</ion-note>
+    </ion-item>
+  </ion-card-content>
+
+  <!-- footer -->
+  <ion-footer
+    *ngIf="
+      footerFirstIcon ||
+      footerFirstString ||
+      footerSecondIcon ||
+      footerSecondString ||
+      footerThirdIcon ||
+      footerThirdString
+    "
+    class="footerItem"
+  >
+    <ion-row nowrap>
+      <ion-col
+        *ngIf="footerFirstIcon || footerFirstString"
+        align="center"
+        (click)="clickFooterFirstIcon($event)"
+      >
+        <div class="footerButton">
+          <ion-icon *ngIf="footerFirstIcon" [name]="footerFirstIcon"></ion-icon>
+          <div *ngIf="footerFirstString">{{ footerFirstString }}</div>
+        </div>
+      </ion-col>
+      <ion-col
+        *ngIf="footerSecondIcon || footerSecondString"
+        align="center"
+        (click)="clickFooterSecondIcon($event)"
+      >
+        <div class="footerButton">
+          <ion-icon
+            *ngIf="footerSecondIcon"
+            [name]="footerSecondIcon"
+          ></ion-icon>
+          <div *ngIf="footerSecondString">{{ footerSecondString }}</div>
+        </div>
+      </ion-col>
+      <ion-col
+        *ngIf="footerThirdIcon || footerThirdString"
+        align="center"
+        (click)="clickFooterThirdIcon($event)"
+      >
+        <div class="footerButton">
+          <ion-icon *ngIf="footerThirdIcon" [name]="footerThirdIcon"></ion-icon>
+          <div *ngIf="footerThirdString">{{ footerThirdString }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</ion-card>

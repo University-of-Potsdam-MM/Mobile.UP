@@ -36,3 +36,6 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 config.json
 .gitlab-ci.yml
+
+capacitor.config.json
+capacitor.plugins.json

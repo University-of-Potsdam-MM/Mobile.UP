@@ -1,9 +1,9 @@
-import { OnInit, Component, Input } from "@angular/core";
-import { ModalController } from "@ionic/angular";
+import { OnInit, Component, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
-  selector: "lecture-search-modal-page",
-  templateUrl: "./lecture-search.modal.html",
+  selector: 'lecture-search-modal-page',
+  templateUrl: './lecture-search.modal.html',
 })
 export class LectureSearchModalPage implements OnInit {
   @Input() item;
@@ -36,9 +36,9 @@ export class LectureSearchModalPage implements OnInit {
   unescapeHTML(s: string) {
     // replaces &colon; in strings, unescape / decodeURI didnt work (?)
     if (s !== undefined) {
-      return s.replace(/&colon;/g, ":");
+      return s.replace(/&colon;/g, ':');
     } else {
-      return "";
+      return '';
     }
   }
 }

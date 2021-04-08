@@ -4,27 +4,6 @@
 
 export const environment = {
   production: false,
-
-  /**
-   * Threshold:
-   * Valid values are: ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL, ALL
-   */
-  logging: {
-    logLevels: [
-      {
-        loggerName: "root",
-        logLevel: "ALL",
-      },
-    ],
-    browserConsoleAppender: {
-      threshold: "ALL",
-    },
-    localStorageAppender: {
-      localStorageKey: "localLogStorage",
-      maxMessages: 50,
-      threshold: "ALL",
-    },
-  },
 };
 
 /*

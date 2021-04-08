@@ -7,7 +7,12 @@ ion-grid {
 }
 
 ion-item {
+  --background: var(--ion-card-background);
   --min-height: 10px;
 
   min-height: 10px;
+}
+
+.mensaFilter {
+  --background: var(--ion-toolbar-background);
 }

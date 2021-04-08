@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="refreshGrades(true)"
       slot="end"
@@ -9,7 +10,6 @@
     >
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.grades.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -52,6 +52,7 @@
   <div *ngIf="studentLoaded && !multipleDegrees && studentDetails">
     <ion-list>
       <ion-item
+        mode="md"
         color="primary"
         class="studiengang"
         lines="none"
@@ -81,6 +82,7 @@
   <div *ngIf="studentLoaded && multipleDegrees && studentDetails">
     <ion-list>
       <ion-item
+        mode="md"
         color="primary"
         *ngFor="let degree of studentDetails; let i = index"
         class="studiengang"
@@ -116,5 +118,9 @@
     ></app-grades-table>
   </div>
 
-  <app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+  <app-hint-box
+    *ngIf="networkError"
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 </ion-content>

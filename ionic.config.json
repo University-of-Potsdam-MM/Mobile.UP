@@ -1,7 +1,7 @@
 {
-  "name": "MobileUP",
+  "name": "Mobile.UP",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }

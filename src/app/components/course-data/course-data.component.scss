@@ -19,14 +19,14 @@
   --background: var(--ion-color-light);
 
   border-radius: 0;
-  color: #000;
+  color: var(--ion-color-dark);
   font-size: 0.75rem;
   margin-left: 0.5%;
 }
 
 /*
-Generic Styling, for Desktops/Laptops
-*/
+  Generic Styling, for Desktops/Laptops
+  */
 table {
   border-collapse: collapse;
   width: 100%;
@@ -34,28 +34,28 @@ table {
 
 /* Zebra striping */
 tr:nth-of-type(odd) {
-  background: #eee;
+  background: var(--ion-color-light-shade);
 }
 
 th {
   background: var(--ion-color-primary);
-  color: #fff;
+  color: var(--ion-color-light);
   font-size: 0.75rem;
   font-weight: bold;
 }
 
 td,
 th {
-  border: 1px solid #ededed;
+  border: 1px solid var(--ion-color-dark-shade);
   padding: 6px;
   text-align: left;
 }
 
 /*
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
+  Max width before this PARTICULAR table gets nasty
+  This query will take effect for any screen smaller than 760px
+  and also iPads specifically.
+  */
 @media only screen and (max-width: 760px),
   (min-device-width: 768px) and (max-device-width: 1024px) {
   /* Force table to not be like tables anymore */
@@ -70,7 +70,7 @@ and also iPads specifically.
   }
 
   tr {
-    border: 1px solid #ededed;
+    border: 1px solid var(--ion-color-dark-shade);
   }
 
   /* Hide table headers (but not display: none;, for accessibility) */
@@ -81,13 +81,13 @@ and also iPads specifically.
   }
 
   tr.emptyRow {
-    border: 0 solid #ededed;
+    border: 0 none;
   }
 
   td {
     /* Behave  like a "row" */
     border: 0 none;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid var(--ion-color-dark-shade);
     position: relative;
   }
 
@@ -105,8 +105,8 @@ and also iPads specifically.
   }
 
   /*
-    Label the data
-    */
+      Label the data
+      */
   td:nth-of-type(1)::before {
     content: "Tag:";
   }

@@ -1,21 +1,14 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { Routes, RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
-import { LibraryAccountPage } from "./library-account.page";
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpLoaderFactory } from "src/app/app.module";
-import { HttpClient } from "@angular/common/http";
-import { ComponentsModule } from "src/app/components/components.module";
-import { LibraryPwChangePage } from "./library-pw-change.module";
-
-const routes: Routes = [
-  {
-    path: "",
-    component: LibraryAccountPage,
-  },
-];
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { LibraryAccountPageRoutingModule } from './library-account-routing.module';
+import { LibraryAccountPage } from './library-account.page';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpLoaderFactory } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
+import { ComponentsModule } from 'src/app/components/components.module';
+import { LibraryPwChangePage } from './library-pw-change.module';
 
 @NgModule({
   imports: [
@@ -23,6 +16,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
+    LibraryAccountPageRoutingModule,
     ComponentsModule,
     TranslateModule.forChild({
       loader: {
@@ -31,7 +25,6 @@ const routes: Routes = [
         deps: [HttpClient],
       },
     }),
-    RouterModule.forChild(routes),
   ],
   declarations: [LibraryAccountPage, LibraryPwChangePage],
   entryComponents: [LibraryPwChangePage],

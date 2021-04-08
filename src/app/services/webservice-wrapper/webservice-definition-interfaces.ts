@@ -1,6 +1,6 @@
-import { ICampus } from "../../lib/interfaces";
-import { Observable } from "rxjs";
-import { ISession } from "../login-provider/interfaces";
+import { ICampus } from '../../lib/interfaces';
+import { Observable } from 'rxjs';
+import { ISession } from '../login-service/interfaces';
 
 /**
  * Defines a webservice in a more or less standardized way
@@ -9,6 +9,7 @@ export interface IWebservice {
   /**
    * function that will be called to build the http request. The result must
    * be an Observable.
+   *
    * @param args
    */
   buildRequest: (params: any, url: string) => Observable<any>;
@@ -18,6 +19,7 @@ export interface IWebservice {
    * By default this function will just return the http requests response.
    * This function can be defined to preprocess the response and return something
    * that the corresponding page can use directly
+   *
    * @param response
    */
   responseCallback?: (
@@ -30,6 +32,7 @@ export interface IWebservice {
    * callback.
    * By default this function will just log the error and return an empty array
    * because that is something that can easily be checked.
+   *
    * @param error
    */
   errorCallback?: (

@@ -1,15 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title>{{ "words.changeOrder" | translate }}</ion-title>
   </ion-toolbar>
@@ -17,7 +15,7 @@
 
 <ion-content>
   <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
-    <ion-item *ngFor="let campus of campusList">
+    <ion-item mode="md" *ngFor="let campus of campusList">
       <ion-label> {{ campus.pretty_name }} </ion-label>
       <ion-reorder slot="end"></ion-reorder>
     </ion-item>

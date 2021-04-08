@@ -1,29 +1,30 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
-    <ion-title>{{ "page.lectures.title" | translate }}</ion-title>
+    <ion-title>
+      <div [innerHTML]="'page.lectures.title' | translate"></div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding-bottom">
   <span *ngIf="showItemTreePath && !isCourse">
     <span *ngFor="let treeItem of itemTree; let last = last">
-      <ion-item-divider *ngIf="!last">
+      <ion-item-divider mode="md" *ngIf="!last">
         <ion-label class="ion-text-wrap"> {{ treeItem }} </ion-label>
       </ion-item-divider>
     </span>
   </span>
   <ion-item-divider
+    mode="md"
     class="linkItem"
     (click)="showItemTreePath = !showItemTreePath"
   >

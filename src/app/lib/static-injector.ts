@@ -1,4 +1,4 @@
-import { Injector } from "@angular/core";
+import { Injector } from '@angular/core';
 
 // https://robferguson.org/blog/2018/09/28/ionic-3-component-inheritance/
 export class StaticInjectorService {

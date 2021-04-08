@@ -1,8 +1,13 @@
 <div align="center" *ngIf="!isLoaded && !networkError" class="ion-padding">
   <ion-spinner name="dots"></ion-spinner>
 </div>
-<app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+<app-hint-box
+  *ngIf="networkError"
+  hintTypeI18nKey="hints.type.hint"
+  hintTextI18nKey="alert.httpErrorStatus.generic"
+></app-hint-box>
 <ion-item
+  mode="md"
   class="courseData ion-padding-top"
   *ngIf="course.courseId && courseData"
 >
@@ -192,12 +197,12 @@
     *ngFor="let group of courseGroups; let i = index"
     class="groupTable courseData"
   >
-    <ion-item lines="none" style="font-weight: bold">
+    <ion-item mode="md" lines="none" style="font-weight: bold">
       <ion-label>
         {{ "page.lectures.group" | translate }} {{ group }}
       </ion-label>
     </ion-item>
-    <ion-item lines="none">
+    <ion-item mode="md" lines="none">
       <table>
         <thead>
           <tr>

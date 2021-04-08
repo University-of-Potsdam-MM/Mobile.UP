@@ -1,16 +1,8 @@
-ion-grid {
-  --ion-grid-padding: 0;
-
-  ion-col {
-    --ion-grid-column-padding: 0;
-  }
-}
-
 .reorder-button {
   --padding-top: 18px;
 
   ion-icon {
-    color: #000;
+    color: var(--ion-color-dark);
   }
 }
 
@@ -19,4 +11,6 @@ ion-segment-button {
   --padding-start: 5px;
   --margin-end: 0;
   --margin-start: 0;
+
+  border-bottom: 0 none !important;
 }

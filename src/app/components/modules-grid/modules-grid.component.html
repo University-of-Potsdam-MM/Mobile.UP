@@ -1,4 +1,4 @@
-<ion-item class="favoritesItem" lines="none">
+<ion-item mode="md" *ngIf="!favsAreEmpty" class="favoritesItem" lines="none">
   <ion-icon name="star" slot="start" color="primary"></ion-icon>
   <ion-label color="primary">
     {{ "button.favorites" | translate }}
@@ -12,6 +12,7 @@
     (click)="toggleEditingMode()"
   ></ion-icon>
   <ion-button
+    mode="md"
     *ngIf="editingMode"
     (click)="toggleEditingMode()"
     slot="end"

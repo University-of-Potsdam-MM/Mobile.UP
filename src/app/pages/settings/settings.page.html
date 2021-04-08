@@ -1,7 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.settings.title" | translate }}</ion-title>
   </ion-toolbar>
@@ -11,16 +10,26 @@
   <ion-list *ngIf="settings_initializes" class="ion-no-padding">
     <div *ngFor="let setting of settings" id="test_div">
       <div
+        class="settingsDiv"
         *ngIf="!(setting.mobileOnly && !(platform.is('ios') || platform.is('android')))"
-        style="border-bottom: solid #f4f4f4 2px !important"
       >
-        <ion-item lines="none" *ngIf="getSettingType(setting) === 'boolean'">
-          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+        <ion-item
+          mode="md"
+          lines="none"
+          *ngIf="getSettingType(setting) === 'boolean'"
+        >
+          <ion-icon
+            color="primary"
+            name="{{ setting.icon }}"
+            slot="start"
+          ></ion-icon>
           <ion-label class="ion-text-wrap"
             >{{ "page.settings.setting." + setting.key + ".lbl" | translate
             }}</ion-label
           >
           <ion-toggle
+            mode="md"
+            size="small"
             slot="end"
             checked="{{ setting.value }}"
             (ionChange)="changeBoolSetting(setting)"
@@ -28,6 +37,7 @@
         </ion-item>
 
         <ion-item-divider
+          mode="md"
           color="light"
           *ngIf="getSettingType(setting) == 'placeholder'"
         >
@@ -38,10 +48,15 @@
         </ion-item-divider>
 
         <ion-item
+          mode="md"
           *ngIf="getSettingType(setting) !== 'boolean' && getSettingType(setting) !== 'placeholder'"
           lines="none"
         >
-          <ion-icon name="{{ setting.icon }}" slot="start"></ion-icon>
+          <ion-icon
+            color="primary"
+            name="{{ setting.icon }}"
+            slot="start"
+          ></ion-icon>
           <ion-label class="ion-text-wrap"
             >{{ "page.settings.setting." + setting.key + ".lbl" | translate
             }}</ion-label

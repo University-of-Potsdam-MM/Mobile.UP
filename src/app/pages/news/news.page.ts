@@ -1,30 +1,21 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonSlides } from "@ionic/angular";
-import { INewsApiResponse } from "src/app/lib/interfaces";
-import { AbstractPage } from "src/app/lib/abstract-page";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { Component, OnInit } from '@angular/core';
+import { INewsApiResponse } from 'src/app/lib/interfaces';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
-  selector: "app-news",
-  templateUrl: "./news.page.html",
-  styleUrls: ["./news.page.scss"],
+  selector: 'app-news',
+  templateUrl: './news.page.html',
+  styleUrls: ['./news.page.scss'],
 })
 export class NewsPage extends AbstractPage implements OnInit {
-  @ViewChild(IonSlides, { static: false }) slides: IonSlides;
-
   public newsSource = 0;
   public newsList;
   public sourcesList = [];
   public isLoaded = false;
-  public showLeftButton = false;
-  public showRightButton = true;
   public selectedCategory = 0;
   public categories = [];
   networkError;
-
-  slideOptions = {
-    slidesPerView: "auto",
-  };
 
   constructor(private ws: WebserviceWrapperService) {
     super({ optionalNetwork: true });
@@ -41,7 +32,7 @@ export class NewsPage extends AbstractPage implements OnInit {
     this.networkError = false;
 
     this.ws
-      .call("news", {}, { forceRefresh: refresher !== undefined })
+      .call('news', {}, { forceRefresh: refresher !== undefined })
       .subscribe(
         (response: INewsApiResponse) => {
           if (refresher && refresher.target) {
@@ -52,31 +43,29 @@ export class NewsPage extends AbstractPage implements OnInit {
             response.errors === undefined ||
             response.errors.exist === false
           ) {
-            this.newsList = response.vars.news;
+            this.newsList = response.vars.news.sort(function (a, b) {
+              return Number(b.News.time) - Number(a.News.time);
+            });
             const tmpArray = [];
+            // eslint-disable-next-line guard-for-in
             for (const source in response.vars.newsSources) {
               tmpArray.push(response.vars.newsSources[source]);
             }
-            let i, j;
+            let i;
+            let j;
             this.sourcesList = [];
             for (i = 0; i < tmpArray.length; i++) {
               for (j = 0; j < this.newsList.length; j++) {
                 if (this.newsList[j].NewsSource.name === tmpArray[i]) {
-                  this.sourcesList.push(tmpArray[i]);
+                  if (tmpArray[i] !== 'Zur Quelle') {
+                    this.sourcesList.push(tmpArray[i]);
+                  }
                   break;
                 }
               }
             }
             this.categories = this.sourcesList;
             this.isLoaded = true;
-
-            if (this.slides) {
-              this.slides.update();
-            }
-
-            if (this.selectedCategory === 0) {
-              this.showLeftButton = false;
-            }
           }
         },
         () => {
@@ -89,51 +78,8 @@ export class NewsPage extends AbstractPage implements OnInit {
       );
   }
 
-  // Method executed when the slides are changed
-  public async slideChanged() {
-    this.showLeftButton = !(await this.slides.isBeginning());
-    this.showRightButton = !(await this.slides.isEnd());
-  }
-
-  // Method that shows the next slide
-  public slideNext(): void {
-    this.slides.slideNext();
-    this.slideChanged();
-  }
-
-  // Method that shows the previous slide
-  public slidePrev(): void {
-    this.slides.slidePrev();
-    this.slideChanged();
-  }
-
   public setNewsSource(i: number): void {
     this.newsSource = i;
     this.selectedCategory = i;
-  }
-
-  swipeNewsSource(event) {
-    if (Math.abs(event.deltaY) < 50) {
-      const maxIndex = this.sourcesList.length - 1;
-      const currentIndex = this.newsSource;
-      let newIndex;
-      if (event.deltaX > 0) {
-        // user swiped from left to right
-        if (currentIndex > 0) {
-          newIndex = currentIndex - 1;
-          this.setNewsSource(newIndex);
-          this.slides.slidePrev();
-          this.slideChanged();
-        }
-      } else if (event.deltaX < 0) {
-        // user swiped from right to left
-        if (currentIndex < maxIndex) {
-          newIndex = currentIndex + 1;
-          this.setNewsSource(newIndex);
-          this.slides.slideNext();
-          this.slideChanged();
-        }
-      }
-    }
   }
 }

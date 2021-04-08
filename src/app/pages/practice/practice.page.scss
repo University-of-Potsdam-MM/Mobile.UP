@@ -1,24 +1,7 @@
 .partner {
-  background-color: #b0c4de;
+  background-color: var(--ion-color-custom-partner);
 }
 
-.removeFavButton {
-  color: var(--ion-color-primary);
-}
-
-ion-item .h2 {
-  background: #d3d3d3;
-}
-
-.notUnderlined {
-  text-decoration: none;
-  text-transform: capitalize;
-}
-
-p {
-  font-size: small;
-}
-
-ion-label {
-  margin-bottom: 0;
+.filterFavoritesButton {
+  margin-top: 8px;
 }

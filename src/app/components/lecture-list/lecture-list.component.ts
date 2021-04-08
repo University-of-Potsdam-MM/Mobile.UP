@@ -1,39 +1,38 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Logger, LoggingService } from "ionic-logging-service";
+import { Component, OnInit, Input } from '@angular/core';
+// import { Logger, LoggingService } from 'ionic-logging-service';
 import {
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
   IPulsAPIResponse_getLectureScheduleCourses,
-} from "src/app/lib/interfaces_PULS";
-import { convertToArray } from "src/app/lib/util";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+} from 'src/app/lib/interfaces_PULS';
+import { convertToArray } from 'src/app/lib/util';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
-  selector: "app-lecture-list",
-  templateUrl: "./lecture-list.component.html",
-  styleUrls: ["./lecture-list.component.scss"],
+  selector: 'app-lecture-list',
+  templateUrl: './lecture-list.component.html',
+  styleUrls: ['./lecture-list.component.scss'],
 })
 export class LectureListComponent implements OnInit {
   @Input() headerIdInput: string;
   @Input() hasSubTreeInput;
+  @Input() refresh = false;
   headerId: string;
   hasSubTree;
-  @Input() refresh = false;
 
   lectureSchedule;
   isLoaded;
   networkError;
   isExpanded = [];
   isExpandedCourse = [];
-  logger: Logger;
+  // logger: Logger;
 
   constructor(
-    private ws: WebserviceWrapperService,
-    private loggingService: LoggingService
+    private ws: WebserviceWrapperService // private loggingService: LoggingService
   ) {}
 
   ngOnInit() {
-    this.logger = this.loggingService.getLogger("[/lecture-list.component]");
+    // this.logger = this.loggingService.getLogger('[/lecture-list.component]');
 
     if (this.headerIdInput) {
       this.headerId = this.headerIdInput;
@@ -47,7 +46,7 @@ export class LectureListComponent implements OnInit {
     if (!this.headerId) {
       this.ws
         .call(
-          "pulsGetLectureScheduleRoot",
+          'pulsGetLectureScheduleRoot',
           {},
           { forceRefreshGroup: this.refresh }
         )
@@ -58,13 +57,13 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error("ngOnInit() pulsGetLectureScheduleRoot", error);
+            // this.logger.error('ngOnInit() pulsGetLectureScheduleRoot', error);
           }
         );
     } else if (this.hasSubTree) {
       this.ws
         .call(
-          "pulsGetLectureScheduleSubTree",
+          'pulsGetLectureScheduleSubTree',
           { headerId: this.headerId },
           { forceRefreshGroup: this.refresh }
         )
@@ -75,16 +74,16 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error(
-              "ngOnInit() pulsGetLectureScheduleSubTree",
-              error
-            );
+            // this.logger.error(
+            //   'ngOnInit() pulsGetLectureScheduleSubTree',
+            //   error
+            // );
           }
         );
     } else {
       this.ws
         .call(
-          "pulsGetLectureScheduleCourses",
+          'pulsGetLectureScheduleCourses',
           { headerId: this.headerId },
           { forceRefreshGroup: this.refresh }
         )
@@ -95,10 +94,10 @@ export class LectureListComponent implements OnInit {
           },
           (error) => {
             this.networkError = true;
-            this.logger.error(
-              "ngOnInit() pulsGetLectureScheduleCourses",
-              error
-            );
+            // this.logger.error(
+            //   'ngOnInit() pulsGetLectureScheduleCourses',
+            //   error
+            // );
           }
         );
     }
@@ -151,13 +150,14 @@ export class LectureListComponent implements OnInit {
    * @param input
    */
   htmlDecode(input) {
-    const doc = new DOMParser().parseFromString(input, "text/html");
+    const doc = new DOMParser().parseFromString(input, 'text/html');
     return doc.documentElement.textContent;
   }
 
   /**
    * has to be declared for html pages to use the imported function
    * couldn't find a better solution
+   *
    * @param array
    */
   convertToArray(array) {

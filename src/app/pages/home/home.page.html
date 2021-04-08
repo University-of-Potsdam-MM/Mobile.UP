@@ -1,12 +1,11 @@
-<ion-header>
+<ion-header mode="ios">
   <ion-toolbar>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title> {{ "appName" | translate }} </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="editingMode ? 'disableScrolling' : ''">
+<ion-content [ngClass]="editingMode ? 'disableScrolling' : ''" mode="ios">
   <!-- template for each tile -->
   <ng-template #moduleTemplate let-module="module" class="no-select">
     <div (click)="openModule(module, {}, true)" class="no-select linkItem">
@@ -20,15 +19,17 @@
         [name]="module.icon"
       ></ion-icon>
       <ion-icon
-        class="moduleIcon centered"
+        class="moduleIcon svgThatShouldChangeColor centered"
         color="primary"
         *ngIf="module.customIcon"
         [src]="module.customIcon"
       ></ion-icon>
       <ion-label class="moduleLabel no-select">
-        <div align="center" class="hyphen no-select ion-padding-top">
-          {{ module.i18nKey | translate }}
-        </div>
+        <div
+          align="center"
+          class="hyphen no-select ion-padding-top"
+          [innerHTML]="module.i18nKey | translate"
+        ></div>
       </ion-label>
     </div>
   </ng-template>
@@ -36,6 +37,7 @@
   <!-- gridster grid displaying selected modules. Using the sortedModules object
    here because it already is an array, which is nice -->
   <modules-grid
+    [favsAreEmpty]="favsAreEmpty"
     [modules]="sortedModules"
     [template]="moduleTemplate"
     (editingModeChanged)="editingMode = !editingMode"
@@ -53,6 +55,7 @@
   >
     <ion-list lines="none">
       <ion-item
+        mode="md"
         *ngFor="let module of sortedModules | orderBy: 'translation'"
         button
         (click)="openModule(module, {}, false)"
@@ -63,12 +66,15 @@
           [name]="module.icon"
         ></ion-icon>
         <ion-icon
+          class="svgThatShouldChangeColor"
           *ngIf="module.customIcon"
           slot="start"
           [src]="module.customIcon"
         ></ion-icon>
         <!-- title with icon -->
-        <ion-label> {{ module.i18nKey | translate }} </ion-label>
+        <ion-label class="moduleLabel no-select">
+          <div [innerHTML]=" module.i18nKey | translate"></div>
+        </ion-label>
         <!-- favourite-state icon -->
         <ion-icon
           slot="end"

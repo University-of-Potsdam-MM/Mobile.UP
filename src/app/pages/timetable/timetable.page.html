@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-chip
       *ngIf="isMobile && !noUserRights && (eventSource.length > 0)"
       slot="end"
@@ -11,15 +11,30 @@
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Export</ion-label>
     </ion-chip>
-    <app-connection-indicator slot="end"></app-connection-indicator>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.timetable.title" | translate }}</ion-title>
   </ion-toolbar>
+  <ion-toolbar *ngIf="!noUserRights && !isLoading && !error">
+    <ion-segment class="ion-nowrap" mode="md" [value]="calMode">
+      <ion-segment-button
+        (click)="changeCalendarMode('month')"
+        [value]="'month'"
+      >
+        {{ "page.timetable.month" | translate }}
+      </ion-segment-button>
+
+      <ion-segment-button (click)="changeCalendarMode('week')" [value]="'week'">
+        {{ "page.timetable.week" | translate }}
+      </ion-segment-button>
+
+      <ion-segment-button (click)="changeCalendarMode('day')" [value]="'day'">
+        {{ "page.timetable.day" | translate }}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [ngClass]="modalOpen ? 'modalOpened ion-no-padding' : 'modalClosed ion-no-padding'"
->
+<ion-content class="ion-no-padding">
   <div align="center" *ngIf="isLoading && !noUserRights" class="ion-padding">
     <ion-spinner name="dots"></ion-spinner>
   </div>
@@ -31,7 +46,11 @@
     ></app-hint-box>
   </div>
 
-  <app-network-error-hint *ngIf="error"></app-network-error-hint>
+  <app-hint-box
+    *ngIf="error"
+    hintTypeI18nKey="hints.type.hint"
+    hintTextI18nKey="alert.httpErrorStatus.generic"
+  ></app-hint-box>
 
   <ion-progress-bar
     *ngIf="!noUserRights && !isLoading && !exportFinished"
@@ -40,45 +59,10 @@
 
   <span *ngIf="!noUserRights && !isLoading && !error">
     <ion-grid>
-      <ion-row nowrap class="ion-align-items-center ion-justify-content-center">
-        <ion-col size="auto">
-          <ion-button
-            expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'month' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('month')"
-          >
-            {{ "page.timetable.month" | translate }}
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button
-            expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'week' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('week')"
-          >
-            {{ "page.timetable.week" | translate }}
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button
-            expand="full"
-            [ngClass]="calendarOptions.calendarMode == 'day' ? 'activeCalendarButton' : 'calendarButton'"
-            size="small"
-            (click)="changeCalendarMode('day')"
-          >
-            {{ "page.timetable.day" | translate }}
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <ion-grid>
       <div align="center">
         <ion-row nowrap>
           <ion-col size="2">
-            <ion-button fill="clear" (click)="swipePrevious()"
+            <ion-button mode="md" fill="clear" (click)="swipePrevious()"
               ><ion-icon slot="icon-only" name="caret-back"></ion-icon
             ></ion-button>
           </ion-col>
@@ -86,7 +70,7 @@
             <h6 id="title">{{ currentTitle }}</h6>
           </ion-col>
           <ion-col size="2">
-            <ion-button fill="clear" (click)="swipeNext()"
+            <ion-button mode="md" fill="clear" (click)="swipeNext()"
               ><ion-icon slot="icon-only" name="caret-forward"></ion-icon
             ></ion-button>
           </ion-col>
@@ -124,7 +108,7 @@
     <calendar
       class="calendar"
       [eventSource]="eventSource"
-      [calendarMode]="calendarOptions.calendarMode"
+      [calendarMode]="calMode"
       [currentDate]="calendarOptions.currentDate"
       [locale]="calendarOptions.locale"
       [startingDayWeek]="calendarOptions.startingDayWeek"
@@ -133,7 +117,6 @@
       [endHour]="calendarOptions.endHour"
       [step]="calendarOptions.step"
       [timeInterval]="calendarOptions.timeInterval"
-      [lockSwipeToPrev]="calendarOptions.lockSwipeToPrev"
       [dateFormatter]="calendarOptions.dateFormatter"
       [showEventDetail]="calendarOptions.showEventDetail"
       [autoSelect]="calendarOptions.autoSelect"

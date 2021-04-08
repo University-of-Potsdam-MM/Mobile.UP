@@ -1,17 +1,19 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { ModalController, Platform } from "@ionic/angular";
-import { convertToArray, isInArray } from "src/app/lib/util";
-import { AlertService } from "../../services/alert/alert.service";
-import { WebIntentService } from "../../services/web-intent/web-intent.service";
-import { WebserviceWrapperService } from "../../services/webservice-wrapper/webservice-wrapper.service";
+import { Component, OnInit, Input } from '@angular/core';
+import { ModalController, Platform } from '@ionic/angular';
+import { convertToArray, isInArray } from 'src/app/lib/util';
+import { WebIntentService } from '../../services/web-intent/web-intent.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
-  selector: "book-modal-page",
-  templateUrl: "./book-detail.modal.html",
-  styleUrls: ["../../pages/library-search/library-search.page.scss"],
+  selector: 'book-modal-page',
+  templateUrl: './book-detail.modal.html',
+  styleUrls: ['../../pages/library-search/library-search.page.scss'],
 })
 export class BookDetailModalPage implements OnInit {
-  activeSegment = "location";
+  @Input() book;
+  @Input() isFavorite;
+
+  activeSegment = 'location';
   showLocation = true;
   showDetails = false;
   showShortAbstract = true;
@@ -20,18 +22,16 @@ export class BookDetailModalPage implements OnInit {
   locationData;
   error;
 
-  @Input() book;
-  @Input() isFavorite;
   shortAbstract = false;
   bookDetails = {
-    title: "",
+    title: '',
     keywords: [],
     isbn: [],
     series: [],
     extent: [],
     notes: [],
     toc: [],
-    abstract: "",
+    abstract: '',
     shortAbstract: null,
     mediaType: null,
     noDetails: true,
@@ -39,7 +39,6 @@ export class BookDetailModalPage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private alertService: AlertService,
     public webIntent: WebIntentService,
     public platform: Platform,
     private ws: WebserviceWrapperService
@@ -58,12 +57,6 @@ export class BookDetailModalPage implements OnInit {
 
   favorite() {
     this.isFavorite = !this.isFavorite;
-
-    if (!this.isFavorite) {
-      this.alertService.showToast("hints.text.favRemoved");
-    } else {
-      this.alertService.showToast("hints.text.favAdded");
-    }
   }
 
   /**
@@ -84,8 +77,8 @@ export class BookDetailModalPage implements OnInit {
     if (this.book && this.book.titleInfo) {
       this.bookDetails.title = convertToArray(this.book.titleInfo)[0].title;
       this.bookDetails.title = this.bookDetails.title.replace(
-        new RegExp("-", "g"),
-        " "
+        new RegExp('-', 'g'),
+        ' '
       );
     }
   }
@@ -101,9 +94,9 @@ export class BookDetailModalPage implements OnInit {
 
     this.ws
       .call(
-        "libraryDAIA",
+        'libraryDAIA',
         {
-          id: "ppn:" + this.book.recordInfo.recordIdentifier._,
+          id: 'ppn:' + this.book.recordInfo.recordIdentifier._,
         },
         { forceRefresh: refresher !== undefined }
       )
@@ -168,7 +161,7 @@ export class BookDetailModalPage implements OnInit {
           if (!isInArray(this.bookDetails.isbn, tmp[i]._)) {
             let identString;
             if (tmp[i].$ && tmp[i].$.type) {
-              identString = tmp[i]._ + " [" + tmp[i].$.type + "]";
+              identString = tmp[i]._ + ' [' + tmp[i].$.type + ']';
             } else {
               identString = tmp[i]._;
             }
@@ -204,7 +197,7 @@ export class BookDetailModalPage implements OnInit {
       const tmp = convertToArray(this.book.relatedItem);
 
       for (i = 0; i < tmp.length; i++) {
-        if (tmp[i] && tmp[i].$ && tmp[i].$.type === "series") {
+        if (tmp[i] && tmp[i].$ && tmp[i].$.type === 'series') {
           if (
             tmp[i].titleInfo &&
             tmp[i].titleInfo.title &&
@@ -256,7 +249,7 @@ export class BookDetailModalPage implements OnInit {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (
-          typeof tmp[i] === "string" &&
+          typeof tmp[i] === 'string' &&
           !isInArray(this.bookDetails.notes, tmp[i])
         ) {
           this.bookDetails.notes.push(tmp[i]);
@@ -276,7 +269,7 @@ export class BookDetailModalPage implements OnInit {
           this.bookDetails.notes.push(tmp[i]._);
           this.bookDetails.noDetails = false;
         } else if (
-          typeof tmp[i] === "string" &&
+          typeof tmp[i] === 'string' &&
           !isInArray(this.bookDetails.notes, tmp[i])
         ) {
           this.bookDetails.notes.push(tmp[i]);
@@ -290,7 +283,8 @@ export class BookDetailModalPage implements OnInit {
    * @name getAbstractAndTOC
    */
   getAbstractAndTOC(): void {
-    let i, j;
+    let i;
+    let j;
     if (this.book.abstract) {
       const tmp = convertToArray(this.book.abstract);
 
@@ -300,10 +294,10 @@ export class BookDetailModalPage implements OnInit {
           tocToSplit = tocToSplit._;
         }
 
-        if (tocToSplit && tocToSplit.indexOf("--") >= 0) {
-          const toc = tocToSplit.split("--");
+        if (tocToSplit && tocToSplit.indexOf('--') >= 0) {
+          const toc = tocToSplit.split('--');
           for (j = 0; j < toc.length; j++) {
-            if (toc[j] !== "") {
+            if (toc[j] !== '') {
               this.bookDetails.toc.push(toc[j]);
               this.bookDetails.noDetails = false;
             }
@@ -317,7 +311,7 @@ export class BookDetailModalPage implements OnInit {
 
     if (this.bookDetails.abstract.length > 280) {
       this.bookDetails.shortAbstract =
-        this.bookDetails.abstract.substring(0, 279) + "...";
+        this.bookDetails.abstract.substring(0, 279) + '...';
       this.shortAbstract = true;
     }
   }

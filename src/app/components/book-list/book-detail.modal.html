@@ -1,18 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title>{{ "page.library-search.titleDetail" | translate }}</ion-title>
     <ion-button
+      mode="md"
       *ngIf="!(platform.is('ios') || platform.is('android'))"
       (click)="updateLocation(true)"
       slot="end"
@@ -20,7 +19,7 @@
     >
       <ion-icon style="font-size: x-large" name="refresh"></ion-icon>
     </ion-button>
-    <ion-button slot="end" (click)="favorite()" fill="clear">
+    <ion-button mode="md" slot="end" (click)="favorite()" fill="clear">
       <ion-icon
         style="font-size: x-large"
         [name]="isFavorite ? 'star' : 'star-outline'"
@@ -59,7 +58,7 @@
   >
     {{ "page.library-search.bookSet" | translate }}
   </p>
-  <ion-segment [value]="activeSegment">
+  <ion-segment [value]="activeSegment" mode="md">
     <ion-segment-button
       value="location"
       (click)="showLocation = true; showDetails = false;"
@@ -97,12 +96,19 @@
         hintTypeI18nKey="hints.type.hint"
         hintTextI18nKey="hints.text.noInformation"
       ></app-hint-box>
-      <app-network-error-hint *ngIf="error"></app-network-error-hint>
+      <app-hint-box
+        *ngIf="error"
+        hintTypeI18nKey="hints.type.hint"
+        hintTextI18nKey="alert.httpErrorStatus.generic"
+      ></app-hint-box>
     </div>
   </div>
 
   <ion-list *ngIf="showDetails" lines="none">
-    <ion-item *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>Abstract</h2>
         <p *ngIf="!shortAbstract || !showShortAbstract">
@@ -113,6 +119,7 @@
         </p>
         <p *ngIf="shortAbstract" align="right">
           <ion-button
+            mode="md"
             size="small"
             fill="clear"
             (click)="showShortAbstract = !showShortAbstract"
@@ -127,7 +134,10 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.keywords" | translate }}</h2>
         <p class="list" *ngFor="let keyword of bookDetails.keywords">
@@ -139,7 +149,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.toc && bookDetails.toc.length != 0">
+    <ion-item mode="md" *ngIf="bookDetails.toc && bookDetails.toc.length != 0">
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.toc" | translate }}</h2>
         <p class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
@@ -148,6 +158,7 @@
         </p>
         <p *ngIf="bookDetails.toc.length > 3" align="right">
           <ion-button
+            mode="md"
             size="small"
             fill="clear"
             (click)="showFullTOC = !showFullTOC"
@@ -160,7 +171,10 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.notes && bookDetails.notes.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.notes && bookDetails.notes.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.annotations" | translate }}</h2>
         <p class="list" *ngFor="let note of bookDetails.notes">
@@ -168,7 +182,10 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.series && bookDetails.series.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.series && bookDetails.series.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.serie" | translate }}</h2>
         <p class="list" *ngFor="let serie of bookDetails.series">
@@ -176,7 +193,10 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>Identifier</h2>
         <p class="list" *ngFor="let isbn of bookDetails.isbn">
@@ -184,7 +204,10 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item *ngIf="bookDetails.extent && bookDetails.extent.length != 0">
+    <ion-item
+      mode="md"
+      *ngIf="bookDetails.extent && bookDetails.extent.length != 0"
+    >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.extent" | translate }}</h2>
         <p class="list" *ngFor="let extent of bookDetails.extent">

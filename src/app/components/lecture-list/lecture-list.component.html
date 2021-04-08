@@ -1,7 +1,11 @@
 <div align="center" *ngIf="!isLoaded && !networkError" class="ion-padding">
   <ion-spinner name="dots"></ion-spinner>
 </div>
-<app-network-error-hint *ngIf="networkError"></app-network-error-hint>
+<app-hint-box
+  *ngIf="networkError"
+  hintTypeI18nKey="hints.type.hint"
+  hintTextI18nKey="alert.httpErrorStatus.generic"
+></app-hint-box>
 <ion-list
   *ngIf="
     lectureSchedule &&
@@ -22,6 +26,7 @@
     "
   >
     <ion-item
+      mode="md"
       [ngClass]="
         !isExpanded[childNode.headerId] ? 'rootItem' : 'expandedRootItem'
       "
@@ -66,6 +71,7 @@
     [ngClass]="!isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'"
   >
     <ion-item
+      mode="md"
       [ngClass]="
         !isExpanded[childNode.headerId] ? 'subTreeItem' : 'expandedItem'
       "
@@ -112,6 +118,7 @@
     "
   >
     <ion-item
+      mode="md"
       [ngClass]="
         !isExpandedCourse[course.courseId] ? 'courseItem' : 'expandedItem'
       "
@@ -141,14 +148,16 @@
     lectureSchedule &&
     lectureSchedule.lectureScheduleCourses &&
     lectureSchedule.lectureScheduleCourses.currentNode &&
-    lectureSchedule.lectureScheduleCourses.currentNode.courses &&
-    !lectureSchedule.lectureScheduleCourses.currentNode.courses.course
+    (!lectureSchedule.lectureScheduleCourses.currentNode.courses ||
+      (lectureSchedule.lectureScheduleCourses.currentNode.courses &&
+        !lectureSchedule.lectureScheduleCourses.currentNode.courses.course))
   "
   class="courseItem"
 >
-  <ion-item class="noCourses">
-    <ion-label class="ion-text-wrap">
-      {{ "page.lectures.noCourses" | translate }}
-    </ion-label>
-  </ion-item>
+  <div class="noCourses">
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="page.lectures.noCourses"
+    ></app-hint-box>
+  </div>
 </div>

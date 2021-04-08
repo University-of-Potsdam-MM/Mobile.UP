@@ -5,16 +5,12 @@ ion-checkbox {
 }
 
 .feeAmount {
-  color: #f00;
+  color: var(--ion-color-danger);
   font-weight: bold;
 }
 
 .noFeeAmount {
   font-weight: bold;
-}
-
-ion-button {
-  --border-radius: 0;
 }
 
 ion-card {

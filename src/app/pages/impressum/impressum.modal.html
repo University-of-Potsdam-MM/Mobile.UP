@@ -1,15 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title *ngIf="header">{{ header }}</ion-title>
   </ion-toolbar>

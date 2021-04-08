@@ -1,5 +1,5 @@
-import { HttpParameterCodec } from "@angular/common/http";
-import * as moment from "moment";
+import { HttpParameterCodec } from '@angular/common/http';
+import * as moment from 'moment';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to
@@ -31,11 +31,12 @@ export class WebHttpUrlEncodingCodec implements HttpParameterCodec {
  */
 export function isInArray(array, value): boolean {
   let found = false;
-  for (let i = 0; i < array.length; i++) {
-    if (JSON.stringify(array[i]) === JSON.stringify(value)) {
+  for (const item of array) {
+    if (JSON.stringify(item) === JSON.stringify(value)) {
       found = true;
     }
   }
+
   return found;
 }
 
@@ -60,7 +61,7 @@ export function convertToArray(toConvert) {
  * @returns {Boolean} - Whether string x contains string y
  */
 export function contains(x: string, y: string): boolean {
-  if (x && y && typeof x === "string" && typeof y === "string") {
+  if (x && y && typeof x === 'string' && typeof y === 'string') {
     return x.toLowerCase().includes(y.toLowerCase());
   } else {
     return false;
@@ -70,6 +71,7 @@ export function contains(x: string, y: string): boolean {
 /**
  * tests whether obj is an empty object
  * from here https://stackoverflow.com/a/32108184/6800122
+ *
  * @param obj
  */
 export function isEmptyObject(obj) {

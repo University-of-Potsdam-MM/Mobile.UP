@@ -1,13 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <app-connection-indicator slot="end"></app-connection-indicator>
+    <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.impressum.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngClass]="modalOpen ? 'modalOpened' : 'modalClosed'">
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col class="placeholder-img">
@@ -17,18 +16,28 @@
     </ion-row>
   </ion-grid>
   <ion-list>
-    <ion-item>
+    <ion-item mode="md">
       <ion-label>
         <b>{{ "page.impressum.listHeader" | translate }}</b>
       </ion-label>
     </ion-item>
-    <ion-item detail button (click)="openSection('page.legalNotice.title')">
+    <ion-item
+      mode="md"
+      detail
+      button
+      (click)="openSection('page.legalNotice.title')"
+    >
       <ion-label> {{ "page.legalNotice.title" | translate }} </ion-label>
     </ion-item>
-    <ion-item detail button (click)="openSection('page.privacyPolicy.title')">
+    <ion-item
+      mode="md"
+      detail
+      button
+      (click)="openSection('page.privacyPolicy.title')"
+    >
       <ion-label> {{ "page.privacyPolicy.title" | translate }} </ion-label>
     </ion-item>
-    <!-- <ion-item detail button (click)="openPage('page.termsOfUse.title')">
+    <!-- <ion-item mode="md" detail button (click)="openPage('page.termsOfUse.title')">
       <ion-label>
         {{ "page.termsOfUse.title" | translate }}
       </ion-label>

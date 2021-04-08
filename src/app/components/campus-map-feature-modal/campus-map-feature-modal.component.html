@@ -1,65 +1,62 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
-    <ion-title
-      >{{ feature.properties.Name }} ({{
-        feature.properties.campus.pretty_name
-      }})</ion-title
-    >
+    <ion-title>{{ "page.campus-map.title" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content>
   <ng-template #descriptionItemsTemplate>
     <ion-list>
-      <ion-item *ngFor="let item of descriptionItems">
-        {{ item }}
+      <ion-item mode="md" *ngFor="let item of descriptionItems">
+        <ion-label class="ion-text-wrap">{{
+          formatItemString(item)
+        }}</ion-label>
       </ion-item>
     </ion-list>
   </ng-template>
 
-  <ng-template #multipleDescriptionItemsTemplate>
-    {{ "page.campus-map.here_is_multiple" | translate }}:
+  <ng-template #descriptionTemplate>
+    <ion-item-divider mode="md">
+      <ion-label class="ion-text-wrap"
+        >{{ feature.properties.Name }} ({{
+          feature.properties.campus.pretty_name
+        }}):</ion-label
+      >
+    </ion-item-divider>
+
     <ng-container [ngTemplateOutlet]="descriptionItemsTemplate"></ng-container>
   </ng-template>
 
-  <ng-template #singleDescriptionItemTemplate>
-    {{ "page.campus-map.here_is_single" | translate }}:
-    <ng-container [ngTemplateOutlet]="descriptionItemsTemplate"></ng-container>
-  </ng-template>
-
-  <ng-template #noDescriptionItemsTemplate>
-    {{ "page.campus-map.no_description" | translate }}
-    <!-- TODO: would be nice to show some kind of description here -->
+  <ng-template #noDescriptionTemplate>
+    <ion-item-divider mode="md">
+      <ion-label class="ion-text-wrap"
+        >{{ feature.properties.Name }} ({{
+          feature.properties.campus.pretty_name
+        }})</ion-label
+      >
+    </ion-item-divider>
+    <app-hint-box
+      hintTypeI18nKey="hints.type.hint"
+      hintTextI18nKey="page.campus-map.no_description"
+    ></app-hint-box>
   </ng-template>
 
   <div [ngSwitch]="descriptionItems.length">
     <!-- if there is no description -->
     <ng-container *ngSwitchCase="0">
-      <ng-container
-        [ngTemplateOutlet]="noDescriptionItemsTemplate"
-      ></ng-container>
+      <ng-container [ngTemplateOutlet]="noDescriptionTemplate"></ng-container>
     </ng-container>
     <!-- if there is only one description item -->
-    <ng-container *ngSwitchCase="1">
-      <ng-container
-        [ngTemplateOutlet]="singleDescriptionItemTemplate"
-      ></ng-container>
-    </ng-container>
-    <!-- if there are multiple description items -->
     <ng-container *ngSwitchDefault>
-      <ng-container
-        [ngTemplateOutlet]="multipleDescriptionItemsTemplate"
-      ></ng-container>
+      <ng-container [ngTemplateOutlet]="descriptionTemplate"></ng-container>
     </ng-container>
   </div>
 </ion-content>

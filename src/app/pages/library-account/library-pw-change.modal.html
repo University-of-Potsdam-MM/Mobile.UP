@@ -1,15 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-button
+      mode="md"
       slot="start"
       (click)="closeModal()"
       fill="clear"
       class="modalBackButton"
     >
-      <ion-icon
-        style="color: black; font-size: x-large"
-        name="chevron-back"
-      ></ion-icon>
+      <ion-icon name="chevron-back"></ion-icon>
     </ion-button>
     <ion-title *ngIf="header">{{ header }}</ion-title>
   </ion-toolbar>
@@ -17,11 +15,12 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="changeForm" (ngSubmit)="changePassword()">
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.oldPassword' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="current-password"
         formControlName="oldPassword"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.oldPassword' | translate }}"
@@ -29,11 +28,12 @@
     </ion-item>
     <br />
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.newPassword' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="new-password"
         formControlName="newPassword"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.newPassword' | translate }}"
@@ -41,11 +41,12 @@
     </ion-item>
     <br />
 
-    <ion-item>
+    <ion-item mode="md">
       <ion-label position="floating"
         >{{ 'page.library-account.newPasswordAgain' | translate }}</ion-label
       >
       <ion-input
+        autocomplete="new-password"
         formControlName="newPasswordVerify"
         [type]="pwVisibility"
         placeholder="{{ 'page.library-account.newPassword' | translate }}"
@@ -70,6 +71,7 @@
 
     <div align="right" class="ion-padding-end">
       <ion-button
+        mode="md"
         [disabled]="!changeForm.valid"
         type="submit"
         class="ion-no-margin"

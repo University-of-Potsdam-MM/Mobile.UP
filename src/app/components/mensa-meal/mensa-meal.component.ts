@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { IMeals } from "src/app/lib/interfaces";
+import { Component, OnInit, Input } from '@angular/core';
+import { IMeals } from 'src/app/lib/interfaces';
 
 @Component({
-  selector: "app-mensa-meal",
-  templateUrl: "./mensa-meal.component.html",
-  styleUrls: ["./mensa-meal.component.scss"],
+  selector: 'app-mensa-meal',
+  templateUrl: './mensa-meal.component.html',
+  styleUrls: ['./mensa-meal.component.scss'],
 })
 export class MensaMealComponent implements OnInit {
   @Input() meals: IMeals[];
@@ -37,7 +37,8 @@ export class MensaMealComponent implements OnInit {
 
   expandMeal(i) {
     if (
-      this.meals[i].prices ||
+      (this.meals[i].prices &&
+        (this.meals[i].prices.student || this.meals[i].prices.guest)) ||
       (this.meals[i].allergens && this.meals[i].allergens.length > 0)
     ) {
       if (this.mealIsExpanded[i]) {
@@ -74,8 +75,8 @@ export class MensaMealComponent implements OnInit {
     }
   }
 
-  formatPrices(number: number) {
-    return number.toFixed(2) + " €";
+  formatPrices(num: number) {
+    return num.toFixed(2) + ' €';
   }
 
   slideLoaded($event) {

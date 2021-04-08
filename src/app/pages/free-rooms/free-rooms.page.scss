@@ -3,6 +3,7 @@ ion-badge {
 }
 
 ion-item.timePicker {
+  --background: var(--ion-toolbar-background);
   --min-height: 10px;
 
   min-height: 10px;

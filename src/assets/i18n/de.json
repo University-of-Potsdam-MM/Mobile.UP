@@ -132,7 +132,7 @@
       "allResults": "Liste aller Ergebnisse",
       "toc": "Inhaltsverzeichnis"
     },
-    "events": {
+    "event": {
       "title": "Events",
       "showEventDetails": "Details anzeigen",
       "hideEventDetails": "Details ausblenden",
@@ -148,7 +148,7 @@
       "title": "Moodle.UP"
     },
     "lectures": {
-      "title": "Vorlesungsverzeichnis",
+      "title": "Vorlesungs&shy;verzeichnis",
       "term": "Semester",
       "sws": "Semesterwochenstunden",
       "links": "Links",
@@ -207,7 +207,7 @@
     },
     "transport": {
       "title": "Nahverkehr",
-      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des VBB genutzt.",
+      "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Verkehrsbundes Berlin-Brandenburg genutzt.",
       "journeys": "Fahrten ab",
       "track": "Gleis",
       "cancelled": "Fällt aus"
@@ -289,7 +289,7 @@
     },
     "roomplan": {
       "title": "Raumplan",
-      "no_house": "Das gewählte Haus ist heute gantägig frei.",
+      "no_house": "Das gewählte Haus ist heute ganztägig frei.",
       "no_room": "Der gewählte Raum ist heute ganztägig frei.",
       "date": "Datum",
       "no_rooms_hintText": "Für diesen Tag ist kein Raumplan vorhanden."
@@ -342,8 +342,8 @@
       "select_categories": "Kategorien zum Anzeigen wählen",
       "enable_geolocation": "Standort anzeigen",
       "disable_geolocation": "Standort nicht mehr anzeigen",
-      "here_is_multiple": "Hier befinden sich",
-      "here_is_single": "Hier befindet sich",
+      "here_is_multiple": "hier befinden sich",
+      "here_is_single": "hier befindet sich",
       "no_description": "Keine Beschreibung vorhanden",
       "category": {
         "associateinstitutes": "An-Institute",
@@ -364,12 +364,12 @@
       "sendUsername": "Benutzernamen anhängen",
       "sendDeviceData": "Geräteinformationen anhängen",
       "hintSendUsername": "Wenn diese Option aktiviert ist, wird Ihr <b>PULS-Benutzername</b> an uns übermittelt. Dies kann nützlich sein, wenn ein accountspezifisches Problem in der App auftritt. Bei Bedarf kontaktieren wir Sie per E-Mail bezüglich Ihres Problems.",
-      "hintSendDeviceData": "Wenn diese Option aktiviert ist, werden folgende Geräte-Informationen übermittelt: <br><br> a) <b>Information über Ihr Gerät</b> (Hersteller, Modell, Identifier (UUID)) <br><br> b) <b>Informationen über die App</b> (Mobile.UP-Version, Cordova-Version) <br><br> c) <b>Informationen über Ihr Betriebssystem</b> (Versionsnummer von Android / iOS) <br><br> Wir nutzen diese Informationen ausschließlich zur Analyse Ihres Problems."
+      "hintSendDeviceData": "Wenn diese Option aktiviert ist, werden folgende Geräte-Informationen übermittelt: <br><br> a) <b>Information über Ihr Gerät</b> wie Hersteller, Modell und Identifier (UUID) <br><br> b) <b>Informationen über Ihr Betriebssystem</b> wie Versionsnummer von Android / iOS <br><br> c) <b>Informationen über die genutzte App-Version</b><br><br> Wir nutzen diese Informationen ausschließlich zur Analyse Ihres Problems."
     }
   },
   "button": {
     "ok": "OK",
-    "call": "Anruf",
+    "call": "Anrufen",
     "add": "Export",
     "toHome": "Zur Startseite",
     "cancel": "Abbrechen",
@@ -465,7 +465,8 @@
   "launchNavigator": {
     "headerText": "Auswahl merken?",
     "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
-    "dialogHeaderText": "App zur Navigation auswählen..."
+    "dialogHeaderText": "Kartendienst auswählen...",
+    "destination": "Ziel"
   },
   "hints": {
     "type": {
@@ -474,14 +475,14 @@
     },
     "text": {
       "login-hint": "Bitte verwenden Sie zur Anmeldung als Benutzername Ihr Mailkürzel ohne @uni-potsdam.de.",
-      "login-hint-bib": "<b>Ausweisnummer</b><br> Für Studierende der Universität Potsdam gilt die Ausweisnummer des Studierendenausweises (PUCK), ansonsten die Nummer der Nutzerkarte (Eingabe ohne 'UB').",
+      "login-hint-bib": "<b>Ausweisnummer</b><br> Für Studierende der Universität Potsdam gilt die Ausweisnummer des Studierendenausweises (PUCK), ansonsten die Nummer der Nutzerkarte (ohne 'UB').",
       "login-hint-bib-firstlogin": "<b>Passwort beim Erstlogin</b><br> Bei Bibliotheksanmeldung vor dem 20.08.2019: die ersten drei Buchstaben des Nachnamens. Für Erstsemesterstudierende ab 2019/20: Geburtsdatum im Format TTMMJJ.",
       "password-change-hint-bib": "Beachten Sie bitte bei der Vergabe des neuen Passwortes:<br>- 8 bis 12 Zeichen<br>- mindestens 1 Kleinbuchstabe<br>- keine Umlaute<br>- mindestens 1 Zahl<br>- erlaubte Sonderzeichen: - + _ ; : ?",
       "mensa-nomeals-hint": "Es wurden keine Speisen gefunden, die den Kriterien entsprechen.",
       "grades-selectDegree-hint": "Bitte wählen Sie einen Abschluss aus, zu dem Leistungen angezeigt werden sollen.",
       "grades-notSupported-hint": "Diese Funktion wird für Ihren Account nicht unterstützt.",
       "grades-noGrades-hint": "Keine Leistungen eingetragen.",
-      "openings-planCanChange-hint": "Achtung! Dieser Wochenplan kann sich in anderen Wochen ändern.",
+      "openings-planCanChange-hint": "Der Zeitplan kann sich in anderen Wochen ändern.",
       "noResults-hint": "Für diesen Suchbegriff wurden keine Ergebnisse gefunden.",
       "favAdded": "Zu Favoriten hinzugefügt!",
       "favExists": "Bereits favorisiert!",

@@ -3,6 +3,10 @@ ion-list {
 }
 
 .cancelled {
-  background: #b33a3a;
+  background: var(--ion-color-danger);
   font-weight: 300;
+}
+
+.opnvIcon {
+  padding-right: 5px;
 }

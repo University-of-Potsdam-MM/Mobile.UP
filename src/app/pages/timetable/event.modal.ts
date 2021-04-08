@@ -1,23 +1,23 @@
-import { Component, Input, OnInit } from "@angular/core";
-import * as moment from "moment";
-import { IEventObject } from "./createEvents";
-import { ModalController } from "@ionic/angular";
-import { TranslateService } from "@ngx-translate/core";
+import { Component, Input, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { IEventObject } from './createEvents';
+import { ModalController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Component for the modal to be shown when an event is selected
  */
 
 @Component({
-  selector: "event-modal-page",
-  templateUrl: "./event.modal.html",
+  selector: 'event-modal-page',
+  templateUrl: './event.modal.html',
 })
 export class EventModalPage implements OnInit {
-  isArray = Array.isArray;
-  moment = moment;
-
   @Input() events: IEventObject[] = null;
   @Input() date = null;
+
+  isArray = Array.isArray;
+  moment = moment;
 
   constructor(
     private modalCtrl: ModalController,
@@ -30,17 +30,17 @@ export class EventModalPage implements OnInit {
 
   ngOnInit() {
     if (this.events) {
-      for (let i = 0; i < this.events.length; i++) {
+      for (const event of this.events) {
         if (
-          this.events[i].eventDetails &&
-          this.events[i].eventDetails.startDate &&
-          this.events[i].eventDetails.endDate
+          event.eventDetails &&
+          event.eventDetails.startDate &&
+          event.eventDetails.endDate
         ) {
-          const startArray = this.events[i].eventDetails.startDate.split(".");
-          const endArray = this.events[i].eventDetails.endDate.split(".");
+          const startArray = event.eventDetails.startDate.split('.');
+          const endArray = event.eventDetails.endDate.split('.');
 
           if (startArray.length > 2) {
-            this.events[i].eventDetails.startDate = new Date(
+            event.eventDetails.startDate = new Date(
               startArray[2],
               startArray[1] - 1, // Javascript dates range from 0-11
               startArray[0]
@@ -48,7 +48,7 @@ export class EventModalPage implements OnInit {
           }
 
           if (endArray.length > 2) {
-            this.events[i].eventDetails.endDate = new Date(
+            event.eventDetails.endDate = new Date(
               endArray[2],
               endArray[1] - 1, // Javascript dates range from 0-11
               endArray[0]
