@@ -77,15 +77,19 @@
 
         <ion-row>
           <ion-col>
-            <ion-button mode="md" expand="full" type="button" (click)="abort()">
+            <ion-button
+              mode="md"
+              class="loginButtons"
+              type="button"
+              (click)="abort()"
+            >
               {{ "button.cancel" | translate }}
             </ion-button>
           </ion-col>
           <ion-col>
             <ion-button
               mode="md"
-              expand="full"
-              class="submit-btn"
+              class="submit-btn loginButtons"
               [disabled]="!loginForm.valid"
               type="submit"
             >

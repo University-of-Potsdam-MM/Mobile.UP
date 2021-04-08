@@ -402,6 +402,7 @@ export class CampusMapPage extends AbstractPage implements OnInit, OnDestroy {
     this.ws.call('maps').subscribe(
       (response: IMapsResponse) => {
         this.geoJSON = response;
+        this.isLoaded = true;
         this.addFeaturesToLayerGroups(this.geoJSON, map);
       },
       () => {
@@ -409,6 +410,7 @@ export class CampusMapPage extends AbstractPage implements OnInit, OnDestroy {
           .get('assets/json/geojson.json')
           .subscribe((response: IMapsResponse) => {
             this.geoJSON = response;
+            this.isLoaded = true;
             this.addFeaturesToLayerGroups(this.geoJSON, map);
           });
       }
@@ -581,6 +583,5 @@ export class CampusMapPage extends AbstractPage implements OnInit, OnDestroy {
     this.addLeafletSearch(this.map);
     map.invalidateSize();
     this.selectCampus(this.currentCampus);
-    this.isLoaded = true;
   }
 }

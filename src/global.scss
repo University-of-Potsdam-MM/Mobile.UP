@@ -53,12 +53,8 @@
     local("Sourc-Sans-Pro-Bold") format("truetype");
 }
 
-/* reset default theme box shadows and border radius */
-ion-button {
-  --box-shadow: none;
-
-  border-radius: 0;
-  text-transform: uppercase;
+.loginButtons {
+  width: 100% !important;
 }
 
 ion-item {
@@ -244,10 +240,6 @@ ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color),
 ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
   color: var(--ion-color-dark) !important;
 }
-
-// ion-card {
-//   box-shadow: none !important;
-// }
 
 .card-background-page {
   ion-card {
