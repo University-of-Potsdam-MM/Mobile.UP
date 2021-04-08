@@ -22,6 +22,7 @@ import { CacheModule } from 'ionic-cache';
 import { IonicStorageModule } from '@ionic/storage';
 import { FormBuilder } from '@angular/forms';
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { AuthenticationGuardService } from './services/authentication-guard/authentication-guard.service';
 
 // export function configureLogging(loggingService: LoggingService): () => void {
 //   return () => loggingService.configure(environment.logging);
@@ -75,6 +76,7 @@ export function initApiManagerStatus(config: ConfigService) {
     ConfigService,
     Calendar,
     WebserviceWrapperService,
+    AuthenticationGuardService,
     FormBuilder,
     {
       provide: APP_INITIALIZER,

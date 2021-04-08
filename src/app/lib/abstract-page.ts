@@ -131,15 +131,9 @@ export abstract class AbstractPage {
    * @name requireSession
    * @desc tests for existing session and sends user to LoginPage in case none is found
    */
-  async requireSession(optional?) {
+  async requireSession() {
     // this.logger.debug('requireSession');
-
     this.session = await this.sessionProvider.getSession();
-    if (!this.session && !optional) {
-      this.navCtrl.navigateRoot('/home').then(() => {
-        this.navCtrl.navigateForward('/login');
-      });
-    }
   }
 
   /**
@@ -149,13 +143,13 @@ export abstract class AbstractPage {
    */
   private processOptions(pageOptions: IPageOptions) {
     if (pageOptions.requireSession) {
-      this.requireSession(false);
+      this.requireSession();
     }
     if (pageOptions.requireNetwork) {
       this.requireNetwork(true);
     }
     if (pageOptions.optionalSession) {
-      this.requireSession(true);
+      this.requireSession();
     }
     if (pageOptions.optionalNetwork) {
       this.requireNetwork(false);

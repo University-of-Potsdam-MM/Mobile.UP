@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthenticationGuardService } from './services/authentication-guard/authentication-guard.service';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
     path: 'grades',
     loadChildren: () =>
       import('./pages/grades/grades.module').then((m) => m.GradesPageModule),
+    canActivate: [AuthenticationGuardService],
   },
   {
     path: 'impressum',
@@ -87,6 +89,7 @@ const routes: Routes = [
       import('./pages/person-search/person-search.module').then(
         (m) => m.PersonSearchPageModule
       ),
+    canActivate: [AuthenticationGuardService],
   },
   {
     path: 'practice',
@@ -122,6 +125,7 @@ const routes: Routes = [
       import('./pages/timetable/timetable.module').then(
         (m) => m.TimetablePageModule
       ),
+    canActivate: [AuthenticationGuardService],
   },
   {
     path: 'transport',
