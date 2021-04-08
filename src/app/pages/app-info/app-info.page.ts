@@ -41,8 +41,7 @@ export class AppInfoPage extends AbstractPage implements OnInit {
   }
 
   navigateToInstitut() {
-    const address =
-      'Institut für Informatik & Computational Science, An der Bahn 2, 14476 Potsdam';
+    const address = 'An der Bahn 2, 14476 Potsdam';
 
     this.navigator.navigateToAddress(address);
   }
