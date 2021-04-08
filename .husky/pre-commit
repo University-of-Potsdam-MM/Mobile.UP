@@ -1,6 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint:fix
-npm run stylelint:fix
+# npm run lint:fix
+# npm run stylelint:fix
 npm run pretty-quick:staged
