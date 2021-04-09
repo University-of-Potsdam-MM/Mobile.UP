@@ -53,72 +53,72 @@ install_dependencies:
     refs:
       - tags
 
-.android:
-  stage: build
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-    ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
-    ANDROID_API: "android-30"
-    ANDROID_BUILD_TOOLS: "30.0.3"
-    ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
-    ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
-  before_script:
-    - apt-get update; apt-get install -y openjdk-8-jdk gradle
-    - if [ ! -d android-sdk-linux ] || [ ! -d android-sdk-linux/tools/bin ] || [ ! -d android-sdk-linux/build-tools/$ANDROID_BUILD_TOOLS/ ] || [ ! -d android-sdk-linux/platform-tools/ ];
-      then
-        rm -rf android-sdk-linux/;
-        mkdir android-sdk-linux;
-        pushd android-sdk-linux;
-          wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip -d tools && rm -f tools.zip;
-          set +o pipefail;
-          yes | tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
-          set -o pipefail;
-          tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS";
-        popd;
-      fi
-    - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
-    - npm install -g @ionic/cli
-  script:
-    - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
-    - rm -rf $PWD/android/app/build
-    - ionic capacitor sync android --prod
-    - cd android && ./gradlew assembleRelease
-    - cd .. && zipalign -v 4 $PWD/android/app/build/outputs/apk/release/app-release-unsigned.apk MobileUP-unsigned.apk
+# .android:
+#   stage: build
+#   variables:
+#     GIT_SUBMODULE_STRATEGY: recursive
+#     ANDROID_SDK_URL: https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
+#     ANDROID_API: "android-30"
+#     ANDROID_BUILD_TOOLS: "30.0.3"
+#     ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
+#     ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
+#   before_script:
+#     - apt-get update; apt-get install -y openjdk-8-jdk gradle
+#     - if [ ! -d android-sdk-linux ] || [ ! -d android-sdk-linux/tools/bin ] || [ ! -d android-sdk-linux/build-tools/$ANDROID_BUILD_TOOLS/ ] || [ ! -d android-sdk-linux/platform-tools/ ];
+#       then
+#         rm -rf android-sdk-linux/;
+#         mkdir android-sdk-linux;
+#         pushd android-sdk-linux;
+#           wget -O tools.zip $ANDROID_SDK_URL && unzip tools.zip -d tools && rm -f tools.zip;
+#           set +o pipefail;
+#           yes | tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses;
+#           set -o pipefail;
+#           tools/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;$ANDROID_API" "build-tools;$ANDROID_BUILD_TOOLS";
+#         popd;
+#       fi
+#     - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+#     - npm install -g @ionic/cli
+#   script:
+#     - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+#     - rm -rf $PWD/android/app/build
+#     - ionic capacitor sync android --prod
+#     - cd android && ./gradlew assembleRelease
+#     - cd .. && zipalign -v 4 $PWD/android/app/build/outputs/apk/release/app-release-unsigned.apk MobileUP-unsigned.apk
 
 # only used for merge requests (and branches != master in order to avoid double building)
-android-test:
-  extends: .android
-  # keep built artifacts on Git.UP for one week for manual testing/inspection
-  artifacts:
-    paths:
-      - MobileUP-unsigned.apk
-    expire_in: 1 week
-  except:
-    refs:
-      - master
-      - tags
+# android-test:
+#   extends: .android
+#   # keep built artifacts on Git.UP for one week for manual testing/inspection
+#   artifacts:
+#     paths:
+#       - MobileUP-unsigned.apk
+#     expire_in: 1 week
+#   except:
+#     refs:
+#       - master
+#       - tags
 
 # special job for building and keeping the artifacts for production, only executed for master
-android-production:
-  extends: .android
-  after_script:
-    - if [ ! -f "MobileUP-unsigned.apk" ]; then
-        exit 1;
-      fi
-    - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
-    - echo "$KEYSTORE" | base64 -d > keystore
-    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore -storepass:env KEYSTORE_PASS MobileUP-unsigned.apk /my-release-key
-    - zipalign -v 4 MobileUP-unsigned.apk MobileUP.apk
-  # keep built artifacts on Git.UP for one month for manual testing/inspection, final versions are published on Google PlayStore anyway
-  artifacts:
-    paths:
-      - MobileUP.apk
-    expire_in: 1 month
-  only:
-    - master
-  except:
-    refs:
-      - tags
+# android-production:
+#   extends: .android
+#   after_script:
+#     - if [ ! -f "MobileUP-unsigned.apk" ]; then
+#         exit 1;
+#       fi
+#     - export PATH=$ANDROID_SDK_ROOT/tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
+#     - echo "$KEYSTORE" | base64 -d > keystore
+#     - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore -storepass:env KEYSTORE_PASS MobileUP-unsigned.apk /my-release-key
+#     - zipalign -v 4 MobileUP-unsigned.apk MobileUP.apk
+#   # keep built artifacts on Git.UP for one month for manual testing/inspection, final versions are published on Google PlayStore anyway
+#   artifacts:
+#     paths:
+#       - MobileUP.apk
+#     expire_in: 1 month
+#   only:
+#     - master
+#   except:
+#     refs:
+#       - tags
 
 .browser:
   stage: build
