@@ -167,9 +167,11 @@ deploy-browser-production:
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - rm -rf platforms/
+    - mkdir -p platforms/browser/ && cp -r www/ platforms/browser/www
     - if [ -z "$SSH_DEPLOY_HOSTS" ]; then echo "no servers (SSH_DEPLOY_HOSTS) defined."; exit 1; fi
     - for server in $SSH_DEPLOY_HOSTS; do
-        tar cfz - www/ | ssh -i /root/.ssh/id_rsa gitup-deploy@$server;
+        tar cfz - platforms/browser/www/ | ssh -i /root/.ssh/id_rsa gitup-deploy@$server;
       done
   # uncomment to only deploy manually and not on every push
   #when: manual
