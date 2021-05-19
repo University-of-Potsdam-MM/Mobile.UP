@@ -63,7 +63,7 @@
     ></app-custom-card>
   </div>
 
-  <div *ngIf="isLoaded && newsList.length == 0 && !networkError">
+  <div *ngIf="isLoaded && newsList && newsList.length == 0 && !networkError">
     <app-hint-box
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noNews"
