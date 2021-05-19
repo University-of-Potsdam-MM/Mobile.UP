@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import { ConfigService } from '../config/config.service';
 import { Device } from '@capacitor/device';
 
@@ -27,7 +26,7 @@ export class DeviceService {
    * @param {Storage} storage
    * @param {Platform} platform
    */
-  constructor(private platform: Platform) {}
+  constructor() {}
 
   /**
    * @name getDeviceInfo
@@ -35,11 +34,12 @@ export class DeviceService {
    */
   async getDeviceInfo(): Promise<IDeviceInfo> {
     const info = await Device.getInfo();
+    const uid = await Device.getId();
     this.deviceInfo = {
       appVersion: ConfigService.config.appVersion,
       osPlatform: info.platform,
       osVersion: info.osVersion,
-      uuid: info.uuid,
+      uuid: uid.uuid,
       deviceManufacturer: info.manufacturer,
       deviceModel: info.model,
     };

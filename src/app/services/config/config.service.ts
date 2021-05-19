@@ -57,31 +57,34 @@ export class ConfigService {
 
   loadApiManagerStatus() {
     return new Promise<void>((resolve) => {
-      this.http
-        .get('https://apiup.uni-potsdam.de/endpoints/services/Version', {
-          responseType: 'text',
-        })
-        .subscribe(
-          (apiManagerVersion) => {
-            if (apiManagerVersion.includes('WSO2 API Manager-2.1.0')) {
-              ConfigService.isApiManagerUpdated = false;
-              // this.logger.debug('API Manager is not updated yet.');
-              resolve();
-            } else {
-              ConfigService.isApiManagerUpdated = true;
-              // this.logger.debug('API Manager is updated.');
-              resolve();
-            }
-          },
-          (error) => {
-            // this.logger.error('loadApiManagerStatus', error);
-            ConfigService.isApiManagerUpdated = false;
-            // this.logger.debug(
-            //   'API Manager status could not be loaded // is not updated yet.'
-            // );
-            resolve();
-          }
-        );
+      ConfigService.isApiManagerUpdated = true;
+      resolve();
+
+      // this.http
+      //   .get('https://apiup.uni-potsdam.de/endpoints/services/Version', {
+      //     responseType: 'text',
+      //   })
+      //   .subscribe(
+      //     (apiManagerVersion) => {
+      //       if (apiManagerVersion.includes('WSO2 API Manager-2.1.0')) {
+      //         ConfigService.isApiManagerUpdated = false;
+      //         // this.logger.debug('API Manager is not updated yet.');
+      //         resolve();
+      //       } else {
+      //         ConfigService.isApiManagerUpdated = true;
+      //         // this.logger.debug('API Manager is updated.');
+      //         resolve();
+      //       }
+      //     },
+      //     (error) => {
+      //       // this.logger.error('loadApiManagerStatus', error);
+      //       ConfigService.isApiManagerUpdated = false;
+      //       // this.logger.debug(
+      //       //   'API Manager status could not be loaded // is not updated yet.'
+      //       // );
+      //       resolve();
+      //     }
+      //   );
     });
   }
 }

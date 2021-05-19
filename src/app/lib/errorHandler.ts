@@ -29,7 +29,7 @@ export class MobileUPErrorHandler implements ErrorHandler {
   async handleError(error) {
     let loclalUuid = 'none';
     if (this.platform.is('ios') || this.platform.is('android')) {
-      const info = await Device.getInfo();
+      const info = await Device.getId();
       loclalUuid = info.uuid;
     }
 
