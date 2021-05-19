@@ -1,6 +1,6 @@
 {
   "name": "Mobile.UP",
-  "version": "2021.3.0",
+  "version": "2021.4.0",
   "author": "Universität Potsdam",
   "homepage": "https://uni-potsdam.de/mobileup",
   "scripts": {
@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^11.2.14",
     "@angular/router": "^11.2.14",
     "@asymmetrik/ngx-leaflet": "^7.0.1",
-    "@capacitor-community/http": "^0.3.1",
+    "@capacitor-community/http": "^1.0.0-alpha.5",
     "@capacitor/android": "^3.0.0",
     "@capacitor/app": "^1.0.0",
     "@capacitor/app-launcher": "^1.0.0",

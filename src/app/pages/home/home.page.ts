@@ -7,8 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { ConfigService } from 'src/app/services/config/config.service';
 import { Storage } from '@capacitor/storage';
 import { Browser } from '@capacitor/browser';
-import '@capacitor-community/http';
-import { Plugins } from '@capacitor/core';
+import { Http } from '@capacitor-community/http';
 
 @Component({
   selector: 'app-home',
@@ -86,8 +85,6 @@ export class HomePage extends AbstractPage implements OnInit {
   async checkAppUpdate() {
     const remoteConfigUrl =
       ConfigService.config.webservices.endpoint.config.url;
-
-    const { Http } = Plugins;
 
     const ret = await Http.request({
       method: 'GET',
@@ -225,7 +222,11 @@ export class HomePage extends AbstractPage implements OnInit {
 
     for (const moduleName in modules) {
       const moduleToAdd: IModule = modules[moduleName];
-      moduleToAdd.x = moduleToAdd.y = moduleToAdd.rows = moduleToAdd.cols = undefined;
+      moduleToAdd.x =
+        moduleToAdd.y =
+        moduleToAdd.rows =
+        moduleToAdd.cols =
+          undefined;
       if (!moduleToAdd.hide) {
         moduleToAdd.i18nKey = `page.${moduleToAdd.componentName}.title`;
         moduleList[moduleName] = moduleToAdd;
