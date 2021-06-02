@@ -55,7 +55,7 @@
               <b>{{ "words.house" | translate }} {{house.lbl}}</b>
               <ion-badge mode="ios" color="primary">
                 {{house.rooms.length}}
-                <span *ngIf="house.rooms.length == 1"
+                <span *ngIf="house.rooms.length === 1"
                   >{{ "words.booking" | translate }}</span
                 >
                 <span *ngIf="house.rooms.length > 1"
@@ -117,14 +117,14 @@
   </ng-template>
 
   <p
-    *ngIf="!isLoaded || (housesFound.length == 0 && error == null && !requestProcessed)"
+    *ngIf="!isLoaded || (housesFound.length === 0 && error === null && !requestProcessed)"
     style="text-align: center"
   >
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
   <ng-container
-    *ngIf="housesFound.length == 0 && requestProcessed;
+    *ngIf="housesFound.length === 0 && requestProcessed;
                 then noRoomsFoundTemplate; else roomsFoundTemplate"
   >
   </ng-container>

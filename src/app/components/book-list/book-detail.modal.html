@@ -45,7 +45,7 @@
     (mediaType)="setMediaType($event)"
   ></app-book-list>
   <p
-    *ngIf="bookDetails.mediaType == 'mediatype_o'"
+    *ngIf="bookDetails.mediaType === 'mediatype_o'"
     class="copyright-info ion-padding-horizontal"
   >
     {{ "page.library-search.copyright" | translate }}
@@ -53,7 +53,7 @@
     {{ "page.library-search.electronicUsage" | translate }}
   </p>
   <p
-    *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') != -1)"
+    *ngIf="book.originInfo && book.originInfo.issuance && (book.originInfo.issuance.indexOf('multipart') !== -1)"
     class="copyright-info ion-padding-horizontal"
   >
     {{ "page.library-search.bookSet" | translate }}
@@ -107,7 +107,7 @@
   <ion-list *ngIf="showDetails" lines="none">
     <ion-item
       mode="md"
-      *ngIf="bookDetails.abstract && bookDetails.abstract.length != 0"
+      *ngIf="bookDetails.abstract && bookDetails.abstract.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>Abstract</h2>
@@ -136,7 +136,7 @@
     </ion-item>
     <ion-item
       mode="md"
-      *ngIf="bookDetails.keywords && bookDetails.keywords.length != 0"
+      *ngIf="bookDetails.keywords && bookDetails.keywords.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.keywords" | translate }}</h2>
@@ -149,7 +149,7 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item mode="md" *ngIf="bookDetails.toc && bookDetails.toc.length != 0">
+    <ion-item mode="md" *ngIf="bookDetails.toc && bookDetails.toc.length !== 0">
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.toc" | translate }}</h2>
         <p class="list" *ngFor="let chapter of bookDetails.toc; let i = index">
@@ -173,7 +173,7 @@
     </ion-item>
     <ion-item
       mode="md"
-      *ngIf="bookDetails.notes && bookDetails.notes.length != 0"
+      *ngIf="bookDetails.notes && bookDetails.notes.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.annotations" | translate }}</h2>
@@ -184,7 +184,7 @@
     </ion-item>
     <ion-item
       mode="md"
-      *ngIf="bookDetails.series && bookDetails.series.length != 0"
+      *ngIf="bookDetails.series && bookDetails.series.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.serie" | translate }}</h2>
@@ -195,7 +195,7 @@
     </ion-item>
     <ion-item
       mode="md"
-      *ngIf="bookDetails.isbn && bookDetails.isbn.length != 0"
+      *ngIf="bookDetails.isbn && bookDetails.isbn.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>Identifier</h2>
@@ -206,7 +206,7 @@
     </ion-item>
     <ion-item
       mode="md"
-      *ngIf="bookDetails.extent && bookDetails.extent.length != 0"
+      *ngIf="bookDetails.extent && bookDetails.extent.length !== 0"
     >
       <ion-label class="ion-text-wrap">
         <h2>{{ "page.library-search.extent" | translate }}</h2>

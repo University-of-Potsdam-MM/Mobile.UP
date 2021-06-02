@@ -106,7 +106,7 @@
         ></app-book-list>
       </span>
     </ng-container>
-    <div *ngIf="!bookList || bookList.length == 0">
+    <div *ngIf="!bookList || bookList.length === 0">
       <app-hint-box
         *ngIf="!networkError"
         hintTypeI18nKey="hints.type.hint"
@@ -137,7 +137,7 @@
         ></app-book-list>
       </span>
     </ng-container>
-    <div *ngIf="displayedFavorites.length == 0">
+    <div *ngIf="displayedFavorites.length === 0">
       <app-hint-box
         hintTypeI18nKey="hints.type.hint"
         hintTextI18nKey="hints.text.noFavorites"

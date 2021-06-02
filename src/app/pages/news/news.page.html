@@ -55,7 +55,7 @@
 
   <div *ngFor="let article of newsList" class="news-article">
     <app-custom-card
-      *ngIf="article.NewsSource.name == sourcesList[newsSource]"
+      *ngIf="article.NewsSource.name === sourcesList[newsSource]"
       [headerNote]="article.News.DateString ? article.News.DateString : null"
       [cardTitle]="article.News.headline ? article.News.headline : null"
       [cardContent]="article.News.description ? article.News.description : null"
@@ -63,7 +63,7 @@
     ></app-custom-card>
   </div>
 
-  <div *ngIf="isLoaded && newsList && newsList.length == 0 && !networkError">
+  <div *ngIf="isLoaded && newsList && newsList.length === 0 && !networkError">
     <app-hint-box
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noNews"

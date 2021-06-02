@@ -164,10 +164,10 @@
             <b *ngIf="moduleGroup.examDesc">{{ moduleGroup.examDesc }}</b>
           </ion-col>
           <ion-col>
-            <b *ngIf="moduleGroup.grade && moduleGroup.grade != 'unbenotet'">{{
+            <b *ngIf="moduleGroup.grade && moduleGroup.grade !== 'unbenotet'">{{
               moduleGroup.grade
             }}</b>
-            <b *ngIf="moduleGroup.grade && moduleGroup.grade == 'unbenotet'"
+            <b *ngIf="moduleGroup.grade && moduleGroup.grade === 'unbenotet'"
               >-</b
             >
           </ion-col>
@@ -229,7 +229,7 @@
                 <div
                   *ngIf="
                     studyPerformance.grade &&
-                    studyPerformance.grade == 'unbenotet'
+                    studyPerformance.grade === 'unbenotet'
                   "
                 >
                   -
@@ -237,7 +237,7 @@
                 <div
                   *ngIf="
                     studyPerformance.grade &&
-                    studyPerformance.grade != 'unbenotet'
+                    studyPerformance.grade !== 'unbenotet'
                   "
                 >
                   {{ studyPerformance.grade }}
@@ -246,7 +246,7 @@
               <ion-col>
                 <b
                   *ngIf="
-                    studyPerformance.status && studyPerformance.status == 'BE'
+                    studyPerformance.status && studyPerformance.status === 'BE'
                   "
                   style="color: var(--ion-color-success)"
                   >{{ studyPerformance.status }}</b
@@ -254,14 +254,14 @@
                 <b
                   *ngIf="
                     studyPerformance.status &&
-                    studyPerformance.status == ('NB' || 'EN')
+                    studyPerformance.status === ('NB' || 'EN')
                   "
                   style="color: var(--ion-color-danger)"
                   >{{ studyPerformance.status }}</b
                 >
                 <b
                   *ngIf="
-                    studyPerformance.status && studyPerformance.status == 'AN'
+                    studyPerformance.status && studyPerformance.status === 'AN'
                   "
                   style="color: var(--ion-color-warning)"
                   >{{ studyPerformance.status }}</b

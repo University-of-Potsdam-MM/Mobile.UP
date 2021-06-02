@@ -41,7 +41,7 @@
     <ion-spinner name="dots"></ion-spinner>
   </div>
 
-  <div *ngIf="isLoaded && openingHours.length == 0">
+  <div *ngIf="isLoaded && openingHours.length === 0">
     <app-hint-box
       *ngIf="!networkError"
       hintTypeI18nKey="hints.type.hint"
@@ -69,13 +69,13 @@
                 <h3 class="ion-text-wrap">{{ splitItemName(item.name)[0] }}</h3>
                 <h3 class="ion-text-wrap">{{ splitItemName(item.name)[1] }}</h3>
                 <p>
-                  <ng-container *ngIf="openUntil(i) != ''"
+                  <ng-container *ngIf="openUntil(i) !== ''"
                     >{{ openUntil(i) }}</ng-container
                   >
                 </p>
               </ion-label>
               <ion-icon
-                *ngIf="(getComment(i) != '' || item.itv.length > 0)"
+                *ngIf="(getComment(i) !== '' || item.itv.length > 0)"
                 [name]="!item.isExpanded ? 'caret-forward' : 'caret-down'"
                 size="small"
                 slot="end"
@@ -90,13 +90,13 @@
                 <h3 class="ion-text-wrap">{{ splitItemName(item.name)[0] }}</h3>
                 <h3 class="ion-text-wrap">{{ splitItemName(item.name)[1] }}</h3>
                 <p>
-                  <ng-container *ngIf="closedUntil(i) != ''"
+                  <ng-container *ngIf="closedUntil(i) !== ''"
                     >{{ closedUntil(i) }}</ng-container
                   >
                 </p>
               </ion-label>
               <ion-icon
-                *ngIf="(getComment(i) != '' || item.itv.length > 0)"
+                *ngIf="(getComment(i) !== '' || item.itv.length > 0)"
                 [name]="!item.isExpanded ? 'caret-forward' : 'caret-down'"
                 size="small"
                 slot="end"
@@ -113,7 +113,7 @@
               <h3 class="ion-text-wrap">{{ splitItemName(item.name)[1] }}</h3>
             </ion-label>
             <ion-icon
-              *ngIf="(getComment(i) != '' || item.itv.length > 0)"
+              *ngIf="(getComment(i) !== '' || item.itv.length > 0)"
               [name]="!item.isExpanded ? 'caret-forward' : 'caret-down'"
               size="small"
               slot="end"
@@ -122,9 +122,9 @@
         </ion-card-header>
 
         <ion-card-content
-          *ngIf="item.isExpanded && (getComment(i) != '' || item.itv.length > 0)"
+          *ngIf="item.isExpanded && (getComment(i) !== '' || item.itv.length > 0)"
         >
-          <ng-container *ngIf="getComment(i) != ''">
+          <ng-container *ngIf="getComment(i) !== ''">
             <ion-item mode="md" lines="none" style="padding-left: 6px">
               <ion-label class="ion-text-wrap">
                 <h2>{{ "page.opening-hours.comment" | translate }}</h2>
@@ -147,8 +147,8 @@
                   <ng-container
                     *ngFor="let timespot of interval; let i = index"
                   >
-                    <h2 *ngIf="i == 0">{{ timespot }}</h2>
-                    <p *ngIf="i != 0">{{ timespot }}</p>
+                    <h2 *ngIf="i === 0">{{ timespot }}</h2>
+                    <p *ngIf="i !== 0">{{ timespot }}</p>
                   </ng-container>
                 </ion-label>
               </ion-item>

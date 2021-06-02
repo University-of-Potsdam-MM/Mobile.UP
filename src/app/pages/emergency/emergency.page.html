@@ -42,7 +42,7 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-  <div *ngIf="isLoaded && displayedList.length == 0">
+  <div *ngIf="isLoaded && displayedList.length === 0">
     <app-hint-box
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noResults-hint"

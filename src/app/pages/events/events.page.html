@@ -79,12 +79,12 @@
 
   <div *ngFor="let event of listOfEvents">
     <app-event-view
-      *ngIf="event.Place.name == listOfPlaces[selectedPlace]"
+      *ngIf="event.Place.name === listOfPlaces[selectedPlace]"
       [event]="event"
     ></app-event-view>
   </div>
 
-  <div *ngIf="isLoaded && listOfEvents.length == 0 && !networkError">
+  <div *ngIf="isLoaded && listOfEvents.length === 0 && !networkError">
     <app-hint-box
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noEvents"

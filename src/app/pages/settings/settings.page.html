@@ -39,7 +39,7 @@
         <ion-item-divider
           mode="md"
           color="light"
-          *ngIf="getSettingType(setting) == 'placeholder'"
+          *ngIf="getSettingType(setting) === 'placeholder'"
         >
           <ion-label class="ion-text-wrap"
             >{{ "page.settings.setting." + setting.key + ".lbl" | translate

@@ -63,7 +63,7 @@
           *ngIf="
             book.relatedItem &&
             convertToArray(book.relatedItem)[0].$ &&
-            convertToArray(book.relatedItem)[0].$.type == 'series'
+            convertToArray(book.relatedItem)[0].$.type === 'series'
           "
         >
           <p *ngIf="convertToArray(book.relatedItem)[0].titleInfo">
@@ -132,7 +132,7 @@
           <span *ngIf="book.originInfo.edition">{{
             convertToArray(book.originInfo.edition)[0]
           }}</span>
-          <span *ngIf="bookDetails && bookDetails.publisher != ''">
+          <span *ngIf="bookDetails && bookDetails.publisher !== ''">
             <span *ngIf="book.originInfo.edition">, </span>
             {{ bookDetails.publisher }}
           </span>
@@ -141,10 +141,10 @@
               convertToArray(book.originInfo)[0].dateIssued &&
               convertToArray(convertToArray(book.originInfo)[0].dateIssued)[0]
                 ._ &&
-              !(bookDetails && bookDetails.publisher != '')
+              !(bookDetails && bookDetails.publisher !== '')
             "
           >
-            <span *ngIf="bookDetails && bookDetails.publisher != ''">, </span>
+            <span *ngIf="bookDetails && bookDetails.publisher !== ''">, </span>
             {{
               convertToArray(convertToArray(book.originInfo)[0].dateIssued)[0]._
             }}

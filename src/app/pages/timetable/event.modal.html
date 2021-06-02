@@ -110,13 +110,13 @@
           <h2>{{ "page.timetable.building" | translate }}</h2>
 
           <p
-            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building != 'N'"
+            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building !== 'N'"
           >
             {{ event.eventDetails.building }}
           </p>
 
           <p
-            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building == 'N'"
+            *ngIf="event.eventDetails && event.eventDetails.building && event.eventDetails.building === 'N'"
           >
             /
           </p>
@@ -131,7 +131,7 @@
           <p>
             {{ event.eventDetails.roomType }}
             <span
-              *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room != 'N.'"
+              *ngIf="event.eventDetails && event.eventDetails.room && event.eventDetails.room !== 'N.'"
               >{{ event.eventDetails.room }}</span
             >
           </p>

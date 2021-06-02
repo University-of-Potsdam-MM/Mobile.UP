@@ -224,30 +224,30 @@
               let i = index;
               let odd = odd
             "
-            [ngClass]="event.groupId != group ? 'emptyRow' : ''"
+            [ngClass]="event.groupId !== group ? 'emptyRow' : ''"
           >
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.daySC">{{ event.daySC }}</span>
             </td>
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.startTime && event.endTime"
                 >{{ event.startTime }} - {{ event.endTime }}</span
               >
             </td>
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.rhythmSC">{{ event.rhythmSC }}</span>
             </td>
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.startDate && event.endDate"
                 >{{ event.startDate }} - {{ event.endDate }}</span
               >
             </td>
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.roomSc">{{
                 replaceUnderscore(event.roomSc)
               }}</span>
             </td>
-            <td *ngIf="event.groupId == group">
+            <td *ngIf="event.groupId === group">
               <span *ngIf="event.lecturers && event.lecturers.lecturer">
                 <span
                   *ngFor="

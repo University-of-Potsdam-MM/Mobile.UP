@@ -26,7 +26,7 @@
   </p>
 
   <div
-    *ngIf="noResults && query.length > 0 && (response_received && personsFound.length == 0 && error == null)"
+    *ngIf="noResults && query.length > 0 && (response_received && personsFound.length === 0 && error === null)"
   >
     <app-hint-box
       hintTypeI18nKey="hints.type.hint"

@@ -11,10 +11,10 @@
           : 'marginBottom'
       "
     >
-      <ion-avatar slot="end" *ngIf="meal.type && meal.type.length == 1">
+      <ion-avatar slot="end" *ngIf="meal.type && meal.type.length === 1">
         <span *ngFor="let type of meal.type">
           <span *ngFor="let icon of iconMapping">
-            <img *ngIf="type == icon.key" [src]="icon.value" />
+            <img *ngIf="type === icon.key" [src]="icon.value" />
           </span>
         </span>
       </ion-avatar>
@@ -22,7 +22,7 @@
         <ion-slides (ionSlidesDidLoad)="slideLoaded($event)">
           <ion-slide *ngFor="let type of meal.type">
             <span *ngFor="let icon of iconMapping">
-              <img *ngIf="type == icon.key" [src]="icon.value" />
+              <img *ngIf="type === icon.key" [src]="icon.value" />
             </span>
           </ion-slide>
         </ion-slides>

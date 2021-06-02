@@ -57,9 +57,9 @@
     <ion-spinner name="dots"></ion-spinner>
   </p>
 
-  <div *ngIf="isLoaded && displayedList.length == 0">
+  <div *ngIf="isLoaded && displayedList.length === 0">
     <app-hint-box
-      *ngIf="error == null"
+      *ngIf="error === null"
       hintTypeI18nKey="hints.type.hint"
       hintTextI18nKey="hints.text.noResults-hint"
     ></app-hint-box>

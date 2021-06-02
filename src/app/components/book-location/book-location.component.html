@@ -89,9 +89,9 @@
           slot="start"
           style="color: var(--ion-color-danger-shade); -webkit-margin-end: 10px"
           *ngIf="
-            (item[0] && item[0].indexOf('ausgeliehen') != -1) ||
-            item[0].indexOf('nicht') != -1 ||
-            item[0].indexOf('bestellt') != -1
+            (item[0] && item[0].indexOf('ausgeliehen') !== -1) ||
+            item[0].indexOf('nicht') !== -1 ||
+            item[0].indexOf('bestellt') !== -1
           "
           name="remove-circle"
         ></ion-icon>
@@ -104,8 +104,8 @@
           *ngIf="
             (item[0] &&
               departmentName &&
-              item[0].indexOf('Präsenzbestand') != -1) ||
-            departmentName.indexOf('Handapparat') != -1
+              item[0].indexOf('Präsenzbestand') !== -1) ||
+            departmentName.indexOf('Handapparat') !== -1
           "
           name="contrast"
         ></ion-icon>
@@ -118,13 +118,13 @@
           *ngIf="
             !(
               (item[0] &&
-                (item[0].indexOf('ausgeliehen') != -1 ||
-                  item[0].indexOf('nicht') != -1 ||
-                  item[0].indexOf('bestellt') != -1)) ||
+                (item[0].indexOf('ausgeliehen') !== -1 ||
+                  item[0].indexOf('nicht') !== -1 ||
+                  item[0].indexOf('bestellt') !== -1)) ||
               (item[0] &&
                 departmentName &&
-                (item[0].indexOf('Präsenzbestand') != -1 ||
-                  departmentName.indexOf('Handapparat') != -1))
+                (item[0].indexOf('Präsenzbestand') !== -1 ||
+                  departmentName.indexOf('Handapparat') !== -1))
             )
           "
           name="checkmark-circle"
@@ -150,7 +150,7 @@
           (click)="webIntent.permissionPromptWebsite(roomURL)"
         ></ion-icon>
         <ion-note
-          *ngIf="label && item[0] && label != item[0]"
+          *ngIf="label && item[0] && label !== item[0]"
           style="
             font-size: small;
             padding-inline-start: 5px;
