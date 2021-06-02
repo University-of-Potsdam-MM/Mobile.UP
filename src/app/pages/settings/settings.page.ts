@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as Constants from '../../services/settings/settings_config';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { ISetting, ESettingType } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { Storage } from '@capacitor/storage';

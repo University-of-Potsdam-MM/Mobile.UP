@@ -5,9 +5,7 @@ import {
   IDeviceInfo,
 } from 'src/app/services/device/device.service';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - this works
-import * as packageJson from '../../../../package.json';
+import { default as packageJson } from '../../../../package.json';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 

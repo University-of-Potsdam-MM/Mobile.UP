@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { ICampus, IJourneyResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';

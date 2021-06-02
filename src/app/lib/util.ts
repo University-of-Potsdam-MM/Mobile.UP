@@ -1,5 +1,5 @@
 import { HttpParameterCodec } from '@angular/common/http';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 
 /**
  * A `HttpParameterCodec` that uses `encodeURIComponent` and `decodeURIComponent` to

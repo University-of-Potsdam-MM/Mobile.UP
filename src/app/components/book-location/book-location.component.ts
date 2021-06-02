@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';

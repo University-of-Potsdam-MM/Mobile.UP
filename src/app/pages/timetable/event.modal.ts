@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { IEventObject } from './createEvents';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';

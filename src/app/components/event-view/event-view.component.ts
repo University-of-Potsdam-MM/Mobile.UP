@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { INewsEventsObject } from 'src/app/lib/interfaces';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

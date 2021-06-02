@@ -13,7 +13,7 @@ import {
   AlertController,
 } from '@ionic/angular';
 import { IBibSession } from './lib/interfaces';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { UserSessionService } from './services/user-session/user-session.service';
 import { SettingsService } from './services/settings/settings.service';

@@ -1,5 +1,5 @@
 import { Frequency, RRule, Weekday } from 'rrule';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { ICourse, IEvent_PULS } from 'src/app/lib/interfaces_PULS';
 import { convertToArray } from 'src/app/lib/util';
 import { IEvent } from 'ionic2-calendar/calendar';

@@ -7,7 +7,7 @@ import {
   IBibSession,
 } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService } from '../../services/config/config.service';

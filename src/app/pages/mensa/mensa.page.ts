@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -348,7 +348,8 @@ export class MensaPage extends AbstractPage {
                   nominatim,
                   { locale: this.translate.currentLang }
                 );
-                this.foodhopperIsOpen = foodhopperOpening.parsedOpening.getState();
+                this.foodhopperIsOpen =
+                  foodhopperOpening.parsedOpening.getState();
               }
             }
           }

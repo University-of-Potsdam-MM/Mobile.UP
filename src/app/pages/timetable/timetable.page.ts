@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IEventObject, createEventSource } from './createEvents';
 import { ModalController, AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EventModalPage } from './event.modal';
 import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
@@ -395,9 +395,8 @@ export class TimetablePage extends AbstractPage {
 
                         const chooseCalendarAlert = await this.alertCtrl.create(
                           {
-                            header: this.translate.instant(
-                              'alert.title.choose'
-                            ),
+                            header:
+                              this.translate.instant('alert.title.choose'),
                             inputs: calendarInputs,
                             backdropDismiss: false,
                             mode: 'md',

@@ -18,7 +18,7 @@ import { isEmptyObject } from '../../lib/util';
 import { switchMap, timeout } from 'rxjs/operators';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../connection/connection.service';
-import * as moment from 'moment';
+import { default as moment } from 'moment';
 import { Storage } from '@capacitor/storage';
 import { CacheService } from 'ionic-cache';
 
