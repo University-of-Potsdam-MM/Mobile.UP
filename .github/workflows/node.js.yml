@@ -29,7 +29,11 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm run compodoc
-    - run: bash ./deploy.sh
-    
-env:
-  GH_REF: github.com/University-of-Potsdam-MM/Mobile.UP.git
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        target_branch: gh-pages
+        build_dir: documentation
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
