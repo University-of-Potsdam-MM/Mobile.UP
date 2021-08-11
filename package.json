@@ -65,7 +65,7 @@
     "leaflet-search": "^2.9.11",
     "moment": "^2.29.1",
     "ngx-order-pipe": "^2.1.1",
-    "opening_hours": "^3.7.0",
+    "opening_hours": "^3.6.0",
     "rrule": "^2.6.8",
     "rxjs": "^6.6.7",
     "stream": "0.0.2",
