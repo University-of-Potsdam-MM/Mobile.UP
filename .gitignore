@@ -9,7 +9,6 @@
 log.txt
 *.sublime-project
 *.sublime-workspace
-/.vscode
 npm-debug.log*
 
 /.gradle
@@ -19,6 +18,7 @@ npm-debug.log*
 /.sourcemaps
 /.versions
 /.vscode
+/.nova
 /coverage
 /dist
 /documentation
