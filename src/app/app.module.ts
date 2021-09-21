@@ -19,7 +19,7 @@ import { WebserviceWrapperService } from './services/webservice-wrapper/webservi
 // import { LoggingService } from 'ionic-logging-service';
 import { GridsterModule } from 'angular-gridster2';
 import { CacheModule } from 'ionic-cache';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { FormBuilder } from '@angular/forms';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { AuthenticationGuardService } from './services/authentication-guard/authentication-guard.service';
