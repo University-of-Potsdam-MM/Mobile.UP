@@ -203,7 +203,7 @@
         "url": "https://apiup.uni-potsdam.de/endpoints/practiceAPI/app_data.json"
       },
       "practiceJobPostings": {
-        "url": "https://www.uni-potsdam.de/abindiepraxis/download/"
+        "url": "https://praxisportal.uni-potsdam.de/download/"
       },
       "news": {
         "url": "https://apiup.uni-potsdam.de/endpoints/newsAPI/news/"
