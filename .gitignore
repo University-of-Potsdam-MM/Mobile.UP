@@ -27,6 +27,7 @@ npm-debug.log*
 /plugins
 /www
 $RECYCLE.BIN/
+/.angular
 
 .DS_Store
 Thumbs.db

@@ -322,6 +322,7 @@ export class CampusMapPage extends AbstractPage implements OnInit, OnDestroy {
   async watchGeolocation() {
     let currentStatus: PermissionStatus = {
       location: 'prompt',
+      coarseLocation: 'prompt',
     };
     if (this.platform.is('ios') || this.platform.is('android')) {
       currentStatus = await Geolocation.checkPermissions();
