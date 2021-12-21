@@ -6,8 +6,8 @@ android {
         applicationId "de.floriangoessler.upapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20210500
-        versionName "2021.5"
+        versionCode 20210600
+        versionName "2021.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
