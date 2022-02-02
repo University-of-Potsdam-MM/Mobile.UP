@@ -63,7 +63,7 @@ install_dependencies:
     ANDROID_HOME: $CI_PROJECT_DIR/android-sdk-linux/
     ANDROID_SDK_ROOT: $CI_PROJECT_DIR/android-sdk-linux/
   before_script:
-    - apt-get update; apt-get install -y openjdk-8-jdk gradle
+    - apt-get update; apt-get install -y openjdk-11-jdk gradle
     - if [ ! -d android-sdk-linux ] || [ ! -d android-sdk-linux/tools/bin ] || [ ! -d android-sdk-linux/build-tools/$ANDROID_BUILD_TOOLS/ ] || [ ! -d android-sdk-linux/platform-tools/ ];
       then
         rm -rf android-sdk-linux/;
