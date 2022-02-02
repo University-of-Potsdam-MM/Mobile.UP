@@ -135,15 +135,9 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
           'read_patron read_fees read_items write_items change_password read_availability',
       };
 
-      const loginHeaders = new HttpHeaders().append(
-        'Authorization',
-        ConfigService.config.webservices.apiToken
-      );
-
       this.http
         .get(this.endpoint + 'auth/login', {
           params: body,
-          headers: loginHeaders,
         })
         .subscribe(
           (data: IBibSessionResponse) => {
