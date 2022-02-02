@@ -24,8 +24,7 @@ export interface IWebservice {
    */
   responseCallback?: (
     response: any,
-    name: string,
-    isUsingUpdatedApiManager: boolean
+    name: string
   ) => any;
   /**
    * function that will be used as callback function for the http requests error
@@ -37,8 +36,7 @@ export interface IWebservice {
    */
   errorCallback?: (
     error: any,
-    name: string,
-    isUsingUpdatedApiManager: boolean
+    name: string
   ) => any;
 }
 

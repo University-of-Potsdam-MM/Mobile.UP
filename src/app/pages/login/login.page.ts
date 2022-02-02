@@ -61,9 +61,7 @@ export class LoginPage extends AbstractPage {
 
       this.showLoading();
 
-      const oidcObject = ConfigService.isApiManagerUpdated
-        ? ConfigService.config.authorization.oidc_new
-        : ConfigService.config.authorization.oidc;
+      const oidcObject = ConfigService.config.authorization.oidc;
 
       // prepare Observable for use in switch
       const session: Observable<ISession> = this.upLogin.oidcLogin(

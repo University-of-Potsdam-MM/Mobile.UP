@@ -40,10 +40,6 @@ export function initEmergency(config: ConfigService) {
   return () => config.loadEmergency('assets/json/emergency.json');
 }
 
-export function initApiManagerStatus(config: ConfigService) {
-  return () => config.loadApiManagerStatus();
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -87,12 +83,6 @@ export function initApiManagerStatus(config: ConfigService) {
     {
       provide: APP_INITIALIZER,
       useFactory: initEmergency,
-      deps: [ConfigService],
-      multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initApiManagerStatus,
       deps: [ConfigService],
       multi: true,
     },

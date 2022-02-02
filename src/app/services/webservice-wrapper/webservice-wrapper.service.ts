@@ -93,23 +93,15 @@ function createRoomParams(params: IRoomsRequestParams) {
 })
 export class WebserviceWrapperService {
   /**
-   * oftenly used header, can be used in buildRequest functions
+   * commonly used header, can be used in buildRequest functions
    */
   private apiTokenHeader = {
-    Authorization: ConfigService.config.webservices.apiToken,
-  };
-  private apiTokenHeaderNew = {
-    apikey: ConfigService.config.webservices.apiTokenNew,
+    apikey: ConfigService.config.webservices.apiToken,
   };
 
   private pulsHeaders = {
     'Content-Type': 'application/json',
-    Authorization: ConfigService.config.webservices.apiToken,
-  };
-
-  private pulsHeadersNew = {
-    'Content-Type': 'application/json',
-    apikey: ConfigService.config.webservices.apiTokenNew,
+    apikey: ConfigService.config.webservices.apiToken,
   };
 
   /**
@@ -166,18 +158,14 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) =>
         this.http
           .get(url, {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.apiTokenHeaderNew
-              : this.apiTokenHeader,
+            headers: this.apiTokenHeader
           })
           .pipe(timeout(2000)),
     },
     mensa: {
       buildRequest: (params: IMensaRequestParams, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: { location: params.campus_canteen_name },
         }),
     },
@@ -192,27 +180,21 @@ export class WebserviceWrapperService {
     roomsSearch: {
       buildRequest: (params: IRoomsRequestParams, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: createRoomParams(params),
         }),
     },
     roomPlanSearch: {
       buildRequest: (params: IRoomsRequestParams, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: createRoomParams(params),
         }),
     },
     library: {
       buildRequest: (requestParams: ILibraryRequestParams, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: {
             operation: 'searchRetrieve',
             query: requestParams.query,
@@ -226,9 +208,7 @@ export class WebserviceWrapperService {
     libraryDAIA: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: {
             id: params.id,
             format: 'json',
@@ -242,25 +222,19 @@ export class WebserviceWrapperService {
     emergencyCalls: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader
         }),
     },
     openingHours: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader
         }),
     },
     transport: {
       buildRequest: (params: ITransportRequestParams, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: {
             maxJourneys: params.maxJourneys,
             format: 'json',
@@ -272,44 +246,34 @@ export class WebserviceWrapperService {
     practiceSearch: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader
         }),
     },
     news: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader
         }),
     },
     events: {
       buildRequest: (params, url) => {
         url += moment().unix();
         return this.http.get(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader
         });
       },
     },
     logging: {
       buildRequest: (errorObject, url) =>
         this.http.post(url, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.apiTokenHeaderNew
-            : this.apiTokenHeader,
+          headers: this.apiTokenHeader,
           params: errorObject,
         }),
     },
     feedback: {
       buildRequest: (request, url) =>
         this.http.post(url, request, {
-          headers: ConfigService.isApiManagerUpdated
-            ? this.pulsHeadersNew
-            : this.pulsHeaders,
+          headers: this.pulsHeaders
         }),
     },
     nominatim: {
@@ -343,9 +307,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { semester: 0 } },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -359,9 +321,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
       responseCallback: (response) =>
@@ -373,9 +333,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { headerId: params.headerId } },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -385,9 +343,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { headerId: params.headerId } },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -397,9 +353,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { courseId: params.courseId } },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -414,9 +368,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
       responseCallback: (response) =>
@@ -438,9 +390,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -460,9 +410,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: ConfigService.isApiManagerUpdated
-              ? this.pulsHeadersNew
-              : this.pulsHeaders,
+            headers: this.pulsHeaders
           }
         ),
     },
@@ -565,8 +513,7 @@ export class WebserviceWrapperService {
           observer.next(
             ws.responseCallback(
               response,
-              webserviceName,
-              ConfigService.isApiManagerUpdated
+              webserviceName
             )
           );
           observer.complete();
@@ -575,8 +522,7 @@ export class WebserviceWrapperService {
           observer.error(
             ws.errorCallback(
               error,
-              webserviceName,
-              ConfigService.isApiManagerUpdated
+              webserviceName
             )
           );
         }

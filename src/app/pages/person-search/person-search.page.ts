@@ -170,9 +170,7 @@ export class PersonSearchPage extends AbstractPage implements OnInit {
       this.session.credentials.username
     ) {
       // this.logger.debug('refreshToken', 're-authenticating...');
-      const oidcObject = ConfigService.isApiManagerUpdated
-        ? ConfigService.config.authorization.oidc_new
-        : ConfigService.config.authorization.oidc;
+      const oidcObject = ConfigService.config.authorization.oidc;
       this.login.oidcLogin(this.session.credentials, oidcObject).subscribe(
         (sessionRes) => {
           // this.logger.debug('refreshToken', 're-authenticating successfull');

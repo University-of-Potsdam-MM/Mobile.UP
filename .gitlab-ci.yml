@@ -79,7 +79,7 @@ install_dependencies:
     - export PATH=$ANDROID_SDK_ROOT/tools/cmdline-tools/bin/:$ANDROID_SDK_ROOT/platform-tools/:$ANDROID_SDK_ROOT/build-tools/$ANDROID_BUILD_TOOLS/:$PATH
     - npm install -g @ionic/cli
   script:
-    - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+    - $PWD/fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
     - rm -rf $PWD/android/app/build
     - ionic capacitor sync android --prod
     - cd android && ./gradlew assembleRelease
@@ -125,7 +125,7 @@ android-production:
   before_script:
     - npm install -g @ionic/cli
   script:
-    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+    - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
     - ionic build --prod
 
 # only used for merge requests (and branches != master in order to avoid double building)
@@ -189,7 +189,7 @@ deploy-browser-production:
 #   before_script:
 #     - npm install -g @ionic/cli
 #   script:
-#     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING ACCESS_TOKEN_NEW BASIC_AUTH_STRING_NEW"
+#     - ./fillCredentials.sh "src/assets/config.dist.json" "ACCESS_TOKEN BASIC_AUTH_STRING"
 #     - rm -rf $PWD/ios/ios_build
 #     - ionic capacitor sync ios --prod
 

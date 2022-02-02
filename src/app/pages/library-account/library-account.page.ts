@@ -136,12 +136,9 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       };
 
       const loginHeaders = new HttpHeaders().append(
-        'Authorization',
+        'apikey',
         ConfigService.config.webservices.apiToken
       );
-
-      // const headersNew = new HttpHeaders()
-      //   .append('apikey', ConfigService.config.webservices.apiTokenNew);
 
       this.http
         .get(this.endpoint + 'auth/login', {

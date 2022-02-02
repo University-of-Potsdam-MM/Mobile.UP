@@ -144,9 +144,7 @@ export class AppComponent {
         (await this.connectionService.checkOnline())
         // && utils.sessionIsValid(session.timestamp, session.oidcTokenObject.expires_in, ConfigService.config.general.tokenRefreshBoundary)
       ) {
-        const oidcObject = ConfigService.isApiManagerUpdated
-          ? ConfigService.config.authorization.oidc_new
-          : ConfigService.config.authorization.oidc;
+        const oidcObject = ConfigService.config.authorization.oidc;
 
         this.login
           .oidcRefreshToken(session.oidcTokenObject.refresh_token, oidcObject)

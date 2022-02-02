@@ -189,7 +189,6 @@ export interface IAppUrls {
 // references interfaces coming from login-provider
 export interface ILoginConfig {
   oidc?: ILoginConfig_OIDC;
-  oidc_new?: ILoginConfig_OIDC;
 }
 
 export interface IBibSessionResponse {
@@ -230,7 +229,6 @@ export interface IModule {
 export interface IWebServices {
   endpoint: { [name: string]: IEndpoint };
   apiToken: string;
-  apiTokenNew: string;
   defaultCachingTTL: number;
   cacheGroupKeySuffix: string;
 }
