@@ -6,7 +6,7 @@
 #  * SSH_KNOWN_HOSTS (hosts keys of the servers to which the artifacts should be deployed; `ssh-keyscan hostname`)
 # except SSH_DEPLOY_HOSTS and SSH_DEPLOY_KEY all variables can be set in the Group
 
-image: node:14
+image: node:16
 
 stages:
   - prepare
