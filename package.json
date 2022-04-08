@@ -63,7 +63,7 @@
     "leaflet": "^1.7.1",
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-search": "^3.0.2",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "ngx-order-pipe": "^2.2.0",
     "opening_hours": "3.6.0",
     "postcss": "^8.4.12",
