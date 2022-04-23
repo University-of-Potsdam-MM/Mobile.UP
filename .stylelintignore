@@ -34,3 +34,5 @@ bin/
 # only lint .scss files
 *.*
 !*.scss
+.angular/
+.nova/

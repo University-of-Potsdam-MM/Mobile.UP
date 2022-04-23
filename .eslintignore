@@ -33,3 +33,6 @@ bin/
 
 protractor.conf.js
 karma.conf.js
+rollup.config.js
+.angular/
+.nova/

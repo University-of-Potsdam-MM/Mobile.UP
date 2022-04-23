@@ -158,7 +158,7 @@ export class WebserviceWrapperService {
       buildRequest: (params, url) =>
         this.http
           .get(url, {
-            headers: this.apiTokenHeader
+            headers: this.apiTokenHeader,
           })
           .pipe(timeout(2000)),
     },
@@ -222,13 +222,13 @@ export class WebserviceWrapperService {
     emergencyCalls: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: this.apiTokenHeader
+          headers: this.apiTokenHeader,
         }),
     },
     openingHours: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: this.apiTokenHeader
+          headers: this.apiTokenHeader,
         }),
     },
     transport: {
@@ -246,20 +246,20 @@ export class WebserviceWrapperService {
     practiceSearch: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: this.apiTokenHeader
+          headers: this.apiTokenHeader,
         }),
     },
     news: {
       buildRequest: (params, url) =>
         this.http.get(url, {
-          headers: this.apiTokenHeader
+          headers: this.apiTokenHeader,
         }),
     },
     events: {
       buildRequest: (params, url) => {
         url += moment().unix();
         return this.http.get(url, {
-          headers: this.apiTokenHeader
+          headers: this.apiTokenHeader,
         });
       },
     },
@@ -273,7 +273,7 @@ export class WebserviceWrapperService {
     feedback: {
       buildRequest: (request, url) =>
         this.http.post(url, request, {
-          headers: this.pulsHeaders
+          headers: this.pulsHeaders,
         }),
     },
     nominatim: {
@@ -307,7 +307,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { semester: 0 } },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -321,7 +321,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
       responseCallback: (response) =>
@@ -333,7 +333,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { headerId: params.headerId } },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -343,7 +343,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { headerId: params.headerId } },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -353,7 +353,7 @@ export class WebserviceWrapperService {
           url,
           { condition: { courseId: params.courseId } },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -368,7 +368,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
       responseCallback: (response) =>
@@ -390,7 +390,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -410,7 +410,7 @@ export class WebserviceWrapperService {
             },
           },
           {
-            headers: this.pulsHeaders
+            headers: this.pulsHeaders,
           }
         ),
     },
@@ -510,21 +510,11 @@ export class WebserviceWrapperService {
     const wrapperObservable = new Observable((observer) => {
       request.subscribe(
         (response) => {
-          observer.next(
-            ws.responseCallback(
-              response,
-              webserviceName
-            )
-          );
+          observer.next(ws.responseCallback(response, webserviceName));
           observer.complete();
         },
         (error) => {
-          observer.error(
-            ws.errorCallback(
-              error,
-              webserviceName
-            )
-          );
+          observer.error(ws.errorCallback(error, webserviceName));
         }
       );
     });

@@ -22,10 +22,7 @@ export interface IWebservice {
    *
    * @param response
    */
-  responseCallback?: (
-    response: any,
-    name: string
-  ) => any;
+  responseCallback?: (response: any, name: string) => any;
   /**
    * function that will be used as callback function for the http requests error
    * callback.
@@ -34,10 +31,7 @@ export interface IWebservice {
    *
    * @param error
    */
-  errorCallback?: (
-    error: any,
-    name: string
-  ) => any;
+  errorCallback?: (error: any, name: string) => any;
 }
 
 export interface ICachingOptions {

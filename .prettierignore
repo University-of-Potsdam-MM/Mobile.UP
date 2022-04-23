@@ -39,3 +39,5 @@ config.json
 
 capacitor.config.json
 capacitor.plugins.json
+.angular/
+.nova/

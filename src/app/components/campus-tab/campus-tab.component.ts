@@ -26,6 +26,22 @@ export class CampusTabComponent implements OnInit {
   @Output() campusChanged: EventEmitter<ICampus> = new EventEmitter<ICampus>();
 
   /**
+   * @desc list of ICampus object that will be used
+   */
+  campusList: ICampus[] = [];
+
+  /**
+   * @desc holds the currently selected campus object
+   */
+  _selectedCampus: ICampus;
+  listProcessed = false;
+
+  constructor(
+    private settings: SettingsService,
+    private modalCtrl: ModalController
+  ) {}
+
+  /**
    * this input can be used to set the selected campus from outside
    *
    * @param campus
@@ -42,23 +58,6 @@ export class CampusTabComponent implements OnInit {
   @Input() set selectedCampusNoEmit(campus: ICampus) {
     this.selectCampus(campus, true);
   }
-
-  /**
-   * @desc list of ICampus object that will be used
-   */
-  campusList: ICampus[] = [];
-
-  /**
-   * @desc holds the currently selected campus object
-   */
-  _selectedCampus: ICampus;
-
-  listProcessed = false;
-
-  constructor(
-    private settings: SettingsService,
-    private modalCtrl: ModalController
-  ) {}
 
   /**
    * selects the specified campus directly and then emits the campusChanged event

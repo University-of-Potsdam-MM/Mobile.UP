@@ -85,9 +85,8 @@ export class WebIntentService {
           const showDialog = await this.settingsProvider.getSettingValue(
             'showDialog'
           );
-          const userPreferenceWebsiteOrApp = await this.settingsProvider.getSettingValue(
-            'appRedirect'
-          );
+          const userPreferenceWebsiteOrApp =
+            await this.settingsProvider.getSettingValue('appRedirect');
 
           let appRedirect = false;
           if (userPreferenceWebsiteOrApp === 'App') {

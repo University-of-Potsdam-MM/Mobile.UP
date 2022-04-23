@@ -12,7 +12,8 @@ import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 })
 export class OpeningHoursPage
   extends AbstractPage
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   openingHours = [];
   allOpeningHours: any = [];
   weekday = [];
@@ -70,18 +71,15 @@ export class OpeningHoursPage
                   { locale: this.translate.currentLang }
                 );
 
-                openingHour.nextChange = openingHour.parsedOpening.getNextChange(
-                  from,
-                  to
-                );
+                openingHour.nextChange =
+                  openingHour.parsedOpening.getNextChange(from, to);
 
                 openingHour.state = openingHour.parsedOpening.getState();
-                openingHour.unknownState = openingHour.parsedOpening.getUnknown();
+                openingHour.unknownState =
+                  openingHour.parsedOpening.getUnknown();
 
-                openingHour.intervals = openingHour.parsedOpening.getOpenIntervals(
-                  from,
-                  to
-                );
+                openingHour.intervals =
+                  openingHour.parsedOpening.getOpenIntervals(from, to);
 
                 openingHour.itv = [];
 
