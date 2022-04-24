@@ -1,8 +1,8 @@
-import { Frequency, RRule, Weekday } from 'rrule';
+import { IEvent } from 'ionic2-calendar/calendar';
 import { default as moment } from 'moment';
+import { Frequency, RRule, Weekday } from 'rrule';
 import { ICourse, IEvent_PULS } from 'src/app/lib/interfaces_PULS';
 import { convertToArray } from 'src/app/lib/util';
-import { IEvent } from 'ionic2-calendar/calendar';
 
 export interface IEventRules {
   begin: RRule;

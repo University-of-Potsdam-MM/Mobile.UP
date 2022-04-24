@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IFeedback } from 'src/app/lib/interfaces';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
 import {
   DeviceService,
   IDeviceInfo,
 } from 'src/app/services/device/device.service';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-feedback',

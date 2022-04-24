@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '../config/config.service';
 import { Device } from '@capacitor/device';
+import { ConfigService } from '../config/config.service';
 
 /**
  * @type {IDeviceInfo}

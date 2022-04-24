@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IPulsAPIResponse_getCourseData } from 'src/app/lib/interfaces_PULS';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { convertToArray, isInArray } from 'src/app/lib/util';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-course-data',

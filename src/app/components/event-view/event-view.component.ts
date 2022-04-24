@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { INewsEventsObject } from 'src/app/lib/interfaces';
-import { default as moment } from 'moment';
+import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { default as moment } from 'moment';
+import { INewsEventsObject } from 'src/app/lib/interfaces';
 
 @Component({
   selector: 'app-event-view',

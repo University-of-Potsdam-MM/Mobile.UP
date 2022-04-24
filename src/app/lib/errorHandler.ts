@@ -1,11 +1,11 @@
-import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandler, Injectable } from '@angular/core';
+import { Device } from '@capacitor/device';
 import { Platform } from '@ionic/angular';
-import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 import { AlertService } from '../services/alert/alert.service';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { ConnectionService } from '../services/connection/connection.service';
-import { Device } from '@capacitor/device';
+import { ErrorHandlerService } from '../services/error-handler/error-handler.service';
 
 @Injectable()
 export class MobileUPErrorHandler implements ErrorHandler {

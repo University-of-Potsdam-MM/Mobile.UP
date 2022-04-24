@@ -4,35 +4,35 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import {
-  Platform,
-  MenuController,
-  NavController,
-  IonRouterOutlet,
-  ModalController,
-  AlertController,
-} from '@ionic/angular';
-import { IBibSession } from './lib/interfaces';
-import { default as moment } from 'moment';
-import { TranslateService } from '@ngx-translate/core';
-import { UserSessionService } from './services/user-session/user-session.service';
-import { SettingsService } from './services/settings/settings.service';
-import { ConfigService } from './services/config/config.service';
-import {
-  ISession,
-  IOIDCRefreshResponseObject,
-} from './services/login-service/interfaces';
-import { UPLoginProvider } from './services/login-service/login';
 import { Router } from '@angular/router';
-import { AlertService } from './services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
-import { ConnectionService } from './services/connection/connection.service';
-import jwt_decode from 'jwt-decode';
+import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Storage } from '@capacitor/storage';
+import {
+  AlertController,
+  IonRouterOutlet,
+  MenuController,
+  ModalController,
+  NavController,
+  Platform,
+} from '@ionic/angular';
+import { AlertButton } from '@ionic/core';
+import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from 'ionic-cache';
-import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
+import jwt_decode from 'jwt-decode';
+import { default as moment } from 'moment';
+import { IBibSession } from './lib/interfaces';
+import { AlertService } from './services/alert/alert.service';
+import { ConfigService } from './services/config/config.service';
+import { ConnectionService } from './services/connection/connection.service';
 import { DarkModeAndroid } from './services/dark-mode-android/dist/esm';
+import {
+  IOIDCRefreshResponseObject,
+  ISession,
+} from './services/login-service/interfaces';
+import { UPLoginProvider } from './services/login-service/login';
+import { SettingsService } from './services/settings/settings.service';
+import { UserSessionService } from './services/user-session/user-session.service';
 
 @Component({
   selector: 'app-root',

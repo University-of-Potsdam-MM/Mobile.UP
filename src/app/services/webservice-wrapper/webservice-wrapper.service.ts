@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ConfigService } from '../config/config.service';
+import { Injectable } from '@angular/core';
+import { Storage } from '@capacitor/storage';
+import { CacheService } from 'ionic-cache';
+import { default as moment } from 'moment';
 import { from, Observable } from 'rxjs';
+import { switchMap, timeout } from 'rxjs/operators';
+import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PULS';
+import { isEmptyObject } from '../../lib/util';
+import { AlertService } from '../alert/alert.service';
+import { ConfigService } from '../config/config.service';
+// import { Logger, LoggingService } from 'ionic-logging-service';
+import { ConnectionService } from '../connection/connection.service';
 import {
   ICachingOptions,
   ILibraryRequestParams,
@@ -12,15 +21,6 @@ import {
   ITransportRequestParams,
   IWebservice,
 } from './webservice-definition-interfaces';
-import { IPulsAPIResponse_getLectureScheduleRoot } from '../../lib/interfaces_PULS';
-import { AlertService } from '../alert/alert.service';
-import { isEmptyObject } from '../../lib/util';
-import { switchMap, timeout } from 'rxjs/operators';
-// import { Logger, LoggingService } from 'ionic-logging-service';
-import { ConnectionService } from '../connection/connection.service';
-import { default as moment } from 'moment';
-import { Storage } from '@capacitor/storage';
-import { CacheService } from 'ionic-cache';
 
 /**
  * creates the httpParams for a request to the rooms api

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import * as Constants from '../../services/settings/settings_config';
-import { default as moment } from 'moment';
-import { ISetting, ESettingType } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
 import { Storage } from '@capacitor/storage';
+import { TranslateService } from '@ngx-translate/core';
+import { default as moment } from 'moment';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { ESettingType, ISetting } from 'src/app/lib/interfaces';
+import * as Constants from '../../services/settings/settings_config';
 
 @Component({
   selector: 'app-settings',

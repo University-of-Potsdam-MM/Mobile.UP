@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import { INewsApiResponse } from 'src/app/lib/interfaces';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({

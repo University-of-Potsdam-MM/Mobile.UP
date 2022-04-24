@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IPerson } from 'src/app/lib/interfaces';
-import { UPLoginProvider } from 'src/app/services/login-service/login';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { IPersonsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import { ConfigService } from 'src/app/services/config/config.service';
+import { Component, OnInit } from '@angular/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { IPerson } from 'src/app/lib/interfaces';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { UPLoginProvider } from 'src/app/services/login-service/login';
+import { IPersonsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-person-search',

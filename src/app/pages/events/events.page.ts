@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { IonSlides } from '@ionic/angular';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IEventApiResponse, INewsEventsObject } from 'src/app/lib/interfaces';
-import { IonSlides } from '@ionic/angular';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-events',

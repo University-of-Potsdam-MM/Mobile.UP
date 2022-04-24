@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { IModule, ISetting } from '../../lib/interfaces';
+import { AppLauncher } from '@capacitor/app-launcher';
+import { Browser } from '@capacitor/browser';
+import { Storage } from '@capacitor/storage';
+import { AlertController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { Platform, AlertController } from '@ionic/angular';
-import { SettingsService } from '../settings/settings.service';
+import { IModule, ISetting } from '../../lib/interfaces';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import * as Constants from '../../services/settings/settings_config';
-import { Storage } from '@capacitor/storage';
-import { Browser } from '@capacitor/browser';
-import { AppLauncher } from '@capacitor/app-launcher';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root',

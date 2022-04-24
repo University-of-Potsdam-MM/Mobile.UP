@@ -1,28 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  IUBUser,
-  IUBFees,
-  IUBItems,
-  IBibSessionResponse,
-  IBibSession,
-} from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { default as moment } from 'moment';
-import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ConfigService } from '../../services/config/config.service';
-import {
-  ICredentials,
-  ELoginErrors,
-} from 'src/app/services/login-service/interfaces';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Storage } from '@capacitor/storage';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { AlertButton } from '@ionic/core';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { LibraryPwChangePage } from './library-pw-change.module';
-import { sessionIsValid } from 'src/app/lib/util';
-import { Storage } from '@capacitor/storage';
+import { TranslateService } from '@ngx-translate/core';
+import { default as moment } from 'moment';
 import { AppComponent } from 'src/app/app.component';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import {
+  IBibSession,
+  IBibSessionResponse,
+  IUBFees,
+  IUBItems,
+  IUBUser,
+} from 'src/app/lib/interfaces';
+import { sessionIsValid } from 'src/app/lib/util';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import {
+  ELoginErrors,
+  ICredentials,
+} from 'src/app/services/login-service/interfaces';
+import { ConfigService } from '../../services/config/config.service';
+import { LibraryPwChangePage } from './library-pw-change.module';
 
 @Component({
   selector: 'app-library-account',

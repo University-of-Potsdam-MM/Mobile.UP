@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { Storage } from '@capacitor/storage';
 import { ModalController } from '@ionic/angular';
 import { ICampus } from 'src/app/lib/interfaces';
-import { Storage } from '@capacitor/storage';
 
 @Component({
   selector: 'campus-modal-page',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ISetting, ESettingType } from '../../lib/interfaces';
-import * as Constants from './settings_config';
 import { Storage } from '@capacitor/storage';
+import { ESettingType, ISetting } from '../../lib/interfaces';
+import * as Constants from './settings_config';
 
 @Injectable({
   providedIn: 'root',

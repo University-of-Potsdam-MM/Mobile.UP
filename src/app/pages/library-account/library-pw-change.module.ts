@@ -1,17 +1,17 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
 import {
-  FormGroup,
   FormBuilder,
-  Validators,
-  ValidatorFn,
+  FormGroup,
   ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from '@angular/forms';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { IBibSession } from 'src/app/lib/interfaces';
-import { AlertService } from 'src/app/services/alert/alert.service';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { Storage } from '@capacitor/storage';
+import { ModalController } from '@ionic/angular';
+import { IBibSession } from 'src/app/lib/interfaces';
+import { AlertService } from 'src/app/services/alert/alert.service';
 
 @Component({
   selector: 'library-pw-change-modal-page',

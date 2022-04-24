@@ -1,27 +1,27 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpLoaderFactory } from '../app.module';
 import { HttpClient } from '@angular/common/http';
-import { HintBoxComponent } from './hint-box/hint-box.component';
-import { CampusTabComponent } from './campus-tab/campus-tab.component';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { IonicModule } from '@ionic/angular';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { GridsterModule } from 'angular-gridster2';
+import { HttpLoaderFactory } from '../app.module';
 import { BookListComponent } from './book-list/book-list.component';
+import { BookLocationComponent } from './book-location/book-location.component';
+import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campus-map-feature-modal.component';
+import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
+import { CampusTabComponent } from './campus-tab/campus-tab.component';
+import { CourseDataComponent } from './course-data/course-data.component';
+import { CustomCardComponent } from './custom-card/custom-card.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { EventViewComponent } from './event-view/event-view.component';
 import { FooterDisclaimerComponent } from './footer-disclaimer/footer-disclaimer.component';
 import { GradesTableComponent } from './grades-table/grades-table.component';
+import { HintBoxComponent } from './hint-box/hint-box.component';
 import { LectureListComponent } from './lecture-list/lecture-list.component';
 import { MensaMealComponent } from './mensa-meal/mensa-meal.component';
-import { EventViewComponent } from './event-view/event-view.component';
-import { FormsModule } from '@angular/forms';
-import { BookLocationComponent } from './book-location/book-location.component';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { CampusMapFeatureModalComponent } from './campus-map-feature-modal/campus-map-feature-modal.component';
-import { CourseDataComponent } from './course-data/course-data.component';
-import { CampusReorderModalPage } from './campus-tab/campus-reorder.modal';
-import { DatePickerComponent } from './date-picker/date-picker.component';
 import { ModulesGridComponent } from './modules-grid/modules-grid.component';
-import { GridsterModule } from 'angular-gridster2';
-import { CustomCardComponent } from './custom-card/custom-card.component';
 
 @NgModule({
   declarations: [

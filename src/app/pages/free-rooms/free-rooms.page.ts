@@ -1,17 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RoomplanPage } from '../roomplan/roomplan.page';
-import {
-  IHouse,
-  IRoomRequestResponse,
-  IRoom,
-  ICampus,
-} from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
-import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import {
+  ICampus,
+  IHouse,
+  IRoom,
+  IRoomRequestResponse,
+} from 'src/app/lib/interfaces';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { RoomplanPage } from '../roomplan/roomplan.page';
 
 @Component({
   selector: 'app-free-rooms',

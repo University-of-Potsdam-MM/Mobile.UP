@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import * as xml2js from 'xml2js';
-import { ModalController, AlertController } from '@ionic/angular';
-import { IConfig } from 'src/app/lib/interfaces';
-import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
+import { Keyboard } from '@capacitor/keyboard';
+import { Storage } from '@capacitor/storage';
+import { AlertController, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as jquery from 'jquery';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { BookDetailModalPage } from 'src/app/components/book-list/book-detail.modal';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { ILibraryRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { IConfig } from 'src/app/lib/interfaces';
 import { contains, convertToArray, isInArray } from 'src/app/lib/util';
-import { Storage } from '@capacitor/storage';
-import { Keyboard } from '@capacitor/keyboard';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import * as xml2js from 'xml2js';
+import { ILibraryRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-library-search',

@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { default as moment } from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import * as jquery from 'jquery';
+import { default as moment } from 'moment';
 import * as opening from 'opening_hours';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { convertToArray, isInArray } from 'src/app/lib/util';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { IMensaRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-mensa',

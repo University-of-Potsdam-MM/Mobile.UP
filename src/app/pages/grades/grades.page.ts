@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IConfig } from 'src/app/lib/interfaces';
 import {
   IPulsAPIResponse_getAcademicAchievements,
   IPulsAPIResponse_getPersonalStudyAreas,
 } from 'src/app/lib/interfaces_PULS';
-import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({

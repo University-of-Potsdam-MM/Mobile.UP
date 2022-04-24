@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import {
+  IPulsAPIResponse_getLectureScheduleCourses,
   IPulsAPIResponse_getLectureScheduleRoot,
   IPulsAPIResponse_getLectureScheduleSubTree,
-  IPulsAPIResponse_getLectureScheduleCourses,
 } from 'src/app/lib/interfaces_PULS';
 import { convertToArray } from 'src/app/lib/util';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';

@@ -1,30 +1,29 @@
 /* eslint-disable @typescript-eslint/dot-notation */
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import {
-  IMapsResponseObject,
-  ICampus,
-  IMapsResponse,
-} from 'src/app/lib/interfaces';
-
-import { ModalController, IonSearchbar, Platform } from '@ionic/angular';
-import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+  Geolocation,
+  PermissionStatus,
+  Position,
+} from '@capacitor/geolocation';
+import { Keyboard } from '@capacitor/keyboard';
+import { IonSearchbar, ModalController, Platform } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import * as L from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 import 'leaflet-rotatedmarker';
 import 'leaflet-search';
 import { AbstractPage } from 'src/app/lib/abstract-page';
+import {
+  ICampus,
+  IMapsResponse,
+  IMapsResponseObject,
+} from 'src/app/lib/interfaces';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { CampusMapFeatureModalComponent } from '../../components/campus-map-feature-modal/campus-map-feature-modal.component';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
 import { ConfigService } from '../../services/config/config.service';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { AlertService } from 'src/app/services/alert/alert.service';
-import { LatLngExpression } from 'leaflet';
-import { Keyboard } from '@capacitor/keyboard';
-import {
-  Geolocation,
-  Position,
-  PermissionStatus,
-} from '@capacitor/geolocation';
-import { HttpClient } from '@angular/common/http';
 
 export interface CampusMapQueryParams {
   campus?: string | number;

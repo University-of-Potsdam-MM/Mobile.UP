@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+// import { Logger, LoggingService } from 'ionic-logging-service';
+import { Network } from '@capacitor/network';
 import { NavController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../alert/alert.service';
-// import { Logger, LoggingService } from 'ionic-logging-service';
-import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root',

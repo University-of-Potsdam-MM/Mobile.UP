@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IConfig, EmergencyCall } from 'src/app/lib/interfaces';
+import { Injectable } from '@angular/core';
+import { EmergencyCall, IConfig } from 'src/app/lib/interfaces';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 
 @Injectable({

@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { AlertButton } from '@ionic/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {
-  ICredentials,
-  ISession,
-  ELoginErrors,
-} from 'src/app/services/login-service/interfaces';
-import { UPLoginProvider } from 'src/app/services/login-service/login';
+import { Observable } from 'rxjs';
+import { AppComponent } from 'src/app/app.component';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { AlertService } from 'src/app/services/alert/alert.service';
-import { AlertButton } from '@ionic/core';
-import { AppComponent } from 'src/app/app.component';
-import { ConnectionService } from 'src/app/services/connection/connection.service';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ConnectionService } from 'src/app/services/connection/connection.service';
+import {
+  ELoginErrors,
+  ICredentials,
+  ISession,
+} from 'src/app/services/login-service/interfaces';
+import { UPLoginProvider } from 'src/app/services/login-service/login';
 
 @Component({
   selector: 'app-login',

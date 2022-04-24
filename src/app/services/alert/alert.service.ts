@@ -4,8 +4,8 @@ import {
   NavController,
   ToastController,
 } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
 import { AlertButton, ToastButton } from '@ionic/core';
+import { TranslateService } from '@ngx-translate/core';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 
 /**

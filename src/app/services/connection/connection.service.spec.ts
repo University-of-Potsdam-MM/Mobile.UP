@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ConnectionService } from './connection.service';
 
 describe('ConnectionService', () => {

@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { default as moment } from 'moment';
-import { ICampus, IJourneyResponse } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { ITransportRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 import { TranslateService } from '@ngx-translate/core';
+import { default as moment } from 'moment';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { ICampus, IJourneyResponse } from 'src/app/lib/interfaces';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { ITransportRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-transport',

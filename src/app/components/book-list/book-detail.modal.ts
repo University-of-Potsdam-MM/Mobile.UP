@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { convertToArray, isInArray } from 'src/app/lib/util';
 import { WebIntentService } from '../../services/web-intent/web-intent.service';

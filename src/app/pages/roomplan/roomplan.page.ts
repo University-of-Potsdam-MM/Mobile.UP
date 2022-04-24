@@ -1,18 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  IHouse,
-  IRoom,
-  IHousePlan,
-  IRoomEvent,
-  IReservationRequestResponse,
-  ICampus,
-} from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
-import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import {
+  ICampus,
+  IHouse,
+  IHousePlan,
+  IReservationRequestResponse,
+  IRoom,
+  IRoomEvent,
+} from 'src/app/lib/interfaces';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
+import { CampusTabComponent } from '../../components/campus-tab/campus-tab.component';
+import { IRoomsRequestParams } from '../../services/webservice-wrapper/webservice-definition-interfaces';
 
 @Component({
   selector: 'app-roomplan',

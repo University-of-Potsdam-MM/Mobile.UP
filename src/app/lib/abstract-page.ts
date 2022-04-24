@@ -1,10 +1,9 @@
-import { ISession } from '../services/login-service/interfaces';
-import { ConnectionService } from '../services/connection/connection.service';
-import { UserSessionService } from '../services/user-session/user-session.service';
 import { Injector, Type } from '@angular/core';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController, NavController, Platform } from '@ionic/angular';
+import { ConnectionService } from '../services/connection/connection.service';
+import { ISession } from '../services/login-service/interfaces';
+import { UserSessionService } from '../services/user-session/user-session.service';
 // import { Logger, LoggingService } from 'ionic-logging-service';
 import { WebIntentService } from '../services/web-intent/web-intent.service';
 import { StaticInjectorService } from './static-injector';

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-
 import { GradesTableComponent } from './grades-table.component';
 
 describe('GradesTableComponent', () => {

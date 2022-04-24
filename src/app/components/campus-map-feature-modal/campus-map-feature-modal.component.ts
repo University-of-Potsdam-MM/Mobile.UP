@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Feature } from 'geojson';
 import { ModalController } from '@ionic/angular';
+import { Feature } from 'geojson';
 
 @Component({
   selector: 'app-campus-map-feature-modal',

@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import * as jquery from 'jquery';
-import { Address, EmergencyCall } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
-import { ConfigService } from 'src/app/services/config/config.service';
-import { contains } from 'src/app/lib/util';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Keyboard } from '@capacitor/keyboard';
-import { NavigatorService } from 'src/app/services/navigator/navigator.service';
 import { TranslateService } from '@ngx-translate/core';
+import * as jquery from 'jquery';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { Address, EmergencyCall } from 'src/app/lib/interfaces';
+import { contains } from 'src/app/lib/util';
+import { ConfigService } from 'src/app/services/config/config.service';
+import { NavigatorService } from 'src/app/services/navigator/navigator.service';
+import { WebserviceWrapperService } from 'src/app/services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-emergency',

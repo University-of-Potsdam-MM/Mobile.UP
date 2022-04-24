@@ -1,15 +1,15 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import * as jquery from 'jquery';
-import { TranslateService } from '@ngx-translate/core';
-import { ADS, IADSResponse } from 'src/app/lib/interfaces';
-import { SettingsService } from 'src/app/services/settings/settings.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { contains, isInArray } from 'src/app/lib/util';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { Storage } from '@capacitor/storage';
+import { TranslateService } from '@ngx-translate/core';
+import * as jquery from 'jquery';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { ADS, IADSResponse } from 'src/app/lib/interfaces';
+import { contains, isInArray } from 'src/app/lib/util';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { SettingsService } from 'src/app/services/settings/settings.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
 @Component({
   selector: 'app-practice',

@@ -1,5 +1,5 @@
-import { ICampus } from '../../lib/interfaces';
 import { Observable } from 'rxjs';
+import { ICampus } from '../../lib/interfaces';
 import { ISession } from '../login-service/interfaces';
 
 /**

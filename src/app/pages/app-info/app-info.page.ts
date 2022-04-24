@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigatorService } from 'src/app/services/navigator/navigator.service';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { AbstractPage } from 'src/app/lib/abstract-page';
 import {
   DeviceService,
   IDeviceInfo,
 } from 'src/app/services/device/device.service';
-import { AbstractPage } from 'src/app/lib/abstract-page';
+import { NavigatorService } from 'src/app/services/navigator/navigator.service';
 import { default as packageJson } from '../../../../package.json';
-import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-app-info',

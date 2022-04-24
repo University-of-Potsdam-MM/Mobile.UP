@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ImpressumPageRoutingModule } from './impressum-routing.module';
-import { ImpressumPage } from './impressum.page';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { ImpressumModalPage } from './impressum.modal';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpLoaderFactory } from 'src/app/app.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { ImpressumPageRoutingModule } from './impressum-routing.module';
+import { ImpressumModalPage } from './impressum.modal';
+import { ImpressumPage } from './impressum.page';
 
 @NgModule({
   imports: [

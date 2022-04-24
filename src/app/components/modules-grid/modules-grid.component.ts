@@ -2,21 +2,21 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
+  OnInit,
   Output,
   ViewChild,
-  OnInit,
-  OnDestroy,
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuController, Platform } from '@ionic/angular';
 import {
   DisplayGrid,
   GridsterComponent,
   GridsterConfig,
   GridsterItem,
 } from 'angular-gridster2';
-import { IModule } from '../../lib/interfaces';
-import { Platform, MenuController } from '@ionic/angular';
 import * as dLoop from 'delayed-loop';
-import { Router } from '@angular/router';
+import { IModule } from '../../lib/interfaces';
 
 /**
  * This components takes a list of modules and displays those modules as tiles.

@@ -4,8 +4,8 @@
 import * as geojson from 'geojson';
 import { IDeviceInfo } from '../services/device/device.service';
 import {
-  ILoginConfig_OIDC,
   ICredentials,
+  ILoginConfig_OIDC,
 } from '../services/login-service/interfaces';
 
 /**

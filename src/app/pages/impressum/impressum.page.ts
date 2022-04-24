@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ImpressumModalPage } from './impressum.modal';
+import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import { ModalController } from '@ionic/angular';
 import { ConfigService } from 'src/app/services/config/config.service';
+import { ImpressumModalPage } from './impressum.modal';
 
 @Component({
   selector: 'app-impressum',

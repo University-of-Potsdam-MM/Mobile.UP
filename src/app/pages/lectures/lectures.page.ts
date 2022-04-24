@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Keyboard } from '@capacitor/keyboard';
+import { ModalController } from '@ionic/angular';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IPulsAPIResponse_getLectureScheduleAll } from 'src/app/lib/interfaces_PULS';
-import { LectureSearchModalPage } from './lecture-search.modal';
-import { ModalController } from '@ionic/angular';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 import { contains, convertToArray, isInArray } from 'src/app/lib/util';
-import { Keyboard } from '@capacitor/keyboard';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { LectureSearchModalPage } from './lecture-search.modal';
 
 @Component({
   selector: 'app-lectures',

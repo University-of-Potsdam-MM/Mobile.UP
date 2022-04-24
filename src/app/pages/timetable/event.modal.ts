@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { default as moment } from 'moment';
-import { IEventObject } from './createEvents';
 import { ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import { default as moment } from 'moment';
+import { IEventObject } from './createEvents';
 
 /**
  * Component for the modal to be shown when an event is selected

@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component } from '@angular/core';
-import { IEventObject, createEventSource } from './createEvents';
-import { ModalController, AlertController } from '@ionic/angular';
-import { TranslateService } from '@ngx-translate/core';
-import { default as moment } from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EventModalPage } from './event.modal';
-import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { Calendar } from '@ionic-native/calendar/ngx';
-import { AlertService } from 'src/app/services/alert/alert.service';
+import { AlertController, ModalController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import * as dLoop from 'delayed-loop';
+import { CalendarMode, IEvent } from 'ionic2-calendar/calendar';
+import { default as moment } from 'moment';
 import { AbstractPage } from 'src/app/lib/abstract-page';
-import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { IPulsAPIResponse_getStudentCourses } from 'src/app/lib/interfaces_PULS';
 import { convertToArray } from 'src/app/lib/util';
-import { IEvent, CalendarMode } from 'ionic2-calendar/calendar';
+import { AlertService } from 'src/app/services/alert/alert.service';
+import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
+import { createEventSource, IEventObject } from './createEvents';
+import { EventModalPage } from './event.modal';
 
 @Component({
   selector: 'app-timetable',

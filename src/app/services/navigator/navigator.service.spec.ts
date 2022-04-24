@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { NavigatorService } from './navigator.service';
 
 describe('NavigatorService', () => {

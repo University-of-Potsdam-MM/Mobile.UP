@@ -1,13 +1,13 @@
 /* eslint-disable guard-for-in */
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { IModule, IConfig } from 'src/app/lib/interfaces';
-import { AbstractPage } from 'src/app/lib/abstract-page';
-import { ToastController } from '@ionic/angular';
-import { ConfigService } from 'src/app/services/config/config.service';
-import { Storage } from '@capacitor/storage';
-import { Browser } from '@capacitor/browser';
 import { Http } from '@capacitor-community/http';
+import { Browser } from '@capacitor/browser';
+import { Storage } from '@capacitor/storage';
+import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { AbstractPage } from 'src/app/lib/abstract-page';
+import { IConfig, IModule } from 'src/app/lib/interfaces';
+import { ConfigService } from 'src/app/services/config/config.service';
 
 @Component({
   selector: 'app-home',

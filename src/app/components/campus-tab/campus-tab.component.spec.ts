@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-
 import { CampusTabComponent } from './campus-tab.component';
 
 describe('CampusTabComponent', () => {

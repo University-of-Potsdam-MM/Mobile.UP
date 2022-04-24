@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { AuthenticationGuardService } from './authentication-guard.service';
 
 describe('AuthenticationGuardService', () => {

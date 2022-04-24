@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as opening from 'opening_hours';
+import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 import { TranslateService } from '@ngx-translate/core';
+import * as opening from 'opening_hours';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
-import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 
 @Component({
   selector: 'app-opening-hours',

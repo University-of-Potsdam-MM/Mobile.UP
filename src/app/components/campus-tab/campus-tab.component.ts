@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Storage } from '@capacitor/storage';
+import { ModalController } from '@ionic/angular';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ICampus } from '../../lib/interfaces';
 import { ConfigService } from '../../services/config/config.service';
-import { ModalController } from '@ionic/angular';
 import { CampusReorderModalPage } from './campus-reorder.modal';
-import { Storage } from '@capacitor/storage';
 
 /**
  * Component for displaying a campus menu using ion-segments.
