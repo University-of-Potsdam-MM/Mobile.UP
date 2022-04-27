@@ -5,6 +5,7 @@ import { Browser } from '@capacitor/browser';
 import { Storage } from '@capacitor/storage';
 import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
+import * as $ from 'jquery';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { IConfig, IModule } from 'src/app/lib/interfaces';
 import { ConfigService } from 'src/app/services/config/config.service';
@@ -22,6 +23,8 @@ export class HomePage extends AbstractPage implements OnInit {
   sortedModules = [];
   editingMode = false;
   favsAreEmpty = false;
+  displaySystemStatusWarning = false;
+  systemStatusWarning;
 
   constructor(
     private translate: TranslateService,
@@ -38,10 +41,25 @@ export class HomePage extends AbstractPage implements OnInit {
         if (this.platform.is('android') || this.platform.is('ios')) {
           this.checkAppUpdate();
         }
+
+        this.loadSystemStatus();
       })
       .catch((error) => {
         // this.logger.error('ngOnInit', 'platformReady', error);
       });
+  }
+
+  async loadSystemStatus() {
+    const url =
+      'https://raw.githubusercontent.com/University-of-Potsdam-MM/Mobile.UP/master/src/assets/systemstatus.json';
+
+    const systemStatus = await $.getJSON(url);
+    if (systemStatus.displayWarning && systemStatus.warnings) {
+      this.displaySystemStatusWarning = true;
+      this.systemStatusWarning = systemStatus.warnings;
+    } else {
+      this.displaySystemStatusWarning = false;
+    }
   }
 
   async setupModules() {

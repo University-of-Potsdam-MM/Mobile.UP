@@ -34,6 +34,13 @@
     </div>
   </ng-template>
 
+  <app-custom-card
+    *ngIf="displaySystemStatusWarning"
+    [headerTitle]="systemStatusWarning.title"
+    [headerNote]="systemStatusWarning.message"
+    [headerIcon]="'warning'"
+  ></app-custom-card>
+
   <!-- gridster grid displaying selected modules. Using the sortedModules object
    here because it already is an array, which is nice -->
   <modules-grid
