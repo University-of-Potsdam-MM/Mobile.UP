@@ -3,6 +3,7 @@
 	"appName": "Mobile.UP",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
+	"scheme": "Mobile.UP",
 	"webDir": "www",
 	"plugins": {
 		"SplashScreen": {

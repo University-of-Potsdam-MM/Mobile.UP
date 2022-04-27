@@ -364,7 +364,7 @@
       "sendUsername": "Benutzernamen anhängen",
       "sendDeviceData": "Geräteinformationen anhängen",
       "hintSendUsername": "Wenn diese Option aktiviert ist, wird Ihr <b>PULS-Benutzername</b> an uns übermittelt. Dies kann nützlich sein, wenn ein accountspezifisches Problem in der App auftritt. Bei Bedarf kontaktieren wir Sie per E-Mail bezüglich Ihres Problems.",
-      "hintSendDeviceData": "Wenn diese Option aktiviert ist, werden folgende Geräte-Informationen übermittelt: <br><br> a) <b>Information über Ihr Gerät</b> wie Hersteller, Modell und Identifier (UUID) <br><br> b) <b>Informationen über Ihr Betriebssystem</b> wie Versionsnummer von Android / iOS <br><br> c) <b>Informationen über die genutzte App-Version</b><br><br> Wir nutzen diese Informationen ausschließlich zur Analyse Ihres Problems."
+      "hintSendDeviceData": "Wenn diese Option aktiviert ist, werden folgende Geräte-Informationen übermittelt: <br><br> a) <b>Information über Ihr Gerät</b> wie Hersteller, Modell und Identifier (appspezifische UUID) <br><br> b) <b>Informationen über Ihr Betriebssystem</b> wie Versionsnummer von Android / iOS <br><br> c) <b>Informationen über die genutzte App-Version</b><br><br> Wir nutzen diese Informationen ausschließlich zur Analyse Ihres Problems."
     }
   },
   "button": {
