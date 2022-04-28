@@ -41,12 +41,14 @@ export class HomePage extends AbstractPage implements OnInit {
         if (this.platform.is('android') || this.platform.is('ios')) {
           this.checkAppUpdate();
         }
-
-        this.loadSystemStatus();
       })
       .catch((error) => {
         // this.logger.error('ngOnInit', 'platformReady', error);
       });
+  }
+
+  ionViewDidEnter() {
+    this.loadSystemStatus();
   }
 
   async loadSystemStatus() {
