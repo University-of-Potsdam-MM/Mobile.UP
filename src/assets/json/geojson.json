@@ -1165,6 +1165,33 @@
           "properties": {
             "extrude": -1,
             "timestamp": null,
+            "Name": "2.70",
+            "icon": null,
+            "visibility": -1,
+            "description": "Institut für Informatik und Computational Science",
+            "tessellate": -1,
+            "drawOrder": null,
+            "end": null,
+            "altitudeMode": null,
+            "begin": null
+          },
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [12.974239, 52.413589],
+                [12.974778, 52.413533],
+                [12.974614, 52.412967],
+                [12.974088, 52.413026]
+              ]
+            ]
+          }
+        },
+        {
+          "properties": {
+            "extrude": -1,
+            "timestamp": null,
             "Name": "2.01",
             "icon": null,
             "visibility": -1,
