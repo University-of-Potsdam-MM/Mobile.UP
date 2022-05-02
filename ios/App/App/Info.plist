@@ -40,8 +40,6 @@
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app uses your calendar to export your timetable</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Contact access is required to save people to the contacts list</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app requires access to your location for navigation purposes</string>
 	<key>UILaunchStoryboardName</key>
