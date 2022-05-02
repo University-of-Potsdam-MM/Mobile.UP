@@ -27,7 +27,10 @@ export class MensaMealComponent implements OnInit {
     if (
       this.mealForDate[i] &&
       this.meals[i].description &&
-      this.meals[i].description.length > 1
+      this.meals[i].description.length > 1 &&
+      // this filters out responses from the API that aren't properly encoded
+      // e.g. Ukrainian alphabet, that hasn't been properly handled by the API
+      this.meals[i].description.indexOf('???') === -1
     ) {
       return true;
     } else {
