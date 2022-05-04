@@ -150,7 +150,7 @@ ion-item-divider,
 }
 
 .leaflet-control-search .search-tip {
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 6px rgb(0 0 0 / 40%);
   white-space: normal !important;
 }
 
@@ -171,8 +171,8 @@ ion-item-divider,
 
 .modalBackButton {
   --border-radius: 50%;
-  --background-focused: rgba(66, 66, 66, 0.24);
-  --background-hover: rgba(66, 66, 66, 0.08);
+  --background-focused: rgb(66 66 66 / 24%);
+  --background-hover: rgb(66 66 66 / 8%);
   --icon-margin-end: 0;
   --icon-margin-start: 0;
   --icon-font-size: 24px;
