@@ -1,13 +1,20 @@
 <ion-card mode="ios">
-  <ion-card-header *ngIf="hintTextI18nKey">
+  <ion-card-header *ngIf="hintTextI18nKey && hintTypeI18nKey">
     <ion-label>{{ hintTypeI18nKey | translate }}</ion-label>
+  </ion-card-header>
+  <ion-card-header *ngIf="hintTextAsString && hintTypeAsString">
+    <ion-label>{{ hintTypeAsString }}</ion-label>
   </ion-card-header>
 
   <ion-card-content
     [ngClass]="disableTextCentering === 'true' ? '' : 'ion-text-center'"
   >
     <ion-label>
-      <div [innerHTML]="translate.instant(hintTextI18nKey)"></div>
+      <div
+        *ngIf="hintTextI18nKey"
+        [innerHTML]="translate.instant(hintTextI18nKey)"
+      ></div>
+      <div *ngIf="hintTextAsString">{{ hintTextAsString }}</div>
       <div
         *ngIf="secondHintTextI18nKey"
         [innerHTML]="translate.instant(secondHintTextI18nKey)"

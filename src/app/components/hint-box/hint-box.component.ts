@@ -14,6 +14,12 @@ export class HintBoxComponent {
   hintTextI18nKey: string;
 
   @Input()
+  hintTypeAsString: string;
+
+  @Input()
+  hintTextAsString: string;
+
+  @Input()
   secondHintTextI18nKey: string;
 
   @Input()
