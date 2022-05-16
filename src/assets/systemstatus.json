@@ -1,5 +1,5 @@
 {
-  "displayWarning": true,
+  "displayWarning": false,
   "warnings": {
     "title": "Störungsmeldung",
     "message": "Aktuell sind viele Dienste in der App nur unzuverlässig oder gar nicht zu erreichen."
