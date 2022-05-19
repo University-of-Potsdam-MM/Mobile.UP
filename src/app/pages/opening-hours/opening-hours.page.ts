@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 import { TranslateService } from '@ngx-translate/core';
-import * as opening from 'opening_hours';
+import opening_hours, { nominatim_object, optional_conf } from 'opening_hours';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { WebserviceWrapperService } from '../../services/webservice-wrapper/webservice-wrapper.service';
 
@@ -46,7 +46,7 @@ export class OpeningHoursPage
   loadOpeningHours(refresher?) {
     this.networkError = false;
     this.ws.call('nominatim').subscribe(
-      (nominatim) => {
+      (nominatim: nominatim_object) => {
         if (!(refresher && refresher.target)) {
           this.isLoaded = false;
         } else {
@@ -64,11 +64,19 @@ export class OpeningHoursPage
               to.setDate(to.getDate() + 6);
               to.setHours(23, 59, 59, 999);
 
+              const optionalConfig: optional_conf = {
+                mode: 0,
+                locale: this.translate.currentLang,
+                tag_key: undefined,
+                map_value: undefined,
+                warnings_severity: undefined,
+              };
+
               for (const openingHour of this.allOpeningHours) {
-                openingHour.parsedOpening = new opening(
+                openingHour.parsedOpening = new opening_hours(
                   openingHour.opening_hours,
                   nominatim,
-                  { locale: this.translate.currentLang }
+                  optionalConfig
                 );
 
                 openingHour.nextChange =

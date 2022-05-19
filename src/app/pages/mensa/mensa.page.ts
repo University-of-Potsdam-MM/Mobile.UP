@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as jquery from 'jquery';
 import { default as moment } from 'moment';
-import * as opening from 'opening_hours';
+import opening_hours, { nominatim_object, optional_conf } from 'opening_hours';
 import { AbstractPage } from 'src/app/lib/abstract-page';
 import { ICampus, IMeals, IMensaResponse } from 'src/app/lib/interfaces';
 import { convertToArray, isInArray } from 'src/app/lib/util';
@@ -305,7 +305,7 @@ export class MensaPage extends AbstractPage {
     this.ws
       .call('openingHours', {}, { forceRefresh: refresher !== undefined })
       .subscribe((response: any) => {
-        this.ws.call('nominatim').subscribe((nominatim) => {
+        this.ws.call('nominatim').subscribe((nominatim: nominatim_object) => {
           if (response) {
             response = convertToArray(response);
             let mensaOpening = response.filter(function (item) {
@@ -318,12 +318,20 @@ export class MensaPage extends AbstractPage {
               }
             });
 
+            const optionalConfig: optional_conf = {
+              mode: 0,
+              locale: this.translate.currentLang,
+              tag_key: undefined,
+              map_value: undefined,
+              warnings_severity: undefined,
+            };
+
             if (mensaOpening && mensaOpening.length > 0) {
               mensaOpening = mensaOpening[0];
-              mensaOpening.parsedOpening = new opening(
+              mensaOpening.parsedOpening = new opening_hours(
                 mensaOpening.opening_hours,
                 nominatim,
-                { locale: this.translate.currentLang }
+                optionalConfig
               );
               this.mensaIsOpen = mensaOpening.parsedOpening.getState();
             }
@@ -343,10 +351,10 @@ export class MensaPage extends AbstractPage {
 
               if (foodhopperOpening && foodhopperOpening.length > 0) {
                 foodhopperOpening = foodhopperOpening[0];
-                foodhopperOpening.parsedOpening = new opening(
+                foodhopperOpening.parsedOpening = new opening_hours(
                   foodhopperOpening.opening_hours,
                   nominatim,
-                  { locale: this.translate.currentLang }
+                  optionalConfig
                 );
                 this.foodhopperIsOpen =
                   foodhopperOpening.parsedOpening.getState();
