@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { AlertController, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as dLoop from 'delayed-loop';

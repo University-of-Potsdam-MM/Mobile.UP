@@ -7,7 +7,7 @@ import { FormBuilder } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';

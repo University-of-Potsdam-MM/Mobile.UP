@@ -23,6 +23,10 @@
               "jquery",
               "opening_hours",
               "leaflet-search",
+              "leaflet",
+              "localforage",
+              "moment",
+              "delayed-loop",
               "xml2js"
             ],
             "assets": [
@@ -177,7 +181,8 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/angular-toolkit"
+    "defaultCollection": "@ionic/angular-toolkit",
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
