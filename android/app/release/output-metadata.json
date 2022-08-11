@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 20220300,
-      "versionName": "2022.3",
+      "versionCode": 20220400,
+      "versionName": "2022.4",
       "outputFile": "app-release.apk"
     }
   ],
