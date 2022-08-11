@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { Browser } from '@capacitor/browser';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { AlertController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { IModule, ISetting } from '../../lib/interfaces';
@@ -72,7 +72,7 @@ export class WebIntentService {
         moduleConfig.urlAndroid
       ) {
         if (moduleConfig.appId) {
-          const prefObj = await Storage.get({
+          const prefObj = await Preferences.get({
             key: 'setUserPreferenceWebsiteOrApp',
           });
           const setPreference = JSON.parse(prefObj.value);
@@ -173,7 +173,7 @@ export class WebIntentService {
         {
           text: this.translate.instant('button.save'),
           handler: async (decision) => {
-            await Storage.set({
+            await Preferences.set({
               key: 'setUserPreferenceWebsiteOrApp',
               value: JSON.stringify(true),
             });
@@ -194,7 +194,7 @@ export class WebIntentService {
             //   setting,
             //   decision
             // );
-            Storage.set({
+            Preferences.set({
               key: 'settings.' + setting.key,
               value: JSON.stringify(setting),
             }).then(() => {

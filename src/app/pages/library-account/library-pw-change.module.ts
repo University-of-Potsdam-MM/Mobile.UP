@@ -5,10 +5,10 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
-  Validators,
+  Validators
 } from '@angular/forms';
 // import { Logger, LoggingService } from 'ionic-logging-service';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { ModalController } from '@ionic/angular';
 import { IBibSession } from 'src/app/lib/interfaces';
 import { AlertService } from 'src/app/services/alert/alert.service';
@@ -76,7 +76,7 @@ export class LibraryPwChangePage implements OnInit {
   };
 
   async changePassword() {
-    const bibObj = await Storage.get({ key: 'bibSession' });
+    const bibObj = await Preferences.get({ key: 'bibSession' });
     const bibSession: IBibSession = JSON.parse(bibObj.value);
 
     const body = {
@@ -96,7 +96,7 @@ export class LibraryPwChangePage implements OnInit {
       .subscribe(
         () => {
           bibSession.credentials.password = this.changeForm.value.newPassword;
-          Storage.set({
+          Preferences.set({
             key: 'bibSession',
             value: JSON.stringify(bibSession),
           }).then(() => {

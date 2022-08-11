@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Keyboard } from '@capacitor/keyboard';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { AlertController, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as jquery from 'jquery';
@@ -247,7 +247,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     } else {
     }
 
-    await Storage.set({
+    await Preferences.set({
       key: 'favoriteBooks',
       value: JSON.stringify(this.allFavorites),
     });
@@ -279,7 +279,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
     this.displayedFavorites = [];
     this.displayedFavorites = this.sortFavorites(tmp2);
 
-    await Storage.set({
+    await Preferences.set({
       key: 'favoriteBooks',
       value: JSON.stringify(this.allFavorites),
     });
@@ -291,7 +291,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
       this.allFavorites = this.sortFavorites(this.allFavorites);
       this.displayedFavorites = this.sortFavorites(this.allFavorites);
       this.isLoadedFavorites = true;
-      await Storage.set({
+      await Preferences.set({
         key: 'favoriteBooks',
         value: JSON.stringify(this.allFavorites),
       });
@@ -311,7 +311,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
    * @description checks if favorites are still valid
    */
   async checkFavorites(refresher?) {
-    const tmpObj = await Storage.get({ key: 'favoriteBooks' });
+    const tmpObj = await Preferences.get({ key: 'favoriteBooks' });
     const tmp = JSON.parse(tmpObj.value);
 
     this.displayedFavorites = [];
@@ -532,7 +532,7 @@ export class LibrarySearchPage extends AbstractPage implements OnInit {
           handler: async () => {
             this.displayedFavorites = [];
             this.allFavorites = [];
-            await Storage.set({
+            await Preferences.set({
               key: 'favoriteBooks',
               value: JSON.stringify(this.allFavorites),
             });

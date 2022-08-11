@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { TranslateService } from '@ngx-translate/core';
 import { default as moment } from 'moment';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -48,7 +48,7 @@ export class SettingsPage extends AbstractPage implements OnInit {
    * @returns {Promise<any>}
    */
   public async getSettingValue(key) {
-    const settingObj = await Storage.get({ key: 'settings.' + key });
+    const settingObj = await Preferences.get({ key: 'settings.' + key });
     const setting: ISetting = JSON.parse(settingObj.value);
     if (setting == null) {
       return null;
@@ -123,7 +123,7 @@ export class SettingsPage extends AbstractPage implements OnInit {
     setting.value = value;
     // this.logger.debug('saveSettings', 'saved setting', setting, value);
 
-    await Storage.set({
+    await Preferences.set({
       key: 'settings.' + setting.key,
       value: JSON.stringify(setting),
     });

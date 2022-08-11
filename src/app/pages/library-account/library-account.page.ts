@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { AlertButton } from '@ionic/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,13 +13,13 @@ import {
   IBibSessionResponse,
   IUBFees,
   IUBItems,
-  IUBUser,
+  IUBUser
 } from 'src/app/lib/interfaces';
 import { sessionIsValid } from 'src/app/lib/util';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import {
   ELoginErrors,
-  ICredentials,
+  ICredentials
 } from 'src/app/services/login-service/interfaces';
 import { ConfigService } from '../../services/config/config.service';
 import { LibraryPwChangePage } from './library-pw-change.module';
@@ -80,7 +80,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
   }
 
   async ngOnInit() {
-    const bibObj = await Storage.get({ key: 'bibSession' });
+    const bibObj = await Preferences.get({ key: 'bibSession' });
     this.bibSession = JSON.parse(bibObj.value);
     this.endpoint = ConfigService.config.webservices.endpoint.libraryPAIA.url;
 
@@ -148,7 +148,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
               timestamp: new Date(),
             };
 
-            Storage.set({
+            Preferences.set({
               key: 'bibSession',
               value: JSON.stringify(this.bibSession),
             });
@@ -205,7 +205,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
       password: ['', Validators.required],
     });
 
-    Storage.remove({ key: 'bibSession' });
+    Preferences.remove({ key: 'bibSession' });
     this.app.updateLoginStatus();
     // this.logger.debug('logoutUB()', 'successfully logged out ub-user');
   }
@@ -584,7 +584,7 @@ export class LibraryAccountPage extends AbstractPage implements OnInit {
     modal.present();
     const response = await modal.onDidDismiss();
     if (response && response.data && response.data.shouldRelogin) {
-      const bibObj = await Storage.get({ key: 'bibSession' });
+      const bibObj = await Preferences.get({ key: 'bibSession' });
       this.bibSession = JSON.parse(bibObj.value);
       this.loginUB(this.bibSession.credentials);
       this.alertService.showToast('hints.text.changedPassword');

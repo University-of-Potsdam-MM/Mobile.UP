@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Keyboard } from '@capacitor/keyboard';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { TranslateService } from '@ngx-translate/core';
 import * as jquery from 'jquery';
 import { AbstractPage } from 'src/app/lib/abstract-page';
@@ -64,7 +64,7 @@ export class PracticePage extends AbstractPage {
    * @param refresher
    */
   async loadData(refresher?) {
-    const favObj = await Storage.get({ key: 'favoriteJobs' });
+    const favObj = await Preferences.get({ key: 'favoriteJobs' });
 
     let favorizedJobs: ADS[] = [];
     // load favorites if there are any
@@ -117,7 +117,7 @@ export class PracticePage extends AbstractPage {
             this.noFavoritesSet = false;
           }
 
-          await Storage.set({
+          await Preferences.set({
             key: 'favoriteJobs',
             value: JSON.stringify(favorizedItemsThatStillExist),
           });
@@ -240,7 +240,7 @@ export class PracticePage extends AbstractPage {
    * @param {ADS} ads
    */
   async makeFavorite(ads) {
-    const favObj = await Storage.get({ key: 'favoriteJobs' });
+    const favObj = await Preferences.get({ key: 'favoriteJobs' });
 
     let favorizedJobs: ADS[] = [];
     // load favorites if there are any
@@ -268,7 +268,7 @@ export class PracticePage extends AbstractPage {
     }
 
     // save fav array
-    await Storage.set({
+    await Preferences.set({
       key: 'favoriteJobs',
       value: JSON.stringify(favorizedJobs),
     });
@@ -280,7 +280,7 @@ export class PracticePage extends AbstractPage {
    * @param {ADS} ads
    */
   async removeFavorite(ads: ADS) {
-    const favObj = await Storage.get({ key: 'favoriteJobs' });
+    const favObj = await Preferences.get({ key: 'favoriteJobs' });
     const favorizedJobs: ADS[] = JSON.parse(favObj.value);
     const newFavorites: ADS[] = [];
 
@@ -309,7 +309,7 @@ export class PracticePage extends AbstractPage {
       this.noFavoritesSet = false;
     }
 
-    await Storage.set({
+    await Preferences.set({
       key: 'favoriteJobs',
       value: JSON.stringify(newFavorites),
     });

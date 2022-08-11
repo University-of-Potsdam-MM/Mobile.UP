@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { ModalController } from '@ionic/angular';
 import { SettingsService } from 'src/app/services/settings/settings.service';
 import { ICampus } from '../../lib/interfaces';
@@ -103,7 +103,7 @@ export class CampusTabComponent implements OnInit {
    * initializes this component
    */
   async ngOnInit() {
-    const savedListResult = await Storage.get({ key: 'campusListOrdered' });
+    const savedListResult = await Preferences.get({ key: 'campusListOrdered' });
     const savedList = JSON.parse(savedListResult.value);
 
     const configList: ICampus[] = Array.from(ConfigService.config.campus);
@@ -134,7 +134,7 @@ export class CampusTabComponent implements OnInit {
       }
     }
 
-    await Storage.set({
+    await Preferences.set({
       key: 'campusListOrdered',
       value: JSON.stringify(this.campusList),
     });

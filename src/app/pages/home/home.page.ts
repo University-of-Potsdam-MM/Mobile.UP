@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@capacitor-community/http';
 import { Browser } from '@capacitor/browser';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as $ from 'jquery';
@@ -65,7 +65,7 @@ export class HomePage extends AbstractPage implements OnInit {
   }
 
   async setupModules() {
-    const userModulesObj = await Storage.get({ key: 'moduleList' });
+    const userModulesObj = await Preferences.get({ key: 'moduleList' });
     const userModules = JSON.parse(userModulesObj.value);
     const configModules = this.buildDefaultModulesList();
 
@@ -209,7 +209,7 @@ export class HomePage extends AbstractPage implements OnInit {
 
     this.userHasFavorites();
 
-    await Storage.set({
+    await Preferences.set({
       key: 'moduleList',
       value: JSON.stringify(this.modules),
     }).then(() => {
@@ -261,7 +261,7 @@ export class HomePage extends AbstractPage implements OnInit {
     // we can just store the existing modules again because gridster is
     // operating on the same object
     // this.logger.debug('onGridChanged', 'grid was changed, saving changed module list');
-    await Storage.set({
+    await Preferences.set({
       key: 'moduleList',
       value: JSON.stringify(this.modules),
     });

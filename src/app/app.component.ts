@@ -2,19 +2,19 @@ import {
   ChangeDetectorRef,
   Component,
   QueryList,
-  ViewChildren,
+  ViewChildren
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Keyboard, KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
+import { Preferences } from '@capacitor/preferences';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Storage } from '@capacitor/storage';
 import {
   AlertController,
   IonRouterOutlet,
   MenuController,
   ModalController,
   NavController,
-  Platform,
+  Platform
 } from '@ionic/angular';
 import { AlertButton } from '@ionic/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +28,7 @@ import { ConnectionService } from './services/connection/connection.service';
 import { DarkModeAndroid } from './services/dark-mode-android/dist/esm';
 import {
   IOIDCRefreshResponseObject,
-  ISession,
+  ISession
 } from './services/login-service/interfaces';
 import { UPLoginProvider } from './services/login-service/login';
 import { SettingsService } from './services/settings/settings.service';
@@ -288,7 +288,7 @@ export class AppComponent {
     this.fullName = undefined;
 
     const session: ISession = await this.userSession.getSession();
-    const bibObj = await Storage.get({ key: 'bibSession' });
+    const bibObj = await Preferences.get({ key: 'bibSession' });
     const bibSession: IBibSession = JSON.parse(bibObj.value);
 
     if (bibSession) {
@@ -351,7 +351,7 @@ export class AppComponent {
       {
         text: this.translate.instant('button.ok'),
         handler: async () => {
-          await Storage.remove({ key: 'bibSession' });
+          await Preferences.remove({ key: 'bibSession' });
           // this.logger.debug('doBibLogout()', 'successfully logged out ub-user');
           this.updateLoginStatus();
           this.navCtrl.navigateRoot('/home');
@@ -371,9 +371,9 @@ export class AppComponent {
   async performLogout() {
     this.userSession.removeSession();
     for (let i = 0; i < 10; i++) {
-      await Storage.remove({ key: 'studentGrades[' + i + ']' });
+      await Preferences.remove({ key: 'studentGrades[' + i + ']' });
     }
-    await Storage.remove({ key: 'userInformation' });
+    await Preferences.remove({ key: 'userInformation' });
     this.cache.clearAll();
     this.updateLoginStatus();
   }

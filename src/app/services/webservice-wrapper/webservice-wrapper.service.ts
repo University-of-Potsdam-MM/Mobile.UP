@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { CacheService } from 'ionic-cache';
 import { default as moment } from 'moment';
 import { from, Observable } from 'rxjs';
@@ -19,7 +19,7 @@ import {
   IPersonsRequestParams,
   IRoomsRequestParams,
   ITransportRequestParams,
-  IWebservice,
+  IWebservice
 } from './webservice-definition-interfaces';
 
 /**
@@ -137,7 +137,7 @@ export class WebserviceWrapperService {
     errorCallback: async (error, wsName, usingUpdatedApiManager) => {
       // this.logger.error('errorCallback', `calling '${wsName}': `, error);
       // this.logger.error('USING NEW API MANAGER: ' + usingUpdatedApiManager);
-      await Storage.set({
+      await Preferences.set({
         key: 'latestWebserviceError',
         value: JSON.stringify(error),
       });

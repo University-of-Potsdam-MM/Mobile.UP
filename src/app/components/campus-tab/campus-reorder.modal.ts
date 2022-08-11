@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { ModalController } from '@ionic/angular';
 import { ICampus } from 'src/app/lib/interfaces';
 
@@ -30,7 +30,7 @@ export class CampusReorderModalPage {
       this.campusList.splice(ev.detail.from, 1)[0]
     );
 
-    await Storage.set({
+    await Preferences.set({
       key: 'campusListOrdered',
       value: JSON.stringify(this.campusList),
     });

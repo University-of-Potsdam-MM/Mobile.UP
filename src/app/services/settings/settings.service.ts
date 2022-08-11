@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@capacitor/storage';
+import { Preferences } from '@capacitor/preferences';
 import { ESettingType, ISetting } from '../../lib/interfaces';
 import * as Constants from './settings_config';
 
@@ -10,7 +10,7 @@ export class SettingsService {
   constructor() {}
 
   async getSettingValue(key: string) {
-    const settingObj = await Storage.get({ key: 'settings.' + key });
+    const settingObj = await Preferences.get({ key: 'settings.' + key });
     const setting: ISetting = JSON.parse(settingObj.value);
 
     if (setting === null) {
