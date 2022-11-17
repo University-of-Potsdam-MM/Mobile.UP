@@ -10,20 +10,20 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "~@ionic/angular/css/core.css";
+@import url("~@ionic/angular/css/core.css");
 
 /* Basic CSS for apps built with Ionic */
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import "~@ionic/angular/css/display.css";
+@import url("~@ionic/angular/css/normalize.css");
+@import url("~@ionic/angular/css/structure.css");
+@import url("~@ionic/angular/css/typography.css");
+@import url("~@ionic/angular/css/display.css");
 
 /* Optional CSS utils that can be commented out */
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@import url("~@ionic/angular/css/padding.css");
+@import url("~@ionic/angular/css/float-elements.css");
+@import url("~@ionic/angular/css/text-alignment.css");
+@import url("~@ionic/angular/css/text-transformation.css");
+@import url("~@ionic/angular/css/flex-utils.css");
 
 // // Add UP Font
 // /* Source Sans Pro Regular */
@@ -236,7 +236,7 @@ ion-back-button {
   --ion-text-color: var(--ion-color-dark) !important;
 }
 
-ion-toolbar.sc-ion-back-button-md-h:not(.ion-color):not(.ion-color),
+ion-toolbar.sc-ion-back-button-md-h:not(.ion-color, .ion-color),
 ion-toolbar:not(.ion-color) .sc-ion-back-button-md-h:not(.ion-color) {
   color: var(--ion-color-dark) !important;
 }
