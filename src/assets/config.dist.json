@@ -32,11 +32,6 @@
       "hide": false,
       "url": "https://www.uni-potsdam.de/de/veranstaltungen"
     },
-    "feedback": {
-      "componentName": "feedback",
-      "icon": "send",
-      "selected": false
-    },
     "free-rooms": {
       "componentName": "free-rooms",
       "icon": "square-outline",
