@@ -86,6 +86,11 @@
       "icon": "restaurant",
       "selected": true
     },
+    "mensa2": {
+      "componentName": "mensa2",
+      "icon": "restaurant",
+      "selected": true
+    },
     "moodle": {
       "componentName": "moodle",
       "customIcon": "./assets/icon/moodle.svg",

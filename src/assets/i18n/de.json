@@ -316,6 +316,9 @@
       "mensaClosed": "Diese Mensa ist derzeit geschlossen.",
       "foodhopperGriebnitzsee": "Der Food Hopper in der Stahnsdorfer Str. 140-156 ist geöffnet und bietet warmes Mittagessen zum Mitnehmen an."
     },
+    "mensa2": {
+      "title": "Mensa2"
+    },
     "unishop": {
       "title": "UNIshop"
     },
