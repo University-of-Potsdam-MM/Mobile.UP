@@ -3,7 +3,7 @@
     <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
       mode="md"
-      *ngIf="!(platform.is('ios') || platform.is('android'))"
+      *ngIf="ulfSelected && !(platform.is('ios') || platform.is('android'))"
       (click)="loadMenu(true)"
       slot="end"
       fill="clear"
@@ -15,13 +15,20 @@
   </ion-toolbar>
 
   <ion-toolbar mode="md">
-    <p>Changer</p>
+    <ion-segment value="mensen">
+      <ion-segment-button (click)="selectTab('mensen')" value="mensen">
+        <ion-label>Mensen</ion-label>
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('ulfscoffee')" value="ulfscoffee">
+        <ion-label>Ulfs Kaffee</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 
-  <ion-toolbar *ngIf="isLoaded && !networkError">
+  <ion-toolbar *ngIf="ulfSelected && isLoaded && !networkError">
     <ion-grid>
       <ion-row>
-        <ion-col size="2">
+        <ion-col size="6">
           <app-date-picker
             [compactMode]="true"
             [inputDate]="selectedDate"
@@ -50,27 +57,38 @@
 </ion-header>
 
 <ion-content class="ion-no-padding">
-  <ion-refresher
-    *ngIf="platform.is('ios') || platform.is('android')"
-    slot="fixed"
-    (ionRefresh)="loadMenu($event)"
-  >
-    <ion-refresher-content
-      pullingIcon="refresh"
-      refreshingSpinner="dots"
-    ></ion-refresher-content>
-  </ion-refresher>
+  <div *ngIf="ulfSelected && isLoaded && !networkError">
+    <ion-refresher
+      *ngIf="platform.is('ios') || platform.is('android')"
+      slot="fixed"
+      (ionRefresh)="loadMenu($event)"
+    >
+      <ion-refresher-content
+        pullingIcon="refresh"
+        refreshingSpinner="dots"
+      ></ion-refresher-content>
+    </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" class="ion-padding">
-    <ion-spinner name="dots"></ion-spinner>
+    <div align="center" *ngIf="!isLoaded" class="ion-padding">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
   </div>
 
-  <div *ngIf="isLoaded && !networkError">
+  <div *ngIf="ulfSelected && isLoaded && !networkError">
     <app-mensa-meal
       *ngIf="ulfMeals && !noUlfMealsForDate"
       [meals]="displayedUlfMeals"
       [mealForDate]="ulfMealForDate"
       [iconMapping]="ulfIconMapping"
     ></app-mensa-meal>
+  </div>
+
+  <div *ngIf="mensenSelected && !networkError">
+    <p style="text-align: center; font-size: 24px">
+      Leider können wir nicht mehr die Speiseplan der Mensen abrufen und euch
+      nur auf den
+      <a href="https://swp.webspeiseplan.de/"> Webspeiseplan der SWP </a>
+      weiterleiten.
+    </p>
   </div>
 </ion-content>

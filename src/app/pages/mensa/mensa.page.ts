@@ -61,7 +61,6 @@ export class MensaPage extends AbstractPage {
   }
 
   loadCampusMenu(refresher?) {
-    console.log('loadcampusmenu');
     if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     }
@@ -82,8 +81,6 @@ export class MensaPage extends AbstractPage {
     this.noMealsForDate = true;
     this.noUlfMealsForDate = true;
     this.networkError = false;
-
-    console.log('canteen name: ' + this.campus.canteen_name);
 
     if (this.campus.canteen_name && this.campus.canteen_name.length > 0) {
       this.noMensaForLocation = false;
@@ -111,8 +108,6 @@ export class MensaPage extends AbstractPage {
             if (res.iconHashMap && res.iconHashMap.entry) {
               this.iconMapping = res.iconHashMap.entry;
             }
-
-            console.log('resp1_');
 
             if (this.campus.canteen_name === 'Griebnitzsee') {
               const ulfParam = 'UlfsCafe';

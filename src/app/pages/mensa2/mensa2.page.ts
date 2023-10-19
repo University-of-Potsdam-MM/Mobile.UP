@@ -14,8 +14,10 @@ import { WebserviceWrapperService } from '../../services/webservice-wrapper/webs
   styleUrls: ['./mensa2.page.scss'],
 })
 export class Mensa2Page extends AbstractPage implements OnInit {
-  isLoaded;
-  networkError;
+  isLoaded = false;
+  ulfSelected = false;
+  mensenSelected = true;
+  networkError = false;
   selectedDate;
   currentDate = moment();
   filterKeywords = [];
@@ -38,9 +40,12 @@ export class Mensa2Page extends AbstractPage implements OnInit {
     this.loadMenu(false);
   }
 
-  loadMenu(refresher?) {
-    console.log('loadMenu');
+  selectTab(tabName: string) {
+    this.ulfSelected = tabName === 'ulfscoffee';
+    this.mensenSelected = tabName === 'mensen';
+  }
 
+  loadMenu(refresher?) {
     if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     }
@@ -77,20 +82,16 @@ export class Mensa2Page extends AbstractPage implements OnInit {
               campus_canteen_name: ulfParam,
             } as IMensaRequestParams)
             .subscribe((resUlf: IMensaResponse) => {
-              console.log(JSON.stringify(resUlf));
-
               if (resUlf.meal) {
                 this.ulfMeals = resUlf.meal;
                 this.displayedUlfMeals = resUlf.meal;
               }
+              this.getFilterKeywords();
+              this.classifyMeals();
               if (resUlf.iconHashMap && resUlf.iconHashMap.entry) {
                 this.ulfIconMapping = resUlf.iconHashMap.entry;
               }
-              if (refresher && refresher.target) {
-                refresher.target.complete();
-              }
               this.isLoaded = true;
-              this.networkError = false;
               if (refresher && refresher.target) {
                 refresher.target.complete();
               }
@@ -104,6 +105,20 @@ export class Mensa2Page extends AbstractPage implements OnInit {
           }
         }
       );
+  }
+
+  getFilterKeywords() {
+    this.filterKeywords = [];
+    for (const [index, meal] of this.displayedUlfMeals.entries()) {
+      if (this.ulfMealForDate[index]) {
+        for (const mealType of meal.type) {
+          if (!isInArray(this.filterKeywords, mealType)) {
+            this.filterKeywords.push(mealType);
+          }
+        }
+      }
+    }
+    this.filterKeywords.sort();
   }
 
   pickDate($event) {
@@ -133,7 +148,6 @@ export class Mensa2Page extends AbstractPage implements OnInit {
 
   filterMenus(event) {
     const filter = convertToArray(event.detail.value);
-
     this.displayedUlfMeals = this.ulfMeals;
 
     if (filter && filter.length > 0) {
@@ -154,7 +168,6 @@ export class Mensa2Page extends AbstractPage implements OnInit {
         });
       }
     }
-
     this.classifyMeals();
   }
 
