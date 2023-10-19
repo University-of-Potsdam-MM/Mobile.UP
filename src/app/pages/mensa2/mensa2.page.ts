@@ -34,9 +34,13 @@ export class Mensa2Page extends AbstractPage implements OnInit {
     super({ optionalNetwork: true });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadMenu(false);
+  }
 
   loadMenu(refresher?) {
+    console.log('loadMenu');
+
     if (!(refresher && refresher.target)) {
       this.isLoaded = false;
     }
@@ -54,7 +58,7 @@ export class Mensa2Page extends AbstractPage implements OnInit {
       .call(
         'mensa',
         {
-          campus_canteen_name: this.campus.canteen_name,
+          campus_canteen_name: 'Griebnitzsee',
         } as IMensaRequestParams,
         { forceRefreshGroup: refresher !== undefined }
       )
@@ -67,26 +71,30 @@ export class Mensa2Page extends AbstractPage implements OnInit {
               return 0;
             }
           });
+          const ulfParam = 'UlfsCafe';
+          this.ws
+            .call('mensa', {
+              campus_canteen_name: ulfParam,
+            } as IMensaRequestParams)
+            .subscribe((resUlf: IMensaResponse) => {
+              console.log(JSON.stringify(resUlf));
 
-          if (this.campus.canteen_name === 'Griebnitzsee') {
-            const ulfParam = 'UlfsCafe';
-            this.ws
-              .call('mensa', {
-                campus_canteen_name: ulfParam,
-              } as IMensaRequestParams)
-              .subscribe((resUlf: IMensaResponse) => {
-                if (resUlf.meal) {
-                  this.ulfMeals = resUlf.meal;
-                  this.displayedUlfMeals = resUlf.meal;
-                }
-                if (resUlf.iconHashMap && resUlf.iconHashMap.entry) {
-                  this.ulfIconMapping = resUlf.iconHashMap.entry;
-                }
-                if (refresher && refresher.target) {
-                  refresher.target.complete();
-                }
-              });
-          }
+              if (resUlf.meal) {
+                this.ulfMeals = resUlf.meal;
+                this.displayedUlfMeals = resUlf.meal;
+              }
+              if (resUlf.iconHashMap && resUlf.iconHashMap.entry) {
+                this.ulfIconMapping = resUlf.iconHashMap.entry;
+              }
+              if (refresher && refresher.target) {
+                refresher.target.complete();
+              }
+              this.isLoaded = true;
+              this.networkError = false;
+              if (refresher && refresher.target) {
+                refresher.target.complete();
+              }
+            });
         },
         () => {
           this.isLoaded = true;

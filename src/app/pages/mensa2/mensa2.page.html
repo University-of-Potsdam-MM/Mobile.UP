@@ -13,6 +13,11 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.mensa2.title" | translate }}</ion-title>
   </ion-toolbar>
+
+  <ion-toolbar mode="md">
+    <p>Changer</p>
+  </ion-toolbar>
+
   <ion-toolbar *ngIf="isLoaded && !networkError">
     <ion-grid>
       <ion-row>
@@ -44,7 +49,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-no-padding">
   <ion-refresher
     *ngIf="platform.is('ios') || platform.is('android')"
     slot="fixed"
@@ -55,4 +60,17 @@
       refreshingSpinner="dots"
     ></ion-refresher-content>
   </ion-refresher>
+
+  <div align="center" *ngIf="!isLoaded" class="ion-padding">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+
+  <div *ngIf="isLoaded && !networkError">
+    <app-mensa-meal
+      *ngIf="ulfMeals && !noUlfMealsForDate"
+      [meals]="displayedUlfMeals"
+      [mealForDate]="ulfMealForDate"
+      [iconMapping]="ulfIconMapping"
+    ></app-mensa-meal>
+  </div>
 </ion-content>
