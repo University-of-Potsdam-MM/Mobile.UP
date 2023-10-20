@@ -72,11 +72,6 @@ const routes: Routes = [
       import('./pages/mensa/mensa.module').then((m) => m.MensaPageModule),
   },
   {
-    path: 'mensa2',
-    loadChildren: () =>
-      import('./pages/mensa2/mensa2.module').then((m) => m.Mensa2PageModule),
-  },
-  {
     path: 'news',
     loadChildren: () =>
       import('./pages/news/news.module').then((m) => m.NewsPageModule),
@@ -145,11 +140,6 @@ const routes: Routes = [
       import('./pages/library-account/library-account.module').then(
         (m) => m.LibraryAccountPageModule
       ),
-  },
-  {
-    path: 'mensa2',
-    loadChildren: () =>
-      import('./pages/mensa2/mensa2.module').then((m) => m.Mensa2PageModule),
   },
   // {
   //   path: 'events',
