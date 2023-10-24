@@ -467,6 +467,12 @@
     "general": "General",
     "exportLog": "Export log"
   },
+  "info-banner": {
+    "title": "New information",
+    "subtitle": "About PULS login & cafeteria app",
+    "description": "Unfortunately, the PULS login is currently not possible. We are working on a solution and ask for your patience.",
+    "ack-text": "Close note"
+  },
   "launchNavigator": {
     "headerText": "Remember your choice?",
     "bodyText": "Use the same app for navigating next time?",

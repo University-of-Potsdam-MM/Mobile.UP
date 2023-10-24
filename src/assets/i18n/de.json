@@ -467,6 +467,12 @@
     "general": "Allgemein",
     "exportLog": "Log exportieren"
   },
+  "info-banner": {
+    "title": "Neue Informationen",
+    "subtitle": "Zu PULS Login & Mensaapp",
+    "description": "Der PULS-Login ist derzeit leider nicht möglich. Wir arbeiten an einer Lösung und bitten Sie um Geduld.",
+    "ack-text": "Hinweis schließen"
+  },
   "launchNavigator": {
     "headerText": "Auswahl merken?",
     "bodyText": "Beim nächsten Mal die gleiche App verwenden?",
