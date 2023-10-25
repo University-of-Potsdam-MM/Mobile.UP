@@ -315,8 +315,7 @@
       "disclaimer": "Alle Daten werden mit freundlicher Unterstützung des Studentenwerk Potsdam genutzt.",
       "mensaClosed": "Diese Mensa ist derzeit geschlossen.",
       "foodhopperGriebnitzsee": "Der Food Hopper in der Stahnsdorfer Str. 140-156 ist geöffnet und bietet warmes Mittagessen zum Mitnehmen an.",
-      "mensaAPINotAvailable1": "Leider stehen uns die Daten der Mensen nicht mehr zur Verfügung. Daher können wir Sie nur auf den ",
-      "mensaAPINotAvailable2": " weiterleiten.",
+      "mensaAPINotAvailable": "Der Universität Potsdam stehen die Daten leider nicht mehr zur Verfügung. Das Studentenwerk Potsdam hat eine eigene App entwickelt und veröffentlicht die Speisepläne der Mensen unter diesem Link: ",
       "mensaLinktext": "Webspeiseplan",
       "ulfscafe": "Ulfs Café",
       "mensen": "Mensen"
