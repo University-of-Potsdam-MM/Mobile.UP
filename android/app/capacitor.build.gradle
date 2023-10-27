@@ -23,7 +23,7 @@ dependencies {
     implementation project(':capacitor-share')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-dark-mode-android')
-
+    implementation "androidx.webkit:webkit:1.4.0"
 }
 
 

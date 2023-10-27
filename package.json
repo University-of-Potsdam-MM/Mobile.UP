@@ -54,6 +54,7 @@
     "angular-gridster2": "^15.0.0",
     "capacitor-dark-mode-android": "file:src/app/services/dark-mode-android",
     "cordova-plugin-calendar": "^5.1.6",
+    "cordova-plugin-file": "^8.0.0",
     "delayed-loop": "^1.0.1",
     "i18next-client": "^1.11.5",
     "ionic-cache": "^6.0.3",

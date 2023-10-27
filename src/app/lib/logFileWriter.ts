@@ -1,12 +1,12 @@
 import { File } from '@awesome-cordova-plugins/file/ngx';
 
-export const writeToLogFile = (logString: string) => {
+export const writeToLogFile = (fileName: string, logString: string) => {
   //newFile.writeFile(newFile.dataDirectory, "testFileName", logString)
   //  .then()
   //  .catch(e => console.error(e));
 
   const newFile: File = new File();
-  const formPage = new FormsPage(newFile);
+  const formPage = new FormsPage(fileName, newFile);
   formPage.createFile().then((_) => {
     formPage.writeFile(logString);
   });
@@ -19,11 +19,7 @@ export class FormsPage {
 
   private blob: Blob;
 
-  private fileName: string;
-
-  constructor(private file: File) {
-    this.fileName = this.createFileName();
-  }
+  constructor(private fileName: string, private file: File) {}
 
   async createFile() {
     return this.file.createFile(this.file.dataDirectory, this.fileName, true);
@@ -38,14 +34,19 @@ export class FormsPage {
 
   writeFile(logString: string) {
     this.stringToWrite = logString;
+    console.log('[FormsPage]: write String: ' + this.stringToWrite);
     this.blob = new Blob([this.stringToWrite], { type: 'text/plain' });
-    this.file.writeFile(this.file.dataDirectory, this.fileName, this.blob, {
-      replace: true,
-      append: false,
-    });
+    this.file
+      .writeFile(this.file.dataDirectory, this.fileName, this.blob, {
+        replace: true,
+        append: false,
+      })
+      .then(() => {
+        console.log('[FormsPage]: wrote Log file');
+      });
   }
 
   private createFileName() {
-    return 'MobileUPTestLog' + new Date().toDateString();
+    return 'MobileUPTestLog'; // + (new Date().toDateString()).replace(" ","-");
   }
 }

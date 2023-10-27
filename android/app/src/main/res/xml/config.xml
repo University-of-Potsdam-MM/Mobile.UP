@@ -6,5 +6,10 @@
     <param name="android-package" value="nl.xservices.plugins.Calendar"/>
   </feature>
 
+  <feature name="File">
+    <param name="android-package" value="org.apache.cordova.file.FileUtils"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   
 </widget>
