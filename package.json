@@ -45,6 +45,7 @@
     "@capacitor/preferences": "^4.0.2",
     "@capacitor/share": "^4.1.0",
     "@capacitor/splash-screen": "^4.1.2",
+    "@ionic-native/file": "^5.36.0",
     "@ionic/angular": "^6.3.8",
     "@ionic/storage-angular": "^3.0.6",
     "@ngx-translate/core": "^14.0.0",
