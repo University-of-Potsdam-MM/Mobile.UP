@@ -1,16 +1,14 @@
-import { File } from '@ionic-native/file/ngx';
-import { Platform } from '@ionic/angular';
-import { FileEntry } from '@ionic-native/file';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 export const writeToLogFile = (logString: string) => {
-  const newFile = new File();
-  /*newFile.writeFile(newFile.dataDirectory, "testFileName", logString)
-    .then()
-    .catch(e => console.error(e));*/
+  //newFile.writeFile(newFile.dataDirectory, "testFileName", logString)
+  //  .then()
+  //  .catch(e => console.error(e));
 
+  const newFile: File = new File();
   const formPage = new FormsPage(newFile);
   formPage.createFile().then((_) => {
-    formPage.writeFile();
+    formPage.writeFile(logString);
   });
 };
 
@@ -21,25 +19,33 @@ export class FormsPage {
 
   private blob: Blob;
 
-  constructor(private file: File) {}
+  private fileName: string;
+
+  constructor(private file: File) {
+    this.fileName = this.createFileName();
+  }
 
   async createFile() {
-    return this.file.createFile(this.file.dataDirectory, 'filename', true);
+    return this.file.createFile(this.file.dataDirectory, this.fileName, true);
   }
 
   async readFile() {
-    this.promise = this.file.readAsText(this.file.dataDirectory, 'filename');
+    this.promise = this.file.readAsText(this.file.dataDirectory, this.fileName);
     await this.promise.then((value) => {
       console.log(value);
     });
   }
 
-  writeFile() {
-    this.stringToWrite = 'I learned this from Medium';
+  writeFile(logString: string) {
+    this.stringToWrite = logString;
     this.blob = new Blob([this.stringToWrite], { type: 'text/plain' });
-    this.file.writeFile(this.file.dataDirectory, 'filename', this.blob, {
+    this.file.writeFile(this.file.dataDirectory, this.fileName, this.blob, {
       replace: true,
       append: false,
     });
+  }
+
+  private createFileName() {
+    return 'MobileUPTestLog' + new Date().toDateString();
   }
 }
