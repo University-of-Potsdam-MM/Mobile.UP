@@ -1,52 +1,27 @@
 import { File } from '@awesome-cordova-plugins/file/ngx';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
+import { FilesystemPlugin, WriteFileOptions } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
-export const writeToLogFile = (fileName: string, logString: string) => {
-  //newFile.writeFile(newFile.dataDirectory, "testFileName", logString)
-  //  .then()
-  //  .catch(e => console.error(e));
+export const saveFileAndShare = async (
+  fileNameWithExtension: string,
+  logString: string
+): Promise<boolean> => {
+  // Native
+  try {
+    const fileConfig: WriteFileOptions = {
+      path: `Exports/${fileNameWithExtension}`,
+      data: logString,
+      directory: Directory.Cache,
+      encoding: Encoding.UTF8,
+      recursive: true,
+    };
+    const writeFileResult = await Filesystem.writeFile(fileConfig);
+    await Share.share({ url: writeFileResult.uri });
 
-  const newFile: File = new File();
-  const formPage = new FormsPage(fileName, newFile);
-  formPage.createFile().then((_) => {
-    formPage.writeFile(logString);
-  });
+    return true;
+  } catch (error) {
+    console.error('Error creating file: ', JSON.stringify(error));
+    return false;
+  }
 };
-
-export class FormsPage {
-  private promise: Promise<string>;
-
-  private stringToWrite: string;
-
-  private blob: Blob;
-
-  constructor(private fileName: string, private file: File) {}
-
-  async createFile() {
-    return this.file.createFile(this.file.dataDirectory, this.fileName, true);
-  }
-
-  async readFile() {
-    this.promise = this.file.readAsText(this.file.dataDirectory, this.fileName);
-    await this.promise.then((value) => {
-      console.log(value);
-    });
-  }
-
-  writeFile(logString: string) {
-    this.stringToWrite = logString;
-    console.log('[FormsPage]: write String: ' + this.stringToWrite);
-    this.blob = new Blob([this.stringToWrite], { type: 'text/plain' });
-    this.file
-      .writeFile(this.file.dataDirectory, this.fileName, this.blob, {
-        replace: true,
-        append: false,
-      })
-      .then(() => {
-        console.log('[FormsPage]: wrote Log file');
-      });
-  }
-
-  private createFileName() {
-    return 'MobileUPTestLog'; // + (new Date().toDateString()).replace(" ","-");
-  }
-}
