@@ -1,6 +1,5 @@
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { FilesystemPlugin, WriteFileOptions } from '@capacitor/filesystem';
+import { WriteFileOptions } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 
 export const saveFileAndShare = async (
