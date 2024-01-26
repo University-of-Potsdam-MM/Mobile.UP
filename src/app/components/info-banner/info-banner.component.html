@@ -1,13 +1,15 @@
 <div id="info-banner-card" class="card">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ "info-banner.title" | translate }}</ion-card-title>
-      <ion-card-subtitle>{{
-        "info-banner.subtitle" | translate
-      }}</ion-card-subtitle>
+      <ion-card-title>
+        {{ title | translate }}
+      </ion-card-title>
+      <ion-card-subtitle>
+        {{ subtitle | translate }}
+      </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      {{ "info-banner.description" | translate }}
+      {{ description | translate }}
     </ion-card-content>
     <div style="display: block; margin: auto; width: fit-content">
       <ion-button fill="clear" (click)="closeCard()">
