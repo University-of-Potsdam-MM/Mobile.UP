@@ -22,6 +22,7 @@ import { HintBoxComponent } from './hint-box/hint-box.component';
 import { LectureListComponent } from './lecture-list/lecture-list.component';
 import { MensaMealComponent } from './mensa-meal/mensa-meal.component';
 import { ModulesGridComponent } from './modules-grid/modules-grid.component';
+import { InfoBannerComponent } from './info-banner/info-banner.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ModulesGridComponent } from './modules-grid/modules-grid.component';
     CampusReorderModalPage,
     DatePickerComponent,
     ModulesGridComponent,
+    InfoBannerComponent,
   ],
   imports: [
     IonicModule,
@@ -70,6 +72,7 @@ import { ModulesGridComponent } from './modules-grid/modules-grid.component';
     CourseDataComponent,
     DatePickerComponent,
     ModulesGridComponent,
+    InfoBannerComponent,
   ],
 })
 export class ComponentsModule {}

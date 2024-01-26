@@ -1,10 +1,10 @@
-<ion-header mode="ios">
+<ion-header>
   <ion-toolbar>
     <ion-back-button mode="md" slot="start"></ion-back-button>
     <ion-button
       mode="md"
-      *ngIf="!(platform.is('ios') || platform.is('android'))"
-      (click)="loadCampusMenu(true)"
+      *ngIf="ulfSelected && !(platform.is('ios') || platform.is('android'))"
+      (click)="loadMenu(true)"
       slot="end"
       fill="clear"
     >
@@ -13,10 +13,19 @@
     <ion-menu-button slot="end"></ion-menu-button>
     <ion-title>{{ "page.mensa.title" | translate }}</ion-title>
   </ion-toolbar>
+
   <ion-toolbar mode="md">
-    <app-campus-tab (campusChanged)="changeCampus($event)"></app-campus-tab>
+    <ion-segment value="mensen">
+      <ion-segment-button (click)="selectTab('mensen')" value="mensen">
+        <ion-label>{{ "page.mensa.mensen" | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button (click)="selectTab('ulfscoffee')" value="ulfscoffee">
+        <ion-label>{{ "page.mensa.ulfscafe" | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
-  <ion-toolbar *ngIf="isLoaded && !noMensaForLocation && !networkError">
+
+  <ion-toolbar *ngIf="ulfSelected && isLoaded && !networkError">
     <ion-grid>
       <ion-row>
         <ion-col size="6">
@@ -48,59 +57,24 @@
 </ion-header>
 
 <ion-content class="ion-no-padding">
-  <ion-refresher
-    *ngIf="platform.is('ios') || platform.is('android')"
-    slot="fixed"
-    (ionRefresh)="loadCampusMenu($event)"
-  >
-    <ion-refresher-content
-      pullingIcon="refresh"
-      refreshingSpinner="dots"
-    ></ion-refresher-content>
-  </ion-refresher>
+  <div *ngIf="ulfSelected && isLoaded && !networkError">
+    <ion-refresher
+      *ngIf="platform.is('ios') || platform.is('android')"
+      slot="fixed"
+      (ionRefresh)="loadMenu($event)"
+    >
+      <ion-refresher-content
+        pullingIcon="refresh"
+        refreshingSpinner="dots"
+      ></ion-refresher-content>
+    </ion-refresher>
 
-  <div align="center" *ngIf="!isLoaded" class="ion-padding">
-    <ion-spinner name="dots"></ion-spinner>
+    <div align="center" *ngIf="!isLoaded" class="ion-padding">
+      <ion-spinner name="dots"></ion-spinner>
+    </div>
   </div>
 
-  <app-hint-box
-    *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation && !foodhopperIsOpen"
-    hintTypeI18nKey="hints.type.hint"
-    hintTextI18nKey="page.mensa.mensaClosed"
-  ></app-hint-box>
-  <app-hint-box
-    *ngIf="isLoaded && !mensaIsOpen && !networkError && !noMensaForLocation && foodhopperIsOpen"
-    hintTypeI18nKey="hints.type.hint"
-    hintTextI18nKey="page.mensa.mensaClosed"
-    secondHintTextI18nKey="page.mensa.foodhopperGriebnitzsee"
-  ></app-hint-box>
-  <app-hint-box
-    *ngIf="isLoaded && mensaIsOpen && !networkError && !noMensaForLocation && foodhopperIsOpen"
-    hintTypeI18nKey="hints.type.hint"
-    hintTextI18nKey="page.mensa.foodhopperGriebnitzsee"
-  ></app-hint-box>
-  <app-hint-box
-    *ngIf="noMensaForLocation"
-    hintTypeI18nKey="hints.type.hint"
-    hintTextI18nKey="hints.text.functionNotAvailable"
-  ></app-hint-box>
-
-  <div *ngIf="isLoaded && !noMensaForLocation && !networkError">
-    <app-mensa-meal
-      *ngIf="!noMealsForDate"
-      [meals]="displayedMeals"
-      [mealForDate]="mealForDate"
-      [iconMapping]="iconMapping"
-    ></app-mensa-meal>
-
-    <ion-item-divider
-      mode="md"
-      *ngIf="ulfMeals && !noUlfMealsForDate"
-      color="light"
-    >
-      <ion-label>Ulf's Café</ion-label>
-    </ion-item-divider>
-
+  <div *ngIf="ulfSelected && isLoaded && !networkError">
     <app-mensa-meal
       *ngIf="ulfMeals && !noUlfMealsForDate"
       [meals]="displayedUlfMeals"
@@ -109,25 +83,12 @@
     ></app-mensa-meal>
   </div>
 
-  <div
-    *ngIf="isLoaded && noMealsForDate && noUlfMealsForDate && !networkError && mensaIsOpen && !noMensaForLocation"
-  >
-    <app-hint-box
-      hintTypeI18nKey="hints.type.hint"
-      hintTextI18nKey="hints.text.mensa-nomeals-hint"
-    ></app-hint-box>
+  <div *ngIf="mensenSelected && !networkError">
+    <p style="text-align: center; font-size: 24px">
+      {{ "page.mensa.mensaAPINotAvailable" | translate }}
+      <a href="https://swp.webspeiseplan.de/"
+        >{{"page.mensa.mensaLinktext" | translate}}</a
+      >
+    </p>
   </div>
-  <app-hint-box
-    *ngIf="isLoaded && networkError && !noMensaForLocation"
-    hintTypeI18nKey="hints.type.hint"
-    hintTextI18nKey="alert.httpErrorStatus.generic"
-  ></app-hint-box>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <app-footer-disclaimer
-      disclaimerReference="page.mensa.disclaimer"
-    ></app-footer-disclaimer>
-  </ion-toolbar>
-</ion-footer>

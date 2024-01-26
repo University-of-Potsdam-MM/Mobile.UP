@@ -314,7 +314,11 @@
       "guests": "Guests",
       "disclaimer": "All data is used with the kind support of the Studentenwerk Potsdam.",
       "mensaClosed": "This canteen is closed at the moment.",
-      "foodhopperGriebnitzsee": "The Food Hopper located at Stahnsdorfer Str. 140-156 is open and offers warm lunches for takeaway."
+      "foodhopperGriebnitzsee": "The Food Hopper located at Stahnsdorfer Str. 140-156 is open and offers warm lunches for takeaway.",
+      "mensaAPINotAvailable": "The data is not available for the University of Potsdam anymore. The Studentenwerk Potsdam has developed an own application and provides the menu under this link: ",
+      "mensaLinktext": "Web Menu",
+      "ulfscafe": "Ulfs Coffee shop",
+      "mensen": "canteens"
     },
     "unishop": {
       "title": "UNIshop"
@@ -461,6 +465,12 @@
     "notLoggedInText": "not logged in",
     "general": "General",
     "exportLog": "Export log"
+  },
+  "info-banner": {
+    "title": "New information",
+    "subtitle": "About login problems",
+    "description": "Unfortunately, the login is currently not possible. We are working on a solution and ask for your patience.",
+    "ack-text": "Close note"
   },
   "launchNavigator": {
     "headerText": "Remember your choice?",
